@@ -1,0 +1,42 @@
+<form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/Admins/account_register/create'); ?>">
+    
+	<div class="form-row">
+	
+        <div class="form-group col-md-6">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name = "name" required placeholder="Enter name">
+            
+        </div>
+		<div class="form-group col-md-6">
+            <label for="name">Account type</label>
+            <input type="text" class="form-control" id="account_type" name = "account_type" required placeholder="Enter account type">
+        </div>
+		
+		<div class="form-group col-md-4">
+            <label for="name">Designation</label>
+            <input type="text" class="form-control" id="designation" name = "designation" required placeholder="Enter designation">
+        </div>
+		<div class="form-group col-md-4">
+            <label for="name">Email</label>
+            <input type="text" class="form-control" id="email" name = "email" required placeholder="Enter email">
+            
+        </div>
+		<div class="form-group col-md-4">
+            <label for="name">Password</label>
+            <input type="password" class="form-control" id="password" name ="password" required placeholder="Enter password">            
+        </div>
+		
+    </div>
+	<div class="form-group text-center">
+	<button class="btn btn-md btn-primary" type="submit">Create Account</button>
+	</div>
+</form>
+
+<script>
+    $(".ajaxForm").validate({}); // Jquery form validation initialization
+    $(".ajaxForm").submit(function(e) {
+        var form = $(this);
+        ajaxSubmit(e, form, showAllaccount);
+    });    
+</script>
+

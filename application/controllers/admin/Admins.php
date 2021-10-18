@@ -1,0 +1,1294 @@
+<?php
+include_once(APPPATH.'core/ADMIN_controller.php');
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Admins extends CI_Controller {
+
+	function __construct(){
+		parent::__construct();
+		$this->load->model('admin/admin_model');
+		$this->load->model('Common_model');
+	}
+
+	public function index(){
+
+		if($this->session->has_userdata('adminData')){
+			$admin_id = $this->session->admin_id;
+			$where = 'admin_id='.$admin_id.' and status="Y"';
+			$menu = array(
+				"menu_headings" => $this->Common_model->getRecordByWhereByOrder('menu_heading',$where,'heading_order','ASC'),
+				"menus" => $this->Common_model->getRecordByWhereByOrder('menu',$where,'heading_id,menu_order','ASC'),
+			);
+			$this->load->view('header',array('title' => 'Admin Section'));
+			$this->load->view('admin/dashboard',$menu);
+			$this->load->view('footer');
+		}
+		else
+		{
+			redirect(base_url('admin/login'));
+		}
+	}
+
+	public function dashboard(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url('admin'));
+			exit;
+		}else{
+			$admin_id = $this->session->admin_id;
+			$where = 'admin_id='.$admin_id.' and status="Y"';
+			$menu = array(
+				"menu_headings" => $this->Common_model->getRecordByWhereByOrder('menu_heading',$where,'heading_order','ASC'),
+				"menus" => $this->Common_model->getRecordByWhereByOrder('menu',$where,'heading_id,menu_order','ASC'),
+			);
+			$data = array();
+			$this->load->view('header');
+			$this->load->view('admin/dashboard',$menu);
+			$this->load->view('footer');
+		}
+	}
+	
+	public function add_menu_heading($param1 = '', $param2 = '')
+	{
+
+		if(!$this->session->has_userdata('adminData')){
+			
+			redirect(base_url('admin'));
+			exit;
+			
+		}else
+		{
+			
+			$data = array();
+			$dt = array();
+			$dt['title'] = "Add Menu Heading";
+			$data['admins'] = $this->db->get_where('admin_master', array())->result_array();
+
+			if($param1 == 'create'){
+
+				$response = $this->admin_model->create_menu_heading();
+				echo json_encode(array("status" => 'true','data' => $response));
+
+			}
+
+			if($param1 == 'update'){
+
+				$response = $this->admin_model->update_menu_heading($param2);
+				echo json_encode(array("status" => 'true'));
+			}
+			
+			if($param1 == 'delete'){
+
+				$response = $this->admin_model->menu_heading_delete($param2);
+				echo json_encode(array("status" => 'true'));
+			}
+
+			if(empty($param1) ){
+
+				$this->load->view('header');
+				$this->load->view('admin/menu/add_menu_heading',$data);
+				$this->load->view('footer');
+			}
+
+		}
+	}
+
+	public function add_student_menu_heading($param1 = '', $param2 = '')
+	{
+
+		if(!$this->session->has_userdata('adminData')){
+
+			redirect(base_url('admin'));
+			exit;
+
+		}else
+		{
+			$data = array();
+			$dt   = array();
+			$dt['title'] = "Add Student Menu Heading";
+
+			if($param1 == 'create'){
+
+				$response = $this->admin_model->create_student_menu_heading();
+				echo json_encode(array("status" => 'true'));
+
+			}
+			if($param1 == 'update'){
+
+				$response = $this->admin_model->update_student_menu_heading($param2);
+				echo json_encode(array("status" => 'true'));
+
+			}
+			if($param1 == 'delete'){
+				$response = $this->admin_model->student_menu_heading_delete($param2);
+				echo json_encode(array("status" => 'true'));
+
+			}
+
+			if(empty($param1) ){
+
+				$data['headings'] = $this->Common_model->student_menu_heading_data();
+				$this->load->view('header');
+				$this->load->view('admin/student_menu/add_menu_heading',$data);
+				$this->load->view('footer');
+			}
+
+		}
+	}
+
+	public function add_menu($param1 = '', $param2 = '')
+	{
+
+		if(!$this->session->has_userdata('adminData')){
+
+			redirect(base_url('admin'));
+			exit;
+
+		}else
+		{
+
+			$data = array();
+			$dt = array();
+			$dt['title'] = "Add Menu";
+
+			$data['admins'] = $this->db->get_where('admin_master', array())->result_array();
+
+			$data['headings'] = $this->db->get_where('menu_heading', array())->result_array();
+
+			if($param1 == 'create'){
+				$response = $this->admin_model->create_menu();
+				echo json_encode(array("status" => 'true'));
+			}
+
+			if($param1 == 'update'){
+				$response = $this->admin_model->update_menu($param2);
+				echo json_encode(array("status" => 'true'));
+			}
+
+			if($param1 == 'delete'){
+				$response = $this->admin_model->menu_delete($param2);
+				echo json_encode(array("status" => 'true'));
+			}
+
+			if(empty($param1))
+			{
+				$this->load->view('header');
+				$this->load->view('admin/menu/add_menu',$data);
+				$this->load->view('footer');
+			}
+
+		}
+	}
+
+	public function student_add_menu($param1 = '', $param2 = '')
+	{
+
+		if(!$this->session->has_userdata('adminData')){
+
+			redirect(base_url('admin'));
+			exit;
+
+		}else
+		{
+
+			$data = array();
+			$dt = array();
+			$dt['title'] = "Add Menu";
+
+
+			$data['headings'] = $this->db->get_where('student_menu_heading', array())->result_array();
+
+			if($param1 == 'create'){
+
+				$response = $this->admin_model->create_student_menu();
+				echo json_encode(array("status" => 'true'));
+			}
+
+			if($param1 == 'update'){
+
+				$response = $this->admin_model->update_student_menu($param2);
+				echo json_encode(array("status" => 'true'));
+			}
+
+			if($param1 == 'delete'){
+
+				$response = $this->admin_model->student_menu_delete($param2);
+				echo json_encode(array("status" => 'true')); 
+			}
+
+			if(empty($param1))
+			{
+				$data['menus'] = $this->Common_model->student_menu_data();
+				$this->load->view('header');
+				$this->load->view('admin/student_menu/add_menu',$data);
+				$this->load->view('footer');
+			}
+
+		}
+	}
+
+	public function login(){
+		if($this->session->has_userdata('adminData')){	
+			redirect(base_url('admin/'.$this->session->account_type));
+			exit;
+		}
+		$this->load->view('admin/login');
+	}
+
+
+
+	public function loginSub(){
+		if($this->session->has_userdata('adminData')){
+
+			redirect(base_url('admin/'.$this->session->account_type));
+			exit;
+		}
+
+		$this->form_validation->set_rules('password', 'Password', 'required');
+		$this->form_validation->set_rules('username', 'username', 'required');
+
+		if ($this->form_validation->run() == FALSE)
+		{
+			$this->load->view('admin/login');
+		}
+		else
+		{
+			$username = $_POST['username'];
+			$password = $_POST['password'];
+			$check_user = $this->admin_model->checkUser($username,$password);
+			if($check_user){	
+				$data = array('loged_in' => true,
+					'adminData' => $check_user->name,
+					'account_type' => $check_user->account_type,
+					'admin_id' => $check_user->id
+				);
+				$this->session->set_userdata($data);
+				redirect(base_url('admin/'.$check_user->account_type));
+			}else{
+				die();
+				$data = array('error'=> "adminData AND PASSWORD ARE  INCORRECT");
+				$this->load->view('admin/login',$data);
+			}
+		}
+	}
+
+	public function department($param1 = '', $param2 = '', $param3 = '')
+	{
+
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url('admin'));
+			exit;
+		}else{
+
+			if($param1 == 'create'){
+
+				$response = $this->admin_model->create_department();
+				$this->session->set_flashdata('ajax_flash_message','Department Successfully Added');
+				redirect(base_url().'admin/Admins/department');
+
+			}
+			if($param1 == 'update'){
+
+				$response = $this->admin_model->department_update($param2);
+				$this->session->set_flashdata('ajax_flash_message','Department Successfully Updated');
+				redirect(base_url().'admin/Admins/department');
+			}
+
+			if($param1 == 'delete'){
+
+				$response = $this->admin_model->department_delete($param2);
+				$this->session->set_flashdata('ajax_flash_message','Department Successfully Deleted');
+				redirect(base_url().'admin/Admins/department');
+			}
+
+			if(empty($param1) ){
+				$data = array();
+				$data['title'] = "Department";
+				$this->load->view('header',$data);
+				$this->load->view('admin/department');
+				$this->load->view('footer');
+			}    
+
+
+		}
+
+	}
+	public function course($param1 = '', $param2 = '', $param3 = '')
+	{
+
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url('admin'));
+			exit;
+		}else
+		{
+
+			if($param1 == 'create'){
+
+				$response = $this->admin_model->create_course();
+				$this->session->set_flashdata('ajax_flash_message','Course Successfully Added');
+				redirect(base_url().'admin/Admins/course');
+
+			}
+			if($param1 == 'update'){
+
+				$response = $this->admin_model->course_update($param2);
+				$this->session->set_flashdata('ajax_flash_message','Course Successfully Updated');
+				redirect(base_url().'admin/Admins/course');
+			}
+
+			if($param1 == 'delete'){
+
+				$response = $this->admin_model->course_delete($param2);
+				$this->session->set_flashdata('ajax_flash_message','Course Successfully Deleted');
+				redirect(base_url().'admin/Admins/course');
+			}
+
+			if(empty($param1) ){
+				$data = array();
+				$data['title'] = "Course";
+				$this->load->view('header',$data);
+				$this->load->view('admin/course');
+				$this->load->view('footer');
+			}    
+
+
+		}
+
+	}
+	public function classes($param1 = '', $param2 = '', $param3 = '')
+	{
+
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url('admin'));
+			exit;
+		}else
+		{
+
+			if($param1 == 'create'){
+				
+				$response = $this->admin_model->create_class();
+				$this->session->set_flashdata('ajax_flash_message','Class Successfully Added');
+				redirect(base_url().'admin/Admins/classes');
+
+			}
+			if($param1 == 'update'){
+
+				$response = $this->admin_model->class_update($param2);
+				$this->session->set_flashdata('ajax_flash_message','Class Successfully Updated');
+				redirect(base_url().'admin/Admins/classes');
+				
+			}
+
+			if($param1 == 'delete'){
+
+				$response = $this->admin_model->class_delete($param2);
+				$this->session->set_flashdata('ajax_flash_message','Class Successfully Deleted');
+				redirect(base_url().'admin/Admins/classes');
+				
+			}
+
+			if(empty($param1) ){
+
+				$data = array();
+				$data['title'] = "Classes";
+				$this->load->view('header',$data);
+				$this->load->view('admin/classes');
+				$this->load->view('footer');
+			}    
+
+
+		}
+
+	}
+	
+	public function paper($param1 = '', $param2 = '', $param3 = '')
+	{
+
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url('admin'));
+			exit;
+		}else
+		{
+
+			if($param1 == 'create'){
+
+				$response = $this->admin_model->create_paper();
+				$this->session->set_flashdata('ajax_flash_message','Paper Successfully Added');
+				redirect(base_url().'admin/Admins/Paper');
+
+			}
+			if($param1 == 'update'){
+
+				$response = $this->admin_model->paper_update($param2);
+				$this->session->set_flashdata('ajax_flash_message','Paper Successfully Updated');
+				redirect(base_url().'admin/Admins/Paper');
+
+			}
+
+			if($param1 == 'delete'){
+
+				$response = $this->admin_model->paper_delete($param2);
+				$this->session->set_flashdata('ajax_flash_message','Paper Successfully Deleted');
+				redirect(base_url().'admin/Admins/Paper');
+			}
+
+			if(empty($param1) ){
+				
+				$data = array();
+				$data['title'] = "Paper";
+				$this->load->view('header',$data);
+				$this->load->view('admin/paper');
+				$this->load->view('footer');
+			}    
+
+
+		}
+
+	}
+	public function paper_test($param1 = '', $param2 = '', $param3 = '')
+	{
+
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url('admin'));
+			exit;
+		}else
+		{
+
+			if($param1 == 'create'){
+
+				$response = $this->admin_model->create_paper();
+				$this->session->set_flashdata('ajax_flash_message','Paper Successfully Added');
+				redirect(base_url().'admin/Admins/Paper');
+
+			}
+			if($param1 == 'update'){
+
+				$response = $this->admin_model->paper_update($param2);
+				$this->session->set_flashdata('ajax_flash_message','Paper Successfully Updated');
+				redirect(base_url().'admin/Admins/Paper');
+
+			}
+
+			if($param1 == 'delete'){
+
+				$response = $this->admin_model->paper_delete($param2);
+				$this->session->set_flashdata('ajax_flash_message','Paper Successfully Deleted');
+				redirect(base_url().'admin/Admins/Paper');
+			}
+
+			if(empty($param1) ){
+				
+				$data = array();
+				$this->load->view('header');
+				$this->load->view('admin/paper_test');
+				$this->load->view('footer');
+			}    
+
+
+		}
+
+	}
+	public function get_class_list_by_course()
+	{
+		if ($this->input->method() == "post") {
+			$id    = 0;
+			$count = 0;
+			$id    = $this->input->post("id");
+			if ($this->input->post("id")) {
+				$data = $this->Common_model->getAllRow("class_master", "id, class_name", array(
+					"course_group_id" => $id
+				),'id ASC');
+				$count++;
+			}
+			if ($count > 0) {
+				$status = true;
+				$msg    = "";
+			}
+		}
+		echo json_encode(array(
+			"status" => $status,
+			"msg" => $msg,
+			"data" => $data
+		));
+	}
+
+	public function get_heading_list_by_admin()
+	{
+		if ($this->input->method() == "post") 
+		{
+			$id    = 0;
+			$count = 0;
+			$id = $this->input->post("id");
+			
+			if ($this->input->post("id")) 
+			{
+				$data = $this->Common_model->getAllRow("menu_heading", "id, heading", array("admin_id" => $id
+			),'id ASC');
+				$count++;
+			}
+			if ($count > 0) {
+				$status = true;
+				$msg    = "";
+			}
+		}
+		echo json_encode(array(
+			"status" => $status,
+			"msg" => $msg,
+			"data" => $data
+		));
+	}
+
+
+	public function get_group_by_class()
+	{
+		if ($this->input->method() == "post") {
+			$id    = 0;
+			$count = 0;
+			$id    = $this->input->post("id");
+			if ($this->input->post("id")) {
+				
+				$data = $this->Common_model->getAllRow("group", "id, group_name", array(
+					"class_id" => $id
+				),'id ASC');
+				$count++;
+			}
+			if ($count > 0) {
+				$status = true;
+				$msg    = "";
+			}else{
+				$status = "";
+			}
+		}
+		echo json_encode(array(
+			"status" => $status,
+			"msg" => $msg,
+			"data" => $data
+		));
+	}
+
+
+	public function get_papers_by_class()
+	{
+
+		if ($this->input->method() == "post") {
+			$class_id    = 0;
+            //$count = 0;
+			$class_id    = $this->input->post("class_id");
+			
+			if ($this->input->post("class_id")) {
+				
+				
+				$data ='<table id="basic-datatable" class="table table-striped dt-responsive nowrap" width="100%" >
+				<thead>
+				<tr>
+				<th>Sno</th>
+				<th>Course</th>
+				<th>Class</th>
+				<th>Paper</th>
+				<th>Type</th>
+				<th>CE</th> 					
+
+				</tr>
+				</thead>';
+
+
+				$i = 1;
+
+				$papers = $this->db->get_where("paper_master", array("class_id" => $class_id))->result_array();
+
+				foreach($papers as $paper){
+
+					$courses = $this->db->get_where("course_group", array("id" => $paper["course_group_id"]))->row_array();
+					$classes = $this->db->get_where("class_master", array("id" => $paper["class_id"]))->row_array();
+					$course_name = $courses["course_name"];
+					$class_name  = $classes["class_name"];
+
+
+					$data .= '<tbody>
+					<tr>
+					<td>'.$i.'</td>
+					<td>'.$course_name.'</td>
+					<td>'.$class_name.'</td>
+					<td>'.$paper["paper_name"].'</td>
+					<td>'.$paper["type"].'</td>
+					<td>'.$paper["ce"].'</td>
+					</tr>
+
+					</tbody>';
+
+
+					$i++; } 
+					$data .= '</table>';
+
+				//$count++;
+				}
+
+				$status = true;
+				$msg    = "";
+
+			}
+			echo json_encode(array(
+				"status" => $status,
+				"msg" => $msg,
+				"data" => $data
+			));
+
+		}
+
+		public function account_register($param1 = '', $param2 = '', $param3 = '')
+		{
+
+			if(!$this->session->has_userdata('adminData')){
+				redirect(base_url('admin'));
+				exit;
+			}else
+			{
+
+				if($param1 == 'create'){
+
+					$response = $this->admin_model->create_account();
+					$this->session->set_flashdata('ajax_flash_message','Account Successfully Added');
+					redirect(base_url().'admin/Admins/account_register');
+
+				}
+				if($param1 == 'update'){
+
+					$response = $this->admin_model->account_update($param2);
+					$this->session->set_flashdata('ajax_flash_message','Account Successfully Updated');
+					redirect(base_url().'admin/Admins/account_register');
+				}
+
+				if($param1 == 'delete'){
+
+					$response = $this->admin_model->account_delete($param2);
+					$this->session->set_flashdata('ajax_flash_message','Account Successfully Deleted');
+					redirect(base_url().'admin/Admins/account_register');
+				}
+
+				if(empty($param1) ){
+					$data = array();
+					$this->load->view('header');
+					$this->load->view('admin/register_account');
+					$this->load->view('footer');
+				}    
+
+
+			}
+
+		}
+
+		public function update_user_status()
+		{
+
+			if ($this->input->method() == "post") 
+			{
+				$id    = 0;
+
+				$id    = $this->input->post("id");
+				$status = $this->input->post("status");
+
+				if ($this->input->post("id")) 
+				{
+					$data = $this->Common_model->updateRecordByConditions("admin_master",array("id" => $id ),array("status" => $status ));
+
+					$status = true;
+					$msg    = "";
+
+					echo json_encode(array(
+						"status" => $status,
+						"msg" => $msg,
+						"data" => $data
+					));
+				}
+			}
+		}
+		public function update_heading_status()
+		{
+
+			if ($this->input->method() == "post") 
+			{
+				$id    = 0;
+				$id    = $this->input->post("id");
+				$status = $this->input->post("status");
+
+				if ($this->input->post("id")) 
+				{
+					$data = $this->Common_model->updateRecordByConditions("menu_heading",array("id" => $id ),array("status" => $status ));
+
+					$status = true;
+					$msg    = "";
+
+					echo json_encode(array(
+						"status" => $status,
+						"msg" => $msg,
+						"data" => $data
+					));
+				}
+			}
+		}
+
+
+		public function update_student_heading_status()
+		{
+			if ($this->input->method() == "post") 
+			{
+				$id    = 0;
+				$id    = $this->input->post("id");
+				$status = $this->input->post("status");
+
+				if ($this->input->post("id")) 
+				{
+					$data = $this->Common_model->updateRecordByConditions("student_menu_heading",array("id" => $id ),array("status" => $status ));
+
+					$status = true;
+					$msg    = "";
+
+					echo json_encode(array(
+						"status" => $status,
+						"msg" => $msg,
+						"data" => $data
+					));
+				}
+			}
+		}
+
+
+		public function update_menu_status()
+		{
+			if ($this->input->method() == "post") 
+			{
+				$id    = 0;
+				$id    = $this->input->post("id");
+				$status = $this->input->post("status");
+
+				if ($this->input->post("id")) 
+				{
+					$data = $this->Common_model->updateRecordByConditions("menu",array("id" => $id ),array("status" => $status ));
+
+					$status = true;
+					$msg    = "";
+
+					echo json_encode(array(
+						"status" => $status,
+						"msg" => $msg,
+						"data" => $data
+					));
+				}
+			}
+		}
+		public function update_student_menu_status()
+		{
+			if ($this->input->method() == "post") 
+			{
+				$id    = 0;
+				$id    = $this->input->post("id");
+				$status = $this->input->post("status");
+
+				if ($this->input->post("id")) 
+				{
+					$data = $this->Common_model->updateRecordByConditions("student_menu",array("id" => $id ),array("status" => $status ));
+
+					$status = true;
+					$msg    = "";
+
+					echo json_encode(array(
+						"status" => $status,
+						"msg" => $msg,
+						"data" => $data
+					));
+				}
+			}
+		}
+
+		public function get_heading_data()
+		{
+
+			if ($this->input->method() == "post") 
+			{
+				$admin_id = 0;
+				$data = array();
+				$dt   = array();
+
+				$admin_id  = $this->input->post("admin_id");
+
+				if($admin_id != "all"){
+
+					$dt['admin_id'] = $admin_id;
+
+				}
+
+				$data['headings'] = $this->Common_model->heading_data($dt);
+
+				$dt =  $this->load->view('admin/menu/getHeadingList',$data,true);
+
+
+
+				echo json_encode(array(
+					"status" => true,
+					"data" => $dt
+				));
+			}
+
+		}
+
+		public function get_student_heading_data()
+		{
+
+			if ($this->input->method() == "post") 
+			{
+				$admin_id = 0;
+				$data = array();
+				$dt   = array();
+
+				$data['headings'] = $this->Common_model->student_menu_heading_data();
+
+				$dt =  $this->load->view('admin/student_menu/getHeadingList',$data,true);
+
+				echo json_encode(array(
+					"status" => true,
+					"data" => $dt
+				));
+			}
+			
+		}
+		
+		public function get_menu_data()
+		{
+			if ($this->input->method() == "post") 
+			{
+				$heading_id = 0;
+				$data = array();
+				$dt   = array();
+				
+				$heading_id  = $this->input->post("heading_id");
+				
+				if($heading_id != "all"){
+					
+					$dt['heading_id'] = $heading_id;
+				}
+				
+				$data['menus'] = $this->Common_model->menu_data($dt);
+				
+				$dt =  $this->load->view('admin/menu/getMenuList',$data,true);
+				
+				
+				echo json_encode(array(
+					"status" => true,
+					"data" => $dt
+				));
+			}
+			
+		}
+		public function get_student_menu_data()
+		{
+			
+			if ($this->input->method() == "post") 
+			{
+				$heading_id = 0;
+				$heading_id  = $this->input->post("heading_id");
+				$data = array();
+				$dt   = array();
+				if($heading_id != "all"){
+					
+					$dt['heading_id'] = $heading_id;
+				}
+				$data['menus'] = $this->Common_model->student_menu_data($dt);
+				
+				$dt =  $this->load->view('admin/student_menu/getMenuList',$data,true);
+				
+				
+				echo json_encode(array(
+					"status" => true,
+					"data" => $dt
+				));
+			}
+			
+		}
+		public function update_menu_heading_order()
+		{
+			$data["heading_order"] = [];
+			foreach($_POST["value"] as $key => $value){
+				
+				$data["heading_order"] = $key+1;
+				$where = 'id='.$value;
+				
+				$this->Common_model->updateRecordByConditions('menu_heading',$where,$data); 
+				
+			}
+			
+			$this->session->set_flashdata('success','Order Updated.');
+			
+			echo "Order Updated";	
+		}
+		public function update_student_menu_heading_order()
+		{
+			$data["heading_order"] = []; 
+			foreach($_POST["value"] as $key => $value){
+				
+				$data["heading_order"] = $key+1;
+				$where = 'id='.$value;
+				
+				$this->Common_model->updateRecordByConditions('student_menu_heading',$where,$data); 
+			}
+			$this->session->set_flashdata('success','Order Updated.');
+			
+			echo "Order Updated";	
+		}
+		public function update_menu_order()
+		{
+			$data["menu_order"] = [];
+			foreach($_POST["value"] as $key => $value){
+				
+				$data["menu_order"] = $key+1;
+				$where = 'id='.$value;
+				
+				$this->Common_model->updateRecordByConditions('menu',$where,$data); 
+				
+			}
+			
+			$this->session->set_flashdata('success','Order Updated.');
+			
+			echo "Order Updated";	
+		}
+		public function update_student_menu_order()
+		{
+			$data["menu_order"] = [];
+			foreach($_POST["value"] as $key => $value){
+				
+				$data["menu_order"] = $key+1;
+				$where = 'id='.$value;
+				
+				$this->Common_model->updateRecordByConditions('student_menu',$where,$data); 
+				
+			}
+			
+			$this->session->set_flashdata('success','Order Updated.');
+			
+			echo "Order Updated";	
+		}
+		
+		public function logout()
+		{
+			$this->session->sess_destroy();
+			redirect(base_url());
+		}
+		
+/* 		public function updateCourseCategory()
+		{
+			$students = $this->Common_model->get_record('student','*');
+			
+			foreach($students as $student){
+				$category = $this->Common_model->getSinglefield('course_group','category','id='.$student['course_group_id']);
+				$data = array('course_category'=>$category);
+				$where = 'student_id='.$student['student_id'];
+				$this->Common_model->updateRecordByConditions('student',$where,$data);
+			}
+		} */
+		
+		public function centers($param1 = '', $param2 = '', $param3 = '')
+		{
+			if(!$this->session->has_userdata('adminData')){
+				redirect(base_url('admin'));
+				exit;
+			}else{
+
+				$data['center_code'] = html_escape($this->input->post('center_code'));
+
+				$data['center_name'] = html_escape($this->input->post('center_name'));
+
+		// $data['address'] = html_escape($this->input->post('address'));
+
+				$data['state'] = html_escape($this->input->post('state'));
+
+				$data['district'] = html_escape($this->input->post('district'));
+
+				$data['city'] = html_escape($this->input->post('city'));
+
+				$data['contact_person'] = html_escape($this->input->post('contact_person'));
+				$data['contact_person_2'] = html_escape($this->input->post('contact_person_2'));
+
+				$data['email'] = html_escape($this->input->post('email'));
+
+				$data['password'] = html_escape($this->input->post('password'));
+
+				$data['mobile_no'] = html_escape($this->input->post('mobile_no'));
+				$data['mobile_no_2'] = html_escape($this->input->post('mobile_no_2'));
+
+				$data['other_mobile_no'] = html_escape($this->input->post('other_mobile_no'));
+				$data['other_mobile_no_2'] = html_escape($this->input->post('other_mobile_no_2'));
+
+				$data['status'] = html_escape($this->input->post('status'));
+				if($param1 == 'create'){
+					$response = $this->admin_model->create_center($data);
+					echo json_encode(array("status" => 'true'));
+				}
+				if($param1 == 'update'){
+					$response = $this->admin_model->center_update($param2,$data);
+					echo json_encode(array("status" => 'true'));
+				}
+				if($param1 == 'delete'){
+					$response = $this->admin_model->center_delete($param2);
+					$this->session->set_flashdata('ajax_flash_message','center Deleted Successfully ');
+
+					redirect(base_url().'admin/Admins/centers');
+				}
+				if(empty($param1) ){
+
+					$data = array();
+
+					$data['title'] = "center";
+					$data['center_code'] = $this->admin_model->getcenterCode();
+					$this->load->view('header',$data);
+					$data['center'] = $this->Common_model->get_record('center','');
+					$this->load->view('admin/center',$data);
+					$this->load->view('footer');
+				}
+			}
+		}
+
+		public function get_dist_by_state()
+		{
+			if ($this->input->method() == "post") {
+				$id    = 0;
+				$count = 0;
+				$state = $this->input->post("state");
+				
+				if ($this->input->post("state")) {
+					$data = $this->db->get_where('distt', array("state_id" => $state))->result_array();
+					$count++;
+				}
+				if ($count > 0) {
+					$status = true;
+					$msg    = "";
+				}
+			}
+			echo json_encode(array(
+				"status" => $status,
+				"msg" => $msg,
+				"data" => $data
+			));
+		}
+		
+		public function allot_course($param1 = '',$param2 = '')
+		{
+			if(!$this->session->has_userdata('adminData')){
+				redirect(base_url('admin'));
+				exit;
+				
+			}else{
+				if($param1 == 'allot'){
+					$response = $this->admin_model->allot_course($param2);
+					echo json_encode(array("status" => 'true'));
+				}
+				
+				if(!empty($param1) && $param1 != 'allot' ){
+					$data = array();
+					$data['courses'] = $this->db->get_where("course_group", array())->result_array();
+					$data['center_id'] = $param1; 
+					$this->load->view('header');
+					$this->load->view('admin/allot_course_to_centers',$data);
+					$this->load->view('footer');
+				}
+
+			}
+		}
+		
+		public function get_paper_code()
+		{
+			if ($this->input->method() == "post") 
+			{
+				$id    = 0;
+				$count = 0;
+				$class_id = $this->input->post("id");
+				$course_group_id = $this->input->post("course_group_id");
+				
+				if($class_id) 
+				{
+					$data = $this->Common_model->getPaperCode($course_group_id,$class_id);
+				}
+				
+				echo json_encode(array(
+					"status" => "true",
+					"data" => $data
+				));
+			}
+		}
+
+
+		public function login_section()
+		{
+
+			if(!$this->session->has_userdata('adminData'))
+			{
+				redirect(base_url('admin'));
+
+				exit;
+
+			}else{
+
+				$data = array();
+
+				$data['users'] = $this->db->get_where("admin_master", array('status' => 'Y'))->result_array();
+				$this->load->view('header');
+				$this->load->view('admin/login_section',$data);
+				$this->load->view('footer');
+
+			}
+		}
+
+		public function check_login()
+		{
+
+			if ($this->input->method() == "post") 
+			{
+				$adminData = $this->input->post('adminData'); 
+
+				$check_user = $this->admin_model->checkUserByadminData($adminData);
+				if($check_user){	
+					$data = array('loged_in' => true,
+						'adminData' => $check_user->name,
+						'account_type' => $check_user->account_type,
+						'admin_id' => $check_user->id
+					);
+					$this->session->set_userdata($data);
+				}else{
+					$data = array('error'=> "adminData INCORRECT");
+					$this->load->view('admin/login',$data);
+				}
+
+				echo json_encode(array(
+					"status" => "true",
+					"data" => $data
+				));
+			}
+		}
+
+		public function getClassByCourse(){
+			$course = $this->input->post('course_group_id');
+			$class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$course."'");
+			$data = array(
+				'class_list' => $class_list,
+				'all' => 'All',
+			);	
+			echo $this->load->view('template/getclass',$data,true);
+		}
+
+		public	function center_add_enrollment(){
+			if(!$this->session->has_userdata('adminData')){
+				redirect(base_url('admin'));
+				exit;
+			}else{
+
+				$data = array();
+				$this->load->view('header');
+				$this->load->view('admin/enrollment/add_student_by_enrollment');
+				$this->load->view('footer');
+			}
+		}
+
+
+		public function check_enrollment_ajax(){
+			$enroll_is = $this->input->post('st_enrollment');
+
+			if ($this->input->method() == "post") 
+			{
+				$enroll_is = $this->input->post('st_enrollment'); 
+				$isEnroll = $this->admin_model->checkStudentEnrollment($enroll_is);
+				$student_id = $isEnroll->student_id;
+				$edit = array('enrollment_no'=>$isEnroll->enrollment_no);
+				if($isEnroll){
+					$data = array('msg'=> "Already Exist",'status'=>false);
+				}
+				else{
+					$resp = $this->admin_model->enrollment_insert_is($enroll_is);
+					$data = array('msg'=> "Added Successfully",'status'=>true);
+				}
+			    // 
+				echo json_encode($data);
+			}
+
+		}
+
+		public function add_center_menu_heading($param1 = '', $param2 = '')
+		{
+			if(!$this->session->has_userdata('adminData')){
+				redirect(base_url('admin'));
+				exit;
+			}else
+			{
+				$data = array();
+				if($param1 == 'create'){
+					$response = $this->admin_model->create_center_menu_heading();
+					echo json_encode(array("status" => 'true')); 
+					
+				}
+				
+				if($param1 == 'update'){
+					
+					$response = $this->admin_model->update_center_menu_heading($param2);
+					echo json_encode(array("status" => 'true'));
+					
+				}
+				if($param1 == 'delete'){
+					$response = $this->admin_model->delete_center_menu_heading($param2);
+					echo json_encode(array("status" => 'true'));
+					
+				}
+				
+				if(empty($param1) ){
+				$dataTitle['title'] = "Add center Menu Heading";	
+					$data['headings'] = $this->Common_model->center_menu_heading_data();
+					$this->load->view('header',$dataTitle);
+					$this->load->view('admin/center/center_menu_heading_view',$data);
+					$this->load->view('footer');
+				}
+				
+			}
+		}
+
+
+		public function get_center_heading_data()
+		{
+
+			if ($this->input->method() == "post") 
+			{
+				$admin_id = 0;
+				$data = array();
+
+				$data['headings'] = $this->Common_model->center_menu_heading_data();
+
+				$viewData =  $this->load->view('admin/center/headingListView',$data,true);
+
+				echo json_encode(array(
+					"status" => true,
+					"data" => $viewData
+				));
+			}
+			
+		}
+
+		public function update_center_heading_status()
+		{
+			if ($this->input->method() == "post") 
+			{
+				$id    = 0;
+				$id    = $this->input->post("id");
+				$status = $this->input->post("status");
+
+				if ($this->input->post("id")) 
+				{
+					$data = $this->Common_model->updateRecordByConditions("center_menu_heading",array("id" => $id ),array("status" => $status ));
+
+					$status = true;
+					$msg    = "";
+
+					echo json_encode(array(
+						"status" => $status,
+						"msg" => $msg,
+						"data" => $data
+					));
+				}
+			}
+		}
+
+}// class

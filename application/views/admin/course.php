@@ -1,0 +1,90 @@
+<div class="container mt-5 text-right">
+<a type="button"  class="btn btn-outline-primary btn-rounded" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/course/create'); ?>', 'Create course')" >Create course</a>
+</div> 
+
+<div class="container mt-3">
+
+	<table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Course name </th>
+				<th>Mode</th>
+				<th>Course code </th>
+				<th>Enrollment code </th>
+				<!--<th>Min duration</th>-->
+				<th>Program fees Male</th>
+				<th>Program fees Female</th>
+				<th>Eligibility</th>
+				<th>Options</th>
+			</tr>
+		</thead>
+		<tfoot>
+			<tr>
+				<th>Id</th>
+				<th>Course name </th>
+				<th>Mode</th>
+				<th>Course code </th>
+				<th>Enrollment code </th>
+				<!--<th>Min duration</th>-->
+				<th>Program fees Male</th>
+				<th>Program fees Female</th>
+				<th>Eligibility</th>
+				<th>Options</th>
+			</tr>
+			</tfoot>
+		<tbody>
+		<?php
+		$i = 1;
+        $courses_groups = $this->db->get_where('course_group', array())->result_array();
+        foreach($courses_groups as $course_group){
+			 $courses = $this->db->get_where('course', array('course_group_id' => $course_group['id']))->result_array();
+			foreach($courses as $course){
+            ?>
+		
+			
+					<tr>
+						<td><?php echo $i; ?></td>
+						<td><?php echo $course_group['course_name']; ?></td>
+						<td><?php echo $course['course_code']; ?></td>
+						<td><?php echo $course['enrollment_code']; ?></td>
+						<!--<td><?php echo $course['min_duration']; ?></td>-->
+						<td><?php echo $course_group['mode']; ?></td>
+						<td><?php echo $course['program_fees_male']; ?></td>
+						<td><?php echo $course['program_fees_female']; ?></td>
+						<td><?php echo $course_group['eligibility']; ?></td>
+						
+						
+                	    <td>
+                		<div style="display: inline-flex;">
+                			<a href="javascript:void(0);" class="dropdown-item" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/course/edit/'.$course['id']); ?>', '<?php echo 'Update course' ?>')"> <i class="mdi mdi-pencil edit-icon"></i></a>   
+                			<a href="javascript:void(0);" class="dropdown-item" onclick="confirmModal('<?php echo site_url('admin/Admins/course/delete/'.$course['id']); ?>', showAllcourse )"><i class="mdi mdi-delete delete-icon"></i></a>
+                		</div>
+                			
+                			
+                    </td>
+					</tr>
+				
+			
+			<?php }
+			$i++;
+			} ?>
+			</tbody>
+		    
+	</table>
+
+</div>
+<script>
+var showAllcourse = function () 
+    {
+        var url = '<?php echo site_url('admin/Admins/course'); ?>';
+        $.ajax({
+            type : 'GET',
+            url: url,
+            success : function(response) {
+                
+                
+            }
+        });
+    }
+</script>
