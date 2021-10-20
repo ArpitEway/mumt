@@ -297,43 +297,50 @@ class Admin_model extends CI_Model {
 	}
 	
 
-    public function create_department()
+    public function create_session()
     {
-        $data['name'] = html_escape($this->input->post('name'));
-        $this->db->insert('department', $data);
-        $department_id = $this->db->insert_id();
+        $data['session'] = html_escape($this->input->post('session'));
+		$data['type'] = html_escape($this->input->post('type'));
+
+        $this->db->insert('session', $data);
+        $session_id = $this->db->insert_id();
         $response = array(
         			'status' => true,
-        			'notification' => 'Department_added_successfully'
+        			'notification' => 'Session_added_successfully'
         			);
         return json_encode($response);
     }
-    public function department_update($param1 = '')
+
+    public function session_update($param1 = '')
 	{
 	    
-		$data['name'] = html_escape($this->input->post('name'));
+		$data['session'] = html_escape($this->input->post('session'));
+		$data['type'] = html_escape($this->input->post('type'));
+
 		$this->db->where('id', $param1);
-		$this->db->update('department', $data);
+		$this->db->update('session', $data);
 		// echo $this->db->last_query();
 		$response = array(
 			'status' => true,
-			'notification' => 'department_has_been_updated_successfully'
+			'notification' => 'session_has_been_updated_successfully'
 		);
 
 		return json_encode($response);
 	}
-	public function department_delete($param1 = '')
+
+	public function session_delete($param1 = '')
 	{
 		$this->db->where('id', $param1);
-		$this->db->delete('department');
+		$this->db->delete('session');
 
 		$response = array(
 			'status' => true,
-			'notification' => 'department_has_been_deleted_successfully'
+			'notification' => 'session_has_been_deleted_successfully'
 		);
 
 		return json_encode($response);
 	}
+
 	public function create_course()
     {
 

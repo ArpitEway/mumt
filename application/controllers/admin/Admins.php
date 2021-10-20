@@ -272,7 +272,7 @@ class Admins extends CI_Controller {
 		}
 	}
 
-	public function department($param1 = '', $param2 = '', $param3 = '')
+	public function session($param1 = '', $param2 = '', $param3 = '')
 	{
 
 		if(!$this->session->has_userdata('adminData')){
@@ -282,30 +282,30 @@ class Admins extends CI_Controller {
 
 			if($param1 == 'create'){
 
-				$response = $this->admin_model->create_department();
-				$this->session->set_flashdata('ajax_flash_message','Department Successfully Added');
-				redirect(base_url().'admin/Admins/department');
+				$response = $this->admin_model->create_session();
+				$this->session->set_flashdata('ajax_flash_message','Session Successfully Added');
+				redirect(base_url().'admin/Admins/session');
 
 			}
 			if($param1 == 'update'){
 
-				$response = $this->admin_model->department_update($param2);
-				$this->session->set_flashdata('ajax_flash_message','Department Successfully Updated');
-				redirect(base_url().'admin/Admins/department');
+				$response = $this->admin_model->session_update($param2);
+				$this->session->set_flashdata('ajax_flash_message','Session Successfully Updated');
+				redirect(base_url().'admin/Admins/session');
 			}
 
 			if($param1 == 'delete'){
 
-				$response = $this->admin_model->department_delete($param2);
-				$this->session->set_flashdata('ajax_flash_message','Department Successfully Deleted');
-				redirect(base_url().'admin/Admins/department');
+				$response = $this->admin_model->session_delete($param2);
+				$this->session->set_flashdata('ajax_flash_message','Session Successfully Deleted');
+				redirect(base_url().'admin/Admins/session');
 			}
 
 			if(empty($param1) ){
 				$data = array();
-				$data['title'] = "Department";
+				$data['title'] = "Session";
 				$this->load->view('header',$data);
-				$this->load->view('admin/department');
+				$this->load->view('admin/session');
 				$this->load->view('footer');
 			}    
 
@@ -1290,5 +1290,86 @@ class Admins extends CI_Controller {
 				}
 			}
 		}
+
+
+public function update_session_unpaid_permission_status()
+	{
+
+	if ($this->input->method() == "post") 
+	{
+            $id    	= 0;
+            $id    	= $this->input->post("id");
+			$status = $this->input->post("status");
+
+			
+            if ($this->input->post("id")) 
+			{
+				$data = $this->Common_model->updateRecordByConditions("session",array("id" => $id ),array("unpaid_permission" => $status ));
+			
+				$dt = $this->db->get_where("session",array("id" => $id ))->result_array();
+
+				if($dt[0]['unpaid_permission'] == 'Y')
+				{
+				$sts_btn = '<input type="button" name="update_stats" data-id='.$id.' class="btn btn-success unpaid_permission_check" value="Yes">';
+				}else{
+				$sts_btn = '<input type="button" name="update_stats" data-id='.$id.' class="btn btn-danger unpaid_permission_check" value="No">';
+				}
+
+
+
+				$status = true;
+				$msg    = "";
+				
+				echo json_encode(array(
+					"status" => $status,
+					"msg" => $msg,
+					"data" => $sts_btn
+				));
+			}
+	}
+}
+
+public function update_doc_permission_status()
+	{
+
+	if ($this->input->method() == "post") 
+	{
+             $id    	= 0;
+             $id    	= $this->input->post("id");
+			 $status = $this->input->post("status");
+
+            if ($this->input->post("id")) 
+			{
+				$data = $this->Common_model->updateRecordByConditions("session",array("id" => $id ),array("document_permission" => $status ));
+			
+				$dt = $this->db->get_where("session",array("id" => $id ))->result_array();
+
+				if($dt[0]['document_permission'] == 'Y')
+				{
+				$sts_btn = '<input type="button" name="update_doc_stats" data-id='.$id.' class="btn btn-success doc_permission_check" value="Yes">';
+				}else{
+				$sts_btn = '<input type="button" name="update_doc_stats" data-id='.$id.' class="btn btn-danger doc_permission_check" value="No">';
+				}
+
+
+				$status = true;
+				$msg    = "";
+				
+				echo json_encode(array(
+					"status" => $status,
+					"msg" => $msg,
+					"data" => $sts_btn
+				));
+			}
+	}
+}
+
+
+
+
+
+
+
+
 
 }// class

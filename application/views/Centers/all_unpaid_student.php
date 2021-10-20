@@ -2,8 +2,7 @@
 	<table id="memListTable" class="table table-striped dt-responsive" style="width:100%">
 		<thead>
 			<tr>
-				<th>Student Id</th>
-				<th>Enrollment No</th>
+				<th>Form No.</th>
 				<th>Student Name</th>
 				<th>Father Name</th>
 				<th>Course</th>

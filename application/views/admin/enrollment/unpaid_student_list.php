@@ -16,8 +16,6 @@
 		<tbody>
 			<?php
 				$i = 1;
-				
-				
 				foreach($students as $student){
 					
 					$courses = $this->db->get_where('course_group', array('id' => $student['course_group_id']))->row_array();
@@ -25,16 +23,16 @@
 						$course_name = $courses['course_name'];
 					}
 				?>
+
 				<tr id="student_tr_<?php echo $student['student_id']; ?>">
-				
-					<td><?php echo $i; ?></td>
-					<td><?php echo $student['student_id']; ?></td>
-					<td><?php echo $course_name; ?></td>
-					<td><?php echo $student['class_name']; ?></td>
-					<td><?php echo $student['name']; ?></td>
-					<td><?php echo $student['f_h_name']; ?></td>
-					<td>
-					<div style="display: inline-flex;">
+				<td><?php echo $i; ?></td>
+				<td><?php echo $student['student_id']; ?></td>
+				<td><?php echo $course_name; ?></td>
+				<td><?php echo $student['class_name']; ?></td>
+				<td><?php echo $student['name']; ?></td>
+				<td><?php echo $student['f_h_name']; ?></td>
+				<td>
+				<div style="display: inline-flex;">
 					
 				<!-- <a href="javascript:void(0);" class="dropdown-item" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/enrollment/edit_unpaid_student/'.$student['student_id']); ?>', '<?php echo 'Payment by university' ?>')"> <i class="fas fa-pencil-alt text-primary"></i></a> -->
 						

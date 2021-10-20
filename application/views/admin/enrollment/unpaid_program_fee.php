@@ -227,6 +227,7 @@ $(document).on('click', '.status_checks', function() {
 			}; 
 			
 			var url = BASE_URL + "admin/enrollment/update_student_installment_permission_status";
+			
 		$.ajax({
 		url: url,
 		type: 'POST',

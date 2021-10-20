@@ -351,7 +351,7 @@ class Common_Model extends CI_Model{
 		$qry = $this->db->where($where);
 
 		$qry = $this->db->update($table,$data);
-	//die($this->db->last_query());
+		
 		return true;
 	}
 

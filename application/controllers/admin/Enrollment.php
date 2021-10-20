@@ -18,7 +18,7 @@
 		
 		public function index(){
 			
-			if($this->session->has_userdata('username')){
+			if($this->session->has_userdata('adminData')){
 				$admin_id = $this->session->admin_id;
 				$where = 'admin_id='.$admin_id.' and status="Y"';
 				$menu = array(
@@ -37,7 +37,7 @@
 		
 		public function user_enquiry(){
 			
-			if($this->session->has_userdata('username')){
+			if($this->session->has_userdata('adminData')){
 				
 				$data = array();
 				$data['user_enquiry'] = $this->db->get_where('user_enquiry', array('status <'=> 3))->result_array();
@@ -55,7 +55,7 @@
 		
 		public function dashboard(){
 			
-			if($this->session->has_userdata('username')){
+			if($this->session->has_userdata('adminData')){
 				
 				$this->load->view('header');
 				$this->load->view('admin/enrollment/dashboard');
@@ -68,7 +68,7 @@
 		}
 		public function student_report(){
 			
-			if($this->session->has_userdata('username')){
+			if($this->session->has_userdata('adminData')){
 				$dt = array();
 				$dt['title'] = "Student Verification";
 				$this->load->view('header',$dt);
@@ -85,7 +85,7 @@
 		
 		
 		public function consolidate_report(){
-			if($this->session->has_userdata('username'))
+			if($this->session->has_userdata('adminData'))
 			{
 				$dt = array();
 				$dt['title'] = "Student Consolidate Report";
@@ -101,7 +101,7 @@
 			}
 		}
 		public function edit_non_verified_list(){
-			if($this->session->has_userdata('username'))
+			if($this->session->has_userdata('adminData'))
 			{
 				$dt = array();
 				$data = array();
@@ -437,7 +437,7 @@
 		}
 		
 		public function unpaid_student_list(){
-			if($this->session->has_userdata('username'))
+			if($this->session->has_userdata('adminData'))
 			{
 				$dt = array();
 				$data = array();
@@ -496,7 +496,7 @@
 		
 		public function view_payment_list(){
 			
-			if($this->session->has_userdata('username')){
+			if($this->session->has_userdata('adminData')){
 				$titleData = array('title' => 'Paid Student');
 				$this->load->view('header',$titleData);
 				$this->load->view('admin/enrollment/view_payment_list');
@@ -660,6 +660,9 @@ public function update_student_installment_permission_status()
 	}
 }
 
+
+
+
 public function print_form($student_id){
 	$where =  array(
 		'student_id' => $student_id,
@@ -685,5 +688,13 @@ public function getOtherCourse($student_id)
 	$data = array('other_student' => $other_student);
 	$this->load->view('admin/student/other_course',$data);
 }
+
+
+
+
+
+
+
+
 
 }

@@ -1,12 +1,12 @@
-<form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/Admins/department/create'); ?>">
+<form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/Admins/session/create'); ?>">
     <div class="form-row">
+
         <div class="form-group col-md-12">
-            <label for="name">Department Name</label>
-            <input type="text" class="form-control" id="name" name = "name" required placeholder="Enter name of department">
+            <label for="name">Session Name</label>
+            <input type="text" class="form-control" id="session" name = "session" required placeholder="Enter name of session">
             <!--<small id="" class="form-text text-muted">provide department name</small>-->
         </div>
         
-      
     </div>
 <div class="form-group text-center">
 	<button class="btn btn-md btn-primary" type="submit">Submit</button>

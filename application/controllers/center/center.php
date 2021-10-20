@@ -143,7 +143,7 @@ class Center extends CI_Controller {
 
 	public function getAdmissionClassByCourse(){
 		$course = $this->input->post('course');
-// and admission_permission!='Y'
+		// and admission_permission!='Y'
 		$class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$course."' and  admission_permission='Y'");
 		$data = array(
 			'class_list' => $class_list,
@@ -154,7 +154,7 @@ class Center extends CI_Controller {
 
 	public function getClassByCourse(){
 		$course = $this->input->post('course');
-// and admission_permission!='Y'
+		// and admission_permission!='Y'
 		$class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$course."' ");
 		$data = array(
 			'class_list' => $class_list,
