@@ -28,49 +28,6 @@ foreach($courses as $course): ?>
             
         </div>
 		
-		<?php 
-		$course_groups = $this->db->get_where('course_group', array('id' => $course['course_group_id']))->result_array();
-		foreach($course_groups as $course_group){
-		
-		?>
-		
-		<div class="form-group col-md-6">
-            <label for="session">Department</label>
-            <select name="department_id" id="department_id" class="form-control" required>
-                <option value="">Select Department</option>
-                    <?php 
-                    $departments = $this->db->get_where('department', array())->result_array();
-                    foreach($departments as $department)
-                        {
-                    ?>
-                    <option value="<?php echo $department['id']; ?>" <?php if($course_group['department_id'] == $department['id']) echo "selected" ?> ><?php echo $department['name']; ?></option>
-                    <?php
-                        } 
-                    ?>
-            </select>
-            
-        </div>
-   	
-		<div class="form-group col-md-6">
-            <label for="session">Category</label>
-            <select name="category" id="category" class="form-control" required>
-                <option value="">Select Category</option>
-				
-                <option value="चतुर्वार्षिक स्नातक पाठ्यक्रम" <?php if($course_group['category'] == "चतुर्वार्षिक स्नातक पाठ्यक्रम" ) echo "selected" ?> >चतुर्वार्षिक स्नातक पाठ्यक्रम</option>
-                <option value="त्रिवार्षिक स्नातक पाठ्यक्रम" <?php if($course_group['category'] == "त्रिवार्षिक स्नातक पाठ्यक्रम" ) echo "selected" ?> >त्रिवार्षिक स्नातक पाठ्यक्रम</option>
-                <option value="चतुःसत्रार्द्ध स्नातकोत्तर पाठ्यक्रम" <?php if($course_group['category'] == "चतुःसत्रार्द्ध स्नातकोत्तर पाठ्यक्रम" ) echo "selected" ?> >चतुःसत्रार्द्ध स्नातकोत्तर पाठ्यक्रम</option>
-				<option value="एकवर्षीय स्नातकोत्तर पत्रोपाधि (डिप्लोमा पाठ्यक्रम)" <?php if($course_group['category'] == "एकवर्षीय स्नातकोत्तर पत्रोपाधि (डिप्लोमा पाठ्यक्रम)" ) echo "selected" ?> >एकवर्षीय स्नातकोत्तर पत्रोपाधि (डिप्लोमा पाठ्यक्रम)</option>
-				<option value="एकवर्षीय स्नातक पत्रोपाधि (डिप्लोमा पाठ्यक्रम)" <?php if($course_group['category'] == "एकवर्षीय स्नातक पत्रोपाधि (डिप्लोमा पाठ्यक्रम)" ) echo "selected" ?> >एकवर्षीय स्नातक पत्रोपाधि (डिप्लोमा पाठ्यक्रम)</option>
-				<option value="प्रमाणपत्र (सर्टिफिकेट)" <?php if($course_group['category'] == "प्रमाणपत्र (सर्टिफिकेट)" ) echo "selected" ?> >प्रमाणपत्र (सर्टिफिकेट)</option>
-				
-            </select>
-            
-        </div>
-        
-		
-		<?php } ?>
-		
-        
         <div class="form-group col-md-6">
             <label for="name">Course Name</label>
             <input type="text" class="form-control" id="course_name" value="<?php echo $course['course_name']; ?>" name = "course_name" required placeholder="Enter name of course">
@@ -82,21 +39,19 @@ foreach($courses as $course): ?>
             <input type="text" class="form-control" id="course_code" value="<?php echo $course['course_code']; ?>" name = "course_code" required placeholder="Enter course code">
             
         </div>
-		<div class="form-group col-md-6">
-            <label for="name">Enrollment code</label>
-            <input type="text" class="form-control" id="enrollment_code" value="<?php echo $course['enrollment_code']; ?>" name = "enrollment_code" required placeholder="Enter enrollment code">
-            
-        </div>
+		
 		<?php 
 		$course_groups = $this->db->get_where('course_group', array('id' => $course['course_group_id']))->result_array();
 		foreach($course_groups as $course_group){
 		?>
+
 		<div class="form-group col-md-6">
             <label for="name">Eligibility</label> 
             <input type="text" class="form-control" value="<?php echo $course_group['eligibility']; ?>" id="eligibility" name="eligibility" required placeholder="Enter eligibility">
             <input type="hidden" name="group_id" value="<?php echo $course_group['id']; ?>">
         </div>
-		<div class="form-group col-md-6">
+
+		<div class="form-group col-md-3">
             <label for="session">Mode</label>
             <select name="mode" id="Mode" class="form-control" required>
                 <option value="annual" <?php if($course_group['mode'] == "annual") echo "selected" ?>  >Annual</option>
@@ -105,37 +60,76 @@ foreach($courses as $course): ?>
             </select>
             
         </div>
+
+        <div class="form-group col-md-3">
+            <label for="session">University mode</label>
+            <select name="university_mode" id="university_mode" class="form-control" >
+            <option value="all" <?php if($course_group['university_mode'] == "all") echo "selected" ?> >All</option>
+			<option value="regular" <?php if($course_group['university_mode'] == "regular") echo "selected" ?> >Regular</option>
+			<option value="private" <?php if($course_group['university_mode'] == "private") echo "selected" ?>>Private</option>
+            
+        </select>
+            
+        </div>
+
 		<?php } ?>
-		
-        <div class="form-group col-md-6">
+
+        <div class="form-group col-md-3">
             <label for="name">Min duration</label>
             <input type="text" class="form-control" id="min_duration" value="<?php echo $course['min_duration']; ?>" name = "min_duration" required placeholder="Enter min duration">
             
         </div>
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-3">
             <label for="name">Max duration</label>
             <input type="text" class="form-control" id="max_duration" value="<?php echo $course['max_duration']; ?>" name = "max_duration" required  placeholder="Enter max duration">
             
         </div>
+
+        <div class="form-group col-md-12" style="margin-bottom: 5px;">
+            <label for="name">Regular</label>
+        </div>
+
         <div class="form-group col-md-3">
             <label for="name">Admission fees</label>
-            <input type="text" class="form-control" id="admission_fees" value="<?php echo $course['admission_fees']; ?>" name = "admission_fees" required placeholder="Enter admission fee">
+            <input type="number" class="form-control" value="<?php echo $course['admission_fees']; ?>" id="admission_fees" name = "admission_fees" value="500"  placeholder="Enter admission fees">
            
         </div>
 		<div class="form-group col-md-3">
-            <label for="name">Program Fees Male</label>
-            <input type="text" class="form-control" id="program_fees" name = "program_fees_male"  required placeholder="Enter program female fees" value="<?php echo $course['program_fees_male']; ?>">
+            <label for="name">Program Fees</label>
+            <input type="text" class="form-control" value="<?php echo $course['program_fees']; ?>" id="program_fees" name = "program_fees"   placeholder="Enter program fees" >
            
         </div>
 		<div class="form-group col-md-3">
-            <label for="name">Program Fees Female</label>
-            <input type="text" class="form-control" id="program_fees" name = "program_fees_female"  required placeholder="Enter program Male fees" value="<?php echo $course['program_fees_female']; ?>">
+            <label for="name">Form Fees</label>
+            <input type="text" class="form-control" value="<?php echo $course['form_fees']; ?>" id="form_fees" name = "form_fees"   placeholder="Enter form fees" >
+        </div>
+		<div class="form-group col-md-3">
+            <label for="name">Exam fees</label>
+            <input type="text" class="form-control" value="<?php echo $course['exam_fees']; ?>"  id="exam_fees" name = "exam_fees"  placeholder="Enter exam fee">
+        </div>
+
+        <div class="form-group col-md-12" style="margin-bottom: 5px;">
+            <label for="name">Private</label>
+        </div>
+
+        <div class="form-group col-md-3">
+            <label for="name">Admission fees</label>
+            <input type="number" class="form-control" value="<?php echo $course['p_admission_fees']; ?>" id="p_admission_fees" name = "p_admission_fees" value="500" placeholder="Enter admission fees">
+           
+        </div>
+		<div class="form-group col-md-3">
+            <label for="name">Program Fees</label>
+            <input type="text" class="form-control" value="<?php echo $course['p_program_fees']; ?>" id="p_program_fees" name = "p_program_fees" placeholder="Enter program fees" >
+           
+        </div>
+		<div class="form-group col-md-3">
+            <label for="name">Form Fees</label>
+            <input type="text" class="form-control" value="<?php echo $course['p_form_fees']; ?>" id="p_form_fees" name = "p_form_fees" placeholder="Enter form fees" >
            
         </div>
 		<div class="form-group col-md-3">
             <label for="name">Exam fees</label>
-            <input type="text" class="form-control" id="exam_fees" value="<?php echo $course['exam_fees']; ?>" name = "exam_fees" placeholder="Enter exam fee">
-           
+            <input type="text" class="form-control" value="<?php echo $course['p_exam_fees']; ?>" id="p_exam_fees" name = "p_exam_fees" placeholder="Enter exam fee">
         </div>
         
     </div>

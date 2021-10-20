@@ -336,23 +336,28 @@ class Admin_model extends CI_Model {
 	}
 	public function create_course()
     {
+
         $data_group['course_name'] = html_escape($this->input->post('course_name'));
 		$data_group['eligibility'] = html_escape($this->input->post('eligibility'));
 		$data_group['mode'] = html_escape($this->input->post('mode'));
-		$data_group['category'] = html_escape($this->input->post('category'));
-		$data_group['department_id'] = html_escape($this->input->post('department_id'));
-		
+		$data_group['university_mode'] = html_escape($this->input->post('university_mode'));
 		
 		$data['course_name'] = html_escape($this->input->post('course_name'));
 		$data['course_code'] = html_escape($this->input->post('course_code'));
-		$data['enrollment_code'] = html_escape($this->input->post('enrollment_code'));
+		
 		$data['min_duration'] = html_escape($this->input->post('min_duration'));
 		$data['max_duration'] = html_escape($this->input->post('max_duration'));
 		$data['session'] = html_escape($this->input->post('session'));
+
 		$data['admission_fees'] = html_escape($this->input->post('admission_fees'));
-		$data['program_fees_male'] = html_escape($this->input->post('program_fees_male'));
-		$data['program_fees_female'] = html_escape($this->input->post('program_fees_female'));
+		$data['program_fees'] = html_escape($this->input->post('program_fees'));
+		$data['form_fees'] = html_escape($this->input->post('form_fees'));
 		$data['exam_fees'] = html_escape($this->input->post('exam_fees'));
+
+		$data['p_admission_fees'] = html_escape($this->input->post('p_admission_fees'));
+		$data['p_program_fees'] = html_escape($this->input->post('p_program_fees'));
+		$data['p_form_fees'] = html_escape($this->input->post('p_form_fees'));
+		$data['p_exam_fees'] = html_escape($this->input->post('p_exam_fees'));
 		
         $this->db->insert('course_group', $data_group);
 		
@@ -376,25 +381,31 @@ class Admin_model extends CI_Model {
 		$data_group['course_name'] = html_escape($this->input->post('course_name'));
 		$data_group['eligibility'] = html_escape($this->input->post('eligibility'));
 		$data_group['mode'] = html_escape($this->input->post('mode'));
-		$data_group['category'] = html_escape($this->input->post('category'));
-		$data_group['department_id'] = html_escape($this->input->post('department_id'));
+		$data_group['university_mode'] = html_escape($this->input->post('university_mode'));
+
 		
 		$course_group_id = $this->input->post('group_id');
 		
 		$data['course_name'] = html_escape($this->input->post('course_name'));
 		$data['course_code'] = html_escape($this->input->post('course_code'));
-		$data['enrollment_code'] = html_escape($this->input->post('enrollment_code'));
 		$data['min_duration'] = html_escape($this->input->post('min_duration'));
 		$data['max_duration'] = html_escape($this->input->post('max_duration'));
 		$data['session'] = html_escape($this->input->post('session'));
+
 		$data['admission_fees'] = html_escape($this->input->post('admission_fees'));
-		$data['program_fees_male'] = html_escape($this->input->post('program_fees_male'));
-		$data['program_fees_female'] = html_escape($this->input->post('program_fees_female'));
+		$data['program_fees'] = html_escape($this->input->post('program_fees'));
+		$data['form_fees'] = html_escape($this->input->post('form_fees'));
 		$data['exam_fees'] = html_escape($this->input->post('exam_fees'));
+
+		
+
+		$data['p_admission_fees'] = html_escape($this->input->post('p_admission_fees'));
+		$data['p_program_fees'] = html_escape($this->input->post('p_program_fees'));
+		$data['p_form_fees'] = html_escape($this->input->post('p_form_fees'));
+		$data['p_exam_fees'] = html_escape($this->input->post('p_exam_fees'));
 		
 		$this->db->where('id', $course_group_id);
 		$this->db->update('course_group', $data_group);
-		
 		
 		$this->db->where('id', $param1);
 		$this->db->update('course', $data);
