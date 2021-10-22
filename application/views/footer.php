@@ -97,7 +97,7 @@ function callTheCallBackFunction() {
 </div>
 
 <div class="offcanvas-footer text-center p-3">
-    <a href="" class="text-custom ">&#169; <?=date('Y')?> MPSVV </a>
+    <a href="" class="text-custom ">&#169; <?=date('Y')?> MMYVV </a>
 </div>
                 <!--end::Purchase-->
             </div>

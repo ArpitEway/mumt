@@ -75,32 +75,7 @@ buttons: [
 				showCancelButton: true,
 				confirmButtonText: "Yes"
 			}).then(function(result) {
-				if (result.value) {
-					$.ajax({
-						url: BASE_URL+'center/center/payStudentFees',
-						method: 'post',
-						dataType: 'json',
-						data: {'student_id':student_id, 'id' :id},
-						success: function (data) {
-							if(data.error== undefined){
-								$('#memListTable').DataTable().draw();
-								$('#balance').html(data.balance);
-								Swal.fire(
-									"",
-									data.success,
-									"success"
-									);
-							}else{
-								Swal.fire(
-									"",
-									data.error,
-									"error"
-									);
-							}
-							
-						}
-					});
-				}
+				window.location.href = BASE_URL+"center/payment/admission/"+student_id;
 		});
 	});
 </script>

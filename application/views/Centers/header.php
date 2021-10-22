@@ -3,8 +3,8 @@
 <!--begin::Head-->
 <head><base href="">
 	<meta charset="utf-8" />
-	<title>MPSVV || center</title>
-	<meta name="description" content="महर्षि पाणिनि संस्कृत एवं वैदिक विश्वविद्यालय" />
+	<title>MMYVV || center</title>
+	<meta name="description" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 	<!--begin::Fonts-->
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
@@ -49,10 +49,10 @@
 						<div class="d-none d-lg-flex align-items-center mr-3">
 							<div class="float-right">
 								<span class="text-custom">
-									<i class="fas fa-map-marker-alt"></i> देवास रोड उज्जैन, मध्य प्रदेश 456010 
+									<i class="fas fa-map-marker-alt"></i>address
 								</span>
 								<span class="text-custom ml-3">
-									<i class="fa fa-envelope" aria-hidden="true"></i>  utdpanini@gmail.com
+									<i class="fa fa-envelope" aria-hidden="true"></i>  email
 								</span>
 							</div>
 						</div>
@@ -94,11 +94,8 @@
 			</div>
 		</div>
 		<div class="container-fluid mt-5">
-			<div class="card card-custom gutter-b example example-compact">
+			<div class="card card-custom gutter-b example example-compact mb-20">
 				<div class="card-body " style="min-height: 70vh;">
 					<div class="content-head row   justify-content-between mb-3">
 						<h3 class="text-primary"><?php echo (isset($title)) ? $title : ''; ?></h3>
-						<?php if($this->session->has_userdata('centerdata')){ ?>
-						<h4>Balance: <i class="fas fa-rupee-sign text-primary"></i> <label id="balance"><?=$this->center_model->getRemainingBalance($this->session->center_id);?></label>/-</h4>
-					<?php } ?>
 					</div>
