@@ -200,19 +200,6 @@ class Common_Model extends CI_Model{
 
 	}
 	
-	public function getSessionForEnrollment(){
-
-		$qry= $this->db->order_by('id','DESC');
-
-		$qry= $this->db->limit(1);
-		$qry= $this->db->get('session');
-
-		//echo $this->db->last_query();
-
-		return $qry->result()[0]->session;
-
-	}
-	
 	function student_data($where = "",$group_by = ""){
 		
 		if($group_by != ""){

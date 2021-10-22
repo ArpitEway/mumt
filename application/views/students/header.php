@@ -3,8 +3,8 @@
 <!--begin::Head-->
 <head><base href="">
 	<meta charset="utf-8" />
-	<title>MPSVV || Student</title>
-	<meta name="description" content="महर्षि पाणिनि संस्कृत एवं वैदिक विश्वविद्यालय" />
+	<title>MMYVV || Student</title>
+	<meta name="description" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 	<!--begin::Fonts-->
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
@@ -56,10 +56,10 @@
 							<div class="d-none d-lg-flex align-items-center mr-3">
 								<div class="float-right">
 									<span class="text-custom">
-										<i class="fas fa-map-marker-alt"></i> देवास रोड उज्जैन 
+										<i class="fas fa-map-marker-alt"></i>Address
 									</span>
 									<span class="text-custom ml-3">
-										<i class="fa fa-envelope" aria-hidden="true"></i>  utdpanini@gmail.com
+										<i class="fa fa-envelope" aria-hidden="true"></i>  email
 									</span>
 								</div>
 							</div>

@@ -83,26 +83,27 @@ class Center extends CI_Controller {
 		redirect(base_url('center/login'));
 	}
 
-	public function enrollment_form($center_id =''){
+	public function admission_form(){
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url('center/'));
 			exit;
 		}
 
-		$enrollSession = $this->Common_model->getSessionForEnrollment();
-		$titleData = array('title' => 'Enrollment Form'); 
+		$titleData = array('title' => 'Admission Form'); 
 		$state_list = $this->Common_model->get_record('state','*');
+		$eligibility_list = $this->Common_model->get_record('course_group','DISTINCT (eligibility)');
 		$district_list = $this->Common_model->get_record('distt','*');
 		$course_group_list = $this->Common_model->get_record('course','*');
 		$data = array(
-			'session' => $enrollSession,
 			'state_list' => $state_list,
 			'district_list' => $district_list,
 			'course_group_list' => $course_group_list,
+			'session' => 2021,
+			'eligibility_list' => $eligibility_list,
 		);
 
 		$this->load->view('centers/header',$titleData);
-		$this->load->view('centers/enrollment_form',$data);
+		$this->load->view('centers/admission_form',$data);
 		$this->load->view('centers/footer');
 	}
 
@@ -154,8 +155,7 @@ class Center extends CI_Controller {
 
 	public function getClassByCourse(){
 		$course = $this->input->post('course');
-		// and admission_permission!='Y'
-		$class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$course."' ");
+		$class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$course."'  and admission_permission='Y'");
 		$data = array(
 			'class_list' => $class_list,
 		);
@@ -237,7 +237,6 @@ class Center extends CI_Controller {
 	public function getFeesList($param1 = ''){
 		$data = $row = array();
 		$where = 'online_payment_transaction.center_id='.$this->session->center_id;
-		
 		if($param1=='paid'){
 			$where .= ' and online_payment_transaction.payment="Y" ';
 		}elseif($param1=='unpaid'){
@@ -257,10 +256,9 @@ class Center extends CI_Controller {
 		);
 
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
-
 		$i = $_POST['start'];
 		foreach($tableData as $result){
-			if($result->payment_status=='pending'){
+			if($result->payment_status!='success'){
 			$btn = '<a href="#" data-student_id="'.$result->student_id.'" data-id="'.$result->id.'" class="btn btn-info btn-sm pay" >Pay</a>';
 			$payment_date = '';
 			}else{
@@ -269,7 +267,7 @@ class Center extends CI_Controller {
 			}
 
 			$i++;
-			$data[] = array($result->student_id,$result->enrollment_no, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->fees_head,$result->amount,$payment_date,$btn);
+			$data[] = array($result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->fees_head,$result->amount,$payment_date,$btn);
 		}
 
 		$output = array(
@@ -438,5 +436,36 @@ class Center extends CI_Controller {
 		$this->load->view('centers/header',$titleData);
 		$this->load->view('centers/payment_detail',$data);
 		$this->load->view('centers/footer');
+	}
+
+	public function getCourseByEligibility()
+	{
+		$eligibility = $this->input->post('eligibility');
+
+		$course_group_list = $this->Common_model->get_record('course_group','*',array('eligibility'=>$eligibility,
+			'admission_permission' => 'Y'
+		));
+		$data = array('course_group_list'=>$course_group_list);
+
+		echo $this->load->view('template/getcourse',$data,true);
+	}
+
+	public function checkDuplicateAdharNo()
+	{
+		$adhar_no = $this->input->post('adhar_no');
+		$where = array('adhar_no'=>$adhar_no,'course_complete'=>'N');
+		$count = $this->Common_model->getCountByWhere('student',$where);
+		if($count>0){
+			echo "Duplicate Adhar Card Number";
+		}
+	}
+	public function checkDuplicateMobileNo()
+	{
+		$p_mobile_no = $this->input->post('p_mobile_no');
+		$count = $this->db->query("select * from student_data as d join student as s on s.student_id=d.student_id where s.course_complete='N' and d.p_mobile_no = '".$p_mobile_no."' limit 1")->num_rows();
+
+		if($count>0){
+			echo "Duplicate Mobile No";
+		}
 	}
 }
