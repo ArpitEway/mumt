@@ -18,6 +18,17 @@ class center_model extends CI_Model {
 		}
 	}
 
+	public function checkLink($centercode)
+	{
+		$query = $this->db->get($this->table." where center_code='".$centercode."'");
+		if($query->num_rows()>0){
+			$result = $query->result();
+			return $result[0];
+		}else{
+			return false;
+		}
+	}
+
 	public function checkcenterStudent($student_id)
 	{
 		$where = array(
