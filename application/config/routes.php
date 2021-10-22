@@ -101,6 +101,7 @@ $route['center/change_password'] = 'center/center/change_password';
 $route['center/login'] = 'center/center/login';
 $route['center/logout'] = 'center/center/logout';
 $route['center/dashboard'] = 'center/center/dashboard';
+$route['center/instruction'] = 'center/center/instruction';
 $route['center/admission_form'] = 'center/center/admission_form';
 $route['center/enrollment_list'] = 'center/center/enrollment_list';
 $route['center/updateEnrollmentForm/(:num)'] = 'center/updateEnrollmentForm/index/$1';

@@ -12,7 +12,7 @@ class Center extends CI_Controller {
 
 	public function index(){
 		if($this->session->has_userdata('centerdata')){
-			redirect(base_url('center/dashboard'));
+			redirect(base_url('center/instruction'));
 		}else{
 			$this->load->view('centers/header');
 			$this->load->view('centers/disclaimer');
@@ -34,6 +34,29 @@ class Center extends CI_Controller {
 			$this->load->view('centers/footer');
 		}
 	}
+
+	public function instruction(){
+		
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url('center/'));
+		}else{
+			$titleData = array('title' => 'Center Instruction'); 
+			$this->load->view('centers/header',$titleData);
+			$id =  $this->session->center_id;
+			$center = $this->Common_model->getRecordById('center','id',$id);
+
+
+			$course_group = $this->db->get_where('course_group', array())->result_array();
+
+			//$course = $this->db->get_where('course', array())->result_array();
+
+			$data = array('course_group' => $course_group);
+			$this->getNotification();
+			$this->load->view('centers/instruction',$data);
+			$this->load->view('centers/footer');
+		}
+	}
+
 
 	public function login(){
 		if($this->session->has_userdata('center_code')){
