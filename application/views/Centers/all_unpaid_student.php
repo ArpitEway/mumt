@@ -3,8 +3,8 @@
 		<thead>
 			<tr>
 				<th>Form No.</th>
-				<th>Student Name</th>
-				<th>Father Name</th>
+				<th>Student </th>
+				<th>Father </th>
 				<th>Course</th>
 				<th>Class</th>
 				<th>Fees Head</th>
