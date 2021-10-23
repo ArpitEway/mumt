@@ -196,7 +196,7 @@ class Center extends CI_Controller {
 		}
 	}
 
-	public function enrollment_list()
+	public function student_list()
 	{
 		$titleData = array('title' => 'Students List', );
 		$this->load->view('Centers/header',$titleData);
