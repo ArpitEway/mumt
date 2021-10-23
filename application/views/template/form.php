@@ -113,10 +113,12 @@ hr.new2 {
 	<div id="printablediv">
 		<div class="form-block row text-center d-block" id="printHeaderdiv">
 			<div class="f-heading-1 text-primary">
-				Maharshi Panini Sanskrit Evam Vedic Vishwavidyalaya Ujjain
+				Maharishi Mahesh Yogi Vedic Vishwavidyalaya
+			</div><div class="f-heading-2 text-primary">
+Brahmsthan Karoundi, Post Mahner-Umariyapaan, Distt – Katni (Madhya Pradesh)
 			</div>
 			<div class="f-heading-3 text-primary">
-				Application Form For Admission <span class="text-dark"><?= $student['session']; ?></span>
+				APPLICATION FORM FOR REGISTRATION <span class="text-dark"><?= $student['session']; ?></span>
 			</div>
 		</div>
 
@@ -315,9 +317,9 @@ hr.new2 {
 
 				<hr class="mt-10">
 
-				<div class="text-center mt-10">
+				<!-- <div class="text-center mt-10">
 					<a id="buttonId" class="btn btn-primary font-weight-bold" href="#">Print</a>
-				</div>
+				</div> -->
 		</div>
 		</div>
 		</div>

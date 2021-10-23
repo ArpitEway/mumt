@@ -155,7 +155,7 @@ class Center extends CI_Controller {
 		}
 		$data = array();
 		$data['student'] = $this->Common_model->student_info($student_id);
-		$this->load->view('Centers/header',array('title' => 'Enrollment Form'));
+		$this->load->view('Centers/header',array('title' => 'Admission Form'));
 		$this->load->view('template/form',$data);
 		$this->load->view('Centers/footer');
 	}
