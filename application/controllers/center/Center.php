@@ -196,7 +196,7 @@ class Center extends CI_Controller {
 		}
 	}
 
-	public function student_list()
+	public function all_student()
 	{
 		$titleData = array('title' => 'Students List', );
 		$this->load->view('Centers/header',$titleData);
@@ -491,4 +491,5 @@ class Center extends CI_Controller {
 			echo "Duplicate Mobile No";
 		}
 	}
+
 }

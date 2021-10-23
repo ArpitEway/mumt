@@ -28,7 +28,7 @@
 							<span class="nav-text">Admission Form</span>
 						</div>
 					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('center/student_list');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('center/all_student');?>">
 						<div>
 							<span class="nav-text">Student List</span>
 						</div>

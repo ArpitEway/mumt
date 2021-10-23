@@ -63,24 +63,7 @@ $route['admin/enrollment/show_form/(:num)'] = 'admin/enrollment/show_form/$1';
 $route['admin/updateStudentData/(:num)'] = 'admin/updateStudentData/index/$1';
 
 
-/* User Routes   */
 
-$route['user'] = 'user/Users';
-$route['user/index'] = 'user/Users';
-$route['users/getCourseByDepartmentId'] = 'user/Users/getCourseByDepartmentId';
-$route['user/enquirySubmit'] = 'user/Users/enquirySubmit';
-$route['user/login'] = 'user/Users/login';
-$route['user/loginSub'] = 'user/Users/loginSub';
-$route['user/admission/(:num)'] = 'user/Users/admission/$1';
-$route['user/admission_form'] = 'user/Users/show_form';
-$route['user/logout'] = 'user/Users/logout';
-$route['user/saveFormdata/(:num)'] = 'user/SaveFormdata/index/$1';
-$route['user/dashboard'] = 'user/Users/dashboard';
-$route['user/form'] = 'user/Users/form';
-$route['user/show_form/(:num)'] = 'user/Users/show_form/$1';
-$route['user/payment/(:num)'] = 'user/payment/paynow/$1';
-$route['user/document/(:num)'] = 'user/document/index/$1';
-$route['user/new_admission'] = 'user/Users/new_admission';
 
 $route['student'] = 'student/Student';
 $route['student/login'] = 'student/Student/login';
