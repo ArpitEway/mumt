@@ -6,7 +6,7 @@ class Center extends CI_Controller {
 	function __construct(){
 		parent::__construct();
 		$this->load->model('Common_model');
-		$this->load->model('center/center_model');
+		$this->load->model('Center/center_model');
 		$this->load->model('Datatable_join_model');
 	}
 
@@ -14,9 +14,9 @@ class Center extends CI_Controller {
 		if($this->session->has_userdata('centerdata')){
 			redirect(base_url('center/instruction'));
 		}else{
-			$this->load->view('centers/header');
-			$this->load->view('centers/disclaimer');
-			$this->load->view('centers/footer');
+			$this->load->view('Centers/header');
+			$this->load->view('Centers/disclaimer');
+			$this->load->view('Centers/footer');
 		}
 	}
 
@@ -25,13 +25,13 @@ class Center extends CI_Controller {
 			redirect(base_url('center/'));
 		}else{
 			$titleData = array('title' => 'Center Dashboard'); 
-			$this->load->view('centers/header',$titleData);
+			$this->load->view('Centers/header',$titleData);
 			$id =  $this->session->center_id;
 			$center = $this->Common_model->getRecordById('center','id',$id);
 			$data = array('center' => $center);
 			$this->getNotification();
-			$this->load->view('centers/dashboard',$data);
-			$this->load->view('centers/footer');
+			$this->load->view('Centers/dashboard',$data);
+			$this->load->view('Centers/footer');
 		}
 	}
 
@@ -63,7 +63,7 @@ class Center extends CI_Controller {
 			redirect(base_url('center'));
 			exit;
 		}
-		$this->load->view('centers/login');
+		$this->load->view('Centers/login');
 	}
 
 	public function loginSub(){
@@ -77,7 +77,7 @@ class Center extends CI_Controller {
 		if ($this->form_validation->run() == FALSE)
 		{
 			$this->session->set_flashdata('error','center Code And Password Are Required');
-			$this->load->view('centers/login');
+			$this->load->view('Centers/login');
 		}
 		else
 		{
@@ -95,7 +95,7 @@ class Center extends CI_Controller {
 			}else{
 
 				$this->session->set_flashdata('error','center Code And Password Are Incorrect');
-				$this->load->view('centers/login',$data);
+				$this->load->view('Centers/login',$data);
 			}
 		}
 	}
@@ -125,9 +125,9 @@ class Center extends CI_Controller {
 			'eligibility_list' => $eligibility_list,
 		);
 
-		$this->load->view('centers/header',$titleData);
-		$this->load->view('centers/admission_form',$data);
-		$this->load->view('centers/footer');
+		$this->load->view('Centers/header',$titleData);
+		$this->load->view('Centers/admission_form',$data);
+		$this->load->view('Centers/footer');
 	}
 
 	public function isDuplicateEnrollment(){
@@ -151,16 +151,16 @@ class Center extends CI_Controller {
 
 	public function show_form($student_id){
 		if(!$this->session->has_userdata('centerdata')){
-			redirect(base_url('centers/login'));
+			redirect(base_url('center/login'));
 		}
 		$data = array();
 		$data['student'] = $this->Common_model->student_info($student_id);
 		if($data['student']['approved']!='Y'){
-			redirect(base_url('centers/admission/'.$student_id));
+			redirect(base_url('center/admission/'.$student_id));
 		}
-		$this->load->view('centers/header',array('title' => 'Enrollment Form'));	
+		$this->load->view('Centers/header',array('title' => 'Enrollment Form'));	
 		$this->load->view('template/form',$data);
-		$this->load->view('centers/footer');
+		$this->load->view('Centers/footer');
 	}
 
 
@@ -190,18 +190,18 @@ class Center extends CI_Controller {
 		if($center_id!=''){
 			$center = $this->Common_model->getRecordById('center','id',$center_id);
 			$centerdata = array('center' => $center);
-//$this->load->view('centers/header');
-			$this->load->view('centers/notification',$centerdata);
-//$this->load->view('centers/footer');	
+//$this->load->view('Centers/header');
+			$this->load->view('Centers/notification',$centerdata);
+//$this->load->view('Centers/footer');	
 		}
 	}
 
 	public function enrollment_list()
 	{
 		$titleData = array('title' => 'Students List', );
-		$this->load->view('centers/header',$titleData);
-		$this->load->view('centers/student_details');
-		$this->load->view('centers/footer');
+		$this->load->view('Centers/header',$titleData);
+		$this->load->view('Centers/student_details');
+		$this->load->view('Centers/footer');
 	}
 
 	public function getStudentList(){
@@ -247,14 +247,14 @@ class Center extends CI_Controller {
 	{
 		if($param1=='paid'){
 		$titleData = array('title' => 'Paid Student List');
-		$this->load->view('centers/header',$titleData);
-		$this->load->view('centers/all_paid_student');
+		$this->load->view('Centers/header',$titleData);
+		$this->load->view('Centers/all_paid_student');
 		}elseif($param1=='unpaid'){
 		$titleData = array('title' => 'Unpaid Student List');
-		$this->load->view('centers/header',$titleData);
-		$this->load->view('centers/all_unpaid_student');
+		$this->load->view('Centers/header',$titleData);
+		$this->load->view('Centers/all_unpaid_student');
 		}
-		$this->load->view('centers/footer');
+		$this->load->view('Centers/footer');
 	}
 
 	public function getFeesList($param1 = ''){
@@ -313,7 +313,7 @@ class Center extends CI_Controller {
 
 			$titleData = array('title' => 'center Profile'); 
 
-			$this->load->view('centers/header',$titleData);
+			$this->load->view('Centers/header',$titleData);
 
 			$center_data = $this->session->get_userdata($data);
 
@@ -324,8 +324,8 @@ class Center extends CI_Controller {
 			$center = $this->Common_model->getRecordById('center','id',$id);
 			$data = array('center' => $center);
 			$this->getNotification();
-			$this->load->view('centers/profile',$data);
-			$this->load->view('centers/footer');
+			$this->load->view('Centers/profile',$data);
+			$this->load->view('Centers/footer');
 		}
 	}
 	public function change_password(){
@@ -337,7 +337,7 @@ class Center extends CI_Controller {
 
 			$titleData = array('title' => 'Change Password'); 
 
-			$this->load->view('centers/header',$titleData);
+			$this->load->view('Centers/header',$titleData);
 
 			$center_data = $this->session->get_userdata($data);
 
@@ -346,8 +346,8 @@ class Center extends CI_Controller {
 			$center = $this->Common_model->getRecordById('center','id',$id);
 			$data = array('center' => $center);
 			$this->getNotification();
-			$this->load->view('centers/change_password',$data);
-			$this->load->view('centers/footer');
+			$this->load->view('Centers/change_password',$data);
+			$this->load->view('Centers/footer');
 		}
 }
 
@@ -456,9 +456,9 @@ class Center extends CI_Controller {
 		);
 
 		$titleData = array('title'=>'Payment Details');
-		$this->load->view('centers/header',$titleData);
-		$this->load->view('centers/payment_detail',$data);
-		$this->load->view('centers/footer');
+		$this->load->view('Centers/header',$titleData);
+		$this->load->view('Centers/payment_detail',$data);
+		$this->load->view('Centers/footer');
 	}
 
 	public function getCourseByEligibility()
