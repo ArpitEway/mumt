@@ -72,8 +72,9 @@ class saveFormdata extends CI_Controller {
 		$studentData['student_id'] = $student_id;
 		$this->Common_model->insertAll('student_data',$studentData);
 		
-		$OnlinePayTxnData = array('student_id' => $student_id,'center_id' => $this->session->center_id,'fees_head' => 'admission','amount' => 1500,'payment_status'=>'pending','course_group_id' => $course_group_id,'class_id' => $class_id,'student_name' => $data['name'],'admission_type'=>'regular');
+		$OnlinePayTxnData = array('student_id' => $student_id,'center_id' => $this->session->center_id,'fees_head' => 'Admission Fees','amount' => 1500,'payment_status'=>'pending','course_group_id' => $course_group_id,'class_id' => $class_id,'student_name' => $data['name'],'admission_type'=>'regular');
 		$OnlinePayTxn = $this->Common_model->insertAll('online_payment_transaction',$OnlinePayTxnData);
+		$student_id = $this->Common_model->UrlEncrypt($student_id);
 		$result = array('student_id'=>$student_id);
 		echo json_encode($result);
 

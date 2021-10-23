@@ -658,6 +658,28 @@ class Common_Model extends CI_Model{
 		
 		return $config;
 	}
+
+	public function UrlEncrypt($string)
+	{
+				$decodeArray = array(
+                'cipher' => 'des',
+                'mode' => 'cbc',
+                'hmac_digest' => 'sha224',
+        );
+		$this->encryption->initialize($decodeArray);
+		return urlencode($this->encryption->encrypt($string));
+	}
+
+	public function UrlDecrypt($string)
+	{
+				$decodeArray = array(
+                'cipher' => 'des',
+                'mode' => 'cbc',
+                'hmac_digest' => 'sha224',
+        );
+		$this->encryption->initialize($decodeArray);
+		return $this->encryption->decrypt(urldecode($string));
+	}
 }
 
 ?>

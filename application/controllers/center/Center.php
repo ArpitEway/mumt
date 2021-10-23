@@ -153,6 +153,7 @@ class Center extends CI_Controller {
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url('center/login'));
 		}
+		$student_id = $this->Common_model->UrlDecrypt($student_id);
 		$data = array();
 		$data['student'] = $this->Common_model->student_info($student_id);
 		$this->load->view('Centers/header',array('title' => 'Admission Form'));
@@ -187,9 +188,7 @@ class Center extends CI_Controller {
 		if($center_id!=''){
 			$center = $this->Common_model->getRecordById('center','id',$center_id);
 			$centerdata = array('center' => $center);
-//$this->load->view('Centers/header');
 			$this->load->view('Centers/notification',$centerdata);
-//$this->load->view('Centers/footer');	
 		}
 	}
 
@@ -224,7 +223,7 @@ class Center extends CI_Controller {
 		$i = $_POST['start'];
 		foreach($tableData as $result){
 
-			$btn = '<a href="'.base_url('center/show_form/'.$result->student_id).'" class="btn btn-info btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>';
+			$btn = '<a href="'.base_url('center/show_form/'.$this->Common_model->UrlEncrypt($result->student_id)).'" class="btn btn-info btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>';
 			$i++;
 			$data[] = array($result->student_id,$result->enrollment_no, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$btn);
 		}
@@ -278,7 +277,7 @@ class Center extends CI_Controller {
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
 		foreach($tableData as $result){
-			$btn = '<a href="#" data-student_id="'.$result->student_id.'" data-id="'.$result->id.'" class="btn btn-info btn-sm pay" >Pay</a>';
+			$btn = '<a href="#" data-student_id="'.$this->Common_model->UrlEncrypt($result->student_id).'" data-id="'.$this->Common_model->UrlEncrypt($result->id).'" class="btn btn-info btn-sm pay" >Pay</a>';
 			$i++;
 			$data[] = array($result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->amount,$btn);
 		}
@@ -314,7 +313,7 @@ class Center extends CI_Controller {
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
 		foreach($tableData as $result){
-			$btn = '<a href="'.base_url('center/show_fees/'.$result->id).'" class="btn btn-primary btn-sm" target="_blank" ><i class="fa fa-eye"></i></a>';			
+			$btn = '<a href="'.base_url('center/show_fees/'.$this->Common_model->UrlEncrypt($result->id)).'" class="btn btn-primary btn-sm" target="_blank" ><i class="fa fa-eye"></i></a>';			
 			$i++;
 			$data[] = array($result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->fees_head,$result->amount,$result->txnId,$btn);
 		}
@@ -332,21 +331,12 @@ class Center extends CI_Controller {
 
 	public function profile(){
 		if(!$this->session->has_userdata('centerdata')){
-
 			redirect(base_url('center/'));
-
 		}else{
-
 			$titleData = array('title' => 'center Profile'); 
-
 			$this->load->view('Centers/header',$titleData);
-
 			$center_data = $this->session->get_userdata($data);
-
-			//$id =  $this->session->center_id;
-
 			$id = $center_data['center_id'];
-
 			$center = $this->Common_model->getRecordById('center','id',$id);
 			$data = array('center' => $center);
 			$this->getNotification();
@@ -526,20 +516,8 @@ class Center extends CI_Controller {
 	}
 
 	public function loginAs($centercode){
-		// $decodeArray = array(
-  //               'cipher' => 'des',
-  //               'mode' => 'cbc',
-  //               'hmac_digest' => 'sha224',
-  //       );
-		// $centercode = $this->encryption->initialize($decodeArray);
-		// echo $ciphertext = $this->encryption->encrypt('akshay');
-		// $centercode = $this->encryption->initialize($decodeArray);
-		// echo $ciphertext = $this->encryption->decrypt();
-	
 			$centercode = $this->encrypt_decrypt($centercode,'decrypt');
-
 			$check_user = $this->center_model->checkLink($centercode);
-
 			if($check_user){	
 				$data = array(
 					'loged_in' => true,
@@ -550,9 +528,8 @@ class Center extends CI_Controller {
 				$this->session->set_userdata($data);
 				redirect(base_url('center'));
 			}else{
-
 				$this->session->set_flashdata('error','center Code Are Incorrect');
-				$this->load->view('centers/login',$data);
+				redirect(base_url('center'));
 			}		
 		}
 

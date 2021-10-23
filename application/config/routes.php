@@ -87,11 +87,11 @@ $route['center/dashboard'] = 'center/center/dashboard';
 $route['center/instruction'] = 'center/center/instruction';
 $route['center/admission_form'] = 'center/center/admission_form';
 $route['center/all_student'] = 'center/center/all_student';
-$route['center/updateEnrollmentForm/(:num)'] = 'center/updateEnrollmentForm/index/$1';
-$route['center/show_form/(:num)'] = 'center/center/show_form/$1';
-$route['center/show_fees/(:num)'] = 'center/center/show_fees/$1';
+$route['center/show_form/(:any)'] = 'center/center/show_form/$1';
+$route['center/show_fees/(:any)'] = 'center/center/show_fees/$1';
 $route['center/student_list/(:any)'] = 'center/center/student_list/$1';
 $route['center/admission_instruction'] = 'center/center/admission_instruction';
+$route['center/loginAs'] = 'center/center/loginAs';
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

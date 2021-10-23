@@ -15,7 +15,7 @@
 				<div class="row py-2">
 					<label class="col-sm-6 text-heading">Contact person</label>
 					<div class="col-sm-6 text-value">
-						<?php echo $center->contact_person; ?>
+						<?php echo $center->contactpersonname; ?>
 					</div>
 				</div>
 			</div>
@@ -23,23 +23,15 @@
 				<div class="row py-2">
 					<label class="col-sm-6 text-heading">Mobile No.</label>
 					<div class="col-sm-6 text-value">
-						<?php echo $center->mobile_no.', '.$center->mobile_no_2; ?>
+						<?php echo $center->mobile_no_1.', '.$center->mobile_no_2; ?>
 					</div>
 				</div>
 			</div>
 			<div class="col-md-6">
 				<div class="row py-2">
-					<label class="col-sm-6 text-heading">Other Contact person</label>
+					<label class="col-sm-6 text-heading">Address</label>
 					<div class="col-sm-6 text-value">
-						<?php echo $center->contact_person_2; ?>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-6">
-				<div class="row py-2">
-					<label class="col-sm-6 text-heading">Mobile No</label>
-					<div class="col-sm-6 text-value">
-						<?php echo $center->other_mobile_no.', '.$center->other_mobile_no_2; ?>
+						<?php echo $center->address; ?>
 					</div>
 				</div>
 			</div>
@@ -55,7 +47,7 @@
 				<div class="row py-2">
 					<label class="col-sm-6 text-heading">District</label>
 					<div class="col-sm-6 text-value">
-						<?php echo $this->Common_model->getDistrict($center->district); ?>
+						<?php echo $this->Common_model->getDistrict($center->distt_id); ?>
 					</div>
 				</div>
 			</div>

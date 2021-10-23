@@ -66,8 +66,10 @@
 	</div>
 	<div class="row py-3 border justify-content-center">
 	<?php
-		$url = ($url=='payProgramFess') ? 'student/payment/payProgramFess/' : 'student/payment/';
+	$student_id = $this->Common_model->UrlEncrypt($student['student_id']);
+		$url = ($url=='payProgramFess') ? 'student/payment/payProgramFess/' : 'student/payment/'.$student_id;
 	?>
-	<a class="btn btn-default text-dark font-weight-bold" href="<?=base_url($url.$student['student_id']);?>">Pay Now</a>
+	
+	<a class="btn btn-default text-dark font-weight-bold" href="<?=base_url($url);?>">Pay Now</a>
 </div>
 </div>
