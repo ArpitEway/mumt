@@ -22,7 +22,7 @@ class Payment extends CI_Controller {
 		$data['student'] = $student;
 		$data['url'] = 'paynow';
 		$data['paymentType'] = 'admission';
-		$data['txnAmt'] = 1500;
+		$data['txnAmt'] = 1;
 		
 		$this->load->view('Centers/header',$titleData);
 		$this->load->view('Centers/admission_payment',$data);
@@ -35,7 +35,7 @@ class Payment extends CI_Controller {
 		}
 		if($student_id!=''){
 			$student = $this->Common_model->student_info($student_id);
-			$txnAmt=1500;
+			$txnAmt=1;
 			if($student['payment_status']=='Y'){
 				$this->session->set_flashdata('warning','Payment Already Submitted');
 				redirect(base_url('center/dashboard'));

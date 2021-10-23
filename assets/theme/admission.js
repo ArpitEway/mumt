@@ -219,12 +219,10 @@ function validation(step){
 	var p_district = $('select[name="p_district"]').find(":selected").val();
 	var p_city = $('input[name="p_city"]').val();
 	var p_pin_code = $('input[name="p_pin_code"]').val();
-	var ten_marks = $('input[name="ten_marks"]').val();
-	var ten_year = $('select[name="ten_year"]').val();
-	var ten_subjects = $('input[name="ten_subjects"]').val();
-	var ten_board = $('input[name="ten_board"]').val();
-	var ten_total_marks = $('input[name="ten_total_marks"]').val();
-	var ten_total_marks = $('input[name="ten_total_marks"]').val();
+	var marks = $('input[name="marks"]').val();
+	var passing_year = $('select[name="passing_year"]').val();
+	var board = $('input[name="board"]').val();
+	var total_marks = $('input[name="total_marks"]').val();
 	var nationality = $('select[name="nationality"]').val();
 	var religion = $('select[name="religion"]').val();
 
@@ -414,35 +412,29 @@ function validation(step){
 	}else{
 		$('input[name="p_pin_code"]').next('div').text('');
 	}
-	if(ten_marks==''){
-		$('input[name="ten_marks"]').next('div').text('Marks is Required');
+	if(marks==''){
+		$('input[name="marks"]').next('div').text('Marks is Required');
 		submit = false
 	}else{
-		$('input[name="ten_marks"]').next('div').text('');
+		$('input[name="marks"]').next('div').text('');
 	}
-	if(ten_year==''){
-		$('select[name="ten_year"]').next('div').text('Year is Required');
+	if(passing_year==''){
+		$('select[name="passing_year"]').next('div').text('Year is Required');
 		submit = false
 	}else{
-		$('select[name="ten_year"]').next('div').text('');
+		$('select[name="passing_year"]').next('div').text('');
 	}
-	if(ten_subjects==''){
-		$('input[name="ten_subjects"]').next('div').text('Subject is Required');
+	if(board==''){
+		$('input[name="board"]').next('div').text('Board is Required');
 		submit = false
 	}else{
-		$('input[name="ten_subjects"]').next('div').text('');
+		$('input[name="board"]').next('div').text('');
 	}
-	if(ten_board==''){
-		$('input[name="ten_board"]').next('div').text('Board is Required');
+	if(total_marks==''){
+		$('input[name="total_marks"]').next('div').text('Total Marks is Required');
 		submit = false
 	}else{
-		$('input[name="ten_board"]').next('div').text('');
-	}
-	if(ten_total_marks==''){
-		$('input[name="ten_total_marks"]').next('div').text('Total Marks is Required');
-		submit = false
-	}else{
-		$('input[name="ten_total_marks"]').next('div').text('');
+		$('input[name="total_marks"]').next('div').text('');
 	}
 	if(submit == false){
 		return false;
