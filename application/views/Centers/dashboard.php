@@ -23,7 +23,7 @@
 		<div class="tab-content">
 			<div class="tab-pane fade active show" id="Enrollment" role="tabpanel" aria-labelledby="Enrollment-tab">
 				<div class="row">
-					<a class="border-0 custom-menu-item" href="<?=base_url('center/admission_form');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('center/admission_instruction');?>">
 						<div>
 							<span class="nav-text">Admission Form</span>
 						</div>

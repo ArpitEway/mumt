@@ -254,17 +254,17 @@ class Center extends CI_Controller {
 		$this->load->view('Centers/footer');
 	}
 
-	public function getFeesList($param1 = ''){
+	public function getUnpaidFeesList($param1 = ''){
 		$data = $row = array();
-		$where = 'online_payment_transaction.center_id='.$this->session->center_id;
-		if($param1=='paid'){
-			$where .= ' and online_payment_transaction.payment="Y" ';
-		}elseif($param1=='unpaid'){
-			$where .= ' and online_payment_transaction.payment!="Y" ';
+		$where = 'online_payment_transaction.center_id='.$this->session->center_id.' and online_payment_transaction.payment!="Y"';
+		if($param1=='Admission'){
+			$where .= ' and online_payment_transaction.fees_head="Admission Fees"';
+		}elseif($param1=='Exam'){
+			$where .= ' and online_payment_transaction.fees_head="Exam Fees"';
 		}
 		
-		$column_order = array('student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','fees_head','amount','payment_date',null);
-		$column_search = array('student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','fees_head','amount','payment_date');
+		$column_order = array('student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','amount',null);
+		$column_search = array('student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','amount');
 
 		$DataTableArray = array(
 			'column_order' => $column_order,
@@ -278,16 +278,45 @@ class Center extends CI_Controller {
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
 		foreach($tableData as $result){
-			if($result->payment_status!='success'){
 			$btn = '<a href="#" data-student_id="'.$result->student_id.'" data-id="'.$result->id.'" class="btn btn-info btn-sm pay" >Pay</a>';
-			$payment_date = '';
-			}else{
-			$btn = '<a href="'.base_url('center/show_fees/'.$result->id).'" class="btn btn-primary btn-sm" target="_blank" ><i class="fa fa-eye"></i></a>';
-			$payment_date = $this->Common_model->viewDate($result->payment_date);
-			}
-
 			$i++;
-			$data[] = array($result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->fees_head,$result->amount,$payment_date,$btn);
+			$data[] = array($result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->amount,$btn);
+		}
+
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->Datatable_join_model->countAll('online_payment_transaction',$where),
+			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
+			"data" => $data,
+		);
+
+		// Output to JSON format
+		echo json_encode($output);
+	}
+
+
+	public function getPaidFeesList(){
+		$data = $row = array();
+		$where = 'online_payment_transaction.center_id='.$this->session->center_id.' and online_payment_transaction.payment="Y"';
+		
+		$column_order = array('student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','fees_head','amount','txnId',null);
+		$column_search = array('student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','fees_head','amount','txnId');
+
+		$DataTableArray = array(
+			'column_order' => $column_order,
+			'column_search' => $column_search,
+			'where' => $where.' and online_payment_transaction.center_id=student.center_id',
+			'table' => 'student',
+			'table2' => 'online_payment_transaction',
+			'joinOn' => 'student.student_id=online_payment_transaction.student_id'
+		);
+
+		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
+		$i = $_POST['start'];
+		foreach($tableData as $result){
+			$btn = '<a href="'.base_url('center/show_fees/'.$result->id).'" class="btn btn-primary btn-sm" target="_blank" ><i class="fa fa-eye"></i></a>';			
+			$i++;
+			$data[] = array($result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->fees_head,$result->amount,$result->txnId,$btn);
 		}
 
 		$output = array(
@@ -489,4 +518,57 @@ class Center extends CI_Controller {
 		}
 	}
 
+	public function admission_instruction()
+	{
+		$this->load->view('Centers/header',array('title'=>'Admission Instruction'));
+		$this->load->view('Centers/admission_instruction');
+		$this->load->view('Centers/footer');
+	}
+
+	public function loginAs($centercode){
+		// $decodeArray = array(
+  //               'cipher' => 'des',
+  //               'mode' => 'cbc',
+  //               'hmac_digest' => 'sha224',
+  //       );
+		// $centercode = $this->encryption->initialize($decodeArray);
+		// echo $ciphertext = $this->encryption->encrypt('akshay');
+		// $centercode = $this->encryption->initialize($decodeArray);
+		// echo $ciphertext = $this->encryption->decrypt();
+	
+			$centercode = $this->encrypt_decrypt($centercode,'decrypt');
+
+			$check_user = $this->center_model->checkLink($centercode);
+
+			if($check_user){	
+				$data = array(
+					'loged_in' => true,
+					'centerdata' => $check_user->center_code,
+					'center_id' => $check_user->id,
+					'account_type' => 'center'
+				);
+				$this->session->set_userdata($data);
+				redirect(base_url('center'));
+			}else{
+
+				$this->session->set_flashdata('error','center Code Are Incorrect');
+				$this->load->view('centers/login',$data);
+			}		
+		}
+
+		private	function encrypt_decrypt($string, $action = 'encrypt')
+		{
+			$encrypt_method = "AES-256-CBC";
+		    $secret_key = '0734MMYEway'; // user define private key
+		    $secret_iv = 'MMYEway0734'; // user define secret key
+		    $key = hash('sha256', $secret_key);
+		    $iv = substr(hash('sha256', $secret_iv), 0, 16); // sha256 is hash_hmac_algo
+		    if ($action == 'encrypt') {
+		    	$output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
+		    	$output = base64_encode($output);
+		    } else if ($action == 'decrypt') {
+		    	$output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
+		    }
+		    return $output;
+		}
 }

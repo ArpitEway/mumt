@@ -1,45 +1,45 @@
  
 <form action="<?=$action; ?>" method="post" name="payuForm" >
 
-    <input 000 name="key" value="<?=$key ?>" />
+    <input type="hidden" name="key" value="<?=$key ?>" />
 
-    <input 000 name="hash" value="<?=$hash ?>"/>
+    <input type="hidden" name="hash" value="<?=$hash ?>"/>
 
-    <input 000 name="txnid" value="<?=$txnid ?>" /> 
+    <input type="hidden" name="txnid" value="<?=$txnid ?>" /> 
 
-    <input 000 name="surl" value="<?=$surl ?>" />  
+    <input type="hidden" name="surl" value="<?=$surl ?>" />  
 
-    <input 000 name="furl" value="<?=$furl ?>" />
+    <input type="hidden" name="furl" value="<?=$furl ?>" />
 
-    <input 000 name="amount" value="<?=$amount; ?>" />
+    <input type="hidden" name="amount" value="<?=$amount; ?>" />
 
-    <input 000 name="firstname" value="<?=$firstname;  ?>" />
+    <input type="hidden" name="firstname" value="<?=$firstname;  ?>" />
 
-    <input 000 name="email" value="<?=$email;  ?>" />
+    <input type="hidden" name="email" value="<?=$email;  ?>" />
 
-    <input 000 name="phone" value="<?=$phone;  ?>" />
+    <input type="hidden" name="phone" value="<?=$phone;  ?>" />
 
-    <input 000 name="productinfo" value="<?=$productinfo?>" />
+    <input type="hidden" name="productinfo" value="<?=$productinfo?>" />
 
-    <input 000 name="address1" value="<?=$address1; ?>" />
+    <input type="hidden" name="address1" value="<?=$address1; ?>" />
 
-    <input 000 name="city" value="<?=$city; ?>" />
+    <input type="hidden" name="city" value="<?=$city; ?>" />
 
-    <input 000 name="state" value="<?=$state; ?>"/>
+    <input type="hidden" name="state" value="<?=$state; ?>"/>
 
-    <input 000 name="country" value="<?=$country?>"/>
+    <input type="hidden" name="country" value="<?=$country?>"/>
 
-    <input 000 name="zipcode" value="<?=$zipcode;  ?>"/>
+    <input type="hidden" name="zipcode" value="<?=$zipcode;  ?>"/>
 
-    <input 000 name="udf1" value="<?=$udf1; ?>"/>
+    <input type="hidden" name="udf1" value="<?=$udf1; ?>"/>
 
-    <input 000 name="udf2" value="<?=$udf2; ?>" />
+    <input type="hidden" name="udf2" value="<?=$udf2; ?>" />
 
-	<input 000 name="udf3" value="<?=$udf3; ?>" />
+	<input type="hidden" name="udf3" value="<?=$udf3; ?>" />
 
-	<input 000 name="udf4" value="<?=$udf4; ?>"/>
+	<input type="hidden" name="udf4" value="<?=$udf4; ?>"/>
 
-	<input 000 name="udf5" value="<?=$udf5; ?>"/>
+	<input type="hidden" name="udf5" value="<?=$udf5; ?>"/>
 
 </form>
 <script>

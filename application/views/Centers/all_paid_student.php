@@ -9,7 +9,7 @@
 				<th>Class</th>
 				<th>Fees Head</th>
 				<th>Fees Amount</th>
-				<th>Payment Date</th>
+				<th>Txn Id</th>
 				<th>Receipt</th>
 			</tr>
 		</thead>
@@ -28,7 +28,7 @@
 "order": [0],
 // Load data from an Ajax source
 "ajax": {
-	"url": BASE_URL+'center/center/getFeesList/paid',
+	"url": BASE_URL+'center/center/getPaidFeesList',
 	"type": "POST"
 },
 "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],

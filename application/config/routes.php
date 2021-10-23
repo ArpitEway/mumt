@@ -91,6 +91,7 @@ $route['center/updateEnrollmentForm/(:num)'] = 'center/updateEnrollmentForm/inde
 $route['center/show_form/(:num)'] = 'center/center/show_form/$1';
 $route['center/show_fees/(:num)'] = 'center/center/show_fees/$1';
 $route['center/student_list/(:any)'] = 'center/center/student_list/$1';
+$route['center/admission_instruction'] = 'center/center/admission_instruction';
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

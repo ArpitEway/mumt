@@ -49,7 +49,7 @@
 		</div>
 		<div class="col-xl-3 text-center">
 			<div class="image-input image-input-outline" id="kt_image_1">
-				<div class="image-input-wrapper" style="background-image: url(<?=base_url($url);?>)"></div>
+				<div class="image-input-wrapper" style="background-image: url(<?=base_url('assets/images/center/student.bmp')?>)"></div>
 
 				<label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
 					<i class="fa fa-pen icon-sm text-muted"></i>

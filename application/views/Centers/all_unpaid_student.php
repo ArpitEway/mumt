@@ -7,9 +7,7 @@
 				<th>Father Name</th>
 				<th>Course</th>
 				<th>Class</th>
-				<th>Fees Head</th>
 				<th>Fees Amount</th>
-				<th>Payment Date</th>
 				<th>Pay</th>
 			</tr>
 		</thead>
@@ -28,7 +26,7 @@
 "order": [0],
 // Load data from an Ajax source
 "ajax": {
-	"url": BASE_URL+'center/center/getFeesList/unpaid',
+	"url": BASE_URL+'center/center/getUnpaidFeesList/Admission',
 	"type": "POST"
 },
 "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
@@ -75,7 +73,11 @@ buttons: [
 				showCancelButton: true,
 				confirmButtonText: "Yes"
 			}).then(function(result) {
+				if(result.isConfirmed){
 				window.location.href = BASE_URL+"center/payment/admission/"+student_id;
+				}else{
+					return false;
+				}
 		});
 	});
 </script>
