@@ -41,23 +41,23 @@
 			{
 				"extend": "colvis",
 				"text": "<i class='fa fa-search bigger-110 text-custom'></i>",
-				"className": "btn-info",
+				"className": "btn-custom",
 				columns: ':not(:first)'
 			},
 			{
 				"extend": "copy",
 				"text": "<i class='fa fa-copy bigger-110 text-custom'></i> Copy",
-				"className": "btn-info"
+				"className": "btn-custom"
 			},
 			{
 				"extend": "excel",
 				"text": "<i class='fa fa-file-excel bigger-110 text-custom'></i> Excel",
-				"className": "btn-info"
+				"className": "btn-custom"
 			},
 			{
 				"extend": "print",
 				"text": "<i class='fa fa-print bigger-110 text-custom'></i> Print",
-				"className": "btn-info"
+				"className": "btn-custom"
 			},
 			], 
 		});
