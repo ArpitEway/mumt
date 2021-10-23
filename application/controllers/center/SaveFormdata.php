@@ -16,7 +16,8 @@ class saveFormdata extends CI_Controller {
 	public function index(){
 		$course_group_id = html_escape($this->input->post('course_group_id'));
 		$class_id = html_escape($this->input->post('class_id'));
-		$data['session'] = html_escape($this->input->post('session'));
+		$session = html_escape($this->input->post('session'));
+		$data['session'] = $session;
 		$data['course_group_id'] = $course_group_id;
 		$data['course_name'] = $this->Common_model->getCourseNameByCourseId($course_group_id);
 		$data['class_name'] = $this->Common_model->getClassNameByClassId($class_id);
@@ -49,7 +50,7 @@ class saveFormdata extends CI_Controller {
 		$studentData['c_state'] = html_escape($this->input->post('c_state'));
 		$studentData['c_district'] = html_escape($this->input->post('c_district'));
 		$studentData['c_pin_code'] = html_escape($this->input->post('c_pin_code'));
-		$studentData['marks'] = html_escape($this->input->post('ten_marks'));
+		$studentData['marks'] = html_escape($this->input->post('marks'));
 		$studentData['total_marks'] = html_escape($this->input->post('total_marks'));
 		$studentData['passing_year'] = html_escape($this->input->post('passing_year'));
 		$studentData['percentage'] = html_escape($this->input->post('percentage'));
@@ -57,7 +58,11 @@ class saveFormdata extends CI_Controller {
 		$studentData['minority'] = html_escape($this->input->post('minority'));
 		$student_id = $this->Common_model->insertAll('student',$data);
 
-		$path = './assets/student_image/';
+		$path = './assets/student_image/'.$session;
+		if(!file_exists($path)){
+			mkdir($path);
+		}
+
 		$upload = $this->do_upload('photo',$path,$student_id);
 		
 		$PhotoData = array('photo' => $upload['file_name']);

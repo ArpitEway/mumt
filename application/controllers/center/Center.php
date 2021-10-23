@@ -155,10 +155,7 @@ class Center extends CI_Controller {
 		}
 		$data = array();
 		$data['student'] = $this->Common_model->student_info($student_id);
-		if($data['student']['approved']!='Y'){
-			redirect(base_url('center/admission/'.$student_id));
-		}
-		$this->load->view('Centers/header',array('title' => 'Enrollment Form'));	
+		$this->load->view('Centers/header',array('title' => 'Enrollment Form'));
 		$this->load->view('template/form',$data);
 		$this->load->view('Centers/footer');
 	}
@@ -227,7 +224,7 @@ class Center extends CI_Controller {
 		$i = $_POST['start'];
 		foreach($tableData as $result){
 
-			$btn = '<a href="'.base_url('center/show_form/'.$result->student_id).'" class="btn btn-primary btn-sm" target="_blank" ><i class="fa fa-eye"></i></a>';
+			$btn = '<a href="'.base_url('center/show_form/'.$result->student_id).'" class="btn btn-info btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>';
 			$i++;
 			$data[] = array($result->student_id,$result->enrollment_no, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$btn);
 		}

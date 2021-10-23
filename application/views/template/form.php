@@ -45,9 +45,9 @@ hr.new2 {
 }
 .form-group.col-md-5.text-left.m-auto,
 .form-group.col-md-4.text-left.m-auto ,
- .form-group.col-md-2.text-left.m-auto,
- .form-group.col-md-9.text-left.m-auto,
-  .form-group.col-md-3.text-left.m-auto {
+.form-group.col-md-2.text-left.m-auto,
+.form-group.col-md-9.text-left.m-auto,
+.form-group.col-md-3.text-left.m-auto {
 	padding: 5px;
 	text-transform: uppercase;
 	font-size: 14px;
@@ -185,7 +185,7 @@ hr.new2 {
 				</div>
 
 				<div class="row col-md-2">
-					<img class="student_form_img" src="<?php echo base_url('/assets/student_image/').$student['photo'];?>"></img>
+					<img class="student_form_img" src="<?php echo base_url('/assets/student_image/').$student['session'].'/'.$student['photo'];?>"></img>
 				</div>	
 
 			</div>
@@ -228,10 +228,10 @@ hr.new2 {
 					</div>
 
 					<div class="form-group col-md-3 text-left m-auto">
-						<label class="label_form">Samagra ID:</label>
+						<label class="label_form">Marital Status:</label>
 					</div>
 					<div class="form-group col-md-3 text-left m-auto form-text-color">
-						<?php echo $student['sm_id']; ?>
+						<?php echo $student['marital_status']; ?>
 					</div>
 
 					<div class="form-group col-md-3 text-left m-auto">
@@ -276,7 +276,7 @@ hr.new2 {
 
 			</div>
 
-<?php if(!$this->session->has_userdata('centerdata')){ ?>
+
 			<label class="label_form mt-5 label_heading"><b>Educational Detail</b></label>
 
 			<div class="form-block row ">
@@ -298,166 +298,29 @@ hr.new2 {
 
 							<tr>
 
-								<td class="form-text-color" ><?php echo 'HS'; ?></td>
-								<td class="form-text-color"><?php echo $student['ten_board']; ?></td>
-								<td class="form-text-color" ><?php echo $student['ten_year']; ?></td>
-								<td class="form-text-color" ><?php echo $student['ten_total_marks']; ?></td>
-								<td class="form-text-color"><?php echo $student['ten_marks']; ?></td>
+								<td class="form-text-color" ><?php echo $student['eligibility']; ?></td>
+								<td class="form-text-color"><?php echo $student['board']; ?></td>
+								<td class="form-text-color" ><?php echo $student['passing_year']; ?></td>
+								<td class="form-text-color" ><?php echo $student['total_marks']; ?></td>
+								<td class="form-text-color"><?php echo $student['marks']; ?></td>
 
 							</tr>
-
-							<tr>
-
-								<td class="form-text-color"><?php echo 'HSSC'; ?></td>
-								<td class="form-text-color"><?php echo $student['twowelth_board']; ?></td>
-								<td class="form-text-color"><?php echo $student['twowelth_year']; ?></td>
-								<td class="form-text-color"><?php echo $student['twowelth_total_marks']; ?></td>
-								<td class="form-text-color"><?php echo $student['twowelth_marks']; ?></td>
-
-							</tr>
-							<?php if ($student['graduation_university']!='') {
-?>
-							<tr>
-
-								<td class="form-text-color"><?php echo 'Graduation'; ?></td>
-								<td class="form-text-color"><?php echo $student['graduation_university']; ?></td>
-								<td class="form-text-color"><?php echo $student['graduation_year']; ?></td>
-								<td class="form-text-color"><?php echo $student['graduation_total_marks']; ?></td>
-								<td class="form-text-color"><?php echo $student['graduation_marks']; ?></td>
-							</tr>
-<?php 
-							} ?>
-							<?php if ($student['pg_university']!='') {
-?>
-							<tr>
-
-								<td class="form-text-color"><?php echo 'Post Graduation'; ?></td>
-								<td class="form-text-color"><?php echo $student['pg_university']; ?></td>
-								<td class="form-text-color"><?php echo $student['pg_year']; ?></td>
-								<td class="form-text-color"><?php echo $student['pg_total_marks']; ?></td>
-								<td class="form-text-color"><?php echo $student['pg_marks']; ?></td>
-							</tr>
-<?php 
-							} ?>
 						</tbody>
 					</table>
 				</div>
 			</div>
-			<?php
-		}
-			if (isset($payment_details) && count($payment_details)>0) {
-				?>
-			<label class="label_form mt-5 label_heading "><b>Other detail</b></label>
-			<div class="form-block row other-detail">
-				<div class="row">
-					<div class="col-md-12 ">
-						<label class="label_form">क्या अध्ययन में अन्तराल रहा है यदि हाँ, तो उसका विवरण (शपथ पत्र) संलग्न करें।  :</label><strong><?php echo $student['gap_certificate']; ?></strong>
-					</div>
 
-					<div class="col-md-12"> 
-						<label class="label_form">क्या आवेदक सेवारत है यदि हाँ तो नियोक्ता का विवरण दें।  :</label><strong><?php echo $student['retirement']; ?></strong>
-					</div>
-					<div class="col-md-12 ">
-						<label class="label_form">क्या आवेदक के विरुद्ध पूर्व में अनुशासनहीनता/अपराधिक कृत्य के विरुद्ध पुलिस थाने में प्रकरण दर्ज है अथवा न्यायालय / विद्यालय/महाविद्यालय द्वारा कोई कार्यवाही की गई ? यदि हाँ तो विवरण संलग्न करें।  :</label><strong><?php echo $student['complaint']; ?></strong>
-					</div>
-				</div>
-
-			</div>
-			
-
-					<label class="label_form mt-5 label_heading"><b>Payment information</b></label>
-
-					<div class="form-block">
-						<?php
-						$i=0;
-				foreach ($payment_details as $payment) {
-					$i++;
-					?>
-						<div class="row p-0">
-							<div class="form-group col-md-1 mb-0">
-								<label class="label_form"><?=$i?>.</label>
-							</div>
-							<div class="form-group col-md-2 mb-0 text-uppercase">
-								<label class="label_form"><?=$payment['fees_head']?></label>
-							</div>
-							<div class="form-group col-md-2 mb-0">
-								<label class="label_form">Amount : </label> <?php echo $payment['amount']; ?>
-							</div>
-							<div class="form-group col-md-2 mb-0">
-								<label class="label_form">Date : </label> <?=$this->Common_model->viewDate($payment['payment_date']);?>
-							</div>
-							<div class="form-group col-md-5 mb-0 ">
-								<label class="label_form"><?= ($payment['SabPaisaTxId']=='') ? 'Payment' : 'SabPaisa id' ?> : </label> <?= ($payment['SabPaisaTxId']=='') ? $payment['payment_status'] : $payment['SabPaisaTxId'] ?>
-							</div>
-						</div>
-						<?php } ?>
-					</div>
 				
-			<div class="row  mt-10 " >
-				<div class="col-md-12">
 
-					<div class="form-group col-md-12 text-center confirmation">
-						<label class="label_form label_heading">आवेदक का घोषणा-पत्र</label>
-					</div>
-					<div class="form-group col-md-12 text-justify" style="padding: 0px;">
-						<label class="label_form label_heading" > मैं प्रवेश के लिए प्रार्थना करता हूँ/करती हूँ तथा यह वचन देता हूँ/देती हूँ कि मैं रैगिंग विरोधी नियमों के साथ विश्वविद्यालय के नियमों का पालन करूंगा/करूँगी तथा कक्षाओं में न्यूनतम 75% उपस्थिति सुनिश्चित करूंगा/करूँगी. मेरे द्वारा दी गयी जानकारी गलत पायी जाती है तो मेरा प्रवेश निरस्त कर दिया जाये।
-						</label>
-					</div>
 
+				<hr class="mt-10">
+
+				<div class="text-center mt-10">
+					<a id="buttonId" class="btn btn-primary font-weight-bold" href="#">Print</a>
 				</div>
-			</div>
-
-			<div class="text-right label_heading signature" style="margin-top:50px !important;">
-				आवेदक के हस्ताक्षर
-			</div>
-			<hr class="mt-10">
-
-
-			<div class="row text-center mt-10" style="padding: 0px;">
-
-				<div class="row col-md-12 m-auto">
-
-					<div class="form-group col-md-12 text-center m-auto label_heading">
-						<label class="label_form">प्रवेश समिति की अनुशंसा</label>
-					</div>
-
-					<div class="form-group col-md-12 text-justify m-auto label_heading" style="padding: 0px;">
-						<label class="label_form">आवेदक द्वारा प्रस्तुत आवेदन पत्र का सम्यक परीक्षण कर लिया गया है। आवेदक ने सभी आवश्यक जानकारियों की पूर्ति कर दी है तथा सभी आवश्यक दस्तावेज संलग्न कर दिये हैं। आवेदक को निम्नलिखित पाठ्यक्रम में प्रवेश दिया जाये।
-						</label>
-					</div>
-
-				</div>
-
-
-			</div>
-
-			<div class=" row col-md-12  mt-10 label_heading cls" >
-				पाठक्रम (कक्षा) का नाम : <?php echo $student['course_name']; ?>
-			</div>
-
-			<div class="row ">
-				<div class="col-md-4 label_heading cls" style="margin-top:70px !important;">
-					दिनांक : 
-				</div>
-				<div class="col-md-4 label_heading cls" style="margin-top:70px !important;">
-					प्रवेश समिति सदस्य/विभाग समन्वयक के हस्ताक्षर
-				</div>
-
-				<div class="col-md-4 text-right label_heading" style="margin-top:70px !important;">
-					प्रवेश समिति के अध्यक्ष/विभागाध्यक्ष के हस्ताक्षर एवं पदमुद्रा
-				</div>
-
-			</div>
-
-			<hr class="mt-10">
-	
-<div class="text-center mt-10">
-	<a id="buttonId" class="btn btn-primary font-weight-bold" href="#">Print</a>
-</div>
-<?php	}	?>
-</div>
-</div>
-</div>
+		</div>
+		</div>
+		</div>
 <script>
 	$('#buttonId').on('click', function () {
 		window.print();
