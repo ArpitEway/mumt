@@ -41,7 +41,7 @@ class Center extends CI_Controller {
 			redirect(base_url('center/'));
 		}else{
 			$titleData = array('title' => 'Center Instruction'); 
-			$this->load->view('centers/header',$titleData);
+			$this->load->view('Centers/header',$titleData);
 			$id =  $this->session->center_id;
 			$center = $this->Common_model->getRecordById('center','id',$id);
 
@@ -52,8 +52,8 @@ class Center extends CI_Controller {
 
 			$data = array('course_group' => $course_group);
 			$this->getNotification();
-			$this->load->view('centers/instruction',$data);
-			$this->load->view('centers/footer');
+			$this->load->view('Centers/instruction',$data);
+			$this->load->view('Centers/footer');
 		}
 	}
 
