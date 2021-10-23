@@ -9,9 +9,9 @@
 					</span>
 				</a>
 			</li>
-			<li class="nav-item mb-2">
+		 	<li class="nav-item mb-2">
 				<a class="nav-link border" id="payment-tab" data-toggle="tab" href="#payment">
-					<span class="nav-text">Payment</span>
+					<span class="nav-text">Account</span>
 					<span class="nav-icon flot-right" >
 						<i class="flaticon2-fast-next"></i>
 					</span>
@@ -33,15 +33,6 @@
 							<span class="nav-text">Student List</span>
 						</div>
 					</a>
-				</div>
-			</div>
-			<div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
-				<div class="row">
-					<a class="border-0 custom-menu-item" href="<?=base_url('center/student_list/paid');?>">
-						<div>
-							<span class="nav-text">Paid Student</span>
-						</div>
-					</a>
 					<a class="border-0 custom-menu-item" href="<?=base_url('center/student_list/unpaid');?>">
 						<div>
 							<span class="nav-text">Unpaid Student</span>
@@ -49,6 +40,15 @@
 					</a>
 				</div>
 			</div>
+			<div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
+				<div class="row">
+										<a class="border-0 custom-menu-item" href="<?=base_url('center/student_list/paid');?>">
+						<div>
+							<span class="nav-text">Paid Student</span>
+						</div>
+					</a>
+				</div>
+			</div> 
 		</div>
 	</div>
 </div>
