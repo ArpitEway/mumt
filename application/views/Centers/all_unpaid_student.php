@@ -16,7 +16,7 @@
 		<tbody>
 		</tbody>
 	</table>
-</div>
+</div> 
 <script>
 	$(document).ready(function(){
 		var myTable =  $('#memListTable').DataTable({
