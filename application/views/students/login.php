@@ -3,7 +3,7 @@
 	<!--begin::Head-->
 	<head><base href="../../../../">
 		<meta charset="utf-8" />
-		<title>Login MPSVV</title>
+		<title>Login MMYVV</title>
 		<meta name="description" content="Login page example" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 		<!--begin::Fonts-->
@@ -100,7 +100,7 @@
 						<!--end::Aside body-->
 						<!--begin: Aside footer for desktop-->
 						<div class="d-flex flex-column-auto justify-content-between mt-15">
-							<div class="text-dark-50 font-weight-bold order-2 order-sm-1 my-2">© 2021 MPSVV</div>
+							<div class="text-dark-50 font-weight-bold order-2 order-sm-1 my-2">© <?=date('Y');?> MMYVV</div>
 						</div>
 						<!--end: Aside footer for desktop-->
 					</div>

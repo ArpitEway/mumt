@@ -3,7 +3,7 @@
 
             <div class="row mt-3 pl-10">
                 <div class="col-md-3">
-                    <a  class="text-dark users"  data-user = "<?=$user['email']; ?>" data-pass = "<?= $user['password']; ?>")>
+                    <a  class="text-dark users"  data-user = "<?=$user['user_name']; ?>" data-pass = "<?= $user['password']; ?>")>
                     <div class="card card-custom bgi-no-repeat gutter-b card-stretch master-admin-block">
                         <div class="card-body">
                         <?php echo $user['name']; ?>

@@ -1141,9 +1141,9 @@ class Admins extends CI_Controller {
 
 			if ($this->input->method() == "post") 
 			{
-				$adminData = $this->input->post('adminData'); 
+				$adminData = $this->input->post('username'); 
 
-				$check_user = $this->admin_model->checkUserByadminData($adminData);
+				$check_user = $this->admin_model->checkUserByUsername($adminData);
 				if($check_user){	
 					$data = array('loged_in' => true,
 						'adminData' => $check_user->name,
@@ -1152,7 +1152,7 @@ class Admins extends CI_Controller {
 					);
 					$this->session->set_userdata($data);
 				}else{
-					$data = array('error'=> "adminData INCORRECT");
+					$data = array('error'=> "username INCORRECT");
 					$this->load->view('admin/login',$data);
 				}
 

@@ -3,7 +3,7 @@
 	<!--begin::Head-->
 	<head><base href="../../../../">
 		<meta charset="utf-8" />
-		<title>Login MPSVV</title>
+		<title>Login MMYVV</title>
 		<meta name="description" content="Login page example" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 		<!--begin::Fonts-->
@@ -57,7 +57,7 @@
 								<!--begin::Form-->
 								<form class="form" method="post" action="<?=BASE_URL('admin/loginSub')?>" >
 									<div class="form-group py-3 m-0">
-										<input class="form-control  placeholder-dark-75" type="Email" placeholder="Email" name="username" autocomplete="off" />
+										<input class="form-control  placeholder-dark-75" type="test" placeholder="User Id" name="username" autocomplete="off" />
 									</div>
 									<div class="form-group py-3 border-top m-0">
 										<input class="form-control  placeholder-dark-75" type="Password" placeholder="Password" name="password" />
@@ -81,7 +81,7 @@
 						<!--end::Aside body-->
 						<!--begin: Aside footer for desktop-->
 						<div class="d-flex flex-column-auto justify-content-between mt-15">
-							<div class="text-dark-50 font-weight-bold order-2 order-sm-1 my-2">© 2021 MPSVV</div>
+							<div class="text-dark-50 font-weight-bold order-2 order-sm-1 my-2">© <?=date('Y');?> MMYVV</div>
 						</div>
 						<!--end: Aside footer for desktop-->
 					</div>
