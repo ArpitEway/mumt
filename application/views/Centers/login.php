@@ -62,7 +62,7 @@
 							<!--begin::Form-->
 							<form class="form" method="post" action="<?=base_url('center/center/loginSub')?>" >
 								<div class="form-group py-3 m-0">
-									<input class="form-control  placeholder-dark-75" type="text" placeholder="center Code" name="centercode" maxlength="7" minlength="7" id="centercode" autocomplete="off" required />
+									<input class="form-control  placeholder-dark-75" type="text" placeholder="center Code" name="centercode" maxlength="6" minlength="6" id="centercode" autocomplete="off" required />
 								</div>
 
 								<div class="form-group py-3 border-top m-0">
@@ -100,19 +100,6 @@
 		</div>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script type='text/javascript' src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
-		<script type="text/javascript">
-			$("#dob").inputmask();
-			$("#enrollment_no").inputmask({"mask": "AAA-99-9999"});
-
-			$('input[type=radio][name=radio]').change(function() {
-				if (this.value == '3') {
-					$("#enrollment_no").inputmask({"mask": "AAA-99-9999"});
-				}
-				else if (this.value == '4') {
-					$("#enrollment_no").inputmask({"mask": "AAAA-99-9999"});
-				}
-			});
-		</script>
 	</body>
 	<!--end::Body-->
 	</html>
