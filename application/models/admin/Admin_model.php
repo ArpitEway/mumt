@@ -38,7 +38,7 @@ class Admin_model extends CI_Model {
 		public function checkUserByUsername($username)
         {
                 $password = md5($password);
-                $query = $this->db->get(" admin_master where user_name='".$username."' ");
+                $query = $this->db->get("admin_master where user_name='".$username."' ");
                 
                 if($query->num_rows()>0){
                         $result = $query->result();

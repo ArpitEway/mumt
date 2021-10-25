@@ -140,7 +140,7 @@ $(document).on("click","#submit_btn",function(){
 		program_fees : $("#program_fees").val()
 	};
 	console.log(data);
-	var url = BASE_URL+"admin/master/get_student_consolidate_data"; 
+	var url = BASE_URL+"admin/admins/get_student_consolidate_data"; 
 	var response = call_ajax(data,url);
 	
 	console.log(response);

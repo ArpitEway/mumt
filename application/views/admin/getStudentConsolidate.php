@@ -35,7 +35,7 @@
 			if(isset($students)){
 			foreach($students as $student){
 			
-			$userData = $this->Common_model->getRecordById('user_enquiry','student_id',$student['student_id'])
+			// $userData = $this->Common_model->getRecordById('user_enquiry','student_id',$student['student_id'])
 			
 			?>
 			
@@ -44,16 +44,16 @@
 				<td><?=$student["student_id"]?></td>
 				
 				<td><?php echo $student["enrollment_no"]; ?></td>
-				<td><?php echo ($student["name"]=='') ? $userData->name : $student["name"]; ?></td>
+				<td><?php echo ($student["name"]=='') ? 'N/A' : $student["name"]; ?></td>
 				<!--<td><?php //echo $student["f_h_name"]; ?></td>-->
 				<td><?php echo $this->Common_model->getMobileNoByStudentID($student["student_id"]) ?></td>
 				 <td><?php 
-					$newDate = ($student["dob"]=='') ? $userData->dob : $student["dob"];
+					$newDate = ($student["dob"]=='') ? 'N/A' : $student["dob"];
 					
 					echo date("d-m-Y", strtotime($newDate)); ?></td>
 				<td><?php if($student["course_name"]==''){
 				
-					$course_group_id = $userData->course_group_id;
+					$course_group_id = 'N/A';
 					echo $this->Common_model->getSinglefield('course_group','course_name','id='.$course_group_id);
 					}else{
 					echo $student["course_name"];
@@ -67,7 +67,7 @@
 					} ?></td>
 					<td>
 						<a class="btn btn-sm btn-primary" href="<?=BASE_URL('admin/master/show_form/'.$student['student_id']);?>" target="_blank"><i class="fa fa-eye"></i></a>
-						<a class="btn btn-sm btn-danger" href="<?=BASE_URL('admin/master/edit_student/'.$student['student_id']);?>" target="_blank"><i class="fa fa-pen"></i></a>
+						<!-- <a class="btn btn-sm btn-danger" href="<?=BASE_URL('admin/master/edit_student/'.$student['student_id']);?>" target="_blank"><i class="fa fa-pen"></i></a> -->
 					</td>
                  
 			</tr>
