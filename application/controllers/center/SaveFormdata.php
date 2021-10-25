@@ -7,7 +7,7 @@ class saveFormdata extends CI_Controller {
 	function __construct(){
 		parent::__construct();
 		$this->load->model('Common_model');
-		$this->load->model('center/center_model');
+		$this->load->model('Center/center_model');
 		if(!$this->session->has_userdata('centerdata')){
 			exit();
 		}
