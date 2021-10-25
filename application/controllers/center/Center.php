@@ -13,10 +13,8 @@ class Center extends CI_Controller {
 	public function index(){
 		if($this->session->has_userdata('centerdata')){
 			redirect(base_url('center/instruction'));
-		}else{
-			$this->load->view('Centers/header');
-			$this->load->view('Centers/disclaimer');
-			$this->load->view('Centers/footer');
+		}else{			
+			$this->load->view('Centers/login');
 		}
 	}
 
@@ -40,7 +38,7 @@ class Center extends CI_Controller {
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url('center/'));
 		}else{
-			$titleData = array('title' => 'Center Instruction'); 
+			$titleData = array('title' => 'Course Fees Structure'); 
 			$this->load->view('Centers/header',$titleData);
 			$id =  $this->session->center_id;
 			$center = $this->Common_model->getRecordById('center','id',$id);
@@ -517,21 +515,21 @@ class Center extends CI_Controller {
 	}
 
 	public function loginAs($centercode){
-			$centercode = $this->Common_model->encrypt_decrypt($centercode,'decrypt');
-			$check_user = $this->center_model->checkLink($centercode);
-			if($check_user){	
-				$data = array(
-					'loged_in' => true,
-					'centerdata' => $check_user->center_code,
-					'center_id' => $check_user->id,
-					'account_type' => 'center'
-				);
-				$this->session->set_userdata($data);
-				redirect(base_url('center'));
-			}else{
-				$this->session->set_flashdata('error','center Code Are Incorrect');
-				redirect(base_url('center'));
-			}		
-		}
+		$centercode = $this->Common_model->encrypt_decrypt($centercode,'decrypt');
+		$check_user = $this->center_model->checkLink($centercode);
+		if($check_user){	
+			$data = array(
+				'loged_in' => true,
+				'centerdata' => $check_user->center_code,
+				'center_id' => $check_user->id,
+				'account_type' => 'center'
+			);
+			$this->session->set_userdata($data);
+			redirect(base_url('center'));
+		}else{
+			$this->session->set_flashdata('error','center Code Are Incorrect');
+			redirect(base_url('center'));
+		}		
+	}
 
 }

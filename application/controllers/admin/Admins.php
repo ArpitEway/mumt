@@ -239,7 +239,6 @@ class Admins extends CI_Controller {
 
 	public function loginSub(){
 		if($this->session->has_userdata('adminData')){
-
 			redirect(base_url('admin/'.$this->session->account_type));
 			exit;
 		}
@@ -265,8 +264,7 @@ class Admins extends CI_Controller {
 				$this->session->set_userdata($data);
 				redirect(base_url('admin/'.$check_user->account_type));
 			}else{
-				die();
-				$data = array('error'=> "adminData AND PASSWORD ARE  INCORRECT");
+				$data = array('error'=> "USERNAME AND PASSWORD ARE  INCORRECT");
 				$this->load->view('admin/login',$data);
 			}
 		}

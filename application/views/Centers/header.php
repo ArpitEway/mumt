@@ -64,17 +64,18 @@
 						">
 						<?php if($this->session->has_userdata('centerdata')){ ?>
 							<a href="<?=base_url('center/dashboard')?>" class="btn btn-custom-white mr-3">Dashboard</a>
-						<div class="dropdown">
-							<a class="btn btn-custom-white dropdown-toggle mr-3" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<a href="<?=base_url('center/logout')?>" class="btn btn-custom-white">Log Out</a>
+<!--						<div class="dropdown">
+ 							<a class="btn btn-custom-white dropdown-toggle mr-3" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								Action
-							</a>
+							</a> -->
 
-							<div class="dropdown-menu l-50" aria-labelledby="dropdownMenuLink">
+<!-- 							<div class="dropdown-menu l-50" aria-labelledby="dropdownMenuLink">
 								<a class="dropdown-item" href="<?=base_url('center/profile')?>">Profile</a>
-								<a class="dropdown-item" href="<?=base_url('center/change_password')?>">Change Password</a>
 								<a href="<?=base_url('center/logout')?>" class="dropdown-item">Log Out</a>
+								<a class="dropdown-item" href="<?=base_url('center/change_password')?>">Change Password</a>
 							</div>
-						</div>
+						</div> -->
 						
 					<?php }else{ ?>
 						<a href="<?=base_url('center/login')?>" class="btn btn-custom-white mr-3">Sign In</a>

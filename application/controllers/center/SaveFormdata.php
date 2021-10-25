@@ -55,6 +55,7 @@ class saveFormdata extends CI_Controller {
 		$studentData['passing_year'] = html_escape($this->input->post('passing_year'));
 		$studentData['percentage'] = html_escape($this->input->post('percentage'));
 		$studentData['board'] = html_escape($this->input->post('board'));
+		$studentData['nationality'] = html_escape($this->input->post('nationality'));
 		$studentData['minority'] = html_escape($this->input->post('minority'));
 		$student_id = $this->Common_model->insertAll('student',$data);
 
