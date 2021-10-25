@@ -973,7 +973,7 @@ class Admins extends CI_Controller {
 			redirect(base_url());
 		}
 		
-/* 		public function updateCourseCategory()
+		/* 	public function updateCourseCategory()
 		{
 			$students = $this->Common_model->get_record('student','*');
 			
@@ -1399,6 +1399,7 @@ public function update_doc_permission_status()
 
 			if($course_group_id != "all"){	 
 
+
 				$dt['course_group_id'] = $course_group_id;
 			}
 			if($session != "All"){	 
@@ -1467,6 +1468,27 @@ public function update_doc_permission_status()
 		$this->load->view('header',array('title' => 'Search Students'));	
 		$this->load->view('admin/search_student',$data);
 		$this->load->view('footer');
+	}
+
+
+	public function course_detail(){
+
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url('admin'));
+			exit;
+	
+		}else{
+	
+			$admin_id = $this->session->admin_id;
+			
+			$course_group = $this->db->get_where('course_group', array())->result_array();
+	
+			$data = array('course_group' => $course_group);
+	
+			$this->load->view('header');
+			$this->load->view('admin/course_detail',$data);
+			$this->load->view('footer');
+		}
 	}
 
 }// class
