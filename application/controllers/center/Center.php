@@ -153,7 +153,7 @@ class Center extends CI_Controller {
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url('center/login'));
 		}
-		$student_id = $this->Common_model->UrlDecrypt($student_id);
+		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		$data = array();
 		$data['student'] = $this->Common_model->student_info($student_id);
 		$this->load->view('Centers/header',array('title' => 'Admission Form'));
@@ -223,7 +223,7 @@ class Center extends CI_Controller {
 		$i = $_POST['start'];
 		foreach($tableData as $result){
 
-			$btn = '<a href="'.base_url('center/show_form/'.$this->Common_model->UrlEncrypt($result->student_id)).'" class="btn btn-info btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>';
+			$btn = '<a href="'.base_url('center/show_form/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>';
 			$i++;
 			$data[] = array($result->student_id,$result->enrollment_no, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$btn);
 		}
@@ -277,7 +277,7 @@ class Center extends CI_Controller {
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
 		foreach($tableData as $result){
-			$btn = '<a href="#" data-student_id="'.$this->Common_model->UrlEncrypt($result->student_id).'" data-id="'.$this->Common_model->UrlEncrypt($result->id).'" class="btn btn-info btn-sm pay" >Pay</a>';
+			$btn = '<a href="#" data-student_id="'.$this->Common_model->encrypt_decrypt($result->student_id).'" data-id="'.$this->Common_model->encrypt_decrypt($result->id).'" class="btn btn-info btn-sm pay" >Pay</a>';
 			$i++;
 			$data[] = array($result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->amount,$btn);
 		}
@@ -313,7 +313,7 @@ class Center extends CI_Controller {
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
 		foreach($tableData as $result){
-			$btn = '<a href="'.base_url('center/show_fees/'.$this->Common_model->UrlEncrypt($result->id)).'" class="btn btn-primary btn-sm" target="_blank" ><i class="fa fa-eye"></i></a>';			
+			$btn = '<a href="'.base_url('center/show_fees/'.$this->Common_model->encrypt_decrypt($result->id)).'" class="btn btn-primary btn-sm" target="_blank" ><i class="fa fa-eye"></i></a>';			
 			$i++;
 			$data[] = array($result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->fees_head,$result->amount,$result->txnId,$btn);
 		}
@@ -369,6 +369,7 @@ class Center extends CI_Controller {
 
 	public function password_change($id)
 	{
+		$id = $this->Common_model->encrypt_decrypt($id,'decrypt');
 		$where = array("id" => $id);
 
 		$data = $this->Common_model->getRecordById('center','id',$id);
@@ -458,6 +459,7 @@ class Center extends CI_Controller {
 
 	public function show_fees($onlinePayTxnId)
 	{
+		$onlinePayTxnId = $this->Common_model->encrypt_decrypt($onlinePayTxnId,'decrypt');
 		$where = 'id='.$onlinePayTxnId;
 		$transaction = $this->Common_model->get_record('online_payment_transaction','*',$where);
 		if($transaction[0]['center_id']!=$this->session->center_id){
@@ -516,7 +518,7 @@ class Center extends CI_Controller {
 	}
 
 	public function loginAs($centercode){
-			$centercode = $this->encrypt_decrypt($centercode,'decrypt');
+			$centercode = $this->Common_model->encrypt_decrypt($centercode,'decrypt');
 			$check_user = $this->center_model->checkLink($centercode);
 			if($check_user){	
 				$data = array(
@@ -533,19 +535,4 @@ class Center extends CI_Controller {
 			}		
 		}
 
-		private	function encrypt_decrypt($string, $action = 'encrypt')
-		{
-			$encrypt_method = "AES-256-CBC";
-		    $secret_key = '0734MMYEway'; // user define private key
-		    $secret_iv = 'MMYEway0734'; // user define secret key
-		    $key = hash('sha256', $secret_key);
-		    $iv = substr(hash('sha256', $secret_iv), 0, 16); // sha256 is hash_hmac_algo
-		    if ($action == 'encrypt') {
-		    	$output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
-		    	$output = base64_encode($output);
-		    } else if ($action == 'decrypt') {
-		    	$output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
-		    }
-		    return $output;
-		}
 }

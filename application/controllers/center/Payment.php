@@ -14,7 +14,7 @@ class Payment extends CI_Controller {
 			redirect(base_url('center/login'));
 		}
 		$titleData = array('title'=>'Admission Payment');
-		$student_id = $this->Common_model->UrlDecrypt($student_id);
+		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		$student = $this->Common_model->student_info($student_id);
 		if($student['payment_status']=='Y'){
 			$this->session->set_flashdata('warning','Payment Already Submitted');
@@ -34,7 +34,7 @@ class Payment extends CI_Controller {
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url('center/login'));
 		}
-		$student_id = $this->Common_model->UrlDecrypt($student_id);
+		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		if($student_id!=''){
 			$student = $this->Common_model->student_info($student_id);
 			$txnAmt=1;
@@ -157,7 +157,7 @@ class Payment extends CI_Controller {
 				$this->Common_model->updateRecordByConditions('student',$where,$student);
 			}
 			$this->session->set_flashdata($remsg,$msg);
-			$student_id = $this->Common_model->UrlEncrypt($student_id);
+			$student_id = $this->Common_model->encrypt_decrypt($student_id);
 			redirect(base_url('center/payment/detail/'.$id));
 		}
 	}
@@ -166,7 +166,7 @@ class Payment extends CI_Controller {
 	if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url('center/login'));
 		}
-		$id = $this->Common_model->UrlDecrypt($id);
+		$id = $this->Common_model->encrypt_decrypt($id,'decrypt');
 		$where = 'id='.$id;
 		$transaction = $this->Common_model->get_record('online_payment_transaction','*',$where);
 		if($transaction[0]['student_id']!=$this->session->student_id){

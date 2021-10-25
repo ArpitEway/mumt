@@ -659,26 +659,20 @@ class Common_Model extends CI_Model{
 		return $config;
 	}
 
-	public function UrlEncrypt($string)
+	public	function encrypt_decrypt($string, $action = 'encrypt')
 	{
-				$decodeArray = array(
-                'cipher' => 'des',
-                'mode' => 'cbc',
-                'hmac_digest' => 'sha224',
-        );
-		$this->encryption->initialize($decodeArray);
-		return urlencode($this->encryption->encrypt($string));
-	}
-
-	public function UrlDecrypt($string)
-	{
-				$decodeArray = array(
-                'cipher' => 'des',
-                'mode' => 'cbc',
-                'hmac_digest' => 'sha224',
-        );
-		$this->encryption->initialize($decodeArray);
-		return $this->encryption->decrypt(urldecode($string));
+		$encrypt_method = "AES-256-CBC";
+		    $secret_key = '0734MMYEway'; // user define private key
+		    $secret_iv = 'MMYEway0734'; // user define secret key
+		    $key = hash('sha256', $secret_key);
+		    $iv = substr(hash('sha256', $secret_iv), 0, 16); // sha256 is hash_hmac_algo
+		    if ($action == 'encrypt') {
+		    	$output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
+		    	$output = base64_encode($output);
+		    } else if ($action == 'decrypt') {
+		    	$output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
+		    }
+		    return $output;
 	}
 }
 

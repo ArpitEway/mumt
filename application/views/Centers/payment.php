@@ -66,7 +66,7 @@
 	</div>
 	<div class="row py-3 border justify-content-center">
 	<?php
-	$student_id = $this->Common_model->UrlEncrypt($student['student_id']);
+	$student_id = $this->Common_model->encrypt_decrypt($student['student_id']);
 		$url = ($url=='payProgramFess') ? 'student/payment/payProgramFess/' : 'student/payment/'.$student_id;
 	?>
 	
