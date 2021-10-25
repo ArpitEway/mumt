@@ -6,7 +6,6 @@ class Payment extends CI_Controller {
 		parent::__construct();
 		$this->load->model('Common_model');
 		$this->load->model('Center/Center_model');
-		include APPPATH . 'third_party/AesCipher.php';
 	}
 	
 	public function admission($student_id){
