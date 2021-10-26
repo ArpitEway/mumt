@@ -1,10 +1,13 @@
 "use strict";
 $("#course_group_id").on('change', function(){
 	var course = $(this).val();
+	var csrfName = $('.csrfname').attr('name');
+    var csrfHash = $('.csrfname').val(); 
+
 	$.ajax({
 		method: "POST",
 		url: BASE_URL+"center/center/getClassByCourse",
-		data: {course : course},
+		data: {course : course,[csrfName]:csrfHash},
 	})
 	.done(function( msg ) {
 		$('#class_id').html(msg);
@@ -13,11 +16,14 @@ $("#course_group_id").on('change', function(){
 
 $("#eligibility").on('change', function(){
 	var eligibility = $(this).val();
+	var csrfName = $('.csrfname').attr('name');
+	var csrfHash = $('.csrfname').val();
+
 	$('input[name="qualifying_exam"]').val(eligibility);
 	$.ajax({
 		method: "POST",
 		url: BASE_URL+"center/center/getCourseByEligibility",
-		data: {eligibility : eligibility},
+		data: {eligibility : eligibility,[csrfName]:csrfHash},
 	})
 	.done(function( msg ) {
 		$('#course_group_id').html(msg);
@@ -27,6 +33,9 @@ $("#eligibility").on('change', function(){
 $('input[name="adhar_no"]').on('keyup', function(){
 	var self = $(this);
 	var adhar_no = $(this).val();
+	var csrfName = $('.csrfname').attr('name');
+	var csrfHash = $('.csrfname').val();
+
 	if($.isNumeric(adhar_no) == false){
 		$(self).next().text("Please Enter Correct Adhar No");
 		$('input[type="button"]').attr('disabled','disabled');
@@ -39,7 +48,7 @@ $('input[name="adhar_no"]').on('keyup', function(){
 	$.ajax({
 		method: "POST",
 		url: BASE_URL+"center/center/checkDuplicateAdharNo",
-		data: {adhar_no : adhar_no},
+		data: {adhar_no : adhar_no,[csrfName]:csrfHash},
 	})
 	.done(function( msg ) {
 		if(msg!=''){
@@ -55,6 +64,8 @@ $('input[name="adhar_no"]').on('keyup', function(){
 $('input[name="p_mobile_no"]').on('keyup', function(){
 	var self = $(this);
 	var p_mobile_no = $(this).val();
+	var csrfName = $('.csrfname').attr('name');
+	var csrfHash = $('.csrfname').val();
 	if($.isNumeric(p_mobile_no) == false){
 		$(self).next().text("Please Enter Correct Mobile No");
 		$('input[type="button"]').attr('disabled','disabled');
@@ -67,7 +78,7 @@ $('input[name="p_mobile_no"]').on('keyup', function(){
 	$.ajax({
 		method: "POST",
 		url: BASE_URL+"center/center/checkDuplicateMobileNo",
-		data: {p_mobile_no : p_mobile_no},
+		data: {p_mobile_no : p_mobile_no,[csrfName]:csrfHash},
 	})
 	.done(function( msg ) {
 		if(msg!=''){
@@ -98,10 +109,12 @@ $("#copyAddress").on('change',function (){
 $(".state").on('change', function(){
 	var state = $(this).val();
 	var nameAttr = $(this).data('district');
+	var csrfName = $('.csrfname').attr('name');
+	var csrfHash = $('.csrfname').val();
 	$.ajax({
 		method: "POST",
 		url: BASE_URL+"center/center/getDistrictByState",
-		data: {state : state, nameAttr: nameAttr},
+		data: {state : state, nameAttr: nameAttr,[csrfName]:csrfHash},
 	})
 	.done(function( msg ) {
 		console.log($("select[name='"+nameAttr+"']"));
