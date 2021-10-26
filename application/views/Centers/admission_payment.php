@@ -34,12 +34,7 @@
 		<div class="col-sm-8"><?=$student['f_h_name']?>
 		</div>
 	</div>
-	<div class="row py-3 border">
-		<div class="col-sm-4 border-right">Center Code
-		</div>
-		<div class="col-sm-8"><?=$student['center_code']?>
-		</div>
-	</div>
+	
 	<div class="row py-3 border">
 		<div class="col-sm-4 border-right">Course / Class
 		</div>

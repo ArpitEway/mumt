@@ -202,7 +202,9 @@ class Center extends CI_Controller {
 		$where = array(
 			'center_id' => $this->session->center_id,
 		);
-// Fetch member's records
+
+		// Fetch member's records
+		
 		$column_order = array('student.student_id','enrollment_no','name','f_h_name','course_name','class_name',null);
 		$column_search = array('student.student_id','enrollment_no','course_name','class_name','name','f_h_name');
 

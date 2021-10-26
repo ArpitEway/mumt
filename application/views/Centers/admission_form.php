@@ -51,11 +51,11 @@
 			<div class="image-input image-input-outline" id="kt_image_1">
 				<div class="image-input-wrapper" style="background-image: url(<?=base_url('assets/images/center/student.bmp')?>)"></div>
 
-				<label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
+				<label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change Image">
 					<i class="fa fa-pen icon-sm text-muted"></i>
 					<input type="file" name="photo" id="photo" accept=".png, .jpg, .jpeg"/>
 				</label>
-				<span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
+				<span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Remove Image">
 					<i class="ki ki-bold-close icon-xs text-muted"></i>
 				</span>
 				<div id="errPhoto" class="fv-plugins-message-container"></div>
@@ -164,7 +164,7 @@
 		<div class="col-md-4">
 			<div class="form-group ">
 				<label>Nationality:</label><span class="text-danger"> *</span>
-				<select name="religion" class="form-control ">
+				<select name="nationality" class="form-control ">
 					<option value="">Select Nationality</option>
 					<option value="Indian">Indian</option>
 					<option value="Other">Other </option>
@@ -189,7 +189,7 @@
 			<div class="form-group ">
 				<label>Category:</label><span class="text-danger"> *</span>
 				<select name="category" class="form-control ">
-					<option value="">select Category</option>
+					<option value="">Select Category</option>
 					<option>सामान्य</option>
 					<option>अ.जा.</option>
 					<option>अ.ज.जा.</option>

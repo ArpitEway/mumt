@@ -20,6 +20,24 @@
 </div>
 
 <div class="form-group col-md-3">
+    <label for="center_id">Center</label>
+    <select name="center_id" id="center_id" class="form-control "  required >
+    <option value="all">All</option>
+    <?php 
+        $centers = $this->db->get_where('center', array())->result_array();
+        foreach($centers as $center)
+		{
+        ?>
+		
+		<option value="<?php echo $center['center_id']; ?>"><?php echo $center['center_code'] ." - ". $center['center_name']; ?></option>
+        
+	<?php
+        } 
+    ?> 
+    </select>       
+</div>
+
+<div class="form-group col-md-3">
     <label for="course">Course</label>
     <select name="course_group_id" id="course_group_id" class="form-control course_group_id" data-target="#class_id" required >
     <option value="all">All</option>
@@ -44,23 +62,7 @@
     </select>       
 </div>
 
-<div class="form-group col-md-3">
-    <label for="center_id">Center</label>
-    <select name="center_id" id="center_id" class="form-control "  required >
-    <option value="all">All</option>
-    <?php 
-        $centers = $this->db->get_where('center', array())->result_array();
-        foreach($centers as $center)
-		{
-        ?>
-		
-		<option value="<?php echo $center['center_id']; ?>"><?php echo $center['center_name']; ?></option>
-        
-	<?php
-        } 
-    ?> 
-    </select>       
-</div>
+
 
 <div class="form-group col-md-3">
 	<label for="class">Payment</label>
@@ -181,3 +183,5 @@ var showAllpaper = function ()
         });
     }
 </script>
+
+<!-- <script src="<?=base_url()?>assets/js/pages/crud/forms/widgets/select2.js"></script> -->
