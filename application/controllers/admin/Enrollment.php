@@ -35,23 +35,7 @@
 			}
 		}
 		
-		public function user_enquiry(){
-			
-			if($this->session->has_userdata('adminData')){
-				
-				$data = array();
-				$data['user_enquiry'] = $this->db->get_where('user_enquiry', array('status <'=> 3))->result_array();
-				$dt = array();
-				$dt['title'] = "User Enquiry";
-				$this->load->view('header',$dt);
-				$this->load->view('admin/enrollment/user_enquiry',$data);
-				$this->load->view('footer');
-			}
-			else
-			{
-				redirect(base_url('admin/login'));
-			}
-		}
+		
 		
 		public function dashboard(){
 			
@@ -83,7 +67,6 @@
 			}
 		}
 		
-		
 		public function consolidate_report(){
 			if($this->session->has_userdata('adminData'))
 			{
@@ -100,6 +83,7 @@
 				redirect(base_url('enrollment/login'));
 			}
 		}
+
 		public function edit_non_verified_list(){
 			if($this->session->has_userdata('adminData'))
 			{
@@ -128,22 +112,32 @@
 				$data = array();
 				$dt   = array();
 				
-				$course_group_id  = $this->input->post("course_group_id");
-				$class_id  = $this->input->post("class_id");
-				$approved 		  = $this->input->post("approved");
-				$payment 		  = $this->input->post("payment");
-				$enrolled 		  = $this->input->post("enrolled");
-				$document_upload  = $this->input->post("document_upload");
-				$filter  		  = $this->input->post("filter");
-				$form_status  	  = $this->input->post("form_status");
-				$program_fees  	  = $this->input->post("program_fees");
-				$session 		  = $this->input->post("session");
-				
+				$course_group_id  = 	$this->input->post("course_group_id");
+				$class_id  		  = 	$this->input->post("class_id");
+				$approved 		  = 	$this->input->post("approved");
+				$payment 		  = 	$this->input->post("payment");
+				$enrolled 		  = 	$this->input->post("enrolled");
+				$document_upload  = 	$this->input->post("document_upload");
+				$filter  		  = 	$this->input->post("filter");
+				$session 		  = 	$this->input->post("session");
+			    $mode 		  	  = 	$this->input->post("mode");
+				$center 	  	  = 	$this->input->post("center");
+
+			
+
+				if($mode != "all"){	 
+					
+					$dt['mode'] = $mode;
+				}
+				if($center != "all"){	 
+					
+					$dt['center_id'] = $center;
+				}
 				if($course_group_id != "all"){	 
 					
 					$dt['course_group_id'] = $course_group_id;
 				}
-				if($session != "All"){	 
+				if($session != "all"){	 
 					
 					$dt['session'] = $session;
 				}else{
@@ -153,16 +147,6 @@
 					
 					$dt['class_id'] = $class_id;
 				}
-				if($program_fees != "all"){	
-					
-					$dt['program_fees'] = $program_fees;
-				}
-				
-				if($form_status != "all"){
-					
-					$dt['form_status'] = $form_status;
-				}
-				
 				if($approved != "all"){
 					
 					$dt['approved'] = $approved;
@@ -390,7 +374,7 @@
 		public function edit_student($student_id){		
 			$wherestudent = 'student_id='.$student_id;
 			$student = $this->Common_model->get_record('student','*',$wherestudent);
-			$userData = $this->Common_model->get_record('user_enquiry','*',$wherestudent);
+			
 			$courseData = $this->Common_model->getRecordById('course_group','id',$student[0]['course_group_id']);
 			$titleData = array('title' => 'Admission Form'); 
 			$category_list = $this->Common_model->getDistinct('course_group','category');

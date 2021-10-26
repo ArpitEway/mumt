@@ -239,7 +239,6 @@ class Admins extends CI_Controller {
 
 	public function loginSub(){
 		if($this->session->has_userdata('adminData')){
-
 			redirect(base_url('admin/'.$this->session->account_type));
 			exit;
 		}
@@ -265,8 +264,7 @@ class Admins extends CI_Controller {
 				$this->session->set_userdata($data);
 				redirect(base_url('admin/'.$check_user->account_type));
 			}else{
-				die();
-				$data = array('error'=> "adminData AND PASSWORD ARE  INCORRECT");
+				$data = array('error'=> "USERNAME AND PASSWORD ARE  INCORRECT");
 				$this->load->view('admin/login',$data);
 			}
 		}
@@ -973,7 +971,7 @@ class Admins extends CI_Controller {
 			redirect(base_url());
 		}
 		
-/* 		public function updateCourseCategory()
+		/* 	public function updateCourseCategory()
 		{
 			$students = $this->Common_model->get_record('student','*');
 			
@@ -1362,14 +1360,133 @@ public function update_doc_permission_status()
 				));
 			}
 	}
+
+	
+
 }
 
+     //work shifting of master into admin-----------
+
+          public function consolidate_report(){
+		$dt = array();
+		$dt['title'] = "Student Consolidate Report";
+		$this->load->view('header',$dt);
+		$this->db->order_by('id', 'Desc');
+		$dt['sessions'] = $this->db->get_where('session', array())->result_array();
+		$this->load->view('admin/consolidate_report',$dt);
+		$this->load->view('footer');
+	}
+
+	public function get_student_consolidate_data()
+	{
+		if ($this->input->method() == "post") 
+		{
+			$course_group_id = 0;
+			$data = array();
+			$dt   = array();
+			$course_group_id  = $this->input->post("course_group_id");
+			$class_id  = $this->input->post("class_id");
+			$approved 		  = $this->input->post("approved");
+			$payment 		  = $this->input->post("payment");
+			$enrolled 		  = $this->input->post("enrolled");
+			$document_upload  = $this->input->post("document_upload");
+			$filter  		  = $this->input->post("filter");
+			$form_status  	  = $this->input->post("form_status");
+			$program_fees  	  = $this->input->post("program_fees");
+			$session 		  = $this->input->post("session");
+
+			if($course_group_id != "all"){	 
 
 
+				$dt['course_group_id'] = $course_group_id;
+			}
+			if($session != "All"){	 
+
+				$dt['session'] = $session;
+			}else{
+				$dt['name!='] = '';
+			}
+			if($class_id != ""){	 
+
+				$dt['class_id'] = $class_id;
+			}
+			if($program_fees != "all"){	
+
+				$dt['program_fees'] = $program_fees;
+			}
+
+			if($form_status != "all"){
+
+				$dt['form_status'] = $form_status;
+			}
+			if($approved != "all"){
+
+				$dt['approved'] = $approved;
+			}
+			if($payment != "all"){
+
+				$dt['payment_status'] = $payment;
+			}
+			if($enrolled != "all"){
+
+				$dt['enrolled'] = $enrolled;
+			}
+			if($document_upload != "all"){
+
+				$dt['document_uploaded'] = $document_upload;
+			}
+			if($filter == "list"){
+
+				$data['students'] = $this->Common_model->student_data_consolidate($dt);
+			}
+			if($filter == "count"){
+
+				$data['course_count'] = $this->Common_model->student_data_consolidate($dt,'course_group_id');
+
+			}
+			$dt = $this->load->view('admin/getStudentConsolidate',$data,true);
+			echo json_encode(array(
+				"status" => true,
+				"data" => $dt
+			));
+		}
+	}
+
+	public function show_form($student_id){
+		$data = array();
+		$data['student'] = $this->Common_model->student_info($student_id);
+		$this->load->view('header',array('title' => 'Admission Form'));	
+		$this->load->view('template/form',$data);
+		$this->load->view('footer');
+	}
+
+		public function search_student(){
+		$data = array();
+		
+		$this->load->view('header',array('title' => 'Search Students'));	
+		$this->load->view('admin/search_student',$data);
+		$this->load->view('footer');
+	}
 
 
+	public function course_detail(){
 
-
-
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url('admin'));
+			exit;
+	
+		}else{
+	
+			$admin_id = $this->session->admin_id;
+			
+			$course_group = $this->db->get_where('course_group', array())->result_array();
+	
+			$data = array('course_group' => $course_group);
+	
+			$this->load->view('header');
+			$this->load->view('admin/course_detail',$data);
+			$this->load->view('footer');
+		}
+	}
 
 }// class

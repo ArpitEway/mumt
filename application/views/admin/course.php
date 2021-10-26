@@ -3,8 +3,8 @@
 </div> 
 
 <div class="container mt-3">
-
-	<table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
+	
+<table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
 		<thead>
 			<tr>
 				<th>#</th>
@@ -12,6 +12,7 @@
 				<th>Course code </th>
 				<th>Mode</th>
 				<th>Eligibility</th>
+				<th>Form fees</th>
 				<th>Admission fees</th>
 				<th>Program fees</th>
 				<th>Exam fees</th>
@@ -25,6 +26,7 @@
 				<th>Course code </th>
 				<th>Mode</th>
 				<th>Eligibility</th>
+				<th>Form fees</th>
 				<th>Admission fees</th>
 				<th>Program fees</th>
 				<th>Exam fees</th>
@@ -46,7 +48,8 @@
 						<td><?php echo $course['course_code']; ?></td>
 						<td><?php echo $course_group['mode']; ?></td>
 						<td><?php echo $course_group['eligibility']; ?></td>
-						<td><?php echo $course_group['admission_fees']; ?></td>
+						<td><?php echo $course['form_fees']; ?></td>
+						<td><?php echo $course['admission_fees']; ?></td>
 						<td><?php echo $course['program_fees']; ?></td>
 						<td><?php echo $course['exam_fees']; ?></td>
                 	<td>

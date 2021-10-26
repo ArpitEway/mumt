@@ -54,6 +54,9 @@
 									<h2 class="font-weight-bold text-warning">Sign In</h2>
 									<p class="text-muted font-weight-bold">Enter your username and password</p>
 								</div>
+								<?php if (isset($error)) { ?>
+								<span id="alert-msg" class="aler alert-error p-2 alert-msg" style="color:red;"><?= $error;?></span>
+							<?php } ?>
 								<!--begin::Form-->
 								<form class="form" method="post" action="<?=BASE_URL('admin/loginSub')?>" >
 									<div class="form-group py-3 m-0">
@@ -76,7 +79,6 @@
 								<!--end::Form-->
 							</div>
 							<!--end::Signin-->
-							
 						</div>
 						<!--end::Aside body-->
 						<!--begin: Aside footer for desktop-->

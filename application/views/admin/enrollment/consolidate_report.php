@@ -3,9 +3,9 @@
 <div class="row mt-5"> 
 
 <div class="form-group col-md-3">
-	<label for="class">Session</label>
-    <select name="session" id="session" class="form-control" >
-	<option>All</option>
+	<label for="session_id">Session</label>
+    <select name="session_id" id="session_id" class="form-control" >
+	<option value="all">All</option>
 	<?php 
         
         foreach($sessions as $session)
@@ -17,6 +17,24 @@
 		?>		
 		
 	</select>
+</div>
+
+<div class="form-group col-md-3">
+    <label for="center_id">Center</label>
+    <select name="center_id" id="center_id" class="form-control "  required >
+    <option value="all">All</option>
+    <?php 
+        $centers = $this->db->get_where('center', array())->result_array();
+        foreach($centers as $center)
+		{
+        ?>
+		
+		<option value="<?php echo $center['center_id']; ?>"><?php echo $center['center_code'] ." - ". $center['center_name']; ?></option>
+        
+	<?php
+        } 
+    ?> 
+    </select>       
 </div>
 
 <div class="form-group col-md-3">
@@ -36,19 +54,23 @@
         ?> 
        </select>       
 </div>
+
 <div class="form-group col-md-3">
-            <label for="class_id">Class</label>
-            <select name="class_id" id="class_id" class="form-control"  required >
-			<option value="">All</option>
-            </select>       
+    <label for="class_id">Class</label>
+    <select name="class_id" id="class_id" class="form-control"  required >
+	<option value="">All</option>
+    </select>       
 </div>
+
+
+
 <div class="form-group col-md-3">
-	<label for="class">Admission Form status</label>
-    <select name="form_status" id="form_status" class="form-control"  > 
-		<option value="all"> All </option>
-		<option value="Y"> Completed </option>
-		<option value="N"> Not Completed </option>
-		
+	<label for="class">Payment</label>
+    <select name="payment" id="payment" class="form-control"  > 
+		<option value="all">All</option>
+		<option value="Y">Paid</option>
+		<option value="N">Unpaid</option>
+		 
 	</select>
 </div>
 
@@ -61,17 +83,7 @@
 		
 	</select>
 </div>
-	
-<div class="form-group col-md-3">
-	<label for="class">Payment</label>
-    <select name="payment" id="payment" class="form-control"  > 
-		<option value="all">All</option>
-		<option value="Y">Paid</option>
-		<option value="N">Unpaid</option>
-		 
-	</select>
-</div>
-	
+
 <div class="form-group col-md-3">
 	<label for="class">Approved Status</label>
     <select name="approved" id="approved" class="form-control"  > 
@@ -90,19 +102,21 @@
 		<option value="N">Non Enrolled</option>
 	</select>
 </div>
+
 <div class="form-group col-md-3">
-	<label for="class">Program Fees Status</label>
-    <select name="program_fees" id="program_fees" class="form-control" > 
+	<label for="class">Mode</label>
+    <select name="mode" id="mode" class="form-control" > 
 		<option value="all">All</option>
-		<option value="Y">Paid</option> 
-		<option value="N">Unpaid</option>
+		<option value="annual">Annual </option> 
+		<option value="semester">Semester</option>
 	</select>
 </div>
+
 <div class="col-md-3 radio-inline" style="top: 7px;">
 <label class="radio radio-success">
-             <input type="radio" name="filter" value="list" checked />
-             <span></span>
-              List
+<input type="radio" name="filter" value="list" checked />
+<span></span>
+List
 </label>
 
 <label class="radio radio-success">
@@ -131,15 +145,18 @@ $(document).on("click","#submit_btn",function(){
 		course_group_id : $("#course_group_id").val(),
 		class_id : $("#class_id").val(),
 		document_upload : $("#document_upload").val(),
-		form_status : $("#form_status").val(),
+		center : $("#center_id").val(),
+		mode : $("#mode").val(),
 		approved : $("#approved").val(),
 		payment : $("#payment").val(),
 		filter : $('input[name="filter"]:checked').val(),
 		enrolled : $("#enrolled").val(),
-		session : $("#session").val(),
+		session : $("#session_id").val(),
 		program_fees : $("#program_fees").val()
 	};
+
 	console.log(data);
+
 	var url = BASE_URL+"admin/enrollment/get_student_consolidate_data"; 
 	var response = call_ajax(data,url);
 	
@@ -166,3 +183,5 @@ var showAllpaper = function ()
         });
     }
 </script>
+
+<!-- <script src="<?=base_url()?>assets/js/pages/crud/forms/widgets/select2.js"></script> -->

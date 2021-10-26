@@ -7,21 +7,6 @@ var KTSelect2 = function() {
             placeholder: 'Select a state'
         });
 
-        // nested
-        $('#kt_select2_2, #kt_select2_2_validate').select2({
-            placeholder: 'Select a state'
-        });
-
-        // multi select
-        $('#kt_select2_3, #kt_select2_3_validate').select2({
-            placeholder: 'Select a state',
-        });
-
-        // basic
-        $('#kt_select2_4').select2({
-            placeholder: "Select a state",
-            allowClear: true
-        });
 
         // loading data from array
         var data = [{

@@ -11,10 +11,7 @@ class Dashboard extends CI_controller {
 
 	public function index()
 	{
-		$this->load->view('students/header');
-		$this->load->view('disclaimer');
-		$this->load->view('footer');
-		//redirect(base_url('user'));
+		redirect(base_url('center'));
 	}
 	public function notice_board()
 	{

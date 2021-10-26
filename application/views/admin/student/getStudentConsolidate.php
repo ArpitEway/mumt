@@ -34,7 +34,7 @@
 			if(isset($students)){
 			foreach($students as $student){
 			
-			$userData = $this->Common_model->getRecordById('user_enquiry','student_id',$student['student_id'])
+			$userData = $this->Common_model->getRecordById('student_data','student_id',$student['student_id'])
 			
 			?>
 			
@@ -60,7 +60,7 @@
 					}else{
 					echo $student["class_name"];
 					} ?></td>
-<td><?php 
+					<td><?php 
 					$newDate = ($student["dob"]=='') ? $userData->dob : $student["dob"];
 					
 					echo date("d-m-Y", strtotime($newDate)); ?></td>
@@ -79,7 +79,7 @@
 			<tr>
 				
 			<td><?php echo $i; ?></td>
-			<td><?php echo $this->Common_model->getCourseNameByCourseId($student["course_group_id"]); ?></td>
+			<td><?php echo $this->Common_model->getCourseNameByCourseId($student["id"]); ?></td>
 			<td><?php echo $student["cnt"]; ?></td>
 			<?php $total = $total + $student["cnt"];?>
 			</tr>

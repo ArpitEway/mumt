@@ -25,12 +25,13 @@ class Common_Model extends CI_Model{
 		
 		if(isset($qry->row()->p_mobile_no)){
 		$mobile = $qry->row()->p_mobile_no;
-		return ($mobile!='') ? $mobile : $this->getSinglefield('user_enquiry','mobile_no','student_id='.$id);
+		return ($mobile!='') ? $mobile : $this->getSinglefield('student_data','p_mobile_no','student_id='.$id);
 		}else{
-			return $this->getSinglefield('user_enquiry','mobile_no','student_id='.$id);
+			return $this->getSinglefield('student_data','p_mobile_no','student_id='.$id);
 		}
 
 	}
+
 	function getStudentRemarkNameById($id){
 
 		$qry = $this->db->select("document_name");
@@ -217,18 +218,27 @@ class Common_Model extends CI_Model{
 		return $query->result_array();
 
 	}
+
 	function student_data_consolidate($where = "",$group_by = ""){
 		
 		if($group_by != ""){
-				$this->db->select('count(*) as cnt,course_name');
-				$this->db->group_by($group_by);
+			$this->db->select('count(*) as cnt,course_group.id,course_group.course_name as course_nm');
+			$this->db->group_by($group_by);
 		}else{
-				$this->db->select('*');
+			$this->db->select('*');
 		}
+
 		$this->db->from("student");
 		$this->db->where($where);
+
+		$this->db->join("course_group", "student.course_group_id = course_group.id", 'left'); 
+
 		$query = $this->db->get();
-			
+
+		// echo $this->db->last_query();
+
+		// die;
+
 		return $query->result_array();
 
 	}
