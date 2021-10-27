@@ -1489,4 +1489,80 @@ public function update_doc_permission_status()
 		}
 	}
 
-}// class
+	public function updateDdeStudent()
+	{
+		$dde_students = $this->Common_model->get_record('dde_student','*');
+
+		foreach ($dde_students as $dde_student) {
+			
+			$studentdata = $this->Common_model->get_record('dde_student_data','*','student_id='.$dde_student['student_id']);
+
+			$courseDetail = $this->Common_model->getRecordById('dde_course','old_id',$dde_student['course_group_id']);
+			
+			$dde_student['course_group_id'] = $courseDetail->new_id;
+			$dde_student['course_name'] = $courseDetail->new_name;
+			$classData = $this->Common_model->getRecordByWhere('class_master','course_group_id='.$courseDetail->new_id.' and  admission_permission="Y" ');
+			
+			$dde_student['class_id'] = $classData[0]->id;
+			$dde_student['class_name'] = $classData[0]->class_name;
+			$dde_student['medium'] = $studentdata[0]['medium'];
+			unset($dde_student['admit_card']);
+			unset($dde_student['cls_id']);
+			unset($dde_student['form_no']);
+			unset($dde_student['contact']);
+			unset($dde_student['signature']);
+			unset($dde_student['regi_date']);
+			unset($dde_student['forwarded']);
+			unset($dde_student['forward_date']);
+			unset($dde_student['marksheet_out']);
+			unset($dde_student['marksheet_remark']);
+			unset($dde_student['admission_in']);
+			unset($dde_student['addmission_remark']);
+			unset($dde_student['exam_center_id']);
+			unset($dde_student['exam_center_code']);
+			unset($dde_student['ex']);
+			unset($dde_student['delete_request']);
+			unset($dde_student['through_bpp']);
+			unset($dde_student['old_student_id']);
+			unset($dde_student['status']);
+			unset($dde_student['pattern']);
+			unset($dde_student['prev_pattern']);
+			unset($dde_student['new_exam_permission']);
+			unset($dde_student['admission_print']);
+			unset($dde_student['new_exam_center_id']);
+			unset($dde_student['new_exam_center_code']);
+			unset($dde_student['permission']);
+			unset($dde_student['problem']);
+			unset($dde_student['problem_description']);
+			unset($dde_student['book_issued']);
+			
+			$this->Common_model->insertAll('student',$dde_student);
+			
+			$compareArray = $this->Common_model->get_record('student_data','*','student_id=0');
+			$studentdata = $studentdata[0];
+			$updateData = array_diff_key($studentdata,$compareArray[0]);
+			$updateData = array_diff($studentdata,$updateData);
+			$updateData['handicapped'] = $studentdata['p_handicapped'];
+			$updateData['eligibility'] = $studentdata['ten_sub'];
+			$updateData['board'] = $studentdata['ten_board'];
+			$updateData['total_marks'] = $studentdata['ten_tmarks'];
+			$updateData['marks'] = $studentdata['ten_marks'];
+			$updateData['passing_year'] = $studentdata['ten_sub'];
+			$updateData['percentage'] = $studentdata['ten_per'];
+			$this->Common_model->insertAll('student_data',$updateData);
+
+			$txnData = $this->Common_model->get_record('dde_online_payment_transaction','*','student_id='.$dde_student['student_id']);
+			$compareArray = $this->Common_model->get_record('online_payment_transaction','*','student_id=1');
+			$txnData = $txnData[0];
+			$updateData = array_diff_key($txnData,$compareArray[0]);
+			$updateData = array_diff($txnData,$updateData);
+			$updateData['course_group_id'] = $courseDetail->new_id;
+			$updateData['class_id'] = $classData[0]->id;
+			$updateData['txnId'] = $txnData['txnid'];
+			$this->Common_model->insertAll('online_payment_transaction',$updateData);
+		}
+	}
+
+
+
+}// controller
