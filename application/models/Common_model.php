@@ -200,7 +200,7 @@ class Common_Model extends CI_Model{
 		return $qry->result_array();
 
 	}
-	
+
 	function student_data($where = "",$group_by = ""){
 		
 		if($group_by != ""){

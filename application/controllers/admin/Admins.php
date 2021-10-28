@@ -994,28 +994,32 @@ class Admins extends CI_Controller {
 
 				$data['center_name'] = html_escape($this->input->post('center_name'));
 
-		// $data['address'] = html_escape($this->input->post('address'));
+				$data['address'] = html_escape($this->input->post('address'));
 
-				$data['state'] = html_escape($this->input->post('state'));
+				$data['pin_code'] = html_escape($this->input->post('pin_code'));
 
-				$data['district'] = html_escape($this->input->post('district'));
+				$data['state_id'] = html_escape($this->input->post('state'));
+
+				$data['distt_id'] = html_escape($this->input->post('district'));
 
 				$data['city'] = html_escape($this->input->post('city'));
 
-				$data['contact_person'] = html_escape($this->input->post('contact_person'));
-				$data['contact_person_2'] = html_escape($this->input->post('contact_person_2'));
+				$data['contactpersonname'] = html_escape($this->input->post('contact_person'));
 
 				$data['email'] = html_escape($this->input->post('email'));
 
 				$data['password'] = html_escape($this->input->post('password'));
 
-				$data['mobile_no'] = html_escape($this->input->post('mobile_no'));
+				//$data['std_code'] = html_escape($this->input->post('std_code'));
+
+				$data['phoneno'] = html_escape($this->input->post('phoneno'));
+
+				$data['mobile_no_1'] = html_escape($this->input->post('mobile_no'));
+
 				$data['mobile_no_2'] = html_escape($this->input->post('mobile_no_2'));
 
-				$data['other_mobile_no'] = html_escape($this->input->post('other_mobile_no'));
-				$data['other_mobile_no_2'] = html_escape($this->input->post('other_mobile_no_2'));
-
 				$data['status'] = html_escape($this->input->post('status'));
+
 				if($param1 == 'create'){
 					$response = $this->admin_model->create_center($data);
 					echo json_encode(array("status" => 'true'));
@@ -1026,15 +1030,15 @@ class Admins extends CI_Controller {
 				}
 				if($param1 == 'delete'){
 					$response = $this->admin_model->center_delete($param2);
-					$this->session->set_flashdata('ajax_flash_message','center Deleted Successfully ');
+					$this->session->set_flashdata('ajax_flash_message','Center Deleted Successfully ');
 
 					redirect(base_url().'admin/Admins/centers');
 				}
+
 				if(empty($param1) ){
 
 					$data = array();
-
-					$data['title'] = "center";
+					$data['title'] = "Center";
 					$data['center_code'] = $this->admin_model->getcenterCode();
 					$this->load->view('header',$data);
 					$data['center'] = $this->Common_model->get_record('center','');

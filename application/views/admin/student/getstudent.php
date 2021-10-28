@@ -2,12 +2,12 @@
 			<thead>
 				<tr>
 				
-					<!--<th>Sno.</th>-->
+					
 					<th>Form No.</th>
 					<th>Course</th>
 					<th>Class</th>
 					<th>Student Name</th>
-					<!--<th>Father name</th>-->	
+					<th>Father name</th>	
 					<th>Document</th>
 					<th>Action</th>
 					
@@ -21,17 +21,19 @@
 			
 			foreach($students as $student){
 			$docs = $this->Common_model->getAllRow("admission_document",'document_name,document_image',array("student_id" => $student['student_id']),'');
+			
+			
 			?>
 			
 			<tr>
-				<!--<td><?php echo $i; ?></td>-->
+				
 				<td><a target="_blank" href="<?php echo BASE_URL('admin/enrollment/show_form/'.$student["student_id"]); ?>" ><?php echo $student["student_id"]; ?></a></td>
 				<td><?php echo $student["course_name"]; ?></td>
 				<td><?php echo $student["class_name"]; ?></td>
 				<td><?php echo $student["name"]; ?></td>
-				<!--<td><?php echo $student["f_h_name"]; ?></td>-->
+				<td><?php echo $student["f_h_name"]; ?></td>
 				<td><?php foreach($docs as $doc){
-							echo "<br>";
+				 echo "<br>";
 				?><?php 
 				
 				?>
@@ -46,9 +48,29 @@
 				{ 
 				?>
 				
-				<a target="blank" href="<?php echo BASE_URL('assets/documents/'.$doc["document_image"]); ?>">
+				<?php if($doc["document_name"] == 'Aadhaar Card'){ ?>
+
+				
+
+				<?php 
+
+				$student_id = $this->Common_model->encrypt_decrypt($student["student_id"]); 
+
+				?>
+
+				<a href="<?php echo site_url('admin/enrollment/update_aadhar/'.$student_id); ?>">
+
+				<?php echo $doc["document_name"]; ?>
+
+				</a>
+
+				<?php }else{ ?>
+
+				<a target="_blank" href="<?php echo BASE_URL('assets/documents/'.$doc["document_image"]); ?>">
 				
 				<?php echo $doc["document_name"];  ?>
+
+				<?php }?> 
 				
 				</a>
 				
@@ -56,19 +78,22 @@
 				
 				<a data-magnify="gallery" data-src="" data-caption="<?php echo $doc["document_name"] ?>" data-group="a" href="<?php echo BASE_URL('assets/documents/'.$doc["document_image"]); ?>">
 					  <?php echo $doc["document_name"]; ?>  
-				</a>
-			
-				
 
-				<?php 
+
+
+				</a>
+
+			
+
+			<?php 
 				}}
-				?> 
+			?> 
 				</td>
 				<td>
                 <div style="display: inline-grid;">
 					<?php if($student["approved"] != 'Y' || $student["approved"] == "" ){ ?>
 					<a  style="margin:5px;" class="btn btn-success" data-id="<?php echo site_url('admin/enrollment/make_approved/'.$student["student_id"]); ?>" data-st_id="<?=$student["student_id"]?>" onclick="make_approved(this)"> Make Approved </a>
-					<a href="javascript:void(0);" style="margin:5px;" class="btn btn-danger" onclick="rightModal('<?php echo site_url('admin/modal/student_popup/admin/student/update/remark_update/'.$student["student_id"]); ?>', '<?php echo 'Select Remark' ?>')"> Make Non approve
+					<a href="javascript:void(0);" style="margin:5px;" class="btn btn-danger" onclick="rightModal('<?php echo site_url('admin/modal/student_popup/admin/student/update/remark_update/'.$student['student_id']); ?>', '<?php echo 'Select Remark' ?>')"> Make Non approve
 					</a>
 					<span  class="remark_span_<?=$student["student_id"];?>" style="color:red;">
 					<?php if($student["remark"] != "N" )
@@ -93,13 +118,8 @@
 				</a>   
 				<?php } ?>		
 				</div>
-				<?php $Count = $this->Common_model->getCountByWhere('student',array('user_id' => $student["user_id"])); 
-					if($Count>1){
-				?>
-				<a href="javascript:void(0);" style="margin:5px;" class="btn btn-danger" onclick="rightModal('<?=BASE_URL('admin/enrollment/getOtherCourse/'.$student["student_id"]); ?>', '<?php echo 'Other Course Details' ?>')">Other Course</a>
-
-			</td>
-		<?php } ?>
+				
+				</td>
 				</tr>
 			
 			
@@ -174,7 +194,6 @@ function make_approved(param){
 	var html = $(param).html();
 	var url  = $(param).attr('data-id');
 	var rem = $(param).attr('data-st_id');
-	
 	
 	if (confirm('Are you sure to make approved')) 
 	{

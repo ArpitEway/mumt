@@ -1,50 +1,68 @@
+<style>
+.btn.btn-primary i {
+    color: #FFFFFF !important;
+}
+</style>
 <div class="text-right mt-3">
 <?php if($this->session->account_type=='Admin'){ ?>
-<a type="button" style="margin-left: 10px;" class="btn btn-outline-primary btn-rounded alignToTitle" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/center/create/'.$center_code); ?>', 'Create center')"  >Create center</a>
+<a type="button" style="margin-left: 10px;" class="btn btn-outline-primary btn-rounded alignToTitle" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/center/create/'.$center_code); ?>', 'Create center')"  >Create Center</a>
 <?php } ?>
 </div>
 <div class="container mt-5" >
 
-	<table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Balance</th>
-				<th>center code</th>
-				<th>center name</th>
-				<th>Contact Person</th>
-				<th>Mobile No</th>
-				<th>Mobile No 2</th>
-				<th>Contact Person 2</th>
-				<th>Other Mobile No</th>
-				<th>Other Mobile No 2</th>
-				<th>Email</th>
-				<th>City</th>
-				<?php if($this->session->account_type=='Admin'){ ?>
-				<th>Options</th>
-			<?php } ?>
-				<!-- <th>Action</th> -->
-			</tr>
-		</thead>
-		<tbody>
+			<table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Center Code</th>
+						<th>Center Name</th>
+						<th>Contact Person</th>
+						<th>Mobile No</th>
+						<th>Other Mobile No</th>
+						<th>Email</th>
+
+						<th>Status</th>
+						
+						<?php if($this->session->account_type=='Admin'){ ?>
+						<th>Options</th>
+					<?php } ?>
+						<!-- <th>Action</th> -->
+					</tr>
+				</thead>
+			<tbody>
     		<?php
     		$i = 1;
             foreach($center as $center){
     		?>
-			
 					<tr>
 					<td><?php echo $i; ?></td>
-					<td><?php echo $center['balance']; ?> /-</td>
 					<td><?php echo $center['center_code']; ?> </td>	
 					<td><?php echo $center['center_name']; ?> </td>
-					<td><?php echo $center['contact_person']; ?> </td>
-					<td><?php echo $center['mobile_no']; ?> </td>
+					<td><?php echo $center['contactpersonname']; ?> </td>
+					<td><?php echo $center['mobile_no_1']; ?> </td>
 					<td><?php echo $center['mobile_no_2']; ?> </td>
-					<td><?php echo $center['contact_person_2']; ?> </td>
-					<td><?php echo $center['other_mobile_no']; ?> </td>
-					<td><?php echo $center['other_mobile_no_2']; ?> </td>
 					<td><?php echo $center['email']; ?> </td>
-					<td><?php echo $center['city']; ?> </td>
+					<td>
+
+				<?php
+
+				if($session['status'] == 'Y')
+				{
+
+				?>
+				<input type="button" name="update_center_stats" data-id = <?=$center["id"];?> class="btn btn-success center_status_check" value="Yes">
+				
+				<?php }else{ ?>
+
+				<input type="button" name="update_center_stats" data-id = <?=$center["id"];?>  class="btn btn-danger center_status_check" value="No">
+				
+				<?php 
+				}	
+
+				?>
+					</td>
+					
+
 <?php if($this->session->account_type=='Admin'){ ?>
 <td>				
 	<div>
@@ -52,9 +70,9 @@
 	</div>
 </td>
 <?php } ?>
-<!-- 						<td>
-							<a href="<?php echo site_url('admin/Admins/allot_course/'.$center['id']); ?>" class="btn btn-primary btn-sm" >Add courses </a>
-						</td> -->
+<!--<td>
+		<a href="<?php echo site_url('admin/Admins/allot_course/'.$center['id']); ?>" class="btn btn-primary btn-sm" >Add courses </a>
+</td> -->
 </tr>
 				
 <?php $i++; } ?>
@@ -76,4 +94,36 @@ var showAllcenters = function ()
             }
         });
     }
+
+
+
+$(document).on('click', '.center_status_check', function() {
+
+var val = $(this).val();
+
+var self =this;
+
+var status = (val=='Yes') ? 'N' : 'Y';
+
+var data = {
+		  id: $(this).attr('data-id'),
+		  status: status
+	  }; 
+	  
+var url = BASE_URL + "admin/Admins/update_center_status";
+
+$.ajax({
+  url: url,
+  type: 'POST',
+  dataType: 'json',
+  data: data,
+  success: function (data) {
+	  
+	  $(self).parent().html(data.data);
+	  
+  }
+});
+
+});
+
 </script>

@@ -848,7 +848,6 @@ class Admin_model extends CI_Model {
 	
 	public function create_center($data)
     {
-        
         $this->db->insert('center', $data);
         $center_id = $this->db->insert_id();
         $response = array(
@@ -856,6 +855,7 @@ class Admin_model extends CI_Model {
         			);
         return json_encode($response);
     }
+
 	public function center_update($param1 = '',$data)
 	{
 	    
@@ -1008,15 +1008,38 @@ class Admin_model extends CI_Model {
 			$count = $qry->row()->cnt;
 			$count = $count + 1;
 			if($count < 10){
-				$center_code = "MPSVV0".$count;	
+				$center_code = "IC0".$count;	
 			}else{
-				$center_code = "MPSVV".$count;
+				$center_code = "IC".$count;
 			}	
 			return $center_code;
 		}else{
 			return "MPSVV01";
 		}
 	}
+
+
+	public function aadhar_update($param1 = '')
+	{
+	    
+		$aadhar_no = html_escape($this->input->post('aadhar_number'));
+		
+		$data['adhar_no'] = $this->input->post('aadhar_number');
+	
+		$this->db->where('student_id', $param1);
+		$this->db->update('student', $data);
+		
+		$response = array(
+			'status' => true
+		);
+
+		return json_encode($response);
+	}
+
+
+
+
+
 }
 
 ?>
