@@ -742,44 +742,12 @@ class Admin_model extends CI_Model {
 	public function student_approve($param1 = '')
 	{
 	    $students = $this->db->get_where('student', array('student_id' => $param1))->row_array();
-		
-		if($students['document_uploaded'] == "Y" && $students['payment_status'] == "Y"){
-		
 		$data['remark'] = "N";
 		$data['approved'] = "Y";
-				
 		$this->db->where('student_id', $param1);
 		$this->db->update('student', $data);
-
-		$new_student_id = $param1;
-
-		$student 	  = $this->Common_model->getRecordById('student','student_id',$new_student_id);
-		$class_id 	  = $student->class_id;
-		$course 	  = $student->course_group_id;
-		$student_name = $student->name;
-		$gender 	  = $student->gender;
-
-		$program_fees = $this->Common_model->getStudentProgramFeeByClass($course,$class_id,$gender);
-
-		$OnlinePayTxnData = array('student_id' => $new_student_id,'fees_head' => 'Program Fees','amount' => $program_fees,'course_group_id' => $course,'class_id' => $class_id,'student_name' => $student_name,'payment_status' => 'pending' );
-
-		$OnlinePayTxn = $this->Common_model->insertAll('online_payment_transaction',$OnlinePayTxnData);
-
-		$response = array(
-					 'status' => 'true'
-				 );
-
+		$response = array('status' => 'true');
 		return json_encode($response);
-
-
-		
-		}else{
-			$response = array(
-					 'status' => "false"
-				 );
-
-			return json_encode($response);
-		}
 	}
 	
 	public function account_delete($param1 = '')

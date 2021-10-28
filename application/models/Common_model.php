@@ -34,13 +34,13 @@ class Common_Model extends CI_Model{
 
 	function getStudentRemarkNameById($id){
 
-		$qry = $this->db->select("document_name");
+		$qry = $this->db->select("document");
 		
 		$qry = $this->db->where("id",$id);
 
 		$qry = $this->db->get("document_category");
 		
-		$document_name = $qry->row()->document_name;
+		$document_name = $qry->row()->document;
 		
 		return $document_name;
 		

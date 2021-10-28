@@ -18,10 +18,7 @@ class Modal extends CI_Controller {
 
 		/*LOADING ALL THE MODELS HERE*/
 		$this->load->model('admin/admin_model');
-	
-	
-		/*SET DEFAULT TIMEZONE*/
-	
+		$this->load->model('Common_model');
 		
 	}
 
@@ -40,6 +37,7 @@ class Modal extends CI_Controller {
 
 	function student_popup($folder_name1 = '',$folder_name2 = '',$folder_name3 = '', $page_name = '' , $param1 = '' , $param2 = '', $param3 = '')
 	{
+		$param1 = $this->Common_model->encrypt_decrypt($param1,'decrypt');
 		$page_data['param1']	=	$param1;
 		$page_data['param2']	=	$param2;
 		$page_data['param3']	=	$param3;

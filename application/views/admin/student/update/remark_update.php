@@ -22,13 +22,13 @@ $course = $this->db->get_where('course_group', array("id" => $course_group_id))-
 
 $document_id = $course['document_id'];
 
-$documnets = $this->db->get_where('document_category', "document_id in (".$document_id." , 0)" )->result_array();
+$documnets = $this->db->get_where('document_category', "category in (".$document_id." , 0)" )->result_array();
 
 foreach($documnets as $doc){
 ?>
 	<div>
 	<input type="checkbox" id="remark1" value="<?php echo $doc['id']; ?>" class="form-check-input chk" name="remark[]" >
-	<label for="remark1" class="chk_label"><?php echo $doc['document_name']; ?><?php if($doc['status'] == "Y"){ ?><span style="color:red;" ><b>*</b></span><?php } ?></label>
+	<label for="remark1" class="chk_label"><?php echo $doc['document']; ?><?php if($doc['status'] == "Y"){ ?><span style="color:red;" ><b>*</b></span><?php } ?></label>
 	</div>
 	
 <?php } ?>
