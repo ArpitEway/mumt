@@ -1,4 +1,3 @@
-
 <style>
 
 .chk{
@@ -12,7 +11,7 @@
 }
 </style> 
 <form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/enrollment/student_doc_update/'.$param1); ?>">
-
+<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 <div class="form-check text-justify" >
 <?php
 

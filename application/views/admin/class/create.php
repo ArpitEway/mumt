@@ -3,6 +3,7 @@
 	
         <div class="form-group col-md-6">
             <label for="course">Course</label>
+            <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
             <select name="course_group_id" id="course_group_id" class="form-control" required>
                 <option value="">Select course</option>
                     <?php 

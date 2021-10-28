@@ -27,7 +27,7 @@
 	public function list()
 	{
 		$data = $row = array();
-		$where = 'document_uploaded!="Y" and payment_status="Y"';
+		$where = 'document_uploaded!="Y" and payment_status="Y" and center_id='.$this->session->center_id;
 		
 		$column_order = array('student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name',null);
 		$column_search = array('student','enrollment_no', 'name', 'f_h_name', 'course_name','class_name');

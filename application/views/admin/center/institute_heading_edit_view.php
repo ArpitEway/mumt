@@ -2,11 +2,9 @@
 $menu_headings = $this->db->get_where('institute_menu_heading', array('id' => $param1))->result_array();
 
 foreach($menu_headings as $menu_heading): ?>
-
 <form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/Admins/add_institute_menu_heading/update/'.$menu_heading['id']); ?>">
-    
 	<div class="form-row">
-		
+		<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
         <div class="form-group col-md-4">
             <label for="name">Heading name</label>
             <input type="text" class="form-control" value="<?php echo $menu_heading['heading']; ?>" id="heading_name"  name="heading_name" required placeholder="Enter heading">

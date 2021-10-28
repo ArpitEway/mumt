@@ -3,7 +3,7 @@
 </div>
 <div class="container mt-3" >
 
-
+<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	<table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
 		<thead>
 			<tr>
@@ -30,11 +30,11 @@
 				{
 
 				?>
-				<input type="button" name="update_stats" data-id = <?=$session["id"];?> class="btn btn-success unpaid_permission_check" value="Yes">
+				<input type="button" name="update_stats" data-id = "<?=$session["id"];?>" class="btn btn-success unpaid_permission_check" value="Yes">
 				
 				<?php }else{ ?>
 
-				<input type="button" name="update_stats" data-id = <?=$session["id"];?>  class="btn btn-danger unpaid_permission_check" value="No">
+				<input type="button" name="update_stats" data-id = "<?=$session["id"];?>"  class="btn btn-danger unpaid_permission_check" value="No">
 				
 				<?php 
 				}	
@@ -49,11 +49,11 @@
 				{
 
 				?>
-				<input type="button" name="update_doc_stats" data-id = <?=$session["id"];?> class="btn btn-success doc_permission_check" value="Yes">
+				<input type="button" name="update_doc_stats" data-id = "<?=$session["id"];?>" class="btn btn-success doc_permission_check" value="Yes">
 				
 				<?php }else{ ?>
 
-				<input type="button" name="update_doc_stats" data-id = <?=$session["id"];?>  class="btn btn-danger doc_permission_check" value="No">
+				<input type="button" name="update_doc_stats" data-id = "<?=$session["id"];?> " class="btn btn-danger doc_permission_check" value="No">
 				
 				<?php 
 				}	
@@ -74,10 +74,14 @@
 <script>
 var showAlldepartment = function () 
     {
+    	var csrfName = $('.csrfname').attr('name');
+    	var csrfHash = $('.csrfname').val();
+
         var url = '<?php echo site_url('admin/Admins/session'); ?>';
         $.ajax({
             type : 'GET',
             url: url,
+            data: {[csrfName]: csrfHash},
             success : function(response) {
                 
                 initDataTable('basic-datatable');
@@ -89,7 +93,8 @@ var showAlldepartment = function ()
 $(document).on('click', '.unpaid_permission_check', function() {
 
   	var val = $(this).val();
-
+  	var csrfName = $('.csrfname').attr('name');
+  	var csrfHash = $('.csrfname').val();
 	var self =this;
 
     var status = (val=='Yes') ? 'N' : 'Y';
@@ -97,7 +102,8 @@ $(document).on('click', '.unpaid_permission_check', function() {
 
 	var data = {
 				id: $(this).attr('data-id'),
-				status: status
+				status: status,
+				[csrfName]: csrfHash,
 			}; 
 			
 	var url = BASE_URL + "admin/Admins/update_session_unpaid_permission_status";
@@ -117,17 +123,15 @@ $(document).on('click', '.unpaid_permission_check', function() {
 });
 
 $(document).on('click', '.doc_permission_check', function() {
-
 var val = $(this).val();
-
 var self =this;
-
 var status = (val=='Yes') ? 'N' : 'Y';
-
-
+var csrfName = $('.csrfname').attr('name');
+var csrfHash = $('.csrfname').val();
 var data = {
 		  id: $(this).attr('data-id'),
-		  status: status
+		  status: status,
+		  [csrfName]: csrfHash,
 	  }; 
 	  
 var url = BASE_URL + "admin/Admins/update_doc_permission_status";

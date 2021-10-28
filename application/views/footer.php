@@ -9,7 +9,6 @@ function rightModal(url, header)
   // LOADING THE AJAX MODAL
   
   jQuery('#right-modal').modal('show', {backdrop: 'true'});
-
   // SHOW AJAX RESPONSE ON REQUEST SUCCESS
   $.ajax({
     url: url,

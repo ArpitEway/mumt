@@ -1,4 +1,5 @@
 <div class="container mt-5" >
+	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	<table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
 		<thead>
 			<tr>
@@ -73,7 +74,7 @@
  <!--begin::Form-->
 <form method="POST" class="d-block" id="ajaxForm" action="<?php echo site_url('admin/enrollment/update_unpaid_student'); ?>">
   <div class="card-body">
-
+	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
     <div class="form-group row">
     <label for="example-date-input" class="col-5 col-form-label">Student Name</label>
     <div class="col-7">
@@ -188,10 +189,7 @@ $('.student').on('click', function (e) {
 			$('#kt_datepicker_modal').modal('toggle');
 			//$('#student_tr_'+student_id).remove();
 			location.reload();
-			
-		
 			toastr.success("Submitted");
-			
 		}else{
 			toastr.error("Something wrong");
 		}

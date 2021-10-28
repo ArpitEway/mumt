@@ -1,4 +1,5 @@
-	<form method='POST' action="">
+<form method='POST' action="">
+<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 <div class="col-sm-4 m-auto">
 		<fieldset class="form-group">
 			<label for="exampleSelect1">Action</label>

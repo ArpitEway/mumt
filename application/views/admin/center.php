@@ -9,7 +9,7 @@
 <?php } ?>
 </div>
 <div class="container mt-5" >
-
+<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 			<table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
 				<thead>
 					<tr>
@@ -20,9 +20,7 @@
 						<th>Mobile No</th>
 						<th>Other Mobile No</th>
 						<th>Email</th>
-
 						<th>Status</th>
-						
 						<?php if($this->session->account_type=='Admin'){ ?>
 						<th>Options</th>
 					<?php } ?>
@@ -50,11 +48,11 @@
 				{
 
 				?>
-				<input type="button" name="update_center_stats" data-id = <?=$center["id"];?> class="btn btn-success center_status_check" value="Yes">
+				<input type="button" name="update_center_stats" data-id="<?=$center["id"];?>" class="btn btn-success center_status_check" value="Yes">
 				
 				<?php }else{ ?>
 
-				<input type="button" name="update_center_stats" data-id = <?=$center["id"];?>  class="btn btn-danger center_status_check" value="No">
+				<input type="button" name="update_center_stats" data-id = "<?=$center["id"];?>"  class="btn btn-danger center_status_check" value="No">
 				
 				<?php 
 				}	

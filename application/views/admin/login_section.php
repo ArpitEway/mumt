@@ -1,4 +1,4 @@
-<div class="row">
+<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>"><div class="row">
     <?php foreach($users as $user) { ?>
 
             <div class="row mt-3 pl-10">
@@ -18,11 +18,14 @@
 <script>
 
     $(document).on("click", ".users", function() {
+    var csrfName = $('.csrfname').attr('name');
+    var csrfHash = $('.csrfname').val();
     var username = $(this).attr('data-user');
     var password = $(this).attr('data-pass');
     var data = {
         username: username,
-        password: password
+        password: password,
+        [csrfName]: csrfHash,
     };
     var target = $(this).attr("data-target");
     var url = BASE_URL + "admin/Admins/check_login";

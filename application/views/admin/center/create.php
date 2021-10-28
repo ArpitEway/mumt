@@ -1,12 +1,9 @@
-
 <form method="POST" class="d-block ajaxForm" >
     <div class="form-row">
-	
 	<div class="form-group col-md-4">
 	<label for="class">Center Code</label>
 	<input type="text" class="form-control" id="center_code" name="center_code" required="required" placeholder="Enter Center code">
-	</div>
-	
+<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">	
 	<div class="form-group col-md-8">
 	<label for="class">Center Name</label>
 	<input type="text" required="required" class="form-control" id="center_name" name="center_name" placeholder="Enter Center name">

@@ -37,7 +37,6 @@
 		public function dashboard(){
 			
 			if($this->session->has_userdata('adminData')){
-				
 				$this->load->view('header');
 				$this->load->view('admin/enrollment/dashboard');
 				$this->load->view('footer');
@@ -50,12 +49,14 @@
 		public function student_report(){
 			
 			if($this->session->has_userdata('adminData')){
-				$dt = array();
-				$dt['title'] = "Student Verification";
+				$data = array();
+				$data['title'] = "Student Verification";
 				$this->load->view('header',$dt);
 				$this->db->order_by('id', 'Desc');
-				$dt['sessions'] = $this->db->get_where('session', array())->result_array();
-				$this->load->view('admin/enrollment/view_student_report',$dt);
+				$data['sessions'] = $this->db->get_where('session', array())->result_array();
+				$data['name_csrf'] = $this->security->get_csrf_token_name();
+				$data['hash_csrf'] = $this->security->get_csrf_hash();
+				$this->load->view('admin/enrollment/view_student_report',$data);
 				$this->load->view('footer');
 			}
 			else
@@ -72,6 +73,8 @@
 				$this->load->view('header',$dt);
 				$this->db->order_by('id', 'Desc');
 				$dt['sessions'] = $this->db->get_where('session', array())->result_array();
+				$data['name_csrf'] = $this->security->get_csrf_token_name();
+				$data['hash_csrf'] = $this->security->get_csrf_hash();
 				$this->load->view('admin/enrollment/consolidate_report',$dt);
 				$this->load->view('footer');
 			}
@@ -89,6 +92,8 @@
 				$dt['approved'] = "";
 				$data['students'] = $this->Common_model->all_student_info_by_where($dt);
 				$dt['title'] = "Edit Non Verified Studnets";
+				$data['name_csrf'] = $this->security->get_csrf_token_name();
+				$data['hash_csrf'] = $this->security->get_csrf_hash();
 				$this->load->view('header',$dt);
 				$this->load->view('admin/enrollment/edit_non_verified_list',$data);
 				$this->load->view('footer');
@@ -119,9 +124,6 @@
 				$session 		  = 	$this->input->post("session");
 			    $mode 		  	  = 	$this->input->post("mode");
 				$center 	  	  = 	$this->input->post("center");
-
-			
-
 				if($mode != "all"){	 
 					
 					$dt['mode'] = $mode;
@@ -206,7 +208,6 @@
 		}
 		
 		public function make_approved($param){
-			
 			$response = $this->admin_model->student_approve($param);
 			$json = json_decode($response);
 			if($json->status == 'true'){
@@ -266,7 +267,7 @@
 			$data = array(
 				'student' => $student,
 			);
-			$this->load->view('header',array('title' => 'Admission Form'));	
+			$this->load->view('header',array('title' => 'Admission Form'));
 			$this->load->view('template/form',$data);
 			$this->load->view('footer');
 		}
@@ -302,6 +303,8 @@
 				'action' => '',
 				);
 			}
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->load->view('header',array('title' => 'Generate Enrollment'));
 			$this->load->view('admin/enrollment/generate_enrollment',$data);
 			$this->load->view('footer');
@@ -423,6 +426,8 @@
 				$dt['payment_status'] = 'N';
 				$data['students'] = $this->Common_model->all_student_info_by_where($dt);
 				$dt['title'] = "Unpaid student";
+				$data['name_csrf'] = $this->security->get_csrf_token_name();
+				$data['hash_csrf'] = $this->security->get_csrf_hash();
 				$this->load->view('header',$dt);
 				$this->load->view('admin/enrollment/unpaid_student_list',$data);
 				$this->load->view('footer');
@@ -478,6 +483,8 @@
 			if($this->session->has_userdata('adminData')){
 				$titleData = array('title' => 'Paid Student');
 				$this->load->view('header',$titleData);
+				$data['name_csrf'] = $this->security->get_csrf_token_name();
+				$data['hash_csrf'] = $this->security->get_csrf_hash();
 				$this->load->view('admin/enrollment/view_payment_list');
 				$this->load->view('footer');
 			}
@@ -616,7 +623,6 @@
 		
 public function update_student_installment_permission_status()
 	{
-	
 	if ($this->input->method() == "post") 
 	{
             $id     = 0;
@@ -662,9 +668,10 @@ public function getOtherCourse($student_id)
 	$where = 'user_id='.$user_id.' and student_id!='.$student_id;
 	$other_student = $this->Common_model->getRecordByWhere('student',$where);
 	$data = array('other_student' => $other_student);
+	$data['name_csrf'] = $this->security->get_csrf_token_name();
+	$data['hash_csrf'] = $this->security->get_csrf_hash();
 	$this->load->view('admin/student/other_course',$data);
 }
-
 
 public function update_aadhar($param){
 			
@@ -701,7 +708,6 @@ public function aadhar_update($param){
 	"res" => $aadhar_no
 	
 	));
-	//redirect(base_url().'admin/enrollment/student_report');
 }
 
 public function checkDuplicateAdharNo()
@@ -713,7 +719,4 @@ public function checkDuplicateAdharNo()
 			echo "Duplicate Adhar Card Number";
 		}
 	}
-
-
-
 }

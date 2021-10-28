@@ -1,13 +1,12 @@
 <div class="container">
 
-<div class="row mt-5"> 
-
+<div class="row mt-5">
+<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 <div class="form-group col-md-3">
 	<label for="class">Session</label>
     <select name="session" id="session" class="form-control" >
 	<option>All</option>
 	<?php 
-        
         foreach($sessions as $session)
 		{
         ?>
@@ -15,7 +14,6 @@
 		<?php
 		} 
 		?>		
-		
 	</select>
 </div>
 

@@ -7,7 +7,7 @@ foreach($menus as $menu): ?>
 <form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/Admins/add_menu/update/'.$menu['id']); ?>">
 
 <div class="form-row">
-
+<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 		  <div class="form-group col-md-4">
 				<label for="course">Select admin</label>
 				<select name="admin_id" id="admin_id" class="form-control admin_id">

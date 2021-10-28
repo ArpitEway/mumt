@@ -1,9 +1,8 @@
 <div class="container mt-5 text-right">
 <a type="button"  class="btn btn-outline-primary btn-rounded" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/course/create'); ?>', 'Create course')" >Create course</a>
 </div> 
-
 <div class="container mt-3">
-	
+<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 <table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
 		<thead>
 			<tr>

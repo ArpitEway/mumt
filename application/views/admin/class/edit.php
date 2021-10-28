@@ -1,20 +1,16 @@
 <?php
-
 $classes = $this->db->get_where('class_master', array('id' => $param1))->result_array();
 
 foreach($classes as $class): ?>
-
-
 <?php 
 
 $group_info = $this->db->get_where('group', array('class_id' => $class['id']))->result_array();
 
 ?>
-
 <form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/Admins/classes/update/'.$param1); ?>">
 
     <div class="form-row">
-	
+	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
         <div class="form-group col-md-6">
             <label for="course">Course</label>
             <select name="course_group_id" id="course_group_id" class="form-control" required>
