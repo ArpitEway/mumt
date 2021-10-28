@@ -24,6 +24,7 @@
 	<link href="https:////cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet" type="text/css">
 	<link rel="shortcut icon" href="<?=base_url()?>assets/images/maskgroup/MaskGroup1.png" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link href="<?=base_url()?>assets/light_box/css/jquery.magnify.css" rel="stylesheet">
 	<script type='text/javascript' src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
 	<script type="text/javascript">
 		var BASE_URL = "<?php echo base_url();?>";

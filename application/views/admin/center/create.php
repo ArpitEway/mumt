@@ -2,37 +2,34 @@
 <form method="POST" class="d-block ajaxForm" >
     <div class="form-row">
 	
-	<div class="form-group col-md-6">
-	<label for="class">center Code</label>
-	<input type="text" class="form-control" id="center_code" name="center_code" required="required" placeholder="Enter center code" readonly value="<?= $param1; ?>">
+	<div class="form-group col-md-4">
+	<label for="class">Center Code</label>
+	<input type="text" class="form-control" id="center_code" name="center_code" required="required" placeholder="Enter Center code">
 	</div>
 	
-	<div class="form-group col-md-6">
-	<label for="class">center Name</label>
-	<input type="text" required="required" class="form-control" id="center_name" name="center_name" placeholder="Enter center name"    >
+	<div class="form-group col-md-8">
+	<label for="class">Center Name</label>
+	<input type="text" required="required" class="form-control" id="center_name" name="center_name" placeholder="Enter Center name">
 	</div>
 	
-<!-- 	<div class="form-group col-md-12">
+	<div class="form-group col-md-12">
 	<label for="class">Address</label>
 	<textarea class="form-control" id="address" name="address"  required ></textarea>
-	</div> -->
+	</div>
 	
 	<div class="form-group col-md-4">
 		<label for="session">State</label>
 		<select name="state"  required="required" id="state" class="form-control" data-target="#district"  >
-		<option value="">Select State</option>
-		<?php
-		$states = $this->db->get_where('state', array())->result_array();
-		
+			<option value="">Select State</option>
+				<?php
+				$states = $this->db->get_where('state', array())->result_array();
 				foreach($states as $state)
-                    {
-                    ?>
-					
-           <option value="<?php echo $state['state_id']; ?>" ><?php echo $state['name']; ?></option>
-            <?php
-             } 
-			?>
-			
+				{
+				?>
+				<option value="<?php echo $state['state_id']; ?>" ><?php echo $state['name']; ?></option>
+				<?php
+				} 
+				?>
 		</select>
 	</div>
 	
@@ -46,43 +43,34 @@
 	<div class="form-group col-md-4">
 		<label for="session">City</label>
 		<input type="text" required="required" class="form-control" id="city" name="city" placeholder="Enter city"   >
-		
-    </div>
-	
+	</div>
 	<div class="form-group col-md-4">
 		<label for="class">Contact Person</label>
 		<input type="text" required="required" class="form-control" id="contact_person" name="contact_person"  placeholder="Enter contact person" required >
 	</div>
 	<div class="form-group col-md-4">
 		<label for="class">Mobile no</label>
-		<input type="text" required="required" class="form-control" id="mobile_no" name="mobile_no" placeholder="Enter mobile no"   >
+		<input type="text" required="required" class="form-control" id="mobile_no" name="mobile_no" placeholder="Enter mobile no" >
 	</div>
 	<div class="form-group col-md-4">
 		<label for="class">Mobile no 2</label>
-		<input type="text" class="form-control" id="mobile_no_2" name="mobile_no_2" placeholder="Enter mobile no"   >
+		<input type="text" class="form-control" id="mobile_no_2" name="mobile_no_2" placeholder="Enter mobile no" >
 	</div>
-		<div class="form-group col-md-4">
-		<label for="class">Other Contact Person</label>
-		<input type="text" required="required" class="form-control" id="contact_person_2" name="contact_person_2"  placeholder="Enter contact person" required >
-	</div>
-	<div class="form-group col-md-4">
-		<label for="class">Other Mobile no.</label>
-		<input type="text" required="required" class="form-control" id="other_mobile_no" name="other_mobile_no" placeholder="Enter mobile no"   >
-	</div>
-	<div class="form-group col-md-4">
-		<label for="class">Other Mobile no. 2</label>
-		<input type="text" class="form-control" id="other_mobile_no_2" name="other_mobile_no_2" placeholder="Enter mobile no">
-	</div>
+		
 	<div class="form-group col-md-4">
 		<label for="class">Email</label>
-		<input type="text" required="required" class="form-control" id="email" name="email" placeholder="Enter email"   >
+		<input type="text" required="required" class="form-control" id="email" name="email" placeholder="Enter email">
 	</div>
-	<div class="form-group col-md-4">
+	<div class="form-group col-md-3">
+		<label for="class">Pin Code</label>
+		<input type="text" required="required" class="form-control" id="pin_code" name="pin_code"  placeholder="Enter pin code" required >
+	</div>
+	<div class="form-group col-md-3">
 		<label for="class">Password</label>
-		<input type="password" class="form-control" value="123456" id="password" name="password" placeholder="Enter password"  >
+		<input type="password" class="form-control" value="123456" id="password" name="password" placeholder="Enter password">
 	</div>
 	
-	<div class="form-group col-md-4">
+	<div class="form-group col-md-2">
 		<label for="session">Status</label>
 		<select name="status" required="required" id="status" class="form-control" >
 			<option value="Y" >Yes</option>
@@ -94,13 +82,13 @@
 	
 </div>
 	<div class="form-group text-center">
-	<button class="btn btn-md btn-primary" id="center_submit" type="button" >Submit</button>
+	<button class="btn btn-md btn-primary" id="Center_submit" type="button" >Submit</button>
 	</div>
 </form>
 
-
-
 <script>
+
+
 $(document).on("change", "#state", function() {
 	
 		var type = $('option:selected', this).attr('data-type');
@@ -124,7 +112,7 @@ $(document).on("change", "#state", function() {
 });
 
 
-$("#center_submit").on('click',function (e){
+$("#Center_submit").on('click',function (e){
 	
 	var frm = $('.ajaxForm').serialize();
 	

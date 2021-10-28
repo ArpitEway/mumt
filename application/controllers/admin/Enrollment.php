@@ -12,7 +12,7 @@
 			$this->load->model('Common_model');
 			$this->load->model('Datatable_join_model');
 			if($this->session->account_type!='enrollment'){
-				redirect(base_url('admin/logout'));
+				redirect(base_url('admin/logout')); 
 			}
 		}
 		
@@ -34,9 +34,6 @@
 				redirect(base_url('admin/login'));
 			}
 		}
-		
-		
-		
 		public function dashboard(){
 			
 			if($this->session->has_userdata('adminData')){
@@ -70,7 +67,7 @@
 		public function consolidate_report(){
 			if($this->session->has_userdata('adminData'))
 			{
-				$dt = array();
+				$dt = array(); 
 				$dt['title'] = "Student Consolidate Report";
 				$this->load->view('header',$dt);
 				$this->db->order_by('id', 'Desc');
@@ -308,8 +305,6 @@
 			$this->load->view('header',array('title' => 'Generate Enrollment'));
 			$this->load->view('admin/enrollment/generate_enrollment',$data);
 			$this->load->view('footer');
-			
-			
 		}
 		
 		public function enrollment_permission(){
@@ -624,8 +619,8 @@ public function update_student_installment_permission_status()
 	
 	if ($this->input->method() == "post") 
 	{
-            $id    = 0;
-            $id    = $this->input->post("id");
+            $id     = 0;
+            $id     = $this->input->post("id");
 			$status = $this->input->post("status");
 			
             if ($this->input->post("id")) 
@@ -643,9 +638,6 @@ public function update_student_installment_permission_status()
 			}
 	}
 }
-
-
-
 
 public function print_form($student_id){
 	$where =  array(
@@ -674,10 +666,53 @@ public function getOtherCourse($student_id)
 }
 
 
+public function update_aadhar($param){
+			
+	if($this->session->has_userdata('adminData')){
+
+	$data['student_id'] = $this->Common_model->encrypt_decrypt($param,'decrypt'); 
 
 
+	$dt['student.student_id'] = $data['student_id'];
+	$data['student_detail'] = $this->Common_model->student_data($dt);
 
+	$this->load->view('header');
+	$this->load->view('admin/student/update_aadhar',$data);
+	$this->load->view('footer');
 
+	}
+	else
+	{
+		redirect(base_url('admin/login'));
+	}
+}
+
+public function aadhar_update($param){
+			
+	$response = $this->admin_model->aadhar_update($param);
+
+	$dt['student.student_id'] = $param;
+	$student_detail = $this->Common_model->student_data($dt);
+
+	$aadhar_no = wordwrap($student_detail[0]['adhar_no'], 4, ' ',true);
+
+	echo json_encode(array(
+	"status" => 'true',
+	"res" => $aadhar_no
+	
+	));
+	//redirect(base_url().'admin/enrollment/student_report');
+}
+
+public function checkDuplicateAdharNo()
+	{
+		$adhar_no = $this->input->post('adhar_no');
+		$where = array('adhar_no'=>$adhar_no,'course_complete'=>'N');
+		$count = $this->Common_model->getCountByWhere('student',$where);
+		if($count>0){
+			echo "Duplicate Adhar Card Number";
+		}
+	}
 
 
 
