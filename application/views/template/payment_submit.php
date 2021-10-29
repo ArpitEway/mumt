@@ -2,7 +2,7 @@
 <form action="<?=$action; ?>" method="post" name="payuForm" >
 
     <input type="hidden" name="key" value="<?=$key ?>" />
-
+    
     <input type="hidden" name="hash" value="<?=$hash ?>"/>
 
     <input type="hidden" name="txnid" value="<?=$txnid ?>" /> 

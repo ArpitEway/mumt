@@ -1,7 +1,7 @@
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-
+<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 <table id="mytable" class="table">
 			<thead>
 				<tr>
@@ -32,7 +32,7 @@
 				</td>
 				<td>		 
                 	<div style="display: inline-flex;">
-						<a href="javascript:void(0);" class="dropdown-item" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/center/center_heading_edit_view/'.$heading['id']); ?>', '<?php echo 'Update heading' ?>')"> <i class="mdi mdi-pencil edit-icon"></i></a>   
+						<a href="javascript:void(0);" class="dropdown-item" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/institute/institute_heading_edit_view/'.$heading['id']); ?>', '<?php echo 'Update heading' ?>')"> <i class="mdi mdi-pencil edit-icon"></i></a>   
 						<a href="javascript:void(0);" id="delete" class="dropdown-item" onclick="delete_heading(<?php echo $heading['id']; ?>,this);" ?> <i class="mdi mdi-delete delete-icon"></i></a>
                 	</div>
                 </td>
@@ -56,7 +56,7 @@ $sortable.sortable({
 	stop:function(event, ui){
 		var parameters = $sortable.sortable("toArray");
 		console.log(parameters);
-		$.post("<?php echo BASE_URL(); ?>admin/admins/update_student_menu_heading_order", {
+		$.post("<?php echo base_url(); ?>admin/admins/update_student_menu_heading_order", {
 		value:parameters},function(result){
 			toastr.success(result);
 		});
@@ -70,7 +70,7 @@ function delete_heading(para1,param)
 	
 	if (confirm('Are you sure ?')) {
 	
-	var url = '<?php echo BASE_URL('admin/Admins/add_student_menu_heading/delete/'); ?>'+para1;
+	var url = '<?php echo base_url('admin/Admins/add_student_menu_heading/delete/'); ?>'+para1;
         $.ajax({
             type : 'GET',
             url: url,
@@ -126,7 +126,7 @@ $(document).on('change', '.status_checks', function(e) {
 			}; 
 			
 			var target = $(this).attr("data-target");
-			var url = BASE_URL + "admin/Admins/update_student_heading_status";
+			var url = base_url + "admin/Admins/update_student_heading_status";
 			var response = call_ajax(data, url);
 			if(response.status == true) 
 			{
@@ -141,7 +141,7 @@ $(document).on('change', '.status_checks', function(e) {
 			};
 			
 			var target = $(this).attr("data-target");
-			var url = BASE_URL + "admin/Admins/update_student_heading_status";
+			var url = base_url + "admin/Admins/update_student_heading_status";
 			var response = call_ajax(data, url);
 			if(response.status == true) {
 				

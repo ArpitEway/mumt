@@ -1,8 +1,6 @@
-
-<form method="POST" class="d-block ajaxForm" >
-    
+<form method="POST" class="d-block ajaxForm" >    
 	<div class="form-row">
-		
+		<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
         <div class="form-group col-md-4">
         <label for="name">Heading name</label>
         <input type="text" class="form-control" id="heading_name" name="heading_name"  placeholder="Enter heading">
@@ -52,7 +50,7 @@
 				</td>
 				<td>		
                 	<div style="display: inline-flex;">
-						<a href="javascript:void(0);" class="dropdown-item" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/center/center_heading_edit_view/'.$heading['id']); ?>', '<?php echo 'Update heading' ?>')"> <i class="mdi mdi-pencil edit-icon"></i></a>   
+						<a href="javascript:void(0);" class="dropdown-item" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/institute/institute_heading_edit_view/'.$heading['id']); ?>', '<?php echo 'Update heading' ?>')"> <i class="mdi mdi-pencil edit-icon"></i></a>   
 						<a href="javascript:void(0);" id="delete" class="dropdown-item" onclick="delete_heading(<?php echo $heading['id']; ?>,this);" ?> <i class="mdi mdi-delete delete-icon"></i></a>
                 	</div>
                 </td>
@@ -76,7 +74,7 @@ $sortable.sortable({
 	stop:function(event, ui){
 		var parameters = $sortable.sortable("toArray");
 		console.log(parameters);
-		$.post("<?php echo BASE_URL(); ?>admin/admins/update_student_menu_heading_order", {
+		$.post("<?php echo base_url(); ?>admin/admins/update_student_menu_heading_order", {
 		value:parameters},function(result){
 			toastr.success(result);
 		});
@@ -89,7 +87,7 @@ function delete_heading(para1,param)
 	
 	if (confirm('Are you sure ?')) {
 	
-	var url = '<?php echo BASE_URL('admin/Admins/add_center_menu_heading/delete/'); ?>'+para1;
+	var url = '<?php echo base_url('admin/Admins/add_institute_menu_heading/delete/'); ?>'+para1;
         $.ajax({
             type : 'GET',
             url: url,
@@ -143,7 +141,7 @@ $(document).on('change', '.status_checks', function(e) {
 			}; 
 			
 			var target = $(this).attr("data-target");
-			var url = BASE_URL + "admin/Admins/update_center_heading_status";
+			var url = base_url + "admin/Admins/update_institute_heading_status";
 			var response = call_ajax(data, url);
 			if(response.status == true) 
 			{
@@ -158,7 +156,7 @@ $(document).on('change', '.status_checks', function(e) {
 			};
 			
 			var target = $(this).attr("data-target");
-			var url = BASE_URL + "admin/Admins/update_center_heading_status";
+			var url = base_url + "admin/Admins/update_institute_heading_status";
 			var response = call_ajax(data, url);
 			if(response.status == true) {
 				
@@ -209,7 +207,7 @@ $("#heading_submit").on('click',function (e){
 	var frm = $('.ajaxForm').serialize();
 		
 	$.ajax({
-		url: '<?php echo site_url('admin/admins/add_center_menu_heading/create'); ?>',
+		url: '<?php echo site_url('admin/admins/add_institute_menu_heading/create'); ?>',
 		type: 'POST',
 		dataType : 'json',
 		data: frm,
@@ -217,7 +215,7 @@ $("#heading_submit").on('click',function (e){
 			
 		if(datas.status == "true"){
 			    var data = "";
-				var url = BASE_URL+"admin/Admins/get_center_heading_data"; 
+				var url = base_url+"admin/Admins/get_institute_heading_data"; 
 				var response = call_ajax(data,url);
 
 				$('#heading_name').val("");	

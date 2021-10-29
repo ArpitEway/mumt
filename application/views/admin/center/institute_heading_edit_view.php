@@ -1,12 +1,10 @@
 <?php
-$menu_headings = $this->db->get_where('center_menu_heading', array('id' => $param1))->result_array();
+$menu_headings = $this->db->get_where('institute_menu_heading', array('id' => $param1))->result_array();
 
 foreach($menu_headings as $menu_heading): ?>
-
-<form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/Admins/add_center_menu_heading/update/'.$menu_heading['id']); ?>">
-    
+<form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/Admins/add_institute_menu_heading/update/'.$menu_heading['id']); ?>">
 	<div class="form-row">
-		
+		<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
         <div class="form-group col-md-4">
             <label for="name">Heading name</label>
             <input type="text" class="form-control" value="<?php echo $menu_heading['heading']; ?>" id="heading_name"  name="heading_name" required placeholder="Enter heading">
@@ -29,7 +27,7 @@ foreach($menu_headings as $menu_heading): ?>
 	var frm = $('.ajaxForm').serialize();
 		
 	$.ajax({
-		url: '<?php echo site_url('admin/admins/add_center_menu_heading/update/'.$param1); ?>',
+		url: '<?php echo site_url('admin/admins/add_institute_menu_heading/update/'.$param1); ?>',
 		type: 'POST',
 		dataType : 'json',
 		data: frm,
@@ -41,7 +39,7 @@ foreach($menu_headings as $menu_heading): ?>
 			admin_id : $("#admin_id").val(),
 			};
 				
-			var url = BASE_URL+"admin/Admins/get_center_heading_data"; 
+			var url = base_url+"admin/Admins/get_institute_heading_data"; 
 			var response = call_ajax(data,url);
 			console.log(response);
 				

@@ -5,9 +5,9 @@ $accounts = $this->db->get_where('admin_master', array('id' => $param1))->result
 foreach($accounts as $account): ?>
 
 <form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/Admins/account_register/update/'.$param1); ?>">
-
+    <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
     <div class="form-row">
-	
+	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
         <div class="form-group col-md-6">
             <label for="name">Name</label>
             <input type="text" class="form-control" value="<?php echo $account['name']; ?>" id="name" name = "name" required placeholder="Enter name">
@@ -23,8 +23,8 @@ foreach($accounts as $account): ?>
             <input type="text" class="form-control" value="<?php echo $account['designation']; ?>" id="designation" name = "designation" required placeholder="Enter designation">
         </div>
 		<div class="form-group col-md-6">
-            <label for="name">Email</label>
-            <input type="text" class="form-control" value="<?php echo $account['email']; ?>" id="email" name = "email" required placeholder="Enter email">
+            <label for="name">Username</label>
+            <input type="text" class="form-control" value="<?php echo $account['user_name']; ?>" id="user_name" name = "user_name" required placeholder="Enter Username">
             
         </div>
 		

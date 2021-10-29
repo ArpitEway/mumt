@@ -7,7 +7,7 @@ foreach($menus as $menu): ?>
 <form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/Admins/add_menu/update/'.$menu['id']); ?>">
 
 <div class="form-row">
-
+<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 		  <div class="form-group col-md-4">
 				<label for="course">Select admin</label>
 				<select name="admin_id" id="admin_id" class="form-control admin_id">
@@ -83,8 +83,9 @@ foreach($menus as $menu): ?>
 
 	$("#edit_menu_submit").on('click',function (e){
 	
-	var frm = $('.ajaxForm').serialize();
-		
+		var frm = $('.ajaxForm').serialize();
+		var csrfName = $('.csrfname').attr('name');
+		var csrfHash = $('.csrfname').val(); 
 	$.ajax({
 		url: '<?php echo site_url('admin/admins/add_menu/update/'.$param1); ?>',
 		type: 'POST',
@@ -96,6 +97,7 @@ foreach($menus as $menu): ?>
 			
 			var data = {
 			admin_id : $("#admin_id").val(),
+			[csrfName]:csrfHash,
 			};
 				
 			var url = BASE_URL+"admin/Admins/get_menu_data"; 
@@ -105,8 +107,6 @@ foreach($menus as $menu): ?>
 			$('#dt').html(response.data);
 			$('#right-modal').modal('toggle');
 			toastr.success("Menu Updated Successfully");
-			
-			
 		}else{
 			toastr.error("Something wrong");
 		}

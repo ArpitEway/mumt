@@ -4,7 +4,7 @@ $menus = $this->db->get_where('student_menu', array('id' => $param1))->result_ar
 foreach($menus as $menu): ?>
 
 <form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/Admins/student_add_menu/update/'.$menu['id']); ?>">
-
+<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 <div class="form-row">
 
 		 

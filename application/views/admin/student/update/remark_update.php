@@ -1,4 +1,3 @@
-
 <style>
 
 .chk{
@@ -12,7 +11,7 @@
 }
 </style> 
 <form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/enrollment/student_doc_update/'.$param1); ?>">
-
+<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 <div class="form-check text-justify" >
 <?php
 
@@ -23,13 +22,13 @@ $course = $this->db->get_where('course_group', array("id" => $course_group_id))-
 
 $document_id = $course['document_id'];
 
-$documnets = $this->db->get_where('document_category', "document_id in (".$document_id." , 0)" )->result_array();
+$documnets = $this->db->get_where('document_category', "category in (".$document_id." , 0)" )->result_array();
 
 foreach($documnets as $doc){
 ?>
 	<div>
-	<input type="checkbox" id="remark1" value="<?php echo $doc['id']; ?>" class="form-check-input chk" name="remark[]" >
-	<label for="remark1" class="chk_label"><?php echo $doc['document_name']; ?><?php if($doc['status'] == "Y"){ ?><span style="color:red;" ><b>*</b></span><?php } ?></label>
+	<input type="checkbox" id="remark<?=$doc['id']; ?>" value="<?php echo $doc['id']; ?>" class="form-check-input chk" name="remark[]" >
+	<label for="remark<?=$doc['id']; ?>" class="chk_label"><?php echo $doc['document']; ?><?php if($doc['status'] == "Y"){ ?><span style="color:red;" ><b>*</b></span><?php } ?></label>
 	</div>
 	
 <?php } ?>

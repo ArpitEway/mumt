@@ -34,13 +34,13 @@ class Common_Model extends CI_Model{
 
 	function getStudentRemarkNameById($id){
 
-		$qry = $this->db->select("document_name");
+		$qry = $this->db->select("document");
 		
 		$qry = $this->db->where("id",$id);
 
 		$qry = $this->db->get("document_category");
 		
-		$document_name = $qry->row()->document_name;
+		$document_name = $qry->row()->document;
 		
 		return $document_name;
 		
@@ -200,7 +200,7 @@ class Common_Model extends CI_Model{
 		return $qry->result_array();
 
 	}
-	
+
 	function student_data($where = "",$group_by = ""){
 		
 		if($group_by != ""){
@@ -211,7 +211,6 @@ class Common_Model extends CI_Model{
 		}
 		$this->db->from("student");
 		$this->db->where($where);
-		$this->db->where("student_data.p_mobile_no != ","");
 		$this->db->join("student_data", "student.student_id = student_data.student_id", 'left'); 
 		$query = $this->db->get();
 		

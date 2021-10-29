@@ -1,3 +1,4 @@
+<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 <div class="container mt-5">
 <div class="text-right py-3">
 <a type="button" style="margin-left: 10px;" class="btn btn-outline-primary btn-rounded alignToTitle" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/paper/create'); ?>', 'Create paper')"  >Create paper</a>

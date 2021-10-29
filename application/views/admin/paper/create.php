@@ -1,6 +1,6 @@
 <form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/Admins/paper/create'); ?>">
     <div class="form-row" id="addedRows">
-	
+	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
         <div class="form-group col-md-6">
             <label for="course">Course</label>
             <select name="course_group_id" id="course_group_id" class="form-control course_group_id" data-target="#class_id" required >
@@ -80,9 +80,12 @@
 $(document).on("change", "#class_id", function() {
 	
 		var type = $('option:selected', this).attr('data-type');
+		var csrfName = $('.csrfname').attr('name');
+		var csrfHash = $('.csrfname').val(); 
 		var data = {
 			id: $(this).val(),
-			course_group_id: $("#course_group_id").val()
+			course_group_id: $("#course_group_id").val(),
+			[csrfName]:csrfHash
 		};
 		var target = $(this).attr("data-target");
 		var url = BASE_URL + "admin/Admins/get_paper_code";
@@ -95,10 +98,12 @@ $(document).on("change", "#class_id", function() {
 		} 
 });
 $(document).on("change", "#course_group_id", function() {
-	
+	var csrfName = $('.csrfname').attr('name');
+		var csrfHash = $('.csrfname').val(); 
 		var type = $('option:selected', this).attr('data-type');
 		var data = {
-			id: $(this).val()
+			id: $(this).val(),
+			[csrfName]:csrfHash
 		};
 		var target = $(this).attr("data-target");
 		var url = BASE_URL + "admin/Admins/get_class_list_by_course";
@@ -114,12 +119,13 @@ $(document).on("change", ".ce", function() {
 		
 		var opt = $(this).val();
 		var target = $(this).attr("data-target");
-		
+		var csrfName = $('.csrfname').attr('name');
+		var csrfHash = $('.csrfname').val(); 
 		if(opt == "elective")
 		{
-		
 			var data = {
-				id: $("#class_id").val()
+				id: $("#class_id").val(),
+				[csrfName]:csrfHash
 			};
 			$i = 1;
 			var url = BASE_URL + "admin/Admins/get_group_by_class";
@@ -142,15 +148,15 @@ $(document).on("change", ".add_ce", function() {
 		
 		var opt = $(this).val();
 		var target = $(this).attr("data-target");
-		
+		var csrfName = $('.csrfname').attr('name');
+		var csrfHash = $('.csrfname').val(); 
 		if(opt == "elective")
 		{
-			
-			
 			var v = $(this).closest('div').siblings('.add_div').html()
 			
 			var data = {
-			id: $("#class_id").val()
+			id: $("#class_id").val(),
+			[csrfName]:csrfHash
 			};
 			$i = 1;
 			var url = BASE_URL + "admin/Admins/get_group_by_class";

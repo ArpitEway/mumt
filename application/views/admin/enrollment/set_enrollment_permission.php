@@ -1,4 +1,5 @@
 <form method="post" action="" class="mt-3" >
+<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	<div class="table-responsive">
 		<table class="table table-hover">
 			<thead>

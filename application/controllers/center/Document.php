@@ -2,8 +2,8 @@
 	defined('BASEPATH') OR exit('No direct script access allowed');
 	
 	class Document extends CI_Controller {
-		
 		function __construct(){
+
 			parent::__construct();
 			$this->load->model('Common_model');
 			$this->load->model('Center/center_model');
@@ -14,20 +14,21 @@
 		}
 
 	public function index(){
+		$csrf = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
 		$titleData = array('title' => 'Upload Admission Document List'); 
 		$this->load->view('Centers/header',$titleData);	
-		$this->load->view('Centers/upload_admission_documnet');	
+		$this->load->view('Centers/upload_admission_document',$csrf);	
 		$this->load->view('Centers/footer');
 	}
 
-	public function list()
-	{
-		$data = $row = array();
-		$where = 'document_uploaded!="Y" and payment_status="Y"';
-		
+	public function Doc_list(){
+			$data = array();
+		$where = 'document_uploaded!="Y" and payment_status="Y" and center_id='.$this->session->center_id;
 		$column_order = array('student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name',null);
 		$column_search = array('student','enrollment_no', 'name', 'f_h_name', 'course_name','class_name');
-
 		$DataTableArray = array(
 			'column_order' => $column_order,
 			'column_search' => $column_search,
@@ -51,10 +52,14 @@
 		);
 
 		// Output to JSON format
-		echo json_encode($output);		
+		echo json_encode($output);	
 	}
 
 		public function upload($student_id){
+			$csrf = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
 			$titleData = array('title'=>'Upload Admission Document');
 			$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 			$where = 'student_id='.$student_id;
@@ -69,7 +74,9 @@
 			'courseData' => $courseData,
 			'documentData' => $documentData,
 			'student' => $student,
-			);
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
 			$this->load->view('centers/header',$titleData);
 			$this->load->view('centers/document',$data);
 			$this->load->view('centers/footer');
@@ -245,21 +252,4 @@
 			echo json_encode($msg);
 			exit();
 		}
-		// public function list()
-		// {
-		// 	$user_id = $this->session->Users_id;
-
-		// 	$userData = $this->Common_model->getRecordByWhere('user_enquiry',array('id'=>$user_id));
-		// 	$student_id = $userData[0]->student_id;
-		// 	if($student_id != '')
-		// 	{
-
-		// 		$students = $this->Common_model->getRecordByWhere('student','student_id in ('.$student_id.')');
-		// 		$data['students'] = $students;
-		// 		$this->load->view('students/header',$titleData);
-		// 		$this->load->view('students/document_list',$data);
-		// 		$this->load->view('students/footer');
-
-		// 	}
-		// }
 	}

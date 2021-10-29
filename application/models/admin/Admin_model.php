@@ -681,7 +681,7 @@ class Admin_model extends CI_Model {
         $data['name'] = html_escape($this->input->post('name'));
 		$data['account_type'] = html_escape($this->input->post('account_type'));
 		$data['designation'] = html_escape($this->input->post('designation'));
-		$data['email'] = html_escape($this->input->post('email'));
+		$data['user_name'] = html_escape($this->input->post('user_name'));
 		$data['password'] = md5($this->input->post('password'));
 		
         $this->db->insert('admin_master', $data);
@@ -700,7 +700,7 @@ class Admin_model extends CI_Model {
 		$data['name'] 		  = html_escape($this->input->post('name'));
 		$data['account_type'] = html_escape($this->input->post('account_type'));
 		$data['designation']  = html_escape($this->input->post('designation'));
-		$data['email'] 		  = html_escape($this->input->post('email'));
+		$data['user_name'] = html_escape($this->input->post('user_name'));
 		$data['password'] 	  = md5($this->input->post('password'));
 		
 		$this->db->where('id', $param1);
@@ -742,44 +742,12 @@ class Admin_model extends CI_Model {
 	public function student_approve($param1 = '')
 	{
 	    $students = $this->db->get_where('student', array('student_id' => $param1))->row_array();
-		
-		if($students['document_uploaded'] == "Y" && $students['payment_status'] == "Y"){
-		
 		$data['remark'] = "N";
 		$data['approved'] = "Y";
-				
 		$this->db->where('student_id', $param1);
 		$this->db->update('student', $data);
-
-		$new_student_id = $param1;
-
-		$student 	  = $this->Common_model->getRecordById('student','student_id',$new_student_id);
-		$class_id 	  = $student->class_id;
-		$course 	  = $student->course_group_id;
-		$student_name = $student->name;
-		$gender 	  = $student->gender;
-
-		$program_fees = $this->Common_model->getStudentProgramFeeByClass($course,$class_id,$gender);
-
-		$OnlinePayTxnData = array('student_id' => $new_student_id,'fees_head' => 'Program Fees','amount' => $program_fees,'course_group_id' => $course,'class_id' => $class_id,'student_name' => $student_name,'payment_status' => 'pending' );
-
-		$OnlinePayTxn = $this->Common_model->insertAll('online_payment_transaction',$OnlinePayTxnData);
-
-		$response = array(
-					 'status' => 'true'
-				 );
-
+		$response = array('status' => 'true');
 		return json_encode($response);
-
-
-		
-		}else{
-			$response = array(
-					 'status' => "false"
-				 );
-
-			return json_encode($response);
-		}
 	}
 	
 	public function account_delete($param1 = '')
@@ -848,7 +816,6 @@ class Admin_model extends CI_Model {
 	
 	public function create_center($data)
     {
-        
         $this->db->insert('center', $data);
         $center_id = $this->db->insert_id();
         $response = array(
@@ -856,6 +823,7 @@ class Admin_model extends CI_Model {
         			);
         return json_encode($response);
     }
+
 	public function center_update($param1 = '',$data)
 	{
 	    
@@ -1008,15 +976,38 @@ class Admin_model extends CI_Model {
 			$count = $qry->row()->cnt;
 			$count = $count + 1;
 			if($count < 10){
-				$center_code = "MPSVV0".$count;	
+				$center_code = "IC0".$count;	
 			}else{
-				$center_code = "MPSVV".$count;
+				$center_code = "IC".$count;
 			}	
 			return $center_code;
 		}else{
 			return "MPSVV01";
 		}
 	}
+
+
+	public function aadhar_update($param1 = '')
+	{
+	    
+		$aadhar_no = html_escape($this->input->post('aadhar_number'));
+		
+		$data['adhar_no'] = $this->input->post('aadhar_number');
+	
+		$this->db->where('student_id', $param1);
+		$this->db->update('student', $data);
+		
+		$response = array(
+			'status' => true
+		);
+
+		return json_encode($response);
+	}
+
+
+
+
+
 }
 
 ?>

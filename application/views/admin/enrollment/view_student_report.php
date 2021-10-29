@@ -1,6 +1,7 @@
 <div class="">
 <div class="row mt-5">
 <div class="form-group col-md-3">
+	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	<label for="class">Session</label>
     <select name="session" id="session" class="form-control" >
     	<option>All</option>
@@ -60,12 +61,14 @@
 <script>
 
 $(document).on("click","#submit_btn",function(){
-	
+	var csrfName = $('.csrfname').attr('name');
+	var csrfHash = $('.csrfname').val(); 
 	var data = {
 		session : $("#session").val(),
 		course_group_id : $("#course_group_id").val(),
 		class_id : $("#class_id").val(),
-		approved : $("#approved").val()
+		approved : $("#approved").val(),
+		[csrfName]:csrfHash
 	};
 	var url = BASE_URL+"admin/enrollment/get_student_data"; 
 	var response = call_ajax(data,url);

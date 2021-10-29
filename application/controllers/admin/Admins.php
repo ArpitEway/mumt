@@ -59,7 +59,10 @@ class Admins extends CI_Controller {
 		}else
 		{
 			
-			$data = array();
+			$data = array('course_group' => $course_group,
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash()
+			);
 			$dt = array();
 			$dt['title'] = "Add Menu Heading";
 			$data['admins'] = $this->db->get_where('admin_master', array())->result_array();
@@ -172,6 +175,9 @@ class Admins extends CI_Controller {
 
 			if(empty($param1))
 			{
+				$data['name_csrf'] = $this->security->get_csrf_token_name();
+				$data['hash_csrf'] = $this->security->get_csrf_hash();
+			
 				$this->load->view('header');
 				$this->load->view('admin/menu/add_menu',$data);
 				$this->load->view('footer');
@@ -232,7 +238,11 @@ class Admins extends CI_Controller {
 			redirect(base_url('admin/'.$this->session->account_type));
 			exit;
 		}
-		$this->load->view('admin/login');
+		$csrf = array(
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash()
+			);
+		$this->load->view('admin/login',$csrf);
 	}
 
 
@@ -248,7 +258,11 @@ class Admins extends CI_Controller {
 
 		if ($this->form_validation->run() == FALSE)
 		{
-			$this->load->view('admin/login');
+			$csrf = array(
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash()
+			);
+			$this->load->view('admin/login',$csrf);
 		}
 		else
 		{
@@ -264,7 +278,10 @@ class Admins extends CI_Controller {
 				$this->session->set_userdata($data);
 				redirect(base_url('admin/'.$check_user->account_type));
 			}else{
-				$data = array('error'=> "USERNAME AND PASSWORD ARE  INCORRECT");
+				$data = array('error'=> "USERNAME AND PASSWORD ARE  INCORRECT",
+					'name_csrf' => $this->security->get_csrf_token_name(),
+					'hash_csrf' => $this->security->get_csrf_hash()
+				);
 				$this->load->view('admin/login',$data);
 			}
 		}
@@ -302,8 +319,12 @@ class Admins extends CI_Controller {
 			if(empty($param1) ){
 				$data = array();
 				$data['title'] = "Session";
+				$csrf = array(
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash()
+			);
 				$this->load->view('header',$data);
-				$this->load->view('admin/session');
+				$this->load->view('admin/session',$csrf);
 				$this->load->view('footer');
 			}    
 
@@ -313,13 +334,11 @@ class Admins extends CI_Controller {
 	}
 	public function course($param1 = '', $param2 = '', $param3 = '')
 	{
-
 		if(!$this->session->has_userdata('adminData')){
 			redirect(base_url('admin'));
 			exit;
 		}else
 		{
-
 			if($param1 == 'create'){
 
 				$response = $this->admin_model->create_course();
@@ -344,8 +363,12 @@ class Admins extends CI_Controller {
 			if(empty($param1) ){
 				$data = array();
 				$data['title'] = "Course";
+				$csrf = array(
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash()
+			);
 				$this->load->view('header',$data);
-				$this->load->view('admin/course');
+				$this->load->view('admin/course',$csrf);
 				$this->load->view('footer');
 			}    
 
@@ -390,7 +413,11 @@ class Admins extends CI_Controller {
 				$data = array();
 				$data['title'] = "Classes";
 				$this->load->view('header',$data);
-				$this->load->view('admin/classes');
+				$csrf = array(
+					'name_csrf' => $this->security->get_csrf_token_name(),
+					'hash_csrf' => $this->security->get_csrf_hash()
+				);
+				$this->load->view('admin/classes',$csrf);
 				$this->load->view('footer');
 			}    
 
@@ -435,7 +462,11 @@ class Admins extends CI_Controller {
 				$data = array();
 				$data['title'] = "Paper";
 				$this->load->view('header',$data);
-				$this->load->view('admin/paper');
+				$csrf = array(
+					'name_csrf' => $this->security->get_csrf_token_name(),
+					'hash_csrf' => $this->security->get_csrf_hash()
+				);
+				$this->load->view('admin/paper',$csrf);
 				$this->load->view('footer');
 			}    
 
@@ -445,7 +476,6 @@ class Admins extends CI_Controller {
 	}
 	public function paper_test($param1 = '', $param2 = '', $param3 = '')
 	{
-
 		if(!$this->session->has_userdata('adminData')){
 			redirect(base_url('admin'));
 			exit;
@@ -480,11 +510,8 @@ class Admins extends CI_Controller {
 				$this->load->view('header');
 				$this->load->view('admin/paper_test');
 				$this->load->view('footer');
-			}    
-
-
+			}
 		}
-
 	}
 	public function get_class_list_by_course()
 	{
@@ -666,7 +693,11 @@ class Admins extends CI_Controller {
 				if(empty($param1) ){
 					$data = array();
 					$this->load->view('header');
-					$this->load->view('admin/register_account');
+					$csrf = array(
+					'name_csrf' => $this->security->get_csrf_token_name(),
+					'hash_csrf' => $this->security->get_csrf_hash()
+				);
+					$this->load->view('admin/register_account',$csrf);
 					$this->load->view('footer');
 				}    
 
@@ -818,9 +849,6 @@ class Admins extends CI_Controller {
 				$data['headings'] = $this->Common_model->heading_data($dt);
 
 				$dt =  $this->load->view('admin/menu/getHeadingList',$data,true);
-
-
-
 				echo json_encode(array(
 					"status" => true,
 					"data" => $dt
@@ -868,8 +896,6 @@ class Admins extends CI_Controller {
 				$data['menus'] = $this->Common_model->menu_data($dt);
 				
 				$dt =  $this->load->view('admin/menu/getMenuList',$data,true);
-				
-				
 				echo json_encode(array(
 					"status" => true,
 					"data" => $dt
@@ -893,8 +919,6 @@ class Admins extends CI_Controller {
 				$data['menus'] = $this->Common_model->student_menu_data($dt);
 				
 				$dt =  $this->load->view('admin/student_menu/getMenuList',$data,true);
-				
-				
 				echo json_encode(array(
 					"status" => true,
 					"data" => $dt
@@ -902,22 +926,19 @@ class Admins extends CI_Controller {
 			}
 			
 		}
+
 		public function update_menu_heading_order()
 		{
 			$data["heading_order"] = [];
 			foreach($_POST["value"] as $key => $value){
-				
 				$data["heading_order"] = $key+1;
 				$where = 'id='.$value;
-				
-				$this->Common_model->updateRecordByConditions('menu_heading',$where,$data); 
-				
+				$this->Common_model->updateRecordByConditions('menu_heading',$where,$data);
 			}
-			
 			$this->session->set_flashdata('success','Order Updated.');
-			
 			echo "Order Updated";	
 		}
+
 		public function update_student_menu_heading_order()
 		{
 			$data["heading_order"] = []; 
@@ -929,9 +950,9 @@ class Admins extends CI_Controller {
 				$this->Common_model->updateRecordByConditions('student_menu_heading',$where,$data); 
 			}
 			$this->session->set_flashdata('success','Order Updated.');
-			
 			echo "Order Updated";	
 		}
+
 		public function update_menu_order()
 		{
 			$data["menu_order"] = [];
@@ -941,13 +962,13 @@ class Admins extends CI_Controller {
 				$where = 'id='.$value;
 				
 				$this->Common_model->updateRecordByConditions('menu',$where,$data); 
-				
 			}
 			
 			$this->session->set_flashdata('success','Order Updated.');
 			
 			echo "Order Updated";	
 		}
+
 		public function update_student_menu_order()
 		{
 			$data["menu_order"] = [];
@@ -971,18 +992,6 @@ class Admins extends CI_Controller {
 			redirect(base_url());
 		}
 		
-		/* 	public function updateCourseCategory()
-		{
-			$students = $this->Common_model->get_record('student','*');
-			
-			foreach($students as $student){
-				$category = $this->Common_model->getSinglefield('course_group','category','id='.$student['course_group_id']);
-				$data = array('course_category'=>$category);
-				$where = 'student_id='.$student['student_id'];
-				$this->Common_model->updateRecordByConditions('student',$where,$data);
-			}
-		} */
-		
 		public function centers($param1 = '', $param2 = '', $param3 = '')
 		{
 			if(!$this->session->has_userdata('adminData')){
@@ -994,28 +1003,28 @@ class Admins extends CI_Controller {
 
 				$data['center_name'] = html_escape($this->input->post('center_name'));
 
-		// $data['address'] = html_escape($this->input->post('address'));
+				$data['address'] = html_escape($this->input->post('address'));
 
-				$data['state'] = html_escape($this->input->post('state'));
+				$data['pin_code'] = html_escape($this->input->post('pin_code'));
 
-				$data['district'] = html_escape($this->input->post('district'));
+				$data['state_id'] = html_escape($this->input->post('state'));
+
+				$data['distt_id'] = html_escape($this->input->post('district'));
 
 				$data['city'] = html_escape($this->input->post('city'));
 
-				$data['contact_person'] = html_escape($this->input->post('contact_person'));
-				$data['contact_person_2'] = html_escape($this->input->post('contact_person_2'));
+				$data['contactpersonname'] = html_escape($this->input->post('contact_person'));
 
 				$data['email'] = html_escape($this->input->post('email'));
 
 				$data['password'] = html_escape($this->input->post('password'));
 
-				$data['mobile_no'] = html_escape($this->input->post('mobile_no'));
+				$data['mobile_no_1'] = html_escape($this->input->post('mobile_no'));
+
 				$data['mobile_no_2'] = html_escape($this->input->post('mobile_no_2'));
 
-				$data['other_mobile_no'] = html_escape($this->input->post('other_mobile_no'));
-				$data['other_mobile_no_2'] = html_escape($this->input->post('other_mobile_no_2'));
-
 				$data['status'] = html_escape($this->input->post('status'));
+
 				if($param1 == 'create'){
 					$response = $this->admin_model->create_center($data);
 					echo json_encode(array("status" => 'true'));
@@ -1026,18 +1035,21 @@ class Admins extends CI_Controller {
 				}
 				if($param1 == 'delete'){
 					$response = $this->admin_model->center_delete($param2);
-					$this->session->set_flashdata('ajax_flash_message','center Deleted Successfully ');
+					$this->session->set_flashdata('ajax_flash_message','Center Deleted Successfully ');
 
 					redirect(base_url().'admin/Admins/centers');
 				}
+
 				if(empty($param1) ){
 
 					$data = array();
-
-					$data['title'] = "center";
+					$data['title'] = "Center";
 					$data['center_code'] = $this->admin_model->getcenterCode();
 					$this->load->view('header',$data);
 					$data['center'] = $this->Common_model->get_record('center','');
+
+					$data['name_csrf'] = $this->security->get_csrf_token_name();
+					$data['hash_csrf'] = $this->security->get_csrf_hash();
 					$this->load->view('admin/center',$data);
 					$this->load->view('footer');
 				}
@@ -1082,7 +1094,9 @@ class Admins extends CI_Controller {
 				if(!empty($param1) && $param1 != 'allot' ){
 					$data = array();
 					$data['courses'] = $this->db->get_where("course_group", array())->result_array();
-					$data['center_id'] = $param1; 
+					$data['center_id'] = $param1;
+					$data['name_csrf'] = $this->security->get_csrf_token_name();
+					$data['hash_csrf'] = $this->security->get_csrf_hash();
 					$this->load->view('header');
 					$this->load->view('admin/allot_course_to_centers',$data);
 					$this->load->view('footer');
@@ -1099,12 +1113,10 @@ class Admins extends CI_Controller {
 				$count = 0;
 				$class_id = $this->input->post("id");
 				$course_group_id = $this->input->post("course_group_id");
-				
 				if($class_id) 
 				{
 					$data = $this->Common_model->getPaperCode($course_group_id,$class_id);
 				}
-				
 				echo json_encode(array(
 					"status" => "true",
 					"data" => $data
@@ -1115,28 +1127,25 @@ class Admins extends CI_Controller {
 
 		public function login_section()
 		{
-
 			if(!$this->session->has_userdata('adminData'))
 			{
 				redirect(base_url('admin'));
 
 				exit;
-
 			}else{
 
 				$data = array();
-
 				$data['users'] = $this->db->get_where("admin_master", array('status' => 'Y'))->result_array();
 				$this->load->view('header');
+				$data['name_csrf'] = $this->security->get_csrf_token_name();
+				$data['hash_csrf'] = $this->security->get_csrf_hash();
 				$this->load->view('admin/login_section',$data);
 				$this->load->view('footer');
-
 			}
 		}
 
 		public function check_login()
 		{
-
 			if ($this->input->method() == "post") 
 			{
 				$adminData = $this->input->post('username'); 
@@ -1151,6 +1160,8 @@ class Admins extends CI_Controller {
 					$this->session->set_userdata($data);
 				}else{
 					$data = array('error'=> "username INCORRECT");
+					$data['name_csrf'] = $this->security->get_csrf_token_name();
+					$data['hash_csrf'] = $this->security->get_csrf_hash();
 					$this->load->view('admin/login',$data);
 				}
 
@@ -1169,42 +1180,6 @@ class Admins extends CI_Controller {
 				'all' => 'All',
 			);	
 			echo $this->load->view('template/getclass',$data,true);
-		}
-
-		public	function center_add_enrollment(){
-			if(!$this->session->has_userdata('adminData')){
-				redirect(base_url('admin'));
-				exit;
-			}else{
-
-				$data = array();
-				$this->load->view('header');
-				$this->load->view('admin/enrollment/add_student_by_enrollment');
-				$this->load->view('footer');
-			}
-		}
-
-
-		public function check_enrollment_ajax(){
-			$enroll_is = $this->input->post('st_enrollment');
-
-			if ($this->input->method() == "post") 
-			{
-				$enroll_is = $this->input->post('st_enrollment'); 
-				$isEnroll = $this->admin_model->checkStudentEnrollment($enroll_is);
-				$student_id = $isEnroll->student_id;
-				$edit = array('enrollment_no'=>$isEnroll->enrollment_no);
-				if($isEnroll){
-					$data = array('msg'=> "Already Exist",'status'=>false);
-				}
-				else{
-					$resp = $this->admin_model->enrollment_insert_is($enroll_is);
-					$data = array('msg'=> "Added Successfully",'status'=>true);
-				}
-			    // 
-				echo json_encode($data);
-			}
-
 		}
 
 		public function add_center_menu_heading($param1 = '', $param2 = '')
@@ -1237,6 +1212,8 @@ class Admins extends CI_Controller {
 				$dataTitle['title'] = "Add center Menu Heading";	
 					$data['headings'] = $this->Common_model->center_menu_heading_data();
 					$this->load->view('header',$dataTitle);
+					$data['name_csrf'] = $this->security->get_csrf_token_name();
+					$data['hash_csrf'] = $this->security->get_csrf_hash();
 					$this->load->view('admin/center/center_menu_heading_view',$data);
 					$this->load->view('footer');
 				}
@@ -1252,9 +1229,7 @@ class Admins extends CI_Controller {
 			{
 				$admin_id = 0;
 				$data = array();
-
 				$data['headings'] = $this->Common_model->center_menu_heading_data();
-
 				$viewData =  $this->load->view('admin/center/headingListView',$data,true);
 
 				echo json_encode(array(
@@ -1279,7 +1254,6 @@ class Admins extends CI_Controller {
 
 					$status = true;
 					$msg    = "";
-
 					echo json_encode(array(
 						"status" => $status,
 						"msg" => $msg,
@@ -1298,8 +1272,6 @@ public function update_session_unpaid_permission_status()
             $id    	= 0;
             $id    	= $this->input->post("id");
 			$status = $this->input->post("status");
-
-			
             if ($this->input->post("id")) 
 			{
 				$data = $this->Common_model->updateRecordByConditions("session",array("id" => $id ),array("unpaid_permission" => $status ));
@@ -1312,9 +1284,6 @@ public function update_session_unpaid_permission_status()
 				}else{
 				$sts_btn = '<input type="button" name="update_stats" data-id='.$id.' class="btn btn-danger unpaid_permission_check" value="No">';
 				}
-
-
-
 				$status = true;
 				$msg    = "";
 				
@@ -1348,8 +1317,6 @@ public function update_doc_permission_status()
 				}else{
 				$sts_btn = '<input type="button" name="update_doc_stats" data-id='.$id.' class="btn btn-danger doc_permission_check" value="No">';
 				}
-
-
 				$status = true;
 				$msg    = "";
 				
@@ -1360,14 +1327,8 @@ public function update_doc_permission_status()
 				));
 			}
 	}
-
-	
-
 }
-
-     //work shifting of master into admin-----------
-
-          public function consolidate_report(){
+	public function consolidate_report(){
 		$dt = array();
 		$dt['title'] = "Student Consolidate Report";
 		$this->load->view('header',$dt);
@@ -1395,9 +1356,7 @@ public function update_doc_permission_status()
 			$program_fees  	  = $this->input->post("program_fees");
 			$session 		  = $this->input->post("session");
 
-			if($course_group_id != "all"){	 
-
-
+			if($course_group_id != "all"){
 				$dt['course_group_id'] = $course_group_id;
 			}
 			if($session != "All"){	 
@@ -1414,7 +1373,6 @@ public function update_doc_permission_status()
 
 				$dt['program_fees'] = $program_fees;
 			}
-
 			if($form_status != "all"){
 
 				$dt['form_status'] = $form_status;
@@ -1442,7 +1400,6 @@ public function update_doc_permission_status()
 			if($filter == "count"){
 
 				$data['course_count'] = $this->Common_model->student_data_consolidate($dt,'course_group_id');
-
 			}
 			$dt = $this->load->view('admin/getStudentConsolidate',$data,true);
 			echo json_encode(array(
@@ -1455,15 +1412,19 @@ public function update_doc_permission_status()
 	public function show_form($student_id){
 		$data = array();
 		$data['student'] = $this->Common_model->student_info($student_id);
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();
 		$this->load->view('header',array('title' => 'Admission Form'));	
 		$this->load->view('template/form',$data);
 		$this->load->view('footer');
 	}
 
 		public function search_student(){
-		$data = array();
-		
 		$this->load->view('header',array('title' => 'Search Students'));	
+		$data = array(
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash()
+			);
 		$this->load->view('admin/search_student',$data);
 		$this->load->view('footer');
 	}
@@ -1481,8 +1442,11 @@ public function update_doc_permission_status()
 			
 			$course_group = $this->db->get_where('course_group', array())->result_array();
 	
-			$data = array('course_group' => $course_group);
-	
+			$data = array('course_group' => $course_group,
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash()
+			);
+			
 			$this->load->view('header');
 			$this->load->view('admin/course_detail',$data);
 			$this->load->view('footer');
@@ -1563,6 +1527,45 @@ public function update_doc_permission_status()
 		}
 	}
 
+	public function getStudentData()
+	{
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url('admin'));
+			exit;
+		}
+		
+		$text_val =$this->input->post('text_val');
+		$radio_val = $this->input->post('radio_val');
 
+		if($text_val !='')
+		{
+			if($text_val !='' && $radio_val == 'enrollment_no')
+			{
+				$where = array('enrollment_no'=>$text_val);
+
+			}else if($text_val !='' && $radio_val == 'student_id')
+			{
+				$where = array('student.student_id'=>$text_val);
+
+			}else if($text_val !='' && $radio_val == 'roll_no')
+			{
+				$where = array('name'=>$text_val);
+
+			}else if($text_val !='' && $radio_val == 'student_name')
+			{
+				$where =  $this->db->like('student.name',$text_val);
+			}else if($text_val !='' && $radio_val == 'adhar_no')
+			{
+				$where =  array('adhar_no' => $text_val);
+			}
+			$data['students'] = $this->Common_model->student_data($where);
+
+			$dt =  $this->load->view('admin/student/getStudentConsolidate',$data,true);
+			echo json_encode(array(
+				"status" => true,
+				"data" => $dt
+			));
+     	}
+	}//fun
 
 }// controller
