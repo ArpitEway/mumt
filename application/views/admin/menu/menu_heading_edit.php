@@ -6,7 +6,7 @@ foreach($menu_headings as $menu_heading): ?>
 <form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/Admins/add_menu_heading/update/'.$menu_heading['id']); ?>">
     
 	<div class="form-row">
-		
+		<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 		<div class="form-group col-md-4">
             <label for="course">Select admin</label>
             <select name="admin_id" id="admin_id" class="form-control admin_id"  >
@@ -43,7 +43,8 @@ foreach($menu_headings as $menu_heading): ?>
 <script>
 
 	$("#edit_heading_submit").on('click',function (e){
-	
+	var csrfName = $('.csrfname').attr('name');
+	var csrfHash = $('.csrfname').val(); 
 	var frm = $('.ajaxForm').serialize();
 		
 	$.ajax({
@@ -57,6 +58,7 @@ foreach($menu_headings as $menu_heading): ?>
 			
 			var data = {
 			admin_id : $("#admin_id").val(),
+			[csrfName]:csrfHash
 			};
 				
 			var url = BASE_URL+"admin/Admins/get_heading_data"; 

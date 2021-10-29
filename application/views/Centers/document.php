@@ -73,6 +73,7 @@
 	</div>
 </div>
 </div>
+	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 <form method="post" action="<?=base_url('student/Document/uploadDoc');?>" enctype='multipart/form-data' id="target" >
 	<div id="loader">
 	</div>
@@ -127,6 +128,8 @@
 </form>
 <script>
 	$(".custom-file-input").on('change',function (){
+		var csrfName = $('.csrfname').attr('name');
+		var csrfHash = $('.csrfname').val(); 
 		var data = $(this).val();
 		var id = $(this).attr("data-id");
 		if(data==''){
@@ -153,6 +156,7 @@
 				myFormData.append('course_group_id', course_group_id);
 				myFormData.append('document_category_id', document_category_id);
 				myFormData.append('document_name', document_name);
+				myFormData.append([csrfName], csrfHash);
 				$('#loader').addClass('loading');
 				$.ajax({
 					url: "<?=base_url('center/Document/uploadDoc');?>",
@@ -180,11 +184,13 @@
 	$('#loader').addClass('loading');
 	var course_group_id = $('#course_group_id').val();
 	var student_id = $('#student_id').val();
+		var csrfName = $('.csrfname').attr('name');
+		var csrfHash = $('.csrfname').val(); 
 		$.ajax({
 			url: "<?=base_url('center/Document/checkDocumentStatus');?>",
 			type: 'POST',
 			dataType : 'json',
-			data: {student_id:student_id,course_group_id:course_group_id},
+			data: {student_id:student_id,course_group_id:course_group_id, [csrfName]: csrfHash},
 			success: function (data) {
 				$('#loader').removeClass('loading');
 				if(data.success){

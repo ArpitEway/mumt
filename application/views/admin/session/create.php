@@ -3,6 +3,7 @@
 
         <div class="form-group col-md-12">
             <label for="name">Session Name</label>
+            <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
             <input type="text" class="form-control" id="session" name = "session" required placeholder="Enter name of session">
             <!--<small id="" class="form-text text-muted">provide department name</small>-->
         </div>
@@ -14,13 +15,9 @@
 </form>
 
 <script>
-    $(".ajaxForm").validate({}); // Jquery form validation initialization
     $(".ajaxForm").submit(function(e) {
         var form = $(this);
         ajaxSubmit(e, form, showAlldepartment);
     });
-    
-    
-    
 </script>
 

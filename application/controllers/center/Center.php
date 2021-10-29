@@ -14,7 +14,11 @@ class Center extends CI_Controller {
 		if($this->session->has_userdata('centerdata')){
 			redirect(base_url('center/instruction'));
 		}else{			
-			$this->load->view('Centers/login');
+			$csrf = array(
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash()
+			);
+			$this->load->view('Centers/login',$csrf);
 		}
 	}
 
@@ -44,9 +48,6 @@ class Center extends CI_Controller {
 			$center = $this->Common_model->getRecordById('center','id',$id);
 			
 			$course_group = $this->db->get_where('course_group', array())->result_array();
-
-			//$course = $this->db->get_where('course', array())->result_array();
-
 			$data = array('course_group' => $course_group);
 			$this->getNotification();
 			$this->load->view('Centers/instruction',$data);
@@ -60,7 +61,11 @@ class Center extends CI_Controller {
 			redirect(base_url('center'));
 			exit;
 		}
-		$this->load->view('Centers/login');
+		$csrf = array(
+		'name_csrf' => $this->security->get_csrf_token_name(),
+		'hash_csrf' => $this->security->get_csrf_hash()
+		);
+		$this->load->view('Centers/login',$csrf);
 	}
 
 	public function loginSub(){
@@ -74,7 +79,11 @@ class Center extends CI_Controller {
 		if ($this->form_validation->run() == FALSE)
 		{
 			$this->session->set_flashdata('error','center Code And Password Are Required');
-			$this->load->view('Centers/login');
+				$csrf = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+			);
+		$this->load->view('Centers/login',$csrf);
 		}
 		else
 		{
@@ -92,7 +101,11 @@ class Center extends CI_Controller {
 			}else{
 
 				$this->session->set_flashdata('error','center Code And Password Are Incorrect');
-				$this->load->view('Centers/login',$data);
+				$csrf = array(
+					'name_csrf' => $this->security->get_csrf_token_name(),
+					'hash_csrf' => $this->security->get_csrf_hash()
+				);
+				$this->load->view('Centers/login',$csrf);
 			}
 		}
 	}
@@ -108,7 +121,6 @@ class Center extends CI_Controller {
 			redirect(base_url('center/'));
 			exit;
 		}
-
 		$titleData = array('title' => 'Admission Form'); 
 		$state_list = $this->Common_model->get_record('state','*');
 		$eligibility_list = $this->Common_model->get_record('course_group','DISTINCT (eligibility)');
@@ -120,6 +132,8 @@ class Center extends CI_Controller {
 			'course_group_list' => $course_group_list,
 			'session' => 2021,
 			'eligibility_list' => $eligibility_list,
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
 		);
 
 		$this->load->view('Centers/header',$titleData);
@@ -162,7 +176,6 @@ class Center extends CI_Controller {
 
 	public function getAdmissionClassByCourse(){
 		$course = $this->input->post('course');
-		// and admission_permission!='Y'
 		$class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$course."' and  admission_permission='Y'");
 		$data = array(
 			'class_list' => $class_list,
@@ -191,9 +204,13 @@ class Center extends CI_Controller {
 
 	public function all_student()
 	{
+		$csrf = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
 		$titleData = array('title' => 'Students List', );
 		$this->load->view('Centers/header',$titleData);
-		$this->load->view('Centers/student_details');
+		$this->load->view('Centers/student_details',$csrf);
 		$this->load->view('Centers/footer');
 	}
 
@@ -240,14 +257,19 @@ class Center extends CI_Controller {
 
 	public function student_list($param1 = '')
 	{
+		$csrf = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
+
 		if($param1=='paid'){
 		$titleData = array('title' => 'Paid Student List');
 		$this->load->view('Centers/header',$titleData);
-		$this->load->view('Centers/all_paid_student');
+		$this->load->view('Centers/all_paid_student',$csrf);
 		}elseif($param1=='unpaid'){
 		$titleData = array('title' => 'Unpaid Student List');
 		$this->load->view('Centers/header',$titleData);
-		$this->load->view('Centers/all_unpaid_student');
+		$this->load->view('Centers/all_unpaid_student',$csrf);
 		}
 		$this->load->view('Centers/footer');
 	}
@@ -312,7 +334,7 @@ class Center extends CI_Controller {
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
 		foreach($tableData as $result){
-			$btn = '<a href="'.base_url('center/show_fees/'.$this->Common_model->encrypt_decrypt($result->id)).'" class="btn btn-primary btn-sm" target="_blank" ><i class="fa fa-eye"></i></a>';			
+			$btn = '<a href="'.base_url('center/show_fees/'.$this->Common_model->encrypt_decrypt($result->id)).'" class="btn btn-primary btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>';			
 			$i++;
 			$data[] = array($result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->fees_head,$result->amount,$result->txnId,$btn);
 		}
@@ -470,6 +492,8 @@ class Center extends CI_Controller {
 		$data = array(
 		'student' => $student[0],
 		'transaction' => $transaction[0],
+		'name_csrf' => $this->security->get_csrf_token_name(),
+		'hash_csrf' => $this->security->get_csrf_hash()
 		);
 
 		$titleData = array('title'=>'Payment Details');
@@ -481,12 +505,10 @@ class Center extends CI_Controller {
 	public function getCourseByEligibility()
 	{
 		$eligibility = $this->input->post('eligibility');
-
 		$course_group_list = $this->Common_model->get_record('course_group','*',array('eligibility'=>$eligibility,
 			'admission_permission' => 'Y'
 		));
 		$data = array('course_group_list'=>$course_group_list);
-
 		echo $this->load->view('template/getcourse',$data,true);
 	}
 
@@ -500,7 +522,7 @@ class Center extends CI_Controller {
 		}
 	}
 	public function checkDuplicateMobileNo()
-	{
+	{	
 		$p_mobile_no = $this->input->post('p_mobile_no');
 		$count = $this->db->query("select * from student_data as d join student as s on s.student_id=d.student_id where s.course_complete='N' and d.p_mobile_no = '".$p_mobile_no."' limit 1")->num_rows();
 
@@ -533,5 +555,4 @@ class Center extends CI_Controller {
 			redirect(base_url('center'));
 		}		
 	}
-
 }

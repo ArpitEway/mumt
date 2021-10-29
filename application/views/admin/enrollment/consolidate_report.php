@@ -1,8 +1,7 @@
 <div class="container">
-
 <div class="row mt-5"> 
-
 <div class="form-group col-md-3">
+	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	<label for="session_id">Session</label>
     <select name="session_id" id="session_id" class="form-control" >
 	<option value="all">All</option>
@@ -140,7 +139,8 @@ List
 <script>
 
 $(document).on("click","#submit_btn",function(){
-	
+	var csrfName = $('.csrfname').attr('name');
+		var csrfHash = $('.csrfname').val(); 
 	var data = {
 		course_group_id : $("#course_group_id").val(),
 		class_id : $("#class_id").val(),
@@ -152,7 +152,8 @@ $(document).on("click","#submit_btn",function(){
 		filter : $('input[name="filter"]:checked').val(),
 		enrolled : $("#enrolled").val(),
 		session : $("#session_id").val(),
-		program_fees : $("#program_fees").val()
+		program_fees : $("#program_fees").val(),
+		[csrfName]:csrfHash
 	};
 
 	console.log(data);

@@ -1,8 +1,6 @@
-
-<form method="POST" class="d-block ajaxForm" >
-    
+<form method="POST" class="d-block ajaxForm" >    
 	<div class="form-row">
-		
+		<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
         <div class="form-group col-md-4">
         <label for="name">Heading name</label>
         <input type="text" class="form-control" id="heading_name" name="heading_name"  placeholder="Enter heading">

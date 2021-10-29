@@ -1,4 +1,5 @@
 <div class="container-fluid mt-5" >
+		<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	<table id="memListTable" class="table table-striped dt-responsive" style="width:100%">
 		<thead>
 			<tr>
@@ -19,6 +20,8 @@
 </div>
 <script>
 	$(document).ready(function(){
+		var csrfName = $('.csrfname').attr('name');
+		var csrfHash = $('.csrfname').val(); 
 		var myTable =  $('#memListTable').DataTable({
 // Processing indicator
 "processing": true,
@@ -29,7 +32,8 @@
 // Load data from an Ajax source
 "ajax": {
 	"url": BASE_URL+'center/center/getPaidFeesList',
-	"type": "POST"
+	"type": "POST",
+	"data": {[csrfName]:csrfHash}
 },
 "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
 //Set column definition initialisation properties

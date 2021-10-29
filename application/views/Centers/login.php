@@ -64,7 +64,7 @@
 								<div class="form-group py-3 m-0">
 									<input class="form-control  placeholder-dark-75" type="text" placeholder="center Code" name="centercode" maxlength="6" minlength="6" id="centercode" autocomplete="off" required />
 								</div>
-
+								<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 								<div class="form-group py-3 border-top m-0">
 									<input class="form-control  placeholder-dark-75" type="password" placeholder="Password" name="password" id="password" />
 								</div>

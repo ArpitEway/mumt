@@ -1,7 +1,7 @@
 <form method="POST" id="ajaxForm" class="d-block ajaxForm" >
     
 	<div class="form-row">
-		
+		<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 		<div class="form-group col-md-4">
             <label for="course">Select admin</label>
             <select name="admin_id" id="admin_id" class="form-control admin_id" onchange="getval();" >
@@ -102,8 +102,12 @@ $("#heading_submit").on('click',function (e){
 
 function getval()
 {
+	var csrfName = $('.csrfname').attr('name');
+	var csrfHash = $('.csrfname').val(); 
+	console.log(csrfHash);
 	var data = {
 	admin_id : $("#admin_id").val(),
+	[csrfName]:csrfHash
 	};
 	var url = BASE_URL+"admin/Admins/get_heading_data"; 
 	var response = call_ajax(data,url);

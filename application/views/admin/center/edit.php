@@ -7,8 +7,8 @@ foreach($centers as $center):
 ?>
 <form method="POST" class="d-block ajaxForm" >
     <div class="form-row">
-	
 	<div class="form-group col-md-4">
+    	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	<label for="class">Center Code</label>
 	<input type="text" class="form-control" id="center_code" name="center_code" placeholder="Enter center code" value="<?php echo $center['center_code']; ?>"  >
 	</div>

@@ -2,7 +2,7 @@
 <div style="text-align:right;margin:10px">
 <a type="button" style="margin-left: 10px;" class="btn btn-outline-primary btn-rounded alignToTitle" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/paper/create'); ?>', 'Create paper')"  >Create paper</a>
 </div>
-
+<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	<table id="basic-datatable" class="table table-striped dt-responsive nowrap" width="100%" >
 			<thead>
 				<tr>

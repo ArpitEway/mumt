@@ -3,8 +3,7 @@
 	<div class="row">
 		<div class="col-md-9">
 			<div class="row">
-
-
+    <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">   
 				<div class="col-md-6">
 					<div class="form-group ">
 						<label>Session</label><span class="text-danger"> *</span>
