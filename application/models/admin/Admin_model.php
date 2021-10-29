@@ -681,7 +681,7 @@ class Admin_model extends CI_Model {
         $data['name'] = html_escape($this->input->post('name'));
 		$data['account_type'] = html_escape($this->input->post('account_type'));
 		$data['designation'] = html_escape($this->input->post('designation'));
-		$data['email'] = html_escape($this->input->post('email'));
+		$data['user_name'] = html_escape($this->input->post('user_name'));
 		$data['password'] = md5($this->input->post('password'));
 		
         $this->db->insert('admin_master', $data);
@@ -700,7 +700,7 @@ class Admin_model extends CI_Model {
 		$data['name'] 		  = html_escape($this->input->post('name'));
 		$data['account_type'] = html_escape($this->input->post('account_type'));
 		$data['designation']  = html_escape($this->input->post('designation'));
-		$data['email'] 		  = html_escape($this->input->post('email'));
+		$data['user_name'] = html_escape($this->input->post('user_name'));
 		$data['password'] 	  = md5($this->input->post('password'));
 		
 		$this->db->where('id', $param1);

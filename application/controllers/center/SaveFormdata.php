@@ -23,6 +23,8 @@ class saveFormdata extends CI_Controller {
 		$data['class_name'] = $this->Common_model->getClassNameByClassId($class_id);
 		$data['center_id'] = $this->session->center_id;
 		$data['center_code'] = $this->session->centerdata;
+		$data['center_name'] = $this->Common_model->getSinglefield('centers','center_name','center_id='.$this->session->center_id);
+		$data['university_mode'] = 'REG';
 		$data['class_id'] = $class_id;
 		$data['medium'] = html_escape($this->input->post('medium'));
 		$data['category'] = html_escape($this->input->post('category'));

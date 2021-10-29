@@ -2,8 +2,8 @@
 	defined('BASEPATH') OR exit('No direct script access allowed');
 	
 	class Document extends CI_Controller {
-		
 		function __construct(){
+
 			parent::__construct();
 			$this->load->model('Common_model');
 			$this->load->model('Center/center_model');
@@ -20,18 +20,15 @@
 		);
 		$titleData = array('title' => 'Upload Admission Document List'); 
 		$this->load->view('Centers/header',$titleData);	
-		$this->load->view('Centers/upload_admission_documnet',$csrf);	
+		$this->load->view('Centers/upload_admission_document',$csrf);	
 		$this->load->view('Centers/footer');
 	}
 
-	public function list()
-	{
-		$data = $row = array();
+	public function Doc_list(){
+			$data = array();
 		$where = 'document_uploaded!="Y" and payment_status="Y" and center_id='.$this->session->center_id;
-		
 		$column_order = array('student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name',null);
 		$column_search = array('student','enrollment_no', 'name', 'f_h_name', 'course_name','class_name');
-
 		$DataTableArray = array(
 			'column_order' => $column_order,
 			'column_search' => $column_search,
@@ -55,7 +52,7 @@
 		);
 
 		// Output to JSON format
-		echo json_encode($output);		
+		echo json_encode($output);	
 	}
 
 		public function upload($student_id){

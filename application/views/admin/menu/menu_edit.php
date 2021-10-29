@@ -83,8 +83,9 @@ foreach($menus as $menu): ?>
 
 	$("#edit_menu_submit").on('click',function (e){
 	
-	var frm = $('.ajaxForm').serialize();
-		
+		var frm = $('.ajaxForm').serialize();
+		var csrfName = $('.csrfname').attr('name');
+		var csrfHash = $('.csrfname').val(); 
 	$.ajax({
 		url: '<?php echo site_url('admin/admins/add_menu/update/'.$param1); ?>',
 		type: 'POST',
@@ -96,6 +97,7 @@ foreach($menus as $menu): ?>
 			
 			var data = {
 			admin_id : $("#admin_id").val(),
+			[csrfName]:csrfHash,
 			};
 				
 			var url = BASE_URL+"admin/Admins/get_menu_data"; 
@@ -105,8 +107,6 @@ foreach($menus as $menu): ?>
 			$('#dt').html(response.data);
 			$('#right-modal').modal('toggle');
 			toastr.success("Menu Updated Successfully");
-			
-			
 		}else{
 			toastr.error("Something wrong");
 		}

@@ -2,18 +2,15 @@
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 <div class="mt-5 text-right">
-
 <a type="button" class="btn btn-outline-primary btn-rounded" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/account/create'); ?>', 'Create account')"  >Create account</a>
-
 </div>
 <div class="container mt-3" >
-
 	<table id="kt_datatable" class="table table-striped dt-responsive nowrap " width="100%" >
 		<thead>
 			<tr>
 				<th>Id</th>
 				<th>Name</th>
-				<th>Email</th>
+				<th>Username</th>
 				<th>Status</th>
 				<th>Action</th>
 				
@@ -29,7 +26,7 @@
 					<tr>
 						<td><?php echo $i; ?></td>
 						<td><?php echo $acc['name']; ?></td>
-						<td><?php echo $acc['email']; ?></td>
+						<td><?php echo $acc['user_name']; ?></td>
 						<td> 
 						<input type="checkbox" name="update_stats" id="update_chk" <?php if($acc['status'] == "Y") echo "checked" ?> data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-on="Active" data-off="Inactive" data-id="<?= $acc['id']; ?>" class="status_checks btn-success" value="1" >
 						</td>
@@ -49,7 +46,6 @@
 		 <?php 
 		 $i++;
 		 } 
-		 
 		 ?>
 		 </tbody>
 	</table>
@@ -61,7 +57,8 @@
 
 $(document).on('change', '.status_checks', function() {
   var val = $(this).val();
-  
+  var csrfName = $('.csrfname').attr('name');
+  var csrfHash = $('.csrfname').val(); 
   var status = '1';
   var selector = $(this);
   var id = $(this).data('id');
@@ -97,7 +94,8 @@ $(document).on('change', '.status_checks', function() {
 		{
 			var data = {
 				id: $(this).attr('data-id'),
-				status: "Y"
+				status: "Y",
+				[csrfName]:csrfHash,
 			}; 
 			
 			var target = $(this).attr("data-target");
@@ -111,7 +109,8 @@ $(document).on('change', '.status_checks', function() {
 		}else{
 			var data = {
 				id: $(this).attr('data-id'),
-				status: "N"
+				status: "N",
+				[csrfName]:csrfHash,
 			};
 			
 			var target = $(this).attr("data-target");

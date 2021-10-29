@@ -37,19 +37,20 @@
 				<a href="<?php echo site_url('admin/enrollment/update_aadhar/'.$student_id); ?>">
 				<?php echo $doc["document_name"]; ?>
 				</a>
-
+				<br>
 				<?php }else{ ?>
 
 				<a target="_blank" href="<?php echo BASE_URL('assets/documents/'.$doc["document_image"]); ?>">
 				<?php echo $doc["document_name"]; 
 					} ?> 
-				</a>
+				</a><br>
 				
 				<?php }else{ ?>
 				
 				<a data-magnify="gallery" data-src="" data-caption="<?php echo $doc["document_name"] ?>" data-group="a" href="<?php echo BASE_URL('assets/documents/'.$doc["document_image"]); ?>">
 					  <?php echo $doc["document_name"]; ?>  
 				</a>
+				<br>
 			<?php 
 				}
 			}

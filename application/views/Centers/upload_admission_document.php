@@ -28,7 +28,7 @@
 "order": [0],
 // Load data from an Ajax source
 "ajax": {
-	"url": BASE_URL+'center/document/list',
+	"url": BASE_URL+'center/document/Doc_list',
 	"type": "POST",
 	"data": {[csrfName]:csrfHash}
 },

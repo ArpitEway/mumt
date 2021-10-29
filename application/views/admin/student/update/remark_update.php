@@ -27,8 +27,8 @@ $documnets = $this->db->get_where('document_category', "category in (".$document
 foreach($documnets as $doc){
 ?>
 	<div>
-	<input type="checkbox" id="remark1" value="<?php echo $doc['id']; ?>" class="form-check-input chk" name="remark[]" >
-	<label for="remark1" class="chk_label"><?php echo $doc['document']; ?><?php if($doc['status'] == "Y"){ ?><span style="color:red;" ><b>*</b></span><?php } ?></label>
+	<input type="checkbox" id="remark<?=$doc['id']; ?>" value="<?php echo $doc['id']; ?>" class="form-check-input chk" name="remark[]" >
+	<label for="remark<?=$doc['id']; ?>" class="chk_label"><?php echo $doc['document']; ?><?php if($doc['status'] == "Y"){ ?><span style="color:red;" ><b>*</b></span><?php } ?></label>
 	</div>
 	
 <?php } ?>

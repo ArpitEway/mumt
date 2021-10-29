@@ -4,11 +4,11 @@
 }
 </style>
 <div class="text-right mt-3">
-<?php if($this->session->account_type=='Admin'){ ?>
+<?php if($this->session->account_type=='Admins'){ ?>
 <a type="button" style="margin-left: 10px;" class="btn btn-outline-primary btn-rounded alignToTitle" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/center/create/'.$center_code); ?>', 'Create center')"  >Create Center</a>
 <?php } ?>
 </div>
-<div class="container mt-5" >
+<div class=" mt-5" >
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 			<table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
 				<thead>
@@ -21,7 +21,7 @@
 						<th>Other Mobile No</th>
 						<th>Email</th>
 						<th>Status</th>
-						<?php if($this->session->account_type=='Admin'){ ?>
+						<?php if($this->session->account_type=='Admins'){ ?>
 						<th>Options</th>
 					<?php } ?>
 						<!-- <th>Action</th> -->
@@ -61,7 +61,7 @@
 					</td>
 					
 
-<?php if($this->session->account_type=='Admin'){ ?>
+<?php if($this->session->account_type=='Admins'){ ?>
 <td>				
 	<div>
 	<a href="javascript:void(0);" class="btn btn-primary btn-md" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/center/edit/'.$center['id']); ?>', '<?php echo 'Update center' ?>')"> <i class="fas fa-pencil-alt"></i> </a>   <!--  <a href="javascript:void(0);" class="btn btn-danger btn-md" onclick="confirmModal('<?php echo site_url('admin/Admins/centers/delete/'.$center['id']); ?>', showAllcenters )"><i class="fas fa-trash-alt"></i> </a> -->
@@ -96,7 +96,8 @@ var showAllcenters = function ()
 
 
 $(document).on('click', '.center_status_check', function() {
-
+	var csrfName = $('.csrfname').attr('name');
+	var csrfHash = $('.csrfname').val(); 
 var val = $(this).val();
 
 var self =this;
@@ -105,7 +106,8 @@ var status = (val=='Yes') ? 'N' : 'Y';
 
 var data = {
 		  id: $(this).attr('data-id'),
-		  status: status
+		  status: status,
+		  	[csrfName]:csrfHash,
 	  }; 
 	  
 var url = BASE_URL + "admin/Admins/update_center_status";

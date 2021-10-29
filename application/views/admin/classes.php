@@ -1,12 +1,12 @@
 <div class="text-right mt-3">
 <a type="button" style="margin-left: 10px;" class="btn btn-outline-primary btn-rounded alignToTitle" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/class/create'); ?>', 'Create class')"  >Create class</a>
 </div>
-<div class="container mt-5" >
+<div class="mt-5" >
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 <table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
 	<thead>
 		<tr>
-			<th>Id</th>
+			<th>#</th>
 			<th>Course name</th>
 			<th>Class</th>
 			<th>Mode</th> 

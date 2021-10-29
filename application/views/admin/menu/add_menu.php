@@ -71,7 +71,8 @@ $("#admin_id").on('change',function (e){
 });	
 
 $("#menu_submit").on('click',function (e){
-	
+	var csrfName = $('.csrfname').attr('name');
+		var csrfHash = $('.csrfname').val(); 
 	heading = $('#heading_name').val();
 	admin_id = $('#admin_id').val();
 	menu = $('#menu').val();
@@ -117,6 +118,7 @@ $("#menu_submit").on('click',function (e){
 			
 			var data = {
 			heading_id : $("#heading_id").val(),
+			[csrfName]:csrfHash,
 			};
 			
 			var url = BASE_URL+"admin/Admins/get_menu_data"; 
@@ -141,9 +143,11 @@ $("#menu_submit").on('click',function (e){
 });	
 
 $("#heading_id").on('change',function (){		
-		
+		var csrfName = $('.csrfname').attr('name');
+		var csrfHash = $('.csrfname').val(); 
 		var data = {
 			heading_id : $("#heading_id").val(),
+			[csrfName]:csrfHash,
 		};
 		if(heading_id != "")
 	{
@@ -156,8 +160,11 @@ $("#heading_id").on('change',function (){
 });
 
 $("#admin_id").on('change',function (e){
+		var csrfName = $('.csrfname').attr('name');
+		var csrfHash = $('.csrfname').val(); 
 	var data = {
-		id: $(this).val()
+		id: $(this).val(),
+		[csrfName]:csrfHash,
 	};
 	var target = $(this).attr("data-target");
 	var url = BASE_URL + "admin/Admins/get_heading_list_by_admin";

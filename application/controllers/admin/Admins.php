@@ -175,6 +175,9 @@ class Admins extends CI_Controller {
 
 			if(empty($param1))
 			{
+				$data['name_csrf'] = $this->security->get_csrf_token_name();
+				$data['hash_csrf'] = $this->security->get_csrf_hash();
+			
 				$this->load->view('header');
 				$this->load->view('admin/menu/add_menu',$data);
 				$this->load->view('footer');
@@ -1015,10 +1018,6 @@ class Admins extends CI_Controller {
 				$data['email'] = html_escape($this->input->post('email'));
 
 				$data['password'] = html_escape($this->input->post('password'));
-
-				//$data['std_code'] = html_escape($this->input->post('std_code'));
-
-				$data['phoneno'] = html_escape($this->input->post('phoneno'));
 
 				$data['mobile_no_1'] = html_escape($this->input->post('mobile_no'));
 

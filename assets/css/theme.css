@@ -100,7 +100,7 @@ body#kt_body .header-top{
 	}
     @media only screen and (max-width: 768px) {
         .img2 {
-            width: 82%;
+            width: 75%;
         }
         .card-body-main {
             padding: 24px 15px 10px 27px;
