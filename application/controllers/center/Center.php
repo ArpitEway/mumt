@@ -555,4 +555,78 @@ class Center extends CI_Controller {
 			redirect(base_url('center'));
 		}		
 	}
+
+	public function payment_complaint($param = ""){
+		
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url('center/'));
+		}else{
+
+			if(!$param)
+			{
+				$titleData = array('title' => 'Payment Complaint'); 
+				$this->load->view('Centers/header',$titleData);
+				$id =  $this->session->center_id;
+				$center = $this->Common_model->getRecordById('center','id',$id);
+				$data = array('center' => $center,'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash());
+				$this->getNotification();
+				$this->load->view('Centers/payment_complaint',$data);
+				$this->load->view('Centers/footer');
+			}else{
+				
+				$response = $this->center_model->payment_complaint($param);
+			
+				echo $response;
+			}
+		
+			//redirect(base_url().'admin/enrollment/student_report');
+		}
+					
+	}
+
+	public function get_student_detail()
+	{
+
+		if ($this->input->method() == "post") 
+		{
+			$course_group_id = 0;
+			$data = array();
+			$dt   = array();
+				
+				$form_no  = $this->input->post("form_no");
+			
+				$wherestudent = 'student_id='.$form_no;
+
+				$students = $this->Common_model->get_record('student','*',$wherestudent);
+
+				$center_id =  $this->session->center_id;
+
+				$wherestudent = 'center_id='.$center_id;
+
+				$center_detail = $this->Common_model->get_record('payment_complaint','*',$wherecenter);
+				
+				$data = array('students' => $students ,'center_details' => $center_detail,'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash());
+
+				if($data['students']){
+
+					$dt =  $this->load->view('Centers/getStudentDetail',$data,true);
+
+				}else{
+
+					$dt = "Invalid Form no";
+				}
+
+
+				echo json_encode(array(
+				"status" => true,
+				"data" => $dt
+				));
+		}
+			
+	}
+		
+		
+
 }

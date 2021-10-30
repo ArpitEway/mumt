@@ -5,14 +5,15 @@
 				
 					<th>Sno</th>
 					
-					<th>From no</th>
+					<th>Form no</th>
 					<th>Enrollment no</th>
 					<th>Name</th>
-					<!--<th>Father/Husband Name</th>-->
+					<th>F/H Name</th>
 					<th>Mobile no</th>
+					<th>DOB</th>
 					<th>Course</th>
 					<th>Class</th>
-					<th>DOB</th>
+					
 				
 				<?php
 				} 
@@ -44,10 +45,15 @@
 				
 				<td><?php echo $student["enrollment_no"]; ?></td>
 				<td><?php echo ($student["name"]=='') ? $userData->name : $student["name"]; ?></td>
-				<!--<td><?php //echo $student["f_h_name"]; ?></td>-->
+				<td><?php echo $student["f_h_name"]; ?></td>
 				<td><?php echo $this->Common_model->getMobileNoByStudentID($student["student_id"]) ?></td>
-				<td><?php if($student["course_name"]==''){
-				
+				<td><?php 
+				$newDate = ($student["dob"]=='') ? 'N/A' : $student["dob"];
+				echo date("d-m-Y", strtotime($newDate)); ?>
+				</td>
+				<td>
+					
+				<?php if($student["course_name"]==''){
 					$course_group_id = $userData->course_group_id;
 					echo $this->Common_model->getSinglefield('course_group','course_name','id='.$course_group_id);
 					}else{
@@ -59,11 +65,10 @@
 					echo $this->Common_model->getSinglefield('class_master','class_name','id='.$class_id);
 					}else{
 					echo $student["class_name"];
-					} ?></td>
-					<td><?php 
-					$newDate = ($student["dob"]=='') ? $userData->dob : $student["dob"];
+					} ?>
+
+				</td>
 					
-					echo date("d-m-Y", strtotime($newDate)); ?></td>
 			</tr>
 			<?php
 			$i++; } }

@@ -62,12 +62,10 @@ foreach($documnets as $doc){
 
 $("#remark_submit").on('click',function (e){
 	
-	
 	var ck_box = $('input[type="checkbox"]:checked').length;
 	
 	if(ck_box > 0){
 	
-
 		var frm = $('.ajaxForm').serialize();
 		var rem = <?php echo $param1 ?>;
         

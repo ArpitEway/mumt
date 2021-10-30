@@ -122,6 +122,7 @@
 				$document_upload  = 	$this->input->post("document_upload");
 				$filter  		  = 	$this->input->post("filter");
 				$session 		  = 	$this->input->post("session");
+				
 			    $mode 		  	  = 	$this->input->post("mode");
 				$center 	  	  = 	$this->input->post("center");
 				if($mode != "all"){	 

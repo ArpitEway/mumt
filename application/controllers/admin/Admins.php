@@ -1346,22 +1346,33 @@ public function update_doc_permission_status()
 			$data = array();
 			$dt   = array();
 			$course_group_id  = $this->input->post("course_group_id");
-			$class_id  = $this->input->post("class_id");
+			$class_id  		  = $this->input->post("class_id");
 			$approved 		  = $this->input->post("approved");
 			$payment 		  = $this->input->post("payment");
 			$enrolled 		  = $this->input->post("enrolled");
 			$document_upload  = $this->input->post("document_upload");
 			$filter  		  = $this->input->post("filter");
-			$form_status  	  = $this->input->post("form_status");
-			$program_fees  	  = $this->input->post("program_fees");
 			$session 		  = $this->input->post("session");
+			$mode 		  	  = $this->input->post("mode");
+			$center 	  	  = $this->input->post("center");
 
-			if($course_group_id != "all"){
+
+			if($mode != "all"){	 
+					
+				$dt['mode'] = $mode;
+			}
+			if($center != "all"){	 
+				
+				$dt['center_id'] = $center;
+			}
+			if($course_group_id != "all"){	 
+
 				$dt['course_group_id'] = $course_group_id;
 			}
 			if($session != "All"){	 
 
 				$dt['session'] = $session;
+				
 			}else{
 				$dt['name!='] = '';
 			}
@@ -1369,14 +1380,7 @@ public function update_doc_permission_status()
 
 				$dt['class_id'] = $class_id;
 			}
-			if($program_fees != "all"){	
-
-				$dt['program_fees'] = $program_fees;
-			}
-			if($form_status != "all"){
-
-				$dt['form_status'] = $form_status;
-			}
+			
 			if($approved != "all"){
 
 				$dt['approved'] = $approved;
@@ -1567,5 +1571,47 @@ public function update_doc_permission_status()
 			));
      	}
 	}//fun
+public function update_center_status()
+{
+if ($this->input->method() == "post") 
+	{
+            $id    	= 0;
+            $id    	= $this->input->post("id");
+			$status = $this->input->post("status");
+
+			
+            if ($this->input->post("id")) 
+			{
+				$data = $this->Common_model->updateRecordByConditions("center",array("id" => $id ),array("status" => $status ));
+			
+				$dt = $this->db->get_where("center",array("id" => $id ))->result_array();
+
+				if($dt[0]['status'] == 'Y')
+				{
+
+				$sts_btn = '<input type="button" name="update_center_stats" data-id='.$id.' class="btn btn-success center_status_check" value="Yes">';
+				
+				}
+
+				else{
+
+				$sts_btn = '<input type="button" name="update_center_stats" data-id='.$id.' class="btn btn-danger center_status_check" value="No">';
+				
+			}
+
+
+
+				$status = true;
+				$msg    = "";
+				
+				echo json_encode(array(
+					"status" => $status,
+					"msg" => $msg,
+					"data" => $sts_btn
+				));
+			}
+	}
+}
+
 
 }// controller

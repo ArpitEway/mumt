@@ -93,5 +93,9 @@ $route['center/student_list/(:any)'] = 'center/center/student_list/$1';
 $route['center/admission_instruction'] = 'center/center/admission_instruction';
 $route['center/loginAs'] = 'center/center/loginAs';
 
+
+$route['center/payment_complaint'] = 'center/center/payment_complaint';
+
+
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

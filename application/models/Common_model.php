@@ -668,7 +668,7 @@ class Common_Model extends CI_Model{
 		return $config;
 	}
 
-	public	function encrypt_decrypt($string, $action = 'encrypt')
+	public function encrypt_decrypt($string, $action = 'encrypt')
 	{
 		$encrypt_method = "AES-256-CBC";
 		    $secret_key = '0734MMYEway'; // user define private key
