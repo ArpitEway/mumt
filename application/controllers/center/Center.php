@@ -206,7 +206,8 @@ class Center extends CI_Controller {
 	{
 		$csrf = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
-			'hash_csrf' => $this->security->get_csrf_hash()
+			'hash_csrf' => $this->security->get_csrf_hash(),
+			'session_list' => $this->Common_model->get_record('session'),
 		);
 		$titleData = array('title' => 'Students List', );
 		$this->load->view('Centers/header',$titleData);
@@ -216,9 +217,29 @@ class Center extends CI_Controller {
 
 	public function getStudentList(){
 		$data = $row = array();
+
 		$where = array(
 			'center_id' => $this->session->center_id,
 		);
+
+		if($_POST['session']!='All'){
+			$where['session'] = $this->input->post('session');
+		}
+		if($_POST['course_group_id']!='All' and $_POST['course_group_id']!=''){
+			$where['course_group_id'] = $this->input->post('course_group_id');
+		}
+		if($_POST['class_id']!='All' and $_POST['class_id']!=''){
+			$where['class_id'] = $this->input->post('class_id');
+		}
+		if($_POST['approved']!='All'){
+			$where['approved'] = $this->input->post('approved');
+		}
+		if($_POST['enrolled']!='All'){
+			$where['enrolled'] = $this->input->post('enrolled');
+		}
+		if($_POST['document']!='All'){
+			$where['document_uploaded'] = $this->input->post('document');
+		}
 
 		// Fetch member's records
 		
@@ -235,7 +256,8 @@ class Center extends CI_Controller {
 		);
 
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
-
+		// echo $this->db->last_query();
+		// die;
 		$i = $_POST['start'];
 		foreach($tableData as $result){
 
@@ -626,7 +648,26 @@ class Center extends CI_Controller {
 		}
 			
 	}
-		
-		
+	
+	public function getCourseBySession(){
+		$session = $this->input->post('session');
+		$where = "session='".$session."' and center_id=".$this->session->center_id;
+		$course_group_list = $this->Common_model->get_record('student','course_group_id as id,course_name',$where);
+		$data = array(
+			'course_group_list' => $course_group_list,
+			'all'=> true,
+		);
+		echo $this->load->view('template/getcourse',$data,true);
+	}		
+	
+	public function getAllClassByCourse(){
+		$course = $this->input->post('course_group_id');
+		$class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$course."'");
+		$data = array(
+			'class_list' => $class_list,
+			'all'=> true
+		);
+		echo $this->load->view('template/getclass',$data,true);
+	}
 
 }

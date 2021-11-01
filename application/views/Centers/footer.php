@@ -36,7 +36,7 @@
 <script src="<?=base_url();?>assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js"></script>
 <script src="<?=base_url()?>assets/plugins/custom/datatables/datatables.bundle.js"></script>
 <script src="<?=base_url()?>assets/js/function.js"></script>
-
+<script src="<?=base_url()?>assets/theme/center.js?token=<?=date('dmyhis')?>"></script>
 <script src="<?=base_url()?>assets/js/pages/crud/datatables/basic/basic.js"></script>
 <script type="text/javascript">
   toastr.options = {
