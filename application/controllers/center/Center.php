@@ -585,7 +585,8 @@ class Center extends CI_Controller {
 		}else{
 
 			if(!$param)
-			{
+			{ 
+				
 				$titleData = array('title' => 'Payment Complaint'); 
 				$this->load->view('Centers/header',$titleData);
 				$id =  $this->session->center_id;
@@ -595,6 +596,7 @@ class Center extends CI_Controller {
 				$this->getNotification();
 				$this->load->view('Centers/payment_complaint',$data);
 				$this->load->view('Centers/footer');
+
 			}else{
 				
 				$response = $this->center_model->payment_complaint($param);

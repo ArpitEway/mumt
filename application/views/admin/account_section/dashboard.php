@@ -15,9 +15,9 @@
 		<div class="tab-content">
 			<div class="tab-pane fade active show" id="Student" role="tabpanel" aria-labelledby="Student-tab">
 				<div class="row">
-					<a class="border-0 custom-menu-item" href="<?=BASE_URL('admin/account/view_payment_list');?>">
+					<a class="border-0 custom-menu-item" href="<?=BASE_URL('admin/Account/update_payment_complaint');?>">
 						<div>
-							<span class="nav-text">View Payment List</span>
+							<span class="nav-text">Payment Compaint Status</span>
 						</div>
 					</a>
 					

@@ -99,7 +99,6 @@ $(document).on('click', '.unpaid_permission_check', function() {
 
     var status = (val=='Yes') ? 'N' : 'Y';
 
-
 	var data = {
 				id: $(this).attr('data-id'),
 				status: status,

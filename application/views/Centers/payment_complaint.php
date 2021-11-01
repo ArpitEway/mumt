@@ -1,6 +1,6 @@
 <div class="card">
-  	<div class="card-body row text-center" style="margin: 0px 450px 0px 450px;">
-  		<div class="form-group col-md-12">		
+  	<div class="card-body row text-center">
+  		<div class="form-group col-md-3 m-auto" >		
 			<label>Enter Form Number</label>
 			<input type="text" name="form_no" id="form_no" class="form-control form-control-lg form-control-solid">
 			<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">	

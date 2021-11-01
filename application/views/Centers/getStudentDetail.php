@@ -1,5 +1,5 @@
-<div class="text-center">
-<table id="table" class="table table-striped dt-responsive nowrap" width="70%" >
+
+<table id="table" class="table" width="70%" >
 			<thead>
 				<tr>
 				
@@ -58,9 +58,6 @@
 
 </form>
 
-
-<div>
-
 <div class="text-center">
 <table id="table" class="table table-striped dt-responsive nowrap" width="70%" >
 			<thead>
@@ -98,6 +95,7 @@
 				<td><?php echo $student->class_name; ?></td>
 				<td><?php echo $center["details"]; ?></td>
 				<td><?php echo $center["date"]; ?></td>
+
 				<td><?php
 				if($center["status"] == "P"){
 					echo "Pending";

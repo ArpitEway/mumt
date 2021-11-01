@@ -1556,6 +1556,7 @@ public function update_doc_permission_status()
 			));
      	}
 	}//fun
+
 public function update_center_status()
 {
 if ($this->input->method() == "post") 
@@ -1597,6 +1598,9 @@ if ($this->input->method() == "post")
 			}
 	}
 }
+
+
+
 
 
 }// controller

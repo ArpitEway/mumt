@@ -63,8 +63,6 @@ $route['admin/enrollment/show_form/(:num)'] = 'admin/enrollment/show_form/$1';
 $route['admin/updateStudentData/(:num)'] = 'admin/updateStudentData/index/$1';
 
 
-
-
 $route['student'] = 'student/Student';
 $route['student/login'] = 'student/Student/login';
 $route['student/loginSub'] = 'student/Student/loginSub';
