@@ -20,7 +20,7 @@ $group_info = $this->db->get_where('group', array('class_id' => $class['id']))->
                     foreach($courses as $course)
                     {
                     ?>
-                    <option value="<?php echo $course['course_group_id']; ?>" <?php if($course['id'] == $class['course_group_id'] ){ echo "selected"; }  ?>  ><?php echo $course['course_name']; ?></option>
+                    <option value="<?php echo $course['id']; ?>" <?php if($course['id'] == $class['course_group_id'] ){ echo "selected"; }  ?>  ><?php echo $course['course_name']; ?></option>
 					<?php
                     } 
                     ?>

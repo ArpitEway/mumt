@@ -50,15 +50,11 @@ class Admins extends CI_Controller {
 	
 	public function add_menu_heading($param1 = '', $param2 = '')
 	{
-
 		if(!$this->session->has_userdata('adminData')){
-			
 			redirect(base_url('admin'));
 			exit;
-			
 		}else
 		{
-			
 			$data = array('course_group' => $course_group,
 				'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash()
@@ -66,33 +62,23 @@ class Admins extends CI_Controller {
 			$dt = array();
 			$dt['title'] = "Add Menu Heading";
 			$data['admins'] = $this->db->get_where('admin_master', array())->result_array();
-
 			if($param1 == 'create'){
-
 				$response = $this->admin_model->create_menu_heading();
 				echo json_encode(array("status" => 'true','data' => $response));
-
 			}
-
 			if($param1 == 'update'){
-
 				$response = $this->admin_model->update_menu_heading($param2);
 				echo json_encode(array("status" => 'true'));
 			}
-			
 			if($param1 == 'delete'){
-
 				$response = $this->admin_model->menu_heading_delete($param2);
 				echo json_encode(array("status" => 'true'));
 			}
-
 			if(empty($param1) ){
-
-				$this->load->view('header');
+				$this->load->view('header',array('title'=>'Add Admin Menu Heading'));
 				$this->load->view('admin/menu/add_menu_heading',$data);
 				$this->load->view('footer');
 			}
-
 		}
 	}
 
@@ -393,7 +379,6 @@ class Admins extends CI_Controller {
 
 			}
 			if($param1 == 'update'){
-
 				$response = $this->admin_model->class_update($param2);
 				$this->session->set_flashdata('ajax_flash_message','Class Successfully Updated');
 				redirect(base_url().'admin/Admins/classes');

@@ -502,8 +502,7 @@ class Admin_model extends CI_Model {
         return json_encode($response);
     }
 	public function class_update($param1 = '')
-	{
-		
+	{	
 		$data['course_group_id'] = html_escape($this->input->post('course_group_id'));
 		$data['class_name']      = html_escape($this->input->post('class_name'));
 		$data['class_group']  	 = html_escape($this->input->post('class_group'));
