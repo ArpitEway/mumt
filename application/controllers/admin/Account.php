@@ -16,7 +16,6 @@
 		}
 		
 		public function index(){
-			
 			if($this->session->has_userdata('adminData')){
 			$admin_id = $this->session->admin_id;
 			$where = 'admin_id='.$admin_id;
@@ -88,49 +87,17 @@
 			}
 			
 		}
-		
-		public function get_payment_list2()
-		{
-			
-		   if($this->input->method() == "post") 
-			{
-				$fees_head = $this->input->post("payment_list");
-				
-				
-				$dt['fees_head'] = $fees_head;
-					
-				$data = $row = array();
-				
-				$accData = $this->Account_model->account_data($dt);
-				
-				$i = 0;
-
-				/* foreach($accData as $acc){
-				$i++;
-				
-				$data[] = array($i, $acc->student_name,$acc->payment,$acc->payment_status,$acc->payment_date);
-				
-				} */
-
-				$output = array(
-					"draw" => 1,
-					"recordsTotal" => $this->Account_model->countAll(),
-					"recordsFiltered" => $this->Account_model->countFiltered($dt),
-					"data" => $accData,
-				);
-        
-				// Output to JSON format
-				echo json_encode($output);
-				
-			}
-			
-		}
+ 
 		public function update_payment_complaint(){
 			
 			if($this->session->has_userdata('adminData')){
+				$where = array("status" => "Pending");
+				$centers = $this->Common_model->get_record('payment_complaint','*',$where);
 
 				$data = array('name_csrf' => $this->security->get_csrf_token_name(),
-				'hash_csrf' => $this->security->get_csrf_hash());
+					'hash_csrf' => $this->security->get_csrf_hash(),
+					'centers' =>$centers
+				);
 				
 				$this->load->view('header');
 				$this->load->view('admin/account_section/update_payment_complaint',$data);

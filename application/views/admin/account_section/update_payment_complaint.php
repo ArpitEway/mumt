@@ -4,16 +4,11 @@
         <label for="center_id">Center</label>
         <select name="center_id" id="center_id" class="form-control" required >
             <option value="">All</option>
-            <?php 
-
-            $centers = $this->db->get_where('payment_complaint', array("status" => "Pending"))->result_array();
-
+            <?php
             foreach($centers as $center)
             {
-            ?>
-            
+            ?>            
             <option value="<?php echo $center['center_id']; ?>"><?php echo $this->Common_model->getSinglefield("center","center_code",array("id" => $center['center_id'] )); ?></option>
-            
             <?php
             } 
             ?> 
