@@ -23,7 +23,7 @@ class saveFormdata extends CI_Controller {
 		$data['class_name'] = $this->Common_model->getClassNameByClassId($class_id);
 		$data['center_id'] = $this->session->center_id;
 		$data['center_code'] = $this->session->centerdata;
-		$data['center_name'] = $this->Common_model->getSinglefield('center','center_name','center_id='.$this->session->center_id);
+		$data['center_name'] = $this->Common_model->getSinglefield('center','center_name','id='.$this->session->center_id);
 		$data['university_mode'] = 'REG';
 		$data['class_id'] = $class_id;
 		$data['medium'] = html_escape($this->input->post('medium'));
@@ -63,6 +63,11 @@ class saveFormdata extends CI_Controller {
 		$studentData['board'] = html_escape($this->input->post('board'));
 		$studentData['nationality'] = html_escape($this->input->post('nationality'));
 		$studentData['minority'] = html_escape($this->input->post('minority'));
+		
+		// transaction start from here 
+		// https://codeigniter.com/userguide3/database/transactions.html
+		$this->db->trans_start();
+
 		$student_id = $this->Common_model->insertAll('student',$data);
 
 		$path = './assets/student_image/'.$session;
@@ -81,6 +86,18 @@ class saveFormdata extends CI_Controller {
 		
 		$OnlinePayTxnData = array('student_id' => $student_id,'center_id' => $this->session->center_id,'fees_head' => 'Admission Fees','amount' => 1500,'payment_status'=>'pending','course_group_id' => $course_group_id,'class_id' => $class_id,'student_name' => $data['name'],'admission_type'=>'regular');
 		$OnlinePayTxn = $this->Common_model->insertAll('online_payment_transaction',$OnlinePayTxnData);
+
+		// transaction Complete 
+		
+		if ($this->db->trans_status() === FALSE)
+		{
+			$this->db->trans_rollback();
+		}
+		else
+		{ 
+			$this->db->trans_complete();
+		}
+
 		$student_id = $this->Common_model->encrypt_decrypt($student_id);
 		$result = array('student_id'=>$student_id);
 		echo json_encode($result);
