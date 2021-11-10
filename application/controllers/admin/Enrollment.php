@@ -68,14 +68,14 @@
 		public function consolidate_report(){
 			if($this->session->has_userdata('adminData'))
 			{
-				$dt = array(); 
-				$dt['title'] = "Student Consolidate Report";
-				$this->load->view('header',$dt);
+				$dataTitle = array(); 
+				$dataTitle['title'] = "Student Consolidate Report";
+				$this->load->view('header',$dataTitle);
 				$this->db->order_by('id', 'Desc');
-				$dt['sessions'] = $this->db->get_where('session', array())->result_array();
+				$data['sessions'] = $this->db->get_where('session', array())->result_array();
 				$data['name_csrf'] = $this->security->get_csrf_token_name();
 				$data['hash_csrf'] = $this->security->get_csrf_hash();
-				$this->load->view('admin/enrollment/consolidate_report',$dt);
+				$this->load->view('admin/enrollment/consolidate_report',$data);
 				$this->load->view('footer');
 			}
 			else
@@ -84,25 +84,6 @@
 			}
 		}
 
-		public function edit_non_verified_list(){
-			if($this->session->has_userdata('adminData'))
-			{
-				$dt = array();
-				$data = array();
-				$dt['approved'] = "";
-				$data['students'] = $this->Common_model->all_student_info_by_where($dt);
-				$dt['title'] = "Edit Non Verified Studnets";
-				$data['name_csrf'] = $this->security->get_csrf_token_name();
-				$data['hash_csrf'] = $this->security->get_csrf_hash();
-				$this->load->view('header',$dt);
-				$this->load->view('admin/enrollment/edit_non_verified_list',$data);
-				$this->load->view('footer');
-			}
-			else
-			{
-				redirect(base_url('enrollment/login'));
-			}
-		}
 		
 		public function get_student_consolidate_data()
 		{
@@ -122,6 +103,7 @@
 				$document_upload  = 	$this->input->post("document_upload");
 				$filter  		  = 	$this->input->post("filter");
 				$session 		  = 	$this->input->post("session");
+				
 			    $mode 		  	  = 	$this->input->post("mode");
 				$center 	  	  = 	$this->input->post("center");
 				if($mode != "all"){	 
@@ -362,61 +344,6 @@
 			$this->email->initialize($config);	
 		}
 		
-		/*
-			1. js in edit_student js file 
-			2. update code in  admin/updatestudentdata 
-			3. copied from admission files
-		*/
-		
-		public function edit_student($student_id){		
-			$wherestudent = 'student_id='.$student_id;
-			$student = $this->Common_model->get_record('student','*',$wherestudent);
-			
-			$courseData = $this->Common_model->getRecordById('course_group','id',$student[0]['course_group_id']);
-			$titleData = array('title' => 'Admission Form'); 
-			$category_list = $this->Common_model->getDistinct('course_group','category');
-			$documentData = $this->Common_model->get_record('document_category','*','document_id='.$courseData->document_id);
-			$state_list = $this->Common_model->get_record('state','*');
-			$district_list = $this->Common_model->get_record('distt','*');
-			$course_group_list = $this->Common_model->get_record('course_group','*','category="'.$student[0]['course_category'].'"');
-			$class = $this->Common_model->get_record('class_master','*','course_group_id='.$student[0]['course_group_id'].' and admission_permission="Y"');
-			$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$class[0]['id'].' and ce="compulsory"');
-			$docLength = $this->Common_model->getCountByWhere('document_category','document_id ='.$courseData->document_id.' and status="Y"');
-			$data = array(
-			'course_group_list' => $course_group_list,
-			'category_list' => $category_list,
-			'documentData' => $documentData,
-			'state_list' => $state_list,
-			'district_list' => $district_list,
-			'class' => $class[0],
-			'compulsoryPapers' => $compulsoryPapers,
-			'docLength' => $docLength,
-			'courseData' => $courseData,
-			'student' => $student[0],
-			'userData' => $userData[0],
-			);
-			$studentdata = $this->Common_model->get_record('student_data','*',$wherestudent);
-			$data['studentdata'] = $studentdata[0];
-			$data['courseData'] = $courseData;
-			$exam_papers= array();
-			if($class[0]['class_group']=='Y'){
-				$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id where class_id='.$class[0]['id'])->result();
-				$data['groupPaper'] = $groupPaper;
-			}
-			if($student[0]['temp_exam_form']=='Y'){
-				$exam_papers = $this->Common_model->get_record('new_exam_form','paper_id,paper_code',$wherestudent);
-				$data['exam_papers'] = $exam_papers;
-			}
-			$count = $this->Common_model->getCountByWhere('student_data',$wherestudent);
-			if($class[0]['class_group']=='Y'){
-				$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id where class_id='.$class[0]['id'])->result();
-				$data['groupPaper'] = $groupPaper; 
-			}
-			$this->load->view('header',$titleData);
-			$this->load->view('admin/enrollment/edit_student',$data);
-			$this->load->view('footer');
-		}
-		
 		public function unpaid_student_list(){
 			if($this->session->has_userdata('adminData'))
 			{
@@ -518,64 +445,7 @@
 			$this->load->view('header',array('title'=>'status'));
 			$this->load->view('admin/enrollment/status');
 			$this->load->view('footer');
-		}
-		
-		function getUnpaidStudentProgramFee(){
-			$data = $row = array();
-			$where = 'approved="Y"';
-			// Fetch member's records
-			$column_order = array(null,'student.student_id','course_name','class_name','name','f_h_name','p_mobile_no','dob',null);
-			$column_search = array('student.student_id','course_name','class_name','name','p_mobile_no','f_h_name','dob');
-			
-			$DataTableArray = array(
-				'column_order' => $column_order,
-				'column_search' => $column_search,
-				'where' => $where,
-				'table' => 'student',
-				'table2' => 'student_data',
-				'joinOn' => 'student.student_id=student_data.student_id'
-			);
-			
-			$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
-			
-			$i = $_POST['start'];
-			foreach($tableData as $result){
-
-				
-
-				$data_amount = $this->Common_model->getStudentProgramFeeByClass($result->course_group_id,$result->class_id,$result->gender);
-
-				if($result->installment_permission == 'Y'){
-					$data_amount = $data_amount/2;
-				}
-
-				$btn = '<a href="#" class="btn btn-primary btn-sm font-weight-bold student" data-toggle="modal" data-target="#kt_datepicker_modal" data-id="'.$result->student_id.'" data-name="'.$result->name.'" data-amount="'.$data_amount.'">Receive</a>';
-				
-				$sts = $result->installment_permission;
-				
-				if($sts == 'Y')
-				{
-				$installment_btn = '<input type="button" name="update_stats" data-id='.$result->student_id.' class="btn btn-success status_checks" value="Yes">';
-				}else{
-				$installment_btn = '<input type="button" name="update_stats" data-id='.$result->student_id.' class="btn btn-danger status_checks" value="No">';
-				}
-				
-				$i++;
-				
-				$data[] = array('DT_RowId' => 'student_'.$result->student_id,$i, $result->student_id, $result->course_name,$result->class_name, $result->name, $result->f_h_name,$result->p_mobile_no , $this->Common_model->viewDate($result->dob),$btn,$installment_btn);
-			}
-			
-			$output = array(
-            "draw" => $_POST['draw'],
-            "recordsTotal" => $this->Datatable_join_model->countAll('student',$where),
-            "recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
-            "data" => $data,
-			);
-			
-			// Output to JSON format
-			echo json_encode($output);
-		}
-		
+		}		
 		
 public function print_form($student_id){
 	$where =  array(

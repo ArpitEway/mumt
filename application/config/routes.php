@@ -63,8 +63,6 @@ $route['admin/enrollment/show_form/(:num)'] = 'admin/enrollment/show_form/$1';
 $route['admin/updateStudentData/(:num)'] = 'admin/updateStudentData/index/$1';
 
 
-
-
 $route['student'] = 'student/Student';
 $route['student/login'] = 'student/Student/login';
 $route['student/loginSub'] = 'student/Student/loginSub';
@@ -92,6 +90,12 @@ $route['center/show_fees/(:any)'] = 'center/center/show_fees/$1';
 $route['center/student_list/(:any)'] = 'center/center/student_list/$1';
 $route['center/admission_instruction'] = 'center/center/admission_instruction';
 $route['center/loginAs'] = 'center/center/loginAs';
+
+
+$route['center/payment_complaint']  = 'center/center/payment_complaint';
+$route['center/form_edit_request']  = 'center/center/form_edit_request';
+$route['center/get_request_detail'] = 'center/center/get_request_detail';
+
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

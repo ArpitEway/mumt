@@ -8,7 +8,7 @@ function rightModal(url, header)
 {
   // LOADING THE AJAX MODAL
   var csrfName = $('.csrfname').attr('name');
-  var csrfHash = $('.csrfname').val(); 
+  var csrfHash = $('.csrfname').val();
 
   jQuery('#right-modal').modal('show', {backdrop: 'true'});
   // SHOW AJAX RESPONSE ON REQUEST SUCCESS

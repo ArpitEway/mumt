@@ -5,10 +5,9 @@
             <label for="session">Session</label>
             <select name="session" id="session" class="form-control" required>
                 <option value="">Select session</option>
-                <option value="2021" selected >2021</option>
                     <?php 
-                    $sessions = $this->db->get_where('session', array())->result_array();
-                    foreach($sessions as $session)
+                   $sessions = $this->Common_model->get_record('session','*');
+                    foreach($sessions[0] as $session)
                         {
                     ?>
                     <option value="<?php echo $session['id']; ?>"><?php echo $session['session']; ?></option>
@@ -66,19 +65,19 @@
             <label for="name">Regular</label>
         </div>
 
+		<div class="form-group col-md-3">
+            <label for="name">Form Fees</label>
+            <input type="text" class="form-control" id="form_fees" name = "form_fees" value="200"  placeholder="Enter form fees" >
+        </div>
         <div class="form-group col-md-3">
             <label for="name">Admission fees</label>
-            <input type="number" class="form-control" id="admission_fees" name = "admission_fees" value="500"  placeholder="Enter admission fees">
+            <input type="number" class="form-control" id="admission_fees" name = "admission_fees" value="1300"  placeholder="Enter admission fees">
         </div>
         
 		<div class="form-group col-md-3">
             <label for="name">Program Fees</label>
             <input type="text" class="form-control" id="program_fees" name = "program_fees"   placeholder="Enter program fees" >
            
-        </div>
-		<div class="form-group col-md-3">
-            <label for="name">Form Fees</label>
-            <input type="text" class="form-control" id="form_fees" name = "form_fees"   placeholder="Enter form fees" >
         </div>
 		<div class="form-group col-md-3">
             <label for="name">Exam fees</label>
@@ -88,10 +87,14 @@
         <div class="form-group col-md-12" style="margin-bottom: 5px;">
             <label for="name">Private</label>
         </div>
-
+        <div class="form-group col-md-3">
+            <label for="name">Form Fees</label>
+            <input type="text" class="form-control" id="p_form_fees" name = "p_form_fees" placeholder="Enter form fees" >
+           
+        </div>
         <div class="form-group col-md-3">
             <label for="name">Admission fees</label>
-            <input type="number" class="form-control" id="p_admission_fees" name = "p_admission_fees" value="500" placeholder="Enter admission fees">
+            <input type="number" class="form-control" id="p_admission_fees" name = "p_admission_fees"  placeholder="Enter admission fees">
            
         </div>
 		<div class="form-group col-md-3">
@@ -100,17 +103,9 @@
            
         </div>
 		<div class="form-group col-md-3">
-            <label for="name">Form Fees</label>
-            <input type="text" class="form-control" id="p_form_fees" name = "p_form_fees" placeholder="Enter form fees" >
-           
-        </div>
-		<div class="form-group col-md-3">
             <label for="name">Exam fees</label>
             <input type="text" class="form-control" id="p_exam_fees" name = "p_exam_fees" placeholder="Enter exam fee">
-        </div>
-
-
-       
+        </div>       
     </div>
 	<div class="form-group text-center">
 	<button class="btn btn-md btn-primary" type="submit">Submit</button>

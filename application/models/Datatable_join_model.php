@@ -8,9 +8,6 @@ class Datatable_join_model extends CI_Model{
      * @param $_POST filter data based on the posted parameters
      */
     public function getRows($postData,$array){
-	if($array['where']!=''){
-		$this->db->where($array['where']);
-		}
         $this->_get_datatables_query($postData,$array);
         if($postData['length'] != -1){
             $this->db->limit($postData['length'], $postData['start']);

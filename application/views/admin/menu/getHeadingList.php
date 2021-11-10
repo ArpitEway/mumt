@@ -64,7 +64,8 @@ $sortable.sortable({
 
 $(document).on('change', '.status_checks', function(e) {
   var val = $(this).val();
-  
+  var csrfName = $('.csrfname').attr('name');
+	var csrfHash = $('.csrfname').val(); 
   var status = '1';
   var selector = $(this);
   var id = $(this).data('id');

@@ -46,6 +46,7 @@ foreach($centers as $center):
 	<div class="form-group col-md-4">
 		<label for="session">District</label>
 		<select name="district" id="district" class="form-control" >
+		<option value="">Select District</option>
 		<?php
 		$Distt = $this->db->get_where('distt', array("state_id" => $center['state_id']))->result_array();
 		foreach($Distt as $dist)

@@ -43,6 +43,43 @@ class center_model extends CI_Model {
 	{
 		return $this->Common_model->getSinglefield($this->table,'balance','id='.$center_id);
 	}
+
+	public function payment_complaint($student_id)
+	{
+		$details = html_escape($this->input->post('detail'));
+
+		$student_detail = $this->Common_model->getSingleRow("student","*",array("student_id" => $student_id ));
+		
+		$data['details']   		= $details;
+		$data['center_id'] 		= $student_detail->center_id;
+		$data['enrollment_no'] 	= "-";
+		$data['student_id'] 	= $student_id;
+		$data['type']   		= 'admission';
+		$data['date']   		=  date("Y-m-d");
+		$data['status']   		= "P";
+
+		$check = $this->Common_model->getSingleRow("payment_complaint","*",array("student_id" => $student_id ));
+		
+		if($check)
+		{
+			$response = array(
+				'status' => true,
+				'err_msg' => "A Complaint Already Under Process",
+			);
+
+		}else{
+			
+			$this->db->insert('payment_complaint',$data);
+			$response = array(
+				'status' => true,
+				'msg' => "Complained Succesfuly Registered",
+			);
+		}
+
+		return json_encode($response);
+	}
+
+
 }
 
 ?>

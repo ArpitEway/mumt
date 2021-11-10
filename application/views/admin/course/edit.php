@@ -11,14 +11,13 @@ foreach($courses as $course): ?>
             <label for="session">Session</label>
             <select name="session" id="session" class="form-control" required>
                 <option value="">Select session</option>
-                <option value="2021" selected>2021</option>
                     <?php 
-                    $sessions = $this->db->get_where('session', array())->result_array();
+                    $sessions = $this->Common_model->get_record('session','*');
                     foreach($sessions as $session)
                     {
                     ?>
                     
-                    <option value="<?php echo $session['id']; ?>" <?php if($course['session'] == $session['id']) echo "selected" ?> ><?php echo $session['name']; ?></option>
+                    <option value="<?php echo $session['id']; ?>" <?php if($course['session'] == $session['id']) echo "selected" ?> ><?php echo $session['session']; ?></option>
                     
                     <?php
                     } 
