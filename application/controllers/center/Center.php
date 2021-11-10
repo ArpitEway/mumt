@@ -131,7 +131,7 @@ class Center extends CI_Controller {
 			'state_list' => $state_list,
 			'district_list' => $district_list,
 			'course_group_list' => $course_group_list,
-			'session' => 2021,
+			'session' => 'July 2021',
 			'eligibility_list' => $eligibility_list,
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
@@ -208,7 +208,7 @@ class Center extends CI_Controller {
 		$csrf = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
-			'session_list' => $this->Common_model->get_record('session'),
+			'session_list' => $this->Common_model->get_record('session','*'),
 		);
 		$titleData = array('title' => 'Students List', );
 		$this->load->view('Centers/header',$titleData);
