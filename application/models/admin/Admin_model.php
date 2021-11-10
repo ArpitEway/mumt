@@ -1003,8 +1003,25 @@ class Admin_model extends CI_Model {
 		return json_encode($response);
 	}
 
+	public function create_form_request()
+    {
 
+		$data['center_id'] 	= $this->session->center_id;
+		$data['student_id'] = html_escape($this->input->post('student'));
+		$data['detail'] 	= html_escape($this->input->post('detail'));
+		$data['date'] 		= date("Y-m-d");
 
+        $this->db->insert('request', $data);
+
+        $session_id = $this->db->insert_id();
+
+        $response = array(
+        			'status' => true,
+        			'notification' => 'form_request_added_successfully'
+        			);
+
+        return json_encode($response);
+    }
 
 
 }

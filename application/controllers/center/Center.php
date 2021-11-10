@@ -5,6 +5,7 @@ class Center extends CI_Controller {
 
 	function __construct(){
 		parent::__construct();
+		$this->load->model('admin/admin_model');
 		$this->load->model('Common_model');
 		$this->load->model('Center/center_model');
 		$this->load->model('Datatable_join_model');
@@ -408,7 +409,7 @@ class Center extends CI_Controller {
 			$this->load->view('Centers/change_password',$data);
 			$this->load->view('Centers/footer');
 		}
-}
+	}
 
 	public function password_change($id)
 	{
@@ -654,7 +655,7 @@ class Center extends CI_Controller {
 	public function getCourseBySession(){
 		$session = $this->input->post('session');
 		$where = "session='".$session."' and center_id=".$this->session->center_id;
-		$course_group_list = $this->Common_model->get_record('student','course_group_id as id,course_name',$where);
+		$course_group_list = $this->Common_model->get_record('student','distinct(course_group_id) as id,course_name',$where);
 		$data = array(
 			'course_group_list' => $course_group_list,
 			'all'=> true,
@@ -671,5 +672,73 @@ class Center extends CI_Controller {
 		);
 		echo $this->load->view('template/getclass',$data,true);
 	}
+
+
+	public function form_edit_request()
+	{
+		if(!$this->session->has_userdata('centerdata')){
+
+			redirect(base_url('center/'));
+
+		}else{
+
+			$titleData = array('title' => 'Form Edit Request');
+
+			$this->load->view('Centers/header',$titleData);
+
+			$id =  $this->session->center_id;
+
+			$request_detail = $this->Common_model->get_record('request','*',array());
+
+			$data = array('request_detail' => $request_detail,'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash());
+
+			$this->getNotification();
+
+			$this->load->view('Centers/form_edit_request',$data);
+			$this->load->view('Centers/footer');
+
+		}
+	}
+
+	public function getStudent_By_Course(){
+
+		$course_id = $this->input->post('course_id');
+
+		$where = "course_group_id = ".$course_id." and enrolled = 'N' and center_id=".$this->session->center_id;
+		$student_list = $this->Common_model->get_record('student','student_id as id,name',$where);
+		
+		$data = array(
+			'student_list' => $student_list,
+			'all'=> true,
+		);
+		echo $this->load->view('template/getStudent',$data,true);
+	}	
+
+	public function get_request_detail(){
+
+		$session_id = $this->input->post('session_id');
+		$course_id  = $this->input->post('course_id');
+		$student_id = $this->input->post('student');
+		
+
+		$response = $this->admin_model->create_form_request();
+
+		$id =  $this->session->center_id;
+
+		$request_detail = $this->Common_model->get_record('request','*',array());
+
+		$data = array('request_detail' => $request_detail,'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash());
+
+		$dt =  $this->load->view('admin/center/getRequestList',$data,true);
+
+
+		echo json_encode(array("status" => 'true','data' => $dt));
+	
+	}	
+
+	
+
 
 }

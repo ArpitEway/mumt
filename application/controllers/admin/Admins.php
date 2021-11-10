@@ -1298,9 +1298,9 @@ public function update_doc_permission_status()
 
 				if($dt[0]['document_permission'] == 'Y')
 				{
-				$sts_btn = '<input type="button" name="update_doc_stats" data-id='.$id.' class="btn btn-success doc_permission_check" value="Yes">';
+					$sts_btn = '<input type ="button" name="update_doc_stats" data-id='.$id.' class="btn btn-success doc_permission_check" value="Yes">';
 				}else{
-				$sts_btn = '<input type="button" name="update_doc_stats" data-id='.$id.' class="btn btn-danger doc_permission_check" value="No">';
+					$sts_btn = '<input type ="button" name="update_doc_stats" data-id='.$id.' class="btn btn-danger doc_permission_check" value="No">';
 				}
 				$status = true;
 				$msg    = "";

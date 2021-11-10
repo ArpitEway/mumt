@@ -92,7 +92,9 @@ $route['center/admission_instruction'] = 'center/center/admission_instruction';
 $route['center/loginAs'] = 'center/center/loginAs';
 
 
-$route['center/payment_complaint'] = 'center/center/payment_complaint';
+$route['center/payment_complaint']  = 'center/center/payment_complaint';
+$route['center/form_edit_request']  = 'center/center/form_edit_request';
+$route['center/get_request_detail'] = 'center/center/get_request_detail';
 
 
 $route['404_override'] = '';

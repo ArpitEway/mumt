@@ -24,6 +24,7 @@
 
 
 <div id="dt">
+    
 </div>
 
 </div>
@@ -39,7 +40,7 @@ $(document).on("click","#submit_btn",function(){
 		center_id : $("#center_id").val(),
 		[csrfName]:csrfHash
 	};
-	var url = BASE_URL+"admin/Account/get_center_detail"; 
+	var url = BASE_URL + "admin/Account/get_center_detail"; 
 	var response = call_ajax(data,url);
 	console.log(response);
 	

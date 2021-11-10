@@ -20,7 +20,6 @@
 							<span class="nav-text">Payment Compaint Status</span>
 						</div>
 					</a>
-					
 				</div>
 			</div>
 		</div>

@@ -111,7 +111,8 @@ $("#submit").on('click',function (e)
 					
 						if(data.msg){
 									
-							toastr.success(data.msg);		
+							toastr.success(data.msg);
+									
 						}
 						else if(data.err_msg){
 									
@@ -165,8 +166,6 @@ $(document).on('click', '.req_check', function() {
 	});
 
 });
-
-
 
 $(document).on('click', '.remark_check', function() 
 {

@@ -21,11 +21,13 @@ $("#session").on('change', function(){
 	$.ajax({
 		method: "POST",
 		url: BASE_URL+"center/center/getCourseBySession",
-		data: { session : session,
-				[csrfName]:csrfHash
-				},
+		data: { 
+			session : session,
+			[csrfName]:csrfHash
+		},
 	})
 	.done(function( msg ) {
         $('#allClassBycourse').html(msg);
+		console.log(msg);
 	});
 });
