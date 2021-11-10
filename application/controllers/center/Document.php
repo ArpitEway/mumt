@@ -77,9 +77,9 @@
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
 		);
-			$this->load->view('centers/header',$titleData);
-			$this->load->view('centers/document',$data);
-			$this->load->view('centers/footer');
+			$this->load->view('Centers/header',$titleData);
+			$this->load->view('Centers/document',$data);
+			$this->load->view('Centers/footer');
 		}
 		
 		public function uploadDoc(){
@@ -176,6 +176,7 @@
 					echo json_encode($msg);
 					exit();
 		}
+		
 		public function remainingDocument($student_id){
 			if($student_id!=''){
 				$student = $this->Common_model->getRecordById('student','student_id',$student_id);
@@ -196,9 +197,9 @@
 					'student' => $student,
 					'documentData' => $document,
 				);
-			$this->load->view('students/header',$titleData);
-			$this->load->view('students/remaining_document',$data);
-			$this->load->view('students/footer');
+			$this->load->view('Centers/header',$titleData);
+			$this->load->view('Centers/remaining_document',$data);
+			$this->load->view('Centers/footer');
 			}
 		}
 		
