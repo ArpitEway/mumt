@@ -17,8 +17,8 @@
             <input type="text" class="form-control" id="designation" name = "designation" required placeholder="Enter designation">
         </div>
 		<div class="form-group col-md-4">
-            <label for="name">Email</label>
-            <input type="text" class="form-control" id="email" name = "email" required placeholder="Enter email">
+            <label for="name">Username</label>
+            <input type="text" class="form-control" id="username" name = "user_name" required placeholder="Enter Username">
             
         </div>
 		<div class="form-group col-md-4">

@@ -5,9 +5,10 @@
 				
 					<th>Sno</th>
 					
-					<th>From no</th>
+					<th>Form no</th>
 					<th>Enrollment no</th>
 					<th>Name</th>
+					<th>F/H Name</th>
 					<th>Mobile no</th>
 					<th>DOB</th>
 					<th>Course</th>
@@ -45,7 +46,7 @@
 				
 				<td><?php echo $student["enrollment_no"]; ?></td>
 				<td><?php echo ($student["name"]=='') ? 'N/A' : $student["name"]; ?></td>
-				<!--<td><?php //echo $student["f_h_name"]; ?></td>-->
+				<td><?php echo $student["f_h_name"]; ?></td>
 				<td><?php echo $this->Common_model->getMobileNoByStudentID($student["student_id"]) ?></td>
 				 <td><?php 
 					$newDate = ($student["dob"]=='') ? 'N/A' : $student["dob"];

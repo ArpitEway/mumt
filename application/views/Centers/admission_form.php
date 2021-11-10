@@ -189,10 +189,10 @@
 				<label>Category:</label><span class="text-danger"> *</span>
 				<select name="category" class="form-control ">
 					<option value="">Select Category</option>
-					<option>सामान्य</option>
-					<option>अ.जा.</option>
-					<option>अ.ज.जा.</option>
-					<option>पिछड़ा</option>
+					<option>General</option>
+					<option>OBC</option>
+					<option>ST</option>
+					<option>SC</option>
 				</select>
 				<div class="fv-plugins-message-container"></div>
 			</div>

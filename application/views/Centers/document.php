@@ -3,10 +3,8 @@
 	$docCatId = array();
 	$d=0;
 	foreach($documentData as $document){
-		if($document['category']==0){
-			if($student['gender']=='Male' || ($student['marital_status']=='Unmarried' && $student['gender']=='Female')){
-				continue;
-			}
+		if($document['status']=='N'){
+			continue;
 		}
 			$docCatId[$d] = 'docCatId_'.$document['id'];
 			$d++;
@@ -83,7 +81,7 @@
 		
 		<?php 		foreach($documentData as $document){ 
 
-			if($document['category']==0){
+			if($document['document']=='Marriage Certificate'){
 				if($student['gender']=='Male' || ($student['marital_status']=='Unmarried' && $student['gender']=='Female')){
 					continue;
 				}
@@ -93,7 +91,7 @@
 				<div class="row align-items-center">
 					<div class="col-md-8">
 						<div class="form-group">
-							<label><?=$document['document']?><strong class="text-danger"> *</strong></label>
+							<label><?=$document['document'];?><strong class="text-danger"><?= ($document['status']=='N') ? '' : ' *'; ?></strong></label>
 							
 							<input type="hidden" name="document_name<?=$document['id']?>" id="document_name<?=$document['id']?>" value="<?=$document['document']?>" >
 							<input type="hidden" name="document_category_id<?=$document['id']?>" id="document_category_id<?=$document['id']?>" value="<?=$document['id']?>" >

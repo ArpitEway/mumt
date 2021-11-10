@@ -152,7 +152,6 @@ $(document).on("click","#submit_btn",function(){
 		filter : $('input[name="filter"]:checked').val(),
 		enrolled : $("#enrolled").val(),
 		session : $("#session_id").val(),
-		program_fees : $("#program_fees").val(),
 		[csrfName]:csrfHash
 	};
 

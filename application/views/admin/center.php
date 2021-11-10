@@ -44,7 +44,7 @@
 
 				<?php
 
-				if($session['status'] == 'Y')
+				if($center['status'] == 'Y')
 				{
 
 				?>

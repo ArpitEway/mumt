@@ -65,7 +65,9 @@
 
 <script>
 
-var $sortable = $("#mytable > tbody");
+	var $sortable = $("#mytable > tbody");
+	var csrfName = $('.csrfname').attr('name');
+	var csrfHash = $('.csrfname').val(); 
 
 function delete_menu(para1,param) 
 {
@@ -137,7 +139,8 @@ $(document).on('change', '.status_checks', function(e) {
 		{
 			var data = {
 				id: $(this).attr('data-id'),
-				status: "Y"
+				status: "Y",
+				[csrfName]:csrfHash
 			}; 
 			
 			var target = $(this).attr("data-target");
@@ -152,7 +155,8 @@ $(document).on('change', '.status_checks', function(e) {
 			
 			var data = {
 				id: $(this).attr('data-id'),
-				status: "N"
+				status: "N",
+				[csrfName]:csrfHash
 			};
 			
 			var target = $(this).attr("data-target");

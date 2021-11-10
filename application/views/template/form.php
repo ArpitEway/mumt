@@ -77,6 +77,9 @@ hr.new2 {
 		font-weight: 500;
 		color:#635050c2;
 	}
+	.mt-30{
+		padding-top: 50px !important;
+	}
 	h1 {page-break-before: always !important;}
 	th{
 		width:auto !important;
@@ -115,7 +118,7 @@ hr.new2 {
 	<div id="printablediv">
 		<div class="form-block row text-center d-block" id="printHeaderdiv">
 			<div class="f-heading-1 text-primary">
-				Maharishi Mahesh Yogi Vedic Vishwavidyalaya
+				MAHARISHI MAHESH YOGI VEDIC VISHWAVIDYALAYA
 			</div><div class="f-heading-2 text-primary">
 				Brahmsthan Karoundi, Post Mahner-Umariyapaan, Distt – Katni (Madhya Pradesh)
 			</div>
@@ -123,8 +126,6 @@ hr.new2 {
 				APPLICATION FORM FOR REGISTRATION <span class="text-dark"><?= $student['session']; ?></span>
 			</div>
 		</div>
-
-
 		<div class="mt-5">
 			<label class="label_form label_heading "><b>Student details</b></label>
 			<div class="form-block row text-center">
@@ -135,7 +136,6 @@ hr.new2 {
 					<div class="form-text-color form-group col-md-4 text-left m-auto">
 						<?php echo $student['form_no']; ?>
 					</div>
-
 					<div class="form-group col-md-2 text-left m-auto">
 						<label class="label_form">Enrollment :</label>
 					</div>
@@ -161,21 +161,18 @@ hr.new2 {
 					<div class="form-text-color form-group col-md-4 text-left m-auto">
 						<?php echo $student['course_name']; ?>
 					</div>
-
 					<div class="form-group col-md-2 text-left m-auto">
 						<label class="label_form">Class Name:</label>
 					</div>
 					<div class="form-text-color form-group col-md-3 text-left m-auto">
 						<?php echo $student['class_name']; ?>
 					</div>
-
 					<div class="form-group col-md-3 text-left m-auto">
 						<label class="label_form">Student Name :</label>
 					</div>
 					<div class="form-group form-text-color col-md-4 text-left m-auto">
 						<?php echo $student['name']; ?>
 					</div>
-
 					<div class="form-group col-md-2 text-left m-auto">
 						<label class="label_form">DOB:</label>
 					</div>
@@ -221,14 +218,12 @@ hr.new2 {
 				<div class="form-group col-md-3 text-left m-auto form-text-color">
 					<?php echo $student['adhar_no']; ?>
 				</div>
-
 				<div class="form-group col-md-3 text-left m-auto">
 					<label class="label_form">Marital Status:</label>
 				</div>
 				<div class="form-group col-md-3 text-left m-auto form-text-color">
 					<?php echo $student['marital_status']; ?>
 				</div>
-
 				<div class="form-group col-md-3 text-left m-auto">
 					<label class="label_form">Handicaped : </label>
 				</div>
@@ -241,7 +236,6 @@ hr.new2 {
 				<div class="form-group col-md-3 text-left m-auto form-text-color">
 					<?php echo $student['medium'] ?>
 				</div>
-
 				<div class="form-group col-md-3 text-left m-auto">
 					<label class="label_form">Nationality : </label>
 				</div>
@@ -256,7 +250,6 @@ hr.new2 {
 				</div>
 			</div>
 		</div>
-
 		<label class="label_form mt-5 label_heading"><b>Address Details</b></label>
 		<div class="form-block row text-center">
 			<div class="row col-md-12 m-auto">
@@ -267,7 +260,6 @@ hr.new2 {
 					<?php 
 					echo $student['p_address']; ?>
 				</div>
-
 				<div class="form-group col-md-3 text-left m-auto"> 
 					<label class="label_form">State :</label>
 				</div>
@@ -275,7 +267,6 @@ hr.new2 {
 					<?php 
 					echo $this->Common_model->getState($student['p_state']); ?>
 			</div>
-
 			<div class="form-group col-md-3 text-left m-auto">
 				<label class="label_form">City :</label>
 			</div>
@@ -302,7 +293,6 @@ hr.new2 {
 			<div class="form-group col-md-3 text-left m-auto form-text-color">
 				<?php echo $student['p_email']; ?>
 			</div>
-
 			<div class="form-group col-md-3 text-left m-auto">
 				<label class="label_form">Mobile No : </label>
 			</div>
@@ -311,14 +301,10 @@ hr.new2 {
 			</div>
 		</div>
 	</div>
-
 	<label class="label_form mt-5 label_heading"><b>Educational Detail</b></label>
-
 	<div class="form-block row ">
-
 		<div class=" table-responsive">
 			<table class="table " style="text-transform: uppercase;">
-
 				<thead>
 					<tr>
 						<th>Qualifying Exam</th>
@@ -328,17 +314,13 @@ hr.new2 {
 						<th>Obtain Marks</th>
 					</tr>
 				</thead>
-
 				<tbody>
-
 					<tr>
-
 						<td class="form-text-color" ><?php echo $student['eligibility']; ?></td>
 						<td class="form-text-color"><?php echo $student['board']; ?></td>
 						<td class="form-text-color" ><?php echo $student['passing_year']; ?></td>
 						<td class="form-text-color" ><?php echo $student['total_marks']; ?></td>
 						<td class="form-text-color"><?php echo $student['marks']; ?></td>
-
 					</tr>
 				</tbody>
 			</table>
@@ -348,7 +330,7 @@ hr.new2 {
 	 मैं सत्यापित करता / करती हूँ कि मेरे द्वारा इस आवेदन पत्र में दी गई समस्त जानकारी पूर्ण एवं सत्य है| मैंने विश्विद्यालय में प्रवेश सम्बन्धी समस्त नियम एवं शर्तों को पढ़ एवं समझ लिया है एवं मै प्रवेश हेतु वांछनीय योग्यता को पूर्ण करता / करती हूँ| यदि मेरे द्वारा दी गई जानकारी झूठी एवं भ्रामक पाई जाती है तो विश्वविद्यालय किसी भी समय किसी भी स्तर पर मेरा प्रवेश निरस्त कर सकता है, जो मुझे मान्य होगा| प्रवेश निरस्त होने पर मै शुल्क वापसी हेतु कोई दावा नहीं करूँगा / करुँगी | 
 </p>
 	<hr class="my-10">
-	<div class="row justify-content-between">
+	<div class="row justify-content-between mt-30">
 		<div class="font-weight-bold label_heading"><div>दिनांक :</div>
 		<div class="font-weight-bold mt-3 label_heading">स्थान :</div>
 	</div>
