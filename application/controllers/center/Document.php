@@ -69,7 +69,8 @@
 			redirect(base_url('student/dashboard'));
 			}
 			$courseData	= $this->Common_model->getRecordById('course_group','id',$student['course_group_id']);
-			$documentData = $this->Common_model->get_record('document_category','*','category in ('.$courseData->document_id.',0)');
+			$order = 'id asc';
+			$documentData = $this->Common_model->get_record_by_order('document_category','*',$order,'category in ('.$courseData->document_id.',0)');
 			$data = array(
 			'courseData' => $courseData,
 			'documentData' => $documentData,
@@ -176,7 +177,7 @@
 					echo json_encode($msg);
 					exit();
 		}
-		
+
 		public function remainingDocument($student_id){
 			if($student_id!=''){
 				$student = $this->Common_model->getRecordById('student','student_id',$student_id);

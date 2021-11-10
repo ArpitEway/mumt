@@ -684,6 +684,15 @@ class Common_Model extends CI_Model{
 		    }
 		    return $output;
 	}
+
+	public function get_record_by_order($table,$field,$order,$wrr=''){
+		if($wrr!=''){
+			$this->db->where($wrr);
+		}
+		$qry= $this->db->order_by($order);
+		return $this->db->select($field)->from($table)->get()->result_array();
+
+	}
 }
 
 ?>
