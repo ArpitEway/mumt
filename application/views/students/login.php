@@ -29,7 +29,7 @@
 			<!--begin::Login-->
 			<div class="login login-2 login-signin-on d-flex flex-column flex-lg-row flex-column-fluid bg-white" id="kt_login">
 				<!--begin::Content-->
-				<div class="order-2 order-lg-1 flex-column-auto flex-lg-row-fluid d-flex flex-column p-7" style="background-repeat: no-repeat; background-size:cover; background-image: url(<?=base_url();?>assets/images/university/login_student.jpg);">
+				<div class="order-2 order-lg-1 flex-column-auto flex-lg-row-fluid d-flex flex-column p-7" style="background-repeat: no-repeat; background-size:cover; background-image: url(<?=base_url();?>assets/images/university/login.png);">
 					<!--begin::Content body-->
 					<div class="d-flex flex-column-fluid flex-lg-center">
 						<div class="d-flex flex-column justify-content-center">
