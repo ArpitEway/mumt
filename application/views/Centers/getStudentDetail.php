@@ -58,70 +58,16 @@
 
 </form>
 
-<div class="text-center">
-<table id="table" class="table table-striped dt-responsive nowrap" width="70%" >
-			<thead>
-			<tr>
-				
-				<th>S.No.</th>
-				<th>Student Name</th>
-				<th>Form no</th>
-				<th>Course </th>
-				<th>Class</th>
-				<th>Detail</th>
-				<th>Date</th>
-				<th>Status</th>
-				<th>Remark</th>
-		
-			</tr>
-			</thead>
-    		<tbody>
-    		<?php 
-			
-    		$i = 1;
-			
-			foreach($center_details as $center){
 
-			$student = $this->Common_model->getSingleRow("student",'*',array("student_id" => $center["student_id"]));
-			
-			?>
-			
-			<tr>
-
-                <td><?php echo $i; ?></td>
-				<td><?php echo $student->name; ?></td>
-				<td><?php echo $center["student_id"]; ?></td>
-                <td><?php echo $student->course_name; ?></td>
-				<td><?php echo $student->class_name; ?></td>
-				<td><?php echo $center["details"]; ?></td>
-				<td><?php echo $center["date"]; ?></td>
-
-				<td><?php
-				if($center["status"] == "P"){
-					echo "Pending";
-				}else{
-					echo "Done";
-				} ?>
-				</td>
-				<td><?php echo $center["remark"]; ?></td>
-				
-			</tr>
-			
-			
-		<?php
-            	
-	    		$i++;
-		} 
-
-		?>
-			</tbody>
-</table>
 
 
 <script>
 
-$("#submit").on('click',function (e)
-{
+$(document).on('click','#submit',function(e){
+
+// })
+// $("#submit").on('click',function (e)
+// {
     var csrfName = $('.csrfname').attr('name');
     var csrfHash = $('.csrfname').val(); 
 
@@ -155,6 +101,7 @@ $("#submit").on('click',function (e)
 							toastr.error("Something wrong");
 
 						}
+						refreshtable();
 				},
 			});	
 			
@@ -165,6 +112,7 @@ $("#submit").on('click',function (e)
 	}
 
 });	
+
 
 
 </script>

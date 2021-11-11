@@ -592,7 +592,15 @@ class Center extends CI_Controller {
 				$this->load->view('Centers/header',$titleData);
 				$id =  $this->session->center_id;
 				$center = $this->Common_model->getRecordById('center','id',$id);
-				$data = array('center' => $center,'name_csrf' => $this->security->get_csrf_token_name(),
+
+				$center_id =  $this->session->center_id;
+
+				$wherestudent = 'center_id='.$center_id;
+
+				$center_detail = $this->Common_model->get_record('payment_complaint','*',$wherecenter);
+
+
+				$data = array('center' => $center,'center_details' => $center_detail,'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash());
 				$this->getNotification();
 				$this->load->view('Centers/payment_complaint',$data);
@@ -738,7 +746,40 @@ class Center extends CI_Controller {
 	
 	}	
 
-	
+	public function getPaymentComplaint()
+	{
+		$data = $row = array();
+		$where = 'payment_complaint.center_id='.$this->session->center_id.' and type="admission" ';
+		
+		$column_order = array(null,'name','student.student_id','course_name','class_name','details','date','status','payment_complaint.remark');
+		$column_search = array('name','student.student_id','course_name','class_name','details','date','status','payment_complaint.remark');
+
+		$DataTableArray = array(
+			'column_order' => $column_order,
+			'column_search' => $column_search,
+			'where' => $where,
+			'table' => 'payment_complaint',
+			'table2' => 'student',
+			'joinOn' => 'payment_complaint.student_id=student.student_id'
+		);
+
+		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
+		$i = $_POST['start'];
+		foreach($tableData as $result){
+			$i++;
+			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->details,$result->date,$result->status,$result->remark);
+		}
+
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->Datatable_join_model->countAll('payment_complaint',$where),
+			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
+			"data" => $data,
+		);
+
+		// Output to JSON format
+		echo json_encode($output);
+	}	
 
 
 }
