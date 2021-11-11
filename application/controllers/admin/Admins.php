@@ -1455,7 +1455,13 @@ public function update_doc_permission_status()
 			$dde_student['course_group_id'] = $courseDetail->new_id;
 			$dde_student['course_name'] = $courseDetail->new_name;
 			$classData = $this->Common_model->getRecordByWhere('class_master','course_group_id='.$courseDetail->new_id.' and  admission_permission="Y" ');
-			
+
+			$studentCount = $this->Common_model->getCountByWhere('student',array('student_id' => $dde_student['student_id']));
+
+			if($studentCount>0){
+				continue;
+			}
+
 			$dde_student['class_id'] = $classData[0]->id;
 			$dde_student['class_name'] = $classData[0]->class_name;
 			$dde_student['medium'] = $studentdata[0]['medium'];

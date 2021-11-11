@@ -29,9 +29,9 @@ class saveFormdata extends CI_Controller {
 		$data['medium'] = html_escape($this->input->post('medium'));
 		$data['category'] = html_escape($this->input->post('category'));
 		$data['gender'] = html_escape($this->input->post('gender'));
-		$data['name'] = html_escape($this->input->post('name'));
-		$data['f_h_name'] = html_escape($this->input->post('f_h_name'));
-		$data['mother_name'] = html_escape($this->input->post('mother_name'));
+		$data['name'] = html_escape(strtoupper($this->input->post('name')));
+		$data['f_h_name'] = html_escape(strtoupper($this->input->post('f_h_name')));
+		$data['mother_name'] = html_escape(strtoupper($this->input->post('mother_name')));
 		$data['dob'] = html_escape(date("Y-m-d", strtotime($this->input->post('dob'))));
 		$data['adhar_no'] = html_escape($this->input->post('adhar_no'));
 
@@ -78,9 +78,10 @@ class saveFormdata extends CI_Controller {
 		$upload = $this->do_upload('photo',$path,$student_id);
 		
 		$PhotoData = array('photo' => $upload['file_name']);
+		print_r($upload);
 		$where = array('student_id'=>$student_id);
 		$this->Common_model->updateRecordByConditions('student',$where,$PhotoData);
-
+		die();
 		$studentData['student_id'] = $student_id;
 		$this->Common_model->insertAll('student_data',$studentData);
 		

@@ -1,3 +1,21 @@
+<style type="text/css">
+.details-bg{
+    background: #fafafa;
+    border: 1px solid #d3d3d3 !important;
+    box-shadow: 1px 3px 5px 2px beige !important;
+    padding: 5px 0px 19px 0px;
+}
+
+.input-div{
+    background: #fafafa;
+    padding: 50px;
+    margin: 46px 0px 0px 0px;
+}
+.profile .col-md-4 {
+	border-right:1px dashed #cdcdcd ;
+}
+</style>
+
 <?php  
 	
 	$docCatId = array();
@@ -14,56 +32,53 @@
 	var docCatIdArray = [<?php echo '"'.implode('","',  $docCatId ).'"' ?>];
 </script>
 
-<div class="text-danger my-3">	 डाक्यूमेंट्स अपलोड करते समय सभी की साइज 80 KB से 250 KB के मध्य रखना अनिवार्य है|  </div>
-<div class="text-danger my-3">	समस्त डाक्यूमेंट्स अपलोड करने के बाद नीचे दिए गए "Submit" बटन पर अवश्य क्लिक करें| </div>
-<div class="text-danger my-3"> यदि महिला अभ्यर्थी द्वारा Admission Form में पिता के नाम की जगह पति का नाम एवं उपनाम भरा गया है तो Affidevit अथवा Marriage Certificate  की प्रतिलिपि आवश्यक है। </div>
-<div class="card card-custom card-stretch my-10 bg-secondary" id="profile">
-<div class="container profile mt-5">
-	<div class="row">
-		<div class="col-md-2">
+<div class="card card-custom card-stretch my-10 details-bg" id="profile">
+<div class="container-fluid profile mt-5">
+	<div class="row ">
+		<div class="col-md-4">
 			<div class="row py-2">
-				<label class="col-sm-6 text-heading">Form No</label>
-				<div class="col-sm-6 text-value">
-					<?php echo $student['student_id']; ?>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="row py-2">
-				<label class="col-sm-6 text-heading">Student Name</label>
-				<div class="col-sm-6 text-value">
+				<label class="col-sm-3 text-heading">Student</label>
+				<div class="col-sm-9 text-value">
 					<?php echo $student['name']; ?>
 				</div>
 			</div>
 		</div>
 		<div class="col-md-4">
 			<div class="row py-2">
-				<label class="col-sm-6 text-heading">Father Name</label>
-				<div class="col-sm-6 text-value">
-					<?php echo $student['f_h_name']; ?>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-2">
-			<div class="row py-2">
-				<label class="col-sm-6 text-heading">Session</label>
-				<div class="col-sm-6 text-value">
+				<label class="col-sm-3 text-heading">Session</label>
+				<div class="col-sm-9 text-value">
 					<?php echo $student['session']; ?>
 				</div>
 			</div>
 		</div>
-		<div class="col-md-6">
+		<div class="col-md-4" style="border:none;">
 			<div class="row py-2">
-				<label class="col-sm-4 text-heading">Course Name</label>
-				<div class="col-sm-8 text-value">
-					<?php echo $student['course_name']; ?>
+				<label class="col-sm-3 text-heading">Course</label>
+				<div class="col-sm-9 text-value">
+					<?php echo $student['course_name'];  ?>
 				</div>
 			</div>
 		</div>
 		<div class="col-md-4">
 			<div class="row py-2">
-				<label class="col-sm-6 text-heading">Class Name</label>
-				<div class="col-sm-6 text-value">
+				<label class="col-sm-3 text-heading">Father</label>
+				<div class="col-sm-9 text-value">
+					<?php echo $student['f_h_name']; ?>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="row py-2">
+				<label class="col-sm-3 text-heading">Form No</label>
+				<div class="col-sm-9 text-value">
+					<?php echo $student['student_id']; ?>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4" style="border:none;">
+			<div class="row py-2">
+				<label class="col-sm-3 text-heading">Class</label>
+				<div class="col-sm-9 text-value">
 					<?php echo $student['class_name']; ?>
 				</div>
 			</div>
@@ -75,7 +90,7 @@
 <form method="post" action="<?=base_url('student/Document/uploadDoc');?>" enctype='multipart/form-data' id="target" >
 	<div id="loader">
 	</div>
-	<div class="row">
+	<div class="row input-div">
 		<input type="hidden" name="course_group_id" id="course_group_id" value="<?=$courseData->id; ?>" >
 		<input type="hidden" name="student_id" id="student_id" value="<?=$student['student_id']; ?>" >
 		
@@ -88,38 +103,41 @@
 			}
 			?>
 			<div class="col-md-6">
-				<div class="row align-items-center">
-					<div class="col-md-8">
-						<div class="form-group">
-							<label><?=$document['document'];?><strong class="text-danger"><?= ($document['status']=='N') ? '' : ' *'; ?></strong></label>
-							
-							<input type="hidden" name="document_name<?=$document['id']?>" id="document_name<?=$document['id']?>" value="<?=$document['document']?>" >
-							<input type="hidden" name="document_category_id<?=$document['id']?>" id="document_category_id<?=$document['id']?>" value="<?=$document['id']?>" >
-							<div></div>
-							<div class="custom-file">
-								<input type="file" accept="image/*,application/pdf" class="custom-file-input" id="<?='docCatId_'.$document['id']?>" data-id="<?=$document['id']?>" name="document[]" >
-								
-								<label class="custom-file-label" for="<?='docCatId_'.$document['id']?>"></label>
-							</div>
-							<div class="fv-plugins-message-container"></div>
-						</div>
+				<div class="form-group">
+					<label><?=$document['document'];?><strong class="text-danger"><?= ($document['status']=='N') ? '' : ' *'; ?></strong>
+						<span class="ml-auto" id="<?='downloadBtnId_'.$document['id']?>">
+							<?php 
+							$file = $this->Common_model->GetAdmissonDocFile($student['student_id'],$document['id']);
+							if($file){
+								$src = 'assets/documents/'.$file;
+								?>
+								<a href="<?=base_url($src);?>" download>
+									Download
+								</a>
+							<?php }
+							?>
+						</span>
+					</label>
+
+					<input type="hidden" name="document_name<?=$document['id']?>" id="document_name<?=$document['id']?>" value="<?=$document['document']?>" >
+					<input type="hidden" name="document_category_id<?=$document['id']?>" id="document_category_id<?=$document['id']?>" value="<?=$document['id']?>" >
+					<div></div>
+					<div class="custom-file">
+						<input type="file" accept="image/*,application/pdf" class="custom-file-input" id="<?='docCatId_'.$document['id']?>" data-id="<?=$document['id']?>" name="document[]" >
+
+						<label class="custom-file-label" for="<?='docCatId_'.$document['id']?>"></label>
 					</div>
-						<div class="col-md-4" id="<?='downloadBtnId_'.$document['id']?>">
-					<?php 
-						$file = $this->Common_model->GetAdmissonDocFile($student['student_id'],$document['id']);
-						if($file){
-							$src = 'assets/documents/'.$file;
-						?>
-							<a href="<?=base_url($src);?>" download>
-								Download
-							</a>
-						<?php }
-					?>
-						</div>
+					<div class="fv-plugins-message-container"></div>
 				</div>
 			</div>
 		<?php } ?>
 	</div>
+
+<ul class="my-5"><li class="text-danger my-3 font-weight-bold">	 डाक्यूमेंट्स अपलोड करते समय सभी की साइज 80 KB से 250 KB के मध्य रखना अनिवार्य है|  </li>
+<li class="text-danger my-3 font-weight-bold">समस्त डाक्यूमेंट्स अपलोड करने के बाद नीचे दिए गए "Submit" बटन पर अवश्य क्लिक करें| </li>
+<li class="text-danger my-3 font-weight-bold"> यदि महिला अभ्यर्थी द्वारा Admission Form में पिता के नाम की जगह पति का नाम एवं उपनाम भरा गया है तो Affidevit अथवा Marriage Certificate  की प्रतिलिपि आवश्यक है। </li>
+<li class="text-danger my-3 font-weight-bold">समस्त डाक्यूमेंट्स अपलोड करने के बाद नीचे दिए गए "Submit" बटन पर अवश्य क्लिक करें|</li></ul>
+
 	<div class="row justify-content-center my-3">
 		<button type="submit" class="btn btn-primary btn-lg" id="submit" name="submit">Submit</button>
 	</div>

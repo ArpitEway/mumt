@@ -1,3 +1,8 @@
+<ul class="my-5">
+	<li class="text-danger">
+    Payment Gateway द्वारा किये गए ट्रांसेक्शन से संबधित समस्या के समाधान लिए Form No एवं पूर्ण जानकारी के साथ Submit करे |</li>
+</ul>
+
 <div class="card">
   	<div class="card-body row text-center">
   		<div class="form-group col-md-3 m-auto" >		
@@ -7,7 +12,7 @@
 		</div>		
 		<div class="form-group col-md-12">
 			<label for="class"></label>
-			<button type="button" class="btn btn-primary mt-4" style="margin-top: 24px !important;" id="submit_btn">Submit</button>
+			<button type="button" class="btn btn-primary mt-4" style="margin-top: 24px !important;" id="submit_btn">Search</button>
 		</div>
 	</div>
 </div>

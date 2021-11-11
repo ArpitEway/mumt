@@ -1,5 +1,5 @@
 <div class="mt-5" >
-	<div class="row">
+	<div class="row mb-4">
 		<div class="col-md-4">
 			<div class="form-group">
 				<label>Session</label>
@@ -61,6 +61,7 @@
 
 
 	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+
 	<table id="memListTable" class="table table-striped dt-responsive" style="width:100%">
 		<thead>
 			<tr>

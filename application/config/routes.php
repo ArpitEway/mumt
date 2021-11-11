@@ -89,7 +89,7 @@ $route['center/show_form/(:any)'] = 'center/center/show_form/$1';
 $route['center/show_fees/(:any)'] = 'center/center/show_fees/$1';
 $route['center/student_list/(:any)'] = 'center/center/student_list/$1';
 $route['center/admission_instruction'] = 'center/center/admission_instruction';
-$route['center/loginAs'] = 'center/center/loginAs';
+$route['center/loginAs/(:any)'] = 'center/center/loginAs/$1';
 
 
 $route['center/payment_complaint']  = 'center/center/payment_complaint';

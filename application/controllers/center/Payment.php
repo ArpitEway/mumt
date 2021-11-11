@@ -22,7 +22,7 @@ class Payment extends CI_Controller {
 		$data['student'] = $student;
 		$data['url'] = 'paynow';
 		$data['paymentType'] = 'admission';
-		$data['txnAmt'] = 1;
+		$data['txnAmt'] = 1500;
 		
 		$this->load->view('Centers/header',$titleData);
 		$this->load->view('Centers/admission_payment',$data);
@@ -36,7 +36,7 @@ class Payment extends CI_Controller {
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		if($student_id!=''){
 			$student = $this->Common_model->student_info($student_id);
-			$txnAmt=1;
+			$txnAmt=1500;
 			if($student['payment_status']=='Y'){
 				$this->session->set_flashdata('warning','Payment Already Submitted');
 				redirect(base_url('center/dashboard'));
@@ -70,7 +70,7 @@ class Payment extends CI_Controller {
 			$posted['country'] = $student['nationality'];
 			$posted['zipcode'] = $student['p_pin_code'];
 			$posted['udf1'] = $student_id;
-			$posted['udf2'] = "university_mode";
+			$posted['udf2'] = "Regular";
 			$posted['udf3'] = "-";
 			$posted['udf4'] = $student["center_id"].' / '.$student['class_id'];
 			$posted['udf5'] = $student["name"]."/".$student["f_h_name"];
@@ -156,7 +156,7 @@ class Payment extends CI_Controller {
 				$this->Common_model->updateRecordByConditions('student',$where,$student);
 			}
 			$this->session->set_flashdata($remsg,$msg);
-			$student_id = $this->Common_model->encrypt_decrypt($student_id);
+			$id = $this->Common_model->encrypt_decrypt($id);
 			redirect(base_url('center/payment/detail/'.$id));
 		}
 	}

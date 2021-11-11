@@ -30,7 +30,7 @@
 					</a>
 					<a class="border-0 custom-menu-item" href="<?=base_url('center/all_student');?>">
 						<div>
-							<span class="nav-text">Student List</span>
+							<span class="nav-text">Student Report</span>
 						</div>
 					</a>
 					<a class="border-0 custom-menu-item" href="<?=base_url('center/student_list/unpaid');?>">

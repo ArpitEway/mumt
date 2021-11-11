@@ -66,7 +66,7 @@
 		<div class="col-xl-4">
 			<div class="form-group ">
 				<label>Student Name:</label><span class="text-danger"> *</span>
-				<input type="text" class="form-control " name="name" value="" placeholder="hindi">
+				<input type="text" class="form-control " name="name" value="" placeholder="Student Name">
 				<div class="fv-plugins-message-container"></div>
 			</div>
 		</div>

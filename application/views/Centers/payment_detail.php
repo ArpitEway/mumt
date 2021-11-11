@@ -30,6 +30,12 @@
 		Billing Details
 	</div>
 	<div class="row py-3 border">
+		<div class="col-sm-5 border-right">Form NO
+		</div>
+		<div class="col-sm-7 "><?=$student['student_id']?>
+		</div>
+	</div>
+	<div class="row py-3 border">
 		<div class="col-sm-5 border-right">Name
 		</div>
 		<div class="col-sm-7 "><?=$student['name']?>
