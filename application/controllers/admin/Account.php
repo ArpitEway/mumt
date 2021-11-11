@@ -197,11 +197,11 @@ public function update_request_remark()
 
 			if ($this->input->post("id")) 
 			{
-				$data = $this->Common_model->updateRecordByConditions("payment_complaint",array("id" => $id ),array("remark" => $remark,"status" => $status));
+				$data = $this->Common_model->updateRecordByConditions("payment_complaint",array("id" => $id ),array("payment_remark" => $remark,"status" => $status));
 				
 				$dt = $this->db->get_where("payment_complaint",array("id" => $id ))->result_array();
 
-				if($dt[0]['remark'] != 'invalid' || $dt[0]['remark'] == '')
+				if($dt[0]['payment_remark'] != 'invalid' || $dt[0]['payment_remark'] == '')
 				{
 
 					

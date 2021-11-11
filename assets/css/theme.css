@@ -287,3 +287,21 @@ color: #781e19 ! important;
     width: 153px;
     height: 165px;
 }
+
+.Payment-complaint{
+    background: #fdfdfd;
+    margin-bottom: 47px;
+    box-shadow: 1px 3px 5px beige;
+}
+
+.btn.btn-custom:hover{
+    color: #ffffff;
+    background-color: #edc831;
+    border-color: #fbc44f;
+    transition: 1s ease;
+}
+.message_detail{
+    margin: 0 auto;
+    width: 55%;
+    height: 300px;
+}

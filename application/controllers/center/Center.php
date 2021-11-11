@@ -751,8 +751,8 @@ class Center extends CI_Controller {
 		$data = $row = array();
 		$where = 'payment_complaint.center_id='.$this->session->center_id.' and type="admission" ';
 		
-		$column_order = array(null,'name','student.student_id','course_name','class_name','details','date','status','payment_complaint.remark');
-		$column_search = array('name','student.student_id','course_name','class_name','details','date','status','payment_complaint.remark');
+		$column_order = array(null,'name','student.student_id','course_name','class_name','details','date','status','payment_remark');
+		$column_search = array('name','student.student_id','course_name','class_name','details','date','status','payment_remark');
 
 		$DataTableArray = array(
 			'column_order' => $column_order,
@@ -767,7 +767,9 @@ class Center extends CI_Controller {
 		$i = $_POST['start'];
 		foreach($tableData as $result){
 			$i++;
-			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->details,$result->date,$result->status,$result->remark);
+			$date = $this->Common_model->viewDate($result->date);
+			$status = ($result->status=='P') ? 'Pending' : 'Done';
+			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->details,$date,$status,$result->payment_remark);
 		}
 
 		$output = array(
@@ -779,7 +781,5 @@ class Center extends CI_Controller {
 
 		// Output to JSON format
 		echo json_encode($output);
-	}	
-
-
+	}
 }
