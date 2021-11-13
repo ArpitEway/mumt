@@ -78,10 +78,8 @@ class saveFormdata extends CI_Controller {
 		$upload = $this->do_upload('photo',$path,$student_id);
 		
 		$PhotoData = array('photo' => $upload['file_name']);
-		print_r($upload);
 		$where = array('student_id'=>$student_id);
 		$this->Common_model->updateRecordByConditions('student',$where,$PhotoData);
-		die();
 		$studentData['student_id'] = $student_id;
 		$this->Common_model->insertAll('student_data',$studentData);
 		
