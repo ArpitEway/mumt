@@ -1,21 +1,3 @@
-<style type="text/css">
-.details-bg{
-    background: #fafafa;
-    border: 1px solid #d3d3d3 !important;
-    box-shadow: 1px 3px 5px 2px beige !important;
-    padding: 5px 0px 19px 0px;
-}
-
-.input-div{
-    background: #fafafa;
-    padding: 50px;
-    margin: 46px 0px 0px 0px;
-}
-.profile .col-md-4 {
-	border-right:1px dashed #cdcdcd ;
-}
-</style>
-
 <?php  
 	
 	$docCatId = array();
@@ -35,7 +17,7 @@
 <div class="card card-custom card-stretch my-10 details-bg" id="profile">
 <div class="container-fluid profile mt-5">
 	<div class="row ">
-		<div class="col-md-4">
+		<div class="col-md-4 border-right-dashed">
 			<div class="row py-2">
 				<label class="col-sm-3 text-heading">Student</label>
 				<div class="col-sm-9 text-value">
@@ -43,7 +25,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-4 border-right-dashed">
 			<div class="row py-2">
 				<label class="col-sm-3 text-heading">Session</label>
 				<div class="col-sm-9 text-value">
@@ -51,7 +33,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-4" style="border:none;">
+		<div class="col-md-4">
 			<div class="row py-2">
 				<label class="col-sm-3 text-heading">Course</label>
 				<div class="col-sm-9 text-value">
@@ -59,7 +41,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-4 border-right-dashed">
 			<div class="row py-2">
 				<label class="col-sm-3 text-heading">Father</label>
 				<div class="col-sm-9 text-value">
@@ -67,7 +49,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-4 border-right-dashed">
 			<div class="row py-2">
 				<label class="col-sm-3 text-heading">Form No</label>
 				<div class="col-sm-9 text-value">
@@ -75,7 +57,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-4" style="border:none;">
+		<div class="col-md-4">
 			<div class="row py-2">
 				<label class="col-sm-3 text-heading">Class</label>
 				<div class="col-sm-9 text-value">

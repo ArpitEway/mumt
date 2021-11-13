@@ -789,7 +789,7 @@
 </div>
 <script type="text/javascript">
 	$("#dob").inputmask();
-</script>			
+</script>
 <script src="<?=base_url();?>assets/theme/old_student.js?token=<?=date('YmdHis')?>"></script>
 <script type="text/javascript">
 	var avatar1 = new KTImageInput('kt_image_1');

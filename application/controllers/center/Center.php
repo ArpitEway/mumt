@@ -650,8 +650,7 @@ class Center extends CI_Controller {
 
 					$dt = "Invalid Form no";
 				}
-
-
+				
 				echo json_encode(array(
 				"status" => true,
 				"data" => $dt
@@ -768,8 +767,7 @@ class Center extends CI_Controller {
 		foreach($tableData as $result){
 			$i++;
 			$date = $this->Common_model->viewDate($result->date);
-			$status = ($result->status=='P') ? 'Pending' : 'Done';
-			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->details,$date,$status,$result->payment_remark);
+			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->details,$date,$result->status,$result->payment_remark);
 		}
 
 		$output = array(

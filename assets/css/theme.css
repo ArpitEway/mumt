@@ -305,3 +305,18 @@ color: #781e19 ! important;
     width: 55%;
     height: 300px;
 }
+.details-bg{
+    background: #fafafa;
+    border: 1px solid #d3d3d3 !important;
+    box-shadow: 1px 3px 5px 2px beige !important;
+    padding: 5px 0px 19px 0px;
+}
+
+.input-div{
+    background: #fafafa;
+    padding: 50px;
+    margin: 46px 0px 0px 0px;
+}
+.border-right-dashed {
+    border-right:1px dashed #cdcdcd ;
+}

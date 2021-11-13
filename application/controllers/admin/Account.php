@@ -92,7 +92,7 @@
 			
 			if($this->session->has_userdata('adminData')){
 				$where = array("status" => "Pending");
-				$centers = $this->Common_model->get_record('payment_complaint','*',$where);
+				$centers = $this->Common_model->get_record('payment_complaint','distinct(center_id)',$where);
 
 				$data = array('name_csrf' => $this->security->get_csrf_token_name(),
 					'hash_csrf' => $this->security->get_csrf_hash(),
@@ -109,7 +109,7 @@
 			}
 		}
 
-	public function get_center_detail()
+	public function get_payment_complaints()
 	{
 		if ($this->input->method() == "post") 
 		{
@@ -117,37 +117,33 @@
 			$data = array();
 			$dt   = array();
 				
-				$center_id  = $this->input->post("center_id");
+			$center_id  = $this->input->post("center_id");
+		
+			$wherecenter = 'center_id='.$center_id.' and status="Pending"';
+			$center_detail = $this->Common_model->get_record('payment_complaint','*',$wherecenter);
 			
-				$wherecenter = 'center_id='.$center_id;
-				$center_detail = $this->Common_model->get_record('payment_complaint','*',$wherecenter);
-				
-				$data = array('center_details' => $center_detail ,'name_csrf' => $this->security->get_csrf_token_name(),
-				'hash_csrf' => $this->security->get_csrf_hash());
+			$data = array('center_details' => $center_detail ,'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash());
 
-				if($data['center_details']){
-
-					$dt =  $this->load->view('admin/account_section/getStudentDetail',$data,true);
-
-				}else{
-
-					$dt = "Invalid Center Code";
-				}
-
-
-				echo json_encode(array(
-				"status" => true,
-				"data" => $dt
-				));
+			if($data['center_details']){
+				$dt =  $this->load->view('admin/account_section/getPaymentComplaints',$data,true);
+				$status = true;
+			}else{
+				$dt = "This Center Does Not Have Any Pending payment Complaint";
+				$status = false;
+			}
+			echo json_encode(array(
+			"status" => $status,
+			"data" => $dt
+			));
 		}
-			
 	}
 
 
-public function update_request_status()
-{
-	if ($this->input->method() == "post") 
+	public function update_request_status()
 	{
+		if ($this->input->method() == "post") 
+		{
             $id    	= 0;
             $id    	= $this->input->post("id");
 			$status = $this->input->post("status");
@@ -159,21 +155,11 @@ public function update_request_status()
 			
 				$dt = $this->db->get_where("payment_complaint",array("id" => $id ))->result_array();
 
-				if($dt[0]['status'] == 'Done')
-				{
-
+				if($dt[0]['status'] == 'Done'){
 				$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-success req_check" value="Done">';
-				
-				}
-
-				else{
-
+				}else{
 				$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-danger req_check" value="Pending">';
-				
 			}
-
-
-
 				$status = true;
 				$msg    = "";
 				
@@ -183,41 +169,34 @@ public function update_request_status()
 					"data" => $sts_btn
 				));
 			}
+		}
 	}
-}
 
-public function update_request_remark()
-{
-	if ($this->input->method() == "post") 
+	public function update_request_remark()
 	{
-        $id    	= 0;
-        $id    	= $this->input->post("id");
-		$remark = "invalid";
-		$status = "Done";
+		if ($this->input->method() == "post") 
+		{
+	        $id    	= $this->input->post("id");
+	        $remark = $this->input->post("remark");
+			$status = ($remark=='Invalid') ? 'Done' : "Pending";
 
 			if ($this->input->post("id")) 
 			{
 				$data = $this->Common_model->updateRecordByConditions("payment_complaint",array("id" => $id ),array("payment_remark" => $remark,"status" => $status));
 				
 				$dt = $this->db->get_where("payment_complaint",array("id" => $id ))->result_array();
-
-				if($dt[0]['payment_remark'] != 'invalid' || $dt[0]['payment_remark'] == '')
-				{
-
-					
-				$sts_btn = '<input type="button" name="update_req_remark" data-id='.$id.' class="btn btn-success req_check" value="Set">';
-					
 				
-				}
-
-				else{
-
-				$sts_btn = '<input type="button" name="req_remark" data-id='.$id.' class="btn btn-danger req_check" value="Invalid">';
+				if($dt[0]['payment_remark'] != 'Invalid'){
+				
+				$sts_btn = '<input type="button" name="update_req_remark" data-id='.$id.' class="btn btn-success remark_check" value="Set">';
+				
+				$sts_btn2 = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-danger req_check" value="Pending">';
+				}else{
+				
+				$sts_btn = '<input type="button" name="req_remark" data-id='.$id.' class="btn btn-danger remark_check" value="Invalid">';
 				
 				$sts_btn2 = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-success req_check" value="Done">';
-
 				}
-			
 
 				$status = true;
 				$msg    = "";
@@ -225,13 +204,44 @@ public function update_request_remark()
 				echo json_encode(array(
 					"status" => $status,
 					"msg" => $msg,
-					"data" => $sts_btn,
-					"data2" => $sts_btn2
+					"remarkBtn" => $sts_btn,
+					"statusBtn" => $sts_btn2
 				));
-			}		
+			}	
+		}
 	}
-}
-		
-		
-		
+
+	public function view_student_transaction($student_id)
+	{
+		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		$student = $this->Common_model->getRecordById('student','student_id',$student_id);
+		$paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student_id));
+		$data = array(
+			'student' => $student,
+			'paymentDetails' => $paymentDetails,
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		$this->load->view('header',array('title' => 'View Student Transaction'));
+		$this->load->view('admin/account_section/view_student_transaction',$data);
+		$this->load->view('footer');
+	}
+
+	public function updatePaymentTransaction()
+	{
+		$id = $this->input->post('id');
+		$txnid = $this->input->post('TxnId');
+		$dateTime = $this->input->post('dateTime');
+		$dateTime = explode(' ',$dateTime);
+		$updateData = array('txnId' => $txnid,'payment_date' => $dateTime[0],'payment_time' => $dateTime[1],'payment' => 'Y', 'payment_status' => 'captured');
+		$where = array('id' => $id);
+		$result = $this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$updateData);
+		if($result){
+			$return = array('success' => 'Transaction Details Updated');
+		}else{
+			$return = array('error' => 'An error occurred');
+		}
+		echo json_encode($return);
+		die;
+	}
 }

@@ -56,7 +56,7 @@ class center_model extends CI_Model {
 		$data['student_id'] 	= $student_id;
 		$data['type']   		= 'admission';
 		$data['date']   		=  date("Y-m-d");
-		$data['status']   		= "P";
+		$data['status']   		= "Pending";
 
 		$check = $this->Common_model->getSingleRow("payment_complaint","*",array("student_id" => $student_id ));
 		
