@@ -521,4 +521,67 @@ public function checkDuplicateAdharNo()
 			echo "Duplicate Adhar Card Number";
 		}
 	}
-}
+
+	public function check_enrollment_status()
+	{
+		$session_july='July 2021';		// All Class
+
+		$where = array('session'=>$session_july);
+		$data['total_student'] = $this->Common_model->getCountByWhere('student',$where);
+
+       //---paid------
+		$where = array('payment_status'=>'Y','session'=>$session_july);
+		$data['tot_paid'] = $this->Common_model->getCountByWhere('student',$where);
+
+       // --- not paid------
+		$where = array('payment_status'=>'N','session'=>$session_july);
+		$data['tot_unpaid'] = $this->Common_model->getCountByWhere('student',$where);
+
+       //---paid and uploaded--------
+		$where = array('document_uploaded'=>'Y','payment_status'=>'Y','session'=>$session_july);
+		$data['uploaded'] = $this->Common_model->getCountByWhere('student',$where);
+        
+        //---not uploaded--------
+		$where = array('document_uploaded'=>'N','payment_status'=>'Y','session'=>$session_july);
+		$data['not_uploaded'] = $this->Common_model->getCountByWhere('student',$where);
+        
+        //---paid/uploaded/ is = approved---
+		$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'N','session'=>$session_july);
+		$data['non_approved'] = $this->Common_model->getCountByWhere('student',$where);
+
+        // paid + uploaded but approved = '' not verified----
+		$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'','session'=>$session_july);
+		$data['not_verified'] = $this->Common_model->getCountByWhere('student',$where);
+
+         // paid + uploaded + approved = Y  verified----
+		$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'Y','session'=>$session_july);
+		$data['approved'] = $this->Common_model->getCountByWhere('student',$where);
+
+		// enrollement genrated
+		$where = array('enrollment_no !='=>'-','approved='=>'Y','session'=>$session_july);
+		$data['en_generated'] = $this->Common_model->getCountByWhere('student',$where);
+
+		// not enrollement genrated
+		$where = array('enrollment_no'=>'-','approved='=>'Y','session'=>$session_july);
+		$data['not_en_generated'] = $this->Common_model->getCountByWhere('student',$where);
+
+		// enrolled
+		$where = array('enrolled'=>'Y','approved='=>'Y','enrollment_no !='=>'-','session'=>$session_july);
+		$data['tot_enrolled'] = $this->Common_model->getCountByWhere('student',$where);
+
+		// enrolled
+		$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july);
+		$data['tot_not_enrolled'] = $this->Common_model->getCountByWhere('student',$where);
+
+  //        echo '<pre>';
+		// print_r($data);die;
+        $this->load->view('header');
+	    $this->load->view('admin/enrollment/enrollment_status_count',$data);
+	    $this->load->view('footer');
+
+	    
+		
+		
+	}
+
+}//class
