@@ -30,7 +30,7 @@
 	<div class="row py-3 border">
 		<div class="col-sm-4 border-right">State
 		</div>
-		<div class="col-sm-8"><?php echo $this->Common_model->getSinglefield('state','name','state_id='.$studentData['p_state']);?>
+		<div class="col-sm-8"><?php echo $studentData['p_state']; ?>
 		</div>
 	</div>
 	<div class="row py-3 border">

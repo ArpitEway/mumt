@@ -264,8 +264,7 @@ hr.new2 {
 					<label class="label_form">State :</label>
 				</div>
 				<div class="form-group col-md-3 text-left m-auto form-text-color">
-					<?php 
-					echo $this->Common_model->getState($student['p_state']); ?>
+					<?php echo $student['p_state'] ?>
 			</div>
 			<div class="form-group col-md-3 text-left m-auto">
 				<label class="label_form">City :</label>
@@ -283,9 +282,7 @@ hr.new2 {
 				<label class="label_form">District :</label>
 			</div>
 			<div class="form-group col-md-3 text-left m-auto form-text-color">
-				<?php 
-				echo $this->Common_model->getDistrict($student['p_district']);
-				?>
+				<?php echo $student['p_district']; ?>
 			</div>
 			<div class="form-group col-md-3 text-left m-auto">
 				<label class="label_form">Email id :</label>

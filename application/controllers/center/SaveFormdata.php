@@ -44,13 +44,17 @@ class saveFormdata extends CI_Controller {
 		$studentData['marital_status'] = html_escape($this->input->post('marital_status'));
 		$studentData['p_address'] = html_escape($this->input->post('p_address'));
 		$studentData['p_city'] = html_escape($this->input->post('p_city'));
-		$studentData['p_state'] = html_escape($this->input->post('p_state'));
-		$studentData['p_district'] = html_escape($this->input->post('p_district'));
+		$p_state_id = html_escape($this->input->post('p_state'));
+		$studentData['p_state'] = $this->Common_model->getState($p_state_id);
+		$p_district_id = html_escape($this->input->post('p_district'));
+		$studentData['p_district'] = $this->Common_model->getDistrict($p_district_id);
 		$studentData['p_pin_code'] = html_escape($this->input->post('p_pin_code'));
 		$studentData['c_address'] = html_escape($this->input->post('c_address'));
 		$studentData['c_city'] = html_escape($this->input->post('c_city'));
-		$studentData['c_state'] = html_escape($this->input->post('c_state'));
-		$studentData['c_district'] = html_escape($this->input->post('c_district'));
+		$c_state_id = html_escape($this->input->post('c_state'));
+		$c_district_id = html_escape($this->input->post('c_district'));
+		$studentData['c_state'] = $this->Common_model->getState($c_state_id);
+		$studentData['c_district'] = $this->Common_model->getDistrict($c_district_id);
 		$studentData['c_pin_code'] = html_escape($this->input->post('c_pin_code'));
 
 		$studentData['marks'] = html_escape($this->input->post('marks'));
