@@ -18,7 +18,7 @@
 			?>
 			
 			<tr>
-				<td><a target="_blank" href="<?php echo BASE_URL('admin/enrollment/show_form/'.$student["student_id"]); ?>" ><?php echo $student["student_id"]; ?></a></td>
+			<td><a target="_blank" href="<?php echo BASE_URL('admin/enrollment/show_form/'.$this->Common_model->encrypt_decrypt($student['student_id'],'encrypt'); ?>" ><?php echo $student["student_id"]; ?></a></td>
 				<td><?php echo $student["course_name"]; ?></td>
 				<td><?php echo $student["class_name"]; ?></td>
 				<td><?php echo $student["name"]; ?></td>

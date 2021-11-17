@@ -41,7 +41,8 @@
 			
 				<tr>
 				<td><?php echo $i; ?></td>
-				<td><a target="_blank" href="<?php echo site_url('admin/'.$this->session->account_type.'/show_form/'.$student["student_id"]); ?>"> <?=$student["student_id"]?></a></td>
+
+				<td><a target="_blank" href="<?php echo site_url('admin/'.$this->session->account_type.'/show_form/'.$this->Common_model->encrypt_decrypt($student['student_id'],'encrypt')); ?>"> <?=$student["student_id"]?></a></td>
 				
 				<td><?php echo $student["enrollment_no"]; ?></td>
 				<td><?php echo ($student["name"]=='') ? $userData->name : $student["name"]; ?></td>

@@ -693,6 +693,21 @@ class Common_Model extends CI_Model{
 		return $this->db->select($field)->from($table)->get()->result_array();
 
 	}
+	
+	public function get_record_group_by_where($table,$field,$order,$wrr=''){
+		if($wrr!=''){
+			$this->db->where($wrr);
+		}
+		$qry= $this->db->group_by($field);
+		$qry= $this->db->order_by($order);
+		 return $this->db->select('count(*) as count,center_id')->from($table)->get()->result_array();
+
+		// echo $this->db->last_query();
+		// die;
+	}
+
+
+
 }
 
 ?>

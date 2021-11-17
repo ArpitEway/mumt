@@ -1,0 +1,201 @@
+<div class="text-center">
+<table id="table" class="table table-striped dt-responsive nowrap" width="70%" >
+			<thead>
+			<tr>
+				
+				<th>S.No.</th>
+				<th>Student Name</th>
+				<th>Form no</th>
+				<th>Detail</th>
+				<th>Date</th>
+				<th>Status</th>
+				<th>Remark</th>
+		
+			</tr>
+			</thead>
+    		<tbody>
+    		<?php 
+			
+    		$i = 1;
+			
+			foreach($center_details as $center){
+
+			$student = $this->Common_model->getSingleRow("student",'*',array("student_id" => $center["student_id"]));
+			
+			?>
+			
+			<tr>
+
+                <td><?php echo $i; ?></td>
+				<td><?php echo $student->name; ?></td>
+				<td><?php echo $center["student_id"]; ?></td>
+				<td><?php echo $center["detail"]; ?></td>
+				<td><?php echo $center["date"]; ?></td>
+
+			<td >
+				
+			 <?php
+			if($center['status'] == 'Done')
+			{
+			?>
+
+			<input type="button" name="update_req_stats" data-id = "<?=$center["id"];?>" class="btn btn-success req_check" value="Done">
+			
+			<?php }else{ ?>
+			
+			<input type="button" name="update_req_stats" data-id = "<?=$center["id"];?> " class="btn btn-danger req_check" value="Pending">
+			
+			<?php 
+			}	
+			?> 
+
+			</td>
+			<td>
+		
+			<?php
+			if($session['remark'] == '' || $session['remark'] != 'Invalid')
+			{
+			?>
+
+			<input type="button" name="update_req_remark" data-id = "<?=$center["id"];?>" class="btn btn-success remark_check" value="Set">
+				
+			<?php }else{ ?>
+				
+			<input type="button" name="req_remark" data-id = "<?=$center["id"];?>" class="btn btn-danger remark_check" value="Invalid">
+				
+			<?php 
+			}	
+			?>
+		</td>
+		<td><a target="_blank" href='<?php echo base_url('/admin/enrollment/editForm/').$this->Common_model->encrypt_decrypt($center["student_id"],'encrypt'); ?>' >Edit Form</a></td>		
+		</tr>
+			
+			
+		<?php
+            	
+	    		$i++;
+		} 
+
+		?>
+			</tbody>
+</table>
+
+
+<script>
+
+$("#submit").on('click',function (e)
+{
+    var csrfName = $('.csrfname').attr('name');
+    var csrfHash = $('.csrfname').val(); 
+
+	detail = $('#detail').val(); 
+
+	if(detail)
+	{
+
+			var frm = $('.ajaxForm').serialize();
+			
+			$.ajax({
+			url: '<?php echo site_url('center/Center/request/'.$student_id); ?>',
+			type: 'POST',
+			dataType : 'json',
+			data: frm,
+				success: function (data) 
+				{
+
+					console.log(data.msg);
+					
+						if(data.msg){
+									
+							toastr.success(data.msg);
+									
+						}
+						else if(data.err_msg){
+									
+							toastr.error(data.err_msg);
+						}
+						else{
+
+							toastr.error("Something wrong");
+
+						}
+				},
+			});	
+			
+	}else{
+
+		toastr.error("Please Enter detail");
+
+	}
+
+});	
+
+
+
+$(document).on('click', '.req_check', function() {
+
+	var val = $(this).val();
+	var csrfName = $('.csrfname').attr('name');
+	var csrfHash = $('.csrfname').val();
+	var self = this;
+
+	var status = (val=='Done') ? 'Pending' : 'Done';
+
+	var data = {
+			id: $(this).attr('data-id'),
+			status: status,
+			[csrfName]: csrfHash,
+		}; 
+		
+	var url = BASE_URL + "admin/Enrollment/update_request_status";
+
+	$.ajax({
+	url: url,
+	type: 'POST',
+	dataType: 'json',
+	data: data,
+	success: function (data) {
+		
+		$(self).parent().html(data.data);
+		
+	}
+	});
+
+});
+
+$(document).on('click', '.remark_check', function() 
+{
+
+	var val = $(this).val();
+	var csrfName = $('.csrfname').attr('name');
+	var csrfHash = $('.csrfname').val();
+	var self = this;
+
+	var remark = (val=='Set') ? 'Invalid' : 'Set';
+
+	var data = {
+			id: $(this).attr('data-id'),
+			remark: remark,
+			[csrfName]: csrfHash,
+		}; 
+			
+		var url = BASE_URL + "admin/Enrollment/update_form_request_remark";
+
+		$.ajax({
+		url: url,
+		type: 'POST',
+		dataType: 'json',
+		data: data,
+		success: function (data) {
+			
+			$(self).parent().html(data.data);
+			
+		}
+	});
+
+
+});
+
+
+
+</script>

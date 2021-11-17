@@ -722,18 +722,26 @@ class Center extends CI_Controller {
 		echo $this->load->view('template/getStudent',$data,true);
 	}	
 
-	public function get_request_detail(){
+	public function update_request_detail(){
 
 		$session_id = $this->input->post('session_id');
 		$course_id  = $this->input->post('course_id');
 		$student_id = $this->input->post('student');
 		
+		$check_record = $this->Common_model->get_record('request','*',array("center_id" => $id,'student_id' => $student_id));
 
-		$response = $this->admin_model->create_form_request();
 
 		$id =  $this->session->center_id;
 
+		if($check_record)
+		{
+			echo json_encode(array("status" => 'true','data' => "error"));
+		}else{
+
+		$response = $this->admin_model->create_form_request();
+
 		$request_detail = $this->Common_model->get_record('request','*',array());
+
 
 		$data = array('request_detail' => $request_detail,'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash());
@@ -744,6 +752,7 @@ class Center extends CI_Controller {
 		echo json_encode(array("status" => 'true','data' => $dt));
 	
 	}	
+}
 
 	public function getPaymentComplaint()
 	{
@@ -767,9 +776,9 @@ class Center extends CI_Controller {
 		foreach($tableData as $result){
 			$i++;
 			$date = $this->Common_model->viewDate($result->date);
-			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->details,$date,$result->status,$result->payment_remark);
-		}
-
+			$status = ($result->status=='P') ? 'Pending' : 'Done';
+			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->details,$date,$status,$result->payment_remark);
+		
 		$output = array(
 			"draw" => $_POST['draw'],
 			"recordsTotal" => $this->Datatable_join_model->countAll('payment_complaint',$where),
@@ -780,4 +789,43 @@ class Center extends CI_Controller {
 		// Output to JSON format
 		echo json_encode($output);
 	}
+		
+	
+
+	public function getFormEditRequest()
+	{
+		$data = $row = array();
+		$where = 'request.center_id='.$this->session->center_id;
+		
+		$column_order = array(null,'name','student.student_id','detail','date','status','request.remark');
+		$column_search = array('name','student.student_id','detail','date','status','request.remark');
+
+		$DataTableArray = array(
+			'column_order' => $column_order,
+			'column_search' => $column_search,
+			'where' => $where,
+			'table' =>  'request',
+			'table2' => 'student',
+			'joinOn' => 'request.student_id=student.student_id'
+		);
+
+		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
+		$i = $_POST['start'];
+		foreach($tableData as $result){
+			$i++;
+			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->detail,$result->date,$result->status,$result->remark);
+		}
+
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->Datatable_join_model->countAll('request',$where),
+			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
+			"data" => $data,
+		);
+
+		// Output to JSON format
+		echo json_encode($output);
+	}	
+
+
 }

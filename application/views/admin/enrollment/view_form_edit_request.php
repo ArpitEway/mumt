@@ -8,7 +8,7 @@
             foreach($centers as $center)
             {
             ?>            
-           		<option value="<?php echo $center['center_id']; ?>"><?php echo $this->Common_model->getSinglefield("center","center_code",array("id" => $center['center_id'] ))." (".$center['count'].")"; ?></option>
+            <option value="<?php echo $center['center_id']; ?>"><?php echo $this->Common_model->getSinglefield("center","center_code",array("id" => $center['center_id'] ))." (".$center['count'].")"; ?></option>
             <?php
             } 
             ?> 
@@ -40,16 +40,11 @@ $(document).on("click","#submit_btn",function(){
 		center_id : $("#center_id").val(),
 		[csrfName]:csrfHash
 	};
-	var url = BASE_URL + "admin/Account/get_center_detail";
+	var url = BASE_URL + "admin/Enrollment/get_center_detail"; 
 	var response = call_ajax(data,url);
 	console.log(response);
-	if(response.status){
+	
 	$('#dt').html(response.data);
-	}else{
-	toastr.warning(response.data);
-	$('#dt').html('');
-	}
-
 	KTDatatablesBasicBasic.init();
 		 
 });

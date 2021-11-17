@@ -244,6 +244,9 @@
 		}
 		
 		public function show_form($student_id){
+
+			$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt'); 
+
 			$student = $this->Common_model->student_info($student_id);
 			$data = array(
 				'student' => $student,
@@ -585,3 +588,146 @@ public function checkDuplicateAdharNo()
 	}
 
 }//class
+
+	public function center_request(){
+			
+		if($this->session->has_userdata('adminData'))
+		{
+			$where = array("status" => "Pending");
+			$centers = $this->Common_model->get_record_group_by_where('request','center_id','center_id',$where);
+
+			$data = array('name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+				'centers' =>$centers
+			);
+			
+			$this->load->view('header');
+			$this->load->view('admin/enrollment/view_form_edit_request',$data);
+			$this->load->view('footer');
+		}
+		else
+		{
+			redirect(base_url('admin/login'));
+		}
+	}
+
+	public function get_center_detail()
+	{
+		if ($this->input->method() == "post") 
+		{
+			$course_group_id = 0;
+			$data = array();
+			$dt   = array();
+				
+				$center_id  = $this->input->post("center_id");
+			
+				$wherecenter = 'center_id='.$center_id;
+				$center_detail = $this->Common_model->get_record('request','*',$wherecenter);
+				
+				$data = array('center_details' => $center_detail ,'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash());
+
+				if($data['center_details']){
+
+					$dt =  $this->load->view('admin/Enrollment/getStudentDetail',$data,true);
+
+				}else{
+
+					$dt = "Invalid Center Code";
+				}
+
+
+				echo json_encode(array(
+				"status" => true,
+				"data" => $dt
+				));
+		}
+			
+	}
+
+	public function editForm($student_id = ""){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url('admin/'));
+			exit;
+		}
+
+		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		$titleData = array('title' => 'Admission Form'); 
+		$state_list = $this->Common_model->get_record('state','*');
+		$eligibility_list = $this->Common_model->get_record('course_group','DISTINCT (eligibility)');
+		$district_list = $this->Common_model->get_record('distt','*');
+		$course_group_list = $this->Common_model->get_record('course','*');
+		
+		$data = array(
+			'state_list' => $state_list,
+			'district_list' => $district_list,
+			'course_group_list' => $course_group_list,
+			'session' => 'July 2021',
+			'eligibility_list' => $eligibility_list,
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+			'student_detail' => $this->db->get_where('student', array("student_id" => $student_id))->row(),
+			'student_data'  => $this->db->get_where('student_data', array("student_id" => $student_id))->row()
+		
+		);
+
+
+		$this->load->view('header',$titleData);
+		$this->load->view('admin/enrollment/editForm',$data);
+		$this->load->view('footer');
+	}
+
+	public function update_request_status()
+{
+	if ($this->input->method() == "post") 
+	{
+            $id    	= 0;
+            $id    	= $this->input->post("id");
+			$status = $this->input->post("status");
+
+			
+            if ($this->input->post("id")) 
+			{
+				$data = $this->Common_model->updateRecordByConditions("request",array("id" => $id),array("status" => $status ));
+			
+				$dt = $this->db->get_where("request",array("id" => $id ))->result_array();
+
+				if($dt[0]['status'] == 'Done')
+				{
+
+				$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-success req_check" value="Done">';
+				
+				}
+
+				else{
+
+				$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-danger req_check" value="Pending">';
+				
+			}
+
+
+
+				$status = true;
+				$msg    = "";
+				
+				echo json_encode(array(
+					"status" => $status,
+					"msg" => $msg,
+					"data" => $sts_btn
+				));
+			}
+
+
+
+	}
+}
+
+
+
+
+
+}
+
+
+
+}
