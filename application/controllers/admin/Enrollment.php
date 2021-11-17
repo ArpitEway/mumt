@@ -583,11 +583,10 @@ public function checkDuplicateAdharNo()
 	    $this->load->view('footer');
 
 	    
-		
+	
 		
 	}
 
-}//class
 
 	public function center_request(){
 			
@@ -730,4 +729,3 @@ public function checkDuplicateAdharNo()
 
 
 
-}
