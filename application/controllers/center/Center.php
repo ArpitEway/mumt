@@ -665,7 +665,7 @@ class Center extends CI_Controller {
 		$course_group_list = $this->Common_model->get_record('student','distinct(course_group_id) as id,course_name',$where);
 		$data = array(
 			'course_group_list' => $course_group_list,
-			'all'=> true,
+			
 		);
 		echo $this->load->view('template/getcourse',$data,true);
 	}		
@@ -717,12 +717,12 @@ class Center extends CI_Controller {
 		
 		$data = array(
 			'student_list' => $student_list,
-			'all'=> true,
+			
 		);
 		echo $this->load->view('template/getStudent',$data,true);
 	}	
 
-	public function update_request_detail(){
+	public function create_form_edit_request(){
 
 		$session_id = $this->input->post('session_id');
 		$course_id  = $this->input->post('course_id');
@@ -776,9 +776,9 @@ class Center extends CI_Controller {
 		foreach($tableData as $result){
 			$i++;
 			$date = $this->Common_model->viewDate($result->date);
-			$status = ($result->status=='P') ? 'Pending' : 'Done';
+			$status = ($result->status=='Pending') ? 'Pending' : 'Done';
 			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->details,$date,$status,$result->payment_remark);
-		
+		}
 		$output = array(
 			"draw" => $_POST['draw'],
 			"recordsTotal" => $this->Datatable_join_model->countAll('payment_complaint',$where),
@@ -788,17 +788,17 @@ class Center extends CI_Controller {
 
 		// Output to JSON format
 		echo json_encode($output);
-	}
-		
 	
+		
+}
 
 	public function getFormEditRequest()
 	{
 		$data = $row = array();
 		$where = 'request.center_id='.$this->session->center_id;
 		
-		$column_order = array(null,'name','student.student_id','detail','date','status','request.remark');
-		$column_search = array('name','student.student_id','detail','date','status','request.remark');
+		$column_order = array(null,'name','student.student_id','detail','date','status','request_remark');
+		$column_search = array('name','student.student_id','detail','date','status','request_remark');
 
 		$DataTableArray = array(
 			'column_order' => $column_order,
@@ -813,8 +813,8 @@ class Center extends CI_Controller {
 		$i = $_POST['start'];
 		foreach($tableData as $result){
 			$i++;
-			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->detail,$result->date,$result->status,$result->remark);
-		}
+			$data[] = array($i, $result->name, $result->student_id, $result->detail,$result->date,$result->status,$result->request_remark);
+		
 
 		$output = array(
 			"draw" => $_POST['draw'],
@@ -822,7 +822,7 @@ class Center extends CI_Controller {
 			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
 			"data" => $data,
 		);
-
+	}
 		// Output to JSON format
 		echo json_encode($output);
 	}	

@@ -909,8 +909,6 @@ class Admin_model extends CI_Model {
                
                 $query = $this->db->get(" student where enrollment_no='".$enroll."' ");
 
-
-                
                 if($query->num_rows()>0){
                         $result = $query->result();
                         return $result[0];
@@ -929,7 +927,7 @@ class Admin_model extends CI_Model {
 		
 	   }
 
-	   public function create_center_menu_heading()
+	public function create_center_menu_heading()
 	 {
 
 
@@ -946,7 +944,8 @@ class Admin_model extends CI_Model {
         {
              $data['heading_order'] = 1;
         }
-         $this->db->insert('center_menu_heading',$data);
+        $this->db->insert('center_menu_heading',$data);
+
         $response = array(
 				'status' => 'true',
 				);

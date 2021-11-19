@@ -1,6 +1,6 @@
 <div class="text-center">
 
-            <table id="table" class="table table-striped dt-responsive nowrap" width="70%" >
+            <table id="memListTable" class="table table-striped dt-responsive nowrap" width="70%" >
                 <thead>
                     <tr>
                         
@@ -36,9 +36,9 @@
                 <td><?php echo $student->course_name; ?></td>
 				<td><?php echo $student->class_name; ?></td> 
 				<td><?php echo $request["detail"]; ?></td>
-				<td><?php echo $request["date"]; ?></td>
+				<td><?php echo $this->Common_model->viewDate($request["date"]); ?></td>
 				<td><?php echo $request["status"]; ?></td>
-				<td><?php echo $request["remark"]; ?></td>
+				<td><?php echo $request["request_remark"]; ?></td>
 
 			</tr>
 			

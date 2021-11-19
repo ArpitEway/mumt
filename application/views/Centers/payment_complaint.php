@@ -47,23 +47,23 @@
 	var csrfName = $('.csrfname').attr('name');
 		var csrfHash = $('.csrfname').val(); 
 		var myTable =  $('#memListTable').DataTable({
-// Processing indicator
-"processing": true,
-// DataTables server-side processing mode
-"serverSide": true,
-// Initial no order.
-"order": [0],
-// Load data from an Ajax source
-"ajax": {
-	"url": BASE_URL+'center/center/getPaymentComplaint',
-	"type": "POST",
-	"data": {[csrfName]:csrfHash}
-},
-"lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-//Set column definition initialisation properties
-"columnDefs": [{ 
-	"targets": [0],
-	"orderable": true
+		// Processing indicator
+		"processing": true,
+		// DataTables server-side processing mode
+		"serverSide": true,
+		// Initial no order.
+		"order": [0],
+		// Load data from an Ajax source
+		"ajax": {
+			"url": BASE_URL+'center/center/getPaymentComplaint',
+			"type": "POST",
+			"data": {[csrfName]:csrfHash}
+		},
+		"lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+		//Set column definition initialisation properties
+		"columnDefs": [{ 
+			"targets": [0],
+			"orderable": true
 }],
 dom: '<"row" <"col-md-4" l><"col-md-4 text-center" B> <"col-md-4 col-md-4" f>>rt<"bottom"ip>',
 buttons: [

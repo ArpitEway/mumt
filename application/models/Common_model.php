@@ -593,9 +593,13 @@ class Common_Model extends CI_Model{
 		}
 		return true;
 	}
+	// change date format
 	public function viewDate($date){
 		return date("d-m-Y", strtotime($date));
 	}
+
+	
+
 	public function DB_Date($date){
 		return date("Y-m-d", strtotime($date));
 	}
