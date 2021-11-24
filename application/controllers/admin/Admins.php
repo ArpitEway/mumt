@@ -1606,6 +1606,12 @@ if ($this->input->method() == "post")
 			}
 	}
 }
+public function center_login_section($param1 = '', $param2 = '', $param3 = '')
+		{
+			if(!$this->session->has_userdata('adminData')){
+				redirect(base_url('admin'));
+				exit;
+			}else{
 
 				$data['center_code'] = html_escape($this->input->post('center_code'));
 
