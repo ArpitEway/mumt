@@ -1,500 +1,146 @@
 <?php
-	include_once(APPPATH.'core/ADMIN_controller.php');
-	
-	defined('BASEPATH') OR exit('No direct script access allowed');
-	
-	class Director extends CI_Controller {
-		
-		function __construct(){
-			parent::__construct();
-			$this->load->model('admin/admin_model');
-			$this->load->model('admin/Account_model');
-			$this->load->model('Common_model');
-			$this->load->model('Datatable_join_model');
-			if($this->session->account_type!='director'){
-				redirect(base_url('admin/logout')); 
-			}
+include_once(APPPATH.'core/ADMIN_controller.php');
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Director extends CI_Controller {
+
+	function __construct(){
+		parent::__construct();
+		$this->load->model('admin/admin_model');
+		$this->load->model('admin/Account_model');
+		$this->load->model('Common_model');
+		$this->load->model('Datatable_join_model');
+		if($this->session->account_type!='director'){
+			redirect(base_url('admin/logout')); 
 		}
-		
-		public function index(){
-			
-			if($this->session->has_userdata('adminData')){
+	}
 
-				$admin_id = $this->session->admin_id;
-				
-				$where = 'admin_id='.$admin_id.' and status="Y"';
+	public function index(){
 
-				$menu = array(
+		if($this->session->has_userdata('adminData')){
+
+			$admin_id = $this->session->admin_id;
+
+			$where = 'admin_id='.$admin_id.' and status="Y"';
+
+			$menu = array(
 				"menu_headings" => $this->Common_model->getRecordByWhereByOrder('menu_heading',$where,'heading_order','ASC'),
 				"menus" => $this->Common_model->getRecordByWhereByOrder('menu',$where,'heading_id,menu_order','ASC'),
-				);
-
-				$this->load->view('header',array('title' => 'Director Section'));
-				$this->load->view('admin/director/dashboard',$menu);
-				$this->load->view('footer');
-			}
-			else
-			{
-				redirect(base_url('admin/login'));
-			}
-		}
-		public function dashboard(){
-			
-			if($this->session->has_userdata('adminData')){
-
-				$admin_id = $this->session->admin_id;
-				
-				$where = 'admin_id='.$admin_id.' and status="Y"';
-				
-				$menu = array(
-				"menu_headings" => $this->Common_model->getRecordByWhereByOrder('menu_heading',$where,'heading_order','ASC'),
-				"menus" => $this->Common_model->getRecordByWhereByOrder('menu',$where,'heading_id,menu_order','ASC'),
-				);
-
-				$this->load->view('header');
-				$this->load->view('admin/director/dashboard',$menu);
-				$this->load->view('footer');
-			}
-			else
-			{
-				redirect(base_url('admin/login'));
-			}
-		}
-		
-		
-		public function consolidate_report(){
-		if($this->session->has_userdata('adminData'))
-			{
-				$dataTitle = array(); 
-				$dataTitle['title'] = "Student Consolidate Report";
-				$this->load->view('header',$dataTitle);
-				$this->db->order_by('id', 'Desc');
-				$data['sessions']  = $this->db->get_where('session', array())->result_array();
-				$data['name_csrf'] = $this->security->get_csrf_token_name();
-				$data['hash_csrf'] = $this->security->get_csrf_hash();
-				$this->load->view('admin/director/consolidate_report',$data);
-				$this->load->view('footer');
-			}
-			else
-			{
-				redirect(base_url('enrollment/login'));
-			}
-		}
-
-		
-		public function get_student_consolidate_data()
-		{
-			
-			if ($this->input->method() == "post") 
-			{
-				$course_group_id = 0;
-				
-				$data = array();
-				$dt   = array();
-				
-				$course_group_id  = 	$this->input->post("course_group_id");
-				$class_id  		  = 	$this->input->post("class_id");
-				$approved 		  = 	$this->input->post("approved");
-				$payment 		  = 	$this->input->post("payment");
-				$enrolled 		  = 	$this->input->post("enrolled");
-				$document_upload  = 	$this->input->post("document_upload");
-				$filter  		  = 	$this->input->post("filter");
-				$session 		  = 	$this->input->post("session");
-			    $mode 		  	  = 	$this->input->post("mode");
-				$center 	  	  = 	$this->input->post("center");
-				
-				if($center != "all"){	 
-					
-					$dt['center_id'] = $center;
-				}
-				if($mode != "all"){	 
-					
-					$dt['mode'] = $mode;
-				}
-				if($session != "all"){	 
-					
-					$dt['session'] = $session;
-				}else{
-					$dt['name!='] = '';
-				}
-				
-				if($filter == "course"){
-					
-					$data['course_count'] = $this->Common_model->student_data_consolidate($dt,'course_group_id');
-				
-				}
-				if($filter == "center"){
-					
-					$data['center_count'] = $this->Common_model->student_data_consolidate($dt,'center_id');
-					
-				}
-				
-				
-				$dt = $this->load->view('admin/director/getStudentConsolidate',$data,true);
-				
-				echo json_encode(array(
-				"status" => true,
-				"data" => $dt
-				));
-			}
-			
-		}
-		
-		
-		public function student_doc_update($param){
-			
-			$response = $this->admin_model->student_doc_update($param);
-			$this->session->set_flashdata('ajax_flash_message','Non approved');
-			
-			$remark_ids = $this->Common_model->getStudentRemarkID($param);
-			$remark_ids = explode(",",$remark_ids);
-			foreach($remark_ids as $remark_id ){
-				$remark[] = $this->Common_model->getStudentRemarkNameById($remark_id)."<br>";
-			}
-			
-			echo json_encode(array(
-			"status" => 'true',
-			"remark" => $remark
-			
-			));
-			//redirect(base_url().'admin/enrollment/student_report');
-		}
-		
-		public function make_approved($param){
-			$param = $this->Common_model->encrypt_decrypt($param,'decrypt');
-			$response = $this->admin_model->student_approve($param);
-			$json = json_decode($response);
-			if($json->status == 'true'){
-				$this->session->set_flashdata('ajax_flash_message','Approved');
-				}else{
-				$this->session->set_flashdata('ajax_error_message','Admission pending');
-			}
-		}
-		
-		
-		public function get_student_data()
-		{
-			
-			if ($this->input->method() == "post") 
-			{
-				$course_group_id = 0;
-				$data = array();
-				$dt   = array();
-				
-				$course_group_id  = $this->input->post("course_group_id");
-				$class_id  = $this->input->post("class_id");
-				
-				$approved = $this->input->post("approved");
-				
-				$session = $this->input->post("session");
-				
-				if($course_group_id != "all"){	
-					$dt['course_group_id'] = $course_group_id;
-				}
-				if($class_id != ""){	
-					$dt['class_id'] = $class_id;
-				}
-				if($approved != "all"){
-					$dt['approved'] = $approved;
-				}if($session != "All"){
-					$dt['session'] = $session;
-				}
-				
-				$dt['payment_status'] = "Y";
-				$dt['document_uploaded'] = "Y";
-				
-				$data['students'] = $this->Common_model->student_data($dt);
-				
-				$dt =  $this->load->view('admin/student/getstudent',$data,true);
-				echo json_encode(array(
-				"status" => true,
-				"data" => $dt
-				));
-			}
-			
-		}
-		
-		public function show_form($student_id){
-
-			$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt'); 
-
-			$student = $this->Common_model->student_info($student_id);
-			$data = array(
-				'student' => $student,
 			);
-			$this->load->view('header',array('title' => 'Admission Form'));
-			$this->load->view('template/form',$data);
+
+			$this->load->view('header',array('title' => 'Director Section'));
+			$this->load->view('admin/director/dashboard',$menu);
 			$this->load->view('footer');
 		}
-		
-		public function generate_enrollment(){
-			if(isset($_POST['action']) && $_POST['action']=='view'){
-				$student = $this->Common_model->getRecordByWhereByOrder('student','approved="Y" and enrollment_no in ("-","")','course_group_id','ASC');
-				$session = $this->Common_model->getSessionForEnrollment();
-				$enrollment_no = $this->Common_model->getCountByWhere('student','approved="Y" and enrollment_no not in ("-","") and session ="'.$session.'"');
-				$enrollment_no+=1;
-				$en_session = substr($session, -2);
-				$data = array( 
-				'students' => $student,
-				'enrollment_no' => $enrollment_no,
-				'en_session' => $en_session,
-				'action' => 'view',
-				);
-				}else if(isset($_POST['action']) && $_POST['action']=='generate'){
-				
-				$student_id = $this->input->post('student_id');
-				$enrollment_no = $this->input->post('enrollment_no');
-				
-				$this->Common_model->genrateEnrollment($student_id,$enrollment_no);
-				
-				$student = $this->Common_model->getRecordByWhereByOrder('student','approved="Y" and enrollment_no not in ("-","")','course_group_id','ASC');
-				$data = array(
-				'students' => $student,
-				'action' => 'generate',
-				);
-				}else{
-				$data = array(
-				'student' => '',
-				'action' => '',
-				);
-			}
+		else
+		{
+			redirect(base_url('admin/login'));
+		}
+	}
+	public function dashboard(){
+
+		if($this->session->has_userdata('adminData')){
+
+			$admin_id = $this->session->admin_id;
+
+			$where = 'admin_id='.$admin_id.' and status="Y"';
+
+			$menu = array(
+				"menu_headings" => $this->Common_model->getRecordByWhereByOrder('menu_heading',$where,'heading_order','ASC'),
+				"menus" => $this->Common_model->getRecordByWhereByOrder('menu',$where,'heading_id,menu_order','ASC'),
+			);
+
+			$this->load->view('header');
+			$this->load->view('admin/director/dashboard',$menu);
+			$this->load->view('footer');
+		}
+		else
+		{
+			redirect(base_url('admin/login'));
+		}
+	}
+
+
+	public function consolidate_report(){
+		if($this->session->has_userdata('adminData'))
+		{
+			$dataTitle = array(); 
+			$dataTitle['title'] = "Student Consolidate Report";
+			$this->load->view('header',$dataTitle);
+			$this->db->order_by('id', 'Desc');
+			$data['sessions']  = $this->db->get_where('session', array())->result_array();
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
-			$this->load->view('header',array('title' => 'Generate Enrollment'));
-			$this->load->view('admin/enrollment/generate_enrollment',$data);
+			$this->load->view('admin/director/consolidate_report',$data);
 			$this->load->view('footer');
 		}
-		
-		public function enrollment_permission(){
-			if(!isset($_POST['action'])){
-				$student = $this->Common_model->getRecordByWhereByOrder('student','approved="Y" and enrollment_no not in ("-","") and enrolled="N"','course_group_id','ASC');
-				$data = array(
-				'students' => $student,
-				);
-				$this->load->view('header',array('title' => 'Enrollment Permission'));
-				$this->load->view('admin/enrollment/set_enrollment_permission',$data);
-				$this->load->view('footer');
-				}else if($_POST['action']=='setPermission'){
-				$enrollment_nos = $this->input->post('enrollment_no');
-				$this->iniEmail();
-				$filename = base_url('assets/images/maskgroup/MaskGroup1.png');
-				
-				foreach($enrollment_nos as $enrollment_no){				
-					$data = array('enrolled' => 'Y');
-					$where = 'enrollment_no="'.$enrollment_no.'"';
-					$this->Common_model->updateRecordByConditions('student',$where,$data);
-					$student = $this->Common_model->getRecordById('student','enrollment_no',$enrollment_no);
-					$studentdetail = $this->Common_model->getRecordById('student_data','student_id',$student->student_id);
-					$this->email->from('info@mpsvv.in', 'MPSVV');
-					//$this->email->to('akshay.eway@gmail.com');
-					$this->email->bcc('mpsvvenrolstatus@gmail.com');
-					$this->email->to($studentdetail->p_email);
-					$this->email->subject('Enrollment Generated');
-					$studentData = array(
-					"student" => $student
-					);
-					$msgbody = $this->load->view('template/email/enrollment_info_2',$studentData,true);
-					$this->email->message($msgbody);
-					$mail = $this->email->send();
-				}
-				$this->session->set_flashdata('ajax_flash_message','permission updated');
-				redirect(base_url().'admin/enrollment/enrollment_permission');		
-			}
-		}
-		
-		
-		private function iniEmail(){
-			
-			$config['protocol'] = 'SMTP';
-			$config['smtp_host'] = 'mpsvv.in';
-			$config['smtp_user'] = 'info@mpsvv.in';
-			$config['smtp_pass'] = '9A0xki1#';
-			$config['smtp_port'] = 465;
-			$config['smtp_crypto'] = 'ssl';
-			$config['charset'] = 'utf-8';
-			$config['wordwrap'] = TRUE;
-			$config['mailtype'] = 'html';
-			
-			$this->email->initialize($config);	
-		}
-		
-		public function unpaid_student_list(){
-			if($this->session->has_userdata('adminData'))
-			{
-				$dt = array();
-				$data = array();
-				$dt['payment_status'] = 'N';
-				$data['students'] = $this->Common_model->all_student_info_by_where($dt);
-				$dt['title'] = "Unpaid student";
-				$data['name_csrf'] = $this->security->get_csrf_token_name();
-				$data['hash_csrf'] = $this->security->get_csrf_hash();
-				$this->load->view('header',$dt);
-				$this->load->view('admin/enrollment/unpaid_student_list',$data);
-				$this->load->view('footer');
-			}
-			else
-			{
-				redirect(base_url('enrollment/login'));
-			}
-		}
-		
-		public function update_unpaid_student(){
-			
-			if ($this->input->method() == "post") 
-			{
-				$payment_date  = $this->input->post("payment_date");
-				
-				$student_id  = $this->input->post("student_id");
-				$remark  = $this->input->post("remark");
-				$payment_mode  = $this->input->post("payment_mode");
-				$amount  = $this->input->post("amount");
-				$file_name = '';
-				if(isset($_FILES['images']) && $_FILES['images']['tmp_name']!=''){
-				$filename = $student_id.'-'.date('Ymdhis');
-				$this->upload->initialize($this->Common_model->set_upload_options('./assets/transactionImgaes/',$filename));
-				if(!$this->upload->do_upload('images')){
-					$error = $this->upload->display_errors();
-					$msg = array('error'=>$error);
-					echo json_encode($msg);
-					exit();
-					
-				}else{
-				$uploadData = $this->upload->data();
-				$file_name = $uploadData['file_name'];
-				}
-				}
-				$updateData = array(
-					'student_id' => $student_id,
-					'payment_date' => $payment_date,
-					'remark' => $remark,
-					'payment_mode' => $payment_mode,
-					'amount' => $amount,
-					'image' => $file_name
-				);
-				$response = $this->admin_model->unpaid_student_update($updateData);
-				if($response){
-				echo json_encode(array("status" => 'true'));
-				}
-			}
-		}
-		
-		public function view_payment_list(){
-			
-			if($this->session->has_userdata('adminData')){
-				$titleData = array('title' => 'Paid Student');
-				$this->load->view('header',$titleData);
-				$data['name_csrf'] = $this->security->get_csrf_token_name();
-				$data['hash_csrf'] = $this->security->get_csrf_hash();
-				$this->load->view('admin/enrollment/view_payment_list');
-				$this->load->view('footer');
-			}
-			else
-			{
-				redirect(base_url('admin/login'));
-			}
-		}
-		
-		public function get_payment_list()
+		else
 		{
-			if ($this->input->method() == "post") 
-			{
-				$course_group_id = 0;
-				$data = array();
-				$dt   = array();
-				$fees_head = $this->input->post("payment_list");
-				if($fees_head != "all"){
-					$dt['fees_head'] = $fees_head;
-				}
-				$dt['payment'] = 'Y' ;
-				$dts['accData'] = $this->Account_model->account_data($dt);
-				$data =  $this->load->view('admin/enrollment/get_payment_list',$dts,true);
-				echo json_encode(array(
-				"status" => true,
-				"data" => $data
-				));
+			redirect(base_url('enrollment/login'));
+		}
+	}
+
+
+	public function get_student_consolidate_data()
+	{
+
+		if ($this->input->method() == "post") 
+		{
+			$course_group_id = 0;
+
+			$data = array();
+			$dt   = array();
+
+			$course_group_id  = 	$this->input->post("course_group_id");
+			$class_id  		  = 	$this->input->post("class_id");
+			$approved 		  = 	$this->input->post("approved");
+			$payment 		  = 	$this->input->post("payment");
+			$enrolled 		  = 	$this->input->post("enrolled");
+			$document_upload  = 	$this->input->post("document_upload");
+			$filter  		  = 	$this->input->post("filter");
+			$session 		  = 	$this->input->post("session");
+			$mode 		  	  = 	$this->input->post("mode");
+			$center 	  	  = 	$this->input->post("center");
+
+			if($center != "all"){	 
+
+				$dt['center_id'] = $center;
 			}
+			if($mode != "all"){	 
+
+				$dt['mode'] = $mode;
+			}
+			if($session != "all"){	 
+
+				$dt['session'] = $session;
+			}else{
+				$dt['name!='] = '';
+			}
+
+			if($filter == "course"){
+
+				$data['course_count'] = $this->Common_model->student_data_consolidate($dt,'course_group_id');
+				
+			}
+			if($filter == "center"){
+
+				$data['center_count'] = $this->Common_model->student_data_consolidate($dt,'center_id');
+
+			}
+
+
+			$dt = $this->load->view('admin/director/getStudentConsolidate',$data,true);
+
+			echo json_encode(array(
+				"status" => true,
+				"data" => $dt
+			));
 		}
-		
-		public function status(){
-			$this->load->view('header',array('title'=>'status'));
-			$this->load->view('admin/enrollment/status');
-			$this->load->view('footer');
-		}		
-		
-public function print_form($student_id){
-	$where =  array(
-		'student_id' => $student_id,
-		'payment' => 'Y'
-	);
-	$payment_details = $this->Common_model->get_record('online_payment_transaction','*',$where);
-	$student = $this->Common_model->student_info($student_id);
-	$data = array(
-		'payment_details'=> $payment_details,
-		'student' => $student,
-	);
-	$this->load->view('header',array('title' => 'Admission Form'));	
-	$this->load->view('template/form',$data);
-	$this->load->view('footer');
-}
-
-public function getOtherCourse($student_id)
-{
-	$student = $this->Common_model->getRecordById('student','student_id',$student_id);
-	$user_id = $student->user_id;
-	$where = 'user_id='.$user_id.' and student_id!='.$student_id;
-	$other_student = $this->Common_model->getRecordByWhere('student',$where);
-	$data = array('other_student' => $other_student);
-	$data['name_csrf'] = $this->security->get_csrf_token_name();
-	$data['hash_csrf'] = $this->security->get_csrf_hash();
-	$this->load->view('admin/student/other_course',$data);
-}
-
-public function update_aadhar($param){
-			
-	if($this->session->has_userdata('adminData')){
-
-	$data['student_id'] = $this->Common_model->encrypt_decrypt($param,'decrypt'); 
-
-
-	$dt['student.student_id'] = $data['student_id'];
-	$data['student_detail'] = $this->Common_model->student_data($dt);
-
-	$this->load->view('header');
-	$this->load->view('admin/student/update_aadhar',$data);
-	$this->load->view('footer');
 
 	}
-	else
-	{
-		redirect(base_url('admin/login'));
-	}
-}
-
-public function aadhar_update($param){
-			
-	$response = $this->admin_model->aadhar_update($param);
-
-	$dt['student.student_id'] = $param;
-	$student_detail = $this->Common_model->student_data($dt);
-
-	$aadhar_no = wordwrap($student_detail[0]['adhar_no'], 4, ' ',true);
-
-	echo json_encode(array(
-	"status" => 'true',
-	"res" => $aadhar_no
 	
-	));
-}
 
-public function checkDuplicateAdharNo()
-	{
-		$adhar_no = $this->input->post('adhar_no');
-		$where = array('adhar_no'=>$adhar_no,'course_complete'=>'N');
-		$count = $this->Common_model->getCountByWhere('student',$where);
-		if($count>0){
-			echo "Duplicate Adhar Card Number";
-		}
-	}
 
 	public function check_enrollment_status()
 	{
@@ -514,11 +160,11 @@ public function checkDuplicateAdharNo()
        //---paid and uploaded--------
 		$where = array('document_uploaded'=>'Y','payment_status'=>'Y','session'=>$session_july);
 		$data['uploaded'] = $this->Common_model->getCountByWhere('student',$where);
-        
+
         //---not uploaded--------
 		$where = array('document_uploaded'=>'N','payment_status'=>'Y','session'=>$session_july);
 		$data['not_uploaded'] = $this->Common_model->getCountByWhere('student',$where);
-        
+
         //---paid/uploaded/ is = approved---
 		$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'N','session'=>$session_july);
 		$data['non_approved'] = $this->Common_model->getCountByWhere('student',$where);
@@ -550,25 +196,25 @@ public function checkDuplicateAdharNo()
   		//echo '<pre>';
 		// print_r($data);die;
 
-        $this->load->view('header');
-	    $this->load->view('admin/enrollment/enrollment_status_count',$data);
-	    $this->load->view('footer');
+		$this->load->view('header');
+		$this->load->view('admin/enrollment/enrollment_status_count',$data);
+		$this->load->view('footer');
 	}
 
-	public function center_request(){
-			
-		if($this->session->has_userdata('adminData'))
-		{
-			$where = array("status" => "Pending");
-			$centers = $this->Common_model->get_record_group_by_where('request','center_id','center_id',$where);
+	
+
+	public function bulk_permission(){
+
+		if($this->session->has_userdata('adminData')){
+
+			$admin_id = $this->session->admin_id;
 
 			$data = array('name_csrf' => $this->security->get_csrf_token_name(),
-				'hash_csrf' => $this->security->get_csrf_hash(),
-				'centers' =>$centers
+				'hash_csrf' => $this->security->get_csrf_hash()
 			);
-			
-			$this->load->view('header');
-			$this->load->view('admin/enrollment/view_form_edit_request',$data);
+
+			$this->load->view('header',array('title' => 'Bulk Permission For All Centers'));
+			$this->load->view('admin/director/bulk_permission',$data);
 			$this->load->view('footer');
 		}
 		else
@@ -577,186 +223,43 @@ public function checkDuplicateAdharNo()
 		}
 	}
 
-	public function get_center_detail()
+	public function update_center_permission()
 	{
+
 		if ($this->input->method() == "post") 
 		{
-			$course_group_id = 0;
-			$data = array();
-			$dt   = array();
-				
-				$center_id  = $this->input->post("center_id");
-			
-				$wherecenter = 'center_id='.$center_id;
-				$center_detail = $this->Common_model->get_record('request','*',$wherecenter);
-				
-				$data = array('center_details' => $center_detail ,'name_csrf' => $this->security->get_csrf_token_name(),
-				'hash_csrf' => $this->security->get_csrf_hash());
 
-				if($data['center_details']){
+			$parameter1   	= $this->input->post("param_name");
+			$permisssion    = $this->input->post("permission");
 
-					$dt =  $this->load->view('admin/Enrollment/getStudentDetail',$data,true);
-
-				}else{
-
-					$dt = "Invalid Center Code";
-				}
+			$data = array($parameter1 => $permisssion);
+			$where = 'status= "Y" ';
+			$res = $this->Common_model->updateRecordByConditions('center',$where,$data);
 
 
-				echo json_encode(array(
-				"status" => true,
-				"data" => $dt
-				));
-		}
-			
-	}
+			$dt = $this->db->get_where("center",array($parameter1 => $permisssion))->row();
 
-	public function editForm($student_id = ""){
-		if(!$this->session->has_userdata('adminData')){
-			redirect(base_url('admin/'));
-			exit;
-		}
-
-		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
-		$titleData = array('title' => 'Admission Form'); 
-		$state_list = $this->Common_model->get_record('state','*');
-		$eligibility_list = $this->Common_model->get_record('course_group','DISTINCT (eligibility)');
-		$district_list = $this->Common_model->get_record('distt','*');
-		$course_group_list = $this->Common_model->get_record('course','*');
-		
-		$data = array(
-			'state_list' => $state_list,
-			'district_list' => $district_list,
-			'course_group_list' => $course_group_list,
-			'session' => 'July 2021',
-			'eligibility_list' => $eligibility_list,
-			'name_csrf' => $this->security->get_csrf_token_name(),
-			'hash_csrf' => $this->security->get_csrf_hash(),
-			'student_detail' => $this->db->get_where('student', array("student_id" => $student_id))->row(),
-			'student_data'  => $this->db->get_where('student_data', array("student_id" => $student_id))->row()
-		
-		);
-
-
-		$this->load->view('header',$titleData);
-		$this->load->view('admin/enrollment/editForm',$data);
-		$this->load->view('footer');
-	}
-
-	public function update_request_status()
-{
-	if ($this->input->method() == "post") 
-	{
-            $id    	= 0;
-            $id    	= $this->input->post("id");
-			$status = $this->input->post("status");
-
-			
-            if ($this->input->post("id")) 
+			if($dt->$parameter1 == 'Y')
 			{
-				$data = $this->Common_model->updateRecordByConditions("request",array("id" => $id),array("status" => $status ));
-			
-				$dt = $this->db->get_where("request",array("id" => $id ))->result_array();
 
-				if($dt[0]['status'] == 'Done')
-				{
-
-				$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-success req_check" value="Done">';
+				$sts_btn = '<a class="btn btn-danger" onclick="update_permission(\''.$parameter1.'\',\'N\')">All No</a>';
 				
-				}
+			}
 
-				else{
+			else{
 
-				$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-danger req_check" value="Pending">';
+				$sts_btn = '<a class="btn btn-primary" onclick="update_permission(\''.$parameter1.'\',\'Y\')">All Yes</a>';
 				
 			}
 
 
+			echo json_encode(array(
+				"status" => $res,
+				"msg" => "Permission has been updated successfully",
+				"sts_btn"=>$sts_btn,
+				"p1"=>$parameter1,
+			));
 
-				$status = true;
-				$msg    = "";
-				
-				echo json_encode(array(
-					"status" => $status,
-					"msg" => $msg,
-					"data" => $sts_btn
-				));
-			}
-
-
-
-	}
-}
-
-
-public function bulk_permission(){
-			
-	if($this->session->has_userdata('adminData')){
-
-		$admin_id = $this->session->admin_id;
-
-		$data = array('name_csrf' => $this->security->get_csrf_token_name(),
-		'hash_csrf' => $this->security->get_csrf_hash()
-		);
-		
-		$this->load->view('header',array('title' => 'Bulk Permission For All Centers'));
-		$this->load->view('admin/director/bulk_permission',$data);
-		$this->load->view('footer');
-	}
-	else
-	{
-		redirect(base_url('admin/login'));
-	}
-}
-
-public function update_center_permission()
-{
-			
-	if ($this->input->method() == "post") 
-	{
-           
-        $parameter1   	= $this->input->post("param_name");
-		$permisssion    = $this->input->post("permission");
-
-		$data = array($parameter1 => $permisssion);
-		$where = 'status= "Y" ';
-		$res = $this->Common_model->updateRecordByConditions('center',$where,$data);
-
-
-		$dt = $this->db->get_where("center",array($parameter1 => $permisssion))->row();
-
-		if($dt->$parameter1 == 'Y')
-		{
-
-		$sts_btn = '<a class="btn btn-danger" onclick="update_permission(\''.$parameter1.'\',\'N\')">All No</a>';
-				
 		}
-
-		else{
-
-		$sts_btn = '<a class="btn btn-primary" onclick="update_permission(\''.$parameter1.'\',\'Y\')">All Yes</a>';
-				
-		}
-
-
-		echo json_encode(array(
-			"status" => $res,
-			"msg" => "Permission has been updated successfully",
-			"sts_btn"=>$sts_btn,
-			"p1"=>$parameter1,
-		));
-
 	}
 }
-
-
-
-
-
-
-
-
-}
-
-
-
