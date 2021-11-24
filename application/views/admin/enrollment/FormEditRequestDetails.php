@@ -83,55 +83,6 @@
 
 <script>
 
-$("#submit").on('click',function (e)
-{
-    var csrfName = $('.csrfname').attr('name');
-    var csrfHash = $('.csrfname').val(); 
-
-	detail = $('#detail').val(); 
-
-	if(detail)
-	{
-
-			var frm = $('.ajaxForm').serialize();
-			
-			$.ajax({
-			url: '<?php echo site_url('center/Center/request/'.$student_id); ?>',
-			type: 'POST',
-			dataType : 'json',
-			data: frm,
-				success: function (data) 
-				{
-
-					console.log(data.msg);
-					
-						if(data.msg){
-									
-							toastr.success(data.msg);
-									
-						}
-						else if(data.err_msg){
-									
-							toastr.error(data.err_msg);
-						}
-						else{
-
-							toastr.error("Something wrong");
-
-						}
-				},
-			});	
-			
-	}else{
-
-		toastr.error("Please Enter detail");
-
-	}
-
-});	
-
-
-
 $(document).on('click', '.req_check', function() {
 
 	var val = $(this).val();
@@ -147,7 +98,7 @@ $(document).on('click', '.req_check', function() {
 			[csrfName]: csrfHash,
 		}; 
 		
-	var url = BASE_URL + "admin/Enrollment/update_request_status";
+	var url = BASE_URL + "admin/Enrollment/update_form_edit_request_status";
 
 	$.ajax({
 	url: url,

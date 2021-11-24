@@ -40,7 +40,7 @@ $(document).on("click","#submit_btn",function(){
 		center_id : $("#center_id").val(),
 		[csrfName]:csrfHash
 	};
-	var url = BASE_URL + "admin/Enrollment/get_center_detail"; 
+	var url = BASE_URL + "admin/Enrollment/getFormEditRequest"; 
 	var response = call_ajax(data,url);
 	console.log(response);
 	

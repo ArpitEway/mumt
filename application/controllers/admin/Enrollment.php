@@ -34,18 +34,12 @@
 				redirect(base_url('admin/login'));
 			}
 		}
+
 		public function dashboard(){
 			
-			if($this->session->has_userdata('adminData')){
-				$this->load->view('header');
-				$this->load->view('admin/enrollment/dashboard');
-				$this->load->view('footer');
-			}
-			else
-			{
-				redirect(base_url('admin/login'));
-			}
+			redirect(base_url('admin/enrollment'));
 		}
+
 		public function student_report(){
 			
 			if($this->session->has_userdata('adminData')){
@@ -343,247 +337,127 @@
 			$config['charset'] = 'utf-8';
 			$config['wordwrap'] = TRUE;
 			$config['mailtype'] = 'html';
-			
 			$this->email->initialize($config);	
 		}
 		
-		public function unpaid_student_list(){
-			if($this->session->has_userdata('adminData'))
-			{
-				$dt = array();
-				$data = array();
-				$dt['payment_status'] = 'N';
-				$data['students'] = $this->Common_model->all_student_info_by_where($dt);
-				$dt['title'] = "Unpaid student";
-				$data['name_csrf'] = $this->security->get_csrf_token_name();
-				$data['hash_csrf'] = $this->security->get_csrf_hash();
-				$this->load->view('header',$dt);
-				$this->load->view('admin/enrollment/unpaid_student_list',$data);
-				$this->load->view('footer');
-			}
-			else
-			{
-				redirect(base_url('enrollment/login'));
-			}
+		public function print_form($student_id){
+			$where =  array(
+				'student_id' => $student_id,
+				'payment' => 'Y'
+			);
+			$payment_details = $this->Common_model->get_record('online_payment_transaction','*',$where);
+			$student = $this->Common_model->student_info($student_id);
+			$data = array(
+				'payment_details'=> $payment_details,
+				'student' => $student,
+			);
+			$this->load->view('header',array('title' => 'Admission Form'));	
+			$this->load->view('template/form',$data);
+			$this->load->view('footer');
 		}
-		
-		public function update_unpaid_student(){
-			
-			if ($this->input->method() == "post") 
-			{
-				$payment_date  = $this->input->post("payment_date");
-				
-				$student_id  = $this->input->post("student_id");
-				$remark  = $this->input->post("remark");
-				$payment_mode  = $this->input->post("payment_mode");
-				$amount  = $this->input->post("amount");
-				$file_name = '';
-				if(isset($_FILES['images']) && $_FILES['images']['tmp_name']!=''){
-				$filename = $student_id.'-'.date('Ymdhis');
-				$this->upload->initialize($this->Common_model->set_upload_options('./assets/transactionImgaes/',$filename));
-				if(!$this->upload->do_upload('images')){
-					$error = $this->upload->display_errors();
-					$msg = array('error'=>$error);
-					echo json_encode($msg);
-					exit();
-					
-				}else{
-				$uploadData = $this->upload->data();
-				$file_name = $uploadData['file_name'];
-				}
-				}
-				$updateData = array(
-					'student_id' => $student_id,
-					'payment_date' => $payment_date,
-					'remark' => $remark,
-					'payment_mode' => $payment_mode,
-					'amount' => $amount,
-					'image' => $file_name
-				);
-				$response = $this->admin_model->unpaid_student_update($updateData);
-				if($response){
-				echo json_encode(array("status" => 'true'));
-				}
-			}
-		}
-		
-		public function view_payment_list(){
-			
+
+		public function update_aadhar($param){
 			if($this->session->has_userdata('adminData')){
-				$titleData = array('title' => 'Paid Student');
-				$this->load->view('header',$titleData);
-				$data['name_csrf'] = $this->security->get_csrf_token_name();
-				$data['hash_csrf'] = $this->security->get_csrf_hash();
-				$this->load->view('admin/enrollment/view_payment_list');
-				$this->load->view('footer');
+
+			$data['student_id'] = $this->Common_model->encrypt_decrypt($param,'decrypt'); 
+
+
+			$dt['student.student_id'] = $data['student_id'];
+			$data['student_detail'] = $this->Common_model->student_data($dt);
+
+			$this->load->view('header');
+			$this->load->view('admin/student/update_aadhar',$data);
+			$this->load->view('footer');
+
 			}
 			else
 			{
 				redirect(base_url('admin/login'));
 			}
 		}
-		
-		public function get_payment_list()
+
+		public function aadhar_update($param){
+					
+			$response = $this->admin_model->aadhar_update($param);
+
+			$dt['student.student_id'] = $param;
+			$student_detail = $this->Common_model->student_data($dt);
+
+			$aadhar_no = wordwrap($student_detail[0]['adhar_no'], 4, ' ',true);
+
+			echo json_encode(array(
+			"status" => 'true',
+			"res" => $aadhar_no
+			
+			));
+		}
+
+		public function checkDuplicateAdharNo()
 		{
-			if ($this->input->method() == "post") 
-			{
-				$course_group_id = 0;
-				$data = array();
-				$dt   = array();
-				$fees_head = $this->input->post("payment_list");
-				if($fees_head != "all"){
-					$dt['fees_head'] = $fees_head;
-				}
-				$dt['payment'] = 'Y' ;
-				$dts['accData'] = $this->Account_model->account_data($dt);
-				$data =  $this->load->view('admin/enrollment/get_payment_list',$dts,true);
-				echo json_encode(array(
-				"status" => true,
-				"data" => $data
-				));
+			$adhar_no = $this->input->post('adhar_no');
+			$where = array('adhar_no'=>$adhar_no,'course_complete'=>'N');
+			$count = $this->Common_model->getCountByWhere('student',$where);
+			if($count>0){
+				echo "Duplicate Adhar Card Number";
 			}
 		}
-		
-		public function status(){
-			$this->load->view('header',array('title'=>'status'));
-			$this->load->view('admin/enrollment/status');
-			$this->load->view('footer');
-		}		
-		
-public function print_form($student_id){
-	$where =  array(
-		'student_id' => $student_id,
-		'payment' => 'Y'
-	);
-	$payment_details = $this->Common_model->get_record('online_payment_transaction','*',$where);
-	$student = $this->Common_model->student_info($student_id);
-	$data = array(
-		'payment_details'=> $payment_details,
-		'student' => $student,
-	);
-	$this->load->view('header',array('title' => 'Admission Form'));	
-	$this->load->view('template/form',$data);
-	$this->load->view('footer');
-}
 
-public function getOtherCourse($student_id)
-{
-	$student = $this->Common_model->getRecordById('student','student_id',$student_id);
-	$user_id = $student->user_id;
-	$where = 'user_id='.$user_id.' and student_id!='.$student_id;
-	$other_student = $this->Common_model->getRecordByWhere('student',$where);
-	$data = array('other_student' => $other_student);
-	$data['name_csrf'] = $this->security->get_csrf_token_name();
-	$data['hash_csrf'] = $this->security->get_csrf_hash();
-	$this->load->view('admin/student/other_course',$data);
-}
+		public function enrollment_status()
+		{
+			$session_july='July 2021';		// All Class
 
-public function update_aadhar($param){
-			
-	if($this->session->has_userdata('adminData')){
+			$where = array('session'=>$session_july);
+			$data['total_student'] = $this->Common_model->getCountByWhere('student',$where);
 
-	$data['student_id'] = $this->Common_model->encrypt_decrypt($param,'decrypt'); 
+	       //---paid------
+			$where = array('payment_status'=>'Y','session'=>$session_july);
+			$data['tot_paid'] = $this->Common_model->getCountByWhere('student',$where);
 
+	       // --- not paid------
+			$where = array('payment_status'=>'N','session'=>$session_july);
+			$data['tot_unpaid'] = $this->Common_model->getCountByWhere('student',$where);
 
-	$dt['student.student_id'] = $data['student_id'];
-	$data['student_detail'] = $this->Common_model->student_data($dt);
+	       //---paid and uploaded--------
+			$where = array('document_uploaded'=>'Y','payment_status'=>'Y','session'=>$session_july);
+			$data['uploaded'] = $this->Common_model->getCountByWhere('student',$where);
+	        
+	        //---not uploaded--------
+			$where = array('document_uploaded'=>'N','payment_status'=>'Y','session'=>$session_july);
+			$data['not_uploaded'] = $this->Common_model->getCountByWhere('student',$where);
+	        
+	        //---paid/uploaded/ non approved---
+			$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'N','session'=>$session_july);
+			$data['non_approved'] = $this->Common_model->getCountByWhere('student',$where);
 
-	$this->load->view('header');
-	$this->load->view('admin/student/update_aadhar',$data);
-	$this->load->view('footer');
+	        // paid + uploaded but approved = '' not verified----
+			$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'','session'=>$session_july);
+			$data['not_verified'] = $this->Common_model->getCountByWhere('student',$where);
 
-	}
-	else
-	{
-		redirect(base_url('admin/login'));
-	}
-}
+	         // paid + uploaded + approved = Y  verified----
+			$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'Y','session'=>$session_july);
+			$data['approved'] = $this->Common_model->getCountByWhere('student',$where);
 
-public function aadhar_update($param){
-			
-	$response = $this->admin_model->aadhar_update($param);
+			// enrollement genrated
+			$where = array('enrollment_no !='=>'-','approved='=>'Y','session'=>$session_july);
+			$data['en_generated'] = $this->Common_model->getCountByWhere('student',$where);
 
-	$dt['student.student_id'] = $param;
-	$student_detail = $this->Common_model->student_data($dt);
+			// not enrollement genrated
+			$where = array('enrollment_no'=>'-','approved='=>'Y','session'=>$session_july);
+			$data['not_en_generated'] = $this->Common_model->getCountByWhere('student',$where);
 
-	$aadhar_no = wordwrap($student_detail[0]['adhar_no'], 4, ' ',true);
+			// enrolled
+			$where = array('enrolled'=>'Y','approved='=>'Y','enrollment_no !='=>'-','session'=>$session_july);
+			$data['tot_enrolled'] = $this->Common_model->getCountByWhere('student',$where);
 
-	echo json_encode(array(
-	"status" => 'true',
-	"res" => $aadhar_no
-	
-	));
-}
+			// not enrolled
+			$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july);
+			$data['tot_not_enrolled'] = $this->Common_model->getCountByWhere('student',$where);
 
-public function checkDuplicateAdharNo()
-	{
-		$adhar_no = $this->input->post('adhar_no');
-		$where = array('adhar_no'=>$adhar_no,'course_complete'=>'N');
-		$count = $this->Common_model->getCountByWhere('student',$where);
-		if($count>0){
-			echo "Duplicate Adhar Card Number";
+	        $this->load->view('header');
+		    $this->load->view('admin/enrollment/enrollment_status_count',$data);
+		    $this->load->view('footer');
+
 		}
-	}
-
-	public function check_enrollment_status()
-	{
-		$session_july='July 2021';		// All Class
-
-		$where = array('session'=>$session_july);
-		$data['total_student'] = $this->Common_model->getCountByWhere('student',$where);
-
-       //---paid------
-		$where = array('payment_status'=>'Y','session'=>$session_july);
-		$data['tot_paid'] = $this->Common_model->getCountByWhere('student',$where);
-
-       // --- not paid------
-		$where = array('payment_status'=>'N','session'=>$session_july);
-		$data['tot_unpaid'] = $this->Common_model->getCountByWhere('student',$where);
-
-       //---paid and uploaded--------
-		$where = array('document_uploaded'=>'Y','payment_status'=>'Y','session'=>$session_july);
-		$data['uploaded'] = $this->Common_model->getCountByWhere('student',$where);
-        
-        //---not uploaded--------
-		$where = array('document_uploaded'=>'N','payment_status'=>'Y','session'=>$session_july);
-		$data['not_uploaded'] = $this->Common_model->getCountByWhere('student',$where);
-        
-        //---paid/uploaded/ is = approved---
-		$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'N','session'=>$session_july);
-		$data['non_approved'] = $this->Common_model->getCountByWhere('student',$where);
-
-        // paid + uploaded but approved = '' not verified----
-		$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'','session'=>$session_july);
-		$data['not_verified'] = $this->Common_model->getCountByWhere('student',$where);
-
-         // paid + uploaded + approved = Y  verified----
-		$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'Y','session'=>$session_july);
-		$data['approved'] = $this->Common_model->getCountByWhere('student',$where);
-
-		// enrollement genrated
-		$where = array('enrollment_no !='=>'-','approved='=>'Y','session'=>$session_july);
-		$data['en_generated'] = $this->Common_model->getCountByWhere('student',$where);
-
-		// not enrollement genrated
-		$where = array('enrollment_no'=>'-','approved='=>'Y','session'=>$session_july);
-		$data['not_en_generated'] = $this->Common_model->getCountByWhere('student',$where);
-
-		// enrolled
-		$where = array('enrolled'=>'Y','approved='=>'Y','enrollment_no !='=>'-','session'=>$session_july);
-		$data['tot_enrolled'] = $this->Common_model->getCountByWhere('student',$where);
-
-		// enrolled
-		$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july);
-		$data['tot_not_enrolled'] = $this->Common_model->getCountByWhere('student',$where);
-
-  //        echo '<pre>';
-		// print_r($data);die;
-        $this->load->view('header');
-	    $this->load->view('admin/enrollment/enrollment_status_count',$data);
-	    $this->load->view('footer');
-
-	}
-
 
 	public function center_request(){
 			
@@ -607,7 +481,7 @@ public function checkDuplicateAdharNo()
 		}
 	}
 
-	public function get_center_detail()
+	public function getFormEditRequest()
 	{
 		if ($this->input->method() == "post") 
 		{
@@ -625,13 +499,11 @@ public function checkDuplicateAdharNo()
 
 				if($data['center_details']){
 
-					$dt =  $this->load->view('admin/Enrollment/getStudentDetail',$data,true);
+					$dt =  $this->load->view('admin/Enrollment/FormEditRequestDetails',$data,true);
 
 				}else{
-
 					$dt = "Invalid Center Code";
 				}
-
 
 				echo json_encode(array(
 				"status" => true,
@@ -673,90 +545,78 @@ public function checkDuplicateAdharNo()
 		$this->load->view('footer');
 	}
 
-	public function update_request_status()
-	{
-	if ($this->input->method() == "post") 
-	{
-            $id    	= 0;
-            $id    	= $this->input->post("id");
+	public function update_form_edit_request_status(){
+		if ($this->input->method() == "post"){
+			$id    	= 0;
+			$id    	= $this->input->post("id");
 			$status = $this->input->post("status");
-
-			
-            if ($this->input->post("id")) 
-			{
+			if ($this->input->post("id")){
 				$data = $this->Common_model->updateRecordByConditions("request",array("id" => $id),array("status" => $status ));
-			
+
 				$dt = $this->db->get_where("request",array("id" => $id ))->result_array();
 
 				if($dt[0]['status'] == 'Done')
 				{
+					$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-success req_check" value="Done">';
 
-				$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-success req_check" value="Done">';
-				
+				}else{
+					$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-danger req_check" value="Pending">';
 				}
-
-				else{
-
-				$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-danger req_check" value="Pending">';
-				
-			}
-
-
-
 				$status = true;
 				$msg    = "";
-				
+
 				echo json_encode(array(
 					"status" => $status,
 					"msg" => $msg,
 					"data" => $sts_btn
 				));
 			}
-
-
-
+		}
 	}
-}
 
-public function getCenterRequest()
-	{
-		$data = $row = array();
-		$where = 'request.center_id='.$this->session->center_id;
+	public function getCenterRequest()
+		{
+			$data = $row = array();
+			$where = 'request.center_id='.$this->session->center_id;
+			
+			$column_order = array(null,'name','student.student_id','detail','date','status','request_remark');
+			$column_search = array('name','student.student_id','detail','date','status','request_remark');
+
+			$DataTableArray = array(
+				'column_order' => $column_order,
+				'column_search' => $column_search,
+				'where' => $where,
+				'table' =>  'request',
+				'table2' => 'student',
+				'joinOn' => 'request.student_id=student.student_id'
+			);
+
+			$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
+			$i = $_POST['start'];
+			foreach($tableData as $result){
+				$i++;
+				$date = $this->Common_model->viewDate($result->date);
+				$data[] = array($i, $result->name, $result->student_id, $result->detail,$date,$result->status,$result->request_remark);
+			}
+
+			$output = array(
+				"draw" => $_POST['draw'],
+				"recordsTotal" => $this->Datatable_join_model->countAll('request',$where),
+				"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
+				"data" => $data,
+			);
 		
-		$column_order = array(null,'name','student.student_id','detail','date','status','request_remark');
-		$column_search = array('name','student.student_id','detail','date','status','request_remark');
-
-		$DataTableArray = array(
-			'column_order' => $column_order,
-			'column_search' => $column_search,
-			'where' => $where,
-			'table' =>  'request',
-			'table2' => 'student',
-			'joinOn' => 'request.student_id=student.student_id'
-		);
-
-		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
-		$i = $_POST['start'];
-		foreach($tableData as $result){
-			$i++;
-			$date = $this->Common_model->viewDate($result->date);
-			$data[] = array($i, $result->name, $result->student_id, $result->detail,$date,$result->status,$result->request_remark);
+			// Output to JSON format
+			echo json_encode($output);
 		}
 
-		$output = array(
-			"draw" => $_POST['draw'],
-			"recordsTotal" => $this->Datatable_join_model->countAll('request',$where),
-			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
-			"data" => $data,
-		);
-	
-		// Output to JSON format
-		echo json_encode($output);
-	}	
-
-
-
+		public function search_student(){
+			$this->load->view('header',array('title' => 'Search Students'));	
+			$data = array(
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash()
+			);
+			$this->load->view('admin/search_student',$data);
+			$this->load->view('footer');
+		}
 }
-
-
-

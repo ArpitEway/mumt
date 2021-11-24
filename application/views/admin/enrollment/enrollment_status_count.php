@@ -19,7 +19,7 @@
 		<a href="#" class="card card-custom bg-danger bg-hover-state-danger card-stretch gutter-b">
 			<!--begin::Body-->
 			<div class="card-body">
-				<span class="text-custom fas fa-graduation-cap icon-3x"></span>
+				<span class="text-white fas fa-graduation-cap icon-3x"></span>
 				<div class="text-inverse-danger font-weight-bolder font-size-h5 mb-2 mt-5">Students</div>
 				<div class="font-weight-bold text-inverse-danger font-size-sm">Total Student : <?=$total_student;?></div>
 				
@@ -33,7 +33,7 @@
 		<a href="#" class="card card-custom bg-primary bg-hover-state-primary card-stretch gutter-b">
 			<!--begin::Body-->
 			<div class="card-body">
-				<span class="text-custom fas fa-rupee-sign icon-3x"></span>
+				<span class="text-white fas fa-rupee-sign icon-3x"></span>
 				<div class="text-inverse-primary font-weight-bolder font-size-h5 mb-2 mt-5">Admission Fee Payments</div>
 				<div class="font-weight-bold text-inverse-primary font-size-sm">Paid Student: <?=$tot_paid;?></div>
 				<div class="font-weight-bold text-inverse-primary font-size-sm">Unpaid Student: <?=$tot_unpaid;?></div>
@@ -48,7 +48,7 @@
 		<a href="#" class="card card-custom bg-success bg-hover-state-success card-stretch gutter-b">
 			<!--begin::Body-->
 			<div class="card-body">
-				<span class="text-custom fas fa-file-upload icon-3x"></span>
+				<span class="text-white fas fa-file-upload icon-3x"></span>
 				<div class="text-inverse-success font-weight-bolder font-size-h5 mb-2 mt-5">Document</div>
 				<div class="font-weight-bold text-inverse-success font-size-sm">Student's Document Uploaded: <?=$uploaded;?></div>
 				<div class="font-weight-bold text-inverse-success font-size-sm">Student's Document Not Uploaded: <?=$not_uploaded;?></div>
@@ -62,7 +62,7 @@
 		<a href="#" class="card card-custom bg-info bg-hover-state-info card-stretch card-stretch gutter-b">
 			<!--begin::Body-->
 			<div class="card-body">
-				<span class="text-custom fas fa-check-double icon-3x"></span>
+				<span class="text-white fas fa-check-double icon-3x"></span>
 				<div class="text-inverse-success font-weight-bolder font-size-h5 mb-2 mt-5">Approved</div>
   
 				
@@ -80,7 +80,7 @@
 		<a href="#" class="card card-custom bg-custom card-stretch gutter-b">
 			<!--begin::Body-->
 			<div class="card-body" >
-				<span class="text-custom fas fa-money-check-alt icon-3x"></span>
+				<span class="text-white fas fa-money-check-alt icon-3x"></span>
 				<div style="color:white!important;" class="text-custom font-weight-bolder font-size-h5 mb-2 mt-5">Generating Enrollment</div>
 				<div  class="font-weight-bold text-inverse-danger font-size-sm">Total Generated : <?=$en_generated?></div>
 				<div style="color:white!important;" class="font-weight-bold text-custom font-size-sm">Remain to generate: <?=$not_en_generated;?></div>
@@ -95,9 +95,9 @@
 		<a href="#" class="card card-custom bg-custom-2 bg-hover-state-info card-stretch card-stretch gutter-b">
 			<!--begin::Body-->
 			<div class="card-body" >
-				<span class="text-custom fas fa-user-plus icon-3x"></span>
+				<span class="text-white fas fa-user-plus icon-3x"></span>
 				<div class="text-inverse-success font-weight-bolder font-size-h5 mb-2 mt-5">Enrolled Status</div>
-				<div class="font-weight-bold text-custom font-size-sm">Total Enrolled: <?=$tot_enrolled;?></div>
+				<div class="font-weight-bold text-white font-size-sm">Total Enrolled: <?=$tot_enrolled;?></div>
 				<div class="font-weight-bold text-inverse-success font-size-sm">Remain to Enrolled : <?=$tot_not_enrolled;?></div>
 			</div>
 			<!--end::Body-->

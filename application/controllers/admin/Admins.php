@@ -1410,12 +1410,12 @@ public function update_doc_permission_status()
 		$this->load->view('footer');
 	}
 
-		public function search_student(){
+	public function search_student(){
 		$this->load->view('header',array('title' => 'Search Students'));	
 		$data = array(
-				'name_csrf' => $this->security->get_csrf_token_name(),
-				'hash_csrf' => $this->security->get_csrf_hash()
-			);
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
 		$this->load->view('admin/search_student',$data);
 		$this->load->view('footer');
 	}
