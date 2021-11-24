@@ -582,9 +582,6 @@ public function checkDuplicateAdharNo()
 	    $this->load->view('admin/enrollment/enrollment_status_count',$data);
 	    $this->load->view('footer');
 
-	    
-	
-		
 	}
 
 
@@ -677,7 +674,7 @@ public function checkDuplicateAdharNo()
 	}
 
 	public function update_request_status()
-{
+	{
 	if ($this->input->method() == "post") 
 	{
             $id    	= 0;
@@ -721,7 +718,41 @@ public function checkDuplicateAdharNo()
 	}
 }
 
+public function getCenterRequest()
+	{
+		$data = $row = array();
+		$where = 'request.center_id='.$this->session->center_id;
+		
+		$column_order = array(null,'name','student.student_id','detail','date','status','request_remark');
+		$column_search = array('name','student.student_id','detail','date','status','request_remark');
 
+		$DataTableArray = array(
+			'column_order' => $column_order,
+			'column_search' => $column_search,
+			'where' => $where,
+			'table' =>  'request',
+			'table2' => 'student',
+			'joinOn' => 'request.student_id=student.student_id'
+		);
+
+		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
+		$i = $_POST['start'];
+		foreach($tableData as $result){
+			$i++;
+			$date = $this->Common_model->viewDate($result->date);
+			$data[] = array($i, $result->name, $result->student_id, $result->detail,$date,$result->status,$result->request_remark);
+		}
+
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->Datatable_join_model->countAll('request',$where),
+			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
+			"data" => $data,
+		);
+	
+		// Output to JSON format
+		echo json_encode($output);
+	}	
 
 
 

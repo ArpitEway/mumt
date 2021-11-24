@@ -19,7 +19,7 @@ class Common_Model extends CI_Model{
 		$qry = $this->db->select("p_mobile_no");
 		
 		$qry = $this->db->where("student_id",$id);
-
+ 
 		$qry = $this->db->get("student_data");
 		
 		
@@ -221,7 +221,7 @@ class Common_Model extends CI_Model{
 	function student_data_consolidate($where = "",$group_by = ""){
 		
 		if($group_by != ""){
-			$this->db->select('count(*) as cnt,course_group.id,course_group.course_name as course_nm');
+			$this->db->select('count(*) as cnt,course_group.id,course_group.course_name as course_nm,center_id');
 			$this->db->group_by($group_by);
 		}else{
 			$this->db->select('*');
@@ -278,7 +278,7 @@ class Common_Model extends CI_Model{
 			$this->db->select('count(*) as cnt,course_name');
 			$this->db->group_by($group_by);
 		}else{
-			$this->db->select('*');
+			$this->db->select('*'); 
 		}
 			$this->db->from("student");
 			$this->db->where($where);
@@ -704,10 +704,21 @@ class Common_Model extends CI_Model{
 		}
 		$qry= $this->db->group_by($field);
 		$qry= $this->db->order_by($order);
-		 return $this->db->select('count(*) as count,center_id')->from($table)->get()->result_array();
+		return $this->db->select('count(*) as count,center_id')->from($table)->get()->result_array();
 
 		// echo $this->db->last_query();
 		// die;
+	}
+	function getCenterNameById($id){
+
+		$qry = $this->db->select("center_name");
+		
+		$qry = $this->db->where("id",$id);
+
+		$qry = $this->db->get("center");
+		
+		return $qry->row()->center_name;
+
 	}
 
 

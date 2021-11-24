@@ -1,0 +1,130 @@
+<style>
+.btn.btn-primary i {
+    color: #FFFFFF !important;
+}
+</style>
+<div class="text-right mt-3">
+
+</div>
+<div class=" mt-5" >
+<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+			<table id="memListTable" class="table table-striped dt-responsive nowrap" width="100%" >
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Center Code</th>
+						<th>Center Name</th>
+						<th>Contact Person</th>
+						<th>Mobile No</th>
+						<th>Options</th>
+						
+					</tr>
+				</thead>
+			<tbody>
+    		</tbody>
+</table>
+
+</div>
+
+
+<script>
+	$(document).ready(function(){
+		
+	var csrfName = $('.csrfname').attr('name');
+		var csrfHash = $('.csrfname').val(); 
+		var myTable =  $('#memListTable').DataTable({
+		// Processing indicator
+		"processing": true,
+		// DataTables server-side processing mode
+		"serverSide": true,
+		// Initial no order.
+		"order": [0],
+		// Load data from an Ajax source
+		"ajax": {
+			"url": BASE_URL+'admin/admins/getCenterLogin',
+			"type": "POST",
+			"data": {[csrfName]:csrfHash}
+		},
+		"lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+		//Set column definition initialisation properties
+		"columnDefs": [{ 
+			"targets": [0],
+			"orderable": true
+}],
+dom: '<"row" <"col-md-4" l><"col-md-4 text-center" B> <"col-md-4 col-md-4" f>>rt<"bottom"ip>',
+buttons: [
+{
+	"extend": "colvis",
+	"text": "<i class='fa fa-search bigger-110 text-custom'></i>",
+	"className": "btn-custom",
+	columns: ':not(:first)'
+},
+{
+	"extend": "copy",
+	"text": "<i class='fa fa-copy bigger-110 text-custom'></i> Copy",
+	"className": "btn-custom"
+},
+{
+	"extend": "excel",
+	"text": "<i class='fa fa-file-excel bigger-110 text-custom'></i> Excel",
+	"className": "btn-custom"
+},
+{
+	"extend": "print",
+	"text": "<i class='fa fa-print bigger-110 text-custom'></i> Print",
+	"className": "btn-custom"
+},
+], 
+});
+
+
+
+var showAllcenters = function () 
+    {
+        var url = '<?php echo site_url('admin/Admins/centers'); ?>';
+        $.ajax({
+            type : 'GET',
+            url: url,
+            success : function(response) {
+                
+                initDataTable('basic-datatable');
+            }
+        });
+    }
+
+
+
+$(document).on('click', '.center_status_check', function() {
+var csrfName = $('.csrfname').attr('name');
+var csrfHash = $('.csrfname').val(); 
+var val = $(this).val();
+
+var self =this;
+
+var status = (val=='Yes') ? 'N' : 'Y';
+
+var data = {
+		  id: $(this).attr('data-id'),
+		  status: status,
+		  	[csrfName]:csrfHash,
+	  }; 
+	  
+var url = BASE_URL + "admin/Admins/update_center_status";
+
+$.ajax({
+  url: url,
+  type: 'POST',
+  dataType: 'json',
+  data: data,
+  success: function (data) {
+	  
+	  $(self).parent().html(data.data);
+	  
+  }
+});
+
+});
+
+
+});
+</script>

@@ -13,7 +13,6 @@
 					<th>DOB</th>
 					<th>Course</th>
 					<th>Class</th>
-					<th>Edit</th>
 					
 				
 				<?php
@@ -24,7 +23,13 @@
 					<th>Course</th>
 					<th>Count</th>
 					
-				<?php } ?>
+				<?php } if(isset($center_count)){  ?>
+                    <th>Sno</th>
+					<th>IC Name</th>
+                    <th>IC Code</th>
+					<th>Count</th>
+
+                <?php } ?>
 					
 		</tr>
 </thead>
@@ -56,6 +61,7 @@
 				<td>
 					
 				<?php if($student["course_name"]==''){
+                    
 					$course_group_id = $userData->course_group_id;
 					echo $this->Common_model->getSinglefield('course_group','course_name','id='.$course_group_id);
 					}else{
@@ -70,9 +76,6 @@
 					} ?>
 
 				</td>
-				
-				<td><a target="_blank" href='<?php echo base_url('admin/Admins/editForm/').$this->Common_model->encrypt_decrypt($student["student_id"],'encrypt'); ?>' >Edit Form</a></td>		
-				
 					
 			</tr>
 			<?php
@@ -80,6 +83,32 @@
 			?>
 			
 			<?php	
+			if(isset($center_count)){ 
+
+			$total = 0;
+			foreach($center_count as $student){	
+			?>
+			<tr>
+				
+			<td><?php echo $i; ?></td>
+			<td><?php echo $this->Common_model->getCenterNameById($student["center_id"]); ?></td>
+            <td><?php echo $student["center_code"]); ?></td>
+			<td><?php echo $student["cnt"]; ?></td>
+			<?php $total = $total + $student["cnt"];?>
+			</tr>
+			
+			
+			
+			<?php $i++; } ?>
+			<tfoot>
+			<tr>
+			<td></td>
+			<td><?php echo "Total"; ?></td>
+			<td><?php echo $total ?></td>
+			</tr>
+			<tfoot>
+			<?php } ?>
+            <?php	
 			if(isset($course_count)){ ?>
 			
 			<?php

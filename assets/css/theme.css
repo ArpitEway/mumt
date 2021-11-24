@@ -320,3 +320,7 @@ color: #781e19 ! important;
 .border-right-dashed {
     border-right:1px dashed #cdcdcd ;
 }
+.master-admin-block:hover {
+    box-shadow: 1px 1px 5px 0px #771e18;
+    cursor: pointer;
+}

@@ -28,8 +28,7 @@
             <?php
                 $heading_id = '';
                 $class = '';
-                foreach($menus as $menu)
-                {
+                foreach($menus as $menu){
                     if($heading_id!=$menu->heading_id){
                         if($heading_id!=''){
                         ?>
@@ -42,8 +41,8 @@
                     <div class="tab-pane fade <?=$class;?>" id="heading-<?=$menu->heading_id?>" role="tabpanel" aria-labelledby="heading-<?=$menu->heading_id?>-tab">
                         <div class="row">
                             <?php
-                            $class ='';
-                            $heading_id=$menu->heading_id;
+                                $class ='';
+                                $heading_id=$menu->heading_id;
                             }
                         ?>
                         <a class="border-0 custom-menu-item" href="<?=BASE_URL($menu->url);?>">

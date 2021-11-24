@@ -474,7 +474,7 @@ class Center extends CI_Controller {
 		$student_id = $this->input->post('student_id');
 		if($this->center_model->checkcenterStudent($student_id)){
 		$onlinePayTxnId = $this->input->post('id');
-		$center_id = $this->session->center_id;
+		$center_id  = $this->session->center_id;
 		$centerdata = $this->Common_model->getRecordById('center','id',$center_id);
 		$updateData = array(
 			'payment' => 'Y',
@@ -813,8 +813,9 @@ class Center extends CI_Controller {
 		$i = $_POST['start'];
 		foreach($tableData as $result){
 			$i++;
-			$data[] = array($i, $result->name, $result->student_id, $result->detail,$result->date,$result->status,$result->request_remark);
-		
+			$date = $this->Common_model->viewDate($result->date);
+			$data[] = array($i, $result->name, $result->student_id, $result->detail,$date,$result->status,$result->request_remark);
+		}
 
 		$output = array(
 			"draw" => $_POST['draw'],
@@ -822,7 +823,7 @@ class Center extends CI_Controller {
 			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
 			"data" => $data,
 		);
-	}
+	
 		// Output to JSON format
 		echo json_encode($output);
 	}	

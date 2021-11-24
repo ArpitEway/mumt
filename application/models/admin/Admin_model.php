@@ -774,17 +774,17 @@ class Admin_model extends CI_Model {
 		$data['course_group_id'] = $student_info['course_group_id'];
 		$data['class_id'] 		 = $student_info['class_id'];
 		$data['student_name']    = $student_info['name'];
-		$data['amount'] 	 = $uploadData['amount'];
+		$data['amount'] 	 	 = $uploadData['amount'];
 		$data['remark'] 		 = $uploadData['remark'];
 		$data['fees_head'] 		 = 'admission';
 		$data['payment'] 		 = "Y";
 		$data['payment_status']  = "Verified By University";
 		$data['payment_date'] 	 = $payment_date;
 		$data['payment_mode'] 	 = $uploadData['payment_mode'];
-		$data['image'] 	 = $uploadData['image'];
+		$data['image'] 	 		 = $uploadData['image'];
 		$data['exam_session'] 	 = "";
 		$data['clientTxnId'] 	 = "";
-		$data['PGTxnNo'] 	 = "";
+		$data['PGTxnNo'] 	 	 = "";
 		$data['SabPaisaTxId'] 	 = "";
 		$data['issuerRefNo'] 	 = "";
 		
@@ -878,11 +878,11 @@ class Admin_model extends CI_Model {
 		$data['payment_mode'] 	 = $updateData['payment_mode'];
 		$data['payment'] 		 = "Y";
 		$data['payment_status']  = "Verified By University";
-		$data['image']  = $updateData['filename'];
+		$data['image']  		 = $updateData['filename'];
 		$data['payment_date'] 	 = $payment_date;
 		$data['exam_session'] 	 = "";
 		$data['clientTxnId'] 	 = "";
-		$data['PGTxnNo'] 	 = "";
+		$data['PGTxnNo'] 	 	 = "";
 		$data['SabPaisaTxId'] 	 = "";
 		$data['issuerRefNo'] 	 = "";
 		
