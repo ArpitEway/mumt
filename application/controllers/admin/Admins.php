@@ -9,6 +9,8 @@ class Admins extends CI_Controller {
 		parent::__construct();
 		$this->load->model('admin/admin_model');
 		$this->load->model('Common_model');
+		$this->load->model('Datatable_model');
+		$this->load->model('Datatable_join_model');
 	}
 
 	public function index(){
@@ -1408,12 +1410,12 @@ public function update_doc_permission_status()
 		$this->load->view('footer');
 	}
 
-		public function search_student(){
+	public function search_student(){
 		$this->load->view('header',array('title' => 'Search Students'));	
 		$data = array(
-				'name_csrf' => $this->security->get_csrf_token_name(),
-				'hash_csrf' => $this->security->get_csrf_hash()
-			);
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
 		$this->load->view('admin/search_student',$data);
 		$this->load->view('footer');
 	}
@@ -1604,9 +1606,137 @@ if ($this->input->method() == "post")
 			}
 	}
 }
+public function center_login_section($param1 = '', $param2 = '', $param3 = '')
+		{
+			if(!$this->session->has_userdata('adminData')){
+				redirect(base_url('admin'));
+				exit;
+			}else{
+
+				$data['center_code'] = html_escape($this->input->post('center_code'));
+
+				$data['center_name'] = html_escape($this->input->post('center_name'));
+
+				$data['address'] = html_escape($this->input->post('address'));
+
+				$data['pin_code'] = html_escape($this->input->post('pin_code'));
+
+				$data['state_id'] = html_escape($this->input->post('state'));
+
+				$data['distt_id'] = html_escape($this->input->post('district'));
+
+				$data['city'] = html_escape($this->input->post('city'));
+
+				$data['contactpersonname'] = html_escape($this->input->post('contact_person'));
+
+				$data['email'] = html_escape($this->input->post('email'));
+
+				$data['password'] = html_escape($this->input->post('password'));
+
+				$data['mobile_no_1'] = html_escape($this->input->post('mobile_no'));
+
+				$data['mobile_no_2'] = html_escape($this->input->post('mobile_no_2'));
+
+				$data['status'] = html_escape($this->input->post('status'));
+
+				if($param1 == 'create'){
+					$response = $this->admin_model->create_center($data);
+					echo json_encode(array("status" => 'true'));
+				}
+				if($param1 == 'update'){
+					$response = $this->admin_model->center_update($param2,$data);
+					echo json_encode(array("status" => 'true'));
+				}
+				if($param1 == 'delete'){
+					$response = $this->admin_model->center_delete($param2);
+					$this->session->set_flashdata('ajax_flash_message','Center Deleted Successfully ');
+
+					redirect(base_url().'admin/Admins/centers');
+				}
+
+				if(empty($param1) ){
+
+					$data = array();
+					$data['title'] = "Center login";
+					$data['center_code'] = $this->admin_model->getcenterCode();
+					$this->load->view('header',$data);
+					$data['center'] = $this->Common_model->get_record('center','');
+
+					$data['name_csrf'] = $this->security->get_csrf_token_name();
+					$data['hash_csrf'] = $this->security->get_csrf_hash();
+					$this->load->view('admin/center_login',$data);
+					$this->load->view('footer');
+				}
+			}
+		}
+
+	public function getCenterLogin()
+	{
+		$data = $row = array();
+		$where = "status=   'Y' ";
+		
+		$column_order = array(null,'center_code','center_name','contactpersonname','mobile_no_1');
+		$column_search = array('center_code','center_name','contactpersonname','mobile_no_1');
+
+		$DataTableArray = array(
+			'column_order' => $column_order,
+			'column_search' => $column_search,
+			'where' => $where,
+			'table' => 'center'
+		);
+
+		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
+		$i = $_POST['start'];
+		foreach($tableData as $result){
+			$center_code = $this->Common_model->encrypt_decrypt($result->center_code,'encrypt');
+			$btn ='<a class="btn btn-primary"  href="'.base_url('center/loginAs/').$center_code.'" >Log As</a>' ;
+			$i++;
+			$data[] = array($i, $result->center_code, $result->center_name, $result->contactpersonname,$result->mobile_no_1,$btn);
+		}
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->Datatable_join_model->countAll('center',$where),
+			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
+			"data" => $data,
+		);
+
+		// Output to JSON format
+		echo json_encode($output);
+	
+		
+}
+
+public function editForm($student_id = ""){
+	if(!$this->session->has_userdata('adminData')){
+		redirect(base_url('admin/'));
+		exit;
+	}
+
+	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+	$titleData = array('title' => 'Admission Form'); 
+	$state_list = $this->Common_model->get_record('state','*');
+	$eligibility_list = $this->Common_model->get_record('course_group','DISTINCT (eligibility)');
+	$district_list = $this->Common_model->get_record('distt','*');
+	$course_group_list = $this->Common_model->get_record('course','*');
+	
+	$data = array(
+		'state_list' => $state_list,
+		'district_list' => $district_list,
+		'course_group_list' => $course_group_list,
+		'session' => 'July 2021',
+		'eligibility_list' => $eligibility_list,
+		'name_csrf' => $this->security->get_csrf_token_name(),
+		'hash_csrf' => $this->security->get_csrf_hash(),
+		'student_detail' => $this->db->get_where('student', array("student_id" => $student_id))->row(),
+		'student_data'  => $this->db->get_where('student_data', array("student_id" => $student_id))->row()
+	
+	);
 
 
-
+	$this->load->view('header',$titleData);
+	$this->load->view('admin/editForm',$data);
+	$this->load->view('footer');
+}
 
 
 }// controller

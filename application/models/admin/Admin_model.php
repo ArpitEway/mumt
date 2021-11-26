@@ -761,57 +761,6 @@ class Admin_model extends CI_Model {
 
 		return json_encode($response);
 	}
-		
-
-	public function unpaid_student_update($uploadData)
-	{
-		
-		$student_info = $this->Common_model->student_info($uploadData['student_id']);
-		
-		$payment_date = $this->Common_model->DB_Date($uploadData['payment_date']); 
-	
-		$data['student_id'] 	 = $uploadData['student_id'] ;
-		$data['course_group_id'] = $student_info['course_group_id'];
-		$data['class_id'] 		 = $student_info['class_id'];
-		$data['student_name']    = $student_info['name'];
-		$data['amount'] 	 = $uploadData['amount'];
-		$data['remark'] 		 = $uploadData['remark'];
-		$data['fees_head'] 		 = 'admission';
-		$data['payment'] 		 = "Y";
-		$data['payment_status']  = "Verified By University";
-		$data['payment_date'] 	 = $payment_date;
-		$data['payment_mode'] 	 = $uploadData['payment_mode'];
-		$data['image'] 	 = $uploadData['image'];
-		$data['exam_session'] 	 = "";
-		$data['clientTxnId'] 	 = "";
-		$data['PGTxnNo'] 	 = "";
-		$data['SabPaisaTxId'] 	 = "";
-		$data['issuerRefNo'] 	 = "";
-		
-		$old_record = $this->db->get_where('online_payment_transaction', array('student_id' => $uploadData['student_id'], 'fees_head'=> 'admission' ))->row_array();
-		
-		if($old_record)	
-		{
-			$this->db->where(array('student_id' => $uploadData['student_id'], 'fees_head'=> 'admission' ));
-			$this->db->update('online_payment_transaction', $data);
-		}
-		else{
-			
-			$this->db->insert('online_payment_transaction', $data);
-			
-		}
-		
-		$student_data['payment_status'] = 'Y';
-		
-		$this->db->where('student_id', $uploadData['student_id']);
-		$this->db->update('student', $student_data);
-		
-		$response = array(
-				'status' => 'true',
-				);
-				
-		return json_encode($response);
-	}
 	
 	public function create_center($data)
     {
@@ -878,11 +827,11 @@ class Admin_model extends CI_Model {
 		$data['payment_mode'] 	 = $updateData['payment_mode'];
 		$data['payment'] 		 = "Y";
 		$data['payment_status']  = "Verified By University";
-		$data['image']  = $updateData['filename'];
+		$data['image']  		 = $updateData['filename'];
 		$data['payment_date'] 	 = $payment_date;
 		$data['exam_session'] 	 = "";
 		$data['clientTxnId'] 	 = "";
-		$data['PGTxnNo'] 	 = "";
+		$data['PGTxnNo'] 	 	 = "";
 		$data['SabPaisaTxId'] 	 = "";
 		$data['issuerRefNo'] 	 = "";
 		
@@ -909,8 +858,6 @@ class Admin_model extends CI_Model {
                
                 $query = $this->db->get(" student where enrollment_no='".$enroll."' ");
 
-
-                
                 if($query->num_rows()>0){
                         $result = $query->result();
                         return $result[0];
@@ -919,17 +866,7 @@ class Admin_model extends CI_Model {
                 }
         }
 
-        public function enrollment_insert_is($enrollIs)
-	   {
-	  
-		$this->db->insert('student', array('enrollment_no'=>$enrollIs));
-        $last_id = $this->db->insert_id();
-        $response = array('last_id'=>$last_id);
-        return json_encode($response);
-		
-	   }
-
-	   public function create_center_menu_heading()
+        public function create_center_menu_heading()
 	 {
 
 
@@ -946,7 +883,8 @@ class Admin_model extends CI_Model {
         {
              $data['heading_order'] = 1;
         }
-         $this->db->insert('center_menu_heading',$data);
+        $this->db->insert('center_menu_heading',$data);
+
         $response = array(
 				'status' => 'true',
 				);

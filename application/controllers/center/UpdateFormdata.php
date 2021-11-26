@@ -2,28 +2,27 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class saveFormdata extends CI_Controller {
+class updateFormdata extends CI_Controller {
 
 	function __construct(){
 		parent::__construct();
 		$this->load->model('Common_model');
 		$this->load->model('Center/center_model');
-		if(!$this->session->has_userdata('centerdata')){
+		if(!$this->session->has_userdata('adminData')){
 			exit();
 		}
 	}
 
 	public function index(){
+
 		$course_group_id = html_escape($this->input->post('course_group_id'));
 		$class_id = html_escape($this->input->post('class_id'));
 		$session = html_escape($this->input->post('session'));
+
 		$data['session'] = $session;
 		$data['course_group_id'] = $course_group_id;
 		$data['course_name'] = $this->Common_model->getCourseNameByCourseId($course_group_id);
 		$data['class_name'] = $this->Common_model->getClassNameByClassId($class_id);
-		$data['center_id'] = $this->session->center_id;
-		$data['center_code'] = $this->session->centerdata;
-		$data['center_name'] = $this->Common_model->getSinglefield('center','center_name','id='.$this->session->center_id);
 		$data['university_mode'] = 'REG';
 		$data['class_id'] = $class_id;
 		$data['medium'] = html_escape($this->input->post('medium'));
@@ -44,17 +43,13 @@ class saveFormdata extends CI_Controller {
 		$studentData['marital_status'] = html_escape($this->input->post('marital_status'));
 		$studentData['p_address'] = html_escape($this->input->post('p_address'));
 		$studentData['p_city'] = html_escape($this->input->post('p_city'));
-		$p_state_id = html_escape($this->input->post('p_state'));
-		$studentData['p_state'] = $this->Common_model->getState($p_state_id);
-		$p_district_id = html_escape($this->input->post('p_district'));
-		$studentData['p_district'] = $this->Common_model->getDistrict($p_district_id);
+		$studentData['p_state'] = html_escape($this->input->post('p_state'));
+		$studentData['p_district'] = html_escape($this->input->post('p_district'));
 		$studentData['p_pin_code'] = html_escape($this->input->post('p_pin_code'));
 		$studentData['c_address'] = html_escape($this->input->post('c_address'));
 		$studentData['c_city'] = html_escape($this->input->post('c_city'));
-		$c_state_id = html_escape($this->input->post('c_state'));
-		$c_district_id = html_escape($this->input->post('c_district'));
-		$studentData['c_state'] = $this->Common_model->getState($c_state_id);
-		$studentData['c_district'] = $this->Common_model->getDistrict($c_district_id);
+		$studentData['c_state'] = html_escape($this->input->post('c_state'));
+		$studentData['c_district'] = html_escape($this->input->post('c_district'));
 		$studentData['c_pin_code'] = html_escape($this->input->post('c_pin_code'));
 
 		$studentData['marks'] = html_escape($this->input->post('marks'));
@@ -70,25 +65,39 @@ class saveFormdata extends CI_Controller {
 		
 		// transaction start from here 
 		// https://codeigniter.com/userguide3/database/transactions.html
+		
 		$this->db->trans_start();
 
-		$student_id = $this->Common_model->insertAll('student',$data);
+        $student_id = html_escape($this->input->post('student_id'));
+
+        $this->db->where('student_id', $student_id);
+		$this->db->update('student', $data);
+
 
 		$path = './assets/student_image/'.$session;
-		if(!file_exists($path)){
-			mkdir($path);
-		}
+		// if(!file_exists($path)){
+		// 	mkdir($path);
+		// }
 
 		$upload = $this->do_upload('photo',$path,$student_id);
 		
 		$PhotoData = array('photo' => $upload['file_name']);
+		
 		$where = array('student_id'=>$student_id);
 		$this->Common_model->updateRecordByConditions('student',$where,$PhotoData);
+
+
 		$studentData['student_id'] = $student_id;
-		$this->Common_model->insertAll('student_data',$studentData);
+
+        $this->db->where('student_id', $student_id);
+		$this->db->update('student_data', $studentData);
+
 		
-		$OnlinePayTxnData = array('student_id' => $student_id,'center_id' => $this->session->center_id,'fees_head' => 'Admission Fees','amount' => 1500,'payment_status'=>'pending','course_group_id' => $course_group_id,'class_id' => $class_id,'student_name' => $data['name'],'admission_type'=>'regular');
-		$OnlinePayTxn = $this->Common_model->insertAll('online_payment_transaction',$OnlinePayTxnData);
+		$OnlinePayTxnData = array('course_group_id' => $course_group_id,'class_id' => $class_id);
+
+        $this->db->where('student_id', $student_id);
+		$this->db->update('online_payment_transaction', $OnlinePayTxnData);
+		
 
 		// transaction Complete 
 		
@@ -114,7 +123,7 @@ class saveFormdata extends CI_Controller {
 		$config['upload_path'] = $path;
 		$config['allowed_types'] = 'gif|jpg|png|pdf';
 		$config['max_size']      = '0';
-		$config['overwrite']     = FALSE;
+		$config['overwrite']     = TRUE;
 		$config['file_name'] =  $name;
 
 		return $config;
@@ -131,11 +140,14 @@ class saveFormdata extends CI_Controller {
 		$this->upload->initialize($config);
 		if ( ! $this->upload->do_upload($file))
 		{
-			return $error = array('error' => $this->upload->display_errors());
+			 return $error = $this->upload->display_errors();
+           
 		}
 		else
 		{
 			return   $this->upload->data();
 		}
 	}
+
+
 }

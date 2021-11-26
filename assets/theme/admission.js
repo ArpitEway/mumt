@@ -199,6 +199,65 @@ $(document).on('click','#submit', function () {
 	});
 });
 
+$(document).on('click','#edit_submit', function () {
+	if(validation()==false){
+		return false;
+	}
+
+	Swal.fire({
+		text: "All is good! Please confirm the form submission.",
+		icon: "success",
+		showCancelButton: true,
+		buttonsStyling: false,
+		confirmButtonText: "Yes, submit!",
+		cancelButtonText: "No, cancel",
+		customClass: {
+			confirmButton: "btn font-weight-bold btn-primary",
+			cancelButton: "btn font-weight-bold btn-default"
+		}
+	}).then(function (result) {
+		if (result.value) {
+		$('input[type="button"]').attr('disabled','disabled');
+			var form = $('form');
+			var formData = new FormData(form[0]);
+
+			$.ajax({
+				method: "POST",
+				url: BASE_URL+"center/updateFormdata/",
+				data: formData,
+				dataType: 'json',
+				cache:false,
+				contentType: false,
+				processData: false,
+				success: function (data) {
+					console.log(data);
+					if(data.student_id){
+					toastr.success('Form Submitted Successfully');
+					setTimeout(function(){
+						window.location.href = BASE_URL+"admin/enrollment/show_form/"+data.student_id;
+					}, 1000);
+					}
+					},
+					error: function (data) {
+				$('input[type="button"]').removeAttr('disabled','disabled');
+						toastr.error('An error occurred.');
+					},
+				});
+			return false;
+		} else if (result.dismiss === 'cancel') {
+			Swal.fire({
+				text: "Your form has not been submitted!.",
+				icon: "error",
+				buttonsStyling: false,
+				confirmButtonText: "Ok, got it!",
+				customClass: {
+					confirmButton: "btn font-weight-bold btn-primary",
+				}
+			});
+		}
+	});
+});
+
 function validation(step){
 	var submit = true;
 	

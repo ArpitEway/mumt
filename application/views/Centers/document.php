@@ -86,8 +86,8 @@
 			?>
 			<div class="col-md-6">
 				<div class="form-group">
-					<label><?=$document['document'];?><strong class="text-danger"><?= ($document['status']=='N') ? '' : ' *'; ?></strong>
-						<span class="ml-auto" id="<?='downloadBtnId_'.$document['id']?>">
+					<label class="w-100"><?=$document['document'];?><strong class="text-danger"><?= ($document['status']=='N') ? '' : ' *'; ?></strong>
+						<span class="float-right" id="<?='downloadBtnId_'.$document['id']?>">
 							<?php 
 							$file = $this->Common_model->GetAdmissonDocFile($student['student_id'],$document['id']);
 							if($file){

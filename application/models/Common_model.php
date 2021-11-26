@@ -19,7 +19,7 @@ class Common_Model extends CI_Model{
 		$qry = $this->db->select("p_mobile_no");
 		
 		$qry = $this->db->where("student_id",$id);
-
+ 
 		$qry = $this->db->get("student_data");
 		
 		
@@ -221,7 +221,7 @@ class Common_Model extends CI_Model{
 	function student_data_consolidate($where = "",$group_by = ""){
 		
 		if($group_by != ""){
-			$this->db->select('count(*) as cnt,course_group.id,course_group.course_name as course_nm');
+			$this->db->select('count(*) as cnt,course_group.id,course_group.course_name as course_nm,center_id');
 			$this->db->group_by($group_by);
 		}else{
 			$this->db->select('*');
@@ -278,7 +278,7 @@ class Common_Model extends CI_Model{
 			$this->db->select('count(*) as cnt,course_name');
 			$this->db->group_by($group_by);
 		}else{
-			$this->db->select('*');
+			$this->db->select('*'); 
 		}
 			$this->db->from("student");
 			$this->db->where($where);
@@ -593,9 +593,13 @@ class Common_Model extends CI_Model{
 		}
 		return true;
 	}
+	// change date format
 	public function viewDate($date){
 		return date("d-m-Y", strtotime($date));
 	}
+
+	
+
 	public function DB_Date($date){
 		return date("Y-m-d", strtotime($date));
 	}
@@ -691,6 +695,26 @@ class Common_Model extends CI_Model{
 		}
 		$qry= $this->db->order_by($order);
 		return $this->db->select($field)->from($table)->get()->result_array();
+
+	}
+	
+	public function get_record_group_by_where($table,$field,$wrr=''){
+		if($wrr!=''){
+			$this->db->where($wrr);
+		}
+		$qry= $this->db->group_by($field);
+		return $this->db->select('count(*) as count,'.$field)->from($table)->get()->result_array();
+	}
+
+	function getCenterNameById($id){
+
+		$qry = $this->db->select("center_name");
+		
+		$qry = $this->db->where("id",$id);
+
+		$qry = $this->db->get("center");
+		
+		return $qry->row()->center_name;
 
 	}
 }

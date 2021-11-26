@@ -1,0 +1,265 @@
+<?php
+include_once(APPPATH.'core/ADMIN_controller.php');
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Director extends CI_Controller {
+
+	function __construct(){
+		parent::__construct();
+		$this->load->model('admin/admin_model');
+		$this->load->model('admin/Account_model');
+		$this->load->model('Common_model');
+		$this->load->model('Datatable_join_model');
+		if($this->session->account_type!='director'){
+			redirect(base_url('admin/logout')); 
+		}
+	}
+
+	public function index(){
+
+		if($this->session->has_userdata('adminData')){
+
+			$admin_id = $this->session->admin_id;
+
+			$where = 'admin_id='.$admin_id.' and status="Y"';
+
+			$menu = array(
+				"menu_headings" => $this->Common_model->getRecordByWhereByOrder('menu_heading',$where,'heading_order','ASC'),
+				"menus" => $this->Common_model->getRecordByWhereByOrder('menu',$where,'heading_id,menu_order','ASC'),
+			);
+
+			$this->load->view('header',array('title' => 'Director Section'));
+			$this->load->view('admin/director/dashboard',$menu);
+			$this->load->view('footer');
+		}
+		else
+		{
+			redirect(base_url('admin/login'));
+		}
+	}
+	public function dashboard(){
+
+		if($this->session->has_userdata('adminData')){
+
+			$admin_id = $this->session->admin_id;
+
+			$where = 'admin_id='.$admin_id.' and status="Y"';
+
+			$menu = array(
+				"menu_headings" => $this->Common_model->getRecordByWhereByOrder('menu_heading',$where,'heading_order','ASC'),
+				"menus" => $this->Common_model->getRecordByWhereByOrder('menu',$where,'heading_id,menu_order','ASC'),
+			);
+
+			$this->load->view('header');
+			$this->load->view('admin/director/dashboard',$menu);
+			$this->load->view('footer');
+		}
+		else
+		{
+			redirect(base_url('admin/login'));
+		}
+	}
+
+
+	public function consolidate_report(){
+		if($this->session->has_userdata('adminData'))
+		{
+			$dataTitle = array(); 
+			$dataTitle['title'] = "Student Consolidate Report";
+			$this->load->view('header',$dataTitle);
+			$this->db->order_by('id', 'Desc');
+			$data['sessions']  = $this->db->get_where('session', array())->result_array();
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$this->load->view('admin/director/consolidate_report',$data);
+			$this->load->view('footer');
+		}
+		else
+		{
+			redirect(base_url('enrollment/login'));
+		}
+	}
+
+
+	public function get_student_consolidate_data()
+	{
+
+		if ($this->input->method() == "post") 
+		{
+			$course_group_id = 0;
+
+			$data = array();
+			$dt   = array();
+
+			$course_group_id  = 	$this->input->post("course_group_id");
+			$class_id  		  = 	$this->input->post("class_id");
+			$approved 		  = 	$this->input->post("approved");
+			$payment 		  = 	$this->input->post("payment");
+			$enrolled 		  = 	$this->input->post("enrolled");
+			$document_upload  = 	$this->input->post("document_upload");
+			$filter  		  = 	$this->input->post("filter");
+			$session 		  = 	$this->input->post("session");
+			$mode 		  	  = 	$this->input->post("mode");
+			$center 	  	  = 	$this->input->post("center");
+
+			if($center != "all"){	 
+
+				$dt['center_id'] = $center;
+			}
+			if($mode != "all"){	 
+
+				$dt['mode'] = $mode;
+			}
+			if($session != "all"){	 
+
+				$dt['session'] = $session;
+			}else{
+				$dt['name!='] = '';
+			}
+
+			if($filter == "course"){
+
+				$data['course_count'] = $this->Common_model->student_data_consolidate($dt,'course_group_id');
+				
+			}
+			if($filter == "center"){
+
+				$data['center_count'] = $this->Common_model->student_data_consolidate($dt,'center_id');
+
+			}
+
+
+			$dt = $this->load->view('admin/director/getStudentConsolidate',$data,true);
+
+			echo json_encode(array(
+				"status" => true,
+				"data" => $dt
+			));
+		}
+
+	}
+	
+
+
+	public function check_enrollment_status()
+	{
+		$session_july='July 2021';		// All Class
+
+		$where = array('session'=>$session_july);
+		$data['total_student'] = $this->Common_model->getCountByWhere('student',$where);
+
+       //---paid------
+		$where = array('payment_status'=>'Y','session'=>$session_july);
+		$data['tot_paid'] = $this->Common_model->getCountByWhere('student',$where);
+
+       // --- not paid------
+		$where = array('payment_status'=>'N','session'=>$session_july);
+		$data['tot_unpaid'] = $this->Common_model->getCountByWhere('student',$where);
+
+       //---paid and uploaded--------
+		$where = array('document_uploaded'=>'Y','payment_status'=>'Y','session'=>$session_july);
+		$data['uploaded'] = $this->Common_model->getCountByWhere('student',$where);
+
+        //---not uploaded--------
+		$where = array('document_uploaded'=>'N','payment_status'=>'Y','session'=>$session_july);
+		$data['not_uploaded'] = $this->Common_model->getCountByWhere('student',$where);
+
+        //---paid/uploaded/ is = approved---
+		$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'N','session'=>$session_july);
+		$data['non_approved'] = $this->Common_model->getCountByWhere('student',$where);
+
+        // paid + uploaded but approved = '' not verified----
+		$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'','session'=>$session_july);
+		$data['not_verified'] = $this->Common_model->getCountByWhere('student',$where);
+
+         // paid + uploaded + approved = Y  verified----
+		$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'Y','session'=>$session_july);
+		$data['approved'] = $this->Common_model->getCountByWhere('student',$where);
+
+		// enrollement genrated
+		$where = array('enrollment_no !='=>'-','approved='=>'Y','session'=>$session_july);
+		$data['en_generated'] = $this->Common_model->getCountByWhere('student',$where);
+
+		// not enrollement genrated
+		$where = array('enrollment_no'=>'-','approved='=>'Y','session'=>$session_july);
+		$data['not_en_generated'] = $this->Common_model->getCountByWhere('student',$where);
+
+		// enrolled
+		$where = array('enrolled'=>'Y','approved='=>'Y','enrollment_no !='=>'-','session'=>$session_july);
+		$data['tot_enrolled'] = $this->Common_model->getCountByWhere('student',$where);
+
+		// enrolled
+		$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july);
+		$data['tot_not_enrolled'] = $this->Common_model->getCountByWhere('student',$where);
+
+  		//echo '<pre>';
+		// print_r($data);die;
+
+		$this->load->view('header');
+		$this->load->view('admin/enrollment/enrollment_status_count',$data);
+		$this->load->view('footer');
+	}
+
+	
+
+	public function bulk_permission(){
+
+		if($this->session->has_userdata('adminData')){
+
+			$admin_id = $this->session->admin_id;
+
+			$data = array('name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash()
+			);
+
+			$this->load->view('header',array('title' => 'Bulk Permission For All Centers'));
+			$this->load->view('admin/director/bulk_permission',$data);
+			$this->load->view('footer');
+		}
+		else
+		{
+			redirect(base_url('admin/login'));
+		}
+	}
+
+	public function update_center_permission()
+	{
+
+		if ($this->input->method() == "post") 
+		{
+
+			$parameter1   	= $this->input->post("param_name");
+			$permisssion    = $this->input->post("permission");
+
+			$data = array($parameter1 => $permisssion);
+			$where = 'status= "Y" ';
+			$res = $this->Common_model->updateRecordByConditions('center',$where,$data);
+
+
+			$dt = $this->db->get_where("center",array($parameter1 => $permisssion))->row();
+
+			if($dt->$parameter1 == 'Y')
+			{
+
+				$sts_btn = '<a class="btn btn-danger" onclick="update_permission(\''.$parameter1.'\',\'N\')">All No</a>';
+				
+			}
+
+			else{
+
+				$sts_btn = '<a class="btn btn-primary" onclick="update_permission(\''.$parameter1.'\',\'Y\')">All Yes</a>';
+				
+			}
+
+
+			echo json_encode(array(
+				"status" => $res,
+				"msg" => "Permission has been updated successfully",
+				"sts_btn"=>$sts_btn,
+				"p1"=>$parameter1,
+			));
+
+		}
+	}
+}

@@ -10,7 +10,7 @@
 			$this->load->model('admin/admin_model');
 			$this->load->model('Common_model');
 			$this->load->model('admin/Account_model');
-			if(!$this->session->account_type=='Account'){
+			if($this->session->account_type!='Account'){
 				redirect(base_url('admin/logout'));
 			}
 		}
@@ -37,62 +37,28 @@
 		public function dashboard(){
 			
 			if($this->session->has_userdata('adminData')){
+			$admin_id = $this->session->admin_id;
+			$where = 'admin_id='.$admin_id;
+				$menu = array(
+					"menu_headings" => $this->Common_model->getRecordByWhereByOrder('menu_heading',$where,'heading_order','ASC'),
+					"menus" => $this->Common_model->getRecordByWhereByOrder('menu',$where,'heading_id,menu_order','ASC'),
+				);
 				
-				$this->load->view('admin/account_section/header');
-				$this->load->view('admin/account_section/dashboard');
-				$this->load->view('admin/account_section/footer');
+				$this->load->view('header',array('title' => 'Account Section'));
+				$this->load->view('admin/account_section/dashboard',$menu);
+				$this->load->view('footer');
 			}
 			else
 			{
 				redirect(base_url('admin/login'));
 			}
 		}
-		public function view_payment_list(){
-			
-			if($this->session->has_userdata('adminData')){
-				
-			$this->load->view('admin/account_section/header');
-			$this->load->view('admin/account_section/view_payment_list');
-			$this->load->view('admin/account_section/footer');
-		}
-			else
-			{
-				redirect(base_url('admin/login'));
-			}
-		}
-		
-		public function get_payment_list()
-		{
-			
-			if ($this->input->method() == "post") 
-			{
-				$course_group_id = 0;
-				$data = array();
-				$dt   = array();
-				
-				$fees_head = $this->input->post("payment_list");
-				
-				if($fees_head != "all"){
-					$dt['fees_head'] = $fees_head;
-				}
-				$dt['payment'] = "Y";
-				$dts['accData'] = $this->Account_model->account_data($dt);
-				
-				$data =  $this->load->view('admin/account_section/get_payment_list',$dts,true);
-				
-				echo json_encode(array(
-				"status" => true,
-				"data" => $data
-				));
-			}
-			
-		}
- 
-		public function update_payment_complaint(){
+
+		public function view_payment_complaint(){
 			
 			if($this->session->has_userdata('adminData')){
 				$where = array("status" => "Pending");
-				$centers = $this->Common_model->get_record('payment_complaint','distinct(center_id)',$where);
+				$centers = $this->Common_model->get_record_group_by_where('payment_complaint','center_id',$where);
 
 				$data = array('name_csrf' => $this->security->get_csrf_token_name(),
 					'hash_csrf' => $this->security->get_csrf_hash(),
@@ -100,7 +66,7 @@
 				);
 				
 				$this->load->view('header');
-				$this->load->view('admin/account_section/update_payment_complaint',$data);
+				$this->load->view('admin/account_section/view_payment_complaint',$data);
 				$this->load->view('footer');
 			}
 			else
@@ -140,7 +106,7 @@
 	}
 
 
-	public function update_request_status()
+	public function update_payment_complaint_status()
 	{
 		if ($this->input->method() == "post") 
 		{
@@ -172,7 +138,7 @@
 		}
 	}
 
-	public function update_request_remark()
+	public function update_payment_complaint_remark()
 	{
 		if ($this->input->method() == "post") 
 		{

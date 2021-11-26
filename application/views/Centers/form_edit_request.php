@@ -76,19 +76,16 @@ li{
 </div>
 
 
-<div id="dt">
 
 <div class="text-center">
 
-            <table id="table" class="table table-striped dt-responsive nowrap" width="70%" >
+            <table id="memListTable" class="table table-striped dt-responsive nowrap" width="70%" >
                 <thead>
                     <tr>
                         
                         <th>S.No.</th>
                         <th>Student Name </th>
                         <th>Form no</th>
-                        <th>Course </th>
-                        <th>Class</th>
                         <th>Detail</th>
                         <th>Date</th>
                         <th>Status</th>
@@ -97,38 +94,6 @@ li{
                     </tr>
                 </thead>
     		<tbody>
-
-    		<?php 
-			
-    		$i = 1;
-
-			foreach($request_detail as $request){
-
-			$student = $this->Common_model->getSingleRow("student",'*',array("student_id" => $request["student_id"]));
-			
-			?>
-			
-			<tr>
-
-                <td><?php echo $i; ?></td>
-				<td><?php echo $student->name; ?></td>
-				<td><?php echo $request["student_id"]; ?></td>
-                <td><?php echo $student->course_name; ?></td>
-				<td><?php echo $student->class_name; ?></td> 
-				<td><?php echo $request["detail"]; ?></td>
-				<td><?php echo $request["date"]; ?></td>
-				<td><?php echo $request["status"]; ?></td>
-				<td><?php echo $request["remark"]; ?></td>
-
-			</tr>
-			
-			
-		<?php
-            	
-	    		$i++;
-		} 
-
-		?>
 			</tbody>
 </table>
 
@@ -138,7 +103,56 @@ li{
 </div>
 
 <script>
+$(document).ready(function(){
+		
+	var csrfName = $('.csrfname').attr('name');
+	var csrfHash = $('.csrfname').val(); 
+	var myTable =  $('#memListTable').DataTable({
+	// Processing indicator
+	"processing": true,
+	// DataTables server-side processing mode
+	"serverSide": true,
+	// Initial no order.
+	"order": [0],
+	// Load data from an Ajax source
+	"ajax": {
+		"url": BASE_URL+'center/center/getFormEditRequest',
+		"type": "POST",
+		"data": {[csrfName]:csrfHash}
+	},
+	"lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+	//Set column definition initialisation properties
+	"columnDefs": [{ 
+		"targets": [0],
+		"orderable": true
+	}],
+	dom: '<"row" <"col-md-4" l><"col-md-4 text-center" B> <"col-md-4 col-md-4" f>>rt<"bottom"ip>',
+	buttons: [
+	{
+		"extend": "colvis",
+		"text": "<i class='fa fa-search bigger-110 text-custom'></i>",
+		"className": "btn-custom",
+		columns: ':not(:first)'
+	},
+	{
+		"extend": "copy",
+		"text": "<i class='fa fa-copy bigger-110 text-custom'></i> Copy",
+		"className": "btn-custom"
+	},
+	{
+		"extend": "excel",
+		"text": "<i class='fa fa-file-excel bigger-110 text-custom'></i> Excel",
+		"className": "btn-custom"
+	},
+	{
+		"extend": "print",
+		"text": "<i class='fa fa-print bigger-110 text-custom'></i> Print",
+		"className": "btn-custom"
+	},
+	], 
 
+	
+	});
 $(document).on("click","#submit_btn",function(){
 
 	var student = $("#student").val();
@@ -160,12 +174,17 @@ $(document).on("click","#submit_btn",function(){
 					[csrfName]:csrfHash
 				};
 
-				var url = BASE_URL + "center/center/get_request_detail"; 
+				var url = BASE_URL + "center/center/create_form_edit_request"; 
 				var response = call_ajax(data,url);
 				console.log(response);
-				$('#dt').html("");
-				$('#dt').html(response.data);
-				KTDatatablesBasicBasic.init();
+				
+				$("#session").val("");
+				$("#student").val("");
+				$(".detail").val("");
+				$("#allClassBycourse").val("");
+				
+
+				myTable.draw();
 
 			}else{
 
@@ -198,5 +217,5 @@ $("#allClassBycourse").on('change', function(){
 	});
 
 });
-
+});
 </script>
