@@ -1402,6 +1402,7 @@ public function update_doc_permission_status()
 
 	public function show_form($student_id){
 		$data = array();
+		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt'); 
 		$data['student'] = $this->Common_model->student_info($student_id);
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
@@ -1411,11 +1412,17 @@ public function update_doc_permission_status()
 	}
 
 	public function search_student(){
-		$this->load->view('header',array('title' => 'Search Students'));	
+		
+		$segment = $this->uri->segment(2);
+		
+		$this->load->view('header',array('title' => 'Search Students'));
+
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
-			'hash_csrf' => $this->security->get_csrf_hash()
+			'hash_csrf' => $this->security->get_csrf_hash(),
+			'segment' => $segment
 		);
+
 		$this->load->view('admin/search_student',$data);
 		$this->load->view('footer');
 	}
@@ -1533,6 +1540,7 @@ public function update_doc_permission_status()
 		
 		$text_val =$this->input->post('text_val');
 		$radio_val = $this->input->post('radio_val');
+		$segment = $this->input->post('segment');
 
 		if($text_val !='')
 		{
@@ -1555,8 +1563,11 @@ public function update_doc_permission_status()
 			{
 				$where =  array('adhar_no' => $text_val);
 			}
+
 			$data['students'] = $this->Common_model->student_data($where);
 
+			$data['segment'] = $segment;
+			
 			$dt =  $this->load->view('admin/student/getStudentConsolidate',$data,true);
 			echo json_encode(array(
 				"status" => true,

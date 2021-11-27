@@ -11,7 +11,7 @@ class Director extends CI_Controller {
 		$this->load->model('admin/Account_model');
 		$this->load->model('Common_model');
 		$this->load->model('Datatable_join_model');
-		if($this->session->account_type!='director'){
+		if($this->session->account_type!='Director'){
 			redirect(base_url('admin/logout')); 
 		}
 	}

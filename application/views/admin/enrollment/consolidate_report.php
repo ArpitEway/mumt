@@ -113,18 +113,30 @@
 
 <div class="col-md-3 radio-inline" style="top: 7px;">
 <label class="radio radio-success">
-<input type="radio" name="filter" value="list" checked />
+<input type="radio" name="filter" value="list"  />
 <span></span>
 List
 </label>
 
 <label class="radio radio-success">
-<input type="radio" name="filter" value="count" />
+<input type="radio" name="filter" value="count" checked/>
        <span></span>
             Count
        </label>          
 </div>
+
+<div class="form-group col-md-3">
+	<label for="class">Student Count</label>
+    <select name="count_filter" id="count_filter" class="form-control" >
+		 
+	<option value="course_wise">Course Wise </option> 
+	<option value="center_wise">Center Wise </option>
+
+	</select>
 </div>
+
+</div>
+
 
 <div class="form-group text-center">
 	<button class="btn btn-md btn-primary mt-4" type="button" id="submit_btn">Submit</button>
@@ -152,6 +164,7 @@ $(document).on("click","#submit_btn",function(){
 		filter : $('input[name="filter"]:checked').val(),
 		enrolled : $("#enrolled").val(),
 		session : $("#session_id").val(),
+		count_filter:$("#count_filter").val(),
 		[csrfName]:csrfHash
 	};
 
@@ -168,6 +181,15 @@ $(document).on("click","#submit_btn",function(){
 	
 });
 
+
+$('input:radio[name="filter"]').change(function() {
+    if ($(this).val()=='list') {
+        $('#count_filter').attr('disabled', true);
+    } 
+    else if ($(this).val()=='count') {
+        $('#count_filter').attr('disabled', false);
+    }
+});
 
 
 var showAllpaper = function () 
