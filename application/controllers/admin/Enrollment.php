@@ -11,7 +11,7 @@
 			$this->load->model('admin/Account_model');
 			$this->load->model('Common_model');
 			$this->load->model('Datatable_join_model');
-			if($this->session->account_type!='enrollment'){
+			if($this->session->account_type!='Enrollment'){
 				redirect(base_url('admin/logout')); 
 			}
 		}
@@ -100,6 +100,11 @@
 				
 			    $mode 		  	  = 	$this->input->post("mode");
 				$center 	  	  = 	$this->input->post("center");
+
+
+				$count_filter = $this->input->post("count_filter");
+
+
 				if($mode != "all"){	 
 					
 					$dt['mode'] = $mode;
@@ -148,7 +153,18 @@
 				
 				if($filter == "count"){
 					
-					$data['course_count'] = $this->Common_model->student_data_consolidate($dt,'course_group_id');
+					if($count_filter == "course_wise"){
+
+						$data['count_filter'] = 'course_wise';
+
+						$data['course_count'] = $this->Common_model->student_data_consolidate($dt,'course_group_id');
+					
+					}else{
+						$data['count_filter'] = 'center_wise';
+
+						$data['course_count'] = $this->Common_model->student_data_consolidate($dt,'center_id');
+					
+					}
 					
 				}
 				
@@ -611,10 +627,14 @@
 		}
 
 		public function search_student(){
+
+			$segment = $this->uri->segment(2);
+			
 			$this->load->view('header',array('title' => 'Search Students'));	
 			$data = array(
 				'name_csrf' => $this->security->get_csrf_token_name(),
-				'hash_csrf' => $this->security->get_csrf_hash()
+				'hash_csrf' => $this->security->get_csrf_hash(),
+				'segment' => $segment
 			);
 			$this->load->view('admin/search_student',$data);
 			$this->load->view('footer');

@@ -88,7 +88,7 @@
 			<td><?php echo $i; ?></td>
 			<td><?php echo $this->Common_model->getCourseNameByCourseId($student["course_group_id"]); ?></td>
 			<td><?php echo $student["cnt"]; ?></td>
-			<?php $total = $total + $student["cnt"];?>
+			<?php $total = $total + $student["cnt"]; ?>
 			</tr>
 			
 			
