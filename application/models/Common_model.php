@@ -221,7 +221,7 @@ class Common_Model extends CI_Model{
 	function student_data_consolidate($where = "",$group_by = ""){
 		
 		if($group_by != ""){
-			$this->db->select('count(*) as cnt,course_group.id,course_group.course_name as course_nm,center_id');
+			$this->db->select('count(*) as cnt,course_group.id,course_group.course_name as course_nm,center_id,center_code');
 			$this->db->group_by($group_by);
 		}else{
 			$this->db->select('*');
@@ -486,8 +486,6 @@ class Common_Model extends CI_Model{
 		return $result->$field;
 	}
 
-	
-
 	public function getCountByWhere($table,$where=''){
 
 		if($where!=''){
@@ -517,7 +515,6 @@ class Common_Model extends CI_Model{
 		return $q->row();
 	}
 
-	
 	public function getAllRow($table_name, $fields='*', $where=array(), $order_by='id DESC')
 	{
 		$this->db->select($fields);
@@ -597,8 +594,6 @@ class Common_Model extends CI_Model{
 	public function viewDate($date){
 		return date("d-m-Y", strtotime($date));
 	}
-
-	
 
 	public function DB_Date($date){
 		return date("Y-m-d", strtotime($date));

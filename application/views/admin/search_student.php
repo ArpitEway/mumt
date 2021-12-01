@@ -77,7 +77,7 @@
         var text_val = $('#search_text').val();
         var radio_val = $('input[name="radio_stduent_search"]:checked').val();
         if(text_val =='' && radio_val == 'enrollment_no')
-        {
+        { 
             alert('Enrollment Number is required !');
         }
         else if(text_val==''&& radio_val == 'student_id')
@@ -99,6 +99,7 @@
         {
             let data = {
                     'text_val':text_val,
+                    'segment':"<?php echo $segment; ?>",
                     'radio_val':radio_val,
                     [csrfName]:csrfHash
                 }

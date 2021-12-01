@@ -11,7 +11,7 @@
 			$this->load->model('admin/Account_model');
 			$this->load->model('Common_model');
 			$this->load->model('Datatable_join_model');
-			if($this->session->account_type!='enrollment'){
+			if($this->session->account_type!='Enrollment'){
 				redirect(base_url('admin/logout')); 
 			}
 		}
@@ -100,6 +100,11 @@
 				
 			    $mode 		  	  = 	$this->input->post("mode");
 				$center 	  	  = 	$this->input->post("center");
+
+
+				$count_filter = $this->input->post("count_filter");
+
+
 				if($mode != "all"){	 
 					
 					$dt['mode'] = $mode;
@@ -148,7 +153,18 @@
 				
 				if($filter == "count"){
 					
-					$data['course_count'] = $this->Common_model->student_data_consolidate($dt,'course_group_id');
+					if($count_filter == "course_wise"){
+
+						$data['count_filter'] = 'course_wise';
+
+						$data['course_count'] = $this->Common_model->student_data_consolidate($dt,'course_group_id');
+					
+					}else{
+						$data['count_filter'] = 'center_wise';
+
+						$data['course_count'] = $this->Common_model->student_data_consolidate($dt,'center_id');
+					
+					}
 					
 				}
 				
@@ -611,12 +627,148 @@
 		}
 
 		public function search_student(){
+
+			$segment = $this->uri->segment(2);
+			
 			$this->load->view('header',array('title' => 'Search Students'));	
 			$data = array(
 				'name_csrf' => $this->security->get_csrf_token_name(),
-				'hash_csrf' => $this->security->get_csrf_hash()
+				'hash_csrf' => $this->security->get_csrf_hash(),
+				'segment' => $segment
 			);
 			$this->load->view('admin/search_student',$data);
 			$this->load->view('footer');
 		}
+
+		public function center_wise_list($param)
+		{
+			
+			if($param!='')
+			{
+				$session_july='July 2021';
+              
+				
+				if($param =='paid')
+				{
+                   //---paid------
+			     $where = array('payment_status'=>'Y','session'=>$session_july);
+			     $msg = array('title' => 'Center Wise Student List(Paid)');
+				}
+				if($param =='not_paid'){
+					// --- not paid------
+			    $where = array('payment_status'=>'N','session'=>$session_july);
+			    $msg = array('title' => 'Center Wise Student List(Unpaid)');
+				}
+
+				if($param =='uploaded')
+				{
+					//---paid and uploaded--------
+			     $where = array('document_uploaded'=>'Y','payment_status'=>'Y','session'=>$session_july);
+			     $msg = array('title' => 'Center Wise Student List(Documents Uploaded)');
+				}
+				if($param =='not_uploaded')
+				{
+//---not uploaded--------
+			     $where = array('document_uploaded'=>'N','payment_status'=>'Y','session'=>$session_july);
+			     $msg = array('title' => 'Center Wise Student List(Documents Not Uploaded)');
+				}
+				if($param =='approved')
+				{
+
+					// paid + uploaded + approved = Y  verified----
+			     $where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'Y','session'=>$session_july);
+			     $msg = array('title' => 'Center Wise Student List(Approved)');
+				}
+				if($param =='not_verified')
+				{
+					 // paid + uploaded but approved = '' not verified----
+			     $where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'','session'=>$session_july);
+			     $msg = array('title' => 'Center Wise Student List(Not Verified)');
+				}
+				if($param =='non_approved')
+				{
+					  //---paid/uploaded/ non approved---
+			     $where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'N','session'=>$session_july);
+			     $msg = array('title' => 'Center Wise Student List(Non-Approved)');
+				}
+				if($param =='generated')
+				{
+					// enrollement genrated
+			     $where = array('enrollment_no !='=>'-','approved='=>'Y','session'=>$session_july);
+			     $msg = array('title' => 'Center Wise Student List(Generated)');
+				}
+				if($param =='not_generated')
+				{
+					// not enrollement genrated
+			     $where = array('enrollment_no'=>'-','approved='=>'Y','session'=>$session_july);
+			     $msg = array('title' => 'Center Wise Student List(Not Generated)');
+				}
+				if($param =='enrolled')
+				{
+                  // enrolled
+			     $where = array('enrolled'=>'Y','approved='=>'Y','enrollment_no !='=>'-','session'=>$session_july);
+			     $msg = array('title' => 'Center Wise Student List(Enrolled)');
+				}
+				if($param =='not_enrolled')
+				{
+					// not enrolled
+			     $where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july);
+			     $msg = array('title' => 'Center Wise Student List(Not Enrolled)');
+				}
+
+				if($param == 'all')
+				{
+                
+				$where = array('session'=>$session_july);
+				$msg = array('title' => 'Center Wise Student List');
+				}
+					
+                // All Class
+                $this->db->select('COUNT(student_id) as student_count,center_id,center_code,
+                	center_name,center_id');
+				$this->db->group_by('center_id');
+			    $data['listing'] = $this->Common_model->getRecordByWhere('student',$where);
+                // echo $this->db->last_query();
+                // echo'<pre>';
+                // print_r($data);die;
+			    $this->load->view('header',$msg);
+				$this->load->view('admin/enrollment/center_wise_list',$data); 
+			    $this->load->view('footer');
+
+					
+				
+			}else{
+			
+                  return redirect(base_url().'enrollment/enrollment_status');
+			}
+
+			
+			//
+		}
+
+		function students_count_list()
+		{
+			
+		  $center_id = $this->uri->segment(4);
+           if($center_id!='')
+           {
+
+           	$this->db->where('center_id',$center_id);
+		    $data['listing'] = $this->Common_model->getRecordByWhere('student');
+		    $this->load->view('header',array('title' => 'Center Wise Student List'));
+			$this->load->view('admin/enrollment/students_count_details',$data); 
+			$this->load->view('footer');
+           }else
+           {
+           	redirect(base_url('admin/enrollment/enrollment_status'));
+           }
+		  
+		   
+		  // echo'<pre>';
+		  // print_r($data);
+
+
+		}
+
+
 }

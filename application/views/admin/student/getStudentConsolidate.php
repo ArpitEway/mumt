@@ -13,18 +13,32 @@
 					<th>DOB</th>
 					<th>Course</th>
 					<th>Class</th>
-					<th>Edit</th>
+					
+					<th>
+					<?php if($segment == "Admins"){ ?>	
+						Edit
+					<?php } ?>
+				</th>
+					
 					
 				
 				<?php
 				} 
-				if(isset($course_count)){ ?>
-				
+				if(isset($course_count)){
+
+				 if($count_filter == "center_wise"){ ?>
+
+					<th>Sno</th>
+					<th>Center</th>
+					<th>Count</th>
+
+				 <?php }else{ ?>
+					
 					<th>Sno</th>
 					<th>Course</th>
 					<th>Count</th>
 					
-				<?php } ?>
+				<?php } }?>
 					
 		</tr>
 </thead>
@@ -71,7 +85,11 @@
 
 				</td>
 				
-				<td><a target="_blank" href='<?php echo base_url('admin/Admins/editForm/').$this->Common_model->encrypt_decrypt($student["student_id"],'encrypt'); ?>' >Edit Form</a></td>		
+				<td>
+					<?php if($segment == "Admins"){ ?>
+					  <a target="_blank" href='<?php echo base_url('admin/Admins/editForm/').$this->Common_model->encrypt_decrypt($student["student_id"],'encrypt'); ?>' >Edit Form</a> 
+					<?php } ?>
+				</td>		 
 				
 					
 			</tr>
@@ -89,7 +107,18 @@
 			<tr>
 				
 			<td><?php echo $i; ?></td>
+
+			<?php  if($count_filter == "center_wise"){ ?>
+
+				<td><?php echo $this->Common_model->getCenterNameById($student["center_id"]); ?></td>
+
+			<?php }else{ ?>
+
 			<td><?php echo $this->Common_model->getCourseNameByCourseId($student["id"]); ?></td>
+			
+			<?php } ?>
+			
+			
 			<td><?php echo $student["cnt"]; ?></td>
 			<?php $total = $total + $student["cnt"];?>
 			</tr>
