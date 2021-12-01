@@ -344,7 +344,9 @@ class Common_Model extends CI_Model{
 	function updateRecordByConditions($table,$where,$data)
 	{
 
+		if($where != ""){
 		$qry = $this->db->where($where);
+		}
 
 		$qry = $this->db->update($table,$data);
 		

@@ -27,12 +27,12 @@ $result_permission_count = count($center4);
                 <?php if($admission_permission_count > 500)
                 { ?>
                 
-                <a class="btn btn-danger" onclick="update_permission('admission_permission','N')">All No</a>
-                
-                <?php }else{ ?>
-                
-                <a class="btn btn-primary" onclick="update_permission('admission_permission','Y')">All Yes</a>
+                <a class="btn btn-primary" onclick="update_permission('admission_permission','N')">All Yes</a>
     
+                <?php }else{ ?>
+
+                <a class="btn btn-danger" onclick="update_permission('admission_permission','Y')">All No</a>
+             
              <?php } ?>
             </td>
             </tr>
@@ -42,12 +42,12 @@ $result_permission_count = count($center4);
                 <td id="exam_form_permission">
                 <?php if($exam_form_permission_count > 500) { ?>
                 
-                <a class="btn btn-danger" onclick="update_permission('exam_form_permission','N')">All No</a>
+                <a class="btn btn-primary" onclick="update_permission('exam_form_permission','N')">All Yes</a>
                 
                 <?php }else{ ?>
                 
-                <a class="btn btn-primary" onclick="update_permission('exam_form_permission','Y')">All Yes</a>
-    
+                <a class="btn btn-danger" onclick="update_permission('exam_form_permission','Y')">All No</a>
+
                 <?php } ?>
 
                 </td>
@@ -58,11 +58,12 @@ $result_permission_count = count($center4);
                 <td id="admit_card_permission">
                 <?php if($admit_card_permission_count > 500) { ?>
                 
-                <a class="btn btn-danger" onclick="update_permission('admit_card_permission','N')">All No</a>
+                <a class="btn btn-primary" onclick="update_permission('admit_card_permission','N')">All Yes</a>
                 
                 <?php }else{ ?>
+
+                <a class="btn btn-danger" onclick="update_permission('admit_card_permission','Y')">All No</a>
                 
-                <a class="btn btn-primary" onclick="update_permission('admit_card_permission','Y')">All Yes</a>
     
                 <?php } ?>
                 </td>
@@ -73,12 +74,12 @@ $result_permission_count = count($center4);
                 <td id="result_permission">
 
                 <?php if($result_permission_count > 500) { ?>
-                
-                    <a class="btn btn-danger" onclick="update_permission('result_permission','N')">All No</a>
+
+                    <a class="btn btn-primary" onclick="update_permission('result_permission','N')">All Yes</a>
                 
                 <?php }else{ ?>
                 
-                    <a class="btn btn-primary" onclick="update_permission('result_permission','Y')">All Yes</a>
+                    <a class="btn btn-danger" onclick="update_permission('result_permission','Y')">All No</a>
     
                 <?php } ?>
 
@@ -106,6 +107,7 @@ function update_permission(param1,param2){
             success : function(response) {
            console.log(response);
                 $('#'+param1).html("");
+                console.log();
                 $('#'+param1).html(response.sts_btn);
                 toastr.success(response.msg);
            

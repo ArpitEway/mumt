@@ -142,7 +142,7 @@ class Director extends CI_Controller {
 	
 
 
-	public function check_enrollment_status()
+	public function enrollment_status()
 	{
 		$session_july='July 2021';		// All Class
 
@@ -233,22 +233,23 @@ class Director extends CI_Controller {
 			$permisssion    = $this->input->post("permission");
 
 			$data = array($parameter1 => $permisssion);
-			$where = 'status= "Y" ';
+			
 			$res = $this->Common_model->updateRecordByConditions('center',$where,$data);
+			
+			//echo $this->db->last_query();
 
 
 			$dt = $this->db->get_where("center",array($parameter1 => $permisssion))->row();
 
 			if($dt->$parameter1 == 'Y')
 			{
-
-				$sts_btn = '<a class="btn btn-danger" onclick="update_permission(\''.$parameter1.'\',\'N\')">All No</a>';
-				
+				$sts_btn = '<a class="btn btn-primary" onclick="update_permission(\''.$parameter1.'\',\'N\')">All Yes</a>';
 			}
 
 			else{
-
-				$sts_btn = '<a class="btn btn-primary" onclick="update_permission(\''.$parameter1.'\',\'Y\')">All Yes</a>';
+				
+				$sts_btn = '<a class="btn btn-danger" onclick="update_permission(\''.$parameter1.'\',\'Y\')">All No</a>';
+				
 				
 			}
 
