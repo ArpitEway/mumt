@@ -33,7 +33,7 @@ $result_permission_count = count($center4);
 
                 <a class="btn btn-danger" onclick="update_permission('admission_permission','Y')">All No</a>
              
-             <?php } ?>
+             <?php } ?> 
             </td>
             </tr>
 
