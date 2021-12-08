@@ -116,7 +116,8 @@ class Admins extends CI_Controller {
 
 			}
 
-			if(empty($param1) ){
+			if(empty($param1))
+			{
 
 				$data['headings'] = $this->Common_model->student_menu_heading_data();
 				$this->load->view('header');
@@ -896,7 +897,7 @@ class Admins extends CI_Controller {
 			if ($this->input->method() == "post") 
 			{
 				$heading_id = 0;
-				$heading_id  = $this->input->post("heading_id");
+				 $heading_id  = $this->input->post("heading_id");
 				$data = array();
 				$dt   = array();
 				if($heading_id != "all"){
@@ -1749,5 +1750,87 @@ public function editForm($student_id = ""){
 	$this->load->view('footer');
 }
 
+       //-------- add center menus
+        
+        function add_center_menus($param='' ,$id='')
+        {
+        	if(!$this->session->has_userdata('adminData')){
+				redirect(base_url('admin'));
+				exit;
+			}
+			else{
+        	
+		        	if($param == 'create')
+		        	{
+			        	$response = $this->admin_model->create_center_menu();
+						echo json_encode(array("status" => 'true'));
+		        	}
+		        	if($param == 'update')
+		        	{
+		        		$response = $this->admin_model->update_center_menu($id);
+		        		echo json_encode(array('status'=>true));
+		        	}
+		        	if($param == 'delete')
+		        	{
+		        		$response = $this->admin_model->delete_center_menu($id);
+		        		echo json_encode(array('status'=>true));
+		        	}
+		        	if(empty($param))
+		        	{
+			           $this->load->view('header',array('title'=>'Center Menu'));
+			           $this->load->view('admin/center/add_center_menu_view');
+			           $this->load->view('footer');
+		        	}
+          
+        	   }
+           
+        }
 
-}// controller
+        function get_recent_center_menu()
+        {
+          //
+           if($this->input->method()== 'post')
+           {
+           $heading_id = 0;
+				 $heading_id  = $this->input->post("heading_id");
+				$data = array();
+				$dt   = array();
+				if($heading_id != "all"){
+					
+					$dt['heading_id'] = $heading_id;
+				}
+
+           	$data['new_menus'] = $this->Common_model->center_menus_added($dt);
+
+            $dt = $this->load->view('admin/center/menuListView',$data,true);
+  	            
+            echo json_encode(array('status'=>true,
+                             'data'=>$dt));
+           }
+          //if($heading_id)
+        }
+
+        public function update_center_menu_status()
+		{
+			if ($this->input->method() == "post") 
+			{
+				$id    = 0;
+				 $id    = $this->input->post("id");
+				 $status = $this->input->post("status");
+
+				if ($this->input->post("id")) 
+				{
+					$data = $this->Common_model->updateRecordByConditions("center_menu",array("id" => $id ),array("status" => $status ));
+
+					echo $this->db->last_query();
+
+					echo json_encode(array(
+						"status" => true,
+						"msg" => '',
+						"data" => $data
+					));
+				}
+			}
+		}
+
+}// class

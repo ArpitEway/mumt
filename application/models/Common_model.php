@@ -317,10 +317,14 @@ class Common_Model extends CI_Model{
 		return $query->result_array();
 	}
 	
-	function student_menu_data()
-	{
+	function student_menu_data($where = '')
+	{	
 		$this->db->select('*');
 		$this->db->from("student_menu");
+	   if($where!=null)
+		{
+		$this->db->where($where);	
+		}
 		$this->db->order_by("menu_order",'ASC');
 		$query = $this->db->get();
 		return $query->result_array();
@@ -714,6 +718,29 @@ class Common_Model extends CI_Model{
 		return $qry->row()->center_name;
 
 	}
+	
+
+	function center_menus_added($where='')
+	{
+		$heading_id = $this->input->post('heading_id');
+		$this->db->select('*');
+		$this->db->from('center_menu');
+		$this->db->where($where);	
+		 $this->db->order_by('id','DESC');
+		$qry = $this->db->get();
+		return $qry->result_array();
+	}
+	function getCenterMenuHeadingById($id)
+	{
+        $this->db->select('heading');
+        $this->db->where('id',$id);
+        $qry = $this->db->get('center_menu_heading');
+        //return $qry->row_array();
+        return $qry->row()->heading;
+       
+	
+	}
+	
 }
 
 ?>

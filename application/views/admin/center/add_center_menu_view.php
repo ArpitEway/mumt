@@ -1,4 +1,4 @@
-<form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/Admins/student_add_menu/create'); ?>">
+<form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/Admins/add_menu/create'); ?>">
     <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	<div class="form-row">
 	
@@ -7,13 +7,13 @@
         <select name="heading_id" id="heading_id" class="form-control">
 		<option value="" >Select heading</option>
 		<?php
-			$student_menu_headings = $this->db->get_where('student_menu_heading', array())->result_array();
+			$menu_headings = $this->db->get_where('center_menu_heading', array())->result_array();
 				
-				foreach($student_menu_headings as $student_menu_heading)
+				foreach($menu_headings as $heading)
 				{
 				?>
 				
-				<option value="<?php echo $student_menu_heading['id']; ?>"><?php echo $student_menu_heading['heading']; ?></option>
+				<option value="<?php echo $heading['id']; ?>"><?php echo $heading['heading']; ?></option>
 					
 				<?php
 				}
@@ -74,7 +74,7 @@
 			
 			<tr id="<?php echo $menu['id'];  ?>" data-id = "tr_<?php echo $menu['id']; ?>">
 			<td><?php echo $i; ?></td>	
-<td><?php echo $this->Common_model->getStudentHeadingNameById($menu["heading_id"]); ?></td>
+<td><?php echo $this->Common_model->getCenterMenuHeadingById($menu["heading_id"]); ?></td>
 			<td><?php echo $menu["option"]; ?></td>
 			<td><?php echo $menu["url"]; ?></td>
 			<td> 
@@ -82,7 +82,7 @@
 			</td>
 			<td>		
                 <div style="display: inline-flex;">
-						<a href="javascript:void(0);" class="dropdown-item" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/student_menu/menu_edit/'.$menu['id']); ?>', '<?php echo 'Update menu' ?>')"> <i class="mdi mdi-pencil edit-icon"></i></a>   
+						<a href="javascript:void(0);" class="dropdown-item" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/center/center_menu_edit_popup/'.$menu['id']); ?>', '<?php echo 'Update menu' ?>')"> <i class="mdi mdi-pencil edit-icon"></i></a>   
 						
 						<a href="javascript:void(0);" id="delete" class="dropdown-item" onclick="delete_menu(<?php echo $menu['id']; ?>,this);" ?> <i class="mdi mdi-delete delete-icon"></i></a>
                 </div>
@@ -118,14 +118,16 @@ $sortable.sortable({
 });
 $("#heading_id").on('change',function (){		
 		var data = {
-			heading_id : $("#heading_id").val(),
+			'heading_id' : $("#heading_id").val(),
 		};
-		var url = BASE_URL+"admin/Admins/get_student_menu_data"; 
+		
+		var url = BASE_URL+"admin/Admins/get_recent_center_menu"; 
 		var response = call_ajax(data,url);
 		console.log(response);
 		
 		$('#dt').html(response.data);
 });
+
 $(document).on('change', '.status_checks', function(e) {
   var val = $(this).val();
   
@@ -202,7 +204,7 @@ function delete_menu(para1,param)
 	
 	if (confirm('Are you sure ?')) {
 	
-	var url = '<?php echo BASE_URL('admin/Admins/student_add_menu/delete/'); ?>'+para1;
+	var url = '<?php echo BASE_URL('admin/Admins/add_center_menus/delete/'); ?>'+para1;
         $.ajax({
             type : 'GET',
             url: url,
@@ -236,20 +238,16 @@ var showAllaccount = function ()
 
 $("#menu_submit").on('click',function (e)
 {
-	heading = $('#heading_name').val();
+	heading = $('#heading_id').val();
 	//admin_id = $('#admin_id').val();
+	//alert(heading);
 	menu = $('#menu').val();
 	menu_url = $('#menu_url').val();
 	
-	if(heading_id == "" || menu == "" || menu_url == "")
+	if(heading == "" || menu == "" || menu_url == "")
 	{
-		
-		// if(admin_id == ""){
-		// $('select[name="admin_id"]').next('div').text('Admin name is Required');
-		// 	submit = false;
-		// }
-		
-		if(heading_id == '[object HTMLSelectElement]'){
+			
+		if(heading == '[object HTMLSelectElement]' || heading == ''){
 			$('select[name="heading_id"]').next('div').text('Heading is Required');
 			submit = false;
 		}
@@ -274,7 +272,7 @@ $("#menu_submit").on('click',function (e)
 	
 	var frm = $('.ajaxForm').serialize();
 	$.ajax({
-		url: '<?php echo site_url('admin/admins/student_add_menu/create'); ?>',
+		url: '<?php echo site_url('admin/admins/add_center_menus/create'); ?>',
 		type: 'POST',
 		dataType : 'json',
 		data: frm,
@@ -286,7 +284,7 @@ $("#menu_submit").on('click',function (e)
 			heading_id : $("#heading_id").val(),
 			};
 			
-			var url = BASE_URL+"admin/Admins/get_student_menu_data"; 
+			var url = BASE_URL+"admin/Admins/get_recent_center_menu"; 
 			var response = call_ajax(data,url);
 			console.log(response);
 			

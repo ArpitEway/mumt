@@ -1,9 +1,9 @@
 <?php
-$menus = $this->db->get_where('student_menu', array('id' => $param1))->result_array();
+$menus = $this->db->get_where('center_menu', array('id' => $param1))->result_array();
 
 foreach($menus as $menu): ?>
 
-<form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/Admins/student_add_menu/update/'.$menu['id']); ?>">
+<form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/Admins/add_center_menus/update/'.$menu['id']); ?>">
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 <div class="form-row">
 
@@ -13,7 +13,7 @@ foreach($menus as $menu): ?>
 			
 			<select name="heading_id" id="heading_id" class="form-control">
 			<?php
-					$menu_headings = $this->db->get_where('student_menu_heading', array())->result_array();
+					$menu_headings = $this->db->get_where('center_menu_heading', array())->result_array();
 
 					foreach($menu_headings as $menu_heading)
 					{
@@ -64,19 +64,20 @@ foreach($menus as $menu): ?>
 	var frm = $('.ajaxForm').serialize();
 		
 	$.ajax({
-		url: '<?php echo site_url('admin/admins/student_add_menu/update/'.$param1); ?>',
+		url: '<?php echo site_url('admin/admins/add_center_menus/update/'.$param1); ?>',
 		type: 'POST',
 		dataType : 'json',
 		data: frm,
 		success: function (datas) {
+			console.log(datas.status);
 		
-		if(datas.status == "true"){
+		if(datas.status == true){
 			
 			var data = {
-			heading_id : $("#heading_id").val(),
+			admin_id : $("#admin_id").val(),
 			};
 				
-			var url = BASE_URL+"admin/Admins/get_student_menu_data"; 
+			var url = BASE_URL+"admin/Admins/get_recent_center_menu"; 
 			var response = call_ajax(data,url);
 			console.log(response);
 				

@@ -4,7 +4,7 @@ var callBackFunction;
 var callBackFunctionForGenericConfirmationModal;
 
 
-function rightModal(url, header)
+function rightModal(url, header)//header means heading of page/modal popup
 {
   // LOADING THE AJAX MODAL
   var csrfName = $('.csrfname').attr('name');
@@ -17,10 +17,10 @@ function rightModal(url, header)
     data: {[csrfName]:csrfHash},
     success: function(response)
     {
-        //console.log(response);
+      //console.log(response);
       jQuery('#right-modal .modal-body').html(response);
       jQuery('#right-modal .modal-title').html(header);
-	   KTAutosize.init();
+	    KTAutosize.init();
     }
   });
 }
