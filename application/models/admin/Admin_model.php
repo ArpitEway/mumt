@@ -961,6 +961,73 @@ class Admin_model extends CI_Model {
         return json_encode($response);
     }
 
+    function create_center_menu()
+    {
+
+    	$data['heading_id']=$this->input->post('heading_id');
+    	$data['option']=$this->input->post('menu');
+    	$data['url']=$this->input->post('menu_url');
+    	$data['status']=$this->input->post('status');
+
+    	//$insert_menu = $this->db->insert('center_menu',$data,true);
+    	//checking menu already
+    	$this->db->order_by('id','DESC');
+    	$this->db->limit(1);
+    	$already = $this->db->get_where('center_menu',array())->row_array();
+    	if($already)
+    	{
+    		$data['menu_order'] = $already['menu_order']+1;
+
+        }else
+        {
+        	$data['menu_order'] = 1;
+        }
+
+        $insert_menu = $this->db->insert('center_menu',$data);
+        if($insert_menu)
+        {
+        	$last_id = $this->db->insert_id();
+
+	    	$response = array(
+				'status' => 'true',
+				'insert_id' => $last_id
+				);
+				
+		   return json_encode($response);
+        }
+    }
+
+    function update_center_menu($id)
+    {
+      if($id)
+      {
+      	$data['heading_id']=html_escape($this->input->post('heading_id'));
+      	$data['option']=html_escape($this->input->post('menu'));
+      	$data['url']=html_escape($this->input->post('menu_url'));
+      	$data['status']=html_escape($this->input->post('status'));
+
+      	$this->db->where('id',$id);
+      	$this->db->update('center_menu',$data);
+
+      	$response = array(
+				'status' => 'true',
+				);
+				
+		return json_encode($response);
+      }
+    }
+
+    function delete_center_menu($id)
+	{
+		if($id)
+		{
+			$this->db->where('id',$id);
+			$this->db->delete('center_menu');
+			$response = array('status'=>true);
+			return json_encode($response);
+		}
+	}
+
 
 }
 
