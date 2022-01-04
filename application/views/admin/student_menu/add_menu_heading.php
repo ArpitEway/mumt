@@ -33,7 +33,7 @@
 					
 				</tr>
 			</thead>
-    		<tbody id="sortable">
+    		<tbody id="sortable" class="row_position">
     		<?php 
 			
     		$i = 1;
@@ -70,19 +70,33 @@
 <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
 <script>
 
-var $sortable = $("#mytable > tbody");
+$(".row_position").sortable({
+        delay: -100,
+        stop: function() {
+            var selectedData = new Array();
+         
+            $(".row_position>tr").each(function() {
+              
+                selectedData.push($(this).attr("id"));
+               
+            });
+            updateOrder(selectedData);
+        }
+    });
 
-$sortable.sortable({
-	stop:function(event, ui){
-		var parameters = $sortable.sortable("toArray");
-		console.log(parameters);
-		$.post("<?php echo BASE_URL(); ?>admin/admins/update_student_menu_heading_order", {
-		value:parameters},function(result){
-			toastr.success(result);
-		});
-	}
+    function updateOrder(totalData){
+        var csrfName = $('.csrfname').attr('name');
+            var csrfHash = $('.csrfname').val(); 
+    $.ajax({
+    url :BASE_URL+'admin/Admins/update_student_menu_heading_order',
+    type:'POST' ,
+    data :{allData:totalData,[csrfName]:csrfHash},
+    success : function(result){
+        toastr.success('Order Updated Successfully');
+    }
+    });
+   }
 
-});
 function delete_heading(para1,param) 
 {
 	var tr_id = $(param).closest("tr").attr('data-id');
