@@ -77,7 +77,11 @@ class Admins extends CI_Controller {
 				echo json_encode(array("status" => 'true'));
 			}
 			if(empty($param1) ){
-				$this->load->view('header',array('title'=>'Add Admin Menu Heading'));
+				$data['name_csrf'] = $this->security->get_csrf_token_name();
+				$data['hash_csrf'] = $this->security->get_csrf_hash();
+				$data['title']='Add Admin Menu Heading';
+			
+				$this->load->view('header');
 				$this->load->view('admin/menu/add_menu_heading',$data);
 				$this->load->view('footer');
 			}
@@ -118,7 +122,8 @@ class Admins extends CI_Controller {
 
 			if(empty($param1))
 			{
-
+				$data['name_csrf'] = $this->security->get_csrf_token_name();
+				$data['hash_csrf'] = $this->security->get_csrf_hash();
 				$data['headings'] = $this->Common_model->student_menu_heading_data();
 				$this->load->view('header');
 				$this->load->view('admin/student_menu/add_menu_heading',$data);
@@ -213,6 +218,10 @@ class Admins extends CI_Controller {
 
 			if(empty($param1))
 			{
+				$data = array(
+					'name_csrf' => $this->security->get_csrf_token_name(),
+					'hash_csrf' => $this->security->get_csrf_hash()
+				);
 				$data['menus'] = $this->Common_model->student_menu_data();
 				$this->load->view('header');
 				$this->load->view('admin/student_menu/add_menu',$data);
@@ -835,7 +844,8 @@ class Admins extends CI_Controller {
 				}
 
 				$data['headings'] = $this->Common_model->heading_data($dt);
-
+				$data['name_csrf'] = $this->security->get_csrf_token_name();
+				$data['hash_csrf'] = $this->security->get_csrf_hash();
 				$dt =  $this->load->view('admin/menu/getHeadingList',$data,true);
 				echo json_encode(array(
 					"status" => true,
@@ -882,7 +892,8 @@ class Admins extends CI_Controller {
 				}
 				
 				$data['menus'] = $this->Common_model->menu_data($dt);
-				
+				$data['name_csrf'] = $this->security->get_csrf_token_name();
+					$data['hash_csrf'] = $this->security->get_csrf_hash();
 				$dt =  $this->load->view('admin/menu/getMenuList',$data,true);
 				echo json_encode(array(
 					"status" => true,
@@ -917,61 +928,88 @@ class Admins extends CI_Controller {
 
 		public function update_menu_heading_order()
 		{
-			$data["heading_order"] = [];
-			foreach($_POST["value"] as $key => $value){
-				$data["heading_order"] = $key+1;
-				$where = 'id='.$value;
-				$this->Common_model->updateRecordByConditions('menu_heading',$where,$data);
-			}
-			$this->session->set_flashdata('success','Order Updated.');
-			echo "Order Updated";	
+
+			$allDataa=$_POST['allData'];
+		
+		$i = 1;
+		foreach ($allDataa as $key => $value) {
+			$data = array(
+				'heading_order' => $i
+				);
+				
+				$where = 'id='.$value;				
+				$this->Common_model->updateRecordByConditions('menu_heading',$where,$data); 
+			$i++;
+		
+	
+		$this->session->set_flashdata('success','Order Updated.');
+		echo "Order Updated";	
+	}
+
 		}
 
 		public function update_student_menu_heading_order()
 		{
-			$data["heading_order"] = []; 
-			foreach($_POST["value"] as $key => $value){
+			$allDataa=$_POST['allData'];
+		
+		$i = 1;
+		foreach ($allDataa as $key => $value) {
+			$data = array(
+				'heading_order' => $i
+				);
 				
-				$data["heading_order"] = $key+1;
-				$where = 'id='.$value;
-				
+				$where = 'id='.$value;				
 				$this->Common_model->updateRecordByConditions('student_menu_heading',$where,$data); 
-			}
-			$this->session->set_flashdata('success','Order Updated.');
-			echo "Order Updated";	
+			$i++;
+		
+	
+		$this->session->set_flashdata('success','Order Updated.');
+		echo "Order Updated";	
+	}
+			
 		}
 
 		public function update_menu_order()
 		{
-			$data["menu_order"] = [];
-			foreach($_POST["value"] as $key => $value){
+
+			$allDataa=$_POST['allData'];
+		
+		$i = 1;
+		foreach ($allDataa as $key => $value) {
+			$data = array(
+				'menu_order' => $i
+				);
 				
-				$data["menu_order"] = $key+1;
-				$where = 'id='.$value;
-				
+				$where = 'id='.$value;				
 				$this->Common_model->updateRecordByConditions('menu',$where,$data); 
-			}
-			
-			$this->session->set_flashdata('success','Order Updated.');
-			
-			echo "Order Updated";	
+			$i++;
+		
+	
+		$this->session->set_flashdata('success','Order Updated.');
+		echo "Order Updated";	
+	}
 		}
 
 		public function update_student_menu_order()
 		{
-			$data["menu_order"] = [];
-			foreach($_POST["value"] as $key => $value){
+
+			$allDataa=$_POST['allData'];
+		
+		$i = 1;
+		foreach ($allDataa as $key => $value) {
+			$data = array(
+				'menu_order' => $i
+				);
 				
-				$data["menu_order"] = $key+1;
-				$where = 'id='.$value;
-				
+				$where = 'id='.$value;				
 				$this->Common_model->updateRecordByConditions('student_menu',$where,$data); 
-				
-			}
+			$i++;
+		
+	
+		$this->session->set_flashdata('success','Order Updated.');
+		echo "Order Updated";	
+	}
 			
-			$this->session->set_flashdata('success','Order Updated.');
-			
-			echo "Order Updated";	
 		}
 		
 		public function logout()
