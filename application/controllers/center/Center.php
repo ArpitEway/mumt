@@ -114,7 +114,7 @@ class Center extends CI_Controller {
 	public function logout()
 	{
 		$this->session->sess_destroy();
-		redirect(base_url('center/login'));
+		redirect('http://162.144.38.91/~mmyvvdde/main/center/index.php');
 	}
 
 	public function admission_form(){
