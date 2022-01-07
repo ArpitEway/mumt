@@ -1359,13 +1359,16 @@ public function update_doc_permission_status()
 		$dt['title'] = "Student Consolidate Report";
 		$this->load->view('header',$dt);
 		$this->db->order_by('id', 'Desc');
+		$dt['name_csrf'] = $this->security->get_csrf_token_name();
+		$dt['hash_csrf'] = $this->security->get_csrf_hash();
 		$dt['sessions'] = $this->db->get_where('session', array())->result_array();
 		$this->load->view('admin/consolidate_report',$dt);
 		$this->load->view('footer');
 	}
 
 	public function get_student_consolidate_data()
-	{
+	{   
+	
 		if ($this->input->method() == "post") 
 		{
 			$course_group_id = 0;
@@ -1381,8 +1384,8 @@ public function update_doc_permission_status()
 			$session 		  = $this->input->post("session");
 			$mode 		  	  = $this->input->post("mode");
 			$center 	  	  = $this->input->post("center");
-
-
+			$count_filter = $this->input->post("count_filter");
+          
 			if($mode != "all"){	 
 					
 				$dt['mode'] = $mode;
@@ -1429,9 +1432,21 @@ public function update_doc_permission_status()
 			}
 			if($filter == "count"){
 
-				$data['course_count'] = $this->Common_model->student_data_consolidate($dt,'course_group_id');
+				if($count_filter == "course_wise"){
+
+					$data['count_filter'] = 'course_wise';
+
+					$data['course_count'] = $this->Common_model->student_data_consolidate($dt,'course_group_id');
+				   
+				}else{
+					$data['count_filter'] = 'center_wise';
+				
+					$data['course_count'] = $this->Common_model->student_data_consolidate($dt,'center_id');
+				
+				}
 			}
-			$dt = $this->load->view('admin/getStudentConsolidate',$data,true);
+		
+			$dt = $this->load->view('admin/student/getStudentConsolidate',$data,true);
 			echo json_encode(array(
 				"status" => true,
 				"data" => $dt
