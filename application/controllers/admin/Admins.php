@@ -177,6 +177,7 @@ class Admins extends CI_Controller {
 				$this->load->view('footer');
 			}
 
+			
 		}
 	}
 
@@ -1886,4 +1887,20 @@ public function editForm($student_id = ""){
 			}
 		}
 
+		// public function moveStudentImages()
+		// {
+		// 	$students = $this->Common_model->get_record('student','*');
+		// 	foreach ($students as $student) {
+		// 		$org_image=".\assets\July 2021\/".$student['photo'];
+		// 		$destination=".\assets\student_image\July 2021\/";
+
+		// 		$img_name=basename($org_image);
+
+		// 		if( rename( $org_image , $destination.'/'.$img_name )){
+		// 			echo '<br>moved!'.$student['student_id'];
+		// 		} else {
+		// 			echo '<br>failed'.$student['student_id'];
+		// 		}
+		// 	}
+		// }
 }// class

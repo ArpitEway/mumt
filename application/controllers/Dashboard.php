@@ -11,7 +11,7 @@ class Dashboard extends CI_controller {
 
 	public function index()
 	{
-		redirect(base_url('center'));
+		redirect('http://162.144.38.91/~mmyvvdde/main/center/index.php');
 	}
 	public function notice_board()
 	{

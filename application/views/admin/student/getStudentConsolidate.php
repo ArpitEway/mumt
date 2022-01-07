@@ -37,12 +37,15 @@
 
 					<th>Sno</th>
 					<th>Center</th>
+					<th>Center Code</th>
+
 					<th>Count</th>
 
 				 <?php }else{ ?>
 					
 					<th>Sno</th>
 					<th>Course</th>
+					
 					<th>Count</th>
 					
 				<?php } }?>
@@ -129,8 +132,9 @@
 			<td><?php echo $this->Common_model->getCourseNameByCourseId($student["id"]); ?></td>
 			
 			<?php } ?>
-			
-			
+
+			<?php if($count_filter=='center_wise'){ ?>	<td><?php 	 echo $this->Common_model->getCenterCodeById($student["center_id"]); ?></td><?php  } ?>
+            
 			<td><?php echo $student["cnt"]; ?></td>
 			<?php $total = $total + $student["cnt"];?>
 			</tr>
@@ -142,6 +146,8 @@
 			<tr>
 			<td></td>
 			<td><?php echo "Total"; ?></td>
+			<?php if($count_filter=='center_wise'){ ?>	<td></td><?php  } ?>
+
 			<td><?php echo $total ?></td>
 			</tr>
 			<tfoot>
