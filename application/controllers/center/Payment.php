@@ -175,9 +175,9 @@ class Payment extends CI_Controller {
 		$id = $this->Common_model->encrypt_decrypt($id,'decrypt');
 		$where = 'id='.$id;
 		$transaction = $this->Common_model->get_record('online_payment_transaction','*',$where);
-		if($transaction[0]['student_id']!=$this->session->student_id){
+		if($transaction[0]['center_id']!=$this->session->center_id){
 			$this->session->set_flashdata('error','Details Not Found');
-			redirect(base_url('student/dashboard'));
+			redirect(base_url('center/dashboard'));
 		}
 		$wherestudent = 'student_id='.$transaction[0]['student_id'];
 		$student = $this->Common_model->get_record('student','*',$wherestudent);
