@@ -244,8 +244,6 @@ class Admins extends CI_Controller {
 		$this->load->view('admin/login',$csrf);
 	}
 
-
-
 	public function loginSub(){
 		if($this->session->has_userdata('adminData')){
 			redirect(base_url('admin/'.$this->session->account_type));
@@ -1199,6 +1197,34 @@ class Admins extends CI_Controller {
 			}
 		}
 
+
+		public function remote_login($u_Id)
+		{
+			
+				//$userId  = $this->Common_model->encrypt_decrypt($u_Id,'decrypt');
+
+				$check_user = $this->admin_model->checkUserByUserID($u_Id);
+
+				if($check_user){	
+					$data = array('loged_in' => true,
+						'adminData' => $check_user->name,
+						'account_type' => $check_user->account_type,
+						'admin_id' => $check_user->id
+					);
+
+					$this->session->set_userdata($data);
+					redirect(base_url('admin/'.$check_user->account_type));
+
+				}else{
+					$data = array('error'=> "username INCORRECT");
+					$data['name_csrf'] = $this->security->get_csrf_token_name();
+					$data['hash_csrf'] = $this->security->get_csrf_hash();
+					$this->load->view('admin/login',$data);
+				}
+
+				
+		}
+
 		public function getClassByCourse(){
 			$course = $this->input->post('course_group_id');
 			$class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$course."'");
@@ -1218,9 +1244,10 @@ class Admins extends CI_Controller {
 			{
 				$data = array();
 				if($param1 == 'create'){
+
 					$response = $this->admin_model->create_center_menu_heading();
 					echo json_encode(array("status" => 'true')); 
-					
+		
 				}
 				
 				if($param1 == 'update'){
