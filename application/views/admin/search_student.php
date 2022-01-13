@@ -78,7 +78,9 @@
     var site_url = "<?php echo base_url(); ?>"
 
     function search_student_data()
-    {
+    {    
+
+        $('#student_data_tbl').hide();
         var csrfName = $('.csrfname').attr('name');
         var csrfHash = $('.csrfname').val();
         var text_val = $('#search_text').val();
@@ -120,8 +122,16 @@
                 $("#myLoader").show();
                },
                 success:function(resp)
-                {
-                    $('#student_data_tbl').html(resp.data);
+                {if( $("#myLoader").show()){
+						$('#student_data_tbl').hide();
+						// $table = $('#dt').html(status.data);
+
+					}if( $('#myLoader').hide()){
+                        $('#student_data_tbl').html(resp.data);
+						$('#student_data_tbl').show();
+						
+					}
+                   
                     KTDatatablesBasicBasic.init();            
                 }//success
                 
