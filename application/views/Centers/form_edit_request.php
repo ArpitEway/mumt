@@ -16,90 +16,70 @@ li{
 </div>
 
 <div class="card-body row text-center">
+	<div class="form-group col-md-3 m-auto">
+		<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+		<label for="center_id">Session</label>
+		<select name="session" id="session" class="form-control" required >
+			<option value="">Select</option>
+			<?php
+			$sessions = $this->Common_model->get_record('student','distinct(session)');
+			foreach($sessions as $session){
+				?>
+				<option value="<?php echo $session['session']; ?>"><?php echo $session['session']; ?></option>
+				<?php
+			} 
+			?> 
+		</select>       
+	</div>
 
-        <div class="form-group col-md-3 m-auto">
-
-            <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-
-            <label for="center_id">Session</label>
-            <select name="session" id="session" class="form-control" required >
-                    <option value="">Select</option>
-                    <?php 
-
-                    $sessions = $this->db->get_where('session', array())->result_array();
-
-                    foreach($sessions as $session)
-                    {
-                    ?>
-                    
-                    <option value="<?php echo $session['session']; ?>"><?php echo $session['session']; ?></option>
-                    
-                    <?php
-                    } 
-                    ?> 
-                </select>       
-        </div>
-        
-        <div class="form-group col-md-3 m-auto">
-			<div class="form-group m-auto">
-				<label>Select Course</label>
-				<select class="form-control filter" name="course_group_id" id="allClassBycourse">
-					<option value ="">Select</option>
-				</select>
-			</div>
+	<div class="form-group col-md-3 m-auto">
+		<div class="form-group m-auto">
+			<label>Select Course</label>
+			<select class="form-control filter" name="course_group_id" id="allClassBycourse">
+				<option value ="">Select</option>
+			</select>
 		</div>
+	</div>
 
-        <div class="form-group col-md-3 m-auto">
-			<div class="form-group m-auto">
-				<label>Select Student</label>
-				<select class="form-control filter" name="student" id="student">
-					<option value ="" >Select</option>
-				</select>
-			</div>
+	<div class="form-group col-md-3 m-auto">
+		<div class="form-group m-auto">
+			<label>Select Student</label>
+			<select class="form-control filter" name="student" id="student">
+				<option value ="" >Select</option>
+			</select>
 		</div>
+	</div>
 
-        <div class="form-group col-md-6 m-auto" >
-            <div class="form-group m-auto">
-		      
-              <textarea style="margin-top:30px;" class="form-control detail" placeholder="Enter detail" id="kt_autosize_2" rows="4" name="detail"></textarea>
-		    
-            </div>
-        </div>
+	<div class="form-group col-md-6 m-auto" >
+		<div class="form-group m-auto">
 
-		<div class="form-group col-md-12">
-			<label for="class"></label>
-			<button type="button" class="btn btn-primary mt-4" style="margin-top: 24px !important;" id="submit_btn">Submit</button>
+			<textarea style="margin-top:30px;" class="form-control detail" placeholder="Enter detail" id="kt_autosize_2" rows="4" name="detail"></textarea>
+
 		</div>
+	</div>
 
-
+	<div class="form-group col-md-12">
+		<label for="class"></label>
+		<button type="button" class="btn btn-primary mt-4" id="submit_btn">Submit</button>
 	</div>
 </div>
-
-
-
-<div class="text-center">
-
-            <table id="memListTable" class="table table-striped dt-responsive nowrap" width="70%" >
-                <thead>
-                    <tr>
-                        
-                        <th>S.No.</th>
-                        <th>Student Name </th>
-                        <th>Form no</th>
-                        <th>Detail</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th>Remark</th>
-                
-                    </tr>
-                </thead>
-    		<tbody>
-			</tbody>
-</table>
-
-
 </div>
-
+<div class="dt-responsive mt-10">
+	<table id="memListTable" class="table table-striped">
+		<thead>
+			<tr>
+				<th>S.No.</th>
+				<th>Student Name </th>
+				<th>Form no</th>
+				<th>Detail</th>
+				<th>Date</th>
+				<th>Status</th>
+				<th>Remark</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
 </div>
 
 <script>

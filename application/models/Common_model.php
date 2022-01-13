@@ -752,6 +752,10 @@ class Common_Model extends CI_Model{
 	
 	}
 	
+	public function last_query(){
+			echo $this->db->last_query();
+			die;
+		}	
 }
 
 ?>

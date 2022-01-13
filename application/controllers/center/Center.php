@@ -13,7 +13,7 @@ class Center extends CI_Controller {
 
 	public function index(){
 		if($this->session->has_userdata('centerdata')){
-			redirect(base_url('center/instruction'));
+			redirect(base_url('center/dashboard'));
 		}else{			
 			$csrf = array(
 				'name_csrf' => $this->security->get_csrf_token_name(),
@@ -618,45 +618,32 @@ class Center extends CI_Controller {
 					
 	}
 
-	public function get_student_detail()
-	{
-
-		if ($this->input->method() == "post") 
-		{
+	public function get_student_detail(){
+		if ($this->input->method() == "post"){
 			$course_group_id = 0;
 			$data = array();
 			$dt   = array();
-				
-				$form_no  = $this->input->post("form_no");
-			
-				$wherestudent = 'student_id='.$form_no;
 
-				$students = $this->Common_model->get_record('student','*',$wherestudent);
+			$form_no  = $this->input->post("form_no");
+			$wherestudent = 'student_id='.$form_no;
+			$students = $this->Common_model->get_record('student','*',$wherestudent);
+			$center_id =  $this->session->center_id;
+			$wherestudent = 'center_id='.$center_id;
 
-				$center_id =  $this->session->center_id;
-
-				$wherestudent = 'center_id='.$center_id;
-
-				$center_detail = $this->Common_model->get_record('payment_complaint','*',$wherecenter);
-				
-				$data = array('students' => $students ,'center_details' => $center_detail,'name_csrf' => $this->security->get_csrf_token_name(),
+			$center_detail = $this->Common_model->get_record('payment_complaint','*',$wherecenter);
+			$data = array('students' => $students ,'center_details' => $center_detail,'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash());
 
-				if($data['students']){
-
-					$dt =  $this->load->view('Centers/getStudentDetail',$data,true);
-
-				}else{
-
-					$dt = "Invalid Form no";
-				}
-				
-				echo json_encode(array(
+			if($data['students']){
+				$dt =  $this->load->view('Centers/getStudentDetail',$data,true);
+			}else{
+				$dt = "Invalid Form no";
+			}
+			echo json_encode(array(
 				"status" => true,
 				"data" => $dt
-				));
+			));
 		}
-			
 	}
 	
 	public function getCourseBySession(){
@@ -700,8 +687,6 @@ class Center extends CI_Controller {
 			$data = array('request_detail' => $request_detail,'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash());
 
-			$this->getNotification();
-
 			$this->load->view('Centers/form_edit_request',$data);
 			$this->load->view('Centers/footer');
 
@@ -729,26 +714,17 @@ class Center extends CI_Controller {
 		$student_id = $this->input->post('student');
 		
 		$check_record = $this->Common_model->get_record('request','*',array("center_id" => $id,'student_id' => $student_id));
-
-
 		$id =  $this->session->center_id;
 
-		if($check_record)
-		{
+		if($check_record){
 			echo json_encode(array("status" => 'true','data' => "error"));
 		}else{
-
 		$response = $this->admin_model->create_form_request();
-
 		$request_detail = $this->Common_model->get_record('request','*',array());
-
-
 		$data = array('request_detail' => $request_detail,'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash());
 
 		$dt =  $this->load->view('admin/center/getRequestList',$data,true);
-
-
 		echo json_encode(array("status" => 'true','data' => $dt));
 	
 	}	
@@ -813,8 +789,9 @@ class Center extends CI_Controller {
 		$i = $_POST['start'];
 		foreach($tableData as $result){
 			$i++;
+			$status = ($result->status=='Pending') ? 'Pending' : 'Done';
 			$date = $this->Common_model->viewDate($result->date);
-			$data[] = array($i, $result->name, $result->student_id, $result->detail,$date,$result->status,$result->request_remark);
+			$data[] = array($i, $result->name, $result->student_id, $result->detail,$date,$status,$result->request_remark);
 		}
 
 		$output = array(

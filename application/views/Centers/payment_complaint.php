@@ -103,9 +103,7 @@ $(document).on("click","#search_btn",function(){
 	var url = BASE_URL+"center/Center/get_student_detail"; 
 	var response = call_ajax(data,url);
 	console.log(response);
-	
 	$('#dt').html(response.data);
-	
 	myTable.draw();
 	
 });
@@ -129,12 +127,15 @@ $(document).on('click','#submit',function(e){
 			{
 				console.log(data.msg);
 				if(data.msg){
+					$('#formData').fadeOut('slow');
 					toastr.success(data.msg);		
 				}
 				else if(data.err_msg){
+					$('#formData').fadeOut('slow');
 					toastr.error(data.err_msg);
 				}
 				else{
+					$('#formData').fadeOut('slow');
 					toastr.error("Something wrong");
 				}
 				myTable.draw();
