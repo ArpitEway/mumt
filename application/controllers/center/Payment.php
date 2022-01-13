@@ -143,9 +143,11 @@ class Payment extends CI_Controller {
 				"payment_date" => $date,
 				"payment_time" => $time,
 				"txnId" => $txnid,
+				"admission_type" => 'Regular',
 			);
 			$where = 'student_id='.$student_id.' and fees_head="'.$productinfo.'"';
-			$id = $this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$response);
+			$txnData = $this->Common_model->get_record('online_payment_transaction','*',$where);
+			$this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$response);
 
 			if($productinfo == 'Admission Fees'){
 				$status = 'payment_status'; 	
@@ -163,7 +165,8 @@ class Payment extends CI_Controller {
 			);
 			$this->session->set_userdata($sessionData);
 			$this->session->set_flashdata($remsg,$msg);
-			$id = $this->Common_model->encrypt_decrypt($id);
+			
+			$id = $this->Common_model->encrypt_decrypt($txnData[0]['id']);
 			redirect(base_url('center/payment/detail/'.$id));
 		}
 	}
