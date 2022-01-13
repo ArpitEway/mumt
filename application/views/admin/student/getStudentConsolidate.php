@@ -1,3 +1,4 @@
+
 <table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
 <thead>
 		<tr>
@@ -19,6 +20,12 @@
 						Edit
 					<?php } ?>
 				</th>
+				    <th>Payment</th>
+					<th>Document Uploaded</th>
+					<th>Approved</th>
+					<th>Enrolled</th>
+					<th>Exam Form</th>
+					<th>Center Code</th>
 					
 					
 				
@@ -45,6 +52,7 @@
 					
 		</tr>
 </thead>
+
 <tbody>
     <?php 
 			
@@ -90,11 +98,15 @@
 				
 				<td>
 					<?php if($segment == "Admins"){ ?>
-					  <a target="_blank" href='<?php echo base_url('admin/Admins/editForm/').$this->Common_model->encrypt_decrypt($student["student_id"],'encrypt'); ?>' >Edit Form</a> 
+					  <a target="_blank"  href='<?php echo base_url('admin/Admins/editForm/').$this->Common_model->encrypt_decrypt($student["student_id"],'encrypt'); ?>'><i class="fa fa-pen"></i></a> 
 					<?php } ?>
 				</td>		 
-				
-					
+				<td><?php if( $student["payment_status"]=='Y'){echo 'Paid' ;}else{echo 'Unpaid' ;} ?></td>
+                 <td><?php if( $student["document_uploaded"]=='Y'){echo 'Uploaded' ;}else{echo 'Not Uploaded' ;} ?></td>
+                 <td><?php if( $student["approved"]=='Y'){echo 'Approved' ;}elseif($student["approved"]=='N'){echo 'Non Approved' ;}else{echo 'Non Verified';} ?></td>
+                 <td><?php if( $student["enrolled"]=='Y'){echo 'Enrolled' ;}else{echo 'Non Enrolled' ;} ?></td>
+                 <td><?php if( $student["new_exam_form"]=='Y'){echo 'Submit' ;}elseif($student["new_exam_form"]=='D'){echo 'Not Permitted' ;}else{echo 'Not Submitted';} ; ?></td>
+				<td><?php echo $student["center_code"]; ?></td> 
 			</tr>
 			<?php
 			$i++; } }
