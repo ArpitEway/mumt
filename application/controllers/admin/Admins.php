@@ -1788,7 +1788,7 @@ public function editForm($student_id = ""){
 	$this->load->view('admin/editForm',$data);
 	$this->load->view('footer');
 }
-
+  
        //-------- add center menus
         
         function add_center_menus($param='' ,$id='')

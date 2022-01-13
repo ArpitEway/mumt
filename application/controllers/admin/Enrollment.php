@@ -80,10 +80,10 @@
 
 		
 		public function get_student_consolidate_data()
-		{
-			
+		{ 
 			if ($this->input->method() == "post") 
 			{
+				
 				$course_group_id = 0;
 				
 				$data = array();
