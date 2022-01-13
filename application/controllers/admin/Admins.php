@@ -77,7 +77,11 @@ class Admins extends CI_Controller {
 				echo json_encode(array("status" => 'true'));
 			}
 			if(empty($param1) ){
-				$this->load->view('header',array('title'=>'Add Admin Menu Heading'));
+				$data['name_csrf'] = $this->security->get_csrf_token_name();
+				$data['hash_csrf'] = $this->security->get_csrf_hash();
+				$data['title']='Add Admin Menu Heading';
+			
+				$this->load->view('header');
 				$this->load->view('admin/menu/add_menu_heading',$data);
 				$this->load->view('footer');
 			}
@@ -118,7 +122,8 @@ class Admins extends CI_Controller {
 
 			if(empty($param1))
 			{
-
+				$data['name_csrf'] = $this->security->get_csrf_token_name();
+				$data['hash_csrf'] = $this->security->get_csrf_hash();
 				$data['headings'] = $this->Common_model->student_menu_heading_data();
 				$this->load->view('header');
 				$this->load->view('admin/student_menu/add_menu_heading',$data);
@@ -172,6 +177,7 @@ class Admins extends CI_Controller {
 				$this->load->view('footer');
 			}
 
+			
 		}
 	}
 
@@ -213,6 +219,10 @@ class Admins extends CI_Controller {
 
 			if(empty($param1))
 			{
+				$data = array(
+					'name_csrf' => $this->security->get_csrf_token_name(),
+					'hash_csrf' => $this->security->get_csrf_hash()
+				);
 				$data['menus'] = $this->Common_model->student_menu_data();
 				$this->load->view('header');
 				$this->load->view('admin/student_menu/add_menu',$data);
@@ -835,7 +845,8 @@ class Admins extends CI_Controller {
 				}
 
 				$data['headings'] = $this->Common_model->heading_data($dt);
-
+				$data['name_csrf'] = $this->security->get_csrf_token_name();
+				$data['hash_csrf'] = $this->security->get_csrf_hash();
 				$dt =  $this->load->view('admin/menu/getHeadingList',$data,true);
 				echo json_encode(array(
 					"status" => true,
@@ -882,7 +893,8 @@ class Admins extends CI_Controller {
 				}
 				
 				$data['menus'] = $this->Common_model->menu_data($dt);
-				
+				$data['name_csrf'] = $this->security->get_csrf_token_name();
+					$data['hash_csrf'] = $this->security->get_csrf_hash();
 				$dt =  $this->load->view('admin/menu/getMenuList',$data,true);
 				echo json_encode(array(
 					"status" => true,
@@ -917,61 +929,88 @@ class Admins extends CI_Controller {
 
 		public function update_menu_heading_order()
 		{
-			$data["heading_order"] = [];
-			foreach($_POST["value"] as $key => $value){
-				$data["heading_order"] = $key+1;
-				$where = 'id='.$value;
-				$this->Common_model->updateRecordByConditions('menu_heading',$where,$data);
-			}
-			$this->session->set_flashdata('success','Order Updated.');
-			echo "Order Updated";	
+
+			$allDataa=$_POST['allData'];
+		
+		$i = 1;
+		foreach ($allDataa as $key => $value) {
+			$data = array(
+				'heading_order' => $i
+				);
+				
+				$where = 'id='.$value;				
+				$this->Common_model->updateRecordByConditions('menu_heading',$where,$data); 
+			$i++;
+		
+	
+		$this->session->set_flashdata('success','Order Updated.');
+		echo "Order Updated";	
+	}
+
 		}
 
 		public function update_student_menu_heading_order()
 		{
-			$data["heading_order"] = []; 
-			foreach($_POST["value"] as $key => $value){
+			$allDataa=$_POST['allData'];
+		
+		$i = 1;
+		foreach ($allDataa as $key => $value) {
+			$data = array(
+				'heading_order' => $i
+				);
 				
-				$data["heading_order"] = $key+1;
-				$where = 'id='.$value;
-				
+				$where = 'id='.$value;				
 				$this->Common_model->updateRecordByConditions('student_menu_heading',$where,$data); 
-			}
-			$this->session->set_flashdata('success','Order Updated.');
-			echo "Order Updated";	
+			$i++;
+		
+	
+		$this->session->set_flashdata('success','Order Updated.');
+		echo "Order Updated";	
+	}
+			
 		}
 
 		public function update_menu_order()
 		{
-			$data["menu_order"] = [];
-			foreach($_POST["value"] as $key => $value){
+
+			$allDataa=$_POST['allData'];
+		
+		$i = 1;
+		foreach ($allDataa as $key => $value) {
+			$data = array(
+				'menu_order' => $i
+				);
 				
-				$data["menu_order"] = $key+1;
-				$where = 'id='.$value;
-				
+				$where = 'id='.$value;				
 				$this->Common_model->updateRecordByConditions('menu',$where,$data); 
-			}
-			
-			$this->session->set_flashdata('success','Order Updated.');
-			
-			echo "Order Updated";	
+			$i++;
+		
+	
+		$this->session->set_flashdata('success','Order Updated.');
+		echo "Order Updated";	
+	}
 		}
 
 		public function update_student_menu_order()
 		{
-			$data["menu_order"] = [];
-			foreach($_POST["value"] as $key => $value){
+
+			$allDataa=$_POST['allData'];
+		
+		$i = 1;
+		foreach ($allDataa as $key => $value) {
+			$data = array(
+				'menu_order' => $i
+				);
 				
-				$data["menu_order"] = $key+1;
-				$where = 'id='.$value;
-				
+				$where = 'id='.$value;				
 				$this->Common_model->updateRecordByConditions('student_menu',$where,$data); 
-				
-			}
+			$i++;
+		
+	
+		$this->session->set_flashdata('success','Order Updated.');
+		echo "Order Updated";	
+	}
 			
-			$this->session->set_flashdata('success','Order Updated.');
-			
-			echo "Order Updated";	
 		}
 		
 		public function logout()
@@ -1701,7 +1740,7 @@ public function center_login_section($param1 = '', $param2 = '', $param3 = '')
 		$i = $_POST['start'];
 		foreach($tableData as $result){
 			$center_code = $this->Common_model->encrypt_decrypt($result->center_code,'encrypt');
-			$btn ='<a class="btn btn-primary"  href="'.base_url('center/loginAs/').$center_code.'" >Log As</a>' ;
+			$btn ='<a class="btn btn-primary"  href="'.base_url('center/loginAs/').$center_code.'" target="_blank" >Log As</a>' ;
 			$i++;
 			$data[] = array($i, $result->center_code, $result->center_name, $result->contactpersonname,$result->mobile_no_1,$btn);
 		}
@@ -1833,4 +1872,20 @@ public function editForm($student_id = ""){
 			}
 		}
 
+		// public function moveStudentImages()
+		// {
+		// 	$students = $this->Common_model->get_record('student','*');
+		// 	foreach ($students as $student) {
+		// 		$org_image=".\assets\July 2021\/".$student['photo'];
+		// 		$destination=".\assets\student_image\July 2021\/";
+
+		// 		$img_name=basename($org_image);
+
+		// 		if( rename( $org_image , $destination.'/'.$img_name )){
+		// 			echo '<br>moved!'.$student['student_id'];
+		// 		} else {
+		// 			echo '<br>failed'.$student['student_id'];
+		// 		}
+		// 	}
+		// }
 }// class

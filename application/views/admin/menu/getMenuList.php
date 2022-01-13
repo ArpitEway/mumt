@@ -15,7 +15,7 @@
 					
 				</tr>
 			</thead>
-    		<tbody id="sortable">
+    		<tbody id="sortable" class="row_position">
     		<?php 
 			
     		$i = 1;
@@ -89,17 +89,32 @@ function delete_menu(para1,param)
 	}
 }
 
-$sortable.sortable({
-	stop:function(event, ui){
-		var parameters = $sortable.sortable("toArray");
-		console.log(parameters);
-		$.post("<?php echo BASE_URL(); ?>admin/admins/update_menu_order", {
-		value:parameters},function(result){
-			toastr.success(result);
-		});
-	}
+$(".row_position").sortable({
+        delay: -100,
+        stop: function() {
+            var selectedData = new Array();
+         
+            $(".row_position>tr").each(function() {
+              
+                selectedData.push($(this).attr("id"));
+               
+            });
+            updateOrder(selectedData);
+        }
+    });
 
-});
+    function updateOrder(totalData){
+        var csrfName = $('.csrfname').attr('name');
+            var csrfHash = $('.csrfname').val(); 
+    $.ajax({
+    url :BASE_URL+'admin/Admins/update_menu_order',
+    type:'POST' ,
+    data :{allData:totalData,[csrfName]:csrfHash},
+    success : function(result){
+        toastr.success('Order Updated Successfully');
+    }
+    });
+   }
 
 $(document).on('change', '.status_checks', function(e) {
   var val = $(this).val();

@@ -9,6 +9,7 @@
             <th>Admisssion Fees</th>
             <th>Program Fees</th>
             <th>Exam Fees</th>
+            <th>Syllabus</th>
         </thead>
         <tbody>
         <?php
@@ -42,9 +43,16 @@
             ?></td>
 
             <td><?php echo $course->exam_fees; ?></td>
+            <td center>
+                <?php
+                $url = './assets/regular_syllabus/'.$course_detail['course_name'].'.pdf';
 
+                if(file_exists($url)){
+                    ?>
+                    <a href="<?php echo site_url($url);?>" download ><img src="<?=base_url('assets/images/')?>pdf.png" width="55"></a>
+                <?php } ?>
+                </td>
             </tr>
-
             <?php
         $i++;
         } ?>

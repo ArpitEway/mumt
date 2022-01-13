@@ -718,6 +718,17 @@ class Common_Model extends CI_Model{
 		return $qry->row()->center_name;
 
 	}
+	function getCenterCodeById($id){
+
+		$qry = $this->db->select("center_code");
+		
+		$qry = $this->db->where("id",$id);
+
+		$qry = $this->db->get("center");
+		
+		return $qry->row()->center_code;
+
+	}
 	
 
 	function center_menus_added($where='')
