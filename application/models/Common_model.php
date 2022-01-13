@@ -206,7 +206,9 @@ class Common_Model extends CI_Model{
 		if($group_by != ""){
 				$this->db->select('count(*) as cnt,course_name');
 				$this->db->group_by($group_by);
+				
 		}else{
+			
 				$this->db->select('*');
 		}
 		$this->db->from("student");
@@ -751,6 +753,22 @@ class Common_Model extends CI_Model{
        
 	
 	}
+
+
+
+public function getSessionForEnrollment(){
+		$qry= $this->db->order_by('id','DESC');
+		$qry= $this->db->limit(1);
+		$qry= $this->db->get('session');
+
+		//echo $this->db->last_query();
+
+		return $qry->result()[0]->session;
+
+	}
+
+
+	
 	
 	public function last_query(){
 			echo $this->db->last_query();

@@ -115,10 +115,20 @@
 </label>
 
 <label class="radio radio-success">
-<input type="radio" name="filter" value="count" />
+<input type="radio" name="filter" value="count" checked/>
        <span></span>
             Count
        </label>          
+</div>
+
+<div class="form-group col-md-3">
+	<label for="class">Student Count</label>
+    <select name="count_filter" id="count_filter" class="form-control" >
+		 
+	<option value="course_wise">Course Wise </option> 
+	<option value="center_wise" >Center Wise </option>
+
+	</select>
 </div>
 </div>
 
@@ -133,9 +143,18 @@
 
 
 <script>
+$('input:radio[name="filter"]').change(function() {
+    if ($(this).val()=='list') {
+        $('#count_filter').attr('disabled', true);
+    } 
+    else if ($(this).val()=='count') {
+        $('#count_filter').attr('disabled', false);
+    }
+});
 
 $(document).on("click","#submit_btn",function(){
-	
+	var csrfName = $('.csrfname').attr('name');
+		var csrfHash = $('.csrfname').val(); 
 	var data = {
 		course_group_id : $("#course_group_id").val(),
 		class_id : $("#class_id").val(),
@@ -147,6 +166,8 @@ $(document).on("click","#submit_btn",function(){
 		filter : $('input[name="filter"]:checked').val(),
 		enrolled : $("#enrolled").val(),
 		session : $("#session").val(),
+		[csrfName]:csrfHash,
+		count_filter:$("#count_filter").val(),
 	};
 	console.log(data);
 	var url = BASE_URL+"admin/admins/get_student_consolidate_data"; 

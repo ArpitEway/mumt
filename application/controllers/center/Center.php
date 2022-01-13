@@ -205,12 +205,16 @@ class Center extends CI_Controller {
 
 	public function all_student()
 	{
+		$group_by = array('center_id' => $this->session->center_id);
 		$csrf = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 			'session_list' => $this->Common_model->get_record('session','*'),
+			'courses' => $this->Common_model->get_record_by_order('student','DISTINCT(course_group_id),course_name','course_name desc',$where)
+		 
 		);
-		$titleData = array('title' => 'Students Report', );
+
+		$titleData = array('title' => 'Students Report' );
 		$this->load->view('Centers/header',$titleData);
 		$this->load->view('Centers/student_details',$csrf);
 		$this->load->view('Centers/footer');
@@ -597,7 +601,7 @@ class Center extends CI_Controller {
 
 				$wherestudent = 'center_id='.$center_id;
 
-				$center_detail = $this->Common_model->get_record('payment_complaint','*',$wherecenter);
+				$center_detail = $this->Common_model->get_record('payment_complaint','*',$wherestudent);
 
 
 				$data = array('center' => $center,'center_details' => $center_detail,'name_csrf' => $this->security->get_csrf_token_name(),
@@ -630,8 +634,9 @@ class Center extends CI_Controller {
 			$center_id =  $this->session->center_id;
 			$wherestudent = 'center_id='.$center_id;
 
-			$center_detail = $this->Common_model->get_record('payment_complaint','*',$wherecenter);
-			$data = array('students' => $students ,'center_details' => $center_detail,'name_csrf' => $this->security->get_csrf_token_name(),
+				$center_detail = $this->Common_model->get_record('payment_complaint','*',$wherestudent);
+				
+				$data = array('students' => $students ,'center_details' => $center_detail,'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash());
 
 			if($data['students']){
