@@ -15,9 +15,33 @@
 		?>		
 	</select>
 </div>
+
+
+
+<div class="form-group col-md-3">
+    <label for="center_id">Center</label>
+    <select name="center_id" id="center_id" class="form-control " data-target="#course_group_id" required >
+    <option value="all">All</option>
+    <?php 
+        $centers = $this->db->get_where('center', array())->result_array();
+        foreach($centers as $center)
+		{
+        ?>
+		
+		<option value="<?php echo $center['center_id']; ?>"><?php echo $center['center_code'] ." - ". $center['center_name']; ?></option>
+        
+	<?php
+        } 
+    ?> 
+    </select>       
+</div>
+
+
+
+
 <div class="form-group col-md-3">
             <label for="course">Course</label>
-            <select name="course_group_id" id="course_group_id" class="form-control course_group_id" data-target="#class_id" required >
+            <select name="course_group_id" id="course_group_id" class="form-control course_group_id"  required >
            
 			<option value="all">All</option>
                 <?php 
@@ -31,12 +55,10 @@
                 ?>
             </select>       
 </div>
-<div class="form-group col-md-3">
-            <label for="class_id">Class</label>
-            <select name="class_id" id="class_id" class="form-control"  required >
-			<option value="">All</option>
-            </select>       
-</div>
+
+
+
+
 <div class="form-group col-md-3">
 	<label for="class">Approved</label>
     <select name="approved" id="approved" class="form-control"  > 
@@ -65,8 +87,8 @@ $(document).on("click","#submit_btn",function(){
 	var csrfHash = $('.csrfname').val(); 
 	var data = {
 		session : $("#session").val(),
+		center : $("#center_id").val(),
 		course_group_id : $("#course_group_id").val(),
-		class_id : $("#class_id").val(),
 		approved : $("#approved").val(),
 		[csrfName]:csrfHash
 	};

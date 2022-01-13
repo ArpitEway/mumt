@@ -219,20 +219,23 @@
 				$course_group_id = 0;
 				$data = array();
 				$dt   = array();
-				
+
+				$center 	  	  = 	$this->input->post("center");
 				$course_group_id  = $this->input->post("course_group_id");
-				$class_id  = $this->input->post("class_id");
-				
 				$approved = $this->input->post("approved");
-				
 				$session = $this->input->post("session");
 				
+
+                  if($center != "all"){	 
+					
+					$dt['center_id'] = $center;
+				}
+
+
 				if($course_group_id != "all"){	
 					$dt['course_group_id'] = $course_group_id;
 				}
-				if($class_id != ""){	
-					$dt['class_id'] = $class_id;
-				}
+				
 				if($approved != "all"){
 					$dt['approved'] = $approved;
 				}if($session != "All"){
