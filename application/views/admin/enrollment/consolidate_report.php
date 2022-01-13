@@ -157,6 +157,8 @@ List
 <script>
 
 $(document).on("click","#submit_btn",function(){
+	alert('fd');
+	
 	var csrfName = $('.csrfname').attr('name');
 		var csrfHash = $('.csrfname').val(); 
 	var data = {
