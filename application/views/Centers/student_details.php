@@ -16,6 +16,10 @@
 				<label>Course</label>
 				<select class="form-control filter" name="course_group_id" id="allClassBycourse">
 					<option>All</option>
+					<?php foreach($courses as $course){
+			 ?>
+			 <option value="<?php echo $course['course_group_id']; ?>"><?php echo $course['course_name']; ?></option>
+		     <?php  } ?>
 				</select>
 			</div>
 		</div>

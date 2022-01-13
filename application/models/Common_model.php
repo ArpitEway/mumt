@@ -206,7 +206,9 @@ class Common_Model extends CI_Model{
 		if($group_by != ""){
 				$this->db->select('count(*) as cnt,course_name');
 				$this->db->group_by($group_by);
+				
 		}else{
+			
 				$this->db->select('*');
 		}
 		$this->db->from("student");
