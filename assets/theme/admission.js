@@ -220,7 +220,7 @@ $(document).on('click','#edit_submit', function () {
 		$('input[type="button"]').attr('disabled','disabled');
 			var form = $('form');
 			var formData = new FormData(form[0]);
-
+			console.log(formData);
 			$.ajax({
 				method: "POST",
 				url: BASE_URL+"center/updateFormdata/",
@@ -234,7 +234,7 @@ $(document).on('click','#edit_submit', function () {
 					if(data.student_id){
 					toastr.success('Form Submitted Successfully');
 					setTimeout(function(){
-						window.location.href = BASE_URL+"admin/enrollment/show_form/"+data.student_id;
+						window.location.href = BASE_URL+"admin/"+data.userType+"/show_form/"+data.student_id;
 					}, 1000);
 					}
 					},
@@ -243,7 +243,7 @@ $(document).on('click','#edit_submit', function () {
 						toastr.error('An error occurred.');
 					},
 				});
-			return false;
+			
 		} else if (result.dismiss === 'cancel') {
 			Swal.fire({
 				text: "Your form has not been submitted!.",

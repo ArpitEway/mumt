@@ -138,10 +138,17 @@ List
 </div>
 
 
+
 <div class="form-group text-center">
 	<button class="btn btn-md btn-primary mt-4" type="button" id="submit_btn">Submit</button>
 </div>
-
+<div align="center" id="myLoader" class="loader_div" style="display: none;" >
+  <svg>
+    <circle cx="50" cy="50" r="40" stroke="red" stroke-dasharray="78.5 235.5" stroke-width="3" fill="none" />
+    <circle cx="50" cy="50" r="30" stroke="blue" stroke-dasharray="62.8 188.8" stroke-width="3" fill="none" />
+    <circle cx="50" cy="50" r="20" stroke="green" stroke-dasharray="47.1 141.3" stroke-width="3" fill="none" />
+  </svg>
+</div>
 <div id="dt">
 </div>
 
@@ -151,6 +158,8 @@ List
 <script>
 
 $(document).on("click","#submit_btn",function(){
+	
+	$('#dt').hide();
 	var csrfName = $('.csrfname').attr('name');
 		var csrfHash = $('.csrfname').val(); 
 	var data = {
@@ -167,17 +176,35 @@ $(document).on("click","#submit_btn",function(){
 		count_filter:$("#count_filter").val(),
 		[csrfName]:csrfHash
 	};
+	$.ajax({
+		url: '<?php echo site_url('admin/enrollment/get_student_consolidate_data'); ?>',
 
-	console.log(data);
+                type:'post',
+                dataType : 'JSON',
+                data:data,
+                 beforeSend: function()
+              {
+                $("#myLoader").show();
+               },
+                success:function(status)
+                {
+					if( $("#myLoader").show()){
+						$('#dt').hide();
+						// $table = $('#dt').html(status.data);
 
-	var url = BASE_URL+"admin/enrollment/get_student_consolidate_data"; 
-	var response = call_ajax(data,url);
-	
-	console.log(response);
-	
-	$('#dt').html(response.data);
-	KTDatatablesBasicBasic.init();
-		 
+					}if( $('#myLoader').hide()){
+						$table = $('#dt').html(status.data);
+						$('#dt').show();
+						
+					}
+				
+	               KTDatatablesBasicBasic.init();
+                },
+                   complete: function()
+              {
+                $('#myLoader').hide();
+              },
+            })
 	
 });
 
@@ -206,4 +233,3 @@ var showAllpaper = function ()
     }
 </script>
 
-<!-- <script src="<?=base_url()?>assets/js/pages/crud/forms/widgets/select2.js"></script> -->
