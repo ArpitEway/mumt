@@ -115,17 +115,33 @@
 </label>
 
 <label class="radio radio-success">
-<input type="radio" name="filter" value="count" />
+<input type="radio" name="filter" value="count" checked/>
        <span></span>
             Count
        </label>          
+</div>
+
+<div class="form-group col-md-3">
+	<label for="class">Student Count</label>
+    <select name="count_filter" id="count_filter" class="form-control" >
+		 
+	<option value="course_wise">Course Wise </option> 
+	<option value="center_wise" >Center Wise </option>
+
+	</select>
 </div>
 </div>
 
 <div class="form-group text-center">
 	<button class="btn btn-md btn-primary mt-4" type="button" id="submit_btn">Submit</button>
 </div>
-
+<div align="center" id="myLoader" class="loader_div" style="display: none;" >
+  <svg>
+    <circle cx="50" cy="50" r="40" stroke="red" stroke-dasharray="78.5 235.5" stroke-width="3" fill="none" />
+    <circle cx="50" cy="50" r="30" stroke="blue" stroke-dasharray="62.8 188.8" stroke-width="3" fill="none" />
+    <circle cx="50" cy="50" r="20" stroke="green" stroke-dasharray="47.1 141.3" stroke-width="3" fill="none" />
+  </svg>
+</div>
 <div id="dt">
 </div>
 
@@ -133,9 +149,20 @@
 
 
 <script>
+$('input:radio[name="filter"]').change(function() {
+    if ($(this).val()=='list') {
+        $('#count_filter').attr('disabled', true);
+    } 
+    else if ($(this).val()=='count') {
+        $('#count_filter').attr('disabled', false);
+    }
+});
 
 $(document).on("click","#submit_btn",function(){
-	
+	$('#dt').hide();
+
+	var csrfName = $('.csrfname').attr('name');
+		var csrfHash = $('.csrfname').val(); 
 	var data = {
 		course_group_id : $("#course_group_id").val(),
 		class_id : $("#class_id").val(),
@@ -147,15 +174,43 @@ $(document).on("click","#submit_btn",function(){
 		filter : $('input[name="filter"]:checked').val(),
 		enrolled : $("#enrolled").val(),
 		session : $("#session").val(),
+		[csrfName]:csrfHash,
+		count_filter:$("#count_filter").val(),
 	};
-	console.log(data);
-	var url = BASE_URL+"admin/admins/get_student_consolidate_data"; 
-	var response = call_ajax(data,url);
+
 	
-	console.log(response);
 	
-	$('#dt').html(response.data);
-	KTDatatablesBasicBasic.init();
+	$.ajax({
+		url: '<?php echo site_url('admin/admins/get_student_consolidate_data'); ?>',
+
+                type:'post',
+                dataType : 'JSON',
+                data:data,
+                 beforeSend: function()
+              {
+                $("#myLoader").show();
+               },
+                success:function(status)
+                {
+					if( $("#myLoader").show()){
+						$('#dt').hide();
+						// $table = $('#dt').html(status.data);
+
+					}if( $('#myLoader').hide()){
+						$table = $('#dt').html(status.data);
+						$('#dt').show();
+						
+					}
+				
+	               KTDatatablesBasicBasic.init();
+                },
+                   complete: function()
+              {
+                $('#myLoader').hide();
+              },
+            })
+	
+
 });
 
 var showAllpaper = function () 

@@ -15,9 +15,33 @@
 		?>		
 	</select>
 </div>
+
+
+
+<div class="form-group col-md-3">
+    <label for="center_id">Center</label>
+    <select name="center_id" id="center_id" class="form-control " data-target="#course_group_id" required >
+    <option value="all">All</option>
+    <?php 
+        $centers = $this->db->get_where('center', array())->result_array();
+        foreach($centers as $center)
+		{
+        ?>
+		
+		<option value="<?php echo $center['center_id']; ?>"><?php echo $center['center_code'] ." - ". $center['center_name']; ?></option>
+        
+	<?php
+        } 
+    ?> 
+    </select>       
+</div>
+
+
+
+
 <div class="form-group col-md-3">
             <label for="course">Course</label>
-            <select name="course_group_id" id="course_group_id" class="form-control course_group_id" data-target="#class_id" required >
+            <select name="course_group_id" id="course_group_id" class="form-control course_group_id"  required >
            
 			<option value="all">All</option>
                 <?php 
@@ -31,12 +55,10 @@
                 ?>
             </select>       
 </div>
-<div class="form-group col-md-3">
-            <label for="class_id">Class</label>
-            <select name="class_id" id="class_id" class="form-control"  required >
-			<option value="">All</option>
-            </select>       
-</div>
+
+
+
+
 <div class="form-group col-md-3">
 	<label for="class">Approved</label>
     <select name="approved" id="approved" class="form-control"  > 
@@ -52,6 +74,13 @@
 	<button type="button" class="btn btn-primary mt-4" style="margin-top: 24px !important;" id="submit_btn">Submit</button>
 </div>
 </div>
+<div align="center" id="myLoader" class="loader_div" style="display: none;" >
+  <svg>
+    <circle cx="50" cy="50" r="40" stroke="red" stroke-dasharray="78.5 235.5" stroke-width="3" fill="none" />
+    <circle cx="50" cy="50" r="30" stroke="blue" stroke-dasharray="62.8 188.8" stroke-width="3" fill="none" />
+    <circle cx="50" cy="50" r="20" stroke="green" stroke-dasharray="47.1 141.3" stroke-width="3" fill="none" />
+  </svg>
+</div>
 <div id="dt">
 </div>
 
@@ -61,22 +90,60 @@
 <script>
 
 $(document).on("click","#submit_btn",function(){
+	$('#dt').hide();
+
 	var csrfName = $('.csrfname').attr('name');
 	var csrfHash = $('.csrfname').val(); 
 	var data = {
 		session : $("#session").val(),
+		center : $("#center_id").val(),
 		course_group_id : $("#course_group_id").val(),
-		class_id : $("#class_id").val(),
 		approved : $("#approved").val(),
 		[csrfName]:csrfHash
 	};
 	var url = BASE_URL+"admin/enrollment/get_student_data"; 
-	var response = call_ajax(data,url);
-	console.log(response);
+
+	$.ajax({
+		url: '<?php echo site_url('admin/enrollment/get_student_data'); ?>',
+
+                type:'post',
+                dataType : 'JSON',
+                data:data,
+                 beforeSend: function()
+              {
+                $("#myLoader").show();
+               },
+                success:function(status)
+                {
+					if( $("#myLoader").show()){
+						$('#dt').hide();
+						// $table = $('#dt').html(status.data);
+
+					}if( $('#myLoader').hide()){
+						$table = $('#dt').html(status.data);
+						$('#dt').show();
+						
+					}
+				
+	               KTDatatablesBasicBasic.init();
+                },
+                   complete: function()
+              {
+                $('#myLoader').hide();
+              },
+            })
+
+	// var url = BASE_URL+"admin/director/get_student_consolidate_data"; 
+	// var response = call_ajax(data,url);
 	
-	$('#dt').html(response.data);
-	KTDatatablesBasicBasic.init();
+	// console.log(response);
+	
+	// $('#dt').html(response.data);
+	// KTDatatablesBasicBasic.init();
 		 
+	
 });
+	
+
 
 </script>

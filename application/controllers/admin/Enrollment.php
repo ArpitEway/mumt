@@ -80,10 +80,10 @@
 
 		
 		public function get_student_consolidate_data()
-		{
-			
+		{ 
 			if ($this->input->method() == "post") 
 			{
+				
 				$course_group_id = 0;
 				
 				$data = array();
@@ -97,86 +97,71 @@
 				$document_upload  = 	$this->input->post("document_upload");
 				$filter  		  = 	$this->input->post("filter");
 				$session 		  = 	$this->input->post("session");
-				
 			    $mode 		  	  = 	$this->input->post("mode");
 				$center 	  	  = 	$this->input->post("center");
 
 
 				$count_filter = $this->input->post("count_filter");
 
-
 				if($mode != "all"){	 
-					
 					$dt['mode'] = $mode;
 				}
+				
 				if($center != "all"){	 
-					
 					$dt['center_id'] = $center;
 				}
+				
 				if($course_group_id != "all"){	 
-					
 					$dt['course_group_id'] = $course_group_id;
 				}
+				
 				if($session != "all"){	 
-					
 					$dt['session'] = $session;
 				}else{
 					$dt['name!='] = '';
 				}
-				if($class_id != ""){	 
-					
+				
+				if($class_id != "All"){	 
 					$dt['class_id'] = $class_id;
 				}
+				
 				if($approved != "all"){
-					
 					$dt['approved'] = $approved;
 				}
 				
 				if($payment != "all"){
-					
 					$dt['payment_status'] = $payment;
 				}
 				
 				if($enrolled != "all"){
-					
 					$dt['enrolled'] = $enrolled;
 				}
 				
 				if($document_upload != "all"){
-					
 					$dt['document_uploaded'] = $document_upload;
 				}
+				
 				if($filter == "list"){
-					
 					$data['students'] = $this->Common_model->student_data_consolidate($dt);
 				}
 				
 				if($filter == "count"){
-					
 					if($count_filter == "course_wise"){
-
 						$data['count_filter'] = 'course_wise';
-
 						$data['course_count'] = $this->Common_model->student_data_consolidate($dt,'course_group_id');
-					
 					}else{
 						$data['count_filter'] = 'center_wise';
-
 						$data['course_count'] = $this->Common_model->student_data_consolidate($dt,'center_id');
-					
 					}
-					
 				}
 				
 				
 				$dt = $this->load->view('admin/student/getStudentConsolidate',$data,true);
-				
 				echo json_encode(array(
 				"status" => true,
 				"data" => $dt
 				));
 			}
-			
 		}
 		
 		
@@ -219,20 +204,23 @@
 				$course_group_id = 0;
 				$data = array();
 				$dt   = array();
-				
+
+				$center 	  	  = 	$this->input->post("center");
 				$course_group_id  = $this->input->post("course_group_id");
-				$class_id  = $this->input->post("class_id");
-				
 				$approved = $this->input->post("approved");
-				
 				$session = $this->input->post("session");
 				
+
+                  if($center != "all"){	 
+					
+					$dt['center_id'] = $center;
+				}
+
+
 				if($course_group_id != "all"){	
 					$dt['course_group_id'] = $course_group_id;
 				}
-				if($class_id != ""){	
-					$dt['class_id'] = $class_id;
-				}
+				
 				if($approved != "all"){
 					$dt['approved'] = $approved;
 				}if($session != "All"){
@@ -476,23 +464,18 @@
 		}
 
 	public function center_request(){
-			
 		if($this->session->has_userdata('adminData'))
 		{
 			$where = array("status" => "Pending");
-			$centers = $this->Common_model->get_record_group_by_where('request','center_id','center_id',$where);
-
+			$centers = $this->Common_model->get_record_group_by_where('request','center_id',$where);
 			$data = array('name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash(),
 				'centers' =>$centers
 			);
-			
 			$this->load->view('header');
 			$this->load->view('admin/enrollment/view_form_edit_request',$data);
 			$this->load->view('footer');
-		}
-		else
-		{
+		}else{
 			redirect(base_url('admin/login'));
 		}
 	}
@@ -504,29 +487,21 @@
 			$course_group_id = 0;
 			$data = array();
 			$dt   = array();
-				
-				$center_id  = $this->input->post("center_id");
-			
-				$wherecenter = 'center_id='.$center_id;
-				$center_detail = $this->Common_model->get_record('request','*',$wherecenter);
-				
-				$data = array('center_details' => $center_detail ,'name_csrf' => $this->security->get_csrf_token_name(),
+			$center_id  = $this->input->post("center_id");
+			$wherecenter = 'center_id='.$center_id;
+			$center_detail = $this->Common_model->get_record('request','*',$wherecenter);
+			$data = array('center_details' => $center_detail ,'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash());
-
-				if($data['center_details']){
-
-					$dt =  $this->load->view('admin/Enrollment/FormEditRequestDetails',$data,true);
-
-				}else{
-					$dt = "Invalid Center Code";
-				}
-
-				echo json_encode(array(
+			if($data['center_details']){
+				$dt =  $this->load->view('admin/Enrollment/FormEditRequestDetails',$data,true);
+			}else{
+				$dt = "Invalid Center Code";
+			}
+			echo json_encode(array(
 				"status" => true,
 				"data" => $dt
-				));
+			));
 		}
-			
 	}
 
 	public function editForm($student_id = ""){
@@ -627,9 +602,7 @@
 		}
 
 		public function search_student(){
-
 			$segment = $this->uri->segment(2);
-			
 			$this->load->view('header',array('title' => 'Search Students'));	
 			$data = array(
 				'name_csrf' => $this->security->get_csrf_token_name(),
@@ -646,8 +619,6 @@
 			if($param!='')
 			{
 				$session_july='July 2021';
-              
-				
 				if($param =='paid')
 				{
                    //---paid------
@@ -728,22 +699,12 @@
                 	center_name,center_id');
 				$this->db->group_by('center_id');
 			    $data['listing'] = $this->Common_model->getRecordByWhere('student',$where);
-                // echo $this->db->last_query();
-                // echo'<pre>';
-                // print_r($data);die;
 			    $this->load->view('header',$msg);
 				$this->load->view('admin/enrollment/center_wise_list',$data); 
 			    $this->load->view('footer');
-
-					
-				
 			}else{
-			
                   return redirect(base_url().'enrollment/enrollment_status');
 			}
-
-			
-			//
 		}
 
 		function students_count_list()
@@ -762,13 +723,35 @@
            {
            	redirect(base_url('admin/enrollment/enrollment_status'));
            }
-		  
-		   
-		  // echo'<pre>';
-		  // print_r($data);
-
-
 		}
 
+		public function update_form_request_remark()
+		{
+			if ($this->input->method() == "post"){
+				$id = $this->input->post('id');
+				$remark = $this->input->post('remark');
+				$status = ($remark=='Set') ? 'Pending' : 'Done';
+				$remark = ($remark=='Set') ? '' : 'Invalid';
+				if($this->input->post("id")){
+					$data = $this->Common_model->updateRecordByConditions("request",array("id" => $id),array("status" => $status,'remark' => $remark ));
+					$dt = $this->db->get_where("request",array("id" => $id ))->result_array();
+					if($dt[0]['remark'] == 'Invalid'){
+						$remark_btn = '<input type="button" name="req_remark" data-id='.$id.' class="btn btn-danger remark_check" value="Invalid">';
+						$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-success req_check" value="Done">';
+					}else{
+						$remark_btn = '<input type="button" name="req_remark" data-id='.$id.' class="btn btn-success remark_check" value="Set">';
+						$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-danger req_check" value="Pending">';
+					}
+					$status = true;
+					$msg    = "";
 
-}
+					echo json_encode(array(
+						"status" => $status,
+						"msg" => $msg,
+						"remark_btn" => $remark_btn,
+						"sts_btn" => $sts_btn
+					));
+				}
+			}
+		}
+	}

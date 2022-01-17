@@ -1,4 +1,5 @@
 <form class="p-5">
+
 	<h4 class="my-5 font-weight-bold text-dark">Educational Details</h4>
 	<div class="row">
 		<div class="col-md-9">
@@ -440,7 +441,6 @@
 
 				<input type="hidden" name="student_id" id="student_id"  value="<?=$student_detail->student_id;?>">
 				<input type="hidden" name="center_id"  id="center_id"   value="<?=$student_detail->center_id;?>" >
-
 				<input type="button" name="edit_submit" id="edit_submit" class="btn btn-primary m-auto" value="submit">
 			
 			</div>

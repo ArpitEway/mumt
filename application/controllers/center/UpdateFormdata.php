@@ -14,7 +14,7 @@ class updateFormdata extends CI_Controller {
 	}
 
 	public function index(){
-
+    
 		$course_group_id = html_escape($this->input->post('course_group_id'));
 		$class_id = html_escape($this->input->post('class_id'));
 		$session = html_escape($this->input->post('session'));
@@ -73,16 +73,17 @@ class updateFormdata extends CI_Controller {
         $this->db->where('student_id', $student_id);
 		$this->db->update('student', $data);
 
-
-		$path = './assets/student_image/'.$session;
-		// if(!file_exists($path)){
-		// 	mkdir($path);
-		// }
-
+		$path = 'assets/student_image/'.$session;
+		if(!file_exists($path)){
+			
+			mkdir($path);
+		}
+		
+      
 		$upload = $this->do_upload('photo',$path,$student_id);
 		
 		$PhotoData = array('photo' => $upload['file_name']);
-		
+	
 		$where = array('student_id'=>$student_id);
 		$this->Common_model->updateRecordByConditions('student',$where,$PhotoData);
 
@@ -111,7 +112,9 @@ class updateFormdata extends CI_Controller {
 		}
 
 		$student_id = $this->Common_model->encrypt_decrypt($student_id);
-		$result = array('student_id'=>$student_id);
+		$userType = $this->session->userdata['account_type'];
+		$result = array('student_id'=>$student_id ,'userType'=>$userType);
+	
 		echo json_encode($result);
 
 	}

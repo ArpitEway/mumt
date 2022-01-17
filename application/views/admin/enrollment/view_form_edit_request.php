@@ -35,7 +35,7 @@ $(document).on("click","#submit_btn",function(){
 
 	var csrfName = $('.csrfname').attr('name');
     var csrfHash = $('.csrfname').val(); 
-	
+	$('#dt').html();
 	var data = {
 		center_id : $("#center_id").val(),
 		[csrfName]:csrfHash
@@ -46,7 +46,6 @@ $(document).on("click","#submit_btn",function(){
 	
 	$('#dt').html(response.data);
 	KTDatatablesBasicBasic.init();
-		 
 });
 
 </script>
