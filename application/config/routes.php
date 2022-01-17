@@ -61,7 +61,7 @@ $route['admin/Admin'] = 'admin/Admins';
 $route['admin/logout'] = 'admin/Admins/logout';
 $route['admin/enrollment/show_form/(:num)'] = 'admin/enrollment/show_form/$1';
 $route['admin/updateStudentData/(:num)'] = 'admin/updateStudentData/index/$1';
-
+$route['admin/remote_login/(:any)'] = 'admin/Admins/remote_login/$1';
 
 $route['student'] = 'student/Student';
 $route['student/login'] = 'student/Student/login';
