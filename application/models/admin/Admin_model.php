@@ -47,17 +47,16 @@ class Admin_model extends CI_Model {
                         return false;
                 }
         }
-		public function checkUserByUserID($ID)
+        public function checkUserByUserID($ID)
         {
-                
-                $query = $this->db->get("admin_master where id='".$ID."' ");
-                
-                if($query->num_rows()>0){
-                        $result = $query->result();
-                        return $result[0];
-                }else{
-                        return false;
-                }
+        	$query = $this->db->get("admin_master where id='".$ID."' ");
+
+        	if($query->num_rows()>0){
+        		$result = $query->result();
+        		return $result[0];
+        	}else{
+        		return false;
+        	}
         }
     
  

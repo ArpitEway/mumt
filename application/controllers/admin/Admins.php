@@ -1200,29 +1200,22 @@ class Admins extends CI_Controller {
 
 		public function remote_login($u_Id)
 		{
-			
-				//$userId  = $this->Common_model->encrypt_decrypt($u_Id,'decrypt');
-
-				$check_user = $this->admin_model->checkUserByUserID($u_Id);
-
-				if($check_user){	
-					$data = array('loged_in' => true,
-						'adminData' => $check_user->name,
-						'account_type' => $check_user->account_type,
-						'admin_id' => $check_user->id
-					);
-
-					$this->session->set_userdata($data);
-					redirect(base_url('admin/'.$check_user->account_type));
-
-				}else{
-					$data = array('error'=> "username INCORRECT");
-					$data['name_csrf'] = $this->security->get_csrf_token_name();
-					$data['hash_csrf'] = $this->security->get_csrf_hash();
-					$this->load->view('admin/login',$data);
-				}
-
-				
+			$userId  = $this->Common_model->encrypt_decrypt($u_Id,'decrypt');
+			$check_user = $this->admin_model->checkUserByUserID($userId);
+			if($check_user){
+				$data = array('loged_in' => true,
+					'adminData' => $check_user->name,
+					'account_type' => $check_user->account_type,
+					'admin_id' => $check_user->id
+				);
+				$this->session->set_userdata($data);
+				redirect(base_url('admin/'.$check_user->account_type));
+			}else{
+				$data = array('error'=> "username INCORRECT");
+				$data['name_csrf'] = $this->security->get_csrf_token_name();
+				$data['hash_csrf'] = $this->security->get_csrf_hash();
+				$this->load->view('admin/login',$data);
+			}
 		}
 
 		public function getClassByCourse(){
