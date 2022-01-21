@@ -1,4 +1,5 @@
-<table id="kt_datatable_2" class="table table-striped dt-responsive nowrap" width="100%" >
+<div class="dt-responsive">
+<table id="kt_datatable_2" class="table table-striped" >
 			<thead>
 				<tr>
 					<th>Form No.</th>
@@ -92,6 +93,7 @@
 			?>
 			</tbody>
 </table>
+</div>
 <script src="https://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>
 <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
 <script src="<?=BASE_URL()?>assets/light_box/js/jquery.magnify.js"></script>
