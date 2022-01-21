@@ -98,7 +98,7 @@ $(document).on('click', '.remark_check', function(){
 		data: data,
 		success: function (data) {
 			$(self).parent().html(data.remark_btn);
-			$(self).parent().parent().prev('.req_check_td').html(data.sts_btn);
+			$(self).parent().prev().html(data.sts_btn);
 		}
 	});
 });

@@ -148,11 +148,11 @@
 
 			if ($this->input->post("id")) 
 			{
-				$data = $this->Common_model->updateRecordByConditions("payment_complaint",array("id" => $id ),array("payment_remark" => $remark,"status" => $status));
+				$data = $this->Common_model->updateRecordByConditions("payment_complaint",array("id" => $id ),array("remark" => $remark,"status" => $status));
 				
 				$dt = $this->db->get_where("payment_complaint",array("id" => $id ))->result_array();
 				
-				if($dt[0]['payment_remark'] != 'Invalid'){
+				if($dt[0]['remark'] != 'Invalid'){
 				
 				$sts_btn = '<input type="button" name="update_req_remark" data-id='.$id.' class="btn btn-success remark_check" value="Set">';
 				

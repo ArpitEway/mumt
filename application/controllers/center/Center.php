@@ -625,10 +625,10 @@ class Center extends CI_Controller {
 			$data = array();
 			$dt   = array();
 
+			$center_id =  $this->session->center_id;
 			$form_no  = $this->input->post("form_no");
 			$wherestudent = 'student_id='.$form_no.' and center_id='.$center_id;
 			$students = $this->Common_model->get_record('student','*',$wherestudent);
-			$center_id =  $this->session->center_id;
 			$wherestudent = 'center_id='.$center_id;
 
 				$center_detail = $this->Common_model->get_record('payment_complaint','*',$wherestudent);
@@ -737,8 +737,8 @@ class Center extends CI_Controller {
 		$data = $row = array();
 		$where = 'payment_complaint.center_id='.$this->session->center_id.' and type="admission" ';
 		
-		$column_order = array(null,'name','student.student_id','course_name','class_name','details','date','status','payment_remark');
-		$column_search = array('name','student.student_id','course_name','class_name','details','date','status','payment_remark');
+		$column_order = array(null,'name','student.student_id','course_name','class_name','details','date','status','remark');
+		$column_search = array('name','student.student_id','course_name','class_name','details','date','status','remark');
 
 		$DataTableArray = array(
 			'column_order' => $column_order,
@@ -755,7 +755,7 @@ class Center extends CI_Controller {
 			$i++;
 			$date = $this->Common_model->viewDate($result->date);
 			$status = ($result->status=='Pending') ? 'Pending' : 'Done';
-			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->details,$date,$status,$result->payment_remark);
+			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->details,$date,$status,$result->remark);
 		}
 		$output = array(
 			"draw" => $_POST['draw'],
