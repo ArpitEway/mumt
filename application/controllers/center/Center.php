@@ -205,13 +205,12 @@ class Center extends CI_Controller {
 
 	public function all_student()
 	{
-		$group_by = array('center_id' => $this->session->center_id);
+		$where = array('center_id' => $this->session->center_id);
 		$csrf = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 			'session_list' => $this->Common_model->get_record('session','*'),
 			'courses' => $this->Common_model->get_record_by_order('student','DISTINCT(course_group_id),course_name','course_name desc',$where)
-		 
 		);
 
 		$titleData = array('title' => 'Students Report' );
@@ -261,8 +260,6 @@ class Center extends CI_Controller {
 		);
 
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
-		// echo $this->db->last_query();
-		// die;
 		$i = $_POST['start'];
 		foreach($tableData as $result){
 			$btn = ($result->document_uploaded=='Y') ?
@@ -629,7 +626,7 @@ class Center extends CI_Controller {
 			$dt   = array();
 
 			$form_no  = $this->input->post("form_no");
-			$wherestudent = 'student_id='.$form_no;
+			$wherestudent = 'student_id='.$form_no.' and center_id='.$center_id;
 			$students = $this->Common_model->get_record('student','*',$wherestudent);
 			$center_id =  $this->session->center_id;
 			$wherestudent = 'center_id='.$center_id;
