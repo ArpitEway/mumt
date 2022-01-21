@@ -76,6 +76,7 @@ $(document).on("click","#submit_btn",function(){
                    complete: function()
               {
                 $('#myLoader').hide();
+                
               },
             })
 
