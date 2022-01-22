@@ -47,10 +47,8 @@ class Center extends CI_Controller {
 			$this->load->view('Centers/header',$titleData);
 			$id =  $this->session->center_id;
 			$center = $this->Common_model->getRecordById('center','id',$id);
-			
 			$course_group = $this->db->get_where('course_group', array())->result_array();
 			$data = array('course_group' => $course_group);
-			$this->getNotification();
 			$this->load->view('Centers/instruction',$data);
 			$this->load->view('Centers/footer');
 		}

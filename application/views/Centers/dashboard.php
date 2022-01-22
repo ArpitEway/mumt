@@ -23,6 +23,13 @@
 		<div class="tab-content">
 			<div class="tab-pane fade active show" id="Enrollment" role="tabpanel" aria-labelledby="Enrollment-tab">
 				<div class="row">
+
+					<a class="border-0 custom-menu-item" href="<?=base_url('center/instruction');?>">
+						<div>
+							<span class="nav-text">Course Details</span>
+						</div>
+					</a>
+
 					<a class="border-0 custom-menu-item" href="<?=base_url('center/admission_instruction');?>">
 						<div>
 							<span class="nav-text">Admission Form</span>
@@ -43,6 +50,7 @@
 							<span class="nav-text">Upload Admission Document</span>
 						</div>
 					</a>
+
 				</div>
 			</div>
 			<div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
