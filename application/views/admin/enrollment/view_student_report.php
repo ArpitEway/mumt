@@ -62,8 +62,8 @@
 <div class="form-group col-md-3">
 	<label for="class">Approved</label>
     <select name="approved" id="approved" class="form-control"  > 
-		<!-- <option value="all">All</option> -->
-		<option value=""> Non-verified </option>
+		<option value="all">All</option>
+		<option value="" selected> Non-verified </option>
 		<option value="Y">Approved </option>
 		<option value="N">Non-Approved </option>
 	</select>
