@@ -12,10 +12,10 @@
 	font-weight: 500 !important;
 }
 .student_form_img {
-	width: 115px;
-	margin: auto;
-	height: 140px;
-	object-fit: cover;
+    width: 115px;
+    margin: auto;
+    height: 150px;
+    object-fit: none;
 }
 .m-auto{
 	margin:auto;
