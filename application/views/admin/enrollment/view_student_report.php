@@ -62,18 +62,19 @@
 <div class="form-group col-md-3">
 	<label for="class">Approved</label>
     <select name="approved" id="approved" class="form-control"  > 
-		<option value="all">All</option>
+		<!-- <option value="all">All</option> -->
 		<option value=""> Non-verified </option>
 		<option value="Y">Approved </option>
 		<option value="N">Non-Approved </option>
 	</select>
 </div>
 
-<div class="form-group col-md-3">
+<div class="form-group col-md-12 text-center mt-10 ">
 	<label for="class"></label>
-	<button type="button" class="btn btn-primary mt-4" style="margin-top: 24px !important;" id="submit_btn">Submit</button>
+	<button type="button" class="btn btn-primary"  id="submit_btn">Submit</button>
 </div>
 </div>
+
 <div align="center" id="myLoader" class="loader_div" style="display: none;" >
   <svg>
     <circle cx="50" cy="50" r="40" stroke="red" stroke-dasharray="78.5 235.5" stroke-width="3" fill="none" />
