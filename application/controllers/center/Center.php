@@ -806,4 +806,56 @@ class Center extends CI_Controller {
 	}	
 
 
+
+
+public function Document_uplode(){
+
+       $titleData = array('title' => 'Students Remarks Document' );
+		$this->load->view('Centers/header',$titleData);
+
+      $center_id =  $this->session->center_id;
+        $where = array(
+ 	        'approved' =>'N',
+	    	'center_id' => $center_id,
+		);
+      
+		$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
+
+		echo $this->load->view('Centers/documentnewlist',$data);
+		$this->load->view('Centers/footer');
+	}	
+
+
+	public function WrongDocument($student_id){
+			if($student_id!=''){
+				$student = $this->Common_model->getRecordById('student','student_id',$student_id);
+				$remark = $student->remark;
+			$admissionDocWhere = " student_id = ".$student_id." and document_category_id in  (".$remark.") and status='N'";
+			$admissionDocCount = $this->Common_model->getCountByWhere('admission_document',$admissionDocWhere);
+			$remarkCount= substr_count($remark,',');
+			$remarkCount+=1;
+			if($admissionDocCount==$remarkCount){
+			$this->session->set_flashdata('warning',"Document Already Submited");
+				redirect(base_url('center/Document_uplode'));
+			}
+				$where = ' id in ( '.$remark.' ) ';
+				$document = $this->Common_model->getRecordByWhere('admission_document',$where);
+				$titleData = array('title' => 'Unapproved Document List');
+				
+				$data = array(
+					'student' => $student,
+					'documentData' => $document,
+				);
+			$this->load->view('Centers/header',$titleData);
+			$this->load->view('Centers/wrong_document',$data);
+			$this->load->view('Centers/footer');
+			}
+		}
+
+
+
+
+
+
+
 }
