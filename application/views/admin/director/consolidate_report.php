@@ -45,7 +45,7 @@
 	</div>
 
 	<div class="form-group col-md-3">
-		<label for="class">Course Mode</label>
+		<label for="class">Student Count</label>
 		<select name="filter" id="filter" class="form-control" > 
 			<option value="course">Course wise </option> 
 			<option value="center">Center wise</option>
