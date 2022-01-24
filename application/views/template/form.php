@@ -15,7 +15,7 @@
     width: 115px;
     margin: auto;
     height: 150px;
-    object-fit: none;
+    object-fit: unset;
 }
 .m-auto{
 	margin:auto;
