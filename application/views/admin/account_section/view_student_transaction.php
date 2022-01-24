@@ -124,10 +124,10 @@
 					</div>
 					<div class="col-md-2 text-center">
 						<?php if($payment->payment!="Y"){ ?>
-							<label class="text-heading"><button type="button" class="btn btn-primary modalOpen" data-toggle="modal" data-paymentId="<?=$payment->id;?>" data-target="#exampleModalCenter">Update</button></label>
+							<label class="text-heading mt-3"><button type="button" class="btn btn-primary modalOpen" data-toggle="modal" data-paymentId="<?=$payment->id;?>" data-target="#exampleModalCenter">Update</button></label>
 
 						<?php }else{
-							echo '<label class="text-heading"> Paid </label>';
+							echo '<label class="text-heading mt-3"> Paid </label>';
 						} ?>
 					</div>
 				</div>
@@ -193,6 +193,7 @@
 					$('.modalOpen').remove();
 					$('#exampleModalCenter').toggle();
 					$('.modal-backdrop').remove();
+					location.reload();
 				}else if(response.error){
 					toastr.error(response.error);
 				}

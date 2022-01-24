@@ -51,14 +51,10 @@ class updateFormdata extends CI_Controller {
 		$studentData['c_state'] = html_escape($this->input->post('c_state'));
 		$studentData['c_district'] = html_escape($this->input->post('c_district'));
 		$studentData['c_pin_code'] = html_escape($this->input->post('c_pin_code'));
-
 		$studentData['marks'] = html_escape($this->input->post('marks'));
 		$studentData['total_marks'] = html_escape($this->input->post('total_marks'));
-
 		$studentData['passing_year'] = html_escape($this->input->post('passing_year'));
-
 	    $studentData['percentage'] = $studentData['total_marks'] * 100/$studentData['marks'];
-
 		$studentData['board'] = html_escape($this->input->post('board'));
 		$studentData['nationality'] = html_escape($this->input->post('nationality'));
 		$studentData['minority'] = html_escape($this->input->post('minority'));
@@ -67,56 +63,42 @@ class updateFormdata extends CI_Controller {
 		// https://codeigniter.com/userguide3/database/transactions.html
 		
 		$this->db->trans_start();
-
         $student_id = html_escape($this->input->post('student_id'));
-
         $this->db->where('student_id', $student_id);
 		$this->db->update('student', $data);
 
 		$path = 'assets/student_image/'.$session;
+
 		if(!file_exists($path)){
-			
 			mkdir($path);
 		}
-		
-      
 		$upload = $this->do_upload('photo',$path,$student_id);
 		
-		$PhotoData = array('photo' => $upload['file_name']);
-	
-		$where = array('student_id'=>$student_id);
-		$this->Common_model->updateRecordByConditions('student',$where,$PhotoData);
-
+		if (isset($upload['file_name'])) {
+			$PhotoData = array('photo' => $upload['file_name']);
+			$where = array('student_id'=>$student_id);
+			$this->Common_model->updateRecordByConditions('student',$where,$PhotoData);
+		}
 
 		$studentData['student_id'] = $student_id;
-
         $this->db->where('student_id', $student_id);
 		$this->db->update('student_data', $studentData);
-
 		
 		$OnlinePayTxnData = array('course_group_id' => $course_group_id,'class_id' => $class_id);
 
         $this->db->where('student_id', $student_id);
 		$this->db->update('online_payment_transaction', $OnlinePayTxnData);
 		
-
-		// transaction Complete 
-		
-		if ($this->db->trans_status() === FALSE)
-		{
+		if ($this->db->trans_status() === FALSE){
 			$this->db->trans_rollback();
-		}
-		else
-		{ 
+		}else{ 
 			$this->db->trans_complete();
 		}
 
 		$student_id = $this->Common_model->encrypt_decrypt($student_id);
 		$userType = $this->session->userdata['account_type'];
 		$result = array('student_id'=>$student_id ,'userType'=>$userType);
-	
 		echo json_encode($result);
-
 	}
 
 	private function set_upload_options($path,$name)
@@ -138,16 +120,11 @@ class updateFormdata extends CI_Controller {
 		$config['upload_path'] = $path;
 		$config['allowed_types'] = 'gif|jpg|png|jpeg';
 		$config['file_name'] =  $name;
-
 		$this->load->library('upload', $config);
 		$this->upload->initialize($config);
-		if ( ! $this->upload->do_upload($file))
-		{
-			 return $error = $this->upload->display_errors();
-           
-		}
-		else
-		{
+		if (! $this->upload->do_upload($file)){
+			 return $this->upload->display_errors();
+		}else{
 			return   $this->upload->data();
 		}
 	}

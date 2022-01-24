@@ -32,9 +32,9 @@ class center_model extends CI_Model {
 	public function checkcenterStudent($student_id)
 	{
 		$where = array(
-		'center_code' =>	$this->session->centerdata,
-		'center_id' => $this->session->center_id
-	);
+			'center_code' =>	$this->session->centerdata,
+			'center_id' => $this->session->center_id
+		);
 		$count = $this->Common_model->getCountByWhere('student',$where);
 		return ($count>0) ? true : false;
 	}
@@ -58,28 +58,21 @@ class center_model extends CI_Model {
 		$data['date']   		=  date("Y-m-d");
 		$data['status']   		= "Pending";
 
-		$check = $this->Common_model->getSingleRow("payment_complaint","*",array("student_id" => $student_id ));
-		
-		if($check)
-		{
+		$check = $this->Common_model->getSingleRow("payment_complaint","*",array("student_id" => $student_id, 'status !=' => 'Done' ));
+		if($check){
 			$response = array(
 				'status' => true,
 				'err_msg' => "A Complaint Already Under Process",
 			);
-
-		}else{
-			
+		}else{			
 			$this->db->insert('payment_complaint',$data);
 			$response = array(
 				'status' => true,
 				'msg' => "Complained Succesfuly Registered",
 			);
 		}
-
 		return json_encode($response);
 	}
-
-
 }
 
 ?>

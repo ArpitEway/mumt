@@ -2,7 +2,7 @@
 $("#course_group_id").on('change', function(){
 	var course = $(this).val();
 	var csrfName = $('.csrfname').attr('name');
-    var csrfHash = $('.csrfname').val(); 
+	var csrfHash = $('.csrfname').val(); 
 
 	$.ajax({
 		method: "POST",
@@ -298,7 +298,6 @@ function validation(step){
 	var nationality = $('select[name="nationality"]').val();
 	var religion = $('select[name="religion"]').val();
 
-
 	if(nationality==''){
 		$('select[name="nationality"]').next('div').text('Session is Required');
 		submit = false
@@ -340,12 +339,16 @@ function validation(step){
 	}else{
 		$('select[name="category"]').next('div').text('');
 	}
-	if(photo==''){
-		$('#errPhoto').text('photo is Required');
-		submit = false
-	}else{
-		$('#errPhoto').text('');
+
+	if(!$('input[name="student_id"]').length>0){
+		if(photo==''){
+			$('#errPhoto').text('photo is Required');
+			submit = false
+		}else{
+			$('#errPhoto').text('');
+		}
 	}
+	
 	if(name_hindi==''){
 		$('input[name="name_hindi"]').next('div').text('Name is Required');
 		submit = false

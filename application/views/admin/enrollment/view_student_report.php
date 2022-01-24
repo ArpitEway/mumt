@@ -3,57 +3,49 @@
 <div class="form-group col-md-3">
 	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	<label for="class">Session</label>
-    <select name="session" id="session" class="form-control" >
-    	<option>All</option>
+	<select name="session" id="session" class="form-control" >
+		<option>All</option>
 		<?php 
-        foreach($sessions as $session)
-		{
-        ?>
-		<option value="<?php echo $session['session']; ?>" ><?php echo $session['session']; ?></option>
-		<?php
+		foreach($sessions as $session){
+			?>
+			<option value="<?php echo $session['session']; ?>" ><?php echo $session['session']; ?></option>
+			<?php
 		} 
-		?>		
+		?>
 	</select>
 </div>
 
-
-
 <div class="form-group col-md-3">
-    <label for="center_id">Center</label>
-    <select name="center_id" id="center_id" class="form-control " data-target="#course_group_id" required >
-    <option value="all">All</option>
-    <?php 
-        $centers = $this->db->get_where('center', array())->result_array();
-        foreach($centers as $center)
+	<label for="center_id">Center</label>
+	<select name="center_id" id="center_id" class="form-control " data-target="#course_group_id" required >
+		<option value="all">All</option>
+		<?php 
+		$centers = $this->db->get_where('center', array())->result_array();
+		foreach($centers as $center)
 		{
-        ?>
-		
-		<option value="<?php echo $center['center_id']; ?>"><?php echo $center['center_code'] ." - ". $center['center_name']; ?></option>
-        
-	<?php
-        } 
-    ?> 
-    </select>       
+			?>
+			<option value="<?php echo $center['center_id']; ?>"><?php echo $center['center_code'] ." - ". $center['center_name']; ?></option>
+			<?php
+		} 
+		?> 
+	</select>       
 </div>
 
 
 
 
 <div class="form-group col-md-3">
-            <label for="course">Course</label>
-            <select name="course_group_id" id="course_group_id" class="form-control course_group_id"  required >
-           
-			<option value="all">All</option>
-                <?php 
-                $courses = $this->db->get_where('course', array())->result_array();
-                foreach($courses as $course)
-                {
-                ?>
-				<option value="<?php echo $course['course_group_id']; ?>"><?php echo $course['course_name']; ?></option>
-                <?php
-                } 
-                ?>
-            </select>       
+	<label for="course">Course</label>
+	<select name="course_group_id" id="course_group_id" class="form-control course_group_id"  required >
+		<option value="all">All</option>
+		<?php 
+		$courses = $this->db->get_where('course', array())->result_array();
+		foreach($courses as $course){
+			?>
+			<option value="<?php echo $course['course_group_id']; ?>"><?php echo $course['course_name']; ?></option>
+			<?php
+		} ?>
+	</select>
 </div>
 
 
@@ -107,44 +99,29 @@ $(document).on("click","#submit_btn",function(){
 	$.ajax({
 		url: '<?php echo site_url('admin/enrollment/get_student_data'); ?>',
 
-                type:'post',
-                dataType : 'JSON',
-                data:data,
-                 beforeSend: function()
-              {
-                $("#myLoader").show();
-               },
-                success:function(status)
-                {
-					if( $("#myLoader").show()){
-						$('#dt').hide();
+		type:'post',
+		dataType : 'JSON',
+		data:data,
+		beforeSend: function()
+		{
+			$("#myLoader").show();
+		},
+		success:function(status)
+		{
+			if( $("#myLoader").show()){
+				$('#dt').hide();
 						// $table = $('#dt').html(status.data);
-
 					}if( $('#myLoader').hide()){
 						$table = $('#dt').html(status.data);
 						$('#dt').show();
-						
 					}
-				
-	               KTDatatablesBasicBasic.init();
-                },
-                   complete: function()
-              {
-                $('#myLoader').hide();
-              },
-            })
+					KTDatatablesBasicBasic.init();
+				},
+				complete: function()
+				{
+					$('#myLoader').hide();
+				},
+			})
 
-	// var url = BASE_URL+"admin/director/get_student_consolidate_data"; 
-	// var response = call_ajax(data,url);
-	
-	// console.log(response);
-	
-	// $('#dt').html(response.data);
-	// KTDatatablesBasicBasic.init();
-		 
-	
 });
-	
-
-
 </script>
