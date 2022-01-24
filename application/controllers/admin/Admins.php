@@ -1923,4 +1923,17 @@ public function editForm($student_id = ""){
 		// 		}
 		// 	}
 		// }
+
+		public function updatePassingYear()
+		{
+			$stduent_ids = $this->Common_model->get_record('pass_year_student_data','*');
+			foreach ($stduent_ids as $student) {
+				$where = array('student_id' => $student['student_id']);
+				$data = array('passing_year' => $student['ten_year']);
+				// echo "<pre>";
+				// print_r($data);
+				$this->Common_model->updateRecordByConditions('student_data',$where,$data);
+				echo $this->db->last_query().'<br>';
+			}
+		}
 }// class
