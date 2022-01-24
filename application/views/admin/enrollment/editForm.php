@@ -283,7 +283,7 @@
 						<option value='' >Select State</option>
 						<?php 
 						foreach($state_list as $state){ ?>
-							<option value='<?=$state["name"];?>' <?php if($student_data->c_state == $state["name"]){ echo "selected='selected'";} ?> ><?=$state['name']?></option>
+							<option <?php if($student_data->c_state == $state["name"]){ echo "selected='selected'";} ?> ><?=$state['name']?></option>
 						<?php } ?>
 					</select>
 					<div class="fv-plugins-message-container"></div>
@@ -300,7 +300,7 @@
                         $district_list = $this->db->get_where('distt')->result_array();
 
                             foreach ($district_list as $district) { ?>
-								<option value="<?=$district['name']?>" <?php if($student_data->c_district == $district['name']){ echo "selected='selected'";} ?>  ><?=$district['name']?></option>
+								<option <?php if($student_data->c_district == $district['name']){ echo "selected='selected'";} ?>  ><?=$district['name']?></option>
 							<?php } ?>
 					</select>
 					<div class="fv-plugins-message-container"></div>
@@ -344,7 +344,7 @@
 							<option value='' >Select State</option>
 							<?php 
 							foreach($state_list as $state){ ?>
-								<option value='<?=$state["name"];?>' <?php if($student_data->p_state == $state["name"]){ echo "selected='selected'";} ?> ><?=$state['name']?></option>
+								<option <?php if($student_data->p_state == $state["name"]){ echo "selected='selected'";} ?> ><?=$state['name']?></option>
 							<?php } ?>
 						</select>
 						<div class="fv-plugins-message-container"></div>
@@ -360,7 +360,7 @@
 							<?php
                     $district_list = $this->db->get_where('distt')->result_array();
                             foreach ($district_list as $district) { ?>
-								<option value="<?=$district['name']?>" <?php if($student_data->p_district == $district['name']){ echo "selected='selected'";} ?>  ><?=$district['name']?></option>
+								<option <?php if($student_data->p_district == $district['name']){ echo "selected='selected'";} ?>  ><?=$district['name']?></option>
 							<?php } ?>
 						</select>
 						<div class="fv-plugins-message-container"></div>
