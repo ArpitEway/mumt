@@ -254,4 +254,51 @@
 			echo json_encode($msg);
 			exit();
 		}
+
+
+
+		public function wronguploadDoc(){
+			$student_id = html_escape($this->input->post('student_id'));
+			$document_name = html_escape($this->input->post('document_name'));
+			$document_category_id = html_escape($this->input->post('document_category_id'));
+			$course_group_id = html_escape($this->input->post('course_group_id'));
+			
+			$path = './assets/documents/';
+			$this->load->library('upload');
+				if($_FILES['document']['name']==''){
+					echo 'an error occcerd';
+					exit;
+				}
+				
+				
+				$nextid = $this->Common_model->getNextOrder('admission_document','id');
+				
+				$this->upload->initialize($this->set_upload_options($path,$nextid));
+				if(!$this->upload->do_upload('document')){
+					$error = $this->upload->display_errors();
+					$msg = array('error'=>$error);
+					echo json_encode($msg);
+					exit();
+				}
+				
+			$uploadData = $this->upload->data();
+			
+			$docData['document_name'] = $document_name.' Not Found';
+			$docData['document_image'] = $uploadData['file_name'];
+			$image_name = $uploadData['file_name'];
+			$docData['document_category_id'] = $document_category_id;
+			$docData['status'] = 'Y';
+
+			
+					$docData['student_id'] = $student_id;
+					$docData['course_group_id'] = $course_group_id;
+					$this->Common_model->insertAll('admission_document',$docData);
+			
+			
+			 $msg = array('success'=>"Document Uploaded Successfully",
+			 				
+							);
+			 echo json_encode($msg);
+			exit();
+		}
 	}

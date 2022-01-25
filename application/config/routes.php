@@ -91,10 +91,12 @@ $route['center/student_list/(:any)'] = 'center/center/student_list/$1';
 $route['center/admission_instruction'] = 'center/center/admission_instruction';
 $route['center/loginAs/(:any)'] = 'center/center/loginAs/$1';
 $route['center/Document_uplode'] = 'center/center/Document_uplode';
-$route['center/Document_uplode'] = 'center/center/Document_uplode';
+ $route['center/center/WrongDocument']  = 'center/center/WrongDocument';
+$route['center/Document/uploadwrongDocument'] = 'center/Document/uploadwrongDocument';
+$route['center/Document/remainingDocument'] = 'center/Document/remainingDocument';
 
 
-$route['center/WrongDocument']  = 'center/center/WrongDocument';
+
 $route['center/form_edit_request']  = 'center/center/form_edit_request';
 $route['center/get_request_detail'] = 'center/center/get_request_detail';
 

@@ -821,25 +821,19 @@ public function Document_uplode(){
       
 		$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
 
-		echo $this->load->view('Centers/documentnewlist',$data);
+		 $this->load->view('Centers/documentnewlist',$data);
 		$this->load->view('Centers/footer');
 	}	
 
 
 	public function WrongDocument($student_id){
+		
 			if($student_id!=''){
 				$student = $this->Common_model->getRecordById('student','student_id',$student_id);
 				$remark = $student->remark;
-			$admissionDocWhere = " student_id = ".$student_id." and document_category_id in  (".$remark.") and status='N'";
-			$admissionDocCount = $this->Common_model->getCountByWhere('admission_document',$admissionDocWhere);
-			$remarkCount= substr_count($remark,',');
-			$remarkCount+=1;
-			if($admissionDocCount==$remarkCount){
-			$this->session->set_flashdata('warning',"Document Already Submited");
-				redirect(base_url('center/Document_uplode'));
-			}
+		
 				$where = ' id in ( '.$remark.' ) ';
-				$document = $this->Common_model->getRecordByWhere('admission_document',$where);
+				$document = $this->Common_model->getRecordByWhere('document_category',$where);
 				$titleData = array('title' => 'Unapproved Document List');
 				
 				$data = array(

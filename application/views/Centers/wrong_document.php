@@ -3,10 +3,10 @@
 	$docCatId = array();
 	$d=0;
 	foreach($documentData as $document){
-		if($document->status=='N'){
+		if($document->status=='Y'){
 			continue;
 		}
-			$docCatId[$d] = 'docCatId_'.$document->id;
+			$docCatId[$d] = 'docCatId_'.$document['id'];
 			$d++;
 	}
 ?>
@@ -69,35 +69,22 @@
 </div>
 </div>
 	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-<form method="post" action="<?=base_url('student/Document/uploadDoc');?>" enctype='multipart/form-data' id="target" >
+<form method="post" action="" enctype='multipart/form-data' id="target" >
 	<div id="loader">
 	</div>
 	<div class="row input-div">
-		<input type="hidden" name="course_group_id" id="course_group_id" value="<?=$courseData->id; ?>" >
+		<input type="hidden" name="course_group_id" id="course_group_id" value="<?=$student->course_group_id; ?>" >
 		<input type="hidden" name="student_id" id="student_id" value="<?=$student->student_id; ?>" >
 		
 		<?php 		foreach($documentData as $document){ 
 
-			if($document->document=='Marriage Certificate'){
-				if($student->gender=='Male' || ($student->marital_status=='Unmarried' && $student->gender=='Female')){
-					continue;
-				}
-			}
+			
 			?>
 			<div class="col-md-6">
 				<div class="form-group">
-					<label class="w-100"><?=$document->document;?><strong class="text-danger"><?= ($document->status=='N') ? '' : ' *'; ?></strong>
+					<label class="w-100"><?=$document->document;?><strong class="text-danger"><?= ($document->status=='Y') ? '' : ' *'; ?></strong>
 						<span class="float-right" id="<?='downloadBtnId_'.$document->id?>">
-							<?php 
-							$file = $this->Common_model->GetAdmissonDocFile($student->student_id,$document->id);
-							if($file){
-								$src = 'assets/documents/'.$file;
-								?>
-								<a href="<?=base_url($src);?>" download>
-									Download
-								</a>
-							<?php }
-							?>
+							
 						</span>
 					</label>
 
@@ -157,7 +144,7 @@
 				myFormData.append([csrfName], csrfHash);
 				$('#loader').addClass('loading');
 				$.ajax({
-					url: "<?=base_url('center/Document/uploadDoc');?>",
+					url: "<?=base_url('center/Document/wronguploadDoc');?>",
 					type: 'POST',
 					processData: false, // important
 					contentType: false, // important
@@ -166,7 +153,7 @@
 					success: function (data) {
 						$('#loader').removeClass('loading');
 						if(data.success){
-							$('#downloadBtnId_'+id).html(data.btn);
+				
 							toastr.success(data.success);
 							}else{
 							toastr.error(data.error);
@@ -176,30 +163,5 @@
 			}
 		}
 	});
-	
-	$("#submit").on('click',function (e){
-	  e.preventDefault();
-	$('#loader').addClass('loading');
-	var course_group_id = $('#course_group_id').val();
-	var student_id = $('#student_id').val();
-		var csrfName = $('.csrfname').attr('name');
-		var csrfHash = $('.csrfname').val(); 
-		$.ajax({
-			url: "<?=base_url('center/Document/checkDocumentStatus');?>",
-			type: 'POST',
-			dataType : 'json',
-			data: {student_id:student_id,course_group_id:course_group_id, [csrfName]: csrfHash},
-			success: function (data) {
-				$('#loader').removeClass('loading');
-				if(data.success){
-					toastr.success(data.success);
-					window.location.href = BASE_URL+"center/dashboard";
-					return false;
-					}else{
-					toastr.error(data.error);
-					return false;
-				}
-			},
-		});
-	});
+
 </script>
