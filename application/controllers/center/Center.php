@@ -826,7 +826,7 @@ public function Document_uplode(){
 	}	
 
 
-	public function WrongDocument($student_id){
+	public function madetoapproval($student_id){
 		
 			if($student_id!=''){
 				$student = $this->Common_model->getRecordById('student','student_id',$student_id);
@@ -839,9 +839,11 @@ public function Document_uplode(){
 				$data = array(
 					'student' => $student,
 					'documentData' => $document,
+					'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
 				);
 			$this->load->view('Centers/header',$titleData);
-			$this->load->view('Centers/wrong_document',$data);
+			$this->load->view('Centers/madetoapproval',$data);
 			$this->load->view('Centers/footer');
 			}
 		}

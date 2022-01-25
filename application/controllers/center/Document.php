@@ -257,12 +257,19 @@
 
 
 
-		public function wronguploadDoc(){
+	public function nonapproveuploadDoc(){
 			$student_id = html_escape($this->input->post('student_id'));
 			$document_name = html_escape($this->input->post('document_name'));
 			$document_category_id = html_escape($this->input->post('document_category_id'));
 			$course_group_id = html_escape($this->input->post('course_group_id'));
-			
+
+	        $admissionDocWhere = " student_id = ".$student_id." and document_category_id = ".$document_category_id;
+			$admissionDocCount = $this->Common_model->getCountByWhere('admission_document',$admissionDocWhere);
+
+			$csrf = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		     );
 			$path = './assets/documents/';
 			$this->load->library('upload');
 				if($_FILES['document']['name']==''){
@@ -270,9 +277,12 @@
 					exit;
 				}
 				
-				
+
+				if($admissionDocCount>0){
+				$nextid = $this->Common_model->getSinglefield('admission_document','id',$admissionDocWhere);
+				}else{	
 				$nextid = $this->Common_model->getNextOrder('admission_document','id');
-				
+				}
 				$this->upload->initialize($this->set_upload_options($path,$nextid));
 				if(!$this->upload->do_upload('document')){
 					$error = $this->upload->display_errors();
@@ -290,14 +300,12 @@
 			$docData['status'] = 'Y';
 
 			
-					$docData['student_id'] = $student_id;
-					$docData['course_group_id'] = $course_group_id;
-					$this->Common_model->insertAll('admission_document',$docData);
-			
+			$docData['student_id'] = $student_id;
+			$docData['course_group_id'] = $course_group_id;
+			$this->Common_model->insertAll('admission_document',$docData);
 			
 			 $msg = array('success'=>"Document Uploaded Successfully",
-			 				
-							);
+			 				);
 			 echo json_encode($msg);
 			exit();
 		}

@@ -91,8 +91,8 @@ $route['center/student_list/(:any)'] = 'center/center/student_list/$1';
 $route['center/admission_instruction'] = 'center/center/admission_instruction';
 $route['center/loginAs/(:any)'] = 'center/center/loginAs/$1';
 $route['center/Document_uplode'] = 'center/center/Document_uplode';
- $route['center/center/WrongDocument']  = 'center/center/WrongDocument';
-$route['center/Document/uploadwrongDocument'] = 'center/Document/uploadwrongDocument';
+ $route['center/center/madetoapproval']  = 'center/center/madetoapproval';
+//$route['center/Document/nonapproveuploadDoc'] = 'center/Document/nonapproveuploadDoc';
 $route['center/Document/remainingDocument'] = 'center/Document/remainingDocument';
 
 

@@ -26,7 +26,7 @@
 					<td><?php echo $document->class_name; ?> </td>
                  
 	
-					<td> <a class="btn btn-primary" href="<?=base_url('center/center/WrongDocument/'.$document->student_id)?>">Uplode Document</a></td>
+					<td> <a class="btn btn-primary" href="<?=base_url('center/center/madetoapproval/'.$document->student_id)?>">Uplode Document</a></td>
 					
 					<?php
 					$i++;
