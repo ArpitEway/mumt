@@ -94,6 +94,9 @@
 						<label class="custom-file-label" for="<?='docCatId_'.$document->id?>"></label>
 					</div>
 					<div class="fv-plugins-message-container"></div>
+					<div class="col-md-4" id="<?='downloadBtnId_'.$document->id;?>">
+					
+						</div>
 				</div>
 			</div>
 		<?php } ?>
@@ -101,7 +104,7 @@
 
 
 	<div class="row justify-content-center my-3">
-		<a href="<?=base_url('center/Document_uplode')?>" class="btn btn-primary">Go for approve</a>
+		<a href="<?=base_url('center/non_approve_student_list')?>" class="btn btn-primary">Go for approve</a>
 	</div>
 </form>
  <script>
@@ -146,7 +149,7 @@
 					success: function (data) {
 						$('#loader').removeClass('loading');
 						if(data.success){
-				
+				     $('#downloadBtnId_'+id).html(data.btn);
 							toastr.success(data.success);
 							}else{
 							toastr.error(data.error);

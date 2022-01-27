@@ -814,6 +814,7 @@ public function non_approve_student_list(){
        $titleData = array('title' => 'Students Remarks Document' );
 		$this->load->view('Centers/header',$titleData);
 
+
       $center_id =  $this->session->center_id;
         $where = array(
  	        'approved' =>'N',
@@ -824,8 +825,8 @@ public function non_approve_student_list(){
 
 		 $this->load->view('Centers/non_approve_student_list',$data);
 		$this->load->view('Centers/footer');
-	}	
-
+		
+}
 
 	public function madetoapproval($student_id){
 		

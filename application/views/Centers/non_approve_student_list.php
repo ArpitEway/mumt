@@ -25,11 +25,22 @@
 					<td><?php echo $document->course_name; ?> </td>
 					<td><?php echo $document->class_name; ?> </td>
                  
-	
-					<td> <a class="btn btn-primary" href="<?=base_url('center/center/madetoapproval/'.$document->student_id)?>">Upload Document</a></td>
-					
-					<?php
-					$i++;
+<td>
+  <?php
+  
+$admissionDocCount = $this->Common_model->getCountByWhere('admission_document'," student_id = ".$document->student_id." and  status='N'");
+if($admissionDocCount){
+echo "Doument Uploaded"; 
+		}
+else { ?>
+<a class="btn btn-primary" href="<?=base_url('center/center/madetoapproval/'.$document->student_id)?>">Upload Document</a>
+
+	<?php
+	}
+	?></td>
+
+<?php
+$i++;
 				} 
 				?>
 			</tbody>

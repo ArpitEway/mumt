@@ -297,7 +297,7 @@
 			$docData['document_image'] = $uploadData['file_name'];
 			$image_name = $uploadData['file_name'];
 			$docData['document_category_id'] = $document_category_id;
-			$docData['status'] = 'Y';
+			$docData['status'] = 'N';
 
 			
 			$docData['student_id'] = $student_id;
@@ -305,7 +305,9 @@
 			$this->Common_model->insertAll('admission_document',$docData);
 			
 			 $msg = array('success'=>"Document Uploaded Successfully",
-			 				);
+
+			 	'btn' => "<a href='".base_url('assets/documents/'.$image_name)."' download>Download</a>",
+			 			);
 			 echo json_encode($msg);
 			exit();
 		}
