@@ -189,8 +189,8 @@
 				<label>Nationality:</label><span class="text-danger"> *</span>
 				<select name="nationality" class="form-control ">
 					<option value="">Select Nationality</option>
-					<option value="Indian" <?php if($student_data->nationality == 'Indian'){ echo "selected"; } ?>>Indian</option>
-					<option value="Other" <?php if($student_data->nationality == 'Other'){ echo "selected"; } ?>>Other </option>
+					<option value="Indian" selected <?php if($student_data->nationality == 'Indian'){ echo "selected='selected'"; } ?>>Indian</option>
+					<option value="Other" <?php if($student_data->nationality == 'Other'){ echo "selected='selected'"; } ?>>Other </option>
 				</select>
 				<div class="fv-plugins-message-container"></div>
 			</div>
@@ -200,10 +200,10 @@
 				<label>Religion:</label><span class="text-danger"> *</span>
 				<select name="religion" class="form-control ">
 					<option value="">Select Religion</option>
-					<option value="Hindu" <?php if($student_data->religion == 'Hindu'){ echo "selected"; } ?> >Hindu</option>
-					<option value="Muslim" <?php if($student_data->religion == 'Muslim'){ echo "selected"; } ?>>Muslim </option>
-					<option value="Sikh" <?php if($student_data->religion == 'Sikh'){ echo "selected"; } ?>>Sikh </option>
-					<option value="Christian" <?php if($student_data->religion == 'Christian'){ echo "selected"; } ?>>Christian</option>
+					<option value="Hindu" <?php if($student_data->religion == 'Hindu'){ echo "selected='selected'"; } ?> >Hindu</option>
+					<option value="Muslim" <?php if($student_data->religion == 'Muslim'){ echo "selected='selected'"; } ?>>Muslim </option>
+					<option value="Sikh" <?php if($student_data->religion == 'Sikh'){ echo "selected='selected'"; } ?>>Sikh </option>
+					<option value="Christian" <?php if($student_data->religion == 'Christian'){ echo "selected='selected'"; } ?>>Christian</option>
 				</select>
 				<div class="fv-plugins-message-container"></div>
 			</div>
@@ -213,10 +213,10 @@
 				<label>Category:</label><span class="text-danger"> *</span>
 				<select name="category" class="form-control ">
 					<option value="">Select Category</option>
-					<option <?php if($student_detail->category == 'General'){ echo "selected"; } ?>>General</option>
-					<option <?php if($student_detail->category == 'OBC'){ echo "selected"; } ?>>OBC</option>
-					<option <?php if($student_detail->category == 'ST'){ echo "selected"; } ?>>ST</option>
-					<option <?php if($student_detail->category == 'SC'){ echo "selected"; } ?>>SC</option>
+					<option <?php if($student_detail->category == 'General'){ echo "selected='selected'"; } ?>>General</option>
+					<option <?php if($student_detail->category == 'OBC'){ echo "selected='selected'"; } ?>>OBC</option>
+					<option <?php if($student_detail->category == 'ST'){ echo "selected='selected'"; } ?>>ST</option>
+					<option <?php if($student_detail->category == 'SC'){ echo "selected='selected'"; } ?>>SC</option>
 				</select>
 				<div class="fv-plugins-message-container"></div>
 			</div>
@@ -283,7 +283,7 @@
 						<option value='' >Select State</option>
 						<?php 
 						foreach($state_list as $state){ ?>
-							<option value='<?=$state["state_id"];?>' <?php if($student_data->c_state == $state["state_id"]){ echo "selected";} ?> ><?=$state['name']?></option>
+							<option <?php if($student_data->c_state == $state["name"]){ echo "selected='selected'";} ?> ><?=$state['name']?></option>
 						<?php } ?>
 					</select>
 					<div class="fv-plugins-message-container"></div>
@@ -297,10 +297,10 @@
 					<select class="form-control  district" name="c_district" id="c_district">
 						<option value='' >Select District</option>
                         <?php
-                        $district_list = $this->db->get_where('distt', array("state_id"=> $student_data->c_state))->result_array();
+                        $district_list = $this->db->get_where('distt')->result_array();
 
                             foreach ($district_list as $district) { ?>
-								<option value="<?=$district['distt_id']?>" <?php if($student_data->c_district == $district['distt_id']){ echo "selected";} ?>  ><?=$district['name']?></option>
+								<option <?php if($student_data->c_district == $district['name']){ echo "selected='selected'";} ?>  ><?=$district['name']?></option>
 							<?php } ?>
 					</select>
 					<div class="fv-plugins-message-container"></div>
@@ -344,7 +344,7 @@
 							<option value='' >Select State</option>
 							<?php 
 							foreach($state_list as $state){ ?>
-								<option value='<?=$state["state_id"];?>' <?php if($student_data->p_state == $state["state_id"]){ echo "selected";} ?> ><?=$state['name']?></option>
+								<option <?php if($student_data->p_state == $state["name"]){ echo "selected='selected'";} ?> ><?=$state['name']?></option>
 							<?php } ?>
 						</select>
 						<div class="fv-plugins-message-container"></div>
@@ -358,12 +358,10 @@
 						<select class="form-control  district" name="p_district" id="p_district">
 							<option value='' >Select District</option>
 							<?php
-                        $district_list = $this->db->get_where('distt', array("state_id"=> $student_data->p_state))->result_array();
-
+                    $district_list = $this->db->get_where('distt')->result_array();
                             foreach ($district_list as $district) { ?>
-								<option value="<?=$district['distt_id']?>" <?php if($student_data->p_district == $district['distt_id']){ echo "selected";} ?>  ><?=$district['name']?></option>
+								<option <?php if($student_data->p_district == $district['name']){ echo "selected='selected'";} ?>  ><?=$district['name']?></option>
 							<?php } ?>
-                            
 						</select>
 						<div class="fv-plugins-message-container"></div>
 					</div>
@@ -415,7 +413,7 @@
 						<select class="form-control" name="passing_year">
 							<option value="">---Select---</option>
 							<?php for ($year=2021; $year > 1995; $year--) { ?>
-								<option <?php if($student_data->passing_year == $year){ echo "selected";} ?>><?=$year?></option>
+								<option <?php if($student_data->passing_year == $year){ echo "selected='selected'";} ?>><?=$year?></option>
 							<?php } ?>
 						</select>
 						<div class="fv-plugins-message-container"></div>
@@ -437,12 +435,9 @@
 				
 			</div>
 			<div class="row">
-
 				<input type="hidden" name="student_id" id="student_id"  value="<?=$student_detail->student_id;?>">
 				<input type="hidden" name="center_id"  id="center_id"   value="<?=$student_detail->center_id;?>" >
-
 				<input type="button" name="edit_submit" id="edit_submit" class="btn btn-primary m-auto" value="submit">
-			
 			</div>
 		</div>
 	</form>

@@ -259,7 +259,7 @@
 						<option value='' >Select State</option>
 						<?php 
 						foreach($state_list as $state){ ?>
-							<option value='<?=$state["state_id"];?>' ><?=$state['name']?></option>
+							<option><?=$state['name']?></option>
 						<?php } ?>
 					</select>
 					<div class="fv-plugins-message-container"></div>
@@ -315,7 +315,7 @@
 							<option value='' >Select State</option>
 							<?php 
 							foreach($state_list as $state){ ?>
-								<option value='<?=$state["state_id"];?>' ><?=$state['name']?></option>
+								<option ><?=$state['name']?></option>
 							<?php } ?>
 						</select>
 						<div class="fv-plugins-message-container"></div>
@@ -329,7 +329,7 @@
 						<select class="form-control  district" name="p_district" id="p_district">
 							<option value='' >Select District</option>
 							<?php foreach ($district_list as $district) { ?>
-								<option value="<?=$district['distt_id']?>"><?=$district['name']?></option>
+								<option><?=$district['name']?></option>
 							<?php } ?>
 						</select>
 						<div class="fv-plugins-message-container"></div>

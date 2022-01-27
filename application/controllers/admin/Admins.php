@@ -1777,7 +1777,7 @@ public function center_login_section($param1 = '', $param2 = '', $param3 = '')
 			$center_code = $this->Common_model->encrypt_decrypt($result->center_code,'encrypt');
 			$btn ='<a class="btn btn-primary"  href="'.base_url('center/loginAs/').$center_code.'" target="_blank" >Log As</a>' ;
 			$i++;
-			$data[] = array($i, $result->center_code, $result->center_name, $result->contactpersonname,$result->mobile_no_1,$btn);
+			$data[] = array($i,$result->id, $result->center_code, $result->center_name, $result->contactpersonname,$result->mobile_no_1,$btn);
 		}
 		$output = array(
 			"draw" => $_POST['draw'],
@@ -1923,4 +1923,17 @@ public function editForm($student_id = ""){
 		// 		}
 		// 	}
 		// }
+
+		public function updatePassingYear()
+		{
+			$stduent_ids = $this->Common_model->get_record('pass_year_student_data','*');
+			foreach ($stduent_ids as $student) {
+				$where = array('student_id' => $student['student_id']);
+				$data = array('passing_year' => $student['ten_year']);
+				// echo "<pre>";
+				// print_r($data);
+				$this->Common_model->updateRecordByConditions('student_data',$where,$data);
+				echo $this->db->last_query().'<br>';
+			}
+		}
 }// class

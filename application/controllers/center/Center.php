@@ -149,8 +149,9 @@ class Center extends CI_Controller {
 
 	public function getDistrictByState(){
 		$state = $this->input->post('state');
+		$state_id = $this->Common_model->getSinglefield('state','state_id',array('name' => $state));
 		$nameAttr = $this->input->post('nameAttr');
-		$districts = $this->Common_model->get_record('distt','*',"state_id='".$state."'");
+		$districts = $this->Common_model->get_record('distt','*',"state_id='".$state_id."'");
 		$data = array(
 			'district_list' => $districts,
 			'nameAttr' => $nameAttr
