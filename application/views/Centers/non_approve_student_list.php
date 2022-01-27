@@ -16,6 +16,15 @@
 
 			$i = 1;
 			foreach($documents as $document){
+
+	       $remark = $document->remark;
+			$admissionDocWhere = " student_id = ".$document->student_id." and document_category_id in  (".$remark.") and status='N'";
+			$admissionDocCount = $this->Common_model->getCountByWhere('admission_document',$admissionDocWhere);
+			$remarkCount= substr_count($remark,',');
+			$remarkCount+=1;
+     
+        if(!$admissionDocCount==$remarkCount){
+ 
 				?>
 				<tr>
 					<td><?php echo $i; ?></td>
@@ -25,24 +34,14 @@
 					<td><?php echo $document->course_name; ?> </td>
 					<td><?php echo $document->class_name; ?> </td>
                  
-<td>
-  <?php
-  
-$admissionDocCount = $this->Common_model->getCountByWhere('admission_document'," student_id = ".$document->student_id." and  status='N'");
-if($admissionDocCount){
-echo "Doument Uploaded"; 
-		}
-else { ?>
-<a class="btn btn-primary" href="<?=base_url('center/center/madetoapproval/'.$document->student_id)?>">Upload Document</a>
-
-	<?php
-	}
-	?></td>
+       <td>
+      <a class="btn btn-primary" href="<?=base_url('center/center/madetoapproval/'.$document->student_id)?>">Upload Document</a>
+	</td>
 
 <?php
 $i++;
-				} 
-				?>
-			</tbody>
-		</table>
-	</div>
+		}} 
+	?>
+        </tbody>
+       </table>
+        </div>
