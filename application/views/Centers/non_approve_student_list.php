@@ -1,4 +1,4 @@
-<div class="container mt-5" >
+<div class=" mt-5" >
 <table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
 			<thead>
 				<tr>
@@ -26,7 +26,7 @@
 					<td><?php echo $document->class_name; ?> </td>
                  
 	
-					<td> <a class="btn btn-primary" href="<?=base_url('center/center/madetoapproval/'.$document->student_id)?>">Uplode Document</a></td>
+					<td> <a class="btn btn-primary" href="<?=base_url('center/center/madetoapproval/'.$document->student_id)?>">Upload Document</a></td>
 					
 					<?php
 					$i++;

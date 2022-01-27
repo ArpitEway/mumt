@@ -809,7 +809,7 @@ class Center extends CI_Controller {
 
 
 
-public function Document_uplode(){
+public function non_approve_student_list(){
 
        $titleData = array('title' => 'Students Remarks Document' );
 		$this->load->view('Centers/header',$titleData);
@@ -822,7 +822,7 @@ public function Document_uplode(){
       
 		$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
 
-		 $this->load->view('Centers/documentnewlist',$data);
+		 $this->load->view('Centers/non_approve_student_list',$data);
 		$this->load->view('Centers/footer');
 	}	
 
