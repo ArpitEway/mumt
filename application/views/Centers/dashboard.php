@@ -50,7 +50,11 @@
 							<span class="nav-text">Upload Admission Document</span>
 						</div>
 					</a>
-
+					<a class="border-0 custom-menu-item" href="<?=base_url('center/not_approve_student_list');?>">
+						<div>
+							<span class="nav-text">Unapprove Student List</span>
+						</div>
+					</a>
 				</div>
 			</div>
 			<div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
