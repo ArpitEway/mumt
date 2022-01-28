@@ -811,7 +811,7 @@ class Center extends CI_Controller {
 
 	public function not_approve_student_list(){
 
-		$titleData = array('title' => 'Not Approved Student List' );
+		$titleData = array('title' => 'Unapproved Student List' );
 		$this->load->view('Centers/header',$titleData);
 
 		$center_id =  $this->session->center_id;
