@@ -1,14 +1,13 @@
-<?php  
-	
-	$docCatId = array();
-	$d=0;
-	foreach($documentData as $document){
-		if($document->status=='Y'){
-			continue;
-		}
-			$docCatId[$d] = 'docCatId_'.$document->id;
-			$d++;
+<?php
+$docCatId = array();
+$d=0;
+foreach($documentData as $document){
+	if($document->status=='Y'){
+		continue;
 	}
+	$docCatId[$d] = 'docCatId_'.$document->id;
+	$d++;
+}
 ?>
 <script>
 	var docCatIdArray = [<?php echo '"'.implode('","',  $docCatId ).'"' ?>];
@@ -68,7 +67,7 @@
 	</div>
 </div>
 </div>
- 	 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">  
+	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 <form method="post" action="" enctype='multipart/form-data' id="target" >
 	<div id="loader">
 	</div>
@@ -76,11 +75,8 @@
 		<input type="hidden" name="course_group_id" id="course_group_id" value="<?=$student->course_group_id; ?>">
 		<input type="hidden" name="student_id" id="student_id" value="<?=$student->student_id; ?>">
 		
-		<?php 		foreach($documentData as $document){ 
-
-			
-			?>
-			<div class="col-md-6">
+		<?php	foreach($documentData as $document){ ?>
+			<div class="col-md-5">
 				<div class="form-group">
 					<label class="w-100"><?=$document->document;?><strong class="text-danger"><?= ($document->status=='Y') ? '' : '*'; ?></strong>	
 					</label>
@@ -94,9 +90,10 @@
 						<label class="custom-file-label" for="<?='docCatId_'.$document->id?>"></label>
 					</div>
 					<div class="fv-plugins-message-container"></div>
-					<div class="col-md-4" id="<?='downloadBtnId_'.$document->id;?>">
-					
-						</div>
+				</div>
+			</div>
+			<div class="col-1 m-auto">
+				<div id="<?='downloadBtnId_'.$document->id;?>">
 				</div>
 			</div>
 		<?php } ?>
@@ -104,7 +101,7 @@
 
 
 	<div class="row justify-content-center my-3">
-		<a href="<?=base_url('center/non_approve_student_list')?>" class="btn btn-primary">Go for approve</a>
+		<a href="<?=base_url('center/not_approve_student_list')?>" class="btn btn-primary">Go for approve</a>
 	</div>
 </form>
  <script>
@@ -140,7 +137,7 @@
 				myFormData.append([csrfName], csrfHash);
 				$('#loader').addClass('loading');
 				$.ajax({
-					url: "<?=base_url('center/Document/nonapproveuploadDoc');?>",
+					url: "<?=base_url('center/Document/notapproveuploadDoc');?>",
 					type: 'POST',
 					processData: false, 
 					contentType: false, 
@@ -159,7 +156,4 @@
 			}
 		}
 	});
-
 </script>
-
- 

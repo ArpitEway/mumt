@@ -35,7 +35,8 @@
 					<td><?php echo $document->class_name; ?> </td>
                  
        <td>
-      <a class="btn btn-primary" href="<?=base_url('center/center/madetoapproval/'.$document->student_id)?>">Upload Document</a>
+       	<?php $student_id = $this->Common_model->encrypt_decrypt($document->student_id); ?>
+      <a class="btn btn-primary" href="<?=base_url('center/center/remaining_documents/'.$student_id)?>">Upload Document</a>
 	</td>
 
 <?php

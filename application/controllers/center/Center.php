@@ -809,51 +809,42 @@ class Center extends CI_Controller {
 
 
 
-public function non_approve_student_list(){
+	public function not_approve_student_list(){
 
-       $titleData = array('title' => 'Students Remarks Document' );
+		$titleData = array('title' => 'Not Approved Student List' );
 		$this->load->view('Centers/header',$titleData);
 
-
-      $center_id =  $this->session->center_id;
-        $where = array(
- 	        'approved' =>'N',
-	    	'center_id' => $center_id,
+		$center_id =  $this->session->center_id;
+		$where = array(
+			'approved' =>'N',
+			'center_id' => $center_id,
 		);
-      
+
 		$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
 
-		 $this->load->view('Centers/non_approve_student_list',$data);
-		$this->load->view('Centers/footer');
-		
-}
+		$this->load->view('Centers/not_approve_student_list',$data);
+		$this->load->view('Centers/footer');		
+	}
 
-	public function madetoapproval($student_id){
-		
-			if($student_id!=''){
-				$student = $this->Common_model->getRecordById('student','student_id',$student_id);
-				$remark = $student->remark;
-		
-				$where = ' id in ( '.$remark.' ) ';
-				$document = $this->Common_model->getRecordByWhere('document_category',$where);
-				$titleData = array('title' => 'Unapproved Document List');
-				
-				$data = array(
-					'student' => $student,
-					'documentData' => $document,
-					'name_csrf' => $this->security->get_csrf_token_name(),
+	public function remaining_documents($student_id){
+		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		if($student_id!=''){
+			$student = $this->Common_model->getRecordById('student','student_id',$student_id);
+			$remark = $student->remark;
+
+			$where = ' id in ( '.$remark.' ) ';
+			$document = $this->Common_model->getRecordByWhere('document_category',$where);
+			$titleData = array('title' => 'Unapproved Document List');
+
+			$data = array(
+				'student' => $student,
+				'documentData' => $document,
+				'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash(),
-				);
+			);
 			$this->load->view('Centers/header',$titleData);
-			$this->load->view('Centers/madetoapproval',$data);
+			$this->load->view('Centers/remaining_documents',$data);
 			$this->load->view('Centers/footer');
-			}
 		}
-
-
-
-
-
-
-
+	}
 }

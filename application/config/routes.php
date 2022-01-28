@@ -90,8 +90,8 @@ $route['center/show_fees/(:any)'] = 'center/center/show_fees/$1';
 $route['center/student_list/(:any)'] = 'center/center/student_list/$1';
 $route['center/admission_instruction'] = 'center/center/admission_instruction';
 $route['center/loginAs/(:any)'] = 'center/center/loginAs/$1';
-$route['center/non_approve_student_list'] = 'center/center/non_approve_student_list';
-$route['center/center/madetoapproval']  = 'center/center/madetoapproval';
+$route['center/not_approve_student_list'] = 'center/center/not_approve_student_list';
+$route['center/center/remaining_documents']  = 'center/center/remaining_documents';
 $route['center/Document/remainingDocument'] = 'center/Document/remainingDocument';
 
 

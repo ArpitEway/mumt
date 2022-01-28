@@ -178,32 +178,6 @@
 					exit();
 		}
 
-		public function remainingDocument($student_id){
-			if($student_id!=''){
-				$student = $this->Common_model->getRecordById('student','student_id',$student_id);
-				$remark = $student->remark;
-			$admissionDocWhere = " student_id = ".$student_id." and document_category_id in  (".$remark.") and status='N'";
-			$admissionDocCount = $this->Common_model->getCountByWhere('admission_document',$admissionDocWhere);
-			$remarkCount= substr_count($remark,',');
-			$remarkCount+=1;
-			if($admissionDocCount==$remarkCount){
-			$this->session->set_flashdata('warning',"Document Already Submited");
-				redirect(base_url('student/dashboard'));
-			}
-				$where = ' id in ( '.$remark.' ) ';
-				$document = $this->Common_model->getRecordByWhere('document_category',$where);
-				$titleData = array('title' => 'Unapproved Document List');
-				
-				$data = array(
-					'student' => $student,
-					'documentData' => $document,
-				);
-			$this->load->view('Centers/header',$titleData);
-			$this->load->view('Centers/remaining_document',$data);
-			$this->load->view('Centers/footer');
-			}
-		}
-		
 		public function uploadRemainingDocument(){
 			$student_id = html_escape($this->input->post('student_id'));
 			$document_name = html_escape($this->input->post('document_name'));
@@ -255,42 +229,40 @@
 			exit();
 		}
 
-
-
-	public function nonapproveuploadDoc(){
+		public function notapproveuploadDoc(){
 			$student_id = html_escape($this->input->post('student_id'));
 			$document_name = html_escape($this->input->post('document_name'));
 			$document_category_id = html_escape($this->input->post('document_category_id'));
 			$course_group_id = html_escape($this->input->post('course_group_id'));
 
-	        $admissionDocWhere = " student_id = ".$student_id." and document_category_id = ".$document_category_id;
+			$admissionDocWhere = " student_id = ".$student_id." and document_category_id = ".$document_category_id;
 			$admissionDocCount = $this->Common_model->getCountByWhere('admission_document',$admissionDocWhere);
 
 			$csrf = array(
-			'name_csrf' => $this->security->get_csrf_token_name(),
-			'hash_csrf' => $this->security->get_csrf_hash()
-		     );
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash()
+			);
 			$path = './assets/documents/';
 			$this->load->library('upload');
-				if($_FILES['document']['name']==''){
-					echo 'an error occcerd';
-					exit;
-				}
-				
+			if($_FILES['document']['name']==''){
+				echo 'an error occcerd';
+				exit;
+			}
+			
 
-				if($admissionDocCount>0){
+			if($admissionDocCount>0){
 				$nextid = $this->Common_model->getSinglefield('admission_document','id',$admissionDocWhere);
-				}else{	
+			}else{	
 				$nextid = $this->Common_model->getNextOrder('admission_document','id');
-				}
-				$this->upload->initialize($this->set_upload_options($path,$nextid));
-				if(!$this->upload->do_upload('document')){
-					$error = $this->upload->display_errors();
-					$msg = array('error'=>$error);
-					echo json_encode($msg);
-					exit();
-				}
-				
+			}
+			$this->upload->initialize($this->set_upload_options($path,$nextid));
+			if(!$this->upload->do_upload('document')){
+				$error = $this->upload->display_errors();
+				$msg = array('error'=>$error);
+				echo json_encode($msg);
+				exit();
+			}
+			
 			$uploadData = $this->upload->data();
 			
 			$docData['document_name'] = $document_name.' Not Found';
@@ -304,11 +276,11 @@
 			$docData['course_group_id'] = $course_group_id;
 			$this->Common_model->insertAll('admission_document',$docData);
 			
-			 $msg = array('success'=>"Document Uploaded Successfully",
+			$msg = array('success'=>"Document Uploaded Successfully",
 
-			 	'btn' => "<a href='".base_url('assets/documents/'.$image_name)."' download>Download</a>",
-			 			);
-			 echo json_encode($msg);
+				'btn' => "<a href='".base_url('assets/documents/'.$image_name)."' download>Download</a>",
+			);
+			echo json_encode($msg);
 			exit();
 		}
 	}
