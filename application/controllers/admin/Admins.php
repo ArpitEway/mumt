@@ -1936,4 +1936,94 @@ public function editForm($student_id = ""){
 				echo $this->db->last_query().'<br>';
 			}
 		}
+
+
+public function payment_complaint(){
+			$segment = $this->uri->segment(2);
+		
+		$this->load->view('header',array('title' => 'view payment complaint'));
+
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+			'segment' => $segment
+		);
+
+		$this->load->view('admin/view_payment_complaint',$data);
+		$this->load->view('footer');
+		}
+
+
+public function get_payment_complaints()
+	{
+		
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url('admin'));
+			exit;
+		}
+		
+		$text_val =$this->input->post('text_val');
+		$radio_val = $this->input->post('radio_val');
+		$segment = $this->input->post('segment');
+
+
+    $where = array('student_id'=>$text_val);
+    $where = array('enrollment_no'=>$text_val);  
+
+	$wherecenter = 'student_id='.$where.' and status="Pending"';
+	$student_detail = $this->Common_model->get_record('payment_complaint','*',$wherecenter);
+	
+	$data = array('student_detail' => $student_detail ,'name_csrf' => $this->security->get_csrf_token_name(),
+	'hash_csrf' => $this->security->get_csrf_hash());
+
+
+    $student_id = $this->Common_model->encrypt_decrypt($where,'decrypt');
+	$student = $this->Common_model->getRecordById('student','student_id',$student_id);
+	$paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student_id));
+	$data = array(
+		'student' => $student,
+		'paymentDetails' => $paymentDetails,
+	
+	);
+
+
+	if($data){
+		$dt =  $this->load->view('admin/getPaymentComplaints',$data,true);
+		$status = true;
+	}else{
+		$dt = "This student Does Not Have Any Pending payment Complaint";
+		$status = false;
+	}
+	echo json_encode(array(
+	"status" => $status,
+	"data" => $dt
+	));
+
+		
+  	}
+	
+
+
+
+public function updatePaymentTransaction()
+	{
+		$id = $this->input->post('id');
+		$txnid = $this->input->post('TxnId');
+		$dateTime = $this->input->post('dateTime');
+		$dateTime = explode(' ',$dateTime);
+		$updateData = array('txnId' => $txnid,'payment_date' => $dateTime[0],'payment_time' => $dateTime[1],'payment' => 'Y', 'payment_status' => 'captured');
+		$where = array('id' => $id);
+		$result = $this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$updateData);
+		if($result){
+			$return = array('success' => 'Transaction Details Updated');
+		}else{
+			$return = array('error' => 'An error occurred');
+		}
+		echo json_encode($return);
+		die;
+	}
+
+
+
+
 }// class
