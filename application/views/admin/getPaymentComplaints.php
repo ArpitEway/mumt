@@ -184,7 +184,7 @@
 		e.preventDefault();
 		let formData = $('form').serialize();
 		$.ajax({
-			url: BASE_URL+ 'admin/Account/updatePaymentTransaction',
+			url: BASE_URL+ 'admin/updatePaymentTransaction',
 			method: 'post',
 			data: formData,
 			dataType: 'JSON',
