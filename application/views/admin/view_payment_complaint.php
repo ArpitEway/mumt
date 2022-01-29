@@ -74,7 +74,6 @@
         {
             let data = {
                     'text_val':text_val,
-                    'segment':"<?php echo $segment; ?>",
                     'radio_val':radio_val,
                     [csrfName]:csrfHash
                 }
@@ -93,7 +92,7 @@
             // $table = $('#dt').html(status.data);
 
           }if( $('#myLoader').hide()){
-                        $('#student_data_tbl').html(resp.data);
+               $('#student_data_tbl').html(resp.data);
             $('#student_data_tbl').show();
             
           }

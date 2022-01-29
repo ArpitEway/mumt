@@ -1,3 +1,4 @@
+<div>
 <div class="card card-custom card-stretch my-10 details-bg" id="profile">	
 	<div class="container-fluid profile mt-5">
 		<h4 class="card-title">Student Details</h4>
@@ -183,7 +184,7 @@
 		e.preventDefault();
 		let formData = $('form').serialize();
 		$.ajax({
-			url: BASE_URL+ 'admin/updatePaymentTransaction',
+			url: BASE_URL+ 'admin/Account/updatePaymentTransaction',
 			method: 'post',
 			data: formData,
 			dataType: 'JSON',

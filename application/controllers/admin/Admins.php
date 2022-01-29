@@ -1961,30 +1961,31 @@ public function get_payment_complaints()
 			redirect(base_url('admin'));
 			exit;
 		}
-		
+	else{
 		$text_val =$this->input->post('text_val');
 		$radio_val = $this->input->post('radio_val');
-		$segment = $this->input->post('segment');
+		
 
+            if($text_val !='')
+		   {
+			if($text_val !='' && $radio_val == 'enrollment_no')
+			{
+				
+          $student = $this->Common_model->getRecordById('student','enrollment_no',$text_val);
+			}else if($text_val !='' && $radio_val == 'student_id')
+			{
+				$student = $this->Common_model->getRecordById('student','student_id',$text_val);
 
-    $where = array('student_id'=>$text_val);
-    $where = array('enrollment_no'=>$text_val);  
+			}
+   
 
-	$wherecenter = 'student_id='.$where.' and status="Pending"';
-	$student_detail = $this->Common_model->get_record('payment_complaint','*',$wherecenter);
-	
-	$data = array('student_detail' => $student_detail ,'name_csrf' => $this->security->get_csrf_token_name(),
-	'hash_csrf' => $this->security->get_csrf_hash());
-
-
-    $student_id = $this->Common_model->encrypt_decrypt($where,'decrypt');
-	$student = $this->Common_model->getRecordById('student','student_id',$student_id);
-	$paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student_id));
+	$paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student->student_id ));
 	$data = array(
 		'student' => $student,
 		'paymentDetails' => $paymentDetails,
-	
-	);
+	    'name_csrf' => $this->security->get_csrf_token_name(),
+	    'hash_csrf' => $this->security->get_csrf_hash(),
+	  );
 
 
 	if($data){
@@ -1998,9 +1999,8 @@ public function get_payment_complaints()
 	"status" => $status,
 	"data" => $dt
 	));
-
-		
-  	}
+	
+  	}}}
 	
 
 
