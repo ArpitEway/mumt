@@ -1939,15 +1939,12 @@ public function editForm($student_id = ""){
 
 
 public function payment_complaint(){
-			$segment = $this->uri->segment(2);
-		
+	
 		$this->load->view('header',array('title' => 'view payment complaint'));
-
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
-			'segment' => $segment
-		);
+			);
 
 		$this->load->view('admin/view_payment_complaint',$data);
 		$this->load->view('footer');
@@ -1978,9 +1975,8 @@ public function get_payment_complaints()
 
 			}
    
-
-	$paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student->student_id ));
-	$data = array(
+	  $paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student->student_id ));
+	  $data = array(
 		'student' => $student,
 		'paymentDetails' => $paymentDetails,
 	    'name_csrf' => $this->security->get_csrf_token_name(),
@@ -2002,8 +1998,6 @@ public function get_payment_complaints()
 	
   	}}}
 	
-
-
 
 public function updatePaymentTransaction()
 	{
