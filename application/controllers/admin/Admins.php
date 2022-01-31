@@ -1549,6 +1549,8 @@ public function update_doc_permission_status()
 			$dde_student['class_id'] = $classData[0]->id;
 			$dde_student['class_name'] = $classData[0]->class_name;
 			$dde_student['medium'] = $studentdata[0]['medium'];
+			$dde_student['university_mode'] = 'REG';
+			$dde_student['session'] = 'July 2021';
 			unset($dde_student['admit_card']);
 			unset($dde_student['cls_id']);
 			unset($dde_student['form_no']);
@@ -1602,6 +1604,7 @@ public function update_doc_permission_status()
 			$updateData['course_group_id'] = $courseDetail->new_id;
 			$updateData['class_id'] = $classData[0]->id;
 			$updateData['txnId'] = $txnData['txnid'];
+			$updateData['fees_head'] = 'Admission Fees';
 			$this->Common_model->insertAll('online_payment_transaction',$updateData);
 		}
 	}
