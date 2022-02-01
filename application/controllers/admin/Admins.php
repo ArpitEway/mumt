@@ -1527,7 +1527,7 @@ public function update_doc_permission_status()
 	}
 
 	public function updateDdeStudent()
-	{
+	{	//array('student_id'=> 372663)
 		$dde_students = $this->Common_model->get_record('dde_student','*');
 
 		foreach ($dde_students as $dde_student) {
@@ -1607,6 +1607,46 @@ public function update_doc_permission_status()
 			$updateData['fees_head'] = 'Admission Fees';
 			$updateData['admission_type'] = 'Regular';
 			$this->Common_model->insertAll('online_payment_transaction',$updateData);
+
+			if($dde_student['document_uploaded']=='Y'){
+				$where = array('student_id' => $dde_student['student_id']);
+				$admissionDoc = $this->Common_model->get_record('dde_admission_document','*',$where);
+				$course = $this->Common_model->getRecordById('course_group','id',$courseDetail->new_id);
+				
+				$document_id = $course->document_id;
+
+				foreach ($admissionDoc as $docData) {
+					$where = array('category' => $document_id,
+						'document' => $docData['document_name'],
+							);
+
+					$data = $this->Common_model->get_record('document_category','*',$where);
+
+					$uploadDocData = array(
+						'student_id' => $docData['student_id'],
+						'course_group_id' => $courseDetail->new_id,
+						'document_name' => $docData['document_name'],
+						'document_image' => $docData['document_image'],
+						'date_time' => $docData['date_time'],
+						'status' => $docData['status'],
+						'document_category_id' => $data[0]['id'],
+					);
+
+					$docId = $this->Common_model->insertAll('admission_document',$uploadDocData);
+
+					$org_image=".\assets\/reg_doc_image\/".$docData['document_image'];
+					$ext = pathinfo($org_image, PATHINFO_EXTENSION);
+					$imgName = $docId.'.'.$ext;
+					$destination=".\assets\documents\/".$imgName;
+
+					if( rename( $org_image , $destination )){
+						echo '<br>moved!'.$destination;
+					} else {
+						echo '<br>failed'.$student['student_id'];
+					}
+					$this->Common_model->updateRecordByConditions('admission_document',array('id'=>$docId),array('document_image' => $imgName));
+				}
+			}
 		}
 	}
 
