@@ -14,60 +14,60 @@ foreach($documentData as $document){
 </script>
 
 <div class="card card-custom card-stretch my-10 details-bg" id="profile">
-<div class="container-fluid profile mt-5">
-	<div class="row ">
-		<div class="col-md-4 border-right-dashed">
-			<div class="row py-2">
-				<label class="col-sm-3 text-heading">Student</label>
-				<div class="col-sm-9 text-value">
-					<?php echo $student->name; ?>
+	<div class="container-fluid profile mt-5">
+		<div class="row ">
+			<div class="col-md-4 border-right-dashed">
+				<div class="row py-2">
+					<label class="col-sm-3 text-heading">Student</label>
+					<div class="col-sm-9 text-value">
+						<?php echo $student->name; ?>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="col-md-4 border-right-dashed">
-			<div class="row py-2">
-				<label class="col-sm-3 text-heading">Session</label>
-				<div class="col-sm-9 text-value">
-					<?php echo $student->session; ?>
+			<div class="col-md-4 border-right-dashed">
+				<div class="row py-2">
+					<label class="col-sm-3 text-heading">Session</label>
+					<div class="col-sm-9 text-value">
+						<?php echo $student->session; ?>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="col-md-4">
-			<div class="row py-2">
-				<label class="col-sm-3 text-heading">Course</label>
-				<div class="col-sm-9 text-value">
-					<?php echo $student->course_name;  ?>
+			<div class="col-md-4">
+				<div class="row py-2">
+					<label class="col-sm-3 text-heading">Course</label>
+					<div class="col-sm-9 text-value">
+						<?php echo $student->course_name;  ?>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="col-md-4 border-right-dashed">
-			<div class="row py-2">
-				<label class="col-sm-3 text-heading">Father</label>
-				<div class="col-sm-9 text-value">
-					<?php echo $student->f_h_name; ?>
+			<div class="col-md-4 border-right-dashed">
+				<div class="row py-2">
+					<label class="col-sm-3 text-heading">Father</label>
+					<div class="col-sm-9 text-value">
+						<?php echo $student->f_h_name; ?>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="col-md-4 border-right-dashed">
-			<div class="row py-2">
-				<label class="col-sm-3 text-heading">Form No</label>
-				<div class="col-sm-9 text-value">
-					<?php echo $student->student_id; ?>
+			<div class="col-md-4 border-right-dashed">
+				<div class="row py-2">
+					<label class="col-sm-3 text-heading">Form No</label>
+					<div class="col-sm-9 text-value">
+						<?php echo $student->student_id; ?>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="col-md-4">
-			<div class="row py-2">
-				<label class="col-sm-3 text-heading">Class</label>
-				<div class="col-sm-9 text-value">
-					<?php echo $student->class_name; ?>
+			<div class="col-md-4">
+				<div class="row py-2">
+					<label class="col-sm-3 text-heading">Class</label>
+					<div class="col-sm-9 text-value">
+						<?php echo $student->class_name; ?>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-</div>
-	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 <form method="post" action="" enctype='multipart/form-data' id="target" >
 	<div id="loader">
 	</div>
@@ -86,7 +86,6 @@ foreach($documentData as $document){
 					<div></div>
 					<div class="custom-file">
 						<input type="file" accept="image/*,application/pdf" class="custom-file-input" id="<?='docCatId_'.$document->id?>" data-id="<?=$document->id?>" name="document[]" >
-
 						<label class="custom-file-label" for="<?='docCatId_'.$document->id?>"></label>
 					</div>
 					<div class="fv-plugins-message-container"></div>
@@ -98,8 +97,6 @@ foreach($documentData as $document){
 			</div>
 		<?php } ?>
 	</div>
-
-
 	<div class="row justify-content-center my-3">
 		<a href="<?=base_url('center/not_approve_student_list')?>" class="btn btn-primary">Submit</a>
 	</div>
@@ -137,7 +134,7 @@ foreach($documentData as $document){
 				myFormData.append([csrfName], csrfHash);
 				$('#loader').addClass('loading');
 				$.ajax({
-					url: "<?=base_url('center/Document/notapproveuploadDoc');?>",
+					url: "<?=base_url('center/Document/uploadRemainingDocument');?>",
 					type: 'POST',
 					processData: false, 
 					contentType: false, 

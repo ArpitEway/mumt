@@ -21,9 +21,10 @@
 			$admissionDocWhere = " student_id = ".$document->student_id." and document_category_id in  (".$remark.") and status='N'";
 			$admissionDocCount = $this->Common_model->getCountByWhere('admission_document',$admissionDocWhere);
 			$remarkCount= substr_count($remark,',');
+			
 			$remarkCount+=1;
      
-        if(!$admissionDocCount==$remarkCount){
+        if($admissionDocCount!=$remarkCount){
  
 				?>
 				<tr>

@@ -1014,7 +1014,7 @@ class Admins extends CI_Controller {
 		public function logout()
 		{
 			$this->session->sess_destroy();
-			redirect(base_url());
+			redirect(base_url('admin'));
 		}
 		
 		public function centers($param1 = '', $param2 = '', $param3 = '')
