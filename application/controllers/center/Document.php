@@ -70,7 +70,12 @@
 			}
 			$courseData	= $this->Common_model->getRecordById('course_group','id',$student['course_group_id']);
 			$order = 'id asc';
-			$documentData = $this->Common_model->get_record_by_order('document_category','*',$order,'category in ('.$courseData->document_id.',0)');
+			if ($courseData->course_type=='Diploma') {
+				$whereDoc = 'category in ('.$courseData->document_id.')';
+			}else{
+				$whereDoc = 'category in ('.$courseData->document_id.',0)';
+			}
+			$documentData = $this->Common_model->get_record_by_order('document_category','*',$order,$whereDoc);
 			$data = array(
 			'courseData' => $courseData,
 			'documentData' => $documentData,
