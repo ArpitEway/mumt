@@ -1,3 +1,4 @@
+
 <form id="radio_btn_select">
     <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
     <div class="row">
@@ -106,6 +107,7 @@
         }
         else
         {
+          
             let data = {
                     'text_val':text_val,
                     'segment':"<?php echo $segment; ?>",
