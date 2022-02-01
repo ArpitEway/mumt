@@ -1605,6 +1605,7 @@ public function update_doc_permission_status()
 			$updateData['class_id'] = $classData[0]->id;
 			$updateData['txnId'] = $txnData['txnid'];
 			$updateData['fees_head'] = 'Admission Fees';
+			$updateData['admission_type'] = 'Regular';
 			$this->Common_model->insertAll('online_payment_transaction',$updateData);
 		}
 	}
