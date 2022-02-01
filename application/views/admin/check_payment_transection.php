@@ -24,7 +24,7 @@
                             <input type = "radio"
                             name = "radio_stduent_search"
                             id = "radio_form_id"
-                            value = "student_id" />
+                            value = "student_id" checked />
                             <span></span>
                             Form Id
                         </label>
@@ -78,7 +78,7 @@
                     [csrfName]:csrfHash
                 }
             $.ajax({
-                url:site_url+'admin/admins/get_payment_complaints',
+                url:site_url+'admin/admins/get_payment_details',
                 type:'post',
                 dataType : 'JSON',
                 data: data,
@@ -86,21 +86,21 @@
               {
                 $("#myLoader").show();
                },
-                success:function(resp)
-                {if( $("#myLoader").show()){
-            $('#student_data_tbl').hide();
+               success:function(resp){
+                if( $("#myLoader").show()){
+                    $('#student_data_tbl').hide();
             // $table = $('#dt').html(status.data);
 
-          }if( $('#myLoader').hide()){
-               $('#student_data_tbl').html(resp.data);
-            $('#student_data_tbl').show();
-            
-          }
-                   
-                    KTDatatablesBasicBasic.init();            
-                }//success
+                }
+                if( $('#myLoader').hide()){
+                   $('#student_data_tbl').html(resp.data);
+                   $('#student_data_tbl').show();
+               }
+                     $("#dateTime").unmask();
+                    KTDatatablesBasicBasic.init();       
+            }//success
                 
-            })//ajax
-        }
+        })//ajax
     }
+}
 </script>

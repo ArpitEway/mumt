@@ -1938,68 +1938,60 @@ public function editForm($student_id = ""){
 		}
 
 
-public function payment_complaint(){
-	
-		$this->load->view('header',array('title' => 'view payment complaint'));
-		$data = array(
-			'name_csrf' => $this->security->get_csrf_token_name(),
-			'hash_csrf' => $this->security->get_csrf_hash(),
+		public function check_payment_transection(){
+			$this->load->view('header',array('title' => 'view payment complaint'));
+			$data = array(
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
 			);
 
-		$this->load->view('admin/view_payment_complaint',$data);
-		$this->load->view('footer');
+			$this->load->view('admin/check_payment_transection',$data);
+			$this->load->view('footer');
 		}
 
 
-public function get_payment_complaints()
-	{
-		
+	public function get_payment_details(){
 		if(!$this->session->has_userdata('adminData')){
 			redirect(base_url('admin'));
 			exit;
-		}
-	else{
-		$text_val =$this->input->post('text_val');
-		$radio_val = $this->input->post('radio_val');
-		
+		}else{
 
-            if($text_val !='')
-		   {
-			if($text_val !='' && $radio_val == 'enrollment_no')
-			{
-				
-          $student = $this->Common_model->getRecordById('student','enrollment_no',$text_val);
-			}else if($text_val !='' && $radio_val == 'student_id')
-			{
-				$student = $this->Common_model->getRecordById('student','student_id',$text_val);
+			$text_val =$this->input->post('text_val');
+			$radio_val = $this->input->post('radio_val');
 
+			if($text_val !=''){
+
+				if($text_val !='' && $radio_val == 'enrollment_no'){
+					$student = $this->Common_model->getRecordById('student','enrollment_no',$text_val);
+				}else if($text_val !='' && $radio_val == 'student_id'){
+					$student = $this->Common_model->getRecordById('student','student_id',$text_val);
+				}
+
+				$paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student->student_id ));
+				$data = array(
+					'student' => $student,
+					'paymentDetails' => $paymentDetails,
+					'name_csrf' => $this->security->get_csrf_token_name(),
+					'hash_csrf' => $this->security->get_csrf_hash(),
+				);
+
+				if($data){
+					$dt =  $this->load->view('admin/account_section/view_student_transaction',$data,true);
+					$status = true;
+				}else{
+					$dt = "This student Does Not Have Any Pending payment Complaint";
+					$status = false;
+				}
+				echo json_encode(array(
+					"status" => $status,
+					"data" => $dt
+				));
 			}
-   
-	  $paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student->student_id ));
-	  $data = array(
-		'student' => $student,
-		'paymentDetails' => $paymentDetails,
-	    'name_csrf' => $this->security->get_csrf_token_name(),
-	    'hash_csrf' => $this->security->get_csrf_hash(),
-	  );
-
-
-	if($data){
-		$dt =  $this->load->view('admin/getPaymentComplaints',$data,true);
-		$status = true;
-	}else{
-		$dt = "This student Does Not Have Any Pending payment Complaint";
-		$status = false;
+		}
 	}
-	echo json_encode(array(
-	"status" => $status,
-	"data" => $dt
-	));
-	
-  	}}}
 	
 
-public function updatePaymentTransaction()
+	public function updatePaymentTransaction()
 	{
 		$id = $this->input->post('id');
 		$txnid = $this->input->post('TxnId');
@@ -2016,8 +2008,5 @@ public function updatePaymentTransaction()
 		echo json_encode($return);
 		die;
 	}
-
-
-
 
 }// class

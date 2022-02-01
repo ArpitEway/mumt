@@ -1,4 +1,4 @@
-<div class="card card-custom card-stretch my-10 details-bg" id="profile">	
+<div class="card card-custom my-10 details-bg" id="profile">	
 	<div class="container-fluid profile mt-5">
 		<h4 class="card-title">Student Details</h4>
 		<div class="row">
@@ -76,7 +76,7 @@
 		</div>
 	</div>
 </div>
-<div class="card card-custom card-stretch my-10 details-bg" id="profile">	
+<div class="card card-custom my-10 details-bg" id="profile">	
 	<div class="container-fluid profile mt-5">
 		<h4 class="card-title">Transaction Details</h4>
 		<div class="row">
@@ -176,14 +176,13 @@
         insertMode: false, 
         showMaskOnHover: false,
         hourFormat: '24'
-      }
-   );
+      });
 
 	$('#submit').on('submit',function (e) {
 		e.preventDefault();
 		let formData = $('form').serialize();
 		$.ajax({
-			url: BASE_URL+ 'admin/Account/updatePaymentTransaction',
+			url: BASE_URL+ 'admin/'+account_type+'/updatePaymentTransaction',
 			method: 'post',
 			data: formData,
 			dataType: 'JSON',
@@ -199,6 +198,5 @@
 				}
 			}
 		})
-
 	})
 </script>
