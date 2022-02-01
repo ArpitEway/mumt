@@ -70,7 +70,7 @@
 			}
 			$courseData	= $this->Common_model->getRecordById('course_group','id',$student['course_group_id']);
 			$order = 'id asc';
-			if ($courseData->course_type=='Diploma') {
+			if ($courseData->course_type=='Diploma' || $courseData->course_type=='PGDiploma') {
 				$whereDoc = 'category in ('.$courseData->document_id.')';
 			}else{
 				$whereDoc = 'category in ('.$courseData->document_id.',0)';
