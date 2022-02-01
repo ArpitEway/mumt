@@ -114,7 +114,7 @@ foreach($documentData as $document){
 			var file = $(this);
 			
 			var filesize = parseFloat(file[0].files[0].size / 1024).toFixed(2);
-			if(filesize>250){
+			if(filesize>500){
 				$(this).parent().next('div').text('Document size must be less than 500kb');
 				return false;
 				}else{
