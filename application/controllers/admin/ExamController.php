@@ -11,14 +11,24 @@ class ExamController extends CI_Controller {
 		$this->load->model('Common_model');
 		$this->load->model('Datatable_model');
 		$this->load->model('Datatable_join_model');
+		if($this->session->account_type!='ExamController'){
+				redirect(base_url('admin/logout')); 
+		}
 	}
 
 
 	public function index(){
-			$this->load->view('header',array('title' => 'ExamController Section'));
-			$this->load->view('admin/examController/dashboard');
-			$this->load->view('footer');
+		$admin_id = $this->session->admin_id;
+		$where = 'admin_id='.$admin_id.' and status="Y"';
+		$menu = array(
+			"menu_headings" => $this->Common_model->getRecordByWhereByOrder('menu_heading',$where,'heading_order','ASC'),
+			"menus" => $this->Common_model->getRecordByWhereByOrder('menu',$where,'heading_id,menu_order','ASC'),
+		);
+		$this->load->view('header',array('title' => 'Enrollment Section'));
+		$this->load->view('admin/enrollment/dashboard',$menu);
+		$this->load->view('footer');	
 	}
+
 	public function consolidate_report(){
       
 		$dt = array();
