@@ -736,8 +736,8 @@ class Center extends CI_Controller {
 		$data = $row = array();
 		$where = 'payment_complaint.center_id='.$this->session->center_id.' and type="admission" ';
 		
-		$column_order = array(null,'name','student.student_id','course_name','class_name','details','date','status','remark');
-		$column_search = array('name','student.student_id','course_name','class_name','details','date','status','remark');
+		$column_order = array(null,'name','student.student_id','course_name','class_name','details','date','status','payment_complaint.remark');
+		$column_search = array('name','student.student_id','course_name','class_name','details','date','status','payment_complaint.remark');
 
 		$DataTableArray = array(
 			'column_order' => $column_order,
