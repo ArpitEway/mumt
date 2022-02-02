@@ -312,7 +312,8 @@ class Admin_model extends CI_Model {
     {
         $data['session'] = html_escape($this->input->post('session'));
 		$data['type'] = html_escape($this->input->post('type'));
-
+       $data['enrollment_code'] = html_escape($this->input->post('enrollment'));
+       
         $this->db->insert('session', $data);
         $session_id = $this->db->insert_id();
         $response = array(

@@ -11,7 +11,9 @@
 				<th>Session</th>
 				<th>Unpaid Permission Status</th>
 				<th>Document Permission Status</th>
-				
+				<th>Enrollment Permission Status</th>
+                <th>Exam Form Permission Status</th>
+                <th>Enrollment code</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -23,6 +25,7 @@
 				<tr>
 					<td><?php echo $i; ?></td>
 					<td><?php echo $session['session']; ?></td>
+					
 					<td>
 				<?php
 
@@ -60,7 +63,48 @@
 
 				?>
 				</td>
+
+
+                <td>
+				<?php
+
+				if($session['enrollment_permission'] == 'Y')
+				{
+
+				?>
+				<input type="button" name="update_enroll_stats" data-id = "<?=$session["id"];?>" class="btn btn-success enroll_permission_check" value="Yes">
 				
+				<?php }else{ ?>
+
+				<input type="button" name="update_enroll_stats" data-id = "<?=$session["id"];?> " class="btn btn-danger enroll_permission_check" value="No">
+				
+				<?php 
+				}	
+
+				?>
+				</td>
+
+
+              <td>
+				<?php
+
+				if($session['exam_form_permission'] == 'Y')
+				{
+
+				?>
+				<input type="button" name="update_exam_form_stats" data-id = "<?=$session["id"];?>" class="btn btn-success exam_form_permission_check" value="Yes">
+				
+				<?php }else{ ?>
+
+				<input type="button" name="update_exam_form_stats" data-id = "<?=$session["id"];?> " class="btn btn-danger exam_form_permission_check" value="No">
+				
+				<?php 
+				}	
+
+				?>
+				</td>
+	
+	            <td><?php echo $session['enrollment_code']; ?></td>
 				</tr>
 		 <?php 
 		 $i++;
@@ -134,6 +178,64 @@ var data = {
 	  }; 
 	  
 var url = BASE_URL + "admin/Admins/update_doc_permission_status";
+
+$.ajax({
+  url: url,
+  type: 'POST',
+  dataType: 'json',
+  data: data,
+  success: function (data) {
+	  
+	  $(self).parent().html(data.data);
+	  
+  }
+});
+
+});
+
+
+
+$(document).on('click', '.enroll_permission_check', function() {
+var val = $(this).val();
+var self =this;
+var status = (val=='Yes') ? 'N' : 'Y';
+var csrfName = $('.csrfname').attr('name');
+var csrfHash = $('.csrfname').val();
+var data = {
+		  id: $(this).attr('data-id'),
+		  status: status,
+		  [csrfName]: csrfHash,
+	  }; 
+	  
+var url = BASE_URL + "admin/Admins/update_enroll_permission_status";
+
+$.ajax({
+  url: url,
+  type: 'POST',
+  dataType: 'json',
+  data: data,
+  success: function (data) {
+	  
+	  $(self).parent().html(data.data);
+	  
+  }
+});
+
+});
+
+$(document).on('click', '.exam_form_permission_check', function() {
+var val = $(this).val();
+var self =this;
+var status = (val=='Yes') ? 'N' : 'Y';
+var csrfName = $('.csrfname').attr('name');
+var csrfHash = $('.csrfname').val();
+var data = {
+		  id: $(this).attr('data-id'),
+		  status: status,
+		  [csrfName]: csrfHash,
+	  }; 
+	  
+var url = BASE_URL + "admin/Admins/update_exam_form_permission_status";
 
 $.ajax({
   url: url,
