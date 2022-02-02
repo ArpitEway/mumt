@@ -2040,12 +2040,18 @@ public function editForm($student_id = ""){
 		$id = $this->input->post('id');
 		$txnid = $this->input->post('TxnId');
 		$dateTime = $this->input->post('dateTime');
+		$student_id = $this->input->post('student_id');
 		$dateTime = explode(' ',$dateTime);
 		$updateData = array('txnId' => $txnid,'payment_date' => $dateTime[0],'payment_time' => $dateTime[1],'payment' => 'Y', 'payment_status' => 'captured');
 		$where = array('id' => $id);
-		$result = $this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$updateData);
+		$this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$updateData);
+		$whereStudent = array('student_id'=> $student_id);
+		$result = $this->Common_model->updateRecordByConditions('student',$whereStudent,array('payment_status'=> 'Y'));
 		if($result){
-			$return = array('success' => 'Transaction Details Updated');
+			$paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student_id));
+			$data = array('paymentDetails' => $paymentDetails);
+			$htmlData = $this->load->view('admin/account_section/view_transaction_details',$data,true); 
+			$return = array('success' => 'Transaction Details Updated','data' =>$htmlData);
 		}else{
 			$return = array('error' => 'An error occurred');
 		}

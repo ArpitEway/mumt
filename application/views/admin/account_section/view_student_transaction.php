@@ -76,7 +76,9 @@
 		</div>
 	</div>
 </div>
-<div class="card card-custom my-10 details-bg" id="profile">	
+<div id="txnDetails">
+	
+<div class="card card-custom my-10 details-bg">	
 	<div class="container-fluid profile mt-5">
 		<h4 class="card-title">Transaction Details</h4>
 		<div class="row">
@@ -117,14 +119,14 @@
 						<label class="text-heading mt-3"><?=$payment->payment_status;?></label>
 					</div>
 					<div class="col-md-2">
-						<label class="text-heading mt-3"><?= $this->Common_model->viewDate($payment->payment_date); ?></label>
+						<label class="text-heading mt-3"><?= ($payment->payment_date=='') ? '' : $this->Common_model->viewDate($payment->payment_date); ?></label>
 					</div>
 					<div class="col-md-2">
 						<label class="text-heading mt-3"><?=$payment->txnId;?></label>
 					</div>
 					<div class="col-md-2 text-center">
 						<?php if($payment->payment!="Y"){ ?>
-							<label class="text-heading mt-3"><button type="button" class="btn btn-primary modalOpen" data-toggle="modal" data-paymentId="<?=$payment->id;?>" data-target="#exampleModalCenter">Update</button></label>
+							<label class="text-heading mt-3"><button type="button" class="btn btn-primary modalOpen" data-toggle="modal" data-paymentId="<?=$payment->id;?>" data-student_id="<?=$payment->student_id;?>" data-target="#exampleModalCenter">Update</button></label>
 
 						<?php }else{
 							echo '<label class="text-heading mt-3"> Paid </label>';
@@ -139,7 +141,7 @@
 <div class="modal fade" id="exampleModalCenter" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
-			<form id="submit">
+			<form >
 			<div class="modal-header">
 				<h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -150,6 +152,7 @@
 				<fieldset class="form-group col-md-6">
 					<label for="transaction">Transaction Id</label>
 					<input  type="hidden" name="id" id="paymentId">
+					<input  type="hidden" name="student_id" id="student_id">
 					<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 					<input type="text" required name="TxnId" class="form-control" id="transaction" placeholder="">
 				</fieldset>
@@ -160,7 +163,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
-				<button type="submit"  class="btn btn-primary font-weight-bold">Submit</button>
+				<button type="submit" id="submit"  class="btn btn-primary font-weight-bold">Submit</button>
 			</div>
 		</form>
 		</div>
@@ -169,6 +172,7 @@
 <script type="text/javascript">
 	$( ".modalOpen" ).on('click', function(){
 		$('#paymentId').val($(this).attr("data-paymentId"));
+		$('#student_id').val($(this).attr("data-student_id"));
 	});
 
 	$('#dateTime').inputmask("yyyy-mm-dd hh:mm:ss", {
@@ -178,8 +182,9 @@
         hourFormat: '24'
       });
 
-	$('#submit').on('submit',function (e) {
+	$('#submit').on('click',function (e) {
 		e.preventDefault();
+		
 		let formData = $('form').serialize();
 		$.ajax({
 			url: BASE_URL+ 'admin/'+account_type+'/updatePaymentTransaction',
@@ -189,10 +194,11 @@
 			success: function (response) {
 				if(response.success){
 					toastr.success(response.success);
+					$('#txnDetails').html(response.data);
 					$('.modalOpen').remove();
 					$('#exampleModalCenter').toggle();
 					$('.modal-backdrop').remove();
-					location.reload();
+					//location.reload();
 				}else if(response.error){
 					toastr.error(response.error);
 				}

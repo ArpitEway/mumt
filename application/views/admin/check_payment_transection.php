@@ -33,7 +33,7 @@
                 </div>
             </div> <!-- from-group row -->
             <div class="form-group row">
-                <button type="button" class="btn btn-primary btn-sm m-auto" onclick="search_student_data()">Submit</button>
+                <button type="button" class="btn btn-primary btn-sm m-auto" id="getTxnData">Submit</button>
             </div>
         </div>
     </div>
@@ -53,54 +53,41 @@
 <script type="text/javascript">
     var site_url = "<?php echo base_url(); ?>"
 
-    function search_student_data()
-    {    
+    $('#getTxnData').on('click',function (e) {
+        e.preventDefault();
 
         $('#student_data_tbl').hide();
         var csrfName = $('.csrfname').attr('name');
         var csrfHash = $('.csrfname').val();
         var text_val = $('#search_text').val();
         var radio_val = $('input[name="radio_stduent_search"]:checked').val();
-        if(text_val =='' && radio_val == 'enrollment_no')
-        { 
+        if(text_val =='' && radio_val == 'enrollment_no'){ 
             alert('Enrollment Number is required !');
-        }
-        else if(text_val==''&& radio_val == 'student_id')
-        {
+        }else if(text_val==''&& radio_val == 'student_id'){
             alert('Form/Student Id is required !');
-        }
-       
-        else
-        {
+        }else{
             let data = {
-                    'text_val':text_val,
-                    'radio_val':radio_val,
-                    [csrfName]:csrfHash
-                }
+                'text_val':text_val,
+                'radio_val':radio_val,
+                [csrfName]:csrfHash
+            }
             $.ajax({
-                url:site_url+'admin/admins/get_payment_details',
+                url:site_url+'admin/'+account_type+'/get_payment_details',
                 type:'post',
                 dataType : 'JSON',
                 data: data,
-                beforeSend: function()
-              {
+                beforeSend: function(){
                 $("#myLoader").show();
                },
                success:function(resp){
-                if( $("#myLoader").show()){
-                    $('#student_data_tbl').hide();
-            // $table = $('#dt').html(status.data);
-
+                if($('#myLoader').hide()){
+                    $('#student_data_tbl').html(resp.data);
+                    $('#student_data_tbl').show();
+                        $j=jQuery.noConflict();
+                    $('#dateTime').inputmask("yyyy-mm-dd hh:mm:ss");
                 }
-                if( $('#myLoader').hide()){
-                   $('#student_data_tbl').html(resp.data);
-                   $('#student_data_tbl').show();
-               }
-                     $("#dateTime").unmask();
-                    KTDatatablesBasicBasic.init();       
             }//success
-                
         })//ajax
     }
-}
+});
 </script>
