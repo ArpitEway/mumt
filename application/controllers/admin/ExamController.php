@@ -24,7 +24,7 @@ class ExamController extends CI_Controller {
 			"menu_headings" => $this->Common_model->getRecordByWhereByOrder('menu_heading',$where,'heading_order','ASC'),
 			"menus" => $this->Common_model->getRecordByWhereByOrder('menu',$where,'heading_id,menu_order','ASC'),
 		);
-		$this->load->view('header',array('title' => 'Enrollment Section'));
+		$this->load->view('header',array('title' => 'Exam Controller Section'));
 		$this->load->view('admin/enrollment/dashboard',$menu);
 		$this->load->view('footer');	
 	}
