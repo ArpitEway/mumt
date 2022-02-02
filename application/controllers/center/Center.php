@@ -742,6 +742,7 @@ class Center extends CI_Controller {
 		$DataTableArray = array(
 			'column_order' => $column_order,
 			'column_search' => $column_search,
+			'select' => 'student.name, student.student_id, student.course_name, student.class_name, payment_complaint.date, payment_complaint.details, payment_complaint.remark',
 			'where' => $where,
 			'table' => 'payment_complaint',
 			'table2' => 'student',

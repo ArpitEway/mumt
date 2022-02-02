@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card border-0">
   	<div class="card-body row text-center" >
         <div class="form-group col-md-3 m-auto">
         <label for="center_id">Center</label>

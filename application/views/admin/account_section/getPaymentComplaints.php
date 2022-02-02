@@ -1,3 +1,6 @@
+<div class="container mb-5">
+	<h3 class="text-primary text-center h2"><?= ' ( '.$centerData->center_code.' ) ( '.$centerData->center_name.' ) ( '.$centerData->contactpersonname.' ) ( '.$centerData->mobile_no_1.' , '.$centerData->mobile_no_1.' ) '; ?></h3>
+</div>
 <div class="text-center">
 	<table id="table" class="table table-striped dt-responsive nowrap" width="70%" >
 		<thead>
@@ -21,34 +24,34 @@
 			
 			$i = 1;
 			
-			foreach($center_details as $center){
+			foreach($complaints as $complaint){
 
-				$student = $this->Common_model->getSingleRow("student",'*',array("student_id" => $center["student_id"]));
-				$student_id = $this->Common_model->encrypt_decrypt($center["student_id"]);
+				$student = $this->Common_model->getSingleRow("student",'*',array("student_id" => $complaint["student_id"]));
+				$student_id = $this->Common_model->encrypt_decrypt($complaint["student_id"]);
 				?>
 
 				<tr>
 
 					<td><?php echo $i; ?></td>
 					<td><?php echo $student->name; ?></td>
-					<td><?php echo $center["student_id"]; ?></td>
+					<td><?php echo $complaint["student_id"]; ?></td>
 					<td><?php echo $student->course_name; ?></td>
 					<td><?php echo $student->class_name; ?></td>
-					<td><?php echo $center["details"]; ?></td>
-					<td><?php echo $this->Common_model->viewDate($center["date"]); ?></td>
+					<td><?php echo $complaint["details"]; ?></td>
+					<td><?php echo $this->Common_model->viewDate($complaint["date"]); ?></td>
 
 					<td >
 
 						<?php
-						if($center['status'] == 'Done')
+						if($complaint['status'] == 'Done')
 						{
 							?>
 
-							<input type="button" name="update_req_stats" data-id = "<?=$center["id"];?>" class="btn btn-success req_check" value="Done">
+							<input type="button" name="update_req_stats" data-id = "<?=$complaint["id"];?>" class="btn btn-success req_check" value="Done">
 
 						<?php }else{ ?>
 
-							<input type="button" name="update_req_stats" data-id = "<?=$center["id"];?> " class="btn btn-danger req_check" value="Pending">
+							<input type="button" name="update_req_stats" data-id = "<?=$complaint["id"];?> " class="btn btn-danger req_check" value="Pending">
 
 							<?php 
 						}	
@@ -62,11 +65,11 @@
 						{
 							?>
 
-							<input type="button" name="update_req_remark" data-id = "<?=$center["id"];?>" class="btn btn-success remark_check" value="Set">
+							<input type="button" name="update_req_remark" data-id = "<?=$complaint["id"];?>" class="btn btn-success remark_check" value="Set">
 
 						<?php }else{ ?>
 
-							<input type="button" name="req_remark" data-id = "<?=$center["id"];?>" class="btn btn-danger remark_check" value="Invalid">
+							<input type="button" name="req_remark" data-id = "<?=$complaint["id"];?>" class="btn btn-danger remark_check" value="Invalid">
 
 							<?php 
 						}
