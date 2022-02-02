@@ -1594,6 +1594,7 @@ public function update_doc_permission_status()
 			$updateData['marks'] = $studentdata['ten_marks'];
 			$updateData['passing_year'] = $studentdata['ten_sub'];
 			$updateData['percentage'] = $studentdata['ten_per'];
+			unset($updateData['id']);
 			$this->Common_model->insertAll('student_data',$updateData);
 
 			$txnData = $this->Common_model->get_record('dde_online_payment_transaction','*','student_id='.$dde_student['student_id']);
@@ -1606,6 +1607,7 @@ public function update_doc_permission_status()
 			$updateData['txnId'] = $txnData['txnid'];
 			$updateData['fees_head'] = 'Admission Fees';
 			$updateData['admission_type'] = 'Regular';
+			unset($updateData['id']);
 			$this->Common_model->insertAll('online_payment_transaction',$updateData);
 
 			if($dde_student['document_uploaded']=='Y'){
