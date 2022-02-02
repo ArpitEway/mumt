@@ -1634,10 +1634,10 @@ public function update_doc_permission_status()
 
 					$docId = $this->Common_model->insertAll('admission_document',$uploadDocData);
 
-					$org_image=".\assets\/reg_doc_image\/".$docData['document_image'];
+					$org_image=FCPATH."/assets/reg_doc_image/".$docData['document_image'];
 					$ext = pathinfo($org_image, PATHINFO_EXTENSION);
-					$imgName = $docId.'.'.$ext;
-					$destination=".\assets\documents\/".$imgName;
+				    $imgName = $docId.'.'.$ext;
+				   	$destination=FCPATH."/assets/documents/".$imgName;
 
 					if( rename( $org_image , $destination )){
 						echo '<br>moved!'.$destination;
