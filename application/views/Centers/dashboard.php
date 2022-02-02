@@ -52,16 +52,21 @@
 					</a>
 					<a class="border-0 custom-menu-item" href="<?=base_url('center/not_approve_student_list');?>">
 						<div>
-							<span class="nav-text">Unapprove Student List</span>
+							<span class="nav-text">Unapproved Student List</span>
 						</div>
 					</a>
 				</div>
 			</div>
 			<div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
 				<div class="row">
-										<a class="border-0 custom-menu-item" href="<?=base_url('center/student_list/paid');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('center/student_list/paid');?>">
 						<div>
 							<span class="nav-text">Paid Student</span>
+						</div>
+					</a>
+					<a class="border-0 custom-menu-item" href="<?=base_url('center/payment_complaint');?>">
+						<div>
+							<span class="nav-text">Payment Complaint </span>
 						</div>
 					</a>
 				</div>
