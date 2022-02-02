@@ -93,11 +93,9 @@ $route['center/loginAs/(:any)'] = 'center/center/loginAs/$1';
 $route['center/not_approve_student_list'] = 'center/center/not_approve_student_list';
 $route['center/center/remaining_documents']  = 'center/center/remaining_documents';
 $route['center/Document/remainingDocument'] = 'center/Document/remainingDocument';
-
-
-
 $route['center/form_edit_request']  = 'center/center/form_edit_request';
 $route['center/get_request_detail'] = 'center/center/get_request_detail';
+$route['center/payment_complaint'] = 'center/center/payment_complaint';
 
 
 $route['404_override'] = '';

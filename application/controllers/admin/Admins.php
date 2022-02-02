@@ -1527,7 +1527,7 @@ public function update_doc_permission_status()
 	}
 
 	public function updateDdeStudent()
-	{
+	{	//array('student_id'=> 372663)
 		$dde_students = $this->Common_model->get_record('dde_student','*');
 
 		foreach ($dde_students as $dde_student) {
@@ -1607,6 +1607,46 @@ public function update_doc_permission_status()
 			$updateData['fees_head'] = 'Admission Fees';
 			$updateData['admission_type'] = 'Regular';
 			$this->Common_model->insertAll('online_payment_transaction',$updateData);
+
+			if($dde_student['document_uploaded']=='Y'){
+				$where = array('student_id' => $dde_student['student_id']);
+				$admissionDoc = $this->Common_model->get_record('dde_admission_document','*',$where);
+				$course = $this->Common_model->getRecordById('course_group','id',$courseDetail->new_id);
+				
+				$document_id = $course->document_id;
+
+				foreach ($admissionDoc as $docData) {
+					$where = array('category' => $document_id,
+						'document' => $docData['document_name'],
+							);
+
+					$data = $this->Common_model->get_record('document_category','*',$where);
+
+					$uploadDocData = array(
+						'student_id' => $docData['student_id'],
+						'course_group_id' => $courseDetail->new_id,
+						'document_name' => $docData['document_name'],
+						'document_image' => $docData['document_image'],
+						'date_time' => $docData['date_time'],
+						'status' => $docData['status'],
+						'document_category_id' => $data[0]['id'],
+					);
+
+					$docId = $this->Common_model->insertAll('admission_document',$uploadDocData);
+
+					$org_image=FCPATH."/assets/reg_doc_image/".$docData['document_image'];
+					$ext = pathinfo($org_image, PATHINFO_EXTENSION);
+				    $imgName = $docId.'.'.$ext;
+				   	$destination=FCPATH."/assets/documents/".$imgName;
+
+					if( rename( $org_image , $destination )){
+						echo '<br>moved!'.$destination;
+					} else {
+						echo '<br>failed'.$student['student_id'];
+					}
+					$this->Common_model->updateRecordByConditions('admission_document',array('id'=>$docId),array('document_image' => $imgName));
+				}
+			}
 		}
 	}
 
@@ -1940,4 +1980,83 @@ public function editForm($student_id = ""){
 				echo $this->db->last_query().'<br>';
 			}
 		}
+
+
+		public function check_payment_transection(){
+			$this->load->view('header',array('title' => 'view payment complaint'));
+			$data = array(
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+			);
+
+			$this->load->view('admin/check_payment_transection',$data);
+			$this->load->view('footer');
+		}
+
+
+	public function get_payment_details(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url('admin'));
+			exit;
+		}else{
+
+			$text_val =$this->input->post('text_val');
+			$radio_val = $this->input->post('radio_val');
+
+			if($text_val !=''){
+
+				if($text_val !='' && $radio_val == 'enrollment_no'){
+					$student = $this->Common_model->getRecordById('student','enrollment_no',$text_val);
+				}else if($text_val !='' && $radio_val == 'student_id'){
+					$student = $this->Common_model->getRecordById('student','student_id',$text_val);
+				}
+
+				$paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student->student_id ));
+				$data = array(
+					'student' => $student,
+					'paymentDetails' => $paymentDetails,
+					'name_csrf' => $this->security->get_csrf_token_name(),
+					'hash_csrf' => $this->security->get_csrf_hash(),
+				);
+
+				if($data){
+					$dt =  $this->load->view('admin/account_section/view_student_transaction',$data,true);
+					$status = true;
+				}else{
+					$dt = "This student Does Not Have Any Pending payment Complaint";
+					$status = false;
+				}
+				echo json_encode(array(
+					"status" => $status,
+					"data" => $dt
+				));
+			}
+		}
+	}
+	
+
+	public function updatePaymentTransaction()
+	{
+		$id = $this->input->post('id');
+		$txnid = $this->input->post('TxnId');
+		$dateTime = $this->input->post('dateTime');
+		$student_id = $this->input->post('student_id');
+		$dateTime = explode(' ',$dateTime);
+		$updateData = array('txnId' => $txnid,'payment_date' => $dateTime[0],'payment_time' => $dateTime[1],'payment' => 'Y', 'payment_status' => 'captured');
+		$where = array('id' => $id);
+		$this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$updateData);
+		$whereStudent = array('student_id'=> $student_id);
+		$result = $this->Common_model->updateRecordByConditions('student',$whereStudent,array('payment_status'=> 'Y'));
+		if($result){
+			$paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student_id));
+			$data = array('paymentDetails' => $paymentDetails);
+			$htmlData = $this->load->view('admin/account_section/view_transaction_details',$data,true); 
+			$return = array('success' => 'Transaction Details Updated','data' =>$htmlData);
+		}else{
+			$return = array('error' => 'An error occurred');
+		}
+		echo json_encode($return);
+		die;
+	}
+
 }// class
