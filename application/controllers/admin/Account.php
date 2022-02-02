@@ -85,14 +85,16 @@
 			$dt   = array();
 				
 			$center_id  = $this->input->post("center_id");
-		
+			$centerData = $this->Common_model->getRecordById('center','id',$center_id);
 			$wherecenter = 'center_id='.$center_id.' and status="Pending"';
-			$center_detail = $this->Common_model->get_record('payment_complaint','*',$wherecenter);
+			$complaints = $this->Common_model->get_record('payment_complaint','*',$wherecenter);
 			
-			$data = array('center_details' => $center_detail ,'name_csrf' => $this->security->get_csrf_token_name(),
-			'hash_csrf' => $this->security->get_csrf_hash());
+			$data = array('complaints' => $complaints ,'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+				'centerData' => $centerData,
+			);
 
-			if($data['center_details']){
+			if($data['complaints']){
 				$dt =  $this->load->view('admin/account_section/getPaymentComplaints',$data,true);
 				$status = true;
 			}else{

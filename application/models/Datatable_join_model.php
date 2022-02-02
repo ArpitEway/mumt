@@ -48,9 +48,17 @@ class Datatable_join_model extends CI_Model{
     private function _get_datatables_query($postData,$array){
          
         $this->db->from($array['table']);
+
+        if(isset($array['select']));
+        $this->db->select($array['select']);
+        
+        if(isset($array['group_by']));
+        $this->db->group_by($array['group_by']);
+
         if($array['where']!=''){
-		$this->db->where($array['where']);
-		}
+            $this->db->where($array['where']);
+        }
+
 		if(isset($array['table2']) && $array['table2']!='' && $array['joinOn']!='' && isset($array['joinOn'])){
 			$this->db->join($array['table2'],$array['joinOn']);
 		}

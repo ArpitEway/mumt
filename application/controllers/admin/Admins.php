@@ -1594,6 +1594,7 @@ public function update_doc_permission_status()
 			$updateData['marks'] = $studentdata['ten_marks'];
 			$updateData['passing_year'] = $studentdata['ten_sub'];
 			$updateData['percentage'] = $studentdata['ten_per'];
+			unset($updateData['id']);
 			$this->Common_model->insertAll('student_data',$updateData);
 
 			$txnData = $this->Common_model->get_record('dde_online_payment_transaction','*','student_id='.$dde_student['student_id']);
@@ -1606,6 +1607,7 @@ public function update_doc_permission_status()
 			$updateData['txnId'] = $txnData['txnid'];
 			$updateData['fees_head'] = 'Admission Fees';
 			$updateData['admission_type'] = 'Regular';
+			unset($updateData['id']);
 			$this->Common_model->insertAll('online_payment_transaction',$updateData);
 
 			if($dde_student['document_uploaded']=='Y'){
@@ -2057,6 +2059,72 @@ public function editForm($student_id = ""){
 		}
 		echo json_encode($return);
 		die;
+	}
+
+	public function update_enroll_permission_status()
+	{
+		if ($this->input->method() == "post") 
+		{
+			$id    	= 0;
+			$id    	= $this->input->post("id");
+			$status = $this->input->post("status");
+
+			if ($this->input->post("id")) 
+			{
+				$data = $this->Common_model->updateRecordByConditions("session",array("id" => $id ),array("enrollment_permission" => $status ));
+
+				$dt = $this->db->get_where("session",array("id" => $id ))->result_array();
+
+				if($dt[0]['enrollment_permission'] == 'Y')
+				{
+					$sts_btn = '<input type ="button" name="update_enroll_stats" data-id='.$id.' class="btn btn-success enroll_permission_check" value="Yes">';
+				}else{
+					$sts_btn = '<input type ="button" name="update_enroll_stats" data-id='.$id.' class="btn btn-danger enroll_permission_check" value="No">';
+				}
+				$status = true;
+				$msg    = "";
+				
+				echo json_encode(array(
+					"status" => $status,
+					"msg" => $msg,
+					"data" => $sts_btn
+				));
+			}
+		}
+	}
+
+
+	public function update_exam_form_permission_status()
+	{
+
+		if ($this->input->method() == "post") 
+		{
+			$id    	= 0;
+			$id    	= $this->input->post("id");
+			$status = $this->input->post("status");
+
+			if ($this->input->post("id")) 
+			{
+				$data = $this->Common_model->updateRecordByConditions("session",array("id" => $id ),array("exam_form_permission" => $status ));
+
+				$dt = $this->db->get_where("session",array("id" => $id ))->result_array();
+
+				if($dt[0]['exam_form_permission'] == 'Y')
+				{
+					$sts_btn = '<input type ="button" name="update_exam_form_stats" data-id='.$id.' class="btn btn-success exam_form_permission_check" value="Yes">';
+				}else{
+					$sts_btn = '<input type ="button" name="update_exam_form_stats" data-id='.$id.' class="btn btn-danger exam_form_permission_check" value="No">';
+				}
+				$status = true;
+				$msg    = "";
+				
+				echo json_encode(array(
+					"status" => $status,
+					"msg" => $msg,
+					"data" => $sts_btn
+				));
+			}
+		}
 	}
 
 }// class
