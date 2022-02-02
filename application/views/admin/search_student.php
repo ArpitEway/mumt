@@ -106,6 +106,7 @@
         }
         else
         {
+          
             let data = {
                     'text_val':text_val,
                     'segment':"<?php echo $segment; ?>",

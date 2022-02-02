@@ -2,7 +2,7 @@
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 <div class="col-sm-4 m-auto">
 		<fieldset class="form-group">
-			<label for="exampleSelect1">Action</label>
+			<label for="exampleSelect1">Session</label>
 			<select class="form-control" name="action">
 				<option value="view" >View</option>
 				<option value="generate" >Generate</option>
@@ -34,6 +34,8 @@
 		foreach($students as $student){
 		$where = 'course_group_id='.$student->course_group_id;
 		$enrollment_code = $this->Common_model->getSinglefield('course','enrollment_code',$where);
+		echo "<pre>";
+		print_r($enrollment_code);
 		$en = $enrollment_code.'-'.$en_session.'-'.str_pad($enrollment_no++,4,"0",STR_PAD_LEFT );
 	?>
 		<tr>
