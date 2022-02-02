@@ -2059,4 +2059,70 @@ public function editForm($student_id = ""){
 		die;
 	}
 
+	public function update_enroll_permission_status()
+	{
+		if ($this->input->method() == "post") 
+		{
+			$id    	= 0;
+			$id    	= $this->input->post("id");
+			$status = $this->input->post("status");
+
+			if ($this->input->post("id")) 
+			{
+				$data = $this->Common_model->updateRecordByConditions("session",array("id" => $id ),array("enrollment_permission" => $status ));
+
+				$dt = $this->db->get_where("session",array("id" => $id ))->result_array();
+
+				if($dt[0]['enrollment_permission'] == 'Y')
+				{
+					$sts_btn = '<input type ="button" name="update_enroll_stats" data-id='.$id.' class="btn btn-success enroll_permission_check" value="Yes">';
+				}else{
+					$sts_btn = '<input type ="button" name="update_enroll_stats" data-id='.$id.' class="btn btn-danger enroll_permission_check" value="No">';
+				}
+				$status = true;
+				$msg    = "";
+				
+				echo json_encode(array(
+					"status" => $status,
+					"msg" => $msg,
+					"data" => $sts_btn
+				));
+			}
+		}
+	}
+
+
+	public function update_exam_form_permission_status()
+	{
+
+		if ($this->input->method() == "post") 
+		{
+			$id    	= 0;
+			$id    	= $this->input->post("id");
+			$status = $this->input->post("status");
+
+			if ($this->input->post("id")) 
+			{
+				$data = $this->Common_model->updateRecordByConditions("session",array("id" => $id ),array("exam_form_permission" => $status ));
+
+				$dt = $this->db->get_where("session",array("id" => $id ))->result_array();
+
+				if($dt[0]['exam_form_permission'] == 'Y')
+				{
+					$sts_btn = '<input type ="button" name="update_exam_form_stats" data-id='.$id.' class="btn btn-success exam_form_permission_check" value="Yes">';
+				}else{
+					$sts_btn = '<input type ="button" name="update_exam_form_stats" data-id='.$id.' class="btn btn-danger exam_form_permission_check" value="No">';
+				}
+				$status = true;
+				$msg    = "";
+				
+				echo json_encode(array(
+					"status" => $status,
+					"msg" => $msg,
+					"data" => $sts_btn
+				));
+			}
+		}
+	}
+
 }// class
