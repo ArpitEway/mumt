@@ -34,6 +34,8 @@
 		foreach($students as $student){
 		$where = 'course_group_id='.$student->course_group_id;
 		$enrollment_code = $this->Common_model->getSinglefield('course','enrollment_code',$where);
+		echo "<pre>";
+		print_r($enrollment_code);
 		$en = $enrollment_code.'-'.$en_session.'-'.str_pad($enrollment_no++,4,"0",STR_PAD_LEFT );
 	?>
 		<tr>
