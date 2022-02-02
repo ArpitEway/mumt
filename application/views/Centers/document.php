@@ -116,9 +116,9 @@
 	</div>
 
 <ul class="my-5"><li class="text-danger my-3 font-weight-bold">	 डाक्यूमेंट्स अपलोड करते समय सभी की साइज 80 KB से 250 KB के मध्य रखना अनिवार्य है|  </li>
-<li class="text-danger my-3 font-weight-bold">समस्त डाक्यूमेंट्स अपलोड करने के बाद नीचे दिए गए "Submit" बटन पर अवश्य क्लिक करें| </li>
 <li class="text-danger my-3 font-weight-bold"> यदि महिला अभ्यर्थी द्वारा Admission Form में पिता के नाम की जगह पति का नाम एवं उपनाम भरा गया है तो Affidevit अथवा Marriage Certificate  की प्रतिलिपि आवश्यक है। </li>
-<li class="text-danger my-3 font-weight-bold">समस्त डाक्यूमेंट्स अपलोड करने के बाद नीचे दिए गए "Submit" बटन पर अवश्य क्लिक करें|</li></ul>
+<li class="text-danger my-3 font-weight-bold">समस्त डाक्यूमेंट्स अपलोड करने के बाद नीचे दिए गए "Submit" बटन पर अवश्य क्लिक करें| </li>
+</ul>
 
 	<div class="row justify-content-center my-3">
 		<button type="submit" class="btn btn-primary btn-lg" id="submit" name="submit">Submit</button>
@@ -137,7 +137,7 @@
 			var file = $(this);
 			
 			var filesize = parseFloat(file[0].files[0].size / 1024).toFixed(2);
-			if(filesize>250){
+			if(filesize>500){
 				$(this).parent().next('div').text('Document size must be less than 500kb');
 				return false;
 				}else{

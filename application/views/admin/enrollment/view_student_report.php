@@ -1,3 +1,6 @@
+<script src="https://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>
+<script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+<script src="<?=BASE_URL()?>assets/light_box/js/jquery.magnify.js"></script>
 <div class="">
 <div class="row mt-5">
 <div class="form-group col-md-3">
@@ -17,14 +20,14 @@
 
 <div class="form-group col-md-3">
 	<label for="center_id">Center</label>
-	<select name="center_id" id="center_id" class="form-control " data-target="#course_group_id" required >
+	<select name="center_id" id="center_id" class="form-control " data-target="#course_group_id" >
 		<option value="all">All</option>
 		<?php 
 		$centers = $this->db->get_where('center', array())->result_array();
 		foreach($centers as $center)
 		{
 			?>
-			<option value="<?php echo $center['center_id']; ?>"><?php echo $center['center_code'] ." - ". $center['center_name']; ?></option>
+			<option value="<?php echo $center['id']; ?>"><?php echo $center['center_code'] ." - ". $center['center_name']; ?></option>
 			<?php
 		} 
 		?> 
@@ -83,7 +86,7 @@
 <script>
 
 $(document).on("click","#submit_btn",function(){
-	$('#dt').hide();
+	$('#dt').html('');
 
 	var csrfName = $('.csrfname').attr('name');
 	var csrfHash = $('.csrfname').val(); 
