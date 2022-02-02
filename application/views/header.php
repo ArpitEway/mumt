@@ -28,7 +28,7 @@
 	<script type='text/javascript' src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
 	<script type="text/javascript">
 		var BASE_URL = "<?php echo base_url();?>";
-		var account_type = "<?php echo  ($this->session->has_userdata(account_type)) ? $this->session->account_type : '' ;?>";
+		var account_type = "<?php echo  ($this->session->has_userdata('account_type')) ? $this->session->account_type : '' ;?>";
 	</script>
 
 </head>
