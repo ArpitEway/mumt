@@ -1,4 +1,3 @@
-
 <form id="radio_btn_select">
     <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
     <div class="row">

@@ -2,7 +2,7 @@
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 <div class="col-sm-4 m-auto">
 		<fieldset class="form-group">
-			<label for="exampleSelect1">Action</label>
+			<label for="exampleSelect1">Session</label>
 			<select class="form-control" name="action">
 				<option value="view" >View</option>
 				<option value="generate" >Generate</option>

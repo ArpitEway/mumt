@@ -1677,7 +1677,7 @@ public function update_doc_permission_status()
 
 			}else if($text_val !='' && $radio_val == 'student_name')
 			{
-				$where = array('name'=>$text_val);
+				$this->db->like('name', $text_val);
 			}else if($text_val !='' && $radio_val == 'adhar_no')
 			{
 				$where =  array('adhar_no' => $text_val);
