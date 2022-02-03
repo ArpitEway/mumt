@@ -74,11 +74,18 @@ class ExamController extends CI_Controller {
 	}
    
 
-	 public function enrollment_permission(){
+	 public function enrollment_permission($centerCode = ""){
+		$centerCode = $this->Common_model->encrypt_decrypt($centerCode,'decrypt');
 		if(!isset($_POST['action'])){
-		
-			$student = $this->Common_model->getRecordByWhereByOrder('student','approved="Y" and enrollment_no not in ("-")  and enrolled="N"','enrollment_no','ASC',100);
-		
+			
+			$where = array(
+				'center_code' => $centerCode,
+			     'enrolled' => 'N' ,
+				 'approved' => 'Y',
+				 "enrollment_no!="=> '-',
+				
+			);
+			$student = $this->Common_model->getRecordByWhere('student',$where);
 			$data = array(
 			'students' => $student,
 			'name_csrf' => $this->security->get_csrf_token_name(),
@@ -86,7 +93,7 @@ class ExamController extends CI_Controller {
 			);
 		
 			$this->load->view('header',array('title' => 'Enrollment Permission'));
-			$this->load->view('admin/enrollment/set_enrollment_permission',$data);
+			$this->load->view('admin/examController/set_enrollment_permission',$data);
 			$this->load->view('footer');
 			}else if($_POST['action']=='setPermission'){
 	
@@ -100,7 +107,8 @@ class ExamController extends CI_Controller {
 			
 			}
 			$this->session->set_flashdata('ajax_flash_message','permission updated');
-			redirect(base_url().'admin/ExamController/enrollment_permission');		
+			$centerCode = $this->Common_model->encrypt_decrypt($centerCode,'encrypt');
+			redirect(base_url().'admin/ExamController/enrollment_permission/'.$centerCode);		
 		}
 	
 	}
@@ -355,5 +363,19 @@ class ExamController extends CI_Controller {
 			{
 				redirect(base_url('admin/enrollment/enrollment_status'));
 			}
+		}
+
+
+		public function  center_wise_enrollment_permission(){
+			$data = array();
+			$data['title'] = "Center";
+			$this->load->view('header',$data);
+			$where = array("approved" => "Y" , "enrollment_no!="=> '-' , 'enrolled'=> 'N');
+			$data['centers'] = $this->Common_model->get_record_group_by_where('student','center_id , ,center_name ,center_code , ',$where);
+			
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$this->load->view('admin/ExamController/center_wise_enrollment_permission',$data);
+			$this->load->view('footer');
 		}
 }// class
