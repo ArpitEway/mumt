@@ -273,7 +273,7 @@ class ExamController extends CI_Controller {
 				$this->load->view('admin/enrollment/center_wise_list',$data); 
 				$this->load->view('footer');
 			}else{
-				return redirect(base_url().'enrollment/enrollment_status');
+				return redirect(base_url().$this->session->account_type.'/enrollment_status');
 			}
 		}
 
@@ -361,7 +361,7 @@ class ExamController extends CI_Controller {
 				$this->load->view('footer');
 			}else
 			{
-				redirect(base_url('admin/enrollment/enrollment_status'));
+				redirect(base_url('admin/'.$this->session->account_type.'/enrollment_status'));
 			}
 		}
 
@@ -375,7 +375,7 @@ class ExamController extends CI_Controller {
 			
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
-			$this->load->view('admin/ExamController/center_wise_enrollment_permission',$data);
+			$this->load->view('admin/examController/center_wise_enrollment_permission',$data);
 			$this->load->view('footer');
 		}
 
