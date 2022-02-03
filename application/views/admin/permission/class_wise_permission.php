@@ -1,0 +1,107 @@
+<div class="text-right mt-3">
+</div>
+<div class=" mt-5" >
+	<table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
+    <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+		<thead>
+			<tr>
+          <th>S.No</th>
+          <th>Class Id</th>
+          <th>Course name</th>
+          <th>Class</th>
+          <th>Mode</th> 
+          <th>Exam Form Permission</th>
+          <th>Admit Card Permission</th>
+			</tr>
+		</thead>
+		<tbody>
+    	<?php
+    		
+    	$i = 1;
+
+      foreach($classes as $class){			
+			$courses = $this->db->get_where('course_group', array('id'=>$class['course_group_id']))->row_array();     
+			$course_name = $courses['course_name'];
+    		?>
+			
+					<tr>
+						<td><?php echo $i; ?></td>
+                        <td><?php echo $class['id']; ?></td>
+						<td><?php echo $course_name; ?></td>
+						<td><?php echo $class['class_name']; ?></td>
+						<td><?php echo $class['mode']; ?></td>
+            <td>
+                <button id="btn_<?php echo  $class['id']?>" <?php if($class['exam_form_permission']=='Y' ){echo "class='btn btn-success'" ;}else{echo "class='btn btn-danger' ";} ?> onclick="statusChange(<?php echo $class['id'];  ?>,'<?php echo $class['exam_form_permission'];?>')">
+                <?php if($class['exam_form_permission']=='Y' ){echo "Yes" ;}else{
+                  echo " No";
+                } ?></button>
+            </td>
+           
+            <td>
+                <button id="btn_a<?php echo  $class['id']?>" <?php if($class['admit_card_permission']	=='Y' ){echo "class='btn btn-success'" ;}else{echo "class='btn btn-danger' ";} ?> onclick="statusChangeAdmitCard(<?php echo $class['id'];   ?>,'<?php echo $class['admit_card_permission'];?>')">
+                <?php if($class['admit_card_permission']){echo "Yes" ;}else{
+                  echo " No";
+                } ?></button>
+            </td>
+					</tr>
+			<?php $i++; } ?>
+	</tbody>
+	</table>
+
+</div>
+
+<script>
+    function statusChange(id,exam_form_permission){
+        var csrfName = $('.csrfname').attr('name');
+		var csrfHash = $('.csrfname').val(); 
+      $.ajax({
+       url: BASE_URL+"admin/Permission/update_exam_form_permission",
+        type:"post",
+        dataType: 'json',
+        data:{"class_id":id,"exam_form_permission":exam_form_permission,[csrfName]:csrfHash},
+        success: function(response){
+          if(response.success==true){
+          $("#btn_"+id).removeClass("btn btn-success");
+          $("#btn_"+id).addClass("btn btn-danger");
+          $("#btn_"+id).html("No");
+           var s="statusChange("+ id +",'N')";
+          $("#btn_"+id).attr("onclick",s);
+        }else  if(response.error==false){
+          $("#btn_"+id).removeClass("btn btn-danger");
+          $("#btn_"+id).addClass("btn btn-success");
+          $("#btn_"+id).html("Yes");
+           var s="statusChange("+ id +",'Y')";
+          $("#btn_"+id).attr("onclick",s);
+        }
+      }
+    });
+  }
+
+  function statusChangeAdmitCard(id,admit_card_permission){
+    var csrfName = $('.csrfname').attr('name');
+	var csrfHash = $('.csrfname').val(); 
+    $.ajax({
+     url: BASE_URL+"admin/Permission/update_admit_card_permission",
+      type:"post",
+      dataType: 'json',
+      data:{"class_id":id,"admit_card_permission":admit_card_permission,[csrfName]:csrfHash},
+      success: function(response){
+        console.log(response);
+        if(response.success==true){
+        $("#btn_a"+id).removeClass("btn btn-success");
+        $("#btn_a"+id).addClass("btn btn-danger");
+        $("#btn_a"+id).html("No");
+         var s="statusChangeAdmitCard("+ id +",'N')";
+        $("#btn_a"+id).attr("onclick",s);
+      }else  if(response.error==false){
+        $("#btn_a"+id).removeClass("btn btn-danger");
+        $("#btn_a"+id).addClass("btn btn-success");
+        $("#btn_a"+id).html("Yes");
+         var s="statusChangeAdmitCard("+ id +",'Y')";
+        $("#btn_a"+id).attr("onclick",s);
+      }
+    }
+  });
+}
+
+ </script>
