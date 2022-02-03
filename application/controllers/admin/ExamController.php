@@ -92,7 +92,7 @@ class ExamController extends CI_Controller {
 			'hash_csrf' => $this->security->get_csrf_hash(),
 			);
 		
-			$this->load->view('header',array('title' => 'Enrollment Permission'));
+			$this->load->view('header',array('title' => 'Set Enrollment Permission'));
 			$this->load->view('admin/examController/set_enrollment_permission',$data);
 			$this->load->view('footer');
 			}else if($_POST['action']=='setPermission'){
@@ -368,7 +368,7 @@ class ExamController extends CI_Controller {
 
 		public function  center_wise_enrollment_permission(){
 			$data = array();
-			$data['title'] = "Center";
+			$data['title'] = "Center Wise Enrollment Permission";
 			$this->load->view('header',$data);
 			$where = array("approved" => "Y" , "enrollment_no!="=> '-' , 'enrolled'=> 'N');
 			$data['centers'] = $this->Common_model->get_record_group_by_where('student','center_id , ,center_name ,center_code , ',$where);
@@ -378,4 +378,16 @@ class ExamController extends CI_Controller {
 			$this->load->view('admin/ExamController/center_wise_enrollment_permission',$data);
 			$this->load->view('footer');
 		}
+
+	public function course_detail(){
+			$titleData = array('title' => 'Course Details'); 
+			$this->load->view('header',$titleData);
+			$id =  $this->session->center_id;
+			$center = $this->Common_model->getRecordById('center','id',$id);
+			$course_group = $this->db->get_where('course_group', array())->result_array();
+			$data = array('course_group' => $course_group);
+			$this->load->view('Centers/instruction',$data);
+			$this->load->view('footer');
+	}
+
 }// class

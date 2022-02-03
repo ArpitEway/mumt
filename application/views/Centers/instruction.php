@@ -57,10 +57,12 @@
         $i++;
         } ?>
     </tbody>
-    </table>  
+    </table>
+<?php if($this->session->has_userdata('centerdata')){ ?>
     <div class="text-center">
     <a class="btn btn-success" href="dashboard">Dashboard</a>
     </div>
+<?php } ?>
   </div>
 </div>
 	
