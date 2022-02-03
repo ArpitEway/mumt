@@ -162,7 +162,7 @@
 			$course_group_id = html_escape($this->input->post('course_group_id'));
 			
 			$document_id = $this->Common_model->getSinglefield('course_group','document_id',' id='.$course_group_id);
-			$documentData = $this->Common_model->get_record('document_category','*','category='.$document_id);
+			$documentData = $this->Common_model->get_record('document_category','*','category='.$document_id.' and status="Y"');
 		
 			foreach($documentData as $document){
 			$admissionDocWhere = " student_id = ".$student_id." and document_category_id = ".$document['id'];
