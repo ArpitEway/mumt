@@ -222,7 +222,7 @@
 
 
 		public function check_payment_transection(){
-			$this->load->view('header',array('title' => 'view payment complaint'));
+			$this->load->view('header',array('title' => 'Search Transaction Details'));
 			$data = array(
 				'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash(),
