@@ -28,13 +28,13 @@ class Admins extends CI_Controller {
 		}
 		else
 		{
-			redirect(base_url('admin/login'));
+			redirect(base_url('login'));
 		}
 	}
 
 	public function dashboard(){
 		if(!$this->session->has_userdata('adminData')){
-			redirect(base_url('admin'));
+			redirect(base_url());
 			exit;
 		}else{
 			$admin_id = $this->session->admin_id;
@@ -53,7 +53,7 @@ class Admins extends CI_Controller {
 	public function add_menu_heading($param1 = '', $param2 = '')
 	{
 		if(!$this->session->has_userdata('adminData')){
-			redirect(base_url('admin'));
+			redirect(base_url());
 			exit;
 		}else
 		{
@@ -93,7 +93,7 @@ class Admins extends CI_Controller {
 
 		if(!$this->session->has_userdata('adminData')){
 
-			redirect(base_url('admin'));
+			redirect(base_url());
 			exit;
 
 		}else
@@ -138,7 +138,7 @@ class Admins extends CI_Controller {
 
 		if(!$this->session->has_userdata('adminData')){
 
-			redirect(base_url('admin'));
+			redirect(base_url());
 			exit;
 
 		}else
@@ -186,7 +186,7 @@ class Admins extends CI_Controller {
 
 		if(!$this->session->has_userdata('adminData')){
 
-			redirect(base_url('admin'));
+			redirect(base_url());
 			exit;
 
 		}else
@@ -288,7 +288,7 @@ class Admins extends CI_Controller {
 	{
 
 		if(!$this->session->has_userdata('adminData')){
-			redirect(base_url('admin'));
+			redirect(base_url());
 			exit;
 		}else{
 
@@ -332,7 +332,7 @@ class Admins extends CI_Controller {
 	public function course($param1 = '', $param2 = '', $param3 = '')
 	{
 		if(!$this->session->has_userdata('adminData')){
-			redirect(base_url('admin'));
+			redirect(base_url());
 			exit;
 		}else
 		{
