@@ -51,9 +51,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 
 
-if($_SERVER['HOSTNAME']=='admin.mmyvvonline.com'){
+if($_SERVER['HTTP_HOST']=='admin.mmyvvonline.com'){
 
 /* Admin Routes   */
+$route['default_controller'] = 'admin/Admins';
+
 $route[''] = 'admin/Admins/login';
 $route['dashboard'] = 'admin/Admins/dashboard';
 $route['login'] = 'admin/Admins/login';
@@ -64,7 +66,7 @@ $route['enrollment/show_form/(:num)'] = 'admin/enrollment/show_form/$1';
 $route['updateStudentData/(:num)'] = 'admin/updateStudentData/index/$1';
 $route['remote_login/(:any)'] = 'admin/Admins/remote_login/$1';
 
-}elseif($_SERVER['HOSTNAME']=='center.mmyvvonline.com'){
+}elseif($_SERVER['HTTP_HOST']=='center.mmyvvonline.com'){
 
 
 $route[''] = 'center/center';
@@ -96,7 +98,6 @@ $route['payment_complaint'] = 'center/center/payment_complaint';
 
 
 
-$route['default_controller'] = 'Dashboard';
 
 $route['student'] = 'student/Student';
 $route['student/login'] = 'student/Student/login';
