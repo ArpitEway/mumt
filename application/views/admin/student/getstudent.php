@@ -18,7 +18,7 @@
 			$docs = $this->Common_model->getAllRow("admission_document",'document_name,document_image',array("student_id" => $student['student_id']),'');
 			?>
 			<tr>
-			<td><a target="_blank" href="<?php echo BASE_URL('admin/enrollment/show_form/'.$this->Common_model->encrypt_decrypt($student['student_id'],'encrypt')); ?>" ><?php echo $student["student_id"]; ?></a></td>
+			<td><a target="_blank" href="<?php echo BASE_URL('show_form/'.$this->Common_model->encrypt_decrypt($student['student_id'],'encrypt')); ?>" ><?php echo $student["student_id"]; ?></a></td>
 				<td><?php echo $student["course_name"]; ?></td>
 				<td><?php echo $student["class_name"]; ?></td>
 				<td><?php echo $student["name"]; ?></td>
@@ -33,7 +33,7 @@
 						if($doc["document_name"] == 'Aadhaar Card'){
 							?>
 
-							<a href="<?php echo site_url('admin/enrollment/update_aadhar/'.$student_id); ?>" target="_blank">
+							<a href="<?php echo site_url('Enrollment/update_aadhar/'.$student_id); ?>" target="_blank">
 								<?php echo $doc["document_name"]; ?>
 							</a>
 							<br>
@@ -48,7 +48,7 @@
 						if($doc["document_name"] == 'Aadhaar Card'){
 							?>
 
-							<a href="<?php echo site_url('admin/enrollment/update_aadhar/'.$student_id); ?>" target="_blank">
+							<a href="<?php echo site_url('Enrollment/update_aadhar/'.$student_id); ?>" target="_blank">
 								<?php echo $doc["document_name"]; ?>
 							</a>
 							<br>
@@ -67,7 +67,7 @@
 				<td>
 					<div style="display: inline-grid;">
 					<?php if($student["approved"] != 'Y' || $student["approved"] == "" ){ ?>
-					<a  style="margin:5px;" class="btn btn-success" data-id="<?php echo site_url('admin/enrollment/make_approved/'.$student_id); ?>" data-st_id="<?=$student_id?>" onclick="make_approved(this)"> Make Approved </a>
+					<a  style="margin:5px;" class="btn btn-success" data-id="<?php echo site_url('admin/Enrollment/make_approved/'.$student_id); ?>" data-st_id="<?=$student_id?>" onclick="make_approved(this)"> Make Approved </a>
 					<a href="javascript:void(0);" style="margin:5px;" class="btn btn-danger" onclick="rightModal('<?php echo site_url('admin/modal/student_popup/admin/student/update/remark_update/'.$student_id); ?>', '<?php echo 'Select Remark' ?>')"> Make Non approve
 					</a>
 					<span  class="remark_span_<?=$student["student_id"];?>" style="color:red;">

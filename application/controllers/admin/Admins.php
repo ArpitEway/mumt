@@ -273,7 +273,7 @@ class Admins extends CI_Controller {
 					'admin_id' => $check_user->id
 				);
 				$this->session->set_userdata($data);
-				redirect(base_url('admin/'.$check_user->account_type));
+				redirect(base_url($check_user->account_type));
 			}else{
 				$data = array('error'=> "USERNAME AND PASSWORD ARE  INCORRECT",
 					'name_csrf' => $this->security->get_csrf_token_name(),
