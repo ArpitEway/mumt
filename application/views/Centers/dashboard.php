@@ -24,33 +24,33 @@
 			<div class="tab-pane fade active show" id="Enrollment" role="tabpanel" aria-labelledby="Enrollment-tab">
 				<div class="row">
 
-					<a class="border-0 custom-menu-item" href="<?=base_url('center/instruction');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('instruction');?>">
 						<div>
 							<span class="nav-text">Course Details</span>
 						</div>
 					</a>
 
-					<a class="border-0 custom-menu-item" href="<?=base_url('center/admission_instruction');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('admission_instruction');?>">
 						<div>
 							<span class="nav-text">Admission Form</span>
 						</div>
 					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('center/all_student');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('all_student');?>">
 						<div>
 							<span class="nav-text">Student Report</span>
 						</div>
 					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('center/student_list/unpaid');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('student_list/unpaid');?>">
 						<div>
 							<span class="nav-text">Unpaid Student</span>
 						</div>
 					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('center/Document');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('Document');?>">
 						<div>
 							<span class="nav-text">Upload Admission Document</span>
 						</div>
 					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('center/not_approve_student_list');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('not_approve_student_list');?>">
 						<div>
 							<span class="nav-text">Unapproved Student List</span>
 						</div>
@@ -59,12 +59,12 @@
 			</div>
 			<div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
 				<div class="row">
-					<a class="border-0 custom-menu-item" href="<?=base_url('center/student_list/paid');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('student_list/paid');?>">
 						<div>
 							<span class="nav-text">Paid Student</span>
 						</div>
 					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('center/payment_complaint');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('payment_complaint');?>">
 						<div>
 							<span class="nav-text">Payment Complaint </span>
 						</div>
