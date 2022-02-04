@@ -572,7 +572,7 @@ class Center extends CI_Controller {
 				'account_type' => 'center'
 			);
 			$this->session->set_userdata($data);
-			redirect(base_url('center'));
+			redirect('https://center.mmyvvonline.com');
 		}else{
 			$this->session->set_flashdata('error','center Code Are Incorrect');
 			redirect(base_url('center'));

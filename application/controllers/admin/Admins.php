@@ -669,21 +669,21 @@ class Admins extends CI_Controller {
 
 					$response = $this->admin_model->create_account();
 					$this->session->set_flashdata('ajax_flash_message','Account Successfully Added');
-					redirect(base_url().'admin/Admins/account_register');
+					redirect(base_url().'account_register');
 
 				}
 				if($param1 == 'update'){
 
 					$response = $this->admin_model->account_update($param2);
 					$this->session->set_flashdata('ajax_flash_message','Account Successfully Updated');
-					redirect(base_url().'admin/Admins/account_register');
+					redirect(base_url().'account_register');
 				}
 
 				if($param1 == 'delete'){
 
 					$response = $this->admin_model->account_delete($param2);
 					$this->session->set_flashdata('ajax_flash_message','Account Successfully Deleted');
-					redirect(base_url().'admin/Admins/account_register');
+					redirect(base_url().'account_register');
 				}
 
 				if(empty($param1) ){
@@ -1154,7 +1154,7 @@ class Admins extends CI_Controller {
 		{
 			if(!$this->session->has_userdata('adminData'))
 			{
-				redirect(base_url('admin'));
+				redirect(base_url());
 
 				exit;
 			}else{
