@@ -262,7 +262,7 @@ class Center extends CI_Controller {
 		$i = $_POST['start'];
 		foreach($tableData as $result){
 			$btn = ($result->document_uploaded=='Y') ?
-			'<a href="'.base_url('center/show_form/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>' : '';
+			'<a href="'.base_url('show_form/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>' : '';
 			$i++;
 			$data[] = array($result->student_id,$result->enrollment_no, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$btn);
 		}
