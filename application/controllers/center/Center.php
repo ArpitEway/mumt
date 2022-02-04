@@ -13,7 +13,7 @@ class Center extends CI_Controller {
 
 	public function index(){
 		if($this->session->has_userdata('centerdata')){
-			redirect(base_url('center/dashboard'));
+			redirect(base_url('dashboard'));
 		}else{			
 			$csrf = array(
 				'name_csrf' => $this->security->get_csrf_token_name(),
