@@ -25,7 +25,7 @@ class Center extends CI_Controller {
 
 	public function dashboard(){
 		if(!$this->session->has_userdata('centerdata')){
-			redirect(base_url('center/'));
+			redirect(base_url());
 		}else{
 			$titleData = array('title' => 'Center Dashboard'); 
 			$this->load->view('Centers/header',$titleData);
@@ -41,7 +41,7 @@ class Center extends CI_Controller {
 	public function instruction(){
 		
 		if(!$this->session->has_userdata('centerdata')){
-			redirect(base_url('center/'));
+			redirect(base_url());
 		}else{
 			$titleData = array('title' => 'Course Fees Structure'); 
 			$this->load->view('Centers/header',$titleData);
@@ -117,7 +117,7 @@ class Center extends CI_Controller {
 
 	public function admission_form(){
 		if(!$this->session->has_userdata('centerdata')){
-			redirect(base_url('center/'));
+			redirect(base_url());
 			exit;
 		}
 		$titleData = array('title' => 'Admission Form'); 
@@ -162,7 +162,7 @@ class Center extends CI_Controller {
 
 	public function show_form($student_id){
 		if(!$this->session->has_userdata('centerdata')){
-			redirect(base_url('center/login'));
+			redirect(base_url('login'));
 		}
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		$data = array();
@@ -357,7 +357,7 @@ class Center extends CI_Controller {
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
 		foreach($tableData as $result){
-			$btn = '<a href="'.base_url('center/show_fees/'.$this->Common_model->encrypt_decrypt($result->id)).'" class="btn btn-primary btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>';			
+			$btn = '<a href="'.base_url('show_fees/'.$this->Common_model->encrypt_decrypt($result->id)).'" class="btn btn-primary btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>';			
 			$i++;
 			$data[] = array($result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->fees_head,$result->amount,$result->txnId,$btn);
 		}
@@ -375,7 +375,7 @@ class Center extends CI_Controller {
 
 	public function profile(){
 		if(!$this->session->has_userdata('centerdata')){
-			redirect(base_url('center/'));
+			redirect(base_url());
 		}else{
 			$titleData = array('title' => 'center Profile'); 
 			$this->load->view('Centers/header',$titleData);
@@ -391,7 +391,7 @@ class Center extends CI_Controller {
 	public function change_password(){
 		if(!$this->session->has_userdata('centerdata')){
 
-			redirect(base_url('center/'));
+			redirect(base_url());
 
 		}else{
 
@@ -467,7 +467,7 @@ class Center extends CI_Controller {
 	public function payStudentFees()
 	{
 		if(!$this->session->has_userdata('centerdata')){
-			redirect(base_url('center/'));
+			redirect(base_url());
 			die();
 		}
 		
@@ -508,7 +508,7 @@ class Center extends CI_Controller {
 		$transaction = $this->Common_model->get_record('online_payment_transaction','*',$where);
 		if($transaction[0]['center_id']!=$this->session->center_id){
 			$this->session->set_flashdata('error','Details Not Found');
-			redirect(base_url('center/dashboard'));
+			redirect(base_url('dashboard'));
 		}
 		$wherestudent = 'student_id='.$transaction[0]['student_id'];
 		$student = $this->Common_model->get_record('student','*',$wherestudent);
@@ -582,7 +582,7 @@ class Center extends CI_Controller {
 	public function payment_complaint($param = ""){
 		
 		if(!$this->session->has_userdata('centerdata')){
-			redirect(base_url('center/'));
+			redirect(base_url());
 		}else{
 
 			if(!$param)
@@ -673,7 +673,7 @@ class Center extends CI_Controller {
 	{
 		if(!$this->session->has_userdata('centerdata')){
 
-			redirect(base_url('center/'));
+			redirect(base_url());
 
 		}else{
 
