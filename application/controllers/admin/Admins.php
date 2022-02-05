@@ -234,7 +234,7 @@ class Admins extends CI_Controller {
 
 	public function login(){
 		if($this->session->has_userdata('adminData')){	
-			redirect(base_url('admin/'.$this->session->account_type));
+			redirect(base_url($this->session->account_type));
 			exit;
 		}
 		$csrf = array(
@@ -246,7 +246,7 @@ class Admins extends CI_Controller {
 
 	public function loginSub(){
 		if($this->session->has_userdata('adminData')){
-			redirect(base_url('admin/'.$this->session->account_type));
+			redirect(base_url($this->session->account_type));
 			exit;
 		}
 
@@ -296,21 +296,21 @@ class Admins extends CI_Controller {
 
 				$response = $this->admin_model->create_session();
 				$this->session->set_flashdata('ajax_flash_message','Session Successfully Added');
-				redirect(base_url().'admin/Admins/session');
+				redirect(base_url().'session');
 
 			}
 			if($param1 == 'update'){
 
 				$response = $this->admin_model->session_update($param2);
 				$this->session->set_flashdata('ajax_flash_message','Session Successfully Updated');
-				redirect(base_url().'admin/Admins/session');
+				redirect(base_url().'session');
 			}
 
 			if($param1 == 'delete'){
 
 				$response = $this->admin_model->session_delete($param2);
 				$this->session->set_flashdata('ajax_flash_message','Session Successfully Deleted');
-				redirect(base_url().'admin/Admins/session');
+				redirect(base_url().'session');
 			}
 
 			if(empty($param1) ){
@@ -340,21 +340,21 @@ class Admins extends CI_Controller {
 
 				$response = $this->admin_model->create_course();
 				$this->session->set_flashdata('ajax_flash_message','Course Successfully Added');
-				redirect(base_url().'admin/Admins/course');
+				redirect(base_url().'course');
 
 			}
 			if($param1 == 'update'){
 
 				$response = $this->admin_model->course_update($param2);
 				$this->session->set_flashdata('ajax_flash_message','Course Successfully Updated');
-				redirect(base_url().'admin/Admins/course');
+				redirect(base_url().'course');
 			}
 
 			if($param1 == 'delete'){
 
 				$response = $this->admin_model->course_delete($param2);
 				$this->session->set_flashdata('ajax_flash_message','Course Successfully Deleted');
-				redirect(base_url().'admin/Admins/course');
+				redirect(base_url().'course');
 			}
 
 			if(empty($param1) ){
@@ -377,7 +377,7 @@ class Admins extends CI_Controller {
 	{
 
 		if(!$this->session->has_userdata('adminData')){
-			redirect(base_url('admin'));
+			redirect(base_url());
 			exit;
 		}else
 		{
@@ -386,13 +386,13 @@ class Admins extends CI_Controller {
 				
 				$response = $this->admin_model->create_class();
 				$this->session->set_flashdata('ajax_flash_message','Class Successfully Added');
-				redirect(base_url().'admin/Admins/classes');
+				redirect(base_url().'classes');
 
 			}
 			if($param1 == 'update'){
 				$response = $this->admin_model->class_update($param2);
 				$this->session->set_flashdata('ajax_flash_message','Class Successfully Updated');
-				redirect(base_url().'admin/Admins/classes');
+				redirect(base_url().'classes');
 				
 			}
 
@@ -400,7 +400,7 @@ class Admins extends CI_Controller {
 
 				$response = $this->admin_model->class_delete($param2);
 				$this->session->set_flashdata('ajax_flash_message','Class Successfully Deleted');
-				redirect(base_url().'admin/Admins/classes');
+				redirect(base_url().'classes');
 				
 			}
 
@@ -426,7 +426,7 @@ class Admins extends CI_Controller {
 	{
 
 		if(!$this->session->has_userdata('adminData')){
-			redirect(base_url('admin'));
+			redirect(base_url());
 			exit;
 		}else
 		{
@@ -435,14 +435,14 @@ class Admins extends CI_Controller {
 
 				$response = $this->admin_model->create_paper();
 				$this->session->set_flashdata('ajax_flash_message','Paper Successfully Added');
-				redirect(base_url().'admin/Admins/Paper');
+				redirect(base_url().'Paper');
 
 			}
 			if($param1 == 'update'){
 
 				$response = $this->admin_model->paper_update($param2);
 				$this->session->set_flashdata('ajax_flash_message','Paper Successfully Updated');
-				redirect(base_url().'admin/Admins/Paper');
+				redirect(base_url().'Paper');
 
 			}
 
@@ -450,7 +450,7 @@ class Admins extends CI_Controller {
 
 				$response = $this->admin_model->paper_delete($param2);
 				$this->session->set_flashdata('ajax_flash_message','Paper Successfully Deleted');
-				redirect(base_url().'admin/Admins/Paper');
+				redirect(base_url().'Paper');
 			}
 
 			if(empty($param1) ){
@@ -473,7 +473,7 @@ class Admins extends CI_Controller {
 	public function paper_test($param1 = '', $param2 = '', $param3 = '')
 	{
 		if(!$this->session->has_userdata('adminData')){
-			redirect(base_url('admin'));
+			redirect(base_url());
 			exit;
 		}else
 		{
@@ -482,14 +482,14 @@ class Admins extends CI_Controller {
 
 				$response = $this->admin_model->create_paper();
 				$this->session->set_flashdata('ajax_flash_message','Paper Successfully Added');
-				redirect(base_url().'admin/Admins/Paper');
+				redirect(base_url().'Paper');
 
 			}
 			if($param1 == 'update'){
 
 				$response = $this->admin_model->paper_update($param2);
 				$this->session->set_flashdata('ajax_flash_message','Paper Successfully Updated');
-				redirect(base_url().'admin/Admins/Paper');
+				redirect(base_url().'Paper');
 
 			}
 
@@ -497,7 +497,7 @@ class Admins extends CI_Controller {
 
 				$response = $this->admin_model->paper_delete($param2);
 				$this->session->set_flashdata('ajax_flash_message','Paper Successfully Deleted');
-				redirect(base_url().'admin/Admins/Paper');
+				redirect(base_url().'Paper');
 			}
 
 			if(empty($param1) ){
@@ -660,7 +660,7 @@ class Admins extends CI_Controller {
 		{
 
 			if(!$this->session->has_userdata('adminData')){
-				redirect(base_url('admin'));
+				redirect(base_url());
 				exit;
 			}else
 			{
@@ -1014,13 +1014,13 @@ class Admins extends CI_Controller {
 		public function logout()
 		{
 			$this->session->sess_destroy();
-			redirect(base_url('admin'));
+			redirect(base_url());
 		}
 		
 		public function centers($param1 = '', $param2 = '', $param3 = '')
 		{
 			if(!$this->session->has_userdata('adminData')){
-				redirect(base_url('admin'));
+				redirect(base_url());
 				exit;
 			}else{
 
@@ -1062,7 +1062,7 @@ class Admins extends CI_Controller {
 					$response = $this->admin_model->center_delete($param2);
 					$this->session->set_flashdata('ajax_flash_message','Center Deleted Successfully ');
 
-					redirect(base_url().'admin/Admins/centers');
+					redirect(base_url().'centers');
 				}
 
 				if(empty($param1) ){
@@ -1107,7 +1107,7 @@ class Admins extends CI_Controller {
 		public function allot_course($param1 = '',$param2 = '')
 		{
 			if(!$this->session->has_userdata('adminData')){
-				redirect(base_url('admin'));
+				redirect(base_url());
 				exit;
 				
 			}else{
@@ -1231,7 +1231,7 @@ class Admins extends CI_Controller {
 		public function add_center_menu_heading($param1 = '', $param2 = '')
 		{
 			if(!$this->session->has_userdata('adminData')){
-				redirect(base_url('admin'));
+				redirect(base_url());
 				exit;
 			}else
 			{
@@ -1506,7 +1506,7 @@ public function update_doc_permission_status()
 	public function course_detail(){
 
 		if(!$this->session->has_userdata('adminData')){
-			redirect(base_url('admin'));
+			redirect(base_url());
 			exit;
 	
 		}else{
@@ -1655,7 +1655,7 @@ public function update_doc_permission_status()
 	public function getStudentData()
 	{
 		if(!$this->session->has_userdata('adminData')){
-			redirect(base_url('admin'));
+			redirect(base_url());
 			exit;
 		}
 		
@@ -1694,38 +1694,36 @@ public function update_doc_permission_status()
 				"status" => true,
 				"data" => $dt
 			));
-     	}
+		}
 	}//fun
 
-public function update_center_status()
-{
-if ($this->input->method() == "post") 
+	public function update_center_status()
 	{
-            $id    	= 0;
-            $id    	= $this->input->post("id");
+		if ($this->input->method() == "post") 
+		{
+			$id    	= 0;
+			$id    	= $this->input->post("id");
 			$status = $this->input->post("status");
 
 			
-            if ($this->input->post("id")) 
+			if ($this->input->post("id")) 
 			{
 				$data = $this->Common_model->updateRecordByConditions("center",array("id" => $id ),array("status" => $status ));
-			
+
 				$dt = $this->db->get_where("center",array("id" => $id ))->result_array();
 
 				if($dt[0]['status'] == 'Y')
 				{
 
-				$sts_btn = '<input type="button" name="update_center_stats" data-id='.$id.' class="btn btn-success center_status_check" value="Yes">';
-				
+					$sts_btn = '<input type="button" name="update_center_stats" data-id='.$id.' class="btn btn-success center_status_check" value="Yes">';
+
 				}
 
 				else{
 
-				$sts_btn = '<input type="button" name="update_center_stats" data-id='.$id.' class="btn btn-danger center_status_check" value="No">';
-				
-			}
+					$sts_btn = '<input type="button" name="update_center_stats" data-id='.$id.' class="btn btn-danger center_status_check" value="No">';
 
-
+				}
 
 				$status = true;
 				$msg    = "";
@@ -1736,71 +1734,30 @@ if ($this->input->method() == "post")
 					"data" => $sts_btn
 				));
 			}
+		}
 	}
-}
-public function center_login_section($param1 = '', $param2 = '', $param3 = '')
-		{
-			if(!$this->session->has_userdata('adminData')){
-				redirect(base_url('admin'));
-				exit;
-			}else{
 
-				$data['center_code'] = html_escape($this->input->post('center_code'));
+	public function center_login_section($param1 = '', $param2 = '', $param3 = '')
+	{
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else{
+			if(empty($param1) ){
 
-				$data['center_name'] = html_escape($this->input->post('center_name'));
+				$data = array();
+				$data['title'] = "Center login";
+				$data['center_code'] = $this->admin_model->getcenterCode();
+				$this->load->view('header',$data);
+				$data['center'] = $this->Common_model->get_record('center','');
 
-				$data['address'] = html_escape($this->input->post('address'));
-
-				$data['pin_code'] = html_escape($this->input->post('pin_code'));
-
-				$data['state_id'] = html_escape($this->input->post('state'));
-
-				$data['distt_id'] = html_escape($this->input->post('district'));
-
-				$data['city'] = html_escape($this->input->post('city'));
-
-				$data['contactpersonname'] = html_escape($this->input->post('contact_person'));
-
-				$data['email'] = html_escape($this->input->post('email'));
-
-				$data['password'] = html_escape($this->input->post('password'));
-
-				$data['mobile_no_1'] = html_escape($this->input->post('mobile_no'));
-
-				$data['mobile_no_2'] = html_escape($this->input->post('mobile_no_2'));
-
-				$data['status'] = html_escape($this->input->post('status'));
-
-				if($param1 == 'create'){
-					$response = $this->admin_model->create_center($data);
-					echo json_encode(array("status" => 'true'));
-				}
-				if($param1 == 'update'){
-					$response = $this->admin_model->center_update($param2,$data);
-					echo json_encode(array("status" => 'true'));
-				}
-				if($param1 == 'delete'){
-					$response = $this->admin_model->center_delete($param2);
-					$this->session->set_flashdata('ajax_flash_message','Center Deleted Successfully ');
-
-					redirect(base_url().'admin/Admins/centers');
-				}
-
-				if(empty($param1) ){
-
-					$data = array();
-					$data['title'] = "Center login";
-					$data['center_code'] = $this->admin_model->getcenterCode();
-					$this->load->view('header',$data);
-					$data['center'] = $this->Common_model->get_record('center','');
-
-					$data['name_csrf'] = $this->security->get_csrf_token_name();
-					$data['hash_csrf'] = $this->security->get_csrf_hash();
-					$this->load->view('admin/center_login',$data);
-					$this->load->view('footer');
-				}
+				$data['name_csrf'] = $this->security->get_csrf_token_name();
+				$data['hash_csrf'] = $this->security->get_csrf_hash();
+				$this->load->view('admin/center_login',$data);
+				$this->load->view('footer');
 			}
 		}
+	}
 
 	public function getCenterLogin()
 	{
@@ -1840,7 +1797,7 @@ public function center_login_section($param1 = '', $param2 = '', $param3 = '')
 
 public function editForm($student_id = ""){
 	if(!$this->session->has_userdata('adminData')){
-		redirect(base_url('admin/'));
+		redirect(base_url());
 		exit;
 	}
 
@@ -1875,7 +1832,7 @@ public function editForm($student_id = ""){
         function add_center_menus($param='' ,$id='')
         {
         	if(!$this->session->has_userdata('adminData')){
-				redirect(base_url('admin'));
+				redirect(base_url());
 				exit;
 			}
 			else{
@@ -1986,7 +1943,7 @@ public function editForm($student_id = ""){
 
 		public function check_payment_transection(){
 			if(!$this->session->has_userdata('adminData')){
-				redirect(base_url('admin'));
+				redirect(base_url());
 				exit;
 			}else{
 				$this->load->view('header',array('title' => 'Search Transaction Details'));
@@ -2004,7 +1961,7 @@ public function editForm($student_id = ""){
 
 	public function get_payment_details(){
 		if(!$this->session->has_userdata('adminData')){
-			redirect(base_url('admin'));
+			redirect(base_url());
 			exit;
 		}else{
 
