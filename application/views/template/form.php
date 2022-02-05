@@ -140,7 +140,7 @@ hr.new2 {
 						<label class="label_form">Enrollment :</label>
 					</div>
 					<div class=" form-text-color form-group col-md-3 text-left m-auto">
-						<?php echo $student['enrollment_no']; ?>
+						<?php if($student['enrolled']=='N'){echo '-';}else{ echo $student['enrollment_no'];}; ?>
 					</div>
 					<div class="form-group col-md-3 text-left m-auto">
 						<label class="label_form">Session :</label>

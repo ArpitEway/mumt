@@ -1985,14 +1985,20 @@ public function editForm($student_id = ""){
 
 
 		public function check_payment_transection(){
-			$this->load->view('header',array('title' => 'view payment complaint'));
-			$data = array(
-				'name_csrf' => $this->security->get_csrf_token_name(),
-				'hash_csrf' => $this->security->get_csrf_hash(),
-			);
-
-			$this->load->view('admin/check_payment_transection',$data);
-			$this->load->view('footer');
+			if(!$this->session->has_userdata('adminData')){
+				redirect(base_url('admin'));
+				exit;
+			}else{
+				$this->load->view('header',array('title' => 'Search Transaction Details'));
+				$data = array(
+					'name_csrf' => $this->security->get_csrf_token_name(),
+					'hash_csrf' => $this->security->get_csrf_hash(),
+				);
+	
+				$this->load->view('admin/check_payment_transection',$data);
+				$this->load->view('footer');
+			}
+		
 		}
 
 

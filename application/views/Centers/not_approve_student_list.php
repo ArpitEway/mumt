@@ -3,7 +3,7 @@
 			<thead>
 				<tr>
 					<th>Sno</th>
-                   <th>Student ID</th>
+                   <th>Form no</th>
                    <th>Student name</th>
                    <th>Father name</th>
                     <th>Course Name</th>
