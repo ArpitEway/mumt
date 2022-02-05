@@ -165,8 +165,10 @@ class Center extends CI_Controller {
 			redirect(base_url('center/login'));
 		}
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+
 		$data = array();
 		$data['student'] = $this->Common_model->student_info($student_id);
+		
 		$this->load->view('Centers/header',array('title' => 'Admission Form'));
 		$this->load->view('template/form',$data);
 		$this->load->view('Centers/footer');
@@ -223,6 +225,7 @@ class Center extends CI_Controller {
 
 		$where = array(
 			'center_id' => $this->session->center_id,
+			
 		);
 
 		if($_POST['session']!='All'){
@@ -264,7 +267,12 @@ class Center extends CI_Controller {
 			$btn = ($result->document_uploaded=='Y') ?
 			'<a href="'.base_url('center/show_form/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>' : '';
 			$i++;
-			$data[] = array($result->student_id,$result->enrollment_no, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$btn);
+			if($result->enrolled=='N'){
+				$enrollment = '-';
+			}else{
+				$enrollment = $result->enrollment_no;
+				}
+			$data[] = array($result->student_id,$enrollment,$result->name, $result->f_h_name, $result->course_name,$result->class_name,$btn);
 		}
 
 		$output = array(
