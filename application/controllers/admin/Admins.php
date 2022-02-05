@@ -1610,45 +1610,45 @@ public function update_doc_permission_status()
 			unset($updateData['id']);
 			$this->Common_model->insertAll('online_payment_transaction',$updateData);
 
-			if($dde_student['document_uploaded']=='Y'){
-				$where = array('student_id' => $dde_student['student_id']);
-				$admissionDoc = $this->Common_model->get_record('dde_admission_document','*',$where);
-				$course = $this->Common_model->getRecordById('course_group','id',$courseDetail->new_id);
+			// if($dde_student['document_uploaded']=='Y'){
+			// 	$where = array('student_id' => $dde_student['student_id']);
+			// 	$admissionDoc = $this->Common_model->get_record('dde_admission_document','*',$where);
+			// 	$course = $this->Common_model->getRecordById('course_group','id',$courseDetail->new_id);
 				
-				$document_id = $course->document_id;
+			// 	$document_id = $course->document_id;
 
-				foreach ($admissionDoc as $docData) {
-					$where = array('category' => $document_id,
-						'document' => $docData['document_name'],
-							);
+			// 	foreach ($admissionDoc as $docData) {
+			// 		$where = array('category' => $document_id,
+			// 			'document' => $docData['document_name'],
+			// 				);
 
-					$data = $this->Common_model->get_record('document_category','*',$where);
+			// 		$data = $this->Common_model->get_record('document_category','*',$where);
 
-					$uploadDocData = array(
-						'student_id' => $docData['student_id'],
-						'course_group_id' => $courseDetail->new_id,
-						'document_name' => $docData['document_name'],
-						'document_image' => $docData['document_image'],
-						'date_time' => $docData['date_time'],
-						'status' => $docData['status'],
-						'document_category_id' => $data[0]['id'],
-					);
+			// 		$uploadDocData = array(
+			// 			'student_id' => $docData['student_id'],
+			// 			'course_group_id' => $courseDetail->new_id,
+			// 			'document_name' => $docData['document_name'],
+			// 			'document_image' => $docData['document_image'],
+			// 			'date_time' => $docData['date_time'],
+			// 			'status' => $docData['status'],
+			// 			'document_category_id' => $data[0]['id'],
+			// 		);
 
-					$docId = $this->Common_model->insertAll('admission_document',$uploadDocData);
+			// 		$docId = $this->Common_model->insertAll('admission_document',$uploadDocData);
 
-					$org_image=FCPATH."/assets/reg_doc_image/".$docData['document_image'];
-					$ext = pathinfo($org_image, PATHINFO_EXTENSION);
-				    $imgName = $docId.'.'.$ext;
-				   	$destination=FCPATH."/assets/documents/".$imgName;
+			// 		$org_image=FCPATH."/assets/reg_doc_image/".$docData['document_image'];
+			// 		$ext = pathinfo($org_image, PATHINFO_EXTENSION);
+			// 	    $imgName = $docId.'.'.$ext;
+			// 	   	$destination=FCPATH."/assets/documents/".$imgName;
 
-					if( rename( $org_image , $destination )){
-						echo '<br>moved!'.$destination;
-					} else {
-						echo '<br>failed'.$student['student_id'];
-					}
-					$this->Common_model->updateRecordByConditions('admission_document',array('id'=>$docId),array('document_image' => $imgName));
-				}
-			}
+			// 		if( rename( $org_image , $destination )){
+			// 			echo '<br>moved!'.$destination;
+			// 		} else {
+			// 			echo '<br>failed'.$student['student_id'];
+			// 		}
+			// 		$this->Common_model->updateRecordByConditions('admission_document',array('id'=>$docId),array('document_image' => $imgName));
+			// 	}
+			// }
 		}
 	}
 
