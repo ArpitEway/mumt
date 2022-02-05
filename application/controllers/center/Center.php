@@ -45,10 +45,11 @@ class Center extends CI_Controller {
 		}else{
 			$titleData = array('title' => 'Course Fees Structure'); 
 			$this->load->view('Centers/header',$titleData);
-			$id =  $this->session->center_id;
-			$center = $this->Common_model->getRecordById('center','id',$id);
-			$course_group = $this->db->get_where('course_group', array())->result_array();
-			$data = array('course_group' => $course_group);
+			$center_id =  $this->session->center_id;
+			$centerdata = $this->Common_model->getRecordById('center','id',$center_id);
+			$this->db->where('id in ('.$centerdata->allot_course_id.')');
+			$course_group_list = $this->Common_model->get_record('course_group','*');
+			$data = array('course_group' => $course_group_list);
 			$this->load->view('Centers/instruction',$data);
 			$this->load->view('Centers/footer');
 		}
@@ -536,6 +537,9 @@ class Center extends CI_Controller {
 	public function getCourseByEligibility()
 	{
 		$eligibility = $this->input->post('eligibility');
+		$center_id =  $this->session->center_id;
+		$centerdata = $this->Common_model->getRecordById('center','id',$center_id);
+		$this->db->where('id in ('.$centerdata->allot_course_id.')');
 		$course_group_list = $this->Common_model->get_record('course_group','*',array('eligibility'=>$eligibility,
 			'admission_permission' => 'Y'
 		));
