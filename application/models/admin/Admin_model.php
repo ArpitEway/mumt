@@ -513,86 +513,75 @@ class Admin_model extends CI_Model {
 					
         return json_encode($response);
     }
-	public function class_update($param1 = '')
-	{	
-		$data['course_group_id'] = html_escape($this->input->post('course_group_id'));
-		$data['class_name']      = html_escape($this->input->post('class_name'));
-		$data['class_group']  	 = html_escape($this->input->post('class_group'));
-		$data['mode'] 		  	 = html_escape($this->input->post('mode'));
-		$data['total_paper']  	 = html_escape($this->input->post('total_paper'));
-		$data['class_group']  	 = html_escape($this->input->post('class_group'));
-		$data['select_group'] 	 = html_escape($this->input->post('select_group'));
-		
-		
-		if($data['class_group']=='Y'){
-			$group_names = html_escape($this->input->post('group_name'));
-			$group_ids = html_escape($this->input->post('group_id'));
-			$count_group_id = count($group_ids);
-			$count = count($group_names);
-			
-		}else{
-			
-			$count = 0;
-		}
-		
-		$data['total_group'] = $count;
-		
-		$courses = $this->db->get_where('course', array('course_group_id' => $data['course_group_id']))->row_array();
-		
-		$course_count = $this->db->get_where('class_master', array('course_group_id' => $data['course_group_id']))->result_array();
-		
-		 
-		$course_count =  @count($course_count);
-		
-		$class_order  = @$course_count + 1 ;
-		
-		$data['class_order'] = $class_order;
-		
-		$course_name  = $courses['course_name'];
-		
-		if($data['class_group']=='Y'){
-			
-			$group_names = html_escape($this->input->post('group_name'));
-			$count = count($group_names);
-			
-		}else{
-			
-			$count = 0;
-		}
-		
-		$this->db->where('id', $param1);
-		$this->db->update('class_master', $data);
-		
-		if($data['class_group']=='Y')
-		{
-			$this->db->where('class_id', $param1);
+    public function class_update($param1 = '')
+    {	
+    	$data['course_group_id'] = html_escape($this->input->post('course_group_id'));
+    	$data['class_name']      = html_escape($this->input->post('class_name'));
+    	$data['class_group']  	 = html_escape($this->input->post('class_group'));
+    	$data['mode'] 		  	 = html_escape($this->input->post('mode'));
+    	$data['total_paper']  	 = html_escape($this->input->post('total_paper'));
+    	$data['class_group']  	 = html_escape($this->input->post('class_group'));
+    	$data['select_group'] 	 = html_escape($this->input->post('select_group'));
+    	
+    	
+    	if($data['class_group']=='Y'){
+    		$group_names = html_escape($this->input->post('group_name'));
+    		$group_ids = html_escape($this->input->post('group_id'));
+    		$count_group_id = count($group_ids);
+    		$count = count($group_names);
+    		
+    	}else{
+    		
+    		$count = 0;
+    	}
+    	
+    	$data['total_group'] = $count;
+    	
+    	$course_name  = $courses['course_name'];
+    	
+    	if($data['class_group']=='Y'){
+    		
+    		$group_names = html_escape($this->input->post('group_name'));
+    		$count = count($group_names);
+    		
+    	}else{
+    		
+    		$count = 0;
+    	}
+    	
+    	$this->db->where('id', $param1);
+    	$this->db->update('class_master', $data);
+    	
+    	if($data['class_group']=='Y')
+    	{
+    		$this->db->where('class_id', $param1);
 			//$this->db->delete('group');
-			$i=0;
-			$data_group['class_id'] 		= $param1;
-			$data_group['course_group_id']  = $data['course_group_id'];
-			$data_group['course_name'] 		= $course_name;
-			$data['total_group'] 			= $count;
-				
-			foreach($group_ids as $group_id )
-				{
-					$data_group['group_name'] = $group_names[$i];
-					$this->db->where('id', $group_id);
-					$this->db->update('group', $data_group);
-					$i++;
-				}
-				
-				if($count_group_id < $count){
-				
-					for($j=$i; $j<$count; $j++){
-						$data_group['group_name'] = $group_names[$j];
-						$this->db->insert('group', $data_group);
-						$insid = $this->db->insert_id();
-					}
-				}
-		}
-		
-			 
-	}
+    		$i=0;
+    		$data_group['class_id'] 		= $param1;
+    		$data_group['course_group_id']  = $data['course_group_id'];
+    		$data_group['course_name'] 		= $course_name;
+    		$data['total_group'] 			= $count;
+    		
+    		foreach($group_ids as $group_id )
+    		{
+    			$data_group['group_name'] = $group_names[$i];
+    			$this->db->where('id', $group_id);
+    			$this->db->update('group', $data_group);
+    			$i++;
+    		}
+    		
+    		if($count_group_id < $count){
+    			
+    			for($j=$i; $j<$count; $j++){
+    				$data_group['group_name'] = $group_names[$j];
+    				$this->db->insert('group', $data_group);
+    				$insid = $this->db->insert_id();
+    			}
+    		}
+    	}
+    	
+    	
+    }
 	
 	public function class_delete($param1 = '')
 	{
