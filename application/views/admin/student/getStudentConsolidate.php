@@ -13,7 +13,7 @@
 					<th>Course</th>
 					<th>Class</th>
 					<th>
-						<?php if($segment == "Admins"){ ?>	
+						<?php if($this->session->account_type == "Admins" || $this->session->account_type == "Enrollment"){ ?>	
 							Edit
 						<?php } ?>
 					</th>
@@ -67,8 +67,8 @@
 								echo $student["class_name"];
 							} ?></td>
 							<td>
-							<?php if($segment == "Admins"){ ?>
-								<a target="_blank"  href='<?php echo base_url('admin/Admins/editForm/').$this->Common_model->encrypt_decrypt($student["student_id"],'encrypt'); ?>'><i class="fa fa-pen"></i></a> 
+							<?php if($this->session->account_type == "Admins" || $this->session->account_type == "Enrollment"){ ?> 
+								<a target="_blank"  href='<?php echo base_url($this->session->account_type.'/editForm/').$this->Common_model->encrypt_decrypt($student["student_id"],'encrypt'); ?>'><i class="fa fa-pen"></i></a> 
 							<?php } ?></td>
 							<td><?php if( $student["payment_status"]=='Y'){echo 'Paid' ;}else{echo 'Unpaid' ;} ?></td>
 							<td><?php if( $student["document_uploaded"]=='Y'){echo 'Uploaded' ;}else{echo 'Not Uploaded' ;} ?></td>
