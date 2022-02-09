@@ -284,7 +284,7 @@
 						<option value='' >Select State</option>
 						<?php 
 						foreach($state_list as $state){ ?>
-							<option <?php if($student_data->c_state == $state["state_id"]){ echo "selected";} ?> ><?=$state['name']?></option>
+							<option <?php if($student_data->c_state == $state["name"]){ echo "selected";} ?> ><?=$state['name']?></option>
 						<?php } ?>
 					</select>
 					<div class="fv-plugins-message-container"></div>
@@ -298,10 +298,8 @@
 					<select class="form-control  district" name="c_district" id="c_district">
 						<option value='' >Select District</option>
                         <?php
-                        $district_list = $this->db->get_where('distt', array("state_id"=> $student_data->c_state))->result_array();
-
                             foreach ($district_list as $district) { ?>
-								<option <?php if($student_data->c_district == $district['distt_id']){ echo "selected";} ?>  ><?=$district['name']?></option>
+								<option <?php if($student_data->c_district == $district['name']){ echo "selected";} ?>  ><?=$district['name']?></option>
 							<?php } ?>
 					</select>
 					<div class="fv-plugins-message-container"></div>
@@ -345,7 +343,7 @@
 							<option value='' >Select State</option>
 							<?php 
 							foreach($state_list as $state){ ?>
-								<option  <?php if($student_data->p_state == $state["state_id"]){ echo "selected";} ?> ><?=$state['name']?></option>
+								<option  <?php if($student_data->p_state == $state["name"]){ echo "selected";} ?> ><?=$state['name']?></option>
 							<?php } ?>
 						</select>
 						<div class="fv-plugins-message-container"></div>
@@ -359,10 +357,8 @@
 						<select class="form-control  district" name="p_district" id="p_district">
 							<option value='' >Select District</option>
 							<?php
-                        $district_list = $this->db->get_where('distt', array("state_id"=> $student_data->p_state))->result_array();
-
                             foreach ($district_list as $district) { ?>
-								<option <?php if($student_data->p_district == $district['distt_id']){ echo "selected";} ?>  ><?=$district['name']?></option>
+								<option <?php if($student_data->p_district == $district['name']){ echo "selected";} ?>  ><?=$district['name']?></option>
 							<?php } ?>
                             
 						</select>
