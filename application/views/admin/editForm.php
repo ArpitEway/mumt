@@ -1,5 +1,4 @@
 <form class="p-5">
-
 	<h4 class="my-5 font-weight-bold text-dark">Educational Details</h4>
 	<div class="row">
 		<div class="col-md-9">
@@ -115,11 +114,11 @@
 				<div class="col-form-label">
 					<div class="radio-inline">
 						<label class="radio radio-success">
-							<input type="radio" name="gender" value="Male" checked="checked" <?php if($student_detail->gender == 'male'){ echo "checked"; } ?> >
+							<input type="radio" name="gender" value="Male" checked="checked" <?php if($student_detail->gender == 'Male'){ echo "checked"; } ?> >
 							<span></span>Male
 						</label>
 						<label class="radio radio-success">
-							<input type="radio" name="gender" value="Female"  <?php if($student_detail->gender == 'female'){ echo "checked"; } ?>>
+							<input type="radio" name="gender" value="Female"  <?php if($student_detail->gender == 'Female'){ echo "checked"; } ?>>
 							<span></span>Female
 						</label>
 					</div>
@@ -190,8 +189,8 @@
 				<label>Nationality:</label><span class="text-danger"> *</span>
 				<select name="nationality" class="form-control ">
 					<option value="">Select Nationality</option>
-					<option value="Indian" <?php if($student_data->nationality == 'Indian'){ echo "selected"; } ?>>Indian</option>
-					<option value="Other" <?php if($student_data->nationality == 'Other'){ echo "selected"; } ?>>Other </option>
+					<option value="INDIAN" <?php if($student_data->nationality == 'INDIAN'){ echo "selected"; } ?>>Indian</option>
+					<option value="OTHER" <?php if($student_data->nationality == 'OTHER'){ echo "selected"; } ?>>Other </option>
 				</select>
 				<div class="fv-plugins-message-container"></div>
 			</div>

@@ -165,8 +165,8 @@
 				<label>Nationality:</label><span class="text-danger"> *</span>
 				<select name="nationality" class="form-control ">
 					<option value="">Select Nationality</option>
-					<option value="Indian">Indian</option>
-					<option value="Other">Other </option>
+					<option value="INDIAN">Indian</option>
+					<option value="OTHER">Other </option>
 				</select>
 				<div class="fv-plugins-message-container"></div>
 			</div>
