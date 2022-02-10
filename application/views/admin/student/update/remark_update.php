@@ -45,6 +45,8 @@ foreach($documnets as $doc){
 	<input type="checkbox" name="other_remark[]" id="other_remark3" class="form-check-input chk" value="other remark">
 <label class="chk_label" for="other_remark3">Other Remark</label>
 </div>
+<div class="col-5 ml-2">
+	</div>
 </div>
 <div class="form-group mt-3 col-sm-6">
     <label class="col-form-label">Remark detail</label>
