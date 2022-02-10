@@ -170,16 +170,18 @@
 			$response = $this->admin_model->student_doc_update($param);
 			$this->session->set_flashdata('ajax_flash_message','Non approved');
 			
-			$remark_ids = $this->Common_model->getStudentRemarkID($param);
+			$student = $this->Common_model->getRecordById('student','student_id',$param);
+			$remark_ids = $student->remark;
 			$remark_ids = explode(",",$remark_ids);
+			
 			foreach($remark_ids as $remark_id ){
 				$remark[] = $this->Common_model->getStudentRemarkNameById($remark_id)."<br>";
 			}
 			
 			echo json_encode(array(
 			"status" => 'true',
-			"remark" => $remark
-			
+			"remark" => $remark,
+			"remark_detail" => $student->remark_detail
 			));
 			//redirect(base_url().'admin/enrollment/student_report');
 		}

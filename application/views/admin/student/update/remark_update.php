@@ -12,7 +12,7 @@
 </style> 
 <form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/enrollment/student_doc_update/'.$param1); ?>">
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-<div class="form-check text-justify" >
+<div class="text-justify row justify-content-around" >
 <?php
 
 $student = $courses = $this->db->get_where('student', array("student_id" => $param1))->row_array();
@@ -26,14 +26,26 @@ $documnets = $this->db->get_where('document_category', "category in (".$document
 
 foreach($documnets as $doc){
 ?>
-	<div>
+	<div class="col-5 ml-2">
 	<input type="checkbox" id="remark<?=$doc['id']; ?>" value="<?php echo $doc['id']; ?>" class="form-check-input chk" name="remark[]" >
 	<label for="remark<?=$doc['id']; ?>" class="chk_label"><?php echo $doc['document']; ?><?php if($doc['status'] == "Y"){ ?><span style="color:red;" ><b>*</b></span><?php } ?></label>
 	</div>
 	
 <?php } ?>
+<div class="col-5 ml-2">
+	<input type="checkbox" id="other_remark1" name="other_remark[]" class="form-check-input chk" value="Not eligible for this course">
+<label class="chk_label" for="other_remark1" >Not eligible for this course</label>
 </div>
+<div class="col-5 ml-2">
+	<input type="checkbox" id="other_remark2" name="other_remark[]" class="form-check-input chk" value="Online marksheet not valid">
+<label class="chk_label" for="other_remark2">Online marksheet not valid</label>
 
+</div>
+<div class="col-5 ml-2">
+	<input type="checkbox" name="other_remark[]" id="other_remark3" class="form-check-input chk" value="other remark">
+<label class="chk_label" for="other_remark3">Other Remark</label>
+</div>
+</div>
 <div class="form-group mt-3 col-sm-6">
     <label class="col-form-label">Remark detail</label>
     <div>
@@ -82,7 +94,7 @@ $("#remark_submit").on('click',function (e){
 				
 			console.log(data.remark);
 				
-			$('.remark_span_'+rem).html(data.remark);
+			$('.remark_span_'+rem).html(data.remark+' '+data.remark_detail);
 				
 			}else{
 				toastr.error("Something wrong");
