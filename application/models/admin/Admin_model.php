@@ -732,7 +732,7 @@ class Admin_model extends CI_Model {
 		
 		
 		$data['remark'] = implode(",",$remark);
-		$data['other_remark'] = implode(",",$other_remark);
+		$data['remark_detail'] = $remark_detail.' ( '.implode(", ",$other_remark).' ) ';
 		$data['approved'] = "N";
 		
 		$this->db->where('student_id', $param1);
@@ -742,11 +742,6 @@ class Admin_model extends CI_Model {
 		$this->db->where('student_id', $param1);
 		$this->db->update('admission_document', $data_student);
 		
-		$response = array(
-			'status' => true
-		);
-
-		return json_encode($response);
 	}
 	
 	public function student_approve($param1 = '')

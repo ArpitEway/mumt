@@ -83,6 +83,7 @@
 					echo $remark_text; ?><br>
 				<?php  
 			}
+			echo " ".$student["remark_detail"];
 				}
 					echo "</span>";
 

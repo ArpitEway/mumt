@@ -32,13 +32,20 @@ foreach($documnets as $doc){
 	</div>
 	
 <?php } ?>
+<div>
+	<input type="checkbox" name="other_remark[]" class="form-check-input chk" value="Not eligible for this course">
+<label class="chk_label" >Not eligible for this course</label>
 </div>
-<input type="checkbox" name="other_remark" value="Not eligible for this course">
-<label>Not eligible for this course</label>
-<input type="checkbox" name="other_remark" value="Online marksheet not valid">
-<label>Online marksheet not valid</label>
-<input type="checkbox" name="other_remark" value="other remark">
-<label>Other Remark</label>
+<div>
+	<input type="checkbox" name="other_remark[]" class="form-check-input chk" value="Online marksheet not valid">
+<label class="chk_label">Online marksheet not valid</label>
+
+</div>
+<div>
+	<input type="checkbox" name="other_remark[]" class="form-check-input chk" value="other remark">
+<label class="chk_label">Other Remark</label>
+</div>
+</div>
 <div class="form-group mt-3 col-sm-6">
     <label class="col-form-label">Remark detail</label>
     <div>
@@ -87,7 +94,7 @@ $("#remark_submit").on('click',function (e){
 				
 			console.log(data.remark);
 				
-			$('.remark_span_'+rem).html(data.remark);
+			$('.remark_span_'+rem).html(data.remark+' '+data.remark_detail);
 				
 			}else{
 				toastr.error("Something wrong");
