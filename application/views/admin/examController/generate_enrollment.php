@@ -70,7 +70,7 @@
 
 				$whereUpdate = array('student_id' => $student['student_id']);
 				$updateData = array('enrollment_no' =>$enrollment);
-				//$updateEnrollment = $this->Common_model->updateRecordByConditions('student',$whereUpdate,$updateData);
+				$updateEnrollment = $this->Common_model->updateRecordByConditions('student',$whereUpdate,$updateData);
 
 				?>
 				<tr>

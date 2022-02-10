@@ -25,13 +25,12 @@
 				foreach($centers as $center)
 				{
 					?>
-
-					<option value="<?php echo $center['center_id']; ?>"><?php echo $center['center_code'] ." - ". $center['center_name']; ?></option>
+					<option value="<?php echo $center['id']; ?>"><?php echo $center['center_code'] ." - ". $center['center_name']; ?></option>
 
 					<?php
 				} 
 				?> 
-			</select>       
+			</select>
 		</div>
 
 		<div class="form-group col-md-3">
