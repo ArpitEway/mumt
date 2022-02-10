@@ -33,7 +33,12 @@ foreach($documnets as $doc){
 	
 <?php } ?>
 </div>
-
+<input type="checkbox" name="other_remark" value="Not eligible for this course">
+<label>Not eligible for this course</label>
+<input type="checkbox" name="other_remark" value="Online marksheet not valid">
+<label>Online marksheet not valid</label>
+<input type="checkbox" name="other_remark" value="other remark">
+<label>Other Remark</label>
 <div class="form-group mt-3 col-sm-6">
     <label class="col-form-label">Remark detail</label>
     <div>

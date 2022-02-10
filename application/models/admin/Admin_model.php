@@ -728,12 +728,11 @@ class Admin_model extends CI_Model {
 	    
 		$remark = html_escape($this->input->post('remark'));
 		$remark_detail = html_escape($this->input->post('remark_detail'));
+		$other_remark = html_escape($this->input->post('other_remark'));
 		
 		
 		$data['remark'] = implode(",",$remark);
-		
-		$data['remark_detail'] = $remark_detail;
-		
+		$data['other_remark'] = implode(",",$other_remark);
 		$data['approved'] = "N";
 		
 		$this->db->where('student_id', $param1);

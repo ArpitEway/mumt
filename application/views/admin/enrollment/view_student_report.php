@@ -33,10 +33,6 @@
 		?> 
 	</select>       
 </div>
-
-
-
-
 <div class="form-group col-md-3">
 	<label for="course">Course</label>
 	<select name="course_group_id" id="course_group_id" class="form-control course_group_id"  required >
@@ -50,10 +46,6 @@
 		} ?>
 	</select>
 </div>
-
-
-
-
 <div class="form-group col-md-3">
 	<label for="class">Approved</label>
     <select name="approved" id="approved" class="form-control"  > 

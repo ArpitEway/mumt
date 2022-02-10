@@ -1547,6 +1547,12 @@ public function update_doc_permission_status()
 			}
 
 			$dde_student['class_id'] = $classData[0]->id;
+			unset($dde_student['enrollment_no']);
+			unset($dde_student['approved']);
+			unset($dde_student['approved_by']);
+			unset($dde_student['new_exam_form']);
+			unset($dde_student['temp_exam_form']);
+			unset($dde_student['enrolled']);
 			$dde_student['class_name'] = $classData[0]->class_name;
 			$dde_student['medium'] = $studentdata[0]['medium'];
 			$dde_student['university_mode'] = 'REG';
@@ -1592,7 +1598,7 @@ public function update_doc_permission_status()
 			$updateData['board'] = $studentdata['ten_board'];
 			$updateData['total_marks'] = $studentdata['ten_tmarks'];
 			$updateData['marks'] = $studentdata['ten_marks'];
-			$updateData['passing_year'] = $studentdata['ten_sub'];
+			$updateData['passing_year'] = $studentdata['ten_year'];
 			$updateData['percentage'] = $studentdata['ten_per'];
 			unset($updateData['id']);
 			$this->Common_model->insertAll('student_data',$updateData);
@@ -1979,6 +1985,19 @@ public function editForm($student_id = ""){
 				// echo "<pre>";
 				// print_r($data);
 				$this->Common_model->updateRecordByConditions('student_data',$where,$data);
+				echo $this->db->last_query().'<br>';
+			}
+		}
+
+		public function updateAadharStudent()
+		{
+			$stduent_ids = $this->Common_model->get_record('aadhar_student','*');
+			foreach ($stduent_ids as $student) {
+				$where = array('student_id' => $student['student_id']);
+				$data = array('adhar_no' => $student['adhar_no']);
+				// echo "<pre>";
+				// print_r($data);
+				$this->Common_model->updateRecordByConditions('student',$where,$data);
 				echo $this->db->last_query().'<br>';
 			}
 		}

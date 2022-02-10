@@ -172,6 +172,7 @@
 			
 			$remark_ids = $this->Common_model->getStudentRemarkID($param);
 			$remark_ids = explode(",",$remark_ids);
+			
 			foreach($remark_ids as $remark_id ){
 				$remark[] = $this->Common_model->getStudentRemarkNameById($remark_id)."<br>";
 			}
