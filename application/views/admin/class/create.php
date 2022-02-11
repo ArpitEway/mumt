@@ -26,7 +26,18 @@
             <input type="text" class="form-control" id="class_name" name="class_name" placeholder="Enter class name" required >        
         </div>
 		
-        <div class="form-group col-md-3">
+<div class="form-group col-md-4">
+            <label for="Select Group">Select Group</label>
+            <select name="select_groups" id="select_groups" class="form-control" required>
+
+                <option value="select group">select group</option>
+                <option value="group">group</option>
+                <option value="paper">paper</option>
+                
+            </select>
+        </div> 
+
+        <div class="form-group col-md-4">
             <label for="session">Group</label>
             <select name="class_group" id="class_group" class="form-control" required>
                 <option value="">Select group</option>
@@ -35,7 +46,7 @@
                 
             </select>
         </div> 
-		<div class="form-group col-md-3">
+		<div class="form-group col-md-4">
             <label for="session">Mode</label>
             <select name="mode" id="Mode" class="form-control" required>
                 <option value="annual">Annual</option>

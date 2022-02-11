@@ -32,6 +32,20 @@ $group_info = $this->db->get_where('group', array('class_id' => $class['id']))->
             <label for="class">Class</label>
             <input type="text" class="form-control" id="class_name" name="class_name" value="<?php echo $class['class_name'];  ?>" placeholder="Enter class name" required >        
         </div>
+
+
+
+<div class="form-group col-md-4">
+            <label for="Select Group">Select Group</label>
+            <select name="select_groups" id="select_groups" class="form-control" required>
+
+                <option value="select group">select group</option>
+                <option value="group" <?php if($class['group_name'] == 'group' ){ echo "selected"; }  ?>>group</option>
+                <option value="paper" <?php if($class['group_name'] == 'paper' ){ echo "selected"; }  ?>>paper</option>
+            
+            </select>
+        </div> 
+
 		
         <div class="form-group col-md-3">
             <label for="session">Group</label>
