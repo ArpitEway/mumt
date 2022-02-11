@@ -55,6 +55,11 @@
 							<span class="nav-text">Unapproved Student List</span>
 						</div>
 					</a>
+					<a class="border-0 custom-menu-item" href="<?=base_url('form_edit_request');?>">
+						<div>
+							<span class="nav-text">Form Edit Request</span>
+						</div>
+					</a>
 				</div>
 			</div>
 			<div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
