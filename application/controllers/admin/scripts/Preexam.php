@@ -92,7 +92,7 @@ class Preexam extends CI_Controller {
 		}
 
 		$students = $this->Common_model->get_record('student','*',$where);
-		$classData = $this->Common_model->getRecordByid('course_group','id',$class_id);
+		$classData = $this->Common_model->getRecordByid('class_master','id',$class_id);
 		foreach ($students as $student) {
 			$where = array('student_id'=>$student['student_id']);
 			// $txnData['user_id'] = $student['user_id'];
