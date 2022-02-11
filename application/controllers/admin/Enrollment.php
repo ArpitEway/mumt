@@ -562,9 +562,9 @@
 				$status = ($remark=='Set') ? 'Pending' : 'Done';
 				$remark = ($remark=='Set') ? '' : 'Invalid';
 				if($this->input->post("id")){
-					$data = $this->Common_model->updateRecordByConditions("request",array("id" => $id),array("status" => $status,'remark' => $remark ));
+					$data = $this->Common_model->updateRecordByConditions("request",array("id" => $id),array("status" => $status,'request_remark' => $remark ));
 					$dt = $this->db->get_where("request",array("id" => $id ))->result_array();
-					if($dt[0]['remark'] == 'Invalid'){
+					if($dt[0]['request_remark'] == 'Invalid'){
 						$remark_btn = '<input type="button" name="req_remark" data-id='.$id.' class="btn btn-danger remark_check" value="Invalid">';
 						$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-success req_check" value="Done">';
 					}else{
