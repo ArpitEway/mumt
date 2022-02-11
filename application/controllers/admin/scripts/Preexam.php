@@ -70,7 +70,7 @@ class Preexam extends CI_Controller {
 		$class_ids = $classes[0]['class_id'];
 		
 		$this->db->select('count(class_id) as num,course_name,class_name,class_id');
-		$this->db->where('class_id in ('.$class_ids.') and program_fees!="N" and new_exam_form="D" and enrolled = "Y"');
+		$this->db->where('class_id in ('.$class_ids.') and new_exam_form="D" and enrolled = "Y"');
 		$this->db->group_by('class_id');
 		$this->db->order_by('course_group_id');
 		$studentClasses = $this->db->get('student')->result();
@@ -83,34 +83,14 @@ class Preexam extends CI_Controller {
 	public function new_exam_form_permission_sub($class_id){
 		$classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		$where = array('class_id' => $class_id,
-					'program_fees!=' => "N",
 					'enrolled' => "Y",
 					'new_exam_form' => "D",
 				);
-		if($classData->class_group=='N'){
-			$where['temp_exam_form'] = "Y";
-		}
-
+		
 		$students = $this->Common_model->get_record('student','*',$where);
-		$classData = $this->Common_model->getRecordByid('class_master','id',$class_id);
+
 		foreach ($students as $student) {
 			$where = array('student_id'=>$student['student_id']);
-			// $txnData['user_id'] = $student['user_id'];
-			$txnData['student_id'] = $student['student_id'];
-			$txnData['course_group_id'] = $student['course_group_id'];
-			$txnData['class_id'] = $student['class_id'];
-			$txnData['fees_head'] = 'Exam Fees';
-			$txnData['payment_type'] = 'NEEDTOPAY';
-			if ($student['mode']=='regular') {
-				$amount = $classData->reg_exam_fees;
-				$amount += ($student['institute_id']==100) ? 150 : 0; 
-			}else{
-				$amount = $classData->pvt_exam_fees;
-				$amount += ($student['institute_id']==100) ? 300 : 0;
-			}
-			$txnData['amount'] = $amount;
-			$this->Common_model->insertAll('user_transaction',$txnData);
-			echo $this->db->last_query().'<br>';
 			$this->Common_model->updateRecordByConditions('student',$where,array('new_exam_form' => "N"));
 		}
 	}
