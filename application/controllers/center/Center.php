@@ -749,7 +749,7 @@ class Center extends CI_Controller {
 		$where = 'payment_complaint.center_id='.$this->session->center_id.' and type="admission" ';
 		
 		$column_order = array(null,'name','student.student_id','course_name','class_name','details','date','status','payment_complaint.remark');
-		$column_search = array('name','student.student_id','course_name','class_name','details','date','status','payment_complaint.remark');
+		$column_search = array('name','student.student_id','course_name','class_name','details','date','payment_complaint.status','payment_complaint.remark');
 
 		$DataTableArray = array(
 			'column_order' => $column_order,
@@ -793,6 +793,7 @@ class Center extends CI_Controller {
 		$DataTableArray = array(
 			'column_order' => $column_order,
 			'column_search' => $column_search,
+			'select' => 'request.request_remark,request.student_id, request.date, request.detail, name, request.status',
 			'where' => $where,
 			'table' =>  'request',
 			'table2' => 'student',
