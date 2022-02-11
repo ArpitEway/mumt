@@ -260,7 +260,7 @@ $(document).on('click','#edit_submit', function () {
 
 function validation(step=""){
 	var submit = true;
-	
+	// console.log(step);
 
 	var session = $('input[name="session"]').val();
 	var course_group_id = $('select[name="course_group_id"]').val();
@@ -279,9 +279,9 @@ function validation(step=""){
 	var mother_occupation = $('select[name="mother_occupation"]').find(":selected").val();
 	var p_mobile_no = $('input[name="p_mobile_no"]').val();
 	var f_h_mobile_no = $('input[name="f_h_mobile_no"]').val();
-	if(!step=="email_validation"){
+	
 	var p_email = $('input[name="p_email"]').val();
-	}
+
 	var dob = $('input[name="dob"]').val();
 	var adhar_no = $('input[name="adhar_no"]').val();
 	var c_address = $('input[name="c_address"]').val();
@@ -412,7 +412,7 @@ function validation(step=""){
 	}else{
 		$('input[name="f_h_mobile_no"]').next('div').text('');
 	}
-	if(!step=="email_validation"){
+	if(!(step=="email_validation")){
 		if(p_email==''){
 			$('input[name="p_email"]').next('div').text('E-mail is Required');
 			submit = false
