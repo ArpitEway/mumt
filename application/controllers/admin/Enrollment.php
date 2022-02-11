@@ -435,7 +435,7 @@
 			$data = array('center_details' => $center_detail ,'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash());
 			if($data['center_details']){
-				$dt =  $this->load->view('admin/Enrollment/FormEditRequestDetails',$data,true);
+				$dt =  $this->load->view('admin/enrollment/FormEditRequestDetails',$data,true);
 			}else{
 				$dt = "Invalid Center Code";
 			}
