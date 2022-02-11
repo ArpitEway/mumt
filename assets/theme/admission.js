@@ -200,10 +200,10 @@ $(document).on('click','#submit', function () {
 });
 
 $(document).on('click','#edit_submit', function () {
-	if(validation()==false){
+	if(validation("email_validation")==false){
 		return false;
 	}
-
+          
 	Swal.fire({
 		text: "All is good! Please confirm the form submission.",
 		icon: "success",
@@ -258,9 +258,10 @@ $(document).on('click','#edit_submit', function () {
 	});
 });
 
-function validation(step){
+function validation(step=""){
 	var submit = true;
 	
+
 	var session = $('input[name="session"]').val();
 	var course_group_id = $('select[name="course_group_id"]').val();
 	var class_id = $('#class_id').val();
@@ -278,7 +279,9 @@ function validation(step){
 	var mother_occupation = $('select[name="mother_occupation"]').find(":selected").val();
 	var p_mobile_no = $('input[name="p_mobile_no"]').val();
 	var f_h_mobile_no = $('input[name="f_h_mobile_no"]').val();
+	if(!step=="email_validation"){
 	var p_email = $('input[name="p_email"]').val();
+	}
 	var dob = $('input[name="dob"]').val();
 	var adhar_no = $('input[name="adhar_no"]').val();
 	var c_address = $('input[name="c_address"]').val();
@@ -409,12 +412,15 @@ function validation(step){
 	}else{
 		$('input[name="f_h_mobile_no"]').next('div').text('');
 	}
-	if(p_email==''){
-		$('input[name="p_email"]').next('div').text('E-mail is Required');
-		submit = false
-	}else{
-		$('input[name="p_email"]').next('div').text('');
+	if(!step=="email_validation"){
+		if(p_email==''){
+			$('input[name="p_email"]').next('div').text('E-mail is Required');
+			submit = false
+		}else{
+			$('input[name="p_email"]').next('div').text('');
+		}
 	}
+	
 	if(dob==''){
 		$('input[name="dob"]').next('div').text('Date of Birth is Required');
 		submit = false
