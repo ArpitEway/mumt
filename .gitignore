@@ -24,3 +24,4 @@ assets/transactionImgaes/*
 .htaccess
 assets/regular_syllabus/*
 application/config/routes.php
+/assets/instruction/*

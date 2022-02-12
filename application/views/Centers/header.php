@@ -92,8 +92,8 @@
 			</div>
 		</div>
 		<div class="container-fluid mt-5">
-			<div class="card card-custom gutter-b example example-compact mb-20">
-				<div class="card-body " style="min-height: 70vh;">
+			<div class="card card-custom gutter-b example example-compact mb-10">
+				<div class="card-body " style="min-height:300px;">
 					<div class="content-head row   justify-content-between mb-3">
 						<h3 class="text-primary"><?php echo (isset($title)) ? $title : ''; ?></h3>
 					</div>

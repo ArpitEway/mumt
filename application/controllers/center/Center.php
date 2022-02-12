@@ -32,8 +32,8 @@ class Center extends CI_Controller {
 			$id =  $this->session->center_id;
 			$center = $this->Common_model->getRecordById('center','id',$id);
 			$data = array('center' => $center);
-			$this->getNotification();
 			$this->load->view('Centers/dashboard',$data);
+			//$this->getNotification();
 			$this->load->view('Centers/footer');
 		}
 	}
