@@ -26,16 +26,6 @@
             <input type="text" class="form-control" id="class_name" name="class_name" placeholder="Enter class name" required >        
         </div>
 		
-<div class="form-group col-md-4">
-            <label for="Select_Group_Type">Select Group Type</label>
-            <select name="select_group_type" id="select_group_type" class="form-control" required>
-
-                <option value="select group type">Select group</option>
-                <option value="Group">Group</option>
-                <option value="Paper">Paper</option>
-                
-            </select>
-        </div> 
 
         <div class="form-group col-md-4">
             <label for="session">Group</label>
@@ -46,6 +36,21 @@
                 
             </select>
         </div> 
+
+
+<div class="form-group col-md-4">
+            <label for="Select_Group_Type">Select Group Type</label>
+            <select name="Select_group_type" id="select_group_type" class="form-control" required>
+
+                <option value="Select group type">Select group</option>
+                <option value="Group">Group</option>
+                <option value="Paper">Paper</option>
+                
+            </select>
+        </div> 
+
+
+
 		<div class="form-group col-md-4">
             <label for="session">Mode</label>
             <select name="mode" id="Mode" class="form-control" required>
@@ -55,7 +60,7 @@
             </select>
             
         </div>
-        <div class="form-group col-md-3">
+        <div class="form-group col-md-6">
             <label for="session">Select min group</label>
             <select name="select_group" id="select_group" class="form-control">
                 <option value="">Select group</option>
@@ -66,7 +71,7 @@
 				<option value="5">5</option>
             </select>
         </div>
-		<div class="form-group col-md-3">
+		<div class="form-group col-md-6">
             <label for="class">Total paper</label>
             <input type="text" class="form-control" id="total_paper" name="total_paper" placeholder="Enter total paper">        
         </div>

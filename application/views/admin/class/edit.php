@@ -33,19 +33,6 @@ $group_info = $this->db->get_where('group', array('class_id' => $class['id']))->
             <input type="text" class="form-control" id="class_name" name="class_name" value="<?php echo $class['class_name'];  ?>" placeholder="Enter class name" required >        
         </div>
 
-
-
-<div class="form-group col-md-4">
-            <label for="Select_Group_Type">Select Group Type</label>
-            <select name="select_group_type" id="select_group_type" class="form-control" required>
-
-                <option value="select_group_type">select group</option>
-                <option value="Group" <?php if($class['Group_type'] == 'Group' ){ echo "selected"; }  ?>>Group</option>
-                <option value="Paper" <?php if($class['Group_type'] == 'Paper' ){ echo "selected"; }  ?>>Paper</option>
-            
-            </select>
-        </div> 
-
 		
         <div class="form-group col-md-3">
             <label for="session">Group</label>
@@ -56,6 +43,21 @@ $group_info = $this->db->get_where('group', array('class_id' => $class['id']))->
                 
             </select>
         </div> 
+
+<div class="form-group col-md-4">
+            <label for="Select_Group_Type">Select Group Type</label>
+            <select name="Select_group_type" id="select_group_type" class="form-control" required>
+
+                <option value="Select_group_type" selected>Select group</option>
+                <option value="Group" <?php if($class['group_type'] == 'Group' ){ echo "selected"; }  ?>>Group</option>
+                <option value="Paper" <?php if($class['group_type'] == 'Paper' ){ echo "selected"; }  ?>>Paper</option>
+            
+            </select>
+        </div> 
+
+
+
+
 		<div class="form-group col-md-3">
             <label for="session">Mode</label>
             <select name="mode" id="mode" class="form-control" required>
@@ -65,7 +67,7 @@ $group_info = $this->db->get_where('group', array('class_id' => $class['id']))->
             </select>
             
         </div>
-        <div class="form-group col-md-3">
+        <div class="form-group col-md-6">
             <label for="session">Select min group</label>
             <select name="select_group" id="select_group" class="form-control">
                 <option value="">Select group</option>
@@ -76,7 +78,7 @@ $group_info = $this->db->get_where('group', array('class_id' => $class['id']))->
 				<option value="5" <?php if($class['select_group'] == '5'){ echo "selected"; }  ?> >5</option>
             </select>
         </div>
-		<div class="form-group col-md-3">
+		<div class="form-group col-md-6">
             <label for="class">Total paper</label>
             <input type="text" class="form-control" value="<?php echo $class['total_paper']; ?>" id="total_paper" name="total_paper" placeholder="Enter total paper"  >        
         </div>
