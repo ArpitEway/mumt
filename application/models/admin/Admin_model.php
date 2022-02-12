@@ -465,7 +465,7 @@ class Admin_model extends CI_Model {
 		$data['mode'] = html_escape($this->input->post('mode'));
 		$data['total_paper'] = html_escape($this->input->post('total_paper'));
 		$data['select_group'] = html_escape($this->input->post('select_group'));
-		$data['group_name'] = html_escape($this->input->post('select_groups'));
+		$data['Group_type'] = html_escape($this->input->post('select_group_type'));
 		$data['class_group'] = html_escape($this->input->post('class_group'));
 		
 		if($data['class_group']=='Y'){
@@ -521,7 +521,7 @@ class Admin_model extends CI_Model {
 		$data['class_group']  	 = html_escape($this->input->post('class_group'));
 		$data['mode'] 		  	 = html_escape($this->input->post('mode'));
 		$data['total_paper']  	 = html_escape($this->input->post('total_paper'));
-		$data['group_name']          = html_escape($this->input->post('select_groups'));
+		$data['Group_type']          = html_escape($this->input->post('select_group_type'));
 		$data['class_group']  	 = html_escape($this->input->post('class_group'));
 		$data['select_group'] 	 = html_escape($this->input->post('select_group'));
 		

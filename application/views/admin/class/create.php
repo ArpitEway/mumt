@@ -27,12 +27,12 @@
         </div>
 		
 <div class="form-group col-md-4">
-            <label for="Select Group">Select Group</label>
-            <select name="select_groups" id="select_groups" class="form-control" required>
+            <label for="Select_Group_Type">Select Group Type</label>
+            <select name="select_group_type" id="select_group_type" class="form-control" required>
 
-                <option value="select group">select group</option>
-                <option value="group">group</option>
-                <option value="paper">paper</option>
+                <option value="select group type">Select group</option>
+                <option value="Group">Group</option>
+                <option value="Paper">Paper</option>
                 
             </select>
         </div> 

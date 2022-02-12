@@ -36,12 +36,12 @@ $group_info = $this->db->get_where('group', array('class_id' => $class['id']))->
 
 
 <div class="form-group col-md-4">
-            <label for="Select Group">Select Group</label>
-            <select name="select_groups" id="select_groups" class="form-control" required>
+            <label for="Select_Group_Type">Select Group Type</label>
+            <select name="select_group_type" id="select_group_type" class="form-control" required>
 
-                <option value="select group">select group</option>
-                <option value="group" <?php if($class['group_name'] == 'group' ){ echo "selected"; }  ?>>group</option>
-                <option value="paper" <?php if($class['group_name'] == 'paper' ){ echo "selected"; }  ?>>paper</option>
+                <option value="select_group_type">select group</option>
+                <option value="Group" <?php if($class['Group_type'] == 'Group' ){ echo "selected"; }  ?>>Group</option>
+                <option value="Paper" <?php if($class['Group_type'] == 'Paper' ){ echo "selected"; }  ?>>Paper</option>
             
             </select>
         </div> 
