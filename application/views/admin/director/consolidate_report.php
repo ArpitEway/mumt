@@ -27,7 +27,7 @@
 		{
 		?>
 			
-		<option value="<?php echo $center['center_id']; ?>"><?php echo $center['center_code'] ." - ". $center['center_name']; ?></option>
+		<option value="<?php echo $center['id']; ?>"><?php echo $center['center_code'] ." - ". $center['center_name']; ?></option>
 			
 		<?php
 			} 

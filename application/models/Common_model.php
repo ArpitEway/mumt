@@ -221,8 +221,9 @@ class Common_Model extends CI_Model{
 	}
 
 	function student_data_consolidate($where = "",$group_by = ""){
-		
+	
 		if($group_by != ""){
+			
 			$this->db->select('count(*) as cnt,course_group.id,course_group.course_name as course_nm,center_id,center_code');
 			$this->db->group_by($group_by);
 		}else{
