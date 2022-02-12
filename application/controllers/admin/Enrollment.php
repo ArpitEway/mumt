@@ -435,7 +435,7 @@
 			$data = array('center_details' => $center_detail ,'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash());
 			if($data['center_details']){
-				$dt =  $this->load->view('admin/Enrollment/FormEditRequestDetails',$data,true);
+				$dt =  $this->load->view('admin/enrollment/FormEditRequestDetails',$data,true);
 			}else{
 				$dt = "Invalid Center Code";
 			}
@@ -563,9 +563,9 @@
 				$status = ($remark=='Set') ? 'Pending' : 'Done';
 				$remark = ($remark=='Set') ? '' : 'Invalid';
 				if($this->input->post("id")){
-					$data = $this->Common_model->updateRecordByConditions("request",array("id" => $id),array("status" => $status,'remark' => $remark ));
+					$data = $this->Common_model->updateRecordByConditions("request",array("id" => $id),array("status" => $status,'request_remark' => $remark ));
 					$dt = $this->db->get_where("request",array("id" => $id ))->result_array();
-					if($dt[0]['remark'] == 'Invalid'){
+					if($dt[0]['request_remark'] == 'Invalid'){
 						$remark_btn = '<input type="button" name="req_remark" data-id='.$id.' class="btn btn-danger remark_check" value="Invalid">';
 						$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-success req_check" value="Done">';
 					}else{
