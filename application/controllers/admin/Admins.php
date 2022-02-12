@@ -1426,9 +1426,10 @@ public function update_doc_permission_status()
 			}else{
 				$dt['name!='] = '';
 			}
-			if($class_id != ""){	 
+			if($class_id != "" && $class_id != "All"){	 
 
 				$dt['class_id'] = $class_id;
+				
 			}
 			
 			if($approved != "all"){
@@ -1450,6 +1451,8 @@ public function update_doc_permission_status()
 			if($filter == "list"){
 
 				$data['students'] = $this->Common_model->student_data_consolidate($dt);
+				
+
 			}
 			if($filter == "count"){
 
@@ -1461,9 +1464,7 @@ public function update_doc_permission_status()
 				   
 				}else{
 					$data['count_filter'] = 'center_wise';
-				
 					$data['course_count'] = $this->Common_model->student_data_consolidate($dt,'center_id');
-				
 				}
 			}
 		
