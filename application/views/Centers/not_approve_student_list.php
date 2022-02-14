@@ -15,28 +15,33 @@
 			<?php
 
 			$i = 1;
-			foreach($documents as $document){
+			foreach($students as $student){
 
-	       $remark = $document->remark;
-			$admissionDocWhere = " student_id = ".$document->student_id." and document_category_id in  (".$remark.") and status='N'";
+	       $remark = $student->remark;
+	       if ($student->remark!='') {
+	       	
+			$admissionDocWhere = " student_id = ".$student->student_id." and document_category_id in  (".$remark.") and status='N'";
 			$admissionDocCount = $this->Common_model->getCountByWhere('admission_document',$admissionDocWhere);
+	       }else{
+	       	$admissionDocCount =0;
+	       }
 			$remarkCount= substr_count($remark,',');
 			
 			$remarkCount+=1;
      
-        if($admissionDocCount!=$remarkCount){
+        if(($admissionDocCount!=$remarkCount) || $remark==''){
  
 				?>
 				<tr>
 					<td><?php echo $i; ?></td>
-					<td><?php echo $document->student_id; ?> </td>
-					<td><?php echo $document->name; ?> </td>
-                    <td><?php echo $document->f_h_name; ?> </td>
-					<td><?php echo $document->course_name; ?> </td>
-					<td><?php echo $document->class_name; ?> </td>
+					<td><?php echo $student->student_id; ?> </td>
+					<td><?php echo $student->name; ?> </td>
+                    <td><?php echo $student->f_h_name; ?> </td>
+					<td><?php echo $student->course_name; ?> </td>
+					<td><?php echo $student->class_name; ?> </td>
                  
        <td>
-       	<?php $student_id = $this->Common_model->encrypt_decrypt($document->student_id); ?>
+       	<?php $student_id = $this->Common_model->encrypt_decrypt($student->student_id); ?>
       <a class="btn btn-primary" href="<?=base_url('center/center/remaining_documents/'.$student_id)?>">Upload Document</a>
 	</td>
 
