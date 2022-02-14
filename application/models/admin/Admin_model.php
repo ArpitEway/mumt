@@ -728,7 +728,8 @@ class Admin_model extends CI_Model {
 		
 		
 		$data['remark'] = implode(",",$remark);
-		$data['remark_detail'] = $remark_detail.' ( '.implode(", ",$other_remark).' ) ';
+		$data['remark_detail'] = $remark_detail;
+		$data['remark_detail'] .= (count($other_remark)>0) ? ' ( '.implode(", ",$other_remark).' ) ' : '';
 		$data['approved'] = "N";
 		
 		$this->db->where('student_id', $param1);
