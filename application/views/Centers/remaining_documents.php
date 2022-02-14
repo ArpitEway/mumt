@@ -67,11 +67,16 @@ foreach($documentData as $document){
 		</div>
 	</div>
 </div>
+
+<div class="row input-div">
+	<div>
+		<h3><?=$student->remark_detail ?></h3>
+	</div>
+	<?php if($student->remark!=''){ ?>
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 <form method="post" action="" enctype='multipart/form-data' id="target" >
 	<div id="loader">
 	</div>
-	<div class="row input-div">
 		<input type="hidden" name="course_group_id" id="course_group_id" value="<?=$student->course_group_id; ?>">
 		<input type="hidden" name="student_id" id="student_id" value="<?=$student->student_id; ?>">
 		
@@ -96,11 +101,13 @@ foreach($documentData as $document){
 				</div>
 			</div>
 		<?php } ?>
-	</div>
 	<div class="row justify-content-center my-3">
 		<a href="<?=base_url('center/not_approve_student_list')?>" class="btn btn-primary">Submit</a>
 	</div>
 </form>
+<?php }
+?>
+	</div>
  <script>
 	$(".custom-file-input").on('change',function (){
 		 var csrfName = $('.csrfname').attr('name');
