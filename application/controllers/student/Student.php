@@ -8,7 +8,7 @@ class Student extends CI_Controller {
 		parent::__construct();
 		$this->load->model('Common_model');
 		$this->load->model('Students/Student_model');
-		$this->load->model('users/User_model');
+		//$this->load->model('users/User_model');
 	}
 	
 	public function index(){
@@ -35,47 +35,58 @@ class Student extends CI_Controller {
 			$this->load->view('students/dashboard',$data);
 			$this->load->view('students/footer');
 		}
+		
 	}
 	
-	public function view_payment_detail(){
-		if(!$this->session->has_userdata('studentdata')){
-			 redirect(base_url('student/'));
-		}else{
-			$this->Student_model->checkStudentForm();
-			$titleData = array('title' => 'Student Payments'); 
-			$this->load->view('students/header',$titleData);
-			$id =  $this->session->student_id;
-			$data['student_payments'] = $this->db->get_where('online_payment_transaction', array("student_id" => $id ))->result_array();
+	//public function view_payment_detail(){
+	// // 	if(!$this->session->has_userdata('studentdata')){
+	// // 		 redirect(base_url('student/'));
+	// // 	}else{
+	// // 		$this->Student_model->checkStudentForm();
+	// // 		$titleData = array('title' => 'Student Payments'); 
+	// // 		$this->load->view('students/header',$titleData);
+	// // 		$id =  $this->session->student_id;
+	// // 		$data['student_payments'] = $this->db->get_where('online_payment_transaction', array("student_id" => $id ))->result_array();
 			
-			$this->load->view('students/view_student_payment',$data);
+	// // 		$this->load->view('students/view_student_payment',$data);
 			
-			$this->load->view('students/footer');
+	// // 		$this->load->view('students/footer');
 			
-		}
-	}
+	// // 	}
+	// }
 	
 	public function login(){
-		$this->load->view('students/login');
+
+		$csrf = array(
+		'name_csrf' => $this->security->get_csrf_token_name(),
+		'hash_csrf' => $this->security->get_csrf_hash()
+		);
+		$this->load->view('students/login',$csrf);
 	}
 
 	public function loginSub(){
 		
-		if($this->session->has_userdata('studentdata')){
-			$this->Student_model->checkStudentForm();
-			redirect(base_url('student/dashboard'));
+		 if($this->session->has_userdata('studentdata')){
+		 	$this->Student_model->checkStudentForm();
+		 	redirect(base_url('student/dashboard'));
 			 exit;
-		 }
+		  }
 
 		$this->form_validation->set_rules('enrollment_no', 'Enrollment_no', 'required');
 		$this->form_validation->set_rules('dob', 'dob', 'required');
 		
 		if ($this->form_validation->run() == FALSE)
 		{
-				$this->load->view('students/login');
+				$csrf = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+			);
+				$this->load->view('students/login',$csrf);
 		}
 		else
-		{
-			
+		{ 
+
+		
 			$username = $_POST['enrollment_no'];
 			$password = $_POST['dob'];
 			
@@ -88,7 +99,7 @@ class Student extends CI_Controller {
 							'studentdata' => $check_user->enrollment_no,
 							'dob' 	  	  => $check_user->dob,
 							'student_id'  => $check_user->student_id,
-							'Users_id'  => $check_user->user_id
+							//'Users_id'  => $check_user->user_id
 						);
 				
 				$this->session->set_userdata($data);
@@ -96,9 +107,14 @@ class Student extends CI_Controller {
 			$this->Student_model->checkStudentForm();
 			redirect(base_url('student/dashboard'));
 			}else{
-				
+
+			$csrf = array(
+					'name_csrf' => $this->security->get_csrf_token_name(),
+					'hash_csrf' => $this->security->get_csrf_hash()
+				);	
 		$this->session->set_flashdata('error','Enrollment no or Password are incorrect');
-		$this->load->view('students/login');
+		
+		$this->load->view('students/login',	$csrf );
 		
 		}
 	}
@@ -136,7 +152,7 @@ class Student extends CI_Controller {
 				'course_group_list' => $course_group_list,
 		);
 		$courseData = $this->Common_model->getRecordById('course_group','id',$student[0]['course_group_id']);
-		$docLength = $this->Common_model->getCountByWhere('document_category','document_id ='.$courseData->document_id.' and status="Y"');
+		$docLength = $this->Common_model->getCountByWhere('document_category','category ='.$courseData->document_id.' and status="Y"');
 		$data['docLength'] = $docLength;
 			if($student[0]['course_group_id']!=''){
 			$whereClass='course_group_id='.$student[0]['course_group_id'];
@@ -293,12 +309,12 @@ class Student extends CI_Controller {
 
 	public function form()
 	{
-		$user_id = $this->session->Users_id;
-		$student_ids = $this->Common_model->getSinglefield('user_enquiry','student_id','id='.$user_id);
-		if($student_ids==''){
-			redirect(base_url('student/enquiry'));
-		}
-		$students = $this->Common_model->getRecordByWhere('student','student_id in ( '.$student_ids.' )');
+		$student_id = $this->session->student_id;
+		// $student_ids = $this->Common_model->getSinglefield('user_enquiry','student_id','id='.$user_id);
+		// if($student_ids==''){
+		// 	redirect(base_url('student/enquiry'));
+		// }
+		$students = $this->Common_model->getRecordByWhere('student',array('student_id'=>$student_id));
 		$data['students'] = $students;
 		$this->load->view('students/header',array('title' => 'Admission Details'));
 		$this->load->view('students/admission_details',$data);
@@ -307,13 +323,13 @@ class Student extends CI_Controller {
 
 	public function new_admission(){
 
-		$user_id = $this->session->Users_id;
-		$students = $this->Common_model->get_record('student','course_group_id','user_id='.$user_id);
+		$user_id = $this->session->student_id;
+		$students = $this->Common_model->get_record('student','course_group_id','student_id='.$student_id);
 		$course_ids = implode(",",array_map(function($a) {return implode(",",$a);},$students));
   
-		$course_list = $this->Common_model->getRecordByWhere('course_group',"admission_permission = 'Y' and id not in (".$course_ids.")");
+		// $course_list = $this->Common_model->getRecordByWhere('course_group',"admission_permission = 'Y' and id not in (".$course_ids.")");
 		$data = array(
-				'course_list' => $course_list,
+				'course_list' => $course_ids,
 			);
 		$this->load->view('students/header');
 		$this->load->view('students/new_admission',$data);
@@ -321,8 +337,8 @@ class Student extends CI_Controller {
 	}
 
 	public function newAdmissionSub(){
-		$user_id = $this->session->Users_id;
-		$userData = $this->Common_model->getRecordById('user_enquiry','id',$user_id);
+		$user_id = $this->session->student_id;
+		$userData = $this->Common_model->getRecordById('user_enquiry','id',$student_id);
 		$course = $this->input->post('course_group_id');
 		$courseData = $this->Common_model->getRecordById('course_group','id',$course);
 		$class = $this->input->post('class_id');
@@ -365,7 +381,7 @@ class Student extends CI_Controller {
 	$OnlinePayTxnData = array('student_id' => $new_student_id,'fees_head' => 'admission','amount' => 272,'payment_status'=>'pending','course_group_id' => $course,'class_id' => $class,'student_name' => $student->name);
 	if($student->document_uploaded=='Y'){
 		$document_id = $courseData->document_id;
-		$documents = $this->Common_model->getRecordByWhere('document_category',array('document_id'=>$document_id));
+		$documents = $this->Common_model->getRecordByWhere('document_category',array('category'=>$document_id));
 		$document_uploaded = 'Y';
 		foreach ($documents as $document) {
 			$whereDoc = 'student_id = '.$student->student_id.' and document_name like "%'.$document->document_name.'%"';

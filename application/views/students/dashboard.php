@@ -1,3 +1,6 @@
+
+
+
 <div class="row mt-2">
 	<div class="col-12 col-md-3 col-sm-12 menu-background p-3" >
 		<ul class="nav flex-column nav-pills">
@@ -30,15 +33,16 @@
 							<span class="nav-text">Payment Details</span>
 						</div>
 					</a>
-					  <?php if($this->User_model->hasNewAdmissionAccess()){ ?>
+					 <!--  <?php if($this->User_model->hasNewAdmissionAccess()){ ?>
                     <a class="border-0 custom-menu-item" href="<?=base_url('student/new_admission');?>">
                         <div>
                             <span class="nav-text">Admission In Additional Program</span>
                         </div>
                     </a>
-                <?php } ?>
+                <?php } ?> -->
+                
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
+</div> 

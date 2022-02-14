@@ -63,7 +63,7 @@
 								<?php } ?>
 								<!--begin::Form-->
 								<form class="form" method="post" action="<?=base_url('student/loginSub')?>" >
-									<div class="form-group py-3 m-0">
+									<!-- <div class="form-group py-3 m-0">
 										<div class="radio-inline">
 											<label class="radio">
 												<input type="radio" value="3" checked="checked" name="radio">
@@ -72,7 +72,9 @@
 												<input type="radio" value="4" name="radio">
 											<span></span>शास्त्री + शिक्षाशास्त्री (BA + BEd)</label>
 										</div>
-									</div>
+									</div> -->
+
+									<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 									<div class="form-group py-3 m-0">
 										<input class="form-control  placeholder-dark-75" type="text" placeholder="Enrollment no" name="enrollment_no" id="enrollment_no" autocomplete="off" required />
 									</div>
@@ -114,16 +116,18 @@
 		<script type='text/javascript' src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
 		<script type="text/javascript">
 			$("#dob").inputmask();
-			$("#enrollment_no").inputmask({"mask": "AAA-99-9999"});
+
+
+			$("#enrollment_no").inputmask({"mask": "AG/-9999-9999"});
 			
-			$('input[type=radio][name=radio]').change(function() {
-				if (this.value == '3') {
-					$("#enrollment_no").inputmask({"mask": "AAA-99-9999"});
-				}
-				else if (this.value == '4') {
-					$("#enrollment_no").inputmask({"mask": "AAAA-99-9999"});
-				}
-			});
+			// $('input[type=radio][name=radio]').change(function() {
+			// 	if (this.value == '3') {
+			// 		$("#enrollment_no").inputmask({"mask": "AAA-99-9999"});
+			// 	}
+			// 	else if (this.value == '4') {
+			// 		$("#enrollment_no").inputmask({"mask": "AAAA-99-9999"});
+			// 	}
+			// });
 		</script>
 	</body>
 	<!--end::Body-->
