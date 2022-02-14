@@ -67,11 +67,13 @@ foreach($documentData as $document){
 		</div>
 	</div>
 </div>
-
-<div class="row input-div">
-	<div>
+<?php if ($student->remark_detail!=''): ?>
+	<div class="col-sm-12 bg-secondary py-4">
 		<h3><?=$student->remark_detail ?></h3>
 	</div>
+<?php endif ?>
+
+<div class="input-div">
 	<?php if($student->remark!=''){ ?>
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 <form method="post" action="" enctype='multipart/form-data' id="target" >
