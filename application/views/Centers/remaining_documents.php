@@ -79,7 +79,7 @@ foreach($documentData as $document){
 	</div>
 		<input type="hidden" name="course_group_id" id="course_group_id" value="<?=$student->course_group_id; ?>">
 		<input type="hidden" name="student_id" id="student_id" value="<?=$student->student_id; ?>">
-		
+		<div class="row">
 		<?php	foreach($documentData as $document){ ?>
 			<div class="col-md-5">
 				<div class="form-group">
@@ -101,6 +101,7 @@ foreach($documentData as $document){
 				</div>
 			</div>
 		<?php } ?>
+	</div>
 	<div class="row justify-content-center my-3">
 		<a href="<?=base_url('center/not_approve_student_list')?>" class="btn btn-primary">Submit</a>
 	</div>
