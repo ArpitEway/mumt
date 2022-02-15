@@ -537,9 +537,11 @@ class Center extends CI_Controller {
 	public function getCourseByEligibility()
 	{
 		$eligibility = $this->input->post('eligibility');
+		if($this->session->has_userdata('center_id')){
 		$center_id =  $this->session->center_id;
 		$centerdata = $this->Common_model->getRecordById('center','id',$center_id);
 		$this->db->where('id in ('.$centerdata->allot_course_id.')');
+		}
 		$course_group_list = $this->Common_model->get_record('course_group','*',array('eligibility'=>$eligibility,
 			'admission_permission' => 'Y'
 		));
