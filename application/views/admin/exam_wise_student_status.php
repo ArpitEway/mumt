@@ -19,7 +19,8 @@
 				<td><?php echo $permitted_student;?></td>
 				<td><?php echo $filled_student; ?></td>
 				<td><?php echo $skipped_student; ?></td>
-				<td><?php echo $not_filled_student; ?></td>
+				<td> <a target="_blank" href="<?= base_url('admin/admins/center_wise_remains_count/');?>" ><?php echo $not_filled_student; ?></a>
+			</td>
 			</tr>
 			<?php 
 		}?>

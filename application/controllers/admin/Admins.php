@@ -2153,7 +2153,7 @@ public function editForm($student_id = ""){
 		}
 	}
 
-public function exam_wise_status(){
+public function exam_form_wise_status(){
 			
 				$this->load->view('header',array('title' => 'Exam Wise Student Status(DEC-2021)'));
 				$data = array(
@@ -2181,18 +2181,37 @@ public function exam_wise_status(){
 
 
 
+	         	public function class_wise_exam_from_status(){
 
-	public function class_wise_exam_from_status(){
+	         		$this->load->view('header',array('title' => 'Class Wise Exam Form Status(DEC-2021)'));
+	         		$data = array(
+	         			'name_csrf' => $this->security->get_csrf_token_name(),
+	         			'hash_csrf' => $this->security->get_csrf_hash(),
+	         		);
+	         		$where = array('new_exam_form !=' =>'D' );
+	         		$data['counts']=$this->Common_model->new_exam_form_permission_status($where);
+	         		$this->load->view('admin/class_wise_exam_from_status',$data);
+	         		$this->load->view('footer');
+	         	}
 
-		$this->load->view('header',array('title' => 'Class Wise Exam Form Status(DEC-2021)'));
-		$data = array(
-			'name_csrf' => $this->security->get_csrf_token_name(),
-			'hash_csrf' => $this->security->get_csrf_hash(),
-		);
-		$where = array('new_exam_form !=' =>'D' );
-		$data['counts']=$this->Common_model->new_exam_form_permission_status($where);
-		$this->load->view('admin/class_wise_exam_from_status',$data);
-		$this->load->view('footer');
-	}
+	         	public function center_wise_remains_count(){
+
+	         		$title = array('title' => 'Center Wise Student Form List');
+	         		$this->load->view('header',$title);	
+	         		$data = array(
+	         			'name_csrf' => $this->security->get_csrf_token_name(),
+	         			'hash_csrf' => $this->security->get_csrf_hash(),
+	         		);
+
+	         		$where = array('new_exam_form' =>'N');
+	         		$this->db->select('COUNT(*) as student_count,center_code,
+	         			center_name');
+	         		$this->db->group_by('center_id');
+	         		$data['listing'] = $this->Common_model->getRecordByWhere('student',$where);
+	         		$this->load->view('admin/center_wise_student_form_count_list',$data); 
+	         		$this->load->view('footer');
+
+	         	}
+
 
 }// class
