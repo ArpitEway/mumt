@@ -112,7 +112,7 @@
 <div id="printThisDivIdOnButtonClick" class="mt-10">
 	<div id="printablediv">
 		<div class="mt-5">
-			<label class="label_form label_heading "><b>Student details</b></label>
+			<label class="label_form label_heading "><b>Student Details</b></label>
 			<div class="form-block row text-center">
 				<div class="row col-md-10 m-auto">
 					<div class="form-group col-md-3 text-left m-auto">
@@ -209,3 +209,10 @@
 			</table>
 		</div>
 	</div>
+		<?php if ($student['new_exam_form']=='N'): ?>
+	<?php $student_id = $this->Common_model->encrypt_decrypt($student['student_id']); ?>
+			<div class="row justify-content-center mt-10">
+				<a class="btn btn-success" href="<?= base_url('Payment/exam_form/'.$student_id) ?>">Process To Payment</a>
+			</div>
+		<?php endif ?>
+</div>

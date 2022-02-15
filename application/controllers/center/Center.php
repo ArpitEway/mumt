@@ -866,9 +866,9 @@ class Center extends CI_Controller {
 	}
 
 
-	public function not_submit_exam_form_students($exam_form1 = 'submitted',$exam_form2 ="notSubmitted"){
+	public function exam_form_students($exam_form1 = 'notSubmitted'){
     
-		$titleData = array('title' => 'Not Submit Exam Form Student List' );
+		$titleData = array('title' => 'Exam Form Student List' );
 		$this->load->view('Centers/header',$titleData);
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
@@ -883,22 +883,21 @@ class Center extends CI_Controller {
 				'new_exam_form' =>'Y',
 				'center_id' => $center_id,
 			);	
-			}else if($exam_form2 =="notSubmitted"){
+			}else if($exam_form1 =="notSubmitted"){
 				$where = array(
 					'new_exam_form' =>'N',
 					'center_id' => $center_id,
 				);
-			}else if($exam_form2=="skipped"){
+			}else if($exam_form1=="skipped"){
 				$where = array(
 					'new_exam_form' =>'S',
 					'center_id' => $center_id,
 				);
 			}
-         $data['exam_form_button'] = $exam_form2 ;
-		
-		$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
+			$data['exam_form_button'] = $exam_form1 ;
+			$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
 
-		$this->load->view('Centers/not_submit_exam_form_students',$data);
+		$this->load->view('Centers/exam_form_students',$data);
 		$this->load->view('Centers/footer');		
 	}
 
@@ -934,31 +933,29 @@ class Center extends CI_Controller {
 		}
     }
 
+    public function showPapers($student_id){
+    	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+    	$titleData = array('title' => 'Student Papers'); 
+    	$this->load->view('Centers/header',$titleData);
+    	
+    	$where = array(
+    		'student_id' => $student_id,
+    	);
+    	$student = $this->Common_model->student_info($student_id);
+    	$data['student'] = $student;
+    	$this->db->select('*');
+    	$this->db->from('paper_master');
+    	$this->db->join('new_Exam_form', 'paper_master.id = new_Exam_form.paper_id');
+    	$where = array('paper_master.class_id' => $student['class_id'],
+    		'student_id' => $student_id
+    	);
+    	$this->db->where($where); 
+    	$data['papers'] = $this->db->get()->result();
+    	// $this->Common_model->last_query();
+    	$this->load->view('Centers/showPapers',$data);
+    	$this->load->view('Centers/footer');
+    }
 
-
-
-	public function showPapers($student_id){
-	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
-	
-	$titleData = array('title' => 'Student Papers'); 
-	$this->load->view('Centers/header',$titleData);
- 	
-	$where = array(
-		'student_id' => $student_id,
-	);
-	$student = $this->Common_model->getRecordByWhere('student',$where);
-	$data['student'] = $this->Common_model->student_info($student_id);
-	
-	$this->db->select('*');
-	$this->db->from('paper_master');
-	$this->db->join('new_Exam_form', 'paper_master.class_id = new_Exam_form.class_id');
-	$this->db->where('paper_master.class_id',$student[0]->class_id); 
-	$data['papers'] = $this->db->get()->result();
-	//echo $this->db->last_query();
-	$this->load->view('Centers/showPapers',$data);
-	$this->load->view('Centers/footer');
-	}
-}
 	public function paper_missing_list(){
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
@@ -970,7 +967,6 @@ class Center extends CI_Controller {
 			'temp_exam_form' =>'N',
 			'center_id' => $center_id,
 		);
-
 		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
 		$this->load->view('Centers/paper_missing_list',$data);
 		$this->load->view('Centers/footer');		
@@ -985,14 +981,12 @@ class Center extends CI_Controller {
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 		);
-		
 		$titleData['title'] = 'Select Papers';
 		$this->load->view('Centers/header',$titleData);
 		$student = $this->Common_model->student_info($student_id);
 		
 		$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory"');
 		$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id where class_id='.$student['class_id'].' Order by g.id')->result();
-
 
 		$data['compulsoryPapers'] = $compulsoryPapers;
 		$data['student'] = $student ;
