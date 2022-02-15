@@ -147,11 +147,28 @@ class Payment extends CI_Controller {
 			);
 			$where = 'student_id='.$student_id.' and fees_head="'.$productinfo.'"';
 			$txnData = $this->Common_model->get_record('online_payment_transaction','*',$where);
-			$this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$response);
 
 			if($productinfo == 'Admission Fees'){
+			$this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$response);
 				$status = 'payment_status';
+				$txnid = $txnData[0]['id'];
 			}elseif($productinfo == 'Exam Fees'){
+				if(count($txnData)>0){
+					$this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$response);
+					$txnid = $txnData[0]['id'];
+				}else{
+
+				$student = $this->Common_model->getRecordById('student','student_id',$student_id);
+				$response['student_id'] = $student_id;
+				$response['fees_head'] = $productinfo;
+				$response['course_group_id'] = $student->course_group_id;
+				$response['class_id'] = $student->class_id;
+				$response['center_id'] = $student->center_id;
+				$response['student_name'] = $student->name;
+				$response['admission_type'] = 'Regular';
+
+				$txnid = $this->Common_model->insertAll('online_payment_transaction',$response);
+				}
 				$status = 'new_exam_form';
 			}
 			if($payment=='Y'){
@@ -167,7 +184,7 @@ class Payment extends CI_Controller {
 			);
 			$this->session->set_userdata($sessionData);
 			$this->session->set_flashdata($remsg,$msg);
-			$id = $this->Common_model->encrypt_decrypt($txnData[0]['id']);
+			$id = $this->Common_model->encrypt_decrypt($txnid);
 			redirect(base_url('center/payment/detail/'.$id));
 		}
 	}

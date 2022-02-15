@@ -51,10 +51,11 @@
                         <input type="button" data-id = "<?=$student->student_id;?>" class="btn btn-success check_skipped" value="Unskippped">
                     </td>
                 <?php } ?>
-                <td>
-                 <input type="button" data-id = "<?=$student->student_id;?> " class="btn btn-danger check_skipped" value="skippped">
-             </td>
+                
              <?php if($exam_form_button=="notSubmitted"){ ?>
+                <td>
+                   <input type="button" data-id = "<?=$student->student_id;?> " class="btn btn-danger check_skipped" value="skippped">
+               </td>
                <td>
                 <?php if ($student->temp_exam_form=='N'){ ?>
                     <a class="btn btn-primary" href="<?=base_url('center/center/select_papers/'.$student_id)?>">Submit</a>

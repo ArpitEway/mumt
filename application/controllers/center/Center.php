@@ -902,36 +902,34 @@ class Center extends CI_Controller {
 	}
 
 
-   public function change_new_exam_form_status(){
-   
+	public function change_new_exam_form_status(){
+		$id    	= 0;
+		$id    	= $this->input->post("id");
+		$status = $this->input->post("check_skipped");
+
+		if ($this->input->post("id")) 
 		{
-			$id    	= 0;
-			$id    	= $this->input->post("id");
-			$status = $this->input->post("check_skipped");
+			$status = ($status=='skipped') ? 'S' : 'N';
+			$data = $this->Common_model->updateRecordByConditions("student",array("student_id" => $id ),array("new_exam_form" => $status ));
 
-			if ($this->input->post("id")) 
+			$dt = $this->db->get_where("student",array("student_id" => $id ))->result_array();
+
+			if($dt[0]['new_exam_form'] == 'N')
 			{
-				$data = $this->Common_model->updateRecordByConditions("student",array("student_id" => $id ),array("new_exam_form" => 'N' ));
-
-				$dt = $this->db->get_where("student",array("student_id" => $id ))->result_array();
-
-				if($dt[0]['new_exam_form'] == 'N')
-				{
-					$sts_btn = '<input type ="button" name="" data-id='.$id.' class="btn btn-danger check_skipped" value="skipped">';
-				}else{
-					$sts_btn = '<input type ="button" name="update_enroll_stats" data-id='.$id.' class="btn btn-success check_skipped" value="Unskipped">';
-				}
-				$status = true;
-				$msg    = "";
-				
-				echo json_encode(array(
-					"status" => $status,
-					"msg" => $msg,
-					"data" => $sts_btn
-				));
+				$sts_btn = '<input type ="button" name="" data-id='.$id.' class="btn btn-danger check_skipped" value="skipped">';
+			}else{
+				$sts_btn = '<input type ="button" name="update_enroll_stats" data-id='.$id.' class="btn btn-success check_skipped" value="Unskipped">';
 			}
+			$status = true;
+			$msg    = "";
+
+			echo json_encode(array(
+				"status" => $status,
+				"msg" => $msg,
+				"data" => $sts_btn
+			));
 		}
-    }
+	}
 
     public function showPapers($student_id){
     	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
