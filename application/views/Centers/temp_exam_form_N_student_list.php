@@ -30,8 +30,8 @@
 					<td><?php echo $student->class_name; ?> </td>
                  
        <td>
-      
-      <a class="btn btn-primary" href="<?=base_url('center/center/select_papers/'.$student->student_id)?>">Select Papers</a>
+	   <?php $student_id = $this->Common_model->encrypt_decrypt($student->student_id); ?>
+      <a class="btn btn-primary" href="<?=base_url('center/center/select_papers/'.$student_id)?>">Select Papers</a>
 	</td>
 
 <?php

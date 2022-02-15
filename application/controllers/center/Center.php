@@ -878,7 +878,7 @@ class Center extends CI_Controller {
 	}
 
 	public function select_papers($student_id){
-	
+		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
