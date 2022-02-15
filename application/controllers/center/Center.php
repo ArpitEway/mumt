@@ -825,6 +825,7 @@ class Center extends CI_Controller {
 		$this->load->view('Centers/header',$titleData);
 
 		$center_id =  $this->session->center_id;
+	
 		$where = array(
 			'approved' =>'N',
 			'center_id' => $center_id,
@@ -857,4 +858,73 @@ class Center extends CI_Controller {
 			$this->load->view('Centers/footer');
 		}
 	}
+
+
+	public function not_submit_exam_form_students($exam_form1 = 'submitted',$exam_form2 ="skipped"){
+
+		$titleData = array('title' => 'Not Submit Exam Form Student List' );
+		$this->load->view('Centers/header',$titleData);
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
+
+
+		$center_id =  $this->session->center_id;
+	
+		    if($exam_form1=='submitted'){
+			$where = array(
+				'new_exam_form' =>'Y',
+				'center_id' => $center_id,
+			);	
+			}else if($exam_form2 =="notSubmitted"){
+				$where = array(
+					'new_exam_form' =>'N',
+					'center_id' => $center_id,
+				);
+			}else if($exam_form2=="skipped"){
+				$where = array(
+					'new_exam_form' =>'S',
+					'center_id' => $center_id,
+				);
+			}
+         $data['exam_form_button'] = $exam_form2 ;
+		
+		$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
+
+		$this->load->view('Centers/not_submit_exam_form_students',$data);
+		$this->load->view('Centers/footer');		
+	}
+
+
+   public function change_new_exam_form_status(){
+   
+		{
+			$id    	= 0;
+			$id    	= $this->input->post("id");
+			$status = $this->input->post("check_skipped");
+
+			if ($this->input->post("id")) 
+			{
+				$data = $this->Common_model->updateRecordByConditions("student",array("student_id" => $id ),array("new_exam_form" => 'N' ));
+
+				$dt = $this->db->get_where("student",array("student_id" => $id ))->result_array();
+
+				if($dt[0]['new_exam_form'] == 'N')
+				{
+					$sts_btn = '<input type ="button" name="" data-id='.$id.' class="btn btn-danger check_skipped" value="skipped">';
+				}else{
+					$sts_btn = '<input type ="button" name="update_enroll_stats" data-id='.$id.' class="btn btn-success check_skipped" value="Unskipped">';
+				}
+				$status = true;
+				$msg    = "";
+				
+				echo json_encode(array(
+					"status" => $status,
+					"msg" => $msg,
+					"data" => $sts_btn
+				));
+			}
+		}
+    }
 }
