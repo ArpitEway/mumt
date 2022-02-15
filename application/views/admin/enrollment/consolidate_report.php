@@ -1,3 +1,4 @@
+
 <div class="container">
 <div class="row mt-5"> 
 <div class="form-group col-md-3">
@@ -24,11 +25,12 @@
     <option value="all">All</option>
     <?php 
         $centers = $this->db->get_where('center', array())->result_array();
+	
         foreach($centers as $center)
 		{
         ?>
 		
-		<option value="<?php echo $center['center_id']; ?>"><?php echo $center['center_code'] ." - ". $center['center_name']; ?></option>
+		<option value="<?php echo $center['id']; ?>"><?php echo $center['center_code'] ." - ". $center['center_name']; ?></option>
         
 	<?php
         } 

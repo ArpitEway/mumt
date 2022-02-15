@@ -171,7 +171,7 @@
 		</div>
 		<div class="col-xl-4">
 			<div class="form-group ">
-				<label>Email :</label><span class="text-danger"> *</span>
+				<label>Email :</label>
 				<input type="text" class="form-control " name="p_email" placeholder="E-mail" value="<?= $student_data->p_email; ?>">
 				<div class="fv-plugins-message-container"></div>
 			</div>
