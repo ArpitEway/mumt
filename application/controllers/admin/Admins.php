@@ -2156,20 +2156,17 @@ public function editForm($student_id = ""){
 
 
 
-public function class_wise_status(){
-			
-				$this->load->view('header',array('title' => 'Class Wise Exam Form Status(DEC-2021)'));
-				$data = array(
-					'name_csrf' => $this->security->get_csrf_token_name(),
-					'hash_csrf' => $this->security->get_csrf_hash(),
-				);
+	public function class_wise_exam_from_status(){
 
-                 $where = array('new_exam_form !=' =>'D' );
-                 $data['counts']=$this->Common_model->new_exam_form_permission_status($where);
-
-	             $this->load->view('admin/class_wise_status',$data);
-	             $this->load->view('footer');
-					
-	         	}
+		$this->load->view('header',array('title' => 'Class Wise Exam Form Status(DEC-2021)'));
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		$where = array('new_exam_form !=' =>'D' );
+		$data['counts']=$this->Common_model->new_exam_form_permission_status($where);
+		$this->load->view('admin/class_wise_exam_from_status',$data);
+		$this->load->view('footer');
+	}
 
 }// class
