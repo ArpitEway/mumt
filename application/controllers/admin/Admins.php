@@ -2153,4 +2153,31 @@ public function editForm($student_id = ""){
 		}
 	}
 
+public function exam_wise_status(){
+			
+				$this->load->view('header',array('title' => 'Exam Wise Student Status(DEC-2021)'));
+				$data = array(
+					'name_csrf' => $this->security->get_csrf_token_name(),
+					'hash_csrf' => $this->security->get_csrf_hash(),
+				);
+
+				$where = array('new_exam_form !=' =>'D');
+				$data['permitted_student'] = $this->Common_model->getCountByWhere('student',$where);
+
+				$where = array('new_exam_form' =>'Y');
+				$data['filled_student'] = $this->Common_model->getCountByWhere('student',$where);
+
+				$where = array('new_exam_form ' =>'');
+				$data['skipped_student'] = $this->Common_model->getCountByWhere('student',$where);
+				
+				$where = array('new_exam_form' =>'N');
+				$data['not_filled_student'] = $this->Common_model->getCountByWhere('student',$where);
+				
+
+	             $this->load->view('admin/exam_wise_student_status',$data);
+	             $this->load->view('footer');
+					
+	         	}
+
+
 }// class
