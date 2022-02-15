@@ -820,7 +820,9 @@ class Center extends CI_Controller {
 
 
 	public function not_approve_student_list(){
-
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url());
+		}
 		$titleData = array('title' => 'Unapproved Student List' );
 		$this->load->view('Centers/header',$titleData);
 
@@ -830,12 +832,14 @@ class Center extends CI_Controller {
 			'center_id' => $center_id,
 		);
 		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
-
 		$this->load->view('Centers/not_approve_student_list',$data);
 		$this->load->view('Centers/footer');		
 	}
 
 	public function remaining_documents($student_id){
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url());
+		}
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		if($student_id!=''){
 			$student = $this->Common_model->getRecordById('student','student_id',$student_id);
@@ -860,11 +864,12 @@ class Center extends CI_Controller {
 		}
 	}
 
-	public function get_student_data(){
-	
-		$titleData = array('title' => ' Student List' );
+	public function paper_missing_list(){
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url());
+		}
+		$titleData = array('title' => 'Paper Missing List' );
 		$this->load->view('Centers/header',$titleData);
-
 		$center_id =  $this->session->center_id;
 		$where = array(
 			'temp_exam_form' =>'N',
@@ -872,57 +877,58 @@ class Center extends CI_Controller {
 		);
 
 		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
-      
-		$this->load->view('Centers/temp_exam_form_N_student_list',$data);
+		$this->load->view('Centers/paper_missing_list',$data);
 		$this->load->view('Centers/footer');		
 	}
 
 	public function select_papers($student_id){
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url());
+		}
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 		);
 		
-		    $titleData['title'] = 'Select Papers';
-			$this->load->view('Centers/header',$titleData);
-			$student = $this->Common_model->student_info($student_id);
+		$titleData['title'] = 'Select Papers';
+		$this->load->view('Centers/header',$titleData);
+		$student = $this->Common_model->student_info($student_id);
 		
-			 $compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory"');
-			 $groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id where class_id='.$student['class_id'].' Order by g.id')->result();
-	
-			
-			 $data['compulsoryPapers'] = $compulsoryPapers;
-		     $data['student'] = $student ;
-			
-			   $data['student_id'] = $student['student_id'];
-			
+		$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory"');
+		$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id where class_id='.$student['class_id'].' Order by g.id')->result();
+
+
+		$data['compulsoryPapers'] = $compulsoryPapers;
+		$data['student'] = $student ;
+
+		$data['student_id'] = $student['student_id'];
+
 			// // CONDITION FOR GROUP PAPER
-			$this->db->select('class_group,select_group,group_type');
-			$this->db->from('class_master');
-			$this->db->join('student', 'class_master.id = student.class_id');
-			$this->db->where(array('class_master.id' => $data['student']['class_id'],
-				'student_id' => $student['student_id']
-			));
-			$class_group = $this->db->get()->result();
-			
-			$data['class_group'] = $class_group ; 
-			
-			$data['groupPaper'] = $groupPaper;
-	
+		$this->db->select('class_group,select_group,group_type');
+		$this->db->from('class_master');
+		$this->db->join('student', 'class_master.id = student.class_id');
+		$this->db->where(array('class_master.id' => $data['student']['class_id'],
+			'student_id' => $student['student_id']
+		));
+		$class_group = $this->db->get()->result();
+
+		$data['class_group'] = $class_group ; 
+
+		$data['groupPaper'] = $groupPaper;
+
 		
-			if($class_group[0]->group_type=='Paper'){
+		if($class_group[0]->group_type=='Paper'){
 			
-				$this->load->view('centers/select_papers',$data);
-			}else{
+			$this->load->view('centers/select_papers',$data);
+		}else{
 			
 			$this->load->view('centers/select_group',$data);
-			}
-			$this->load->view('Centers/footer');
-	
+		}
+		$this->load->view('Centers/footer');
+
 	}
 
-	
 	public function submit_papers(){
 		$student_id = $_POST['student_id'];
 		$paper_id1 = $_POST['paper_id'];
@@ -952,10 +958,9 @@ class Center extends CI_Controller {
 			echo json_encode(array("status" => 'false','student_id' => $student_id));
 		}
 	}
-     
+
 
 	public function submit_group(){
-		
 		$group_id = implode(',',$_POST['group_id']);
 		$paper_id = 	$this->Common_model->get_record('group_paper','group_concat(paper_id) as paper_id ','group_id in ( '.$group_id.' ) ');
 		$paper_id1 = $paper_id[0]['paper_id'] ;
@@ -986,5 +991,4 @@ class Center extends CI_Controller {
 			echo json_encode(array("status" => 'false','student_id' => $student_id));
 		}
 	}
-
 }
