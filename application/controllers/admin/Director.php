@@ -102,7 +102,7 @@ class Director extends CI_Controller {
 			$session 		  = 	$this->input->post("session");
 			$mode 		  	  = 	$this->input->post("mode");
 			$center 	  	  = 	$this->input->post("center");
-
+       
 			if($center != "all"){	 
 
 				$dt['center_id'] = $center;
