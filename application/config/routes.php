@@ -96,6 +96,7 @@ $route['center/Document/remainingDocument'] = 'center/Document/remainingDocument
 $route['center/form_edit_request']  = 'center/center/form_edit_request';
 $route['center/get_request_detail'] = 'center/center/get_request_detail';
 $route['center/payment_complaint'] = 'center/center/payment_complaint';
+$route['center/paper_missing_list'] = 'center/center/paper_missing_list';
 
 
 $route['404_override'] = '';

@@ -820,7 +820,9 @@ class Center extends CI_Controller {
 
 
 	public function not_approve_student_list(){
-
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url());
+		}
 		$titleData = array('title' => 'Unapproved Student List' );
 		$this->load->view('Centers/header',$titleData);
 
@@ -831,12 +833,14 @@ class Center extends CI_Controller {
 			'center_id' => $center_id,
 		);
 		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
-
 		$this->load->view('Centers/not_approve_student_list',$data);
 		$this->load->view('Centers/footer');		
 	}
 
 	public function remaining_documents($student_id){
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url());
+		}
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		if($student_id!=''){
 			$student = $this->Common_model->getRecordById('student','student_id',$student_id);
@@ -953,5 +957,133 @@ class Center extends CI_Controller {
 	//echo $this->db->last_query();
 	$this->load->view('Centers/showPapers',$data);
 	$this->load->view('Centers/footer');
+	}
+}
+	public function paper_missing_list(){
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url());
+		}
+		$titleData = array('title' => 'Paper Missing List' );
+		$this->load->view('Centers/header',$titleData);
+		$center_id =  $this->session->center_id;
+		$where = array(
+			'temp_exam_form' =>'N',
+			'center_id' => $center_id,
+		);
+
+		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
+		$this->load->view('Centers/paper_missing_list',$data);
+		$this->load->view('Centers/footer');		
+	}
+
+	public function select_papers($student_id){
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url());
+		}
+		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		
+		$titleData['title'] = 'Select Papers';
+		$this->load->view('Centers/header',$titleData);
+		$student = $this->Common_model->student_info($student_id);
+		
+		$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory"');
+		$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id where class_id='.$student['class_id'].' Order by g.id')->result();
+
+
+		$data['compulsoryPapers'] = $compulsoryPapers;
+		$data['student'] = $student ;
+
+		$data['student_id'] = $student['student_id'];
+
+			// // CONDITION FOR GROUP PAPER
+		$this->db->select('class_group,select_group,group_type');
+		$this->db->from('class_master');
+		$this->db->join('student', 'class_master.id = student.class_id');
+		$this->db->where(array('class_master.id' => $data['student']['class_id'],
+			'student_id' => $student['student_id']
+		));
+		$class_group = $this->db->get()->result();
+
+		$data['class_group'] = $class_group ; 
+
+		$data['groupPaper'] = $groupPaper;
+
+		
+		if($class_group[0]->group_type=='Paper'){
+			
+			$this->load->view('centers/select_papers',$data);
+		}else{
+			
+			$this->load->view('centers/select_group',$data);
+		}
+		$this->load->view('Centers/footer');
+
+	}
+
+	public function submit_papers(){
+		$student_id = $_POST['student_id'];
+		$paper_id1 = $_POST['paper_id'];
+		$paper_id2 = $_POST['compulsary_paper_id'];
+		$paper_id= array_merge($paper_id1,$paper_id2);
+		$paper_id = implode(",",$paper_id);
+		$paper_data = 	$this->Common_model->get_record('paper_master','*','id in ('.$paper_id.')');
+		
+		foreach($paper_data as $paper){
+			$data['course_group_id']=$paper['course_group_id'];
+			$data['class_id']=$paper['class_id'];
+			$data['paper_code']=$paper['paper_code'];
+			$data['paper_type']=$paper['type'];
+			$data['book_code']=$paper['book_code'];
+			$data['paper_id']=$paper['id'];
+			$data['student_id']=$student_id;
+			$insert = $this->Common_model->insertAll('new_exam_form',$data);
+		}
+		
+
+		if($insert){
+			$data = array('temp_exam_form'=>'Y');
+			$where = array('student_id'=>$student_id);
+			$this->Common_model->updateRecordByConditions('student',$where,$data);
+			echo json_encode(array("status" => 'true','student_id' => $student_id));
+		}else{
+			echo json_encode(array("status" => 'false','student_id' => $student_id));
+		}
+	}
+
+
+	public function submit_group(){
+		$group_id = implode(',',$_POST['group_id']);
+		$paper_id = 	$this->Common_model->get_record('group_paper','group_concat(paper_id) as paper_id ','group_id in ( '.$group_id.' ) ');
+		$paper_id1 = $paper_id[0]['paper_id'] ;
+		$paper_id2 = $_POST['compulsary_paper_id'] ;
+		$paper_id2 = implode(",",$paper_id2);
+		$paper_id = $paper_id1.",".$paper_id2 ;
+		$paper_data = 	$this->Common_model->get_record('paper_master','*','id in ('.$paper_id.')');
+		$student_id=$_POST['student_id'];
+		
+
+		foreach($paper_data as $paper){
+			$data['course_group_id']=$paper['course_group_id'];
+			$data['class_id']=$paper['class_id'];
+			$data['paper_code']=$paper['paper_code'];
+			$data['paper_type']=$paper['type'];
+			$data['book_code']=$paper['book_code'];
+			$data['paper_id']=$paper['id'];
+			$data['student_id']=$student_id;
+			$insert = $this->Common_model->insertAll('new_exam_form',$data);
+		}
+
+		if($insert){
+			$data = array('temp_exam_form'=>'Y');
+			$where = array('student_id'=>$student_id);
+			$this->Common_model->updateRecordByConditions('student',$where,$data);
+			echo json_encode(array("status" => 'true','student_id' => $student_id));
+		}else{
+			echo json_encode(array("status" => 'false','student_id' => $student_id));
+		}
 	}
 }
