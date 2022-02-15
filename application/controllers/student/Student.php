@@ -8,17 +8,17 @@ class Student extends CI_Controller {
 		parent::__construct();
 		$this->load->model('Common_model');
 		$this->load->model('Students/Student_model');
-		//$this->load->model('users/User_model');
 	}
 	
 	public function index(){
 		if($this->session->has_userdata('studentdata')){
-			 $this->Student_model->checkStudentForm();
 			redirect(base_url('student/dashboard'));
 		}else{
-			$this->load->view('students/header');
-			$this->load->view('students/disclaimer');
-			$this->load->view('students/footer');
+			$csrf = array(
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash()
+			);
+			$this->load->view('students/login',$csrf);
 		}
 	}
 	
@@ -31,7 +31,7 @@ class Student extends CI_Controller {
 			$id =  $this->session->student_id;
 			$student = $this->Common_model->getRecordById('student','student_id',$id);
 			$data = array('student' => $student);
-			$this->getNotification();
+			//$this->getNotification();
 			$this->load->view('students/dashboard',$data);
 			$this->load->view('students/footer');
 		}
@@ -213,66 +213,6 @@ class Student extends CI_Controller {
 		$this->load->view('students/header',array('title' => 'Admission Form'));	
 		$this->load->view('template/form',$data);
 		$this->load->view('students/footer');
-	}
-	
-	public function enquirySubmit()
-	{
-		$student_id = $this->input->post('student_id');
-		$studentData = array(
-			'name' => $this->input->post('name'),
-			'f_h_name' => $this->input->post('f_h_name'),
-			'dob' => date("Y-m-d", strtotime($this->input->post('dob'))),
-			'course_group_id' => $this->input->post('course'),
-			'class_id' => $this->input->post('class_id'),
-			'class_name' => $this->Common_model->getClassNameByClassId($this->input->post('class_id')),
-		);
-		$where = 'student_id='.$student_id;
-		
-		$this->Common_model->updateRecordByConditions('student',$where,$studentData);
-		
-		$submitdata = array(
-			'name' => $this->input->post('name'),
-			'f_h_name' => $this->input->post('f_h_name'),
-			'email' => $this->input->post('email'),
-			'dob' => date("Y-m-d", strtotime($this->input->post('dob'))),
-			'mobile_no' => $this->input->post('mobile'),
-			'course_group_id' => $this->input->post('course'),
-			'status' => '1',
-			'student_id' => $student_id,
-		);
-		
-		$user_id = $this->Common_model->insertAll('user_enquiry',$submitdata);
-		$this->Common_model->updateRecordByConditions('student','student_id='.$student_id,array('user_id' => $user_id));
-		$data = array('loged_in' => true,
-							'userdata' => $submitdata['mobile_no'],
-							'dob' => $submitdata['dob'],
-							'Users_id' => $user_id,
-							'student_id' => $student_id
-						);
-		$this->session->set_userdata($data);
-				
-		$this->session->set_flashdata('success','Your Query Submited Successfully');
-		
-		redirect(base_url('student/payment/admission/'.$student_id));
-	}
-	
-	public function enquiry(){
-		if(!$this->session->has_userdata('studentdata')){
-			$this->load->view('students/login'); 
-		}else{
-		$enrollment_no = $this->session->studentdata;
-		//$enrolldata = explode("-",$enrollment_no);
-		//$enrollmentCode = $enrolldata[0];
-		//$whereCourse = 'enrollment_code="'.$enrollmentCode.'"';
-		//$course_group_list = $this->Common_model->get_record('course','*',$whereCourse);
-		$course_group_list = $this->Common_model->get_record('course_group','*','admission_permission="Y"');
-		$data = array(
-				'course_group_list' => $course_group_list,
-		);
-			$this->load->view('students/header',array('title' => 'Form'));	
-			$this->load->view('students/enquiry',$data);
-			$this->load->view('students/footer');
-		}
 	}
 	
 	public function getAdmissionClassByCourse(){

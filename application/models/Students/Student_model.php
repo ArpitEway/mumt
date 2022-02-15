@@ -40,35 +40,6 @@
 				}else{
 				return false;
 			}
-		}
-		
-		public function checkStudentForm(){
-			if(!$this->session->has_userdata('studentdata')){
-				redirect(base_url('students/login'));
-			}
-			$enrollment_no = $this->session->studentdata;
-			$enrollSession = explode("-",$enrollment_no);
-			$session = $enrollSession[1];
-			$student = $this->Common_model->getRecordById('student','enrollment_no',$enrollment_no);
-			 if($session < 21){
-			$where = 'student_id='.$student->student_id;
-				$userCount = $this->Common_model->getCountByWhere('student',$where);
-				if($userCount<1){
-				$this->session->set_flashdata('warning','Please Fill Form First');
-					redirect(base_url('student/enquiry'));
-					}else if($student->payment_status!='Y'){
-					$this->session->set_flashdata('warning','Please Make Payment First');
-					redirect(base_url('student/payment/admission/'.$student->student_id));
-					}
-					 elseif($student->form_status!='Y'){
-					redirect(base_url('student/admission/'.$student->student_id));
-					 }
-					else{
-					return true;
-				}
-			// }
-		
-		}
-	
-	}}
+		}	
+	}
 ?>
