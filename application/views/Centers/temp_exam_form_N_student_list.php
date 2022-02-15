@@ -1,0 +1,43 @@
+<div class=" mt-5" >
+<table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
+			<thead>
+				<tr>
+					<th>Sno</th>
+                   <th>Form no</th>
+                   <th>Session</th>
+                   <th>Name</th>
+                    <th>F/H Name</th>
+                    <th>Course</th>
+                   
+                    <th>Class</th>
+                    <th>Select Paper</th>
+				</tr>
+			</thead>
+				<tbody>
+			<?php
+
+			$i = 1;
+			foreach($students as $student){
+				?>
+				<tr>
+					<td><?php echo $i; ?></td>
+					<td><?php echo $student->student_id; ?> </td>
+					<td><?php echo $student->session; ?> </td>
+					<td><?php echo $student->name; ?> </td>
+                    <td><?php echo $student->f_h_name; ?> </td>
+                    <td><?php echo $student->course_name; ?> </td>
+			
+					<td><?php echo $student->class_name; ?> </td>
+                 
+       <td>
+      
+      <a class="btn btn-primary" href="<?=base_url('center/center/select_papers/'.$student->student_id)?>">Select Papers</a>
+	</td>
+
+<?php
+$i++;
+		} 
+	?>
+        </tbody>
+       </table>
+        </div>
