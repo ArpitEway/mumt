@@ -862,8 +862,8 @@ class Center extends CI_Controller {
 	}
 
 
-	public function not_submit_exam_form_students($exam_form1 = 'submitted',$exam_form2 ="skipped"){
-
+	public function not_submit_exam_form_students($exam_form1 = 'submitted',$exam_form2 ="notSubmitted"){
+    
 		$titleData = array('title' => 'Not Submit Exam Form Student List' );
 		$this->load->view('Centers/header',$titleData);
 		$data = array(
@@ -929,4 +929,29 @@ class Center extends CI_Controller {
 			}
 		}
     }
+
+
+
+
+	public function showPapers($student_id){
+	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+	
+	$titleData = array('title' => 'Student Papers'); 
+	$this->load->view('Centers/header',$titleData);
+ 	
+	$where = array(
+		'student_id' => $student_id,
+	);
+	$student = $this->Common_model->getRecordByWhere('student',$where);
+	$data['student'] = $this->Common_model->student_info($student_id);
+	
+	$this->db->select('*');
+	$this->db->from('paper_master');
+	$this->db->join('new_Exam_form', 'paper_master.class_id = new_Exam_form.class_id');
+	$this->db->where('paper_master.class_id',$student[0]->class_id); 
+	$data['papers'] = $this->db->get()->result();
+	//echo $this->db->last_query();
+	$this->load->view('Centers/showPapers',$data);
+	$this->load->view('Centers/footer');
+	}
 }

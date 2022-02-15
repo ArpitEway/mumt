@@ -131,7 +131,6 @@ $i++;
 			dataType: 'json',
 			data: data,
 			success: function (data) {
-       
 				$(self).parent().html(data.data);
 
 			}
