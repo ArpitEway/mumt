@@ -52,7 +52,7 @@
          ?>
     <td>
      <?php
-     if($exam_form_button=="skipped")
+     if($exam_form_button=="skipped" )
      {
      ?>
      <input type="button" name="" data-id = "<?=$student->student_id;?>" class="btn btn-success check_skipped" value="Unskippped">
@@ -71,7 +71,7 @@
 
 
          <?php 
-         if($exam_form_button=="notSubmitted")
+         if($exam_form_button=="notSubmitted" && $student->temp_exam_form=='N')
          {
          ?>
         <td>
@@ -79,8 +79,24 @@
         </td>
          <?php
          }
+         else{
+        ?>
+         <td>
+          <a class="btn btn-primary" href="<?=base_url('center/center/showPapers/'.$student_id)?>">Show Papers</a>
+        </td>
+         <?php
+         }
          ?>
- 
+        <?php 
+         if($exam_form_button=="submitted")
+         {
+         ?>
+        <td>
+        <a class="btn btn-primary" href="#">Submit</a>
+        </td>
+         <?php
+         }
+         ?>
 
 <?php
 $i++;
