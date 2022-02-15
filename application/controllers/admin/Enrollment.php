@@ -99,8 +99,6 @@
 				$session 		  = 	$this->input->post("session");
 			    $mode 		  	  = 	$this->input->post("mode");
 				$center 	  	  = 	$this->input->post("center");
-
-
 				$count_filter = $this->input->post("count_filter");
 
 				if($mode != "all"){	 
@@ -143,6 +141,7 @@
 				
 				if($filter == "list"){
 					$data['students'] = $this->Common_model->student_data_consolidate($dt);
+				
 				}
 				
 				if($filter == "count"){
@@ -170,16 +169,18 @@
 			$response = $this->admin_model->student_doc_update($param);
 			$this->session->set_flashdata('ajax_flash_message','Non approved');
 			
-			$remark_ids = $this->Common_model->getStudentRemarkID($param);
+			$student = $this->Common_model->getRecordById('student','student_id',$param);
+			$remark_ids = $student->remark;
 			$remark_ids = explode(",",$remark_ids);
+			
 			foreach($remark_ids as $remark_id ){
 				$remark[] = $this->Common_model->getStudentRemarkNameById($remark_id)."<br>";
 			}
 			
 			echo json_encode(array(
 			"status" => 'true',
-			"remark" => $remark
-			
+			"remark" => $remark,
+			"remark_detail" => $student->remark_detail
 			));
 			//redirect(base_url().'admin/enrollment/student_report');
 		}
@@ -433,7 +434,7 @@
 			$data = array('center_details' => $center_detail ,'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash());
 			if($data['center_details']){
-				$dt =  $this->load->view('admin/Enrollment/FormEditRequestDetails',$data,true);
+				$dt =  $this->load->view('admin/enrollment/FormEditRequestDetails',$data,true);
 			}else{
 				$dt = "Invalid Center Code";
 			}
@@ -561,9 +562,9 @@
 				$status = ($remark=='Set') ? 'Pending' : 'Done';
 				$remark = ($remark=='Set') ? '' : 'Invalid';
 				if($this->input->post("id")){
-					$data = $this->Common_model->updateRecordByConditions("request",array("id" => $id),array("status" => $status,'remark' => $remark ));
+					$data = $this->Common_model->updateRecordByConditions("request",array("id" => $id),array("status" => $status,'request_remark' => $remark ));
 					$dt = $this->db->get_where("request",array("id" => $id ))->result_array();
-					if($dt[0]['remark'] == 'Invalid'){
+					if($dt[0]['request_remark'] == 'Invalid'){
 						$remark_btn = '<input type="button" name="req_remark" data-id='.$id.' class="btn btn-danger remark_check" value="Invalid">';
 						$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-success req_check" value="Done">';
 					}else{

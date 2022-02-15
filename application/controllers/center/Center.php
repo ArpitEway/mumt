@@ -32,8 +32,8 @@ class Center extends CI_Controller {
 			$id =  $this->session->center_id;
 			$center = $this->Common_model->getRecordById('center','id',$id);
 			$data = array('center' => $center);
-			$this->getNotification();
 			$this->load->view('Centers/dashboard',$data);
+			$this->getNotification();
 			$this->load->view('Centers/footer');
 		}
 	}
@@ -745,7 +745,7 @@ class Center extends CI_Controller {
 		$where = 'payment_complaint.center_id='.$this->session->center_id.' and type="admission" ';
 		
 		$column_order = array(null,'name','student.student_id','course_name','class_name','details','date','status','payment_complaint.remark');
-		$column_search = array('name','student.student_id','course_name','class_name','details','date','status','payment_complaint.remark');
+		$column_search = array('name','student.student_id','course_name','class_name','details','date','payment_complaint.status','payment_complaint.remark');
 
 		$DataTableArray = array(
 			'column_order' => $column_order,
@@ -789,6 +789,7 @@ class Center extends CI_Controller {
 		$DataTableArray = array(
 			'column_order' => $column_order,
 			'column_search' => $column_search,
+			'select' => 'request.request_remark,request.student_id, request.date, request.detail, name, request.status',
 			'where' => $where,
 			'table' =>  'request',
 			'table2' => 'student',
@@ -828,8 +829,7 @@ class Center extends CI_Controller {
 			'approved' =>'N',
 			'center_id' => $center_id,
 		);
-
-		$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
+		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
 
 		$this->load->view('Centers/not_approve_student_list',$data);
 		$this->load->view('Centers/footer');		
@@ -840,9 +840,12 @@ class Center extends CI_Controller {
 		if($student_id!=''){
 			$student = $this->Common_model->getRecordById('student','student_id',$student_id);
 			$remark = $student->remark;
-
-			$where = ' id in ( '.$remark.' ) ';
-			$document = $this->Common_model->getRecordByWhere('document_category',$where);
+			if($remark!=''){
+				$where = ' id in ( '.$remark.' ) ';
+				$document = $this->Common_model->getRecordByWhere('document_category',$where);
+			}else{
+				$document=array();
+			}
 			$titleData = array('title' => 'Unapproved Document List');
 
 			$data = array(

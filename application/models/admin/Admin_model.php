@@ -465,6 +465,7 @@ class Admin_model extends CI_Model {
 		$data['mode'] = html_escape($this->input->post('mode'));
 		$data['total_paper'] = html_escape($this->input->post('total_paper'));
 		$data['select_group'] = html_escape($this->input->post('select_group'));
+		$data['group_type'] = html_escape($this->input->post('Select_group_type'));
 		$data['class_group'] = html_escape($this->input->post('class_group'));
 		
 		if($data['class_group']=='Y'){
@@ -520,6 +521,7 @@ class Admin_model extends CI_Model {
 		$data['class_group']  	 = html_escape($this->input->post('class_group'));
 		$data['mode'] 		  	 = html_escape($this->input->post('mode'));
 		$data['total_paper']  	 = html_escape($this->input->post('total_paper'));
+		$data['group_type']          = html_escape($this->input->post('Select_group_type'));
 		$data['class_group']  	 = html_escape($this->input->post('class_group'));
 		$data['select_group'] 	 = html_escape($this->input->post('select_group'));
 		
@@ -541,12 +543,6 @@ class Admin_model extends CI_Model {
 		
 		$course_count = $this->db->get_where('class_master', array('course_group_id' => $data['course_group_id']))->result_array();
 		
-		 
-		$course_count =  @count($course_count);
-		
-		$class_order  = @$course_count + 1 ;
-		
-		$data['class_order'] = $class_order;
 		
 		$course_name  = $courses['course_name'];
 		
@@ -728,12 +724,12 @@ class Admin_model extends CI_Model {
 	    
 		$remark = html_escape($this->input->post('remark'));
 		$remark_detail = html_escape($this->input->post('remark_detail'));
+		$other_remark = html_escape($this->input->post('other_remark'));
 		
 		
 		$data['remark'] = implode(",",$remark);
-		
 		$data['remark_detail'] = $remark_detail;
-		
+		$data['remark_detail'] .= (count($other_remark)>0) ? ' ( '.implode(", ",$other_remark).' ) ' : '';
 		$data['approved'] = "N";
 		
 		$this->db->where('student_id', $param1);
@@ -743,11 +739,6 @@ class Admin_model extends CI_Model {
 		$this->db->where('student_id', $param1);
 		$this->db->update('admission_document', $data_student);
 		
-		$response = array(
-			'status' => true
-		);
-
-		return json_encode($response);
 	}
 	
 	public function student_approve($param1 = '')
