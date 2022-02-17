@@ -874,35 +874,32 @@ class Center extends CI_Controller {
 
 	public function exam_form_students($exam_form1 = 'notSubmitted'){
     
-		$titleData = array('title' => 'Exam Form Student List' );
-		$this->load->view('Centers/header',$titleData);
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
 		);
 
-
 		$center_id =  $this->session->center_id;
-	
-		    if($exam_form1=='submitted'){
+
+		if($exam_form1=='submitted'){
 			$where = array(
 				'new_exam_form' =>'Y',
 				'center_id' => $center_id,
-			);	
-			}else if($exam_form1 =="notSubmitted"){
-				$where = array(
-					'new_exam_form' =>'N',
-					'center_id' => $center_id,
-				);
-			}else if($exam_form1=="skipped"){
-				$where = array(
-					'new_exam_form' =>'S',
-					'center_id' => $center_id,
-				);
-			}
-			$data['exam_form_button'] = $exam_form1 ;
-			$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
-
+			);
+		}else if($exam_form1 =="notSubmitted"){
+			$where = array(
+				'new_exam_form' =>'N',
+				'center_id' => $center_id,
+			);
+		}else if($exam_form1=="skipped"){
+			$where = array(
+				'new_exam_form' =>'S',
+				'center_id' => $center_id,
+			);
+		}
+		$data['exam_form_button'] = $exam_form1 ;
+		$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
+		$this->load->view('Centers/header');
 		$this->load->view('Centers/exam_form_students',$data);
 		$this->load->view('Centers/footer');		
 	}
