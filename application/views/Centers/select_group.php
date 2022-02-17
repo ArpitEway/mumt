@@ -203,13 +203,14 @@
 
             </div>
             <?php } 
+            if($class_group[0]->class_group=='Y'){
             ?>
             <div class="row border border-primary bg-primary p-2 my-3 text-white ">
                 <div class="col-md-12 text-center select-group">Please Select <?=$class_group[0]->select_group ?> Paper Group</div>
             </div>
             <?php
                 $group_name = '';
-				if($class_group[0]->class_group=='Y'){
+				
                 foreach($groupPaper as $paper){
                     if($group_name!=$paper->group_name){
                         $group_name=$paper->group_name;
@@ -231,7 +232,8 @@
                     <div class="col-3"><?=$paper->paper_code; ?></div>
                     <div class="col-7"><?=$paper->paper_name; ?></div>
                 </div>
-                <?php }    }
+                <?php }    
+            }
     ?>
     </form>
     <div class="d-flex justify-content-center mt-10">
@@ -243,6 +245,7 @@
 	var select_group = <?php echo $class_group[0]->select_group; ?>;
    // alert(select_group);
 $('#group_submit').on('click', function (e) {
+if(select_group!=0){
 
 	var selectedGroups = $("input[name='group_id[]']:checked").length;
 
@@ -255,6 +258,7 @@ $('#group_submit').on('click', function (e) {
 		alert('Please Select '+select_group+' Paper Group');
 		return false;
 	}
+}
 	
 
 	var data = $("form").serialize(); 
