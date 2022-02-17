@@ -25,10 +25,10 @@
                <th>Course</th>
                <th>Class</th>
                <th>Total Fees</th>
+               <th>Action</th>
                 <?php if($exam_form_button=="notSubmitted"){ ?>
                     <th>Skip Exam Form</th>
                 <?php } ?>
-               <th>Action</th>
            </tr>
        </thead>
        <tbody>
@@ -61,9 +61,6 @@
                 <?php } ?>
                 
              <?php if($exam_form_button=="notSubmitted"){ ?>
-                <td>
-                   <input type="button" data-id = "<?=$student->student_id;?> " class="btn btn-danger check_skipped" value="skipped">
-               </td>
                <td>
                 <?php if ($student->temp_exam_form=='N'){ ?>
                     <a class="btn btn-primary" href="<?=base_url('select_papers/'.$student_id)?>">Select Papers</a>
@@ -71,6 +68,9 @@
                     <a class="btn btn-primary" href="<?=base_url('showPapers/'.$student_id)?>">Fill Exam Form</a>
                 <?php } ?>
             </td>
+             <td>
+                   <input type="button" data-id = "<?=$student->student_id;?> " class="btn btn-danger check_skipped" value="skipped">
+               </td>
             <?php
           }
           if($exam_form_button=="submitted")
