@@ -1054,12 +1054,15 @@ class Center extends CI_Controller {
 
 
 	public function submit_group(){
+		$paper_id = $_POST['compulsary_paper_id'] ;
+		$paper_id = implode(",",$paper_id);
+
+		if(isset($_POST['group_id'])){
 		$group_id = implode(',',$_POST['group_id']);
-		$paper_id = 	$this->Common_model->get_record('group_paper','group_concat(paper_id) as paper_id ','group_id in ( '.$group_id.' ) ');
-		$paper_id1 = $paper_id[0]['paper_id'] ;
-		$paper_id2 = $_POST['compulsary_paper_id'] ;
-		$paper_id2 = implode(",",$paper_id2);
-		$paper_id = $paper_id1.",".$paper_id2 ;
+		$group_paper_ids = 	$this->Common_model->get_record('group_paper','group_concat(paper_id) as paper_id ','group_id in ( '.$group_id.' ) ');
+		$group_paper_id = $group_paper_ids[0]['paper_id'] ;
+		$paper_id = $paper_id.",".$group_paper_id ;
+		}
 		$paper_data = 	$this->Common_model->get_record('paper_master','*','id in ('.$paper_id.')');
 		$student_id=$_POST['student_id'];
 		
