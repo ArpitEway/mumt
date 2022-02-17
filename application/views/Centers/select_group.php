@@ -190,6 +190,8 @@
         ?>
         <input type="hidden" id="updatepaper" value='Y'>
 		<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+		<input type="hidden"  name="student_id" id="student_id"  value="<?php echo $student['student_id']  ?>">
+		<input type="hidden"  name="student_id" id="student_id_decript"  value="<?php echo $this->Common_model->encrypt_decrypt($student['student_id']);  ?>">
         <?php
             foreach($compulsoryPapers as $paper){
                 
@@ -199,8 +201,7 @@
                 <div class="col-3"><?=$paper['paper_code']; ?></div>
                 <div class="col-7"><?=$paper['paper_name']?>  </div>
                 <input type="hidden"  name="compulsary_paper_id[]<?php echo  $paper['id'] ;?>" id="" value="<?php echo $paper['id'];  ?>">
-				<input type="hidden"  name="student_id" id="student_id" value="<?php echo $student['student_id']  ?>">
-
+				
             </div>
             <?php } 
             if($class_group[0]->class_group=='Y'){
@@ -276,7 +277,7 @@ if(select_group!=0){
 
 					if(data.status=='true'){
 				
-					window.location.href = BASE_URL+"center/center/get_student_data";
+					window.location.href = BASE_URL+"/showPaper/"+$('#student_id_decript').val();
 					return false;
 					}else{
 					
