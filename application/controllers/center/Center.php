@@ -1013,10 +1013,10 @@ class Center extends CI_Controller {
 		
 		if($class_group[0]->group_type=='Paper'){
 			
-			$this->load->view('centers/select_papers',$data);
+			$this->load->view('Centers/select_papers',$data);
 		}else{
 			
-			$this->load->view('centers/select_group',$data);
+			$this->load->view('Centers/select_group',$data);
 		}
 		$this->load->view('Centers/footer');
 

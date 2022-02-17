@@ -58,9 +58,9 @@
                </td>
                <td>
                 <?php if ($student->temp_exam_form=='N'){ ?>
-                    <a class="btn btn-primary" href="<?=base_url('select_papers/'.$student_id)?>">Submit</a>
+                    <a class="btn btn-primary" href="<?=base_url('select_papers/'.$student_id)?>">Select Papers</a>
                 <?php }else if ($student->temp_exam_form=='Y') { ?>
-                    <a class="btn btn-primary" href="<?=base_url('showPapers/'.$student_id)?>">Show Papers</a>
+                    <a class="btn btn-primary" href="<?=base_url('showPapers/'.$student_id)?>">Fill Exam Form</a>
                 <?php } ?>
             </td>
             <?php

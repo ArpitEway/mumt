@@ -173,7 +173,7 @@
 
 				</div>
 				<div class="row col-md-2">
-					<img class="student_form_img" src="<?php echo base_url('/assets/student_image/').$student['photo'];?>"></img>
+					<img class="student_form_img" src="<?php echo base_url('/assets/student_image/').$student['session'].'/'.$student['photo'];?>"></img>
 				</div>
 			</div>
 			
