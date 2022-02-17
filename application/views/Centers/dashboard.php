@@ -91,7 +91,7 @@
 							<span class="nav-text">Paper Missing List</span>
 						</div>
 					</a> -->
-					<a class="border-0 custom-menu-item" href="<?=base_url('center/exam_form_students');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
 						<div>
 							<span class="nav-text">Exam Form Dec 2021</span>
 						</div>
