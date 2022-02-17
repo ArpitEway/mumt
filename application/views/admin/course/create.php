@@ -7,10 +7,10 @@
                 <option value="">Select session</option>
                     <?php 
                    $sessions = $this->Common_model->get_record('session','*');
-                    foreach($sessions[0] as $session)
+                    foreach($sessions as $session)
                         {
                     ?>
-                    <option value="<?php echo $session['id']; ?>"><?php echo $session['session']; ?></option>
+                    <option value="<?php echo $session['session']; ?>"><?php echo $session['session']; ?></option>
                     <?php
                         } 
                     ?>

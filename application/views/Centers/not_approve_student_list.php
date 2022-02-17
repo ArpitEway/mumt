@@ -1,54 +1,53 @@
 <div class=" mt-5" >
-<table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
-			<thead>
-				<tr>
-					<th>Sno</th>
-                   <th>Form no</th>
-                   <th>Student name</th>
-                   <th>Father name</th>
-                    <th>Course Name</th>
-                    <th>Class Name</th>
-                    <th>Action</th>
-				</tr>
-			</thead>
-				<tbody>
+	<table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
+		<thead>
+			<tr>
+				<th>Sno</th>
+				<th>Form no</th>
+				<th>Student name</th>
+				<th>Father name</th>
+				<th>Course Name</th>
+				<th>Class Name</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
 			<?php
-
 			$i = 1;
 			foreach($students as $student){
 
-	       $remark = $student->remark;
-	       if ($student->remark!='') {
-	       	
-			$admissionDocWhere = " student_id = ".$student->student_id." and document_category_id in  (".$remark.") and status='N'";
-			$admissionDocCount = $this->Common_model->getCountByWhere('admission_document',$admissionDocWhere);
-	       }else{
-	       	$admissionDocCount =0;
-	       }
-			$remarkCount= substr_count($remark,',');
-			
-			$remarkCount+=1;
-     
-        if(($admissionDocCount!=$remarkCount) || $remark==''){
- 
-				?>
-				<tr>
-					<td><?php echo $i; ?></td>
-					<td><?php echo $student->student_id; ?> </td>
-					<td><?php echo $student->name; ?> </td>
-                    <td><?php echo $student->f_h_name; ?> </td>
-					<td><?php echo $student->course_name; ?> </td>
-					<td><?php echo $student->class_name; ?> </td>
-                 
-       <td>
-       	<?php $student_id = $this->Common_model->encrypt_decrypt($student->student_id); ?>
-      <a class="btn btn-primary" href="<?=base_url('center/center/remaining_documents/'.$student_id)?>">Upload Document</a>
-	</td>
+				$remark = $student->remark;
+				if ($student->remark!='') {
 
-<?php
-$i++;
-		}} 
-	?>
-        </tbody>
-       </table>
-        </div>
+					$admissionDocWhere = " student_id = ".$student->student_id." and document_category_id in  (".$remark.") and status='N'";
+					$admissionDocCount = $this->Common_model->getCountByWhere('admission_document',$admissionDocWhere);
+				}else{
+					$admissionDocCount =0;
+				}
+				$remarkCount= substr_count($remark,',');
+
+				$remarkCount+=1;
+
+				if(($admissionDocCount!=$remarkCount) || $remark==''){
+
+					?>
+					<tr>
+						<td><?php echo $i; ?></td>
+						<td><?php echo $student->student_id; ?> </td>
+						<td><?php echo $student->name; ?> </td>
+						<td><?php echo $student->f_h_name; ?> </td>
+						<td><?php echo $student->course_name; ?> </td>
+						<td><?php echo $student->class_name; ?> </td>
+
+						<td>
+							<?php $student_id = $this->Common_model->encrypt_decrypt($student->student_id); ?>
+							<a class="btn btn-primary" href="<?=base_url('center/center/remaining_documents/'.$student_id)?>">Upload Document</a>
+						</td>
+					</tr>
+						<?php
+						$i++;
+					}} 
+					?>
+				</tbody>
+			</table>
+		</div>
