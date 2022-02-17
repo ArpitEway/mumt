@@ -395,7 +395,7 @@ li.menu-item span.menu-text{
   div#kt_header_mobile{
     background: linear-gradient(to bottom, #f1e767 0%,#feb645 100%) !important;
     } 
-    .header-top{
-        margin: -25px;
+    .header-top {
+        margin-top: -50px;
     }
 }
