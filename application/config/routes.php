@@ -97,6 +97,8 @@ $route['center/form_edit_request']  = 'center/center/form_edit_request';
 $route['center/get_request_detail'] = 'center/center/get_request_detail';
 $route['center/payment_complaint'] = 'center/center/payment_complaint';
 $route['center/paper_missing_list'] = 'center/center/paper_missing_list';
+$route['center/exam_form_students/(:any)'] = 'center/center/exam_form_students/$1';
+$route['center/exam_form_students'] = 'center/center/exam_form_students';
 
 
 $route['404_override'] = '';
