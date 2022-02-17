@@ -1,8 +1,8 @@
 <div class=" mt-5" >
     <div class="row justify-content-around mb-10">
-        <a href="<?=base_url('center/exam_form_students/notSubmitted')?>" class="btn btn-primary">Not Submitted</a>
-        <a href="<?=base_url('center/exam_form_students/submitted')?>" class="btn btn-success">Submitted</a>
-        <a href="<?=base_url('center/exam_form_students/skipped')?>" class="btn btn-warning">Skipped</a>
+        <a href="<?=base_url('exam_form_students/notSubmitted')?>" class="btn btn-primary">Not Submitted</a>
+        <a href="<?=base_url('exam_form_students/submitted')?>" class="btn btn-success">Submitted</a>
+        <a href="<?=base_url('exam_form_students/skipped')?>" class="btn btn-warning">Skipped</a>
     </div>
 
     <table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
@@ -58,9 +58,9 @@
                </td>
                <td>
                 <?php if ($student->temp_exam_form=='N'){ ?>
-                    <a class="btn btn-primary" href="<?=base_url('center/center/select_papers/'.$student_id)?>">Submit</a>
+                    <a class="btn btn-primary" href="<?=base_url('select_papers/'.$student_id)?>">Submit</a>
                 <?php }else if ($student->temp_exam_form=='Y') { ?>
-                    <a class="btn btn-primary" href="<?=base_url('center/center/showPapers/'.$student_id)?>">Show Papers</a>
+                    <a class="btn btn-primary" href="<?=base_url('showPapers/'.$student_id)?>">Show Papers</a>
                 <?php } ?>
             </td>
             <?php
@@ -69,7 +69,7 @@
           {
            ?>
            <td>
-            <a class="btn btn-primary" href="<?=base_url('center/center/showPapers/'.$student_id)?>">Submit</a>
+            <a class="btn btn-primary" href="<?=base_url('showPapers/'.$student_id)?>">Submit</a>
         </td>
         <?php
         }
