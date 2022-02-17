@@ -563,32 +563,32 @@ class Admin_model extends CI_Model {
 		{
 			$this->db->where('class_id', $param1);
 			//$this->db->delete('group');
-			$i=0;
-			$data_group['class_id'] 		= $param1;
-			$data_group['course_group_id']  = $data['course_group_id'];
-			$data_group['course_name'] 		= $course_name;
-			$data['total_group'] 			= $count;
-				
-			foreach($group_ids as $group_id )
-				{
-					$data_group['group_name'] = $group_names[$i];
-					$this->db->where('id', $group_id);
-					$this->db->update('group', $data_group);
-					$i++;
-				}
-				
-				if($count_group_id < $count){
-				
-					for($j=$i; $j<$count; $j++){
-						$data_group['group_name'] = $group_names[$j];
-						$this->db->insert('group', $data_group);
-						$insid = $this->db->insert_id();
-					}
-				}
-		}
-		
-			 
-	}
+    		$i=0;
+    		$data_group['class_id'] 		= $param1;
+    		$data_group['course_group_id']  = $data['course_group_id'];
+    		$data_group['course_name'] 		= $course_name;
+    		$data['total_group'] 			= $count;
+    		
+    		foreach($group_ids as $group_id )
+    		{
+    			$data_group['group_name'] = $group_names[$i];
+    			$this->db->where('id', $group_id);
+    			$this->db->update('group', $data_group);
+    			$i++;
+    		}
+    		
+    		if($count_group_id < $count){
+    			
+    			for($j=$i; $j<$count; $j++){
+    				$data_group['group_name'] = $group_names[$j];
+    				$this->db->insert('group', $data_group);
+    				$insid = $this->db->insert_id();
+    			}
+    		}
+    	}
+    	
+    	
+    }
 	
 	public function class_delete($param1 = '')
 	{
@@ -728,7 +728,8 @@ class Admin_model extends CI_Model {
 		
 		
 		$data['remark'] = implode(",",$remark);
-		$data['remark_detail'] = $remark_detail.' ( '.implode(", ",$other_remark).' ) ';
+		$data['remark_detail'] = $remark_detail;
+		$data['remark_detail'] .= (count($other_remark)>0) ? ' ( '.implode(", ",$other_remark).' ) ' : '';
 		$data['approved'] = "N";
 		
 		$this->db->where('student_id', $param1);

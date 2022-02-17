@@ -99,8 +99,6 @@
 				$session 		  = 	$this->input->post("session");
 			    $mode 		  	  = 	$this->input->post("mode");
 				$center 	  	  = 	$this->input->post("center");
-
-
 				$count_filter = $this->input->post("count_filter");
 
 				if($mode != "all"){	 
@@ -143,6 +141,7 @@
 				
 				if($filter == "list"){
 					$data['students'] = $this->Common_model->student_data_consolidate($dt);
+				
 				}
 				
 				if($filter == "count"){
@@ -471,7 +470,6 @@
 			'student_data'  => $this->db->get_where('student_data', array("student_id" => $student_id))->row()
 		
 		);
-
 
 		$this->load->view('header',$titleData);
 		$this->load->view('admin/editForm',$data);

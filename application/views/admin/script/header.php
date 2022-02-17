@@ -3,7 +3,7 @@
 <!--begin::Head-->
 <head><base href="">
 	<meta charset="utf-8" />
-	<title>MMYVV || center</title>
+	<title>MMYVV || Admin</title>
 	<meta name="description" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 	<!--begin::Fonts-->
@@ -21,11 +21,14 @@
 	<!--end::Global Theme Styles-->
 	<!--begin::Layout Themes(used by all pages)-->
 	<!--end::Layout Themes-->
+	<link href="https:////cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet" type="text/css">
 	<link rel="shortcut icon" href="<?=base_url()?>assets/images/maskgroup/MaskGroup1.png" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link href="<?=base_url()?>assets/light_box/css/jquery.magnify.css" rel="stylesheet">
 	<script type='text/javascript' src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
 	<script type="text/javascript">
 		var BASE_URL = "<?php echo base_url();?>";
+		var account_type = "<?php echo  ($this->session->has_userdata('account_type')) ? $this->session->account_type : '' ;?>";
 	</script>
 
 </head>
@@ -59,23 +62,21 @@
 						display: flex;
 						align-items: center;
 						">
-						<?php if($this->session->has_userdata('centerdata')){ ?>
-							<a href="<?=base_url('dashboard')?>" class="btn btn-custom-white mr-3">Dashboard</a>
-							<a href="<?=base_url('logout')?>" class="btn btn-custom-white">Log Out</a>
-<!--						<div class="dropdown">
- 							<a class="btn btn-custom-white dropdown-toggle mr-3" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<?php if($this->session->has_userdata('adminData')){ ?>
+							<a href="<?=base_url('admin/')?>" class="btn btn-custom-white mr-3">Dashboard</a>
+						<div class="dropdown">
+							<a class="btn btn-custom-white dropdown-toggle mr-3" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								Action
-							</a> -->
+							</a>
 
-<!-- 							<div class="dropdown-menu l-50" aria-labelledby="dropdownMenuLink">
-								<a class="dropdown-item" href="<?=base_url('center/profile')?>">Profile</a>
-								<a href="<?=base_url('center/logout')?>" class="dropdown-item">Log Out</a>
-								<a class="dropdown-item" href="<?=base_url('center/change_password')?>">Change Password</a>
+							<div class="dropdown-menu l-50" aria-labelledby="dropdownMenuLink">
+								<!-- <a class="dropdown-item" href="<?=base_url('admin/change_password')?>">Change Password</a> -->
+								<a href="<?=base_url('admin/logout')?>" class="dropdown-item">Log Out</a>
 							</div>
-						</div> -->
+						</div>
 						
 					<?php }else{ ?>
-						<a href="<?=base_url('center/login')?>" class="btn btn-custom-white mr-3">Sign In</a>
+						<a href="<?=base_url('admin/login')?>" class="btn btn-custom-white mr-3">Sign In</a>
 					<?php } ?>
 					</div>
 				</div>
@@ -92,8 +93,8 @@
 			</div>
 		</div>
 		<div class="container-fluid mt-5">
-			<div class="card card-custom gutter-b example example-compact mb-10">
-				<div class="card-body " style="min-height:300px;">
+			<div class="card card-custom gutter-b example example-compact">
+				<div class="card-body " style="min-height: 70vh;">
 					<div class="content-head row   justify-content-between mb-3">
 						<h3 class="text-primary"><?php echo (isset($title)) ? $title : ''; ?></h3>
 					</div>

@@ -221,8 +221,9 @@ class Common_Model extends CI_Model{
 	}
 
 	function student_data_consolidate($where = "",$group_by = ""){
-		
+	
 		if($group_by != ""){
+			
 			$this->db->select('count(*) as cnt,course_group.id,course_group.course_name as course_nm,center_id,center_code');
 			$this->db->group_by($group_by);
 		}else{
@@ -755,7 +756,6 @@ class Common_Model extends CI_Model{
 	}
 
 
-
 public function getSessionForEnrollment(){
 		$qry= $this->db->order_by('id','DESC');
 		$qry= $this->db->limit(1);
@@ -768,12 +768,22 @@ public function getSessionForEnrollment(){
 	}
 
 
-	
-	
 	public function last_query(){
 			echo $this->db->last_query();
 			die;
 		}	
+
+public function new_exam_form_permission_status($where){
+
+	$this->db->where($where);
+	$this->db->select('count(*) as cnt,course_name,class_name,class_id');
+	$this->db->group_by('class_id');			
+	$this->db->from("student");
+    $query = $this->db->get();
+	return $query->result_array();
+
+}
+
 }
 
 ?>

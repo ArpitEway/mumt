@@ -11,7 +11,13 @@ class Dashboard extends CI_controller {
 
 	public function index()
 	{
+		if($_SERVER['HOSTNAME']=='center.mmyvvonline.com'){
+
+		}elseif($_SERVER['HOSTNAME']=='admin.mmyvvonline.com'){
+
+		}else{
 		redirect('http://162.144.38.91/~mmyvvdde/main/center/index.php');
+		}
 	}
 	public function notice_board()
 	{
