@@ -536,6 +536,11 @@ class Center extends CI_Controller {
 	public function getCourseByEligibility()
 	{
 		$eligibility = $this->input->post('eligibility');
+		if($this->session->has_userdata('center_id')){
+		$center_id =  $this->session->center_id;
+		$centerdata = $this->Common_model->getRecordById('center','id',$center_id);
+		$this->db->where('id in ('.$centerdata->allot_course_id.')');
+		}
 		$course_group_list = $this->Common_model->get_record('course_group','*',array('eligibility'=>$eligibility,
 			'admission_permission' => 'Y'
 		));
@@ -827,6 +832,7 @@ class Center extends CI_Controller {
 		$this->load->view('Centers/header',$titleData);
 
 		$center_id =  $this->session->center_id;
+	
 		$where = array(
 			'approved' =>'N',
 			'center_id' => $center_id,
@@ -864,6 +870,95 @@ class Center extends CI_Controller {
 		}
 	}
 
+
+	public function exam_form_students($exam_form1 = 'notSubmitted'){
+    
+		$titleData = array('title' => 'Exam Form Student List' );
+		$this->load->view('Centers/header',$titleData);
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
+
+
+		$center_id =  $this->session->center_id;
+	
+		    if($exam_form1=='submitted'){
+			$where = array(
+				'new_exam_form' =>'Y',
+				'center_id' => $center_id,
+			);	
+			}else if($exam_form1 =="notSubmitted"){
+				$where = array(
+					'new_exam_form' =>'N',
+					'center_id' => $center_id,
+				);
+			}else if($exam_form1=="skipped"){
+				$where = array(
+					'new_exam_form' =>'S',
+					'center_id' => $center_id,
+				);
+			}
+			$data['exam_form_button'] = $exam_form1 ;
+			$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
+
+		$this->load->view('Centers/exam_form_students',$data);
+		$this->load->view('Centers/footer');		
+	}
+
+
+	public function change_new_exam_form_status(){
+		$id    	= 0;
+		$id    	= $this->input->post("id");
+		$status = $this->input->post("check_skipped");
+
+		if ($this->input->post("id")) 
+		{
+			$status = ($status=='skipped') ? 'S' : 'N';
+			$data = $this->Common_model->updateRecordByConditions("student",array("student_id" => $id ),array("new_exam_form" => $status ));
+
+			$dt = $this->db->get_where("student",array("student_id" => $id ))->result_array();
+
+			if($dt[0]['new_exam_form'] == 'N')
+			{
+				$sts_btn = '<input type ="button" name="" data-id='.$id.' class="btn btn-danger check_skipped" value="skipped">';
+			}else{
+				$sts_btn = '<input type ="button" name="update_enroll_stats" data-id='.$id.' class="btn btn-success check_skipped" value="Unskipped">';
+			}
+			$status = true;
+			$msg    = "";
+
+			echo json_encode(array(
+				"status" => $status,
+				"msg" => $msg,
+				"data" => $sts_btn
+			));
+		}
+	}
+
+    public function showPapers($student_id){
+    	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+    	$titleData = array('title' => 'Student Papers'); 
+    	$this->load->view('Centers/header',$titleData);
+    	
+    	$where = array(
+    		'student_id' => $student_id,
+    	);
+    	$student = $this->Common_model->student_info($student_id);
+    	$data['student'] = $student;
+    	$this->db->select('*');
+    	$this->db->from('paper_master');
+    	$this->db->join('new_Exam_form', 'paper_master.id = new_Exam_form.paper_id');
+    	$where = array('paper_master.class_id' => $student['class_id'],
+    		'student_id' => $student_id
+    	);
+    	$this->db->where($where); 
+    	$data['papers'] = $this->db->get()->result();
+    	// $this->Common_model->last_query();
+    	$this->load->view('Centers/showPapers',$data);
+    	$this->load->view('Centers/footer');
+    }
+
 	public function paper_missing_list(){
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
@@ -875,7 +970,6 @@ class Center extends CI_Controller {
 			'temp_exam_form' =>'N',
 			'center_id' => $center_id,
 		);
-
 		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
 		$this->load->view('Centers/paper_missing_list',$data);
 		$this->load->view('Centers/footer');		
@@ -890,14 +984,12 @@ class Center extends CI_Controller {
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 		);
-		
 		$titleData['title'] = 'Select Papers';
 		$this->load->view('Centers/header',$titleData);
 		$student = $this->Common_model->student_info($student_id);
 		
 		$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory"');
 		$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id where class_id='.$student['class_id'].' Order by g.id')->result();
-
 
 		$data['compulsoryPapers'] = $compulsoryPapers;
 		$data['student'] = $student ;
