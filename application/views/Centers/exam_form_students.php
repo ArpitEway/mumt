@@ -4,7 +4,7 @@
         <a href="<?=base_url('exam_form_students/submitted')?>" class="btn btn-success">Submitted</a>
         <a href="<?=base_url('exam_form_students/skipped')?>" class="btn btn-warning">Skipped</a>
     </div>
-<div class="container-fluid text-center">
+<div class="container-fluid text-center mb-10">
     <?php if ($exam_form_button=="notSubmitted"): ?>
         <h3 class="text-primary">Exam Form Student List</h3>
     <?php elseif ($exam_form_button=="submitted"): ?>
