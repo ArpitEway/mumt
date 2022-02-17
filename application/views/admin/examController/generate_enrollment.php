@@ -56,7 +56,7 @@
 			);
 			//$this->Common_model->getCountByWhere('student',$whereEnrollmentNoCount);
 			$last_enrollment = $this->Common_model->get_record('student','max(enrollment_no) as enrollment_no');
-			$last_number = substr($last_enrollment[0]['enrollment_no'], -3);
+			$last_number = substr($last_enrollment[0]['enrollment_no'], 6);
 			$lastTwoNumbers = (int) substr($session, -2);
 			$month =  strtok($session, " ");
 
