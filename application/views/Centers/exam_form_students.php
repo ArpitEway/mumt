@@ -69,7 +69,7 @@
           {
            ?>
            <td>
-            <a class="btn btn-primary" href="<?=base_url('showPapers/'.$student_id)?>">Submit</a>
+            <a class="btn btn-primary" href="<?=base_url('showPapers/'.$student_id)?>">View Paper</a>
         </td>
         <?php
         }

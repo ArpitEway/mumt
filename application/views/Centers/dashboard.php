@@ -17,14 +17,14 @@
 					</span>
 				</a>
 			</li>
-			<!-- <li class="nav-item mb-2">
+			<li class="nav-item mb-2">
 				<a class="nav-link border" id="exam-tab" data-toggle="tab" href="#exam">
 					<span class="nav-text">Examination</span>
 					<span class="nav-icon flot-right" >
 						<i class="flaticon2-fast-next"></i>
 					</span>
 				</a>
-			</li> -->
+			</li>
 		</ul>
 	</div>
 	<div class="col-md-8 col-12 col-sm-12 menu-background p-3">
@@ -91,11 +91,11 @@
 							<span class="nav-text">Paper Missing List</span>
 						</div>
 					</a> -->
-<!-- 					<a class="border-0 custom-menu-item" href="<?=base_url('center/exam_form_students');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('center/exam_form_students');?>">
 						<div>
 							<span class="nav-text">Exam Form July 2021</span>
 						</div>
-					</a> -->
+					</a>
 				</div>
 			</div> 
 		</div>
