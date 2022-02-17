@@ -48,13 +48,13 @@
                <?php $student_id = $this->Common_model->encrypt_decrypt($student->student_id); ?>
                <?php if($exam_form_button=="skipped"){ ?>
                    <td>
-                        <input type="button" data-id = "<?=$student->student_id;?>" class="btn btn-success check_skipped" value="Unskippped">
+                        <input type="button" data-id = "<?=$student->student_id;?>" class="btn btn-success check_skipped" value="unskippped">
                     </td>
                 <?php } ?>
                 
              <?php if($exam_form_button=="notSubmitted"){ ?>
                 <td>
-                   <input type="button" data-id = "<?=$student->student_id;?> " class="btn btn-danger check_skipped" value="skippped">
+                   <input type="button" data-id = "<?=$student->student_id;?> " class="btn btn-danger check_skipped" value="skipped">
                </td>
                <td>
                 <?php if ($student->temp_exam_form=='N'){ ?>
@@ -93,7 +93,7 @@
            var csrfHash = $('.csrfname').val(); 
            var val = $(this).val();
            var self =this;
-           var check_skipped = (val=='skipped') ? 'unskipped' : 'skipped';
+           var check_skipped = val;
 
            var data = {
             id: $(this).attr('data-id'),
