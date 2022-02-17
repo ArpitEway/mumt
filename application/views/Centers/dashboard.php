@@ -17,14 +17,14 @@
 					</span>
 				</a>
 			</li>
-			<!-- <li class="nav-item mb-2">
+			<li class="nav-item mb-2">
 				<a class="nav-link border" id="exam-tab" data-toggle="tab" href="#exam">
 					<span class="nav-text">Examination</span>
 					<span class="nav-icon flot-right" >
 						<i class="flaticon2-fast-next"></i>
 					</span>
 				</a>
-			</li> -->
+			</li>
 		</ul>
 	</div>
 	<div class="col-md-8 col-12 col-sm-12 menu-background p-3">
@@ -32,47 +32,52 @@
 			<div class="tab-pane fade active show" id="Enrollment" role="tabpanel" aria-labelledby="Enrollment-tab">
 				<div class="row">
 
-					<a class="border-0 custom-menu-item" href="<?=base_url('center/instruction');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('instruction');?>">
 						<div>
 							<span class="nav-text">Course Details</span>
 						</div>
 					</a>
 
-					<a class="border-0 custom-menu-item" href="<?=base_url('center/admission_instruction');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('admission_instruction');?>">
 						<div>
 							<span class="nav-text">Admission Form</span>
 						</div>
 					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('center/all_student');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('all_student');?>">
 						<div>
 							<span class="nav-text">Student Report</span>
 						</div>
 					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('center/student_list/unpaid');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('student_list/unpaid');?>">
 						<div>
 							<span class="nav-text">Unpaid Student</span>
 						</div>
 					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('center/Document');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('Document');?>">
 						<div>
 							<span class="nav-text">Upload Admission Document</span>
 						</div>
 					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('center/not_approve_student_list');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('not_approve_student_list');?>">
 						<div>
 							<span class="nav-text">Unapproved Student List</span>
+						</div>
+					</a>
+					<a class="border-0 custom-menu-item" href="<?=base_url('form_edit_request');?>">
+						<div>
+							<span class="nav-text">Form Edit Request</span>
 						</div>
 					</a>
 				</div>
 			</div>
 			<div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
 				<div class="row">
-					<a class="border-0 custom-menu-item" href="<?=base_url('center/student_list/paid');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('student_list/paid');?>">
 						<div>
 							<span class="nav-text">Paid Student</span>
 						</div>
 					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('center/payment_complaint');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('payment_complaint');?>">
 						<div>
 							<span class="nav-text">Payment Complaint </span>
 						</div>
@@ -86,11 +91,11 @@
 							<span class="nav-text">Paper Missing List</span>
 						</div>
 					</a> -->
-<!-- 					<a class="border-0 custom-menu-item" href="<?=base_url('center/exam_form_students');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
 						<div>
-							<span class="nav-text">Exam Form July 2021</span>
+							<span class="nav-text">Exam Form Dec 2021</span>
 						</div>
-					</a> -->
+					</a>
 				</div>
 			</div> 
 		</div>

@@ -13,7 +13,6 @@
 					<tr>
 						<th>#</th>
 						<th>Center Id</th>
-
 						<th>Center Code</th>
 						<th>Center Name</th>
 						<th>Contact Person</th>

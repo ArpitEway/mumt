@@ -60,8 +60,8 @@
 						align-items: center;
 						">
 						<?php if($this->session->has_userdata('centerdata')){ ?>
-							<a href="<?=base_url('center/dashboard')?>" class="btn btn-custom-white mr-3">Dashboard</a>
-							<a href="<?=base_url('center/logout')?>" class="btn btn-custom-white">Log Out</a>
+							<a href="<?=base_url('dashboard')?>" class="btn btn-custom-white mr-3">Dashboard</a>
+							<a href="<?=base_url('logout')?>" class="btn btn-custom-white">Log Out</a>
 <!--						<div class="dropdown">
  							<a class="btn btn-custom-white dropdown-toggle mr-3" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								Action

@@ -4,7 +4,15 @@
         <a href="<?=base_url('exam_form_students/submitted')?>" class="btn btn-success">Submitted</a>
         <a href="<?=base_url('exam_form_students/skipped')?>" class="btn btn-warning">Skipped</a>
     </div>
-
+<div class="container-fluid text-center mb-10">
+    <?php if ($exam_form_button=="notSubmitted"): ?>
+        <h3 class="text-primary">Exam Form Student List</h3>
+    <?php elseif ($exam_form_button=="submitted"): ?>
+        <h3 class="text-primary"> Submitted Exam Form</h3>
+    <?php elseif ($exam_form_button=="skipped"): ?>
+        <h3 class="text-primary"> Skipped Exam Form</h3>
+    <?php endif ?>
+</div>
     <table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
         <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
         <thead>
@@ -17,10 +25,10 @@
                <th>Course</th>
                <th>Class</th>
                <th>Total Fees</th>
+               <th>Action</th>
                 <?php if($exam_form_button=="notSubmitted"){ ?>
                     <th>Skip Exam Form</th>
                 <?php } ?>
-               <th>Action</th>
            </tr>
        </thead>
        <tbody>
@@ -53,23 +61,23 @@
                 <?php } ?>
                 
              <?php if($exam_form_button=="notSubmitted"){ ?>
-                <td>
-                   <input type="button" data-id = "<?=$student->student_id;?> " class="btn btn-danger check_skipped" value="skipped">
-               </td>
                <td>
                 <?php if ($student->temp_exam_form=='N'){ ?>
-                    <a class="btn btn-primary" href="<?=base_url('select_papers/'.$student_id)?>">Submit</a>
+                    <a class="btn btn-primary" href="<?=base_url('select_papers/'.$student_id)?>">Select Papers</a>
                 <?php }else if ($student->temp_exam_form=='Y') { ?>
-                    <a class="btn btn-primary" href="<?=base_url('showPapers/'.$student_id)?>">Show Papers</a>
+                    <a class="btn btn-primary" href="<?=base_url('showPapers/'.$student_id)?>">Fill Exam Form</a>
                 <?php } ?>
             </td>
+             <td>
+                   <input type="button" data-id = "<?=$student->student_id;?> " class="btn btn-danger check_skipped" value="skipped">
+               </td>
             <?php
           }
           if($exam_form_button=="submitted")
           {
            ?>
            <td>
-            <a class="btn btn-primary" href="<?=base_url('showPapers/'.$student_id)?>">Submit</a>
+            <a class="btn btn-primary" href="<?=base_url('showPapers/'.$student_id)?>">View Paper</a>
         </td>
         <?php
         }

@@ -173,7 +173,7 @@
 
 				</div>
 				<div class="row col-md-2">
-					<img class="student_form_img" src="<?php echo base_url('/assets/student_image/').$student['photo'];?>"></img>
+					<img class="student_form_img" src="<?php echo base_url('/assets/student_image/').$student['session'].'/'.$student['photo'];?>"></img>
 				</div>
 			</div>
 			
@@ -190,6 +190,8 @@
         ?>
         <input type="hidden" id="updatepaper" value='Y'>
 		<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+		<input type="hidden"  name="student_id" id="student_id"  value="<?php echo $student['student_id']  ?>">
+		<input type="hidden"  name="student_id" id="student_id_decript"  value="<?php echo $this->Common_model->encrypt_decrypt($student['student_id']);  ?>">
         <?php
             foreach($compulsoryPapers as $paper){
                 
@@ -199,17 +201,17 @@
                 <div class="col-3"><?=$paper['paper_code']; ?></div>
                 <div class="col-7"><?=$paper['paper_name']?>  </div>
                 <input type="hidden"  name="compulsary_paper_id[]<?php echo  $paper['id'] ;?>" id="" value="<?php echo $paper['id'];  ?>">
-				<input type="hidden"  name="student_id" id="student_id" value="<?php echo $student['student_id']  ?>">
-
+				
             </div>
             <?php } 
+            if($class_group[0]->class_group=='Y'){
             ?>
             <div class="row border border-primary bg-primary p-2 my-3 text-white ">
                 <div class="col-md-12 text-center select-group">Please Select <?=$class_group[0]->select_group ?> Paper Group</div>
             </div>
             <?php
                 $group_name = '';
-				if($class_group[0]->class_group=='Y'){
+				
                 foreach($groupPaper as $paper){
                     if($group_name!=$paper->group_name){
                         $group_name=$paper->group_name;
@@ -231,7 +233,8 @@
                     <div class="col-3"><?=$paper->paper_code; ?></div>
                     <div class="col-7"><?=$paper->paper_name; ?></div>
                 </div>
-                <?php }    }
+                <?php }    
+            }
     ?>
     </form>
     <div class="d-flex justify-content-center mt-10">
@@ -243,6 +246,7 @@
 	var select_group = <?php echo $class_group[0]->select_group; ?>;
    // alert(select_group);
 $('#group_submit').on('click', function (e) {
+if(select_group!=0){
 
 	var selectedGroups = $("input[name='group_id[]']:checked").length;
 
@@ -255,6 +259,7 @@ $('#group_submit').on('click', function (e) {
 		alert('Please Select '+select_group+' Paper Group');
 		return false;
 	}
+}
 	
 
 	var data = $("form").serialize(); 
@@ -272,7 +277,7 @@ $('#group_submit').on('click', function (e) {
 
 					if(data.status=='true'){
 				
-					window.location.href = BASE_URL+"center/center/get_student_data";
+					window.location.href = BASE_URL+"showPapers/"+$('#student_id_decript').val();
 					return false;
 					}else{
 					

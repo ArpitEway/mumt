@@ -174,7 +174,7 @@
 
 				</div>
 				<div class="row col-md-2">
-					<img class="student_form_img" src="<?php echo base_url('/assets/student_image/').$student['photo'];?>">
+					<img class="student_form_img" src="<?php echo base_url('/assets/student_image/').$student['session'].'/'.$student['photo'];?>">
 				</div>
 			</div>
 			
@@ -183,6 +183,7 @@
 	<form>
 		<input type="hidden"  name="student_id" id="student_id" value="<?php echo $student['student_id']  ?>">
         <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+        <input type="hidden"  name="student_id" id="student_id_decript"  value="<?php echo $this->Common_model->encrypt_decrypt($student['student_id']);  ?>">
 
 		<div class="mt-5">
 			<div class="row border border-primary bg-primary text-white p-2">
@@ -248,7 +249,7 @@
 							console.log(data);
 
 							if(data.status=='true'){
-								window.location.href = BASE_URL+"center/center/get_student_data";
+								window.location.href = BASE_URL+"showPapers/"+$('#student_id_decript').val();
 								return false;
 							}else{
 								return false;
