@@ -91,13 +91,18 @@
                       <!--begin::Nav-->
                       <ul class="menu-nav p-0">
                         <li class="menu-item menu-item-active" aria-haspopup="true">
-                          <a href="index.html" class="menu-link">
-                            <span class="menu-text">Dashboard</span>
+                          <a href="<?=base_url()?>" class="menu-link">
+                            <span class="menu-text">Home</span>
                           </a>
                         </li>
-                        <li class="menu-item " aria-haspopup="true">
-                          <a href="index.html" class="menu-link">
-                            <span class="menu-text">dfsdf</span>
+                        <li class="menu-item" aria-haspopup="true">
+                          <a href="<?=base_url('profile')?>" class="menu-link">
+                            <span class="menu-text">Profile</span>
+                          </a>
+                        </li>
+                        <li class="menu-item" aria-haspopup="true">
+                          <a href="<?=base_url('profile')?>" class="menu-link">
+                            <span class="menu-text">Log Out</span>
                           </a>
                         </li>
                       </ul>
@@ -129,3 +134,9 @@
           <!--end::Top-->
         </div>
           <!--end::Header-->
+<div class="container mt-5">
+      <div class="card card-custom gutter-b example example-compact mb-10">
+        <div class="card-body " style="min-height:300px;">
+          <div class="content-head row   justify-content-between mb-3">
+            <h3 class="text-primary"><?php echo (isset($title)) ? $title : ''; ?></h3>
+          </div>
