@@ -249,7 +249,7 @@
 							console.log(data);
 
 							if(data.status=='true'){
-								window.location.href = BASE_URL+"/showPaper/"+$('#student_id_decript').val();
+								window.location.href = BASE_URL+"showPapers/"+$('#student_id_decript').val();
 								return false;
 							}else{
 								return false;
