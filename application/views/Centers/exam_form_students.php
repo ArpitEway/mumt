@@ -14,7 +14,7 @@
     <?php endif ?>
 </div>
 <div class="table-responsive">
-    <table id="kt_datatable_scroll" class="table table-striped"  >
+    <table id="kt_datatable_scroll" class="table table-striped nowrap"  >
         <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
         <thead>
             <tr>
