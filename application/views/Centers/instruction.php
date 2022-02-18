@@ -45,7 +45,8 @@
             <td><?php echo $course->exam_fees; ?></td>
             <td center>
                 <?php
-                $url = './assets/regular_syllabus/'.$course_detail['course_name'].'.pdf';
+                $course_name =  str_replace('/', ' ', $course_detail['course_name']); 
+                $url = './assets/regular_syllabus/'.$course_name.'.pdf';
 
                 if(file_exists($url)){
                     ?>
