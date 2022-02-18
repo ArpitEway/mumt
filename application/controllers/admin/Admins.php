@@ -2126,4 +2126,64 @@ public function editForm($student_id = ""){
 		$this->load->view('footer');
 	}
 
+
+
+public function check_student_exam_records(){
+			if(!$this->session->has_userdata('adminData')){
+				redirect(base_url('admin'));
+				exit;
+			}else{
+				$this->load->view('header',array('title' => 'Search Transaction Details'));
+				$data = array(
+					'name_csrf' => $this->security->get_csrf_token_name(),
+					'hash_csrf' => $this->security->get_csrf_hash(),
+				);
+	
+				$this->load->view('admin/check_student_exam_records',$data);
+				$this->load->view('footer');
+			}
+		
+		}
+
+
+		public function get_student_exam_details(){
+			if(!$this->session->has_userdata('adminData')){
+				redirect(base_url('admin'));
+				exit;
+			}else{
+
+				$text_val =$this->input->post('text_val');
+				$radio_val = $this->input->post('radio_val');
+
+				if($text_val !=''){
+
+					if($text_val !='' && $radio_val == 'roll_no'){
+						$student = $this->Common_model->getRecordById('student','roll_no',$text_val);
+					}
+					else if($text_val !='' && $radio_val == 'enrollment_no'){
+						$student = $this->Common_model->getRecordById('student','enrollment_no',$text_val);
+					}else if($text_val !='' && $radio_val == 'student_id'){
+						$student = $this->Common_model->getRecordById('student','student_id',$text_val);
+					}  
+
+					$papers = $this->Common_model->getRecordByWhere('new_exam_form',array('student_id' =>$student->student_id));
+
+					$data = array(
+						'paper' => $papers,
+						'student' => $student,
+						'name_csrf' => $this->security->get_csrf_token_name(),
+						'hash_csrf' => $this->security->get_csrf_hash(),
+					);
+
+					$dt =  $this->load->view('admin/view_student_examination_view_records',$data,true);
+					echo json_encode(array(
+						"status" => true,
+						"data" => $dt
+					));
+				}
+			}
+		}
+
+
+
 }// class
