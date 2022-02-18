@@ -140,6 +140,30 @@ class Preexam extends CI_Controller {
 	//          echo $this->db->last_query().'<br>';
 	// 	}
 	// }
+
+
+	
+	public function generate_roll_no(){		
+		if(isset($_POST['action']) && $_POST['action']=='generate'){
+			$data = array(			
+				 'action' => 'generate',
+			);
+		}else if( isset($_POST['action']) && $_POST['action']=='view'){
+			$data = array(
+				 'action' => 'view',
+			);
+		}
+		else{
+			$data = array(
+				'student' => '',
+				'action' => '',
+			);
+		}
+		$this->load->view('header',array('title' => 'Generate Roll Number'));
+		$this->load->view('admin/script/generate_roll_no',$data);
+		$this->load->view('footer');
+	}
+
 }
 
 ?>

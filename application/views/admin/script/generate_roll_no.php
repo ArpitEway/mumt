@@ -2,11 +2,10 @@
 <div class="col-sm-4 m-auto">
 		<fieldset class="form-group">
 			<label for="exampleSelect1">Action</label>
-			<select class="form-control" name="action">
-			<option value="" >Select</option>
-
-				<option value="view" >View</option>
-				<option value="generate" >Generate</option>
+			<select class="form-control" name="action" id="action">
+			<option value="">Select</option>
+				<option value="view" <?php if($action=='view'){echo "selected" ;} ?>>View</option>
+				<option value="generate" <?php if($action=='generate'){echo "selected" ;} ?> >Generate</option>
 			</select>
 		</fieldset>
 		<fieldset class="form-group text-center">
@@ -27,6 +26,9 @@
 	</thead>
 <tbody>
 	<?php
+	if($action =='generate' || $action=='view'){
+
+	
 	$i=1;
 	$classData = $this->Common_model->getRecordByWhere('class_master');
 	foreach ($classData as $class) {
@@ -73,6 +75,7 @@
 		<?php
 		}
 	}
+}
 		?>
 </tbody>
 </table>
