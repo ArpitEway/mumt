@@ -104,6 +104,15 @@
 				<option value="semester">Semester</option>
 			</select>
 		</div>
+		<div class="form-group col-md-3">
+			<label for="class">Exam Form Status</label>
+			<select name="new_exam_form" id="new_exam_form" class="form-control"  > 
+				<option value="all">All</option>
+				<option value="D"> Not Permitted </option>
+				<option value="Y">Submitted </option>
+				<option value="N">Not Submitted </option>
+			</select>
+		</div>
 
 		<div class="col-md-3 radio-inline" style="top: 7px;">
 			<label class="radio radio-success">
@@ -123,11 +132,16 @@
 			<label for="class">Student Count</label>
 			<select name="count_filter" id="count_filter" class="form-control" >
 
-				<option value="course_wise">Course Wise </option> 
-				<option value="center_wise" >Center Wise </option>
-
+				<option value="course_group_id">Course Wise </option> 
+				<option value="center_id" >Center Wise </option>
+				<option value="class_id" >Class Wise </option>
 			</select>
 		</div>
+		
+			
+	
+
+
 	</div>
 
 	<div class="form-group text-center">
@@ -165,7 +179,7 @@
 			course_group_id : $("#course_group_id").val(),
 			class_id : $("#class_id").val(),
 			document_upload : $("#document_upload").val(),
-			center : $("#center_id").val(),
+			center_id : $("#center_id").val(),
 			approved : $("#approved").val(),
 			mode : $("#mode").val(),
 			payment : $("#payment").val(),
@@ -174,6 +188,7 @@
 			session : $("#session").val(),
 			[csrfName]:csrfHash,
 			count_filter:$("#count_filter").val(),
+			new_exam_form:$("#new_exam_form").val(),
 		};
 
 
