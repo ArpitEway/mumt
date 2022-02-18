@@ -33,7 +33,7 @@
     if(response) {
         console.log(response);
         console.log(response.data);
-        var link = BASE_URL + "admin/"+response.data.account_type;
+        var link = BASE_URL+response.data.account_type;
         window.open(link, '_blank').focus();
     } 
 });

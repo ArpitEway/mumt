@@ -1,3 +1,6 @@
+</div>
+</div>
+</div>
 <!-- Right modal content -->
 <div id="right-modal" class="modal fade" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-right">

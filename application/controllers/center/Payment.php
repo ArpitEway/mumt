@@ -147,10 +147,29 @@ class Payment extends CI_Controller {
 			);
 			$where = 'student_id='.$student_id.' and fees_head="'.$productinfo.'"';
 			$txnData = $this->Common_model->get_record('online_payment_transaction','*',$where);
-			$this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$response);
 
 			if($productinfo == 'Admission Fees'){
-				$status = 'payment_status'; 	
+			$this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$response);
+				$status = 'payment_status';
+				$txnid = $txnData[0]['id'];
+			}elseif($productinfo == 'Exam Fees'){
+				if(count($txnData)>0){
+					$this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$response);
+					$txnid = $txnData[0]['id'];
+				}else{
+
+				$student = $this->Common_model->getRecordById('student','student_id',$student_id);
+				$response['student_id'] = $student_id;
+				$response['fees_head'] = $productinfo;
+				$response['course_group_id'] = $student->course_group_id;
+				$response['class_id'] = $student->class_id;
+				$response['center_id'] = $student->center_id;
+				$response['student_name'] = $student->name;
+				$response['admission_type'] = 'Regular';
+
+				$txnid = $this->Common_model->insertAll('online_payment_transaction',$response);
+				}
+				$status = 'new_exam_form';
 			}
 			if($payment=='Y'){
 				$where = 'student_id='.$student_id;
@@ -165,8 +184,7 @@ class Payment extends CI_Controller {
 			);
 			$this->session->set_userdata($sessionData);
 			$this->session->set_flashdata($remsg,$msg);
-			
-			$id = $this->Common_model->encrypt_decrypt($txnData[0]['id']);
+			$id = $this->Common_model->encrypt_decrypt($txnid);
 			redirect(base_url('center/payment/detail/'.$id));
 		}
 	}
@@ -193,5 +211,106 @@ class Payment extends CI_Controller {
 		$this->load->view('Centers/header',$titleData);
 		$this->load->view('Centers/payment_detail',$data);
 		$this->load->view('Centers/footer');
+	}
+
+	public function exam_form($student_id){
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url('center/login'));
+		}
+		$titleData = array('title'=>'Exam Form Payment');
+		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		$student = $this->Common_model->student_info($student_id);
+		if($student['new_exam_form']=='Y'){
+			$this->session->set_flashdata('warning','Payment Already Submitted');
+			redirect(base_url('center/dashboard'));
+		}
+
+		$where = array(
+			'session' =>$student['session'],
+			'course_group_id' => $student['course_group_id'],
+		);
+
+		$fees = $this->Common_model->getRecordByWhere('course',$where);
+
+		$data['student'] = $student;
+		$data['url'] = 'paynow';
+		$data['paymentType'] = 'Exam Fees';
+		$data['txnAmt'] = $fees[0]->program_fees+$fees[0]->exam_fees;
+		
+		$this->load->view('Centers/header',$titleData);
+		$this->load->view('Centers/exam_form_payment',$data);
+		$this->load->view('Centers/footer');
+	}
+
+
+	public function exam_form_payment($student_id){
+		
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url('center/login'));
+		}
+		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		if($student_id!=''){
+			$student = $this->Common_model->student_info($student_id);
+			$where = array(
+				'session' =>$student['session'],
+				'course_group_id' => $student['course_group_id'],
+			);
+			$fees = $this->Common_model->getRecordByWhere('course',$where);
+			$txnAmt=$fees[0]->program_fees+$fees[0]->exam_fees;
+			if($student['new_exam_form']=='Y'){
+				$this->session->set_flashdata('warning','Payment Already Submitted');
+				redirect(base_url('center/dashboard'));
+			}
+			$hash_string = '';
+		/*  testing credential 
+			$MERCHANT_KEY = "9WEOTe";
+			$SALT = "uFYw7ClQ"; 
+			$PAYU_BASE_URL = "https://test.payu.in"; */
+		/*  live credential  */
+			$MERCHANT_KEY = "h9OyBB";
+			$SALT = "rzu8VRFb";
+			$PAYU_BASE_URL = "https://secure.payu.in";
+		
+			$action = '';
+			$txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);
+
+			$posted = array();
+			$posted['key'] = $MERCHANT_KEY;
+			$posted['txnid'] = $txnid;
+			$posted['surl'] =base_url('center/payment/response');
+			$posted['furl'] =base_url('center/payment/response');
+			$posted['amount'] =$txnAmt;
+			$posted['firstname'] = $student['name'];
+			$posted['email'] = $student['p_email'];
+			$posted['phone'] = $student['p_mobile_no'];
+			$posted['productinfo'] = "Exam Fees";
+			$posted['address1'] = $student['p_address'];
+			$posted['city'] = $student['p_city'];
+			$posted['state'] = $student['p_state'];
+			$posted['country'] = $student['nationality'];
+			$posted['zipcode'] = $student['p_pin_code'];
+			$posted['udf1'] = $student_id;
+			$posted['udf2'] = "Regular";
+			$posted['udf3'] = "Dec 2021";
+			$posted['udf4'] = $student["center_id"].' / '.$student['class_id'];
+			$posted['udf5'] = $student["name"]."/".$student["f_h_name"];
+			$hash = '';
+
+			$hashSequence = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10";
+
+			$hashVarsSeq = explode('|', $hashSequence);
+
+			foreach($hashVarsSeq as $hash_var) {
+				$hash_string .= isset($posted[$hash_var]) ? $posted[$hash_var] : '';
+				$hash_string .= '|';
+			}
+
+			$hash_string .= $SALT;
+			$hash = strtolower(hash('sha512', $hash_string));
+			$action = $PAYU_BASE_URL . '/_payment';
+			$posted['hash'] = $hash;
+			$posted['action'] = $action;
+			$this->load->view('template/payment_submit',$posted);
+		}
 	}
 }

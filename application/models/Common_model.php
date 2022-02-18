@@ -776,7 +776,7 @@ public function getSessionForEnrollment(){
 public function new_exam_form_permission_status($where){
 
 	$this->db->where($where);
-	$this->db->select('count(*) as cnt,course_name,class_name');
+	$this->db->select('count(*) as cnt,course_name,class_name,class_id');
 	$this->db->group_by('class_id');			
 	$this->db->from("student");
     $query = $this->db->get();

@@ -17,7 +17,7 @@ foreach($courses as $course): ?>
                     {
                     ?>
                     
-                    <option value="<?php echo $session['id']; ?>" <?php if($course['session'] == $session['id']) echo "selected" ?> ><?php echo $session['session']; ?></option>
+                    <option value="<?php echo $session['session']; ?>" <?php if($course['session'] == $session['session']) echo "selected" ?> ><?php echo $session['session']; ?></option>
                     
                     <?php
                     } 

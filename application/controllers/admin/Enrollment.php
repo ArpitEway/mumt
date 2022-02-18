@@ -471,7 +471,6 @@
 		
 		);
 
-
 		$this->load->view('header',$titleData);
 		$this->load->view('admin/editForm',$data);
 		$this->load->view('footer');

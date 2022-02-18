@@ -4,7 +4,7 @@
     font-family: 'Poppins', sans-serif;
 }
 body{
-    background-color: #ffeb3b38;
+    background-color: #ffeb3b38 !important;
 }
 h3, a, button, label{
     font-family: 'Poppins', sans-serif !important;
@@ -369,4 +369,33 @@ color: #781e19 ! important;
 .master-admin-block:hover {
     box-shadow: 1px 1px 5px 0px #771e18;
     cursor: pointer;
+}
+#student a.menu-link{
+    background-color: transparent;
+}
+li.menu-item.menu-item-active span.menu-text{
+    color: #771e18 !important;
+    font-weight: 600 !important;
+}
+li.menu-item span.menu-text{
+    color: #5b5b60 !important;
+}
+@media only screen and (min-width: 900px) {
+    li.menu-item.menu-item-active span.menu-text{
+        font-size: 14px;
+        font-weight: 600;
+    }
+    li.menu-item span.menu-text {
+    color: #5b5b60 !important;
+    font-size: 14px !important;
+    }
+}
+
+@media only screen and (max-width: 991.98px) {
+  div#kt_header_mobile{
+    background: linear-gradient(to bottom, #f1e767 0%,#feb645 100%) !important;
+    } 
+    .header-top {
+        margin-top: -50px;
+    }
 }
