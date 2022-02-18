@@ -85,6 +85,7 @@ class Preexam extends CI_Controller {
 		$where = array('class_id' => $class_id,
 					'enrolled' => "Y",
 					'new_exam_form' => "D",
+					'temp_exam_form' => "Y",
 				);
 		
 		$students = $this->Common_model->get_record('student','*',$where);

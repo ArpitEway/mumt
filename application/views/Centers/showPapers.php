@@ -1,7 +1,4 @@
 <style>
-	.select-group{
-		font-size: 15px;
-	}
 	.form-block {
 		background: hsl(228deg 100% 99%);
 		border: 1px solid hsl(216deg 84% 83%);
@@ -109,14 +106,17 @@
 		}
 
 	}
+
+
 </style>
-<div class="mt-5">
-			<label class="label_form label_heading "><b>Student details</b></label>
+<div id="printThisDivIdOnButtonClick" class="mt-10">
+	<div id="printablediv">
+		<div class="mt-5">
+			<label class="label_form label_heading "><b>Student Details</b></label>
 			<div class="form-block row text-center">
 				<div class="row col-md-10 m-auto">
 					<div class="form-group col-md-3 text-left m-auto">
 						<label class="label_form">Form Number :</label>
-						<input type="hidden"  name="student_id" id="student_id" value="<?php echo $student['student_id']  ?>">
 
 					</div>
 					<div class="form-text-color form-group col-md-4 text-left m-auto">
@@ -173,117 +173,46 @@
 
 				</div>
 				<div class="row col-md-2">
-					<img class="student_form_img" src="<?php echo base_url('/assets/student_image/').$student['session'].'/'.$student['photo'];?>"></img>
+					<img class="student_form_img" src="<?php echo base_url('/assets/student_image/').$student['session'].'/'.$student['photo'];?>">
 				</div>
 			</div>
 			
-            </div>
-<form>
-    <div class="row border border-primary bg-primary text-white p-2 mt-5">
-        <div class="col-2"><strong>#</strong></div>
-        <div class="col-3"><strong>Paper code</strong></div>
-        <div class="col-7"><strong>Subjects Name</strong></div>
-    </div>
-    <?php
+		</div>
+	</div>
+	<label class="label_form mt-5 label_heading"><b>Paper Details</b></label>
+	<div class="form-block row ">
+		<div class=" table-responsive">
+			<table class="table " style="text-transform: uppercase;">
+				<thead>
+					<tr>
+						<th>#</th>
 
-            $i=0;
-        ?>
-        <input type="hidden" id="updatepaper" value='Y'>
-		<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-		<input type="hidden"  name="student_id" id="student_id"  value="<?php echo $student['student_id']  ?>">
-		<input type="hidden"  name="student_id" id="student_id_decript"  value="<?php echo $this->Common_model->encrypt_decrypt($student['student_id']);  ?>">
+						<th>Paper Code</th>
+						<th>Paper Name</th>
+					</tr>
+				</thead>
+                <tbody>
         <?php
-            foreach($compulsoryPapers as $paper){
-                
+
+            $i = 1;
+            foreach($papers as $paper){
             ?>
-            <div class="row border border-default p-2">
-                <div class="col-2"><?=++$i; ?></div>
-                <div class="col-3"><?=$paper['paper_code']; ?></div>
-                <div class="col-7"><?=$paper['paper_name']?>  </div>
-                <input type="hidden"  name="compulsary_paper_id[]<?php echo  $paper['id'] ;?>" id="" value="<?php echo $paper['id'];  ?>">
-				
-            </div>
-            <?php } 
-            if($class_group[0]->class_group=='Y'){
-            ?>
-            <div class="row border border-primary bg-primary p-2 my-3 text-white ">
-                <div class="col-md-12 text-center select-group">Please Select <?=$class_group[0]->select_group ?> Paper Group</div>
-            </div>
+            <tr>
+            <td><?php echo $i; ?></td>
+            <td><?php echo $paper->paper_code; ?></td>
+            <td><?php echo $paper->paper_name; ?></td>
+            </tr>
             <?php
-                $group_name = '';
-				
-                foreach($groupPaper as $paper){
-                    if($group_name!=$paper->group_name){
-                        $group_name=$paper->group_name;
-                    ?>
-                    <div class="row border border-primary bg-primary p-2 mt-3 text-white">
-                        <div class="col-2">#</div>
-                        <div class="col-3">
-                            <label class="checkbox checkbox-dark">
-                                <input name="group_id[]" class="checkbox" value="<?=$paper->group_id; ?>" type="checkbox" >
-
-                            <span></span></label>
-                            
-                        </div>
-                        <div class="col-7"><?=$paper->group_name; ?></div>
-                    </div>
-                <?php } ?>
-                <div class="row border border-default p-2">
-                    <div class="col-2"><?=++$i; ?></div>
-                    <div class="col-3"><?=$paper->paper_code; ?></div>
-                    <div class="col-7"><?=$paper->paper_name; ?></div>
-                </div>
-                <?php }    
-            }
-    ?>
-    </form>
-    <div class="d-flex justify-content-center mt-10">
-        <button type="reset" class="btn btn-primary btn-block col-3 submit" id="group_submit">Submit</button>
-    </div>
-    </div>
-
-<script>
-	var select_group = <?php echo $class_group[0]->select_group; ?>;
-   // alert(select_group);
-$('#group_submit').on('click', function (e) {
-if(select_group!=0){
-
-	var selectedGroups = $("input[name='group_id[]']:checked").length;
-
-	if(selectedGroups==0){
-       
-		alert('Please Select Paper Group');
-		return false;
-	}else if(selectedGroups != select_group){
-       // alert(selectedGroups);
-		alert('Please Select '+select_group+' Paper Group');
-		return false;
-	}
-}
-	
-
-	var data = $("form").serialize(); 
-
-    console.log(data);
-    
-	 $.ajax({
-	        	url: "<?=base_url('center/center/submit_group');?>",  
-              
-                type:'post',
-                dataType : 'JSON',
-                data:data,
-				success:function(data){
-					console.log(data);
-
-					if(data.status=='true'){
-				
-					window.location.href = BASE_URL+"showPapers/"+$('#student_id_decript').val();
-					return false;
-					}else{
-					
-					return false;
-				}
-            }
-	 });   
-});
-</script>
+        $i++;
+        } ?>
+    </tbody>
+			</table>
+		</div>
+	</div>
+		<?php if ($student['new_exam_form']=='N'): ?>
+	<?php $student_id = $this->Common_model->encrypt_decrypt($student['student_id']); ?>
+			<div class="row justify-content-center mt-10">
+				<a class="btn btn-success" href="<?= base_url('Payment/exam_form/'.$student_id) ?>">Process To Payment</a>
+			</div>
+		<?php endif ?>
+</div>
