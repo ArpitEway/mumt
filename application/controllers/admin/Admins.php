@@ -2168,6 +2168,9 @@ public function editForm($student_id = ""){
 		public function final_exam_date_wise_permission()
 		{
 		 $data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
 		$this->load->view('header',array('title' => 'Final Exam Date Wise Permission (DEC-2021)'));
 		
 		$this->db->select('GROUP_CONCAT(cls_id) as cls_id ,course_name,class_name,exam_start_date,exam_end_date,id,exam_permission');
