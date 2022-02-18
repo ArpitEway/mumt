@@ -1,10 +1,21 @@
+<style type="text/css">
+    .profile .text-heading {
+        font-size: 15px;
+     }
+</style>
  <div class="card card-custom my-10 details-bg" id="profile">	
  	<div class="container-fluid profile mt-5"> 
  		<h4 class="card-title">Student Details</h4>
- 		<div class="row">
- 			<div class="col-sm-10 row">
-
- 				<div class="col-md-6">
+ 			<div class="row ">
+                <div class="col-md-4">
+                    <div class="row py-2">
+                        <label class="col-sm-4 text-heading">Form No</label>
+                        <div class="col-sm-8 text-value">
+                            <?php echo $student->student_id; ?>
+                        </div>
+                    </div>
+                </div>
+ 				<div class="col-md-4">
  					<div class="row py-2">
  						<label class="col-sm-4 text-heading">Enrollment No</label>
  						<div class="col-sm-8 text-value">
@@ -12,8 +23,31 @@
  						</div>
  					</div>
  				</div>
-
- 				<div class="col-md-6">
+                <div class="col-md-4">
+                    <div class="row py-2">
+                        <label class="col-sm-4 text-heading">Roll No</label>
+                        <div class="col-sm-8 text-value">
+                            <?php echo $student->roll_no; ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row py-2">
+                        <label class="col-sm-4 text-heading"> Name</label>
+                        <div class="col-sm-8 text-value">
+                            <?php echo $student->name; ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row py-2">
+                        <label class="col-sm-4 text-heading">Father Name</label>
+                        <div class="col-sm-8 text-value">
+                            <?php echo $student->f_h_name; ?>
+                        </div>
+                    </div>
+                </div>
+ 				<div class="col-md-4">
  					<div class="row py-2">
  						<label class="col-sm-4 text-heading">DOB</label>
  						<div class="col-sm-8 text-value">
@@ -21,46 +55,8 @@
 
  						</div>
  					</div>
- 				</div> 
-
-
- 				<div class="col-md-6">
- 					<div class="row py-2">
- 						<label class="col-sm-4 text-heading"> Name</label>
- 						<div class="col-sm-8 text-value">
- 							<?php echo $student->name; ?>
- 						</div>
- 					</div>
  				</div>
-
- 				<div class="col-md-6">
- 					<div class="row py-2">
- 						<label class="col-sm-4 text-heading">Father Name</label>
- 						<div class="col-sm-8 text-value">
- 							<?php echo $student->f_h_name; ?>
- 						</div>
- 					</div>
- 				</div>
-
- 				<div class="col-md-6">
- 					<div class="row py-2">
- 						<label class="col-sm-4 text-heading">Course Name</label>
- 						<div class="col-sm-8 text-value">
- 							<?php echo $student->course_name;  ?>
- 						</div>
- 					</div>
- 				</div>
-
- 				<div class="col-md-6">
- 					<div class="row py-2">
- 						<label class="col-sm-4 text-heading">Roll No</label>
- 						<div class="col-sm-8 text-value">
- 							<?php echo $student->roll_no; ?>
- 						</div>
- 					</div>
- 				</div>
-
- 				<div class="col-md-6">
+                <div class="col-md-4">
  					<div class="row py-2">
  						<label class="col-sm-4 text-heading">Exam form</label>
  						<div class="col-sm-8 text-value">
@@ -68,8 +64,7 @@
  						</div>
  					</div>
  				</div>
-
- 				<div class="col-md-6">
+ 				<div class="col-md-4">
  					<div class="row py-2">
  						<label class="col-sm-4 text-heading">Center Code</label>
  						<div class="col-sm-8 text-value">
@@ -77,28 +72,14 @@
  						</div>
  					</div>
  				</div>
-
-
- 				<div class="col-md-6">
+                <div class="col-md-6">
  					<div class="row py-2">
- 						<label class="col-sm-4 text-heading">Student ID</label>
+ 						<label class="col-sm-4 text-heading">Course/Class</label>
  						<div class="col-sm-8 text-value">
- 							<?php echo $student->student_id; ?>
+ 						<?php echo $student->course_name;  ?> (	<?php echo $student->class_name; ?>)
  						</div>
  					</div>
  				</div>
-
- 				<div class="col-md-6">
- 					<div class="row py-2">
- 						<label class="col-sm-4 text-heading">Class</label>
- 						<div class="col-sm-8 text-value">
- 							<?php echo $student->class_name; ?>
- 						</div>
- 					</div>
- 				</div>
-
- 			</div>
-
  		</div>
  	</div>
  </div>  
@@ -108,13 +89,13 @@
  		<div class="container-fluid profile mt-5">
 
  			<div class="row">
- 				<div class="col-md-2">
+ 				<div class="col-md-5">
  					<label class="text-heading">Paper Name</label>
  				</div>
- 				<div class="col-md-2">
+ 				<div class="col-md-1">
  					<label class="text-heading">Paper Code</label>
  				</div>
- 				<div class="col-md-2">
+ 				<div class="col-md-1">
  					<label class="text-heading">Answer Sheet</label>
  				</div>
  				<div class="col-md-1">
@@ -138,13 +119,13 @@
  			<?php foreach ($paper as $payment) { ?>
  				<div class="row mt-3">
 
- 					<div class="col-md-2">
+ 					<div class="col-md-5">
  						<label class="text-heading mt-3"><?=$this->Common_model->getPaperNameById($payment->paper_id); ?></label>
  					</div> 
- 					<div class="col-md-2">
+ 					<div class="col-md-1">
  						<label class="text-heading mt-3"><?=$payment->paper_code;?></label>
  					</div>
- 					<div class="col-md-2">
+ 					<div class="col-md-1">
  						<label class="text-heading mt-3"></label>
  					</div>
  					<div class="col-md-1">
