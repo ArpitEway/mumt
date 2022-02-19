@@ -21,7 +21,7 @@
 					<td><?php echo $student->course_name; ?> </td>
 					<td><?php echo $student->class_name; ?> </td>
 					
-						<td><a target="_blank" href="<?=base_url('center/center/admit_card_student_list/' .$this->Common_model->encrypt_decrypt($student->class_id,'encrypt'));?>">Show</a></td>
+						<td><a target="_blank" href="<?=base_url('admit_card_student_list/' .$this->Common_model->encrypt_decrypt($student->class_id,'encrypt'));?>">Show</a></td>
 					
 				</tr>
 				<?php

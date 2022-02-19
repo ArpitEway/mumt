@@ -27,7 +27,7 @@
 					
 					
 
-					<td><a target="_blank" href="<?=base_url('center/center/admit_card/'.$this->Common_model->encrypt_decrypt($student->student_id,'encrypt'));?>"><i class="far fa-eye text-info mr-5"></i></a></td>	
+					<td><a target="_blank" href="<?=base_url('admit_card/'.$this->Common_model->encrypt_decrypt($student->student_id,'encrypt'));?>"><i class="far fa-eye text-info mr-5"></i></a></td>	
 
 				</tr>
 				<?php 
