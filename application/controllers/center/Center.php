@@ -112,8 +112,14 @@ class Center extends CI_Controller {
 
 	public function logout()
 	{
+		$center_id = array( 10,11,12,13 );
+		if(in_array($this->session->center_id, $center_ids)){
 		$this->session->sess_destroy();
 		redirect('http://162.144.38.91/~mmyvvdde/main/center/index.php');
+		}else{
+		$this->session->sess_destroy();
+			redirect(base_url());
+		}
 	}
 
 	public function admission_form(){
