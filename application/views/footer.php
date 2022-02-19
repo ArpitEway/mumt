@@ -121,7 +121,7 @@ function callTheCallBackFunction() {
         <!--begin::Page Vendors(used by this page)-->
         <script src="<?=base_url()?>assets/plugins/custom/datatables/datatables.bundle.js"></script>
         
-        <script src="<?=base_url()?>assets/js/pages/crud/datatables/basic/basic.js"></script>
+        <script src="<?=base_url()?>assets/js/pages/crud/datatables/basic/basic.js?token=<?=date('dmyhis')?>"></script>
           
 <!--end::Page Vendors-->
 <!--begin::Page Scripts(used by this page)-->
