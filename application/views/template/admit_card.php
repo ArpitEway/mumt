@@ -115,8 +115,8 @@
 				<tr>
 					<td><?php echo $i ; ?></td>
 					<td><?php echo $paper->paper_name; ?></td>
-					<td><?php echo  $this->Common_model->viewDate($paper->exam_start_date); ?></td>
-					<td><?php echo $this->Common_model->viewDate($paper->exam_end_date); ?></td>
+					<td rowspan="4"><?php echo  $this->Common_model->viewDate($paper->exam_start_date); ?></td>
+					<td rowspan="4"><?php echo $this->Common_model->viewDate($paper->exam_end_date); ?></td>
 					<!-- <td><?= ($paper->exam_shift=='मध्याह्न') ? '१२:०० से ०३:०० बजे तक' : ''; ?></td> -->
 			</tr>
 			<?php 

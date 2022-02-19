@@ -1121,6 +1121,7 @@ public function admit_card_list(){
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
+		$class_id=$this->Common_model->encrypt_decrypt($class_id,'decrypt');
 		$titleData = array('title' => 'Admit Card Student List DEC 2021' );
 		$this->load->view('Centers/header',$titleData);
 		$center_id =  $this->session->center_id;
@@ -1137,7 +1138,7 @@ public function admit_card_list(){
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
-
+$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		$titleData = array('title' => 'Admit Card Dec 2021' );
 		$this->load->view('Centers/header',$titleData);
 		$center_id =  $this->session->center_id;
