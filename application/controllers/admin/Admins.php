@@ -2173,10 +2173,10 @@ public function editForm($student_id = ""){
 		);
 		$this->load->view('header',array('title' => 'Final Exam Date Wise Permission (DEC-2021)'));
 		
-		$this->db->select('GROUP_CONCAT(cls_id) as cls_id ,course_name,class_name,exam_start_date,exam_end_date,id,exam_permission');
+		$this->db->select('GROUP_CONCAT(class_id) as class_id ,course_name,class_name,exam_start_date,exam_end_date,id,exam_permission');
 		$this->db->from("time_table");
 
-		$this->db->group_by("cls_id,exam_start_date"); 
+		$this->db->group_by("class_id,exam_start_date"); 
 		$this->db->order_by("exam_start_date ","asc");
 		$data['category'] = $this->db->get()->result_array();
 	
