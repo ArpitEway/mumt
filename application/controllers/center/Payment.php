@@ -17,7 +17,7 @@ class Payment extends CI_Controller {
 		$student = $this->Common_model->student_info($student_id);
 		if($student['payment_status']=='Y'){
 			$this->session->set_flashdata('warning','Payment Already Submitted');
-			redirect(base_url('center/dashboard'));
+			redirect(base_url('dashboard'));
 		}
 		$data['student'] = $student;
 		$data['url'] = 'paynow';
@@ -31,7 +31,7 @@ class Payment extends CI_Controller {
 	
 	public function admission_payment($student_id){
 		if(!$this->session->has_userdata('centerdata')){
-			redirect(base_url('center/login'));
+			redirect(base_url('login'));
 		}
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		if($student_id!=''){
@@ -39,7 +39,7 @@ class Payment extends CI_Controller {
 			$txnAmt=1500;
 			if($student['payment_status']=='Y'){
 				$this->session->set_flashdata('warning','Payment Already Submitted');
-				redirect(base_url('center/dashboard'));
+				redirect(base_url('dashboard'));
 			}
 			$hash_string = '';
 		/*  testing credential 
@@ -198,7 +198,7 @@ class Payment extends CI_Controller {
 		$transaction = $this->Common_model->get_record('online_payment_transaction','*',$where);
 		if($transaction[0]['center_id']!=$this->session->center_id){
 			$this->session->set_flashdata('error','Details Not Found');
-			redirect(base_url('center/dashboard'));
+			redirect(base_url('dashboard'));
 		}
 		$wherestudent = 'student_id='.$transaction[0]['student_id'];
 		$student = $this->Common_model->get_record('student','*',$wherestudent);
@@ -215,14 +215,14 @@ class Payment extends CI_Controller {
 
 	public function exam_form($student_id){
 		if(!$this->session->has_userdata('centerdata')){
-			redirect(base_url('center/login'));
+			redirect(base_url('login'));
 		}
 		$titleData = array('title'=>'Exam Form Payment');
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		$student = $this->Common_model->student_info($student_id);
 		if($student['new_exam_form']=='Y'){
 			$this->session->set_flashdata('warning','Payment Already Submitted');
-			redirect(base_url('center/dashboard'));
+			redirect(base_url('dashboard'));
 		}
 
 		$where = array(
@@ -246,7 +246,7 @@ class Payment extends CI_Controller {
 	public function exam_form_payment($student_id){
 		
 		if(!$this->session->has_userdata('centerdata')){
-			redirect(base_url('center/login'));
+			redirect(base_url('login'));
 		}
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		if($student_id!=''){
@@ -259,7 +259,7 @@ class Payment extends CI_Controller {
 			$txnAmt=$fees[0]->program_fees+$fees[0]->exam_fees;
 			if($student['new_exam_form']=='Y'){
 				$this->session->set_flashdata('warning','Payment Already Submitted');
-				redirect(base_url('center/dashboard'));
+				redirect(base_url('dashboard'));
 			}
 			$hash_string = '';
 		/*  testing credential 

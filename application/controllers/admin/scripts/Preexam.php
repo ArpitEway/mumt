@@ -96,39 +96,17 @@ class Preexam extends CI_Controller {
 		}
 	}
 
-
-	// public function generate_roll_no(){		
-	// 	if(isset($_POST['action']) && $_POST['action']=='generate'){
-	// 		$data = array(			
-	// 			 'action' => 'generate',
-	// 		);
-	// 	}else if( isset($_POST['action']) && $_POST['action']=='view'){
-	// 		$data = array(
-	// 			 'action' => 'view',
-	// 		);
-	// 	}
-	// 	else{
-	// 		$data = array(
-	// 			'student' => '',
-	// 			'action' => '',
-	// 		);
-	// 	}
-	// 	$this->load->view('header',array('title' => 'Generate Roll Number'));
-	// 	$this->load->view('admin/script/generate_roll_no',$data);
-	// 	$this->load->view('footer');
-	// }
-
-	// public function update_temp_id()
-	// {
-	// 	$classData = $this->Common_model->getRecordByWhere('class_master');
-	// 	foreach ($classData as $class) {
-	// 		$where = array('id'=>$class->id);
-	// 		$temp_id = str_pad($class->id,3,"0",STR_PAD_LEFT );
-	// 		$data = array('temp_id' => $temp_id);
-	// 		$this->Common_model->updateRecordByConditions('class_master',$where,$data);
-	// 		echo $this->db->last_query().'<br>';
-	// 	}
-	// }
+	public function update_temp_id()
+	{
+		$classData = $this->Common_model->getRecordByWhere('class_master');
+		foreach ($classData as $class) {
+			$where = array('id'=>$class->id);
+			$temp_id = $class->id+100;
+			$data = array('temp_id' => $temp_id);
+			$this->Common_model->updateRecordByConditions('class_master',$where,$data);
+			echo $this->db->last_query().'<br>';
+		}
+	}
 	
 	// public function	update_exam_center_id_in_student() {
 		
@@ -140,6 +118,34 @@ class Preexam extends CI_Controller {
 	//          echo $this->db->last_query().'<br>';
 	// 	}
 	// }
+
+
+	
+	public function generate_roll_no(){		
+		if(isset($_POST['action']) && $_POST['action']=='generate'){
+			$data = array(			
+				 'action' => 'generate',
+			);
+		}else if( isset($_POST['action']) && $_POST['action']=='view'){
+			$data = array(
+				 'action' => 'view',
+			);
+		}
+		else{
+			$data = array(
+				'student' => '',
+				'action' => '',
+			);
+		}
+
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();
+			
+		$this->load->view('header',array('title' => 'Generate Roll Number'));
+		$this->load->view('admin/script/generate_roll_no',$data);
+		$this->load->view('footer');
+	}
+
 }
 
 ?>

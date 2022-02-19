@@ -156,10 +156,7 @@
 	</div>
 	<div id="dt">
 	</div>
-
 </div>
-
-
 <script>
 	$('input:radio[name="filter"]').change(function() {
 		if ($(this).val()=='list') {
@@ -223,17 +220,4 @@
 				},
 			})
 	});
-
-	var showAllpaper = function () 
-	{
-		var url = '<?php echo site_url('admin/Admins/paper'); ?>';
-		$.ajax({
-			type : 'GET',
-			url: url,
-			success : function(response) {
-
-				initDataTable('basic-datatable');
-			}
-		});
-	}
 </script>

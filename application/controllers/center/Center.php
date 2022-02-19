@@ -112,8 +112,14 @@ class Center extends CI_Controller {
 
 	public function logout()
 	{
-		$this->session->sess_destroy();
-		redirect('http://162.144.38.91/~mmyvvdde/main/center/index.php');
+		$center_ids = array( 10,11,12,13 );
+		if(in_array($this->session->center_id, $center_ids)){
+			$this->session->sess_destroy();
+			redirect(base_url());
+		}else{
+			$this->session->sess_destroy();
+			redirect('http://162.144.38.91/~mmyvvdde/main/center/index.php');
+		}
 	}
 
 	public function admission_form(){
@@ -616,7 +622,6 @@ class Center extends CI_Controller {
 
 				$data = array('center' => $center,'center_details' => $center_detail,'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash());
-				$this->getNotification();
 				$this->load->view('Centers/payment_complaint',$data);
 				$this->load->view('Centers/footer');
 

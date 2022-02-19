@@ -4,9 +4,9 @@
 			<tr>
 				<th>Sno</th>
 				<th>Course Name</th>
-				<th>Course Name</th>
-				<th>Student Count</th>
-				<th>Fill Exam Form Student Count</th>
+				<th>Class Name</th>
+				<th>Total Exam Form</th>
+				<th>Fill Exam Form</th>
 			</tr>
 		</thead>
 		<tbody>
