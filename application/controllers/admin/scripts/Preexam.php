@@ -96,17 +96,7 @@ class Preexam extends CI_Controller {
 		}
 	}
 
-	public function update_temp_id()
-	{
-		$classData = $this->Common_model->getRecordByWhere('class_master');
-		foreach ($classData as $class) {
-			$where = array('id'=>$class->id);
-			$temp_id = $class->id+100;
-			$data = array('temp_id' => $temp_id);
-			$this->Common_model->updateRecordByConditions('class_master',$where,$data);
-			echo $this->db->last_query().'<br>';
-		}
-	}
+	
 	
 	// public function	update_exam_center_id_in_student() {
 		

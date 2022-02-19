@@ -1398,44 +1398,56 @@ public function update_doc_permission_status()
 			$course_group_id  = $this->input->post("course_group_id");
 			$class_id  		  = $this->input->post("class_id");
 			$approved 		  = $this->input->post("approved");
+			$new_exam_form    = $this->input->post("new_exam_form");
+		
 			$payment 		  = $this->input->post("payment");
 			$enrolled 		  = $this->input->post("enrolled");
 			$document_upload  = $this->input->post("document_upload");
 			$filter  		  = $this->input->post("filter");
 			$session 		  = $this->input->post("session");
 			$mode 		  	  = $this->input->post("mode");
-			$center 	  	  = $this->input->post("center");
-			$count_filter = $this->input->post("count_filter");
-          
+			$center_id	  	  = $this->input->post("center_id");
+			
 			if($mode != "all"){	 
 					
 				$dt['mode'] = $mode;
 			}
-			if($center != "all"){	 
+
+			if($session != "All") {	 
 				
-				$dt['center_id'] = $center;
-			}
-			if($course_group_id != "all"){	 
-
-				$dt['course_group_id'] = $course_group_id;
-			}
-			if($session != "All"){	 
-
 				$dt['session'] = $session;
-				
-			}else{
+			}else  {
 				$dt['name!='] = '';
 			}
-			if($class_id != "" && $class_id != "All"){	 
+
+			
+			if($class_id !=  "All" && $class_id !=  "" ){	 
 
 				$dt['class_id'] = $class_id;
-				
-			}
+				}
 			
 			if($approved != "all"){
 
 				$dt['approved'] = $approved;
 			}
+           
+			
+			if($new_exam_form != "all"){
+               
+				$dt['new_exam_form'] = $new_exam_form;
+			}
+			if($course_group_id != "all"){
+               
+				$dt['course_group_id'] = $course_group_id;
+			}
+			
+			if($center_id != "all"){
+               
+				$dt['center_id'] = $center_id;
+			}
+		
+
+
 			if($payment != "all"){
 
 				$dt['payment_status'] = $payment;
@@ -1447,32 +1459,32 @@ public function update_doc_permission_status()
 			if($document_upload != "all"){
 
 				$dt['document_uploaded'] = $document_upload;
+			//print_r($document_upload);
 			}
+			
+			//print($dt);
+			//die;
 			if($filter == "list"){
 
 				$data['students'] = $this->Common_model->student_data_consolidate($dt);
 				
 
 			}
-			if($filter == "count"){
-
-				if($count_filter == "course_wise"){
-
-					$data['count_filter'] = 'course_wise';
-
-					$data['course_count'] = $this->Common_model->student_data_consolidate($dt,'course_group_id');
-				   
-				}else{
-					$data['count_filter'] = 'center_wise';
-					$data['course_count'] = $this->Common_model->student_data_consolidate($dt,'center_id');
-				}
+			if($filter == "count"){				
+				$data['course_count'] = $this->Common_model->student_data_consolidate($dt,$_POST['count_filter']);
 			}
-		
+			
+			//$this->Common_model->last_query();
+					
 			$dt = $this->load->view('admin/student/getStudentConsolidate',$data,true);
+		
 			echo json_encode(array(
 				"status" => true,
 				"data" => $dt
 			));
+
+
+		
 		}
 	}
 

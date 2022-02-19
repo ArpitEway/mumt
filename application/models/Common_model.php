@@ -221,26 +221,18 @@ class Common_Model extends CI_Model{
 	}
 
 	function student_data_consolidate($where = "",$group_by = ""){
-	
+		
 		if($group_by != ""){
-			
-			$this->db->select('count(*) as cnt,course_group.id,course_group.course_name as course_nm,center_id,center_code');
-			$this->db->group_by($group_by);
+				$this->db->select('count(*) as cnt,'.$group_by);
+				$this->db->group_by($group_by);
 		}else{
-			$this->db->select('*');
+				$this->db->select('*');
 		}
-
 		$this->db->from("student");
 		$this->db->where($where);
-
 		$this->db->join("course_group", "student.course_group_id = course_group.id", 'left'); 
-
 		$query = $this->db->get();
-
-		// echo $this->db->last_query();
-
-		// die;
-
+			
 		return $query->result_array();
 
 	}
@@ -744,19 +736,19 @@ class Common_Model extends CI_Model{
 		$qry = $this->db->get();
 		return $qry->result_array();
 	}
+
 	function getCenterMenuHeadingById($id)
 	{
-        $this->db->select('heading');
-        $this->db->where('id',$id);
-        $qry = $this->db->get('center_menu_heading');
+		$this->db->select('heading');
+		$this->db->where('id',$id);
+		$qry = $this->db->get('center_menu_heading');
         //return $qry->row_array();
-        return $qry->row()->heading;
-       
-	
+		return $qry->row()->heading;
+
+
 	}
 
-
-public function getSessionForEnrollment(){
+	public function getSessionForEnrollment(){
 		$qry= $this->db->order_by('id','DESC');
 		$qry= $this->db->limit(1);
 		$qry= $this->db->get('session');
@@ -769,21 +761,26 @@ public function getSessionForEnrollment(){
 
 
 	public function last_query(){
-			echo $this->db->last_query();
-			die;
-		}	
+		echo $this->db->last_query();
+		die;
+	}	
 
-public function new_exam_form_permission_status($where){
+	public function new_exam_form_permission_status($where){
 
-	$this->db->where($where);
-	$this->db->select('count(*) as cnt,course_name,class_name,class_id');
-	$this->db->group_by('class_id');			
-	$this->db->from("student");
-    $query = $this->db->get();
-	return $query->result_array();
+		$this->db->where($where);
+		$this->db->select('count(*) as cnt,course_name,class_name,class_id');
+		$this->db->group_by('class_id');			
+		$this->db->from("student");
+		$query = $this->db->get();
+		return $query->result_array();
+	}
 
-}
-
+	public function debug_data($data)
+	{
+		echo '<pre>';
+		print_r($data);
+		// die;
+	}
 }
 
 ?>

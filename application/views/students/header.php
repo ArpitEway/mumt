@@ -72,18 +72,18 @@
                     <div id="kt_header_menu" class="header-menu header-menu-mobile header-menu-layout-default">
                       <!--begin::Nav-->
                       <ul class="menu-nav p-0">
-                        <li class="menu-item menu-item-active" aria-haspopup="true">
+                        <li class="menu-item <?= ($page_slug=='') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
                           <a href="<?=base_url()?>" class="menu-link">
                             <span class="menu-text">Home</span>
                           </a>
                         </li>
-                        <li class="menu-item" aria-haspopup="true">
+                        <li class="menu-item <?= ($page_slug=='profile') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
                           <a href="<?=base_url('profile')?>" class="menu-link">
                             <span class="menu-text">Profile</span>
                           </a>
                         </li>
                         <li class="menu-item" aria-haspopup="true">
-                          <a href="<?=base_url('profile')?>" class="menu-link">
+                          <a href="<?=base_url('logout')?>" class="menu-link">
                             <span class="menu-text">Log Out</span>
                           </a>
                         </li>
