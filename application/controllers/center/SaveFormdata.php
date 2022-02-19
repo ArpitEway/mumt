@@ -70,6 +70,12 @@ class saveFormdata extends CI_Controller {
 		
 		// transaction start from here 
 		// https://codeigniter.com/userguide3/database/transactions.html
+		$center_ids = array( 10,11,12,13 );
+		if(in_array($this->session->center_id, $center_ids)){
+			$data['payment_status']='Y';
+			$data['document_uploaded']='Y';
+			$data['approved']='Y';
+		}
 		$this->db->trans_start();
 
 		$student_id = $this->Common_model->insertAll('student',$data);
@@ -88,6 +94,10 @@ class saveFormdata extends CI_Controller {
 		$this->Common_model->insertAll('student_data',$studentData);
 		
 		$OnlinePayTxnData = array('student_id' => $student_id,'center_id' => $this->session->center_id,'fees_head' => 'Admission Fees','amount' => 1500,'payment_status'=>'pending','course_group_id' => $course_group_id,'class_id' => $class_id,'student_name' => $data['name'],'admission_type'=>'regular');
+		if(in_array($this->session->center_id, $center_ids)){
+			$OnlinePayTxnData['payment_status']	= 'Paid By University';
+			$OnlinePayTxnData['payment'] =	'Y';
+		}
 		$OnlinePayTxn = $this->Common_model->insertAll('online_payment_transaction',$OnlinePayTxnData);
 
 		// transaction Complete 
