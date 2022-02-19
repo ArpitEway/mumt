@@ -34,8 +34,7 @@ class Student extends CI_Controller {
 			//$this->getNotification();
 			$this->load->view('students/dashboard',$data);
 			$this->load->view('students/footer');
-		}
-		
+		}	
 	}
 	
 	public function login(){
