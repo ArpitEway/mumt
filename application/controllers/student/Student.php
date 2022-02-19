@@ -26,7 +26,7 @@ class Student extends CI_Controller {
 		if(!$this->session->has_userdata('studentdata')){
 			 redirect(base_url(''));
 		}else{
-		    $titleData = array('title' => 'Student Dashboard'); 
+		    $titleData = array('title' => 'Student Dashboard','page_slug' => ''); 
 			$this->load->view('students/header',$titleData);
 			$id =  $this->session->student_id;
 			$student = $this->Common_model->getRecordById('student','student_id',$id);
@@ -118,7 +118,7 @@ class Student extends CI_Controller {
 		if($data['student']['approved']!='Y'){
 		redirect(base_url('admission/'.$student_id));
 		}
-		$this->load->view('students/header',array('title' => 'Admission Form'));	
+		$this->load->view('students/header',array('title' => 'Student Form','page_slug' => 'profile'));	
 		$this->load->view('template/form',$data);
 		$this->load->view('students/footer');
 	}
@@ -155,7 +155,7 @@ class Student extends CI_Controller {
     	$data['papers'] = $this->db->get()->result();
 	
 		
-	    $this->load->view('students/header',array('title' => 'Exam Paper'));	
+	    $this->load->view('students/header',array('title' => 'Exam Paper','page_slug' => 'exam_paper'));	
 		$this->load->view('students/exam_paper',$data);
 		$this->load->view('students/footer');
 	}
