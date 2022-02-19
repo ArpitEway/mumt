@@ -24,5 +24,6 @@ assets/transactionImgaes/*
 .htaccess
 assets/regular_syllabus/*
 application/config/routes.php
-/assets/instruction/*
-examPdf/*
+assets/instruction/*
+exam_pdf/*
+assets/exam_answersheet/*

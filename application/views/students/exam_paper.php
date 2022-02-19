@@ -1,87 +1,96 @@
+<style type="text/css">
+	.table td, .table th {
+		padding: 0.75rem;
+		vertical-align: top;
+		border-top: none;
+		font-size: 14px;
+	}
+	.table th{
+		font-weight: 600;
+	}
+</style>
+<div class="container shadow-sm p-5">
+	<div class="table-responsive">
+		
 
-			<div class="BoxD border- padding mar-bot">
-				<div class="row">
-					<div class="col-12">
-						<table class="table table-stripped" border='0'>
-							<input type="hidden" value="<?php echo $student['student_id'] ; ?>" id="student_id">
-						  <tbody>
-						
-							<tr>
-								<td><b>Roll No: </b> <?=$student['roll_no'];?></td>
-								<td colspan="2"><b>Enrollment No: </b><?=$student['enrollment_no'];?></td>
-							</tr>
-							<tr>
-							  <td><b>Student Name: </b> <?=$student['name'];?></td>
-							  <td colspan="2"><b>Father/Husband Name: </b> <?=$student['f_h_name'];?></td>
-							</tr>
-							<tr>
-							  <td><b>Course: </b> <?=$student['course_name'];?></td>
-							  <td colspan="2"><b>Class: </b> <?=$student['class_name'];?></td>
-							</tr>
-						  </tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-            <h4 class="text-center mt-4 mb-4">Answer Sheet First Page</h4>
-            <div class="BoxF border- padding mar-bot txt-center">
-				<div class="row">
-					<div class="col-12">
-						<table class="table ">
-							<thead>
-								<tr>
-									<th>Paper Name</th>
-									<th>Paper Code</th>
-									<th>View</th>
-									<th>Answersheet</th>
-								
-
-								</tr>
-							</thead>
-						  <tbody>
-						  <?php
-			foreach($papers as $paper){
-				
-				$pdf= FCPATH."examPdf/".$paper->test_id;
-				?>
+		<table class="table " >
+			<input type="hidden" value="<?php echo $student['student_id'] ; ?>" id="student_id">
+			<tbody>
 				<tr>
-					<td><?php  echo $paper->paper_name ; ?></td>
-					<td><?php echo $paper->paper_code; ?></td>
-					<td><a target="_blank" href="<?php echo $pdf ?>">show</a></td>
-				
-					<?php 
-					$where = array(
-						 'class_id' => $student["class_id"],
-						'student_id' => $student["student_id"],
-						 'paper_code' =>$paper->paper_code
-					);
-					$data = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',$where);
-					$count = count($data);
-					 $data[0]->answer_sheet;
-					 $path = base_url('applications/assets/exam_answersheet'.$data[0]->upload_date.'/'.$data[0]->answer_sheet);
-				// 	 echo "<pre>";
-				//    echo FCPATH.'applications/assets/exam_answersheet/'.$data[0]->upload_date.'/'.$data[0]->answer_sheet ;
-					
-					if($count>=1 &&  file_exists($path)){
-					?>
-                     <td> <button disable type="button" class="btn btn-success">submitted</button></td> 
-					<?php
-					}
-					else{
-						  $paper_code = $this->Common_model->encrypt_decrypt($paper->paper_code,'encrypt'); 
-						?>
-					<td><a  href="<?php echo  base_url('student/Student/upload_anwser_sheet/').$paper_code ;?>" class="btn btn-dark">Upload</a></td>
-					<?php
-					}
-					?>
-			    </tr>
-			<?php 
-		}
-		?>
-						</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
+					<th>Roll No:</th>
+					<td><?=$student['roll_no'];?></td>
+					<th>Enrollment No:</th>
+					<td><?=$student['enrollment_no'];?></td>
+				</tr>
+				<tr>
+					<th>Student Name:</th>
+					<td><?=$student['name'];?></td>
+					<th>Father/Husband Name:</th>
+					<td><?=$student['f_h_name'];?></td>
+				</tr>
+				<tr>
+					<th>Course/Class:</th>
+					<td colspan="3"><?=$student['course_name'];?> (<?=$student['class_name'];?>) </td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<div class="container shadow-sm p-5 mt-10">
+	<h4 class="text-center mt-10">Answer Sheet First Page</h4>
+	<div class="table-responsive">
+		<table class="table ">
+			<tbody>
+				<tr>
+					<th>Paper Name</th>
+					<th>Paper Code</th>
+					<th>View</th>
+					<th>Answersheet</th>
+				</tr>
+				<?php
+				foreach($papers as $paper){
 
-            
+					$pdf = "exam_pdf/".$paper->test_id.'.pdf';
+					?>
+					<tr>
+						<td><?php  echo $paper->paper_name ; ?></td>
+						<td><?php echo $paper->paper_code; ?></td>
+						<td>
+						<?php if (file_exists(FCPATH.$pdf)): ?>
+							<a target="_blank" href="<?php echo base_url($pdf); ?>">show</a>
+						<?php else: ?>
+							Coming Soon
+						<?php endif; ?>
+						</td>
+						<td>
+						<?php 
+						$where = array(
+							'class_id' => $student["class_id"],
+							'student_id' => $student["student_id"],
+							'paper_code' =>$paper->paper_code
+						);
+						// $this->Common_model->debug_data($where);
+						$data = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',$where);
+						$count = count($data);
+						$data[0]->answer_sheet;
+						$path = FCPATH.'/assets/exam_answersheet/'.$data[0]->upload_date.'/'.$data[0]->answer_sheet;
+						if($count>=1 &&  file_exists($path)){
+							?>
+							<button disable type="button" class="btn btn-success">Submitted</button>
+							<?php
+						}else{
+							$paper_id = $this->Common_model->encrypt_decrypt($paper->id,'encrypt'); 
+							?>
+							<a  href="<?php echo  base_url('student/Student/upload_anwser_sheet/').$paper_id ;?>" class="btn btn-dark">Upload</a>
+							<?php
+						}
+						?>
+						</td>
+					</tr>
+					<?php 
+				}
+				?>
+			</tbody>
+		</table>
+	</div>
+</div>
