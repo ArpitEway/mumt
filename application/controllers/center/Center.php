@@ -1094,22 +1094,19 @@ class Center extends CI_Controller {
 
 
 
-public function admit_card_list(){
+	public function admit_card_list(){
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
 		$titleData = array('title' => 'Admit Card List DEC 2021' );
 		$this->load->view('Centers/header',$titleData);
-   $where = array('center_id'=>$this->session->center_id , 'admit_card_permission' =>'Y',"student.roll_no!="=>0);
-
+		$where = array('center_id'=>$this->session->center_id , 'admit_card_permission' =>'Y',"student.roll_no!="=>0);
 		$this->db->select('DISTINCT(student.class_id) as 
-        class_id,course_name,student.class_name,class_id');
-         
-			$this->db->from('student');
-				$this->db->Where($where);
-			// $this->db->Where("student.roll_no!=","0");
-			$this->db->join('class_master', 'class_master.id = student.class_id');
-		 $data['students'] = $this->db->get()->result();
+			class_id,course_name,student.class_name,class_id');
+		$this->db->from('student');
+		$this->db->Where($where);
+		$this->db->join('class_master', 'class_master.id = student.class_id');
+		$data['students'] = $this->db->get()->result();
 		 //  $this->Common_model->last_query(); 
 		$this->load->view('Centers/class_wise_admit_card',$data);
 		$this->load->view('Centers/footer');		
@@ -1138,7 +1135,7 @@ public function admit_card_list(){
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
-$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		$titleData = array('title' => 'Admit Card Dec 2021' );
 		$this->load->view('Centers/header',$titleData);
 		$center_id =  $this->session->center_id;
@@ -1148,19 +1145,19 @@ $student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
 			'center_id' => $center_id,
 		);
 
-		   $this->db->select('*');
-			$this->db->from('student');
-			$this->db->join('center', 'center.id = student.center_id');
-			$this->db->where($where); 
-			$data['student'] = $this->db->get()->result();
+		$this->db->select('*');
+		$this->db->from('student');
+		$this->db->join('center', 'center.id = student.center_id');
+		$this->db->where($where); 
+		$data['student'] = $this->db->get()->result();
 
-			 $wherePaper = array('student_id' => $student_id);
-			 $this->db->select('*');
-			 $this->db->from('paper_master');
-			 $this->db->join('new_exam_form', 'new_exam_form.paper_id = paper_master.id');
-			 $this->db->join('time_table', 'paper_master.class_id = time_table.class_id');
-			 $this->db->where($wherePaper); 
-			 $data['papers'] = $this->db->get()->result();
+		$wherePaper = array('student_id' => $student_id);
+		$this->db->select('*');
+		$this->db->from('paper_master');
+		$this->db->join('new_exam_form', 'new_exam_form.paper_id = paper_master.id');
+		$this->db->join('time_table', 'paper_master.class_id = time_table.class_id');
+		$this->db->where($wherePaper); 
+		$data['papers'] = $this->db->get()->result();
 
 		$this->load->view('template/admit_card',$data);
 		$this->load->view('Centers/footer');		
@@ -1168,7 +1165,7 @@ $student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
 
 
 
-public function student_roll_no_list(){
+	public function student_roll_no_list(){
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
@@ -1183,7 +1180,4 @@ public function student_roll_no_list(){
 		$this->load->view('Centers/student_roll_no_list',$data);
 		$this->load->view('Centers/footer');		
 	}
-
-
-
 }

@@ -110,13 +110,18 @@
 						  <tbody>
 						  <?php
 						  $i = 1;
+						  $paper_count = count($papers);
 			foreach($papers as $paper){
 				?>
 				<tr>
 					<td><?php echo $i ; ?></td>
 					<td><?php echo $paper->paper_name; ?></td>
-					<td rowspan="4"><?php echo  $this->Common_model->viewDate($paper->exam_start_date); ?></td>
-					<td rowspan="4"><?php echo $this->Common_model->viewDate($paper->exam_end_date); ?></td>
+					<?php if ($i==1): ?>
+						
+					<td rowspan="<?=$paper_count?>" style="vertical-align: middle;"><?php echo  $this->Common_model->viewDate($paper->exam_start_date); ?></td>
+					<td rowspan="<?=$paper_count?>" style="vertical-align: middle;"><?php echo $this->Common_model->viewDate($paper->exam_end_date); ?></td>
+					
+					<?php endif ?>
 					<!-- <td><?= ($paper->exam_shift=='मध्याह्न') ? '१२:०० से ०३:०० बजे तक' : ''; ?></td> -->
 			</tr>
 			<?php 
