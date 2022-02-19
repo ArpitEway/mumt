@@ -68,7 +68,7 @@ var KTDatatablesBasicBasic = function() {
 		});
 	};
 
-	var initTable = function() {
+	var initTableScroll = function() {
 		var table = $('#kt_datatable_scroll');
 
 		// begin first table
@@ -120,6 +120,7 @@ var KTDatatablesBasicBasic = function() {
 		init: function() {
 			initTable2();
 			initTable();
+			initTableScroll();
 		}
 	};
 }();

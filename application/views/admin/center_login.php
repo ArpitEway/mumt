@@ -80,19 +80,6 @@ buttons: [
 
 
 
-var showAllcenters = function () 
-    {
-        var url = '<?php echo site_url('admin/Admins/centers'); ?>';
-        $.ajax({
-            type : 'GET',
-            url: url,
-            success : function(response) {
-                
-                initDataTable('basic-datatable');
-            }
-        });
-    }
-
 
 
 $(document).on('click', '.center_status_check', function() {
