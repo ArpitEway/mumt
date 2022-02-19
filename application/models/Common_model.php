@@ -221,26 +221,18 @@ class Common_Model extends CI_Model{
 	}
 
 	function student_data_consolidate($where = "",$group_by = ""){
-	
+		
 		if($group_by != ""){
-			
-			$this->db->select('count(*) as cnt,course_group.id,course_group.course_name as course_nm,center_id,center_code');
-			$this->db->group_by($group_by);
+				$this->db->select('count(*) as cnt,'.$group_by);
+				$this->db->group_by($group_by);
 		}else{
-			$this->db->select('*');
+				$this->db->select('*');
 		}
-
 		$this->db->from("student");
 		$this->db->where($where);
-
 		$this->db->join("course_group", "student.course_group_id = course_group.id", 'left'); 
-
 		$query = $this->db->get();
-
-		// echo $this->db->last_query();
-
-		// die;
-
+			
 		return $query->result_array();
 
 	}
