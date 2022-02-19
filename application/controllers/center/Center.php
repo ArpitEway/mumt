@@ -616,7 +616,6 @@ class Center extends CI_Controller {
 
 				$data = array('center' => $center,'center_details' => $center_detail,'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash());
-				$this->getNotification();
 				$this->load->view('Centers/payment_complaint',$data);
 				$this->load->view('Centers/footer');
 
