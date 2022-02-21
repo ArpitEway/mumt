@@ -13,7 +13,8 @@
         <h3 class="text-primary"> Skipped Exam Form</h3>
     <?php endif ?>
 </div>
-    <table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
+<div class="table-responsive">
+    <table id="kt_datatable_scroll" class="table table-striped nowrap"  >
         <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
         <thead>
             <tr>
@@ -65,7 +66,7 @@
                 <?php if ($student->temp_exam_form=='N'){ ?>
                     <a class="btn btn-primary" href="<?=base_url('select_papers/'.$student_id)?>">Select Papers</a>
                 <?php }else if ($student->temp_exam_form=='Y') { ?>
-                    <a class="btn btn-primary" href="<?=base_url('showPapers/'.$student_id)?>">Fill Exam Form</a>
+                    <a class="btn btn-primary" href="<?=base_url('showPapers/'.$student_id)?>">Fill Form</a>
                 <?php } ?>
             </td>
              <td>
@@ -88,6 +89,7 @@
     ?>
 </tbody>
 </table>
+</div>
 </div>
 
 <script type="text/javascript">

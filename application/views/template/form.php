@@ -2,10 +2,10 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap');
 .form-block {
-	background: hsl(228deg 100% 99%);
-	border: 1px solid hsl(216deg 84% 83%);
-	border-radius: 10px;
-	padding: 10px;
+    background: hsl(53deg 100% 95% / 61%);
+    border: 1px solid #f6d459;
+    border-radius: 10px;
+    padding: 10px;
 }
 .label_form{
 	font-size: 14px !important;
