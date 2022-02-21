@@ -13,6 +13,7 @@
 					<th>Course</th>
 					<th>Class</th>
 					<th>Paper</th>
+					<th>Paper Code</th>
 					<th>Type</th>
 					<th>CE</th> 					
 					<!--<th>Options</th>-->
@@ -39,6 +40,8 @@
 						<td><?php echo $course_name; ?></td>
 						<td><?php echo $class_name; ?></td>
 						<td><?php echo $paper['paper_name']; ?></td>
+						<td><?php echo $paper['paper_code']; ?></td>
+
 						<td><?php echo $paper['type']; ?></td>
 						<td><?php echo $paper['ce']; ?></td>
 						

@@ -2286,4 +2286,25 @@ public function editForm($student_id = ""){
 		}
 	}
 
+
+	public function paper_for_open_book(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url('admin'));
+			exit;
+		}else{
+			
+			$this->load->view('header',array('title' => 'Paper for open book'));
+			$this->db->select('*');
+			$this->db->from('class_master');
+			$this->db->join('paper_master', 'class_master.id = paper_master.class_id');
+			$this->db->where('class_master.exam_form_permission', 'Y');
+			
+			$data['classes'] = $this->db->get()->result();
+		
+		
+			$this->load->view('admin/paper_for_open_book',$data);
+			$this->load->view('footer');
+		}
+	}
+
 }// class
