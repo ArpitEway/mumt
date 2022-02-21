@@ -11,8 +11,6 @@
 </style>
 <div class="container shadow-sm p-5">
 	<div class="table-responsive">
-		
-
 		<table class="table " >
 			<input type="hidden" value="<?php echo $student['student_id'] ; ?>" id="student_id">
 			<tbody>
@@ -78,7 +76,7 @@
 							?>
 							<button disable type="button" class="btn btn-success">Submitted</button>
 							<?php
-						}else{
+						}elseif(file_exists(FCPATH.$pdf)){
 							$paper_id = $this->Common_model->encrypt_decrypt($paper->id,'encrypt'); 
 							?>
 							<a  href="<?php echo  base_url('student/Student/upload_anwser_sheet/').$paper_id ;?>" class="btn btn-dark">Upload</a>
