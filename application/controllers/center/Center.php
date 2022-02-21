@@ -883,9 +883,9 @@ class Center extends CI_Controller {
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
 		);
-
+		
 		$center_id =  $this->session->center_id;
-
+       
 		if($exam_form1=='submitted'){
 			$where = array(
 				'new_exam_form' =>'Y',
@@ -1066,7 +1066,10 @@ class Center extends CI_Controller {
 		$paper_id = $paper_id.",".$group_paper_id ;
 		}
 		$paper_data = 	$this->Common_model->get_record('paper_master','*','id in ('.$paper_id.')');
-		$student_id=$_POST['student_id'];
+		
+
+		$student_id=$this->Common_model->encrypt_decrypt($_POST['student_id'],'decrypt');
+	
 		
 
 		foreach($paper_data as $paper){
@@ -1179,5 +1182,32 @@ class Center extends CI_Controller {
 		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
 		$this->load->view('Centers/student_roll_no_list',$data);
 		$this->load->view('Centers/footer');		
+	}
+
+	public function paid_by_university($student_id){
+    
+	 $student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+	 $student_data = $this->Common_model->getRecordByWhere('student',array('student_id'=>$student_id));
+
+	        $data['student_id']=$student_data[0]->student_id;
+	        $data['center_id']=$student_data[0]->center_id;
+         	$data['course_group_id']=$student_data[0]->course_group_id;
+			$data['class_id']=$student_data[0]->class_id;
+			$data['amount']='1500';
+			$data['fees_head']='admission_fees';
+			$data['student_name']=$student_data[0]->name;
+			$data['payment']='Y';
+			$data['payment_status']='paid by university';
+			$data['payment_date']= date("Y/m/d");
+			$data['admission_type']= 'regular';
+			$data['payment_time']=date("h:i:sa");
+			$insert = $this->Common_model->insertAll('online_payment_transaction',$data);
+	 $student_data = array(
+		 'new_exam_form' => 'Y'
+	 );
+	 $update = $this->Common_model->updateRecordByConditions('student','student_id='.$student_id,$student_data);
+  if($update){
+	 redirect(base_url('exam_form_students'));
+  }
 	}
 }

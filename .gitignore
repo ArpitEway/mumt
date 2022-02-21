@@ -25,5 +25,5 @@ assets/transactionImgaes/*
 assets/regular_syllabus/*
 application/config/routes.php
 assets/instruction/*
-exam_pdf/*
+examPdf/*
 assets/exam_answersheet/*
