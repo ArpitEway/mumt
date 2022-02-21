@@ -180,7 +180,7 @@
 		<div class="col-xl-4">
 			<div class="form-group ">
 				<label>Date Of Birth</label><span class="text-danger"> *</span>
-				<input type="text"  class="form-control " data-inputmask="'alias': 'dd-mm-yyyy'" name="dob" id="dob"placeholder="dd-mm-yyyy" value="<?= $student_detail->dob; ?>">
+				<input type="text"  class="form-control " data-inputmask="'alias': 'dd-mm-yyyy'" name="dob" id="dob"placeholder="dd-mm-yyyy" value="<?= $this->Common_model->viewDate($student_detail->dob); ?>">
 				<div class="fv-plugins-message-container"></div>
 			</div>
 		</div>

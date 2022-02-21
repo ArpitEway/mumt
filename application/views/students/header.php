@@ -82,6 +82,20 @@
                             <span class="menu-text">Profile</span>
                           </a>
                         </li>
+                        <?php 
+                        $studentData = $this->Common_model->getRecordById('student','student_id',$this->session->student_id);
+                        $whereClass = array('class_id' => $studentData->class_id,
+                          'exam_permission' => 'Y',
+                        );
+                        $timeTableData = $this->Common_model->getRecordByWhere('time_table',$whereClass);
+                        ?>
+                        <?php if (count($timeTableData)!=0): ?>
+                          <li class="menu-item <?= ($page_slug=='exam_paper') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
+                            <a href="<?=base_url('exam_paper')?>" class="menu-link">
+                              <span class="menu-text">Exam Paper</span>
+                            </a>
+                          </li>
+                        <?php endif ?>
                         <li class="menu-item" aria-haspopup="true">
                           <a href="<?=base_url('logout')?>" class="menu-link">
                             <span class="menu-text">Log Out</span>

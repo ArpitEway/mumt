@@ -147,13 +147,21 @@ class Student extends CI_Controller {
 		$this->db->select('paper_master.*');
     	$this->db->from('paper_master');
     	$this->db->join('new_exam_form', 'paper_master.id = new_exam_form.paper_id');
+    	
+    	$class_id = $data['student']['class_id'];
+
     	$where = array('paper_master.class_id' =>$data['student']['class_id'],
     		'student_id' => $student_id
     	);
     	$this->db->where($where); 
     	$data['papers'] = $this->db->get()->result();
-	
-		
+		$whereClass = array('class_id' => $class_id,
+					'exam_permission' => 'Y',
+		);
+		$timeTableData = $this->Common_model->getRecordByWhere('time_table',$whereClass);
+		if(count($timeTableData)==0){
+			redirect(base_url());
+		}
 	    $this->load->view('students/header',array('title' => 'Exam Paper','page_slug' => 'exam_paper'));	
 		$this->load->view('students/exam_paper',$data);
 		$this->load->view('students/footer');
