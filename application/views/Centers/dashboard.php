@@ -96,6 +96,11 @@
 							<span class="nav-text">Exam Form Dec 2021</span>
 						</div>
 					</a>
+					<a class="border-0 custom-menu-item" href="<?=base_url('student_roll_no_list');?>">
+						<div>
+							<span class="nav-text">Roll No List</span>
+						</div>
+					</a>
 				</div>
 			</div> 
 		</div>

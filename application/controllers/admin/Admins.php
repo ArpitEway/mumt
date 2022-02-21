@@ -2177,9 +2177,10 @@ public function editForm($student_id = ""){
 		$this->load->view('admin/center_wise_student_form_count_list',$data); 
 		$this->load->view('footer');
 	}
-		public function final_exam_date_wise_permission()
-		{
-		 $data = array(
+
+	public function final_exam_date_wise_permission()
+	{
+		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 		);
@@ -2191,43 +2192,39 @@ public function editForm($student_id = ""){
 		$this->db->group_by("class_id,exam_start_date"); 
 		$this->db->order_by("exam_start_date ","asc");
 		$data['category'] = $this->db->get()->result_array();
-	
-      
+
+
 		$this->load->view('admin/Final Class Wise Exam Permission',$data);
 		$this->load->view('footer');
-	
-}
 
- // public function update_exam_datewise_permission(){
+	}
 
+/*
+public function update_exam_datewise_permission(){
+	$status =  $this->input->post('exam_permission');
 
-
-
-	// 	$status =  $this->input->post('exam_permission');
-      
-	// 	// if(isset($_POST['exam_start_date'])){
-
-			
-	// 	//}
- //        $id =  $this->input->post('exam_start_date');
-          
-	// 		$where = array('exam_start_date'=>$id);
+		// if(isset($_POST['exam_start_date'])){
 
 
- //        if($status!=''){
-	// 	$st = ($status == 'Y') ? 'N' : 'Y';
-	// 	$data=array(
-	// 		'exam_permission'=>$st);
-	//         }
-        
-	// 	$res=$this->Common_model->updateRecordByConditions('time_table',$where,$data);
-	// 	if($status == 'Y'){
-	// 		echo json_encode(array('success'=>true));
-	// 	}else if($status == 'N'){
-	// 		echo json_encode(array('error'=>false));
-	// 	}
-	// }
+		//}
+	$id =  $this->input->post('exam_start_date');
 
+	$where = array('exam_start_date'=>$id);
+
+
+	if($status!=''){
+		$st = ($status == 'Y') ? 'N' : 'Y';
+		$data=array(
+			'exam_permission'=>$st);
+	}
+
+	$res=$this->Common_model->updateRecordByConditions('time_table',$where,$data);
+	if($status == 'Y'){
+		echo json_encode(array('success'=>true));
+	}else if($status == 'N'){
+		echo json_encode(array('error'=>false));
+	}
+} */
 
 
 	public function check_student_exam_records(){
