@@ -46,7 +46,7 @@
 							'class_id' => $class->id,
 						);
 						$roll_no_data = $this->Common_model->get_record('student','max(roll_no)',$whereRollNo);
-						$last_number = ($roll_no_data[0]['roll_no']==0) ? $class->temp_id.'1001' : +1;	
+						$last_number = ($roll_no_data[0]['roll_no']==0) ? $class->temp_id.'10001' : +1;	
 						
 						foreach ($students as $student) {
 								$roll_no = $last_number;

@@ -2198,34 +2198,35 @@ public function editForm($student_id = ""){
 	
 }
 
+ // public function update_exam_datewise_permission(){
 
- public function update_exam_datewise_permission(){
-		$status =  $this->input->post('exam_permission');
+
+
+
+	// 	$status =  $this->input->post('exam_permission');
       
-		if(isset($_POST['exam_start_date'])){
-			$id =  $this->input->post('exam_start_date');
+	// 	// if(isset($_POST['exam_start_date'])){
+
+			
+	// 	//}
+ //        $id =  $this->input->post('exam_start_date');
           
-			$where = array('exam_start_date'=>$id);
-		}
+	// 		$where = array('exam_start_date'=>$id);
+
+
+ //        if($status!=''){
+	// 	$st = ($status == 'Y') ? 'N' : 'Y';
+	// 	$data=array(
+	// 		'exam_permission'=>$st);
+	//         }
         
-        if($status!=''){
-		$st = ($status == 'Y') ? 'N' : 'Y';
-		$data=array(
-			'exam_permission'=>$st,);
-	        }
-        
-		$res=$this->Common_model->updateRecordByConditions('time_table',$where,$data);
-		if($status == 'Y'){
-			echo json_encode(array('success'=>true));
-		}else if($status == 'N'){
-			echo json_encode(array('error'=>false));
-		}
-	}
-
-
-
-	
-
+	// 	$res=$this->Common_model->updateRecordByConditions('time_table',$where,$data);
+	// 	if($status == 'Y'){
+	// 		echo json_encode(array('success'=>true));
+	// 	}else if($status == 'N'){
+	// 		echo json_encode(array('error'=>false));
+	// 	}
+	// }
 
 
 

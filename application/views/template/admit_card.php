@@ -27,7 +27,7 @@
 	<div  id="container_content"  style="margin: auto; width:1150px;">
 		<div class="admit-card">
 			<div class="BoxA border- padding mar-bot"> 
-				<div class="row">
+				<div class="row justify-content-center align-items-center">
 					<div class="col-3 txt-center">
 						<img src="<?=base_url()?>assets/images/maskgroup/MaskGroup1.png" width="100px;" />
 					</div>
@@ -58,12 +58,12 @@
 						<table class="table table-bordered">
 							<input type="hidden" value="<?php echo $student[0]->student_id ; ?>" id="student_id">
 						  <tbody>
-							<tr>
+							<!-- <tr>
 							  <td colspan="4"><b>Exam Center: </b><?= $this->Common_model->getCenterNameById($student[0]->id); ?></td>
 							</tr>
 								<tr>
 							  <td colspan="4"><b>College: </b><?=$student[0]->center_name; ?></td>
-							    </tr>
+							    </tr> -->
 							<tr>
 								<td><b>Roll No: </b> <?=$student[0]->roll_no;?></td>
 								<td colspan="2"><b>Enrollment No: </b><?=$student[0]->enrollment_no;?></td>
@@ -78,7 +78,7 @@
 							  <td colspan="2"><b>Class: </b> <?=$student[0]->class_name;?></td>
 							</tr>
 							<tr>
-								<td><b>Mode:</b> <?= ucwords($student[0]->university_mode);?></td>
+								<td><b>Mode:</b> Regular</td>
 								<td class="border border-dark" colspan="2"> <b>Mobile No. :</b> <?php 	$mobile_no =$this->Common_model->getMobileNoByStudentID($student[0]->student_id);	?><?= $mobile_no ?> </td>
 							</tr>
 						  </tbody>

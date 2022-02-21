@@ -1176,7 +1176,7 @@ class Center extends CI_Controller {
 			'center_id' => $center_id,
 			'roll_no !=' => 0,
 		);
-		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
+		$data['students'] = $this->Common_model->getRecordByWhereByOrder('student',$where,'roll_no','ASC');
 		$this->load->view('Centers/student_roll_no_list',$data);
 		$this->load->view('Centers/footer');		
 	}
