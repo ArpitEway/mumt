@@ -25,7 +25,7 @@
     		<?php
     		$i = 1;
             foreach($classes as $class){
-			$exam_date = $this->Common_model->getRecordByWhere('time_table',array('cls_id' => $class->class_id));
+			$exam_date = $this->Common_model->getRecordByWhere('time_table',array('class_id' => $class->class_id));
     		?>
 					<tr>
 					<td><?php echo $i; ?></td>
@@ -38,7 +38,13 @@
 					<td><?php echo $class->ce; ?> </td>
 					<td><?php echo $class->test_id; ?> </td>
                     <td><?php echo $exam_date[0]->exam_start_date; ?> </td>
-                    <td> <a target="_blank" href="<?php  echo  base_url('examPdf/'.$class->test_id.'.pdf') ?>" ><?php if($class->test_id!=0){ echo 'View' ;} else{echo 'Not available' ;} ;?></a></td>
+                    <td>
+<?php if(file_exists(FCPATH.'exam_pdf/'.$class->test_id.'.pdf')){ ?>
+                     <a target="_blank" href="<?php  echo  base_url('exam_pdf/'.$class->test_id.'.pdf') ?>" >View</a>
+<?php }else{
+	echo 'N/A';
+} ?>
+                 </td>
 </tr>
 				
 <?php $i++; } ?>

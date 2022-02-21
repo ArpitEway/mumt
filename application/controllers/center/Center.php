@@ -1189,18 +1189,25 @@ class Center extends CI_Controller {
 	 $student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 	 $student_data = $this->Common_model->getRecordByWhere('student',array('student_id'=>$student_id));
 
+	 $where = array(
+	 	'session' =>$student_data[0]->session,
+	 	'course_group_id' => $student_data[0]->course_group_id,
+	 );
+
+	 $fees = $this->Common_model->getRecordByWhere('course',$where);
+
 	        $data['student_id']=$student_data[0]->student_id;
 	        $data['center_id']=$student_data[0]->center_id;
          	$data['course_group_id']=$student_data[0]->course_group_id;
 			$data['class_id']=$student_data[0]->class_id;
-			$data['amount']='1500';
-			$data['fees_head']='admission_fees';
+			$data['amount']=$fees[0]->program_fees+$fees[0]->exam_fees;
+			$data['fees_head']='Exam Fees';
 			$data['student_name']=$student_data[0]->name;
 			$data['payment']='Y';
-			$data['payment_status']='paid by university';
-			$data['payment_date']= date("Y/m/d");
-			$data['admission_type']= 'regular';
-			$data['payment_time']=date("h:i:sa");
+			$data['payment_status']='Paid By University';
+			$data['payment_date']= date("Y-m-d");
+			$data['admission_type']= 'Regular';
+			$data['payment_time']=date("h:i:s");
 			$insert = $this->Common_model->insertAll('online_payment_transaction',$data);
 	 $student_data = array(
 		 'new_exam_form' => 'Y'

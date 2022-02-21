@@ -2292,7 +2292,6 @@ public function editForm($student_id = ""){
 			redirect(base_url('admin'));
 			exit;
 		}else{
-			//$class_master = $this->Common_model->getRecordByWhere('class_master',array('exam_form_permission' =>'Y'));
 			
 			$this->load->view('header',array('title' => 'Paper for open book'));
 			$this->db->select('*');
