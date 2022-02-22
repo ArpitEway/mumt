@@ -426,7 +426,7 @@
 	public function center_request(){
 		if($this->session->has_userdata('adminData'))
 		{
-			$where = array("status" => "Pending");
+			$where = array('status' => 'Pending');
 			$centers = $this->Common_model->get_record_group_by_where('request','center_id',$where);
 			$data = array('name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash(),
@@ -444,11 +444,15 @@
 	{
 		if ($this->input->method() == "post") 
 		{
-			$course_group_id = 0;
+			//$course_group_id = 0;
 			$data = array();
 			$dt   = array();
 			$center_id  = $this->input->post("center_id");
-			$wherecenter = 'center_id='.$center_id;
+			$wherecenter = array('status' => 'Pending',
+				 'center_id'=>$center_id 
+
+		);
+			
 			$center_detail = $this->Common_model->get_record('request','*',$wherecenter);
 			$data = array('center_details' => $center_detail ,'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash());
