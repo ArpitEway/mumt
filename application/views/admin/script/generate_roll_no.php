@@ -31,7 +31,8 @@
 
 
 					$i=1;
-					$classData = $this->Common_model->getRecordByWhere('class_master');
+					$whereclass = array('exam_form_permission' => 'Y');
+					$classData = $this->Common_model->getRecordByWhere('class_master',$whereclass);
 					foreach ($classData as $class) {
 						$where = array(
 							'new_exam_form' => 'Y',
@@ -45,9 +46,8 @@
 							'roll_no !=' =>'0',
 							'class_id' => $class->id,
 						);
-						$roll_no_data = $this->Common_model->get_record('student','max(roll_no)',$whereRollNo);
-						$last_number = ($roll_no_data[0]['roll_no']==0) ? $class->temp_id.'10001' : +1;	
-						
+						$roll_no_data = $this->Common_model->get_record('student','max(roll_no) as roll_no',$whereRollNo);
+						$last_number = ($roll_no_data[0]['roll_no']==0) ? $class->temp_id.'10001' : $roll_no_data[0]['roll_no']+1;	
 						foreach ($students as $student) {
 								$roll_no = $last_number;
 							if($action=='generate'){
@@ -56,7 +56,6 @@
 								$this->Common_model->updateRecordByConditions('student',$whereUpdate,$updateData);
 							}
 							$last_number++ ;
-
 							?>
 							<tr>
 								<td><?=$i++;?></td>

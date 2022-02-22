@@ -55,8 +55,7 @@ class Admins extends CI_Controller {
 		if(!$this->session->has_userdata('adminData')){
 			redirect(base_url());
 			exit;
-		}else
-		{
+		}else{
 			$data = array('course_group' => $course_group,
 				'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash()
@@ -90,14 +89,10 @@ class Admins extends CI_Controller {
 
 	public function add_student_menu_heading($param1 = '', $param2 = '')
 	{
-
 		if(!$this->session->has_userdata('adminData')){
-
 			redirect(base_url());
 			exit;
-
-		}else
-		{
+		}else{
 			$data = array();
 			$dt   = array();
 			$dt['title'] = "Add Student Menu Heading";
@@ -129,7 +124,6 @@ class Admins extends CI_Controller {
 				$this->load->view('admin/student_menu/add_menu_heading',$data);
 				$this->load->view('footer');
 			}
-
 		}
 	}
 
@@ -137,12 +131,9 @@ class Admins extends CI_Controller {
 	{
 
 		if(!$this->session->has_userdata('adminData')){
-
 			redirect(base_url());
 			exit;
-
-		}else
-		{
+		}else{
 
 			$data = array();
 			$dt = array();
@@ -2297,8 +2288,6 @@ public function update_exam_datewise_permission(){
 			$this->db->where('class_master.exam_form_permission', 'Y');
 			
 			$data['classes'] = $this->db->get()->result();
-		
-		
 			$this->load->view('admin/paper_for_open_book',$data);
 			$this->load->view('footer');
 		}

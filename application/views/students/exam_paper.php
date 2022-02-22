@@ -35,7 +35,7 @@
 	</div>
 </div>
 <div class="container shadow-sm p-5 mt-10">
-	<h4 class="text-center mt-10">Answer Sheet First Page</h4>
+	<h4 class="text-center mt-10"><a href="<?=base_url('assets/instruction/')?>Answer sheet Front Page.pdf">Answer Sheet First Page</a></h4>
 	<div class="table-responsive">
 		<table class="table ">
 			<tbody>
