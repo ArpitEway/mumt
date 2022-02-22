@@ -89,7 +89,7 @@
                         );
                         $timeTableData = $this->Common_model->getRecordByWhere('time_table',$whereClass);
                         ?>
-                        <?php if (count($timeTableData)!=0): ?>
+                        <?php if ((count($timeTableData)!=0) && ($studentData->new_exam_form=='Y')): ?>
                           <li class="menu-item <?= ($page_slug=='exam_paper') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
                             <a href="<?=base_url('exam_paper')?>" class="menu-link">
                               <span class="menu-text">Exam Paper</span>

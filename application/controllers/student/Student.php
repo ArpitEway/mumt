@@ -159,7 +159,7 @@ class Student extends CI_Controller {
 					'exam_permission' => 'Y',
 		);
 		$timeTableData = $this->Common_model->getRecordByWhere('time_table',$whereClass);
-		if(count($timeTableData)==0){
+		if((count($timeTableData)==0) || ($data['student']['new_exam_form']!='Y')){
 			redirect(base_url());
 		}
 	    $this->load->view('students/header',array('title' => 'Exam Paper','page_slug' => 'exam_paper'));	
@@ -182,7 +182,6 @@ class Student extends CI_Controller {
 	}
 
 	public function upload_assignment_sub(){
-
 		if($_FILES['file']['name']!='')
 		{
 			$ext1=strtolower(pathinfo($_FILES['file']['name'],PATHINFO_EXTENSION));
