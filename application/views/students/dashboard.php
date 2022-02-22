@@ -6,7 +6,11 @@ $whereClass = array('class_id' => $studentData->class_id,
 $timeTableData = $this->Common_model->getRecordByWhere('time_table',$whereClass);
 ?>
 <?php if (count($timeTableData)!=0 && $studentData->new_exam_form=="Y"): ?>
-	<a href="<?=base_url('exam_paper')?>" class="btn btn-primary float-right">Exam Paper</a>
+	<div class="row justify-content-center align-items-center" >
+		<h5>Click Here to Examination</h5>
+
+	<a href="<?=base_url('exam_paper')?>" class="btn btn-primary float-right ml-2"> Exam Paper</a>
+</div>
 <?php endif ?>
 <div class="notification"> 
 	<ul>
