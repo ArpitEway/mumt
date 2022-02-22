@@ -60,7 +60,7 @@
  					<div class="row py-2">
  						<label class="col-sm-4 text-heading">Exam form</label>
  						<div class="col-sm-8 text-value">
- 							<?php echo $student->exam_form;  ?>
+ 							<?php echo $student->new_exam_form;  ?>
  						</div>
  					</div>
  				</div>
@@ -125,9 +125,23 @@
  					<div class="col-md-1">
  						<label class="text-heading mt-3"><?=$payment->paper_code;?></label>
  					</div>
- 					<div class="col-md-1">
- 						<label class="text-heading mt-3"></label>
- 					</div>
+
+                    <?php
+                    $where = array('student_id'=>$payment->student_id,
+                       'paper_code'=>$payment->paper_code );
+
+                    $view = $this->Common_model->get_record("upload_exam_ans_sheet",'answer_sheet',$where);
+
+                    if($view!=''){
+                      ?>
+
+                      <div class="col-md-1"><a target="_blank" href="<?=base_url('assets/exam_answersheet/'.$view->answer_sheet);?>">View Answer Sheet</a>
+                         <label class="text-heading mt-3"></label>
+                     </div>
+                     <?php 
+                 }?>
+                    
+
  					<div class="col-md-1">
  						<label class="text-heading mt-3"></label>
  					</div>

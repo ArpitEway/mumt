@@ -2223,7 +2223,7 @@ public function update_exam_datewise_permission(){
 			redirect(base_url('admin'));
 			exit;
 		}else{
-			$this->load->view('header',array('title' => 'Search Transaction Details'));
+			$this->load->view('header',array('title' =>'Search Student Answersheet (Dec 2021)'));
 			$data = array(
 				'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash(),
