@@ -2295,4 +2295,24 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
+	public function answersheet_uplaod_status(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url('admin'));
+			exit;
+		}else{	
+			$this->load->view('header',array('title' => 'Answersheet Upload Status'));
+			$this->db->select('count(*) as num');
+			$this->db->from('new_exam_form');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+			$this->db->where('student.new_exam_form','Y');
+			$count = $this->db->get()->result();
+			$data['total_paper_count'] = $count[0]->num;
+			$data['uploaded'] = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array('exam_status'=> 'R','answer_sheet	!=' => ''));
+			$data['checked'] = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array('teacher_id!='=> ''));
+
+			$this->load->view('admin/answersheet_uplaod_status',$data);
+			$this->load->view('footer');
+		}
+	}
+
 }// class
