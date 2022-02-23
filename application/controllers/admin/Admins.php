@@ -2299,18 +2299,15 @@ public function update_exam_datewise_permission(){
 			exit;
 		}else{	
 			$this->load->view('header',array('title' => 'Answersheet Upload Status'));
-			$this->db->select('*');
+			$this->db->select('count(*) as num');
 			$this->db->from('new_exam_form');
 			$this->db->join('student', 'new_exam_form.student_id = student.student_id');
 			$this->db->where('student.new_exam_form','Y');
-			$data['data'] = $this->db->get()->result();
-			
-			$data['total_paper_count'] = count($data['data']);
-	
-			$data['uploaded'] = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array('exam_status'=> 'R'));
-			
-           $data['checked'] = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array('teacher_id!='=> ''));
-		
+			$count = $this->db->get()->result();
+			$data['total_paper_count'] = $count[0]->num;
+			$data['uploaded'] = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array('exam_status'=> 'R','answer_sheet	!=' => ''));
+			$data['checked'] = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array('teacher_id!='=> ''));
+
 			$this->load->view('admin/answersheet_uplaod_status',$data);
 			$this->load->view('footer');
 		}
