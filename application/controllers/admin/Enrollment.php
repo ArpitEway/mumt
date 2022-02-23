@@ -449,10 +449,9 @@
 			$dt   = array();
 			$center_id  = $this->input->post("center_id");
 			$wherecenter = array('status' => 'Pending',
-				 'center_id'=>$center_id 
+				'center_id'=>$center_id,
+			);
 
-		);
-			
 			$center_detail = $this->Common_model->get_record('request','*',$wherecenter);
 			$data = array('center_details' => $center_detail ,'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash());
