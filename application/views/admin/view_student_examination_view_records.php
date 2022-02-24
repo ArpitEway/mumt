@@ -116,7 +116,15 @@
  				</div>
 
  			</div>
- 			<?php foreach ($paper as $payment) { ?>
+ 			<?php foreach ($paper as $payment) {
+
+$where = array('student_id'=>$payment->student_id,
+                       'paper_code'=>$payment->paper_code );
+
+                    $view = $this->Common_model->get_record("upload_exam_ans_sheet",'*',$where);
+
+
+             ?>
  				<div class="row mt-3">
 
  					<div class="col-md-5">
@@ -125,22 +133,37 @@
  					<div class="col-md-1">
  						<label class="text-heading mt-3"><?=$payment->paper_code;?></label>
  					</div>
-
+ 
                     <?php
-                    $where = array('student_id'=>$payment->student_id,
-                       'paper_code'=>$payment->paper_code );
-
-                    $view = $this->Common_model->get_record("upload_exam_ans_sheet",'answer_sheet',$where);
-
-                    if($view!=''){
+                    
+                    if($view){
                       ?>
 
-                      <div class="col-md-1"><a target="_blank" href="<?=base_url('assets/exam_answersheet/'.$view->answer_sheet);?>">View Answer Sheet</a>
-                         <label class="text-heading mt-3"></label>
-                     </div>
-                     <?php 
-                 }?>
-                    
+                      <div class="col-md-1">
+
+                          <?php if(file_exists(FCPATH.'/assets/exam_answersheet/'.$view[0]->upload_date.'/'.$view[0]->answer_sheet)){ ?>
+                            <a target="_blank" href="<?php  echo  base_url('/assets/exam_answersheet/'.$view[0]['upload_date'].'/'.$view[0]['answer_sheet'].'.pdf') ?>" >View</a>
+                       <?php }else{
+                        echo 'N/A';
+                    } ?></div>
+
+                    <?php 
+                }?>
+
+
+                <?php  
+
+                  if($view){?>
+                    <div class="col-md-1">
+                     <?php if(file_exists(FCPATH.'/assets/exam_answersheet/'.$view[0]->upload_date.'/'.$view[0]->answer_sheet)){ ?>
+
+                        <a  class="btn btn-lg " href="<?php  echo  base_url('admin/admins/Delete_answersheet/').$view[0]['id'] ;?>">
+                         <i class="mdi mdi-delete delete-icon"></i></a>
+                     <?php }else{
+                        echo 'N/A';
+                    } ?></div>
+                    <?php 
+                }?>
 
  					<div class="col-md-1">
  						<label class="text-heading mt-3"></label>

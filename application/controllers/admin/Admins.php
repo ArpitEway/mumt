@@ -2293,4 +2293,48 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
+
+
+  public function Delete_answersheet($id)
+  {
+  
+  	$view = $this->Common_model->get_record('upload_exam_ans_sheet','*',array('id'=>$id));
+
+  	if(file_exists(FCPATH.'/assets/exam_answersheet/'.$view[0]['upload_date'].'/'.$view[0]['answer_sheet'].'.pdf'))
+  	{
+
+
+  		$studentdata=unlink( FCPATH . '/assets/exam_answersheet/'.$view[0]['upload_date'].'/'.$view[0]['answer_sheet'].'.pdf' );
+
+  	}
+
+  	if($studentdata){
+
+  		$where = array(
+  			'id' => $id
+  		);
+  		$data = array(
+  			'answer_sheet' => ''
+  		);
+  		$response= $this->Common_model->updateRecordByConditions('upload_exam_ans_sheet',$where,$data);
+  		$this->session->set_flashdata('ajax_flash_message','Status Successfully Updated');
+  	}
+  }
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
 }// class
