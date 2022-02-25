@@ -72,9 +72,9 @@
  						</div>
  					</div>
  				</div>
-                <div class="col-md-4">
+                <div class="col-md-12">
  					<div class="row py-4">
- 						<label class="col-sm-4 text-heading">Course/Class</label>
+ 						<label class="col-sm-2 text-heading">Course/Class</label>
  						<div class="col-sm-8 text-value">
  						<?php echo $student->course_name;  ?> (	<?php echo $student->class_name; ?>)
  						</div>
