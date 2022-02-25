@@ -154,7 +154,7 @@
                     
                      <?php if(file_exists(FCPATH.'/assets/exam_answersheet/'.$view[0]->upload_date.'/'.$view[0]->answer_sheet)){ ?>
 
-                        <a  class="btn btn-lg"    onclick='javascript:confirmationDelete($(this));return false;'  href="<?php  echo  base_url('admin/admins/Delete_answersheet/').$view[0]['id']  ;?>"
+                        <a  onclick='javascript:confirmationDelete($(this));return false;'  href="<?php  echo  base_url('admin/admins/Delete_answersheet/').$view[0]['id']  ;?>"
 
                             >
                          <i class="mdi mdi-delete delete-icon"></i></a>
