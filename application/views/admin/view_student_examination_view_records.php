@@ -113,8 +113,10 @@
  			<?php foreach ($paper as $payment) {
 
              $where = array('student_id'=>$payment->student_id,
-                       'paper_code'=>$payment->paper_code );
-
+                       'paper_code'=>$payment->paper_code,
+                           'answer_sheet!='=>''
+                        );
+                     
                     $view = $this->Common_model->get_record("upload_exam_ans_sheet",'*',$where);
 
              ?>
@@ -134,6 +136,7 @@
 
                     
                           <?php if(file_exists(FCPATH.'/assets/exam_answersheet/'.$view[0]->upload_date.'/'.$view[0]->answer_sheet)){ ?>
+
                             <a target="_blank" href="<?php  echo  base_url('/assets/exam_answersheet/'.$view[0]['upload_date'].'/'.$view[0]['answer_sheet'].'.pdf') ?>" >View</a>
                        <?php }else{
                         echo 'N/A';
@@ -151,7 +154,9 @@
                     
                      <?php if(file_exists(FCPATH.'/assets/exam_answersheet/'.$view[0]->upload_date.'/'.$view[0]->answer_sheet)){ ?>
 
-                        <a  class="btn btn-lg " href="<?php  echo  base_url('admin/admins/Delete_answersheet/').$view[0]['id'] ;?>">
+                        <a  class="btn btn-lg"    onclick='javascript:confirmationDelete($(this));return false;'  href="<?php  echo  base_url('admin/admins/Delete_answersheet/').$view[0]['id']  ;?>"
+
+                            >
                          <i class="mdi mdi-delete delete-icon"></i></a>
                      <?php }else{
                         echo 'N/A';
@@ -175,3 +180,14 @@
  	</div>
  </div>
 
+<script type="text/javascript">
+    
+function confirmationDelete(anchor)
+{
+   var conf = confirm('Are you sure want to delete this record?');
+   if(conf)
+      window.location=anchor.attr("href");
+}
+
+
+</script>
