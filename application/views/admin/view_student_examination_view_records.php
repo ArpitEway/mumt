@@ -133,38 +133,41 @@ $where = array('student_id'=>$payment->student_id,
  					<div class="col-md-1">
  						<label class="text-heading mt-3"><?=$payment->paper_code;?></label>
  					</div>
- 
+           <div class="col-md-1">
                     <?php
                     
                     if($view){
                       ?>
 
-                      <div class="col-md-1">
-
+                    
                           <?php if(file_exists(FCPATH.'/assets/exam_answersheet/'.$view[0]->upload_date.'/'.$view[0]->answer_sheet)){ ?>
                             <a target="_blank" href="<?php  echo  base_url('/assets/exam_answersheet/'.$view[0]['upload_date'].'/'.$view[0]['answer_sheet'].'.pdf') ?>" >View</a>
                        <?php }else{
                         echo 'N/A';
-                    } ?></div>
+                    } ?>
 
                     <?php 
-                }?>
+                }
+                else{  
+                    echo 'N/A';}?></div>
 
-
+            <div class="col-md-1">
                 <?php  
 
                   if($view){?>
-                    <div class="col-md-1">
+                    
                      <?php if(file_exists(FCPATH.'/assets/exam_answersheet/'.$view[0]->upload_date.'/'.$view[0]->answer_sheet)){ ?>
 
                         <a  class="btn btn-lg " href="<?php  echo  base_url('admin/admins/Delete_answersheet/').$view[0]['id'] ;?>">
                          <i class="mdi mdi-delete delete-icon"></i></a>
                      <?php }else{
                         echo 'N/A';
-                    } ?></div>
+                    } ?>
                     <?php 
-                }?>
+                } else{  
+                    echo 'N/A';}?>
                 
+                </div>
 
  					<div class="col-md-1">
  						<label class="text-heading mt-3"></label>
