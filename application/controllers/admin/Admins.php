@@ -2314,7 +2314,8 @@ public function update_exam_datewise_permission(){
   			'id' => $id
   		);
   		$data = array(
-  			'answer_sheet' => ''
+  			'answer_sheet' => '',
+  			'file_exist'=>'N'
   		);
   		$response= $this->Common_model->updateRecordByConditions('upload_exam_ans_sheet',$where,$data);
   		redirect(base_url('admin/admins/check_student_exam_records'));
