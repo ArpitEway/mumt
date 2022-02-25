@@ -2317,7 +2317,7 @@ public function update_exam_datewise_permission(){
   			'answer_sheet' => ''
   		);
   		$response= $this->Common_model->updateRecordByConditions('upload_exam_ans_sheet',$where,$data);
-  		$this->session->set_flashdata('ajax_flash_message','Status Successfully Updated');
+  		redirect(base_url('admin/admins/check_student_exam_records'));
   	}
   }
 
