@@ -2315,4 +2315,54 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
+
+
+public function updatePaymentTransactiodetails()
+	{
+		
+		$txnid = $this->input->post('TxnId');
+		$Fess = $this->input->post('Fess');
+		$dateTime = $this->input->post('dateTime');
+		$student_id = $this->input->post('student_id');
+		
+		$where = array('student_id'=>$student_id);
+
+		$student_details =  $this->Common_model->getRecordByWhere('student',$where);
+
+
+		$center_id = $student_details[0]->center_id;
+		$course_group_id = $student_details[0]->course_group_id;
+		$class_id = $student_details[0]->class_id;
+		$remark = $student_details[0]->remark;
+		$name = $student_details[0]->name;
+		$session = $student_details[0]->session;
+		 $university_mode = $student_details[0]->university_mode;
+         $exam_fees = $student_details1[0]->exam_fees;
+
+		$dateTime = explode(' ',$dateTime);
+		$updateData = array('txnId' => $txnid,'fees_head'=>$Fess,'payment_date' => $dateTime[0],'payment_time' => $dateTime[1],'payment' => 'Y', 'payment_status' => 'captured','student_id'=>$student_id
+			 ,'center_id'=>$center_id,'course_group_id'=>$course_group_id,'class_id'=>$class_id,'remark'=>$remark,'student_name'=>$name,'exam_session'=>$session,
+			  'admission_type'=>$university_mode
+	);
+		
+
+		$transaction = $this->Common_model->insertAll('online_payment_transaction',$updateData);
+	
+		$where1 = array('student_id' => $student_id);
+		$result = $this->Common_model->updateRecordByConditions('student',$where1,array('payment_status'=> 'Y'));
+		if($result){
+			$paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student_id));
+			$data = array('paymentDetails' => $paymentDetails);
+			$htmlData = $this->load->view('admin/account_section/view_transaction_details',$data,true); 
+			$return = array('success' => 'Transaction Details Updated','data' =>$htmlData);
+		}else{
+			$return = array('error' => 'An error occurred');
+		}
+		echo json_encode($return);
+		die;
+	}
+
+
+
+
 }// class

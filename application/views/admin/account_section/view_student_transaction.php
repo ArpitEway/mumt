@@ -100,9 +100,10 @@
 			<div class="col-md-2">
 				<label class="text-heading">Transaction no</label>
 			</div>
-			<div class="col-md-2 text-center">
+			<div class="col-md-1 text-center">
 				<label class="text-heading">Action</label>
 			</div>
+			
 		</div>
 			<?php foreach ($paymentDetails as $payment) { ?>
 				<div class="row mt-3">
@@ -124,7 +125,7 @@
 					<div class="col-md-2">
 						<label class="text-heading mt-3"><?=$payment->txnId;?></label>
 					</div>
-					<div class="col-md-2 text-center">
+					<div class="col-md-1 text-center">
 						<?php if($payment->payment!="Y"){ ?>
 							<label class="text-heading mt-3"><button type="button" class="btn btn-primary modalOpen" data-toggle="modal" data-paymentId="<?=$payment->id;?>" data-student_id="<?=$payment->student_id;?>" data-target="#exampleModalCenter">Update</button></label>
 
@@ -132,11 +133,26 @@
 							echo '<label class="text-heading mt-3"> Paid </label>';
 						} ?>
 					</div>
+
+
+
+
 				</div>
 			<?php } ?>
 		</div>
 	</div>
+
+
 </div>
+
+
+<div class=" text-center">
+						
+							<label class="text-heading mt-3"><button type="button" class="btn btn-primary modalOpen" data-toggle="modal" data-student_id="<?=$student->student_id;?>" data-target="#exampleModalCenter1"> Add Transaction</button></label>
+
+					</div>
+
+
 
 <div class="modal fade" id="exampleModalCenter" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">
@@ -151,7 +167,7 @@
 			<div class="modal-body row">
 				<fieldset class="form-group col-md-6">
 					<label for="transaction">Transaction Id</label>
-					<input  type="hidden" name="id" id="paymentId">
+					<input  type="hidden" name="id" id="paymentId" >
 					<input  type="hidden" name="student_id" id="student_id">
 					<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 					<input type="text" required name="TxnId" class="form-control" id="transaction" placeholder="">
@@ -169,6 +185,57 @@
 		</div>
 	</div>
 </div>
+
+
+
+
+<div class="modal fade" id="exampleModalCenter1" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<form >
+				<input  type="hidden" name="student_id" id="student_id" value="<?=$student->student_id;?>">
+
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<i aria-hidden="true" class="ki ki-close"></i>
+				</button>
+			</div>
+
+			<div class="modal-body row">
+           <fieldset class="form-group col-md-6">
+                <label>Fess:</label>
+						<select name="Fess" id="Fess" class="form-control" >
+							<option value="">Select All</option>
+						<option selected value="Exam Fees">Exam fees</option>
+							<option value="Admission Fees">Admission fees</option>
+							
+							
+						</select>
+						
+              </fieldset>
+
+				<fieldset class="form-group col-md-6">
+					<label for="transaction">Transaction Id</label>	>
+		
+					<input type="text" required name="TxnId" class="form-control" id="transaction" placeholder="">
+				</fieldset>
+				<fieldset class="form-group col-md-6">
+					<label for="date"> Payment Date</label>
+					<input type="text" required class="form-control" id="dateTime" name="dateTime">
+				</fieldset>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+				<button type="submit" id="submit1"  class="btn btn-primary font-weight-bold">Submit</button>
+			</div>
+		</form>
+		</div>
+	</div>
+</div>
+
+
+
 <script type="text/javascript">
 	$( ".modalOpen" ).on('click', function(){
 		$('#paymentId').val($(this).attr("data-paymentId"));
@@ -197,6 +264,47 @@
 					$('#txnDetails').html(response.data);
 					$('.modalOpen').remove();
 					$('#exampleModalCenter').toggle();
+					$('.modal-backdrop').remove();
+					//location.reload();
+				}else if(response.error){
+					toastr.error(response.error);
+				}
+			}
+		})
+	})
+</script>
+
+
+
+
+<script type="text/javascript">
+	$( ".modalOpen" ).on('click', function(){
+		
+		$('#student_id').val($(this).attr("data-student_id"));
+	});
+
+	$('#dateTime').inputmask("yyyy-mm-dd hh:mm:ss", {
+        placeholder: "yyyy-mm-dd hh:mm:ss", 
+        insertMode: false, 
+        showMaskOnHover: false,
+        hourFormat: '24'
+      });
+
+	$('#submit1').on('click',function (e) {
+		e.preventDefault();
+		
+		let formData = $('form').serialize();
+		$.ajax({
+			url: BASE_URL+ 'admin/'+account_type+'/updatePaymentTransactiodetails',
+			method: 'post',
+			data: formData,
+			dataType: 'JSON',
+			success: function (response) {
+				if(response.success){
+					toastr.success(response.success);
+					$('#txnDetails').html(response.data);
+					$('.modalOpen').remove();
+					$('#exampleModalCenter1').toggle();
 					$('.modal-backdrop').remove();
 					//location.reload();
 				}else if(response.error){
