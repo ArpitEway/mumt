@@ -2329,6 +2329,7 @@ public function updatePaymentTransactiodetails()
 
 		$student_details =  $this->Common_model->getRecordByWhere('student',$where);
 
+ $student_details1 =  $this->Common_model->getRecordByWhere('course',array('course_group_id'=>$student_details[0]->course_group_id));
 
 		$center_id = $student_details[0]->center_id;
 		$course_group_id = $student_details[0]->course_group_id;
@@ -2342,7 +2343,8 @@ public function updatePaymentTransactiodetails()
 		$dateTime = explode(' ',$dateTime);
 		$updateData = array('txnId' => $txnid,'fees_head'=>$Fess,'payment_date' => $dateTime[0],'payment_time' => $dateTime[1],'payment' => 'Y', 'payment_status' => 'captured','student_id'=>$student_id
 			 ,'center_id'=>$center_id,'course_group_id'=>$course_group_id,'class_id'=>$class_id,'remark'=>$remark,'student_name'=>$name,'exam_session'=>$session,
-			  'admission_type'=>$university_mode
+			  'admission_type'=>$university_mode,'amount'=>
+              $exam_fees
 	);
 		
 
