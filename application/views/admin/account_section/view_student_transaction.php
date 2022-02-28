@@ -220,7 +220,7 @@
 				</fieldset>
 				<fieldset class="form-group col-md-6">
 					<label for="date"> Payment Date</label>
-					<input type="text" required class="form-control" id="dateTime" name="dateTime">
+					<input type="text" required class="form-control" id="dateTime1" name="dateTime">
 
 				</fieldset>
 			</div>
@@ -232,12 +232,6 @@
 		</div>
 	</div>
 </div>
-
-
-
-
-
-
 
 
 
@@ -288,7 +282,7 @@
 		$('#student_id').val($(this).attr("data-student_id"));
 	});
 
-	$('#dateTime').inputmask("yyyy-mm-dd hh:mm:ss", {
+	$('#dateTime1').inputmask("yyyy-mm-dd hh:mm:ss", {
         placeholder: "yyyy-mm-dd hh:mm:ss", 
         insertMode: false, 
         showMaskOnHover: false,

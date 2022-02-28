@@ -2325,13 +2325,11 @@ public function updatePaymentTransactiodetails()
 		$dateTime = $this->input->post('dateTime');
 		$student_id = $this->input->post('student_id');
 		
-		$where = array('student_id'=>$student_id,
-			'session'=>'July 2021'
+		$where = array('student_id'=>$student_id		
 	);
 
 		$student_details =  $this->Common_model->getRecordByWhere('student',$where);
-
- $course_details =  $this->Common_model->getRecordByWhere('course',array('course_group_id'=>$student_details[0]->course_group_id,'session'=>$student_details[0]->session));
+     $course_details =  $this->Common_model->getRecordByWhere('course',array('course_group_id'=>$student_details[0]->course_group_id,'session'=>$student_details[0]->session));
 
 		$center_id = $student_details[0]->center_id;
 		$course_group_id = $student_details[0]->course_group_id;
@@ -2341,10 +2339,10 @@ public function updatePaymentTransactiodetails()
 		$session = $student_details[0]->session;
 		// $university_mode = $course_details[0]->university_mode;
 
-if($Fess_head!=''){
+     if($Fess_head!=''){
 		$exam_fees = ($Fess_head== 'Exam Fees') ? $course_details[0]->exam_fees+$course_details[0]->program_fees : $course_details[0]->form_fees+$course_details[0]->admission_fees;
 		
-	}
+	    }
 
 
 		$dateTime = explode(' ',$dateTime);
@@ -2352,8 +2350,7 @@ if($Fess_head!=''){
 			 ,'center_id'=>$center_id,'course_group_id'=>$course_group_id,'class_id'=>$class_id,'remark'=>$remark,'student_name'=>$name,'exam_session'=>$session,
 			  'admission_type'=>'Regular','amount'=>
               $exam_fees
-              
-	);
+              );
 		
 
 		$transaction = $this->Common_model->insertAll('online_payment_transaction',$updateData);
