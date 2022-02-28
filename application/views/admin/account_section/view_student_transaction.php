@@ -187,8 +187,6 @@
 </div>
 
 
-
-
 <div class="modal fade" id="exampleModalCenter1" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
@@ -223,6 +221,7 @@
 				<fieldset class="form-group col-md-6">
 					<label for="date"> Payment Date</label>
 					<input type="text" required class="form-control" id="dateTime" name="dateTime">
+
 				</fieldset>
 			</div>
 			<div class="modal-footer">
@@ -233,6 +232,12 @@
 		</div>
 	</div>
 </div>
+
+
+
+
+
+
 
 
 

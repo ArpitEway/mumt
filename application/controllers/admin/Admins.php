@@ -2321,15 +2321,17 @@ public function updatePaymentTransactiodetails()
 	{
 		
 		$txnid = $this->input->post('TxnId');
-		$Fess = $this->input->post('Fess');
+		$Fess_head = $this->input->post('Fess');
 		$dateTime = $this->input->post('dateTime');
 		$student_id = $this->input->post('student_id');
 		
-		$where = array('student_id'=>$student_id);
+		$where = array('student_id'=>$student_id,
+			'session'=>'July 2021'
+	);
 
 		$student_details =  $this->Common_model->getRecordByWhere('student',$where);
 
- $student_details1 =  $this->Common_model->getRecordByWhere('course',array('course_group_id'=>$student_details[0]->course_group_id));
+ $course_details =  $this->Common_model->getRecordByWhere('course',array('course_group_id'=>$student_details[0]->course_group_id,'session'=>$student_details[0]->session));
 
 		$center_id = $student_details[0]->center_id;
 		$course_group_id = $student_details[0]->course_group_id;
@@ -2337,14 +2339,20 @@ public function updatePaymentTransactiodetails()
 		$remark = $student_details[0]->remark;
 		$name = $student_details[0]->name;
 		$session = $student_details[0]->session;
-		 $university_mode = $student_details[0]->university_mode;
-         $exam_fees = $student_details1[0]->exam_fees;
+		// $university_mode = $course_details[0]->university_mode;
+
+if($Fess_head!=''){
+		$exam_fees = ($Fess_head== 'Exam Fees') ? $course_details[0]->exam_fees+$course_details[0]->program_fees : $course_details[0]->form_fees+$course_details[0]->admission_fees;
+		
+	}
+
 
 		$dateTime = explode(' ',$dateTime);
-		$updateData = array('txnId' => $txnid,'fees_head'=>$Fess,'payment_date' => $dateTime[0],'payment_time' => $dateTime[1],'payment' => 'Y', 'payment_status' => 'captured','student_id'=>$student_id
+		$updateData = array('txnId' => $txnid,'fees_head'=>$Fess_head,'payment_date' => $dateTime[0],'payment_time' => $dateTime[1],'payment' => 'Y', 'payment_status' => 'captured','student_id'=>$student_id
 			 ,'center_id'=>$center_id,'course_group_id'=>$course_group_id,'class_id'=>$class_id,'remark'=>$remark,'student_name'=>$name,'exam_session'=>$session,
-			  'admission_type'=>$university_mode,'amount'=>
+			  'admission_type'=>'Regular','amount'=>
               $exam_fees
+              
 	);
 		
 
