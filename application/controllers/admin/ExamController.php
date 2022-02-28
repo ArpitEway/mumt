@@ -86,6 +86,7 @@ class ExamController extends CI_Controller {
 				
 			);
 			$student = $this->Common_model->getRecordByWhere('student',$where);
+		
 			$data = array(
 			'students' => $student,
 			'name_csrf' => $this->security->get_csrf_token_name(),
@@ -99,6 +100,18 @@ class ExamController extends CI_Controller {
 	
 			
 			$enrollment_nos = $this->input->post('enrollment_no');
+			
+            foreach($enrollment_nos as $en){
+			
+				
+				$student = $this->Common_model->getRecordByWhere('student',array('enrollment_no'=>$en));
+				$exam_form_permission = $this->Common_model->getRecordByWhere('class_master',array('id'=>$student[0]->class_id));
+				$session = $this->Common_model->getRecordByWhere('session',array('session'=>$student[0]->session));
+				
+				if($exam_form_permission[0]->exam_form_permission=='Y' && $session[0]->exam_form_permission){
+					$this->Common_model->updateRecordByConditions('student',array('student_id'=>$student[0]->student_id),array('new_exam_form'=>'N'));
+				}
+			}
 			
 			foreach($enrollment_nos as $enrollment_no){				
 				$data = array('enrolled' => 'Y');

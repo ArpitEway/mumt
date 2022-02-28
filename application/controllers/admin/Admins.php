@@ -1492,8 +1492,6 @@ public function update_doc_permission_status()
 
 	public function search_student(){
 		
-		
-		
 		$this->load->view('header',array('title' => 'Search Students'));
 
 		$data = array(
