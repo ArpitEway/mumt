@@ -195,7 +195,7 @@
 				
 
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>
+				<h5 class="modal-title" id="exampleModalLabel">Add Transaction</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<i aria-hidden="true" class="ki ki-close"></i>
 				</button>
@@ -203,9 +203,9 @@
 
 			<div class="modal-body row">
            <fieldset class="form-group col-md-6">
-           	<label for="fees">Fess</label>	
+           	<label for="fees">Fees</label>	
                 
-						<select name="fess" id="fess" class="form-control" >
+						<select name="fees" id="fees" class="form-control" >
 							<option value="">Select All</option>
 						<option selected value="Exam Fees">Exam fees</option>
 							<option value="Admission Fees">Admission fees</option>
@@ -215,7 +215,7 @@
               </fieldset>
 
 				<fieldset class="form-group col-md-6">
-					<label for="transaction">Transaction Id</label>	>
+					<label for="transaction">Transaction Id</label>	
 		
 					<input type="text" required name="TxnIdnew" class="form-control" id="transaction1" placeholder="">
 				</fieldset>

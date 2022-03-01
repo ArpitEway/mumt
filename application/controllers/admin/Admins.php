@@ -2321,7 +2321,7 @@ public function updatePaymentTransactiodetails()
 	{
 		
 		$txnid = $this->input->post('TxnIdnew');
-		$Fess_head = $this->input->post('fess');
+		$Fess_head = $this->input->post('fees');
 		$dateTime = $this->input->post('dateTimenew');
 		$student_id = $this->input->post('student_id');
 		
@@ -2356,7 +2356,12 @@ public function updatePaymentTransactiodetails()
 		$transaction = $this->Common_model->insertAll('online_payment_transaction',$updateData);
 	
 		$where1 = array('student_id' => $student_id);
+	if($Fess_head=='Admission Fees'){	
 		$result = $this->Common_model->updateRecordByConditions('student',$where1,array('payment_status'=> 'Y'));
+}
+if($Fess_head=='Exam Fees'){
+$result = $this->Common_model->updateRecordByConditions('student',$where1,array('new_exam_form'=> 'Y'));
+}
 		if($result){
 			$paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student_id));
 			$data = array('paymentDetails' => $paymentDetails);
