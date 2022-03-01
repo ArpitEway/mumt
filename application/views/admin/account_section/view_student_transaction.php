@@ -140,17 +140,18 @@
 				</div>
 			<?php } ?>
 		</div>
+
+
+
 	</div>
 
+                <div class=" text-center"> 
+				
+							<label class="text-heading mt-3"><button type="button" class="btn btn-primary modalOpen1" data-toggle="modal" id="showbutton" data-student_id="<?=$student->student_id;?>" data-target="#exampleModalCenter1"> Add Transaction</button></label>
+					</div>              
 
 </div>
 
-
-<div class=" text-center"> 
-						
-							<label class="text-heading mt-3"><button type="button" class="btn btn-primary modalOpen" data-toggle="modal" data-student_id="<?=$student->student_id;?>" data-target="#exampleModalCenter1"> Add Transaction</button></label>
-
-					</div>
 
 
 
@@ -167,7 +168,7 @@
 			<div class="modal-body row">
 				<fieldset class="form-group col-md-6">
 					<label for="transaction">Transaction Id</label>
-					<input  type="hidden" name="id" id="paymentId" >
+					<input  type="hidden" name="id" id="paymentId">
 					<input  type="hidden" name="student_id" id="student_id">
 					<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 					<input type="text" required name="TxnId" class="form-control" id="transaction" placeholder="">
@@ -191,7 +192,7 @@
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<form >
-				<input  type="hidden" name="student_id" id="student_id" value="<?=$student->student_id;?>">
+				
 
 			<div class="modal-header">
 				<h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>
@@ -208,8 +209,7 @@
 							<option value="">Select All</option>
 						<option selected value="Exam Fees">Exam fees</option>
 							<option value="Admission Fees">Admission fees</option>
-							
-							
+									
 						</select>
 						
               </fieldset>
@@ -217,11 +217,11 @@
 				<fieldset class="form-group col-md-6">
 					<label for="transaction">Transaction Id</label>	>
 		
-					<input type="text" required name="TxnId" class="form-control" id="transaction" placeholder="">
+					<input type="text" required name="TxnIdnew" class="form-control" id="transaction1" placeholder="">
 				</fieldset>
 				<fieldset class="form-group col-md-6">
 					<label for="date"> Payment Date</label>
-					<input type="text" required class="form-control" id="dateTime1" name="dateTime">
+					<input type="text" required class="form-control" id="dateTime1" name="dateTimenew">
 
 				</fieldset>
 			</div>
@@ -251,7 +251,8 @@
 
 	$('#submit').on('click',function (e) {
 		e.preventDefault();
-		
+
+		 
 		let formData = $('form').serialize();
 		$.ajax({
 			url: BASE_URL+ 'admin/'+account_type+'/updatePaymentTransaction',
@@ -262,6 +263,7 @@
 				if(response.success){
 					toastr.success(response.success);
 					$('#txnDetails').html(response.data);
+
 					$('.modalOpen').remove();
 					$('#exampleModalCenter').toggle();
 					$('.modal-backdrop').remove();
@@ -276,9 +278,8 @@
 
 
 
-
 <script type="text/javascript">
-	$( ".modalOpen" ).on('click', function(){
+	$( ".modalOpen1" ).on('click', function(){
 		
 		$('#student_id').val($(this).attr("data-student_id"));
 	});
@@ -294,6 +295,7 @@
 		e.preventDefault();
 		
 		let formData = $('form').serialize();
+		
 		$.ajax({
 			url: BASE_URL+ 'admin/'+account_type+'/updatePaymentTransactiodetails',
 			method: 'post',
@@ -303,9 +305,11 @@
 				if(response.success){
 					toastr.success(response.success);
 					$('#txnDetails').html(response.data);
-					$('.modalOpen').remove();
+					$('.modalOpen1').remove();
 					$('#exampleModalCenter1').toggle();
 					$('.modal-backdrop').remove();
+					$('#showbutton').show();
+					
 					//location.reload();
 				}else if(response.error){
 					toastr.error(response.error);

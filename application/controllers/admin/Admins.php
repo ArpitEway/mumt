@@ -2320,9 +2320,9 @@ public function update_exam_datewise_permission(){
 public function updatePaymentTransactiodetails()
 	{
 		
-		$txnid = $this->input->post('TxnId');
+		$txnid = $this->input->post('TxnIdnew');
 		$Fess_head = $this->input->post('fess');
-		$dateTime = $this->input->post('dateTime');
+		$dateTime = $this->input->post('dateTimenew');
 		$student_id = $this->input->post('student_id');
 		
 		$where = array('student_id'=>$student_id		
