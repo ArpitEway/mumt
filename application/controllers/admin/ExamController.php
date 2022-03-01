@@ -454,4 +454,24 @@ class ExamController extends CI_Controller {
 			echo json_encode(array('error'=>false));
 		}
 	}
+
+  
+	public function assign_answersheet(){
+		$titleData = array('title' => 'Teachers'); 
+		$this->load->view('header',$titleData);
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();	
+		$data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id) , course_name ');
+	
+    //    foreach($data['courses'] as $course){
+	// 	$data['class']= $this->Common_model->getRecordByWhere('class_master',array('course_group_id'=>$course['course_group_id'],'exam_form_permission'=>'Y'));
+	// 	//echo "<pre>";
+	// 	//print_r($data['class']);
+		
+	//    }
+	 //  die ;
+		$this->load->view('admin/examController/assign_answersheet',$data);
+		$this->load->view('footer');
+   } 
+
 }// class
