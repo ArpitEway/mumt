@@ -2321,7 +2321,7 @@ public function updatePaymentTransactiodetails()
 	{
 		
 		$txnid = $this->input->post('TxnId');
-		$Fess_head = $this->input->post('Fess');
+		$Fess_head = $this->input->post('fess');
 		$dateTime = $this->input->post('dateTime');
 		$student_id = $this->input->post('student_id');
 		

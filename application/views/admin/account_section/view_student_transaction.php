@@ -146,7 +146,7 @@
 </div>
 
 
-<div class=" text-center">
+<div class=" text-center"> 
 						
 							<label class="text-heading mt-3"><button type="button" class="btn btn-primary modalOpen" data-toggle="modal" data-student_id="<?=$student->student_id;?>" data-target="#exampleModalCenter1"> Add Transaction</button></label>
 
@@ -202,8 +202,9 @@
 
 			<div class="modal-body row">
            <fieldset class="form-group col-md-6">
-                <label>Fess:</label>
-						<select name="Fess" id="Fess" class="form-control" >
+           	<label for="fees">Fess</label>	
+                
+						<select name="fess" id="fess" class="form-control" >
 							<option value="">Select All</option>
 						<option selected value="Exam Fees">Exam fees</option>
 							<option value="Admission Fees">Admission fees</option>
