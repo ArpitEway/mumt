@@ -145,13 +145,13 @@
 
 	</div>
 
-                <div class=" text-center"> 
-				
-							<label class="text-heading mt-3"><button type="button" class="btn btn-primary modalOpen1" data-toggle="modal" id="showbutton" data-student_id="<?=$student->student_id;?>" data-target="#exampleModalCenter1"> Add Transaction</button></label>
-					</div>              
+                        
 
 </div>
-
+ <div class=" text-center" id="showbutton"> 
+				
+							<label class="text-heading mt-3"><button type="button" class="btn btn-primary modalOpen1 " data-toggle="modal"  data-student_id="<?=$student->student_id;?>" data-target="#exampleModalCenter1"> Add Transaction</button></label>
+					</div>     
 
 
 
@@ -305,10 +305,11 @@
 				if(response.success){
 					toastr.success(response.success);
 					$('#txnDetails').html(response.data);
+					
 					$('.modalOpen1').remove();
 					$('#exampleModalCenter1').toggle();
 					$('.modal-backdrop').remove();
-					$('#showbutton').show();
+	
 					
 					//location.reload();
 				}else if(response.error){
