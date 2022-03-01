@@ -30,6 +30,7 @@ class saveFormdata extends CI_Controller {
 		$data['category'] = html_escape($this->input->post('category'));
 		$data['gender'] = html_escape($this->input->post('gender'));
 		$data['name'] = html_escape(strtoupper($this->input->post('name')));
+	
 		$data['f_h_name'] = html_escape(strtoupper($this->input->post('f_h_name')));
 		$data['mother_name'] = html_escape(strtoupper($this->input->post('mother_name')));
 		$data['dob'] = html_escape(date("Y-m-d", strtotime($this->input->post('dob'))));
@@ -79,7 +80,8 @@ class saveFormdata extends CI_Controller {
 		$this->db->trans_start();
 
 		$student_id = $this->Common_model->insertAll('student',$data);
-
+        
+	
 		$path = './assets/student_image/'.$session;
 		if(!file_exists($path)){
 			mkdir($path);
@@ -94,6 +96,7 @@ class saveFormdata extends CI_Controller {
 		$this->Common_model->insertAll('student_data',$studentData);
 		
 		$OnlinePayTxnData = array('student_id' => $student_id,'center_id' => $this->session->center_id,'fees_head' => 'Admission Fees','amount' => 1500,'payment_status'=>'pending','course_group_id' => $course_group_id,'class_id' => $class_id,'student_name' => $data['name'],'admission_type'=>'regular');
+		
 		if(in_array($this->session->center_id, $center_ids)){
 			$OnlinePayTxnData['payment_status']	= 'Paid By University';
 			$OnlinePayTxnData['payment'] =	'Y';
@@ -110,7 +113,30 @@ class saveFormdata extends CI_Controller {
 		{ 
 			$this->db->trans_complete();
 		}
-
+           
+			//	paper add code 
+		$class = $this->Common_model->getRecordByWhere('class_master',array('id' =>$class_id));
+       
+		if($class[0]->exam_form_permission =='Y' && $class[0]->class_group=="N"){
+		$papers = $this->Common_model->getRecordByWhere('paper_master',array('class_id' =>$class_id));
+	
+	
+		foreach($papers as $paper){
+		
+			$data = array(
+				'student_id'=>$student_id ,
+				'course_group_id'=>$paper->course_group_id,
+				'class_id'=>$paper->class_id,
+				'paper_id'=>$paper->id,
+				'paper_code'=>$paper->paper_code,
+				'paper_type'=>$paper->type,
+				'book_code'=>$paper->book_code,
+			);
+	       $this->Common_model->insertAll('new_exam_form',$data);
+		 
+		}
+	
+		}
 		$student_id = $this->Common_model->encrypt_decrypt($student_id);
 		$result = array('student_id'=>$student_id);
 		echo json_encode($result);
@@ -142,9 +168,7 @@ class saveFormdata extends CI_Controller {
 		if ( ! $this->upload->do_upload($file))
 		{
 			return $error = array('error' => $this->upload->display_errors());
-		}
-		else
-		{
+		}else{
 			return   $this->upload->data();
 		}
 	}
