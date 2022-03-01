@@ -388,6 +388,70 @@ class ExamController extends CI_Controller {
 			$data = array('course_group' => $course_group);
 			$this->load->view('Centers/instruction',$data);
 			$this->load->view('footer');
-	}
+	}   
 
+
+
+	public function teachers($param1 = '', $param2 = '', $param3 = ''){
+		
+		if($param1 == 'create'){
+			$data['name'] = html_escape($this->input->post('name'));
+			$data['address'] = html_escape($this->input->post('address'));
+			$data['email'] = html_escape($this->input->post('email'));
+			$data['phone'] = html_escape($this->input->post('phone'));
+			$data['subject'] = html_escape($this->input->post('subject'));
+			$data['clg_name'] = html_escape($this->input->post('clg_name'));	
+			$insert = $this->Common_model->insertAll('teacher',$data);
+			redirect(base_url().'ExamController/teachers');
+		}
+		if($param1 == 'update'){
+			$data['name'] = html_escape($this->input->post('name'));
+			$data['address'] = html_escape($this->input->post('address'));
+			$data['email'] = html_escape($this->input->post('email'));
+			$data['phone'] = html_escape($this->input->post('phone'));
+			$data['subject'] = html_escape($this->input->post('subject'));
+			$data['clg_name'] = html_escape($this->input->post('clg_name'));	
+			$update = $this->Common_model->updateRecordByConditions('teacher', array('id'=>$param2) ,$data);
+			redirect(base_url().'ExamController/teachers');
+		}
+		
+		if($param1 == 'delete'){
+
+			$delete = $this->Common_model->deleteByWhere('teacher',array('id'=>$param2));
+			redirect(base_url().'ExamController/teachers');
+			
+		}
+		if(empty($param1) ){
+		$titleData = array('title' => 'Teachers'); 
+		$this->load->view('header',$titleData);	
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();
+		$data['teachers'] = $this->Common_model->get_record('teacher','*');
+		    $this->load->view('admin/examController/teachers',$data);
+			$this->load->view('footer');
+		}
+	}
+ 
+	public function update_teacher_status(){
+		
+
+		 $status =  $this->input->post('status');
+		if(isset($_POST['id'])){
+			$id =  $this->input->post('id');
+          
+			$where = array('id'=>$id);
+		}
+        if($status!=''){
+		$st = ($status == 'Y') ? 'N' : 'Y';
+		$data=array(
+			'status'=>$st,);
+	        }
+        
+		$res=$this->Common_model->updateRecordByConditions('teacher',$where,$data);
+		if($status == 'Y'){
+			echo json_encode(array('success'=>true));
+		}else if($status == 'N'){
+			echo json_encode(array('error'=>false));
+		}
+	}
 }// class
