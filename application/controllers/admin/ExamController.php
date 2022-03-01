@@ -74,56 +74,51 @@ class ExamController extends CI_Controller {
 	}
    
 
-	 public function enrollment_permission($centerCode = ""){
+	public function enrollment_permission($centerCode = ""){
 		$centerCode = $this->Common_model->encrypt_decrypt($centerCode,'decrypt');
 		if(!isset($_POST['action'])){
 			
 			$where = array(
 				'center_code' => $centerCode,
-			     'enrolled' => 'N' ,
-				 'approved' => 'Y',
-				 "enrollment_no!="=> '-',
-				
+				'enrolled' => 'N',
+				'approved' => 'Y',
+				"enrollment_no!="=> '-',
 			);
+
 			$student = $this->Common_model->getRecordByWhere('student',$where);
-		
+
 			$data = array(
-			'students' => $student,
-			'name_csrf' => $this->security->get_csrf_token_name(),
-			'hash_csrf' => $this->security->get_csrf_hash(),
+				'students' => $student,
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
 			);
-		
+
 			$this->load->view('header',array('title' => 'Set Enrollment Permission'));
 			$this->load->view('admin/examController/set_enrollment_permission',$data);
 			$this->load->view('footer');
-			}else if($_POST['action']=='setPermission'){
-	
-			
+		}else if($_POST['action']=='setPermission'){
 			$enrollment_nos = $this->input->post('enrollment_no');
 			
-            foreach($enrollment_nos as $en){
-			
-				
+			foreach($enrollment_nos as $en){
 				$student = $this->Common_model->getRecordByWhere('student',array('enrollment_no'=>$en));
+
 				$exam_form_permission = $this->Common_model->getRecordByWhere('class_master',array('id'=>$student[0]->class_id));
+
 				$session = $this->Common_model->getRecordByWhere('session',array('session'=>$student[0]->session));
-				
-				if($exam_form_permission[0]->exam_form_permission=='Y' && $session[0]->exam_form_permission){
-					$this->Common_model->updateRecordByConditions('student',array('student_id'=>$student[0]->student_id),array('new_exam_form'=>'N'));
-				}
-			}
-			
-			foreach($enrollment_nos as $enrollment_no){				
+
 				$data = array('enrolled' => 'Y');
-				$where = 'enrollment_no="'.$enrollment_no.'" ';
+				/*****  exam form permission *****/
+				if($exam_form_permission[0]->exam_form_permission=='Y' && $session[0]->exam_form_permission){
+					$data['new_exam_form'] ='N';
+				}
+				$where = 'student_id="'.$student[0]->student_id.'" ';
 				$this->Common_model->updateRecordByConditions('student',$where,$data);
-			
 			}
+
 			$this->session->set_flashdata('ajax_flash_message','permission updated');
 			$centerCode = $this->Common_model->encrypt_decrypt($centerCode,'encrypt');
 			redirect(base_url().'admin/ExamController/enrollment_permission/'.$centerCode);		
 		}
-	
 	}
 
 
@@ -379,18 +374,18 @@ class ExamController extends CI_Controller {
 		}
 
 
-		public function  center_wise_enrollment_permission(){
-			$data = array();
-			$data['title'] = "Center Wise Enrollment Permission";
-			$this->load->view('header',$data);
-			$where = array("approved" => "Y" , "enrollment_no!="=> '-' , 'enrolled'=> 'N');
-			$data['centers'] = $this->Common_model->get_record_group_by_where('student','center_id , ,center_name ,center_code , ',$where);
-			
-			$data['name_csrf'] = $this->security->get_csrf_token_name();
-			$data['hash_csrf'] = $this->security->get_csrf_hash();
-			$this->load->view('admin/examController/center_wise_enrollment_permission',$data);
-			$this->load->view('footer');
-		}
+	public function  center_wise_enrollment_permission(){
+		$data = array();
+		$data['title'] = "Center Wise Enrollment Permission";
+		$this->load->view('header',$data);
+		$where = array("approved" => "Y" , "enrollment_no!="=> '-' , 'enrolled'=> 'N');
+		$data['centers'] = $this->Common_model->get_record_group_by_where('student','center_id, center_name, center_code ',$where);
+
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();
+		$this->load->view('admin/examController/center_wise_enrollment_permission',$data);
+		$this->load->view('footer');
+	}
 
 	public function course_detail(){
 			$titleData = array('title' => 'Course Details'); 

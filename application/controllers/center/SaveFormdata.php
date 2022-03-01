@@ -168,9 +168,7 @@ class saveFormdata extends CI_Controller {
 		if ( ! $this->upload->do_upload($file))
 		{
 			return $error = array('error' => $this->upload->display_errors());
-		}
-		else
-		{
+		}else{
 			return   $this->upload->data();
 		}
 	}
