@@ -58,9 +58,9 @@
 								<span id="alert-msg" class="aler alert-error p-2 alert-msg" style="color:red;"><?= $error;?></span>
 							<?php } ?>
 								<!--begin::Form-->
-								<form class="form" method="post" action="<?=BASE_URL('loginSub')?>" >
+								<form class="form" method="post" action="<?=BASE_URL('admin/teacher/loginSub')?>" >
 									<div class="form-group py-3 m-0">
-										<input class="form-control  placeholder-dark-75" type="test" placeholder="User Id" name="username" autocomplete="off" />
+										<input class="form-control  placeholder-dark-75" type="test" placeholder="Phone No" name="phone" autocomplete="off" />
 									</div>
 									<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 									<div class="form-group py-3 border-top m-0">

@@ -1,13 +1,13 @@
 <?php 
 	if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 	
-	class Student_model extends CI_Model {
+	class Teacher_model extends CI_Model {
 		
         public $table = 'teacher';
         public $id = 'id';
         public $order = 'DESC';
 		
-		public function checkStudent($username,$password)
+		public function checkTeacher($username,$password)
         {
 			
 			$password = date("Y-m-d",strtotime($password));

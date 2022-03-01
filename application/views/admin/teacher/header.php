@@ -28,7 +28,7 @@
 	<script type='text/javascript' src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
 	<script type="text/javascript">
 		var BASE_URL = "<?php echo base_url();?>";
-		var account_type = "<?php echo  ($this->session->has_userdata('account_type')) ? $this->session->account_type : '' ;?>";
+		
 	</script>
 
 </head>
@@ -62,21 +62,22 @@
 						display: flex;
 						align-items: center;
 						">
-						<?php if($this->session->has_userdata('adminData')){ ?>
-							<a href="<?=base_url($this->session->account_type)?>" class="btn btn-custom-white mr-3">Dashboard</a>
+						<?php if($this->session->has_userdata('teacherdata')){ ?>
+							<a href="<?=base_url('admin/teacher/dashboard')?>" class="btn btn-custom-white mr-3">Dashboard</a>
+								
 						<div class="dropdown">
 							<a class="btn btn-custom-white dropdown-toggle mr-3" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								Action
 							</a>
 
 							<div class="dropdown-menu l-50" aria-labelledby="dropdownMenuLink">
-								<!-- <a class="dropdown-item" href="<?=base_url('admin/change_password')?>">Change Password</a> -->
-								<a href="<?=base_url('logout')?>" class="dropdown-item">Log Out</a>
+								 <a class="dropdown-item" href="<?=base_url('admin/teacher/change_password')?>">Change Password</a> 
+								<a href="<?=base_url('admin/teacher/logout')?>" class="dropdown-item">Log Out</a>
 							</div>
 						</div>
 						
 					<?php }else{ ?>
-						<a href="<?=base_url('admin/login')?>" class="btn btn-custom-white mr-3">Sign In</a>
+						<a href="<?=base_url('admin/teacher/login')?>" class="btn btn-custom-white mr-3">Sign In</a>
 					<?php } ?>
 					</div>
 				</div>

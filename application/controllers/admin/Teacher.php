@@ -11,54 +11,49 @@ class Teacher extends CI_Controller {
 		$this->load->model('admin/Teacher_model');
 		$this->load->model('Common_model');
 		$this->load->model('Datatable_join_model');
-		if($this->session->account_type!='Teacher'){
-			redirect(base_url('admin/logout')); 
-		}
-	}
-
-	public function index(){
 
 		if($this->session->has_userdata('teacherdata')){
-
-			$admin_id = $this->session->admin_id;
-
-			$where = 'admin_id='.$admin_id.' and status="Y"';
-
-			$menu = array(
-				"menu_headings" => $this->Common_model->getRecordByWhereByOrder('menu_heading',$where,'heading_order','ASC'),
-				"menus" => $this->Common_model->getRecordByWhereByOrder('menu',$where,'heading_id,menu_order','ASC'),
-			);
-
-			$this->load->view('header',array('title' => 'Teacher Section'));
-			$this->load->view('admin/director/dashboard',$menu);
-			$this->load->view('footer');
-		}
-		else
-		{
-			redirect(base_url('admin/login'));
+			redirect(base_url('admin/teacher/logout')); 
 		}
 	}
+
+public function index(){
+			if($this->session->has_userdata('teacherdata')){
+			$admin_id = $this->session->admin_id;
+			$where = 'admin_id='.$admin_id;
+				$menu = array(
+					"menu_headings" => $this->Common_model->getRecordByWhereByOrder('menu_heading',$where,'heading_order','ASC'),
+					"menus" => $this->Common_model->getRecordByWhereByOrder('menu',$where,'heading_id,menu_order','ASC'),
+				);
+				
+				$this->load->view('admin/teacher/header',array('title' => 'Teacher Section'));
+				$this->load->view('admin/teacher/dashboard',$menu);
+				$this->load->view('admin/teacher/footer');
+			}
+			else
+			{
+				redirect(base_url('admin/teacher/login'));
+			}
+		}
+		
 	public function dashboard(){
 
 		if($this->session->has_userdata('teacherdata')){
-
 			$admin_id = $this->session->admin_id;
-
-			$where = 'admin_id='.$admin_id.' and status="Y"';
-
-			$menu = array(
-				"menu_headings" => $this->Common_model->getRecordByWhereByOrder('menu_heading',$where,'heading_order','ASC'),
-				"menus" => $this->Common_model->getRecordByWhereByOrder('menu',$where,'heading_id,menu_order','ASC'),
-			);
-
-			$this->load->view('header');
-			$this->load->view('admin/director/dashboard',$menu);
-			$this->load->view('footer');
-		}
-		else
-		{
-			redirect(base_url('admin/login'));
-		}
+			$where = 'admin_id='.$admin_id;
+				$menu = array(
+					"menu_headings" => $this->Common_model->getRecordByWhereByOrder('menu_heading',$where,'heading_order','ASC'),
+					"menus" => $this->Common_model->getRecordByWhereByOrder('menu',$where,'heading_id,menu_order','ASC'),
+				);
+				
+				$this->load->view('admin/teacher/header',array('title' => 'Teacher Section'));
+				$this->load->view('admin/teacher/dashboard',$menu);
+				$this->load->view('admin/teacher/footer');
+			}
+			else
+			{
+				redirect(base_url('admin/teacher/login'));
+			}
 	}
 
 
@@ -70,7 +65,7 @@ public function login(){
 		'name_csrf' => $this->security->get_csrf_token_name(),
 		'hash_csrf' => $this->security->get_csrf_hash()
 		);
-		$this->load->view('teacher/login',$csrf);
+		$this->load->view('admin/teacher/login',$csrf);
 	}
 .
 
@@ -92,7 +87,7 @@ public function loginSub(){
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
 			);
-				$this->load->view('teacher/login',$csrf);
+				$this->load->view('admin/teacher/login',$csrf);
 		}
 		else
 		{ 
@@ -101,7 +96,7 @@ public function loginSub(){
 			$username = $_POST['phone'];
 			$password = $_POST['password'];
 			
-			$check_user = $this->Teacher_model->checkStudent($username,$password);
+			$check_user = $this->Teacher_model->checkTeacher($username,$password);
 			
 			if($check_user){
 				
@@ -115,7 +110,7 @@ public function loginSub(){
 				
 				$this->session->set_userdata($data);
 		
-			// $this->Student_model->checkStudentForm();
+			
 			redirect(base_url('dashboard'));
 			}else{
 
@@ -125,14 +120,11 @@ public function loginSub(){
 				);	
 		$this->session->set_flashdata('error','Phone no or Password are incorrect');
 		
-		$this->load->view('teacher/login',	$csrf );
+		$this->load->view('admin/teacher/login',	$csrf );
 		
 		}
 	}
 }
-
-
-
 
 
 
