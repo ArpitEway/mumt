@@ -482,24 +482,47 @@ class ExamController extends CI_Controller {
    }
 
    public function get_center_Code_by_class(){
-	// $dt = $this->load->view('admin/examController/get_center_code_by_class',$data,true);
-	 	// echo json_encode(array(
-		// 		"status" => true,
-		// 		"data" => $dt
-		// 	));
-		$this->db->select('*');
-		$this->db->from('new_exam_form');
-		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
-		$this->db->where('new_exam_form.class_id',181);
-		$this->db->where('new_exam_form.paper_id',73); 
 
-			echo $this->db->last_query();
-		die;
-	//  $this->db->group_by('new_exam_form.paper_id');// add group_by
-	//	$query = $this->db->get()->result();
-		//print_r($query);
-     
-    //  
+
+	$data['name_csrf'] = $this->security->get_csrf_token_name();
+	$data['hash_csrf'] = $this->security->get_csrf_hash();	
+		$this->db->select(' count(*) as cnt ,center_code,center_id');
+		$this->db->from('new_exam_form');
+		$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+		$this->db->where('new_exam_form.class_id',$_POST['class_id']);
+		$this->db->where('new_exam_form.paper_code',$_POST['paper_code']); 
+		$this->db->where('student.new_exam_form','Y'); 
+		$this->db->group_by('center_code');
+
+		$data['centers'] = $this->db->get()->result();
+	
+		if(!isset($_POST['action'])){
+			
+			$dt = $this->load->view('admin/examController/get_center_code_by_class',$data,true);
+			echo json_encode(array(
+					"status" => true,
+					"data" => $dt
+				));
+			}elseif($_POST['action']=='assign_answersheet'){
+	           echo "dfsd";
+			   die ;
+			
+				$assign_answersheets = $this->input->post('assign_answersheet');
+				print_r($assign_answersheets);
+				die ;
+				foreach($assign_answersheets as $assign_answersheets){				
+					$data = array('enrolled' => 'Y');
+					$where = 'enrollment_no="'.$enrollment_no.'" ';
+					$this->Common_model->updateRecordByConditions('student',$where,$data);
+				
+				}
+				$this->session->set_flashdata('ajax_flash_message','permission updated');
+				// $centerCode = $this->Common_model->encrypt_decrypt($centerCode,'encrypt');
+				// redirect(base_url().'admin/ExamController/enrollment_permission/'.$centerCode);		
+			}
+		 
+
+	
    }
    
     

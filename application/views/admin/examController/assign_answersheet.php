@@ -29,7 +29,7 @@
     <div class="form-group col-md-4">
 
             <label for="paper">Paper</label>
-            <select name="paper_id" readonly="readonly"  name='paper_id' id="paper_id" class="form-control" required>
+            <select name="paper_code" readonly="readonly"   id="paper_id" class="form-control" required>
                 <option value="">Select Paper</option>
             </select>
    </div>
@@ -84,7 +84,7 @@ $(document).ready(function() {
               
             var html = '';
             $.each(data.data, function (i, value) {
-                html += ('<option value="' + value.id + '">'+'('+ value.paper_code + ') '+value.paper_name + '</option>');
+                html += ('<option value="' + value.paper_code + '">'+'('+ value.paper_code + ') '+value.paper_name + '</option>');
             });
             $("#paper_id").html(html);
                   
