@@ -72,9 +72,10 @@
 						$count = count($data);
 						$data[0]->answer_sheet;
 						$path = FCPATH.'/assets/exam_answersheet/'.$data[0]->upload_date.'/'.$data[0]->answer_sheet;
-						if($count>=1 &&  file_exists($path)){
+						if($count>=1 &&  file_exists($path) && $data[0]->answer_sheet!=''){
 							?>
 							<button disable type="button" class="btn btn-success">Submitted</button>
+							<a href="javascript:void(0);" onclick="DeleteModal('<?php echo base_url('student/Student/delete_exam_answersheet/').$data[0]->id; ?>')" data-toggle="tooltip" title="Delete Answer-Sheet!"><i class="mdi mdi-delete ml-5"></i></a>
 							<?php
 						}elseif(file_exists(FCPATH.$pdf)){
 							$paper_id = $this->Common_model->encrypt_decrypt($paper->id,'encrypt'); 
