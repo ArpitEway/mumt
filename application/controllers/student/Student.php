@@ -201,7 +201,8 @@ class Student extends CI_Controller {
 					'center_id' =>$_POST['center_id'],
 					'answer_sheet' =>$document_image ,
 					'upload_date' =>date("Y-m-d") ,
-					'exam_status' => 'R'
+					'exam_status' => 'R',
+					'file_exist' => 'Y'
 				);
 				$where = array(
 					'class_id' => $_POST['class_id'],
