@@ -1,5 +1,5 @@
 <?php
-include_once(APPPATH.'core/ADMIN_controller.php');
+// include_once(APPPATH.'core/ADMIN_controller.php');
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -12,62 +12,50 @@ class Teacher extends CI_Controller {
 		$this->load->model('Common_model');
 		$this->load->model('Datatable_join_model');
 
-		if($this->session->has_userdata('teacherdata')){
-			redirect(base_url('admin/teacher/logout')); 
-		}
+		
 	}
 
 public function index(){
-			if($this->session->has_userdata('teacherdata')){
-			$admin_id = $this->session->admin_id;
-			$where = 'admin_id='.$admin_id;
-				$menu = array(
-					"menu_headings" => $this->Common_model->getRecordByWhereByOrder('menu_heading',$where,'heading_order','ASC'),
-					"menus" => $this->Common_model->getRecordByWhereByOrder('menu',$where,'heading_id,menu_order','ASC'),
-				);
-				
-				$this->load->view('admin/teacher/header',array('title' => 'Teacher Section'));
-				$this->load->view('admin/teacher/dashboard',$menu);
-				$this->load->view('admin/teacher/footer');
-			}
-			else
-			{
-				redirect(base_url('admin/teacher/login'));
-			}
+		if($this->session->has_userdata('teacherdata')){
+			redirect(base_url('admin/teacher/dashboard'));
+		}else{			
+			$csrf = array(
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash()
+			);
+			$this->load->view('admin/teacher/login',$csrf);
 		}
+	}
 		
 	public function dashboard(){
 
-		if($this->session->has_userdata('teacherdata')){
-			$admin_id = $this->session->admin_id;
-			$where = 'admin_id='.$admin_id;
-				$menu = array(
-					"menu_headings" => $this->Common_model->getRecordByWhereByOrder('menu_heading',$where,'heading_order','ASC'),
-					"menus" => $this->Common_model->getRecordByWhereByOrder('menu',$where,'heading_id,menu_order','ASC'),
-				);
-				
-				$this->load->view('admin/teacher/header',array('title' => 'Teacher Section'));
-				$this->load->view('admin/teacher/dashboard',$menu);
-				$this->load->view('admin/teacher/footer');
-			}
-			else
-			{
-				redirect(base_url('admin/teacher/login'));
-			}
+		if(!$this->session->has_userdata('teacherdata')){
+			redirect(base_url());
+		}else{
+			$titleData = array('title' => 'Teacher Dashboard'); 
+			$this->load->view('admin/teacher/header',$titleData);
+			$id =  $this->session->teacher_id;
+			$center = $this->Common_model->getRecordById('teacher','id',$id);
+			$data = array('teacher' => $center);
+			$this->load->view('admin/teacher/dashboard',$data);
+			$this->load->view('admin/teacher/footer');
+		}
 	}
 
 
 	
 	
 public function login(){
-
+		if($this->session->has_userdata('teacherdata')){
+			redirect(base_url('teacher'));
+			exit;
+		}
 		$csrf = array(
 		'name_csrf' => $this->security->get_csrf_token_name(),
 		'hash_csrf' => $this->security->get_csrf_hash()
 		);
 		$this->load->view('admin/teacher/login',$csrf);
 	}
-.
 
 
 
@@ -104,14 +92,14 @@ public function loginSub(){
 							'loged_in' 	  => true,
 							'teacherdata' => $check_user->phone,
 							'password' 	  	  => $check_user->password,
-							'id'  => $check_user->id,
+							'teacher_id'  => $check_user->id,
 							
 						);
 				
 				$this->session->set_userdata($data);
 		
 			
-			redirect(base_url('dashboard'));
+			redirect(base_url('admin/teacher/dashboard'));
 			}else{
 
 			$csrf = array(
