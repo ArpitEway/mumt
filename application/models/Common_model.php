@@ -782,6 +782,7 @@ class Common_Model extends CI_Model{
 		print_r($data);
 		// die;
 	}
+
 }
 
 ?>

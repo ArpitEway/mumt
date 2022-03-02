@@ -474,4 +474,33 @@ class ExamController extends CI_Controller {
 		$this->load->view('footer');
    } 
 
+
+   public function getPaperByClassId(){
+	// $_POST['class_id'];
+	   $data= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id']));
+	   echo json_encode(array('data'=>$data));
+   }
+
+   public function get_center_Code_by_class(){
+	// $dt = $this->load->view('admin/examController/get_center_code_by_class',$data,true);
+	 	// echo json_encode(array(
+		// 		"status" => true,
+		// 		"data" => $dt
+		// 	));
+		$this->db->select('*');
+		$this->db->from('new_exam_form');
+		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
+		$this->db->where('new_exam_form.class_id',181);
+		$this->db->where('new_exam_form.paper_id',73); 
+
+			echo $this->db->last_query();
+		die;
+	//  $this->db->group_by('new_exam_form.paper_id');// add group_by
+	//	$query = $this->db->get()->result();
+		//print_r($query);
+     
+    //  
+   }
+   
+    
 }// class
