@@ -100,7 +100,7 @@ public function loginSub(){
 				$this->session->set_userdata($data);
 		
 			
-			redirect(base_url('teacher/dashboard'));
+			redirect(base_url('Teacher/dashboard'));
 			}else{
 
 			$csrf = array(
