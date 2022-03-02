@@ -193,7 +193,7 @@
 				$('#loader').removeClass('loading');
 				if(data.success){
 					toastr.success(data.success);
-					window.location.href = BASE_URL+"center/dashboard";
+					window.location.href = BASE_URL+"dashboard";
 					return false;
 					}else{
 					toastr.error(data.error);
