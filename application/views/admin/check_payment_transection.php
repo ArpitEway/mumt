@@ -10,7 +10,6 @@
                 <label class="col-3 col-form-label" >Search By : </label>
                 <div class="col-9 col-form-label">
                     <div class="radio-inline">
-                                     
                         <label class="radio radio-success">
                             <input type = "radio"
                             name = "radio_stduent_search"
@@ -19,7 +18,6 @@
                             <span></span>
                             Enrollment No.
                         </label>
-
                         <label class="radio radio-success">
                             <input type = "radio"
                             name = "radio_stduent_search"
@@ -28,7 +26,6 @@
                             <span></span>
                             Form Id
                         </label>
-       
                     </div>
                 </div>
             </div> <!-- from-group row -->
