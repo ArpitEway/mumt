@@ -1,5 +1,5 @@
 
-<?php if($teacher[0]->account_no=''){ ?>
+<?php if($teacher[0]->account_no==''){ ?>
 
 
 <div class="col-md-12" id="issue">
