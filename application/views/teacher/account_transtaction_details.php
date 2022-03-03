@@ -7,7 +7,7 @@
   <div class="card card-custom bgi-no-repeat gutter-b card-stretch mt-3">
     <div class="card-body">
         <form id="ajaxForm">
-          <input type="hidden" name="id" value="<?=$id?>">
+          <input type="hidden" name="id" value="<?=$teacher->id?>">
           <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
           <div class="form-group row m-auto">
             
@@ -50,7 +50,7 @@
             </div>
           </div>
           <div class="row">
-            <button type="submit"  id="submitCertificate" class="btn btn-primary m-auto">submit</button>
+            <button type="submit"  id="submit" class="btn btn-primary m-auto">submit</button>
           </div>
         </form>
       </div>
@@ -111,17 +111,11 @@ else{  ?>
 
 
   
- 
-
-
-
-
-
 
 <script>
   $(document).ready(function(){
 
-    $("#submitCertificate").on('click',function (e){
+    $("#submit").on('click',function (e){
       e.preventDefault();
 
      var csrfName = $('.csrfname').attr('name');
