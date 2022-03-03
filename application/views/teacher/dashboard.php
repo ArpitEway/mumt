@@ -20,7 +20,7 @@
 
                   
 
-                    <a class="border-0 custom-menu-item" href="<?=base_url('teacher/Teacher/change_password');?>">
+                    <a class="border-0 custom-menu-item" href="<?=base_url('Teacher/account_transection_details');?>">
                         <div>
                             <span class="nav-text">Teacher</span>
                         </div>

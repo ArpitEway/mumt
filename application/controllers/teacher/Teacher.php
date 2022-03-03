@@ -125,7 +125,7 @@ public function logout()
    public function change_password(){
 	if(!$this->session->has_userdata('teacherdata')){
 
-		redirect(base_url());
+		redirect(base_url('login'));
 
 	}else{
 
@@ -201,6 +201,96 @@ public function change_password_sub($id)
 		}
 
 	}
+
+
+
+
+	public function account_transection_details(){
+
+
+$csrf = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
+		$whereStudent = array('id' => $this->session->teacher_id);
+		$data['teacher'] = $this->Common_model->getRecordByWhere('teacher',$whereStudent);
 	
 
-}
+	     $this->load->view('teacher/header',array('title' => ' Account Details Update'));
+				
+	$this->load->view('teacher/account_transtaction_details',$data);
+			$this->load->view('teacher/footer');
+		
+
+	}
+
+
+
+
+
+public function account_transection_details_sub()
+	{
+
+
+$csrf = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
+
+		$bankname = $this->input->post('bankname');
+		$accountno = $this->input->post('accountno');
+		$accountholder = $this->input->post('accountholder');
+		$ifsccode = $this->input->post('ifsccode');
+		$teacher_id = $this->input->post('id');
+
+		$config['upload_path'] = 'assets/documents';
+		$config['allowed_types'] = 'jpg|jpeg|png|gif';  
+		$config['encrypt_name']=TRUE;
+		$this->load->library('upload');
+		$this->upload->initialize($config);
+
+		if($this->upload->do_upload('file'))
+		{
+			$uploadData = $this->upload->data();
+		}else{
+			$returndata = array('error'=> $this->upload->display_errors());
+            echo json_encode($returndata);	
+			exit();
+		}
+
+		$teacherData = array(
+			'bank_name' => $bankname,
+			'account_no' => $accountno,
+			'account_name' => $accountholder,
+			'ifsc_code' =>$ifsccode,	
+			'image' =>$uploadData['file_name']
+			
+		);
+
+$data = $this->Common_model->updateRecordByConditions('teacher',array('id'=>$teacher_id),$teacherData);
+
+		
+
+        if($data){
+        	$returndata = array('success'=> 'Form Has Been Submited');
+            echo json_encode($returndata);
+		}else{
+			$returndata = array('error'=> 'An Error Occured');
+            echo json_encode($returndata);		
+		}
+	}
+
+
+		
+		}
+
+
+
+
+
+
+
+
+
+	
+
