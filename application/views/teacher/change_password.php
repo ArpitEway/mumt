@@ -2,7 +2,6 @@
 
     <form  method="POST" class="p-4 ajaxForm col-md-9 m-auto">
         <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-           <!-- <input type="hidden" class="id" name="id" value="<?= $teacher->id?>">  -->
         <div class="form-group row">
             <label class="col-xl-3 col-lg-3 col-form-label text-alert">Current Password</label>
             <div class="col-lg-9 col-xl-6">
@@ -29,7 +28,6 @@
 
    
 
-
 <script>
     <?php
     $this->session->set_flashdata("success","");
@@ -48,9 +46,8 @@
             url: '<?php echo site_url('teacher/Teacher/change_password_sub/'.$teacher->id); ?>',
             type: 'POST',
             dataType : 'json',
-            data: {frm ,[csrfName]:csrfHash},
-          
-             
+            data: frm ,
+              
             success: function (data) {
 
                 $('#password').val("");

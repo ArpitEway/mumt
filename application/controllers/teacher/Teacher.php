@@ -126,44 +126,32 @@ public function loginSub(){
 
 	
 public function change_password(){
-		if(!$this->session->has_userdata('teacherdata')){
+	if(!$this->session->has_userdata('teacherdata')){
 
-			redirect(base_url());
+		redirect(base_url());
 
-		}else{
+	}else{
 
-     
-			$titleData = array('title' => 'Change Password'); 
+		$titleData = array('title' => 'Change Password'); 
+		$this->load->view('teacher/header',$titleData);
+		$id = $this->session->teacher_id;
+    	$teacher = $this->Common_model->getRecordById('teacher','id',$id);
+		
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+			'teacher' => $teacher
+		);
 
-			$this->load->view('teacher/header',$titleData);
-
-			//$teacher_data = $this->session->get_userdata();
-	        
-			$id = $this->session->teacher_id;
-
-			$teacher = $this->Common_model->getRecordById('teacher','id',$id);
-			
-	 $data = array(
-					'name_csrf' => $this->security->get_csrf_token_name(),
-					'hash_csrf' => $this->security->get_csrf_hash(),
-					'teacher' => $teacher
-				);
-
-			
-			$this->load->view('teacher/change_password',$data);
-			$this->load->view('teacher/footer');
-		}
+		$this->load->view('teacher/change_password',$data);
+		$this->load->view('teacher/footer');
 	}
+}
 	
 
 
 public function change_password_sub($id)
 	{
-
-//  print_r($_POST);
-// die;
-
-
 
 		$data = array(
 					'name_csrf' => $this->security->get_csrf_token_name(),
@@ -171,22 +159,19 @@ public function change_password_sub($id)
 				);
 	
   
-
-		$resetdata =  $this->Common_model->getRecordById('teacher','id',$id);
+	$resetdata =  $this->Common_model->getRecordById('teacher','id',$id);
 
    $old_password = $resetdata->password;
-// echo $_POST['password'];
-// die;
- //$this->Common_model->last_query();
 
-		if(sha1($this->input->post('password')))
+
+		if($this->input->post('password'))
 		 {
-		 if(sha1($old_password == $this->input->post('password')))
+		 if($old_password == $this->input->post('password'))
 			 {
-			 	$new_password 	  = sha1($this->input->post('new_password'));
-			$confirm_password =sha1( $this->input->post('passconf'));
+			 	$new_password 	  = $this->input->post('new_password');
+			$confirm_password =$this->input->post('passconf');
 
-				if(sha1($this->input->post('new_password') ))
+				if($this->input->post('new_password'))
 				{
 
 						if($new_password == $confirm_password)
