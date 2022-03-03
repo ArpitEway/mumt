@@ -93,7 +93,7 @@ public function loginSub(){
 							'loged_in' 	  => true,
 							'teacherdata' => $check_user->phone,
 							'password' 	  	  => $check_user->password,
-							'teacher_id'  => $check_user->id,
+							'teacher_id'  => $check_user->id
 							
 						);
 				
@@ -132,23 +132,24 @@ public function change_password(){
 
 		}else{
 
-      $data = array(
-					'name_csrf' => $this->security->get_csrf_token_name(),
-					'hash_csrf' => $this->security->get_csrf_hash()
-				);
+     
 			$titleData = array('title' => 'Change Password'); 
 
 			$this->load->view('teacher/header',$titleData);
 
-			$teacher_data = $this->session->get_userdata($data);
+			//$teacher_data = $this->session->get_userdata();
 	        
-			$id = $teacher_data['teacher_id'];
+			$id = $this->session->teacher_id;
 
 			$teacher = $this->Common_model->getRecordById('teacher','id',$id);
 			
-	
+	 $data = array(
+					'name_csrf' => $this->security->get_csrf_token_name(),
+					'hash_csrf' => $this->security->get_csrf_hash(),
+					'teacher' => $teacher
+				);
 
-			$data = array('teacher' => $teacher);
+			
 			$this->load->view('teacher/change_password',$data);
 			$this->load->view('teacher/footer');
 		}
@@ -156,8 +157,11 @@ public function change_password(){
 	
 
 
-public function password_change($id)
+public function change_password_sub($id)
 	{
+
+//  print_r($_POST);
+// die;
 
 
 
@@ -165,26 +169,30 @@ public function password_change($id)
 					'name_csrf' => $this->security->get_csrf_token_name(),
 					'hash_csrf' => $this->security->get_csrf_hash()
 				);
-		$where = array("id" => $id);
+	
+  
 
-		$data = $this->Common_model->getRecordById('teacher','id',$id);
+		$resetdata =  $this->Common_model->getRecordById('teacher','id',$id);
 
-		$old_password = $data->password;
+   $old_password = $resetdata->password;
+// echo $_POST['password'];
+// die;
+ //$this->Common_model->last_query();
 
-		if($this->input->post('password') != "")
-		{
-			if($old_password == $this->input->post('password'))
-			{
-				$new_password 	  = $this->input->post('new_password');
-				$confirm_password = $this->input->post('new_password1');
+		if(sha1($this->input->post('password')))
+		 {
+		 if(sha1($old_password == $this->input->post('password')))
+			 {
+			 	$new_password 	  = sha1($this->input->post('new_password'));
+			$confirm_password =sha1( $this->input->post('passconf'));
 
-				if($this->input->post('new_password1') != "")
+				if(sha1($this->input->post('new_password') ))
 				{
 
 						if($new_password == $confirm_password)
 						{
 							
-							$data = array("password" => $this->input->post("new_password"));
+							$data = array("password" => $new_password );
 							$this->db->where('id', $id);
 							$this->db->update('teacher', $data);
 
@@ -203,16 +211,17 @@ public function password_change($id)
 						"error" => 'Please enter New Password',
 					));
 				}
-			}else{
-				echo json_encode(array(
-					"error" => 'Current Password is wrong',
-				));
-			}
-		}else{
-			echo json_encode(array(
-				"error" => 'Please enter current password',
-			));
-		}
+			 }else{
+		 	echo json_encode(array(
+			 		"error" => 'Current Password is wrong',
+			 	));
+			 }
+		 }else{
+		 	echo json_encode(array(
+		 		"error" => 'Please enter current password',
+		 	));
+		 }
+
 	}
 	
 
