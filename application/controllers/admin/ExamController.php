@@ -463,13 +463,7 @@ class ExamController extends CI_Controller {
 		$data['hash_csrf'] = $this->security->get_csrf_hash();	
 		$data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id) , course_name ');
 	
-    //    foreach($data['courses'] as $course){
-	// 	$data['class']= $this->Common_model->getRecordByWhere('class_master',array('course_group_id'=>$course['course_group_id'],'exam_form_permission'=>'Y'));
-	// 	//echo "<pre>";
-	// 	//print_r($data['class']);
-		
-	//    }
-	 //  die ;
+
 		$this->load->view('admin/examController/assign_answersheet',$data);
 		$this->load->view('footer');
    } 
@@ -484,41 +478,78 @@ class ExamController extends CI_Controller {
    public function get_center_Code_by_class(){
 
 
-	$data['name_csrf'] = $this->security->get_csrf_token_name();
-	$data['hash_csrf'] = $this->security->get_csrf_hash();	
-		$this->db->select(' count(*) as cnt ,center_code,center_id');
-		$this->db->from('new_exam_form');
-		$this->db->join('student', 'new_exam_form.student_id = student.student_id');
-		$this->db->where('new_exam_form.class_id',$_POST['class_id']);
-		$this->db->where('new_exam_form.paper_code',$_POST['paper_code']); 
-		$this->db->where('student.new_exam_form','Y'); 
-		$this->db->group_by('center_code');
 
-		$data['centers'] = $this->db->get()->result();
-	
-		if(!isset($_POST['action'])){
+		if($_POST['action1']=='submit'){
 			
+			$this->db->select('GROUP_CONCAT(center_id) as center_id');
+			$this->db->from("assign_answersheet");
+		    $this->db->where('paper_code',$_POST['paper_code']); 
+			 $query = $this->db->get()->result_array();
+		     $center_id = explode(',',$query[0]['center_id']);
+			    $data['name_csrf'] = $this->security->get_csrf_token_name();
+			    $data['hash_csrf'] = $this->security->get_csrf_hash();	
+				$this->db->select(' count(*) as cnt ,center_code,center_id');
+				$this->db->from('new_exam_form');
+				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+				$this->db->where('new_exam_form.class_id',$_POST['class_id']);
+				$this->db->where('new_exam_form.paper_code',$_POST['paper_code']); 
+				$this->db->where_not_in('student.center_id', $center_id );
+				$this->db->where('student.new_exam_form','Y'); 
+				$this->db->group_by('center_code');
+			  
+				$data['centers'] = $this->db->get()->result();
+				//$this->Common_model->last_query();
+
+				$data['teacher_id'] = $_POST['teacher_id'];
+				$data['class_id'] = $_POST['class_id'];
+				$data['paper_code'] = $_POST['paper_code'];
+				$data['course_group_id'] = $_POST['course_group_id'];
+		
 			$dt = $this->load->view('admin/examController/get_center_code_by_class',$data,true);
 			echo json_encode(array(
 					"status" => true,
 					"data" => $dt
 				));
-			}elseif($_POST['action']=='assign_answersheet'){
-	           echo "dfsd";
-			   die ;
+			}
+			if($_POST['action']=='assign_answersheet'){
 			
-				$assign_answersheets = $this->input->post('assign_answersheet');
-				print_r($assign_answersheets);
-				die ;
-				foreach($assign_answersheets as $assign_answersheets){				
-					$data = array('enrolled' => 'Y');
-					$where = 'enrollment_no="'.$enrollment_no.'" ';
-					$this->Common_model->updateRecordByConditions('student',$where,$data);
+				$where = array(
+					'teacher_id' => $_POST['teacher_id'],
+					'course_group_id'=> $_POST['course_group_id'],
+					'class_id'=> $_POST['class_id'],
+					'paper_code'=> $_POST['paper_code'],
+				);
+				$data= $this->Common_model->getRecordByWhere('assign_answersheet',$where);
 				
+				if($data==null){
+					$data_insert['teacher_id'] = $_POST['teacher_id'];
+					$data_insert['class_id'] = $_POST['class_id'];
+					$data_insert['course_group_id'] = $_POST['course_group_id'];
+					$data_insert['paper_code'] = $_POST['paper_code'];
+					$data_insert['center_id'] =  implode(',',$_POST['center_id']);
+			  
+					$insert = $this->Common_model->insertAll('assign_answersheet',$data_insert);
+				  if($insert){
+					  echo json_encode(array(
+						  "status" => true,
+					  ));	
+				  }
+					  
+				}else{
+			     	$center_id = implode(',',$_POST['center_id']) ;
+					$new_Center_id =$data[0]->center_id .",".$center_id   ;
+					
+					$data=array(
+                    'center_id' =>$new_Center_id,
+					);
+	      			$update = 	$this->Common_model->updateRecordByConditions('assign_answersheet',$where,$data);
+					if($update){
+						echo json_encode(array(
+							"status" => true,
+						));	
+					}
 				}
-				$this->session->set_flashdata('ajax_flash_message','permission updated');
-				// $centerCode = $this->Common_model->encrypt_decrypt($centerCode,'encrypt');
-				// redirect(base_url().'admin/ExamController/enrollment_permission/'.$centerCode);		
+				
 			}
 		 
 
