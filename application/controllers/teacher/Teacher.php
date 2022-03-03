@@ -18,7 +18,7 @@ class Teacher extends CI_Controller {
 public function index(){
 
 		if($this->session->has_userdata('teacherdata')){
-			redirect(base_url('teacher/dashboard'));
+			redirect(base_url('Teacher/dashboard'));
 		}else{			
 			$csrf = array(
 				'name_csrf' => $this->security->get_csrf_token_name(),
@@ -43,10 +43,9 @@ public function index(){
 		}
 	}
 
-
 	
 	
-public function login(){
+   public function login(){
 		if($this->session->has_userdata('teacherdata')){
 			redirect(base_url('teacher'));
 			exit;
@@ -60,7 +59,7 @@ public function login(){
 
 
 
-public function loginSub(){
+  public function loginSub(){
 		
 		 if($this->session->has_userdata('teacherdata')){
 		 	redirect(base_url('dashboard'));
@@ -116,16 +115,14 @@ public function loginSub(){
 }
 
 
-
-	
-	public function logout()
+public function logout()
 	{
 		$this->session->sess_destroy();
 		redirect(base_url('teacher/Teacher/login'));
 	}
 
 	
-public function change_password(){
+   public function change_password(){
 	if(!$this->session->has_userdata('teacherdata')){
 
 		redirect(base_url());
@@ -149,63 +146,59 @@ public function change_password(){
 }
 	
 
-
 public function change_password_sub($id)
 	{
 
 		$data = array(
-					'name_csrf' => $this->security->get_csrf_token_name(),
-					'hash_csrf' => $this->security->get_csrf_hash()
-				);
-	
-  
-	$resetdata =  $this->Common_model->getRecordById('teacher','id',$id);
-
-   $old_password = $resetdata->password;
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
 
 
+		$resetdata =  $this->Common_model->getRecordById('teacher','id',$id);
+		$old_password = $resetdata->password;
 		if($this->input->post('password'))
-		 {
-		 if($old_password == $this->input->post('password'))
-			 {
-			 	$new_password 	  = $this->input->post('new_password');
-			$confirm_password =$this->input->post('passconf');
+		{
+			if($old_password == $this->input->post('password'))
+			{
+				$new_password 	  = $this->input->post('new_password');
+				$confirm_password =$this->input->post('passconf');
 
 				if($this->input->post('new_password'))
 				{
 
-						if($new_password == $confirm_password)
-						{
-							
-							$data = array("password" => $new_password );
-							$this->db->where('id', $id);
-							$this->db->update('teacher', $data);
+					if($new_password == $confirm_password)
+					{
 
-							echo json_encode(array(
-								"success" => 'Password Updated Successfully',
-							));
-						}
-						else{
-							echo json_encode(array(
-								"error" => 'Password does not match',
-							));
-						}
+						$data = array("password" => $new_password );
+						$this->db->where('id', $id);
+						$this->db->update('teacher', $data);
+
+						echo json_encode(array(
+							"success" => 'Password Updated Successfully',
+						));
+					}
+					else{
+						echo json_encode(array(
+							"error" => 'Password does not match',
+						));
+					}
 				}else{
 
 					echo json_encode(array(
 						"error" => 'Please enter New Password',
 					));
 				}
-			 }else{
-		 	echo json_encode(array(
-			 		"error" => 'Current Password is wrong',
-			 	));
-			 }
-		 }else{
-		 	echo json_encode(array(
-		 		"error" => 'Please enter current password',
-		 	));
-		 }
+			}else{
+				echo json_encode(array(
+					"error" => 'Current Password is wrong',
+				));
+			}
+		}else{
+			echo json_encode(array(
+				"error" => 'Please enter current password',
+			));
+		}
 
 	}
 	

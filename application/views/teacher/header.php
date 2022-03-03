@@ -77,7 +77,7 @@
 						</div>
 						
 					<?php }else{ ?>
-						<a href="<?=base_url('teacher/login')?>" class="btn btn-custom-white mr-3">Sign In</a>
+						<a href="<?=base_url('Teacher/login')?>" class="btn btn-custom-white mr-3">Sign In</a>
 					<?php } ?>
 					</div>
 				</div>
