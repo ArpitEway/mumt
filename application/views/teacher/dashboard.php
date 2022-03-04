@@ -3,7 +3,7 @@
         <ul class="nav flex-column nav-pills">
             <li class="nav-item mb-2">
                 <a class="nav-link active show border" id="Enrollment-tab" data-toggle="tab" href="#Enrollment">
-                    <span class="nav-text">Teacher</span>
+                    <span class="nav-text">Teacher </span>
                     <span class="nav-icon flot-right" >
                         <i class="flaticon2-fast-next"></i>
                     </span>
@@ -22,10 +22,15 @@
 
                     <a class="border-0 custom-menu-item" href="<?=base_url('Teacher/account_transection_details');?>">
                         <div>
-                            <span class="nav-text">Teacher</span>
+                            <span class="nav-text">Teacher Bank Details</span>
                         </div>
                     </a>
                    
+                     <a class="border-0 custom-menu-item" href="<?=base_url('Teacher/Teacher_answersheet_checked_count');?>">
+                        <div>
+                            <span class="nav-text">Teacher Count  Details</span>
+                        </div>
+                    </a>
                    
                     
                   

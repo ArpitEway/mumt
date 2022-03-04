@@ -58,7 +58,7 @@
 								<span id="alert-msg" class="aler alert-error p-2 alert-msg" style="color:red;"><?= $error;?></span>
 							<?php } ?>
 								<!--begin::Form-->
-								<form class="form" method="post" action="<?=BASE_URL('teacher/Teacher/loginSub')?>" >
+								<form class="form" method="post" action="<?=BASE_URL('Teacher/loginSub')?>" >
 									<div class="form-group py-3 m-0">
 										<input class="form-control  placeholder-dark-75" type="test" placeholder="Phone No" name="phone" autocomplete="off" />
 									</div>

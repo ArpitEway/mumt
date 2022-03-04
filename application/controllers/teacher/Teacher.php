@@ -31,7 +31,7 @@ public function index(){
 	public function dashboard(){
 	
 		if(!$this->session->has_userdata('teacherdata')){
-			redirect(base_url('login'));
+			redirect(base_url('Teacher/login'));
 		}else{
 			$titleData = array('title' => 'Teacher Dashboard'); 
 			$this->load->view('teacher/header',$titleData);
@@ -47,7 +47,7 @@ public function index(){
 	
    public function login(){
 		if($this->session->has_userdata('teacherdata')){
-			redirect(base_url('teacher'));
+			redirect(base_url('Teacher/dashboard'));
 			exit;
 		}
 		$csrf = array(
@@ -118,7 +118,7 @@ public function index(){
 public function logout()
 	{
 		$this->session->sess_destroy();
-		redirect(base_url('teacher/Teacher/login'));
+		redirect(base_url('Teacher/login'));
 	}
 
 	
@@ -279,6 +279,24 @@ $data = $this->Common_model->updateRecordByConditions('teacher',array('id'=>$tea
             echo json_encode($returndata);		
 		}
 	}
+
+
+
+
+public function Teacher_answersheet_checked_count(){
+
+		$title = array('title' => 'Teacher_answersheet_checked_count');
+		$this->load->view('teacher/header',$title);	
+		
+		$where = array('teacher_id'=>$this->session->teacher_id
+	);
+		$data['assigns'] = $this->Common_model->getRecordByWhere('assign_answersheet',$where);
+
+		
+		$this->load->view('teacher/teacher_answer_sheet_checked_count',$data); 
+		$this->load->view('teacher/footer');
+		}
+
 
 
 		
