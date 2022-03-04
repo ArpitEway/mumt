@@ -133,7 +133,8 @@ class saveFormdata extends CI_Controller {
 				'book_code'=>$paper->book_code,
 			);
 	       $this->Common_model->insertAll('new_exam_form',$data);
-		 
+
+		 $this->Common_model->updateRecordByConditions('student',array('student_id'=>$student_id),array('temp_exam_form' => 'Y'));
 		}
 	
 		}
