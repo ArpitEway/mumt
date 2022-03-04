@@ -39,7 +39,18 @@
 					<tr>
 
 					<td><?php echo $i; ?></td>
-					<td><a target='_blank' href='<?php echo base_url('admin/ExamController/teacher_alloted_exam_center/').$this->Common_model->encrypt_decrypt($teacher->teacher_id,'encrypt'); ?>'>View Details</a></td>
+					<?php 
+                    if($teacher->center_id != ''){
+						?>
+					<td><a  href='<?php echo base_url('admin/ExamController/teacher_alloted_exam_center/').$this->Common_model->encrypt_decrypt($teacher->teacher_id,'encrypt'); ?>'>View</a></td>
+					<?php
+					}else{
+						?>
+					<td>NA</td>
+
+					<?php
+					}
+					?>
 					<td><?php echo $teacher->name ?> </td>	
 					<td><?php echo  $course?> </td>	
 					<td><?php echo $class ?> </td>	
@@ -47,7 +58,6 @@
 					<td><?php echo $teacher->paper_code ?> </td>	
 					<td><?php echo  $paper[0]->paper_name ?> </td>	
 </tr>
-				
 <?php $i++; } ?>
 
 </tbody>

@@ -155,9 +155,18 @@ function Reset() {
       
 
     }
-$(document).on('click', '#submit', function(e) {
-
-	
+$(document).on('click', '#submit', function(e) {	
+// var center_id =document.querySelector('#center_id').checked;
+// console.log(center_id);
+//  if(center_id==false ){
+//   
+//     return false ;
+//  }checkbox
+  
+    if($("input:checkbox").filter(":checked").length<1){
+        toastr.error("PLease Select atleast one");
+        return false ;
+    }
 	var frm = $('.answersheet').serialize();
 	$.ajax({
 	url: '<?php echo site_url('admin/ExamController/get_center_Code_by_class'); ?>',

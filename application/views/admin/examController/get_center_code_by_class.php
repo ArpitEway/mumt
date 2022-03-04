@@ -35,7 +35,7 @@
 				<td><?php echo $count_for_checked ;?></td>
 
 
-				<td><input type="checkbox" name="center_id[]" value="<?=$center_code->center_id;?>"></td>
+				<td><input type="checkbox" class="checkbox" name="center_id[]" value="<?=$center_code->center_id;?>"></td>
 			</tr>
 			<?php 
 			}
