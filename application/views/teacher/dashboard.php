@@ -20,7 +20,7 @@
 
                   
 
-                    <a class="border-0 custom-menu-item" href="<?=base_url('Teacher/account_transection_details');?>">
+                    <a class="border-0 custom-menu-item" href="<?=base_url('Teacher/account_transaction_details');?>">
                         <div>
                             <span class="nav-text">Teacher Bank Details</span>
                         </div>

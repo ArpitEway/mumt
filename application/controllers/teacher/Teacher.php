@@ -205,7 +205,7 @@ public function change_password_sub($id)
 
 
 
-	public function account_transection_details(){
+	public function account_transaction_details(){
 
 
 $csrf = array(
