@@ -487,7 +487,8 @@ class ExamController extends CI_Controller {
 			 $query = $this->db->get()->result_array();
 		     $center_id = explode(',',$query[0]['center_id']);
 			    $data['name_csrf'] = $this->security->get_csrf_token_name();
-			    $data['hash_csrf'] = $this->security->get_csrf_hash();	
+			    $data['hash_csrf'] = $this->security->get_csrf_hash();
+				// it show student count for perticular center and pertical paper .	
 				$this->db->select(' count(*) as cnt ,center_code,center_id');
 				$this->db->from('new_exam_form');
 				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
@@ -498,8 +499,6 @@ class ExamController extends CI_Controller {
 				$this->db->group_by('center_code');
 			  
 				$data['centers'] = $this->db->get()->result();
-				//$this->Common_model->last_query();
-
 				$data['teacher_id'] = $_POST['teacher_id'];
 				$data['class_id'] = $_POST['class_id'];
 				$data['paper_code'] = $_POST['paper_code'];
@@ -556,5 +555,40 @@ class ExamController extends CI_Controller {
 	
    }
    
-    
+        public function  view_assign_answersheet(){
+		
+
+			$titleData = array('title' => 'All Assign Answersheet'); 
+			$this->load->view('header',$titleData);
+			$this->db->select('*');
+			$this->db->from('assign_answersheet');
+			$this->db->join('teacher', 'teacher.id = assign_answersheet.teacher_id');
+			$data['teachers'] = $this->db->get()->result();
+			// echo "<pre>";
+			// print_r($query) ;
+			$this->load->view('admin/examController/view_assign_answersheet',$data);
+			$this->load->view('footer');
+		}
+
+		
+		public function  teacher_alloted_exam_center($teacher_id =""){
+			$teacher_id = $this->Common_model->encrypt_decrypt($teacher_id,'decrypt');
+            // echo $teacher_id ;
+		
+			 $data= $this->Common_model->getRecordByWhere('assign_answersheet',array('teacher_id'=>$teacher_id));
+			 echo "<pre>";
+		     $center_ids = $data[0]->center_id;
+			 print_r( $center_ids) ;
+
+			 $this->db->select('center_code');
+			 $this->db->from('center');                
+			 $this->db->where_in('id',$center_ids);
+		  
+			 $center_id =$this->db->get()->result_array();
+			 $this->Common_model->last_query();
+			  	print_r( $center_id) ;
+			die ;
+			 $this->load->view('admin/examController/view_assign_answersheet',$data);
+			 $this->load->view('footer');
+		}
 }// class
