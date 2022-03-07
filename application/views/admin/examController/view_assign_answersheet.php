@@ -41,8 +41,12 @@
 					<td><?php echo $i; ?></td>
 					<?php 
                     if($teacher->center_id != ''){
+                       $teacher_id = $this->Common_model->encrypt_decrypt($teacher->teacher_id,'encrypt');
+                       $course_group_id = $this->Common_model->encrypt_decrypt($teacher->course_group_id,'encrypt');
+					   
+                       $class_id = $this->Common_model->encrypt_decrypt($teacher->class_id,'encrypt');
 						?>
-					<td><a  href='<?php echo base_url('admin/ExamController/teacher_alloted_exam_center/').$this->Common_model->encrypt_decrypt($teacher->teacher_id,'encrypt'); ?>'>View</a></td>
+					<td><a  href='<?php echo base_url('admin/ExamController/teacher_alloted_exam_center/'). $teacher_id.'/'.$class_id.'/'.$course_group_id; ?>'>View</a></td>
 					<?php
 					}else{
 						?>

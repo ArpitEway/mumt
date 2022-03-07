@@ -527,7 +527,8 @@ class ExamController extends CI_Controller {
 					$data_insert['course_group_id'] = $_POST['course_group_id'];
 					$data_insert['paper_code'] = $_POST['paper_code'];
 					$data_insert['center_id'] =  implode(',',$_POST['center_id']);
-			  
+			        $data_insert['date'] = date("Y-m-d");
+					$data_insert['exam_session'] = 'Dec 2021';
 					$insert = $this->Common_model->insertAll('assign_answersheet',$data_insert);
 				  if($insert){
 					  echo json_encode(array(
@@ -574,13 +575,26 @@ class ExamController extends CI_Controller {
 		}
 
 		
-		public function  teacher_alloted_exam_center($teacher_id =""){
+		public function  teacher_alloted_exam_center($teacher_id ="",$class_id = "" , $course_group_id=""){
+			
 			$teacher_id = $this->Common_model->encrypt_decrypt($teacher_id,'decrypt');
-			$assign_answersheet_data= $this->Common_model->getRecordByWhere('assign_answersheet',array('teacher_id'=>$teacher_id));
+			$class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
+			$course_group_id = $this->Common_model->encrypt_decrypt($course_group_id,'decrypt');
+			
+			$data['course_name']= $this->Common_model->getCourseNameByCourseId($course_group_id);
+			$data['class']= $this->Common_model->getClassNameByClassId($class_id);
+
+
+			$assign_answersheet_data= $this->Common_model->getRecordByWhere('assign_answersheet',array('teacher_id'=>$teacher_id , 'class_id'=>$class_id , 'course_group_id'=>$course_group_id));
+		
+			$data['teacher_name']= $this->Common_model->getSinglefield('teacher','name',array('id'=>$teacher_id));
+		
+			$data['paper_name']= $this->Common_model->getSinglefield('paper_master','paper_name',array('class_id'=>$class_id , 'paper_code'=>$assign_answersheet_data[0]->paper_code));
+
+		
 		
 		     $center_ids = $assign_answersheet_data[0]->center_id;
-            //  print_r(  $center_ids) ;
-			//   die ;
+           
 	    if($center_ids != ''){
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
