@@ -4,7 +4,6 @@
 		<fieldset class="form-group">
 			<label for="exampleSelect1">Action</label>
 			<select class="form-control" name="action" id="action">
-				<option value="">Select</option>
 				<option value="view" <?php if($action=='view'){echo "selected" ;} ?>>View</option>
 				<option value="generate" <?php if($action=='generate'){echo "selected" ;} ?> >Generate</option>
 			</select>
