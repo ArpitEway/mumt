@@ -33,6 +33,13 @@
                     </a>
                    
                     
+ <a class="border-0 custom-menu-item" href="<?=base_url('Teacher/Teacher_paper_alloted_list');?>">
+                        <div>
+                            <span class="nav-text">Teacher Paper  Details</span>
+                        </div>
+                    </a>
+
+
                   
                 </div>
             </div>
