@@ -1,16 +1,8 @@
-<style>
-.btn.btn-primary i {
-    color: #FFFFFF !important;
-}
-</style>
-<div class="text-right mt-3">
-<?php if($this->session->account_type=='Admins'){ ?>
-<a type="button" style="margin-left: 10px;" class="btn btn-outline-primary btn-rounded alignToTitle" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/center/create/'.$center_code); ?>', 'Create center')"  >Create Center</a>
-<?php } ?>
-</div>
+
 <div class=" mt-5" >
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-			<table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
+<div class="dt-responsive">
+			<table id="kt_datatable" class="table table-striped" >
 				<thead>
 					<tr>
 						<th>#</th>
@@ -21,7 +13,6 @@
                         <th>College Name</th>
 						<th>Paper Code</th>
 						<th>Paper Name</th>
-					
 					</tr>
 				</thead>
 			<tbody>
@@ -66,5 +57,6 @@
 
 </tbody>
 </table>
+</div>
 
 </div>

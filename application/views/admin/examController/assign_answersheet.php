@@ -136,7 +136,8 @@ $.ajax({
         console.log(data);
 
         $table = $('#dt').html(data.data);
-		
+        KTDatatablesBasicBasic.init();
+
 
     }
 });

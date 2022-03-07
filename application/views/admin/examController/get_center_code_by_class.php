@@ -1,7 +1,7 @@
 <form method="post"  action="<?=base_url('admin/ExamController/get_center_Code_by_class');?>" class="mt-3 answersheet" >
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-
-<table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
+<div class="dt-responsive">
+<table id="kt_datatable"  class="table table-striped" >
 	<thead>
 		<tr>
 			<th>Sno.</th>
@@ -42,6 +42,7 @@
 		?>
 	</tbody>
 </table>
+		</div>
 <div class="text-center p-3">
 		<input type="hidden" name="action" value="assign_answersheet">
 		<input type="hidden" name="teacher_id" value="<?php echo $teacher_id ; ?>">
