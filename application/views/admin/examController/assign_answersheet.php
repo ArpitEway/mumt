@@ -38,11 +38,13 @@
             <select name="teacher_id" readonly="readonly"   id="teacher" class="form-control teacher" required>
                 <option value="-1">Select Techer</option>
                 <?php  
-                $teachers = $this->Common_model->get_record('teacher','name , id,subject');
+			$teachers= $this->Common_model->getRecordByWhere('teacher',array('status'=>'Y'));
+
+               
                  foreach($teachers as $teacher)
                  {
                  ?>
-                 <option value="<?php echo $teacher['id']; ?>"   ><?php echo $teacher['name']; ?>(<?php echo $teacher['subject']; ?>)</option>
+                 <option value="<?php echo $teacher->id; ?>"   ><?php echo $teacher->name; ?>(<?php echo $teacher->subject; ?>)</option>
                  <?php
                  } 
                  ?>

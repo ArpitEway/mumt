@@ -30,8 +30,7 @@
               
             $paper_name = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$teacher->paper_code , 'class_id'=>$teacher->class_id));
             $teacher_name = $this->Common_model->getRecordByWhere('teacher',array('id'=>$teacher->teacher_id ));
-            // echo "<pre>";
-            // print_r($teacher);
+           
 
             $this->db->select(' count(*) as cnt ,center_code,center_id');
             $this->db->from('new_exam_form');
@@ -42,16 +41,16 @@
             $this->db->where('student.center_id in ('.$teacher->center_id.')');
 
             $total_count= $this->db->get()->result();
-     //   $this->Common_model->last_query();
+     
             $course = $this->Common_model->getCourseNameByCourseId($teacher->course_group_id);
             $class = $this->Common_model->getClassNameByClassId($teacher->class_id);
 
-            $where = array(
-                'paper_code' =>$teacher->paper_code,
-                'class_id' =>$teacher->class_id,
-                'file_exist' => 'Y'
-            );
-            $count_for_available = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',$where);
+            $this->db->select(' count(*) as cnt');
+			$this->db->from('upload_exam_ans_sheet');
+			$this->db->where('paper_code',$teacher->paper_code);
+			$this->db->where('class_id',$teacher->class_id); 
+			$this->db->where('center_id in ('.$teacher->center_id.')');
+			$count_for_available= $this->db->get()->result();
             $count_for_checked =  $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array("paper_code"=>$teacher->paper_code,'class_id' =>$teacher->class_id,'teacher_id='=>$teacher->teacher_id));
     		?>
 					<tr>
@@ -62,7 +61,7 @@
 					<td><?php echo  $class; ?></td>
 					<td><?php echo  $paper_name[0]->paper_name; ?></td>
 					<td><?php echo  	$total_count[0]->cnt ; ?></td>
-					<td><?php echo  	$count_for_available ; ?></td>
+					<td><?php echo  	$count_for_available[0]->cnt ; ?></td>
 					<td><?php echo  	$count_for_checked ; ?></td>
 
 

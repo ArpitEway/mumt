@@ -57,7 +57,7 @@
 					<td>(<?php echo  $paper->paper_code ?>)  <?php echo  $paper->paper_name ?> </td>	
 					<td><?php echo  $total_count[0]->cnt ;?> </td>	
 					<td><?php echo  $allot ;?> </td>	
-					<td><?php echo  $total_count[0]->cnt  ;?> </td>	
+					<td><?php echo  $total_count[0]->cnt -$allot  ;?> </td>	
 					<td><?php echo   $count_for_available ;?> </td>	
 					<td><?php echo $count_for_checked ;?> </td>	
 

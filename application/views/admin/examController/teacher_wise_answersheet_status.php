@@ -1,4 +1,4 @@
-<form method='POST' ?>">
+<form method='POST' ?>
 	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	<div class="col-sm-4 m-auto">
 		<fieldset class="form-group">
