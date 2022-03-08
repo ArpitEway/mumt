@@ -412,11 +412,8 @@ $data = array(
 
 
 
-
-
-public function question_paper_sub($student_id){
-		$student_id = $this->input->post('student_id');
-		$where = array('student_id'=>$student_id);
+	public function question_paper_sub()
+	{
 		
 		$marks1 = $this->input->post('marks1');
 		$marks2 = $this->input->post('marks2');
@@ -424,34 +421,21 @@ public function question_paper_sub($student_id){
 		
 		$marks4 = $this->input->post('marks4');
 		$marks5 = $this->input->post('marks5');
-		
-       
-		$studentData = array(
-			'que_1' => $marks1,
-			'que_2' => $marks2,
-			'que_3' => $marks3,
-			'que_4' =>$marks4,
-			'que_5' =>$marks5	
-			
-			
-
-		);
-          
-		//$onlineTxnId = $this->Common_model->insertAll('online_payment_transaction',$studentData);
-
-		
-		$this->Common_model->updateRecordByConditions(' upload_exam_ans_sheet',$where,$studentData);
-
-		
+		$student_id = $this->input->post('student_id');
 	
+		$updateData = array('que_1' => $marks1,'que_2' => $marks2,'que_3' => $marks3,'payment' => 'Y','que_4' => $marks4,'que_5' => $marks5);
+		$where = array('student_id' => $student_id);
+	$result=	$this->Common_model->updateRecordByConditions('upload_exam_ans_sheet',$where,$updateData);
+		
+		if($result){
+			
+			$return = array('success' => 'Marks Details Updated');
+		}else{
+			$return = array('error' => 'An error occurred');
+		}
+		echo json_encode($return);
+		
 	}
-
-
-
-
-
-
-
 
 
 
