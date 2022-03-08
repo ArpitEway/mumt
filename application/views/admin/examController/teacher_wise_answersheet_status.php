@@ -2,9 +2,9 @@
 	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	<div class="col-sm-4 m-auto">
 		<fieldset class="form-group">
-			<label for="exampleSelect1">Course</label>
+			<label for="exampleSelect1">Teacher</label>
 			<select class="form-control" name="teacher_id" id="teacher_id" class="teacher_id">
-				<option value="" >Select Course</option>
+				<option value="" >Select Teacher</option>
 				<?php
 				$i = 1;
 				foreach ($teachers as $teacher) {
@@ -25,6 +25,7 @@
 <div id="dt">
 </div>
 <script>
+	$(document).ready(function() {
 $(document).on('click', '#submit', function() {
       var teacher_id =   $('#teacher_id').val();
       var csrfName = $('.csrfname').attr('name');
@@ -50,4 +51,10 @@ $(document).on('click', '#submit', function() {
                 
             })
     });
+	$('#teacher_id').select2({
+        placeholder : 'Search Teacher',
+        allowClear: true
+     
+    })
+})
 </script>

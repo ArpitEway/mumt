@@ -59,11 +59,7 @@
 					<td><?php echo  $allot ;?> </td>	
 					<td><?php echo  $total_count[0]->cnt -$allot  ;?> </td>	
 					<td><?php echo   $count_for_available ;?> </td>	
-					<td><?php echo $count_for_checked ;?> </td>	
-
-
-
-                   
+					<td><?php echo $count_for_checked ;?> </td>	                 
 </tr>
 <?php $i++; } ?>
 

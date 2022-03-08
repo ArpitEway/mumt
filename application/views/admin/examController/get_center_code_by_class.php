@@ -1,7 +1,7 @@
 <form method="post"  action="<?=base_url('admin/ExamController/get_center_Code_by_class');?>" class="mt-3 answersheet" >
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 <div class="dt-responsive">
-<table id="kt_datatable"  class="table table-striped" >
+<table id=""  class="table table-striped" >
 	<thead>
 		<tr>
 			<th>Sno.</th>

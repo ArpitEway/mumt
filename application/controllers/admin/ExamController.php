@@ -630,16 +630,16 @@ class ExamController extends CI_Controller {
 			// code for remove centers from assign_answersheet 
 			$assign_answersheet_data= $this->Common_model->getRecordByWhere('assign_answersheet',array('id'=>$_POST['assign_answersheet_id']));
 			
-	        $center_id1 = explode(',',$assign_answersheet_data[0]->center_id);
+	        $alloted_center_id = explode(',',$assign_answersheet_data[0]->center_id);
 		
-			 $center_id2 = $_POST['center_id'];
+			 $remove_center_id_array = $_POST['center_id'];
 		
-			$center_id=array_diff($center_id1,$center_id2);
-			$center_id = implode(',',$center_id);
-         $removed_center_id = implode(',',$center_id2);
+			$new_alloted_center_id=array_diff($alloted_center_id,$remove_center_id_array);
+			$new_alloted_center_id = implode(',',$new_alloted_center_id);
+            $removed_center_id = implode(',',$remove_center_id_array);
 
 			$data=array(
-				'center_id' =>$center_id ,
+				'center_id' =>$new_alloted_center_id ,
 				'removed_exam_center_id' =>$removed_center_id,
 				);
 				  $update =$this->Common_model->updateRecordByConditions('assign_answersheet',array('id' =>$_POST['assign_answersheet_id']),$data);
