@@ -5,7 +5,7 @@
 </style>
 <div class=" mt-5">
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-			<table id="kt_datatable_scroll" class="table table-striped dt-responsive nowrap" width="100%" >
+			<table id="kt_datatable_scroll" class="table table-striped" >
 				<thead>
 					<tr>
 						<th>#</th>
@@ -29,7 +29,7 @@
                 $remaining =$student->cnt - $uploaded_paper;
             $mobile_no  = $this->Common_model->getMobileNoByStudentID($student->student_id);
 
-            if($remaining !=0 ){
+            if($remaining >0 ){
     		?>
 					<tr>
 					<td><?php echo $i; ?></td>

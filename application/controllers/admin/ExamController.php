@@ -424,11 +424,10 @@ class ExamController extends CI_Controller {
 		}
 		
 		if($param1 == 'delete'){
-
 			$delete = $this->Common_model->deleteByWhere('teacher',array('id'=>$param2));
 			redirect(base_url().'ExamController/teachers');
-			
 		}
+
 		if(empty($param1) ){
 		$titleData = array('title' => 'Teachers'); 
 		$this->load->view('header',$titleData);	
@@ -441,20 +440,15 @@ class ExamController extends CI_Controller {
 	}
  
 	public function update_teacher_status(){
-		
-
-		 $status =  $this->input->post('status');
+		$status =  $this->input->post('status');
 		if(isset($_POST['id'])){
 			$id =  $this->input->post('id');
-          
 			$where = array('id'=>$id);
 		}
-        if($status!=''){
-		$st = ($status == 'Y') ? 'N' : 'Y';
-		$data=array(
-			'status'=>$st,);
-	        }
-        
+		if($status!=''){
+			$st = ($status == 'Y') ? 'N' : 'Y';
+			$data=array('status'=>$st,);
+		}
 		$res=$this->Common_model->updateRecordByConditions('teacher',$where,$data);
 		if($status == 'Y'){
 			echo json_encode(array('success'=>true));
@@ -462,10 +456,9 @@ class ExamController extends CI_Controller {
 			echo json_encode(array('error'=>false));
 		}
 	}
-
   
 	public function assign_answersheet(){
-		$titleData = array('title' => 'Teachers'); 
+		$titleData = array('title' => 'Assign Answersheet'); 
 		$this->load->view('header',$titleData);
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();	
@@ -481,179 +474,156 @@ class ExamController extends CI_Controller {
 	   echo json_encode(array('data'=>$data));
    }
 
-   public function get_center_Code_by_class(){
+   public function assign_answersheet_sub(){
+	   	if($_POST['action1']=='submit'){
+	   		$this->db->select('GROUP_CONCAT(center_id) as center_id');
+	   		$this->db->from("assign_answersheet");
+	   		$this->db->where('paper_code',$_POST['paper_code']); 
+	   		$query = $this->db->get()->result_array();
+	   		$center_id = explode(',',$query[0]['center_id']);
+	   		$data['name_csrf'] = $this->security->get_csrf_token_name();
+	   		$data['hash_csrf'] = $this->security->get_csrf_hash();
+					// it show student count for perticular center and pertical paper .	
+	   		$this->db->select(' count(*) as cnt ,center_code,center_id');
+	   		$this->db->from('new_exam_form');
+	   		$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+	   		$this->db->where('new_exam_form.class_id',$_POST['class_id']);
+	   		$this->db->where('new_exam_form.paper_code',$_POST['paper_code']); 
+	   		$this->db->where('student.new_exam_form','Y'); 
+	   		$this->db->where_not_in('student.center_id', $center_id );
+	   		$this->db->group_by('center_code');
 
+	   		$data['centers'] = $this->db->get()->result();
+	   		$data['teacher_id'] = $_POST['teacher_id'];
+	   		$data['class_id'] = $_POST['class_id'];
+	   		$data['paper_code'] = $_POST['paper_code'];
+	   		$data['course_group_id'] = $_POST['course_group_id'];
 
+	   		$dt = $this->load->view('admin/examController/get_center_code_by_class',$data,true);
+	   		echo json_encode(array(
+	   			"status" => true,
+	   			"data" => $dt
+	   		));
+	   	}
+	   	if($_POST['action']=='assign_answersheet'){
 
-		if($_POST['action1']=='submit'){
-			  
-			$this->db->select('GROUP_CONCAT(center_id) as center_id');
-			$this->db->from("assign_answersheet");
-		    $this->db->where('paper_code',$_POST['paper_code']); 
-			 $query = $this->db->get()->result_array();
-		     $center_id = explode(',',$query[0]['center_id']);
-			    $data['name_csrf'] = $this->security->get_csrf_token_name();
-			    $data['hash_csrf'] = $this->security->get_csrf_hash();
-				// it show student count for perticular center and pertical paper .	
-				$this->db->select(' count(*) as cnt ,center_code,center_id');
-				$this->db->from('new_exam_form');
-				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
-				$this->db->where('new_exam_form.class_id',$_POST['class_id']);
-				$this->db->where('new_exam_form.paper_code',$_POST['paper_code']); 
-				$this->db->where_not_in('student.center_id', $center_id );
-				$this->db->where('student.new_exam_form','Y'); 
-				$this->db->group_by('center_code');
-			  
-				$data['centers'] = $this->db->get()->result();
-				
-				$data['teacher_id'] = $_POST['teacher_id'];
-				$data['class_id'] = $_POST['class_id'];
-				$data['paper_code'] = $_POST['paper_code'];
-				$data['course_group_id'] = $_POST['course_group_id'];
-		
-			$dt = $this->load->view('admin/examController/get_center_code_by_class',$data,true);
-			echo json_encode(array(
-					"status" => true,
-					"data" => $dt
-				));
-			}
-			if($_POST['action']=='assign_answersheet'){
+	   		$where = array(
+	   			'teacher_id' => $_POST['teacher_id'],
+	   			'course_group_id'=> $_POST['course_group_id'],
+	   			'class_id'=> $_POST['class_id'],
+	   			'paper_code'=> $_POST['paper_code'],
+	   		);
+	   		$data= $this->Common_model->getRecordByWhere('assign_answersheet',$where);
 
-				$where = array(
-					'teacher_id' => $_POST['teacher_id'],
-					'course_group_id'=> $_POST['course_group_id'],
-					'class_id'=> $_POST['class_id'],
-					'paper_code'=> $_POST['paper_code'],
-				);
-				$data= $this->Common_model->getRecordByWhere('assign_answersheet',$where);
-				
-				if($data==null){
-					$data_insert['teacher_id'] = $_POST['teacher_id'];
-					$data_insert['class_id'] = $_POST['class_id'];
-					$data_insert['course_group_id'] = $_POST['course_group_id'];
-					$data_insert['paper_code'] = $_POST['paper_code'];
-					$data_insert['center_id'] =  implode(',',$_POST['center_id']);
-			        $data_insert['date'] = date("Y-m-d");
-					$data_insert['exam_session'] = 'Dec 2021';
-					$insert = $this->Common_model->insertAll('assign_answersheet',$data_insert);
-				  if($insert){
-					  echo json_encode(array(
-						  "status" => true,
-					  ));	
-				  }
-					  
-				}else{
-			     	$center_id = implode(',',$_POST['center_id']) ;
-					$new_Center_id =$data[0]->center_id .",".$center_id   ;
-					
-					$data=array(
-                    'center_id' =>$new_Center_id,
-					);
-	      			$update = 	$this->Common_model->updateRecordByConditions('assign_answersheet',$where,$data);
-					if($update){
-						echo json_encode(array(
-							"status" => true,
-						));	
-					}
-				}
-				
-			}
-		 
+	   		if($data==null){
+	   			$data_insert['teacher_id'] = $_POST['teacher_id'];
+	   			$data_insert['class_id'] = $_POST['class_id'];
+	   			$data_insert['course_group_id'] = $_POST['course_group_id'];
+	   			$data_insert['paper_code'] = $_POST['paper_code'];
+	   			$data_insert['center_id'] =  implode(',',$_POST['center_id']);
+	   			$data_insert['date'] = date("Y-m-d");
+	   			$data_insert['exam_session'] = 'Dec 2021';
+	   			$insert = $this->Common_model->insertAll('assign_answersheet',$data_insert);
+	   			if($insert){
+	   				echo json_encode(array(
+	   					"status" => true,
+	   				));	
+	   			}
 
-	
-   }
+	   		}else{
+	   			if($data[0]->center_id!=''){
+	   				$center_id = implode(',',$_POST['center_id']) ;
+	   				$new_Center_id =$data[0]->center_id .",".$center_id;
+	   			}else{
+	   				$new_Center_id = $center_id;
+	   			}
+
+	   			$data=array(
+	   				'center_id' =>$new_Center_id,
+	   			);
+	   			$update = 	$this->Common_model->updateRecordByConditions('assign_answersheet',$where,$data);
+	   			if($update){
+	   				echo json_encode(array(
+	   					"status" => true,
+	   				));	
+	   			}
+	   		}
+	   	}
+   	}
    
-        public function  view_assign_answersheet(){
-		
-
-			$titleData = array('title' => 'Alloted Center'); 
-			$this->load->view('header',$titleData);
-			$this->db->select('*');
-			$this->db->from('assign_answersheet');
-			$this->db->join('teacher', 'teacher.id = assign_answersheet.teacher_id');
-			$data['teachers'] = $this->db->get()->result();
-			$this->load->view('admin/examController/view_assign_answersheet',$data);
-			$this->load->view('footer');
-		}
+    public function  view_assign_answersheet(){
+		$titleData = array('title' => 'View Alloted Center List'); 
+		$this->load->view('header',$titleData);
+		$this->db->select('*');
+		$this->db->from('assign_answersheet');
+		$this->db->join('teacher', 'teacher.id = assign_answersheet.teacher_id');
+		$data['teachers'] = $this->db->get()->result();
+		$this->load->view('admin/examController/view_assign_answersheet',$data);
+		$this->load->view('footer');
+	}
 
 		
-		public function  teacher_alloted_exam_center($teacher_id ="",$class_id = "" , $course_group_id=""){
-			
-			$teacher_id = $this->Common_model->encrypt_decrypt($teacher_id,'decrypt');
-			$class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
-			$course_group_id = $this->Common_model->encrypt_decrypt($course_group_id,'decrypt');
-			
-			$data['course_name']= $this->Common_model->getCourseNameByCourseId($course_group_id);
-			$data['class']= $this->Common_model->getClassNameByClassId($class_id);
+	public function  teacher_alloted_exam_center($teacher_id ="",$class_id = "" , $course_group_id=""){
+		$teacher_id = $this->Common_model->encrypt_decrypt($teacher_id,'decrypt');
+		$class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
+		$course_group_id = $this->Common_model->encrypt_decrypt($course_group_id,'decrypt');
 
+		$data['course_name']= $this->Common_model->getCourseNameByCourseId($course_group_id);
+		$data['class']= $this->Common_model->getClassNameByClassId($class_id);
+		$data['teacher_name'] = $this->Common_model->getSinglefield('teacher','name',array('id'=>$teacher_id));
+		$data['paper_name']= $this->Common_model->getSinglefield('paper_master','paper_name',array('class_id'=>$class_id , 'paper_code'=>$assign_answersheet_data[0]->paper_code));
 
-			$assign_answersheet_data= $this->Common_model->getRecordByWhere('assign_answersheet',array('teacher_id'=>$teacher_id , 'class_id'=>$class_id , 'course_group_id'=>$course_group_id));
-		
-			$data['teacher_name']= $this->Common_model->getSinglefield('teacher','name',array('id'=>$teacher_id));
-		
-			$data['paper_name']= $this->Common_model->getSinglefield('paper_master','paper_name',array('class_id'=>$class_id , 'paper_code'=>$assign_answersheet_data[0]->paper_code));
+		$assign_answersheet_data= $this->Common_model->getRecordByWhere('assign_answersheet',array('teacher_id'=>$teacher_id , 'class_id'=>$class_id , 'course_group_id'=>$course_group_id));
 
-		
-		
-		     $center_ids = $assign_answersheet_data[0]->center_id;
-           
-	    if($center_ids != ''){
+		$center_ids = $assign_answersheet_data[0]->center_id;
+
+		if($center_ids != ''){
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 
-			//  query for paper count 
+		//  query for paper count 
 			$this->db->select(' count(*) as cnt , center_code , center_id');
 			$this->db->from('new_exam_form');
 			$this->db->join('student', 'new_exam_form.student_id = student.student_id');
 			$this->db->where('new_exam_form.class_id',$assign_answersheet_data[0]->class_id);
-			$this->db->where('new_exam_form.paper_code',$assign_answersheet_data[0]->paper_code); 
+			$this->db->where('new_exam_form.paper_code',$assign_answersheet_data[0]->paper_code);
 			$this->db->where('student.center_id in ('.$center_ids.')');
 			$this->db->where('student.new_exam_form','Y'); 
 			$this->db->group_by('center_code');
 			$data['paper_count']= $this->db->get()->result();
-		$data['paper_code']= $assign_answersheet_data[0]->paper_code;
-		$data['class_id']= $assign_answersheet_data[0]->class_id;
-		$data['assign_answer_sheet_id']= $assign_answersheet_data[0]->id;
-		
-		}
-			   
-			$titleData = array('title' => 'All Assign Answersheet'); 
-			$this->load->view('header',$titleData);
-			
-			 $this->load->view('admin/examController/teacher_alloted_exam_center',$data);
-			 $this->load->view('footer');
-		
+			$data['paper_code']= $assign_answersheet_data[0]->paper_code;
+			$data['class_id']= $assign_answersheet_data[0]->class_id;
+			$data['assign_answer_sheet_id']= $assign_answersheet_data[0]->id;
 		}
 
-    public function remove_centers_from_assign_answersheet(){
+		$titleData = array('title' => 'All Assign Answersheet'); 
+		$this->load->view('header',$titleData);
+		$this->load->view('admin/examController/teacher_alloted_exam_center',$data);
+		$this->load->view('footer');
+	}
 
+	public function remove_centers_from_assign_answersheet(){
 			// code for remove centers from assign_answersheet 
-			$assign_answersheet_data= $this->Common_model->getRecordByWhere('assign_answersheet',array('id'=>$_POST['assign_answersheet_id']));
-			
-	        $alloted_center_id = explode(',',$assign_answersheet_data[0]->center_id);
-		
-			 $remove_center_id_array = $_POST['center_id'];
-		
-			$new_alloted_center_id=array_diff($alloted_center_id,$remove_center_id_array);
-			$new_alloted_center_id = implode(',',$new_alloted_center_id);
-            $removed_center_id = implode(',',$remove_center_id_array);
+		$assign_answersheet_data= $this->Common_model->getRecordByWhere('assign_answersheet',array('id'=>$_POST['assign_answersheet_id']));
+		$alloted_center_id = explode(',',$assign_answersheet_data[0]->center_id);
+		$remove_center_id_array = $_POST['center_id'];
+		$new_alloted_center_id=array_diff($alloted_center_id,$remove_center_id_array);
+		$new_alloted_center_id = implode(',',$new_alloted_center_id);
+		$removed_center_id = implode(',',$remove_center_id_array);
 
-			$data=array(
-				'center_id' =>$new_alloted_center_id ,
-				'removed_exam_center_id' =>$removed_center_id,
-				);
-				  $update =$this->Common_model->updateRecordByConditions('assign_answersheet',array('id' =>$_POST['assign_answersheet_id']),$data);
-
-				  if($update){
-					echo json_encode(array(
-						"status" => true,
-					));	
-				}
-
+		$data=array(
+			'center_id' =>$new_alloted_center_id ,
+			'removed_exam_center_id' =>$removed_center_id,
+		);
+		$update =$this->Common_model->updateRecordByConditions('assign_answersheet',array('id' =>$_POST['assign_answersheet_id']),$data);
+		if($update){
+			echo json_encode(array(
+				"status" => true,
+			));	
+		}
 	}
   
-
-	 public function course_wise_answersheet_status(){
+	public function course_wise_answersheet_status(){
 		$titleData = array('title' => 'Course Wise Answersheet Status'); 
 		$this->load->view('header',$titleData);
 		$data['courses']= $this->Common_model->get_record('upload_exam_ans_sheet','DISTINCT (course_id)');
@@ -661,20 +631,16 @@ class ExamController extends CI_Controller {
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
 		$this->load->view('admin/examController/course_wise_answersheet_status',$data);
 		$this->load->view('footer');
-	 } 
+	}
 
-
-
-	 public function load_course_wise_answersheet_status(){
-	
-		   $data['papers']= $this->Common_model->getRecordByWhere('paper_master',array('course_group_id'=>$_POST['course_id']));
-		   $dt = $this->load->view('admin/examController/load_course_wise_answersheet_status',$data,true);
-		   echo json_encode(array(
-				   "status" => true,
-				   "data" => $dt
-			   ));
-		
-	 }
+	public function load_course_wise_answersheet_status(){
+		$data['papers']= $this->Common_model->getRecordByWhere('paper_master',array('course_group_id'=>$_POST['course_id']));
+		$dt = $this->load->view('admin/examController/load_course_wise_answersheet_status',$data,true);
+		echo json_encode(array(
+			"status" => true,
+			"data" => $dt
+		));
+	}
 
 	 public function teacher_wise_answersheet_status(){
 		$titleData = array('title' => 'Teacher Wise Answersheet Status'); 
@@ -694,20 +660,19 @@ class ExamController extends CI_Controller {
 	 } 
    
 
-	 public function load_teacher_wise_answersheet_status(){
-		 $data['teachers']= $this->Common_model->getRecordByWhere('assign_answersheet',array('teacher_id'=>$_POST['teacher_id']));
+	public function load_teacher_wise_answersheet_status(){
+		$data['teachers']= $this->Common_model->getRecordByWhere('assign_answersheet',array('teacher_id'=>$_POST['teacher_id']));
 		$dt = $this->load->view('admin/examController/load_teacher_wise_answersheet_status',$data,true);
 		echo json_encode(array(
-				"status" => true,
-				"data" => $dt
-			));
-	 }
+			"status" => true,
+			"data" => $dt
+		));
+	}
 
-
-	 public function remaining_exam_answersheet(){
+	public function remaining_exam_answersheet(){
 		$titleData = array('title' => 'Remaining Exam Status'); 
 		$this->load->view('header',$titleData);
-		$this->db->select('count(*) as cnt ,student.class_id,new_exam_form.course_group_id , center_code , center_name ,roll_no,enrollment_no , name , course_name , class_name ,student.student_id');
+		$this->db->select('count(*) as cnt ,student.class_id,new_exam_form.course_group_id, center_code, center_name, roll_no, enrollment_no, name, course_name, class_name, student.student_id');
 		$this->db->from('new_exam_form');
 		$this->db->join('student', 'new_exam_form.student_id = student.student_id');
 		$this->db->where('student.new_exam_form','Y'); 
@@ -717,6 +682,6 @@ class ExamController extends CI_Controller {
 		$data['students'] = $this->db->get()->result();
 		$this->load->view('admin/examController/remaining_exam_answersheet',$data);
 		$this->load->view('footer');
-	 } 
-   
+	}
+
 }// class
