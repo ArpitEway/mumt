@@ -19,20 +19,20 @@
     <div class="form-group col-md-2">
 
         <label for="course">Class</label>
-        <select name="class_id" readonly="readonly" name='class_id' id="class_id" class="form-control class" required>
+        <select name="class_id" name='class_id' id="class_id" class="form-control class" required>
             <option value="0">Select Class</option>
         </select>
     </div>
     <div class="form-group col-md-4">
         <label for="paper">Paper</label>
-        <select name="paper_code" readonly="readonly"   id="paper_id" class="form-control paper" required>
+        <select name="paper_code" id="paper_id" class="form-control paper" required>
             <option value="0">Select Paper</option>
         </select>
     </div>
     <div class="form-group col-md-3">
 
         <label for="Teacher">Teacher</label>
-        <select name="teacher_id" readonly="readonly"   id="teacher" class="form-control teacher" required>
+        <select name="teacher_id"   id="teacher" class="form-control teacher" required>
             <option value="">Select Techer</option>
             <?php  
             $teachers= $this->Common_model->getRecordByWhere('teacher',array('status'=>'Y'));
@@ -139,6 +139,7 @@
         function Reset() {
         var paper_id = document.getElementById("paper_id");
         paper_id.selectedIndex = 0;
+        $('#teacher').val('').trigger('change');
         }
 
         $(document).on('click', '#submit', function(e) {	

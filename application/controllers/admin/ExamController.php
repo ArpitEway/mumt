@@ -524,6 +524,7 @@ class ExamController extends CI_Controller {
 	   			$data_insert['date'] = date("Y-m-d");
 	   			$data_insert['exam_session'] = 'Dec 2021';
 	   			$insert = $this->Common_model->insertAll('assign_answersheet',$data_insert);
+	   			
 	   			if($insert){
 	   				echo json_encode(array(
 	   					"status" => true,
