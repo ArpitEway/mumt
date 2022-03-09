@@ -5,7 +5,7 @@
 			<thead>
 				<tr>
 					<th>Sno.</th>
-					<th>Exam Center Code</th>
+					<th>Center Code</th>
 					<th>Total Paper</th>
 					<th>Available</th>
 					<th>Checked</th>
@@ -15,6 +15,9 @@
 			<tbody>      
 				<?php
 				$i=1;
+				$total_paper = 0 ;
+				$available=0 ;
+				$checked = 0 ;
 				foreach($centers as $center_code)
 				{  
 					$where = array(
@@ -23,6 +26,9 @@
 					);
 					$count_for_available = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',$where);
 					$count_for_checked =  $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array("paper_code"=>$paper_code,'center_id'=>$center_code->center_id,'teacher_id!='=>''));
+					$total_paper = $total_paper + $center_code->cnt ;
+					$available = $available + $count_for_available ;
+					$checked = $checked + $count_for_checked ;
 					?>
 					<tr>
 						<td><?php echo $i++; ?></td>
@@ -36,6 +42,17 @@
 				}
 				?>
 			</tbody>
+			<tfoot>
+			<tr>
+		
+			<td></td>
+			<td><?php echo "Total"; ?></td>
+			<td><?php echo $total_paper ?></td>
+			<td><?php echo $available  ?></td>
+			<td><?php echo $checked ?></td>
+			<td></td>
+			</tr>
+			<tfoot>
 		</table>
 	</div>
 	<div class="text-center p-3">
@@ -47,6 +64,7 @@
 		<button type="button" class="btn btn-primary" id="submit" name="submit" >submit</button>
 	</div>
 </form>
+
 <script>
 
 		$('#allAssign_answersheet').on('change', function() {

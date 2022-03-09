@@ -568,16 +568,13 @@ class ExamController extends CI_Controller {
 		$teacher_id = $this->Common_model->encrypt_decrypt($teacher_id,'decrypt');
 		$class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
 		$course_group_id = $this->Common_model->encrypt_decrypt($course_group_id,'decrypt');
+		$assign_answersheet_data= $this->Common_model->getRecordByWhere('assign_answersheet',array('teacher_id'=>$teacher_id , 'class_id'=>$class_id , 'course_group_id'=>$course_group_id));
 
+		$center_ids = $assign_answersheet_data[0]->center_id;
 		$data['course_name']= $this->Common_model->getCourseNameByCourseId($course_group_id);
 		$data['class']= $this->Common_model->getClassNameByClassId($class_id);
 		$data['teacher_name'] = $this->Common_model->getSinglefield('teacher','name',array('id'=>$teacher_id));
 		$data['paper_name']= $this->Common_model->getSinglefield('paper_master','paper_name',array('class_id'=>$class_id , 'paper_code'=>$assign_answersheet_data[0]->paper_code));
-
-		$assign_answersheet_data= $this->Common_model->getRecordByWhere('assign_answersheet',array('teacher_id'=>$teacher_id , 'class_id'=>$class_id , 'course_group_id'=>$course_group_id));
-
-		$center_ids = $assign_answersheet_data[0]->center_id;
-
 		if($center_ids != ''){
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();

@@ -52,6 +52,13 @@
 	<button class="btn btn-md btn-primary" type="button" id="submit_form">submit</button>
 </div>
 </form>
+<div align="center" id="myLoader" class="loader_div" style="display: none;" >
+  <svg>
+    <circle cx="50" cy="50" r="40" stroke="red" stroke-dasharray="78.5 235.5" stroke-width="3" fill="none" />
+    <circle cx="50" cy="50" r="30" stroke="blue" stroke-dasharray="62.8 188.8" stroke-width="3" fill="none" />
+    <circle cx="50" cy="50" r="20" stroke="green" stroke-dasharray="47.1 141.3" stroke-width="3" fill="none" />
+  </svg>
+</div>
 <div id="dt">
 </div>
 <!-- select2 cdn -->
@@ -60,6 +67,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script>
     $(document).ready(function() {
+
         var csrfName = $('.csrfname').attr('name');
         var csrfHash = $('.csrfname').val();
         $('#class_id').change(function(){
@@ -75,6 +83,7 @@
             type:'post',
             dataType : 'JSON',
             data: data,
+           
             success:function(data)
             {    
                 console.log(data);
@@ -89,7 +98,7 @@
                 $("#paper_id").html(html);
 
             }
-
+           
         })
     });
     });
@@ -110,6 +119,7 @@
 
 
     $(document).on('click', '#submit_form', function() {
+        $('#dt').hide();
         var course = document.getElementById('course_group_id').value;
         var class_id = document.getElementById('class_id').value;
         var teacher = document.getElementById('teacher').value;
@@ -128,11 +138,25 @@
         type: 'POST',
         dataType: 'json',
         data: frm,
+        beforeSend: function()
+			{
+				$("#myLoader").show();
+			},
         success: function (data) {
-            console.log(data);
-            $table = $('#dt').html(data.data);
+            if( $("#myLoader").show()){
+					$('#dt').hide();
+					// $table = $('#dt').html(status.data);
+					}if( $('#myLoader').hide()){
+                        $table = $('#dt').html(data.data);
+						$('#dt').show();
+						
+					}
             KTDatatablesBasicBasic.init();
-        }
+        },
+        complete: function()
+				{
+					$('#myLoader').hide();
+				},
     });
 });
 

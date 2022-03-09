@@ -157,11 +157,11 @@
 
 <div class=" mt-5" >
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-			<table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
+			<table id="" class="table table-striped dt-responsive nowrap" width="100%" >
 				<thead>
 					<tr>
 						<th>#</th>
-                        <th>Exam Center Code</th>		
+                        <th>Center Code</th>		
                         <th>Paper Count</th>		
                         <th>Checked</th>		
                         <th><input type="checkbox" id="remove_centers"></th>

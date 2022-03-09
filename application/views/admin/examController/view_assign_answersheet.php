@@ -6,7 +6,7 @@
 				<thead>
 					<tr>
 						<th>#</th>
-                        <th>Action</th>
+                        <th>Center</th>
 						<th>Teacher Name</th>
 						<th>Course</th>
 						<th>Class</th>
