@@ -1,18 +1,12 @@
 <form method="POST" class="d-block " >
-   
-	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-    <input type="hidden" id="teacher_id" name="teacher_id" value="<?= $paper_codes[0]->teacher_id; ?>">
-        <div class="form-group col-md-6 m-auto">
+   <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+            <div class="form-group col-md-6 m-auto">
             <label for="paper">Exam paper List</label>
             <select name="paper_code" id="paper" class="form-control paper"  required >
                 <option value="">Select paper</option>
-                    <?php 
-
-                  
-                    foreach($paper_codes as $paper_code)
-                    {
+                    <?php
+                    foreach($paper_codes as $paper_code){
                     ?>
-					
                     <option value="<?php echo $paper_code->paper_code; ?>">
                         <?php
                     $papername=$this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$paper_code->paper_code));
@@ -23,11 +17,7 @@
                     } 
                     ?>
                     </option>
-
-
-
             </select>
-            
         </div>
 		
 		
@@ -55,13 +45,11 @@
         var csrfName = $('.csrfname').attr('name');
         var csrfHash = $('.csrfname').val();
         var paper_code = $('#paper').val();
-           var teacher_id = $('#teacher_id').val();
         if(paper_code ==''){ 
             alert('Select paper  is required !');
         }else{
             let data = {
                 'paper_code':paper_code,
-                'teacher_id':teacher_id,
                 [csrfName]:csrfHash
             }
             $.ajax({

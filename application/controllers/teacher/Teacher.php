@@ -305,105 +305,125 @@ public function Teacher_paper_alloted_list(){
 		$title = array('title' => 'Teacher_paper_alloted_list');
 		$this->load->view('teacher/header',$title);	
 		
-		$where = array('teacher_id'=>$this->session->teacher_id
-
-	);
+		$where = array('teacher_id'=>$this->session->teacher_id);
 		$center_ids = $this->Common_model->getRecordByWhere('assign_answersheet',$where);
-
 			$where = array(
 					'center_id' => $center_ids[0]->center_id,
 					'paper_code' => $center_ids[0]->paper_code,
 					'file_exist'=>'Y',
 					'class_id' => $center_ids[0]->class_id,
 					'course_group_id' => $center_ids[0]->course_group_id
-
 				);
 			$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
-			'hash_csrf' => $this->security->get_csrf_hash()
-		);
-
- $data['paper_codes'] = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',$where);
-
+			'hash_csrf' => $this->security->get_csrf_hash(),
+			'paper_codes' => $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',$where)
+			);
 		$this->load->view('teacher/teacher_paper_list_student_wise',$data); 
 		$this->load->view('teacher/footer');
 		}
 
+		public function get_paper_details(){
+			$paper_code =$this->input->post('paper_code');
+			$where = array('teacher_id'=>$this->session->teacher_id);
+			$assignAnsData = $this->Common_model->getRecordByWhere('assign_answersheet',$where);
+			$where = 'paper_code = "'.$paper_code.'" and upload_exam_ans_sheet.center_id in ('.$assignAnsData[0]->center_id.') and answer_sheet!="" and file_exist="Y" and new_exam_form="Y"';
 
+			$this->db->select('roll_no,enrollment_no,course_name,class_name,paper_code,upload_exam_ans_sheet.student_id,upload_exam_ans_sheet.id');
+			$this->db->from('upload_exam_ans_sheet');
+			$this->db->Where($where );
+			$this->db->join('student', 'student.student_id = upload_exam_ans_sheet.student_id');
+			$answersheetData = $this->db->get()->result();
+			$data = array(
+				'answersheetData' => $answersheetData,
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+			);
 
-
-
-public function get_paper_details(){
+			if($data){
+				$dt =  $this->load->view('teacher/view_student_details',$data,true);
+				$status = true;
+			}
+			echo json_encode(array(
+				"status" => $status,
+				"data" => $dt
+			));
+		}
 		
 
-			$paper_code =$this->input->post('paper_code');
-       $teacher_id =$this->input->post('teacher_id');
-	$where = array(
-		'paper_code'=>$paper_code,
-		'teacher_id'=>$teacher_id 
+
+		public function student_details_uplode(){
 
 
-);
+			$upload_exam_ans_id = $this->input->post('upload_exam_ans_id');
+			$where=array('upload_exam_ans_sheet.id'=>$upload_exam_ans_id);
 
-     $this->db->select('DISTINCT(upload_exam_ans_sheet.student_id) as 
-			student_id,roll_no,enrollment_no,course_name,class_name,paper_code,upload_exam_ans_sheet.student_id');
-		$this->db->from('upload_exam_ans_sheet');
-		$this->db->Where($where );
-		$this->db->join('student', 'student.student_id = upload_exam_ans_sheet.student_id');
+			$this->db->select('*');
+			$this->db->from('upload_exam_ans_sheet');
+			$this->db->Where($where );
+			$this->db->join('student', 'student.student_id = upload_exam_ans_sheet.student_id');
 
-		$student = $this->db->get()->result();
+			$details = $this->db->get()->result();
+			$data = array(
+				'details' => $details,
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+			);
 
-//$this->Common_model->last_query();
+			if($data){
+				$model =  $this->load->view('teacher/view_model_data',$data,true);
+				$status = true;
+			}
+			echo json_encode(array(
+				"status" => $status,
+				"data" => $model
+			));	
+		}
 
-				$data = array(
-					'student' => $student,
-					'name_csrf' => $this->security->get_csrf_token_name(),
-	 			'hash_csrf' => $this->security->get_csrf_hash(),
-				);
 
-				if($data){
-					$dt =  $this->load->view('teacher/view_student_details',$data,true);
-					$status = true;
-				}
+		public function question_paper_sub($id)
+		{
+			
+
+
+			//$id = $this->input->post('id');
+			$marks1 = $this->input->post('marks1');
+			$marks2 = $this->input->post('marks2');
+			$marks3 = $this->input->post('marks3');
+
+			$marks4 = $this->input->post('marks4');
+			$marks5 = $this->input->post('marks5');
+			 $total_marks=($marks1+$marks2+$marks3+$marks4+$marks5);
+
+			$updateData = array('que_1' => $marks1,'que_2' => $marks2,'que_3' => $marks3,'que_4' => $marks4,'que_5' => $marks5,'total_marks'=> $total_marks);
+			$where = array('id' => $id);
+			$result=	$this->Common_model->updateRecordByConditions('upload_exam_ans_sheet',$where,$updateData);
+
+			if($result){
 				echo json_encode(array(
-					"status" => $status,
-					"data" => $dt
+					"success" => ' Updated Successfully',
+					
+				));
+			}else{
+				echo json_encode(array(
+					"error" => ' error Occured',
+					
 				));
 			}
-		
-	
-	
-
-public function student_details_for_question($student_id){
+		}
 
 
+
+public function uplode_answersheet_pdf($id){
 	
-		$title = array('title' => 'student_details_for_question');
+		$title = array('title' => 'Answersheet');
 		$this->load->view('teacher/header',$title);	
-		
-	$where = array('upload_exam_ans_sheet.student_id'=>$student_id
-	);
 
-
-
- $this->db->select('*');
-		$this->db->from('upload_exam_ans_sheet');
-		$this->db->Where($where );
-		$this->db->join('student', 'student.student_id = upload_exam_ans_sheet.student_id');
-		
-		
-
-		$student = $this->db->get()->result();
-
-//$this->Common_model->last_query();
-$data = array(
-				'student' => $student
-					
-				);
-		
+		$where= array('id'=>$id);
+		$answersheet = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',$where);
 
 		
-		$this->load->view('teacher/student_details_for_question',$data); 
+		$this->load->view('teacher/view_answersheet_pdf',$data); 
 		$this->load->view('teacher/footer');
 		}
 
@@ -411,46 +431,5 @@ $data = array(
 
 
 
-
-	public function question_paper_sub()
-	{
-		
-		$marks1 = $this->input->post('marks1');
-		$marks2 = $this->input->post('marks2');
-		$marks3 = $this->input->post('marks3');
-		
-		$marks4 = $this->input->post('marks4');
-		$marks5 = $this->input->post('marks5');
-		$student_id = $this->input->post('student_id');
-	
-		$updateData = array('que_1' => $marks1,'que_2' => $marks2,'que_3' => $marks3,'payment' => 'Y','que_4' => $marks4,'que_5' => $marks5);
-		$where = array('student_id' => $student_id);
-	$result=	$this->Common_model->updateRecordByConditions('upload_exam_ans_sheet',$where,$updateData);
-		
-		if($result){
-			
-			$return = array('success' => 'Marks Details Updated');
-		}else{
-			$return = array('error' => 'An error occurred');
-		}
-		echo json_encode($return);
-		
-	}
-
-
-
-
-
 		
 		}
-
-
-
-
-
-
-
-
-
-	
-
