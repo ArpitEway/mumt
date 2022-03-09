@@ -381,12 +381,12 @@ public function Teacher_paper_alloted_list(){
 		}
 
 
-		public function question_paper_sub($id)
+		public function question_paper_sub()
 		{
 			
 
 
-			//$id = $this->input->post('id');
+			$id = $this->input->post('id');
 			$marks1 = $this->input->post('marks1');
 			$marks2 = $this->input->post('marks2');
 			$marks3 = $this->input->post('marks3');
@@ -394,9 +394,9 @@ public function Teacher_paper_alloted_list(){
 			$marks4 = $this->input->post('marks4');
 			$marks5 = $this->input->post('marks5');
 			 $total_marks=($marks1+$marks2+$marks3+$marks4+$marks5);
-
+	$where = array('id' => $id);
 			$updateData = array('que_1' => $marks1,'que_2' => $marks2,'que_3' => $marks3,'que_4' => $marks4,'que_5' => $marks5,'total_marks'=> $total_marks);
-			$where = array('id' => $id);
+		
 			$result=	$this->Common_model->updateRecordByConditions('upload_exam_ans_sheet',$where,$updateData);
 
 			if($result){

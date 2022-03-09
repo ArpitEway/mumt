@@ -1,4 +1,4 @@
-
+<form id="ajaxForm">
     <div class="row ">
 
         <fieldset class="form-group col-lg-6">
@@ -53,11 +53,11 @@
    </div>
 
 
- <form id="ajaxForm" method="POST" action="<?php echo site_url('teacher/Teacher/question_paper_sub/'.$details[0]->id); ?>">
+<!--   <form id="ajaxForm" method="POST" action="<?php echo site_url('teacher/Teacher/question_paper_sub/'.$details[0]->id); ?>">  -->
     
-<!-- <input  type="hidden" name="student_id" id="student_id" value="<?= $details[0]->id ?>"> -->
+ <input  type="hidden" name="id" id="student_id" value="<?= $details[0]->id ?>"> 
                     <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>"> 
-    <div class="modal-content">
+  
 
 
 <fieldset class="form-group col-md-12">
@@ -165,23 +165,23 @@
    <div class="row justify-content-center">
   
  
-     <button type="submit" class="btn btn-success mr-2" name="submit" id="markssubmit">Submit</button>
+     <button type="submit" class="btn btn-success mr-2"  id="markssubmit">Submit</button>
      
    
    </div>
   </div>
-  </div>
+ 
  </form>
 
 
-<!-- <script>
+ <script>
 
   $("#markssubmit").on('click',function (e){
-       
-           var frm = $('.ajaxForm').serialize();
+       e.preventDefault();
+           var frm = $('#ajaxForm').serialize();
          
         $.ajax({
-        url: '<?php echo site_url('Teacher/question_paper_sub'); ?>',
+        url: '<?php echo site_url('teacher/Teacher/question_paper_sub'); ?>',
         method: 'post',
             data: frm,
             dataType: 'JSON',
@@ -196,7 +196,7 @@
             // $('.modal-backdrop').remove();
         
             toastr.success(data.success);
-            
+             window.location.reload();
         }else{
             toastr.error(data.error);
         }
@@ -206,4 +206,4 @@
     
  });    
     
-</script> -->
+</script> 
