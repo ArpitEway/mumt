@@ -49,7 +49,7 @@
 <div class="form-group text-center">
 	<input type="hidden" class="" name="action1" value="submit">
 
-	<button class="btn btn-md btn-primary" type="button" id="submit_form">submit</button>
+	<button class="btn btn-md btn-primary" type="button" id="submit_form">Search</button>
 </div>
 </form>
 <div align="center" id="myLoader" class="loader_div" style="display: none;" >
