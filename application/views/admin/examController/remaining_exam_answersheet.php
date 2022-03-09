@@ -44,7 +44,7 @@
 					<td><?php echo  $student->cnt ; ?></td>
 					<td><?php echo $remaining ;?></td>
 </tr>
-<?php  } $i++; } ?>
+<?php $i++; }  } ?>
 
 </tbody>
 </table>
