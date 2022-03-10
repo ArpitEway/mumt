@@ -1217,4 +1217,24 @@ class Center extends CI_Controller {
 	 redirect(base_url('exam_form_students'));
   }
 	}
+
+
+	public function remaining_exam_answersheet(){
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url());
+		}
+		$center_id =  $this->session->center_id;
+		$titleData = array('title' => 'Remaining Exam Status'); 
+		$this->load->view('Centers/header',$titleData);
+		$this->db->select('count(*) as cnt ,student.class_id,new_exam_form.course_group_id , center_code , center_name ,roll_no,enrollment_no , name , course_name , class_name ,student.student_id');
+		$this->db->from('new_exam_form');
+		$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+		$this->db->where('student.new_exam_form','Y'); 
+		$this->db->where('student.center_id',$center_id); 
+		$this->db->where('new_exam_form.paper_type','theory'); 
+		$this->db->group_by('new_exam_form.student_id');
+		$data['students'] = $this->db->get()->result();
+		$this->load->view('Centers/remaining_exam_answersheet',$data);
+		$this->load->view('Centers/footer');		
+	 } 
 }
