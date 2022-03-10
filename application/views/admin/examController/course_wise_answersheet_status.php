@@ -8,9 +8,9 @@
 				<?php
 				$i = 1;
 				foreach ($courses as $course) {
-                      $course_name = $this->Common_model->getCourseNameByCourseId($course['course_id']);
+                      $course_name = $this->Common_model->getCourseNameByCourseId($course['course_group_id']);
                     ?>
-					<option value="<?=$course['course_id'];?>" ><?=$course_name;?></option>
+					<option value="<?=$course['course_group_id'];?>" ><?=$course_name;?></option>
 				<?php } ?>
 			</select>
 
@@ -26,13 +26,13 @@
 </div>
 <script>
 $(document).on('click', '#submit', function() {
-      var course_id =   $('#course').val();
+      var course_group_id =   $('#course').val();
       var csrfName = $('.csrfname').attr('name');
 	  var csrfHash = $('.csrfname').val();
-    //  alert(course_id);
+    //  alert(course_group_id);
     //  return false ;
       var data = {
-        course_id: course_id,
+        course_group_id: course_group_id,
 			[csrfName]: csrfHash,
 		}; 
 

@@ -546,9 +546,9 @@ class Common_Model extends CI_Model{
 		return $result->class_name;
 	}
 	
-	public function getCourseNameByCourseId($course_id){
+	public function getCourseNameByCourseId($course_group_id){
 		$this->db->select('course_name');
-		$this->db->where('id='.$course_id);
+		$this->db->where('id='.$course_group_id);
 		$qry= $this->db->get('course_group');
 		$result = $qry->row();
 		if(isset($result->course_name)){

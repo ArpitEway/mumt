@@ -40,8 +40,7 @@
             $this->db->where('paper_code',$paper->paper_code); 
             $center_id= $this->db->get()->result();
    
-        $center_id = explode(',',$center_id[0]->center_id);
-        $allot =count($center_id);
+        $center_ids = $center_id[0]->center_id;
 
             if($center_ids !=""){
         // count for allot
@@ -54,7 +53,7 @@
         $this->db->where('student.new_exam_form','Y'); 
         $allot= $this->db->get()->result();
 
-        $allot_cnt = $allot[0]->cnt ;
+       $allot_cnt = $allot[0]->cnt ;
             }else{
                 $allot_cnt = 0;
             }

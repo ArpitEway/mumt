@@ -16,7 +16,6 @@ class ExamController extends CI_Controller {
 		}
 	}
 
-
 	public function index(){
 		$admin_id = $this->session->admin_id;
 		$where = 'admin_id='.$admin_id.' and status="Y"';
@@ -553,7 +552,7 @@ class ExamController extends CI_Controller {
    	}
    
     public function  view_assign_answersheet(){
-		$titleData = array('title' => 'View Alloted Center List'); 
+		$titleData = array('title' => 'All Assign Answersheet'); 
 		$this->load->view('header',$titleData);
 		$this->db->select('*');
 		$this->db->from('assign_answersheet');
@@ -594,7 +593,7 @@ class ExamController extends CI_Controller {
 			$data['assign_answer_sheet_id']= $assign_answersheet_data[0]->id;
 		}
 
-		$titleData = array('title' => 'All Assign Answersheet'); 
+		$titleData = array('title' => 'Alloted Center List');
 		$this->load->view('header',$titleData);
 		$this->load->view('admin/examController/teacher_alloted_exam_center',$data);
 		$this->load->view('footer');
@@ -624,7 +623,7 @@ class ExamController extends CI_Controller {
 	public function course_wise_answersheet_status(){
 		$titleData = array('title' => 'Course Wise Answersheet Status'); 
 		$this->load->view('header',$titleData);
-		$data['courses']= $this->Common_model->get_record('upload_exam_ans_sheet','DISTINCT (course_id)');
+		$data['courses']= $this->Common_model->get_record('upload_exam_ans_sheet','DISTINCT (course_group_id)',array('course_group_id !=' => '0'));
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
 		$this->load->view('admin/examController/course_wise_answersheet_status',$data);
@@ -632,7 +631,7 @@ class ExamController extends CI_Controller {
 	}
 
 	public function load_course_wise_answersheet_status(){
-		$data['papers']= $this->Common_model->getRecordByWhere('paper_master',array('course_group_id'=>$_POST['course_id']));
+		$data['papers']= $this->Common_model->getRecordByWhere('paper_master',array('course_group_id'=>$_POST['course_group_id']));
 		$dt = $this->load->view('admin/examController/load_course_wise_answersheet_status',$data,true);
 		echo json_encode(array(
 			"status" => true,

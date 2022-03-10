@@ -1,4 +1,3 @@
-
 <style>
 	.form-block {
 		background: hsl(228deg 100% 99%);
@@ -203,7 +202,7 @@
 			<tfoot>
 </table>
 <div class="text-center p-3">
-		<button type="button" class="btn btn-primary" id="submit" name="submit" >submit</button>
+		<button type="button" class="btn btn-primary" id="submit" name="submit" >Remove</button>
 </div>
 </div>
 </form>

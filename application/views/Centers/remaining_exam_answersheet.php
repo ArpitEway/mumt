@@ -22,7 +22,7 @@
     		<?php
     		$i = 1;
             foreach($students as $student){
-                $uploaded_paper  = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array('student_id'=>$student->student_id,'course_id'=>$student->course_group_id, 'class_id'=>$student->class_id));
+                $uploaded_paper  = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array('student_id'=>$student->student_id,'course_group_id'=>$student->course_group_id, 'class_id'=>$student->class_id));
                 $remaining =$student->cnt - $uploaded_paper;
             $mobile_no  = $this->Common_model->getMobileNoByStudentID($student->student_id);
 

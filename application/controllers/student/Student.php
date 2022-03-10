@@ -195,7 +195,7 @@ class Student extends CI_Controller {
 
 			if($upload_file){
 				$data = array('student_id' =>$_POST['student_id'],
-					'course_id' =>$_POST['course_id'],
+					'course_group_id' =>$_POST['course_group_id'],
 					'class_id' =>$_POST['class_id'],
 					'paper_code' =>$_POST['paper_code'],
 					'center_id' =>$_POST['center_id'],

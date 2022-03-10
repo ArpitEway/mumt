@@ -8,7 +8,7 @@
 				<?php
 				$i = 1;
 				foreach ($teachers as $teacher) {
-                     // $course_name = $this->Common_model->getCourseNameByCourseId($course['course_id']);
+                     // $course_name = $this->Common_model->getCourseNameByCourseId($course['course_group_id']);
                     ?>
 					<option value="<?=$teacher->id;?>" ><?=$teacher->name;?></option>
 				<?php } ?>
@@ -39,7 +39,7 @@ $(document).on('click', '#submit', function() {
       var teacher_id =   $('#teacher_id').val();
       var csrfName = $('.csrfname').attr('name');
 	  var csrfHash = $('.csrfname').val();
-    //  alert(course_id);
+    //  alert(course_group_id);
     //  return false ;
       var data = {
         teacher_id: teacher_id,
