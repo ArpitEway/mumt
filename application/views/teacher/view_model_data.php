@@ -67,7 +67,7 @@
 
                 <div class="col-4">
    
-                     <label class="text-heading mt-3">   <a  class="btn btn-info" href="<?php  echo base_url('Teacher/uplode_answersheet_pdf/').$details[0]->id;?>" >View</a></label>
+                     <label class="text-heading mt-3">   <a   target="_blank" class="btn btn-info" href="<?php  echo base_url('Teacher/uplode_answersheet_pdf/').$details[0]->id;?>" >View</a></label>
 
     </div>   </div> 
 
