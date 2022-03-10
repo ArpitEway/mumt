@@ -668,7 +668,7 @@ class ExamController extends CI_Controller {
 	}
 
 	public function remaining_exam_answersheet(){
-		$titleData = array('title' => 'Remaining Exam Status'); 
+		$titleData = array('title' => 'Remaining answersheet  Status'); 
 		$this->load->view('header',$titleData);
 		$this->db->select('count(*) as cnt ,student.class_id,new_exam_form.course_group_id, center_code, center_name, roll_no, enrollment_no, name, course_name, class_name, student.student_id');
 		$this->db->from('new_exam_form');
