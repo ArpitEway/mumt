@@ -420,7 +420,7 @@ public function uplode_answersheet_pdf($id){
 		$this->load->view('teacher/header',$title);	
 
 		$where= array('id'=>$id);
-		$answersheet = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',$where);
+		$answersheet['answer'] = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',$where);
 
 		
 		$this->load->view('teacher/view_answersheet_pdf',$data); 

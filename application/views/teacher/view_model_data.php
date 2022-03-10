@@ -1,55 +1,78 @@
 <form id="ajaxForm">
     <div class="row ">
 
-        <fieldset class="form-group col-lg-6">
-           <label for="enrollnum" class="col-lg-6 text-heading">Enrollment No</label>
-
-           <?php echo $details[0]->enrollment_no; ?>
-
-       </fieldset>
-
-       <fieldset class="form-group col-lg-6">
-           <label for="rollno" class="col-lg-6 text-heading">Roll No</label>
-
-           <?php echo $details[0]->roll_no; ?>
-
-       </fieldset>
-
-       <fieldset class="form-group col-lg-6">
-           <label for="coursename" class="col-lg-8 text-heading">Course Name</label>
-
-           <?php echo $details[0]->course_name; ?>
-
-       </fieldset>        
 
 
-       <fieldset class="form-group col-lg-6">
-           <label for="classname" class="col-lg-4 text-heading">Class Name</label>
+<div class="col-lg-6">
+                    <div class="row py-2">
+                        <label class="col-lg-6 text-heading">Enrollment No</label>
+                        <div class="col-lg-6 text-value">
+                            <?php echo $details[0]->enrollment_no; ?>
+                        </div>
+                    </div>
+                </div>
 
-           <?php echo $details[0]->class_name; ?>
 
-       </fieldset>   
+       <div class="form-group col-lg-6">
+                    <div class="row py-2">
+                        <label class="col-lg-6 form-label text-heading">Roll No</label>
+                        <div class="col-lg-6 text-value">
+                            <?php echo $details[0]->roll_no; ?>
+                        </div>
+                    </div>
+                </div>
+    </div>
+  <div class="row ">
 
 
-       <fieldset class="form-group col-lg-6">
-           <label for="papername" class="col-lg-6 text-heading">Paper Name</label>
+<div class="col-lg-6">
+                    <div class="row py-2">
+                        <label class="col-lg-6 text-heading">Course Name</label>
+                        <div class="col-lg-6 text-value">
+   <?php echo $details[0]->course_name; ?>
+                        </div>
+                    </div>
+                </div>
 
-           <?php
+
+       <div class="form-group col-lg-6">
+                    <div class="row py-2">
+                        <label class="col-lg-6 form-label text-heading">Class Name</label>
+                        <div class="col-lg-6 text-value">
+                           <?php echo $details[0]->class_name; ?>
+                        </div>
+                    </div>
+                </div>
+    </div>
+
+
+   
+
+       
+<div class="row ">
+<div class="col-lg-6">
+                    <div class="row py-2">
+                        <label class="col-lg-6 text-heading">Paper Name</label>
+                        <div class="col-lg-6 text-value">
+<?php
            $papername=$this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$details[0]->paper_code));
            ?>
            <?php echo  $papername[0]->paper_name ;
 
                            ?> 
+                        </div>
+                    </div>
+                </div>
 
-       </fieldset>   
 
- <div class="col-2">
+                <div class="col-4">
    
                      <label class="text-heading mt-3">   <a  class="btn btn-info" href="<?php  echo base_url('Teacher/uplode_answersheet_pdf/').$details[0]->id;?>" >View</a></label>
 
-    </div> 
-       
+    </div>   </div> 
 
+
+             
    </div>
 
 
