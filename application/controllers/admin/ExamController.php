@@ -491,7 +491,7 @@ class ExamController extends CI_Controller {
 	   		$this->db->where('new_exam_form.paper_code',$_POST['paper_code']); 
 	   		$this->db->where('student.new_exam_form','Y'); 
 	   		$this->db->where_not_in('student.center_id', $center_id );
-	   		$this->db->group_by('center_code');
+	   		$this->db->group_by('center_id');
 
 	   		$data['centers'] = $this->db->get()->result();
 	   		$data['teacher_id'] = $_POST['teacher_id'];

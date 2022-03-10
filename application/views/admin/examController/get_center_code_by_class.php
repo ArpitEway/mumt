@@ -18,25 +18,26 @@
 				$total_paper = 0 ;
 				$available=0 ;
 				$checked = 0 ;
-				foreach($centers as $center_code)
+				foreach($centers as $center)
 				{  
 					$where = array(
 						'paper_code' =>$paper_code,
-						'center_id' =>$center_code->center_id,
+						'class_id' =>$class_id,
+						'center_id' =>$center->center_id,
 					);
 					$count_for_available = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',$where);
-					$count_for_checked =  $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array("paper_code"=>$paper_code,'center_id'=>$center_code->center_id,'teacher_id!='=>''));
-					$total_paper = $total_paper + $center_code->cnt ;
+					$count_for_checked =  $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array("paper_code"=>$paper_code,'center_id'=>$center->center_id,'teacher_id!='=>''));
+					$total_paper = $total_paper + $center->cnt ;
 					$available = $available + $count_for_available ;
 					$checked = $checked + $count_for_checked ;
 					?>
 					<tr>
 						<td><?php echo $i++; ?></td>
-						<td><?php echo $center_code->center_code;?></td>
-						<td><?php echo $center_code->cnt;?></td>
+						<td><?php echo $center->center_code;?></td>
+						<td><?php echo $center->cnt;?></td>
 						<td><?php echo $count_for_available ;?></td>
 						<td><?php echo $count_for_checked ;?></td>
-						<td><input type="checkbox" class="checkbox" name="center_id[]" value="<?=$center_code->center_id;?>"></td>
+						<td><input type="checkbox" class="checkbox" name="center_id[]" value="<?=$center->center_id;?>"></td>
 					</tr>
 					<?php 
 				}
@@ -66,7 +67,6 @@
 </form>
 
 <script>
-
 		$('#allAssign_answersheet').on('change', function() {
 			if($('#allAssign_answersheet').is(":checked")){
 				setCheckboxes3(1);

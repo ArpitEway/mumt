@@ -24,6 +24,7 @@
     		$i = 1;
             foreach($papers as $paper){
             $class = $this->Common_model->getClassNameByClassId($paper->class_id);
+            // total count
             $this->db->select(' count(*) as cnt ,center_code,center_id');
             $this->db->from('new_exam_form');
             $this->db->join('student', 'new_exam_form.student_id = student.student_id');
@@ -31,11 +32,13 @@
             $this->db->where('new_exam_form.paper_id',$paper->id); 
             $this->db->where('student.new_exam_form','Y');
             $total_count= $this->db->get()->result();
-        $this->db->select('GROUP_CONCAT(center_id) as center_id');
-        $this->db->from('assign_answersheet');
-        $this->db->where('class_id',$paper->class_id);
-        $this->db->where('paper_code',$paper->paper_code); 
-        $center_id= $this->db->get()->result();
+
+            //
+            $this->db->select('GROUP_CONCAT(center_id) as center_id');
+            $this->db->from('assign_answersheet');
+            $this->db->where('class_id',$paper->class_id);
+            $this->db->where('paper_code',$paper->paper_code); 
+            $center_id= $this->db->get()->result();
       //  echo "<pre>";
         $center_id = explode(',',$center_id[0]->center_id);
          //  $this->Common_model->last_query();
