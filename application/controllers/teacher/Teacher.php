@@ -394,7 +394,7 @@ public function Teacher_paper_alloted_list(){
 			$marks4 = $this->input->post('marks4');
 			$marks5 = $this->input->post('marks5');
 			 $total_marks=($marks1+$marks2+$marks3+$marks4+$marks5);
-	$where = array('id' => $id);
+	      $where = array('id' => $id);
 			$updateData = array('que_1' => $marks1,'que_2' => $marks2,'que_3' => $marks3,'que_4' => $marks4,'que_5' => $marks5,'total_marks'=> $total_marks);
 		
 			$result=	$this->Common_model->updateRecordByConditions('upload_exam_ans_sheet',$where,$updateData);
@@ -416,17 +416,45 @@ public function Teacher_paper_alloted_list(){
 
 public function uplode_answersheet_pdf($id){
 	
-		$title = array('title' => 'Answersheet');
-		$this->load->view('teacher/header',$title);	
+$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
+
 
 		$where= array('id'=>$id);
-		$answersheet['answer'] = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',$where);
+		$data['answer'] = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',$where);
 
 		
 		$this->load->view('teacher/view_answersheet_pdf',$data); 
-		$this->load->view('teacher/footer');
 		}
 
+
+
+		public function student_marks_entry_update()
+		{
+			
+
+		$upload_exam_ans_sheet_id = $this->input->post('upload_exam_ans_sheet_id');
+           $json_data = $this->input->post('json_data');
+
+		
+			$updateData = array('uplode_examsheet_id' => $upload_exam_ans_sheet_id,'json_data' => $json_data);
+		
+			$result=	$this->Common_model->insertAll('answer_sheet_json_data',$updateData);
+//$this->Common_model->last_query();
+			if($result){
+				echo json_encode(array(
+					"success" => ' Updated Successfully',
+					
+				));
+			}else{
+				echo json_encode(array(
+					"error" => ' error Occured',
+					
+				));
+			}
+		}
 
 
 
