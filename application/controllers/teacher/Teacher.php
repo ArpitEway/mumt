@@ -208,7 +208,7 @@ public function change_password_sub($id)
 	public function account_transaction_details(){
 
 
-$csrf = array(
+$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
 		);
