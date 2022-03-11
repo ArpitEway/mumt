@@ -82,11 +82,10 @@ function clearPage() {
 function showPdfData() {
 
   pdf.serializePdf(function (string) {
+
  var csrfName = $('.csrfname').attr('name');
     var csrfHash = $('.csrfname').val(); 
-    //alert(hello0")
-   // var site_url = "<?php echo base_url(); ?>"
-
+    
     var upload_exam_ans_sheet_id = $('#upload_exam_ans_sheet_id').val();
 
     var data = {upload_exam_ans_sheet_id:upload_exam_ans_sheet_id,
@@ -110,6 +109,7 @@ function showPdfData() {
 
        if(data.success){
             toastr.success(data.success);
+
           }else{
             toastr.error(data.error);
           }

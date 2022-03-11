@@ -76,7 +76,7 @@
    </div>
 
 
-<!--   <form id="ajaxForm" method="POST" action="<?php echo site_url('teacher/Teacher/question_paper_sub/'.$details[0]->id); ?>">  -->
+
     
  <input  type="hidden" name="id" id="student_id" value="<?= $details[0]->id ?>"> 
                     <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>"> 
@@ -201,6 +201,49 @@
 
   $("#markssubmit").on('click',function (e){
        e.preventDefault();
+
+        var marks1 = $('#marks1').val();
+var marks2 = $('#marks2').val();
+var marks3 = $('#marks3').val();
+var marks4 = $('#marks4').val();
+var marks5 = $('#marks5').val();
+
+  var submit = true;
+if(marks1==''){
+        $(marks1).next().text('Please Select Marks');
+        submit = false;
+      }else{
+        $(marks1).next().text('');
+      }
+
+if(marks2==''){
+        $(marks2).next().text('Please Select Marks');
+        submit = false;
+      }else{
+        $(marks2).next().text('');
+      }
+if(marks3==''){
+        $(marks3).next().text('Please Select Marks');
+        submit = false;
+      }else{
+        $(marks3).next().text('');
+      }
+
+      if(marks4==''){
+        $(marks4).next().text('Please Select Marks');
+        submit = false;
+      }else{
+        $(marks4).next().text('');
+      }
+       if(marks5==''){
+        $(marks5).next().text('Please Select Marks ');
+        submit = false;
+      }else{
+        $(marks5).next().text('');
+      }
+      if(submit==false){
+        return false;
+      }
            var frm = $('#ajaxForm').serialize();
          
         $.ajax({
@@ -218,7 +261,7 @@
             
             // $('.modal-backdrop').remove();
         
-            toastr.success(data.success);
+            
              window.location.reload();
         }else{
             toastr.error(data.error);
