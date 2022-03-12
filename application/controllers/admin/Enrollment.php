@@ -542,7 +542,7 @@
 	$data['hash_csrf'] = $this->security->get_csrf_hash();
 	
 	 $this->load->view('header',array('title' => 'Generate Enrollment'));
-	 $this->load->view('admin/Enrollment/generate_enrollment',$data);
+	 $this->load->view('admin/enrollment/generate_enrollment',$data);
 	 $this->load->view('footer');
 	}
 
@@ -558,7 +558,7 @@
 
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
-		$this->load->view('admin/Enrollment/center_wise_enrollment_permission',$data);
+		$this->load->view('admin/enrollment/center_wise_enrollment_permission',$data);
 		$this->load->view('footer');
 	}
 
@@ -606,7 +606,7 @@
 
 			$this->session->set_flashdata('ajax_flash_message','permission updated');
 			$centerCode = $this->Common_model->encrypt_decrypt($centerCode,'encrypt');
-			redirect(base_url().'admin/Enrollment/enrollment_permission/'.$centerCode);		
+			redirect(base_url().'admin/enrollment/enrollment_permission/'.$centerCode);		
 		}
 	}
 
