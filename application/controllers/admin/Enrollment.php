@@ -583,7 +583,7 @@
 			);
 
 			$this->load->view('header',array('title' => 'Set Enrollment Permission'));
-			$this->load->view('admin/Enrollment/set_enrollment_permission',$data);
+			$this->load->view('admin/enrollment/set_enrollment_permission',$data);
 			$this->load->view('footer');
 		}else if($_POST['action']=='setPermission'){
 			$enrollment_nos = $this->input->post('enrollment_no');
