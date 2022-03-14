@@ -23,7 +23,7 @@
                 <div class="dz-message" data-dz-message><span>Drop files here to upload only pdf format</span></br>
                     <span>File Size Upto 5 MB</span></div>
                     <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-                    <input name="course_id" hidden value="<?php echo $student["course_group_id"];?>" />
+                    <input name="course_group_id" hidden value="<?php echo $student["course_group_id"];?>" />
                     <input name="class_id"  hidden value="<?php echo $student["class_id"];?>" />
                     <input name="center_id"  hidden value="<?php echo $student["center_id"];?>" />
                     <input name="student_id"  hidden value="<?php echo $student["student_id"];?>" />

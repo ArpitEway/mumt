@@ -123,6 +123,7 @@ function callTheCallBackFunction() {
         
         <script src="<?=base_url()?>assets/js/pages/crud/datatables/basic/basic.js?token=<?=date('dmyhis')?>"></script>
           
+
 <!--end::Page Vendors-->
 <!--begin::Page Scripts(used by this page)-->
 <script src="<?=base_url()?>assets/js/pages/widgets.js"></script>
@@ -132,6 +133,8 @@ function callTheCallBackFunction() {
 <script src="<?=base_url()?>assets/js/pages/crud/file-upload/image-input.js"></script>
 <script src="<?=base_url()?>assets/theme/admin.js?token=<?=date('dmyhis')?>"></script>
 <script src="<?=base_url()?>assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js"></script>
+
+
 
 <!--end::Page Scripts-->
 </body>
