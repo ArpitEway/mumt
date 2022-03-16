@@ -19,7 +19,7 @@
 			foreach($assigns as $assign){	
 
 				$where = array(
-					'center_id' => $assign->center_id,
+					'center_id in ('.$assign->center_id.')',
 					'paper_code' => $assign->paper_code,
 					'file_exist'=>'Y',
 					'class_id' => $assign->class_id,
@@ -27,7 +27,7 @@
 				);
 
 				$total_paper_count=$this->Common_model->getCountByWhere('upload_exam_ans_sheet',$where);
-
+//$this->Common_model->last_query();
 				$checked = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array('paper_code'=>$assign->paper_code,'teacher_id!='=> ''));
 
 				?>
