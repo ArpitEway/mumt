@@ -1,44 +1,38 @@
-
 <?php if($teacher[0]->account_no==''){ ?>
-
-
-<div class="col-md-12" id="issue">
-
-  <div class="card card-custom bgi-no-repeat gutter-b card-stretch mt-3">
-    <div class="card-body">
+  <div class="col-md-12" id="issue">
+    <div class="card card-custom bgi-no-repeat gutter-b card-stretch mt-3">
+      <div class="card-body">
         <form id="ajaxForm">
           <input type="hidden" name="id" value="<?=$teacher->id?>">
           <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
           <div class="form-group row m-auto">
-            
-             <div class="col-lg-6 ">
-              <label>Bank Name:</label>
-              <input type="text" id="bankname" name="bankname" class="form-control" placeholder="Enter Your Bank Number" value=""/>
-              <span class="form-text text-danger"></span>
-            </div></div>
-             <div class="form-group row m-auto">
-            
-            <div class="col-lg-6">
-              <label>Account No.:</label>
-              <input type="number" name="accountno" id="accountno" value="" class="form-control" placeholder="Enter Your Number"/>
-              <span class="form-text text-danger"></span>
-            </div>
+           <div class="col-lg-6 ">
+            <label>Bank Name:</label>
+            <input type="text" id="bankname" name="bankname" class="form-control" placeholder="Enter Your Bank Number" value=""/>
+            <span class="form-text text-danger"></span>
           </div>
+        </div>
+        <div class="form-group row m-auto">
+          <div class="col-lg-6">
+            <label>Account No.:</label>
+            <input type="number" name="accountno" id="accountno" value="" class="form-control" placeholder="Enter Your Number"/>
+            <span class="form-text text-danger"></span>
+          </div>
+        </div>
+        <div class="form-group row m-auto">
+          <div class="col-lg-6">
+            <label>Account Holder Name:</label>
+            <input type="text" id="accountholder" name="accountholder" class="form-control" placeholder="Enter Your  Name" maxlength="10" value=""/>
+            <span class="form-text text-danger"></span>
+          </div>
+        </div>
+        <div class="form-group row m-auto">
+          <div class="col-lg-6">
+            <label>IFSC Code:</label>
+            <input type="text" name="ifsccode" id="ifsccode" class="form-control" placeholder="Enter Certification Number" value="" />
+            <span class="form-text text-danger"></span>
+          </div></div>
           <div class="form-group row m-auto">
-            
-            <div class="col-lg-6">
-              <label>Account Holder Name:</label>
-              <input type="text" id="accountholder" name="accountholder" class="form-control" placeholder="Enter Your  Name" maxlength="10" value=""/>
-              <span class="form-text text-danger"></span>
-            </div> </div>
-
-             <div class="form-group row m-auto">
-            <div class="col-lg-6">
-              <label>IFSC Code:</label>
-              <input type="text" name="ifsccode" id="ifsccode" class="form-control" placeholder="Enter Certification Number" value="" />
-              <span class="form-text text-danger"></span>
-            </div></div>
-             <div class="form-group row m-auto">
             <div class="col-md-4 mt-2">
               <label>Bank Passbook or Chequebook:</label>
               <div class="custom-file">
@@ -56,17 +50,12 @@
       </div>
     </div>
   </div>
- <?php }
-
-
-else{  ?>
-
+<?php }else{  ?>
   <div class="card card-custom bgi-no-repeat gutter-b ">
-     <div class="card-body">
-  <div class="container-fluid profile  ">
-    <h4 class="card-title">Bank Account Details</h4>
-    <div class="row ">
-      
+   <div class="card-body">
+    <div class="container-fluid profile  ">
+      <!-- <h4 class="card-title">Bank Account Details</h4> -->
+      <div class="row">
         <div class="col-md-6">
           <div class="row py-2">
             <label class="col-sm-4 text-heading">Bank Name</label>
@@ -75,7 +64,6 @@ else{  ?>
             </div>
           </div>
         </div>
-      
         <div class="col-md-6">
           <div class="row py-2">
             <label class="col-sm-4 text-heading">Account No.</label>
@@ -84,7 +72,6 @@ else{  ?>
             </div>
           </div>
         </div>
-         
         <div class="col-md-6">
           <div class="row py-2">
             <label class="col-sm-4 text-heading">Account Holder Name</label>
@@ -92,8 +79,7 @@ else{  ?>
               <?php echo $teacher[0]->account_name; ?>
             </div>
           </div>
-        </div> 
-
+        </div>
         <div class="col-md-6">
           <div class="row py-2">
             <label class="col-sm-4 text-heading">IFSC Code</label>
@@ -101,25 +87,19 @@ else{  ?>
               <?php echo $teacher[0]->ifsc_code; ?>
             </div>
           </div>
-       </div>
-      
-              
+        </div>
       </div>
-         </div></div></div>
-<?php
-} ?>
-
-
-  
+    </div>
+  </div>
+</div>
+<?php } ?>
 
 <script>
   $(document).ready(function(){
-
     $("#submit").on('click',function (e){
       e.preventDefault();
-
-     var csrfName = $('.csrfname').attr('name');
-        var csrfHash = $('.csrfname').val();
+      var csrfName = $('.csrfname').attr('name');
+      var csrfHash = $('.csrfname').val();
       var formimage = $('#ajaxForm');
       var frm = new FormData(formimage[0]);
 
@@ -127,7 +107,7 @@ else{  ?>
       var accountno = $('#accountno');
       var accountholder = $('#accountholder');
       var ifsccode = $('#ifsccode');
-     
+
       var file= $('#file');
       var submit = true;
       if(bankname.val()==''){
@@ -154,14 +134,14 @@ else{  ?>
       }else{
         $(ifsccode).next().text('');
       }
-      
+
       if(file.val() ==''){
         $(file).parent().next().text('Please submit Passbook Copy.');
         submit = false;
       }else{
         $(file).parent().next().text('');
       }
-      
+
       if(submit==false){
         return false;
       }
@@ -181,7 +161,7 @@ else{  ?>
           }
         },
       });
-      
+
     });
   });
 </script>
