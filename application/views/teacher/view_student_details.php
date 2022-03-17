@@ -1,3 +1,7 @@
+	
+ <div class="text-center">
+    <a   target="_blank" class="btn btn-warning" href="<?php  echo base_url('Teacher/view_question_pdf/'.$this->Common_model->encrypt_decrypt($details[0]->paper_code,'encrypt'));?>" >View paper</a>  </div> 
+
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>"> 
 <table id="" class="table " width="100%" >
 	<thead>
@@ -22,8 +26,8 @@
 					<td><?= $anssheet->enrollment_no; ?></td>
 					<td><?= $anssheet->course_name; ?></td>
 					<td><?= $anssheet->class_name; ?></td>
-					<td class="col-md-2 text-center">
-						<button  class="btn btn-primary btn-sm font-weight-bold student"  data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$anssheet->id;?>">View Paper</button></td>
+					<td class="col-md-2 ">
+						<button  class="btn btn-primary btn-sm font-weight-bold student"  data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$anssheet->id;?>">View</button></td>
 				</tr>
 				<?php
 				$i++; } 

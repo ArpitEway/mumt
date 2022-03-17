@@ -233,7 +233,7 @@ class Teacher extends CI_Controller {
 
 
 	public function Teacher_paper_alloted_list(){
-		$title = array('title' => 'Teacher Paper Alloted List');
+		$title = array('title' => 'Check Answer  Sheet ');
 		$this->load->view('teacher/header',$title);	
 		$where = array('teacher_id'=>$this->session->teacher_id);
 		$center_ids = $this->Common_model->getRecordByWhere('assign_answersheet',$where);
@@ -336,7 +336,9 @@ class Teacher extends CI_Controller {
 		}
 	}
 
-	public function uplode_answersheet_pdf($id){
+
+
+public function view_answersheet_pdf($id){
 		$id=$this->Common_model->encrypt_decrypt($id,'decrypt');
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
@@ -345,6 +347,19 @@ class Teacher extends CI_Controller {
 		$where= array('id'=>$id);
 		$data['answer'] = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',$where);
 		$this->load->view('teacher/view_answersheet_pdf',$data); 
+	}
+
+
+	public function view_question_pdf($paper_code){
+		$paper_code=$this->Common_model->encrypt_decrypt($paper_code,'decrypt');
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
+
+		$where= array('paper_code'=>$paper_code);
+		$data['question'] = $this->Common_model->getRecordByWhere('paper_master',$where);
+		$this->load->view('teacher/view_question_pdf',$data); 
 	}
 
 	public function student_marks_entry_update()

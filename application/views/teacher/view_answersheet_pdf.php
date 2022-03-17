@@ -15,14 +15,14 @@
 	<input type="hidden" id="pdf_url"  value="<?php echo BASE_URL('assets/exam_answersheet/'.$answer[0]->upload_date.'/'.$answer[0]->answer_sheet); ?>"> 
 	<input type="hidden" id="upload_exam_ans_sheet_id"  value="<?= $answer[0]->id; ?>"> 
 <div class="toolbar">
-	<div class="tool">
+	<!-- <div class="tool">
 		<span>PDFJS + FabricJS + jsPDF</span>
-	</div>
-	<div class="tool">
+	</div> -->
+	<!-- <div class="tool">
 		<label for="">Brush size</label>
 		<input type="number" class="form-control text-right" value="1" id="brush-size" max="50">
-	</div>
-	<div class="tool">
+	</div> -->
+<!-- 	<div class="tool">
 		<label for="">Font size</label>
 		<select id="font-size" class="form-control">
 			<option value="10">10</option>
@@ -36,43 +36,43 @@
 			<option value="72">72</option>
 			<option value="108">108</option>
 		</select>
-	</div>
-	<div class="tool">
+	</div> -->
+	<!-- <div class="tool">
 		<button class="color-tool active" style="background-color: #212121;"></button>
 		<button class="color-tool" style="background-color: red;"></button>
 		<button class="color-tool" style="background-color: blue;"></button>
 		<button class="color-tool" style="background-color: green;"></button>
 		<button class="color-tool" style="background-color: yellow;"></button>
-	</div>
+	</div> -->
 	<div class="tool">
 		<button class="tool-button active"><i class="fa fa-hand-paper-o" title="Free Hand" onclick="enableSelector(event)"></i></button>
 	</div>
 	<div class="tool">
 		<button class="tool-button"><i class="fa fa-pencil" title="Pencil" onclick="enablePencil(event)"></i></button>
 	</div>
-	<div class="tool">
+	<!-- <div class="tool">
 		<button class="tool-button"><i class="fa fa-font" title="Add Text" onclick="enableAddText(event)"></i></button>
-	</div>
-	<div class="tool">
+	</div> -->
+	<!-- <div class="tool">
 		<button class="tool-button"><i class="fa fa-long-arrow-right" title="Add Arrow" onclick="enableAddArrow(event)"></i></button>
-	</div>
-	<div class="tool">
+	</div> -->
+	<!-- <div class="tool">
 		<button class="tool-button"><i class="fa fa-square-o" title="Add rectangle" onclick="enableRectangle(event)"></i></button>
-	</div>
-	<div class="tool">
+	</div> -->
+	<!-- <div class="tool">
 		<button class="tool-button"><i class="fa fa-picture-o" title="Add an Image" onclick="addImage(event)"></i></button>
-	</div>
-	<div class="tool">
+	</div> -->
+	<!-- <div class="tool">
 		<button class="btn btn-danger btn-sm" onclick="deleteSelectedObject(event)"><i class="fa fa-trash"></i></button>
-	</div>
+	</div> -->
 	<div class="tool">
 		<button class="btn btn-danger btn-sm" onclick="clearPage()">Clear Page</button>
 	</div>
 	<div class="tool">
-		<button class="btn btn-info btn-sm" onclick="showPdfData()">Check Pdf</button>
+		<button class="btn btn-info btn-sm" onclick="showPdfData()">Save Pdf</button>
 	</div>
 	<div class="tool">
-		<button class="btn btn-light btn-sm" onclick="savePDF()"><i class="fa fa-save"></i> Save</button>
+		<button class="btn btn-light btn-sm" onclick="savePDF()"><i class="fa fa-save"></i>Downlode </button>
 	</div>
 </div>
 <div id="pdf-container"></div>

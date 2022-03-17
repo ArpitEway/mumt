@@ -10,7 +10,7 @@
                 <option value="<?=$paper_code->paper_code?>"> <?php
 
                     $papername=$this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$paper_code->paper_code));
-                    echo '('.$paper_code->paper_code.')'. $papername[0]->paper_name ;
+                    echo ' ( '.$paper_code->paper_code.' ) '. $papername[0]->paper_name ;
                    // $this->Common_model->last_query();
                     ?> </option>
             <?php endforeach ?> 
