@@ -245,11 +245,11 @@ class Teacher extends CI_Controller {
 			'course_group_id' => $center_ids[0]->course_group_id
 		); 
 
-	$this->db->select('DISTINCT(paper_code)');
-	$this->db->from('upload_exam_ans_sheet');
- $this->db->where($where);
-  $this->db->where('paper_code',$center_ids[0]->paper_code);
-  $data['paper_codes'] = $this->db->get()->result();
+	  $this->db->select('DISTINCT(paper_code)');
+	  $this->db->from('upload_exam_ans_sheet');
+      $this->db->where($where);
+      $this->db->where('paper_code',$center_ids[0]->paper_code);
+      $data['paper_codes'] = $this->db->get()->result();
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
 

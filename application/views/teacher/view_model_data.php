@@ -51,9 +51,9 @@
        
 <div class="row ">
 <div class="col-lg-6">
-                    <div class="row py-2">
+                    <div  class="row py-2">
                         <label class="col-lg-6 text-heading">Paper Name</label>
-                        <div class="col-lg-6 text-value">
+                        <div class="col-lg-6 ">
 <?php
            $papername=$this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$details[0]->paper_code));
            ?>
@@ -65,27 +65,22 @@
                 </div>
 
 
-                <div class="col-4">
+                <div class="m-auto">
    
-                     <label class="text-heading mt-3">   <a   target="_blank" class="btn btn-info" href="<?php  echo base_url('Teacher/uplode_answersheet_pdf/').$details[0]->id;?>" >View</a></label>
-
+                       <a   target="_blank" class="btn btn-info" href="<?php  echo base_url('Teacher/uplode_answersheet_pdf/').$details[0]->id;?>" >View</a>
     </div>   </div> 
 
 
              
    </div>
-
-
-
+<div class="card-footer pb-0"></div>
     
  <input  type="hidden" name="id" id="student_id" value="<?= $details[0]->id ?>"> 
                     <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>"> 
   
-
-
 <fieldset class="form-group col-md-12">
-    <label for="Questions1" class="text-heading">1.</label>
-                    <label for="Questions1" class="col-5 col-form-label">Questions 1</label>
+    <label for="Questions1" class="text-heading"><strong>1.</strong></label>
+                    <label for="Questions1" class="col-5 col-form-label "><strong>Questions 1 </strong> </label>    
                                         
 <label class="text-heading mt-3">
                                                <select name="marks1" class="form-control" id="marks1">
@@ -104,8 +99,8 @@
 
 
 <fieldset class="form-group col-md-12">
-    <label for="Questions1" class="text-heading">2.</label>
-                    <label for="Questions2" class="col-5 col-form-label">Questions 2</label>
+    <label for="Questions1" class="text-heading"><strong>2.</strong></label>
+                    <label for="Questions2" class="col-5 col-form-label"><strong>Questions 2</strong></label>
                                         
 <label class="text-heading mt-3">
                                                <select name="marks2" class="form-control" id="marks2">
@@ -125,8 +120,8 @@
 
 
 <fieldset class="form-group col-md-12">
-    <label for="Questions3" class="text-heading">2.</label>
-                    <label for="Questions3" class="col-5 col-form-label">Questions 3</label>
+    <label for="Questions3" class="text-heading"><strong>3.</strong></label>
+                    <label for="Questions3" class="col-5 col-form-label"><strong>Questions 3</strong></label>
                                         
 <label class="text-heading mt-3">
                                                <select name="marks3" class="form-control" id="marks3">
@@ -144,8 +139,8 @@
                 </fieldset>
 
 <fieldset class="form-group col-md-12">
-    <label for="Questions4" class="text-heading">4.</label>
-                    <label for="Questions4" class="col-5 col-form-label">Questions 4</label>
+    <label for="Questions4" class="text-heading"><strong>4.</strong></label>
+                    <label for="Questions4" class="col-5 col-form-label"><strong>Questions 4</strong></label>
                                         
 <label class="text-heading mt-3">
                                                <select name="marks4" class="form-control" id="marks4">
@@ -164,9 +159,9 @@
 
 
 <fieldset class="form-group col-md-12">
-    <label for="Questions5" class="text-heading">5.</label>
+    <label for="Questions5" class="text-heading"><strong>5.</strong></label>
 
-                    <label for="Questions5" class="col-5 col-form-label">Questions 5</label>
+                    <label for="Questions5" class="col-5 col-form-label"><strong>Questions 5</strong></label>
                                         
 <label class="text-heading mt-3">
                                                <select name="marks5" class="form-control" id="marks5">
@@ -193,7 +188,7 @@
    
    </div>
   </div>
- 
+  
  </form>
 
 
