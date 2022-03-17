@@ -50,10 +50,10 @@
 
        
 <div class="row ">
-<div class="col-lg-6">
+<div class="col-lg-6 ">
                     <div  class="row py-2">
                         <label class="col-lg-6 text-heading">Paper Name</label>
-                        <div class="col-lg-6 ">
+                        <div class="col-lg-6 px-1">
 <?php
            $papername=$this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$details[0]->paper_code));
            ?>
