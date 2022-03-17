@@ -67,7 +67,7 @@
 
                 <div class="m-auto">
    
-                       <a   target="_blank" class="btn btn-info" href="<?php  echo base_url('Teacher/uplode_answersheet_pdf/').$details[0]->id;?>" >View</a>
+                       <a   target="_blank" class="btn btn-info" href="<?php  echo base_url('Teacher/uplode_answersheet_pdf/'.$this->Common_model->encrypt_decrypt($details[0]->id,'encrypt'));?>" >View</a>
     </div>   </div> 
 
 

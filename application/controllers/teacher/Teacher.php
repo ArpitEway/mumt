@@ -337,6 +337,7 @@ class Teacher extends CI_Controller {
 	}
 
 	public function uplode_answersheet_pdf($id){
+		$id=$this->Common_model->encrypt_decrypt($id,'decrypt');
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
