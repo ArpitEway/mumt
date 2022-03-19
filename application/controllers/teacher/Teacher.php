@@ -259,7 +259,7 @@ class Teacher extends CI_Controller {
 	}
 
 	public function get_paper_details(){
-		
+
 		$paper_code =$this->input->post('paper_code');
 		$where = array('teacher_id'=>$this->session->teacher_id);
 		$assignAnsData = $this->Common_model->getRecordByWhere('assign_answersheet',$where);
@@ -371,14 +371,23 @@ class Teacher extends CI_Controller {
 		$updateData = array('uplode_examsheet_id' => $upload_exam_ans_sheet_id,'json_data' => $json_data);
 
 		$result=	$this->Common_model->insertAll('answer_sheet_json_data',$updateData);
-		if($result){
-			echo json_encode(array(
-				"success" => ' Updated Successfully',
-			));
-		}else{
-			echo json_encode(array(
-				"error" => ' error Occured',
-			));
+
+		// if($result){
+		// 	echo json_encode(array(
+		// 		"success" => ' Updated Successfully',
+		// 	));
+		// }else{
+		// 	echo json_encode(array(
+		// 		"error" => ' error Occured',
+		// 	));
+		// }
+		 $this->db->where('uplode_examsheet_id',$upload_exam_ans_sheet_id);
+   $q = $this->db->get('answer_sheet_json_data');
+   
+if($result!=''){
+		$where=array('uplode_examsheet_id'=>$upload_exam_ans_sheet_id);
+$result1=	$this->Common_model->updateRecordByConditions('answer_sheet_json_data',$where,$updateData);
 		}
+
 	}
 }
