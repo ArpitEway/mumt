@@ -1,9 +1,15 @@
-	
+		<link href="<?=base_url()?>assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+		 <script src="<?=base_url()?>assets/plugins/custom/datatables/datatables.bundle.js"></script>
+        
+        <script src="<?=base_url()?>assets/js/pages/crud/datatables/basic/basic.js?token=<?=date('dmyhis')?>"></script> 
+        
  <div class="text-center">
-    <a   target="_blank" class="btn btn-warning" href="<?php  echo base_url('Teacher/view_question_pdf/'.$this->Common_model->encrypt_decrypt($details[0]->paper_code,'encrypt'));?>" >View paper</a>  </div> 
+    <a   target="_blank" class="btn btn-warning" href="<?php  echo base_url('teacher/Teacher/view_question_pdf/'.$this->Common_model->encrypt_decrypt($answersheetData[0]->paper_code,'encrypt'));?>" >View paper</a> 
+     </div> 
+
 
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>"> 
-<table id="" class="table " width="100%" >
+<table id="kt_datatable" class="table table-striped dt-responsive nowrap " width="100%" >
 	<thead>
 		<tr>
 			<th>Sno</th>
@@ -52,10 +58,6 @@
 		</div>
 	</div>
 </div>
-
-
-
-
 
 
 

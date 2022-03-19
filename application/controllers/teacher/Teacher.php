@@ -259,6 +259,7 @@ class Teacher extends CI_Controller {
 	}
 
 	public function get_paper_details(){
+		
 		$paper_code =$this->input->post('paper_code');
 		$where = array('teacher_id'=>$this->session->teacher_id);
 		$assignAnsData = $this->Common_model->getRecordByWhere('assign_answersheet',$where);
@@ -337,8 +338,7 @@ class Teacher extends CI_Controller {
 	}
 
 
-
-public function view_answersheet_pdf($id){
+    public function check_answersheet_pdf($id){
 		$id=$this->Common_model->encrypt_decrypt($id,'decrypt');
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
@@ -359,6 +359,7 @@ public function view_answersheet_pdf($id){
 
 		$where= array('paper_code'=>$paper_code);
 		$data['question'] = $this->Common_model->getRecordByWhere('paper_master',$where);
+		//$this->Common_model->last_query();
 		$this->load->view('teacher/view_question_pdf',$data); 
 	}
 
