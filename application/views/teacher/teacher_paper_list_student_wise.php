@@ -27,7 +27,13 @@
 		
 
 </form>
-
+<div align="center" id="myLoader" class="loader_div" style="display: none;" >
+  <svg>
+    <circle cx="50" cy="50" r="40" stroke="red" stroke-dasharray="78.5 235.5" stroke-width="3" fill="none" />
+    <circle cx="50" cy="50" r="30" stroke="blue" stroke-dasharray="62.8 188.8" stroke-width="3" fill="none" />
+    <circle cx="50" cy="50" r="20" stroke="green" stroke-dasharray="47.1 141.3" stroke-width="3" fill="none" />
+  </svg>
+</div>
 <div class="row" >
     <div class="col-md-12 col-lg-12" id="student_data_tbl">
 <!-- table by ajax append here -->
@@ -40,7 +46,7 @@
     $('#submit').on('click',function (e) {
         e.preventDefault();
 
-       
+       $('#student_data_tbl').hide();
         var csrfName = $('.csrfname').attr('name');
         var csrfHash = $('.csrfname').val();
         var paper_code = $('#paper').val();
@@ -57,11 +63,15 @@
                 dataType : 'JSON',
                 data: data,
               
+       beforeSend: function(){
+                $("#myLoader").show();
+               },
+
                success:function(resp){
-              
+                 if($('#myLoader').hide()){
                     $('#student_data_tbl').html(resp.data);
-                   
-                
+                     $('#student_data_tbl').show();
+                }
             }//success
         })//ajax
     }
