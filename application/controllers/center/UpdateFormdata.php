@@ -14,7 +14,30 @@ class updateFormdata extends CI_Controller {
 	}
 
 	public function index(){
+	   // code for delete papers 
+      if($_POST['old_course_group_id']!=$_POST['course_group_id']){
+       $delete  =  $this->Common_model->deleteByWhere('new_exam_form' ,array('student_id'=>$_POST['student_id']));
+	  
     
+       $class_master =   $this->Common_model->getRecordByWhere('class_master' ,array("id"=>$_POST['class_id']));
+	  
+	  if($class_master[0]->class_group=='N'){
+        $papers =   $this->Common_model->getRecordByWhere('paper_master' ,array("class_id"=>$_POST['class_id']));
+		foreach($papers as $paper){
+			$insert_paper = array(
+				'student_id'=>$_POST['student_id'],
+				'course_group_id' =>$_POST['course_group_id'],
+				'class_id' =>$_POST['class_id'],
+				'paper_id' =>$paper->id,
+				'paper_code' =>$paper->paper_code,
+		    );
+			$insert = $this->Common_model->insertAll('new_exam_form',$insert_paper);
+		}
+	  }else{
+		$data['temp_exam_form'] = 'N';
+	  }
+	  }
+	
 		$course_group_id = html_escape($this->input->post('course_group_id'));
 		$class_id = html_escape($this->input->post('class_id'));
 		$session = html_escape($this->input->post('session'));
