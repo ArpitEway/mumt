@@ -365,29 +365,46 @@ class Teacher extends CI_Controller {
 
 	public function student_marks_entry_update()
 	{
+
 		$upload_exam_ans_sheet_id = $this->input->post('upload_exam_ans_sheet_id');
 		$json_data = $this->input->post('json_data');
 
+
+$where=array('uplode_examsheet_id'=>$upload_exam_ans_sheet_id);
+		$dataCount =	$this->Common_model->getRecordByWhere('answer_sheet_json_data',$where);
+		if($dataCount==""){
 		$updateData = array('uplode_examsheet_id' => $upload_exam_ans_sheet_id,'json_data' => $json_data);
 
 		$result=	$this->Common_model->insertAll('answer_sheet_json_data',$updateData);
 
-		// if($result){
-		// 	echo json_encode(array(
-		// 		"success" => ' Updated Successfully',
-		// 	));
-		// }else{
-		// 	echo json_encode(array(
-		// 		"error" => ' error Occured',
-		// 	));
-		// }
-		 $this->db->where('uplode_examsheet_id',$upload_exam_ans_sheet_id);
-   $q = $this->db->get('answer_sheet_json_data');
-   
-if($result!=''){
-		$where=array('uplode_examsheet_id'=>$upload_exam_ans_sheet_id);
-$result1=	$this->Common_model->updateRecordByConditions('answer_sheet_json_data',$where,$updateData);
+		if($result){
+			echo json_encode(array(
+				"success" => ' Updated Successfully',
+			));
+		}else{
+			echo json_encode(array(
+				"error" => ' error Occured',
+			));
 		}
+}
+	  
+else{
+	$where=array('uplode_examsheet_id'=>$upload_exam_ans_sheet_id);
+	$updateData1 = array('json_data' => $json_data);
+		
+$result1=	$this->Common_model->updateRecordByConditions('answer_sheet_json_data',$where,$updateData1);
 
+
+if($result1){
+			echo json_encode(array(
+				"success" => ' Updated Successfully',
+			));
+		}else{
+			echo json_encode(array(
+				"error" => ' error Occured',
+			));
+		}
+		}
+//$this->Common_model->last_query();
 	}
 }
