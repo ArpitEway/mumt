@@ -2366,4 +2366,80 @@ public function update_exam_datewise_permission(){
 		echo json_encode($return);
 		die;
 	}
+
+	public function regular_consolidate_report(){
+		
+			$dataTitle = array(); 
+			$dataTitle['title'] = "Regular Student Report";
+			$this->load->view('header',$dataTitle);
+			$this->db->order_by('id', 'Desc');
+			$data['sessions']  = $this->db->get_where('session', array())->result_array();
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$this->load->view('admin/regular_consolidate_report',$data);
+			$this->load->view('footer');
+	
+	}
+
+
+	public function get_student_consolidate_data_regular()
+	{
+
+		if ($this->input->method() == "post") 
+		{
+			$course_group_id = 0;
+
+			$data = array();
+			$dt   = array();
+
+			$course_group_id  = 	$this->input->post("course_group_id");
+			$class_id  		  = 	$this->input->post("class_id");
+			$approved 		  = 	$this->input->post("approved");
+			$payment 		  = 	$this->input->post("payment");
+			$enrolled 		  = 	$this->input->post("enrolled");
+			$document_upload  = 	$this->input->post("document_upload");
+			$filter  		  = 	$this->input->post("filter");
+			$session 		  = 	$this->input->post("session");
+			$mode 		  	  = 	$this->input->post("mode");
+			$center 	  	  = 	$this->input->post("center");
+       
+			if($center != "all"){	 
+
+				$dt['center_id'] = $center;
+			}
+			if($mode != "all"){	 
+
+				$dt['mode'] = $mode;
+			}
+			if($session != "all"){	 
+
+				$dt['session'] = $session;
+			}else{
+				$dt['name!='] = '';
+			}
+
+			if($filter == "course"){
+
+				$data['course_count'] = $this->Common_model->student_data_consolidate($dt,'course_group_id');
+				
+			}
+			if($filter == "center"){
+
+				$data['center_count'] = $this->Common_model->student_data_consolidate($dt,'center_id');
+
+			}
+
+
+			$dt = $this->load->view('admin/getStudentConsolidateRegular',$data,true);
+
+			echo json_encode(array(
+				"status" => true,
+				"data" => $dt
+			));
+		}
+
+	}
+	
+
+
 }// class
