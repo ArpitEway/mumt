@@ -22,7 +22,7 @@
 		<select name="center_id" id="center_id" class="form-control"  required >
 		<option value="all">All</option>
 		<?php 
-		$centers = $this->db->get_where('center', "center_code LIKE '%IC%'  not in ('IC5000', 'IC5001','IC5002')")->result_array();
+		$centers = $this->db->get_where('center', "center_code LIKE '%IC%'  and  center_code not in ('IC5000', 'IC5001','IC5002')")->result_array();
 		foreach($centers as $center)
 		{
 		?>
