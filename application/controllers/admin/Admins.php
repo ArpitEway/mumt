@@ -2228,7 +2228,7 @@ public function update_exam_datewise_permission(){
 			redirect(base_url('admin'));
 			exit;
 		}else{
-			$this->load->view('header',array('title' => 'Search Transaction Details'));
+			$this->load->view('header',array('title' =>'Search Student Answersheet (Dec 2021)'));
 			$data = array(
 				'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash(),
@@ -2298,6 +2298,35 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
+
+
+  public function Delete_answersheet($id)
+  {
+  
+  	$view = $this->Common_model->get_record('upload_exam_ans_sheet','*',array('id'=>$id));
+
+  	if(file_exists(FCPATH.'/assets/exam_answersheet/'.$view[0]['upload_date'].'/'.$view[0]['answer_sheet'].'.pdf'))
+  	{
+
+
+  		$studentdata=unlink( FCPATH . '/assets/exam_answersheet/'.$view[0]['upload_date'].'/'.$view[0]['answer_sheet'].'.pdf' );
+
+  	}
+
+  	if($studentdata){
+
+  		$where = array(
+  			'id' => $id
+  		);
+  		$data = array(
+  			'answer_sheet' => '',
+  			'file_exist'=>'N'
+  		);
+  		$response= $this->Common_model->updateRecordByConditions('upload_exam_ans_sheet',$where,$data);
+  		redirect(base_url('admin/admins/check_student_exam_records'));
+  	}
+  }
+
 	public function answersheet_uplaod_status(){
 		if(!$this->session->has_userdata('adminData')){
 			redirect(base_url('admin'));
@@ -2318,24 +2347,20 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
-
-
-	public function add_new_txn(){
-		
+	public function add_new_txn(){		
 		$txnid = $this->input->post('txnId');
 		$Fess_head = $this->input->post('fees_head');
 		$dateTime = $this->input->post('dateTime');
 		$student_id = $this->input->post('student_id');
 		$where = array('student_id'=>$student_id);
-
 		$student_details =  $this->Common_model->getRecordByWhere('student',$where);
 		$course_details =  $this->Common_model->getRecordByWhere('course',array('course_group_id'=>$student_details[0]->course_group_id,'session'=>$student_details[0]->session));
-
 		$center_id = $student_details[0]->center_id;
 		$course_group_id = $student_details[0]->course_group_id;
+		$remark = '';
+		$session = $student_details[0]->session;
 		$class_id = $student_details[0]->class_id;
 		$name = $student_details[0]->name;
-		
 
 		if($Fess_head!=''){
 			$exam_fees = ($Fess_head== 'Exam Fees') ? $course_details[0]->exam_fees+$course_details[0]->program_fees : $course_details[0]->form_fees+$course_details[0]->admission_fees;
@@ -2349,7 +2374,6 @@ public function update_exam_datewise_permission(){
 		);
 
 		$transaction = $this->Common_model->insertAll('online_payment_transaction',$updateData);
-
 		$where1 = array('student_id' => $student_id);
 		if($Fess_head=='Admission Fees'){	
 			$result = $this->Common_model->updateRecordByConditions('student',$where1,array('payment_status'=> 'Y'));
@@ -2367,4 +2391,76 @@ public function update_exam_datewise_permission(){
 		echo json_encode($return);
 		die;
 	}
+
+	public function regular_consolidate_report(){
+			$dataTitle = array(); 
+			$dataTitle['title'] = "Regular Student Report";
+			$this->load->view('header',$dataTitle);
+			$this->db->order_by('id', 'Desc');
+			$data['sessions']  = $this->db->get_where('session', array())->result_array();
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$this->load->view('admin/regular_consolidate_report',$data);
+			$this->load->view('footer');
+	}
+
+
+	public function get_student_consolidate_data_regular()
+	{
+		if ($this->input->method() == "post") 
+		{
+			$course_group_id = 0;
+			$data = array();
+			$dt   = array();
+
+			$course_group_id  = 	$this->input->post("course_group_id");
+			$class_id  		  = 	$this->input->post("class_id");
+			$approved 		  = 	$this->input->post("approved");
+			$payment 		  = 	$this->input->post("payment");
+			$enrolled 		  = 	$this->input->post("enrolled");
+			$document_upload  = 	$this->input->post("document_upload");
+			$filter  		  = 	$this->input->post("filter");
+			$session 		  = 	$this->input->post("session");
+			$mode 		  	  = 	$this->input->post("mode");
+			$center 	  	  = 	$this->input->post("center");
+       
+			if($center != "all"){	 
+
+				$dt['center_id'] = $center;
+			}
+			if($mode != "all"){	 
+
+				$dt['mode'] = $mode;
+			}
+			if($session != "all"){	 
+
+				$dt['session'] = $session;
+			}else{
+				$dt['name!='] = '';
+			}
+
+			if($filter == "course"){
+
+				$data['course_count'] = $this->Common_model->student_data_consolidate($dt,'course_group_id');
+				
+			}
+			if($filter == "center"){
+
+				$data['center_count'] = $this->Common_model->student_data_consolidate($dt,'center_id');
+
+			}
+
+
+			$dt = $this->load->view('admin/getStudentConsolidateRegular',$data,true);
+
+			echo json_encode(array(
+				"status" => true,
+				"data" => $dt
+			));
+		}
+
+	}
+	
+
+
 }// class

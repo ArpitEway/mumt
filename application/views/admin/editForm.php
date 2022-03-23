@@ -26,8 +26,12 @@
 				</div>
 				<div class="col-md-6">
 					<div class="form-group">
+					<input type="hidden" name="old_course_group_id" id="old_course_group_id"  value="<?=$student_detail->course_group_id;?>">
+
 					<label>Course</label><span class="text-danger"> *</span>
 					<select name="course_group_id" id="course_group_id" class="form-control " >
+
+
 					<option value="" >--Select--</option>
                     <?php
 

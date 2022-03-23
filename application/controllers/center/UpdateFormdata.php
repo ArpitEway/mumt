@@ -14,7 +14,31 @@ class updateFormdata extends CI_Controller {
 	}
 
 	public function index(){
-    
+	   // code for delete papers 
+		if($_POST['old_course_group_id']!=$_POST['course_group_id']){
+			$delete  =  $this->Common_model->deleteByWhere('new_exam_form' ,array('student_id'=>$_POST['student_id']));
+			$class_master =   $this->Common_model->getRecordByWhere('class_master' ,array("id"=>$_POST['class_id']));
+			if($class_master[0]->class_group=='N'){
+				$papers =   $this->Common_model->getRecordByWhere('paper_master' ,array("class_id"=>$_POST['class_id']));
+				if(count($papers)>0){
+					foreach($papers as $paper){
+						$insert_paper = array(
+							'student_id'=>$_POST['student_id'],
+							'course_group_id' =>$_POST['course_group_id'],
+							'class_id' =>$_POST['class_id'],
+							'paper_id' =>$paper->id,
+							'paper_code' =>$paper->paper_code,
+						);
+						$insert = $this->Common_model->insertAll('new_exam_form',$insert_paper);
+					}
+				}else{
+					$data['temp_exam_form'] = 'N';
+				}
+			}else{
+				$data['temp_exam_form'] = 'N';
+			}
+		}
+	
 		$course_group_id = html_escape($this->input->post('course_group_id'));
 		$class_id = html_escape($this->input->post('class_id'));
 		$session = html_escape($this->input->post('session'));
@@ -38,7 +62,6 @@ class updateFormdata extends CI_Controller {
 		$studentData['p_mobile_no'] = html_escape($this->input->post('p_mobile_no'));
 		$studentData['religion'] = html_escape($this->input->post('religion'));
 		$studentData['p_email'] = html_escape($this->input->post('p_email'));
-
 		$studentData['handicapped'] = html_escape($this->input->post('handicapped'));
 		$studentData['marital_status'] = html_escape($this->input->post('marital_status'));
 		$studentData['p_address'] = html_escape($this->input->post('p_address'));
@@ -66,7 +89,6 @@ class updateFormdata extends CI_Controller {
         $student_id = html_escape($this->input->post('student_id'));
         $this->db->where('student_id', $student_id);
 		$this->db->update('student', $data);
-
 		$path = 'assets/student_image/'.$session;
 
 		if(!file_exists($path)){
