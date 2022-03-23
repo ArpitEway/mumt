@@ -14,7 +14,7 @@ class Postexam extends CI_Controller {
 		}
 	}
 	
-    public function class_wise_student_count_for_promote_student(){
+    public function promote_student_class_list(){
         $this->db->select('count(*) as cnt ,student.course_name ,student.class_id, student.course_group_id, student.class_name');
         $this->db->from('student');
         $this->db->join('class_master', 'class_master.id = student.class_id');
