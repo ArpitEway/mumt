@@ -48,24 +48,6 @@ margin-right:60px;
     <label for="example-date-input" ><?php echo $details[0]->roll_no; ?></label>
    </div>
 
-
-
-   <!--  <div class="col-lg-6">
-      
-        <label class="col-lg-6 text-heading">Enrollment No</label>
-        <div class="col-lg-6 text-value">
-          <?php echo $details[0]->enrollment_no; ?>
-        </div>
-    
-    </div> -->
-
-
-   <!--  <div class="form-group col-lg-6">
-      
-        <label class="col-lg-6 form-label text-heading">Roll No</label>
-        <div class="col-lg-6 text-value">
-          <?php echo $details[0]->roll_no; ?>
-        </div> -->
     
     </div>
 
@@ -82,31 +64,6 @@ margin-right:60px;
     <label for="example-date-input"><?php echo $details[0]->class_name; ?></label>
   </div></div>
 
-
-
-
-
-
-<!--   <div class="row ">
-    <div class="col-lg-6">
-      <div class="row py-2">
-        <label class="col-lg-6 text-heading">Course Name</label>
-        <div class="col-lg-6 text-value">
-         <?php echo $details[0]->course_name; ?>
-       </div>
-     </div>
-   </div>
-
-
-   <div class="form-group col-lg-6">
-    <div class="row py-2">
-      <label class="col-lg-6 form-label text-heading">Class Name</label>
-      <div class="col-lg-6 text-value">
-       <?php echo $details[0]->class_name; ?>
-     </div>
-   </div>
- </div>
-</div> -->
 
 <div class="fiexcontains ">
   <div class=" items ">
@@ -132,6 +89,8 @@ margin-right:60px;
 <div  class="center"><strong>Questions</strong></div><div style="padding-left: 80px;" class="center"><strong>Marks</strong></div>
 </div>
 
+
+<input  type="hidden" name="id" id="student_tr" value="<?= $details[0]->id ?>">  
 <input  type="hidden" name="id" id="student_id" value="<?= $details[0]->id ?>"> 
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>"> 
 <div class="shift">
@@ -298,6 +257,7 @@ margin-right:60px;
   }
   var frm = $('#ajaxForm').serialize();
 
+ var id = $('#student_tr').val();
   $.ajax({
     url: '<?php echo site_url('teacher/Teacher/question_paper_sub'); ?>',
     method: 'post',
@@ -308,13 +268,14 @@ margin-right:60px;
     success: function (data) {
       if(data.success){
         toastr.success(data.success);
-            // $('.student').remove();
-            // $('#kt_datepicker_modal').modal('toggle');
+           // $('.student').remove();
+            $('#kt_datepicker_modal').modal('toggle');
             
-            // $('.modal-backdrop').remove();
-
-            
-            window.location.reload();
+            $('.modal-backdrop').remove();
+            $('#student_tr_'+id).remove();
+  
+  // $('#kt_datatable info_row[id="'+tr_id+'"]').remove();
+      
           }else{
             toastr.error(data.error);
           }

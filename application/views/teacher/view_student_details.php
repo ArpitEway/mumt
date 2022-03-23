@@ -27,7 +27,9 @@
 		$i = 1;
 		foreach($answersheetData as $anssheet)
 			{ ?>
-				<tr>
+				<tr id="student_tr_<?php echo $anssheet->id; ?>">
+				
+			
 					<td><?= $i; ?></td>
 
 					<td><?= $anssheet->roll_no; ?></td>
@@ -68,10 +70,11 @@
 	$(document).ready(function(){
 
 		$(".student").click(function(){
+			 
 			var upload_exam_ans_id = $(this).attr('data-id');
 			var csrfName = $('.csrfname').attr('name');
 			var csrfHash = $('.csrfname').val();
-
+ 
 			$.ajax({
 				type: "POST",
 				url: BASE_URL+"Teacher/student_details_uplode",
@@ -80,7 +83,7 @@
 				success: function(response){
 
 					$('.modal-body').html(response.data);
-
+					  
 				},
 			});
 		});
