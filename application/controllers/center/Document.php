@@ -14,6 +14,7 @@
 		}
 
 	public function index(){
+		
 		$csrf = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
@@ -25,6 +26,7 @@
 	}
 
 	public function Doc_list(){
+		
 			$data = array();
 		$where = 'document_uploaded!="Y" and payment_status="Y" and center_id='.$this->session->center_id;
 		$column_order = array('student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name',null);
@@ -35,7 +37,7 @@
 			'where' => $where,
 			'table' => 'student',
 		);
-
+           
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
 		foreach($tableData as $result){
