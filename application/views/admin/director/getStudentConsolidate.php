@@ -87,12 +87,13 @@
 
 			$total = 0;
 			foreach($center_count as $student){	
+				
 			?>
 			<tr>
 				
 			<td><?php echo $i; ?></td>
 			<td><?php echo $this->Common_model->getCenterNameById($student["center_id"]); ?></td>
-            <td><?php echo $student["center_code"]; ?></td>
+            <td><?php 	 echo $this->Common_model->getCenterCodeById($student["center_id"]) ?></td>
 			<td><?php echo $student["cnt"]; ?></td>
 			<?php $total = $total + $student["cnt"];?>
 			</tr>
@@ -115,11 +116,13 @@
 			<?php
 			$total = 0;
 			foreach($course_count as $student){	
+              
+				
 			?>
 			<tr>
 				
 			<td><?php echo $i; ?></td>
-			<td><?php echo $this->Common_model->getCourseNameByCourseId($student["id"]); ?></td>
+			<td><?php echo $this->Common_model->getCourseNameByCourseId($student["course_group_id"]); ?></td>
 			<td><?php echo $student["cnt"]; ?></td>
 			<?php $total = $total + $student["cnt"];?>
 			</tr>
