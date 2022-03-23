@@ -23,7 +23,7 @@
 					<td><?php echo $i; ?></td>
 					<td><?php echo $center['center_code']; ?> </td>	
 					<td><?php echo $center['center_name']; ?> </td>
-					<td><a  href='<?php echo base_url('admin/ExamController/enrollment_permission/').$this->Common_model->encrypt_decrypt($center['center_code'],'encrypt'); ?>'><?php echo $center['count']; ?></a></td>
+					<td><a  href='<?php echo base_url('admin/Enrollment/enrollment_permission/').$this->Common_model->encrypt_decrypt($center['center_code'],'encrypt'); ?>'><?php echo $center['count']; ?></a></td>
 				</tr>
 				<?php $i++; } ?>
 			</tbody>

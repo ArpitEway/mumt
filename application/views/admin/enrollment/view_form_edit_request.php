@@ -1,4 +1,5 @@
 <div class="card">
+	 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">	
   	<div class="card-body row text-center" >
         <div class="form-group col-md-3 m-auto">
         <label for="center_id">Center</label>
@@ -16,7 +17,7 @@
         </div>	
 		<div class="form-group col-md-12">
 			<label for="class"></label>
-            <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">	
+           
 			<button type="button" class="btn btn-primary mt-4" style="margin-top: 24px !important;" id="submit_btn">Submit</button>
 		</div>
 	</div>

@@ -1,3 +1,9 @@
+<script type="text/javascript">
+  function DeleteModal(delete_url){
+    jQuery('#alert-modal').modal('show', {backdrop: 'static'});
+    document.getElementById('delete_form').setAttribute('action' , delete_url);
+  }
+</script>
 </div>
 </div>
 </div>
@@ -19,6 +25,25 @@
 </div>
     </div>
 </div>
+
+<div id="alert-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body p-4">
+        <div class="text-center">
+          <i class="dripicons-information h1 text-info"></i>
+          <h4 class="mt-2"><?php echo 'Heads Up' ?>!</h4>
+          <p class="mt-3"><?php echo 'Are You Sure'; ?>?</p>
+          <form method="POST" class="ajaxDeleteForm" action="" id = "delete_form">
+              <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+            <button type="button" class="btn btn-info my-2" data-dismiss="modal"><?php echo 'cancel'; ?></button>
+            <button type="submit" class="btn btn-danger my-2" onclick=""><?php echo 'continue'; ?></button>
+          </form>
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <div class="offcanvas-footer text-center p-3">
         <a href="" class="text-custom ">&#169; <?=date('Y')?> MMYVV </a>
 </div>
@@ -57,6 +82,7 @@
 };
 
 </script>
+
 
 <?php if ($this->session->flashdata('success') != ""):?>
 

@@ -54,39 +54,35 @@
 				if(isset($students)){
 					foreach($students as $student){
 						
-						$userData = $this->Common_model->getRecordById('student_data','student_id',$student['student_id'])
+						
 						?>
 						<tr>
 							<td><?php echo $i; ?></td>
 							<td><a target="_blank" href="<?php echo site_url('admin/'.$this->session->account_type.'/show_form/'.$this->Common_model->encrypt_decrypt($student['student_id'],'encrypt')); ?>"> <?=$student["student_id"]?></a></td>
                               							
 							<td><?php echo $student["enrollment_no"]; ?></td>
-							<td><?php echo ($student["name"]=='') ? $userData->name : $student["name"]; ?></td>
+							<td><?php echo $student["name"] ; ?></td>
 							<td><?php echo $student["f_h_name"]; ?></td>
 							<td><?php echo $this->Common_model->getMobileNoByStudentID($student["student_id"]) ?></td>
 							<td><?php $newDate = ($student["dob"]=='') ? 'N/A' : $student["dob"]; echo date("d-m-Y", strtotime($newDate)); ?></td>
-							<td><?php if($student["course_name"]==''){
-								$course_group_id = $userData->course_group_id;
-								echo $this->Common_model->getSinglefield('course_group','course_name','id='.$course_group_id);
-							}else{
+							<td><?php 
 								echo $student["course_name"];
-							} ?></td>
-							<td><?php if($student["class_name"]==''){
-
-								$class_id = $student['class_id'];
-								echo $this->Common_model->getSinglefield('class_master','class_name','id='.$class_id);
-							}else{
+							?></td>
+							<td><?php 
 								echo $student["class_name"];
-							} ?></td>
+							 ?></td>
 							<td>
 							<?php if(($this->session->account_type == "Admins" || $this->session->account_type == "Enrollment") && $student['approved']!='Y'){ ?> 
 								<a target="_blank"  href='<?php echo base_url($this->session->account_type.'/editForm/').$this->Common_model->encrypt_decrypt($student["student_id"],'encrypt'); ?>'><i class="fa fa-pen"></i></a> 
 							<?php } ?></td>
 							<td><?php if( $student["payment_status"]=='Y'){echo 'Paid' ;}else{echo 'Unpaid' ;} ?></td>
 							<td><?php if( $student["document_uploaded"]=='Y'){echo 'Uploaded' ;}else{echo 'Not Uploaded' ;} ?></td>
+
 							<td><?php if( $student["approved"]=='Y'){echo 'Approved' ;}else if($student["approved"]=='N'){echo 'Non Approved' ;}else{echo 'Non Verified';} ?></td>
+
 							<td><?php if( $student["enrolled"]=='Y'){echo 'Enrolled' ;}else{echo 'Non Enrolled' ;} ?></td>
-							<td><?php if( $student["new_exam_form"]=='Y'){echo 'Submit' ;}else if($student["new_exam_form"]==' D'){echo 'Not Permitted' ;}else{echo 'Not Submitted';} ; ?></td>
+
+							<td><?php if( $student["new_exam_form"]=='Y'){echo 'Submit' ;}else if($student["new_exam_form"]=='D'){echo 'Not Permitted' ;}else{echo 'Not Submitted';} ; ?></td>
 							
 							<td><?php echo $student["center_code"]; ?></td> 
 							

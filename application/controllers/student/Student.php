@@ -195,13 +195,14 @@ class Student extends CI_Controller {
 
 			if($upload_file){
 				$data = array('student_id' =>$_POST['student_id'],
-					'course_id' =>$_POST['course_id'],
+					'course_group_id' =>$_POST['course_group_id'],
 					'class_id' =>$_POST['class_id'],
 					'paper_code' =>$_POST['paper_code'],
 					'center_id' =>$_POST['center_id'],
 					'answer_sheet' =>$document_image ,
 					'upload_date' =>date("Y-m-d") ,
-					'exam_status' => 'R'
+					'exam_status' => 'R',
+					'file_exist' => 'Y'
 				);
 				$where = array(
 					'class_id' => $_POST['class_id'],
@@ -216,5 +217,18 @@ class Student extends CI_Controller {
 				}
 			}
 		}
+	}
+
+	public function delete_exam_answersheet($anssheet_id)
+	{
+		$where = array('id' =>$anssheet_id);
+		$ansdata =	$this->Common_model->getRecordById('upload_exam_ans_sheet','id',$anssheet_id);
+		$data = array('answer_sheet' => '',
+						'upload_date' => '',
+						'file_exist' => 'N',
+						'old_upload_date' => $ansdata->upload_date,
+					);
+		$this->Common_model->updateRecordByConditions('upload_exam_ans_sheet',$where,$data);
+		redirect(base_url('exam_paper'));
 	}
 }

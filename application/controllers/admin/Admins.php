@@ -1492,14 +1492,11 @@ public function update_doc_permission_status()
 
 	public function search_student(){
 		
-		$segment = $this->uri->segment(2);
-		
 		$this->load->view('header',array('title' => 'Search Students'));
 
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
-			'segment' => $segment
 		);
 
 		$this->load->view('admin/search_student',$data);
@@ -1671,7 +1668,7 @@ public function update_doc_permission_status()
 		
 		$text_val =$this->input->post('text_val');
 		$radio_val = $this->input->post('radio_val');
-		$segment = $this->input->post('segment');
+
 
 		if($text_val !='')
 		{
@@ -1685,11 +1682,15 @@ public function update_doc_permission_status()
 
 			}else if($text_val !='' && $radio_val == 'roll_no')
 			{
-				$where = array('name'=>$text_val);
+				$where = array('name'=>$text_val
+
+			);
 
 			}else if($text_val !='' && $radio_val == 'student_name')
 			{
-				$where = array('name'=>$text_val);
+				$where = array();
+				$this->db->like('name', $text_val);
+
 			}else if($text_val !='' && $radio_val == 'adhar_no')
 			{
 				$where =  array('adhar_no' => $text_val);
@@ -1697,8 +1698,7 @@ public function update_doc_permission_status()
 
 			$data['students'] = $this->Common_model->student_data($where);
 
-			$data['segment'] = $segment;
-			
+
 			$dt =  $this->load->view('admin/student/getStudentConsolidate',$data,true);
 			echo json_encode(array(
 				"status" => true,
@@ -2021,20 +2021,25 @@ public function editForm($student_id = ""){
 			}
 		}
 	}
-	
 
 	public function updatePaymentTransaction()
 	{
 		$id = $this->input->post('id');
-		$txnid = $this->input->post('TxnId');
 		$dateTime = $this->input->post('dateTime');
 		$student_id = $this->input->post('student_id');
+		$txnid = $this->input->post('txnid');
 		$dateTime = explode(' ',$dateTime);
-		$updateData = array('txnId' => $txnid,'payment_date' => $dateTime[0],'payment_time' => $dateTime[1],'payment' => 'Y', 'payment_status' => 'captured');
+		$updateData = array('txnId' => $txnid,'payment_date' => $dateTime[0],'payment_time' => $dateTime[1],'payment' => 'Y', 'payment_status' => 'success');
 		$where = array('id' => $id);
 		$this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$updateData);
+		$txnDetails = $this->Common_model->getRecordById('online_payment_transaction','id',$id);
+		if($txnDetails->fees_head=='Exam Fees'){
+			$updateData = array('new_exam_form'=> 'Y'); 
+		}elseif ($txnDetails->fees_head=='Admission Fees') {
+			$updateData = array('payment_status'=> 'Y'); 
+		}
 		$whereStudent = array('student_id'=> $student_id);
-		$result = $this->Common_model->updateRecordByConditions('student',$whereStudent,array('payment_status'=> 'Y'));
+		$result = $this->Common_model->updateRecordByConditions('student',$whereStudent,$updateData);
 		if($result){
 			$paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student_id));
 			$data = array('paymentDetails' => $paymentDetails);
@@ -2322,20 +2327,140 @@ public function update_exam_datewise_permission(){
   	}
   }
 
+	public function answersheet_uplaod_status(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url('admin'));
+			exit;
+		}else{	
+			$this->load->view('header',array('title' => 'Answersheet Upload Status'));
+			$this->db->select('count(*) as num');
+			$this->db->from('new_exam_form');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+			$this->db->where('student.new_exam_form','Y');
+			$count = $this->db->get()->result();
+			$data['total_paper_count'] = $count[0]->num;
+			$data['uploaded'] = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array('exam_status'=> 'R','answer_sheet	!=' => ''));
+			$data['checked'] = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array('teacher_id!='=> ''));
+
+			$this->load->view('admin/answersheet_uplaod_status',$data);
+			$this->load->view('footer');
+		}
+	}
+
+	public function add_new_txn(){		
+		$txnid = $this->input->post('txnId');
+		$Fess_head = $this->input->post('fees_head');
+		$dateTime = $this->input->post('dateTime');
+		$student_id = $this->input->post('student_id');
+		$where = array('student_id'=>$student_id);
+		$student_details =  $this->Common_model->getRecordByWhere('student',$where);
+		$course_details =  $this->Common_model->getRecordByWhere('course',array('course_group_id'=>$student_details[0]->course_group_id,'session'=>$student_details[0]->session));
+		$center_id = $student_details[0]->center_id;
+		$course_group_id = $student_details[0]->course_group_id;
+		$remark = '';
+		$session = $student_details[0]->session;
+		$class_id = $student_details[0]->class_id;
+		$name = $student_details[0]->name;
+
+		if($Fess_head!=''){
+			$exam_fees = ($Fess_head== 'Exam Fees') ? $course_details[0]->exam_fees+$course_details[0]->program_fees : $course_details[0]->form_fees+$course_details[0]->admission_fees;
+		}
+
+		$dateTime = explode(' ',$dateTime);
+		$updateData = array('txnId' => $txnid,'fees_head'=>$Fess_head,'payment_date' => $dateTime[0],'payment_time' => $dateTime[1],'payment' => 'Y', 'payment_status' => 'success','student_id'=>$student_id
+			,'center_id'=>$center_id,'course_group_id'=>$course_group_id,'class_id'=>$class_id,'remark'=>$remark,'student_name'=>$name,'exam_session'=>$session,
+			'admission_type'=>'Regular','amount'=>
+			$exam_fees
+		);
+
+		$transaction = $this->Common_model->insertAll('online_payment_transaction',$updateData);
+		$where1 = array('student_id' => $student_id);
+		if($Fess_head=='Admission Fees'){	
+			$result = $this->Common_model->updateRecordByConditions('student',$where1,array('payment_status'=> 'Y'));
+		}elseif($Fess_head=='Exam Fees'){
+			$result = $this->Common_model->updateRecordByConditions('student',$where1,array('new_exam_form'=> 'Y'));
+		}
+		if($result){
+			$paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student_id));
+			$data = array('paymentDetails' => $paymentDetails);
+			$htmlData = $this->load->view('admin/account_section/view_transaction_details',$data,true); 
+			$return = array('success' => 'Transaction Details Updated','data' =>$htmlData);
+		}else{
+			$return = array('error' => 'An error occurred');
+		}
+		echo json_encode($return);
+		die;
+	}
+
+	public function regular_consolidate_report(){
+			$dataTitle = array(); 
+			$dataTitle['title'] = "Regular Student Report";
+			$this->load->view('header',$dataTitle);
+			$this->db->order_by('id', 'Desc');
+			$data['sessions']  = $this->db->get_where('session', array())->result_array();
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$this->load->view('admin/regular_consolidate_report',$data);
+			$this->load->view('footer');
+	}
 
 
+	public function get_student_consolidate_data_regular()
+	{
+		if ($this->input->method() == "post") 
+		{
+			$course_group_id = 0;
+			$data = array();
+			$dt   = array();
 
+			$course_group_id  = 	$this->input->post("course_group_id");
+			$class_id  		  = 	$this->input->post("class_id");
+			$approved 		  = 	$this->input->post("approved");
+			$payment 		  = 	$this->input->post("payment");
+			$enrolled 		  = 	$this->input->post("enrolled");
+			$document_upload  = 	$this->input->post("document_upload");
+			$filter  		  = 	$this->input->post("filter");
+			$session 		  = 	$this->input->post("session");
+			$mode 		  	  = 	$this->input->post("mode");
+			$center 	  	  = 	$this->input->post("center");
+       
+			if($center != "all"){	 
+
+				$dt['center_id'] = $center;
+			}
+			if($mode != "all"){	 
+
+				$dt['mode'] = $mode;
+			}
+			if($session != "all"){	 
+
+				$dt['session'] = $session;
+			}else{
+				$dt['name!='] = '';
+			}
+
+			if($filter == "course"){
+
+				$data['course_count'] = $this->Common_model->student_data_consolidate($dt,'course_group_id');
+				
+			}
+			if($filter == "center"){
+
+				$data['center_count'] = $this->Common_model->student_data_consolidate($dt,'center_id');
+
+			}
+
+
+			$dt = $this->load->view('admin/getStudentConsolidateRegular',$data,true);
+
+			echo json_encode(array(
+				"status" => true,
+				"data" => $dt
+			));
+		}
+
+	}
 	
-
-
-
-
-
-
-
-
-
-
 
 
 }// class

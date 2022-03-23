@@ -109,7 +109,7 @@
           
             let data = {
                     'text_val':text_val,
-                    'segment':"<?php echo $segment; ?>",
+                
                     'radio_val':radio_val,
                     [csrfName]:csrfHash
                 }

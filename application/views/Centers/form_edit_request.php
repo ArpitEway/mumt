@@ -137,9 +137,9 @@ $(document).on("click","#submit_btn",function(){
 
 	var student = $("#student").val();
     var detail = $(".detail").val();
-	var course_id = $("#allClassBycourse").val();
+	var course_group_id = $("#allClassBycourse").val();
 
-	if(course_id != "" )
+	if(course_group_id != "" )
 	{
 		if(student != "")
 		{
@@ -182,12 +182,12 @@ $("#allClassBycourse").on('change', function(){
 
 	var csrfName = $('.csrfname').attr('name');
 	var csrfHash = $('.csrfname').val(); 
-	var course_id = $(this).val();
+	var course_group_id = $(this).val();
 	$.ajax({
 		method: "POST",
 		url: BASE_URL + "center/center/getStudent_By_Course",
 		data: { 
-			course_id : course_id,
+			course_group_id : course_group_id,
 			[csrfName]:csrfHash
 		},
 	})

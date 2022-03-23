@@ -202,7 +202,7 @@ class Common_Model extends CI_Model{
 	}
 
 	function student_data($where = "",$group_by = ""){
-		
+
 		if($group_by != ""){
 				$this->db->select('count(*) as cnt,course_name');
 				$this->db->group_by($group_by);
@@ -213,6 +213,7 @@ class Common_Model extends CI_Model{
 		}
 		$this->db->from("student");
 		$this->db->where($where);
+		
 		$this->db->join("student_data", "student.student_id = student_data.student_id", 'left'); 
 		$query = $this->db->get();
 		
@@ -545,9 +546,9 @@ class Common_Model extends CI_Model{
 		return $result->class_name;
 	}
 	
-	public function getCourseNameByCourseId($course_id){
+	public function getCourseNameByCourseId($course_group_id){
 		$this->db->select('course_name');
-		$this->db->where('id='.$course_id);
+		$this->db->where('id='.$course_group_id);
 		$qry= $this->db->get('course_group');
 		$result = $qry->row();
 		if(isset($result->course_name)){
@@ -781,6 +782,7 @@ class Common_Model extends CI_Model{
 		print_r($data);
 		// die;
 	}
+
 }
 
 ?>

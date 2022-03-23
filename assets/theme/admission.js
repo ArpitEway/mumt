@@ -165,7 +165,7 @@ $(document).on('click','#submit', function () {
 			var formData = new FormData(form[0]);
 			$.ajax({
 				method: "POST",
-				url: BASE_URL+"center/saveFormdata/",
+				url: BASE_URL+"center/SaveFormdata/",
 				data: formData,
 				dataType: 'json',
 				cache:false,

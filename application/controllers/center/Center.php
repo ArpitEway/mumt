@@ -47,7 +47,7 @@ class Center extends CI_Controller {
 			$this->load->view('Centers/header',$titleData);
 			$center_id =  $this->session->center_id;
 			$centerdata = $this->Common_model->getRecordById('center','id',$center_id);
-			$this->db->where('id in ('.$centerdata->allot_course_id.')');
+			$this->db->where('id in ('.$centerdata->allot_course_group_id.')');
 			$course_group_list = $this->Common_model->get_record('course_group','*');
 			$data = array('course_group' => $course_group_list);
 			$this->load->view('Centers/instruction',$data);
@@ -546,7 +546,7 @@ class Center extends CI_Controller {
 		if($this->session->has_userdata('center_id')){
 		$center_id =  $this->session->center_id;
 		$centerdata = $this->Common_model->getRecordById('center','id',$center_id);
-		$this->db->where('id in ('.$centerdata->allot_course_id.')');
+		$this->db->where('id in ('.$centerdata->allot_course_group_id.')');
 		}
 		$course_group_list = $this->Common_model->get_record('course_group','*',array('eligibility'=>$eligibility,
 			'admission_permission' => 'Y'
@@ -715,9 +715,9 @@ class Center extends CI_Controller {
 
 	public function getStudent_By_Course(){
 
-		$course_id = $this->input->post('course_id');
+		$course_group_id = $this->input->post('course_group_id');
 
-		$where = "course_group_id = ".$course_id." and enrolled = 'N' and center_id=".$this->session->center_id;
+		$where = "course_group_id = ".$course_group_id." and enrolled = 'N' and center_id=".$this->session->center_id;
 		$student_list = $this->Common_model->get_record('student','student_id as id,name',$where);
 		
 		$data = array(
@@ -730,7 +730,7 @@ class Center extends CI_Controller {
 	public function create_form_edit_request(){
 
 		$session_id = $this->input->post('session_id');
-		$course_id  = $this->input->post('course_id');
+		$course_group_id  = $this->input->post('course_group_id');
 		$student_id = $this->input->post('student');
 		
 		$check_record = $this->Common_model->get_record('request','*',array("center_id" => $id,'student_id' => $student_id));
@@ -1217,4 +1217,24 @@ class Center extends CI_Controller {
 	 redirect(base_url('exam_form_students'));
   }
 	}
+
+
+	public function remaining_exam_answersheet(){
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url());
+		}
+		$center_id =  $this->session->center_id;
+		$titleData = array('title' => 'Remaining Exam Status'); 
+		$this->load->view('Centers/header',$titleData);
+		$this->db->select('count(*) as cnt ,student.class_id,new_exam_form.course_group_id , center_code , center_name ,roll_no,enrollment_no , name , course_name , class_name ,student.student_id');
+		$this->db->from('new_exam_form');
+		$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+		$this->db->where('student.new_exam_form','Y'); 
+		$this->db->where('student.center_id',$center_id); 
+		$this->db->where('new_exam_form.paper_type','theory'); 
+		$this->db->group_by('new_exam_form.student_id');
+		$data['students'] = $this->db->get()->result();
+		$this->load->view('Centers/remaining_exam_answersheet',$data);
+		$this->load->view('Centers/footer');		
+	 } 
 }
