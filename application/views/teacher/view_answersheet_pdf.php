@@ -7,7 +7,6 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
 	<link rel="stylesheet" href="<?=base_url()?>assets/check_pdf/styles.css">
 	<link rel="stylesheet" href="<?=base_url()?>assets/check_pdf/pdfannotate.css">
-
 </head>
 <body>   
 	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>"> 
@@ -102,15 +101,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.2.0/jspdf.umd.min.js"></script>
 <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
-
+<script type="text/javascript">
+	var BASE_URL = "<?php echo base_url();?>";
+</script>
 <script src="<?=base_url()?>assets/check_pdf/arrow.fabric.js"></script>
 <script src="<?=base_url()?>assets/check_pdf/pdfannotate.js"></script> 
 <script src="<?=base_url()?>assets/check_pdf/pdfannotate.min.js"></script>
  <script src="<?=base_url()?>assets/check_pdf/sample_output.js"></script> 
 <script src="<?=base_url()?>assets/check_pdf/script.js"></script>
-<script type="text/javascript">
-		var BASE_URL = "<?php echo base_url();?>";
-		
-	</script>
+
 </body>
 </html>

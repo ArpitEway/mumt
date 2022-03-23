@@ -233,7 +233,7 @@ class Teacher extends CI_Controller {
 
 
 	public function Teacher_paper_alloted_list(){
-		$title = array('title' => 'Check Answer  Sheet ');
+		$title = array('title' => 'Check Answer Sheet');
 		$this->load->view('teacher/header',$title);	
 		$where = array('teacher_id'=>$this->session->teacher_id);
 		$center_ids = $this->Common_model->getRecordByWhere('assign_answersheet',$where);
@@ -245,15 +245,13 @@ class Teacher extends CI_Controller {
 			'course_group_id' => $center_ids[0]->course_group_id
 		); 
 
-	  $this->db->select('DISTINCT(paper_code)');
-	  $this->db->from('upload_exam_ans_sheet');
-      $this->db->where($where);
-      $this->db->where('paper_code',$center_ids[0]->paper_code);
-      $data['paper_codes'] = $this->db->get()->result();
+		$this->db->select('DISTINCT(paper_code)');
+		$this->db->from('upload_exam_ans_sheet');
+		$this->db->where($where);
+		$this->db->where('paper_code',$center_ids[0]->paper_code);
+		$data['paper_codes'] = $this->db->get()->result();
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
-
-
 		$this->load->view('teacher/teacher_paper_list_student_wise',$data); 
 		$this->load->view('teacher/footer');
 	}
