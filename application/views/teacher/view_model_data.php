@@ -51,45 +51,45 @@
   <div class="">
     <fieldset class="mb-2 row">
       <label for="Questions1" class="col-3 text-right"><strong>1.</strong></label>
-      <label for="Questions1" class="col-4 text-center"><strong>Questions 1 </strong> </label>
-      <select name="marks1" class="form-control col-2 text-left" id="marks1">
+      <label for="Questions1" class="col-4 text-center"><strong>Question 1 </strong> </label>
+      <select name="marks1" class="form-control col-2 text-left marks" id="marks1" onchange="selectMarks(event)">
         <option value="">N/A</option>
         <?php   for ($i=0; $i<=14; $i++){   ?>
-          <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+          <option student-marks="<?php echo $i; ?>" value="<?php echo $i; ?>"><?php echo $i; ?></option>
         <?php } ?>
       </select>
     </fieldset>
     <fieldset class="mb-2 row">
       <label for="Questions1" class="col-3 text-right"><strong>2.</strong></label>
-      <label for="Questions2" class="col-4 text-center"><strong>Questions 2</strong></label>
-      <select name="marks2" class="form-control col-2 text-left" id="marks2">
+      <label for="Questions2" class="col-4 text-center"><strong>Question 2</strong></label>
+      <select name="marks2" class="form-control col-2 text-left marks" id="marks2"  onchange="selectMarks(event)" >
         <option value="">N/A</option>
         <?php for ($i=0; $i<=14; $i++){ ?>
-          <option value="<?php echo $i; ?>"  ><?php echo $i; ?></option>
+          <option student-marks="<?php echo $i; ?>" value="<?php echo $i; ?>"  ><?php echo $i; ?></option>
           <?php } ?>
       </select>
     </fieldset>
     <fieldset class="mb-2 row">
       <label for="Questions3" class="col-3 text-right"><strong>3.</strong></label>
-      <label for="Questions3" class="col-4 text-center"><strong>Questions 3</strong></label>
-      <select name="marks3" class="form-control col-2 text-left" id="marks3">
+      <label for="Questions3" class="col-4 text-center"><strong>Question 3</strong></label>
+      <select name="marks3" class="form-control col-2 text-left marks" id="marks3" onchange="selectMarks(event)" >
         <option value="">N/A</option>
         <?php for ($i=0; $i<=14; $i++){ ?>
-          <option value="<?php echo $i; ?>"  ><?php echo $i; ?></option>
+          <option student-marks="<?php echo $i; ?>" value="<?php echo $i; ?>"  ><?php echo $i; ?></option>
           <?php } ?>
       </select>
     </fieldset>
 
     <fieldset class="mb-2 row">
       <label for="Questions4" class="col-3 text-right"><strong>4.</strong></label>
-      <label for="Questions4" class="col-4 text-center"><strong>Questions 4</strong></label>
-      <select name="marks4" class="form-control col-2 text-left" id="marks4">
+      <label for="Questions4" class="col-4 text-center"><strong>Question 4</strong></label>
+      <select name="marks4" class="form-control col-2 text-left marks" id="marks4" onchange="selectMarks(event)" > 
         <option value="">N/A</option>
         <?php
         for ($i=0; $i<=14; $i++)
         {
           ?>
-          <option value="<?php echo $i; ?>"  ><?php echo $i; ?></option>
+          <option student-marks="<?php echo $i; ?>" value="<?php echo $i; ?>"  ><?php echo $i; ?></option>
           <?php
         } 
         ?>
@@ -97,21 +97,48 @@
     </fieldset>
     <fieldset class="mb-2 row">
       <label for="Questions5" class="col-3 text-right"><strong>5.</strong></label>
-      <label for="Questions5" class="col-4 text-center"><strong>Questions 5</strong></label>
-      <select name="marks5" class="form-control col-2 text-left" id="marks5">
+      <label for="Questions5" class="col-4 text-center"><strong>Question 5</strong></label>
+      <select name="marks5" class="form-control col-2 text-left marks" id="marks5"  onchange="selectMarks(event)">
         <option value="">N/A</option>
         <?php  for ($i=0; $i<=14; $i++){    ?>
-          <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+          <option student-marks="<?php echo $i; ?>" value="<?php echo $i; ?>"><?php echo $i; ?></option>
         <?php  }  ?>
       </select>
     </fieldset>
+  <hr>
+
+    <fieldset class="mb-2 row">
+      <label for="Questions1" class="col-3 text-right"></label>
+      <label for="Questions1" class="col-4 text-center"><strong>Total</strong> </label>
+      <p id="total_marks"></p>
+    </fieldset>
+   
+
   </div>
+  <div class="form-group col-md-12">
+	<label for="class">Remark</label>
+	<textarea class="form-control" id="remark" name="remark" ></textarea>
+	</div>
   <hr>
   <div class="text-center py-3">
       <button type="submit" class="btn btn-primary mr-2"  id="markssubmit">Submit</button>
      </div>
 </form>
 <script>
+  
+   function selectMarks(e) {
+    var total_marks = $('select option:selected').map(function() {
+      return $(this).attr('student-marks');
+    })
+    .get().map(parseFloat).reduce(function(a, b) {
+      return a + b
+    });
+     console.log(total_marks)
+    
+      document.getElementById("total_marks").innerHTML = total_marks;
+     }
+ 
+
   $("#markssubmit").on('click',function (e){
    e.preventDefault();
    var marks1 = $('#marks1').val();
