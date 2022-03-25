@@ -1,21 +1,34 @@
 var pdf_url =  $('#pdf_url').val();
 
 var pdf = new PDFAnnotate('pdf-container', pdf_url, {
+  
   onPageUpdated(page, oldData, newData) {
     console.log(page, oldData, newData);
   },
+
   ready() {
+       Plugin_initialized1();
     pdf.setBrushSize(7);
     pdf.setFontSize(18);
   console.log('Plugin initialized successfully');
   if($('#old_json_data').length>0){
-    //console.log($('#old_json_data').val());
+    //console.log($('#old_json_data').val()); 
     pdf.loadFromJSON(JSON.parse($('#old_json_data').val()));
+
   }
+  
   },
   scale: 1.5,
   pageImageCompression: 'MEDIUM', // FAST, MEDIUM, SLOW(Helps to control the new PDF file size)
 });
+
+
+ function Plugin_initialized1() {
+  var str = open(pdf_url);
+  var json ={ str};
+ content = Plugin_initialized(json, true);
+  // var initializeData = JSON.parse($content);
+}
 
 function changeActiveTool(event) {
   var element = $(event.target).hasClass('tool-button')
@@ -117,6 +130,43 @@ function showPdfData() {
             },
         });
   });
+}
+
+
+function Plugin_initialized() {
+
+   pdf.serializePdf(function (initializeData) {
+
+   var csrfName = $('.csrfname').attr('name');
+   var csrfHash = $('.csrfname').val(); 
+
+   var upload_exam_ans_sheet_id = $('#upload_exam_ans_sheet_id').val();
+
+   var data = {upload_exam_ans_sheet_id:upload_exam_ans_sheet_id,
+    initialize_json_data: JSON.stringify(JSON.parse(initializeData), null, 4),
+    [csrfName]:csrfHash,
+  };
+
+
+  $.ajax({
+
+
+    url:BASE_URL + "teacher/Teacher/Plugin_initialized_entry_update",
+    type: 'POST',
+    dataType: 'json',
+    data: data,
+    success: function (data) {
+      
+      if(data.success){
+            toastr.success(data.success);
+
+          }else{
+            toastr.error(data.success);
+          }
+            
+              },
+            });
+ });
 }
 
 // $(function () {

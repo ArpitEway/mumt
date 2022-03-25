@@ -405,4 +405,28 @@ class Teacher extends CI_Controller {
 		}
 //$this->Common_model->last_query();
 	}
+
+
+
+
+public function Plugin_initialized_entry_update()
+{
+
+	$upload_exam_ans_sheet_id = $this->input->post('upload_exam_ans_sheet_id');
+	$initialize_json_data = $this->input->post('initialize_json_data');
+
+	$where=array('uplode_examsheet_id'=>$upload_exam_ans_sheet_id);
+
+	
+	$updateData = array('initialize_json' => $initialize_json_data);
+	$result=	$this->Common_model->updateRecordByConditions('answer_sheet_json_data',$where,$updateData);
+
+	echo json_encode(array(
+		"success" => 'update Successfully ',
+	));
+	
+
+}
+
+
 }
