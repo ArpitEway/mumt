@@ -45,7 +45,7 @@
 						</a><br>
 
 					<?php }else{
-						if($doc["document_name"] == 'Aadhaar Card'){
+						if($doc["document_name"] == 'Aadhaar Card' || $doc["document_name"]=='Aadhaar Card Not Found'){
 							?>
 
 							<a href="<?php echo site_url('Enrollment/update_aadhar/'.$student_id); ?>" target="_blank">
