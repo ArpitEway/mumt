@@ -4,10 +4,11 @@ var pdf = new PDFAnnotate('pdf-container', pdf_url, {
   
   onPageUpdated(page, oldData, newData) {
     console.log(page, oldData, newData);
+  
   },
 
   ready() {
-       Plugin_initialized1();
+       Plugin_initialized();  
     pdf.setBrushSize(7);
     pdf.setFontSize(18);
   console.log('Plugin initialized successfully');
@@ -23,12 +24,7 @@ var pdf = new PDFAnnotate('pdf-container', pdf_url, {
 });
 
 
- function Plugin_initialized1() {
-  var str = open(pdf_url);
-  var json ={ str};
- content = Plugin_initialized(json, true);
-  // var initializeData = JSON.parse($content);
-}
+
 
 function changeActiveTool(event) {
   var element = $(event.target).hasClass('tool-button')
