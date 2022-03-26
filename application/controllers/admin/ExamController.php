@@ -680,5 +680,30 @@ class ExamController extends CI_Controller {
 		$this->load->view('admin/examController/remaining_exam_answersheet',$data);
 		$this->load->view('footer');
 	}
+	public function teacher_wise_checked_answersheet_status(){
+		
+   
+	 $titleData = array('title' => 'Teacher Wise Checked Answersheet Status'); 
+	 $this->db->select('*');
+	 $this->db->from('upload_exam_ans_sheet');
+	 $this->db->where('teacher_id!=',"");
+	 $this->db->group_by('teacher_id');
+	 $data['teachers']= $this->db->get()->result();
+	 $data['name_csrf'] = $this->security->get_csrf_token_name();
+	 $data['hash_csrf'] = $this->security->get_csrf_hash();
+	$this->load->view('header',$titleData);
+	 $this->load->view('admin/examController/teacher_wise_checked_answersheet_status',$data);
+	 $this->load->view('footer');
+	}
+   
 
+	public function load_teacher_wise_checked_answersheet_status(){
+		$data['teachers']= $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',array('teacher_id'=>$_POST['teacher_id']));
+	
+		$dt = $this->load->view('admin/examController/load_teacher_wise_checked_answersheet_status',$data,true);
+		echo json_encode(array(
+			"status" => true,
+			"data" => $dt
+		));
+	}
 }// class
