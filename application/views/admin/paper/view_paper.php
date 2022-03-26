@@ -21,8 +21,8 @@
             
 			foreach($papers as $paper){
 				
-			$courses = $this->db->get_where('course_group', array('id' => $paper['course_group_id']))->row_array();
-		 	$classes = $this->db->get_where('class_master', array('id' => $paper['class_id']))->row_array();
+			$courses 	 = $this->db->get_where('course_group', array('id' => $paper['course_group_id']))->row_array();
+		 	$classes 	 = $this->db->get_where('class_master', array('id' => $paper['class_id']))->row_array();
 			$course_name = $courses['course_name'];
 			$class_name  = $classes['class_name'];
 				
@@ -50,16 +50,32 @@
 
 </div>
 <script>
+
+
+$(document).ready(function(){
+		
+		var csrfName = $('.csrfname').attr('name');
+		var csrfHash = $('.csrfname').val();
+
+			
+var data = {
+		[csrfName]:csrfHash,
+	  }; 
+
 var showAllpaper = function () 
     {
+		
         var url = '<?php echo site_url('admin/Admins/paper'); ?>';
         $.ajax({
             type : 'GET',
             url: url,
+			dataType: 'json',
+  			data: data,
             success : function(response) {
                 
                 initDataTable('basic-datatable');
             }
         });
     }
+}
 </script>

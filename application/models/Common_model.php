@@ -337,8 +337,6 @@ class Common_Model extends CI_Model{
 		return $query->result_array();
 	}
 	
-	
-
 	/* Update Record By Where Condition */
 
 	function updateRecordByConditions($table,$where,$data)
@@ -612,24 +610,21 @@ class Common_Model extends CI_Model{
 		if(isset($query->row()->cnt))
 		{
 				$count = $query->row()->cnt;
-				$count = $count + 1;
-				if($count < 10){
-					$paper_count = "0".$count;	
-				}else{
-					$paper_count = $count;
-				}	
+				$paper_count  = $count + 1;
+				
+					
 		}else{
 			
-			$paper_count =  '01';
+			$paper_count =  '1';
 		}
 
-		$where3 = array("course_group_id" => $course_group_id);
-		$this->db->select('course_code');
-		$this->db->from("course");
+		$where3 = array("id" => $course_group_id);
+		$this->db->select('paper_code_pattern');
+		$this->db->from("course_group");
 		$this->db->where($where3);
 		$query = $this->db->get();
 		$course_code = $query->row_array();
-		$course_code = $course_code['course_code'];
+		$course_code = $course_code['paper_code_pattern'];
 		
 		
 		$where2 = array("course_group_id" => $course_group_id,"id" => $class_id);
@@ -641,8 +636,15 @@ class Common_Model extends CI_Model{
 		
 		$class_order = $class['class_order'];
 
-		return $course_code."".$class_order ."".$paper_count;
+		$response = array();
+		$response['paper_code']  = $class_order."R".$course_code."".$paper_count;
+		$response['paper_code1']  = $class_order."R".$course_code;
+		$response['paper_count'] = $paper_count;
+		
+		return $response;
 	}
+
+
 	public function getStudentProgramFeeByClass($course_group_id,$class_id,$gender){
 
 		$whereCourse = "course_group_id=".$course_group_id;

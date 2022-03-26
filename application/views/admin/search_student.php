@@ -109,7 +109,6 @@
           
             let data = {
                     'text_val':text_val,
-                
                     'radio_val':radio_val,
                     [csrfName]:csrfHash
                 }

@@ -360,13 +360,15 @@ class Admin_model extends CI_Model {
 		$data_group['eligibility'] = html_escape($this->input->post('eligibility'));
 		$data_group['mode'] = html_escape($this->input->post('mode'));
 		$data_group['university_mode'] = html_escape($this->input->post('university_mode'));
+
+		$data_group['paper_code_pattern'] = html_escape($this->input->post('paper_code_pattern'));
 		
 		$data['course_name'] = html_escape($this->input->post('course_name'));
 		$data['course_code'] = html_escape($this->input->post('course_code'));
 		
 		$data['min_duration'] = html_escape($this->input->post('min_duration'));
 		$data['max_duration'] = html_escape($this->input->post('max_duration'));
-		$data['session'] = html_escape($this->input->post('session'));
+		$data['session']	  = html_escape($this->input->post('session'));
 
 		$data['admission_fees'] = html_escape($this->input->post('admission_fees'));
 		$data['program_fees'] = html_escape($this->input->post('program_fees'));
@@ -401,7 +403,7 @@ class Admin_model extends CI_Model {
 		$data_group['eligibility'] = html_escape($this->input->post('eligibility'));
 		$data_group['mode'] = html_escape($this->input->post('mode'));
 		$data_group['university_mode'] = html_escape($this->input->post('university_mode'));
-
+		$data_group['paper_code_pattern'] = html_escape($this->input->post('paper_code_pattern'));
 		
 		$course_group_id = $this->input->post('group_id');
 		

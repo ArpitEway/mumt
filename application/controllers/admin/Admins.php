@@ -320,7 +320,8 @@ class Admins extends CI_Controller {
 		}
 
 	}
-	public function course($param1 = '', $param2 = '', $param3 = '')
+
+public function course($param1 = '', $param2 = '', $param3 = '')
 	{
 		if(!$this->session->has_userdata('adminData')){
 			redirect(base_url());
@@ -363,8 +364,9 @@ class Admins extends CI_Controller {
 
 		}
 
-	}
-	public function classes($param1 = '', $param2 = '', $param3 = '')
+}
+
+public function classes($param1 = '', $param2 = '', $param3 = '')
 	{
 
 		if(!$this->session->has_userdata('adminData')){
@@ -412,6 +414,50 @@ class Admins extends CI_Controller {
 		}
 
 	}
+	public function get_papers_by_class_course()
+	{
+
+		if ($this->input->method() == "post") 
+		{
+			$class_id    = 0;
+            		//$count = 0;
+			$class_id    = $this->input->post("class_id");
+			$course_group_id    = $this->input->post("course_group_id");
+			
+			
+				$where = array();
+				if($course_group_id!='All'){
+					$where = array('course_group_id' => $course_group_id);
+				}
+				if($class_id!='All'){
+					$where = array('class_id' => $class_id);
+				}
+				
+				
+				$papers = $this->db->get_where("paper_master",$where)->result_array();
+				
+
+				$htmlData = array(
+					'papers' => $papers,
+					'all_papers' => $all_papers,
+					'name_csrf' => $this->security->get_csrf_token_name(),
+					'hash_csrf' => $this->security->get_csrf_hash()
+				);
+
+
+			$data = $this->load->view('admin/paper/paper',$htmlData,true);
+				
+			
+				$status = true;
+				$msg    = "";
+			 }
+			echo json_encode(array(
+				"status" => $status,
+				"msg" => $msg,
+				"data" => $data
+			));
+
+		}
 	
 	public function paper($param1 = '', $param2 = '', $param3 = '')
 	{
@@ -426,14 +472,14 @@ class Admins extends CI_Controller {
 
 				$response = $this->admin_model->create_paper();
 				$this->session->set_flashdata('ajax_flash_message','Paper Successfully Added');
-				redirect(base_url().'Paper');
+				redirect(base_url().'paper');
 
 			}
 			if($param1 == 'update'){
 
 				$response = $this->admin_model->paper_update($param2);
 				$this->session->set_flashdata('ajax_flash_message','Paper Successfully Updated');
-				redirect(base_url().'Paper');
+				redirect(base_url().'paper');
 
 			}
 
@@ -441,7 +487,7 @@ class Admins extends CI_Controller {
 
 				$response = $this->admin_model->paper_delete($param2);
 				$this->session->set_flashdata('ajax_flash_message','Paper Successfully Deleted');
-				redirect(base_url().'Paper');
+				redirect(base_url().'paper');
 			}
 
 			if(empty($param1) ){
