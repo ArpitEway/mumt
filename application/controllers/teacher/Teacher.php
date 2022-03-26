@@ -342,13 +342,17 @@ class Teacher extends CI_Controller {
 
 
     public function check_answersheet_pdf($id){
+		
 		$id=$this->Common_model->encrypt_decrypt($id,'decrypt');
+		
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
 		);
 		$where= array('id'=>$id);
 		$data['answer'] = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',$where);
+		$update_open_answersheet = $this->Common_model->updateRecordByConditions('upload_exam_ans_sheet',$where,array('open_answersheet'=>'Y'));
+		
 		$this->load->view('teacher/view_answersheet_pdf',$data); 
 	}
 
@@ -409,4 +413,30 @@ class Teacher extends CI_Controller {
 		}
 //$this->Common_model->last_query();
 	}
+
+
+
+
+public function Plugin_initialized_entry_update()
+{
+
+	$upload_exam_ans_sheet_id = $this->input->post('upload_exam_ans_sheet_id');
+	$initialize_json_data = $this->input->post('initialize_json_data');
+
+	$where=array('uplode_examsheet_id'=>$upload_exam_ans_sheet_id);
+ $jsondataCount =	$this->Common_model->getCountByWhere('answer_sheet_json_data',$where);
+	
+	if(empty($jsondataCount)){
+	$updateData = array('initialize_json' => $initialize_json_data,
+	'uplode_examsheet_id'=>$upload_exam_ans_sheet_id);
+	$result=	$this->Common_model->insertAll('answer_sheet_json_data',$updateData);
+}
+	echo json_encode(array(
+		"success" => 'update Successfully ',
+	));
+	
+
+}
+
+
 }

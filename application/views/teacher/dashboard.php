@@ -9,46 +9,31 @@
                     </span>
                 </a>
             </li>
-            
-          
         </ul>
     </div>
     <div class="col-md-8 col-12 col-sm-12 menu-background p-3">
         <div class="tab-content">
             <div class="tab-pane fade active show" id="Enrollment" role="tabpanel" aria-labelledby="Enrollment-tab">
                 <div class="row">
-
-                  
-
                     <a class="border-0 custom-menu-item" href="<?=base_url('Teacher/account_transaction_details');?>">
                         <div>
-                            <span class="nav-text">Teacher Bank Details</span>
+                            <span class="nav-text">Bank Account Details</span>
                         </div>
                     </a>
-                   
-                     <a class="border-0 custom-menu-item" href="<?=base_url('Teacher/Teacher_answersheet_checked_count');?>">
+                    <a class="border-0 custom-menu-item" href="<?=base_url('Teacher/Teacher_answersheet_checked_count');?>">
                         <div>
-                            <span class="nav-text">Teacher Count  Details</span>
+                            <span class="nav-text">Answer-Sheet Status</span>
                         </div>
                     </a>
-                   
-                    
- <a class="border-0 custom-menu-item" href="<?=base_url('Teacher/Teacher_paper_alloted_list');?>">
+                    <a class="border-0 custom-menu-item" href="<?=base_url('Teacher/Teacher_paper_alloted_list');?>">
                         <div>
-                            <span class="nav-text">Teacher Paper  Details</span>
+                            <span class="nav-text">Answer-Sheet</span>
                         </div>
                     </a>
-
-
-                  
                 </div>
             </div>
-          
             <div class="tab-pane fade" id="exam" role="tabpanel" aria-labelledby="exam-tab">
-                <div class="row">
-   
-                
-                   
+                <div class="row">           
                 </div>
             </div> 
         </div>

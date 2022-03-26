@@ -6,7 +6,7 @@
                 <option value="">Select paper</option>
 
 
-<?php foreach ($paper_codes as $paper_code): ?>
+            <?php foreach ($paper_codes as $paper_code): ?>
                 <option value="<?=$paper_code->paper_code?>"> <?php
 
                     $papername=$this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$paper_code->paper_code));

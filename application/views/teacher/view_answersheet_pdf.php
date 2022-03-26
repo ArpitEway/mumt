@@ -71,7 +71,7 @@
 		<button class="btn btn-info btn-sm" onclick="showPdfData()">Save Pdf</button>
 	</div>
 	<div class="tool">
-		<button class="btn btn-light btn-sm" onclick="savePDF()"><i class="fa fa-save"></i> Downlode </button>
+		<button class="btn btn-light btn-sm" onclick="savePDF()"><i class="fa fa-save"></i> Download </button>
 	</div>
 </div>
 <div id="pdf-container"></div>
