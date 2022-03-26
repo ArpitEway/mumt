@@ -420,11 +420,13 @@ public function Plugin_initialized_entry_update()
 	$initialize_json_data = $this->input->post('initialize_json_data');
 
 	$where=array('uplode_examsheet_id'=>$upload_exam_ans_sheet_id);
-
+ $jsondataCount =	$this->Common_model->getCountByWhere('answer_sheet_json_data',$where);
 	
-	$updateData = array('initialize_json' => $initialize_json_data);
-	$result=	$this->Common_model->updateRecordByConditions('answer_sheet_json_data',$where,$updateData);
-
+	if(empty($jsondataCount)){
+	$updateData = array('initialize_json' => $initialize_json_data,
+	'uplode_examsheet_id'=>$upload_exam_ans_sheet_id);
+	$result=	$this->Common_model->insertAll('answer_sheet_json_data',$updateData);
+}
 	echo json_encode(array(
 		"success" => 'update Successfully ',
 	));

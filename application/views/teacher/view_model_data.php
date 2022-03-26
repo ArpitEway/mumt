@@ -12,7 +12,7 @@
     </div>
     <div class="col-6">
       <label for="example-date-input" ><strong>Roll No:</strong></label>
-      <label for="example-date-input" ><?php echo $details[0]->roll_no; ?><?= 'ss'.$details[0]->student_id;?></label>
+      <label for="example-date-input" ><?php echo $details[0]->roll_no; ?></label>
     </div>
   </div>
   <div class="row py-3">
