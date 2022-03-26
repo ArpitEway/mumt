@@ -53,7 +53,7 @@
       <label for="Questions1" class="col-3 text-right"><strong>1.</strong></label>
       <label for="Questions1" class="col-4 text-center"><strong>Question 1 </strong> </label>
       <select name="marks1" class="form-control col-2 text-left marks" id="marks1" onchange="selectMarks(event)">
-        <option value="">N/A</option>
+        <option value="N/A" selected>N/A</option>
         <?php   for ($i=0; $i<=14; $i++){   ?>
           <option student-marks="<?php echo $i; ?>" value="<?php echo $i; ?>"><?php echo $i; ?></option>
         <?php } ?>
@@ -63,7 +63,7 @@
       <label for="Questions1" class="col-3 text-right"><strong>2.</strong></label>
       <label for="Questions2" class="col-4 text-center"><strong>Question 2</strong></label>
       <select name="marks2" class="form-control col-2 text-left marks" id="marks2"  onchange="selectMarks(event)" >
-        <option value="">N/A</option>
+        <option value="N/A" selected>N/A</option>
         <?php for ($i=0; $i<=14; $i++){ ?>
           <option student-marks="<?php echo $i; ?>" value="<?php echo $i; ?>"  ><?php echo $i; ?></option>
           <?php } ?>
@@ -73,7 +73,7 @@
       <label for="Questions3" class="col-3 text-right"><strong>3.</strong></label>
       <label for="Questions3" class="col-4 text-center"><strong>Question 3</strong></label>
       <select name="marks3" class="form-control col-2 text-left marks" id="marks3" onchange="selectMarks(event)" >
-        <option value="">N/A</option>
+        <option value="N/A" selected>N/A</option>
         <?php for ($i=0; $i<=14; $i++){ ?>
           <option student-marks="<?php echo $i; ?>" value="<?php echo $i; ?>"  ><?php echo $i; ?></option>
           <?php } ?>
@@ -84,7 +84,7 @@
       <label for="Questions4" class="col-3 text-right"><strong>4.</strong></label>
       <label for="Questions4" class="col-4 text-center"><strong>Question 4</strong></label>
       <select name="marks4" class="form-control col-2 text-left marks" id="marks4" onchange="selectMarks(event)" > 
-        <option value="">N/A</option>
+        <option value="N/A" selected>N/A</option>
         <?php
         for ($i=0; $i<=14; $i++)
         {
@@ -99,7 +99,7 @@
       <label for="Questions5" class="col-3 text-right"><strong>5.</strong></label>
       <label for="Questions5" class="col-4 text-center"><strong>Question 5</strong></label>
       <select name="marks5" class="form-control col-2 text-left marks" id="marks5"  onchange="selectMarks(event)">
-        <option value="">N/A</option>
+        <option value="N/A" selected>N/A</option>
         <?php  for ($i=0; $i<=14; $i++){    ?>
           <option student-marks="<?php echo $i; ?>" value="<?php echo $i; ?>"><?php echo $i; ?></option>
         <?php  }  ?>
@@ -141,48 +141,48 @@
 
   $("#markssubmit").on('click',function (e){
    e.preventDefault();
-   var marks1 = $('#marks1').val();
-   var marks2 = $('#marks2').val();
-   var marks3 = $('#marks3').val();
-   var marks4 = $('#marks4').val();
-   var marks5 = $('#marks5').val();
+  //  var marks1 = $('#marks1').val();
+  //  var marks2 = $('#marks2').val();
+  //  var marks3 = $('#marks3').val();
+  //  var marks4 = $('#marks4').val();
+  //  var marks5 = $('#marks5').val();
 
-   var submit = true;
-   if(marks1==''){
-    $(marks1).next().text('Please Select Marks');
-    submit = false;
-  }else{
-    $(marks1).next().text('');
-  }
+  //  var submit = true;
+  //  if(marks1==''){
+  //   $(marks1).next().text('Please Select Marks');
+  //   submit = false;
+  // }else{
+  //   $(marks1).next().text('');
+  // }
 
-  if(marks2==''){
-    $(marks2).next().text('Please Select Marks');
-    submit = false;
-  }else{
-    $(marks2).next().text('');
-  }
-  if(marks3==''){
-    $(marks3).next().text('Please Select Marks');
-    submit = false;
-  }else{
-    $(marks3).next().text('');
-  }
+  // if(marks2==''){
+  //   $(marks2).next().text('Please Select Marks');
+  //   submit = false;
+  // }else{
+  //   $(marks2).next().text('');
+  // }
+  // if(marks3==''){
+  //   $(marks3).next().text('Please Select Marks');
+  //   submit = false;
+  // }else{
+  //   $(marks3).next().text('');
+  // }
 
-  if(marks4==''){
-    $(marks4).next().text('Please Select Marks');
-    submit = false;
-  }else{
-    $(marks4).next().text('');
-  }
-  if(marks5==''){
-    $(marks5).next().text('Please Select Marks ');
-    submit = false;
-  }else{
-    $(marks5).next().text('');
-  }
-  if(submit==false){
-    return false;
-  }
+  // if(marks4==''){
+  //   $(marks4).next().text('Please Select Marks');
+  //   submit = false;
+  // }else{
+  //   $(marks4).next().text('');
+  // }
+  // if(marks5==''){
+  //   $(marks5).next().text('Please Select Marks ');
+  //   submit = false;
+  // }else{
+  //   $(marks5).next().text('');
+  // }
+  // if(submit==false){
+  //   return false;
+  // }
   var frm = $('#ajaxForm').serialize();
 
   var id = $('#student_tr').val();
