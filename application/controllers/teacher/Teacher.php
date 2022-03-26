@@ -257,10 +257,11 @@ class Teacher extends CI_Controller {
 	}
 
 	public function get_paper_details(){
-
+     
 		$paper_code =$this->input->post('paper_code');
 		$where = array('teacher_id'=>$this->session->teacher_id);
 		$assignAnsData = $this->Common_model->getRecordByWhere('assign_answersheet',$where);
+	
 		$where = 'paper_code = "'.$paper_code.'" and upload_exam_ans_sheet.center_id in ('.$assignAnsData[0]->center_id.') and answer_sheet!="" and file_exist="Y" and new_exam_form="Y" and teacher_id=""';
 
 		$this->db->select('roll_no,enrollment_no,course_name,class_name,paper_code,upload_exam_ans_sheet.student_id,upload_exam_ans_sheet.id');
@@ -268,6 +269,8 @@ class Teacher extends CI_Controller {
 		$this->db->Where($where );
 		$this->db->join('student', 'student.student_id = upload_exam_ans_sheet.student_id');
 		$answersheetData = $this->db->get()->result();
+	//	$this->Common_model->last_query();
+		
 		$data = array(
 			'answersheetData' => $answersheetData,
 			'name_csrf' => $this->security->get_csrf_token_name(),
@@ -320,10 +323,11 @@ class Teacher extends CI_Controller {
 		$marks3 = $this->input->post('marks3');
 		$marks4 = $this->input->post('marks4');
 		$marks5 = $this->input->post('marks5');
+		$remark = $this->input->post('remark');
 		$total_marks=$marks1+$marks2+$marks3+$marks4+$marks5;
 
 		$where = array('id' => $id);
-		$updateData = array('que_1' => $marks1,'que_2' => $marks2,'que_3' => $marks3,'que_4' => $marks4,'que_5' => $marks5,'total_marks'=> $total_marks,'teacher_id'=>$teacher_id);
+		$updateData = array('que_1' => $marks1,'que_2' => $marks2,'que_3' => $marks3,'que_4' => $marks4,'que_5' => $marks5, 'remark'=>$remark ,'total_marks'=> $total_marks,'teacher_id'=>$teacher_id);
 		$result=	$this->Common_model->updateRecordByConditions('upload_exam_ans_sheet',$where,$updateData);
 		if($result){
 			echo json_encode(array(
