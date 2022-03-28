@@ -54,7 +54,7 @@
                <td><?php echo $student->course_name; ?> </td>
                <td><?php echo $student->class_name; ?> </td>
                <td><?php 
-               if($student->demo='Y'){
+               if($student->demo=='Y'){
                 echo    $fees[0]->exam_fees; 
                }else{
                 echo    $fees[0]->program_fees+$fees[0]->exam_fees; 

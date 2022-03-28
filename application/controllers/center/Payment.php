@@ -235,7 +235,7 @@ class Payment extends CI_Controller {
 		$data['student'] = $student;
 		$data['url'] = 'paynow';
 		$data['paymentType'] = 'Exam Fees';
-		if($student['demo']='Y'){
+		if($student['demo']=='Y'){
 			$data['txnAmt'] = $fees[0]->exam_fees;
 		}else{
 			$data['txnAmt'] = $fees[0]->program_fees+$fees[0]->exam_fees;
@@ -260,7 +260,7 @@ class Payment extends CI_Controller {
 				'course_group_id' => $student['course_group_id'],
 			);
 			$fees = $this->Common_model->getRecordByWhere('course',$where);
-			if($student['demo']='Y'){
+			if($student['demo']=='Y'){
 				$txnAmt= $fees[0]->exam_fees;
 			}else{
 				$txnAmt=$fees[0]->program_fees+$fees[0]->exam_fees;
