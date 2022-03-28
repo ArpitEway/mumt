@@ -1297,16 +1297,17 @@ class Center extends CI_Controller {
 			redirect(base_url().'activity');
 		}
 
-		if(empty($param1) ){
+		if(empty($param1)){
 			$data = array();
 			$data['title'] = "Activity";
 			$csrf = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
 		);
-			$this->load->view('header',$data);
+	     	$this->load->view('Centers/header',$data);
 			$this->load->view('Centers/activity',$csrf);
-			$this->load->view('footer');
+			$this->load->view('Centers/footer');		
+
 		}    
 	 }
 }
