@@ -55,9 +55,9 @@
                <td><?php echo $student->class_name; ?> </td>
                <td><?php 
                if($student->demo='Y'){
-                    $fees[0]->exam_fees; 
+                echo    $fees[0]->exam_fees; 
                }else{
-                    $fees[0]->program_fees+$fees[0]->exam_fees; 
+                echo    $fees[0]->program_fees+$fees[0]->exam_fees; 
                 }
            ?> </td>
                <?php $student_id = $this->Common_model->encrypt_decrypt($student->student_id); ?>
