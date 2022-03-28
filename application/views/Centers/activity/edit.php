@@ -30,7 +30,7 @@ $activities = $this->db->get_where('activity', array('id' => $param1))->result_a
         </div>
     </div>
 	<div class="form-group text-center">
-	<button class="btn btn-md btn-primary" type="submit">Submit</button>
+	<button class="btn btn-md btn-primary" type="submit">Update</button>
 	</div>
 </form>
 
