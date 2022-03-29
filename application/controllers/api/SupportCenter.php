@@ -72,4 +72,19 @@ class SupportCenter extends REST_Controller {
         return $this->response($results, REST_Controller::HTTP_OK);
     }
 
+    public function view_complaint_post()
+    {
+       $center_code    = $this->input->post("center_code");
+       
+       $center = $this->Common_model->getRecordById('center','center_code',$center_code);
+       $where = array('center_id' => $center->id);
+       $center_complaints = $this->Common_model->get_record('center_complaint','*',$where);
+          if(count($center_complaints)>0){
+            $htmlData = array('center_complaints' => $center_complaints);
+            $results['data'] = $this->load->view('api/complaint_list',$htmlData,true);
+        }else{
+                $results['data'] = '<h4 align="center">Data Not Found </h4>';
+        }
+        return $this->response($results, REST_Controller::HTTP_OK);
+    }
 }

@@ -14,13 +14,13 @@
 
 		<tr style="font-weight:bold;">
 
-			<td>S.No</td><td>Session</td><td>Form No</td><td>Enrollment No</td><td>Name</td><td>Course</td><td>Class</td><td>Complaint Type</td>
+			<td>Session</td><td>Form No</td><td>Enrollment No</td><td>Name</td><td>Course</td><td>Class</td><td>Complaint Type</td>
 
 		</tr>
 
 		
 		<tr>
-			<td><?= $i ?></td>
+			
 			<td><?= $student_data["session"] ?></td>
 			<td><?= $student_data["student_id"] ?></td>
 			<td><?= $student_data["enrollment_no"] ?></td>
@@ -30,12 +30,12 @@
 			<td><?= $type ?></td>
 		</tr>
 		<tr>
-			<td colspan="8" style="text-align:center !important">
+			<td colspan="7" class="msgbox" style="text-align:center !important">
 				<h4>Details</h4><br><textarea  value="" name="details" id="details" required="required"/>
 			</textarea>
 		</td>
 		<tr>
-			<td colspan="8" style="text-align:center !important"><input type="button" value=" Submit" name="submit" id="submit" class="btn btn-warning" /></td>
+			<td colspan="7" style="text-align:center !important"><input type="button" value=" Submit" name="submit" id="submit" class="btn btn-warning" /></td>
 		</tr>
 	</table>
 </form>
