@@ -39,7 +39,7 @@ class SupportCenter extends REST_Controller {
 
         if(count($student_data)>0){
             $htmlData = array('type' => $type,'student_data' => $student_data);
-            $results['data'] = $this->load->view('api/student_data',$htmlData);
+            $results['data'] = $this->load->view('api/student_data',$htmlData,true);
         }else{
             if($type=='Result Complaint'){
                 $results['data'] = '<h4 align="center">Exam Data Not Found for this Student. </h4>';
