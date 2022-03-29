@@ -1,8 +1,6 @@
 <?php
-if (!defined('BASEPATH')) exit('No direct script access allowed');
-
 // Load the Rest Controller library
-require APPPATH . '/libraries/REST_Controller.php';
+require APPPATH . 'libraries/REST_Controller.php';
 
  // use chriskacerguis\RestServer\REST_Controller;
 
@@ -26,11 +24,34 @@ class SupportCenter extends REST_Controller {
     
 
 
+
+
+  // insert_api_data
+
+    public function insertcomplaint_post() {
+
+        $student_id    = $this->input->post("student_id");
+        $enrollment_no    = $this->input->post("enrollment_no");
+        $center_code    = $this->input->post("center_code");
+        $complaint_type    = $this->input->post("complaint_type");
+        $details    = $this->input->post("details");
+        $center = $this->Common_model->getRecordById('center','center_code',$center_code);
+        $data = array('center_id'=>$center->center_id, 'student_id' =>$student_id,'type'=>$complaint_type,'status'=>'P','date'=>date('Y-m-d'),'details'=>$details);
+        $insert = $this->Common_model->insertAll('center_complaint',$data);
+        if($insert){
+            $results['msg'] = 'Complaint Successfully Saved Your Complaint No Is';
+        }else{
+            $results['msg']= "Error";
+        }
+            return $this->response($results, REST_Controller::HTTP_OK);
+    }
+
+
     public function index_post()
     {
-        $postdata = file_get_contents("php://input");
-        $request = json_decode($postdata);
-        $data = $request->data;
+        // $postdata = file_get_contents("php://input");
+        // $request = json_decode($postdata);
+        // $data = $request->data;
         $student_id = $this->input->post('student_id');
         $center_code = $this->input->post('center_code');
         $type = $this->input->post('type');
@@ -38,7 +59,7 @@ class SupportCenter extends REST_Controller {
         $student_data = $this->Common_model->get_record('student','*',$where);
 
         if(count($student_data)>0){
-            $htmlData = array('type' => $type,'student_data' => $student_data);
+            $htmlData = array('type' => $type,'student_data' => $student_data[0]);
             $results['data'] = $this->load->view('api/student_data',$htmlData,true);
         }else{
             if($type=='Result Complaint'){
@@ -50,27 +71,4 @@ class SupportCenter extends REST_Controller {
         return $this->response($results, REST_Controller::HTTP_OK);
     }
 
-
-
-  // insert_api_data
-
-    public function insert_api_data_post () {
-       $center_id    = $this->input->post("center_id");
-       $student_id    = $this->input->post("student_id");
-       $type    = $this->input->post("type");
-       $status    = $this->input->post("status");
-       $details    = $this->input->post("details");
-
-       $data = array('center_id'=>$center_id, 'student_id' =>$student_id,'type'=>$type,'status'=>$status,'details'=>$details);
-
-       $insert = $this->Api_Model->insert('center_complaint',$data);
-       if($insert){
-            $data_res['msg'] = 'Data successfully saved';
-            $res = json_encode($data_res);
-            return $this->response($res, REST_Controller::HTTP_OK );
-        }else{
-        $results['msg']= "Error";
-            return $this->response($results, REST_Controller::HTTP_OK);
-        }
-    }
 }
