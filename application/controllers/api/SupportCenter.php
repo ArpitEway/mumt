@@ -9,7 +9,7 @@ require APPPATH . '/libraries/REST_Controller.php';
 header('Content-Type: application/json');
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: PUT, GET, POST, DELETE");
-header("Access-Control-Allow-Headers:  X-Requested-With, Content-Type, Accept"); 
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept"); 
 
 class SupportCenter extends REST_Controller {
 /**
