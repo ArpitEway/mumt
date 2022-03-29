@@ -47,7 +47,7 @@ class SupportCenter extends REST_Controller {
     }
 
 
-    public function index_post()
+    public function searchStudent_post()
     {
         // $postdata = file_get_contents("php://input");
         // $request = json_decode($postdata);
