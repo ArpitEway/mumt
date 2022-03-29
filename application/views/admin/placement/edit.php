@@ -11,31 +11,28 @@ $companies = $this->db->get_where('company', array('id' => $param1))->result_arr
         
 		<div class="form-group col-md-6">
             <label for="name">Company Name</label>
-            <input type="text" class="form-control" value="<?php echo $companies[0]['company_name']; ?>" id="company_name" name="company_name" placeholder="Enter Company Name" required>        
+            <input type="text" class="form-control" value="<?php echo $companies[0]['company_name']; ?>" id="company_name" name="company_name" placeholder="Enter Company Name" required >        
         </div>
         <div class="form-group col-md-6">
             <label for="name">Job Title</label>
-            <input type="text" class="form-control" value="<?php echo $companies[0]['job_title']; ?>" id="job_title" name="job_title" placeholder="Enter Job Title" required>        
+            <input type="text" class="form-control" value="<?php echo $companies[0]['job_title']; ?>" id="job_title" name="job_title" placeholder="Enter Job Title" required >        
         </div>
-
         <div class="form-group col-md-12">
             <label for="name">Minimum Qualification</label>
-            <input type="text" class="form-control" value="<?php echo $companies[0]['min_qualification']; ?>" id="min_qualification" name="min_qualification" placeholder="Enter Min Qualification" required>        
+            <input type="text" class="form-control" value="<?php echo $companies[0]['min_qualification']; ?>" id="min_qualification" name="min_qualification" placeholder="Enter Min Qualification" required >        
         </div>
         <div class="form-group col-md-6">
             <label class="col-form-label">Description</label>
             <textarea class="form-control description" placeholder="Description" id="kt_autosize_2" rows="4" name="description"  ><?php echo $companies[0]['description']; ?></textarea>
         </div>
-
         <div class="form-group col-md-6">
             <label class="col-form-label">Other detail</label>
             <textarea class="form-control description" placeholder="Other Detail" id="kt_autosize_2" rows="4" name="other_detail"><?php echo $companies[0]['other_detail']; ?></textarea>
         </div>
 
-
-	<div class="form-group text-center">
-	    <button class="btn btn-md btn-primary" type="submit">Submit</button>
-	</div>
+        <div class="form-group col-md-12 text-center">
+            <button class="btn btn-md btn-primary" type="submit">Submit</button>
+        </div>
 		
 </div>
 </form>

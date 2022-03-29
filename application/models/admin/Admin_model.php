@@ -276,7 +276,7 @@ class Admin_model extends CI_Model {
 	}
 	public function student_menu_heading_delete($param1 = '')
 	{
-		$this->db->where('id', $param1);
+		$this->db->where('id', $param1); 
 		$this->db->delete('student_menu_heading');
 
 		$response = array(

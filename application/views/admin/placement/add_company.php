@@ -18,7 +18,7 @@
         </div>
         <div class="form-group col-md-6">
             <label class="col-form-label">Description</label>
-            <textarea class="form-control description" placeholder="Description" id="kt_autosize_2" rows="4" name="description"  ></textarea>
+            <textarea class="form-control description" placeholder="Description" id="kt_autosize_2" rows="4" name="description"></textarea>
         </div>
 
         <div class="form-group col-md-6">
@@ -27,7 +27,7 @@
         </div>
 
 
-	<div class="form-group text-center">
+	<div class="form-group col-md-12 text-center">
 	    <button class="btn btn-md btn-primary" type="submit">Submit</button>
 	</div>
 		
