@@ -2463,4 +2463,144 @@ public function update_exam_datewise_permission(){
 	
 
 
+	public function view_payment_complaint(){
+
+
+		$centers = $this->Common_model->get_record_group_by_where('center_complaint','center_id');
+
+		$data = array('name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+			'centers' =>$centers
+		);
+
+		$this->load->view('header');
+		$this->load->view('admin/account_section/view_payment_complaint',$data);
+		$this->load->view('footer');
+		
+	}
+	public function get_payment_complaints()
+	{
+		if ($this->input->method() == "post") 
+		{
+			$course_group_id = 0;
+			$data = array();
+			$dt   = array();
+
+			$center_id  = $this->input->post("center_id");
+			$centerData = $this->Common_model->getRecordById('center','id',$center_id);
+			$wherecenter = 'center_id='.$center_id.' and status="P"';
+			$complaints = $this->Common_model->get_record('center_complaint','*',$wherecenter);
+			//	$this->Common_model->last_query();
+			$data = array('complaints' => $complaints ,'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+				'centerData' => $centerData,
+			);
+
+			if($data['complaints']){
+				$dt =  $this->load->view('admin/getPaymentComplaints',$data,true);
+				$status = true;
+			}else{
+				$dt = "This Center Does Not Have Any Pending payment Complaint";
+				$status = false;
+			}
+			echo json_encode(array(
+				"status" => $status,
+				"data" => $dt
+			));
+		}
+	}
+
+
+public function update_payment_complaint_status()
+	{
+		if ($this->input->method() == "post") 
+		{
+            $id    	= 0;
+            $id    	= $this->input->post("id");
+			$status = $this->input->post("status");
+
+			
+            if ($this->input->post("id")) 
+			{
+				$data = $this->Common_model->updateRecordByConditions("center_complaint",array("id" => $id ),array("status" => $status ));
+			
+				$dt = $this->db->get_where("center_complaint",array("id" => $id ))->result_array();
+
+				if($dt[0]['status'] == 'P'){
+				$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-success req_check" value="Done">';
+				}else{
+				$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-danger req_check" value="Pending">';
+			}
+				$status = true;
+				$msg    = "";
+				
+				echo json_encode(array(
+					"status" => $status,
+					"msg" => $msg,
+					"data" => $sts_btn
+				));
+			}
+		}
+	}
+
+
+
+public function update_payment_complaint_remark()
+	{
+		if ($this->input->method() == "post") 
+		{
+	        $id    	= $this->input->post("id");
+	        $remark = $this->input->post("remark");
+			$status = ($remark=='Invalid') ? 'Done' : "Pending";
+
+			if ($this->input->post("id")) 
+			{
+				$data = $this->Common_model->updateRecordByConditions("payment_complaint",array("id" => $id ),array("remark" => $remark,"status" => $status));
+				
+				$dt = $this->db->get_where("payment_complaint",array("id" => $id ))->result_array();
+				
+				if($dt[0]['remark'] != 'Invalid'){
+				
+				$sts_btn = '<input type="button" name="update_req_remark" data-id='.$id.' class="btn btn-success remark_check" value="Set">';
+				
+				$sts_btn2 = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-danger req_check" value="Pending">';
+				}else{
+				
+				$sts_btn = '<input type="button" name="req_remark" data-id='.$id.' class="btn btn-danger remark_check" value="Invalid">';
+				
+				$sts_btn2 = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-success req_check" value="Done">';
+				}
+
+				$status = true;
+				$msg    = "";
+				
+				echo json_encode(array(
+					"status" => $status,
+					"msg" => $msg,
+					"remarkBtn" => $sts_btn,
+					"statusBtn" => $sts_btn2
+				));
+			}	
+		}
+	}
+
+public function view_student_transaction($student_id)
+	{
+		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		$student = $this->Common_model->getRecordById('student','student_id',$student_id);
+		$paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student_id));
+		$data = array(
+			'student' => $student,
+			'paymentDetails' => $paymentDetails,
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		$this->load->view('header',array('title' => 'View Student Transaction'));
+		$this->load->view('admin/account_section/view_student_transaction',$data);
+		$this->load->view('footer');
+	}
+
+
+
+
 }// class
