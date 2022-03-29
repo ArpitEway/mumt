@@ -32,8 +32,21 @@ class SupportCenter extends REST_Controller {
         $request = json_decode($postdata);
         $data = $request->data;
         $student_id = $this->input->post('student_id');
-        $results['student_data'] = $this->Common_model->getRecordById('student','student_id',$student_id);
-        $this->load->view('api/student_data');
+        $center_code = $this->input->post('center_code');
+        $type = $this->input->post('type');
+        $where = array('student_id' => $student_id,'center_code' => $center_code);
+        $student_data = $this->Common_model->get_record('student','*',$where);
+
+        if(count($student_data)>0){
+            $htmlData = array('type' => $type,'student_data' => $student_data);
+            $results['data'] = $this->load->view('api/student_data',$htmlData);
+        }else{
+            if($type=='Result Complaint'){
+                $results['data'] = '<h4 align="center">Exam Data Not Found for this Student. </h4>';
+            }else{
+                $results['data'] = '<h4 align="center">Data Not Found </h4>';
+            }
+        }
         return $this->response($results, REST_Controller::HTTP_OK);
     }
 
