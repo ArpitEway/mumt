@@ -40,7 +40,7 @@ class SupportCenter extends REST_Controller {
         $data = array('center_id'=>$center->id, 'student_id' =>$student_id,'type'=>$complaint_type,'status'=>'P','date'=>date('Y-m-d'),'details'=>$details);
         $insert = $this->Common_model->insertAll('center_complaint',$data);
         if($insert){
-            $results['msg'] = 'Complaint Successfully Saved Your Complaint No Is';
+            $results['msg'] = 'Complaint Successfully Saved Your Complaint No Is '.$insert;
         }else{
             $results['msg']= "Error";
         }
