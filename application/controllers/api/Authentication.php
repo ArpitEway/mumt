@@ -4,6 +4,8 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 // Load the Rest Controller library
 require APPPATH . '/libraries/REST_Controller.php';
 
+ // use chriskacerguis\RestServer\REST_Controller;
+
 header('Content-Type: application/json');
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: PUT, GET, POST, DELETE");
@@ -18,8 +20,6 @@ class Authentication extends REST_Controller {
         $this->load->model('api_model');
     }
     
-
-
 
 
 public function get_current_data_get()
@@ -41,36 +41,32 @@ public function get_current_data_get()
 
 
 
-
-
-
-
-
-
-
-
   // insert_api_data
 
-    public function index_post () {
+    public function insert_api_data_post () {
 
-        $postdata = file_get_contents("php://input");
-        $request = json_decode($postdata);
-        $center_id = $request->center_id; 
-        $student_id = $request->student_id;
-        $type = $request->type;
-        $status = $request->status;
-        $details = $request->details;
-
-        // $where = array("center_id"=> $center_id ,"student_id"=> $student_id ,"type"=> $type,"status"=> $status,"details"=> $details
+        // $postdata = file_get_contents("php://input");
+        // $request = json_decode($postdata);
+        // $center_id = $request->center_id; 
+        // $student_id = $request->student_id;
+        // $type = $request->type;
+        // $status = $request->status;
+        // $details = $request->details;
+      // $where = array("center_id"=> $center_id ,"student_id"=> $student_id ,"type"=> $type,"status"=> $status,"details"=> $details
         //      );
         // $results = $this->api_model->getSingleRowByWhere("center_complaint",$where);
-
         // $center_id1 = $results->center_id;
         // $student_id1 = $results->student_id;
         // $type1 = $results->type;
         // $status1 = $results->status;
         // $details1 = $results->details;
-
+        
+       $center_id    = $this->input->post("center_id");
+       $student_id    = $this->input->post("student_id");
+       $type    = $this->input->post("type");
+       $status    = $this->input->post("status");
+       $details    = $this->input->post("details");
+       
         $data = array('center_id'=>$center_id, 'student_id' =>$student_id,'type'=>$type,'status'=>$status,'details'=>$details
                 );
 
