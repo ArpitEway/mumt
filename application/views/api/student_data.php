@@ -4,7 +4,7 @@
 
 	<input type="hidden" value="<?=$student_data["enrollment_no"] ?>" name="en" id="en"/>
 
-	<input type="hidden" value="<?=$_SESSION["center_id"] ?>" name="center" id="center"/>
+	<input type="hidden" value="<?=$student_data["center_code"] ?>" name="center" id="center"/>
 
 	<input type="hidden" value="<?=$type ?>" name="type" id="complaint_type"/>
 
@@ -18,16 +18,16 @@
 
 		</tr>
 
-		$i=1;
-		$data .= '<tr>
+		
+		<tr>
 			<td><?= $i ?></td>
-		<td><?= $student_data["session"] ?></td>
-		<td><?= $student_data["student_id"] ?></td>
-		<td><?= $student_data["enrollment_no"] ?></td>
-		<td><?= $student_data["name"] ?></td>
-		<td><?= $student_data["course_name"] ?></td>
-		<td><?= $student_data["class_name"] ?></td>
-		<td><?= $type ?></td>
+			<td><?= $student_data["session"] ?></td>
+			<td><?= $student_data["student_id"] ?></td>
+			<td><?= $student_data["enrollment_no"] ?></td>
+			<td><?= $student_data["name"] ?></td>
+			<td><?= $student_data["course_name"] ?></td>
+			<td><?= $student_data["class_name"] ?></td>
+			<td><?= $type ?></td>
 		</tr>
 		<tr>
 			<td colspan="8" style="text-align:center !important">
