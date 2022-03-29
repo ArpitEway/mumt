@@ -718,6 +718,17 @@ class Admin_model extends CI_Model {
 
 		return json_encode($response);
 	}
+	public function delete_company($param1 = '')
+	{
+		$this->db->where('id', $param1);
+		$this->db->delete('company');
+	
+		$response = array(
+			'status' => true
+		);
+
+		return json_encode($response);
+	}
 	
 	public function create_account()
     {

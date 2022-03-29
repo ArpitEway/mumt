@@ -3,7 +3,7 @@
 <a type="button" style="margin-left: 10px;" class="btn btn-outline-primary btn-rounded alignToTitle" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/placement/add_company'); ?>', 'Add Company')">Add Company</a>
 </div>
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-	<table id="basic-datatable" class="table table-striped dt-responsive nowrap" width="100%" >
+	<table id="kt_datatable" class="table table-striped dt-responsive nowrap">
 			<thead>
 				<tr>
 
@@ -37,7 +37,7 @@
                 	    <td>
                 			<div style="display: inline-flex;">
 								<a href="javascript:void(0);" class="dropdown-item" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/placement/edit/'.$company['id']); ?>', '<?php echo 'Update comapany' ?>')"> <i class="mdi mdi-pencil edit-icon"></i></a>   
-								<a href="javascript:void(0);" class="dropdown-item" onclick="confirmModal('<?php echo site_url('admin/Admins/placement/delete/'.$company['id']); ?>', showAllpaper )"><i class="mdi mdi-delete delete-icon"></i></a>
+								<a href="javascript:void(0);" class="dropdown-item" onclick="confirmModal('<?php echo site_url('admin/Placement/company/delete/'.$company['id']); ?>', showAllCompany )"><i class="mdi mdi-delete delete-icon"></i></a>
 							</div>
                         </td>
 					</tr>
@@ -50,9 +50,9 @@
 
 </div>
 <script>
-var showAllpaper = function () 
+var showAllCompany = function () 
     {
-        var url = '<?php echo site_url('admin/Admins/paper'); ?>';
+        var url = '<?php echo site_url('admin/Admins/company'); ?>';
         $.ajax({
             type : 'GET',
             url: url,
