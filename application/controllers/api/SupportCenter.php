@@ -21,7 +21,7 @@ class SupportCenter extends REST_Controller {
         parent::__construct();
         date_default_timezone_set('Asia/Kolkata');
         // Load the user model
-        $this->load->model('Common_Model');
+        $this->load->model('Common_model');
     }
     
 
@@ -32,7 +32,7 @@ class SupportCenter extends REST_Controller {
         $request = json_decode($postdata);
         $data = $request->data;
         $student_id = $this->input->post('student_id');
-        $results['student_data'] = $this->Common_Model->getRecordById('student','student_id',$student_id);
+        $results['student_data'] = $this->Common_model->getRecordById('student','student_id',$student_id);
         $this->load->view('api/student_data');
         return $this->response($results, REST_Controller::HTTP_OK);
     }
