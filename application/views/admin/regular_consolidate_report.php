@@ -1,3 +1,8 @@
+<style type="text/css">
+	.float-right.mt-1 {
+		display: none !important;
+	}
+</style>
 <div class="container">
 	<div class="row mt-5"> 
 		<div class="form-group col-md-3">

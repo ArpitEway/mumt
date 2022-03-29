@@ -71,7 +71,7 @@ class saveFormdata extends CI_Controller {
 		
 		// transaction start from here 
 		// https://codeigniter.com/userguide3/database/transactions.html
-		$center_ids = array( 10,11,12,13 );
+		$center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28 );
 		if(in_array($this->session->center_id, $center_ids)){
 			$data['payment_status']='Y';
 			$data['document_uploaded']='Y';

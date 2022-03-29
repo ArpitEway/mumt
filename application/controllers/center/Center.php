@@ -112,7 +112,7 @@ class Center extends CI_Controller {
 
 	public function logout()
 	{
-		$center_ids = array( 10,11,12,13 );
+		$center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28 );
 		if(in_array($this->session->center_id, $center_ids)){
 			$this->session->sess_destroy();
 			redirect(base_url());
