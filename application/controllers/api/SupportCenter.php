@@ -36,7 +36,8 @@ class SupportCenter extends REST_Controller {
         $complaint_type    = $this->input->post("complaint_type");
         $details    = $this->input->post("details");
         $center = $this->Common_model->getRecordById('center','center_code',$center_code);
-        $data = array('center_id'=>$center->center_id, 'student_id' =>$student_id,'type'=>$complaint_type,'status'=>'P','date'=>date('Y-m-d'),'details'=>$details);
+
+        $data = array('center_id'=>$center->id, 'student_id' =>$student_id,'type'=>$complaint_type,'status'=>'P','date'=>date('Y-m-d'),'details'=>$details);
         $insert = $this->Common_model->insertAll('center_complaint',$data);
         if($insert){
             $results['msg'] = 'Complaint Successfully Saved Your Complaint No Is';
