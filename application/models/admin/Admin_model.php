@@ -682,6 +682,42 @@ class Admin_model extends CI_Model {
 
 		return json_encode($response);
 	}
+
+
+	public function add_company()
+    {
+        $data['company_name'] 	   = html_escape($this->input->post('company_name'));
+		$data['job_title'] 		   = html_escape($this->input->post('job_title'));
+		$data['min_qualification'] = html_escape($this->input->post('min_qualification'));
+		$data['description']       = html_escape($this->input->post('description'));
+		$data['other_detail'] 	   = html_escape($this->input->post('other_detail'));
+		
+        $this->db->insert('company', $data);
+		
+        $company_id = $this->db->insert_id();
+		
+        $response = array(
+        			'status' => true
+        			);
+        return json_encode($response);
+    }
+	public function update_company($param1 = '')
+	{
+	    
+		$data['company_name'] 	   = html_escape($this->input->post('company_name'));
+		$data['job_title'] 		   = html_escape($this->input->post('job_title'));
+		$data['min_qualification'] = html_escape($this->input->post('min_qualification'));
+		$data['description']       = html_escape($this->input->post('description'));
+		$data['other_detail'] 	   = html_escape($this->input->post('other_detail'));
+		
+		$this->db->where('id', $param1);
+		$this->db->update('company', $data);
+		$response = array(
+			'status' => true
+		);
+
+		return json_encode($response);
+	}
 	
 	public function create_account()
     {
