@@ -4,19 +4,51 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 // Load the Rest Controller library
 require APPPATH . '/libraries/REST_Controller.php';
 
+header('Content-Type: application/json');
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: PUT, GET, POST, DELETE");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept"); 
 
 class Authentication extends REST_Controller {
 
-    public function __construct($config = 'rest') { 
-        parent::__construct($config);
+    public function __construct() { 
+        parent::__construct();
         date_default_timezone_set('Asia/Kolkata');
         // Load the user model
         $this->load->model('api_model');
     }
     
+
+
+
+
+public function get_current_data_get()
+        {
+            
+            $postdata = file_get_contents("php://input");
+            $request = json_decode($postdata);
+            
+            $data = $request->data;
+            
+            $where = "student_id = ".$data->student_id;
+            
+            $results['student_data'] = $this->Api_Model->getSingleRowByWhere("student",$where);
+          //  $student_data = $results['student_data']->theme_name;
+            
+            return $this->response($results, REST_Controller::HTTP_OK);
+            
+        }
+
+
+
+
+
+
+
+
+
+
+
   // insert_api_data
 
     public function index_post () {
@@ -50,7 +82,7 @@ class Authentication extends REST_Controller {
          $res = json_encode($data_res);
 
             return $this->response($res, REST_Controller::
-            );
+           HTTP_OK );
 
         }else{
            $results['msg']= "Error";

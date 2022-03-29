@@ -101,7 +101,7 @@ $config['rest_realm'] = '';
 |           authorization key
 |
 */
-$config['rest_auth'] = 'basic';
+// $config['rest_auth'] = 'basic';
 /*
 |--------------------------------------------------------------------------
 | REST Login Source
@@ -193,7 +193,7 @@ $config['auth_library_function'] = '';
 | Array of usernames and passwords for login, if ldap is configured this is ignored
 |
 */
- $config['rest_valid_logins'] = '';
+ // $config['rest_valid_logins'] = '';
 /*
 |--------------------------------------------------------------------------
 | Global IP White-listing
@@ -274,7 +274,7 @@ $config['rest_database_group'] = 'default';
 | The table name in your database that stores API keys
 |
 */
-$config['rest_keys_table'] = 'keys';
+// $config['rest_keys_table'] = 'keys';
 /*
 |--------------------------------------------------------------------------
 | REST Enable Keys
@@ -298,7 +298,7 @@ $config['rest_keys_table'] = 'keys';
 |   ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 |
 */
-$config['rest_enable_keys'] = TRUE;
+// $config['rest_enable_keys'] = TRUE;
 /*
 |--------------------------------------------------------------------------
 | REST Table Key Column Name
@@ -308,7 +308,7 @@ $config['rest_enable_keys'] = TRUE;
 | column name to match e.g. my_key
 |
 */
-$config['rest_key_column'] = 'key';
+// $config['rest_key_column'] = 'key';
 /*
 |--------------------------------------------------------------------------
 | REST API Limits method
@@ -345,8 +345,8 @@ $config['rest_key_length'] = 40;
 | Note: Custom headers with the X- prefix are deprecated as of
 | 2012/06/12. See RFC 6648 specification for more details
 |
-*/
-$config['rest_key_name'] = 'X-API-KEY';
+// */
+// $config['rest_key_name'] = 'X-API-KEY';
 /*
 |--------------------------------------------------------------------------
 | REST Enable Logging
@@ -382,7 +382,7 @@ $config['rest_enable_logging'] = FALSE;
 | table name to match e.g. my_logs
 |
 */
-$config['rest_logs_table'] = 'center_complaint';
+// $config['rest_logs_table'] = 'center_complaint';
 /*
 |--------------------------------------------------------------------------
 | REST Method Access Control
