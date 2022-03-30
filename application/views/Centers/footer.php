@@ -64,8 +64,8 @@ function callTheCallBackFunction() {
       <div class="modal-body p-4">
         <div class="text-center">
           <i class="dripicons-information h1 text-info"></i>
-          <h4 class="mt-2"><?php echo 'heads_up' ?>!</h4>
-          <p class="mt-3"><?php echo 'are_you_sure'; ?>?</p>
+          <h4 class="mt-2"><?php echo 'Heads Up' ?>!</h4>
+          <p class="mt-3"><?php echo 'Are  You Sure'; ?>?</p>
           <form method="POST" class="ajaxDeleteForm" action="" id = "delete_form">
               <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
             <button type="button" class="btn btn-info my-2" data-dismiss="modal"><?php echo 'cancel'; ?></button>
