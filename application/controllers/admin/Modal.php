@@ -24,15 +24,14 @@ class Modal extends CI_Controller {
 
 	function popup($folder_name1 = '',$folder_name2 = '', $page_name = '' , $param1 = '' , $param2 = '', $param3 = '')
 	{
-		  $page_data['param1']	=	$param1;//id
-		  $page_data['param2']	=	$param2;
-		  $page_data['param3']	=	$param3;
-		 $page_data['name_csrf'] = $this->security->get_csrf_token_name();
-		 $page_data['hash_csrf'] = $this->security->get_csrf_hash();
+		$page_data['param1']	=	$param1;//id
+		$page_data['param2']	=	$param2;
+		$page_data['param3']	=	$param3;
+		$page_data['name_csrf'] = $this->security->get_csrf_token_name();
+		$page_data['hash_csrf'] = $this->security->get_csrf_hash();
 
 		$this->load->view($folder_name1.'/'.$folder_name2.'/'.$page_name.'.php' ,$page_data);
-
-		
+	
 	}
 
 	

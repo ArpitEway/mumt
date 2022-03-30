@@ -53,7 +53,13 @@
                <td><?php echo $student->name; ?> </td>
                <td><?php echo $student->course_name; ?> </td>
                <td><?php echo $student->class_name; ?> </td>
-               <td><?php echo $fees[0]->program_fees+$fees[0]->exam_fees; ?> </td>
+               <td><?php 
+               if($student->demo=='Y'){
+                echo    $fees[0]->exam_fees; 
+               }else{
+                echo    $fees[0]->program_fees+$fees[0]->exam_fees; 
+                }
+           ?> </td>
                <?php $student_id = $this->Common_model->encrypt_decrypt($student->student_id); ?>
                <?php if($exam_form_button=="skipped"){ ?>
                    <td>

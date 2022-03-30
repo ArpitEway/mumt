@@ -36,7 +36,7 @@
 						
                 	    <td>
                 			<div style="display: inline-flex;">
-								<a href="javascript:void(0);" class="dropdown-item" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/placement/edit/'.$company['id']); ?>', '<?php echo 'Update comapany' ?>')"> <i class="mdi mdi-pencil edit-icon"></i></a>   
+								<a href="javascript:void(0);" class="dropdown-item" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/placement/edit/'.$company['id']); ?>', '<?php echo 'Update Company' ?>')"> <i class="mdi mdi-pencil edit-icon"></i></a>   
 								<a href="javascript:void(0);" class="dropdown-item" onclick="confirmModal('<?php echo site_url('admin/Placement/company/delete/'.$company['id']); ?>', showAllCompany )"><i class="mdi mdi-delete delete-icon"></i></a>
 							</div>
                         </td>
