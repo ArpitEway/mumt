@@ -94,24 +94,20 @@ class Placement extends CI_Controller {
 				$response = $this->admin_model->add_company();
 				$this->session->set_flashdata('ajax_flash_message','Company Successfully Added');
 				redirect(base_url().'admin/placement/company_list');
-
 			}
 			if($param1 == 'update'){
 				$response = $this->admin_model->update_company($param2);
 				$this->session->set_flashdata('ajax_flash_message','Company Successfully Updated');
 				redirect(base_url().'admin/placement/company_list');
-
 			}
 
 			if($param1 == 'delete'){
-                  
 				$response = $this->admin_model->delete_company($param2);
 				$this->session->set_flashdata('ajax_flash_message','Company Successfully Deleted');
 				redirect(base_url().'admin/placement/company_list');
 			}
 
 			if(empty($param1) ){
-				
 				$data = array();
 				$data['title'] = "Company";
 				$this->load->view('header',$data);
@@ -119,14 +115,9 @@ class Placement extends CI_Controller {
 					'name_csrf' => $this->security->get_csrf_token_name(),
 					'hash_csrf' => $this->security->get_csrf_hash()
 				);
-				$this->load->view('admin/placement',$csrf);
+				$this->load->view('admin/placement/company_list',$csrf);
 				$this->load->view('footer');
-			}    
-
-
+			}
 		}
-
 	}
-
-
 }
