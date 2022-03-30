@@ -2463,7 +2463,7 @@ public function update_exam_datewise_permission(){
 	
 
 
-	public function view_payment_complaint(){
+	public function view_complaint(){
 
 
 		$centers = $this->Common_model->get_record_group_by_where('center_complaint','center_id');
@@ -2474,11 +2474,11 @@ public function update_exam_datewise_permission(){
 		);
 
 		$this->load->view('header');
-		$this->load->view('admin/account_section/view_payment_complaint',$data);
+		$this->load->view('admin/view_complaint_status',$data);
 		$this->load->view('footer');
 		
 	}
-	public function get_payment_complaints()
+	public function get_complaints_status()
 	{
 		if ($this->input->method() == "post") 
 		{
@@ -2511,7 +2511,7 @@ public function update_exam_datewise_permission(){
 	}
 
 
-public function update_payment_complaint_status()
+public function update_complaint_status()
 	{
 		if ($this->input->method() == "post") 
 		{
@@ -2545,7 +2545,7 @@ public function update_payment_complaint_status()
 
 
 
-public function update_payment_complaint_remark()
+public function update_complaint_remark()
 	{
 		if ($this->input->method() == "post") 
 		{
@@ -2584,40 +2584,29 @@ public function update_payment_complaint_remark()
 		}
 	}
 
-public function view_student_transaction($student_id)
-	{
-		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
-		$student = $this->Common_model->getRecordById('student','student_id',$student_id);
-		$paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student_id));
-		$data = array(
-			'student' => $student,
-			'paymentDetails' => $paymentDetails,
-			'name_csrf' => $this->security->get_csrf_token_name(),
-			'hash_csrf' => $this->security->get_csrf_hash(),
-		);
-		$this->load->view('header',array('title' => 'View Student Transaction'));
-		$this->load->view('admin/account_section/view_student_transaction',$data);
-		$this->load->view('footer');
-	}
 
+	public function complaint_form_sub(){
 
-
-public function complaint_form_sub(){
-		$student_id = $this->input->post('student_id');
+		$id = $this->input->post('complain');
 		$redy = $this->input->post('redy');
-	
-		
+
+	    $where = array(
+			'id' => $id	);
 		$studentData = array(
-			'type' => $redy
-				);
-$where = array(
-			'id' => $student_id	);
-
-
-$update =  $this->Common_model->updateRecordByConditions('center_complaint',$where,$studentData);
-if($update){
-$this->session->set_flashdata('ajax_flash_message','Status Successfully Updated');
-}}
+			'type' => $redy	);
+	
+		$update =  $this->Common_model->updateRecordByConditions('center_complaint',$where,$studentData);
+		if($update){
+			echo json_encode(array(
+				"success" => ' Updated Successfully',
+			));
+		}
+		else{
+			echo json_encode(array(
+				"error" => ' error Occured',
+			));
+		}
+	}
 
 
 

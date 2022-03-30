@@ -1,10 +1,9 @@
- <style>
-#group2 {
-  display: none;
-  padding-left:220px ;
-}
-</style> 
 
+<style>
+	.hide{
+padding-left: 230px;
+	}
+</style>
 
 <div class="container mb-5">
 	<h3 class="text-primary text-center h2"><?= ' ( '.$centerData->center_code.' ) ( '.$centerData->center_name.' ) ( '.$centerData->contactpersonname.' ) ( '.$centerData->mobile_no_1.' , '.$centerData->mobile_no_1.' ) '; ?></h3>
@@ -24,13 +23,13 @@
 				<th>Status</th>
 				<th>Remark</th>
 				<th>Forward</th>
-				<th>View/Action</th>
+				
 
 			</tr>
 		</thead>
 		<tbody>
 			<?php 
-			
+			 
 			$i = 1;
 			
 			foreach($complaints as $complaint){
@@ -87,29 +86,24 @@
 
 
                           <td>
-							<button type="button" class="btn btn-info " data-id="<?=$complaint->id;?>" id="forward"  >Forward</button>
+							<button type="button" class="btn btn-info forward " data-id="<?=$complaint["id"];?>"   >Forward</button>
 
-						 <form id="ajaxForm">
+						 <form class="hide" style="display: none">
 
-						 	<div id="group2"  >
-						 		<input type="hidden" class="csrfname" name="student_id" value="<?=$complaint->id; ?>">	
-						 		<div >
+						 	
+						 		<input type="hidden" name="complain"  value="<?=$complaint["id"];?>">	
+						 		   <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>"> 
 						 		Exam Form  <input type="radio" value="Exam Form" name="redy"><br><br>
 						 		Enrollment <input type="radio" value="Enrollment" name="redy"><br><br>
 						 		Technical Support  <input type="radio" value="Technical Support" name="redy"><br><br>
 						 		Marksheet <input type="radio" value="Marksheet" name="redy"><br><br>
-						 		Result <input type="radio" value="Result" name="redy"><br><br></div>
-						 		<button type="submit" class="btn btn-success"  id="submit" >Submit</button>
+						 		Result <input type="radio" value="Result" name="redy"><br><br>
+						 		<button type="button" class="btn btn-success forwardcomplain"   >Submit</button>
 
-						 	</div>
 						 </form>
 
 					</td>
 
-
-					<td>
-						<a href="<?=base_url('admin/admins/view_student_transaction/'.$student_id);?>" target="_blank" >View Details</a>
-					</td>
 				</tr>
 
 
@@ -140,7 +134,7 @@
 				[csrfName]: csrfHash,
 			}; 
 
-			var url = BASE_URL + "admin/admins/update_payment_complaint_status";
+			var url = BASE_URL + "admin/admins/update_complaint_status";
 
 			$.ajax({
 				url: url,
@@ -171,7 +165,7 @@
 				remark: remark,
 				[csrfName]: csrfHash,
 			};
-			var url = BASE_URL + "admin/admins/update_payment_complaint_remark";
+			var url = BASE_URL + "admin/admins/update_complaint_remark";
 
 			$.ajax({
 				url: url,
@@ -186,71 +180,36 @@
 		});
 	</script>
 <script>
- $("#submit").on('click',function (e){
-   e.preventDefault();
-var frm = $('#ajaxForm').serialize();
+	// $(document).on('click', '.forwardcomplain', function(e) {
+  $(".forwardcomplain").on('click',function (e){
+  	
 
-  
+   e.preventDefault();
+var frm = $(this).parent().serialize();
+
   $.ajax({
+
     url: '<?php echo site_url('admin/admins/complaint_form_sub'); ?>',
     method: 'post',
-    data: frm,
-    dataType: 'JSON',
+     data: frm,
+   dataType: 'JSON',   
     success: function (data) {
       if(data.success){
         toastr.success(data.success);
            
-
-  // $('#kt_datatable info_row[id="'+tr_id+'"]').remove();
-
 }else{
   toastr.error(data.error);
 }
 },
-});</script>
 });
+});</script>
 
 
-
-
-
-
-
-
-
-  <!-- <script>
-	$(document).ready(function(){
-	$('#forward').click(function() {
-  $('#group2').css('display', "block")
-  
-
-});});</script>  -->
-  
-
-
- <!-- <script>
-	
-	const targetDiv = document.getElementById("group2");
-const btn = document.getElementById("forward");
-btn.onclick = function () {
-  if (targetDiv.style.display !== "none") {
-    targetDiv.style.display = "none";
-  } else {
-    targetDiv.style.display = "block";
-  }
-};
-    </script>   --> 
-
- 
       <script>
-	$(document).ready(function(){
-		var id = $(this).attr('data-id');
-			var targetDiv = document.getElementById("group2");
-	$('#forward').click(function() {
-		  if (targetDiv.style.display == "none"){
-  $('#group2').show();}else{
-  	$('#group2').hide();
-  }
-  
+		
+	$('.forward').click(function() {
+		
+  $(this).next().toggle();
 
-});});</script>   
+});
+</script>   
