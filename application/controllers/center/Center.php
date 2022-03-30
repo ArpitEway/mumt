@@ -1238,76 +1238,73 @@ class Center extends CI_Controller {
 		$this->load->view('Centers/footer');		
 	 } 
 
-	 public function activity($param1="",$param2=""){
-		if(!$this->session->has_userdata('centerdata')){
-			redirect(base_url());
-		}
-		$center_id =  $this->session->center_id;
-		
-		if($param1 == 'create'){
-     
-		    $ext1=strtolower(pathinfo($_FILES['photos']['name'],PATHINFO_EXTENSION));
-			$activity_image=date('Y-m-d-H-i-s')."_".$_FILES['photos']['name'];
+	public function activity($param1="",$param2=""){
+	 	if(!$this->session->has_userdata('centerdata')){
+	 		redirect(base_url());
+	 	}
+	 	$center_id =  $this->session->center_id;
 
-			$upload_file = move_uploaded_file($_FILES['photos']['tmp_name'],"assets/activity/".$activity_image);
-			if(	$upload_file){
-				$data = array(
-					'date' =>$_POST['date'],
-						'activity_name' =>$_POST['activity_name'],
-						'description' =>$_POST['description'],
-						'photos' =>$activity_image,
-						'center_id' =>$center_id,
-					);
-					$insert = $this->Common_model->insertAll('activity',$data);
-				if($insert){
-					redirect(base_url().'activity');
-				}
-			}
-			
+	 	if($param1 == 'create'){
 
-		}
-		if($param1 == 'update'){
+	 		$ext1=strtolower(pathinfo($_FILES['photos']['name'],PATHINFO_EXTENSION));
 
-	
-		if($_FILES['photos']['name']!=""){
-			$ext1=strtolower(pathinfo($_FILES['photos']['name'],PATHINFO_EXTENSION));
-			$activity_image=date('Y-m-d-H-i-s')."_".$_FILES['photos']['name'];
-			$upload_file = move_uploaded_file($_FILES['photos']['tmp_name'],"assets/activity/".$activity_image);	
-		}else{
-			$activity_image=$_POST['old_image'];
-		}
+	 		$activity_image=date('Y-m-d-H-i-s')."_".$_FILES['photos']['name'];
 
-	
-			$data = array(
-					'date' =>$_POST['date'],
-					'activity_name' =>$_POST['activity_name'],
-					'description' =>$_POST['description'],
-					'photos' =>$activity_image,
-				);
-				$update = $this->Common_model->updateRecordByConditions('activity',array("id"=>$param2),$data);
-			if($update){
-				redirect(base_url().'activity');
-			}
-		
-		}
+	 		$upload_file = move_uploaded_file($_FILES['photos']['tmp_name'],"assets/activity/".$activity_image);
+	 		if(	$upload_file){
+	 			$data = array(
+	 				'date' =>$_POST['date'],
+	 				'activity_name' =>$_POST['activity_name'],
+	 				'description' =>$_POST['description'],
+	 				'photos' =>$activity_image,
+	 				'center_id' =>$center_id,
+	 			);
+	 			$insert = $this->Common_model->insertAll('activity',$data);
+	 			if($insert){
+	 				redirect(base_url().'activity');
+	 			}
+	 		}
+	 	}
 
-		if($param1 == 'delete'){
-			$response = $this->Common_model->deleteByWhere('activity',array("id"=>$param2));
-			$this->session->set_flashdata('ajax_flash_message','Activity Successfully Deleted');
-			redirect(base_url().'activity');
-		}
+	 	if($param1 == 'update'){
+	 		if($_FILES['photos']['name']!=""){
+	 			$ext1=strtolower(pathinfo($_FILES['photos']['name'],PATHINFO_EXTENSION));
+	 			$activity_image=date('Y-m-d-H-i-s')."_".$_FILES['photos']['name'];
+	 			$upload_file = move_uploaded_file($_FILES['photos']['tmp_name'],"assets/activity/".$activity_image);	
+	 		}else{
+	 			$activity_image=$_POST['old_image'];
+	 		}
 
-		if(empty($param1)){
-			$data = array();
-			$data['title'] = "Activity";
-			$csrf = array(
-			'name_csrf' => $this->security->get_csrf_token_name(),
-			'hash_csrf' => $this->security->get_csrf_hash()
-		);
-	     	$this->load->view('Centers/header',$data);
-			$this->load->view('Centers/activity',$csrf);
-			$this->load->view('Centers/footer');		
+	 		$data = array(
+	 			'date' =>$_POST['date'],
+	 			'activity_name' =>$_POST['activity_name'],
+	 			'description' =>$_POST['description'],
+	 			'photos' =>$activity_image,
+	 		);
+	 		$update = $this->Common_model->updateRecordByConditions('activity',array("id"=>$param2),$data);
+	 		if($update){
+	 			redirect(base_url().'activity');
+	 		}
+	 	}
 
-		}    
-	 }
+	 	if($param1 == 'delete'){
+	 		$response = $this->Common_model->deleteByWhere('activity',array("id"=>$param2));
+	 		$this->session->set_flashdata('ajax_flash_message','Activity Successfully Deleted');
+	 		redirect(base_url().'activity');
+	 	}
+
+	 	if(empty($param1)){
+	 		$data = array();
+	 		$data['title'] = "Activity";
+	 		$activities = $this->Common_model->getRecordByWhere("activity",array("center_id"=>$center_id));
+	 		$csrf = array(
+	 			'name_csrf' => $this->security->get_csrf_token_name(),
+	 			'hash_csrf' => $this->security->get_csrf_hash(),
+	 			'activities' => $activities
+	 		);
+	 		$this->load->view('Centers/header',$data);
+	 		$this->load->view('Centers/activity',$csrf);
+	 		$this->load->view('Centers/footer');
+	 	}
+	}
 }
