@@ -51,7 +51,7 @@ $(document).on("click","#submit_btn",function(){
 	
 
 	$.ajax({
-		url:  BASE_URL+ 'admin/Admins/get_complaints_status',
+		url:  BASE_URL+ 'admin/'+account_type+'/get_complaints_status',
 
                 type:'post',
                 dataType : 'JSON',

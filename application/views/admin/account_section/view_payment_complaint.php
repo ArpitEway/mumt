@@ -50,7 +50,7 @@ $(document).on("click","#submit_btn",function(){
 	
 
 	$.ajax({
-		url:  BASE_URL+ 'admin/'+account_type+'/get_payment_complaints',
+		url:  BASE_URL+ 'admin/Account/get_payment_complaints',
 
                 type:'post',
                 dataType : 'JSON',
