@@ -29,7 +29,7 @@
 						<td><?php echo $activity->date; ?></td>
 						<td><?php echo $activity->activity_name; ?></td>
 						<td><?php echo $activity->description; ?></td>
-						<td><a class="btn btn-primary" target="_blank" href="<?php echo site_url('assets/activity/'.$activity->photos) ?>">Image</a></td>
+						<td><?php if($activity->photos==""){ ?><button type="button" class="btn btn-danger" >Not Available</button><?php  } else { ?> <a class="btn btn-primary" target="_blank" href="<?php echo site_url('assets/activity/'.$activity->photos) ?>">Image</a> <?php } ?></td>
 						
                 	<td>
                 	<div style="display: inline-flex;">

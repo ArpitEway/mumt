@@ -1245,12 +1245,16 @@ class Center extends CI_Controller {
 		$center_id =  $this->session->center_id;
 		
 		if($param1 == 'create'){
-     
-		    $ext1=strtolower(pathinfo($_FILES['photos']['name'],PATHINFO_EXTENSION));
-			$activity_image=date('Y-m-d-H-i-s')."_".$_FILES['photos']['name'];
+   
 
+		  if($_FILES['photos']['name']==""){
+			$activity_image= "";
+		  }else{
+			$ext1=strtolower(pathinfo($_FILES['photos']['name'],PATHINFO_EXTENSION));
+			$activity_image=date('Y-m-d-H-i-s')."_".$_FILES['photos']['name'];
 			$upload_file = move_uploaded_file($_FILES['photos']['tmp_name'],"assets/activity/".$activity_image);
-			if(	$upload_file){
+		  }
+		   
 				$data = array(
 					'date' =>$_POST['date'],
 						'activity_name' =>$_POST['activity_name'],
@@ -1262,7 +1266,7 @@ class Center extends CI_Controller {
 				if($insert){
 					redirect(base_url().'activity');
 				}
-			}
+			
 			
 
 		}
