@@ -2555,9 +2555,9 @@ public function update_payment_complaint_remark()
 
 			if ($this->input->post("id")) 
 			{
-				$data = $this->Common_model->updateRecordByConditions("payment_complaint",array("id" => $id ),array("remark" => $remark,"status" => $status));
+				$data = $this->Common_model->updateRecordByConditions("center_complaint",array("id" => $id ),array("remark" => $remark,"status" => $status));
 				
-				$dt = $this->db->get_where("payment_complaint",array("id" => $id ))->result_array();
+				$dt = $this->db->get_where("center_complaint",array("id" => $id ))->result_array();
 				
 				if($dt[0]['remark'] != 'Invalid'){
 				
@@ -2599,6 +2599,26 @@ public function view_student_transaction($student_id)
 		$this->load->view('admin/account_section/view_student_transaction',$data);
 		$this->load->view('footer');
 	}
+
+
+
+public function complaint_form_sub(){
+		$student_id = $this->input->post('student_id');
+		$redy = $this->input->post('redy');
+	
+		
+		$studentData = array(
+			'type' => $redy
+				);
+$where = array(
+			'id' => $student_id	);
+
+
+$update =  $this->Common_model->updateRecordByConditions('center_complaint',$where,$studentData);
+if($update){
+$this->session->set_flashdata('ajax_flash_message','Status Successfully Updated');
+}}
+
 
 
 

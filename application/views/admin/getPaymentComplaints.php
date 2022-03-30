@@ -1,3 +1,11 @@
+ <style>
+#group2 {
+  display: none;
+  padding-left:220px ;
+}
+</style> 
+
+
 <div class="container mb-5">
 	<h3 class="text-primary text-center h2"><?= ' ( '.$centerData->center_code.' ) ( '.$centerData->center_name.' ) ( '.$centerData->contactpersonname.' ) ( '.$centerData->mobile_no_1.' , '.$centerData->mobile_no_1.' ) '; ?></h3>
 </div>
@@ -62,7 +70,7 @@
 					<td>
 
 						<?php
-						if($session['remark'] == '' || $session['remark'] != 'Invalid')
+						if($complaint['remark'] == '' || $complaint['remark'] != 'Invalid')
 						{
 							?>
 
@@ -79,18 +87,22 @@
 
 
                           <td>
-							<button type="button" class="btn btn-info forward " id="forward" data-target="#group2" data-toggle="modal" data-Id="<?=$complaint->details;?>">Forward</button>
+							<button type="button" class="btn btn-info " data-id="<?=$complaint->id;?>" id="forward"  >Forward</button>
 
-							<form>
+						 <form id="ajaxForm">
 
-  <div id="group2" data-toggle="modal" aria-hidden="true">
-  Exam Form  <input type="radio" value="value1" name="Exam Form"><br>
-   Enrollment <input type="radio" value="value2" name="Enrollment"><br>
-  Technical Support  <input type="radio" value="value2" name="Technical Support"><br>
-   Marksheet <input type="radio" value="value3" name="Marksheet"><br>
-   Result <input type="radio" value="value3" name="Result">
-  </div>
-</form>
+						 	<div id="group2"  >
+						 		<input type="hidden" class="csrfname" name="student_id" value="<?=$complaint->id; ?>">	
+						 		<div >
+						 		Exam Form  <input type="radio" value="Exam Form" name="redy"><br><br>
+						 		Enrollment <input type="radio" value="Enrollment" name="redy"><br><br>
+						 		Technical Support  <input type="radio" value="Technical Support" name="redy"><br><br>
+						 		Marksheet <input type="radio" value="Marksheet" name="redy"><br><br>
+						 		Result <input type="radio" value="Result" name="redy"><br><br></div>
+						 		<button type="submit" class="btn btn-success"  id="submit" >Submit</button>
+
+						 	</div>
+						 </form>
 
 					</td>
 
@@ -173,12 +185,72 @@
 			});
 		});
 	</script>
-
-
 <script>
-	 btns = document.getElementsByClassName("forward");
-    for (var i = 0; i < btns.length; i++) {
-        btns[i].addEventListener("click", function () {
-			//Add function here
-        });
-    }</script>
+ $("#submit").on('click',function (e){
+   e.preventDefault();
+var frm = $('#ajaxForm').serialize();
+
+  
+  $.ajax({
+    url: '<?php echo site_url('admin/admins/complaint_form_sub'); ?>',
+    method: 'post',
+    data: frm,
+    dataType: 'JSON',
+    success: function (data) {
+      if(data.success){
+        toastr.success(data.success);
+           
+
+  // $('#kt_datatable info_row[id="'+tr_id+'"]').remove();
+
+}else{
+  toastr.error(data.error);
+}
+},
+});</script>
+});
+
+
+
+
+
+
+
+
+
+  <!-- <script>
+	$(document).ready(function(){
+	$('#forward').click(function() {
+  $('#group2').css('display', "block")
+  
+
+});});</script>  -->
+  
+
+
+ <!-- <script>
+	
+	const targetDiv = document.getElementById("group2");
+const btn = document.getElementById("forward");
+btn.onclick = function () {
+  if (targetDiv.style.display !== "none") {
+    targetDiv.style.display = "none";
+  } else {
+    targetDiv.style.display = "block";
+  }
+};
+    </script>   --> 
+
+ 
+      <script>
+	$(document).ready(function(){
+		var id = $(this).attr('data-id');
+			var targetDiv = document.getElementById("group2");
+	$('#forward').click(function() {
+		  if (targetDiv.style.display == "none"){
+  $('#group2').show();}else{
+  	$('#group2').hide();
+  }
+  
+
+});});</script>   
