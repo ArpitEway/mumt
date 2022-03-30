@@ -19,7 +19,7 @@
 			$i=1;
 			foreach ($center_complaints as $rows) {
 				$where = array('student_id' => $rows['student_id']);
-				$student = $this->Common_model->get_record('student','*',);
+				$student = $this->Common_model->get_record('student','*',$where);
 				?>
 
 				<input type="hidden" value="<?php echo $rows["id"]; ?>" name="pid" />
