@@ -27,3 +27,4 @@ application/config/routes.php
 assets/instruction/*
 exam_pdf/*
 assets/exam_answersheet/*
+assets/activity/*
