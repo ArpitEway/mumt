@@ -53,4 +53,16 @@ class WebSite extends REST_Controller {
        $results = $this->Common_model->getRecordByWhere('program',array('department_id' => $department_id));
         return $this->response($results, REST_Controller::HTTP_OK);
     }
+
+     public function GetDepartmentWisePrograms_get()
+    {
+        $departments = $this->Common_model->get_record('department','*');
+        $i=0;
+        while ( $i < count($departments) ) { 
+            $where = array('department_id' => $departments[$i]['id']);
+            $departments[$i]['programs'] = $this->Common_model->get_record('program','*',$where);
+            $i++;
+        }
+        return $this->response($departments, REST_Controller::HTTP_OK);
+    }
 }
