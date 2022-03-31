@@ -51,7 +51,7 @@ padding-left: 230px;
 					<td >
 
 						<?php
-						if($complaint['status'] == 'P')
+						if($complaint['status'] == 'D')
 						{
 							?>
 
@@ -69,15 +69,15 @@ padding-left: 230px;
 					<td>
 
 						<?php
-						if($complaint['remark'] == '' || $complaint['remark'] != 'Invalid')
+						if( $complaint['remark'] == 'Invalid')
 						{
 							?>
 
-							<input type="button" name="update_req_remark" data-id = "<?=$complaint["id"];?>" class="btn btn-success remark_check" value="set">
+							<input type="button" name="update_req_remark" data-id = "<?=$complaint["id"];?>" class="btn btn-danger remark_check" value="Invalid">
 
 						<?php }else{ ?>
 
-							<input type="button" name="req_remark" data-id = "<?=$complaint["id"];?>" class="btn btn-danger remark_check" value="Invalid">
+							<input type="button" name="req_remark" data-id = "<?=$complaint["id"];?>" class="btn btn-success remark_check" value="Set">
 
 							<?php 
 						}
@@ -126,7 +126,7 @@ padding-left: 230px;
 			var csrfHash = $('.csrfname').val();
 			var self = this;
 
-			var status = (val=='Done') ? 'D' : 'P';
+			var status = (val=='Done') ? 'P' : 'D';
 
 			var data = {
 				id: $(this).attr('data-id'),

@@ -2526,10 +2526,10 @@ public function update_complaint_status()
 			
 				$dt = $this->db->get_where("center_complaint",array("id" => $id ))->result_array();
 
-				if($dt[0]['status'] == 'P'){
-				$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-success req_check" value="Pending">';
+				if($dt[0]['status'] == 'D'){
+				$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-success req_check" value="Done">';
 				}else{
-				$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-danger req_check" value="Done">';
+				$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-danger req_check" value="Pending">';
 			}
 				$status = true;
 				$msg    = "";
@@ -2551,24 +2551,24 @@ public function update_complaint_remark()
 		{
 	        $id    	= $this->input->post("id");
 	        $remark = $this->input->post("remark");
-			$status = ($remark=='Invalid') ? 'D' : "P";
-
+			$status = ($remark=='Set') ? 'P' : "D";
+            $remark = ($remark=='Set') ? '' : 'Invalid';
 			if ($this->input->post("id")) 
 			{
 				$data = $this->Common_model->updateRecordByConditions("center_complaint",array("id" => $id ),array("remark" => $remark,"status" => $status));
 				
 				$dt = $this->db->get_where("center_complaint",array("id" => $id ))->result_array();
 				
-				if($dt[0]['remark'] != 'Invalid'){
+				if($dt[0]['remark'] == 'Invalid'){
 				
-				$sts_btn = '<input type="button" name="update_req_remark" data-id='.$id.' class="btn btn-success remark_check" value="set">';
-				
-				$sts_btn2 = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-danger req_check" value="Pending">';
-				}else{
-				
-				$sts_btn = '<input type="button" name="req_remark" data-id='.$id.' class="btn btn-danger remark_check" value="Invalid">';
+				$sts_btn = '<input type="button" name="update_req_remark" data-id='.$id.' class="btn btn-danger remark_check" value="Invalid">';
 				
 				$sts_btn2 = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-success req_check" value="Done">';
+				}else{
+				
+				$sts_btn = '<input type="button" name="req_remark" data-id='.$id.' class="btn btn-success remark_check" value="Set">';
+				
+				$sts_btn2 = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-danger req_check" value="Pending">';
 				}
 
 				$status = true;
