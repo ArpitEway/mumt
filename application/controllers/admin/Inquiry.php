@@ -17,8 +17,14 @@ class Inquiry extends CI_Controller {
 	}
 
 	public function index(){
+		$admin_id = $this->session->admin_id;
+		$where = 'admin_id='.$admin_id.' and status="Y"';
+		$menu = array(
+			"menu_headings" => $this->Common_model->getRecordByWhereByOrder('menu_heading',$where,'heading_order','ASC'),
+			"menus" => $this->Common_model->getRecordByWhereByOrder('menu',$where,'heading_id,menu_order','ASC'),
+		);
 		$this->load->view('header',array('title' => 'Inquiry Section'));
-		$this->load->view('admin/inquiry/dashboard');
+		$this->load->view('admin/inquiry/dashboard',$menu);
 		$this->load->view('footer');	
 	}
 
