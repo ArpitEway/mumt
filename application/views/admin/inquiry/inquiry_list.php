@@ -4,7 +4,8 @@
 				<th>#</th>
 				<th>Name </th>
 				<th>Email  </th>
-				<th>Department </th>
+				<th>Department Name</th>
+				<th>Program Name </th>
 
 			</tr>
 		</thead>
@@ -13,13 +14,16 @@
 		$i = 1;
         	foreach($inquiries as $inquiry)
 			{
-		
+				$department = $this->Common_model->getRecordByWhere("department",array("id"=>$inquiry['department']));
+				$program = $this->Common_model->getRecordByWhere("program",array("id"=>$inquiry['program']));
+			
             ?>
 					<tr>
 						<td><?php echo $i; ?></td>
 						<td><?php echo $inquiry['name']; ?></td>
 						<td><?php echo $inquiry['email']; ?></td>
-						<td><?php echo $inquiry['department']; ?></td>
+						<td><?php echo $department[0]->department_name; ?></td>
+						<td><?php echo $program[0]->program_name; ?></td>
 					</tr>
 				
 			

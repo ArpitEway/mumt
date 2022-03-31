@@ -1,3 +1,4 @@
+
 <form method="POST" enctype="multipart/form-data" class="d-block ajaxForm"  action="<?php echo site_url('center/Center/activity/create'); ?>">
     <div class="form-row">
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
