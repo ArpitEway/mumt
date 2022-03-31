@@ -85,19 +85,23 @@ padding-left: 230px;
 					</td>
 
 
-                          <td>
-							<button type="button" class="btn btn-info forward " data-id="<?=$complaint["id"];?>"   >Forward</button>
+                          <td>   
+                          <!-- 	<div class="type" style="display: none"  data-id= "<?php echo $complaint["type"]; ?>">
+                         </div> -->
+       		       <div  id="type" >
+    	       </div> 
+						<button type="button" class="btn btn-info forward " data-id="<?=$complaint["id"];?>"   >Forward</button>
 
 						 <form class="hide" style="display: none">
 
-						 	
+						     	<span><strong>Select Any Department</strong></span><br><br>
 						 		<input type="hidden" name="complain"  value="<?=$complaint["id"];?>">	
 						 		   <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>"> 
-						 		Exam Form  <input type="radio" value="Exam Form" name="redy"><br><br>
-						 		Enrollment <input type="radio" value="Enrollment" name="redy"><br><br>
-						 		Technical Support  <input type="radio" value="Technical Support" name="redy"><br><br>
-						 		Marksheet <input type="radio" value="Marksheet" name="redy"><br><br>
-						 		Result <input type="radio" value="Result" name="redy"><br><br>
+						 		 <input type="radio" value="Exam Form" name="redy">Exam Form <br><br>
+						 		 <input type="radio" value="Enrollment" name="redy">Enrollment<br><br>
+						 		  <input type="radio" value="Technical Support" name="redy">Technical Support<br><br>
+						 		 <input type="radio" value="Marksheet" name="redy">Marksheet<br><br>
+						 		<input type="radio" value="Result" name="redy">Result <br><br>
 						 		<button type="button" class="btn btn-success forwardcomplain"   >Submit</button>
 
 						 </form>
@@ -181,8 +185,10 @@ padding-left: 230px;
 <script>
 	// $(document).on('click', '.forwardcomplain', function(e) {
   $(".forwardcomplain").on('click',function (e){
-  	
 
+  // var id = $('#student_tr').val();
+  	var val = $(this).val();
+  	var self = this;
    e.preventDefault();
 var frm = $(this).parent().serialize();
 
@@ -194,8 +200,13 @@ var frm = $(this).parent().serialize();
    dataType: 'JSON',   
     success: function (data) {
       if(data.success){
-        toastr.success(data.success);
-           
+       toastr.success(data.success);
+      $(self).parent().toggle().html(data.data); 
+     console.log(data);
+
+ $('#type').parent().html(data.data);
+          
+         
 }else{
   toastr.error(data.error);
 }
@@ -207,8 +218,14 @@ var frm = $(this).parent().serialize();
       <script>
 		
 	$('.forward').click(function() {
+
+var val = $(this).val();
+  	var self = this;
+
+		 $(self).hide();
 		
-  $(this).next().toggle();
+  $(this).next().show();
+
 
 });
 </script>   

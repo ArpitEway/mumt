@@ -2596,9 +2596,18 @@ public function update_complaint_remark()
 			'type' => $redy	);
 	
 		$update =  $this->Common_model->updateRecordByConditions('center_complaint',$where,$studentData);
+	
+	$dt = $this->Common_model->getRecordById('center_complaint','id',$id);	
+	 
+
+$dt1 = $dt->type;
+
+
 		if($update){
 			echo json_encode(array(
+				     'data'  => $dt1,
 				"success" => ' Updated Successfully',
+
 			));
 		}
 		else{
