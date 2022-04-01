@@ -18,6 +18,7 @@
 						<th>CE</th>
 						<th>Test ID</th>
 						<th>Exam Date</th>
+						<th>Max Theory Marks</th>
 						<th>View Paper</th>
 					</tr>
 				</thead>
@@ -38,6 +39,7 @@
 					<td><?php echo $class->ce; ?> </td>
 					<td><?php echo $class->test_id; ?> </td>
                     <td><?php echo $exam_date[0]->exam_start_date; ?> </td>
+                    <td><?php echo $class->max_marks; ?> </td>
                     <td>
 <?php if(file_exists(FCPATH.'exam_pdf/'.$class->test_id.'.pdf')){ ?>
                      <a target="_blank" href="<?php  echo  base_url('exam_pdf/'.$class->test_id.'.pdf') ?>" >View</a>

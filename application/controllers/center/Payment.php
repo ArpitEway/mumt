@@ -235,7 +235,11 @@ class Payment extends CI_Controller {
 		$data['student'] = $student;
 		$data['url'] = 'paynow';
 		$data['paymentType'] = 'Exam Fees';
-		$data['txnAmt'] = $fees[0]->program_fees+$fees[0]->exam_fees;
+		if($student['demo']=='Y'){
+			$data['txnAmt'] = $fees[0]->exam_fees;
+		}else{
+			$data['txnAmt'] = $fees[0]->program_fees+$fees[0]->exam_fees;
+		}
 		
 		$this->load->view('Centers/header',$titleData);
 		$this->load->view('Centers/exam_form_payment',$data);
@@ -256,7 +260,11 @@ class Payment extends CI_Controller {
 				'course_group_id' => $student['course_group_id'],
 			);
 			$fees = $this->Common_model->getRecordByWhere('course',$where);
-			$txnAmt=$fees[0]->program_fees+$fees[0]->exam_fees;
+			if($student['demo']=='Y'){
+				$txnAmt= $fees[0]->exam_fees;
+			}else{
+				$txnAmt=$fees[0]->program_fees+$fees[0]->exam_fees;
+			}
 			if($student['new_exam_form']=='Y'){
 				$this->session->set_flashdata('warning','Payment Already Submitted');
 				redirect(base_url('dashboard'));
