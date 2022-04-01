@@ -1,3 +1,4 @@
+    
 <div class="card border-0">
   	<div class="card-body row text-center" >
         <div class="form-group col-md-3 m-auto">
@@ -50,7 +51,7 @@ $(document).on("click","#submit_btn",function(){
 	
 
 	$.ajax({
-		url:  BASE_URL+ 'admin/Account/get_payment_complaints',
+		url:  BASE_URL+ 'admin/'+account_type+'/get_complaints_status',
 
                 type:'post',
                 dataType : 'JSON',
