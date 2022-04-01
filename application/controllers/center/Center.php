@@ -1245,50 +1245,85 @@ class Center extends CI_Controller {
 		$center_id =  $this->session->center_id;
 		
 		if($param1 == 'create'){
-   
-
-		  if($_FILES['photos']['name']==""){
-			$activity_image= "";
-		  }else{
-			$ext1=strtolower(pathinfo($_FILES['photos']['name'],PATHINFO_EXTENSION));
-			$activity_image=date('Y-m-d-H-i-s')."_".$_FILES['photos']['name'];
-			$upload_file = move_uploaded_file($_FILES['photos']['tmp_name'],"assets/activity/".$activity_image);
-		  }
-		   
-				$data = array(
-					'date' =>$_POST['date'],
-						'activity_name' =>$_POST['activity_name'],
-						'description' =>$_POST['description'],
-						'photos' =>$activity_image,
-						'center_id' =>$center_id,
-					);
-					$insert = $this->Common_model->insertAll('activity',$data);
-				if($insert){
-					redirect(base_url().'activity');
+        //   echo "<pre>";
+		//  print_r($_POST);
+		//  die ;
+		 $data = array(
+			 "activity_name"=>$_POST['activity_name'],
+			 'description'=>$_POST['description'],
+			 'date'=>$_POST['date'],
+			 'center_id'=>$center_id
+		 );
+		 $last_id = $this->Common_model->insertAll('activity',$data);
+		//  print_r($insert );
+	    //  die ;
+		if($_FILES['file']['name']!="")
+		{
+			$files = array_filter($_FILES['file']['name']); //Use something similar before processing files.
+			// Count the number of uploaded files in array
+			$total_count = count($_FILES['file']['name']);
+			// Loop through every file
+				for( $i=0 ; $i < $total_count ; $i++ ) {
+				//The temp file path is obtained
+				$tmpFilePath = $_FILES['file']['tmp_name'][$i];
+				//A file path needs to be present
+					if ($tmpFilePath != ""){
+					//Setup our new file path
+					$newFilePath = "./assets/activity/" .date('Y-m-d-H-i-s')."_".  $_FILES['file']['name'][$i];
+					//File is uploaded to temp dir
+						if(move_uploaded_file($tmpFilePath, $newFilePath)) {
+							$data = array(
+								"activity_id"=>$last_id,
+								"activity_file"=>date('Y-m-d-H-i-s')."_".  $_FILES['file']['name'][$i],
+							);
+							$insert = $this->Common_model->insertAll("activity_file",$data);
+						}
+					}
 				}
+		}
 			
-			
+		redirect(base_url().'activity');
 
 		}
 		if($param1 == 'update'){
 
+	//  echo "<pre>";
+	 
+	// 	 print_r($_FILES);
+	// 	 print_r($_POST['activity_id']);
+	// 	 die ;
+		 if($_FILES['file']['name']!="")
+		 {
+			 $files = array_filter($_FILES['file']['name']); //Use something similar before processing files.
+			 // Count the number of uploaded files in array
+			 $total_count = count($_FILES['file']['name']);
+			 // Loop through every file
+				 for( $i=0 ; $i < $total_count ; $i++ ) {
+				 //The temp file path is obtained
+				 $tmpFilePath = $_FILES['file']['tmp_name'][$i];
+				 //A file path needs to be present
+					 if ($tmpFilePath != ""){
+					 //Setup our new file path
+					 $newFilePath = "./assets/activity/" .date('Y-m-d-H-i-s')."_".  $_FILES['file']['name'][$i];
+					 //File is uploaded to temp dir
+						 if(move_uploaded_file($tmpFilePath, $newFilePath)) {
+							 $data = array(
+								 "activity_id"=>$_POST['activity_id'],
+								 "activity_file"=>date('Y-m-d-H-i-s')."_".  $_FILES['file']['name'][$i],
+							 );
+							 $insert = $this->Common_model->insertAll("activity_file",$data);
+						 }
+					 }
+				 }
+		 }
+			 
 	
-		if($_FILES['photos']['name']!=""){
-			$ext1=strtolower(pathinfo($_FILES['photos']['name'],PATHINFO_EXTENSION));
-			$activity_image=date('Y-m-d-H-i-s')."_".$_FILES['photos']['name'];
-			$upload_file = move_uploaded_file($_FILES['photos']['tmp_name'],"assets/activity/".$activity_image);	
-		}else{
-			$activity_image=$_POST['old_image'];
-		}
-
-	
-			$data = array(
+			    $data = array(
 					'date' =>$_POST['date'],
 					'activity_name' =>$_POST['activity_name'],
 					'description' =>$_POST['description'],
-					'photos' =>$activity_image,
 				);
-				$update = $this->Common_model->updateRecordByConditions('activity',array("id"=>$param2),$data);
+				$update = $this->Common_model->updateRecordByConditions('activity',array("id"=>$_POST['activity_id']),$data);
 			if($update){
 				redirect(base_url().'activity');
 			}
@@ -1313,5 +1348,45 @@ class Center extends CI_Controller {
 			$this->load->view('Centers/footer');		
 
 		}    
+	 }
+
+	 public function show_activity_file()
+	 {
+	
+		$activity_file= $this->Common_model->getRecordByWhere("activity_file",array("activity_id"=>$_POST['activity_id']));
+		
+
+			$name_csrf  = $this->security->get_csrf_token_name();
+			$hash_csrf =  $this->security->get_csrf_hash();
+		
+	
+	   $output = "<div class='row'>";
+	   foreach($activity_file as $files){
+		// print_r($files);
+		$activity_img="".site_url()."assets/activity/".$files->activity_file;
+		// print_r($activity_img);
+		$output .= '
+		<div class="col-md-2">
+        <input type="hidden" class="csrfname" name="'.$name_csrf.'" value="'.$hash_csrf.'">
+			<img src="'.$activity_img.'" class="img-thumbnail" name"old_image" style="height:125px;" />
+			<button type="button" class="btn btn-link remove_image" id="'.$files->id.'">Remove</button>
+		</div>
+		';
+	   }
+	   $output .= '</div>';
+
+	   echo json_encode(array(
+		"status" => true,
+		"data" => $output
+	));			
+	 }
+
+	 public function delete_activity_file()
+	 {
+
+		$delete_img = $this->Common_model->deleteByWhere("activity_file",array('id'=>$_POST['id']));
+		echo json_encode(array(
+			"status" => true,
+		));			
 	 }
 }
