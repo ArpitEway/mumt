@@ -3,7 +3,7 @@
 	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
         <div class="form-group col-md-6">
             <label for="course">Course</label>
-            <select name="course_group_id" id="course_group_id" class="form-control course_group_id" data-target="#class_id" required >
+            <select name="course_group_id" id="course_group_id1" class="form-control course_group_id" data-target="#class_id1" required >
                 <option value="">Select course</option>
                     <?php 
                     $courses = $this->db->get_where('course', array())->result_array();
@@ -19,30 +19,36 @@
             </select>
             
         </div>
-		
+
+		<input type="hidden" name="rowcount" id="rowcount" value="1">
+		<input type="hidden" name="paper_count" id="paper_count">
+		<input type="hidden" name="p_code" id="p_code">
+
 		<div class="form-group col-md-6">
 			<label for="class">Class</label>
-            <select name="class_id" id="class_id" class="form-control" required >  
+            <select name="class_id" id="class_id1" class="form-control" required >  
 			</select>
 		</div>
+		<div class="paper_1 row">
+			<div class="form-group col-md-6">
+				<label for="name">Paper name</label>
+				<input type="text" class="form-control" id="paper_name" name="paper_name[]" placeholder="Enter paper name">        
+			</div>
+				
+			<div class="form-group col-md-6">
+				<label for="code">Paper code</label>
+				<input type="text" class="form-control paper_code" id="paper_code" name="paper_code[]" placeholder="Enter paper code">        
+			</div>
+
+			<div class="form-group col-md-4">
+				<label for="type">Type</label>
+				<select name="type[]" id="type" class="form-control" required >
+					<option value="theory">Theory</option>
+					<option value="project">Project</option>
+					<option value="practical">Practical</option>
+				</select>
+			</div>
 		
-		<div class="form-group col-md-6">
-            <label for="name">Paper name</label>
-            <input type="text" class="form-control" id="paper_name" name="paper_name[]" placeholder="Enter paper name">        
-        </div>
-		
-		<div class="form-group col-md-6">
-            <label for="code">Paper code</label>
-            <input type="text" class="form-control" id="paper_code" name="paper_code[]" placeholder="Enter paper code">        
-        </div>
-		<div class="form-group col-md-4">
-            <label for="type">Type</label>
-            <select name="type[]" id="type" class="form-control" required >
-                <option value="theory">Theory</option>
-				<option value="project">Project</option>
-				<option value="practical">Practical</option>
-            </select>
-        </div>
 		<div class="form-group col-md-4" id="ce_div">
 		<label for="ce">CE</label>
 		<select name="ce[]" id="ce" class="form-control ce" required data-target="#group" >
@@ -65,6 +71,7 @@
         </div>
 		
     </div>
+	</div>
 	<div class="form-group text-center">
 	<button class="btn btn-md btn-primary" type="submit">Submit</button>
 	</div>
@@ -77,28 +84,33 @@
 <script>
 //$(".ajaxForm").validate({}); // Jquery form validation initialization
 
-$(document).on("change", "#class_id", function() {
+$(document).on("change", "#class_id1", function() {
 	
 		var type = $('option:selected', this).attr('data-type');
 		var csrfName = $('.csrfname').attr('name');
 		var csrfHash = $('.csrfname').val(); 
 		var data = {
 			id: $(this).val(),
-			course_group_id: $("#course_group_id").val(),
+			course_group_id: $("#course_group_id1").val(),
 			[csrfName]:csrfHash
 		};
+		console.log(data);
 		var target = $(this).attr("data-target");
 		var url = BASE_URL + "admin/Admins/get_paper_code";
 		var response = call_ajax(data, url);
 		if(response) {
+
 			console.log(response);
-			console.log(response.data);
-			$("#paper_code").val(response.data);
+			console.log(response.data.paper_code);
+			$("#paper_code").val(response.data.paper_code);
+			$("#paper_count").val(response.data.paper_count);
+			$("#p_code").val(response.data.paper_code1);
+			
 			
 		} 
 });
-$(document).on("change", "#course_group_id", function() {
-	var csrfName = $('.csrfname').attr('name');
+$(document).on("change", "#course_group_id1", function() {
+		var csrfName = $('.csrfname').attr('name');
 		var csrfHash = $('.csrfname').val(); 
 		var type = $('option:selected', this).attr('data-type');
 		var data = {
@@ -124,7 +136,7 @@ $(document).on("change", ".ce", function() {
 		if(opt == "elective")
 		{
 			var data = {
-				id: $("#class_id").val(),
+				id: $("#class_id1").val(),
 				[csrfName]:csrfHash
 			};
 			$i = 1;
@@ -155,7 +167,7 @@ $(document).on("change", ".add_ce", function() {
 			var v = $(this).closest('div').siblings('.add_div').html()
 			
 			var data = {
-			id: $("#class_id").val(),
+			id: $("#class_id1").val(),
 			[csrfName]:csrfHash
 			};
 			$i = 1;
@@ -163,9 +175,9 @@ $(document).on("change", ".add_ce", function() {
 			var response = call_ajax(data, url);
 			if(response.status == true) {
 			$(this).closest('div').siblings('.add_div').html('<label for="course" id="group_label">Group</label><select name="group_name[]" id="groups" class="form-control add_group" ><option value="">Select group</option>');
-			for(var i = 0; i < response.data.length; i++) 
+				for(var i = 0; i < response.data.length; i++) 
 				{
-				  $(".add_group").append('<option value="' + response.data[i].id + '">' + response.data[i].group_name + '</option></select>');
+					$(".add_group").append('<option value="' + response.data[i].id + '">' + response.data[i].group_name + '</option></select>');
 				}
 			} 
 			
@@ -193,13 +205,35 @@ $('#class_group').on('change', function() {
 
 function addMoreRows(frm){
 	var rowCount = $("#rowcount").val();
-	var field = '<div class=" form-group row paper_'+rowCount+' "><div class="form-group col-md-6"><label for="name">Paper name</label><input type="text" class="form-control" id="paper_name" name="paper_name[]" placeholder="Enter paper name"></div><div class="form-group col-md-6"><label for="code">Paper code</label><input type="text" class="form-control" id="paper_code" name="paper_code[]" placeholder="Enter paper code"></div><div class="form-group col-md-4"><label for="type">Type</label><select name="type[]" id="type" class="form-control" required ><option value="theory">Theory</option><option value="project">Project</option><option value="practical">Practical</option></select></div><div class="form-group col-md-4"><label for="ce">CE</label><select name="ce[]" id="ce" class="form-control add_ce" required ><option value="compulsory">Compulsory</option><option value="elective">Elective</option></select></div><div class="form-group col-md-4 add_div"></div><div class="form-group col-md-12" style="text-align:right;" ><br><button type="button" class="minus_btn" onclick="RemoveRow('+rowCount+');">Remove </button><input type="hidden" id="rowcount" value="1"><button  type="button" style="margin-left: 10px;"  class="plus_btn" onclick="addMoreRows(this.form);" >Add more</button></div></div></div>';
+
+	var paper_count = $("#paper_count").val();
+	// console.log("RC"+rowCount);
+	
+	var papercode = $("#p_code").val();
+
+	paper_count++;
+
+	papercode = papercode+paper_count;
+	
 	rowCount++;
+
+	var field = '<div class=" form-group row paper_'+rowCount+' "><div class="form-group col-md-6"><label for="name">Paper name</label><input type="text" class="form-control" id="paper_name" name="paper_name[]" placeholder="Enter paper name"></div><div class="form-group col-md-6"><label for="code">Paper code</label><input type="text" class="form-control" id="paper_code" name="paper_code[]" value="'+papercode+'" placeholder="Enter paper code"></div><div class="form-group col-md-4"><label for="type">Type</label><select name="type[]" id="type" class="form-control" required ><option value="theory">Theory</option><option value="project">Project</option><option value="practical">Practical</option></select></div><div class="form-group col-md-4"><label for="ce">CE</label><select name="ce[]" id="ce" class="form-control add_ce" required ><option value="compulsory">Compulsory</option><option value="elective">Elective</option></select></div><div class="form-group col-md-4 add_div"></div><div class="form-group col-md-12" style="text-align:right;" ><br><button type="button" class="minus_btn" onclick="RemoveRow('+rowCount+');">Remove </button><input type="hidden" id="rowcount" value="1"><button  type="button" style="margin-left: 10px;"  class="plus_btn" onclick="addMoreRows(this.form);" >Add more</button></div></div></div>';
+	
+	console.log(rowCount);
+	$("#paper_count").val(rowCount);
 	$("#rowcount").val(rowCount);
 	$('#addedRows').append(field);
 }
 
 function RemoveRow(id){
+
+	let count = $("#paper_count").val();
+	count = count - 1;
+	let rc = $("#rowcount").val();
+	rc = rc - 1;
+	console.log(count);
+	$("#rowcount").val(rc);
+	$("#paper_count").val(count);
 	$('.paper_'+id).remove();
 }
 	
