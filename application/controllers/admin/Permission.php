@@ -51,8 +51,6 @@ class Permission extends CI_Controller {
 		}
 	}
    
-
-   
 	public function update_admit_card_permission(){
 		$status =  $this->input->post('admit_card_permission');
      

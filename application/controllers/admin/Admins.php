@@ -14,7 +14,6 @@ class Admins extends CI_Controller {
 	}
 
 	public function index(){
-
 		if($this->session->has_userdata('adminData')){
 			$admin_id = $this->session->admin_id;
 			$where = 'admin_id='.$admin_id.' and status="Y"';
@@ -2393,15 +2392,15 @@ public function update_exam_datewise_permission(){
 	}
 
 	public function regular_consolidate_report(){
-			$dataTitle = array(); 
-			$dataTitle['title'] = "Regular Student Report";
-			$this->load->view('header',$dataTitle);
-			$this->db->order_by('id', 'Desc');
-			$data['sessions']  = $this->db->get_where('session', array())->result_array();
-			$data['name_csrf'] = $this->security->get_csrf_token_name();
-			$data['hash_csrf'] = $this->security->get_csrf_hash();
-			$this->load->view('admin/regular_consolidate_report',$data);
-			$this->load->view('footer');
+		$dataTitle = array(); 
+		$dataTitle['title'] = "Regular Student Report";
+		$this->load->view('header',$dataTitle);
+		$this->db->order_by('id', 'Desc');
+		$data['sessions']  = $this->db->get_where('session', array())->result_array();
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();
+		$this->load->view('admin/regular_consolidate_report',$data);
+		$this->load->view('footer');
 	}
 
 
@@ -2423,26 +2422,23 @@ public function update_exam_datewise_permission(){
 			$session 		  = 	$this->input->post("session");
 			$mode 		  	  = 	$this->input->post("mode");
 			$center 	  	  = 	$this->input->post("center");
-       
-			if($center != "all"){	 
 
+			if($center != "all"){
 				$dt['center_id'] = $center;
 			}
-			if($mode != "all"){	 
 
+			if($mode != "all"){	 
 				$dt['mode'] = $mode;
 			}
-			if($session != "all"){	 
 
+			if($session != "all"){	 
 				$dt['session'] = $session;
 			}else{
 				$dt['name!='] = '';
 			}
 
 			if($filter == "course"){
-
 				$data['course_count'] = $this->Common_model->student_data_consolidate($dt,'course_group_id');
-				
 			}
 			if($filter == "center"){
 
@@ -2450,24 +2446,17 @@ public function update_exam_datewise_permission(){
 
 			}
 
-
 			$dt = $this->load->view('admin/getStudentConsolidateRegular',$data,true);
-
 			echo json_encode(array(
 				"status" => true,
 				"data" => $dt
 			));
 		}
-
 	}
-	
-
 
 	public function view_complaint(){
-
-        $where = array("status" => "P");
+		$where = array("status" => "P","type" => "Exam Form");
 		$centers = $this->Common_model->get_record_group_by_where('center_complaint','center_id',$where );
-
 		$data = array('name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 			'centers' =>$centers
@@ -2476,8 +2465,8 @@ public function update_exam_datewise_permission(){
 		$this->load->view('header');
 		$this->load->view('admin/view_complaint_status',$data);
 		$this->load->view('footer');
-		
 	}
+
 	public function get_complaints_status()
 	{
 		if ($this->input->method() == "post") 
@@ -2488,7 +2477,7 @@ public function update_exam_datewise_permission(){
 
 			$center_id  = $this->input->post("center_id");
 			$centerData = $this->Common_model->getRecordById('center','id',$center_id);
-			$wherecenter = 'center_id='.$center_id.' and status="P"';
+			$wherecenter = 'center_id='.$center_id.' and status="P" and type="Exam Form"';
 			$complaints = $this->Common_model->get_record('center_complaint','*',$wherecenter);
 			//	$this->Common_model->last_query();
 			$data = array('complaints' => $complaints ,'name_csrf' => $this->security->get_csrf_token_name(),
@@ -2511,29 +2500,26 @@ public function update_exam_datewise_permission(){
 	}
 
 
-public function update_complaint_status()
+	public function update_complaint_status()
 	{
 		if ($this->input->method() == "post") 
 		{
-            $id    	= 0;
-            $id    	= $this->input->post("id");
+			$id    	= 0;
+			$id    	= $this->input->post("id");
 			$status = $this->input->post("status");
-
-			
-            if ($this->input->post("id")) 
+			if ($this->input->post("id")) 
 			{
 				$data = $this->Common_model->updateRecordByConditions("center_complaint",array("id" => $id ),array("status" => $status ));
-			
 				$dt = $this->db->get_where("center_complaint",array("id" => $id ))->result_array();
 
 				if($dt[0]['status'] == 'D'){
-				$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-success req_check" value="Done">';
+					$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-success req_check" value="Done">';
 				}else{
-				$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-danger req_check" value="Pending">';
-			}
+					$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-danger req_check" value="Pending">';
+				}
 				$status = true;
 				$msg    = "";
-				
+
 				echo json_encode(array(
 					"status" => $status,
 					"msg" => $msg,
@@ -2545,35 +2531,35 @@ public function update_complaint_status()
 
 
 
-public function update_complaint_remark()
+	public function update_complaint_remark()
 	{
 		if ($this->input->method() == "post") 
 		{
-	        $id    	= $this->input->post("id");
-	        $remark = $this->input->post("remark");
+			$id    	= $this->input->post("id");
+			$remark = $this->input->post("remark");
 			$status = ($remark=='Set') ? 'P' : "D";
-            $remark = ($remark=='Set') ? '' : 'Invalid';
+			$remark = ($remark=='Set') ? '' : 'Invalid';
 			if ($this->input->post("id")) 
 			{
 				$data = $this->Common_model->updateRecordByConditions("center_complaint",array("id" => $id ),array("remark" => $remark,"status" => $status));
-				
+
 				$dt = $this->db->get_where("center_complaint",array("id" => $id ))->result_array();
-				
+
 				if($dt[0]['remark'] == 'Invalid'){
-				
-				$sts_btn = '<input type="button" name="update_req_remark" data-id='.$id.' class="btn btn-danger remark_check" value="Invalid">';
-				
-				$sts_btn2 = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-success req_check" value="Done">';
+
+					$sts_btn = '<input type="button" name="update_req_remark" data-id='.$id.' class="btn btn-danger remark_check" value="Invalid">';
+
+					$sts_btn2 = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-success req_check" value="Done">';
 				}else{
-				
-				$sts_btn = '<input type="button" name="req_remark" data-id='.$id.' class="btn btn-success remark_check" value="Set">';
-				
-				$sts_btn2 = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-danger req_check" value="Pending">';
+
+					$sts_btn = '<input type="button" name="req_remark" data-id='.$id.' class="btn btn-success remark_check" value="Set">';
+
+					$sts_btn2 = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-danger req_check" value="Pending">';
 				}
 
 				$status = true;
 				$msg    = "";
-				
+
 				echo json_encode(array(
 					"status" => $status,
 					"msg" => $msg,
@@ -2590,35 +2576,24 @@ public function update_complaint_remark()
 		$id = $this->input->post('complain');
 		$redy = $this->input->post('redy');
 
-	    $where = array(
-			'id' => $id	);
-		$studentData = array(
-			'type' => $redy	);
-	
+		$where = array('id' => $id);
+		$studentData = array('type' => $redy);
+
 		$update =  $this->Common_model->updateRecordByConditions('center_complaint',$where,$studentData);
-	
-	$dt = $this->Common_model->getRecordById('center_complaint','id',$id);	
-	 
 
-$dt1 = $dt->type;
-
+		$dt = $this->Common_model->getRecordById('center_complaint','id',$id);	
+		$dt1 = $dt->type;
 
 		if($update){
 			echo json_encode(array(
-				     'data'  => $dt1,
+				'data'  => $dt1,
 				"success" => ' Updated Successfully',
 
 			));
-		}
-		else{
+		}else{
 			echo json_encode(array(
 				"error" => ' error Occured',
 			));
 		}
 	}
-
-
-
-
-
 }// class
