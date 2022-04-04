@@ -1247,6 +1247,7 @@ class Center extends CI_Controller {
 		if($param1 == 'create'){
         //   echo "<pre>";
 		//  print_r($_POST);
+		//  print_r($_FILES);
 		//  die ;
 		 $data = array(
 			 "activity_name"=>$_POST['activity_name'],
@@ -1287,11 +1288,6 @@ class Center extends CI_Controller {
 		}
 		if($param1 == 'update'){
 
-	//  echo "<pre>";
-	 
-	// 	 print_r($_FILES);
-	// 	 print_r($_POST['activity_id']);
-	// 	 die ;
 		 if($_FILES['file']['name']!="")
 		 {
 			 $files = array_filter($_FILES['file']['name']); //Use something similar before processing files.
@@ -1369,7 +1365,7 @@ class Center extends CI_Controller {
 		<div class="col-md-2">
         <input type="hidden" class="csrfname" name="'.$name_csrf.'" value="'.$hash_csrf.'">
 			<img src="'.$activity_img.'" class="img-thumbnail" name"old_image" style="height:125px;" />
-			<button type="button" class="btn btn-link remove_image" id="'.$files->id.'">Remove</button>
+			<button type="button" class="btn btn-link remove_image"  onclick="confirmation('.$files->id.')"   id="'.$files->id.'">Remove</button>
 		</div>
 		';
 	   }

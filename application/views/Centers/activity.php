@@ -10,7 +10,7 @@
 				<th>Date </th>
 				<th>Activity Name </th>
 				<th>Discription </th>
-				<th>Photos </th>
+				<th>View Image </th>
 				<th>Action </th>
 			</tr>
 		</thead>
@@ -21,15 +21,15 @@
         $activities = $this->Common_model->getRecordByWhere("activity",array("center_id"=>$center_id));
         	foreach($activities as $activity)
 			{
-		
-			
+	
+	
             ?>
 					<tr>
 						<td><?php echo $i; ?></td>
 						<td><?php echo $activity->date; ?></td>
 						<td><?php echo $activity->activity_name; ?></td>
 						<td><?php echo $activity->description; ?></td>
-						<td><?php if($activity->photos==""){ ?><button type="button" class="btn btn-danger" >Not Available</button><?php  } else { ?> <a class="btn btn-primary" target="_blank" href="<?php echo site_url('assets/activity/'.$activity->photos) ?>">Image</a> <?php } ?></td>
+						<td><a href="javascript:void(0);" class=" btn btn-primary" onclick="rightModal('<?php echo site_url('admin/modal/popup/Centers/activity/activity_img_popup/'.$activity->id); ?>', '<?php echo 'All  Images' ?>')">View Images</a></td>
 						
                 	<td>
                 	<div style="display: inline-flex;">
