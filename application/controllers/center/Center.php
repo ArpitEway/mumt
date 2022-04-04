@@ -1314,4 +1314,91 @@ class Center extends CI_Controller {
 
 		}    
 	 }
+
+
+
+	public function student_marks_no_list(){
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url());
+		}
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		$titleData = array('title' => 'Student List' );
+		$this->load->view('Centers/header',$titleData);
+		$center_id =  $this->session->center_id;
+		$where = array(
+			'center_id' => $center_id,
+			'new_exam_form' => 'Y',
+			'result_show ' => 'N'
+		);
+		// $this->db->select('*');
+		// $this->db->from('student');
+		//  $this->db->group_by('student.student_id'); 
+		// $this->db->order_by("student.course_group_id,student.class_id","asc");
+		// $this->db->join('new_exam_form', 'new_exam_form.student_id = student.student_id');
+		// $this->db->where($where);
+		// $data['students'] = $this->db->get()->result();
+
+		$data['students'] = $this->Common_model->getRecordByWhereByOrder('student',$where,'course_group_id,class_id','ASC');
+
+		//$this->Common_model->last_query();
+		$this->load->view('Centers/student_marks_no_list',$data);
+		$this->load->view('Centers/footer');		
+	}
+
+
+	public function student_details_uplode(){
+		$student_id = $this->input->post('student_id');
+		$where=array('student.student_id'=>$student_id);
+		$this->db->select('*');
+		$this->db->from('new_exam_form');
+		$this->db->Where($where );
+		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
+	
+
+		$details = $this->db->get()->result();
+		$data = array(
+			'details' => $details,
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		if($data){
+			$model =  $this->load->view('Centers/view_student_model_data',$data,true);
+			$status = true;
+		}
+		echo json_encode(array(
+			"status" => $status,
+			"data" => $model
+		));	
+	}
+
+
+public function marks_paper_sub()
+	{  
+	  $teacher_id = $this->session->teacher_id;
+		$id = $this->input->post('id');
+		$marks1 = $this->input->post('marks1');
+		
+		$where = array('id' => $id);
+		$updateData = array('que_1' => $marks1,'que_2' => $marks2,'que_3' => $marks3,'que_4' => $marks4,'que_5' => $marks5, 'remark'=>$remark ,'total_marks'=> $total_marks,'teacher_id'=>$teacher_id);
+		$result=	$this->Common_model->updateRecordByConditions('new_exam_form',$where,$updateData);
+		if($result){
+			echo json_encode(array(
+				"success" => ' Updated Successfully',
+			));
+		}else{
+			echo json_encode(array(
+				"error" => ' error Occured',
+			));
+		}
+	}
+
+
+
+
+
+
+
 }
