@@ -14,31 +14,24 @@
 		<tbody>
 		<?php
 		$i = 1;              
-        	foreach($departments as $department)
-			{
-		
-			
+        	foreach($departments as $department){
             ?>
-					<tr>
-						<td><?php echo $i; ?></td>
-						<td><?php echo $department['department_name']; ?></td>
-                	<td>
-                	<div style="display: inline-flex;">
-                		<a href="javascript:void(0);" class="dropdown-item" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/department/edit/'.$department['id']); ?>', '<?php echo 'Update Department' ?>')"> <i class="mdi mdi-pencil edit-icon"></i></a>   
-                		<a href="javascript:void(0);" class="dropdown-item" onclick="confirmModal('<?php echo site_url('admin/Inquiry/department/delete/'.$department['id']); ?>', department )"><i class="mdi mdi-delete delete-icon"></i></a>
-                	</div>	
+            <tr>
+            	<td><?php echo $i; ?></td>
+            	<td><?php echo $department['department_name']; ?></td>
+            	<td>
+            		<div style="display: inline-flex;">
+            			<a href="javascript:void(0);" class="dropdown-item" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/department/edit/'.$department['id']); ?>', '<?php echo 'Update Department' ?>')"> <i class="mdi mdi-pencil edit-icon"></i></a>   
+            			<a href="javascript:void(0);" class="dropdown-item" onclick="confirmModal('<?php echo site_url('admin/Inquiry/department/delete/'.$department['id']); ?>', department )"><i class="mdi mdi-delete delete-icon"></i></a>
+            		</div>	
 
-                    </td>
-					</tr>
-				
-			
+            	</td>
+            </tr>			
 			<?php 
 			$i++;
 			} ?>
-			</tbody>
-		    
+		</tbody>
 	</table>
-
 </div>
 <script>
 var department = function () 
