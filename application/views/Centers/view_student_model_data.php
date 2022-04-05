@@ -2,6 +2,17 @@
  select{
     padding: 0px 12px !important;
     height: 30px !important;
+
+}
+.student_img{
+     width: 79%;
+    height: 77%;
+ 
+}
+
+.align{
+     width: 79%;
+    height: 77%;
 }
 </style>
 
@@ -17,9 +28,9 @@
       <label for="example-date-input" ><strong> Center Code::</strong></label>
       <label for="example-date-input" ><?php echo $details[0]->center_code; ?></label>
     </div>
-    <div class="col-6">
-      <label for="example-date-input" ><strong> Center Name:</strong></label>
-      <label for="example-date-input" ><?php echo $details[0]->center_name; ?></label>
+    <div class="col-6 align">
+      <label for="example-date-input"  ><strong> Center Name:</strong></label>
+      <label for="example-date-input"><?php echo $details[0]->center_name; ?></label>
     </div>
   </div>
 
@@ -30,44 +41,32 @@
          Student Details :
         </div>
       </div>
-<div class="row py-3">
-    <div class="col-6">
-      <label for="example-date-input" ><strong>  Enrollment No:</strong></label>
-      <label for="example-date-input" ><?php echo $details[0]->enrollment_no; ?></label>
-    </div>
-    <div class="col-6">
-      <label for="example-date-input" ><strong>   Roll No:</strong></label>
-      <label for="example-date-input" ><?php echo $details[0]->roll_no; ?></label>
-    </div>
-  </div>
 
 
-<div class="row py-3">
-    <div class="col-6">
-      <label for="example-date-input" ><strong>    Name:</strong></label>
-      <label for="example-date-input" ><?php echo $details[0]->name; ?></label>
-    </div>
-    <div class="col-6">
-      <label for="example-date-input" ><strong>    F/H Name:</strong></label>
-      <label for="example-date-input" ><?php echo $details[0]->f_h_name; ?></label>
-    </div>
-  </div>
+<table class= "table table-bordered">
+              
+              <tbody>
+             
+              <tr>
+                <td ><b>Enrollment No: </b> <?=$details[0]->enrollment_no;?></td>
+                <td  colspan="2"><b> Roll No: </b><?=$details[0]->roll_no;?></td>
+                 <td  rowspan="4"> <img  class="student_img" src="<?php echo base_url('/assets/student_image/').$details[0]->session.'/'.$details[0]->photo;?>"
+  ></img></td> 
+              </tr>
+              <tr> 
+                <td><b> Name: </b> <?=$details[0]->name;?></td>
+                <td colspan="2"><b>F/H Name: </b> <?=$details[0]->f_h_name;?></td>
+              </tr>
+              <tr>
+                <td><b>Course: </b> <?=$details[0]->course_name;?></td>
+                <td colspan="2"><b>Class: </b> <?=$details[0]->class_name;?></td>
+              </tr>
+              
+              </tbody>
+            </table>
 
 
 
-<div class="row py-3">
-    <div class="col-6">
-      <label for="example-date-input" ><strong>    Course:</strong></label>
-      <label for="example-date-input" ><?php echo $details[0]->course_name; ?></label>
-    </div>
-     <div class="col-6">
-      <label for="example-date-input" ><strong>    Class:</strong></label>
-      <label for="example-date-input" ><?php echo $details[0]->class_id; ?></label>
-    </div> 
-  </div>
-
-
-  <hr>
 <form id="ajaxForm">
 <table  class="table "  >
     <thead>
@@ -138,58 +137,24 @@ $view=  $this->Common_model->getRecordByWhere("paper_master",'class_id='.$detail
     </tbody>
   </table>
 
-
-
   <div class="text-center py-3">
       <button type="button" class="btn btn-primary mr-2"  id="markssubmit">Submit</button>
      </div>
 </form>
 
-
-
 <script>
   
   $("#markssubmit").on('click',function (e){
    e.preventDefault();
-  //  var marks1 = $('#marks1').val();
-  //  var marks2 = $('#marks2').val();
-  //  var marks3 = $('#marks3').val();
-  //  var marks4 = $('#marks4').val();
-  //  var marks5 = $('#marks5').val();
-
+  //  var marks = $('#marks').val();
   //  var submit = true;
-  //  if(marks1==''){
-  //   $(marks1).next().text('Please Select Marks');
+  //  if(marks==''){
+  //   $(marks).next().text('Please Select Marks');
   //   submit = false;
   // }else{
-  //   $(marks1).next().text('');
+  //   $(marks).next().text('');
   // }
 
-  // if(marks2==''){
-  //   $(marks2).next().text('Please Select Marks');
-  //   submit = false;
-  // }else{
-  //   $(marks2).next().text('');
-  // }
-  // if(marks3==''){
-  //   $(marks3).next().text('Please Select Marks');
-  //   submit = false;
-  // }else{
-  //   $(marks3).next().text('');
-  // }
-
-  // if(marks4==''){
-  //   $(marks4).next().text('Please Select Marks');
-  //   submit = false;
-  // }else{
-  //   $(marks4).next().text('');
-  // }
-  // if(marks5==''){
-  //   $(marks5).next().text('Please Select Marks ');
-  //   submit = false;
-  // }else{
-  //   $(marks5).next().text('');
-  // }
   // if(submit==false){
   //   return false;
   // }

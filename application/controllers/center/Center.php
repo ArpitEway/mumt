@@ -1384,12 +1384,9 @@ public function marks_paper_sub()
 		$data['marks'] = $this->input->post('marks');
 		
 		foreach ($data['paper_id'] as $key => $value){
-			// if($data['marks'][$key]==''){
-			// 	continue;
-			// }
+	
 			$studentData = array(
-				'theory_marks' => $data['marks'][$key],
-				// 'paper_id' =>  $data['paper_id'][$key],
+				'theory_marks' => $data['marks'][$key],	
 			);
 			
 			$where =  array(
