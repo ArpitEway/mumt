@@ -90,7 +90,13 @@
           <!-- <td><?php echo $i ; ?></td> -->
 
           <td><?php echo $student->paper_code; ?></td>
-          <td><?=$this->Common_model->getPaperNameById($student->paper_id); ?></td>
+          <td><?=$this->Common_model->getPaperNameById($student->paper_id); ?>
+
+   <input  type="hidden"  name="student_id" value="<?=$student->student_id?>"> 
+                <input type="hidden" name="paper_id[]" value="<?=$student->paper_id?>">
+                <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>"> 
+
+        </td>
           <td>
               <?php 
        
@@ -109,7 +115,7 @@ $view=  $this->Common_model->getRecordByWhere("paper_master",'class_id='.$detail
             ?>  </td>
           <td> 
           
-            <select name="marks4" class="form-control col-12 " id="marks4"  > 
+            <select name="marks[]" class="form-control col-12 " id="marks"  > 
         <option value="Absent" selected>Absent</option>
         <?php
         for ($i=0; $i<=14; $i++)

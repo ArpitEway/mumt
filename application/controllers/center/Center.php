@@ -1,3 +1,4 @@
+
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -1377,21 +1378,32 @@ class Center extends CI_Controller {
 
 public function marks_paper_sub()
 	{  
-	  $teacher_id = $this->session->teacher_id;
-		$id = $this->input->post('id');
-		$marks1 = $this->input->post('marks1');
+	  $data=array();
+		$post = $this->input->post();
+		$data['paper_id'] = $this->input->post('paper_id');	
+		$data['marks'] = $this->input->post('marks');
 		
-		$where = array('id' => $id);
-		$updateData = array('que_1' => $marks1,'que_2' => $marks2,'que_3' => $marks3,'que_4' => $marks4,'que_5' => $marks5, 'remark'=>$remark ,'total_marks'=> $total_marks,'teacher_id'=>$teacher_id);
-		$result=	$this->Common_model->updateRecordByConditions('new_exam_form',$where,$updateData);
-		if($result){
-			echo json_encode(array(
-				"success" => ' Updated Successfully',
-			));
+		foreach ($data['paper_id'] as $key => $value){
+			// if($data['marks'][$key]==''){
+			// 	continue;
+			// }
+			$studentData = array(
+				'theory_marks' => $data['marks'][$key],
+				// 'paper_id' =>  $data['paper_id'][$key],
+			);
+			
+			$where =  array(
+				'paper_id' =>$value,
+                'student_id'  =>$_POST['student_id']
+			);
+			$Marksentry = $this->Common_model->updateRecordByConditions('new_exam_form',$where,$studentData);
+		}
+		if($Marksentry){
+			$returndata = array('success'=> 'Form Has Been Submited');
+			echo json_encode($returndata);
 		}else{
-			echo json_encode(array(
-				"error" => ' error Occured',
-			));
+			$returndata = array('error'=> 'An Error Occured');
+			echo json_encode($returndata);		
 		}
 	}
 
