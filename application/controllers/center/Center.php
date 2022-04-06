@@ -1312,6 +1312,7 @@ class Center extends CI_Controller {
 					 }
 				 }
 		 }
+		 
 			 
 	
 			    $data = array(
@@ -1345,6 +1346,8 @@ class Center extends CI_Controller {
 
 		}    
 	 }
+
+	 
 
 	 public function show_activity_file()
 	 {

@@ -7,9 +7,9 @@
 		<thead>
 			<tr>
 				<th>#</th>
-				<th>Program Name </th>
 				<th>Department Name </th>
-
+				<th>Program Name </th>
+				<th>Course Type</th>
 				<th>Action </th>
 			</tr>
 		</thead>
@@ -25,12 +25,12 @@
                 $this->db->where('program.id', $program['id']); 
                 $department = $this->db->get()->result();
 
-
             ?>
 					<tr>
 						<td><?php echo $i; ?></td>
-						<td><?php echo $program['program_name']; ?></td>
 						<td><?php echo $department[0]->department_name; ?></td>
+						<td><?php echo $program['program_name']; ?></td>
+						<td><?php echo $program['course_type']; ?></td>
                 	<td>
                 	<div style="display: inline-flex;">
                 		<a href="javascript:void(0);" class="dropdown-item" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/program/edit/'.$program['id']); ?>', '<?php echo 'Update Program' ?>')"> <i class="mdi mdi-pencil edit-icon"></i></a>   

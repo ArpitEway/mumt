@@ -1,3 +1,7 @@
+<script src="https://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>
+<script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+<script src="<?=BASE_URL()?>assets/light_box/js/jquery.magnify.js"></script>
+
 <div class="mt-5 text-right">
 <a type="button"  class="btn btn-outline-primary btn-rounded" onclick="rightModal('<?php echo site_url('admin/modal/popup/Centers/activity/create'); ?>', 'Create Activity')" >Create Activity</a>
 </div> 

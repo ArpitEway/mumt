@@ -105,9 +105,11 @@ class Inquiry extends CI_Controller {
 			exit;
 		}else{
 			if($param1 == 'create'){
-				$data = array('department_id' =>$_POST['department_id'],
-					'program_name' =>$_POST['program_name'],
-					'status'=>'Y' );
+				$data = array(
+					'department_id' => $_POST['department_id'],
+					'program_name' => $_POST['program_name'],
+					'course_type' => $_POST['course_type'],
+					'status' => 'Y' );
 				$insert = $this->Common_model->insertAll('program',$data);
 				if($insert){
 					redirect(base_url().'admin/inquiry/program');
@@ -115,7 +117,9 @@ class Inquiry extends CI_Controller {
 			}
 			if($param1 == 'update'){
 				$data = array('department_id' =>$_POST['department_id'],
-					'program_name' =>$_POST['program_name'],);
+					'program_name' =>$_POST['program_name'],
+					'course_type' => $_POST['course_type'],
+				);
 				$update = $this->Common_model->updateRecordByConditions('program',array("id"=>$param2),$data);
 				if($update){
 					redirect(base_url().'admin/inquiry/program');

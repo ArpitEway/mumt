@@ -160,7 +160,7 @@ function make_approved(param){
 	var html = $(param).html();
 	var html = $(param).prop("onclick", null).off("click");
 	var url  = $(param).attr('data-id');
-	var rem = $(param).attr('data-st_id');
+	var rem  = $(param).attr('data-st_id');
 	
 	if (confirm('Are you sure to make approved')) 
 	{
