@@ -160,7 +160,7 @@ class Enquiry extends CI_Controller {
 			if($department_id){
 
 			$data = array('programs' => $programs ,'name_csrf' => $this->security->get_csrf_token_name(),'hash_csrf' => $this->security->get_csrf_hash());
-			$dt =  $this->load->view('admin/inquiry/program_by_dept',$data,true);
+			$dt =  $this->load->view('admin/enquiry/program_by_dept',$data,true);
 
 			}
 			else{

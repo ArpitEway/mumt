@@ -50,7 +50,7 @@ $(document).on("change","#department",function(){
 	
 
 	$.ajax({
-		url:  BASE_URL+ 'admin/Inquiry/getListByDepartment',
+		url:  BASE_URL+ 'admin/Enquiry/getListByDepartment',
 
                 type:'post',
                 dataType : 'JSON',

@@ -36,7 +36,7 @@
                     <td>
                 	<div style="display: inline-flex;">
                 		<a href="javascript:void(0);" class="dropdown-item" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/program/edit/'.$program['id']); ?>', '<?php echo 'Update Program' ?>')"> <i class="mdi mdi-pencil edit-icon"></i></a>   
-                		<a href="javascript:void(0);" class="dropdown-item" onclick="confirmModal('<?php echo site_url('admin/Inquiry/program/delete/'.$program['id']); ?>', program )"><i class="mdi mdi-delete delete-icon"></i></a>
+                		<a href="javascript:void(0);" class="dropdown-item" onclick="confirmModal('<?php echo site_url('admin/Enquiry/program/delete/'.$program['id']); ?>', program )"><i class="mdi mdi-delete delete-icon"></i></a>
                 	</div>	
 
                     </td>
@@ -56,7 +56,7 @@
 <script>
 var program = function () 
     {
-        var url = '<?php echo site_url('admin/Inquiry/program'); ?>';
+        var url = '<?php echo site_url('admin/Enquiry/program'); ?>';
         $.ajax({
             type : 'GET',
             url: url,
@@ -74,7 +74,7 @@ function updateOrder(totalData){
         var csrfName = $('.csrfname').attr('name');
             var csrfHash = $('.csrfname').val(); 
     $.ajax({
-    url :BASE_URL+'admin/Inquiry/update_program_list_order',
+    url :BASE_URL+'admin/Enquiry/update_program_list_order',
     type:'POST' ,
     data :{allData:totalData,[csrfName]:csrfHash},
     success : function(result){
@@ -87,7 +87,7 @@ function updateOrder(totalData){
 // 	stop:function(event, ui){
 // 		var parameters = $sortable.sortable("toArray");
 // 		console.log(parameters);
-// 		$.post("<?php echo BASE_URL(); ?>admin/Inquiry/update_program_list_order", {
+// 		$.post("<?php echo BASE_URL(); ?>admin/Enquiry/update_program_list_order", {
 // 		value:parameters},function(result){
 // 			toastr.success(result);
 // 		});
@@ -114,7 +114,7 @@ $(".row_position").sortable({
         var csrfName = $('.csrfname').attr('name');
             var csrfHash = $('.csrfname').val(); 
     $.ajax({
-    url :BASE_URL+'admin/Inquiry/update_program_list_order',
+    url :BASE_URL+'admin/Enquiry/update_program_list_order',
     type:'POST' ,
     data :{allData:totalData,[csrfName]:csrfHash},
     success : function(result){
