@@ -144,4 +144,58 @@ class Inquiry extends CI_Controller {
 			}    
 		}
 	}
+
+	public function getListByDepartment()
+	{
+		if ($this->input->method() == "post") 
+		{
+			//$course_group_id = 0;
+			$data = array();
+			$dt   = array();
+		    $department_id  = $this->input->post("department");
+			
+			$all_programs = $this->Common_model->get_record("program","*");
+			$programs = $this->Common_model->get_record_by_order("program","*","p_order",array("department_id" => $department_id));
+
+			if($department_id){
+
+			$data = array('programs' => $programs ,'name_csrf' => $this->security->get_csrf_token_name(),'hash_csrf' => $this->security->get_csrf_hash());
+			$dt =  $this->load->view('admin/inquiry/program_by_dept',$data,true);
+
+			}
+			else{
+
+				$dt =  "<p style='color:red'>Invalid Department ID</p>";
+			}
+			
+			echo json_encode(array(
+				"status" => true,
+				"data" => $dt
+			));
+		}
+	}
+
+	public function update_program_list_order()
+		{
+		
+		$allDataa = $_POST['allData'];
+
+		
+		$i = 1;
+		foreach ($allDataa as $key => $value) 
+		{
+			$data = array(
+				'p_order' => $i
+			);
+					
+			$where = 'id='.$value;				
+			$this->Common_model->updateRecordByConditions('program',$where,$data); 
+			$i++;
+			
+			$this->session->set_flashdata('success','Order Updated.');
+			echo "Order Updated";	
+		}
+
+	}
+
 }// class
