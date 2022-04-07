@@ -56,6 +56,7 @@ class WebSite extends REST_Controller {
 
      public function GetDepartmentWisePrograms_get()
     {
+        $this->db->order_by('orders');
         $departments = $this->Common_model->get_record('department','*');
         $i=0;
         while ( $i < count($departments) ) { 
