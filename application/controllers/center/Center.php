@@ -1267,13 +1267,9 @@ class Center extends CI_Controller {
 				if($insert){
 					redirect(base_url().'activity');
 				}
-			
-			
-
 		}
-		if($param1 == 'update'){
 
-	
+		if($param1 == 'update'){
 		if($_FILES['photos']['name']!=""){
 			$ext1=strtolower(pathinfo($_FILES['photos']['name'],PATHINFO_EXTENSION));
 			$activity_image=date('Y-m-d-H-i-s')."_".$_FILES['photos']['name'];
@@ -1281,8 +1277,6 @@ class Center extends CI_Controller {
 		}else{
 			$activity_image=$_POST['old_image'];
 		}
-
-	
 			$data = array(
 					'date' =>$_POST['date'],
 					'activity_name' =>$_POST['activity_name'],
@@ -1293,7 +1287,6 @@ class Center extends CI_Controller {
 			if($update){
 				redirect(base_url().'activity');
 			}
-		
 		}
 
 		if($param1 == 'delete'){
@@ -1316,98 +1309,76 @@ class Center extends CI_Controller {
 		}    
 	 }
 
+	 public function student_marks_no_list(){
+	 	if(!$this->session->has_userdata('centerdata')){
+	 		redirect(base_url());
+	 	}
+	 	$data = array(
+	 		'name_csrf' => $this->security->get_csrf_token_name(),
+	 		'hash_csrf' => $this->security->get_csrf_hash(),
+	 	);
 
+	 	$titleData = array('title' => 'Assignment Marks Submission' );
+	 	$this->load->view('Centers/header',$titleData);
+	 	$center_id =  $this->session->center_id;
+	 	$where = array(
+	 		'center_id' => $center_id,
+	 		'new_exam_form' => 'Y',
+	 		'result_show ' => 'N'
+	 	);
+	 	$data['students'] = $this->Common_model->getRecordByWhereByOrder('student',$where,'course_group_id,class_id','ASC');
+	 	$this->load->view('Centers/student_marks_no_list',$data);
+	 	$this->load->view('Centers/footer');		
+	 }
 
-	public function student_marks_no_list(){
-		if(!$this->session->has_userdata('centerdata')){
-			redirect(base_url());
-		}
-		$data = array(
-			'name_csrf' => $this->security->get_csrf_token_name(),
-			'hash_csrf' => $this->security->get_csrf_hash(),
-		);
-		$titleData = array('title' => 'Student List' );
-		$this->load->view('Centers/header',$titleData);
-		$center_id =  $this->session->center_id;
-		$where = array(
-			'center_id' => $center_id,
-			'new_exam_form' => 'Y',
-			'result_show ' => 'N'
-		);
-		// $this->db->select('*');
-		// $this->db->from('student');
-		//  $this->db->group_by('student.student_id'); 
-		// $this->db->order_by("student.course_group_id,student.class_id","asc");
-		// $this->db->join('new_exam_form', 'new_exam_form.student_id = student.student_id');
-		// $this->db->where($where);
-		// $data['students'] = $this->db->get()->result();
+	 public function student_details_uplode(){
+	 	$student_id = $this->input->post('student_id');
+	 	$where=array('student.student_id'=>$student_id);
+	 	$this->db->select('*');
+	 	$this->db->from('new_exam_form');
+	 	$this->db->Where($where );
+	 	$this->db->join('student', 'student.student_id = new_exam_form.student_id');
+	 	$details = $this->db->get()->result();
+	 	$data = array(
+	 		'details' => $details,
+	 		'name_csrf' => $this->security->get_csrf_token_name(),
+	 		'hash_csrf' => $this->security->get_csrf_hash(),
+	 	);
+	 	if($data){
+	 		$model =  $this->load->view('Centers/view_student_model_data',$data,true);
+	 		$status = true;
+	 	}
+	 	echo json_encode(array(
+	 		"status" => $status,
+	 		"data" => $model
+	 	));	
+	 }
 
-		$data['students'] = $this->Common_model->getRecordByWhereByOrder('student',$where,'course_group_id,class_id','ASC');
+	 public function marks_paper_sub()
+	 {  
+	 	$data=array();
+	 	$post = $this->input->post();
+	 	$data['paper_id'] = $this->input->post('paper_id');	
+	 	$data['marks'] = $this->input->post('marks');
 
-		//$this->Common_model->last_query();
-		$this->load->view('Centers/student_marks_no_list',$data);
-		$this->load->view('Centers/footer');		
+	 	foreach ($data['paper_id'] as $key => $value){
+
+	 		$studentData = array(
+	 			'theory_marks' => $data['marks'][$key],	
+	 		);
+
+	 		$where =  array(
+	 			'paper_id' =>$value,
+	 			'student_id'  =>$_POST['student_id']
+	 		);
+	 		$Marksentry = $this->Common_model->updateRecordByConditions('new_exam_form',$where,$studentData);
+	 	}
+	 	if($Marksentry){
+	 		$returndata = array('success'=> 'Form Has Been Submited');
+	 		echo json_encode($returndata);
+	 	}else{
+	 		$returndata = array('error'=> 'An Error Occured');
+	 		echo json_encode($returndata);		
+	 	}
+	 }
 	}
-
-
-	public function student_details_uplode(){
-		$student_id = $this->input->post('student_id');
-		$where=array('student.student_id'=>$student_id);
-		$this->db->select('*');
-		$this->db->from('new_exam_form');
-		$this->db->Where($where );
-		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
-	
-
-		$details = $this->db->get()->result();
-		$data = array(
-			'details' => $details,
-			'name_csrf' => $this->security->get_csrf_token_name(),
-			'hash_csrf' => $this->security->get_csrf_hash(),
-		);
-		if($data){
-			$model =  $this->load->view('Centers/view_student_model_data',$data,true);
-			$status = true;
-		}
-		echo json_encode(array(
-			"status" => $status,
-			"data" => $model
-		));	
-	}
-
-
-public function marks_paper_sub()
-	{  
-	  $data=array();
-		$post = $this->input->post();
-		$data['paper_id'] = $this->input->post('paper_id');	
-		$data['marks'] = $this->input->post('marks');
-		
-		foreach ($data['paper_id'] as $key => $value){
-	
-			$studentData = array(
-				'theory_marks' => $data['marks'][$key],	
-			);
-			
-			$where =  array(
-				'paper_id' =>$value,
-                'student_id'  =>$_POST['student_id']
-			);
-			$Marksentry = $this->Common_model->updateRecordByConditions('new_exam_form',$where,$studentData);
-		}
-		if($Marksentry){
-			$returndata = array('success'=> 'Form Has Been Submited');
-			echo json_encode($returndata);
-		}else{
-			$returndata = array('error'=> 'An Error Occured');
-			echo json_encode($returndata);		
-		}
-	}
-
-
-
-
-
-
-
-}
