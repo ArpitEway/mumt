@@ -2642,4 +2642,30 @@ public function update_exam_datewise_permission(){
 			));
 		}
 	}
+
+
+
+public function notification_class_list(){
+		$data['courses'] = $this->Common_model->get_record('course_group','*');
+		$this->load->view('header',array('title' => 'CLass List'));
+		$this->load->view('admin/notification_class_list',$data);
+		$this->load->view('footer');
+	}
+ 
+
+public function student_notification_list($course_id="",$class_id=""){
+	$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id ,'exam_form'=>'Y','roll_number!='=>'0' ));
+	//$this->Common_model->last_query();
+		$this->load->view('header',array('title' => 'Student Notification List'));
+		$this->load->view('admin/student_notification_list',$data);
+		$this->load->view('footer');
+	}
+
+
+
+
+
+
+
+
 }// class
