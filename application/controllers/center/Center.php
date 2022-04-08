@@ -1324,7 +1324,8 @@ class Center extends CI_Controller {
 	 	$where = array(
 	 		'center_id' => $center_id,
 	 		'new_exam_form' => 'Y',
-	 		'result_show ' => 'N'
+	 		'result_show ' => 'N',
+	 		'int_marks_sub'=>'N'
 	 	);
 	 	$data['students'] = $this->Common_model->getRecordByWhereByOrder('student',$where,'course_group_id,class_id','ASC');
 	 	$this->load->view('Centers/student_marks_no_list',$data);
@@ -1364,7 +1365,7 @@ class Center extends CI_Controller {
 	 	foreach ($data['paper_id'] as $key => $value){
 
 	 		$studentData = array(
-	 			'theory_marks' => $data['marks'][$key],	
+	 			'int_marks' => $data['marks'][$key],	
 	 		);
 
 	 		$where =  array(
@@ -1373,7 +1374,18 @@ class Center extends CI_Controller {
 	 		);
 	 		$Marksentry = $this->Common_model->updateRecordByConditions('new_exam_form',$where,$studentData);
 	 	}
-	 	if($Marksentry){
+	 	
+
+	 	$where1 =  array(
+	 		'student_id'  =>$_POST['student_id']
+	 	);
+	 	$Data = array(
+	 		'int_marks_sub' => 'Y',	
+	 	);
+
+	 	$Marksentry1 = $this->Common_model->updateRecordByConditions('student',$where1,$Data);
+	 	if($Marksentry1)
+	 	{
 	 		$returndata = array('success'=> 'Form Has Been Submited');
 	 		echo json_encode($returndata);
 	 	}else{

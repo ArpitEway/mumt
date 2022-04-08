@@ -19,7 +19,7 @@
 			$i = 1;
 			foreach($students as $student){
 				?>
-				<tr>
+				   <tr id="student_tr_<?php echo $student->student_id; ?>">  
 					<td><?php echo $i ; ?></td>
 
 					<td><?php echo $student->name; ?></td>
@@ -44,12 +44,8 @@
 	<div class="modal fade" id="kt_datepicker_modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Student Details</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<i aria-hidden="true" class="ki ki-close"></i>
-				</button>
-			</div>
+			<!-- <div class="modal-header">
+			</div>  -->
 			<div class="modal-body">
 
 			</div>
