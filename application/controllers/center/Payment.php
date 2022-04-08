@@ -96,8 +96,8 @@ class Payment extends CI_Controller {
 		
 	public function response(){
 
-		$date=date('Y-m-d'); 
-		$time=date('h:i:s');
+		$date = date('Y-m-d'); 
+		$time = date('h:i:s');
 		$student_id=$_POST["udf1"];
 		$udf2=$_POST["udf2"];
 		$udf3=$_POST["udf3"];
