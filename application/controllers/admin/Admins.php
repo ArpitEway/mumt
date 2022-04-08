@@ -2642,4 +2642,21 @@ public function update_exam_datewise_permission(){
 			));
 		}
 	}
+
+
+	public function generate_tr($course_id="71",$class_id="247"){
+		// $this->db->limit(20);
+	  $this->db->order_by('roll_number','ASC');
+	  $data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id ,'exam_form'=>'Y','roll_no!='=>'0' ));
+	  $course_name = $this->Common_model->getCourseNameByCourseId($course_id);
+	  $class_name = $this->Common_model->getClassNameByClassId($class_id);
+	//   echo $course_id ;
+	//   echo $class_id ;
+	//   die ;
+	$data['class_id'] = $class_id ;
+	  $this->load->view('header',array('title' =>"TR sheet"));
+	  $this->load->view('admin/generate_tr',$data);
+	  $this->load->view('footer');
+   }
+
 }// class
