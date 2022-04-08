@@ -2596,6 +2596,7 @@ public function update_exam_datewise_permission(){
 					$sts_btn = '<input type="button" name="update_req_remark" data-id='.$id.' class="btn btn-danger remark_check" value="Invalid">';
 
 					$sts_btn2 = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-success req_check" value="Done">';
+				
 				}else{
 
 					$sts_btn = '<input type="button" name="req_remark" data-id='.$id.' class="btn btn-success remark_check" value="Set">';
@@ -2642,4 +2643,65 @@ public function update_exam_datewise_permission(){
 			));
 		}
 	}
+
+	public function marksheet_variable(){
+
+		if(!$this->session->has_userdata('adminData'))
+		{
+			redirect(base_url());
+			exit;
+
+		}else{
+
+			$admin_id = $this->session->admin_id;
+			
+			$data = array();
+			$course_detail = $this->Common_model->get_record('marksheet_variables','*');
+
+			$data = array('course_detail' => $course_detail ,'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash()
+			);
+
+			$this->load->view('header');
+			$this->load->view('admin/marksheet_variable',$data);
+			$this->load->view('footer');
+		}
+
+	}
+
+	public function update_marksheet_variable(){
+
+		$classes    	= $_POST['class_id'];
+		$notifi_no 		= $_POST['notifi_no'];
+		$result_date	= $_POST['result_date'];
+
+		
+
+		foreach($classes as $key => $item)
+		{
+			
+			
+			$where = array('class_id' => $item);
+
+			$marksheetData = array('notification_no' => $notifi_no[$key],'result_date' => $result_date[$key]);
+
+			$update =  $this->Common_model->updateRecordByConditions('marksheet_variables',$where,$marksheetData);
+		
+		}
+
+		if($update){
+			echo json_encode(array(
+				"success" => 'Updated Successfully',
+			));
+		}else{
+			echo json_encode(array(
+				"error" => ' error Occured',
+			));
+		}
+	}
+
+
+	
+
+
 }// class
