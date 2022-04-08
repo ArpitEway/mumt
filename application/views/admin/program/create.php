@@ -1,5 +1,5 @@
 
-<form method="POST" enctype="multipart/form-data" class="d-block ajaxForm"  action="<?php echo site_url('admin/Inquiry/program/create'); ?>">
+<form method="POST" enctype="multipart/form-data" class="d-block ajaxForm"  action="<?php echo site_url('admin/Enquiry/program/create'); ?>">
     <div class="form-row">
       <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
       <div class="form-group col-md-6">
@@ -17,6 +17,21 @@
 				?>		
 			</select>
 		</div>
+
+		<div class="form-group col-md-6">
+      	<label for="course_type">Course Type</label>
+			<select name="course_type" id="course_type" class="form-control" >
+				
+				<option value="">Select</option>
+				<option value="Phd">Phd</option>
+				<option value="UG">UG</option>
+				<option value="PG">PG</option>
+				<option value="PGDiploma">PG Diploma</option>
+				<option value="Diploma">Diploma</option>
+				<option value="Certificate">Certificate</option>		
+			</select>
+		</div>
+		
         <div class="form-group col-md-6">
             <label for="name">Program Name</label>
             <input type="text" class="form-control" id="" name = "program_name" required placeholder="Enter program name">
