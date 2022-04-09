@@ -29,13 +29,7 @@
 <?php 
      
      $isFinalClass = $this->Common_model->isFinalClass($course_group_id);
-    if($isFinalClass==false){
-      echo 'false';
-    }
-    else{
-      echo "true";
-    }
-    die ;
+  
 $page_break_count = -1 ;
 foreach($students as $student)
 {  
@@ -419,7 +413,19 @@ if($page_break_count%4==0 || $page_break_count==0){
    
   
   </tr>
+ 
   </tbody>
+  <tr class="">
+  
+    <td  class="align-middle text-center " colspan="4">Total Marks Obt.</td>
+
+    <td class="align-middle text-center "  colspan="3">Total Marks Obt.</td>
+  
+    <td class="align-middle text-center "  colspan="3">Total Marks Obt.</td>
+ 
+    <td class="align-middle text-center " colspan="5">Total Marks Obt.</td>
+ 
+  </tr>
 </table>
 
 <?php
