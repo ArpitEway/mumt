@@ -2654,6 +2654,9 @@ public function update_exam_datewise_permission(){
 	//   echo $class_id ;
 	//   die ;
 	$data['class_id'] = $class_id ;
+	$data['course_group_id'] = $course_id ;
+	
+
 	  $this->load->view('header',array('title' =>"TR sheet"));
 	  $this->load->view('admin/generate_tr',$data);
 	  $this->load->view('footer');

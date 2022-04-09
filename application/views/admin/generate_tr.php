@@ -22,38 +22,42 @@
         padding-right: 0.25rem;
         
     }
+    .line-height{
+      line-height:5px;
+    }
 </style>
 <?php 
-       
-
+     
+     $isFinalClass = $this->Common_model->isFinalClass($course_group_id);
+    if($isFinalClass==false){
+      echo 'false';
+    }
+    else{
+      echo "true";
+    }
+    die ;
+$page_break_count = -1 ;
 foreach($students as $student)
-{
+{  
 
 
+
+  $page_break_count++;
+  
+    $class_details = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id'=>$class_id));
+ 
+   
     $data['class_id']= $this->Common_model->getRecordByWhere('class_master',array('id' => $class_id));
 
-	
-
-	
-      if( $data['class_id'][0]->project!='N' || $data['class_id'][0]->practical!='N'){
-          $rowspanhead = "4" ;
-        
-      }else{
-        $rowspanhead = "3" ;
-      }
-      if( $data['class_id'][0]->project!='N' || $data['class_id'][0]->practical!='N'){
-        $rowspandata = "5" ;
+    ($data['class_id'][0]->project!='N' || $data['class_id'][0]->practical!='N') ?  $rowspanhead = "4" :  $rowspanhead = "3" ;
+          
+    ($data['class_id'][0]->project!='N' || $data['class_id'][0]->practical!='N') ?  $rowspandata = "5" :  $rowspandata = "4" ;
       
-    }else{
-      $rowspandata = "4" ;
-    }
-	  
-        $this->db->select('*');
-        $this->db->from('paper_master');
-        $this->db->join('new_exam_form', 'paper_master.id = new_exam_form.paper_id');
-        $this->db->where('new_exam_form.student_id',$student->student_id);
+    $marks= $this->Common_model->student_info_for_result($student->student_id);
 
-        $marks = $this->db->get()->result();
+    $show_precent_for_last_class= $this->Common_model->getRecordByWhere('class_master',array('course_group_id' =>$student->course_group_id));
+
+ 
         $total_theory_marks_obt = 0 ;
         $total_asmn_marks_obj=0 ;
         $total_marks_obt=0 ;
@@ -65,103 +69,118 @@ foreach($students as $student)
         $tot_std_marks = 0;
         $tot_marks = 0;
         $final_result_fail_count = 0 ;
-   
+        $RW_Count = 0 ;
+        $total_theory_abs_count = 0 ;
+        $total_int_abs_count = 0 ;
+        $ATKT_paper_codes_array = array(); 
         foreach($marks as $new_exam_form)
         {
-        //   echo "<pre>";
-        //   print_r($new_exam_form);
+          // echo "<pre>";
+          // print_r($new_exam_form);
 
             $total_theory_marks_obt += $new_exam_form->theory_marks;
             $total_asmn_marks_obj += $new_exam_form->int_marks;
-             $total_theory_asm_marks = $new_exam_form->theory_marks+ $new_exam_form->int_marks;
-             $total_marks_obt  += $new_exam_form->theory_marks+ $new_exam_form->int_marks;
-           $total_paper_marks += $new_exam_form->max_theory_marks + $new_exam_form->max_internal_marks ;
+            $total_theory_asm_marks = $new_exam_form->theory_marks+ $new_exam_form->int_marks;
+            $total_marks_obt  += $new_exam_form->theory_marks+ $new_exam_form->int_marks;
+            $total_paper_marks += $new_exam_form->max_theory_marks + $new_exam_form->max_internal_marks ;
 
              if($new_exam_form->type=='theory'){
-                $tot_std_marks += $new_exam_form->theory_marks;
-                $tot_marks += $new_exam_form->max_theory_marks;
-            if($new_exam_form->theory_marks>=$new_exam_form->min_theory_marks){
-                $result = "उत्तीर्ण";
-            }else{
-                $result = "अनुत्तीर्ण";
-                $fail_count++;
-                $fali_tot_marks += $new_exam_form->theory_marks;
-                $require_tot_marks += $new_exam_form->min_theory_marks;
-            }
+                    $tot_std_marks += $new_exam_form->theory_marks;
+                    $tot_marks += $new_exam_form->max_theory_marks;
+                if($new_exam_form->theory_marks>=$new_exam_form->min_theory_marks){
+                    $result = "उत्तीर्ण";
+                }else if($new_exam_form->theory_marks==''){
+                 
+                  array_push( $ATKT_paper_codes_array ,$new_exam_form->paper_code );
+                  $total_theory_abs_count++ ;
+                  $RW_Count++;
+                }else{
+                    array_push( $ATKT_paper_codes_array ,$new_exam_form->paper_code );
+                    $result = "अनुत्तीर्ण";
+                    $fail_count++;
+                    $fali_tot_marks += $new_exam_form->theory_marks;
+                    $require_tot_marks += $new_exam_form->min_theory_marks;
+                }
         }elseif (($data['class_id'][0]->project!='N' || $data['class_id'][0]->practical!='N') && $new_exam_form->type!='theory' && $new_exam_form->p_marks!="N" &&  $new_exam_form->p_marks<$new_exam_form->min_theory_marks){
             $fail_count = $fail_count + 5;
         }
-        // else if($paper_master[0]->type=='practical'){
-        //     $tot_std_marks += $new_exam_form->p_marks;
-        //     $tot_marks += $paper_master[0]->pvt_max_marks;
-        //     if($new_exam_form->p_marks>=$paper_master[0]->pvt_min_marks){
-        //         $result = "उत्तीर्ण";
-        //     }else if($new_exam_form->p_marks=='' && $new_exam_form->p_marks=='N'){
-        //         $result = 'रुद्धः';
-        //         $whCount++;
-        //     }else{
-        //         $result = "अनुत्तीर्ण";
-        //         $fail_count++;
-        //         $fali_tot_marks += $new_exam_form->p_marks;
-        //         $require_tot_marks += $paper_master[0]->pvt_min_marks;
-        //     }
-        // }
+
+         if($new_exam_form->type=='practical'){
+            if($new_exam_form->p_marks=='' || $new_exam_form->p_marks=='N'){
+                $RW_Count++;
+                array_push( $ATKT_paper_codes_array ,$new_exam_form->paper_code );
+            }
+            if($new_exam_form->p_marks==''){
+              $total_int_abs_count++ ;
+            }
+        }
 
                 
-       
         }
+
+
+     
+
         $aggregate_per =   ($tot_std_marks/$tot_marks) * 100;
-                
         $require_grace_marks = $require_tot_marks-$fali_tot_marks;
         if ($fail_count<3 && $require_grace_marks<4 && $aggregate_per>36 ) {
             $check_grace_marks = true;
         }
 
-     
+            foreach($marks as $new_exam_form)
+            {
+                // final result code 
+                if($new_exam_form->paper_type=="theory" )
+                {
+                    if($new_exam_form->theory_marks<$new_exam_form->min_theory_marks && $check_grace_marks==false ){
+                        ++$final_result_fail_count ;
+                      
+                    }
+                }
+                else{
+                if($new_exam_form->p_marks<$new_exam_form->min_theory_marks)
+                    {
+                        ++$final_result_fail_count ;
+                    }
+                }
+                //    final result code end
+
+            }
 
 
- foreach($marks as $new_exam_form)
- {
-     // final result code 
-     if($new_exam_form->paper_type=="theory" )
-     {
-         if($new_exam_form->theory_marks<$new_exam_form->min_theory_marks && $check_grace_marks==false ){
-             ++$final_result_fail_count ;
-            //  echo $final_result_fail_count ;
-         }
-     }
-     else{
-     if($new_exam_form->p_marks<$new_exam_form->min_theory_marks)
-         {
-             ++$final_result_fail_count ;
-         }
-     }
-    //    final result code end
-
- }
+            // echo   $total_theory_abs_count ;
+            // echo   $total_theory_int_count ;
+            ($total_theory_abs_count==5) ? $remark = "Abs in theory" : "";
+            ($total_int_abs_count>0) ? $remark = "Abs in <br> Practical" : "" ;
+            ($total_int_abs_count>0 &&  $total_theory_abs_count==5) ? $remark = "Abs in All" : "" ;
+            
+              
+          
 ?>
-<hr  class="mt-15">
-<div class="mt-25">
+<!-- <hr  class="mt-15">
+<div class="mt-25"> -->
 
-
-<p align="center" style="line-height:15px;font-size:15px;"><b>Maharishi Mahesh Yogi Vedic Vishvavidyalaya, Madhya Pradesh</b></p>
-<p align="center" style="line-height:5px;">Tabulation Register for <strong><?php echo $head_data; ?></strong>  Examination <?php echo $examyear;?>
+<?php 
+if($page_break_count%4==0 || $page_break_count==0){
+?>
+<p align="center"  class="h4" ><b>Maharishi Mahesh Yogi Vedic Vishvavidyalaya, Madhya Pradesh</b></p>
+<p align="center" class="line-height">Tabulation Register for <strong><?php echo $student->course_name ; echo '&nbsp'. $class_details[0]->class_name; ?></strong>  Examination <?php echo $class_details[0]->exam_session;?>
 </p>
-<p align="center" style="line-height:5px;">Directorate of Distance Education</p>
-<p align="left" style="line-height:5px;">DATE: <?php echo $trdate;?></p>
-<table class="table table1">
+<p align="center" class="line-height">Directorate of Distance Education</p>
+<p align="left" class="line-height">DATE: <?php echo $class_details[0]->result_date;?></p>
+<table class="table table1 ">
   <tbody>
     <tr>
       <th  class="align-middle text-center pl-5 pr-5" rowspan="<?php echo $rowspanhead ?>">Roll.No. <br> Reg.No.</th>
       <th  class="align-middle text-center" rowspan="<?php echo $rowspanhead ?>">M.S. <br> No.</th>
       <th  class="align-middle text-center pl-5 pr-5" rowspan="<?php echo $rowspanhead ?>">Photo</th>
-      <td  class="align-middle text-center pl-5 pr-5" rowspan="<?php echo $rowspanhead ?>">Name of the <br> Student and <br> F/H Name</td>
+      <td  class="align-middle text-center" style="width:167px" rowspan="<?php echo $rowspanhead ?>">Name of the <br> Student and <br> F/H Name</td>
       <td  class="align-middle text-right">Paper-></td>
       <?php
       foreach($marks as $paper_master)
       {
           ?>
-      <td  class="align-middle text-center pl-5 pr-5"><?php echo  $paper_master->paper_code ;  ?></td>
+      <td  class="align-middle text-center "><?php echo  $paper_master->paper_code ;  ?></td>
       <?php
       }
       ?>
@@ -174,17 +193,21 @@ foreach($students as $student)
     <tr>
    
     
-      <td class="align-middle text-right pl-5 ">Theory Marks Max/Min -></td>
+      <td class="align-middle text-right " >Theory Marks Max/Min -></td>
       <?php
       foreach($marks as $paper_master)
       {
     
           ?>
-      <td  class="align-middle text-center pl-5 pr-5"><?php if($paper_master->paper_type=='theory'){ echo  $paper_master->max_theory_marks .'/'.  $paper_master->min_theory_marks; } ;?></td>
+      <td  class="align-middle text-center "><?php
+       if($paper_master->paper_type=='theory')
+       { 
+         echo  $paper_master->max_theory_marks .'/'.  $paper_master->min_theory_marks; 
+       } ;?></td>
       <?php
       }
       ?>
-      <td class="align-middle text-center"></td>
+      <td class=""></td>
      
     
     </tr>
@@ -196,7 +219,7 @@ foreach($students as $student)
       foreach($marks as $paper_master)
       {
           ?>
-      <td  class="align-middle text-center pl-5 pr-5"><?php if($paper_master->paper_type=="theory"){ echo  $paper_master->max_internal_marks .'/'. $paper_master->min_internal_marks ;};  ?></td>
+      <td  class="align-middle text-center "><?php if($paper_master->paper_type=="theory"){ echo  $paper_master->max_internal_marks .'/'. $paper_master->min_internal_marks ;};  ?></td>
       <?php
       }
       ?>
@@ -214,7 +237,7 @@ foreach($students as $student)
           foreach($marks as $paper_master)
           {
               ?>
-          <td  class="align-middle text-center pl-5 pr-5"><?php if($paper_master->p_marks=="N"){ echo  "" ;}else{echo  $paper_master->max_theory_marks .'/'.$paper_master->min_theory_marks ;};  ?></td>
+          <td  class="align-middle text-center"><?php if($paper_master->p_marks=="N"){ echo  "" ;}else{echo  $paper_master->max_theory_marks .'/'.$paper_master->min_theory_marks ;};  ?></td>
           <?php
           }
           ?>
@@ -225,49 +248,89 @@ foreach($students as $student)
       <?php 
       }  
      ?>
-  
+
   </tbody>
 </table>
+
+      <?php
+      $center_code = substr($student->center_code, -4);
+      echo '<span >'.$center_code. ' </span>' ;
+       ?>
+
+<?php
+}
+?>
+
+
+ 
+ 
+
 <table class="table table1">
   <tbody>
     <tr>
-      <th  class="align-middle text-center " rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_no ?> <br> <?php echo $student->enrollment_no  ?></th>
+      <th  class="align-middle text-center " style="width: 85px;" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_no ?> <br> <?php echo $student->enrollment_no  ?></th>
       <th  class="align-middle text-center pl-5 pr-5" rowspan="<?php echo $rowspandata ?>"></th>
-      <th  class="align-middle text-center pl-5 pr-5" rowspan="<?php echo $rowspandata ?>">Photo</th>
-      <td  class="align-middle text-center " rowspan="<?php  echo $rowspandata ?>"><?php  echo $student->name ?>/ <br><?php  echo $student->f_h_name ?></td>
-      <td  class="align-middle text-right">Paper-></td>
+      <th  class="align-middle text-center pl-4 pr-4" rowspan="<?php echo $rowspandata ?>">Photo</th>
+      <td  class="align-middle text-center  pl-5 pr-5" style="width: 167px;" rowspan="<?php  echo $rowspandata ?>"><?php  echo $student->name ?>/ <br><?php  echo $student->f_h_name ?></td>
+      <td  class="align-middle text-right" style="width: 187px;">Paper-></td>
       <?php
       foreach($marks as $paper_master)
       {    
           ?>
-      <td  class="align-middle text-center pl-5 pr-5"><?php echo  $paper_master->paper_code ;  ?></td>
+      <td  class="align-middle text-center"><?php echo  $paper_master->paper_code ;  ?></td>
       <?php
       }
       ?>
   
-      <td  class="align-middle text-center  pl-5 pr-5">Total</td>
+      <td  class="align-middle text-center " style="width: 68px;">Total</td>
       <td  class="align-middle text-center pl-5 pr-5" rowspan="<?php echo $rowspandata ?>"><?php   echo $total_marks_obt .'/'. $total_paper_marks ;  ?></td>
-      <td  class="align-middle text-center" rowspan="<?php echo $rowspandata ?>"><?php if($final_result_fail_count>0){echo "Fail";}else{echo "Pass" ;} ?></td>
-      <td  class="align-middle text-center" rowspan="<?php echo $rowspandata ?>">Remarks</td>
+      <td  class="align-middle text-center" style="width: 48px;" rowspan="<?php echo $rowspandata ?>"><?php
+       if($final_result_fail_count>0 && $RW_Count==0)
+       {echo "Fail";}
+       elseif($RW_Count>0){
+         echo "Fail";
+       }else
+       {echo "Pass" ;} 
+       ?></td>
+      <td  class="align-middle text-center " style="width: 68px;" rowspan="<?php echo $rowspandata ?>"><?php 
+        if($check_grace_marks==false){
+          if(($total_theory_abs_count==5)|| ($total_int_abs_count>0 &&  $total_theory_abs_count==5))
+          {
+           echo $remark ;  
+          }else{
+            if(sizeof($ATKT_paper_codes_array)>0){
+             echo "ATKT in";
+            }
+           foreach($ATKT_paper_codes_array as $paper_code){
+             echo  "<br>". $paper_code ;
+           }
+          }
+        }
+     
+       ?></td>
     </tr>
     <tr>
    
     
-      <td class="align-middle text-right" style="width:190px">Theory Marks-></td>
+      <td class="align-middle text-right">Theory Marks-></td>
       <?php
       foreach($marks as $new_exam_form)
       {
           ?>
-      <td  class="align-middle text-center pl-5 pr-5">
-      <?php if($new_exam_form->theory_marks==''){
-                        echo '-';
-                    }elseif($new_exam_form->theory_marks>=$new_exam_form->min_theory_marks){
-                        echo $new_exam_form->theory_marks;
-                    }else{
-                        echo $new_exam_form->theory_marks;
-                        echo ($check_grace_marks) ? ' G' : ' F';
-                    }
-                     ?>
+      <td  class="align-middle text-center">
+      <?php 
+      if($new_exam_form->paper_type=="theory")
+      {
+        if($new_exam_form->theory_marks==''){
+          echo '-';
+      }elseif($new_exam_form->theory_marks>=$new_exam_form->min_theory_marks){
+          echo $new_exam_form->theory_marks;
+      }else{
+          echo $new_exam_form->theory_marks;
+          echo ($check_grace_marks) ? ' G' : ' F';
+      }
+      }
+      ?>
        </td>
       <?php
       }
@@ -279,12 +342,12 @@ foreach($students as $student)
     <tr>
     
    
-      <td class="align-middle text-right pl-10 pr-10">Asmn Marks-></td>
+      <td class="align-middle text-right">Asmn Marks-></td>
       <?php
       foreach($marks as $paper_master)
       {
           ?>
-      <td  class="align-middle text-center pl-5 pr-5"><?php echo  $paper_master->int_marks;  ?></td>
+      <td  class="align-middle text-center "><?php echo  $paper_master->int_marks;  ?></td>
       <?php
       }
       ?>
@@ -298,18 +361,21 @@ foreach($students as $student)
     <tr>
     
    
-    <td class="align-middle text-right pl-10 pr-10">Practical Marks.</td>
+    <td class="align-middle text-right ">Practical Marks.</td>
     <?php
     foreach($marks as $new_exam_form)
     {
         ?>
-    <td  class="align-middle text-center pl-5 pr-5"><?php 
+    <td  class="align-middle text-center"><?php 
     if($new_exam_form->p_marks=="N")
     {echo " ";}
     else{
-        if($new_exam_form->p_marks < $new_exam_form->min_theory_marks){
+        if($new_exam_form->p_marks < $new_exam_form->min_theory_marks && $new_exam_form->p_marks!=''){
             echo  $new_exam_form->p_marks .'*' ;
-        }else{
+        }elseif($new_exam_form->p_marks ==''){
+            echo "RWPR";
+        }
+        else{
             echo  $new_exam_form->p_marks ;
         }
     }
@@ -328,12 +394,24 @@ foreach($students as $student)
     <tr>
     
    
-    <td class="align-middle text-right pl-10 pr-10">Total Marks Obt.</td>
+    <td class="align-middle text-right ">Total Marks Obt.</td>
     <?php
     foreach($marks as $paper_master)
     {
         ?>
-    <td  class="align-middle text-center pl-5 pr-5"><?php if($paper_master->paper_type=="theory"){ echo $paper_master->theory_marks+ $paper_master->int_marks;}else{ echo $paper_master->p_marks;}  ?></td>
+    <td  class="align-middle text-center pl-5 pr-5"><?php
+     if($paper_master->paper_type=="theory"){
+       if($check_grace_marks==true){
+        echo $paper_master->theory_marks+ $paper_master->int_marks;
+       } elseif($paper_master->theory_marks<$paper_master->min_theory_marks){
+        echo $paper_master->theory_marks+ $paper_master->int_marks . "F";
+       }else{
+        echo $paper_master->theory_marks+ $paper_master->int_marks ;
+       }
+      }else{ 
+        echo $paper_master->p_marks;
+      }  
+      ?></td>
     <?php
     }
     ?>
@@ -348,3 +426,6 @@ foreach($students as $student)
 }
 ?>
 </div>
+
+
+

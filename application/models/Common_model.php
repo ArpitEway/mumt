@@ -784,7 +784,30 @@ class Common_Model extends CI_Model{
 		print_r($data);
 		// die;
 	}
+     
+	public function student_info_for_result($student_id)
+	{
+		$this->db->select('*');
+        $this->db->from('paper_master');
+        $this->db->join('new_exam_form', 'paper_master.id = new_exam_form.paper_id');
+        $this->db->where('new_exam_form.student_id',$student_id);
+		return $this->db->get()->result();
+	}
 
+	public function isFinalClass($course_id)
+	{
+		$this->db->select('*');
+        $this->db->from('class_master');
+        $this->db->where('course_group_id',$course_id);
+		$func =  $this->db->get()->result();
+		if(count($func)>1){
+			
+			return false ;
+		}elseif(count($func)==1 && $fun[0]->mode=="Annual" && $fun[0]->last_class == "Y" ){
+            return true ;
+		}
+	
+	}
 }
 
 ?>
