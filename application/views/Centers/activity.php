@@ -1,3 +1,7 @@
+<script src="https://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>
+<script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+<script src="<?=BASE_URL()?>assets/light_box/js/jquery.magnify.js"></script>
+
 <div class="mt-5 text-right">
 <a type="button"  class="btn btn-outline-primary btn-rounded" onclick="rightModal('<?php echo site_url('admin/modal/popup/Centers/activity/create'); ?>', 'Create Activity')" >Create Activity</a>
 </div> 
@@ -10,7 +14,7 @@
 				<th>Date </th>
 				<th>Activity Name </th>
 				<th>Discription </th>
-				<th>Photos </th>
+				<th>View Image </th>
 				<th>Action </th>
 			</tr>
 		</thead>
@@ -21,15 +25,15 @@
         $activities = $this->Common_model->getRecordByWhere("activity",array("center_id"=>$center_id));
         	foreach($activities as $activity)
 			{
-		
-			
+	
+	
             ?>
 					<tr>
 						<td><?php echo $i; ?></td>
 						<td><?php echo $activity->date; ?></td>
 						<td><?php echo $activity->activity_name; ?></td>
 						<td><?php echo $activity->description; ?></td>
-						<td><?php if($activity->photos==""){ ?><button type="button" class="btn btn-danger" >Not Available</button><?php  } else { ?> <a class="btn btn-primary" target="_blank" href="<?php echo site_url('assets/activity/'.$activity->photos) ?>">Image</a> <?php } ?></td>
+						<td><a href="javascript:void(0);" class=" btn btn-primary" onclick="rightModal('<?php echo site_url('admin/modal/popup/Centers/activity/activity_img_popup/'.$activity->id); ?>', '<?php echo 'All  Images' ?>')">View Images</a></td>
 						
                 	<td>
                 	<div style="display: inline-flex;">

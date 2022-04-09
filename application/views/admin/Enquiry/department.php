@@ -22,7 +22,7 @@
             	<td>
             		<div style="display: inline-flex;">
             			<a href="javascript:void(0);" class="dropdown-item" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/department/edit/'.$department['id']); ?>', '<?php echo 'Update Department' ?>')"> <i class="mdi mdi-pencil edit-icon"></i></a>   
-            			<a href="javascript:void(0);" class="dropdown-item" onclick="confirmModal('<?php echo site_url('admin/Inquiry/department/delete/'.$department['id']); ?>', department )"><i class="mdi mdi-delete delete-icon"></i></a>
+            			<a href="javascript:void(0);" class="dropdown-item" onclick="confirmModal('<?php echo site_url('admin/Enquiry/department/delete/'.$department['id']); ?>', department )"><i class="mdi mdi-delete delete-icon"></i></a>
             		</div>	
 
             	</td>
@@ -36,7 +36,7 @@
 <script>
 var department = function () 
     {
-        var url = '<?php echo site_url('admin/Inquiry/department'); ?>';
+        var url = '<?php echo site_url('admin/Enquiry/department'); ?>';
         $.ajax({
             type : 'GET',
             url: url,
