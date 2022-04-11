@@ -1,5 +1,5 @@
 <div class="text-center">
-    <a   target="_blank" class="btn btn-warning" href="<?php  echo base_url('teacher/view_question_pdf/'.$this->Common_model->encrypt_decrypt($answersheetData[0]->paper_code,'encrypt'));?>" >View paper</a> 
+    <a   target="_blank" class="btn btn-warning" href="<?php  echo base_url('Teacher/view_question_pdf/'.$this->Common_model->encrypt_decrypt($answersheetData[0]->paper_code,'encrypt'));?>" >View paper</a> 
      </div> 
 
 
