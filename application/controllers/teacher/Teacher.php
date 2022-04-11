@@ -356,6 +356,21 @@ class Teacher extends CI_Controller {
 		$this->load->view('teacher/view_answersheet_pdf',$data); 
 	}
 
+	 public function view_answersheet_pdf($id){
+		
+		$id=$this->Common_model->encrypt_decrypt($id,'decrypt');
+		
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
+		$where= array('id'=>$id);
+		$data['answer'] = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',$where);
+		$update_open_answersheet = $this->Common_model->updateRecordByConditions('upload_exam_ans_sheet',$where,array('open_answersheet'=>'Y'));
+		
+		$this->load->view('teacher/answersheet_pdf',$data); 
+	}
+
 
 	public function view_question_pdf($paper_code){
 		$paper_code=$this->Common_model->encrypt_decrypt($paper_code,'decrypt');

@@ -36,7 +36,7 @@
       ?> </label>
     </div>
     <div class="col-6 text-center">
-      <a target="_blank" class="btn btn-primary" href="<?php  echo base_url('Teacher/check_answersheet_pdf/'.$this->Common_model->encrypt_decrypt($details[0]->id,'encrypt'));?>" >View</a>
+      <a target="_blank" class="btn btn-primary" href="<?php  echo base_url('Teacher/view_answersheet_pdf/'.$this->Common_model->encrypt_decrypt($details[0]->id,'encrypt'));?>" >View</a>
     </div>
   </div>
   <hr>
