@@ -71,6 +71,7 @@
                  if($('#myLoader').hide()){
                     $('#student_data_tbl').html(resp.data);
                      $('#student_data_tbl').show();
+                     KTDatatablesBasicBasic.init();
                 }
             }//success
         })//ajax

@@ -113,11 +113,9 @@ $(document).on("change",".table #course_group_id",function(){
              $('#dt').show();
             
           }
-                   
-                    KTDatatablesBasicBasic.init();            
+                    KTDatatablesBasicBasic.init();
                 }//success
             })
-
 	} 
 });
 
