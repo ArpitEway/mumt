@@ -1,4 +1,10 @@
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+
 <style>
+  svg {
+    width: 101px;
+    height: 35px;
+  }
     .table1 th {
         border:1px solid black;
         padding: 0.25rem;
@@ -25,21 +31,38 @@
     .line-height{
       line-height:5px;
     }
+    .custom_width {
+      width:167px;
+    }
+    .width_total{
+      width : 68px;
+    }
+  div.b128{
+    border-left: 1px red solid;
+    height: 30px;
+  } 
 </style>
+<?php
+
+?>
 <?php 
-     
-     $isFinalClass = $this->Common_model->isFinalClass($course_group_id);
-  
+
+ $isFinalClass = $this->Common_model->isFinalClass($course_group_id);
 $page_break_count = -1 ;
+$br_code_id = 0 ;
+$roll_no = array(); 
+$page_no = 0 ;
 foreach($students as $student)
 {  
-
+  array_push( $roll_no ,$student->roll_no );
 
 
   $page_break_count++;
   
     $class_details = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id'=>$class_id));
- 
+    // echo "<pre>";
+    // print_r($class_details[0]->bar_code_no);
+
    
     $data['class_id']= $this->Common_model->getRecordByWhere('class_master',array('id' => $class_id));
 
@@ -90,7 +113,7 @@ foreach($students as $student)
                   $RW_Count++;
                 }else{
                     array_push( $ATKT_paper_codes_array ,$new_exam_form->paper_code );
-                    $result = "अनुत्तीर्ण";
+                  
                     $fail_count++;
                     $fali_tot_marks += $new_exam_form->theory_marks;
                     $require_tot_marks += $new_exam_form->min_theory_marks;
@@ -149,26 +172,54 @@ foreach($students as $student)
             ($total_int_abs_count>0 &&  $total_theory_abs_count==5) ? $remark = "Abs in All" : "" ;
             
               
-          
+        if($final_result_fail_count>0 && $RW_Count==0)
+       {
+         $final_result = "Fail" ;
+       }
+       elseif($RW_Count>0){
+        $final_result = "RW" ;
+       }else
+       {
+        $final_result = "Pass" ;
+       } 
+
+       $percentage = round(($total_marks_obt/$total_paper_marks)*100,2);
+       if($percentage>=60)
+       {
+          $division = "First";
+       }elseif($percentage<60 && $percentage>=40){
+         $division  = "Second";
+       }else{
+         $division = "Third";
+       }
 ?>
 <!-- <hr  class="mt-15">
 <div class="mt-25"> -->
 
 <?php 
-if($page_break_count%4==0 || $page_break_count==0){
+if($page_break_count%2==0 || $page_break_count==0){
+  $page_no++ ;
 ?>
 <p align="center"  class="h4" ><b>Maharishi Mahesh Yogi Vedic Vishvavidyalaya, Madhya Pradesh</b></p>
 <p align="center" class="line-height">Tabulation Register for <strong><?php echo $student->course_name ; echo '&nbsp'. $class_details[0]->class_name; ?></strong>  Examination <?php echo $class_details[0]->exam_session;?>
 </p>
 <p align="center" class="line-height">Directorate of Distance Education</p>
-<p align="left" class="line-height">DATE: <?php echo $class_details[0]->result_date;?></p>
-<table class="table table1 ">
+<div class="row">
+    <div class="col-6">
+    DATE: <?php echo $class_details[0]->result_date;?>
+    </div>
+    <div class="col-6 text-right">
+   Page : <?php  echo $page_no ; ?>
+    </div>
+</div>
+<input type="hidden" id="bar_code_no" name="bar_code_no" value="<?php echo  $class_details[0]->bar_code_no ; ?>">
+<table class="table table1">
   <tbody>
     <tr>
       <th  class="align-middle text-center pl-5 pr-5" rowspan="<?php echo $rowspanhead ?>">Roll.No. <br> Reg.No.</th>
       <th  class="align-middle text-center" rowspan="<?php echo $rowspanhead ?>">M.S. <br> No.</th>
       <th  class="align-middle text-center pl-5 pr-5" rowspan="<?php echo $rowspanhead ?>">Photo</th>
-      <td  class="align-middle text-center" style="width:167px" rowspan="<?php echo $rowspanhead ?>">Name of the <br> Student and <br> F/H Name</td>
+      <td  class="align-middle text-center  custom_width" rowspan="<?php echo $rowspanhead ?>">Name of the <br> Student and <br> F/H Name</td>
       <td  class="align-middle text-right">Paper-></td>
       <?php
       foreach($marks as $paper_master)
@@ -184,6 +235,7 @@ if($page_break_count%4==0 || $page_break_count==0){
       <td  class="align-middle text-center" rowspan="<?php echo $rowspanhead ?>">Result</td>
       <td  class="align-middle text-center" rowspan="<?php  echo $rowspanhead ?>">Remarks</td>
     </tr>
+
     <tr>
    
     
@@ -265,7 +317,7 @@ if($page_break_count%4==0 || $page_break_count==0){
       <th  class="align-middle text-center " style="width: 85px;" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_no ?> <br> <?php echo $student->enrollment_no  ?></th>
       <th  class="align-middle text-center pl-5 pr-5" rowspan="<?php echo $rowspandata ?>"></th>
       <th  class="align-middle text-center pl-4 pr-4" rowspan="<?php echo $rowspandata ?>">Photo</th>
-      <td  class="align-middle text-center  pl-5 pr-5" style="width: 167px;" rowspan="<?php  echo $rowspandata ?>"><?php  echo $student->name ?>/ <br><?php  echo $student->f_h_name ?></td>
+      <td  class="align-middle text-center  pl-5 pr-5 custom_width"  rowspan="<?php  echo $rowspandata ?>"><?php  echo $student->name ?>/ <br><?php  echo $student->f_h_name ?></td>
       <td  class="align-middle text-right" style="width: 187px;">Paper-></td>
       <?php
       foreach($marks as $paper_master)
@@ -276,17 +328,10 @@ if($page_break_count%4==0 || $page_break_count==0){
       }
       ?>
   
-      <td  class="align-middle text-center " style="width: 68px;">Total</td>
-      <td  class="align-middle text-center pl-5 pr-5" rowspan="<?php echo $rowspandata ?>"><?php   echo $total_marks_obt .'/'. $total_paper_marks ;  ?></td>
-      <td  class="align-middle text-center" style="width: 48px;" rowspan="<?php echo $rowspandata ?>"><?php
-       if($final_result_fail_count>0 && $RW_Count==0)
-       {echo "Fail";}
-       elseif($RW_Count>0){
-         echo "Fail";
-       }else
-       {echo "Pass" ;} 
-       ?></td>
-      <td  class="align-middle text-center " style="width: 68px;" rowspan="<?php echo $rowspandata ?>"><?php 
+      <td  class="align-middle text-center  width_total">Total</td>
+      <td  class="align-middle text-center pl-5 pr-5" rowspan="<?php echo $rowspandata ?>"><?php if($total_theory_abs_count>0){echo "-" ;}else{echo $total_marks_obt .'/'. $total_paper_marks ;}?></td>
+      <td  class="align-middle text-center" style="width: 48px;" rowspan="<?php echo $rowspandata ?>"><?php echo $final_result ; ?></td>
+      <td  class="align-middle text-center width_total"  rowspan="<?php echo $rowspandata ?>"><?php 
         if($check_grace_marks==false){
           if(($total_theory_abs_count==5)|| ($total_int_abs_count>0 &&  $total_theory_abs_count==5))
           {
@@ -329,7 +374,7 @@ if($page_break_count%4==0 || $page_break_count==0){
       <?php
       }
       ?>
-      <td class="align-middle text-center"><?php  echo  $total_theory_marks_obt ; ?></td>
+      <td class="align-middle text-center"><?php if($total_theory_abs_count>0){echo "-" ;}else{echo  $total_theory_marks_obt ;}  ; ?></td>
      
     
     </tr>
@@ -345,7 +390,7 @@ if($page_break_count%4==0 || $page_break_count==0){
       <?php
       }
       ?>
-      <td class="align-middle text-center"><?php echo $total_asmn_marks_obj ;  ?></td>
+      <td class="align-middle text-center"><?php if($total_theory_abs_count>0){echo "-" ;}else{ echo $total_asmn_marks_obj ;};  ?></td>
      
     
     </tr>
@@ -409,29 +454,85 @@ if($page_break_count%4==0 || $page_break_count==0){
     <?php
     }
     ?>
-    <td class="align-middle text-center"><?php  echo $total_marks_obt ; ?></td>
-   
-  
-  </tr>
+    <td class="align-middle text-center"><?php if($total_theory_abs_count>0){echo "-" ;}else{ echo $total_marks_obt ;} ?></td>
+    </tr>
+  <?php 
+  if($isFinalClass==false){
+  ?>
  
-  </tbody>
-  <tr class="">
-  
-    <td  class="align-middle text-center " colspan="4">Total Marks Obt.</td>
+  <?php  
+  if( $total_theory_abs_count>0)
+  {
+    ?>
+    <tr>
+       <td class="text-center align-middle" colspan="15">
+        -
+       </td>
+    </tr>
+  <?php
+  }else{
+    ?>
+        <tr class="">
+          <td  class="align-middle text-center " colspan="4"><?php  echo 'Tot:'. $total_marks_obt .'/'. $total_paper_marks ; ?></td>
+          <td class="align-middle text-center "  colspan="3"><?php  echo  'Per : '.$percentage .'%' ; ?></td>
+          <td class="align-middle text-center "  colspan="3"><?php  echo $final_result ;?></td>
+          <td class="align-middle text-center " colspan="5"> <?php  echo $division ;  ?></td>
+        </tr>
+  <?php
+  }
 
-    <td class="align-middle text-center "  colspan="3">Total Marks Obt.</td>
-  
-    <td class="align-middle text-center "  colspan="3">Total Marks Obt.</td>
- 
-    <td class="align-middle text-center " colspan="5">Total Marks Obt.</td>
- 
-  </tr>
+}
+
+  ?>
+    <tr class="">
+          <td  class="align-middle text-left " colspan="15"><svg class="barcode<?php echo $student->roll_no.$class_details[0]->bar_code_no ;  ?>"></svg></td>
+    </tr>
+  </tbody>
+
 </table>
+<?php  
+?>
+
 
 <?php
 }
 ?>
+<?php
+
+?>
 </div>
+<script>
 
+    
 
+$( document ).ready(function() {
+ // Access the array elements
+var roll_no = <?php echo json_encode($roll_no); ?>;
+       var bar_code_no = document.getElementById("bar_code_no").value ;
+// Display the array elements
+for(var i = 0; i < roll_no.length; i++){
+    bar_code(roll_no[i]);
+}
+   function bar_code(roll_no)  {
+    var classs = ".barcode"+roll_no +bar_code_no ;
+    var val = roll_no +bar_code_no ;
+     console.log(classs);
+    barcodetype = "code128";
+    showText = false ;
+    
+    JsBarcode(classs , val, {
+        format: barcodetype,
+        lineColor: "#2429e",
+        width: 2,
+        height: 40,
+        displayValue: showText,
+        fontSize:20,
+        textMargin	:1,
+        marginBottom	: 0,
+    });
+   }
+});
+  
+</script>
+     
 
