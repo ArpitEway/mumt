@@ -4,6 +4,11 @@
     height: 30px !important;
 }
 </style>
+<?php
+$classid=$this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$details[0]->class_id));
+       $max_theory_marks=   $classid[0]->max_theory_marks  ;    
+          $marks=  $max_theory_marks/5; ?>
+
 <form id="ajaxForm">
   <div class="row py-3">
     <div class="col-6">
@@ -54,9 +59,15 @@
       <label for="Questions1" class="col-4 text-center"><strong>Question 1 </strong> </label>
       <select name="marks1" class="form-control col-3 text-left marks" id="marks1" onchange="selectMarks(event)">
         <option value="N/A" selected>N/A</option>
-        <?php   for ($i=0; $i<=14; $i++){   ?>
-          <option student-marks="<?php echo $i; ?>" value="<?php echo $i; ?>"><?php echo $i; ?></option>
-        <?php } ?>
+        <?php  
+        for ($i=0; $i<=$marks; $i++)
+        {
+          ?>
+          <option student-marks="<?php echo $i; ?>" value="<?php echo $i; ?>"><?php echo str_pad($i,2,'0',STR_PAD_LEFT);?></option>
+          <?php
+        } 
+        ?>      
+       
       </select>
     </fieldset>
     <fieldset class="mb-2 row">
@@ -64,9 +75,14 @@
       <label for="Questions2" class="col-4 text-center"><strong>Question 2</strong></label>
       <select name="marks2" class="form-control col-3 text-left marks" id="marks2"  onchange="selectMarks(event)" >
         <option value="N/A" selected>N/A</option>
-        <?php for ($i=0; $i<=14; $i++){ ?>
-          <option student-marks="<?php echo $i; ?>" value="<?php echo $i; ?>"  ><?php echo $i; ?></option>
-          <?php } ?>
+        <?php  
+        for ($i=0; $i<=$marks; $i++)
+        {
+          ?>
+          <option student-marks="<?php echo $i; ?>" value="<?php echo $i; ?>"><?php echo str_pad($i,2,'0',STR_PAD_LEFT);?></option>
+          <?php
+        } 
+        ?>
       </select>
     </fieldset>
     <fieldset class="mb-2 row">
@@ -74,9 +90,15 @@
       <label for="Questions3" class="col-4 text-center"><strong>Question 3</strong></label>
       <select name="marks3" class="form-control col-3 text-left marks" id="marks3" onchange="selectMarks(event)" >
         <option value="N/A" selected>N/A</option>
-        <?php for ($i=0; $i<=14; $i++){ ?>
-          <option student-marks="<?php echo $i; ?>" value="<?php echo $i; ?>"  ><?php echo $i; ?></option>
-          <?php } ?>
+        <?php  
+        for ($i=0; $i<=$marks; $i++)
+        {
+          ?>
+          <option student-marks="<?php echo $i; ?>" value="<?php echo $i; ?>"><?php echo str_pad($i,2,'0',STR_PAD_LEFT);?></option>
+          <?php
+        } 
+        ?>
+
       </select>
     </fieldset>
 
@@ -85,14 +107,15 @@
       <label for="Questions4" class="col-4 text-center"><strong>Question 4</strong></label>
       <select name="marks4" class="form-control col-3 text-left marks" id="marks4" onchange="selectMarks(event)" > 
         <option value="N/A" selected>N/A</option>
-        <?php
-        for ($i=0; $i<=14; $i++)
+        <?php  
+        for ($i=0; $i<=$marks; $i++)
         {
           ?>
-          <option student-marks="<?php echo $i; ?>" value="<?php echo $i; ?>"  ><?php echo $i; ?></option>
+          <option student-marks="<?php echo $i; ?>" value="<?php echo $i; ?>"><?php echo str_pad($i,2,'0',STR_PAD_LEFT);?></option>
           <?php
         } 
         ?>
+
       </select>        
     </fieldset>
     <fieldset class="mb-2 row">
@@ -100,9 +123,15 @@
       <label for="Questions5" class="col-4 text-center"><strong>Question 5</strong></label>
       <select name="marks5" class="form-control col-3 text-left marks" id="marks5"  onchange="selectMarks(event)">
         <option value="N/A" selected>N/A</option>
-        <?php  for ($i=0; $i<=14; $i++){    ?>
-          <option student-marks="<?php echo $i; ?>" value="<?php echo $i; ?>"><?php echo $i; ?></option>
-        <?php  }  ?>
+        <?php  
+        for ($i=0; $i<=$marks; $i++)
+        {
+          ?>
+          <option student-marks="<?php echo $i; ?>" value="<?php echo $i; ?>"><?php echo str_pad($i,2,'0',STR_PAD_LEFT);?></option>
+          <?php
+        } 
+        ?>
+
       </select>
     </fieldset>
   <hr>
@@ -141,48 +170,7 @@
 
   $("#markssubmit").on('click',function (e){
    e.preventDefault();
-  //  var marks1 = $('#marks1').val();
-  //  var marks2 = $('#marks2').val();
-  //  var marks3 = $('#marks3').val();
-  //  var marks4 = $('#marks4').val();
-  //  var marks5 = $('#marks5').val();
-
-  //  var submit = true;
-  //  if(marks1==''){
-  //   $(marks1).next().text('Please Select Marks');
-  //   submit = false;
-  // }else{
-  //   $(marks1).next().text('');
-  // }
-
-  // if(marks2==''){
-  //   $(marks2).next().text('Please Select Marks');
-  //   submit = false;
-  // }else{
-  //   $(marks2).next().text('');
-  // }
-  // if(marks3==''){
-  //   $(marks3).next().text('Please Select Marks');
-  //   submit = false;
-  // }else{
-  //   $(marks3).next().text('');
-  // }
-
-  // if(marks4==''){
-  //   $(marks4).next().text('Please Select Marks');
-  //   submit = false;
-  // }else{
-  //   $(marks4).next().text('');
-  // }
-  // if(marks5==''){
-  //   $(marks5).next().text('Please Select Marks ');
-  //   submit = false;
-  // }else{
-  //   $(marks5).next().text('');
-  // }
-  // if(submit==false){
-  //   return false;
-  // }
+  
   var frm = $('#ajaxForm').serialize();
 
   var id = $('#student_tr').val();

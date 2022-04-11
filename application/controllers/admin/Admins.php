@@ -432,10 +432,8 @@ public function classes($param1 = '', $param2 = '', $param3 = '')
 					$where = array('class_id' => $class_id);
 				}
 				
-				
 				$papers = $this->db->get_where("paper_master",$where)->result_array();
 				
-
 				$htmlData = array(
 					'papers' => $papers,
 					'all_papers' => $all_papers,
@@ -443,10 +441,7 @@ public function classes($param1 = '', $param2 = '', $param3 = '')
 					'hash_csrf' => $this->security->get_csrf_hash()
 				);
 
-
-			$data = $this->load->view('admin/paper/paper',$htmlData,true);
-				
-			
+				$data = $this->load->view('admin/paper/paper',$htmlData,true);
 				$status = true;
 				$msg    = "";
 			 }
@@ -455,7 +450,6 @@ public function classes($param1 = '', $param2 = '', $param3 = '')
 				"msg" => $msg,
 				"data" => $data
 			));
-
 		}
 	
 	public function paper($param1 = '', $param2 = '', $param3 = '')

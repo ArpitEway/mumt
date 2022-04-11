@@ -247,7 +247,7 @@ class Teacher extends CI_Controller {
 	public function get_paper_details(){
      
 		$paper_code =$this->input->post('paper_code');
-		$where = array('teacher_id'=>$this->session->teacher_id);
+		$where = array('teacher_id'=>$this->session->teacher_id,'paper_code'=> $paper_code);
 		$assignAnsData = $this->Common_model->getRecordByWhere('assign_answersheet',$where);
 	
 		$where = 'paper_code = "'.$paper_code.'" and upload_exam_ans_sheet.center_id in ('.$assignAnsData[0]->center_id.') and answer_sheet!="" and file_exist="Y" and new_exam_form="Y" and teacher_id=""';
@@ -257,7 +257,6 @@ class Teacher extends CI_Controller {
 		$this->db->Where($where );
 		$this->db->join('student', 'student.student_id = upload_exam_ans_sheet.student_id');
 		$answersheetData = $this->db->get()->result();
-	//	$this->Common_model->last_query();
 		
 		$data = array(
 			'answersheetData' => $answersheetData,
