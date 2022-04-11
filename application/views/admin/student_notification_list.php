@@ -1,3 +1,45 @@
+<?php 
+
+    $check_grace_marks = false;
+  $fail_count = 0;
+  $fali_tot_marks = 0;
+  $require_tot_marks = 0;
+  $tot_marks = 0;
+  foreach($paper_marks as $marks){
+      if($marks->type=='theory'){
+              $tot_marks += $marks->reg_max_marks;
+          if($marks->theory_marks>=$marks->reg_min_marks){
+          
+          }else{
+              
+              $fail_count++;
+              $fali_tot_marks += $marks->theory_marks;
+              $require_tot_marks += $marks->reg_min_marks;
+          }
+         
+      }else if($marks->type=='practical'){
+          $tot_std_marks += $marks->p_marks;
+          $tot_marks += $marks->reg_max_marks;
+          if($marks->p_marks>=$marks->reg_min_marks){
+                    }else{
+            
+              $fail_count++;
+              $fali_tot_marks += $marks->p_marks;
+              $require_tot_marks += $marks->reg_min_marks;
+          }
+      }
+  }
+
+     
+  $require_grace_marks = $require_tot_marks-$fali_tot_marks;
+
+  if ($fail_count<3 && $require_grace_marks<4 ) {
+      $check_grace_marks = true;
+  }
+
+
+?>
+
 
 <?php
 
@@ -57,64 +99,6 @@ $page=1;
 </table>
 <center style="font-size:15px;">Directorate of Distance Education</center>
 
-
- <?php 
-                        $this->db->select('*');
-                        $this->db->from('new_exam_form');
-                        $this->db->join('paper_master', 'new_exam_form.paper_id = paper_master.id');
-                        $this->db->where('new_exam_form.student_id',$student->student_id); 
-                        $paper_marks = $this->db->get()->result();
-                        $check_grace_marks = false;
-                        $fail_count = 0;
-                        $fali_tot_marks = 0;
-                        $require_tot_marks = 0;
-                        $tot_marks = 0;
-                        foreach($paper_marks as $marks){
-                            if($marks->type=='theory'){
-                                    $tot_marks += $marks->max_theory_marks;
-                                if($marks->theory_marks>=$marks->min_theory_marks){
-                                    $result = "Pass";
-                                }else{
-                                    $result = "Fail";
-                                    $fail_count++;
-                                    $fali_tot_marks += $marks->theory_marks;
-                                    $require_tot_marks += $marks->reg_min_marks;
-                                }
-                            }else if($marks->type=='practical'){
-                                $tot_std_marks += $marks->p_marks;
-                                $tot_marks += $marks->max_theory_marks;
-                                if($marks->p_marks>=$marks->min_theory_marks){
-                                    $result = "Pass";
-                                }else{
-                                    $result = "Fail";
-                                    $fail_count++;
-                                    $fali_tot_marks += $marks->p_marks;
-                                    $require_tot_marks += $marks->reg_min_marks;
-                                }
-                            }
-                        }
-                        // echo 'tot_marks'.$tot_marks;
-                        // echo 'tot_std_marks ='.$tot_std_marks;
-                        
-                      
-                        $aggregate_per =   ($tot_std_marks/$tot_marks) * 100;     
-                        $require_grace_marks = $require_tot_marks-$fali_tot_marks;
-                      
-                        if ($fail_count<3 && $require_grace_marks<4  && $aggregate_per) {
-                            $check_grace_marks = true;
-                        }
-                
-
-
-                        $total_paper_marks = 0;
-                        $total_student_marks = 0 ;
-                        $result = "";
-                        $fail_count = 0;
-
-?>
-
-
-
 <table width="100%"  border="1">
 	<tbody>
 		<?php
@@ -135,63 +119,83 @@ $page=1;
 				<td align="center" width="15%" >
 
 					<?php 
+    // $total_paper_marks1 = 0;
+    // $total_student_marks1 = 0 ;
+    $result = "";
+    $fail_count = 0;
+    // $total_max_marks1 = 0 ;
+    // $total_obtained_marks1 = 0;
+    $fail_count=0;
 
-					$this->db->select('*');
+
+
+                      $this->db->select('*');
 					$this->db->from('new_exam_form');
 					$this->db->join('paper_master', 'new_exam_form.paper_id = paper_master.id');
 					$this->db->where('new_exam_form.student_id',$student->student_id); 
 					$paper_marks = $this->db->get()->result();
+    
+        foreach($paper_marks as  $marks){
+            // if($marks->type=="theory"){
+            //     $mx_marks1=  $marks->max_theory_marks + $marks->max_int_marks;
+            // }else{
+            //   $mx_marks1=$marks->max_theory_marks;
+            // }
+            // $total_max_marks1 = $total_max_marks1 +$mx_marks;
+            // if($marks->type=="theory")
+            // {
+            //  $obtain_marks1= $marks->theory_marks + $marks->int_marks;
+            // }else{
+            //  $obtain_marks1= $marks->p_marks;
+            // }
+            // $total_obtained_marks1 = $total_obtained_marks1 +$obtain_marks1;
+        
+       
 
-					$total_int_marks = 0 ;
-       // $total_int_obtain_marks = 0;
-					$total_obtain_marks = 0;
-					foreach($paper_marks as  $marks)
-					{  
+           // final result code 
+           if($marks->type=="theory" )
+           {
+                if(($marks->theory_marks<$marks->reg_min_marks || $marks->int_marks<$marks->reg_min_int_marks) && $check_grace_marks==false ){
+                  ++$fail_count ;
+              }
+           }else{
+             if($marks->p_marks<$marks->reg_min_marks)
+               {
+                ++$fail_count ;
+               }
+           }
 
-						if($marks->type=='theory'){
+}
+           // final result code end
+             if($marks->type=="theory"){
+              if($marks->theory_marks<$marks->reg_min_marks || $marks->int_marks<$marks->reg_min_int_marks){
+               ($check_grace_marks) ? $res = "Pass" :   $res = "Fail";
 
-							if($marks->type=="theory"){
-								$mx_int_marks=  $marks->min_theory_marks + $marks->min_int_marks;
-							}else{
-								$mx_int_marks=$marks->min_theory_marks;
-							}
-							$total_int_marks  += $mx_int_marks ;
-							if($marks->type=="theory")
-							{
-								$obtain_marks1= $marks->theory_marks + $marks->int_marks;
-							}else{
-								$obtain_marks1= $marks->p_marks;
-							}
-							$total_obtain_marks+=$obtain_marks1;
+            
+              }else{
+                $res = "Pass";
+              } 
+             }else{
+            
+               if($marks->p_marks<$marks->reg_min_marks){
+               $res = "Fail";
+               }else{
+               $res = "Pass";
+               }
+             }
+         
+        
 
-						}
-						// else if($marks->type=='practical')
-						// {
+        
 
 
-						// 	if($marks->type=="practical"){
-						// 		$mx_int_marks=  $marks->min_theory_marks + $marks->min_int_marks;
-						// 	}else{
-						// 		$mx_int_marks=$marks->min_theory_marks;
-						// 	}
-						// 	$total_int_marks  += $mx_int_marks ;
-						// 	if($marks->type=="theory")
-						// 	{
-						// 		$obtain_marks1= $marks->theory_marks + $marks->int_marks;
-						// 	}else{
-						// 		$obtain_marks1= $marks->p_marks;
-						// 	}
-						// 	$total_obtain_marks+=$obtain_marks1;
 
-						// }
-					}
+					// if($total_obtain_marks >=  $total_int_marks ){
 
-					if($total_obtain_marks >=  $total_int_marks ){
-
-						echo 'Pass'  ;}
-						else{
-							echo 'Fail'  ;
-						}
+					// 	echo 'Pass'  ;}
+					// 	else{
+					// 		echo 'Fail'  ;
+					// 	}
 
 
 
