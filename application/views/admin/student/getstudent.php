@@ -103,64 +103,12 @@
 </table>
 </div>
 <script>
-
-    window.prettyPrint && prettyPrint();
-
-    var defaultOpts = {
-      draggable: true,
-      resizable: true,
-      movable: true,
-      keyboard: true,
-      title: true,
-      modalWidth: 320,
-      modalHeight: 320,
-      fixedContent: true,
-      fixedModalSize: false,
-      initMaximized: false,
-      gapThreshold: 0.02,
-      ratioThreshold: 0.1,
-      minRatio: 0.05,
-      maxRatio: 16,
-      headToolbar: ['maximize', 'close'],
-      footToolbar: ['zoomIn', 'zoomOut', 'prev', 'fullscreen', 'next', 'actualSize', 'rotateRight'],
-      multiInstances: true,
-      initEvent: 'click',
-      initAnimation: true,
-      fixedModalPos: false,
-      zIndex: 1090,
-      dragHandle: '.magnify-modal',
-      progressiveLoading: true
-    };
-
-    var vm = new Vue({
-      el: '#playground',
-      data: {
-        options: defaultOpts
-      },
-      methods: {
-        changeTheme: function (e) {
-          if (e.target.value === '0') {
-            $('.magnify-theme').remove();
-          } else if (e.target.value === '1') {
-            $('.magnify-theme').remove();
-            $('head').append('<link class="magnify-theme" href="css/magnify-bezelless-theme.css" rel="stylesheet">');
-          } else if (e.target.value === '2') {
-            $('.magnify-theme').remove();
-            $('head').append('<link class="magnify-theme" href="css/magnify-white-theme.css" rel="stylesheet">');
-          }
-        }
-      },
-      updated: function () {
-        $('[data-magnify]').magnify(this.options);
-      }
-    });
-
 function make_approved(param){
 
 	var html = $(param).html();
 	var html = $(param).prop("onclick", null).off("click");
 	var url  = $(param).attr('data-id');
-	var rem = $(param).attr('data-st_id');
+	var rem  = $(param).attr('data-st_id');
 	
 	if (confirm('Are you sure to make approved')) 
 	{

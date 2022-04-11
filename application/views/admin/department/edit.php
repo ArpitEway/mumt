@@ -3,7 +3,7 @@
 $departments = $this->db->get_where('department', array('id' => $param1))->result_array();
  ?>
 
-<form method="POST" enctype="multipart/form-data" class="d-block ajaxForm"  action="<?php echo site_url('admin/Inquiry/department/update/'.$param1); ?>">
+<form method="POST" enctype="multipart/form-data" class="d-block ajaxForm"  action="<?php echo site_url('admin/Enquiry/department/update/'.$param1); ?>">
     <div class="form-row">
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
         <div class="form-group col-md-6">

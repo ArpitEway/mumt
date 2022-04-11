@@ -236,20 +236,8 @@ class Teacher extends CI_Controller {
 		$title = array('title' => 'Check Answer Sheet');
 		$this->load->view('teacher/header',$title);	
 		$where = array('teacher_id'=>$this->session->teacher_id);
-		$center_ids = $this->Common_model->getRecordByWhere('assign_answersheet',$where);
-		$where = array(
-			'center_id in ('.$center_ids[0]->center_id.')',
-			'paper_code' =>$center_ids[0]->paper_code,
-			'file_exist'=>'Y',
-			'class_id' => $center_ids[0]->class_id,
-			'course_group_id' => $center_ids[0]->course_group_id
-		); 
-
-		$this->db->select('DISTINCT(paper_code)');
-		$this->db->from('upload_exam_ans_sheet');
-		$this->db->where($where);
-		$this->db->where('paper_code',$center_ids[0]->paper_code);
-		$data['paper_codes'] = $this->db->get()->result();
+		$assignAnsData = $this->Common_model->getRecordByWhere('assign_answersheet',$where);
+		$data['assignAnsData'] = $assignAnsData;
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
 		$this->load->view('teacher/teacher_paper_list_student_wise',$data); 
@@ -354,6 +342,21 @@ class Teacher extends CI_Controller {
 		$update_open_answersheet = $this->Common_model->updateRecordByConditions('upload_exam_ans_sheet',$where,array('open_answersheet'=>'Y'));
 		
 		$this->load->view('teacher/view_answersheet_pdf',$data); 
+	}
+
+	 public function view_answersheet_pdf($id){
+		
+		$id=$this->Common_model->encrypt_decrypt($id,'decrypt');
+		
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
+		$where= array('id'=>$id);
+		$data['answer'] = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',$where);
+		$update_open_answersheet = $this->Common_model->updateRecordByConditions('upload_exam_ans_sheet',$where,array('open_answersheet'=>'Y'));
+		
+		$this->load->view('teacher/answersheet_pdf',$data); 
 	}
 
 

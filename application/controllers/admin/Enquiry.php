@@ -3,7 +3,7 @@ include_once(APPPATH.'core/ADMIN_controller.php');
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Inquiry extends CI_Controller {
+class Enquiry extends CI_Controller {
 
 	function __construct(){
 		parent::__construct();
@@ -11,7 +11,7 @@ class Inquiry extends CI_Controller {
 		$this->load->model('Common_model');
 		$this->load->model('Datatable_model');
 		$this->load->model('Datatable_join_model');
-		if($this->session->account_type!='Inquiry'){
+		if($this->session->account_type!='Enquiry'){
 				redirect(base_url('admin/logout')); 
 		}
 	}
@@ -23,15 +23,15 @@ class Inquiry extends CI_Controller {
 			"menu_headings" => $this->Common_model->getRecordByWhereByOrder('menu_heading',$where,'heading_order','ASC'),
 			"menus" => $this->Common_model->getRecordByWhereByOrder('menu',$where,'heading_id,menu_order','ASC'),
 		);
-		$this->load->view('header',array('title' => 'Inquiry Section'));
-		$this->load->view('admin/inquiry/dashboard',$menu);
+		$this->load->view('header',array('title' => 'Enquiry Section'));
+		$this->load->view('admin/enquiry/dashboard',$menu);
 		$this->load->view('footer');	
 	}
 
-    public function view_inquiry(){
+    public function view_enquiry(){
         $data['inquiries'] = $this->Common_model->get_record('enquiry','*');
-        $this->load->view('header',array('title' => 'Inquiry Section'));
-		$this->load->view('admin/inquiry/inquiry_list',$data);
+        $this->load->view('header',array('title' => 'Enquiry Section'));
+		$this->load->view('admin/enquiry/enquiry_list',$data);
 		$this->load->view('footer');
     }
 
@@ -54,7 +54,7 @@ class Inquiry extends CI_Controller {
     				'image' =>$department_image,);
     			$insert = $this->Common_model->insertAll('department',$data);
     			if($insert){
-    				redirect(base_url().'admin/inquiry/department');
+    				redirect(base_url().'admin/enquiry/department');
     			}
     		}
 
@@ -73,14 +73,14 @@ class Inquiry extends CI_Controller {
 
     			$update = $this->Common_model->updateRecordByConditions('department',array("id"=>$param2),$data);
     			if($update){
-    				redirect(base_url().'admin/inquiry/department');
+    				redirect(base_url().'admin/enquiry/department');
     			}
     		}
 
     		if($param1 == 'delete'){
     			$response = $this->Common_model->deleteByWhere('department',array("id"=>$param2));
     			$this->session->set_flashdata('ajax_flash_message','Department Successfully Deleted');
-    			redirect(base_url().'admin/inquiry/department');
+    			redirect(base_url().'admin/enquiry/department');
     		}
 
     		if(empty($param1)){
@@ -92,7 +92,7 @@ class Inquiry extends CI_Controller {
     			);
     			$data['departments'] = $this->Common_model->get_record("department","*");
     			$this->load->view('header',$title);
-    			$this->load->view('admin/inquiry/department',$data);
+    			$this->load->view('admin/enquiry/department',$data);
     			$this->load->view('footer');
     		}
     	}
@@ -105,26 +105,30 @@ class Inquiry extends CI_Controller {
 			exit;
 		}else{
 			if($param1 == 'create'){
-				$data = array('department_id' =>$_POST['department_id'],
-					'program_name' =>$_POST['program_name'],
-					'status'=>'Y' );
+				$data = array(
+					'department_id' => $_POST['department_id'],
+					'program_name' => $_POST['program_name'],
+					'course_type' => $_POST['course_type'],
+					'status' => 'Y' );
 				$insert = $this->Common_model->insertAll('program',$data);
 				if($insert){
-					redirect(base_url().'admin/inquiry/program');
+					redirect(base_url().'admin/enquiry/program');
 				}
 			}
 			if($param1 == 'update'){
 				$data = array('department_id' =>$_POST['department_id'],
-					'program_name' =>$_POST['program_name'],);
+					'program_name' =>$_POST['program_name'],
+					'course_type' => $_POST['course_type'],
+				);
 				$update = $this->Common_model->updateRecordByConditions('program',array("id"=>$param2),$data);
 				if($update){
-					redirect(base_url().'admin/inquiry/program');
+					redirect(base_url().'admin/enquiry/program');
 				}
 			}
 			if($param1 == 'delete'){
 				$response = $this->Common_model->deleteByWhere('program',array("id"=>$param2));
 				$this->session->set_flashdata('ajax_flash_message','Department Successfully Deleted');
-				redirect(base_url().'admin/inquiry/program');
+				redirect(base_url().'admin/enquiry/program');
 			}
 			if(empty($param1)){
 				$data = array();
@@ -135,9 +139,63 @@ class Inquiry extends CI_Controller {
 			);
 			$data['programs'] = $this->Common_model->get_record("program","*");
 				$this->load->view('header',$title);
-				$this->load->view('admin/inquiry/program',$data);
+				$this->load->view('admin/enquiry/program',$data);
 				$this->load->view('footer');
 			}    
 		}
 	}
+
+	public function getListByDepartment()
+	{
+		if ($this->input->method() == "post") 
+		{
+			//$course_group_id = 0;
+			$data = array();
+			$dt   = array();
+		    $department_id  = $this->input->post("department");
+			
+			$all_programs = $this->Common_model->get_record("program","*");
+			$programs = $this->Common_model->get_record_by_order("program","*","p_order",array("department_id" => $department_id));
+
+			if($department_id){
+
+			$data = array('programs' => $programs ,'name_csrf' => $this->security->get_csrf_token_name(),'hash_csrf' => $this->security->get_csrf_hash());
+			$dt =  $this->load->view('admin/enquiry/program_by_dept',$data,true);
+
+			}
+			else{
+
+				$dt =  "<p style='color:red'>Invalid Department ID</p>";
+			}
+			
+			echo json_encode(array(
+				"status" => true,
+				"data" => $dt
+			));
+		}
+	}
+
+	public function update_program_list_order()
+		{
+		
+		$allDataa = $_POST['allData'];
+
+		
+		$i = 1;
+		foreach ($allDataa as $key => $value) 
+		{
+			$data = array(
+				'p_order' => $i
+			);
+					
+			$where = 'id='.$value;				
+			$this->Common_model->updateRecordByConditions('program',$where,$data); 
+			$i++;
+			
+			$this->session->set_flashdata('success','Order Updated.');
+			echo "Order Updated";	
+		}
+
+	}
+
 }// class
