@@ -17,6 +17,9 @@ $page=1;
 	.size  {
 		font-size: 15px; 
 	}
+	.alternate:nth-child(even) {
+            background-color: yellow;
+        }
 
 </style>
 <body>
@@ -61,9 +64,9 @@ $page=1;
 		$i=1;
 		foreach($students as $student){
 			?>
-			<tr>
+			<tr class="alternate">
 
-				<td >
+				<td scope="row" width="5%">
 					<?php echo $i++; ?>
 				</td>
 				<td class="style6" scope="row" width="20%">
@@ -81,74 +84,55 @@ $page=1;
 					$fail_count = 0;
 					$get_tot_marks = 0;
 					$require_tot_marks = 0;
-
-					$this->db->select('*');
-					$this->db->from('new_exam_form');
-					$this->db->join('paper_master', 'new_exam_form.paper_id = paper_master.id');
-					$this->db->where('new_exam_form.student_id',$student->student_id); 
-					$paper_marks = $this->db->get()->result();
-
+$paper_marks = $this->Common_model->notification_marks_details_($student->student_id);
+					
 					foreach($paper_marks as  $marks){
 
 						if($marks->type=="theory" )
 						{
-
-							if ($marks->theory_marks+$marks->int_marks>=$marks->min_theory_marks+$marks->min_int_marks){
-								
+							if ($marks->theory_marks>=$marks->min_theory_marks){
+							$result = "Pass";	
 							}
 
 							else{
-
+                                $result = "Fail";
 								$fail_count++;
-								$get_tot_marks += $marks->theory_marks+$marks->int_marks;
-								$require_tot_marks += $marks->min_theory_marks+ $marks->min_int_marks;
+								$get_tot_marks += $marks->theory_marks;
+								$require_tot_marks += $marks->min_theory_marks;
 							}
 						}
 						else if($marks->type=='practical'){
 
 							if($marks->p_marks>=$marks->min_theory_marks){
+								$result = "Pass";	
 							}else{
-
+                             $result = "Fail";
 								$fail_count++;
 								$get_tot_marks += $marks->p_marks;
 								$require_tot_marks += $marks->min_theory_marks;
 							}
 						}
 
-						
-						// if($marks->type=="theory" )
-						// {
-						// 	if(($marks->theory_marks<$marks->min_theory_marks || $marks->int_marks<$marks->min_int_marks) && $check_grace_marks==false ){
-						// 		//++$fail_count ;
-						// 	}
-						// }else{
-						// 	if($marks->p_marks<$marks->min_theory_marks)
-						// 	{
-						// 		//++$fail_count ;
-						// 	}
-						// }
-
 						$require_grace_marks = $require_tot_marks-$get_tot_marks;
 
-
-						if ($fail_count<3 && $require_grace_marks<3 ) {
+						if ($fail_count<2 && $require_grace_marks<3 ) {
 							$check_grace_marks = true;
 						}
 
 						if($marks->type=="theory"){
 
 
-							if($marks->theory_marks>=$marks->min_theory_marks && $marks->int_marks >= $marks->min_int_marks){
+							if($marks->theory_marks>=$marks->max_theory_marks || $marks->int_marks>=$marks->min_int_marks){
 								$result = "Pass";
 							}
 
-							elseif($marks->theory_marks<$marks->min_theory_marks && $marks->int_marks<$marks->min_int_marks){
+							elseif($marks->theory_marks<$marks->max_theory_marks ||  $marks->int_marks<$marks->min_int_marks){
 								$result = 	($check_grace_marks) ? "Pass by grace" :    "Fail";
-                             // $fail_count++;
+                             
 
 							}else{
 								$result = "Fail";
-								 // $fail_count++;
+								
 							} 
 						}
 						elseif($marks->type=="practical")
@@ -161,15 +145,13 @@ $page=1;
 
 							elseif($marks->p_marks<$marks->min_theory_marks){
 								$result = ($check_grace_marks) ? "Pass by grace" :  "Fail";
-                               // ++$fail_count;
+                              
 							}else{
 								$result = "Fail";
-								// ++$fail_count;
+								
 							} 
 						} 
-
 					}
-
 					
 // echo	$require_grace_marks ;
 //    echo $fail_count++;
@@ -181,12 +163,8 @@ $page=1;
 				<td align="center" width="10%">					
 
 					<?php 
-
-					$this->db->select('*');
-					$this->db->from('new_exam_form');
-					$this->db->join('paper_master', 'new_exam_form.paper_id = paper_master.id');
-					$this->db->where('new_exam_form.student_id',$student->student_id); 
-					$paper_marks = $this->db->get()->result();
+   
+$paper_marks = $this->Common_model->notification_marks_details_($student->student_id);
 
 					$total_max_marks = 0 ;
 					$total_obtained_marks = 0;
@@ -232,10 +210,50 @@ $page=1;
 					?>
 				</td>
 
-				<td>Remarks</td>		 	
+				<td>
+					<?php 
+					$require_tot_marks=0;
+					$get_tot_marks=0;
+					$check_grace_marks = false;
+					$fail_count = 0;
 
+            $paper_marks = $this->Common_model->notification_marks_details_($student->student_id);
+				
+					foreach($paper_marks as   $marks)
+					{  
 
+						if($marks->type=="theory"){
 
+							if( $marks->theory!='ABS'){
+								$remark = "";	
+							}
+							else if($marks->theory_marks<$marks->min_theory_marks){
+								$fail_count++;
+								$get_tot_marks += $marks->theory_marks;
+								$require_tot_marks += $marks->min_theory_marks;
+					           $require_grace_marks = $require_tot_marks-$get_tot_marks;			
+
+						     if ($fail_count<2 && $require_grace_marks<3 ) {
+							$check_grace_marks = true;
+							$remark = 'ATKT';
+						     }		
+                          else{
+                            
+                            if($marks->theory='' ||  $marks->theory=0){
+                            	$remark = 'Fail';
+                            } else{
+                                $remark = 'Fail';
+                            }
+                            }
+							}
+							else{
+								$remark = "Absent";    
+							}
+                            }
+		                      }
+					 echo $remark ;
+					?>
+				</td>		 	
 			</tr>
 			<?php
 		}
