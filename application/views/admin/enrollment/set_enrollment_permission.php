@@ -36,7 +36,7 @@
 	
 	<div class="text-center p-3">
 		<input type="hidden" name="action" value="setPermission">
-		<input type="hidden" name="action" value="setProvisional">
+	
 		<button type="submit" class="btn btn-primary btn-lg" name="submit" >Set Permission</button>
 	</div>
 </form>
