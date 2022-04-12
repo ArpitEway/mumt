@@ -9,7 +9,8 @@
 					<th>Father's / Husband's Name</th>
 					<th>Course Name</th>
 					<th> Enrollment No</th>
-					<th><input type="checkbox" id="allEnrolled"></th>
+					<th><input type="checkbox"  id="allEnrolled"> (Enrollment)</th>
+					<th><input type="checkbox" id="all_provision">(Provisional)</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -23,7 +24,8 @@
 						<td><?=$student->f_h_name;?></td>
 						<td><?=$student->course_name;?></td>
 						<td><?=$student->enrollment_no;?></td>
-						<td><input type="checkbox" name="enrollment_no[]" value="<?=$student->enrollment_no;?>"></td>
+						<td><input type="checkbox" class="enrollment_no" name="enrollment_no[]" value="<?=$student->enrollment_no;?>"></td>
+						<td><input type="checkbox" class="provisions" name="student_id[]" value="<?=$student->student_id;?>"></td>
 					</tr>
 					<?php 
 					}
@@ -34,6 +36,7 @@
 	
 	<div class="text-center p-3">
 		<input type="hidden" name="action" value="setPermission">
+		<input type="hidden" name="action" value="setProvisional">
 		<button type="submit" class="btn btn-primary btn-lg" name="submit" >Set Permission</button>
 	</div>
 </form>
@@ -42,9 +45,17 @@
 		// Check All
 		$('#allEnrolled').on('change', function() {
 			if($('#allEnrolled').is(":checked")){
-				$(":checkbox").attr("checked", true);
+				$(".enrollment_no").attr("checked", "checked");
 				}else{
-				$(":checkbox").attr("checked", false);
+					$(".enrollment_no").attr("checked",false );
+			}
+		});
+
+		$('#all_provision').on('change', function() {
+			if($('#all_provision').is(":checked")){
+				$(".provisions").attr("checked", true);
+				}else{
+				$(".provisions").attr("checked", false);
 			}
 		});
 	});
