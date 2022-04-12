@@ -2657,18 +2657,9 @@ public function update_exam_datewise_permission(){
 			
 			$data = array();
 
-			//$course_detail = $this->Common_model->get_record('marksheet_variables','*');
-
-			//$order_by = "notification_no = ASC";
-
 			$whr =  array("notification_no !=" => "");
 
-			//$course_detail = $this->Common_model->getAllRow('marksheet_variables','*',$whr,$order_by);
-
 			$course_detail = $this->Common_model->getRecordByOrder('marksheet_variables',"notification_no,result_date","ASC");
-			
-			// echo $this->db->last_query();
-			// die;
 
 			$data = array('course_detail' => $course_detail ,'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash()
