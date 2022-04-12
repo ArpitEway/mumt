@@ -2656,7 +2656,19 @@ public function update_exam_datewise_permission(){
 			$admin_id = $this->session->admin_id;
 			
 			$data = array();
-			$course_detail = $this->Common_model->get_record('marksheet_variables','*');
+
+			//$course_detail = $this->Common_model->get_record('marksheet_variables','*');
+
+			//$order_by = "notification_no = ASC";
+
+			$whr =  array("notification_no !=" => "");
+
+			//$course_detail = $this->Common_model->getAllRow('marksheet_variables','*',$whr,$order_by);
+
+			$course_detail = $this->Common_model->getRecordByOrder('marksheet_variables',"notification_no,result_date","ASC");
+			
+			// echo $this->db->last_query();
+			// die;
 
 			$data = array('course_detail' => $course_detail ,'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash()
@@ -2671,19 +2683,20 @@ public function update_exam_datewise_permission(){
 
 	public function update_marksheet_variable(){
 
-		$classes    	= $_POST['class_id'];
-		$notifi_no 		= $_POST['notifi_no'];
-		$result_date	= $_POST['result_date'];
-
-		
+		$classes    			= $_POST['class_id'];
+		$notifi_no 				= $_POST['notifi_no'];
+		$result_date			= $_POST['result_date'];
+		$backlog_notifi_no 		= $_POST['backlog_notifi_no'];
+		$backlog_result_date	= $_POST['backlog_result_date'];
+		$exam_session           = $_POST['exam_session'];
+		$bar_code_no           = $_POST['bar_code_no'];
 
 		foreach($classes as $key => $item)
 		{
 			
-			
 			$where = array('class_id' => $item);
 
-			$marksheetData = array('notification_no' => $notifi_no[$key],'result_date' => $result_date[$key]);
+			$marksheetData = array('bar_code_no' => $bar_code_no,'exam_session' => $exam_session,'notification_no' => $notifi_no[$key],'backlog_notification_no' => $backlog_notifi_no[$key],'result_date' => $result_date[$key],'backlog_result_date' => $backlog_result_date[$key]);
 
 			$update =  $this->Common_model->updateRecordByConditions('marksheet_variables',$where,$marksheetData);
 		
