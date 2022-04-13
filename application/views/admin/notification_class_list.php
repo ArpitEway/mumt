@@ -17,7 +17,12 @@
         <td></td>
 			<td><?= $class->class_name ?></td>
 			
-			<td><a target="_blank" href="<?php echo  base_url('admin/admins/student_notification_list/'.$course['id'].'/'.$class->id)  ?>">Notification List</a></td>
+			<td>
+				<?php $course_id = $this->Common_model->encrypt_decrypt($course['id']);
+				$class_id = $this->Common_model->encrypt_decrypt($class->id);
+				 ?>
+				<a target="_blank" href="<?php echo  base_url('admin/admins/student_notification_list/'.$course_id.'/'.$class_id)  ?>">Notification List</a>
+			</td>
 		</tr>
         <?php } ; }  ?>
 	</tbody>

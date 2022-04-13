@@ -1,5 +1,11 @@
 
 <?php
+
+$notification_no = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id' => $students[0]->class_id));
+$notification=$notification_no[0]->notification_no;
+$date=$notification_no[0]->result_date;
+$exam_session=$notification_no[0]->exam_session;
+
 $page=1;
 ?>
 
@@ -24,22 +30,22 @@ $page=1;
 </style>
 <body>
 
-	<!-- <p align="right"><?php echo "Page : ". $page; ?></p> -->
+	 <p align="right"><?php echo "Page : ". $page; ?></p> 
 	<div style="width:75px;float:left"><img src="<?=base_url('assets/logo.png')?>" ></div>
 	<h3 class="text-center" ><strong> Maharishi Mahesh Yogi Vedic Vishwavidyalaya </strong> </h3>
 	<p align="center" style="line-height:0px">Head Office: Karaundi, Post-Mahner ,Distt- Katni(MP) Website www.mmyvvdde.com </p>
 	<h3 align="center"><strong>Result Notification of</strong> <br><h3>
-		<h3 align="center">	<strong><?php echo $students[0]->course_name.' - '. $students[0]->class_name .' Examination '. $students[0]->session ?></strong><br><h3>
+		<h3 align="center">	<strong><?php echo $students[0]->course_name.' - '. $students[0]->class_name .' Examination '. $exam_session?></strong><br><h3>
 			<title>Notification <?php echo $students[0]->course_name?></title> 
 
 
 
 			<div class="flex-container">
-				<div style="font-size:15px;" >Notification No : <?php echo $notification_no;?></div>
+				<div style="font-size:15px;" >Notification No : <?php echo $notification;?></div>
 
-				<div style="font-size:15px;" class="flex">Date : <?php echo $notification_no;?></div>  
+				<div style="font-size:15px;" class="flex">Date : <?php echo $date;?></div>  
 			</div>
-			<div style="font-size:15px;" align="center">The Result of the following examinees of the above exam is hereby declared as under : <?php echo $notification_no;?></div>
+			<div style="font-size:15px;" align="center">The Result of the following examinees of the above exam is hereby declared as under : </div>
 			<hr>
 
 
@@ -122,12 +128,12 @@ $paper_marks = $this->Common_model->notification_marks_details_($student->studen
 						if($marks->type=="theory"){
 
 
-							if($marks->theory_marks>=$marks->max_theory_marks || $marks->int_marks>=$marks->min_int_marks){
+							if($marks->theory_marks>=$marks->min_theory_marks ){
 								$result = "Pass";
 							}
 
-							elseif($marks->theory_marks<$marks->max_theory_marks ||  $marks->int_marks<$marks->min_int_marks){
-								$result = 	($check_grace_marks) ? "Pass by grace" :    "Fail";
+							elseif($marks->theory_marks<$marks->min_theory_marks ){
+								$result = 	($fail_count<2 && $require_grace_marks<3) ? "Pass by grace" :    "Fail";
                              
 
 							}else{
@@ -153,8 +159,8 @@ $paper_marks = $this->Common_model->notification_marks_details_($student->studen
 						} 
 					}
 					
-// echo	$require_grace_marks ;
-//    echo $fail_count++;
+   // echo	$require_grace_marks ;
+   //    echo $fail_count++;
 					echo $result ;
 
 					?>	  	
@@ -168,9 +174,8 @@ $paper_marks = $this->Common_model->notification_marks_details_($student->studen
 
 					$total_max_marks = 0 ;
 					$total_obtained_marks = 0;
-						// $total_obtained_marks1=0;
-						// $total_max_marks1=0;
-					foreach($paper_marks as  $key =>  $marks)
+						
+				foreach($paper_marks as  $key =>  $marks)
 					{  
 
 						if($marks->type=='theory'){
@@ -190,20 +195,20 @@ $paper_marks = $this->Common_model->notification_marks_details_($student->studen
 							$total_obtained_marks+=  $obtain_marks;
 
 						}
-					// 		else if($marks->type=='practical')
-					// 		{
+							else if($marks->type=='practical')
+							{
 
-					// 			if($marks->type=="practical"){
-					// 				$mx_marks1=  $marks->max_theory_marks ;
+								if($marks->type=="practical"){
+									$mx_marks=  $marks->max_theory_marks  ;
 
-					// 			$total_max_marks1+=$mx_marks1;
-					// 		}
-					// 			else($marks->type=="practical"){
+								$total_max_marks+=$mx_marks;
+							}
+								else{
 
-					// 			$obtain_marks1= $marks->p_marks;
-					// 			$total_obtained_marks1+= $obtain_marks1;
-					// 		}
-					 }
+								$obtain_marks= $marks->p_marks;
+								$total_obtained_marks+= $obtain_marks1;
+							}
+					 }}
 
 					echo $total_obtained_marks .' / '. $total_max_marks;
 
@@ -212,47 +217,94 @@ $paper_marks = $this->Common_model->notification_marks_details_($student->studen
 
 				<td>
 					<?php 
+					$total_theory_abs_count=0;
+					$total_int_abs_count=0;
 					$require_tot_marks=0;
 					$get_tot_marks=0;
 					$check_grace_marks = false;
-					$fail_count = 0;
+					$ATKT_count = 0;
+                  $ATKT_paper_codes = array(); 
 
-            $paper_marks = $this->Common_model->notification_marks_details_($student->student_id);
-				
-					foreach($paper_marks as   $marks)
-					{  
+                  $paper_marks = $this->Common_model->notification_marks_details_($student->student_id);
 
-						if($marks->type=="theory"){
+                  foreach($paper_marks as   $marks)
+                  {  
+                  	if($marks->type=="theory" )
+                  	{
+                  		if($marks->theory_marks>=$marks->min_theory_marks ){
 
-							if( $marks->theory!='ABS'){
-								$remark = "";	
-							}
-							else if($marks->theory_marks<$marks->min_theory_marks){
-								$fail_count++;
-								$get_tot_marks += $marks->theory_marks;
-								$require_tot_marks += $marks->min_theory_marks;
-					           $require_grace_marks = $require_tot_marks-$get_tot_marks;			
+                  			$remark = '';
+                  		}
+                  		elseif($marks->theory_marks=='') {
+                  			array_push( $ATKT_paper_codes,$marks->paper_code );
+                  			$total_theory_abs_count++;
+                  		}		
+                  		else{ 
 
-						     if ($fail_count<2 && $require_grace_marks<3 ) {
-							$check_grace_marks = true;
-							$remark = 'ATKT';
-						     }		
-                          else{
-                            
-                            if($marks->theory='' ||  $marks->theory=0){
-                            	$remark = 'Fail';
-                            } else{
-                                $remark = 'Fail';
-                            }
-                            }
-							}
-							else{
-								$remark = "Absent";    
-							}
-                            }
-		                      }
-					 echo $remark ;
-					?>
+                  			array_push( $ATKT_paper_codes ,$marks->paper_code );
+                  			$fail_count++;
+                  			$fali_tot_marks += $marks->theory_marks;
+                  			$require_tot_marks += $marks->min_theory_marks;
+                  		}			
+                  		$require_grace_marks = $require_tot_marks-$fali_tot_marks;
+                  	}
+
+                  	elseif($marks->type=='practical'){
+                  		if($marks->p_marks=='' || $marks->p_marks=='N'){
+
+                  			$total_int_abs_count++ ;
+                  			array_push( $ATKT_paper_codes ,$marks->paper_code );
+                  		}
+                  		if($marks->p_marks==''){
+                  			$total_int_abs_count++ ;
+                  		}
+                  	}
+
+                  	if ($fail_count>2 && $require_grace_marks>3  ) {
+                  		$check_grace_marks = false;
+                  	}
+                  	($total_theory_abs_count==5) ? $remark = "Abs in theory" : "";
+                  	($total_int_abs_count>0) ? $remark = "Abs in <br> Practical" : "" ;
+                  	($total_int_abs_count>0 &&  $total_theory_abs_count==5) ? $remark = "Abs in All" : "" ;
+
+
+      	              // if($marks->type=="theory"){
+                  		if($check_grace_marks==false){
+                  			if(($total_theory_abs_count==5)|| ($total_int_abs_count>0 &&  $total_theory_abs_count==5)){
+                  				// $remark = "Absent";
+                  			}
+
+                  			elseif($marks->theory_marks<$marks->min_theory_marks && ($ATKT_paper_codes)>0 ){
+
+                  				$remark = 	($fail_count>2 && $require_grace_marks>3) ? "ATKT" :    "";                  
+
+                  			}else{
+                  				$remark = "";
+
+                  			} 
+                  		}  
+                      elseif($check_grace_marks==false ){
+                  			if(($total_int_abs_count==5)|| ($total_int_abs_count>0 &&  $total_int_abs_count==5)){
+                  				// $remark = "Absent";
+                  			}
+                  			elseif($marks->p_marks<$marks->min_theory_marks && ($ATKT_paper_codes)>0 ){
+                  				$remark = 	($fail_count>2 && $require_grace_marks>3) ? "ATKT" :    "";                  
+
+                  			}else{
+                  				$remark = "";
+                  			} 
+                  		}  
+
+                  //	}
+		
+					}
+				// echo	"in ".$remark;
+					 echo $remark;
+			foreach($ATKT_paper_codes as $paper_code){
+             echo  "<br>". $paper_code ;
+           }  
+
+     				?>
 				</td>		 	
 			</tr>
 			<?php
