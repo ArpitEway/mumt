@@ -24,6 +24,7 @@
 				<td><?php echo $student["name"]; ?></td>
 				<td><?php echo $student["f_h_name"]; ?></td>
 				<td><?php 
+				$std = $student["student_id"] ;
 				$student_id = $this->Common_model->encrypt_decrypt($student["student_id"]); 
 				foreach($docs as $doc){
 					$ext = explode(".",$doc["document_image"]);
@@ -67,7 +68,7 @@
 				<td>
 					<div style="display: inline-grid;">
 					<?php if($student["approved"] != 'Y' || $student["approved"] == "" ){ ?>
-					<a href="javascript:void(0);" style="margin:5px;" class="btn btn-success" id="provision" onclick="rightModal('<?php echo site_url('admin/modal/student_popup/admin/student/update/provisional_remark/'.$student_id); ?>', '<?php echo 'Provisional Remark' ?>')"> Make  approved
+					<a href="javascript:void(0);" style="margin:5px;" class="btn btn-success" id="<?php echo  $std  ?>"   onclick="rightModal('<?php echo site_url('admin/modal/student_popup/admin/student/update/provisional_remark/'.$student_id); ?>', '<?php echo 'Provisional Remark' ?>')"> Make  approved
 
 					<a href="javascript:void(0);" style="margin:5px;" class="btn btn-danger" onclick="rightModal('<?php echo site_url('admin/modal/student_popup/admin/student/update/remark_update/'.$student_id); ?>', '<?php echo 'Select Remark' ?>')"> Make Non approve
 					</a>
@@ -131,14 +132,14 @@
 
 
 $(document).on('click', '#remark_submit', function(e) {
-	
+	// alert();
 	var ck_box = $('input[type="checkbox"]:checked').length;
 	
 	if(ck_box > 0){
 	
 		var frm = $('.ajaxForm').serialize();
 		var rem = $('.student_id_model').val();
-        
+           console.log(rem);
 	$.ajax({
 	url: '<?php echo site_url('admin/enrollment/provisional_remark_update/'); ?>'+ rem,
 	type: 'POST',
@@ -149,7 +150,9 @@ $(document).on('click', '#remark_submit', function(e) {
 		console.log(data);
 			$('#right-modal').modal('toggle');
 			toastr.success("approved");
-			$('#provision').html("Approved");
+			$('#'+rem).html("Approved");
+			$('#' +rem).prop("onclick",null).off("click");
+			$("#" +rem).siblings('a').hide();
 			}else{
 				toastr.error("Something wrong");
 			}
