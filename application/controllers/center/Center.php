@@ -1,3 +1,4 @@
+
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -1262,7 +1263,87 @@ class Center extends CI_Controller {
 			$this->load->view('Centers/footer');		
 
 		}    
+	 }
+
+	public function student_marks_no_list(){
+	 	if(!$this->session->has_userdata('centerdata')){
+	 		redirect(base_url());
+	 	}
+	 	$data = array(
+	 		'name_csrf' => $this->security->get_csrf_token_name(),
+	 		'hash_csrf' => $this->security->get_csrf_hash(),
+	 	);
+
+	 	$titleData = array('title' => 'Assignment Marks Submission' );
+	 	$this->load->view('Centers/header',$titleData);
+	 	$center_id =  $this->session->center_id;
+	 	$where = array(
+	 		'center_id' => $center_id,
+	 		'new_exam_form' => 'Y',
+	 		'result_show ' => 'N',
+	 		'int_marks_sub'=>'N'
+	 	);
+	 	$data['students'] = $this->Common_model->getRecordByWhereByOrder('student',$where,'course_group_id,class_id','ASC');
+	 	$this->load->view('Centers/student_marks_no_list',$data);
+	 	$this->load->view('Centers/footer');		
 	}
+
+	public function student_details_upload(){
+	 	$student_id = $this->input->post('student_id');
+	 	$where=array('student.student_id'=>$student_id);
+	 	$this->db->select('*');
+	 	$this->db->from('new_exam_form');
+	 	$this->db->Where($where );
+	 	$this->db->join('student', 'student.student_id = new_exam_form.student_id');
+	 	$details = $this->db->get()->result();
+	 	$data = array(
+	 		'details' => $details,
+	 		'name_csrf' => $this->security->get_csrf_token_name(),
+	 		'hash_csrf' => $this->security->get_csrf_hash(),
+	 	);
+	 	if($data){
+	 		$model =  $this->load->view('Centers/view_student_model_data',$data,true);
+	 		$status = true;
+	 	}
+	 	echo json_encode(array(
+	 		"status" => $status,
+	 		"data" => $model
+	 	));	
+	}
+
+	public function marks_paper_sub()
+	{  
+	 	$data=array();
+	 	$post = $this->input->post();
+	 	$data['paper_id'] = $this->input->post('paper_id');	
+	 	$data['marks'] = $this->input->post('marks');
+	 	foreach ($data['paper_id'] as $key => $value){
+	 		$studentData = array(
+	 			'int_marks' => $data['marks'][$key],	
+	 		);
+	 		$where =  array(
+	 			'paper_id' =>$value,
+	 			'student_id'  =>$_POST['student_id']
+	 		);
+	 		$Marksentry = $this->Common_model->updateRecordByConditions('new_exam_form',$where,$studentData);
+	 	}
+
+	 	$where1 =  array(
+	 		'student_id'  =>$_POST['student_id']
+	 	);
+	 	$Data = array(
+	 		'int_marks_sub' => 'Y',	
+	 	);
+	 	$Marksentry1 = $this->Common_model->updateRecordByConditions('student',$where1,$Data);
+	 	if($Marksentry1)
+	 	{
+	 		$returndata = array('success'=> 'Form Has Been Submited');
+	 		echo json_encode($returndata);
+	 	}else{
+	 		$returndata = array('error'=> 'An Error Occured');
+	 		echo json_encode($returndata);		
+	 	}
+	 }
 
 	public function show_activity_file(){
 		$activity_file= $this->Common_model->getRecordByWhere("activity_file",array("activity_id"=>$_POST['activity_id']));
@@ -1288,4 +1369,4 @@ class Center extends CI_Controller {
 		$delete_img = $this->Common_model->deleteByWhere("activity_file",array('id'=>$_POST['id']));
 		echo json_encode(array("status" => true,));			
 	}
-}	 
+}
