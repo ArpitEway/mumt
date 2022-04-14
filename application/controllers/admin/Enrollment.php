@@ -603,10 +603,16 @@
 				$where = 'student_id="'.$student[0]->student_id.'" ';
 				$this->Common_model->updateRecordByConditions('student',$where,$data);
 			}
-
+			$student_ids  = $this->input->post('student_id');
+			
+			foreach($student_ids as $student_id){
+				$where = 'student_id="'.$student_id.'" ';
+				$data = array('provisional' => 'Y');
+			 $this->Common_model->updateRecordByConditions('student',$where,$data);
+			}
 			$this->session->set_flashdata('ajax_flash_message','permission updated');
 			$centerCode = $this->Common_model->encrypt_decrypt($centerCode,'encrypt');
-			redirect(base_url().'admin/enrollment/enrollment_permission/'.$centerCode);		
+			redirect(base_url().'admin/enrollment/enrollment_permission/'.$centerCode);
 		}
 	}
 

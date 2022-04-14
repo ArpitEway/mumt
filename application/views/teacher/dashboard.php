@@ -15,6 +15,11 @@
         <div class="tab-content">
             <div class="tab-pane fade active show" id="Enrollment" role="tabpanel" aria-labelledby="Enrollment-tab">
                 <div class="row">
+                     <a class="border-0 custom-menu-item" href="<?=base_url('Teacher/Teacher_paper_alloted_list');?>">
+                        <div>
+                            <span class="nav-text">Answer-Sheet</span>
+                        </div>
+                    </a>
                     <a class="border-0 custom-menu-item" href="<?=base_url('Teacher/account_transaction_details');?>">
                         <div>
                             <span class="nav-text">Bank Account Details</span>
@@ -23,11 +28,6 @@
                     <a class="border-0 custom-menu-item" href="<?=base_url('Teacher/Teacher_answersheet_checked_count');?>">
                         <div>
                             <span class="nav-text">Answer-Sheet Status</span>
-                        </div>
-                    </a>
-                    <a class="border-0 custom-menu-item" href="<?=base_url('Teacher/Teacher_paper_alloted_list');?>">
-                        <div>
-                            <span class="nav-text">Answer-Sheet</span>
                         </div>
                     </a>
                 </div>

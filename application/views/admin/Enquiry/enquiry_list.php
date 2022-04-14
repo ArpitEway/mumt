@@ -14,17 +14,17 @@
 		<tbody>
 			<?php
 			$i = 1;
-			foreach($inquiries as $inquiry)
+			foreach($inquiries as $Enquiry)
 			{
-				$department = $this->Common_model->getRecordByWhere("department",array("id"=>$inquiry['department']));
-				$program = $this->Common_model->getRecordByWhere("program",array("id"=>$inquiry['program']));
+				$department = $this->Common_model->getRecordByWhere("department",array("id"=>$Enquiry['department']));
+				$program = $this->Common_model->getRecordByWhere("program",array("id"=>$Enquiry['program']));
 				?>
 				<tr>
 					<td><?php echo $i; ?></td>
-					<td><?php echo $inquiry['name']; ?></td>
-					<td><?php echo $inquiry['email']; ?></td>
-					<td><?php echo $inquiry['mobile']; ?></td>
-					<td><?php echo $inquiry['City']; ?></td>
+					<td><?php echo $Enquiry['name']; ?></td>
+					<td><?php echo $Enquiry['email']; ?></td>
+					<td><?php echo $Enquiry['mobile']; ?></td>
+					<td><?php echo $Enquiry['City']; ?></td>
 					<td><?php echo $department[0]->department_name; ?></td>
 					<td><?php echo $program[0]->program_name; ?></td>
 				</tr>

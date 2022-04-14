@@ -10,10 +10,14 @@
 				<th>Paper Name</th>
 				<th>Type</th>
 				<th>CE</th>
-                <th>Exam Date</th>
+				<th>Max Theory Marks</th>
+				<th>Min Theory Marks</th>
+				<th>Max Internal Marks</th>
+				<th>Min Internal Marks</th>
+<!--            <th>Exam Date</th>
 				<th>Exam Day</th>
 				<th>Exam Time</th>
-				<th>Option</th>
+ -->				<th>Option</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -30,25 +34,25 @@
 					<td><?=$paper["paper_name"]?></td>
 					<td><?=$paper["type"]?></td>
 					<td><?=$paper["ce"]?></td>
-                    <td>
-
+					<td><?=$paper["max_theory_marks"]?></td>
+					<td><?=$paper["min_theory_marks"]?></td>
+					<td><?=$paper["max_internal_marks"]?></td>
+					<td><?=$paper["min_internal_marks"]?></td>
+                   <!--  <td>
 						<?php 
-						if($paper["exam_date"] != "0000-00-00" ){
-						$this->Common_model->viewDate($paper["exam_date"]);
-						}
-						
+						// if($paper["exam_date"] != "0000-00-00" ){
+						// 		$this->Common_model->viewDate($paper["exam_date"]);
+						// }
 						?>
-
                     </td>
 					<td><?=$paper["exam_day"]?></td>
-					<td><?=$paper["exam_shift"]?></td>
+					<td><?=$paper["exam_shift"]?></td> -->
 					<td>
 						<div style="display: inline-flex;">
 							<a href="javascript:void(0);" class="dropdown-item" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/paper/edit/'.$paper['id']); ?>', '<?php echo 'Update Paper' ?>')"> <i class="mdi mdi-pencil edit-icon"></i></a>   
 							<a href="javascript:void(0);" class="dropdown-item" onclick="confirmModal('<?php echo site_url('admin/Admins/paper/delete/'.$paper['id']); ?>')"><i class="mdi mdi-delete delete-icon"></i></a>
 						</div>
                     </td>
-
 				</tr>
 			<?php $i++; }  ?>			
 		</tbody>
