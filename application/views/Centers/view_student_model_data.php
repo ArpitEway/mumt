@@ -109,15 +109,15 @@
           <td>
               <?php 
        
-$view=  $this->Common_model->getRecordByWhere("paper_master",'class_id='.$details[0]->class_id);
-           echo $view[0]->max_theory_marks;
+$view1=  $this->Common_model->getRecordByWhere("paper_master",'class_id='.$details[0]->class_id);
+           echo $view1[0]->max_int_marks;
                       
             ?>  
           </td>
           <td>    <?php 
        
 $view=  $this->Common_model->getRecordByWhere("paper_master",'class_id='.$details[0]->class_id);
-           echo $view[0]->min_theory_marks;
+           echo $view[0]->min_int_marks;
                         
             ?>  </td>
           <td> 
@@ -125,7 +125,9 @@ $view=  $this->Common_model->getRecordByWhere("paper_master",'class_id='.$detail
             <select name="marks[]" class="form-control col-12 " id="marks"  > 
         <option value="Absent" selected>Absent</option>
         <?php
-        for ($i=0; $i<=14; $i++)
+           
+      $marks=  $view[0]->max_int_marks;
+        for ($i=0; $i<=$marks; $i++)
         {
           ?>
           <option value="<?php echo $i; ?>"  ><?php echo $i; ?></option>
