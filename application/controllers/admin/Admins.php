@@ -2661,4 +2661,6 @@ public function update_exam_datewise_permission(){
 			));
 		}
 	}
+
+
 }// class

@@ -69,6 +69,103 @@ class Postexam extends CI_Controller {
            }
       }
 
+      public function upload_old_marks()
+      {
+         
+           $this->db->select('course_name,class_name,class_id, COUNT(student_id) as cnt');
+           $this->db->where('exam_form', 'Y');
+           $this->db->where('result_show', 'Y');
+           $this->db->where('upload_result', 'N');
+           $this->db->group_by('class_id'); 
+         
+           $data['courses'] = $this->db->get('student')->result();
+        
+           $this->load->view('header',array('title' => ''));
+           $this->load->view('admin/script/upload_old_marks',$data);
+           $this->load->view('footer');
+          
+      }
+
+      public function upload_old_data_script($class_id="")
+      {
+
+         
+          $check_grace_marks = false;
+          $fail_count = 0;
+          $whCount = 0;
+          $fali_tot_marks = 0;
+          $require_tot_marks = 0;
+          $tot_std_marks = 0;
+          $tot_marks = 0;
+          $grace_result_count=0;
+          $fail_result_count=0;
+          
+           $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id , "exam_form"=>'Y',"result_show"=>'Y',"upload_result"=>'N'));
+        
+           foreach($students as $student)
+           {
+
+          
+
+              $data = array(
+                  'student_id' => $student->student_id ,
+                  'center_id' => $student->institute_id ,
+                  'center_code' => $student->institute_code ,
+                  'course_group_id' =>$student->course_group_id ,
+                  'course_name' => $student->course_name ,
+                  'class_id' => $student->class_id ,
+                  'enrollment_no' => $student->enrollment_no ,
+                  'roll_no' => $student->roll_no ,
+                  'name' => $student->name ,
+                  'f_h_name' => $student->f_h_name ,
+                  'mother_name' => $student->mother_name ,
+                  'marksheet_no' =>$student->marksheet_no ,
+                  
+              );
+            //  $old_exam_data_id = $this->Common_model->insertAll('old_exam_data',$data);
+        $new_exam_form = $this->Common_model->getRecordByWhere('new_exam_form',array('student_id'=>$student->student_id));
+
+           foreach($new_exam_form  as $marks)
+           {
+
+                    $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$marks->class_id,'paper_code'=>$marks->paper_code));
+                    echo "<pre>";
+                    print_r($marks);
+                    if($marks->paper_type=='theory'){
+                        $tot_std_marks += $marks->theory_marks + $marks->int_marks;
+                        $tot_marks += $paper_master[0]->reg_max_marks + $paper_master[0]->reg_max_int_marks;
+                        if($marks->theory_marks==''){
+                            $whCount++;
+                        }else if($marks->theory_marks<$paper_master[0]->reg_min_marks){
+                            $result = "fail";
+                            $fail_count++;
+                            $fali_tot_marks += $marks->theory_marks;
+                            $require_tot_marks += $paper_master[0]->reg_min_marks;
+                        }
+                    }else if($paper=='practical'){
+                        $tot_std_marks += $paper->p_marks;
+                        $tot_marks += $paper->reg_max_marks;
+                        if($paper->p_marks>=$paper->reg_min_marks){
+                            $result = "pass";
+                        }else if($paper->p_marks=='' && $paper->p_marks=='N'){
+                            $whCount++;
+                        }else if($paper->theory_marks<$paper->reg_min_marks){
+                            $result = "fail";
+                            $fail_count++;
+                            $fali_tot_marks += $paper->p_marks;
+                            $require_tot_marks += $paper->reg_min_marks;
+                        }
+                    }
+           
+           }     
+           
+          
+           }
+        
+           die ;
+          
+      }
+
 }
 
 ?>
