@@ -9,6 +9,81 @@ $exam_session=$notification_no[0]->exam_session;
 $page=1;
 ?>
 
+<!-- <?php 
+
+$paper_marks = $this->Common_model->notification_marks_details_($students[0]->student_id);
+
+
+    $check_grace_marks = false;
+  $fail_count = 0;
+  $fali_tot_marks = 0;
+  $require_tot_marks = 0;
+  $tot_marks = 0;
+   $total_int_count=0;
+    $total_theory_abs_count=0;
+  foreach($paper_marks as $marks){
+      if($marks->type=='theory'){
+              $tot_marks += $marks->max_theory_marks;
+          if($marks->theory_marks>=$marks->min_theory_marks){
+              $result = "Pass";
+          }elseif($marks->theory_marks==''){
+            $total_theory_abs_count++;
+          }else{
+              $result = "Fail";
+              $fail_count++;
+              $fali_tot_marks += $marks->theory_marks;
+              $require_tot_marks += $marks->min_theory_marks;
+          }
+          
+      }else if($marks->type=='practical'){
+          $tot_std_marks += $marks->p_marks;
+          $tot_marks += $marks->max_theory_marks;
+          if($marks->p_marks>=$marks->min_theory_marks){
+              $result = "Pass";
+          }elseif($marks->p_marks==''){
+            $total_int_count++;
+          }else{
+              $result = "Fail";
+              $fail_count++;
+              $fali_tot_marks += $marks->p_marks;
+              $require_tot_marks += $marks->min_theory_marks;
+          }
+      }
+  
+}
+     
+  $require_grace_marks = $require_tot_marks-$fali_tot_marks;
+
+  if ($fail_count<3 && $require_grace_marks<4  ) {
+      $check_grace_marks = true;
+  }
+
+             if($marks->type=="theory"){
+              if($marks->theory_marks<$marks->min_theory_marks || $marks->int_marks<$marks->min_internal_marks){
+               $res =  ($check_grace_marks) ? "Pass" : "ATKT";
+              }else{
+                $res = "Pass";
+              } 
+             }else{
+            
+               if($marks->p_marks<$marks->min_theory_marks ){
+               $result = "ATKT";
+               }else{
+               $result = "Pass";
+               }
+             }
+
+
+
+?>
+
+ -->
+
+
+
+
+
+
 <style>
 
 	.break { page-break-before: always; }
@@ -84,83 +159,148 @@ $page=1;
 				<td align="center" width="15%" >
 
 					<?php 
-					$result = "";
-					
-					$check_grace_marks = false;
-					$fail_count = 0;
+				
+						$fail_count = 0;
+					$check_grace_marks = false;	
 					$get_tot_marks = 0;
 					$require_tot_marks = 0;
+					 $ATKT_paper_codes = array(); 
            $paper_marks = $this->Common_model->notification_marks_details_($student->student_id);
 					
 					foreach($paper_marks as  $marks){
 
-						if($marks->type=="theory" )
-						{
-							if ($marks->theory_marks>=$marks->min_theory_marks){
-							$result = "Pass";	
-							}
-
-							else{
-                                $result = "Fail";
-								$fail_count++;
-								$get_tot_marks += $marks->theory_marks;
-								$require_tot_marks += $marks->min_theory_marks;
-							}
-						}
-						else if($marks->type=='practical'){
-
-							if($marks->p_marks>=$marks->min_theory_marks){
-								$result = "Pass";	
-							}else{
-                             $result = "Fail";
-								$fail_count++;
-								$get_tot_marks += $marks->p_marks;
-								$require_tot_marks += $marks->min_theory_marks;
-							}
-						}
-
-						$require_grace_marks = $require_tot_marks-$get_tot_marks;
-
-						if ($fail_count<2 && $require_grace_marks<3 ) {
-							$check_grace_marks = true;
-						}
-
-						if($marks->type=="theory"){
 
 
-							if($marks->theory_marks>=$marks->min_theory_marks ){
-								$result = "Pass";
-							}
+  if($marks->type=="theory" )
+           {
+                if($marks->theory_marks<$marks->min_theory_marks){
+                  $fail_count++ ;
+               
+              $get_tot_marks += $marks->theory_marks;
+			$require_tot_marks += $marks->min_theory_marks;
 
-							elseif($marks->theory_marks<$marks->min_theory_marks ){
-								$result = 	($fail_count<2 && $require_grace_marks<3) ? "Pass by grace" :    "Fail";
+              }
+           
+                elseif($marks->theory_marks>$marks->min_theory_marks )  {
+                 $result = "Pass";
+
+                }
+            
+              }
+
+           // else{
+           //   if($marks->p_marks<$marks->min_theory_marks)
+           //     {
+           //      $fail_count++ ;
+           //     }
+           // }
+ $require_grace_marks = $require_tot_marks-$get_tot_marks;
+
+						
+
+           // final result code end
+             if($marks->type=="theory"){
+              if($marks->theory_marks<$marks->min_theory_marks ){
+               $result =  ($fail_count<2 && $require_grace_marks<3) ? "Pass  by grace" : "Fail";
+              }else{
+                $result = "Pass";
+              } 
+             }
+             // else{
+            
+             //   if($marks->p_marks<$marks->min_theory_marks){
+             //   $result = "Pass by grace";
+             //   }else{
+             //   $result = "Pass";
+             //   }
+             // }
+
+
+
+
+
+
+
+
+
+
+					// 	if($marks->type=="theory" )
+					// 	{
+					// 		if ($marks->theory_marks>=$marks->min_theory_marks){
+                   
+					// 		$result = "Pass";	
+					// 		}
+
+					// 		else{
+					// 			 $fail_count++;
+     //                     array_push( $ATKT_paper_codes ,$marks->paper_code );
                              
+     //                            $result = "Fail";
+								 
+					// 			$get_tot_marks += $marks->theory_marks;
+					// 			$require_tot_marks += $marks->min_theory_marks;
 
-							}else{
-								$result = "Fail";
+					// 		}
+					// 	}
+					// 	else if($marks->type=='practical'){
+
+					// 		if($marks->p_marks>=$marks->min_theory_marks){
+					// 			$result = "Pass";	
+					// 		}else{
+     //                         $result = "Fail";
+					// 			$fail_count++;
+					// 			$get_tot_marks += $marks->p_marks;
+					// 			$require_tot_marks += $marks->min_theory_marks;
+					// 		}
+					// 	}
+
+					// $require_grace_marks = $require_tot_marks-$get_tot_marks;
+
+					// 	if ($fail_count<2 && $require_grace_marks<3 ) {
+					// 		$check_grace_marks = true;
+					// 	}	
+					// 	if($marks->type=="theory"){
+
+					// 		if($marks->theory_marks>=$marks->min_theory_marks ){
+					// 			$result = "Pass";
+					// 		}
+
+					// 		elseif($marks->theory_marks<$marks->min_theory_marks ){
+					// 			$result = 	($fail_count<2 && $require_grace_marks<3) ? "Pass by grace" :    "Fail";
+                             
+					// 		}else{
+					// 			$result = "Fail";
 								
-							} 
-						}
-						elseif($marks->type=="practical")
+					// 		} 
+					// 	}
+					// 	elseif($marks->type=="practical")
 
-						{
+					// 	{
 
-							if($marks->p_marks>=$marks->min_theory_marks ){
-								$result = "Pass";
-							}
+					// 		if($marks->p_marks>=$marks->min_theory_marks ){
+					// 			$result = "Pass";
+					// 		}
 
-							elseif($marks->p_marks<$marks->min_theory_marks){
-								$result = ($check_grace_marks) ? "Pass by grace" :  "Fail";
+					// 		elseif($marks->p_marks<$marks->min_theory_marks){
+					// 			$result = ($check_grace_marks) ? "Pass by grace" :  "Fail";
                               
-							}else{
-								$result = "Fail";
+					// 		}else{
+					// 			$result = "Fail";
 								
-							} 
-						} 
+					// 		} 
+					// 	} 
+
+
+
+						
 					}
 					
-   // echo	$require_grace_marks ;
-   //    echo $fail_count++;
+
+
+					
+    	// $require_grace_marks ;
+     echo  $fail_count++;
+      echo $require_grace_marks;
 					echo $result ;
 
 					?>	  	
@@ -181,7 +321,7 @@ $page=1;
 						if($marks->type=='theory'){
 
 							if($marks->type=="theory"){
-								$mx_marks=  $marks->max_theory_marks + $marks->max_int_marks;
+								$mx_marks=  $marks->max_theory_marks + $marks->max_internal_marks;
 							}else{
 								$mx_marks=$marks->max_theory_marks;
 							}
@@ -239,25 +379,26 @@ $page=1;
 							}		
 							else{ 
 								array_push( $ATKT_paper_codes ,$marks->paper_code );
+
 								$fail_count++;
 								$fali_tot_marks += $marks->theory_marks;
 								$require_tot_marks += $marks->min_theory_marks;
 							}			
 						}
-            		      elseif($marks->type=='practical'){
-							if($marks->p_marks=='' || $marks->p_marks=='N'){
-								$total_int_abs_count++ ;
-                  			// array_push( $ATKT_paper_codes ,$marks->paper_code );
-							}
-							if($marks->p_marks==''){
-								$total_int_abs_count++ ;
-							}
-						}
+      //       		      elseif($marks->type=='practical'){
+						// 	if($marks->p_marks=='' || $marks->p_marks=='N'){
+						// 		$total_int_abs_count++ ;
+      //             			// array_push( $ATKT_paper_codes ,$marks->paper_code );
+						// 	}
+						// 	if($marks->p_marks==''){
+						// 		$total_int_abs_count++ ;
+						// 	}
+						// }
 						$require_grace_marks = $require_tot_marks-$fali_tot_marks;
              //      	if ($fail_count>2 && $require_grace_marks>3  ) {
              //      		$check_grace_marks = false;
              //      	}
-						$remark =   ($total_theory_abs_count==4) ? "Abs in theory" : "";
+						$remark =   ($total_theory_abs_count==4) ? "RW" : "";
 						($total_int_abs_count>0) ? $remark = "Abs in <br> Practical" : "" ;
 						($total_int_abs_count>0 &&  $total_theory_abs_count==4) ? $remark = "Abs in All" : "" ;
 
@@ -267,22 +408,23 @@ $page=1;
 								$remark  ;
 							}
 							elseif($marks->theory_marks<$marks->min_theory_marks && ($ATKT_paper_codes)>0 ){
-								$remark = 	($fail_count>2 && $require_grace_marks>3) ? "ATKT" :    "";                  
+								$remark = 	($fail_count>2 && $require_grace_marks>3) ? "ATKT" :    "";  
+								// print_r($ATKT_paper_codes) ;                
 							}else{
 								$remark = "";
 							} 
 						}  
-						elseif($marks->type=="Practical" ){
-							if(($total_int_abs_count==4)|| ($total_int_abs_count>0 &&  $total_int_abs_count==4)){
-                  				// $remark = "Absent";
-							}
-							elseif($marks->p_marks<$marks->min_theory_marks && ($ATKT_paper_codes)>0 ){
-								$remark = 	($fail_count>2 && $require_grace_marks>3) ? "ATKT" :    "";                  
+						// elseif($marks->type=="Practical" ){
+						// 	if(($total_int_abs_count==4)|| ($total_int_abs_count>0 &&  $total_int_abs_count==4)){
+      //             				// $remark = "Absent";
+						// 	}
+						// 	elseif($marks->p_marks<$marks->min_theory_marks && ($ATKT_paper_codes)>0 ){
+						// 		$remark = 	($fail_count>2 && $require_grace_marks>3) ? "ATKT" :    "";                  
 
-							}else{
-								$remark = "";
-							} 
-						}  
+						// 	}else{
+						// 		$remark = "";
+						// 	} 
+						// }  
 					}			
 				// echo	"in ".$remark;
 					 echo $remark;
