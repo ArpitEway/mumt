@@ -10,8 +10,7 @@
 				<th>Enrollment No</th>
 				<th>Roll No</th>
                 <th>Session</th>
-				 <th>Marks Submit</th>
-				
+				<th>Marks Submit</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -21,7 +20,6 @@
 				?>
 				   <tr id="student_tr_<?php echo $student->student_id; ?>">  
 					<td><?php echo $i ; ?></td>
-
 					<td><?php echo $student->name; ?></td>
 					<td><?php echo $student->course_name; ?></td>
 					<td><?php echo $student->class_name; ?></td>
@@ -35,12 +33,9 @@
 				$i++;
 			}
 			?>
-
 		</tbody>
 	</table>
 </div>
-
-
 	<div class="modal fade" id="kt_datepicker_modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
@@ -52,29 +47,19 @@
 		</div>
 	</div>
 </div>
-
-
-
-
 <script>
-
 	$(document).ready(function(){
-
 		$(".student").click(function(){
-			 
 			var student_id = $(this).attr('data-id');
 			var csrfName = $('.csrfname').attr('name');
 			var csrfHash = $('.csrfname').val();
- 
 			$.ajax({
 				type: "POST",
-				url: BASE_URL+"Center/center/student_details_uplode",
+				url: BASE_URL+"Center/center/student_details_upload",
 				dataType:"JSON",
 				data: {student_id: student_id, [csrfName]:csrfHash},
 				success: function(response){
-
 					$('.modal-body').html(response.data);
-					  
 				},
 			});
 		});

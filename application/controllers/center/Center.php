@@ -1265,7 +1265,7 @@ class Center extends CI_Controller {
 		}    
 	 }
 
-	 public function student_marks_no_list(){
+	public function student_marks_no_list(){
 	 	if(!$this->session->has_userdata('centerdata')){
 	 		redirect(base_url());
 	 	}
@@ -1286,9 +1286,9 @@ class Center extends CI_Controller {
 	 	$data['students'] = $this->Common_model->getRecordByWhereByOrder('student',$where,'course_group_id,class_id','ASC');
 	 	$this->load->view('Centers/student_marks_no_list',$data);
 	 	$this->load->view('Centers/footer');		
-	 }
+	}
 
-	 public function student_details_uplode(){
+	public function student_details_upload(){
 	 	$student_id = $this->input->post('student_id');
 	 	$where=array('student.student_id'=>$student_id);
 	 	$this->db->select('*');
@@ -1309,28 +1309,24 @@ class Center extends CI_Controller {
 	 		"status" => $status,
 	 		"data" => $model
 	 	));	
-	 }
+	}
 
-	 public function marks_paper_sub()
-	 {  
+	public function marks_paper_sub()
+	{  
 	 	$data=array();
 	 	$post = $this->input->post();
 	 	$data['paper_id'] = $this->input->post('paper_id');	
 	 	$data['marks'] = $this->input->post('marks');
-
 	 	foreach ($data['paper_id'] as $key => $value){
-
 	 		$studentData = array(
 	 			'int_marks' => $data['marks'][$key],	
 	 		);
-
 	 		$where =  array(
 	 			'paper_id' =>$value,
 	 			'student_id'  =>$_POST['student_id']
 	 		);
 	 		$Marksentry = $this->Common_model->updateRecordByConditions('new_exam_form',$where,$studentData);
 	 	}
-	 	
 
 	 	$where1 =  array(
 	 		'student_id'  =>$_POST['student_id']
@@ -1338,7 +1334,6 @@ class Center extends CI_Controller {
 	 	$Data = array(
 	 		'int_marks_sub' => 'Y',	
 	 	);
-
 	 	$Marksentry1 = $this->Common_model->updateRecordByConditions('student',$where1,$Data);
 	 	if($Marksentry1)
 	 	{
@@ -1349,8 +1344,6 @@ class Center extends CI_Controller {
 	 		echo json_encode($returndata);		
 	 	}
 	 }
-	}
-	}
 
 	public function show_activity_file(){
 		$activity_file= $this->Common_model->getRecordByWhere("activity_file",array("activity_id"=>$_POST['activity_id']));
@@ -1376,4 +1369,4 @@ class Center extends CI_Controller {
 		$delete_img = $this->Common_model->deleteByWhere("activity_file",array('id'=>$_POST['id']));
 		echo json_encode(array("status" => true,));			
 	}
-}	 
+}
