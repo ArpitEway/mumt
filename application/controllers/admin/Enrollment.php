@@ -970,7 +970,6 @@
 	public function complaint_form_sub(){
 		$id = $this->input->post('complain');
 		$redy = $this->input->post('redy');
-
 		$where = array('id' => $id);
 		$studentData = array('type' => $redy);
 
