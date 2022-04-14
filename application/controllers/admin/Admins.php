@@ -2451,7 +2451,6 @@ public function update_exam_datewise_permission(){
 			$course_group_id = 0;
 			$data = array();
 			$dt   = array();
-
 			$course_group_id  = 	$this->input->post("course_group_id");
 			$class_id  		  = 	$this->input->post("class_id");
 			$approved 		  = 	$this->input->post("approved");
@@ -2481,11 +2480,8 @@ public function update_exam_datewise_permission(){
 				$data['course_count'] = $this->Common_model->student_data_consolidate($dt,'course_group_id');
 			}
 			if($filter == "center"){
-
 				$data['center_count'] = $this->Common_model->student_data_consolidate($dt,'center_id');
-
 			}
-
 			$dt = $this->load->view('admin/getStudentConsolidateRegular',$data,true);
 			echo json_encode(array(
 				"status" => true,
@@ -2501,7 +2497,6 @@ public function update_exam_datewise_permission(){
 			'hash_csrf' => $this->security->get_csrf_hash(),
 			'centers' =>$centers
 		);
-
 		$this->load->view('header');
 		$this->load->view('admin/view_complaint_status',$data);
 		$this->load->view('footer');
@@ -2514,7 +2509,6 @@ public function update_exam_datewise_permission(){
 			$course_group_id = 0;
 			$data = array();
 			$dt   = array();
-
 			$center_id  = $this->input->post("center_id");
 			$centerData = $this->Common_model->getRecordById('center','id',$center_id);
 			$wherecenter = 'center_id='.$center_id.' and status="P" and type="Exam Form"';
@@ -2551,7 +2545,6 @@ public function update_exam_datewise_permission(){
 			{
 				$data = $this->Common_model->updateRecordByConditions("center_complaint",array("id" => $id ),array("status" => $status ));
 				$dt = $this->db->get_where("center_complaint",array("id" => $id ))->result_array();
-
 				if($dt[0]['status'] == 'D'){
 					$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-success req_check" value="Done">';
 				}else{
@@ -2559,7 +2552,6 @@ public function update_exam_datewise_permission(){
 				}
 				$status = true;
 				$msg    = "";
-
 				echo json_encode(array(
 					"status" => $status,
 					"msg" => $msg,
@@ -2568,8 +2560,6 @@ public function update_exam_datewise_permission(){
 			}
 		}
 	}
-
-
 
 	public function update_complaint_remark()
 	{
@@ -2586,20 +2576,14 @@ public function update_exam_datewise_permission(){
 				$dt = $this->db->get_where("center_complaint",array("id" => $id ))->result_array();
 
 				if($dt[0]['remark'] == 'Invalid'){
-
 					$sts_btn = '<input type="button" name="update_req_remark" data-id='.$id.' class="btn btn-danger remark_check" value="Invalid">';
-
 					$sts_btn2 = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-success req_check" value="Done">';
-				
 				}else{
 					$sts_btn = '<input type="button" name="req_remark" data-id='.$id.' class="btn btn-success remark_check" value="Set">';
-
 					$sts_btn2 = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-danger req_check" value="Pending">';
 				}
-
 				$status = true;
 				$msg    = "";
-
 				echo json_encode(array(
 					"status" => $status,
 					"msg" => $msg,
@@ -2610,25 +2594,18 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
-
 	public function complaint_form_sub(){
-
 		$id = $this->input->post('complain');
 		$redy = $this->input->post('redy');
-
 		$where = array('id' => $id);
 		$studentData = array('type' => $redy);
-
 		$update =  $this->Common_model->updateRecordByConditions('center_complaint',$where,$studentData);
-
 		$dt = $this->Common_model->getRecordById('center_complaint','id',$id);	
 		$dt1 = $dt->type;
-
 		if($update){
 			echo json_encode(array(
 				'data'  => $dt1,
 				"success" => ' Updated Successfully',
-
 			));
 		}else{
 			echo json_encode(array(
@@ -2638,52 +2615,40 @@ public function update_exam_datewise_permission(){
 	}
 
 	public function marksheet_variable(){
-
-		if(!$this->session->has_userdata('adminData'))
-		{
+		if(!$this->session->has_userdata('adminData')){
 			redirect(base_url());
 			exit;
-
 		}else{
-
 			$admin_id = $this->session->admin_id;
-			
 			$data = array();
-
 			$whr =  array("notification_no !=" => "");
-
 			$course_detail = $this->Common_model->getRecordByOrder('marksheet_variables',"notification_no,result_date","ASC");
-
 			$data = array('course_detail' => $course_detail ,'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash()
 			);
-
 			$this->load->view('header');
 			$this->load->view('admin/marksheet_variable',$data);
 			$this->load->view('footer');
 		}
-
 	}
 
 	public function update_marksheet_variable(){
-
-		$classes    			= $_POST['class_id'];
-		$notifi_no 				= $_POST['notifi_no'];
-		$result_date			= $_POST['result_date'];
-		$backlog_notifi_no 		= $_POST['backlog_notifi_no'];
-		$backlog_result_date	= $_POST['backlog_result_date'];
-		$exam_session           = $_POST['exam_session'];
-		$bar_code_no           = $_POST['bar_code_no'];
-
-		foreach($classes as $key => $item)
-		{
-			
+		$classes    			=	 $_POST['class_id'];
+		$notifi_no 				=	 $_POST['notifi_no'];
+		$result_date			=	 $_POST['result_date'];
+		$backlog_notifi_no 		=	 $_POST['backlog_notifi_no'];
+		$backlog_result_date	=	 $_POST['backlog_result_date'];
+		$exam_session           =	 $_POST['exam_session'];
+		$bar_code_no            =	 $_POST['bar_code_no'];
+		foreach($classes as $key => $item){
 			$where = array('class_id' => $item);
-
-			$marksheetData = array('bar_code_no' => $bar_code_no,'exam_session' => $exam_session,'notification_no' => $notifi_no[$key],'backlog_notification_no' => $backlog_notifi_no[$key],'result_date' => $result_date[$key],'backlog_result_date' => $backlog_result_date[$key]);
-
-			$update =  $this->Common_model->updateRecordByConditions('marksheet_variables',$where,$marksheetData);
-		
+			$marksheetData = array('bar_code_no' => $bar_code_no,
+				'exam_session' => $exam_session,
+				'notification_no' => $notifi_no[$key],
+				'backlog_notification_no' => $backlog_notifi_no[$key],
+				'result_date' => $result_date[$key],
+				'backlog_result_date' => $backlog_result_date[$key]);
+			$update =  $this->Common_model->updateRecordByConditions('marksheet_variables',$where,$marksheetData);		
 		}
 
 		if($update){
@@ -2696,9 +2661,4 @@ public function update_exam_datewise_permission(){
 			));
 		}
 	}
-
-
-	
-
-
 }// class
