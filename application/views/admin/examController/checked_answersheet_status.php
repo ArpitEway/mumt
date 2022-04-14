@@ -1,11 +1,3 @@
-
-
-<?php 
-// echo "<pre>";
-//   $teacher_name = $this->Common_model->getRecordByWhere('teacher',array('id'=>1));
-// print_r($teacher_name);
-// die ;
-?>
 <form method='POST' ?>
 	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	<div class="col-sm-4 m-auto">
@@ -14,18 +6,12 @@
 			<select class="form-control" name="teacher_id" id="teacher_id" class="teacher_id">
 				<option value="" >Select Teacher</option>
 				<?php
-				// $i = 1;
 				foreach ($teachers as $teacher) {
-                    echo "<pre>";
-
-                  
-                    $teacher_name = $this->Common_model->getRecordByWhere('teacher',array('id'=>$teacher->teacher_id));
-              
-                    ?>
+					$teacher_name = $this->Common_model->getRecordByWhere('teacher',array('id'=>$teacher->teacher_id));
+					?>
 					<option value="<?=$teacher_name[0]->id;?>" ><?=$teacher_name[0]->name?></option>
 				<?php } ?>
 			</select>
-
 		</fieldset>
 		<fieldset class="form-group text-center">
 			<input type="hidden" name="action" value="course_wise_amswersheet_list">
@@ -59,7 +45,7 @@ $(document).on('click', '#submit', function() {
 		}; 
 
       $.ajax({
-                url:BASE_URL+'admin/ExamController/load_teacher_wise_checked_answersheet_status',
+                url:BASE_URL+'admin/ExamController/load_checked_answersheet_status',
                 type:'post',
                 dataType : 'JSON',
                 data: data,
