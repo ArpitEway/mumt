@@ -9,8 +9,7 @@
 					<th>Father's / Husband's Name</th>
 					<th>Course Name</th>
 					<th> Enrollment No</th>
-					<th><input type="checkbox"  id="allEnrolled"> (Enrollment)</th>
-					<th><input type="checkbox" id="all_provision">(Provisional)</th>
+					<th><input type="checkbox"  id="allEnrolled"></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -25,7 +24,6 @@
 						<td><?=$student->course_name;?></td>
 						<td><?=$student->enrollment_no;?></td>
 						<td><input type="checkbox" class="enrollment_no" name="enrollment_no[]" value="<?=$student->enrollment_no;?>"></td>
-						<td><input type="checkbox" class="provisions" name="student_id[]" value="<?=$student->student_id;?>"></td>
 					</tr>
 					<?php 
 					}
@@ -51,12 +49,6 @@
 			}
 		});
 
-		$('#all_provision').on('change', function() {
-			if($('#all_provision').is(":checked")){
-				$(".provisions").attr("checked", true);
-				}else{
-				$(".provisions").attr("checked", false);
-			}
-		});
+	
 	});
 </script>
