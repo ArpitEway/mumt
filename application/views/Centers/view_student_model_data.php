@@ -110,14 +110,18 @@
               <?php 
        
 $view1=  $this->Common_model->getRecordByWhere("paper_master",'class_id='.$details[0]->class_id);
-           echo $view1[0]->max_int_marks;
+
+           echo $view1[0]->max_internal_marks;
+
                       
             ?>  
           </td>
           <td>    <?php 
        
 $view=  $this->Common_model->getRecordByWhere("paper_master",'class_id='.$details[0]->class_id);
-           echo $view[0]->min_int_marks;
+
+           echo $view[0]->min_internal_marks;
+
                         
             ?>  </td>
           <td> 
@@ -126,7 +130,8 @@ $view=  $this->Common_model->getRecordByWhere("paper_master",'class_id='.$detail
         <option value="Absent" selected>Absent</option>
         <?php
            
-      $marks=  $view[0]->max_int_marks;
+      $marks=  $view[0]->max_internal_marks;
+
         for ($i=0; $i<=$marks; $i++)
         {
           ?>
