@@ -135,7 +135,7 @@ $(document).on('click', '#remark_submit', function(e) {
 	// alert();
 	var ck_box = $('input[type="checkbox"]:checked').length;
 	
-	if(ck_box > 0){
+
 	
 		var frm = $('.ajaxForm').serialize();
 		var rem = $('.student_id_model').val();
@@ -158,9 +158,7 @@ $(document).on('click', '#remark_submit', function(e) {
 			}
 		},
 	});	
-	}else{
-	toastr.error("Please check atleast one checkbox");
-	}
+
 });	
 
 </script>
