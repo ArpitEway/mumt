@@ -10,7 +10,7 @@
  
 }
 .increase{
-   width:80px ;
+   width:100px ;
 }
 
 .align{
@@ -43,7 +43,7 @@
 
                  <tr> 
                 <td><b> Center Code: </b> <?=$details[0]->center_code;?></td>
-                <td colspan="3"><b>Center Name: </b> <?=$details[0]->center_name;?></td>
+                <td ><b>Center Name: </b> <?=$details[0]->center_name;?></td>
                  <td  rowspan="5"> <img  class="student_img" src="<?php echo base_url('/assets/student_image/').$details[0]->session.'/'.$details[0]->photo;?>" ></td> 
 
               </tr>
@@ -51,15 +51,15 @@
               <tr>
                   
                 <td ><strong>Enrollment No: </strong> <?=$details[0]->enrollment_no;?></td>
-                <td  colspan="3"><strong> Roll No: </strong><?=$details[0]->roll_no;?></td>
+                <td  ><strong> Roll No: </strong><?=$details[0]->roll_no;?></td>
               </tr>
               <tr> 
                 <td><b> Name: </b> <?=$details[0]->name;?></td>
-                <td colspan="3"><b>F/H Name: </b> <?=$details[0]->f_h_name;?></td>
+                <td ><b>F/H Name: </b> <?=$details[0]->f_h_name;?></td>
               </tr>
               <tr>
                 <td><b>Course: </b> <?=$details[0]->course_name;?></td>
-                <td colspan="3"><b>Class: </b> <?=$details[0]->class_name;?></td>
+                <td ><b>Class: </b> <?=$details[0]->class_name;?></td>
               </tr>
               
               </tbody>
@@ -118,7 +118,7 @@ $view=  $this->Common_model->getRecordByWhere("paper_master",'class_id='.$detail
           <td> 
           
             <select name="marks[]" class="form-control col-12 increase " id="marks"  > 
-        <option value="Absent" selected>ABS</option>
+        <option value="ABS" selected>Absent</option>
         <?php
           
       $max_internal=  $view[0]->max_internal_marks;
@@ -171,7 +171,7 @@ var id = $('#student_tr').val();
   {
  
   $.ajax({
-    url: '<?php echo site_url('Center/center/assignment_marks_sub'); ?>',
+    url: '<?php echo site_url('center/center/assignment_marks_sub'); ?>',
     method: 'post',
     data: frm,
     dataType: 'JSON',
