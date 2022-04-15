@@ -102,69 +102,151 @@ class Postexam extends CI_Controller {
           
            $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id , "exam_form"=>'Y',"result_show"=>'Y',"upload_result"=>'N'));
         
-           foreach($students as $student)
-           {
+foreach($students as $student)
+{
+                                    // echo "<pre>";
+                                    // print_r($student);
+                                    // die ;
+                                    // echo "<pre>";
+                                    // print_r($marks);
+                    $data = array(
+                        'student_id' => $student->student_id ,
+                        'center_id' => $student->center_id ,
+                        'center_code' => $student->center_code ,
+                        'course_group_id' =>$student->course_group_id ,
+                        'course_name' => $student->course_name ,
+                        'class_id' => $student->class_id ,
+                        'enrollment_no' => $student->enrollment_no ,
+                        'roll_no' => $student->roll_no ,
+                        'name' => $student->name ,
+                        'f_h_name' => $student->f_h_name ,
+                        'mother_name' => $student->mother_name ,
+                        'marksheet_no' =>$student->marksheet_no ,
+                    );
+                    $old_exam_data_id = $this->Common_model->insertAll('old_exam_data',$data);
+                    $new_exam_form = $this->Common_model->getRecordByWhere('new_exam_form',array('student_id'=>$student->student_id));
 
-          
+                        foreach($new_exam_form  as $marks)
+                        {
 
-              $data = array(
-                  'student_id' => $student->student_id ,
-                  'center_id' => $student->institute_id ,
-                  'center_code' => $student->institute_code ,
-                  'course_group_id' =>$student->course_group_id ,
-                  'course_name' => $student->course_name ,
-                  'class_id' => $student->class_id ,
-                  'enrollment_no' => $student->enrollment_no ,
-                  'roll_no' => $student->roll_no ,
-                  'name' => $student->name ,
-                  'f_h_name' => $student->f_h_name ,
-                  'mother_name' => $student->mother_name ,
-                  'marksheet_no' =>$student->marksheet_no ,
-                  
-              );
-            //  $old_exam_data_id = $this->Common_model->insertAll('old_exam_data',$data);
-        $new_exam_form = $this->Common_model->getRecordByWhere('new_exam_form',array('student_id'=>$student->student_id));
+                                    $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$marks->class_id,'paper_code'=>$marks->paper_code));
+                                 
+                                            if($marks->paper_type=='theory'){
+                                                $tot_std_marks += $marks->theory_marks + $marks->int_marks;
+                                                $tot_marks += $paper_master[0]->max_theory_marks + $paper_master[0]->max_internal_marks;
+                                                if($marks->theory_marks==''){
+                                                    $whCount++;
+                                                }else if($marks->theory_marks<$paper_master[0]->min_theory_marks){
+                                                    $result = "fail";
+                                                    $fail_count++;
+                                                    $fali_tot_marks += $marks->theory_marks;
+                                                    $require_tot_marks += $paper_master[0]->min_theory_marks;
+                                                }
+                                            }else if($marks->paper_type=='practical'){
+                                                $tot_std_marks += $marks->p_marks;
+                                                $tot_marks += $paper_master[0]->max_theory_marks;
+                                                if($marks->p_marks>= $paper_master[0]->min_theory_marks){
+                                                    $result = "pass";
+                                                }else if($marks->p_marks=='' && $marks->p_marks=='N'){
+                                                    $whCount++;
+                                                }else if($marks->theory_marks<$paper_master[0]->min_theory_marks){
+                                                    $result = "fail";
+                                                    $fail_count++;
+                                                    $fali_tot_marks += $marks->p_marks;
+                                                    $require_tot_marks +=$paper_master[0]->min_theory_marks;
+                                                }
+                                            }
+                        
+                        }     
+    
+                            $aggregate_per =   ($tot_std_marks/$tot_marks) * 100;
 
-           foreach($new_exam_form  as $marks)
-           {
-
-                    $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$marks->class_id,'paper_code'=>$marks->paper_code));
-                    echo "<pre>";
-                    print_r($marks);
-                    if($marks->paper_type=='theory'){
-                        $tot_std_marks += $marks->theory_marks + $marks->int_marks;
-                        $tot_marks += $paper_master[0]->reg_max_marks + $paper_master[0]->reg_max_int_marks;
-                        if($marks->theory_marks==''){
-                            $whCount++;
-                        }else if($marks->theory_marks<$paper_master[0]->reg_min_marks){
-                            $result = "fail";
-                            $fail_count++;
-                            $fali_tot_marks += $marks->theory_marks;
-                            $require_tot_marks += $paper_master[0]->reg_min_marks;
-                        }
-                    }else if($paper=='practical'){
-                        $tot_std_marks += $paper->p_marks;
-                        $tot_marks += $paper->reg_max_marks;
-                        if($paper->p_marks>=$paper->reg_min_marks){
-                            $result = "pass";
-                        }else if($paper->p_marks=='' && $paper->p_marks=='N'){
-                            $whCount++;
-                        }else if($paper->theory_marks<$paper->reg_min_marks){
-                            $result = "fail";
-                            $fail_count++;
-                            $fali_tot_marks += $paper->p_marks;
-                            $require_tot_marks += $paper->reg_min_marks;
-                        }
-                    }
-           
-           }     
-           
-          
+                            $require_grace_marks = $require_tot_marks-$fali_tot_marks;
+                            if ($fail_count<3 && $require_grace_marks<4 && $aggregate_per>36){
+                                $check_grace_marks = true;
+                            }
            }
         
-           die ;
           
-      }
+          
+                foreach($new_exam_form as $marks)
+                {
+                        $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$marks->class_id,'paper_code'=>$marks->paper_code));
+                        $paper_name =$this->Common_model->getPaperNameById($marks->paper_id);
+                        // echo "<pre>";
+                        // print_r($paper_master);
+                        if($marks->paper_type=="theory")
+                        {
+                            if($marks->theory_marks==''){
+                                $result = "-";
+                            }else if($marks->theory_marks>= $paper_master[0]->min_theory_marks){
+                                $result = "PASS";
+                            }else{
+                                if($check_grace_marks){
+                                    $result = "PASS BY GRACE";
+                                    $grace_result_count++;
+                                }else{
+                                    $result = 'FAIL';
+                                    $fail_result_count++;
+                                }
+                            }
+                        }else if($marks->paper_type=="practical")
+                        {
+                            if($marks->p_marks==''){
+                                $result = "-";
+                            }else if($marks->p_marks>=$paper_master[0]->min_theory_marks){
+                                $result = "PASS";
+                            }else{
+                                if($check_grace_marks){
+                                    $result = "PASS BY GRACE";
+                                    $grace_result_count++;
+                                }else{
+                                    $result = 'FAIL';
+                                    $fail_result_count++;
+                                }
+                            }
+                        }
+           
+                        $data = array(
+                            'exam_data_id' =>$old_exam_data_id ,
+                            'student_id' => $student->student_id ,
+                            'course_group_id' =>$student->course_group_id ,
+                            'class_id' => $student->class_id ,
+                            'center_id' => $student->center_id ,
+                            'paper_code'=>$paper_master[0]->paper_code ,
+                            'type'=>$marks->paper_type ,
+                            'max_theory_marks'=>$paper_master[0]->max_theory_marks ,
+                            'max_int_marks'=>$paper_master[0]->max_internal_marks ,
+                            'min_theory_marks'=>$paper_master[0]->min_theory_marks ,
+                            'min_int_marks'=>$paper_master[0]->min_internal_marks ,
+                            'theory_marks'=>$marks->theory_marks,
+                            'p_marks'=>$marks->p_marks,
+                            'int_marks'=>$marks->int_marks,
+                            'paper_name'=>$paper_name,
+                            'result' =>$result ,
+                            'p_order'=>$marks->paper_order 
+                        );
+                           $insert = $this->Common_model->insertAll('old_result_data',$data);
+                }
+              
+                        if($fail_result_count>0){
+                            $final_result = "FAIL";
+                        }elseif($grace_result_count>0)
+                        {
+                            $final_result = "PASS BY GRACE";
+                        }else{
+                            $final_result = "PASS";
+                        }
+                        $update_old_exam_data = $this->Common_model->updateRecordByConditions('old_exam_data',array('student_id'=>$student->student_id),array('exam_result'=>$final_result));
+        
+                        if($insert)
+                        {
+                            echo $old_exam_data_id;
+                            die ;
+                        }
+      
+      
+ }
 
 }
 
