@@ -55,7 +55,7 @@
 			var csrfHash = $('.csrfname').val();
 			$.ajax({
 				type: "POST",
-				url: BASE_URL+"Center/center/student_details_upload",
+				url: BASE_URL+"center/center/student_details_upload",
 				dataType:"JSON",
 				data: {student_id: student_id, [csrfName]:csrfHash},
 				success: function(response){
