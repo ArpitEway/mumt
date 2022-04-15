@@ -1,4 +1,4 @@
-\<div class=" dt-responsive  mt-5">
+<div class=" dt-responsive  mt-5">
 	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	<table id="kt_datatable" class="table table-striped "  >
 		<thead>
@@ -20,7 +20,7 @@
 			$tot_open_answersheet = 0;
 			$tot_remaining = 0;
 			foreach($teachers as $teacher){
-                    $paper_name = $this->Common_model->getSinglefield('paper_master','paper_name',array('class_id'=>$teacher->class_id));
+                    $paper_name = $this->Common_model->getSinglefield('paper_master','paper_name',array('class_id'=>$teacher->class_id,'paper_code'=>$teacher->paper_code));
                     $teacher_name = $this->Common_model->getSinglefield('teacher','name',array('id'=>$teacher->teacher_id));
 
                     $class = $this->Common_model->getClassNameByClassId($teacher->class_id);
