@@ -5,7 +5,8 @@ $notification=$notification_no[0]->notification_no;
 $date=$notification_no[0]->result_date;
 $exam_session=$notification_no[0]->exam_session;
 $page_break_count = -1 ;
-$page_no = 0 ;
+$page_no = 1 ;
+ $page_break_count++;
 ?>
 
 <style>
@@ -30,7 +31,8 @@ $page_no = 0 ;
 </style>
 
 
-	 <p align="right"><?php echo "Page : ". $page; ?></p> 
+
+	 <p align="right"><?php echo "Page : ". $page_no ; ?></p> 
 	<div style="width:75px;float:left"><img src="<?=base_url('assets/logo.png')?>" ></div>
 	<h3 class="text-center" ><strong> Maharishi Mahesh Yogi Vedic Vishwavidyalaya </strong> </h3>
 	<p align="center" style="line-height:0px">Head Office: Karaundi, Post-Mahner ,Distt- Katni(MP) Website www.mmyvvdde.com </p>
@@ -116,17 +118,11 @@ $page_no = 0 ;
 								 $check_grace_marks = true;
 							}	
 			?>
+			<?php 
+			if($page_break_count%1==0 ){
+				$page_no++ ;
 
-
-
-
-
-
-
-
-
-
-
+				?>
 
 			<tr class="alternate">
            
@@ -224,7 +220,6 @@ $page_no = 0 ;
 					<td>
 						<?php
 
-
 						if($marks->type=="theory" )
 						{
 							if($marks->theory_marks=='' ){
@@ -273,34 +268,11 @@ $page_no = 0 ;
 						?>	
 				</td>
 					</tr>
-
-<?php
-		}
-		?> 
-
-		
+       <?php
+		}}
+		?> 	
 	</tbody>
 	</table>
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	<table width="100%">
 		<hr>
