@@ -11,7 +11,6 @@
 			{
 
 			?>
-						
 				<option value="<?php echo $dept['id']; ?>"><?php echo $dept['department_name']; ?></option>
 						
 			<?php
