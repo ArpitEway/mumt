@@ -1265,7 +1265,7 @@ class Center extends CI_Controller {
 		}    
 	 }
 
-	public function student_marks_no_list(){
+	public function assignment_marks_list(){
 	 	if(!$this->session->has_userdata('centerdata')){
 	 		redirect(base_url());
 	 	}
@@ -1288,7 +1288,7 @@ class Center extends CI_Controller {
 	 	$this->load->view('Centers/footer');		
 	}
 
-	public function student_details_upload(){
+	public function load_student_assignment (){
 	 	$student_id = $this->input->post('student_id');
 	 	$where=array('student.student_id'=>$student_id);
 	 	$this->db->select('*');
@@ -1311,7 +1311,7 @@ class Center extends CI_Controller {
 	 	));	
 	}
 
-	public function marks_paper_sub()
+	public function assignment_marks_sub()
 	{  
 	 	$data=array();
 	 	$post = $this->input->post();

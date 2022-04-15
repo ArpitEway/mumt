@@ -5,9 +5,12 @@
 
 }
 .student_img{
-     width: 79%;
+     width: 100%;
     height: 77%;
  
+}
+.increase{
+   width:80px ;
 }
 
 .align{
@@ -24,25 +27,7 @@
 <div class="text-center"><label ><strong>Assignments के विश्वविद्यालय में Verification के पश्चात ही Final Marks प्रदान किये जायेंगे। </strong> 
 </label></div></div>
  <hr>
-           
-<!-- 
- <div  class="row py-3">
-        <div class="col-6 font-weight-bolder">
-         Information Center :
-        </div>
-      </div> -->
-<div style="padding-right: 107px;">
-<div class="row py-3">
-    <div class="col-6">
-      <label for="example-date-input" ><strong> Center Code::</strong></label>
-      <label for="example-date-input" ><?php echo $details[0]->center_code; ?></label>
-    </div>
-    <div class="col-6">
-      <label for="example-date-input"  ><strong> Center Name:</strong></label>
-      <label for="example-date-input"><?php echo $details[0]->center_name; ?></label>
-    </div>
-  </div></div>
-
+          
 
 <div  style="padding-right: 425px;"  class="row py-3">
         <div class="col-6 font-weight-bolder">
@@ -54,21 +39,27 @@
 <table class= "table table-bordered ">
               
               <tbody>
+
+
+                 <tr> 
+                <td><b> Center Code: </b> <?=$details[0]->center_code;?></td>
+                <td colspan="3"><b>Center Name: </b> <?=$details[0]->center_name;?></td>
+                 <td  rowspan="5"> <img  class="student_img" src="<?php echo base_url('/assets/student_image/').$details[0]->session.'/'.$details[0]->photo;?>" ></td> 
+
+              </tr>
              
               <tr>
-
+                  
                 <td ><strong>Enrollment No: </strong> <?=$details[0]->enrollment_no;?></td>
-                <td  colspan="2"><strong> Roll No: </strong><?=$details[0]->roll_no;?></td>
-                 <td  rowspan="4"> <img  class="student_img" src="<?php echo base_url('/assets/student_image/').$details[0]->session.'/'.$details[0]->photo;?>"
-  ></td> 
+                <td  colspan="3"><strong> Roll No: </strong><?=$details[0]->roll_no;?></td>
               </tr>
               <tr> 
                 <td><b> Name: </b> <?=$details[0]->name;?></td>
-                <td colspan="2"><b>F/H Name: </b> <?=$details[0]->f_h_name;?></td>
+                <td colspan="3"><b>F/H Name: </b> <?=$details[0]->f_h_name;?></td>
               </tr>
               <tr>
                 <td><b>Course: </b> <?=$details[0]->course_name;?></td>
-                <td colspan="2"><b>Class: </b> <?=$details[0]->class_name;?></td>
+                <td colspan="3"><b>Class: </b> <?=$details[0]->class_name;?></td>
               </tr>
               
               </tbody>
@@ -85,7 +76,7 @@
         <th>Paper Name</th>
         <th>Max Marks</th>
         <th> Min Marks</th>
-        <th>Marks</th>
+        <th class="text-center">Marks</th>
                
       </tr>
     </thead>
@@ -126,16 +117,17 @@ $view=  $this->Common_model->getRecordByWhere("paper_master",'class_id='.$detail
             ?>  </td>
           <td> 
           
-            <select name="marks[]" class="form-control col-12 " id="marks"  > 
-        <option value="Absent" selected>Absent</option>
+            <select name="marks[]" class="form-control col-12 increase " id="marks"  > 
+        <option value="Absent" selected>ABS</option>
         <?php
-           
-      $marks=  $view[0]->max_internal_marks;
-
-        for ($i=0; $i<=$marks; $i++)
+          
+      $max_internal=  $view[0]->max_internal_marks;
+      $min_internal=  $view[0]->min_internal_marks; 
+  
+        for ($i=$min_internal; $i<=$max_internal; $i++)
         {
           ?>
-          <option value="<?php echo $i; ?>"  ><?php echo $i; ?></option>
+          <option value="<?php echo $i; ?>"  ><?php echo str_pad($i,2,'0',STR_PAD_LEFT); ?></option>
           <?php
         } 
         ?>
@@ -179,7 +171,7 @@ var id = $('#student_tr').val();
   {
  
   $.ajax({
-    url: '<?php echo site_url('Center/center/marks_paper_sub'); ?>',
+    url: '<?php echo site_url('Center/center/assignment_marks_sub'); ?>',
     method: 'post',
     data: frm,
     dataType: 'JSON',
