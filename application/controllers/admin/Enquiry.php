@@ -24,14 +24,14 @@ class Enquiry extends CI_Controller {
 			"menus" => $this->Common_model->getRecordByWhereByOrder('menu',$where,'heading_id,menu_order','ASC'),
 		);
 		$this->load->view('header',array('title' => 'Enquiry Section'));
-		$this->load->view('admin/enquiry/dashboard',$menu);
+		$this->load->view('admin/Enquiry/dashboard',$menu);
 		$this->load->view('footer');	
 	}
 
     public function view_enquiry(){
         $data['inquiries'] = $this->Common_model->get_record('enquiry','*');
         $this->load->view('header',array('title' => 'Enquiry Section'));
-		$this->load->view('admin/enquiry/enquiry_list',$data);
+		$this->load->view('admin/Enquiry/enquiry_list',$data);
 		$this->load->view('footer');
     }
 
