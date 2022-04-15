@@ -54,7 +54,7 @@ class WebSite extends REST_Controller {
         return $this->response($results, REST_Controller::HTTP_OK);
     }
 
-     public function GetDepartmentWisePrograms_get()
+    public function GetDepartmentWisePrograms_get()
     {
         $this->db->order_by('orders');
         $departments = $this->Common_model->get_record('department','*');
@@ -67,4 +67,20 @@ class WebSite extends REST_Controller {
         }
         return $this->response($departments, REST_Controller::HTTP_OK);
     }
+
+    public function getCourseTypeWiseCourse_get()
+    {
+        $where = array('course_type !=' => '');
+        $this->db->order_by('course_type,p_order');
+        $course_type = $this->Common_model->get_record('program','DISTINCT(course_type) as course_type',$where);
+        $i = 0;
+        $response = array();
+        foreach ($course_type as $course) {
+            $response[$i]['course_type'] = $course['course_type'];
+            $response[$i]['program'] = $this->Common_model->get_record('program','*',array('course_type' => $course['course_type']));
+            $i++;
+        }
+        return $this->response($response, REST_Controller::HTTP_OK);
+    }
+
 }
