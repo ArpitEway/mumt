@@ -55,7 +55,7 @@
 				<td>
 					<?php echo $checked  ; ?>
 				</td>
-				<td><?php  echo $total_paper_count-$checked_count ; ?></td>
+				<td><?php  echo $total_paper_count-$checked ; ?></td>
 
 
 			</tr>
