@@ -148,7 +148,7 @@ $(document).on('click', '#remark_submit', function(e) {
 	if(data){
 		console.log(data);
 			$('#right-modal').modal('toggle');
-			toastr.success("approved").fadeOut(1000);
+		//	toastr.success("approved").fadeOut(1000);
 			$('#'+rem).html("Approved");
 			
 			$('#' +rem).prop("onclick",null).off("click");
