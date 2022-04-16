@@ -16,6 +16,7 @@
 .align{
    padding-right: 100px;  
 }
+
 </style>
 
 
@@ -39,33 +40,26 @@
 <table class= "table table-bordered ">
               
               <tbody>
-
-
-                 <tr> 
-                <td><b> Center Code: </b> <?=$details[0]->center_code;?></td>
-                <td ><b>Center Name: </b> <?=$details[0]->center_name;?></td>
+              
+              <tr>          
+               <td><strong>Enrollment No: </strong> <?=$details[0]->enrollment_no;?></td>
+                <td><strong> Roll No: </strong><?=$details[0]->roll_no;?></td>
                  <td  rowspan="5"> <img  class="student_img" src="<?php echo base_url('/assets/student_image/').$details[0]->session.'/'.$details[0]->photo;?>" ></td> 
-
-              </tr>
-             
-              <tr>
-                  
-                <td ><strong>Enrollment No: </strong> <?=$details[0]->enrollment_no;?></td>
-                <td  ><strong> Roll No: </strong><?=$details[0]->roll_no;?></td>
               </tr>
               <tr> 
                 <td><b> Name: </b> <?=$details[0]->name;?></td>
-                <td ><b>F/H Name: </b> <?=$details[0]->f_h_name;?></td>
+                <td><b>F/H Name: </b> <?=$details[0]->f_h_name;?></td>
               </tr>
               <tr>
                 <td><b>Course: </b> <?=$details[0]->course_name;?></td>
-                <td ><b>Class: </b> <?=$details[0]->class_name;?></td>
+                <td><b>Class: </b> <?=$details[0]->class_name;?></td>
               </tr>
               
+               <tr> 
+                <td colspan="2"><b>Center Name: </b> <?=$details[0]->center_name .' ( '.$details[0]->center_code.' )';?></td>
+              </tr>
               </tbody>
             </table>
-
-
 
 <form id="ajaxForm">
 <table  class="table " >
@@ -167,7 +161,7 @@ $view=  $this->Common_model->getRecordByWhere("paper_master",'class_id='.$detail
   // }
   var frm = $('#ajaxForm').serialize();
 var id = $('#student_tr').val();
- if (confirm('Are you sure for marks update')) 
+ if (confirm('Are you Sure For Marks Update')) 
   {
  
   $.ajax({
