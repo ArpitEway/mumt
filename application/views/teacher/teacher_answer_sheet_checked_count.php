@@ -25,10 +25,15 @@
 					'class_id' => $assign->class_id,
 					'course_group_id' => $assign->course_group_id
 				);
-
-				$total_paper_count=$this->Common_model->getCountByWhere('upload_exam_ans_sheet',$where);
-//$this->Common_model->last_query();
-				$checked = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array('paper_code'=>$assign->paper_code,'teacher_id!='=> ''));
+	           $this->db->select(' count(*) as cnt');
+				$this->db->from('upload_exam_ans_sheet');
+				$this->db->where('paper_code',$assign->paper_code);
+				$this->db->where('class_id',$assign->class_id); 
+				$this->db->where('course_group_id',$assign->course_group_id); 
+				$this->db->where('center_id in ('.$assign->center_id.')');
+				$total_paper_count= $this->db->get()->result();
+			
+				$checked = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array('paper_code'=>$assign->paper_code,'teacher_id'=> $assign->teacher_id));
 
 				?>
 
@@ -49,13 +54,13 @@
 				</td>
 
 				<td>
-					<?php echo  $total_paper_count ; ?>
+					<?php echo  $total_paper_count[0]->cnt; ?>
 				</td>
 
 				<td>
 					<?php echo $checked  ; ?>
 				</td>
-				<td><?php  echo $total_paper_count-$checked ; ?></td>
+				<td><?php  echo $total_paper_count[0]->cnt-$checked ; ?></td>
 
 
 			</tr>
