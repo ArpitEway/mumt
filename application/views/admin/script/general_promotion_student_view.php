@@ -6,6 +6,7 @@
 
 
 <div class=" table-responsive ">
+  <form method="post"  action="<?=base_url('admin/scripts/Postexam/general_promtion_student_submit');?>" class="mt-3 answersheet" >
   <table  class="table table-striped">
        <thead>
           <tr class="color">
@@ -20,7 +21,8 @@
        <tr>
       
             <th>Paper Code</th>
-            <th> Current Theory marks</th>
+            <th></th>
+            <th> Current Theory marks (Teacher)</th>
             <th> Final Theory marks</th>
             
           </tr>
@@ -45,6 +47,9 @@
             <td><?php echo $paper->paper_code; ?></td>
            <td><?php echo $paper->total_marks; ?></td>
           <td><?php echo $paper->total_marks; ?></td>
+          <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+          <input type="hidden"  name="papar_id" value="<?=$paper->id;?>">
+          <input type="hidden"  name="student_id" value="<?=$papar->student_id;?>">
         </tr>
         <?php
        }        
@@ -52,4 +57,5 @@
   ?>
     </tbody>
   </table>
+</form>
 </div>

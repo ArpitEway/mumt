@@ -102,6 +102,26 @@ public function general_promotion_class_list_paper_count(){
     
 
 
+ public function general_promtion_student_submit(){
+  
+        foreach($_POST['student_id'] as $student_id){
+         
+            $student= $this->Common_model->getRecordByWhere('student',array('student_id'=>$student_id));
+            $data = array(
+                'theory_marks' => $_POST['theory_marks'],
+             );
+            $where = array(
+                'student_id'=>$student_id ,
+            );
+            $update =$this->Common_model->updateRecordByConditions('new_exam_form',$where,$data);
+          }
+           if($update){
+                redirect(base_url('admin/scripts/Postexam/general_promotion_class_list_paper_count'));
+           }
+      }
+
+
+
 }
 
 ?>
