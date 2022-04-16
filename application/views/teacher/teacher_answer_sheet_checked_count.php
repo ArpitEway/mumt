@@ -18,13 +18,13 @@
 
 			foreach($assigns as $assign){	
 
-				$where = array(
-					'center_id in ('.$assign->center_id.')',
-					'paper_code' => $assign->paper_code,
-					'file_exist'=>'Y',
-					'class_id' => $assign->class_id,
-					'course_group_id' => $assign->course_group_id
-				);
+				// $where = array(
+				// 	'center_id in ('.$assign->center_id.')',
+				// 	'paper_code' => $assign->paper_code,
+				// 	'file_exist'=>'Y',
+				// 	'class_id' => $assign->class_id,
+				// 	'course_group_id' => $assign->course_group_id
+				// );
 	           $this->db->select(' count(*) as cnt');
 				$this->db->from('upload_exam_ans_sheet');
 				$this->db->where('paper_code',$assign->paper_code);
