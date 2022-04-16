@@ -133,9 +133,8 @@
 
 $(document).on('click', '#remark_submit', function(e) {
 	// alert();
+	$('#remark_submit').prop('disabled', true);
 	var ck_box = $('input[type="checkbox"]:checked').length;
-	
-
 	
 		var frm = $('.ajaxForm').serialize();
 		var rem = $('.student_id_model').val();
@@ -149,8 +148,9 @@ $(document).on('click', '#remark_submit', function(e) {
 	if(data){
 		console.log(data);
 			$('#right-modal').modal('toggle');
-			toastr.success("approved");
+			toastr.success("approved").fadeOut(1000);
 			$('#'+rem).html("Approved");
+			
 			$('#' +rem).prop("onclick",null).off("click");
 			$("#" +rem).siblings('a').hide();
 			}else{
