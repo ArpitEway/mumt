@@ -1283,7 +1283,7 @@ class Center extends CI_Controller {
 	 		'result_show ' => 'N',
 	 		'int_marks_sub'=>'N'
 	 	);
-	 	$data['students'] = $this->Common_model->getRecordByWhereByOrder('student',$where,'course_group_id,class_id','ASC');
+	 	$data['students'] = $this->Common_model->getRecordByWhereByOrder('student',$where,'course_group_id,class_id,roll_no','ASC');
 	 	$this->load->view('Centers/student_marks_no_list',$data);
 	 	$this->load->view('Centers/footer');		
 	}
