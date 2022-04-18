@@ -5,14 +5,18 @@
 
 }
 .student_img{
-     width: 79%;
+     width: 100%;
     height: 77%;
  
+}
+.increase{
+   width:100px ;
 }
 
 .align{
    padding-right: 100px;  
 }
+
 </style>
 
 
@@ -24,25 +28,7 @@
 <div class="text-center"><label ><strong>Assignments के विश्वविद्यालय में Verification के पश्चात ही Final Marks प्रदान किये जायेंगे। </strong> 
 </label></div></div>
  <hr>
-           
-<!-- 
- <div  class="row py-3">
-        <div class="col-6 font-weight-bolder">
-         Information Center :
-        </div>
-      </div> -->
-<div style="padding-right: 107px;">
-<div class="row py-3">
-    <div class="col-6">
-      <label for="example-date-input" ><strong> Center Code::</strong></label>
-      <label for="example-date-input" ><?php echo $details[0]->center_code; ?></label>
-    </div>
-    <div class="col-6">
-      <label for="example-date-input"  ><strong> Center Name:</strong></label>
-      <label for="example-date-input"><?php echo $details[0]->center_name; ?></label>
-    </div>
-  </div></div>
-
+          
 
 <div  style="padding-right: 425px;"  class="row py-3">
         <div class="col-6 font-weight-bolder">
@@ -54,27 +40,26 @@
 <table class= "table table-bordered ">
               
               <tbody>
-             
-              <tr>
-
-                <td ><strong>Enrollment No: </strong> <?=$details[0]->enrollment_no;?></td>
-                <td  colspan="2"><strong> Roll No: </strong><?=$details[0]->roll_no;?></td>
-                 <td  rowspan="4"> <img  class="student_img" src="<?php echo base_url('/assets/student_image/').$details[0]->session.'/'.$details[0]->photo;?>"
-  ></td> 
+              
+              <tr>          
+               <td><strong>Enrollment No: </strong> <?=$details[0]->enrollment_no;?></td>
+                <td><strong> Roll No: </strong><?=$details[0]->roll_no;?></td>
+                 <td  rowspan="5"> <img  class="student_img" src="<?php echo base_url('/assets/student_image/').$details[0]->session.'/'.$details[0]->photo;?>" ></td> 
               </tr>
               <tr> 
                 <td><b> Name: </b> <?=$details[0]->name;?></td>
-                <td colspan="2"><b>F/H Name: </b> <?=$details[0]->f_h_name;?></td>
+                <td><b>F/H Name: </b> <?=$details[0]->f_h_name;?></td>
               </tr>
               <tr>
                 <td><b>Course: </b> <?=$details[0]->course_name;?></td>
-                <td colspan="2"><b>Class: </b> <?=$details[0]->class_name;?></td>
+                <td><b>Class: </b> <?=$details[0]->class_name;?></td>
               </tr>
               
+               <tr> 
+                <td colspan="2"><b>Center Name: </b> <?=$details[0]->center_name .' ( '.$details[0]->center_code.' )';?></td>
+              </tr>
               </tbody>
             </table>
-
-
 
 <form id="ajaxForm">
 <table  class="table " >
@@ -85,7 +70,7 @@
         <th>Paper Name</th>
         <th>Max Marks</th>
         <th> Min Marks</th>
-        <th>Marks</th>
+        <th class="text-center">Marks</th>
                
       </tr>
     </thead>
@@ -126,16 +111,17 @@ $view=  $this->Common_model->getRecordByWhere("paper_master",'class_id='.$detail
             ?>  </td>
           <td> 
           
-            <select name="marks[]" class="form-control col-12 " id="marks"  > 
-        <option value="Absent" selected>Absent</option>
+            <select name="marks[]" class="form-control col-12 increase " id="marks"  > 
+        <option value="ABS" selected>Absent</option>
         <?php
-           
-      $marks=  $view[0]->max_internal_marks;
-
-        for ($i=0; $i<=$marks; $i++)
+          
+      $max_internal=  $view[0]->max_internal_marks;
+      $min_internal=  $view[0]->min_internal_marks; 
+  
+        for ($i=$min_internal; $i<=$max_internal; $i++)
         {
           ?>
-          <option value="<?php echo $i; ?>"  ><?php echo $i; ?></option>
+          <option value="<?php echo $i; ?>"  ><?php echo str_pad($i,2,'0',STR_PAD_LEFT); ?></option>
           <?php
         } 
         ?>
@@ -175,11 +161,11 @@ $view=  $this->Common_model->getRecordByWhere("paper_master",'class_id='.$detail
   // }
   var frm = $('#ajaxForm').serialize();
 var id = $('#student_tr').val();
- if (confirm('Are you sure for marks update')) 
+ if (confirm('Are you Sure For Marks Update')) 
   {
  
   $.ajax({
-    url: '<?php echo site_url('Center/center/marks_paper_sub'); ?>',
+    url: '<?php echo site_url('center/center/assignment_marks_sub'); ?>',
     method: 'post',
     data: frm,
     dataType: 'JSON',
