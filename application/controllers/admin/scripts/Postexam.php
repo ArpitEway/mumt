@@ -104,21 +104,32 @@ public function general_promotion_class_list_paper_count(){
 
  public function general_promtion_student_submit(){
   
-        foreach($_POST['student_id'] as $student_id){
+  $data['student_id'] = $this->input->post('student_id');   
+//   $data['theory_marks'] = $this->input->post('theory_marks');
+// $data['paper_code'] = $this->input->post('paper_code'); 
+
+        foreach( $data['student_id'] as $key => $value){
          
-            $student= $this->Common_model->getRecordByWhere('student',array('student_id'=>$student_id));
-            $data = array(
-                'theory_marks' => $_POST['theory_marks'],
-             );
-            $where = array(
-                'student_id'=>$student_id ,
-            );
-            $update =$this->Common_model->updateRecordByConditions('new_exam_form',$where,$data);
-          }
+$new_exam_form = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',array('student_id'=> $value));
+// $this->Common_model->last_query();
+// die;
+
+         foreach($new_exam_form  as $key => $marks)
+            {
+            $old=array('theory_marks'=> $marks->total_marks, );
+      
+             $where = array(
+                 // 'paper_code' =>$value,
+             'student_id'=>$value ,
+               // 'paper_code'=>$data['paper_code'],
+         );
+         $update =$this->Common_model->updateRecordByConditions('new_exam_form',$where, $old);
+          }}
            if($update){
                 redirect(base_url('admin/scripts/Postexam/general_promotion_class_list_paper_count'));
            }
       }
+
 
 
 
