@@ -56,17 +56,17 @@
 
   if($obtain_theory_marks >=$min_theory_marks){
 
- if (count($obtain_theory_marks>0)) {
       $old_num = array('theory_marks' => $paper->total_marks,);
-    }}
+    
       $where = array(
         'student_id'=>$paper->student_id ,
         'paper_code'  =>$paper->paper_code,);
       $update =$this->Common_model->updateRecordByConditions('new_exam_form',$where, $old_num);
- //$this->Common_model->last_query();
+    }
+  
 
       ?>
-      <!-- <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">  -->
+      
       <tr>
         <td></td>
         <td><?php echo $paper->paper_code; ?></td>
@@ -77,6 +77,7 @@
       <?php
     }        
   }
+
   ?>
 </tbody>
 </table>
