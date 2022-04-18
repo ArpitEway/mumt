@@ -77,6 +77,7 @@
       <?php
    $s=1;
       foreach($details as $student){
+       $view=  $this->Common_model->getRecordByWhere("paper_master",'class_id='.$details[0]->class_id);
         ?>
         <tr>
          
@@ -91,22 +92,12 @@
 
         </td>
           <td>
-              <?php 
-       
-$view1=  $this->Common_model->getRecordByWhere("paper_master",'class_id='.$details[0]->class_id);
-
-           echo $view1[0]->max_internal_marks;
-
-                      
+              <?php
+           echo $view[0]->max_internal_marks;               
             ?>  
           </td>
           <td>    <?php 
-       
-$view=  $this->Common_model->getRecordByWhere("paper_master",'class_id='.$details[0]->class_id);
-
-           echo $view[0]->min_internal_marks;
-
-                        
+               echo $view[0]->min_internal_marks;                      
             ?>  </td>
           <td> 
           
