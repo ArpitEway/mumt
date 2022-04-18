@@ -84,12 +84,11 @@ public function general_promotion_class_list_paper_count(){
         $this->load->view('admin/script/student_count_for_general_promotion',$data);
          $this->load->view('footer');
         
-      
       }
 
 
   public function general_promotion_student_list($class_id="" ,$course_group_id=""){
-     $this->load->view('header');
+     $this->load->view('header',array('title' => 'General Promotion Students Marks Details'));
         // $data = array(
         //     'name_csrf' => $this->security->get_csrf_token_name(),
         //     'hash_csrf' => $this->security->get_csrf_hash(),

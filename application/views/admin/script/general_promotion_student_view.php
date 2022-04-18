@@ -7,8 +7,7 @@
 </style>
 
 
-  <fieldset  style="border:1px solid #999"; >
-  <legend>List Of Student<strong> June 2021</strong> Exam:</legend>
+ 
   <form method="post"  action="" class="mt-3 answersheet" >
     <table  class="table table-bordered">
      <thead>
@@ -16,7 +15,6 @@
        <th>Sn No.</th>
        <th>Enrollment No.</th>
        <th> Student Name</th>
-       <th> F/H Name</th>
        <th>Course</th>
 
      </tr> </thead>
@@ -41,7 +39,6 @@
       <td><?php echo $i++; ?></td>
       <td ><?php echo $row->enrollment_no; ?></td>
       <td><?php echo $row->name; ?></td>
-      <td ><?php echo $row->f_h_name; ?></td>
       <td><?php echo $row->course_name ; ?></td>   
     </tr>
     <?php
@@ -50,12 +47,18 @@
 
     foreach ($paper_details as $paper) { 
 
-
  $paper_count = $this->Common_model->getRecordByWhere('new_exam_form',array('student_id' => $paper->student_id));
 
- if (count($paper_count->theory_marks)==0) {
+  $marks_count = $this->Common_model->getRecordByWhere('paper_master',array('class_id' => $paper->class_id));
+  
+  $min_theory_marks= $marks_count[0]->min_theory_marks;
+  $obtain_theory_marks = $paper_count[0]->theory_marks;
+
+  if($obtain_theory_marks >=$min_theory_marks){
+
+ if (count($obtain_theory_marks>0)) {
       $old_num = array('theory_marks' => $paper->total_marks,);
-    }
+    }}
       $where = array(
         'student_id'=>$paper->student_id ,
         'paper_code'  =>$paper->paper_code,);
@@ -77,7 +80,7 @@
   ?>
 </tbody>
 </table>
-</fieldset>
+
 </form>
 
 
