@@ -5,9 +5,8 @@
 
 }
 .student_img{
-     width: 100%;
-    height: 77%;
- 
+     width: 120px;
+    height: auto;
 }
 .increase{
    width:100px ;
