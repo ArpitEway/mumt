@@ -89,49 +89,17 @@ public function general_promotion_class_list_paper_count(){
 
 
   public function general_promotion_student_list($class_id="" ,$course_group_id=""){
-     $this->load->view('header',array('title' => 'General Promotion Students List'));
-        $data = array(
-            'name_csrf' => $this->security->get_csrf_token_name(),
-            'hash_csrf' => $this->security->get_csrf_hash(),
-        );
+     $this->load->view('header');
+        // $data = array(
+        //     'name_csrf' => $this->security->get_csrf_token_name(),
+        //     'hash_csrf' => $this->security->get_csrf_hash(),
+        // );
           $data['students']= $this->Common_model->getRecordByWhere('student',array('class_id' => $class_id , 'exam_form'=>'Y'));
 
           $this->load->view('admin/script/general_promotion_student_view',$data);
           $this->load->view('footer');
       }
     
-
-
- public function general_promtion_student_submit(){
-  
-  $data['student_id'] = $this->input->post('student_id');   
-//   $data['theory_marks'] = $this->input->post('theory_marks');
-// $data['paper_code'] = $this->input->post('paper_code'); 
-
-        foreach( $data['student_id'] as $key => $value){
-         
-$new_exam_form = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',array('student_id'=> $value));
-// $this->Common_model->last_query();
-// die;
-
-         foreach($new_exam_form  as $key => $marks)
-            {
-            $old=array('theory_marks'=> $marks->total_marks, );
-      
-             $where = array(
-                 // 'paper_code' =>$value,
-             'student_id'=>$value ,
-               // 'paper_code'=>$data['paper_code'],
-         );
-         $update =$this->Common_model->updateRecordByConditions('new_exam_form',$where, $old);
-          }}
-           if($update){
-                redirect(base_url('admin/scripts/Postexam/general_promotion_class_list_paper_count'));
-           }
-      }
-
-
-
 
 }
 
