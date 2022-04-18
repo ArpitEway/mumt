@@ -73,12 +73,13 @@ class Postexam extends CI_Controller {
 
 public function general_promotion_class_list_paper_count(){
   $this->load->view('header',array('title' => 'General Promotion Students'));
-        $this->db->select('count(*) as cnt ,student.course_name ,student.class_id, student.course_group_id, student.class_name');
+        $this->db->select('count(*) as cnt ,student.course_name ,student.class_id, student.class_name');
         $this->db->from('student');
          $this->db->join('new_exam_form', 'new_exam_form.class_id = student.class_id');
         $this->db->group_by('student.class_id');
-        $this->db->where('student.exam_form','Y');
+        $this->db->where('student.new_exam_form','Y');
          $this->db->where('new_exam_form.paper_type','theory');
+         $this->db->where('new_exam_form.theory_marks','');
         $data['courses'] = $this->db->get()->result();
        // $this->Common_model->last_query();    
         $this->load->view('admin/script/student_count_for_general_promotion',$data);
@@ -87,13 +88,19 @@ public function general_promotion_class_list_paper_count(){
       }
 
 
-  public function general_promotion_student_list($class_id="" ,$course_group_id=""){
+  public function general_promotion_student_list($class_id=""){
      $this->load->view('header',array('title' => 'General Promotion Students Marks Details'));
-        // $data = array(
-        //     'name_csrf' => $this->security->get_csrf_token_name(),
-        //     'hash_csrf' => $this->security->get_csrf_hash(),
-        // );
-          $data['students']= $this->Common_model->getRecordByWhere('student',array('class_id' => $class_id , 'exam_form'=>'Y'));
+
+     $this->db->select('*');
+     $this->db->from('student');
+     $this->db->join('new_exam_form', 'new_exam_form.class_id = student.class_id');
+     $this->db->group_by('student.student_id');
+     $this->db->where('student.new_exam_form','Y');
+     $this->db->where('new_exam_form.paper_type','theory');
+     $this->db->where('new_exam_form.theory_marks','');
+     $data['students'] = $this->db->get()->result();
+  
+          // $data['students']= $this->Common_model->getRecordByWhere('student',array('class_id' => $class_id , 'new_exam_form'=>'Y'));
 
           $this->load->view('admin/script/general_promotion_student_view',$data);
           $this->load->view('footer');

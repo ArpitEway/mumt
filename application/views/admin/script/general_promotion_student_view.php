@@ -47,12 +47,10 @@
 
     foreach ($paper_details as $paper) { 
 
- $paper_count = $this->Common_model->getRecordByWhere('new_exam_form',array('student_id' => $paper->student_id));
+  $min_marks = $this->Common_model->getRecordByWhere('paper_master',array('class_id' => $paper->class_id)); 
+  $min_theory_marks= $min_marks[0]->min_theory_marks;
 
-  $marks_count = $this->Common_model->getRecordByWhere('paper_master',array('class_id' => $paper->class_id));
-  
-  $min_theory_marks= $marks_count[0]->min_theory_marks;
-  $obtain_theory_marks = $paper_count[0]->theory_marks;
+  $obtain_theory_marks = $paper[0]->total_marks;
 
   if($obtain_theory_marks >=$min_theory_marks){
 
