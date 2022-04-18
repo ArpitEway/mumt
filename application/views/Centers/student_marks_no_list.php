@@ -4,12 +4,11 @@
 		<thead>
 			<tr>
 				<th>Sno</th>
+				<th>Roll No</th>
+				<th>Enrollment No</th>
 				<th>Student Name</th>
 				<th>Course</th>
-				<th>Class</th>
-				<th>Enrollment No</th>
-				<th>Roll No</th>
-                <th>Session</th>
+				<th>Class</th>	
 				<th>Marks Submit</th>
 			</tr>
 		</thead>
@@ -20,12 +19,11 @@
 				?>
 				   <tr id="student_tr_<?php echo $student->student_id; ?>">  
 					<td><?php echo $i ; ?></td>
+					<td><?php echo $student->roll_no; ?></td>   
+					<td><?php echo $student->enrollment_no; ?></td>   
 					<td><?php echo $student->name; ?></td>
 					<td><?php echo $student->course_name; ?></td>
 					<td><?php echo $student->class_name; ?></td>
-					<td><?php echo $student->enrollment_no; ?></td>
-					<td><?php echo $student->roll_no; ?></td>
-					<td><?php echo $student->session; ?></td>
 					<td class="col-md-2 ">
 						<button  class="btn btn-primary btn-sm font-weight-bold student"  data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$student->student_id;?>">View</button></td>
 				</tr>
