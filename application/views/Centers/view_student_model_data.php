@@ -18,17 +18,6 @@
 
 </style>
 
-
-  <div>      
-  <div class="text-center"><label  style="color:red;">Provisional Internal Marks
-</label></div>
-<div class="text-center"><label ><strong>प्रविष्ट किये जा रहे निम्न अंक</strong> <label style="color:red;">Provisional Marks</label> <strong>हैं - </strong>
-</label></div>
-<div class="text-center"><label ><strong>Assignments के विश्वविद्यालय में Verification के पश्चात ही Final Marks प्रदान किये जायेंगे। </strong> 
-</label></div></div>
- <hr>
-          
-
 <div  style="padding-right: 425px;"  class="row py-3">
         <div class="col-6 font-weight-bolder">
          Student Details :
@@ -75,8 +64,11 @@
     </thead>
     <tbody>
       <?php
+    $markscounter =1;
    $s=1;
+ $ajax_count=count($details); 
       foreach($details as $student){
+       
        $view=  $this->Common_model->getRecordByWhere("paper_master",'class_id='.$details[0]->class_id);
         ?>
         <tr>
@@ -101,42 +93,101 @@
             ?>  </td>
           <td> 
           
-            <select name="marks[]" class="form-control col-12 increase " id="marks"  > 
+            <select name="marks[]" class="form-control col-12 increase"  id="<?="id_{$markscounter}"; ?>"  > 
         <option value="ABS" selected>Absent</option>
         <?php
-          
+        $percentage = 90;  
       $max_internal=  $view[0]->max_internal_marks;
       $min_internal=  $view[0]->min_internal_marks; 
+
+
+       $max_internal_percentage =  ($percentage / 100) * $max_internal;
+
   
-        for ($i=$min_internal; $i<=$max_internal; $i++)
+        for ($i=$min_internal; $i<=$max_internal_percentage; $i++)
+
         {
+
           ?>
-          <option value="<?php echo $i; ?>"  ><?php echo str_pad($i,2,'0',STR_PAD_LEFT); ?></option>
+          
+          <option class="same_num" value="<?php echo $i; ?>"  ><?php echo str_pad($i,2,'0',STR_PAD_LEFT); ?></option>
+  
           <?php
         } 
+
         ?>
+            
       </select>        
           </td>
         
           
         </tr>
         <?php 
+
+        $markscounter++;
       }
       ?>
-
+<input type="hidden" value="<?php echo $ajax_count; ?>" name="count_item" id="count_item"/>
     </tbody>
   </table>
 
   <div class="text-center py-3">
-      <button type="button" class="btn btn-primary mr-2"  id="markssubmit">Submit</button>
+      <button type="button" class="btn btn-primary mr-2"  id="markssubmit" >Submit</button>
        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
      </div>
 </form>
+
 
 <script>
   
   $("#markssubmit").on('click',function (e){
    e.preventDefault();
+ var i = 1;
+ var count=document.getElementById("count_item").value;
+
+ //    console.log(newMarks)
+  var marks='';
+  var marksArr=[];
+
+  while (count >= i )
+  {
+
+if (document.getElementById(`id_${i}`).value=='ABS')
+    {
+      var  check = false;
+      break;
+    }
+
+
+    var newMarks = document.getElementById(`id_${i}`).value;
+    console.log(newMarks)
+     marksArr.push(newMarks); 
+    i++; 
+  }
+  const filteredArr = marksArr.filter(el=>{
+    if(el=newMarks){
+       return el;
+    }
+  });
+  var counts = {};
+  filteredArr.forEach(function(el) { counts[el] = (counts[el] || 0)+1; });
+  for (const key in counts) {
+    if (counts.hasOwnProperty(key)) {
+      //console.log(counts[key]); 
+      if(counts[key]>2){
+        var  check_marks = false;
+        break;
+      }
+    }
+  }
+  if(check_marks==false){ 
+    alert('आपने  दो से अधिक बार समान अंक दर्ज किए हैं');
+    return false; 
+  }
+
+  
+
+
   //  var marks = $('#marks').val();
   //  var submit = true;
   //  if(marks==''){
@@ -162,13 +213,11 @@ var id = $('#student_tr').val();
     success: function (data) {
       if(data.success){
         toastr.success(data.success);
-           // $('.student').remove();
+         
            $('#kt_datepicker_modal').modal('toggle');
 
            $('.modal-backdrop').remove();
             $('#student_tr_'+id).hide();
-
-  // $('#kt_datatable info_row[id="'+tr_id+'"]').remove();
 
 }else{
   toastr.error(data.error);
