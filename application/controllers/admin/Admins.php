@@ -2654,8 +2654,8 @@ public function update_exam_datewise_permission(){
 			if($student['total_marks']<$student['marks']){
 				echo "<br> Total Marks".	$data['total_marks'] = $student['marks'];
 				echo "<br> Marks".	$data['marks'] = $student['total_marks'];
-			}
 			$this->Common_model->updateRecordByConditions('student_data',$where,$data);
+			}
 		}
 	}
 }// class
