@@ -43,33 +43,32 @@
     </tr>
     <?php
 
-    $paper_details = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',array('student_id' => $row->student_id));
+    $paper_details = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',array('student_id' => $row->student_id,'teacher_id'=>''));
 
     foreach ($paper_details as $paper) { 
 
-  $min_marks = $this->Common_model->getRecordByWhere('paper_master',array('class_id' => $paper->class_id)); 
-  $min_theory_marks= $min_marks[0]->min_theory_marks;
+      $min_marks = $this->Common_model->getRecordByWhere('paper_master',array('class_id' => $paper->class_id)); 
 
-  $obtain_theory_marks = $paper[0]->total_marks;
+      $min_theory_marks= $min_marks[0]->min_theory_marks;
+        $obtain_theory_marks = $paper->total_marks;
 
-  if($obtain_theory_marks >=$min_theory_marks){
+      if($obtain_theory_marks >=$min_theory_marks){
 
-      $old_num = array('theory_marks' => $paper->total_marks,);
-    
-      $where = array(
-        'student_id'=>$paper->student_id ,
-        'paper_code'  =>$paper->paper_code,);
-      $update =$this->Common_model->updateRecordByConditions('new_exam_form',$where, $old_num);
+        $old_num = array('theory_marks' => $paper->total_marks,);
+
+        $where = array(
+          'student_id'=>$paper->student_id ,
+          'paper_code'  =>$paper->paper_code,);
+        $update =$this->Common_model->updateRecordByConditions('new_exam_form',$where, $old_num);
     }
   
-
       ?>
       
       <tr>
         <td></td>
         <td><?php echo $paper->paper_code; ?></td>
         <td><?php echo $paper->total_marks; ?></td>
-        <td><?php echo $paper->total_marks; ?></td>
+        <td> </td>
 
       </tr>
       <?php

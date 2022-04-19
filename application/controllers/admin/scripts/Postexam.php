@@ -1,5 +1,6 @@
 <?php
-
+ini_set('max_execution_time', 0); 
+ini_set('memory_limit','2048M');
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Postexam extends CI_Controller {
@@ -73,37 +74,34 @@ class Postexam extends CI_Controller {
 
 public function general_promotion_class_list_paper_count(){
   $this->load->view('header',array('title' => 'General Promotion Students'));
-        $this->db->select('count(*) as cnt ,student.course_name ,student.class_id, student.class_name');
+        $this->db->select('count(paper_id) as cnt ,student.course_name ,student.class_id, student.class_name');
         $this->db->from('student');
-         $this->db->join('new_exam_form', 'new_exam_form.class_id = student.class_id');
+         $this->db->join('new_exam_form', 'new_exam_form.student_id = student.student_id');
         $this->db->group_by('student.class_id');
         $this->db->where('student.new_exam_form','Y');
          $this->db->where('new_exam_form.paper_type','theory');
          $this->db->where('new_exam_form.theory_marks','');
+         // $this->db->limit(10,0);
         $data['courses'] = $this->db->get()->result();
-       // $this->Common_model->last_query();    
+         
         $this->load->view('admin/script/student_count_for_general_promotion',$data);
          $this->load->view('footer');
         
       }
 
-
   public function general_promotion_student_list($class_id=""){
      $this->load->view('header',array('title' => 'General Promotion Students Marks Details'));
-
      $this->db->select('*');
      $this->db->from('student');
      $this->db->join('new_exam_form', 'new_exam_form.class_id = student.class_id');
-     $this->db->group_by('student.student_id');
+     $this->db->group_by('student.class_id');
      $this->db->where('student.new_exam_form','Y');
+      $this->db->where('new_exam_form.class_id',$class_id);
      $this->db->where('new_exam_form.paper_type','theory');
-     $this->db->where('new_exam_form.theory_marks','');
+     $this->db->where('new_exam_form.theory_marks','');  
      $data['students'] = $this->db->get()->result();
-  
-          // $data['students']= $this->Common_model->getRecordByWhere('student',array('class_id' => $class_id , 'new_exam_form'=>'Y'));
-
-          $this->load->view('admin/script/general_promotion_student_view',$data);
-          $this->load->view('footer');
+    $this->load->view('admin/script/general_promotion_student_view',$data);
+   $this->load->view('footer');
       }
     
 
