@@ -470,7 +470,7 @@ public function classes($param1 = '', $param2 = '', $param3 = '')
 			}
 			if($param1 == 'update'){
 
-				$response = $this->admin_model->paper_update($param2);
+				$response = $this->admin_model->update_paper($param2);
 				$this->session->set_flashdata('ajax_flash_message','Paper Successfully Updated');
 				redirect(base_url().'paper');
 
