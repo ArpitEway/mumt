@@ -2,6 +2,7 @@
 <?php $paper = $this->Common_model->getRecordById('paper_master','id',$param1);
  ?>
 <form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/Admins/paper/update'); ?>">
+	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	<div class="row">
 		<div class="form-group col-md-6">
 			<label for="name">Paper name</label>
