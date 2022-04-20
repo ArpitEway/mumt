@@ -1265,7 +1265,7 @@ class Center extends CI_Controller {
 		}    
 	 }
 
-	public function Internal_marks_list(){
+	public function internal_marks_list(){
 	 	if(!$this->session->has_userdata('centerdata')){
 	 		redirect(base_url());
 	 	}
