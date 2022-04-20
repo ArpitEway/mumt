@@ -43,9 +43,7 @@
                 <td><b>Class: </b> <?=$details[0]->class_name;?></td>
               </tr>
               
-               <tr> 
-                <td colspan="2"><b>Center Name: </b> <?=$details[0]->center_name .' ( '.$details[0]->center_code.' )';?></td>
-              </tr>
+               
               </tbody>
             </table>
 
