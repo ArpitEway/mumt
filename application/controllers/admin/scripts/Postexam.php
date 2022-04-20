@@ -93,7 +93,7 @@ public function general_promotion_class_list_paper_count(){
      $this->load->view('header',array('title' => 'General Promotion Students Marks Details'));
      $this->db->select('*');
      $this->db->from('student');
-     $this->db->join('new_exam_form', 'new_exam_form.class_id = student.class_id');
+     $this->db->join('new_exam_form', 'new_exam_form.student_id = student.student_id');
      $this->db->group_by('student.class_id');
      $this->db->where('student.new_exam_form','Y');
       $this->db->where('new_exam_form.class_id',$class_id);
