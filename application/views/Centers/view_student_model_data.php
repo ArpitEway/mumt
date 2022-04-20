@@ -64,7 +64,7 @@
     </thead>
     <tbody>
       <?php
-    $markscounter =1;
+   
    $s=1;
  $ajax_count=count($details); 
       foreach($details as $student){
@@ -73,7 +73,7 @@
         ?>
         <tr>
          
- <td><?php echo $s++; ?></td>
+ <td><?php echo $s; ?></td>
           <td><?php echo $student->paper_code; ?></td>
           <td><?=$this->Common_model->getPaperNameById($student->paper_id); ?>
 
@@ -93,7 +93,7 @@
             ?>  </td>
           <td> 
           
-            <select name="marks[]" class="form-control col-12 increase"  id="<?="id_{$markscounter}"; ?>"  > 
+            <select name="marks[]" class="form-control col-12 increase"  id="<?="id_{$s}"; ?>"  > 
         <option value="ABS" selected>Absent</option>
         <?php
         $percentage = 90;  
@@ -101,7 +101,7 @@
       $min_internal=  $view[0]->min_internal_marks; 
 
 
-       $max_internal_percentage =  ($percentage / 100) * $max_internal;
+       $max_internal_percentage = round(($percentage / 100) * $max_internal);
 
   
         for ($i=$min_internal; $i<=$max_internal_percentage; $i++)
@@ -110,7 +110,7 @@
 
           ?>
           
-          <option class="same_num" value="<?php echo $i; ?>"  ><?php echo str_pad($i,2,'0',STR_PAD_LEFT); ?></option>
+          <option class="same_num" value="<?php echo str_pad($i,2,'0',STR_PAD_LEFT); ?>"  ><?php echo str_pad($i,2,'0',STR_PAD_LEFT); ?></option>
   
           <?php
         } 
@@ -123,8 +123,8 @@
           
         </tr>
         <?php 
-
-        $markscounter++;
+$s++;
+        
       }
       ?>
 <input type="hidden" value="<?php echo $ajax_count; ?>" name="count_item" id="count_item"/>
@@ -145,7 +145,6 @@
  var i = 1;
  var count=document.getElementById("count_item").value;
 
- //    console.log(newMarks)
   var marks='';
   var marksArr=[];
 
@@ -158,16 +157,15 @@ if (document.getElementById(`id_${i}`).value=='ABS')
       break;
     }
 
-
     var newMarks = document.getElementById(`id_${i}`).value;
-    console.log(newMarks)
+
      marksArr.push(newMarks); 
     i++; 
   }
-  const filteredArr = marksArr.filter(el=>{
-    if(el=newMarks){
-       return el;
-    }
+   const filteredArr = marksArr.filter(el=>{
+     if(el=newMarks){
+        return el;
+     }
   });
   var counts = {};
   filteredArr.forEach(function(el) { counts[el] = (counts[el] || 0)+1; });
@@ -181,30 +179,26 @@ if (document.getElementById(`id_${i}`).value=='ABS')
     }
   }
   if(check_marks==false){ 
-    alert('आपने  दो से अधिक बार समान अंक दर्ज किए हैं');
+    alert('आपने दो से अधिक बार समान अंक दर्ज किए हैं');
     return false; 
   }
 
-  
+  if(check==false){
+    if(confirm('Are You want to set Absent ?')==false){
+      return false;
+    }
+}
 
 
-  //  var marks = $('#marks').val();
-  //  var submit = true;
-  //  if(marks==''){
-  //   $(marks).next().text('Please Select Marks');
-  //   submit = false;
-  // }else{
-  //   $(marks).next().text('');
-  // }
+var x=confirm(' Are you sure to submit marks ? \n प्रविष्ट किये जा रहे निम्न अंक Provisional Marks हैं। \n Assignments के विश्वविद्यालय में पुनर्मूल्यांकन के पश्चात ही Final Marks प्रदान किये जायेंगे।');
+  if(x==false){
+    return false; 
+  }
 
-  // if(submit==false){
-  //   return false;
-  // }
   var frm = $('#ajaxForm').serialize();
 var id = $('#student_tr').val();
- if (confirm('Are you Sure For Marks Update')) 
-  {
  
+
   $.ajax({
     url: '<?php echo site_url('center/center/assignment_marks_sub'); ?>',
     method: 'post',
@@ -224,6 +218,6 @@ var id = $('#student_tr').val();
 }
 },
 });
-}
+
 });
 </script>
