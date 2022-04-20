@@ -1265,7 +1265,7 @@ class Center extends CI_Controller {
 		}    
 	 }
 
-	public function assignment_marks_list(){
+	public function Internal_marks_list(){
 	 	if(!$this->session->has_userdata('centerdata')){
 	 		redirect(base_url());
 	 	}
@@ -1274,7 +1274,7 @@ class Center extends CI_Controller {
 	 		'hash_csrf' => $this->security->get_csrf_hash(),
 	 	);
 
-	 	$titleData = array('title' => 'Assignment Marks Submission' );
+	 	$titleData = array('title' => 'Internal  Marks Submission' );
 	 	$this->load->view('Centers/header',$titleData);
 	 	$center_id =  $this->session->center_id;
 	 	$where = array(

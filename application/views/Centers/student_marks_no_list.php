@@ -4,8 +4,9 @@
 </label></div>
 <div class="text-center"><label ><strong>प्रविष्ट किये जा रहे निम्न अंक</strong> <label style="color:red;">Provisional Marks</label> <strong>हैं - </strong>
 </label></div>
-<div class="text-center"><label ><strong>Assignments के विश्वविद्यालय में Verification के पश्चात ही Final Marks प्रदान किये जायेंगे। </strong> 
-</label></div></div>
+
+
+</div>
 
 
 
