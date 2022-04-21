@@ -85,12 +85,13 @@ class Postexam extends CI_Controller {
         $this->db->select('*');
         $this->db->from('student');
         $this->db->join('new_exam_form', 'new_exam_form.student_id = student.student_id');
-        // $this->db->group_by('student.class_id');
+         $this->db->group_by('student.student_id');
         $this->db->where('student.new_exam_form','Y');
         $this->db->where('new_exam_form.class_id',$class_id);
         $this->db->where('new_exam_form.paper_type','theory');
         $this->db->where('new_exam_form.theory_marks','');  
         $data['students'] = $this->db->get()->result();
+
         $this->load->view('admin/script/general_promotion_student_view',$data);
         $this->load->view('footer');
     }
