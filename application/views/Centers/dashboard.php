@@ -91,7 +91,7 @@
 							<span class="nav-text">Paper Missing List</span>
 						</div>
 					</a> -->
-					<a class="border-0 custom-menu-item" href="<?=base_url('center/internal_marks_list');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('internal_marks_list');?>">
 						<div>
 							<span class="nav-text">Internal Marks Submission</span>
 						</div>
