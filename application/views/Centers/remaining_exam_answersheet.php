@@ -15,7 +15,8 @@
 						<th>Student Name </th>
 						<th>Course </th>
 						<th>Total Paper </th>
-						<th>Remaining Paper </th>   
+						<th>Remaining Paper </th> 
+						<th>View</th>     
 					</tr>
 				</thead>
 			<tbody>
@@ -36,6 +37,9 @@
 					<td><?php echo  $student->course_name ; ?></td>
 					<td><?php echo  $student->cnt ; ?></td>
 					<td><?php echo $remaining ;?></td>
+
+					
+					<td><a  target="_blank" href="<?=base_url('center/center/exam_paper/'.$this->Common_model->encrypt_decrypt($student->student_id,'encrypt'));?>">Question</a></td>
 </tr>
 <?php $i++; }  } ?>
 

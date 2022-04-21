@@ -19,7 +19,15 @@
     <div class="w-100">
         <!--begin::Form-->
         <div class="col-sm-8 m-auto">
-            <form action="<?php echo  base_url('student/Student/upload_assignment_sub')?>"  id="kt_dropzone_1" class="dropzone" >
+            <?php
+            if($this->session->has_userdata('centerdata')){
+                $account_type= 'center/center/upload_assignment_sub/';
+            }else{
+                $account_type= 'student/Student/upload_assignment_sub/';
+
+            }
+            ?>
+            <form action="<?php echo  base_url($account_type)?>"  id="kt_dropzone_1" class="dropzone" >
                 <div class="dz-message" data-dz-message><span>Drop files here to upload only pdf format</span></br>
                     <span>File Size Upto 5 MB</span></div>
                     <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
