@@ -1384,12 +1384,12 @@ class Center extends CI_Controller {
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
 		);
-		
+
 		$data['student'] = $this->Common_model->student_info($student_id);
 		$this->db->select('paper_master.*');
 		$this->db->from('paper_master');
 		$this->db->join('new_exam_form', 'paper_master.id = new_exam_form.paper_id');
-		
+
 		$class_id = $data['student']['class_id'];
 
 		$where = array('paper_master.class_id' =>$data['student']['class_id'],
