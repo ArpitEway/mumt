@@ -86,11 +86,16 @@
 			</div> 
 			<div class="tab-pane fade" id="exam" role="tabpanel" aria-labelledby="exam-tab">
 				<div class="row">
-	<!--<a class="border-0 custom-menu-item" href="<?=base_url('center/paper_missing_list');?>">
+						<!--<a class="border-0 custom-menu-item" href="<?=base_url('center/paper_missing_list');?>">
 						<div>
 							<span class="nav-text">Paper Missing List</span>
 						</div>
 					</a> -->
+					<a class="border-0 custom-menu-item" href="<?=base_url('center/internal_marks_list');?>">
+						<div>
+							<span class="nav-text">Internal Marks Submission</span>
+						</div>
+					</a>
 					<a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
 						<div>
 							<span class="nav-text">Exam Form Dec 2021</span>
