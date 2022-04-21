@@ -26,11 +26,10 @@ class Postexam extends CI_Controller {
         $this->db->where('student.course_complete','N');
         $this->db->where('class_master.last_class!=','Y');
         $data['courses'] = $this->db->get()->result();
-            $this->load->view('header',array('title' => 'Promote Students'));
-            $this->load->view('admin/script/class_wise_student_count_for_promote_student',$data);
-            $this->load->view('footer');
-      
-      }
+        $this->load->view('header',array('title' => 'Promote Students'));
+        $this->load->view('admin/script/class_wise_student_count_for_promote_student',$data);
+        $this->load->view('footer');
+    }
     
       public function promote_student($class_id="" ,$course_group_id=""){
         $data = array(
@@ -41,7 +40,6 @@ class Postexam extends CI_Controller {
           $data['course_name']= $this->Common_model->getCourseNameByCourseId($course_group_id);
           $data['class_name']= $this->Common_model->getClassNameByClassId($class_id);
           $data['class_id'] =$class_id ;
-        
           $data['course_group_id'] =$course_group_id ;
           $this->load->view('header',array('title' => 'Promote Students'));
           $this->load->view('admin/script/promote_student_view',$data);
@@ -49,9 +47,7 @@ class Postexam extends CI_Controller {
       }
     
       public function promote_student_submit(){
-  
         foreach($_POST['student_id'] as $student_id){
-         
             $student= $this->Common_model->getRecordByWhere('student',array('student_id'=>$student_id));
             $data = array(
                 'class_id' => $_POST['new_class_id'],
@@ -64,47 +60,40 @@ class Postexam extends CI_Controller {
                 'student_id'=>$student_id ,
             );
             $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
-          }
-           if($update){
-                redirect(base_url('admin/scripts/Postexam/class_wise_student_count_for_promote_student'));
-           }
-      }
+        }
+        if($update){
+            redirect(base_url('admin/scripts/Postexam/class_wise_student_count_for_promote_student'));
+        }
+    }
 
-
-
-public function general_promotion_class_list_paper_count(){
-  $this->load->view('header',array('title' => 'General Promotion Students'));
+    public function general_promotion_class_list_paper_count(){
+        $this->load->view('header',array('title' => 'General Promotion Students'));
         $this->db->select('count(paper_id) as cnt ,student.course_name ,student.class_id, student.class_name');
         $this->db->from('student');
-         $this->db->join('new_exam_form', 'new_exam_form.student_id = student.student_id');
+        $this->db->join('new_exam_form', 'new_exam_form.student_id = student.student_id');
         $this->db->group_by('student.class_id');
         $this->db->where('student.new_exam_form','Y');
-         $this->db->where('new_exam_form.paper_type','theory');
-         $this->db->where('new_exam_form.theory_marks','');
-         // $this->db->limit(10,0);
+        $this->db->where('new_exam_form.paper_type','theory');
+        $this->db->where('new_exam_form.theory_marks','');
         $data['courses'] = $this->db->get()->result();
-         
         $this->load->view('admin/script/student_count_for_general_promotion',$data);
-         $this->load->view('footer');
-        
-      }
+        $this->load->view('footer');
+    }
 
-  public function general_promotion_student_list($class_id=""){
-     $this->load->view('header',array('title' => 'General Promotion Students Marks Details'));
-     $this->db->select('*');
-     $this->db->from('student');
-     $this->db->join('new_exam_form', 'new_exam_form.student_id = student.student_id');
-     $this->db->group_by('student.class_id');
-     $this->db->where('student.new_exam_form','Y');
-      $this->db->where('new_exam_form.class_id',$class_id);
-     $this->db->where('new_exam_form.paper_type','theory');
-     $this->db->where('new_exam_form.theory_marks','');  
-     $data['students'] = $this->db->get()->result();
-    $this->load->view('admin/script/general_promotion_student_view',$data);
-   $this->load->view('footer');
-      }
-    
-
+    public function general_promotion_student_list($class_id=""){
+        $this->load->view('header',array('title' => 'General Promotion Students Marks Details'));
+        $this->db->select('*');
+        $this->db->from('student');
+        $this->db->join('new_exam_form', 'new_exam_form.student_id = student.student_id');
+        // $this->db->group_by('student.class_id');
+        $this->db->where('student.new_exam_form','Y');
+        $this->db->where('new_exam_form.class_id',$class_id);
+        $this->db->where('new_exam_form.paper_type','theory');
+        $this->db->where('new_exam_form.theory_marks','');  
+        $data['students'] = $this->db->get()->result();
+        $this->load->view('admin/script/general_promotion_student_view',$data);
+        $this->load->view('footer');
+    }
 }
 
 ?>
