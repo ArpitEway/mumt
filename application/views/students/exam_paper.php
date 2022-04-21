@@ -74,14 +74,16 @@
 						$data[0]->answer_sheet;
 						$path = FCPATH.'/assets/exam_answersheet/'.$data[0]->upload_date.'/'.$data[0]->answer_sheet;
 						if($count>=1 &&  file_exists($path) && $data[0]->answer_sheet!=''){
-							if($this->session->has_userdata('centerdata')){
-                 		$account_type= 'center/center/delete_exam_answersheet/';
-                    	}else{
-                 		$account_type= 'student/Student/delete_exam_answersheet/';
-                     	}
+							
 						?>
 							<button disable type="button" class="btn btn-success">Submitted</button>
-							<a href="javascript:void(0);" onclick="DeleteModal('<?php echo base_url($account_type).$data[0]->id; ?>')" data-toggle="tooltip" title="Delete Answer-Sheet!"><i class="mdi mdi-delete ml-5"></i></a>
+							
+                            <?php
+                           if($this->session->has_userdata('studentdata')){
+                             ?>
+						<a href="javascript:void(0);" onclick="DeleteModal('<?php echo base_url('student/Student/delete_exam_answersheet/').$data[0]->id; ?>')" data-toggle="tooltip" title="Delete Answer-Sheet!"><i class="mdi mdi-delete ml-5"></i></a>
+                           <?php  } ?>
+
 							<?php
 						}elseif(file_exists(FCPATH.$pdf)){
 
@@ -108,6 +110,3 @@
 		</table>
 	</div>
 </div>
-
-
-				

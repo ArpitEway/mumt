@@ -1466,18 +1466,6 @@ class Center extends CI_Controller {
 		}
 	}
 
-	public function delete_exam_answersheet($anssheet_id)
-	{
-		$where = array('id' =>$anssheet_id);
-		$ansdata =	$this->Common_model->getRecordById('upload_exam_ans_sheet','id',$anssheet_id);
-		$data = array('answer_sheet' => '',
-			'upload_date' => '',
-			'file_exist' => 'N',
-			'old_upload_date' => $ansdata->upload_date,
-		);
-		$this->Common_model->updateRecordByConditions('upload_exam_ans_sheet',$where,$data);
-		redirect(base_url('exam_paper'));
-	}
-
+	
 
 }

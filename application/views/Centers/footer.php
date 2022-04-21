@@ -145,15 +145,6 @@ function callTheCallBackFunction() {
      });
    </script>
 
-
-<script type="text/javascript">
-  function DeleteModal(delete_url){
-    jQuery('#alert-modal').modal('show', {backdrop: 'static'});
-    document.getElementById('delete_form').setAttribute('action' , delete_url);
-  }
-</script>
-
-
 <?php if ($this->session->flashdata('success') != ""):?>
 
   <script type="text/javascript">
