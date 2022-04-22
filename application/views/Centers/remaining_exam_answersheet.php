@@ -22,7 +22,7 @@
 			<?php
 			$i = 1;
 			foreach($students as $student){
-				$uploaded_paper  = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array('student_id'=>$student->student_id,'course_group_id'=>$student->course_group_id, 'class_id'=>$student->class_id));
+				$uploaded_paper  = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array('student_id'=>$student->student_id,'course_group_id'=>$student->course_group_id, 'class_id'=>$student->class_id, 'file_exist'=>'Y'));
 				$remaining =$student->cnt - $uploaded_paper;
 				
 				if($remaining !=0 ){
