@@ -1287,6 +1287,7 @@ class Center extends CI_Controller {
 	 		'result_show ' => 'N',
 	 		'int_marks_sub'=>'N'
 	 	);
+	 	$this->db->where('`class_id` in (154 , 158 , 181 , 193 , 195 , 197 , 199 , 201 , 203 , 205 , 207 , 209 , 211 , 213 , 221 , 223 , 225 , 227 )');
 	 	$data['students'] = $this->Common_model->getRecordByWhereByOrder('student',$where,'course_group_id,class_id,roll_no','ASC');
 	 	$this->load->view('Centers/student_marks_no_list',$data);
 	 	$this->load->view('Centers/footer');		
