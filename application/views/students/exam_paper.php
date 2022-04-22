@@ -71,7 +71,6 @@
 						$data = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',$where);
 
 						$count = count($data);
-						$data[0]->answer_sheet;
 						$path = FCPATH.'/assets/exam_answersheet/'.$data[0]->upload_date.'/'.$data[0]->answer_sheet;
 						if($count>=1 &&  file_exists($path) && $data[0]->answer_sheet!=''){
 							
@@ -79,7 +78,7 @@
 							<button disable type="button" class="btn btn-success">Submitted</button>
 							
                             <?php
-                           if($this->session->has_userdata('studentdata')){
+                           if($this->session->has_userdata('studentdata') && $data[0]->teacher_id==''){
                              ?>
 						<a href="javascript:void(0);" onclick="DeleteModal('<?php echo base_url('student/Student/delete_exam_answersheet/').$data[0]->id; ?>')" data-toggle="tooltip" title="Delete Answer-Sheet!"><i class="mdi mdi-delete ml-5"></i></a>
                            <?php  } ?>
