@@ -1153,8 +1153,12 @@ class Center extends CI_Controller {
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
+	  $data = array(
+		'name_csrf' => $this->security->get_csrf_token_name(),
+		'hash_csrf' => $this->security->get_csrf_hash()
+		);
 		$center_id =  $this->session->center_id;
-		$titleData = array('title' => 'Remaining Exam Status'); 
+		$titleData = array('title' => 'Remaining Exam Answersheet'); 
 		$this->load->view('Centers/header',$titleData);
 		$this->db->select('count(*) as cnt ,student.class_id,new_exam_form.course_group_id , center_code , center_name ,roll_no,enrollment_no , name , course_name , class_name ,student.student_id');
 		$this->db->from('new_exam_form');
@@ -1369,5 +1373,90 @@ class Center extends CI_Controller {
 	{
 		$delete_img = $this->Common_model->deleteByWhere("activity_file",array('id'=>$_POST['id']));
 		echo json_encode(array("status" => true,));			
+	}
+
+
+	public function exam_paper($student_id=''){
+		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
+		$data['student'] = $this->Common_model->student_info($student_id);
+		$this->db->select('paper_master.*');
+		$this->db->from('paper_master');
+		$this->db->join('new_exam_form', 'paper_master.id = new_exam_form.paper_id');
+		$class_id = $data['student']['class_id'];
+		$where = array('paper_master.class_id' =>$data['student']['class_id'],
+			'student_id' => $student_id
+		);
+		$this->db->where($where); 
+		$data['papers'] = $this->db->get()->result();
+		$whereClass = array('class_id' => $class_id,
+			'exam_permission' => 'Y',
+		);
+		$timeTableData = $this->Common_model->getRecordByWhere('time_table',$whereClass);
+		if((count($timeTableData)==0) || ($data['student']['new_exam_form']!='Y')){
+			redirect(base_url());
+		}
+		$this->load->view('Centers/header',array('title' => 'Student Answer Sheet Status','page_slug' => 'exam_paper'));	
+		$this->load->view('students/exam_paper',$data);
+		$this->load->view('Centers/footer');
+	}
+
+
+
+	public function upload_anwser_sheet($paper_id,$student_id=''){
+		$paper_id = $this->Common_model->encrypt_decrypt($paper_id,'decrypt');
+		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
+		$data['paperData'] = $this->Common_model->getRecordById('paper_master','id',$paper_id);
+		$data['student'] = $this->Common_model->student_info($student_id);
+		$this->load->view('Centers/header',array('title' => 'Upload Answer Sheet'));	
+		$this->load->view('students/upload_answer_sheet',$data);
+		$this->load->view('Centers/footer');
+	}
+
+
+	public function upload_assignment_sub(){
+		if($_FILES['file']['name']!='')
+		{
+			$ext1=strtolower(pathinfo($_FILES['file']['name'],PATHINFO_EXTENSION));
+			$fname=$_POST['student_id']."_".$_POST['paper_code'];
+			$document_image = $fname.".".$ext1;
+			$date = date('Y-m-d');
+			if (!is_dir('assets/exam_answersheet/'.$date)) {
+				mkdir('assets/exam_answersheet/'.$date, 0777, TRUE);
+			}
+			$upload_file = move_uploaded_file($_FILES['file']['tmp_name'],"assets/exam_answersheet/".$date.'/'.$document_image);
+			if($upload_file){
+				$data = array('student_id' =>$_POST['student_id'],
+					'course_group_id' =>$_POST['course_group_id'],
+					'class_id' =>$_POST['class_id'],
+					'paper_code' =>$_POST['paper_code'],
+					'center_id' =>$_POST['center_id'],
+					'answer_sheet' =>$document_image ,
+					'upload_date' =>date("Y-m-d") ,
+					'exam_status' => 'R',
+					'file_exist' => 'Y'
+				);
+				$where = array(
+					'class_id' => $_POST['class_id'],
+					'student_id' => $_POST['student_id'],
+					'paper_code' =>$_POST['paper_code']
+				);
+				$ansSheetCount = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',$where);
+				if($ansSheetCount>0){
+					$this->Common_model->updateRecordByConditions('upload_exam_ans_sheet',$where,$data);
+				}else{
+					$insert = $this->Common_model->insertAll('upload_exam_ans_sheet',$data);
+				}
+			}
+		}
+		$student_id = $this->Common_model->encrypt_decrypt($_POST['student_id']);
+		echo $student_id;
 	}
 }
