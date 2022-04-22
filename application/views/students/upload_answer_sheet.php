@@ -13,9 +13,7 @@
             <div class="p-2 col-md-4 font-weight-bold">Paper</div>
             <div class="p-2 col-md-8"> <?=$paperData->paper_name;?> ( <?=$paperData->paper_code;?> )</div>
         </div>
-    </div>        
-
-    
+    </div>   
     <div class="w-100">
         <!--begin::Form-->
         <div class="col-sm-8 m-auto">

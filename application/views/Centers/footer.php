@@ -139,8 +139,8 @@ function callTheCallBackFunction() {
 
       $('#uploadfiles').click(function(){       
        myDropzone.processQueue();
-       myDropzone.on("complete", function(file) {
-        window.location.href = BASE_URL + 'exam_paper';
+       myDropzone.on("success", function(file, response) {
+       window.location.href = BASE_URL + 'exam_paper/'+response;
       });
      });
    </script>
