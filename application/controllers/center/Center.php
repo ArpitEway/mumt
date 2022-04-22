@@ -1158,7 +1158,7 @@ class Center extends CI_Controller {
 		'hash_csrf' => $this->security->get_csrf_hash()
 		);
 		$center_id =  $this->session->center_id;
-		$titleData = array('title' => 'Remaining Exam Status'); 
+		$titleData = array('title' => 'Remaining Exam Answersheet'); 
 		$this->load->view('Centers/header',$titleData);
 		$this->db->select('count(*) as cnt ,student.class_id,new_exam_form.course_group_id , center_code , center_name ,roll_no,enrollment_no , name , course_name , class_name ,student.student_id');
 		$this->db->from('new_exam_form');
@@ -1398,7 +1398,7 @@ class Center extends CI_Controller {
 		if((count($timeTableData)==0) || ($data['student']['new_exam_form']!='Y')){
 			redirect(base_url());
 		}
-		$this->load->view('Centers/header',array('title' => 'Exam Paper','page_slug' => 'exam_paper'));	
+		$this->load->view('Centers/header',array('title' => 'Student Answer Sheet Status','page_slug' => 'exam_paper'));	
 		$this->load->view('students/exam_paper',$data);
 		$this->load->view('Centers/footer');
 	}
