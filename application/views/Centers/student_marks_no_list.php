@@ -38,8 +38,8 @@
 					<td><?php echo $student->name; ?></td>
 					<td><?php echo $student->course_name; ?></td>
 					<td><?php echo $student->class_name; ?></td>
-					<td class="col-md-2 ">
-						<button  class="btn btn-primary btn-sm font-weight-bold student"  data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$student->student_id;?>">View</button></td>
+					<td class="col-md-2">
+						<button  class="btn btn-primary btn-sm font-weight-bold student"  data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$student->student_id;?>" onclick="mark_submission(<?=$student->student_id;?>)">Submission</button></td>
 				</tr>
 				<?php 
 				$i++;
@@ -51,8 +51,10 @@
 	<div class="modal fade" id="kt_datepicker_modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
-			<!-- <div class="modal-header">
-			</div>  -->
+			<div class="modal-header">
+				<h4>Student Details</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div> 
 			<div class="modal-body">
 
 			</div>
@@ -60,9 +62,9 @@
 	</div>
 </div>
 <script>
-	$(document).ready(function(){
-		$(".student").click(function(){
-			var student_id = $(this).attr('data-id');
+
+		function mark_submission(student_id){
+			var student_id = student_id;
 			var csrfName = $('.csrfname').attr('name');
 			var csrfHash = $('.csrfname').val();
 			$.ajax({
@@ -74,6 +76,5 @@
 					$('.modal-body').html(response.data);
 				},
 			});
-		});
-	});
+		}
 </script>
