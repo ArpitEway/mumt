@@ -18,14 +18,8 @@
 
 </style>
 
-<div  style="padding-right: 425px;"  class="row py-3">
-        <div class="col-6 font-weight-bolder">
-         Student Details :
-        </div>
-      </div>
 
-
-<table class= "table table-bordered ">
+<table class= "table table-bordered table-responsive">
               
               <tbody>
               
@@ -48,7 +42,7 @@
             </table>
 
 <form id="ajaxForm">
-<table  class="table " >
+<table  class="table table-responsive" >
     <thead>
       <tr>
           <th>#</th>
@@ -210,6 +204,7 @@ var id = $('#student_tr').val();
 
            $('.modal-backdrop').remove();
             $('#student_tr_'+id).hide();
+            $('.child').hide();
 
 }else{
   toastr.error(data.error);
