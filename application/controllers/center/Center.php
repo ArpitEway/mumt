@@ -1459,4 +1459,125 @@ class Center extends CI_Controller {
 		$student_id = $this->Common_model->encrypt_decrypt($_POST['student_id']);
 		echo $student_id;
 	}
+
+
+
+public function practical_marks_list(){
+	if(!$this->session->has_userdata('centerdata')){
+		redirect(base_url());
+	}
+	$data = array(
+		'name_csrf' => $this->security->get_csrf_token_name(),
+		'hash_csrf' => $this->security->get_csrf_hash(),
+	);
+	$titleData = array('title' => 'practical  Marks Submission' );
+	$this->load->view('Centers/header',$titleData);
+	$center_id =  $this->session->center_id;
+	$where = array('center_id' => $center_id,'new_exam_form' => 'Y','result_show ' => 'N',
+		'paper_type !='=>'theory');
+     $where1 = '(project="Y" or practical = "Y")';
+	$this->db->order_by("student.course_group_id,student.class_id", "asc");
+	$this->db->select('*');
+	$this->db->from('new_exam_form');
+	$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+	$this->db->join('class_master', 'student.class_id = class_master.id');
+	$this->db->Where($where );
+	$this->db->Where($where1 );
+	$data['students'] = $this->db->get()->result();
+	$this->load->view('Centers/practical_marks_no_list',$data);
+	$this->load->view('Centers/footer');		
+}
+
+public function load_student_practical_assignment (){
+	 	$student_id = $this->input->post('student_id');
+	 	$where=array('student.student_id'=>$student_id,
+                  'paper_type!='=>'theory', );
+	 	$this->db->select('*');
+	 	$this->db->from('new_exam_form');
+	 	$this->db->Where($where );
+	 	$this->db->join('student', 'student.student_id = new_exam_form.student_id');
+	 	$this->db->join('class_master', 'class_master.id = student.class_id');
+	 	$this->db->join('paper_master', 'paper_master.id = new_exam_form.paper_id');
+	 	$details = $this->db->get()->result();
+	 //	$this->Common_model->last_query();
+	 	$data = array(
+	 		'details' => $details,
+	 		'name_csrf' => $this->security->get_csrf_token_name(),
+	 		'hash_csrf' => $this->security->get_csrf_hash(),
+	 	);
+	 	if($data){
+	 		$model =  $this->load->view('Centers/view_student_practical_data',$data,true);
+	 		$status = true;
+	 	}
+	 	echo json_encode(array(
+	 		"status" => $status,
+	 		"data" => $model
+	 	));	
+	}
+
+public function practical_assignment_marks_sub()
+	{  
+	 	$data=array();
+	 	$post = $this->input->post();
+	 	$data['paper_id'] = $this->input->post('paper_id');	
+	 	$data['marks'] = $this->input->post('marks');
+	 	foreach ($data['paper_id'] as $key => $value){
+	 		$studentData = array(
+	 			'p_marks' => $data['marks'][$key],	
+	 		);
+	 		$where =  array(
+	 			'paper_id' =>$value,
+	 			'student_id'  =>$_POST['student_id']
+	 		);
+	 		$Marksentry = $this->Common_model->updateRecordByConditions('new_exam_form',$where,$studentData);
+	 	}
+
+	 	$where1 =  array(
+	 		'student_id'  =>$_POST['student_id']
+	 	);
+	 	$Data = array(
+	 		'p_marks_sub' => 'Y',	
+	 	);
+	 	$Marksentry1 = $this->Common_model->updateRecordByConditions('student',$where1,$Data);
+
+	 	$sts_btn = '<button  class="btn btn-info btn-sm font-weight-bold view"  data-toggle="modal" data-target="#kt_datepicker_modal"  data-id = '.$_POST['student_id'].'"
+	 			 onclick="view_mark('.$_POST['student_id'].'")">view</button>';
+
+	 	if($Marksentry1){
+				$dt =  "Marks Submited";
+			}else{
+				$dt = "Error";
+			}
+           
+	 	echo json_encode(array(
+	 		"data" => $sts_btn,
+	 		   'msg'=>  $dt,
+			));	
+
+	 }
+
+public function student_practical_marks (){
+	 	$student_id = $this->input->post('student_id');
+	 	$where=array('student.student_id'=>$student_id,
+                  'paper_type!='=>'theory', );
+	 	$this->db->select('*');
+	 	$this->db->from('new_exam_form');
+	 	$this->db->Where($where );
+	 	$this->db->join('student', 'student.student_id = new_exam_form.student_id');
+	 	$details = $this->db->get()->result();
+	 //	$this->Common_model->last_query();
+	 	$data = array(
+	 		'details' => $details,
+	 		'name_csrf' => $this->security->get_csrf_token_name(),
+	 		'hash_csrf' => $this->security->get_csrf_hash(),
+	 	);
+	 	if($data){
+	 		$model =  $this->load->view('Centers/student_marks_no_data',$data,true);
+	 		$status = true;
+	 	}
+	 	echo json_encode(array(
+	 		"status" => $status,
+	 		"data" => $model
+	 	));	
+	}
 }
