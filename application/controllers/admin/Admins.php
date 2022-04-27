@@ -2644,7 +2644,7 @@ public function update_exam_datewise_permission(){
 	}
 
 
-	public function generate_tr($course_id="71",$class_id="221"){
+	public function generate_tr($course_id="",$class_id=""){
 		// $this->db->limit(20);
 	  $this->db->order_by('roll_number','ASC');
 	  $data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id ,'exam_form'=>'Y','roll_no!='=>'0' ));
@@ -2677,6 +2677,14 @@ public function update_exam_datewise_permission(){
 		   }
 	   }
    }
+
+   public function tr_class_list(){
+	$where = 'id in  (select distinct(course_group_id) from student where exam_form = "Y" ) ';
+	$data['courses'] = $this->Common_model->get_record('course_group','*',$where);
+	$this->load->view('header',array('title' => 'CLass List'));
+	$this->load->view('admin/tr_class_list',$data);
+	$this->load->view('footer');
+}
 }// class
 
 
