@@ -4,13 +4,7 @@
 </label></div>
 <div class="text-center"><label ><strong>प्रविष्ट किये जा रहे निम्न अंक</strong> <label style="color:red;">Provisional Marks</label> <strong>हैं - </strong>
 </label></div>
-
-
 </div>
-
-
-
-
 
  <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>"> 
 <div class="container-fluid mt-5 table-responsive" >
@@ -31,7 +25,7 @@
 			$i = 1;
 			foreach($students as $student){
 				?>
-				   <tr id="student_tr_<?php echo $student->student_id; ?>">  
+				   <tr>  
 					<td><?php echo $i ; ?></td>
 					<td><?php echo $student->roll_no; ?></td>   
 					<td><?php echo $student->enrollment_no; ?></td>   
@@ -39,7 +33,19 @@
 					<td><?php echo $student->course_name; ?></td>
 					<td><?php echo $student->class_name; ?></td>
 					<td class="col-md-2">
-						<button  class="btn btn-primary btn-sm font-weight-bold student"  data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$student->student_id;?>" onclick="mark_submission(<?=$student->student_id;?>)">Submission</button></td>
+					<?php 
+					if($student->int_marks_sub=='N'){
+						?>	
+							<button  class="btn btn-primary btn-sm font-weight-bold student" id="<?="roll_{$student->student_id}"; ?>" data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$student->student_id;?>" onclick="mark_submission(<?=$student->student_id;?>)">Submission</button>
+
+							<button style="display: none" class="btn btn-info btn-sm font-weight-bold view" id="<?="roll_num{$student->student_id}"; ?>" data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$student->student_id;?>" onclick="view_mark(<?=$student->student_id;?>)">view</button>
+
+						<?php }	
+						else{
+							?>
+							<button  class="btn btn-info btn-sm font-weight-bold view" id="<?="roll_num_{$student->student_id}"; ?>" data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$student->student_id;?>" onclick="view_mark(<?=$student->student_id;?>)">view</button>
+						<?php }	?></td>
+
 				</tr>
 				<?php 
 				$i++;
@@ -77,4 +83,24 @@
 				},
 			});
 		}
+
+	function view_mark(student_id){
+			var student_id = student_id;
+			var csrfName = $('.csrfname').attr('name');
+			var csrfHash = $('.csrfname').val();
+			$.ajax({
+				type: "POST",
+				url: BASE_URL+"center/center/student_practical_marks",
+				dataType:"JSON",
+				data: {student_id: student_id, [csrfName]:csrfHash},
+				success: function(response){
+					$('.modal-body').html(response.data);
+				},
+			});
+		}
+
+
+
+
+
 </script>

@@ -43,7 +43,7 @@
 						else{
 							?>
 							<button  class="btn btn-info btn-sm font-weight-bold view" id="<?="roll_num_{$student->student_id}"; ?>" data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$student->student_id;?>" onclick="view_mark(<?=$student->student_id;?>)">view</button>
-						<?php }	?><td>
+						<?php }	?></td>
 
 				</tr>
 				<?php 

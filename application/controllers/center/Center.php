@@ -1268,7 +1268,6 @@ class Center extends CI_Controller {
 
 		}    
 	 }
-
 	public function internal_marks_list(){
 	 	if(!$this->session->has_userdata('centerdata')){
 	 		redirect(base_url());
@@ -1281,21 +1280,23 @@ class Center extends CI_Controller {
 	 	$titleData = array('title' => 'Internal  Marks Submission' );
 	 	$this->load->view('Centers/header',$titleData);
 	 	$center_id =  $this->session->center_id;
-	 	$where = array(
-	 		'center_id' => $center_id,
-	 		'new_exam_form' => 'Y',
-	 		'result_show ' => 'N',
-	 		'int_marks_sub'=>'N'
-	 	);
-	 	$this->db->where('`class_id` in (154 , 158 , 181 , 193 , 195 , 197 , 199 , 201 , 203 , 205 , 207 , 209 , 211 , 213 , 221 , 223 , 225 , 227 )');
-	 	$data['students'] = $this->Common_model->getRecordByWhereByOrder('student',$where,'course_group_id,class_id,roll_no','ASC');
+	 	$where = array('center_id' => $center_id,'new_exam_form' => 'Y','result_show ' => 'N',
+	 		'paper_type'=>'theory');
+	 	$this->db->order_by("student.course_group_id,student.class_id", "asc");
+	 	$this->db->select('*');
+	 	$this->db->from('new_exam_form');
+	 	$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+	 	$this->db->Where($where );
+	 	$this->db->where('`student.class_id` in (154 , 158 , 181 , 193 , 195 , 197 , 199 , 201 , 203 , 205 , 207 , 209 , 211 , 213 , 221 , 223 , 225 , 227 )');
+	 	$data['students'] = $this->db->get()->result();
+
 	 	$this->load->view('Centers/student_marks_no_list',$data);
 	 	$this->load->view('Centers/footer');		
 	}
 
 	public function load_student_assignment (){
 	 	$student_id = $this->input->post('student_id');
-	 	$where=array('student.student_id'=>$student_id);
+	 	$where=array('student.student_id'=>$student_id,'paper_type'=>'theory');
 	 	$this->db->select('*');
 	 	$this->db->from('new_exam_form');
 	 	$this->db->Where($where );
@@ -1499,7 +1500,6 @@ public function load_student_practical_assignment (){
 	 	$this->db->join('class_master', 'class_master.id = student.class_id');
 	 	$this->db->join('paper_master', 'paper_master.id = new_exam_form.paper_id');
 	 	$details = $this->db->get()->result();
-	 //	$this->Common_model->last_query();
 	 	$data = array(
 	 		'details' => $details,
 	 		'name_csrf' => $this->security->get_csrf_token_name(),
@@ -1557,16 +1557,15 @@ public function practical_assignment_marks_sub()
 
 public function student_practical_marks (){
 	 	$student_id = $this->input->post('student_id');
-	 	$where=array('student.student_id'=>$student_id,
-                  'paper_type!='=>'theory', );
+	 	$where=array('student.student_id'=>$student_id,);
+                  // 'paper_type='=>'theory', );
 	 	$this->db->select('*');
 	 	$this->db->from('new_exam_form');
 	 	$this->db->Where($where );
 	 	$this->db->join('student', 'student.student_id = new_exam_form.student_id');
 	 	$details = $this->db->get()->result();
-	 //	$this->Common_model->last_query();
 	 	$data = array(
-	 		'details' => $details,
+	 		'detail' => $details,
 	 		'name_csrf' => $this->security->get_csrf_token_name(),
 	 		'hash_csrf' => $this->security->get_csrf_hash(),
 	 	);
