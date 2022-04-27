@@ -93,7 +93,7 @@
 				
 			<td><?php echo $i; ?></td>
 			<td><?php echo $this->Common_model->getCenterNameById($student["center_id"]); ?></td>
-            <td><?php 	 echo $this->Common_model->getCenterCodeById($student["center_id"]) ?></td>
+            <td><?php echo $this->Common_model->getCenterCodeById($student["center_id"]) ?></td>
 			<td><?php echo $student["cnt"]; ?></td>
 			<?php $total = $total + $student["cnt"];?>
 			</tr>

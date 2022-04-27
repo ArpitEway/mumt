@@ -603,10 +603,10 @@
 				$where = 'student_id="'.$student[0]->student_id.'" ';
 				$this->Common_model->updateRecordByConditions('student',$where,$data);
 			}
-
+		
 			$this->session->set_flashdata('ajax_flash_message','permission updated');
 			$centerCode = $this->Common_model->encrypt_decrypt($centerCode,'encrypt');
-			redirect(base_url().'admin/enrollment/enrollment_permission/'.$centerCode);		
+			redirect(base_url().'admin/enrollment/enrollment_permission/'.$centerCode);
 		}
 	}
 
@@ -964,7 +964,6 @@
 	public function complaint_form_sub(){
 		$id = $this->input->post('complain');
 		$redy = $this->input->post('redy');
-
 		$where = array('id' => $id);
 		$studentData = array('type' => $redy);
 
@@ -978,5 +977,20 @@
 				"error" => ' error Occured',
 			));
 		}
+	}
+
+	
+	public function provisional_remark_update($param){
+		$remark = html_escape($this->input->post('remark'));
+	
+		$data['provisional_remark'] = implode(",",$remark);
+		$data['approved'] = 'Y';
+		$this->db->where('student_id', $param);
+		$this->db->update('student', $data);	
+		$this->session->set_flashdata('ajax_flash_message','approved');
+		echo json_encode(array(
+		"status" => 'true',
+		));
+		//redirect(base_url().'admin/enrollment/student_report');
 	}
 }

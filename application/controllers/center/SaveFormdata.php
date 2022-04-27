@@ -63,8 +63,6 @@ class saveFormdata extends CI_Controller {
 
 		$studentData['passing_year'] = html_escape($this->input->post('passing_year'));
 
-	    $studentData['percentage'] = $studentData['total_marks'] * 100/$studentData['marks'];
-
 		$studentData['board'] = html_escape($this->input->post('board'));
 		$studentData['nationality'] = html_escape($this->input->post('nationality'));
 		$studentData['minority'] = html_escape($this->input->post('minority'));
@@ -103,9 +101,13 @@ class saveFormdata extends CI_Controller {
 		
 		$OnlinePayTxnData = array('student_id' => $student_id,'center_id' => $this->session->center_id,'fees_head' => 'Admission Fees','amount' => 1500,'payment_status'=>'pending','course_group_id' => $course_group_id,'class_id' => $class_id,'student_name' => $data['name'],'admission_type'=>'regular');
 		
-		if(in_array($this->session->center_id, $center_ids)){
+		if(in_array($this->session->center_id, $center_ids_uni) || in_array($this->session->center_id, $center_ids_dep))
+		{
 			$OnlinePayTxnData['payment_status']	= 'Paid By University';
 			$OnlinePayTxnData['payment'] =	'Y';
+			$OnlinePayTxnData['payment_date'] =	date('Y-m-d');
+			$OnlinePayTxnData['payment_time'] =	date('h:i:s');
+			
 		}
 		$OnlinePayTxn = $this->Common_model->insertAll('online_payment_transaction',$OnlinePayTxnData);
 

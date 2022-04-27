@@ -24,6 +24,7 @@
 				<td><?php echo $student["name"]; ?></td>
 				<td><?php echo $student["f_h_name"]; ?></td>
 				<td><?php 
+				$std = $student["student_id"] ;
 				$student_id = $this->Common_model->encrypt_decrypt($student["student_id"]); 
 				foreach($docs as $doc){
 					$ext = explode(".",$doc["document_image"]);
@@ -67,7 +68,8 @@
 				<td>
 					<div style="display: inline-grid;">
 					<?php if($student["approved"] != 'Y' || $student["approved"] == "" ){ ?>
-					<a  style="margin:5px;" class="btn btn-success" data-id="<?php echo site_url('admin/Enrollment/make_approved/'.$student_id); ?>" data-st_id="<?=$student_id?>" onclick="make_approved(this)"> Make Approved </a>
+					<a href="javascript:void(0);" style="margin:5px;" class="btn btn-success" id="<?php echo  $std  ?>"   onclick="rightModal('<?php echo site_url('admin/modal/student_popup/admin/student/update/provisional_remark/'.$student_id); ?>', '<?php echo 'Provisional Remark' ?>')"> Make  approved
+
 					<a href="javascript:void(0);" style="margin:5px;" class="btn btn-danger" onclick="rightModal('<?php echo site_url('admin/modal/student_popup/admin/student/update/remark_update/'.$student_id); ?>', '<?php echo 'Select Remark' ?>')"> Make Non approve
 					</a>
 					<span  class="remark_span_<?=$student["student_id"];?>" style="color:red;">
@@ -103,81 +105,61 @@
 </table>
 </div>
 <script>
+// function make_approved(param){
 
-    window.prettyPrint && prettyPrint();
-
-    var defaultOpts = {
-      draggable: true,
-      resizable: true,
-      movable: true,
-      keyboard: true,
-      title: true,
-      modalWidth: 320,
-      modalHeight: 320,
-      fixedContent: true,
-      fixedModalSize: false,
-      initMaximized: false,
-      gapThreshold: 0.02,
-      ratioThreshold: 0.1,
-      minRatio: 0.05,
-      maxRatio: 16,
-      headToolbar: ['maximize', 'close'],
-      footToolbar: ['zoomIn', 'zoomOut', 'prev', 'fullscreen', 'next', 'actualSize', 'rotateRight'],
-      multiInstances: true,
-      initEvent: 'click',
-      initAnimation: true,
-      fixedModalPos: false,
-      zIndex: 1090,
-      dragHandle: '.magnify-modal',
-      progressiveLoading: true
-    };
-
-    var vm = new Vue({
-      el: '#playground',
-      data: {
-        options: defaultOpts
-      },
-      methods: {
-        changeTheme: function (e) {
-          if (e.target.value === '0') {
-            $('.magnify-theme').remove();
-          } else if (e.target.value === '1') {
-            $('.magnify-theme').remove();
-            $('head').append('<link class="magnify-theme" href="css/magnify-bezelless-theme.css" rel="stylesheet">');
-          } else if (e.target.value === '2') {
-            $('.magnify-theme').remove();
-            $('head').append('<link class="magnify-theme" href="css/magnify-white-theme.css" rel="stylesheet">');
-          }
-        }
-      },
-      updated: function () {
-        $('[data-magnify]').magnify(this.options);
-      }
-    });
-
-function make_approved(param){
-
-	var html = $(param).html();
-	var html = $(param).prop("onclick", null).off("click");
-	var url  = $(param).attr('data-id');
-	var rem = $(param).attr('data-st_id');
+// 	var html = $(param).html();
+// 	var html = $(param).prop("onclick", null).off("click");
+// 	var url  = $(param).attr('data-id');
+// 	var rem  = $(param).attr('data-st_id');
 	
-	if (confirm('Are you sure to make approved')) 
-	{
-        $.ajax({
-            type : 'GET',
-            url: url,
-            success : function(response) {
+// 	if (confirm('Are you sure to make approved')) 
+// 	{
+//         $.ajax({
+//             type : 'GET',
+//             url: url,
+//             success : function(response) {
 				
-				$(param).html("Approved");
-				$(param).siblings('a').hide();
-				$('.remark_span_'+rem).html("");
-            }
-        });
+// 				$(param).html("Approved");
+// 				$(param).siblings('a').hide();
+// 				$('.remark_span_'+rem).html("");
+//             }
+//         });
 		
-	} 
-}
+// 	} 
+// }
 
 
+
+
+$(document).on('click', '#remark_submit', function(e) {
+	// alert();
+	$('#remark_submit').prop('disabled', true);
+	var ck_box = $('input[type="checkbox"]:checked').length;
+	
+		var frm = $('.ajaxForm').serialize();
+		var rem = $('.student_id_model').val();
+           console.log(rem);
+	$.ajax({
+	url: '<?php echo site_url('admin/enrollment/provisional_remark_update/'); ?>'+ rem,
+	type: 'POST',
+	dataType : 'json',
+	data: frm,
+	success: function (data) {
+	if(data){
+		console.log(data);
+			$('#right-modal').modal('toggle');
+		//	toastr.success("approved").fadeOut(1000);
+			$('#'+rem).html("Approved");
+			
+			$('#' +rem).prop("onclick",null).off("click");
+			$("#" +rem).siblings('a').hide();
+			}else{
+				toastr.error("Something wrong");
+			}
+		},
+	});	
+
+});	
 
 </script>
+

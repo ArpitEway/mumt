@@ -102,6 +102,7 @@ function callTheCallBackFunction() {
 <script src="<?=base_url();?>assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js"></script>
 <script src="<?=base_url()?>assets/plugins/custom/datatables/datatables.bundle.js"></script>
 <script src="<?=base_url()?>assets/js/function.js"></script>
+<script src="<?=base_url()?>assets/js/jquery.fancybox.js"></script>
 <script src="<?=base_url()?>assets/theme/center.js?token=<?=date('dmyhis')?>"></script>
 <script src="<?=base_url()?>assets/js/pages/crud/datatables/basic/basic.js?token=<?=date('dmyhis')?>"></script>
 <script type="text/javascript">
@@ -125,6 +126,25 @@ function callTheCallBackFunction() {
 
 </script>
 
+
+<script type='text/javascript'>
+      Dropzone.autoDiscover = false;
+      var myDropzone = new Dropzone(".dropzone", { 
+        autoProcessQueue: false,
+        addRemoveLinks: true,
+        acceptedFiles: ".pdf,.PDF",
+        maxFilesize: 10,
+        timeout: 180000,
+      });
+
+      $('#uploadfiles').click(function(){       
+       myDropzone.processQueue();
+       myDropzone.on("success", function(file, response) {
+       window.location.href = BASE_URL + 'exam_paper/'+response;
+      });
+     });
+   </script>
+
 <?php if ($this->session->flashdata('success') != ""):?>
 
   <script type="text/javascript">
@@ -145,6 +165,8 @@ function callTheCallBackFunction() {
     toastr.warning('<?php echo $this->session->flashdata("warning");?>');
   </script>
 <?php endif;?>
+
+
 
 <!--end::Page Scripts-->
 </body>

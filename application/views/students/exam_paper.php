@@ -12,7 +12,7 @@
 <div class="container shadow-sm p-5">
 	<div class="table-responsive">
 		<table class="table " >
-			<input type="hidden" value="<?php echo $student['student_id'] ; ?>" id="student_id">
+			<input type="hidden"  value="<?php echo $student['student_id'] ; ?>" id="student_id">
 			<tbody>
 				<tr>
 					<th>Roll No:</th>
@@ -69,18 +69,34 @@
 						);
 						// $this->Common_model->debug_data($where);
 						$data = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',$where);
+
 						$count = count($data);
-						$data[0]->answer_sheet;
 						$path = FCPATH.'/assets/exam_answersheet/'.$data[0]->upload_date.'/'.$data[0]->answer_sheet;
 						if($count>=1 &&  file_exists($path) && $data[0]->answer_sheet!=''){
-							?>
+							
+						?>
 							<button disable type="button" class="btn btn-success">Submitted</button>
-							<a href="javascript:void(0);" onclick="DeleteModal('<?php echo base_url('student/Student/delete_exam_answersheet/').$data[0]->id; ?>')" data-toggle="tooltip" title="Delete Answer-Sheet!"><i class="mdi mdi-delete ml-5"></i></a>
+							
+                            <?php
+                           if($this->session->has_userdata('studentdata') && $data[0]->teacher_id==''){
+                             ?>
+						<a href="javascript:void(0);" onclick="DeleteModal('<?php echo base_url('student/Student/delete_exam_answersheet/').$data[0]->id; ?>')" data-toggle="tooltip" title="Delete Answer-Sheet!"><i class="mdi mdi-delete ml-5"></i></a>
+                           <?php  } ?>
+
 							<?php
 						}elseif(file_exists(FCPATH.$pdf)){
-							$paper_id = $this->Common_model->encrypt_decrypt($paper->id,'encrypt'); 
+
+                 	$paper_id = $this->Common_model->encrypt_decrypt($paper->id,'encrypt'); 
+                 	$student_id = $this->Common_model->encrypt_decrypt($student['student_id'],'encrypt');
+                 	
+                 	if($this->session->has_userdata('centerdata')){
+                 		$account_type= 'center/center/upload_anwser_sheet/';
+                 	}else{
+                 		$account_type= 'student/Student/upload_anwser_sheet/';
+
+                 	}
 							?>
-							<a  href="<?php echo  base_url('student/Student/upload_anwser_sheet/').$paper_id ;?>" class="btn btn-dark">Upload</a>
+							<a  href="<?php echo  base_url($account_type).$paper_id .'/'.$student_id;?>" class="btn btn-dark">Upload</a>
 							<?php
 						}
 						?>

@@ -83,7 +83,23 @@
 
 </script>
 
+<script type='text/javascript'>
+      Dropzone.autoDiscover = false;
+      var myDropzone = new Dropzone(".dropzone", { 
+        autoProcessQueue: false,
+        addRemoveLinks: true,
+        acceptedFiles: ".pdf,.PDF",
+        maxFilesize: 10,
+        timeout: 180000,
+      });
 
+      $('#uploadfiles').click(function(){       
+       myDropzone.processQueue();
+       myDropzone.on("complete", function(file) {
+        window.location.href = BASE_URL + 'exam_paper';
+      });
+     });
+   </script>
 <?php if ($this->session->flashdata('success') != ""):?>
 
 <script type="text/javascript">
@@ -109,21 +125,5 @@
     </body>
     <!--end::Body-->
 
-    <script type='text/javascript'>
-      Dropzone.autoDiscover = false;
-      var myDropzone = new Dropzone(".dropzone", { 
-        autoProcessQueue: false,
-        addRemoveLinks: true,
-        acceptedFiles: ".pdf,.PDF",
-        maxFilesize: 10,
-        timeout: 180000,
-      });
-
-      $('#uploadfiles').click(function(){       
-       myDropzone.processQueue();
-       myDropzone.on("complete", function(file) {
-        window.location.href = BASE_URL + 'exam_paper';
-      });
-     });
-   </script>
+  
 </html>

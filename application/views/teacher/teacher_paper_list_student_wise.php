@@ -6,11 +6,11 @@
                 <option value="">Select paper</option>
 
 
-            <?php foreach ($paper_codes as $paper_code): ?>
-                <option value="<?=$paper_code->paper_code?>"> <?php
+            <?php foreach ($assignAnsData as $papers): ?>
+                <option value="<?=$papers->paper_code?>"> <?php
 
-                    $papername=$this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$paper_code->paper_code));
-                    echo ' ( '.$paper_code->paper_code.' ) '. $papername[0]->paper_name ;
+                    $papername=$this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$papers->paper_code));
+                    echo ' ( '.$papers->paper_code.' ) '. $papername[0]->paper_name ;
                    // $this->Common_model->last_query();
                     ?> </option>
             <?php endforeach ?> 
@@ -71,6 +71,7 @@
                  if($('#myLoader').hide()){
                     $('#student_data_tbl').html(resp.data);
                      $('#student_data_tbl').show();
+                     KTDatatablesBasicBasic.init();
                 }
             }//success
         })//ajax

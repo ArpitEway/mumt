@@ -1,65 +1,85 @@
-<div class="mt-5 text-right">
-<a type="button"  class="btn btn-outline-primary btn-rounded" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/program/create'); ?>', 'Create Program')" >Create Program</a>
-</div> 
-<div class=" mt-3">
-<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-<table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
-		<thead>
-			<tr>
-				<th>#</th>
-				<th>Program Name </th>
-				<th>Department Name </th>
-
-				<th>Action </th>
-			</tr>
-		</thead>
-		<tbody>
-		<?php
-		$i = 1;              
-        	foreach($programs as $program)
-			{
-		 
-                $this->db->select('*');
-                $this->db->from('department');
-                $this->db->join('program', 'program.department_id = department.id');
-                $this->db->where('program.id', $program['id']); 
-                $department = $this->db->get()->result();
-
-
-            ?>
-					<tr>
-						<td><?php echo $i; ?></td>
-						<td><?php echo $program['program_name']; ?></td>
-						<td><?php echo $department[0]->department_name; ?></td>
-                	<td>
-                	<div style="display: inline-flex;">
-                		<a href="javascript:void(0);" class="dropdown-item" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/program/edit/'.$program['id']); ?>', '<?php echo 'Update Program' ?>')"> <i class="mdi mdi-pencil edit-icon"></i></a>   
-                		<a href="javascript:void(0);" class="dropdown-item" onclick="confirmModal('<?php echo site_url('admin/Inquiry/program/delete/'.$program['id']); ?>', program )"><i class="mdi mdi-delete delete-icon"></i></a>
-                	</div>	
-
-                    </td>
-					</tr>
-				
-			
-			<?php 
-			$i++;
-			} ?>
-			</tbody>
-		    
-	</table>
-
+<div class="row text-center">
+<div class="form-group col-md-4">
 </div>
+	<div class="form-group col-md-4">
+		<select name="department" id="department" class="form-control department "  required >
+			<option style="text-align:center;"  value="">Select Department</option>
+			<?php 
+
+			$dt = $this->db->get_where('department', array())->result_array();
+			foreach($dt as $dept)
+			{
+
+			?>
+				<option value="<?php echo $dept['id']; ?>"><?php echo $dept['department_name']; ?></option>
+						
+			<?php
+
+			} 
+
+			?>
+		</select>       
+</div>
+<div class="form-group col-md-4">
+</div>
+</div>
+<div align="center" id="myLoader" class="loader_div" style="display: none;" >
+  <svg>
+    <circle cx="50" cy="50" r="40" stroke="red" stroke-dasharray="78.5 235.5" stroke-width="3" fill="none" />
+    <circle cx="50" cy="50" r="30" stroke="blue" stroke-dasharray="62.8 188.8" stroke-width="3" fill="none" />
+    <circle cx="50" cy="50" r="20" stroke="green" stroke-dasharray="47.1 141.3" stroke-width="3" fill="none" />
+  </svg>
+</div>
+<div id="dt">
+    
+</div>
+
 <script>
-var program = function () 
-    {
-        var url = '<?php echo site_url('admin/Inquiry/program'); ?>';
-        $.ajax({
-            type : 'GET',
-            url: url,
-            success : function(response) {
-                
-                
-            }
-        });
-    }
+
+$(document).on("change","#department",function(){
+	$('#dt').hide();
+
+	var csrfName = $('.csrfname').attr('name');
+    var csrfHash = $('.csrfname').val(); 
+	
+	var data = {
+		department : $("#department").val(),
+		[csrfName]:csrfHash
+	};
+	
+
+	$.ajax({
+		url:  BASE_URL+ 'admin/Enquiry/getListByDepartment',
+
+                type:'post',
+                dataType : 'JSON',
+                data:data,
+                 beforeSend: function()
+              {
+                $("#myLoader").show();
+               },
+                success:function(status)
+                {
+					if( $("#myLoader").show()){
+						$('#dt').hide();
+						// $table = $('#dt').html(status.data);
+
+					}if( $('#myLoader').hide()){
+						$table = $('#dt').html(status.data);
+						$('#dt').show();
+						
+					}
+				
+	               KTDatatablesBasicBasic.init();
+                },
+                   complete: function()
+              {
+                $('#myLoader').hide();
+              },
+            })
+
+		
+		 
+});
+
 </script>
