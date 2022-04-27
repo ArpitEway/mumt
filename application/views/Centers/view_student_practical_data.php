@@ -67,7 +67,7 @@
          <td><?php echo $student->paper_code; ?></td>
          <td><?=$this->Common_model->getPaperNameById($student->paper_id); ?>
 
-       <input  type="hidden" id="student_tr" value="<?=$student->student_id?>"> 
+        <input  type="hidden" id="student_tr" value="<?=$student->student_id?>">  
          <input  type="hidden"  name="student_id" value="<?=$student->student_id?>"> 
          <input type="hidden" name="paper_id[]" value="<?=$student->paper_id?>">
          <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>"> 
@@ -189,8 +189,7 @@
   }
 
   var frm = $('#ajaxForm').serialize();
-    var self = this;
-var view=document.getElementsByClassName("view").value;
+  var id = $('#student_tr').val();
   $.ajax({
     url: '<?php echo site_url('center/center/practical_assignment_marks_sub'); ?>',
     method: 'post',
@@ -201,13 +200,15 @@ var view=document.getElementsByClassName("view").value;
          toastr.success(data.msg);
         $('#kt_datepicker_modal').modal('toggle');
         $('.modal-backdrop').remove();
-         $(self).parent().html(data.data);
+         $('#roll_'+id).hide();
+         $('#roll_num'+id).show();
       }
        else{
          toastr.error(data.error);
        }
     },
   });
+
 
 });
 </script>

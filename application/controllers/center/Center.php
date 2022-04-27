@@ -1539,9 +1539,8 @@ public function practical_assignment_marks_sub()
 	 		'p_marks_sub' => 'Y',	
 	 	);
 	 	$Marksentry1 = $this->Common_model->updateRecordByConditions('student',$where1,$Data);
-
-	 	$sts_btn = '<button  class="btn btn-info btn-sm font-weight-bold view"  data-toggle="modal" data-target="#kt_datepicker_modal"  data-id = '.$_POST['student_id'].'"
-	 			 onclick="view_mark('.$_POST['student_id'].'")">view</button>';
+	 	 $sts_btn = '<button  class="btn btn-info btn-sm font-weight-bold view"  data-toggle="modal" data-target="#kt_datepicker_modal"  data-id = '.$_POST['student_id'].'"
+	  		 onclick="view_mark('.$_POST['student_id'].'")">view</button>';
 
 	 	if($Marksentry1){
 				$dt =  "Marks Submited";
