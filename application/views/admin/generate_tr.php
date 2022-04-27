@@ -60,10 +60,6 @@ foreach($students as $student)
   $page_break_count++;
   
     $class_details = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id'=>$class_id));
-    // echo "<pre>";
-    // print_r($class_details[0]->bar_code_no);
-
-   
     $data['class_id']= $this->Common_model->getRecordByWhere('class_master',array('id' => $class_id));
 
     ($data['class_id'][0]->project!='N' || $data['class_id'][0]->practical!='N') ?  $rowspanhead = "4" :  $rowspanhead = "3" ;
@@ -92,9 +88,6 @@ foreach($students as $student)
         $ATKT_paper_codes_array = array(); 
         foreach($marks as $new_exam_form)
         {
-          // echo "<pre>";
-          // print_r($new_exam_form);
-
             $total_theory_marks_obt += $new_exam_form->theory_marks;
             $total_asmn_marks_obj += $new_exam_form->int_marks;
             $total_theory_asm_marks = $new_exam_form->theory_marks+ $new_exam_form->int_marks;
@@ -163,10 +156,6 @@ foreach($students as $student)
                 //    final result code end
 
             }
-
-
-            // echo   $total_theory_abs_count ;
-            // echo   $total_theory_int_count ;
             ($total_theory_abs_count==5) ? $remark = "Abs in theory" : "";
             ($total_int_abs_count>0) ? $remark = "Abs in <br> Practical" : "" ;
             ($total_int_abs_count>0 &&  $total_theory_abs_count==5) ? $remark = "Abs in All" : "" ;
@@ -272,11 +261,9 @@ if($page_break_count%2==0 || $page_break_count==0){
       <td class="align-middle text-center"></td>
     </tr>
      <?php 
-      if( $data['class_id'][0]->project!='N' || $data['class_id'][0]->practical!='N'){
+      if($data['class_id'][0]->project!='N' || $data['class_id'][0]->practical!='N'){
           ?>
         <tr>
-    
-   
         <td class="align-middle text-right">Practical Marks Max/Min-></td>
         
         <?php
