@@ -201,9 +201,10 @@ var id = $('#student_tr').val();
         toastr.success(data.success);
          
            $('#kt_datepicker_modal').modal('toggle');
-
            $('.modal-backdrop').remove();
-            $('#student_tr_'+id).hide();
+            // $('#student_tr_'+id).hide();
+            $('#roll_'+id).hide();
+            $('#roll_num'+id).show();
             $('.child').hide();
 
 }else{
