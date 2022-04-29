@@ -420,19 +420,13 @@ class Center extends CI_Controller {
 
 	public function change_password_sub($id)
 	{
-          $data = array(
-			'name_csrf' => $this->security->get_csrf_token_name(),
-			'hash_csrf' => $this->security->get_csrf_hash()
-		);
+		// $id = $this->Common_model->encrypt_decrypt($id,'decrypt');
+		// $where = array("id" => $id);
 
-		$data = $this->Common_model->getRecordById('center','id',$id);
+		// $data = $this->Common_model->getRecordById('center','id',$id);
 
-		$old_password = $data->password;
-
-		if($this->input->post('password') != "")
-		{
-			if($old_password == $this->input->post('password'))
-			{
+		// $old_password = $data->password;
+			
 				$new_password 	  = $this->input->post('new_password');
 				$confirm_password = $this->input->post('passconf');
 
@@ -461,16 +455,8 @@ class Center extends CI_Controller {
 						"error" => 'Please enter New Password',
 					));
 				}
-			}else{
-				echo json_encode(array(
-					"error" => 'Current Password is wrong',
-				));
-			}
-		}else{
-			echo json_encode(array(
-				"error" => 'Please enter current password',
-			));
-		}
+			
+		
 	}
 
 	public function payStudentFees()
