@@ -61,7 +61,7 @@ class WebSite extends REST_Controller {
         $i=0;
         while ( $i < count($departments) ) { 
             $where = array('department_id' => $departments[$i]['id']);
-            $this->db->order_by('course_type_order,p_order');
+            $this->db->order_by('course_type,course_type_order,p_order');
             $departments[$i]['programs'] = $this->Common_model->get_record('program','*',$where);
             $i++;
         }
