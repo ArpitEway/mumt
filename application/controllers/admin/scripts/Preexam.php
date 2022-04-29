@@ -139,32 +139,14 @@ class Preexam extends CI_Controller {
 
 	public function add_practical(){
 	
-		// $this->db->select('DISTINCT(student_id) ,class_id');  
-		// $this->db->from('new_exam_form');  
-		// $this->db->where('class_id =','154');  
-		// $this->db->order_by("id", "asc");
-		// $students=$this->db->get()->result();  
-		
-		// $where = array(
-        // 'class_id'=>154 ,
-		// 'type!='=>'theory', 
-		// );
-		// $paper_master = $this->Common_model->getRecordByWhere("paper_master",$where);
 		
 		$this->db->select('paper_master.id ,paper_master.class_id , student_id ,paper_master.course_group_id,paper_master.paper_code,type');
-		// $this->db->distinct('student_id');
 		$this->db->from('student');
 		$this->db->join('paper_master', 'paper_master.class_id = student.class_id');
-		$this->db->where('paper_master.class_id','154');        
-		// $this->db->where('student_id','379845');        
+		$this->db->where('paper_master.class_id','154');             
 		$this->db->where('temp_exam_form','Y');        
 		$this->db->where('type!=','theory');  
-
-		// $this->db->limit(5); 
 	  	$new_exam_forms = $this->db->get()->result();
-		//  echo $this->Common_model->last_query();
-
-		
      
 		foreach($new_exam_forms as $new_exam_form){
 			$data = array(
@@ -178,17 +160,9 @@ class Preexam extends CI_Controller {
 				'p_marks'=>'N',
 				'paper_type'=>$new_exam_form->type,
 			);
-		// 	echo "<pre>";
-		// 	$query = $this->Common_model->getRecordByWhere('new_exam_form', array(//making selection
-		// 		'paper_code' =>$new_exam_form->paper_code ,
-		// 		'student_id'=>$new_exam_form->student_id,
-		// 		 'paper_type'=>"practical"
-		// 	));
-	    //   print_r($query) ;
-		//  die ;
-		  $q =     $this->Common_model->insertAll('new_exam_form',$data);
-		echo "<br>";
-      echo $this->db->last_query();
+		        $q = $this->Common_model->insertAll('new_exam_form',$data);
+				echo "<br>";
+				echo $this->db->last_query();
 			 }
 	
 	
