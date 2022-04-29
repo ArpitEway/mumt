@@ -2,12 +2,7 @@
 
     <form  method="POST" class="p-4 ajaxForm col-md-9 m-auto">
         <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-        <div class="form-group row">
-            <label class="col-xl-3 col-lg-3 col-form-label text-alert">Current Password</label>
-            <div class="col-lg-9 col-xl-6">
-                <input type="password" name="password" id="password" class="form-control form-control-lg form-control-solid mb-2"  placeholder="Current Password">                                  
-            </div>
-        </div>
+       
         <div class="form-group row">
             <label class="col-xl-3 col-lg-3 col-form-label text-alert">New Password</label>
             <div class="col-lg-9 col-xl-6">
@@ -44,14 +39,15 @@
 			data: frm,
 			success: function (data) {
 
-				$('#password').val("");
+		
 				$('#new_password').val("");
 				$('#passconf').val("");
-
 				if(data.error){
 					toastr.error(data.error);
+					 
 				}else{
 					toastr.success(data.success);
+					window.location = BASE_URL;
 				}
 			}
 		});
