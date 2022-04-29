@@ -409,17 +409,21 @@ class Center extends CI_Controller {
 			$id = $center_data['center_id'];
 
 			$center = $this->Common_model->getRecordById('center','id',$id);
-			$data = array('center' => $center);
-			$this->getNotification();
+			$data = array('center' => $center,
+                'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(), );
 			$this->load->view('Centers/change_password',$data);
 			$this->load->view('Centers/footer');
 		}
 	}
 
-	public function password_change($id)
+
+	public function change_password_sub($id)
 	{
-		$id = $this->Common_model->encrypt_decrypt($id,'decrypt');
-		$where = array("id" => $id);
+          $data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
 
 		$data = $this->Common_model->getRecordById('center','id',$id);
 
@@ -430,9 +434,9 @@ class Center extends CI_Controller {
 			if($old_password == $this->input->post('password'))
 			{
 				$new_password 	  = $this->input->post('new_password');
-				$confirm_password = $this->input->post('new_password1');
+				$confirm_password = $this->input->post('passconf');
 
-				if($this->input->post('new_password1') != "")
+				if($this->input->post('new_password') != "")
 				{
 
 						if($new_password == $confirm_password)
