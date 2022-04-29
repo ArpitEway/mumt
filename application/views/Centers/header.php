@@ -48,7 +48,7 @@
 					<!--begin::Container-->
 					<div class="container-fluid">
 						<!--begin::Left-->
-						<div class="d-none d-lg-flex align-items-center mr-3">
+						<div class="d-flex align-items-center mr-3">
 							<div class="float-right">
 								<span class="text-custom font-weight-bolder">
 									Jai Guru Dev
@@ -56,11 +56,7 @@
 							</div>
 						</div>
 						<!--end::Left-->
-						<div class="float-right mt-1" style="
-						z-index: 9999999;
-						display: flex;
-						align-items: center;
-						">
+						<div class="float-right mt-1 header-buttons">
 						<?php if($this->session->has_userdata('centerdata')){ ?>
 							<a href="<?=base_url('dashboard')?>" class="btn btn-custom-white mr-3">Dashboard</a>		
 			
