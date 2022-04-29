@@ -16,7 +16,7 @@
 	<link href="<?=base_url()?>assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
 	<link href="<?=base_url()?>assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css" />
 	<link href="<?=base_url()?>assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
-	<link href="<?=base_url()?>assets/css/theme.css" rel="stylesheet" type="text/css" />
+	<link href="<?=base_url()?>assets/css/theme.css?<?=date('YmdHis')?>" rel="stylesheet" type="text/css" />
 			<link href="<?=base_url()?>assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
 	<!--end::Global Theme Styles-->
 	<!--begin::Layout Themes(used by all pages)-->
