@@ -1363,7 +1363,7 @@ class Center extends CI_Controller {
 		$this->db->join('new_exam_form', 'paper_master.id = new_exam_form.paper_id');
 		$class_id = $data['student']['class_id'];
 		$where = array('paper_master.class_id' =>$data['student']['class_id'],
-			'student_id' => $student_id
+			'student_id' => $student_id,'paper_type'=>'theory'
 		);
 		$this->db->where($where);
 		$data['papers'] = $this->db->get()->result();
@@ -1446,7 +1446,7 @@ public function practical_marks_list(){
 	$titleData = array('title' => 'practical  Marks Submission' );
 	$this->load->view('Centers/header',$titleData);
 	$center_id =  $this->session->center_id;
-	$where = array('center_id' => $center_id,'new_exam_form' => 'Y','result_show ' => 'N');
+	$where = array('center_id' => $center_id,'new_exam_form' => 'Y','result_show' => 'N');
 	$this->db->order_by("p_marks_sub,student.course_group_id,student.class_id", "asc");
 	$this->db->select('*');
 	$this->db->from('student');
