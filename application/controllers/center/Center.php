@@ -1443,7 +1443,7 @@ public function practical_marks_list(){
 		'name_csrf' => $this->security->get_csrf_token_name(),
 		'hash_csrf' => $this->security->get_csrf_hash(),
 	);
-	$titleData = array('title' => 'practical  Marks Submission' );
+	$titleData = array('title' => 'Practical  Marks Submission' );
 	$this->load->view('Centers/header',$titleData);
 	$center_id =  $this->session->center_id;
 	$where = array('center_id' => $center_id,'new_exam_form' => 'Y','result_show' => 'N');
