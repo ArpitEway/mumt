@@ -1363,7 +1363,7 @@ class Center extends CI_Controller {
 		$this->db->join('new_exam_form', 'paper_master.id = new_exam_form.paper_id');
 		$class_id = $data['student']['class_id'];
 		$where = array('paper_master.class_id' =>$data['student']['class_id'],
-			'student_id' => $student_id
+			'student_id' => $student_id,'paper_type'=>'theory'
 		);
 		$this->db->where($where);
 		$data['papers'] = $this->db->get()->result();
