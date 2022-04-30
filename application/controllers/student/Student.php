@@ -151,7 +151,7 @@ class Student extends CI_Controller {
     	$class_id = $data['student']['class_id'];
 
     	$where = array('paper_master.class_id' =>$data['student']['class_id'],
-    		'student_id' => $student_id
+    		'student_id' => $student_id ,'paper_type'=>'theory'
     	);
     	$this->db->where($where); 
     	$data['papers'] = $this->db->get()->result();
