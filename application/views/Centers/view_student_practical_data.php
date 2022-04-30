@@ -152,7 +152,7 @@
   }
 
 
-  var x=confirm(' Are you sure to submit marks ? \n प्रविष्ट किये जा रहे निम्न अंक Provisional Marks हैं। \n Assignments के विश्वविद्यालय में पुनर्मूल्यांकन के पश्चात ही Final Marks प्रदान किये जायेंगे।');
+  var x=confirm(' Are you sure to submit marks ? \n प्रविष्ट किये जा रहे निम्न अंक Provisional Marks हैं।');
   if(x==false){
     return false;
   }
