@@ -72,4 +72,59 @@ class Permission extends CI_Controller {
 			echo json_encode(array('error'=>false));
 		}
 	}
+
+
+
+public function course_wise_admission()
+	{
+		$this->load->view('header',array("title"=>"Course Wise Admission Permission"));	
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();
+        $this->db->order_by("course_name", "asc");
+		$data['course']= $this->Common_model->getRecordByWhere("course_group");
+		$this->load->view('admin/permission/course_wise_admission_permission',$data);
+		$this->load->view('footer');	
+	}
+
+
+
+public function update_admission_permission(){
+		
+		$status =  $this->input->post('admission_permission');
+        $status1 =  $this->input->post('admission_permission_pvt');
+		
+		 if(isset($_POST['course_group_id']))
+		{
+			$course_group_id =  $this->input->post('course_group_id');
+			$where = array('id'=>$course_group_id);
+		}
+
+        if($status!=''){
+		$st = ($status == 'Y') ? 'N' : 'Y';
+		$data=array(
+			'admission_permission'=>$st,);
+	        }
+        else{  
+        $st1 = ($status1 == 'Y') ? 'N' : 'Y';
+		$data=array(
+			'admission_permission_pvt'=>$st1,);
+	   }
+
+		$res=$this->Common_model->updateRecordByConditions('course_group',$where,$data);
+		
+		if($status == 'Y'){
+			echo json_encode(array('success'=>true));
+		}else if($status == 'N'){
+			echo json_encode(array('error'=>false));
+		}
+       if($status1 == 'Y'){
+			echo json_encode(array('success'=>true));
+		}else if($status1 == 'N'){
+			echo json_encode(array('error'=>false));
+		}
+
+
+	}
+
+
 }// class
