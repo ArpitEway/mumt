@@ -487,15 +487,13 @@ class Common_Model extends CI_Model{
 	}
 
 	public function getCountByWhere($table,$where=''){
-
 		if($where!=''){
 			$this->db->where($where);
 		}
-
 		$qry = $this->db->get($table);
 		return $qry->num_rows();
-
 	}
+
 	public function getDistinct($table,$field,$where=''){
 		$this->db->select($field);
 		if($where!=''){
