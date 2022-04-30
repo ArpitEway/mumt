@@ -1,5 +1,5 @@
 <div>
-  <div class="text-center"><label  style="color:red;">Provisional Internal Marks
+  <div class="text-center"><label  style="color:red;">Provisional practical Marks
 </label></div>
 <div class="text-center"><label ><strong>प्रविष्ट किये जा रहे निम्न अंक</strong> <label style="color:red;">Provisional Marks</label> <strong>हैं - </strong>
 </label></div>
@@ -30,12 +30,14 @@
 					<td><?php echo $student->name; ?></td>
 					<td><?php echo $student->course_name; ?></td>
 					<td><?php echo $student->class_name; ?></td>
-					<td class="col-md-2">
+                     <td class="col-md-2"   >
 					<?php
-					if($student->int_marks_sub=='N'){
+					if($student->p_marks_sub=='N'){
 						?>
 							<button  class="btn btn-primary btn-sm font-weight-bold student" id="<?="roll_{$student->student_id}"; ?>" data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$student->student_id;?>" onclick="mark_submission(<?=$student->student_id;?>)">Submission</button>
+
 							<button style="display: none" class="btn btn-info btn-sm font-weight-bold view" id="<?="roll_num{$student->student_id}"; ?>" data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$student->student_id;?>" onclick="view_mark(<?=$student->student_id;?>)">view</button>
+
 						<?php }
 						else{
 							?>
@@ -58,6 +60,7 @@
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			</div>
 			<div class="modal-body">
+
 			</div>
 		</div>
 	</div>
@@ -70,7 +73,7 @@
 			var csrfHash = $('.csrfname').val();
 			$.ajax({
 				type: "POST",
-				url: BASE_URL+"center/center/load_student_assignment",
+				url: BASE_URL+"center/center/load_student_practical_assignment",
 				dataType:"JSON",
 				data: {student_id: student_id, [csrfName]:csrfHash},
 				success: function(response){
@@ -79,7 +82,7 @@
 			});
 		}
 
-	function view_mark(student_id){
+		function view_mark(student_id){
 			var student_id = student_id;
 			var csrfName = $('.csrfname').attr('name');
 			var csrfHash = $('.csrfname').val();
@@ -93,4 +96,5 @@
 				},
 			});
 		}
+
 </script>
