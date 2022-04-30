@@ -37,7 +37,8 @@
 </tbody>
 </table>
 <form id="ajaxForm">
-  <table  class="table table-responsive" >
+ <div class="table-responsive">
+  <table  class="table" >
     <thead>
       <tr>
         <th>#</th>
@@ -99,6 +100,7 @@
   <input type="hidden" value="<?php echo $ajax_count; ?>" name="count_item" id="count_item"/>
 </tbody>
 </table>
+</div
 <div class="text-center py-3">
   <button type="button" class="btn btn-primary mr-2"  id="markssubmit" >Submit</button>
   <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
