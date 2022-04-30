@@ -1446,7 +1446,7 @@ public function practical_marks_list(){
 	$titleData = array('title' => 'practical  Marks Submission' );
 	$this->load->view('Centers/header',$titleData);
 	$center_id =  $this->session->center_id;
-	$where = array('center_id' => $center_id,'new_exam_form' => 'Y','result_show' => 'N','roll_no'! => 0);
+	$where = array('center_id' => $center_id,'new_exam_form' => 'Y','result_show' => 'N');
 	$this->db->order_by("p_marks_sub,student.course_group_id,student.class_id", "asc");
 	$this->db->select('*');
 	$this->db->from('student');
