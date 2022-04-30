@@ -91,8 +91,15 @@ foreach($courses as $course): ?>
         </div>
 
         <div class="form-group col-md-12" style="margin-bottom: 5px;">
-            <label for="name">Regular</label>
+            <label for="name"><strong>Regular</strong></label>
         </div>
+
+
+          <div class="form-group col-md-3">
+            <label for="name">Form Fees</label>
+            <input type="text" class="form-control" value="<?php echo $course['form_fees']; ?>" id="form_fees" name = "form_fees"   placeholder="Enter form fees" >
+        </div>
+
 
         <div class="form-group col-md-3">
             <label for="name">Admission Fees</label>
@@ -104,18 +111,22 @@ foreach($courses as $course): ?>
             <input type="text" class="form-control" value="<?php echo $course['program_fees']; ?>" id="program_fees" name = "program_fees"   placeholder="Enter program fees" >
            
         </div>
-		<div class="form-group col-md-3">
-            <label for="name">Form Fees</label>
-            <input type="text" class="form-control" value="<?php echo $course['form_fees']; ?>" id="form_fees" name = "form_fees"   placeholder="Enter form fees" >
-        </div>
+		
 		<div class="form-group col-md-3">
             <label for="name">Exam Fees</label>
             <input type="text" class="form-control" value="<?php echo $course['exam_fees']; ?>"  id="exam_fees" name = "exam_fees"  placeholder="Enter exam fee">
         </div>
 
         <div class="form-group col-md-12" style="margin-bottom: 5px;">
-            <label for="name">Private</label>
+            <label for="name"><strong>Private</strong></label>
         </div>
+
+      <div class="form-group col-md-3">
+            <label for="name">Form Fees</label>
+            <input type="text" class="form-control" value="<?php echo $course['p_form_fees']; ?>" id="p_form_fees" name = "p_form_fees" placeholder="Enter form fees" >
+           
+        </div>
+
 
         <div class="form-group col-md-3">
             <label for="name">Admission Fees</label>
@@ -127,11 +138,7 @@ foreach($courses as $course): ?>
             <input type="text" class="form-control" value="<?php echo $course['p_program_fees']; ?>" id="p_program_fees" name = "p_program_fees" placeholder="Enter program fees" >
            
         </div>
-		<div class="form-group col-md-3">
-            <label for="name">Form Fees</label>
-            <input type="text" class="form-control" value="<?php echo $course['p_form_fees']; ?>" id="p_form_fees" name = "p_form_fees" placeholder="Enter form fees" >
-           
-        </div>
+		
 		<div class="form-group col-md-3">
             <label for="name">Exam Fees</label>
             <input type="text" class="form-control" value="<?php echo $course['p_exam_fees']; ?>" id="p_exam_fees" name = "p_exam_fees" placeholder="Enter exam fee">
