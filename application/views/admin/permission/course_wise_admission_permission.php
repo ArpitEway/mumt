@@ -6,8 +6,8 @@
         <th>Id</th>
         <th>Course name </th>
         <th>Mode</th>
-        <th>Admission Regular Permission</th> 
-        <th>Admission private Permission</th> 
+        <th>Regular Permission</th> 
+        <th>Private Permission</th> 
 
       </tr>
     </thead>    
