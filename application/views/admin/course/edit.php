@@ -47,7 +47,7 @@ foreach($courses as $course): ?>
 
          <div class="form-group col-md-4">
             <label for="paper_code_pattern">Paper Code Pattern</label>
-            <input type="text" class="form-control" id="paper_code_pattern" value="<?php echo $course_group['paper_code_pattern']; ?>" name = "paper_code_pattern" required placeholder="Enter Paper code pattern">
+            <input type="text" class="form-control" id="paper_code_pattern" value="<?php echo $course_group['paper_code_pattern']; ?>" name = "paper_code_pattern"  placeholder="Enter Paper code pattern">
         </div>
 
 		<div class="form-group col-md-4">
