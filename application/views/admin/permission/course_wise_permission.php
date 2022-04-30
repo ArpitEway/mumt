@@ -6,9 +6,8 @@
         <th>Id</th>
         <th>Course name </th>
         <th>Mode</th>
-        <th>Regular Permission</th> 
-        <th>Private Permission</th> 
-
+        <th>Regular Admission</th> 
+        <th>Private Admission</th>
       </tr>
     </thead>    
     <tbody>
@@ -21,7 +20,6 @@
             <td><?php echo $i;?></td>
             <td><?php echo $r->course_name; ?></td>
             <td><?php echo $r->mode; ?></td>
-             
             <td>
              <button id="btn_<?php echo $r->id?>" <?php if($r->admission_permission=='Y' ){echo "class='btn btn-success'" ;}else{echo "class='btn btn-danger' ";} ?> onclick="statusChange(<?php echo $r->id;  ?>,'<?php echo $r->admission_permission;?>')">
               <?php if($r->admission_permission =='Y'){echo "Yes" ;}else{
@@ -35,7 +33,6 @@
                 echo "No"; 
               } ?></button>
             </td>
-
         </tr>
       <?php 
       $i++;
@@ -50,7 +47,7 @@
      var csrfName = $('.csrfname').attr('name');
     var csrfHash = $('.csrfname').val(); 
       $.ajax({
-       url: BASE_URL+"admin/Permission/update_admission_permission",
+       url: BASE_URL+"admin/Permission/update_course_wise_permission",
         type:"post",
         dataType: 'json',
         data:{"course_group_id":id,"admission_permission":admission_permission,[csrfName]:csrfHash},
@@ -78,7 +75,7 @@
      var csrfName = $('.csrfname').attr('name');
     var csrfHash = $('.csrfname').val(); 
     $.ajax({
-     url: BASE_URL+"admin/Permission/update_admission_permission",
+     url: BASE_URL+"admin/Permission/update_course_wise_permission",
       type:"post",
       dataType: 'json',
       data:{"course_group_id":id,"admission_permission_pvt":admission_permission_pvt,[csrfName]:csrfHash},
@@ -100,6 +97,4 @@
     }
   });
 }
-
-
- </script>
+</script>
