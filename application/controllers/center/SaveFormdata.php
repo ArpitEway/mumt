@@ -109,13 +109,13 @@ class saveFormdata extends CI_Controller {
 	    $mode = $this->input->post('mode');
 		if($mode=='regular'){
 			$amount = $amount[0]->form_fees+$amount[0]->admission_fees;
-			// $admission_type = 'regular';
+			$admission_type = 'regular';
 		}else{
 			$amount = $amount[0]->p_form_fees+ $amount[0]->p_admission_fees;
-			// $admission_type = 'private';
+			$admission_type = 'private';
 		}
 	    
-		$OnlinePayTxnData = array('student_id' => $student_id,'center_id' => $this->session->center_id,'fees_head' => 'Admission Fees','amount' => $amount,'payment_status'=>'pending','course_group_id' => $course_group_id,'class_id' => $class_id,'student_name' => $data['name'],'admission_type'=>'regular');
+		$OnlinePayTxnData = array('student_id' => $student_id,'center_id' => $this->session->center_id,'fees_head' => 'Admission Fees','amount' => $amount,'payment_status'=>'pending','course_group_id' => $course_group_id,'class_id' => $class_id,'student_name' => $data['name'],'admission_type'=>$admission_type);
 	
 		if(in_array($this->session->center_id, $center_ids_uni) || in_array($this->session->center_id, $center_ids_dep))
 		{
