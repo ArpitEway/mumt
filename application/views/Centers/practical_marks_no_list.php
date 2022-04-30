@@ -1,5 +1,5 @@
 <div>
-  <div class="text-center"><label  style="color:red;">Provisional practical Marks
+  <div class="text-center"><label  style="color:red;">Provisional Practical Marks
 </label></div>
 <div class="text-center"><label ><strong>प्रविष्ट किये जा रहे निम्न अंक</strong> <label style="color:red;">Provisional Marks</label> <strong>हैं - </strong>
 </label></div>
