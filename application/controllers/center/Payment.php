@@ -50,8 +50,10 @@ class Payment extends CI_Controller {
 	      	$txnAmt = $this->Common_model->getRecordByWhere("course",array('course_group_id'=>$student['course_group_id'],'session'=>$student['session']));
 
 			if($student['university_mode']=='REG'){
+				$mode = "regular";
 				$txnAmt = $txnAmt[0]->form_fees+$txnAmt[0]->admission_fees;
 			}else{
+				$mode = "private";
 				$txnAmt= $txnAmt[0]->p_form_fees+ $txnAmt[0]->p_admission_fees;
 			}
 			if($student['payment_status']=='Y'){
@@ -87,7 +89,7 @@ class Payment extends CI_Controller {
 			$posted['country'] = $student['nationality'];
 			$posted['zipcode'] = $student['p_pin_code'];
 			$posted['udf1'] = $student_id;
-			$posted['udf2'] = 'regular';
+			$posted['udf2'] = $mode;
 			$posted['udf3'] = "-";
 			$posted['udf4'] = $student["center_id"].' / '.$student['class_id'];
 			$posted['udf5'] = $student["name"]."/".$student["f_h_name"];
@@ -272,6 +274,11 @@ class Payment extends CI_Controller {
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		if($student_id!=''){
 			$student = $this->Common_model->student_info($student_id);
+			if($student['university_mode']=='REG'){
+				$mode = "regular";
+			}else{
+				$mode = "private";
+			}
 			$where = array(
 				'session' =>$student['session'],
 				'course_group_id' => $student['course_group_id'],
@@ -315,7 +322,7 @@ class Payment extends CI_Controller {
 			$posted['country'] = $student['nationality'];
 			$posted['zipcode'] = $student['p_pin_code'];
 			$posted['udf1'] = $student_id;
-			$posted['udf2'] = "Regular";
+			$posted['udf2'] = $mode ;
 			$posted['udf3'] = "Dec 2021";
 			$posted['udf4'] = $student["center_id"].' / '.$student['class_id'];
 			$posted['udf5'] = $student["name"]."/".$student["f_h_name"];

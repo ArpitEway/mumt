@@ -19,8 +19,8 @@ $("#eligibility").on('change', function(){
 	
 	var csrfName = $('.csrfname').attr('name');
 	var csrfHash = $('.csrfname').val();
-
-	$('input[name="qualifying_exam"]').val(eligibility);
+	var graduation = eligibility.split('|');
+	$('input[name="qualifying_exam"]').val(graduation[0]);
 	$.ajax({
 		method: "POST",
 		url: BASE_URL+"center/center/getCourseByEligibility",
