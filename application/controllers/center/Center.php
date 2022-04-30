@@ -119,17 +119,19 @@ class Center extends CI_Controller {
 		}
 	}
 
-	public function admission_form(){
+	public function admission_form($mode=''){
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 			exit;
 		}
+		
 		$titleData = array('title' => 'Admission Form');
 		$state_list = $this->Common_model->get_record('state','*');
 		$eligibility_list = $this->Common_model->get_record('course_group','DISTINCT (eligibility)');
 		$district_list = $this->Common_model->get_record('distt','*');
 		$course_group_list = $this->Common_model->get_record('course','*');
 		$data = array(
+			'mode'=>$mode,
 			'state_list' => $state_list,
 			'district_list' => $district_list,
 			'course_group_list' => $course_group_list,
@@ -187,6 +189,7 @@ class Center extends CI_Controller {
 
 	public function getClassByCourse(){
 		$course = $this->input->post('course');
+	
 		$class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$course."'  and admission_permission='Y'");
 		$data = array(
 			'class_list' => $class_list,
@@ -521,14 +524,23 @@ class Center extends CI_Controller {
 	public function getCourseByEligibility()
 	{
 		$eligibility = $this->input->post('eligibility');
+		$myString =$eligibility;
+		 
+		$myArray = explode('|', $myString);
+		
 		if($this->session->has_userdata('center_id')){
 		$center_id =  $this->session->center_id;
 		$centerdata = $this->Common_model->getRecordById('center','id',$center_id);
 		$this->db->where('id in ('.$centerdata->allot_course_group_id.')');
 		}
-		$course_group_list = $this->Common_model->get_record('course_group','*',array('eligibility'=>$eligibility,
-			'admission_permission' => 'Y'
-		));
+		 $where['eligibility'] = $myArray[0];
+		 if($myArray[1]=='regular'){
+		   $where['admission_permission'] = 'Y';
+		 }else{
+			$where['admission_permission_pvt'] = 'Y';
+		 }
+		$course_group_list = $this->Common_model->get_record('course_group','*',$where);
+		
 		$data = array('course_group_list'=>$course_group_list);
 		echo $this->load->view('template/getcourse',$data,true);
 	}
@@ -551,10 +563,11 @@ class Center extends CI_Controller {
 		}
 	}
 
-	public function admission_instruction()
+	public function admission_instruction($mode='')
 	{
+		$data['mode']=$mode ;
 		$this->load->view('Centers/header',array('title'=>'Admission Instruction'));
-		$this->load->view('Centers/admission_instruction');
+		$this->load->view('Centers/admission_instruction',$data);
 		$this->load->view('Centers/footer');
 	}
 

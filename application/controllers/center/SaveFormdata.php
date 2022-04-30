@@ -15,6 +15,7 @@ class saveFormdata extends CI_Controller {
 
 	public function index(){
 		$course_group_id = html_escape($this->input->post('course_group_id'));
+		
 		$class_id = html_escape($this->input->post('class_id'));
 		$session = html_escape($this->input->post('session'));
 		$data['session'] = $session;
@@ -24,7 +25,12 @@ class saveFormdata extends CI_Controller {
 		$data['center_id'] = $this->session->center_id;
 		$data['center_code'] = $this->session->centerdata;
 		$data['center_name'] = $this->Common_model->getSinglefield('center','center_name','id='.$this->session->center_id);
-		$data['university_mode'] = 'REG';
+		if($this->input->post('mode')=="regular"){
+           $mode = "REG";
+		}else{
+			$mode="PVT";
+		};
+		$data['university_mode'] =$mode ;
 		$data['class_id'] = $class_id;
 		$data['medium'] = html_escape($this->input->post('medium'));
 		$data['category'] = html_escape($this->input->post('category'));
@@ -98,9 +104,19 @@ class saveFormdata extends CI_Controller {
 		$this->Common_model->updateRecordByConditions('student',$where,$PhotoData);
 		$studentData['student_id'] = $student_id;
 		$this->Common_model->insertAll('student_data',$studentData);
-		
-		$OnlinePayTxnData = array('student_id' => $student_id,'center_id' => $this->session->center_id,'fees_head' => 'Admission Fees','amount' => 1500,'payment_status'=>'pending','course_group_id' => $course_group_id,'class_id' => $class_id,'student_name' => $data['name'],'admission_type'=>'regular');
-		
+		$amount = $this->Common_model->getRecordByWhere('course',array('course_group_id'=> $course_group_id));
+	
+	    // $mode = $this->input->post('mode');
+		// if($mode=='regular'){
+		// 	$amount = $amount[0]->form_fees+$amount[0]->admission_fees;
+		// 	$admission_type = 'regular';
+		// }else{
+		// 	$amount = $amount[0]->p_form_fees+ $amount[0]->p_admission_fees;
+		// 	$admission_type = 'private';
+		// }
+	    
+		$OnlinePayTxnData = array('student_id' => $student_id,'center_id' => $this->session->center_id,'fees_head' => 'Admission Fees','amount' => $amount,'payment_status'=>'pending','course_group_id' => $course_group_id,'class_id' => $class_id,'student_name' => $data['name'],'admission_type'=>'regular');
+	
 		if(in_array($this->session->center_id, $center_ids_uni) || in_array($this->session->center_id, $center_ids_dep))
 		{
 			$OnlinePayTxnData['payment_status']	= 'Paid By University';

@@ -16,6 +16,7 @@ $("#course_group_id").on('change', function(){
 
 $("#eligibility").on('change', function(){
 	var eligibility = $(this).val();
+	
 	var csrfName = $('.csrfname').attr('name');
 	var csrfHash = $('.csrfname').val();
 

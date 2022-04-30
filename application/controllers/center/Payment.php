@@ -9,12 +9,16 @@ class Payment extends CI_Controller {
 	}
 	
 	public function admission($student_id){
+
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url('center/login'));
 		}
 		$titleData = array('title'=>'Admission Payment');
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		$student = $this->Common_model->student_info($student_id);
+	
+		$txnAmt = $this->Common_model->getRecordByWhere("course",array('course_group_id'=>$student['course_group_id']));
+
 		if($student['payment_status']=='Y'){
 			$this->session->set_flashdata('warning','Payment Already Submitted');
 			redirect(base_url('dashboard'));
@@ -22,7 +26,13 @@ class Payment extends CI_Controller {
 		$data['student'] = $student;
 		$data['url'] = 'paynow';
 		$data['paymentType'] = 'admission';
-		$data['txnAmt'] = 1500;
+		$mode = $this->input->post('mode');
+		if($student['university_mode']=='REG'){
+			$data['txnAmt'] = $txnAmt[0]->form_fees+$txnAmt[0]->admission_fees;
+		}else{
+			$data['txnAmt']= $txnAmt[0]->p_form_fees+ $txnAmt[0]->p_admission_fees;
+		}
+	
 		
 		$this->load->view('Centers/header',$titleData);
 		$this->load->view('Centers/admission_payment',$data);
@@ -35,8 +45,15 @@ class Payment extends CI_Controller {
 		}
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		if($student_id!=''){
+
 			$student = $this->Common_model->student_info($student_id);
-			$txnAmt=1500;
+	      	$txnAmt = $this->Common_model->getRecordByWhere("course",array('course_group_id'=>$student['course_group_id'],'session'=>$student['session']));
+
+			if($student['university_mode']=='REG'){
+				$txnAmt = $txnAmt[0]->form_fees+$txnAmt[0]->admission_fees;
+			}else{
+				$txnAmt= $txnAmt[0]->p_form_fees+ $txnAmt[0]->p_admission_fees;
+			}
 			if($student['payment_status']=='Y'){
 				$this->session->set_flashdata('warning','Payment Already Submitted');
 				redirect(base_url('dashboard'));
@@ -70,7 +87,7 @@ class Payment extends CI_Controller {
 			$posted['country'] = $student['nationality'];
 			$posted['zipcode'] = $student['p_pin_code'];
 			$posted['udf1'] = $student_id;
-			$posted['udf2'] = "Regular";
+			$posted['udf2'] = 'regular';
 			$posted['udf3'] = "-";
 			$posted['udf4'] = $student["center_id"].' / '.$student['class_id'];
 			$posted['udf5'] = $student["name"]."/".$student["f_h_name"];
@@ -143,7 +160,7 @@ class Payment extends CI_Controller {
 				"payment_date" => $date,
 				"payment_time" => $time,
 				"txnId" => $txnid,
-				"admission_type" => 'Regular',
+				"admission_type" =>$udf2,
 			);
 			$where = 'student_id='.$student_id.' and fees_head="'.$productinfo.'"';
 			$txnData = $this->Common_model->get_record('online_payment_transaction','*',$where);
@@ -165,7 +182,7 @@ class Payment extends CI_Controller {
 				$response['class_id'] = $student->class_id;
 				$response['center_id'] = $student->center_id;
 				$response['student_name'] = $student->name;
-				$response['admission_type'] = 'Regular';
+				$response['admission_type'] = $udf2;
 
 				$txnid = $this->Common_model->insertAll('online_payment_transaction',$response);
 				}

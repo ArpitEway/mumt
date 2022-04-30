@@ -38,9 +38,14 @@
 						</div>
 					</a>
 
-					<a class="border-0 custom-menu-item" href="<?=base_url('admission_instruction');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('admission_instruction/private');?>">
 						<div>
-							<span class="nav-text">Admission Form</span>
+							<span class="nav-text">Admission Form Private</span>
+						</div>
+					</a>
+					<a class="border-0 custom-menu-item" href="<?=base_url('admission_instruction/regular');?>">
+						<div>
+							<span class="nav-text">Admission Form Regular</span>
 						</div>
 					</a>
 					<a class="border-0 custom-menu-item" href="<?=base_url('all_student');?>">
