@@ -85,7 +85,7 @@ class WebSite extends REST_Controller {
 
     public function programDetailsById_post()
     {
-        echo $program_id = html_escape($this->input->post("program_id"));
+        $program_id = html_escape($this->input->post("program_id"));
         $where = array('id' => $program_id);
         $response['program'] =  $this->Common_model->get_record('program','*',$where);
         $response['department_name'] = $this->Common_model->getSinglefield('department','department_name','id='.$response['program'][0]['department_id']);
