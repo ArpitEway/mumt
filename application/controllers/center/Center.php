@@ -130,9 +130,9 @@ class Center extends CI_Controller {
 			exit;
 		}
 		if($mode=='regular'){
-			$head = 'Regular';
+			$head = '(Regular)';
 		}else{
-			$head = 'Private';
+			$head = '(Private)';
 		}
 		$titleData = array('title' => 'Admission Form '.$head);
 		$state_list = $this->Common_model->get_record('state','*');
