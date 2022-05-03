@@ -41,7 +41,7 @@
 				  <?php
 				  if($center->admission_permission=='Y'){
 					  ?>
-	                <a class="border-0 custom-menu-item" href="<?=base_url('admission_instruction/regular');?>">
+	                <a class="border-0 custom-menu-item" href="<?=base_url('admission_form/regular');?>">
 						<div>
 							<span class="nav-text">Admission Form Regular</span>
 						</div>
@@ -52,7 +52,7 @@
 				 <?php
 				  if($center->admission_permission_private=='Y'){
 					?>
-					<a class="border-0 custom-menu-item" href="<?=base_url('admission_instruction/private');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('admission_form/private');?>">
 						<div>
 							<span class="nav-text">Admission Form Private</span>
 						</div>
