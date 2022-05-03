@@ -703,4 +703,73 @@ class ExamController extends CI_Controller {
 			"data" => $dt
 		));
 	}
+
+	public function answersheet_remark_status(){
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();
+		$where = array(
+			'total_marks'=>0,
+			'teacher_id!='=>''
+		);
+		$data['courses'] = $this->Common_model->get_record('upload_exam_ans_sheet','DISTINCT (course_group_id),class_id',$where);
+	
+		$this->load->view('header','Answersheet remark status ');
+		$this->load->view('admin/examController/answersheet_remark_status',$data);
+		$this->load->view('footer');
+
+	}
+	public function get_class_list_by_course()
+	{
+		if ($this->input->method() == "post") {
+			$id    = 0;
+			$count = 0;
+			$id    = $this->input->post("id");
+			if ($this->input->post("id")) {
+				$data = $this->Common_model->getAllRow("class_master", "id, class_name", array(
+					"course_group_id" => $id,
+				),'id ASC');
+				$count++;
+			}
+			if ($count > 0) {
+				$status = true;
+				$msg    = "";
+			}
+		}
+		echo json_encode(array(
+			"status" => $status,
+			"msg" => $msg,
+			"data" => $data
+		));
+	}
+
+
+	public function get_student_for_remark(){
+
+		// echo "<pre>";
+		// print_r( $_POST);
+		// die ;
+      // $data['students'] = $this->Common_model->getRecordByWhere("upload_exam_ans_sheet",array('course_group_id'=>$_POST['course_group_id'],'class_id'=>$_POST['class_id']));
+		 
+			$this->db->select('*');
+			$this->db->from('upload_exam_ans_sheet');
+			$this->db->join('student', 'upload_exam_ans_sheet.student_id = student.student_id');
+			if($_POST['course_group_id']!='all'){
+				$this->db->where('upload_exam_ans_sheet.course_group_id', $_POST['course_group_id']);
+				$this->db->where('upload_exam_ans_sheet.class_id', $_POST['class_id']);
+			}
+		
+			$this->db->where('upload_exam_ans_sheet.total_marks',0);
+			$this->db->where('upload_exam_ans_sheet.teacher_id!=','');
+            // $this->db->limit(10);
+			$data['students'] = $this->db->get()->result();
+			//$this->Common_model->last_query();
+			// echo "<pre>";
+			// print_r( $query);
+			// die ;
+		$dt = $this->load->view('admin/examController/get_student_for_remark',$data,true);
+		echo json_encode(array(
+			"status" => true,
+			"data" => $dt
+		));
+	}
 }// class
