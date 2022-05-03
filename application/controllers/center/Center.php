@@ -25,14 +25,19 @@ class Center extends CI_Controller {
 	}
 
 	public function dashboard(){
+	  
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}else{
+		
+
+			
 			$titleData = array('title' => 'Center Dashboard');
 			$this->load->view('Centers/header',$titleData);
 			$id =  $this->session->center_id;
 			$center = $this->Common_model->getRecordById('center','id',$id);
 			$data = array('center' => $center);
+			
 			$this->load->view('Centers/dashboard',$data);
 			$this->getNotification();
 			$this->load->view('Centers/footer');
@@ -524,17 +529,18 @@ class Center extends CI_Controller {
 	public function getCourseByEligibility()
 	{
 		$eligibility = $this->input->post('eligibility');
+		$mode = $this->input->post('mode');
 		$myString =$eligibility;
 		 
-		$myArray = explode('|', $myString);
+		
 		
 		if($this->session->has_userdata('center_id')){
 		$center_id =  $this->session->center_id;
 		$centerdata = $this->Common_model->getRecordById('center','id',$center_id);
 		$this->db->where('id in ('.$centerdata->allot_course_group_id.')');
 		}
-		 $where['eligibility'] = $myArray[0];
-		 if($myArray[1]=='regular'){
+		 $where['eligibility'] = $eligibility;
+		 if($mode=='regular'){
 		   $where['admission_permission'] = 'Y';
 		 }else{
 			$where['admission_permission_pvt'] = 'Y';

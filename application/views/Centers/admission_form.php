@@ -4,7 +4,7 @@
 		<div class="col-md-9">
 			<div class="row">
     <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">   
-    <input type="hidden" class="" name="mode" value="<?= $mode; ?>">   
+    <input type="hidden"  id="mode" name="mode" value="<?= $mode; ?>">   
 				<div class="col-md-6">
 					<div class="form-group ">
 						<label>Session</label><span class="text-danger"> *</span>
@@ -20,7 +20,7 @@
 						<select name="eligibility" id="eligibility" class="form-control" >
 							<option value="">--Select--</option>
 							<?php foreach ($eligibility_list as $row) { ?>
-								<option value="<?php echo  $row['eligibility']?>|<?php echo  $mode; ?>"><?=$row['eligibility']?></option>
+								<option value="<?php echo  $row['eligibility']?>"><?=$row['eligibility']?></option>
 							<?php } ?>
 						</select>
 						<div class="fv-plugins-message-container"></div>

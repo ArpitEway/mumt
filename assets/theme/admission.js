@@ -19,12 +19,12 @@ $("#eligibility").on('change', function(){
 	
 	var csrfName = $('.csrfname').attr('name');
 	var csrfHash = $('.csrfname').val();
-	var graduation = eligibility.split('|');
-	$('input[name="qualifying_exam"]').val(graduation[0]);
+	var mode = $('#mode').val();
+	$('input[name="qualifying_exam"]').val(eligibility);
 	$.ajax({
 		method: "POST",
 		url: BASE_URL+"center/center/getCourseByEligibility",
-		data: {eligibility : eligibility,[csrfName]:csrfHash},
+		data: {mode:mode,eligibility : eligibility,[csrfName]:csrfHash},
 	})
 	.done(function( msg ) {
 		$('#course_group_id').html(msg);

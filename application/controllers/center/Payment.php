@@ -50,10 +50,10 @@ class Payment extends CI_Controller {
 	      	$txnAmt = $this->Common_model->getRecordByWhere("course",array('course_group_id'=>$student['course_group_id'],'session'=>$student['session']));
 
 			if($student['university_mode']=='REG'){
-				$mode = "regular";
+				$mode = "Regular";
 				$txnAmt = $txnAmt[0]->form_fees+$txnAmt[0]->admission_fees;
 			}else{
-				$mode = "private";
+				$mode = "Private";
 				$txnAmt= $txnAmt[0]->p_form_fees+ $txnAmt[0]->p_admission_fees;
 			}
 			if($student['payment_status']=='Y'){
