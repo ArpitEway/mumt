@@ -101,6 +101,11 @@
 							<span class="nav-text">Remaining Exam Answersheet</span>
 						</div>
 					</a>
+					<a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
+						<div>
+							<span class="nav-text">Practical Marks Submission</span>
+						</div>
+					</a>
 					<a class="border-0 custom-menu-item" href="<?=base_url('internal_marks_list');?>">
 						<div>
 							<span class="nav-text">Internal Marks Submission</span>

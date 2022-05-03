@@ -15,6 +15,8 @@
 				<th>Admission fees</th>
 				<th>Program fees</th>
 				<th>Exam fees</th>
+				<th>Private Program fees</th>
+				<th>Private Exam fees</th>
 				<th>Options</th>
 			</tr>
 		</thead>
@@ -29,6 +31,8 @@
 				<th>Admission fees</th>
 				<th>Program fees</th>
 				<th>Exam fees</th>
+				<th>Private Program fees</th>
+				<th>Private Exam fees</th>
 				<th>Options</th>
 			</tr>
 			</tfoot>
@@ -51,6 +55,8 @@
 						<td><?php echo $course['admission_fees']; ?></td>
 						<td><?php echo $course['program_fees']; ?></td>
 						<td><?php echo $course['exam_fees']; ?></td>
+						<td><?php echo $course['p_program_fees']; ?></td>
+						<td><?php echo $course['p_exam_fees']; ?></td>
                 	<td>
                 	<div style="display: inline-flex;">
 					

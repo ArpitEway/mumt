@@ -2658,4 +2658,23 @@ public function update_exam_datewise_permission(){
 			}
 		}
 	}
+
+	public function update_fees_in_program()
+	{
+		$programs = $this->Common_model->get_record('program','id, course_group_id','course_group_id!=0' );
+
+		foreach ($programs as $program) {
+			$courseData = $this->Common_model->getRecordById('course','course_group_id',$program['course_group_id']);
+			$updateData['admission_fees'] = $courseData->form_fees+$courseData->admission_fees;
+			$updateData['program_fees'] = $courseData->program_fees;
+			$updateData['exam_fees'] = $courseData->exam_fees;
+			$courseData = $this->Common_model->getRecordByWhere('course_group',array('id' => $program['course_group_id']));
+			$updateData['min_duration'] = $courseData[0]->duration;
+			$updateData['eligibility'] = $courseData[0]->eligibility_detail;
+			$updateData['mode'] = $courseData[0]->mode;
+			$where = array('id' => $program['id']);
+			$this->Common_model->updateRecordByConditions('program',$where,$updateData);
+			echo $this->db->last_query().'<br>';
+		}
+	}
 }// class

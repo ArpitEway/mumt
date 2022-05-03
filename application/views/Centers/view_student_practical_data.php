@@ -37,7 +37,8 @@
 </tbody>
 </table>
 <form id="ajaxForm">
-  <table  class="table table-responsive" >
+ <div class="table-responsive">
+  <table  class="table" >
     <thead>
       <tr>
         <th>#</th>
@@ -99,6 +100,7 @@
   <input type="hidden" value="<?php echo $ajax_count; ?>" name="count_item" id="count_item"/>
 </tbody>
 </table>
+</div>
 <div class="text-center py-3">
   <button type="button" class="btn btn-primary mr-2"  id="markssubmit" >Submit</button>
   <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
@@ -150,7 +152,7 @@
   }
 
 
-  var x=confirm(' Are you sure to submit marks ? \n प्रविष्ट किये जा रहे निम्न अंक Provisional Marks हैं। \n Assignments के विश्वविद्यालय में पुनर्मूल्यांकन के पश्चात ही Final Marks प्रदान किये जायेंगे।');
+  var x=confirm(' Are you sure to submit marks ? \n प्रविष्ट किये जा रहे निम्न अंक Provisional Marks हैं।');
   if(x==false){
     return false;
   }
