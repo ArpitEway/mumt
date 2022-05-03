@@ -7,7 +7,7 @@ $center1 = $this->db->get_where('center', array("admission_permission" => 'Y'))-
 $center2 = $this->db->get_where('center', array("exam_form_permission" => 'Y'))->result_array();
 $center3 = $this->db->get_where('center', array("admit_card_permission" => 'Y'))->result_array();
 $center4 = $this->db->get_where('center', array("result_permission" => 'Y'))->result_array();
-$center5 = $this->db->get_where('center', array("admission_permission" => 'Y'))->result_array();
+$center5 = $this->db->get_where('center', array("admission_permission_private" => 'Y'))->result_array();
 
 
 $admission_permission_count = count($center1);
