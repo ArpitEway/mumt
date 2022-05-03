@@ -50,7 +50,7 @@
 				  }
 				  ?>
 				 <?php
-				  if($center->admission_permission_pvt=='Y'){
+				  if($center->admission_permission_private=='Y'){
 					?>
 					<a class="border-0 custom-menu-item" href="<?=base_url('admission_instruction/private');?>">
 						<div>
