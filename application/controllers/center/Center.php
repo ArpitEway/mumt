@@ -129,11 +129,25 @@ class Center extends CI_Controller {
 			redirect(base_url());
 			exit;
 		}
+		$center_id =  $this->session->center_id;
+        // echo $center_id;
+		// die ;
 		if($mode=='regular'){
+			$where = array('admission_permission'=>'Y' ,'id'=>$center_id);
 			$head = '(Regular)';
+
 		}else{
+			$where = array('admission_permission_private'=>'Y','id'=>$center_id);
 			$head = '(Private)';
+			$where = array('admission_permission'=>'Y' ,'id'=>$center_id);
+
 		}
+		
+		$check = $this->Common_model->getRecordByWhere("center",$where);
+		if(($mode=='regular' && $check[0]->admission_permission!='Y') || ($mode=='private' && $check[0]->admission_permission_private!='Y')){
+			redirect(base_url('dashboard'));
+		}
+
 		$titleData = array('title' => 'Admission Form '.$head);
 		$state_list = $this->Common_model->get_record('state','*');
 		$eligibility_list = $this->Common_model->get_record('course_group','DISTINCT (eligibility)');
