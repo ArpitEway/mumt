@@ -30,7 +30,7 @@ class Director extends CI_Controller {
 			);
 
 			$this->load->view('header',array('title' => 'Director Section'));
-			$this->load->view('admin/director/dashboard',$menu);
+			$this->load->view('admin/director/bulk_permission',$menu);
 			$this->load->view('footer');
 		}
 		else
