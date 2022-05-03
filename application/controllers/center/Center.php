@@ -129,8 +129,12 @@ class Center extends CI_Controller {
 			redirect(base_url());
 			exit;
 		}
-		
-		$titleData = array('title' => 'Admission Form');
+		if($mode=='regular'){
+			$head = 'Regular';
+		}else{
+			$head = 'Private';
+		}
+		$titleData = array('title' => 'Admission Form '.$head);
 		$state_list = $this->Common_model->get_record('state','*');
 		$eligibility_list = $this->Common_model->get_record('course_group','DISTINCT (eligibility)');
 		$district_list = $this->Common_model->get_record('distt','*');
