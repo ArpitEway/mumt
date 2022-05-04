@@ -86,6 +86,7 @@ foreach($students as $student)
         $total_theory_abs_count = 0 ;
         $total_int_abs_count = 0 ;
         $ATKT_paper_codes_array = array(); 
+        $int_fail_count = 0;
         foreach($marks as $new_exam_form)
         {
             $total_theory_marks_obt += $new_exam_form->theory_marks;
@@ -99,18 +100,38 @@ foreach($students as $student)
                     $tot_marks += $new_exam_form->max_theory_marks;
                 if($new_exam_form->theory_marks>=$new_exam_form->min_theory_marks){
                     $result = "उत्तीर्ण";
-                }else if($new_exam_form->theory_marks==''){
+                }
+                 if($new_exam_form->theory_marks=='' || $new_exam_form->theory_marks=='ABS'){
                  
                   array_push( $ATKT_paper_codes_array ,$new_exam_form->paper_code );
                   $total_theory_abs_count++ ;
                   $RW_Count++;
-                }else{
+                  $fail_count = $fail_count+3 ;
+
+                }
+                if($new_exam_form->theory_marks=='ABS' || $new_exam_form->int_marks=='ABS'  || $new_exam_form->int_marks=='N'){
+                  // echo "dssssssss";
+                  $fail_count = $fail_count+3 ;
+
+                  array_push( $ATKT_paper_codes_array ,$new_exam_form->paper_code );
+                }
+                if($new_exam_form->theory_marks<$new_exam_form->min_theory_marks  && $new_exam_form->theory_marks!=''){
                     array_push( $ATKT_paper_codes_array ,$new_exam_form->paper_code );
-                  
                     $fail_count++;
                     $fali_tot_marks += $new_exam_form->theory_marks;
                     $require_tot_marks += $new_exam_form->min_theory_marks;
                 }
+                if($new_exam_form->int_marks<$new_exam_form->min_internal_marks)
+                {
+                  $int_fail_count++;
+                 
+                }
+
+                if($new_exam_form->int_marks=="ABS"){
+                 $total_int_abs_count++ ;
+                }
+
+
         }elseif (($data['class_id'][0]->project!='N' || $data['class_id'][0]->practical!='N') && $new_exam_form->type!='theory' && $new_exam_form->p_marks!="N" &&  $new_exam_form->p_marks<$new_exam_form->min_theory_marks){
             $fail_count = $fail_count + 5;
         }
@@ -133,8 +154,9 @@ foreach($students as $student)
 
         $aggregate_per =   ($tot_std_marks/$tot_marks) * 100;
         $require_grace_marks = $require_tot_marks-$fali_tot_marks;
-        if ($fail_count<3 && $require_grace_marks<4 && $aggregate_per>36 ) {
+        if ($fail_count<3 && $require_grace_marks<4 && $aggregate_per>36 && $int_fail_count==0) {
             $check_grace_marks = true;
+          
         }
 
             foreach($marks as $new_exam_form)
@@ -158,20 +180,35 @@ foreach($students as $student)
             }
             ($total_theory_abs_count==5) ? $remark = "Abs in theory" : "";
             ($total_int_abs_count>0) ? $remark = "Abs in <br> Practical" : "" ;
-            ($total_int_abs_count>0 &&  $total_theory_abs_count==5) ? $remark = "Abs in All" : "" ;
+            ($total_int_abs_count>0 &&  $total_theory_abs_count>=5) ? $remark = "Abs in All" : "" ;
             
               
-        if($final_result_fail_count>0 && $RW_Count==0)
+        if($final_result_fail_count>0 && $RW_Count==0 )
        {
          $final_result = "Fail" ;
        }
        elseif($RW_Count>0){
         $final_result = "RW" ;
-       }else
+       }elseif( $int_fail_count!=0){
+        $final_result = "Fail" ;
+       }
+       else
        {
         $final_result = "Pass" ;
        } 
+       if( $data['class_id'][0]->project!='N' || $data['class_id'][0]->practical!='N'){
+            if($new_exam_form->p_marks < $new_exam_form->min_theory_marks && $new_exam_form->p_marks!=''){
+            $final_result = "Fail" ;
+            }
+       }
+       if($fail_count>0 && $check_grace_marks==false){
 
+        $final_result = "Fail" ;
+
+       }
+       if($total_theory_abs_count>=5 && $total_int_abs_count>=5){
+        $final_result = "Absent" ;
+       }
        $percentage = round(($total_marks_obt/$total_paper_marks)*100,2);
        if($percentage>=60)
        {
@@ -181,6 +218,7 @@ foreach($students as $student)
        }else{
          $division = "Third";
        }
+
 ?>
 <!-- <hr  class="mt-15">
 <div class="mt-25"> -->
@@ -320,13 +358,14 @@ if($page_break_count%2==0 || $page_break_count==0){
       <td  class="align-middle text-center" style="width: 48px;" rowspan="<?php echo $rowspandata ?>"><?php echo $final_result ; ?></td>
       <td  class="align-middle text-center width_total"  rowspan="<?php echo $rowspandata ?>"><?php 
         if($check_grace_marks==false){
-          if(($total_theory_abs_count==5)|| ($total_int_abs_count>0 &&  $total_theory_abs_count==5))
+          if($total_int_abs_count>0 &&  $total_theory_abs_count>=5)
           {
            echo $remark ;  
           }else{
             if(sizeof($ATKT_paper_codes_array)>0){
              echo "ATKT in";
             }
+          $ATKT_paper_codes_array =  array_unique($ATKT_paper_codes_array);
            foreach($ATKT_paper_codes_array as $paper_code){
              echo  "<br>". $paper_code ;
            }
@@ -349,7 +388,7 @@ if($page_break_count%2==0 || $page_break_count==0){
       {
         if($new_exam_form->theory_marks==''){
           echo '-';
-      }elseif($new_exam_form->theory_marks>=$new_exam_form->min_theory_marks){
+      }elseif($new_exam_form->theory_marks>=$new_exam_form->min_theory_marks && $new_exam_form->theory_marks!="ABS"){
           echo $new_exam_form->theory_marks;
       }else{
           echo $new_exam_form->theory_marks;
@@ -372,8 +411,26 @@ if($page_break_count%2==0 || $page_break_count==0){
       <?php
       foreach($marks as $paper_master)
       {
+        
           ?>
-      <td  class="align-middle text-center "><?php echo  $paper_master->int_marks;  ?></td>
+      <td  class="align-middle text-center ">
+        <?php
+         if($paper_master->paper_type=="theory")
+         {
+           if($paper_master->int_marks==''){
+             echo '-';
+         }elseif($paper_master->int_marks>=$paper_master->min_internal_marks && $paper_master->int_marks!="ABS" ){
+             echo $paper_master->int_marks;
+         }elseif($paper_master->int_marks=="ABS"){
+           echo "ABS F";
+         }
+         else{
+             echo $paper_master->int_marks .'*';
+             
+         }
+         }
+         ?>
+      </td>
       <?php
       }
       ?>
@@ -448,7 +505,7 @@ if($page_break_count%2==0 || $page_break_count==0){
   ?>
  
   <?php  
-  if( $total_theory_abs_count>0)
+  if( $total_theory_abs_count>0 || $final_result !="Pass")
   {
     ?>
     <tr>

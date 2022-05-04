@@ -2681,6 +2681,9 @@ public function update_exam_datewise_permission(){
    public function tr_class_list(){
 	$where = 'id in  (select distinct(course_group_id) from student where exam_form = "Y" ) ';
 	$data['courses'] = $this->Common_model->get_record('course_group','*',$where);
+	// echo "<pre>";
+	// print_r($where);
+	// die ;
 	$this->load->view('header',array('title' => 'Class List'));
 	$this->load->view('admin/tr_class_list',$data);
 	$this->load->view('footer');
