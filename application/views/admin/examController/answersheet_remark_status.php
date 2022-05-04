@@ -1,15 +1,15 @@
-<?php 
+<style>
 
-//  $course = $this->Common_model->getCourseNameByCourseId(51);
-//  echo "<pre>";
-//  print_r($course);
-//  die ;
-?>
-<div class="container-fluid" >
-	<div class="row mt-5 ">
+.center {
+   margin: auto;
+   width: 50% !important; 
+}
+</style>
+<div class="container-fluid"   >
+	<div class="row mt-5  center">
 		<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-		<div class="form-group col-md-3">
-			<label for="course">Course</label>
+		<div class="form-group col-md-6">
+			<label for="course " class="">Select Course</label>
 			<select name="course_group_id" id="course_group_id" class="form-control course_group_id" data-target="#class_id" required >
 				<option value="all">All</option>
 				<?php 
@@ -28,8 +28,8 @@
 				?> 
 			</select>       
 		</div>
-		<div class="form-group col-md-3">
-			<label for="class_id">Class</label>
+		<div class="form-group col-md-6">
+			<label for="class_id">Select Class</label>
 			<select name="class_id" id="class_id" class="form-control"  required >
 				<option value="all">All</option>
 			</select>       

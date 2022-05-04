@@ -745,11 +745,6 @@ class ExamController extends CI_Controller {
 
 	public function get_student_for_remark(){
 
-		// echo "<pre>";
-		// print_r( $_POST);
-		// die ;
-      // $data['students'] = $this->Common_model->getRecordByWhere("upload_exam_ans_sheet",array('course_group_id'=>$_POST['course_group_id'],'class_id'=>$_POST['class_id']));
-		 
 			$this->db->select('*');
 			$this->db->from('upload_exam_ans_sheet');
 			$this->db->join('student', 'upload_exam_ans_sheet.student_id = student.student_id');
@@ -760,16 +755,29 @@ class ExamController extends CI_Controller {
 		
 			$this->db->where('upload_exam_ans_sheet.total_marks',0);
 			$this->db->where('upload_exam_ans_sheet.teacher_id!=','');
-            // $this->db->limit(10);
 			$data['students'] = $this->db->get()->result();
-			//$this->Common_model->last_query();
-			// echo "<pre>";
-			// print_r( $data['students']);
-			// die ;
+
 		$dt = $this->load->view('admin/examController/get_student_for_remark',$data,true);
 		echo json_encode(array(
 			"status" => true,
 			"data" => $dt
 		));
+	}
+
+	public function update_remark_status()
+	{
+
+  $where = array(
+	  'paper_code'=>$_POST['paper_code'],
+	  'student_id'=>$_POST['student_id'],
+	  'class_id'=>$_POST['class_id']
+  );
+  $data = array(
+	  'remark_status' =>$_POST['remark_status'],
+  );
+   $update =  $this->Common_model->updateRecordByConditions('upload_exam_ans_sheet',$where,$data);
+   if($update){
+	echo json_encode(array('status'=>true));
+   }
 	}
 }// class
