@@ -54,34 +54,15 @@ $new_exam_form = $this->Common_model->getRecordByWhere("new_exam_form",array('st
     <tbody>
         <?php 
         foreach($new_exam_form as $paper){
-$upload_exam_answersheet = $this->Common_model->getRecordByWhere("new_exam_form",array('student_id'=>$param1));
-
             
             ?>
         <tr>
-        <td><?php echo $this->Common_model->getPaperNameById($paper->paper_id) ;  ?></td>
+            <td><?php echo $paper->paper_code ;  ?></td>
             <td><?php echo $paper->paper_code ;  ?></td>
             <td>PDF</td>
-            <td>remark</td>
-            <?php
-        //    if($paper->teacher_id!='' && $paper->total_marks==0){
-               ?>
-               <!-- <td>
-                <select name="class_id" id="class_id" class="form-control"  required >
-                     <option value="all">All</option>
-                     <option value="all">All</option>
-                     <option value="all">All</option>
-                </select>    
-                </td>  -->
-            <?php
-        //    }else{
-               ?>
-                 <td>total marks </td>
-               <?php
-        //    }
-            ?>
-          
-           
+            <td><?php echo $paper->remark_status ;  ?></td>
+            <td><?php echo $paper->paper_code ;  ?></td>
+            <td><?php echo $paper->paper_code ;  ?></td>
      
 
         </tr>
