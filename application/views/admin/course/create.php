@@ -41,9 +41,9 @@
 		<div class="form-group col-md-3">
             <label for="session">Mode</label>
             <select name="mode" id="Mode" class="form-control" required>
-                <option value="annual">Annual</option>
-				<option value="semester">Semester</option>
-				<option value="month">Month</option>
+                <option value="Annual">Annual</option>
+				<option value="Semester">Semester</option>
+				<option value="Month">Month</option>
             </select>
         </div>
 

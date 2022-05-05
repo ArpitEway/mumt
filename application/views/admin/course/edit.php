@@ -59,9 +59,9 @@ foreach($courses as $course): ?>
 		<div class="form-group col-md-3">
             <label for="session">Mode</label>
             <select name="mode" id="Mode" class="form-control" required>
-                <option value="annual" <?php if($course_group['mode'] == "annual") echo "selected" ?>  >Annual</option>
-				<option value="semester" <?php if($course_group['mode'] == "semester") echo "selected" ?>>Semester</option>
-				<option value="month" <?php if($course_group['mode'] == "month") echo "selected" ?>>Month</option>
+                <option value="Annual" <?php if($course_group['mode'] == "Annual") echo "selected" ?>  >Annual</option>
+				<option value="Semester" <?php if($course_group['mode'] == "Semester") echo "selected" ?>>Semester</option>
+				<option value="Month" <?php if($course_group['mode'] == "Month") echo "selected" ?>>Month</option>
             </select>
             
         </div>

@@ -17,8 +17,6 @@
 				foreach($courses as $course)
 				{
                      $course_name = $this->Common_model->getCourseNameByCourseId($course['course_group_id']);
-                    // echo "<pre>";
-                    // print_r($course);
 					?>
 
 					<option  value="<?php echo $course['course_group_id']; ?>"><?php echo $course_name; ?></option>
