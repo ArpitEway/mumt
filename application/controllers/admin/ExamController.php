@@ -752,6 +752,7 @@ class ExamController extends CI_Controller {
 				$this->db->where('upload_exam_ans_sheet.course_group_id', $_POST['course_group_id']);
 				$this->db->where('upload_exam_ans_sheet.class_id', $_POST['class_id']);
 			}
+			$this->db->where('upload_exam_ans_sheet.remark_status','');
 		
 			$this->db->where('upload_exam_ans_sheet.total_marks',0);
 			$this->db->where('upload_exam_ans_sheet.teacher_id!=','');
@@ -779,5 +780,18 @@ class ExamController extends CI_Controller {
    if($update){
 	echo json_encode(array('status'=>true));
    }
+	}
+
+	public function view_answersheet_pdf($id){
+	
+		$id=$this->Common_model->encrypt_decrypt($id,'decrypt');
+		
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
+		$where= array('id'=>$id);
+		$data['answer'] = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',$where);
+		$this->load->view('teacher/answersheet_pdf',$data); 
 	}
 }// class

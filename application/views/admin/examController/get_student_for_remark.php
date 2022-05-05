@@ -1,4 +1,4 @@
-
+<div id="">
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 <table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
 			<thead>
@@ -42,3 +42,4 @@
 			?>
 			</tbody>
 </table>
+</div>

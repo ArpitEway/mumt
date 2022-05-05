@@ -14,7 +14,10 @@ $student_details = $this->db->get_where('student', array('student_id' => $param1
 
 $new_exam_form = $this->Common_model->getRecordByWhere("new_exam_form",array('student_id'=>$param1));
 ?>
-<form method="POST" class="mt-3 "  id="update_remark_status" >
+
+
+
+<form method="POST" class="mt-3"  id="update_remark_status"  >
 <input type="hidden"  class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 
 <div class="container">
@@ -63,7 +66,13 @@ $upload_exam_answersheet = $this->Common_model->getRecordByWhere("upload_exam_an
         <tr>
         <td><?php echo $this->Common_model->getPaperNameById($paper->paper_id) ;  ?></td>
             <td><?php echo $paper->paper_code ;  ?></td>
-            <td><?php if($upload_exam_answersheet[0]->answer_sheet!=''){echo $upload_exam_answersheet[0]->answer_sheet ; }else{echo 'NA' ;} ?></td>
+            <td><?php if($upload_exam_answersheet[0]->answer_sheet!=''){
+	         	$id=$this->Common_model->encrypt_decrypt($upload_exam_answersheet[0]->id,'encrypt');
+             
+                ?>
+            <a target="_blank" href="<?php echo base_url('/admin/ExamController/view_answersheet_pdf/'.$id) ?>">View </a>
+                <?php
+                 }else{echo 'NA' ;} ?></td>
             <td><?php  echo $upload_exam_answersheet[0]->remark ;  ?> </td>
             <?php
            if($upload_exam_answersheet[0]->teacher_id!='' && $upload_exam_answersheet[0]->total_marks==0){
@@ -101,26 +110,34 @@ $upload_exam_answersheet = $this->Common_model->getRecordByWhere("upload_exam_an
        
     </tbody>
  </table>
- <button class="btn btn-success" type="submit" id="submit">Submit</button>
+ <div class="form-group text-center">
+ <button class="btn btn-success " type="submit" id="submit" >Submit</button>
+</div>
  </form>
 
  <script>
-     	$('#submit').on('click',function (e) {
-            
-		e.preventDefault();
-		let formData = $('#update_remark_status').serialize();
-		$.ajax({
-			url: BASE_URL+ 'admin/ExamController/update_remark_status',
-			method: 'post',
-			data: formData,
-			dataType: 'JSON',
-			success: function (response) {
-				if(response.status==true){
-					toastr.success('update status remark successfully');
-				}else{
-					toastr.error('something error');
+	$('#submit').on('click',function (e) {
+            $remark_value = $('#status_remark').val();
+             if($remark_value==''){
+                toastr.error('PLease select remark');
+                return false ;
+             }
+			e.preventDefault();
+			let formData = $('#update_remark_status').serialize();
+			$.ajax({
+				url: BASE_URL+ 'admin/ExamController/update_remark_status',
+				method: 'post',
+				data: formData,
+				dataType: 'JSON',
+				success: function (response) {
+					if(response.status==true){
+						getStudentForRemark();
+                        $('#right-modal').modal('hide');
+						toastr.success('update status remark successfully');
+					}else{
+						toastr.error('something error');
+					}
 				}
-			}
+			})
 		})
-	})
  </script>

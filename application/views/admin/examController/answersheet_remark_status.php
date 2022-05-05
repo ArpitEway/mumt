@@ -36,7 +36,7 @@
 	</div>
 
 	<div class="form-group text-center">
-		<button class="btn btn-md btn-primary mt-4" type="button" id="submit_btn">Submit</button>
+		<button class="btn btn-md btn-primary mt-4" type="button" onclick="getStudentForRemark()" id="submit_btn">Submit</button>
 	</div>
 	<div align="center" id="myLoader" class="loader_div" style="display: none;" >
 		<svg>
@@ -69,10 +69,8 @@ $(document).on("change", "#course_group_id", function() {
     } 
 });
 
-$(document).on("click","#submit_btn",function(){
-		// $('#dt').hide();
-     
-
+       const getStudentForRemark=()=>{
+		$('#dt').hide();
 		var csrfName = $('.csrfname').attr('name');
 		var csrfHash = $('.csrfname').val(); 
 		var data = {
@@ -114,5 +112,8 @@ $(document).on("click","#submit_btn",function(){
 					$('#myLoader').hide();
 				},
 			})
-	});
+	};
+
+
+
 </script>
