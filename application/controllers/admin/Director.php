@@ -20,6 +20,8 @@ class Director extends CI_Controller {
 
 		if($this->session->has_userdata('adminData')){
 
+       redirect(base_url('admin/director/bulk_permission'));
+       
 			$admin_id = $this->session->admin_id;
 
 			$where = 'admin_id='.$admin_id.' and status="Y"';
@@ -53,6 +55,7 @@ class Director extends CI_Controller {
 
 			$this->load->view('header');
 			$this->load->view('admin/director/dashboard',$menu);
+
 			$this->load->view('footer');
 		}
 		else

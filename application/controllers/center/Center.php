@@ -25,14 +25,19 @@ class Center extends CI_Controller {
 	}
 
 	public function dashboard(){
+	  
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}else{
+		
+
+			
 			$titleData = array('title' => 'Center Dashboard');
 			$this->load->view('Centers/header',$titleData);
 			$id =  $this->session->center_id;
 			$center = $this->Common_model->getRecordById('center','id',$id);
 			$data = array('center' => $center);
+			
 			$this->load->view('Centers/dashboard',$data);
 			$this->getNotification();
 			$this->load->view('Centers/footer');
@@ -119,17 +124,37 @@ class Center extends CI_Controller {
 		}
 	}
 
-	public function admission_form(){
+	public function admission_form($mode=''){
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 			exit;
 		}
-		$titleData = array('title' => 'Admission Form');
+		$center_id =  $this->session->center_id;
+        // echo $center_id;
+		// die ;
+		if($mode=='regular'){
+			$where = array('admission_permission'=>'Y' ,'id'=>$center_id);
+			$head = '(Regular)';
+
+		}else{
+			$where = array('admission_permission_private'=>'Y','id'=>$center_id);
+			$head = '(Private)';
+			$where = array('admission_permission'=>'Y' ,'id'=>$center_id);
+
+		}
+		
+		$check = $this->Common_model->getRecordByWhere("center",$where);
+		if(($mode=='regular' && $check[0]->admission_permission!='Y') || ($mode=='private' && $check[0]->admission_permission_private!='Y')){
+			redirect(base_url('dashboard'));
+		}
+
+		$titleData = array('title' => 'Admission Form '.$head);
 		$state_list = $this->Common_model->get_record('state','*');
 		$eligibility_list = $this->Common_model->get_record('course_group','DISTINCT (eligibility)');
 		$district_list = $this->Common_model->get_record('distt','*');
 		$course_group_list = $this->Common_model->get_record('course','*');
 		$data = array(
+			'mode'=>$mode,
 			'state_list' => $state_list,
 			'district_list' => $district_list,
 			'course_group_list' => $course_group_list,
@@ -187,6 +212,7 @@ class Center extends CI_Controller {
 
 	public function getClassByCourse(){
 		$course = $this->input->post('course');
+	
 		$class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$course."'  and admission_permission='Y'");
 		$data = array(
 			'class_list' => $class_list,
@@ -521,14 +547,24 @@ class Center extends CI_Controller {
 	public function getCourseByEligibility()
 	{
 		$eligibility = $this->input->post('eligibility');
+		$mode = $this->input->post('mode');
+		$myString =$eligibility;
+		 
+		
+		
 		if($this->session->has_userdata('center_id')){
 		$center_id =  $this->session->center_id;
 		$centerdata = $this->Common_model->getRecordById('center','id',$center_id);
 		$this->db->where('id in ('.$centerdata->allot_course_group_id.')');
 		}
-		$course_group_list = $this->Common_model->get_record('course_group','*',array('eligibility'=>$eligibility,
-			'admission_permission' => 'Y'
-		));
+		 $where['eligibility'] = $eligibility;
+		 if($mode=='regular'){
+		   $where['admission_permission'] = 'Y';
+		 }else{
+			$where['admission_permission_pvt'] = 'Y';
+		 }
+		$course_group_list = $this->Common_model->get_record('course_group','*',$where);
+		
 		$data = array('course_group_list'=>$course_group_list);
 		echo $this->load->view('template/getcourse',$data,true);
 	}
@@ -551,10 +587,11 @@ class Center extends CI_Controller {
 		}
 	}
 
-	public function admission_instruction()
+	public function admission_instruction($mode='')
 	{
+		$data['mode']=$mode ;
 		$this->load->view('Centers/header',array('title'=>'Admission Instruction'));
-		$this->load->view('Centers/admission_instruction');
+		$this->load->view('Centers/admission_instruction',$data);
 		$this->load->view('Centers/footer');
 	}
 
