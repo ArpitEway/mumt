@@ -7,6 +7,7 @@ $exam_session=$notification_no[0]->exam_session;
 $page_break_count = -1 ;
 $page_no = 1 ;
  $page_break_count++;
+ $abs_count = 0 ;
 ?>
 
 <style>
@@ -90,9 +91,18 @@ $page_no = 1 ;
 							{
 								if($marks->theory_marks==''){
 									$Withheld = true;
-								}elseif($marks->theory_marks>=$marks->min_theory_marks){
+								}
+								if($marks->theory_marks>=$marks->min_theory_marks){
 									$result = "Pass";
-								}else{
+								}
+								if($marks->theory_marks=="ABS"){
+									$fail_count++;
+									$abs_count++;
+								
+
+									array_push( $ATKT_paper_codes,$marks->paper_code );
+								}
+								if($marks->theory_marks<$marks->min_theory_marks){
 									$fail_count++;
 									$get_tot_marks += $marks->theory_marks;
 									$require_tot_marks += $marks->min_theory_marks;
@@ -114,9 +124,12 @@ $page_no = 1 ;
 			              $require_grace_marks = $require_tot_marks-$get_tot_marks;
 			              // echo $fail_count;
 			              // echo $require_grace_marks;
-							if ($fail_count<3 && $require_grace_marks<4 ) {
+							if ($fail_count<3 && $require_grace_marks<4  && $abs_count==0) {
 								 $check_grace_marks = true;
-							}	
+							}
+						
+						
+
 			?>
 			<?php 
 			if($page_break_count%1==0 ){
@@ -141,10 +154,10 @@ $page_no = 1 ;
 
 					if($marks->type=="theory" )
 					{
-						if($Withheld){
+						if($Withheld  && $abs_count!=0){
 							echo 'RW';
 						}else{
-							if($fail_count>0){
+							if($fail_count>0 || $abs_count>0){
 								echo ($check_grace_marks) ? 'Pass by grace' : 'Fail';
 							}else{
 								echo 'Pass';
@@ -222,16 +235,18 @@ $page_no = 1 ;
 
 						if($marks->type=="theory" )
 						{
+							
 							if($marks->theory_marks=='' ){
 								echo "RW";
-
 							}
-							elseif($marks->theory_marks>=$marks->min_theory_marks) {
+							elseif(empty($ATKT_paper_codes)) {
 								$remark='';
+							
 							}		
 							else{ 
 
-								if($fail_count>3){
+								if(($require_grace_marks>=4 || $abs_count!=0 ) &&  $marks->theory_marks!=''){
+								
 									$remark= ($check_grace_marks) ? 'Fail' : 'ATKT IN';
 									echo $remark;
 

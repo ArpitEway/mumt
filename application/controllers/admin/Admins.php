@@ -2661,6 +2661,7 @@ public function student_notification_list($course_id="",$class_id=""){
 	$class_id1=$this->Common_model->encrypt_decrypt($class_id,'decrypt');	
 
 	$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id1 ,'class_id' => $class_id1 ,'exam_form'=>'Y','roll_number!='=>'0','result_show'=>'Y' ));
+
 	//$this->Common_model->last_query();
 		$this->load->view('header',array('title' => 'Student Notification List'));
 		$this->load->view('admin/student_notification_list',$data);
