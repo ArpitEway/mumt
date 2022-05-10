@@ -70,7 +70,7 @@
 		<thead>
 			<tr>
 				<th>Form No</th>
-				<th>Enrollment No</th>
+				<!-- <th>Enrollment No</th> -->
 				<th>Name</th>
 				<th>Father Name</th>
 				<th>Course</th>
