@@ -77,7 +77,7 @@
 				<th>Class</th>
 				<th>Aadhar No</th>
 				<th>Mobile</th>
-				<th>View Form</th>
+				<!--<th>View Form</th>-->
 			</tr>
 		</thead>
 		<tbody>
