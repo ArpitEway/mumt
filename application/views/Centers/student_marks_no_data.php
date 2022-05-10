@@ -38,8 +38,7 @@
         <th>#</th>
         <th>Paper Code</th>
         <th>Paper Name</th>
-        <th>Type</th>
-        <th>Marks</th>
+        <th>Internal/Practical Marks</th>
       </tr>
     </thead>
     <tbody>
@@ -52,14 +51,13 @@
          <td><?php echo $student->paper_code; ?></td>
          <td><?=$this->Common_model->getPaperNameById($student->paper_id); ?>
           </td>
-       <td><?php echo $student->paper_type;?> </td>
-      <td>
+        <td class="text-center">
        <?php
-        if($student->paper_type=='theory'){
-          echo $student->int_marks;
-        }else{
-          echo $student->p_marks;
-        }
+          if($student->paper_type=='theory'){
+            echo $student->int_marks;
+          }else{
+            echo $student->p_marks;
+          }
         ?>
       </td>
     </tr>
