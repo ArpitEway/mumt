@@ -297,8 +297,9 @@ class Center extends CI_Controller {
 				$enrollment = $result->enrollment_no;
 				}
 				//$enrollment,
+				,$btn
 				*/
-			$data[] = array($result->student_id,$result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->adhar_no,$result->p_mobile_no,$btn);
+			$data[] = array($result->student_id,$result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->adhar_no,$result->p_mobile_no);
 		}
 
 		$output = array(
