@@ -290,16 +290,14 @@ class Center extends CI_Controller {
 			$btn = ($result->document_uploaded=='Y') ?
 			'<a href="'.base_url('show_form/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>' : '';
 			$i++;
-			/*
+
 			if($result->enrolled=='N'){
 				$enrollment = '-';
 			}else{
 				$enrollment = $result->enrollment_no;
-				}
-				//$enrollment,
-				,$btn
-				*/
-			$data[] = array($result->student_id,$result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->adhar_no,$result->p_mobile_no);
+			}
+	
+			$data[] = array($result->student_id,$enrollment,$result->name, $result->f_h_name, $result->course_name,$result->class_name,$btn);
 		}
 
 		$output = array(
