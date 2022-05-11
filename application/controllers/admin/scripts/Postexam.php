@@ -69,6 +69,41 @@ class Postexam extends CI_Controller {
            }
       }
 
+
+       public function generate_marksheet_no(){
+
+        /*
+            212 - Dec 2021
+            221 - June 2022
+        */
+        $data['students'] = $this->Common_model->getRecordByWhere('student', array('new_exam_form'=>'Y' ,'roll_no!='=>0 ,'marksheet_no'=>''));
+         
+          $starting_no = 10001 ;
+
+           foreach($data['students'] as $student){
+         
+             $f_l_center_code = substr($student->center_code, 0, 1);
+            
+            $l_l_center_code =  substr($student->center_code,-4);
+           
+            $marksheet_no = $f_l_center_code.$starting_no.'212'.$l_l_center_code ;
+                $data  = array(
+                    'marksheet_no'=>$marksheet_no,
+                );
+                $where = array(
+                    'student_id'=>$student->student_id ,
+                );
+                $update_marksheeet_no =$this->Common_model->updateRecordByConditions('student',$where,$data); 
+              
+                $starting_no++ ;
+           }
+           $data['students']  = $this->Common_model->getRecordByWhere('student', array('new_exam_form'=>'Y' ,'roll_no!='=>0 ,'marksheet_no!='=>''));
+
+            $this->load->view('admin/script/header');
+			$this->load->view('admin/script/student_marksheet_no',$data);
+			$this->load->view('admin/script/footer');
+        
+       }
 }
 
 ?>

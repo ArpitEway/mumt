@@ -2661,6 +2661,9 @@ public function update_exam_datewise_permission(){
 
 	public function update_fees_in_program()
 	{
+
+		echo ' d';
+		die ;
 		$programs = $this->Common_model->get_record('program','id, course_group_id','course_group_id!=0' );
 
 		foreach ($programs as $program) {
