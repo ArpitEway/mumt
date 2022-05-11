@@ -2680,4 +2680,12 @@ public function update_exam_datewise_permission(){
 			echo $this->db->last_query().'<br>';
 		}
 	}
+
+
+	public function student_marksheet()
+	{
+		      $this->load->view('admin/student_marksheet/header');
+			  $this->load->view('admin/student_marksheet');
+			  $this->load->view('admin/student_marksheet/footer');
+	}
 }// class
