@@ -2685,9 +2685,12 @@ public function update_exam_datewise_permission(){
 	public function student_marksheet()
 	{
 
-		
+	       $data['students']  = $this->Common_model->getRecordByWhere('student',array('exam_form'=>'Y','roll_no!='=>0 , 'student_id'=>188237));
+		//    echo "<pre>";
+		//    print_r($students);
+		//    die ;
 		      $this->load->view('admin/student_marksheet/header');
-			  $this->load->view('admin/student_marksheet');
+			  $this->load->view('admin/student_marksheet',$data);
 			  $this->load->view('admin/student_marksheet/footer');
 	}
 }// class
