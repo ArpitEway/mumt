@@ -2684,6 +2684,8 @@ public function update_exam_datewise_permission(){
 
 	public function student_marksheet()
 	{
+
+		
 		      $this->load->view('admin/student_marksheet/header');
 			  $this->load->view('admin/student_marksheet');
 			  $this->load->view('admin/student_marksheet/footer');

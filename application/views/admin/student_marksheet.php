@@ -9,12 +9,15 @@
 }
 .whole-margin{
   margin-left:76px;
+  font-family: "Times New Roman"
+
 }
 .head-margin{
   margin-top : 100px ;
 }
 .font-weight {
   font-weight: 490;
+  font-family: "Times New Roman"
 }
 .font-weight-head {
   font-weight: 1200;
@@ -36,6 +39,9 @@ h6{
  font-size: 12px;
  margin:0px;
 }
+p{
+  color:#000000 ;
+}
 
 </style>
 <div class=" font-weight whole-margin mt-3">
@@ -46,7 +52,7 @@ h6{
     </div>
     <div class="row head-margin">
         <div class="col-12 text-center" >
-         <h6 class='font-weight:500'>Bachelor of Social Work First Year Examination June 2021</h6>
+         <h6 class='font-weight:500'><strong>Bachelor of Social Work First Year Examination June 2021</strong></h6>
         </div>
     </div>
     <div class="row mt-3">
@@ -82,34 +88,34 @@ h6{
                 <tbody >
                 <div class=" mb-3">
                   <tr>
-                    <td class="marks-td" ><p>Paper Code</p</td>
-                    <td class=""><p>Paper Name</p></td>
+                    <td class="marks-td" ><p><strong>Paper Code</strong></p</td>
+                    <td class=""><p><strong>Paper Name</strong></p></td>
                   </tr>
                  
                 </div>
                    <tr>
-                   <td class=""><p>1DBSW1</p</td>
-                  <td class=""><p>Maharishi Vedic Science - I</p</td>
+                   <td class=""><p><strong>1DBSW1</strong></p</td>
+                  <td class=""><p><strong>Maharishi Vedic Science - I</strong></p</td>
                   </tr>
                   <tr>
-                  <td class=""><p>1DBSW2</p</td>
-                  <td class=""><p>Vyavsaik Samajkarya ka Udbhav	</p</td>
+                  <td class=""><p><strong>1DBSW2</strong></p</td>
+                  <td class=""><p><strong>Vyavsaik Samajkarya ka Udbhav</strong>	</p</td>
                   </tr>
                   <tr>
-                  <td class=""><p>1DBSW3</p</td>
-                  <td class=""><p>Vyavsaik Samajkarya Darshan	</p</td>
+                  <td class=""><p><strong>1DBSW3</strong></p</td>
+                  <td class=""><p><strong>Vyavsaik Samajkarya Darshan	</strong></p</td>
                   </tr>
                   <tr>
-                  <td class=""><p>1DBSW4</p</td>
-                  <td class=""><p>Manav Samaj	</p</td>
+                  <td class=""><p><strong>1DBSW4</strong></p</td>
+                  <td class=""><p><strong>Manav Samaj	</strong></p</td>
                   </tr>
                   <tr>
-                  <td class=""><p>1DBSW5</p</td>
-                  <td class=""><p>Bhartiya Samajik Vyavstha	</p</td>
+                  <td class=""><p><strong>1DBSW5</strong></p</td>
+                  <td class=""><p><strong>Bhartiya Samajik Vyavstha	</strong></p</td>
                   </tr>
                   <tr>
-                  <td class=""><p>1DBSW6</p</td>
-                  <td class=""><p>Mulbhut Manovegyanik Prakram	</p</td>
+                  <td class=""><p><strong>1DBSW6</strong></p</td>
+                  <td class=""><p><strong>Mulbhut Manovegyanik Prakram</strong>	</p</td>
                   </tr>
                 </tbody>
               </table>
@@ -117,69 +123,68 @@ h6{
           <div class="col-3 mr-0">
             <div class="row">
                <div class="col-12 text-center" >
-                   <p  class="marks_head"><u>Examination Scheme</u></p>
+                   <p  class="marks_head"><u><strong>Examination Scheme</strong></u></p>
                </div>
             </div>
             <div class="row">
                <div class="col-6 text-center" >
-                   <p class="marks_head"><u>Th/Pr/Pj</u></p>
+                   <p class="marks_head"><u><strong>Th/Pr/Pj</strong></u></p>
                </div>
                <div class="col-6 text-center" >
-                   <p class="marks_head"><u>Assignment</u></p>
+                   <p class="marks_head"><u><strong>Assignment</strong></u></p>
                </div>
             </div>
             <div class="row">
                <div class="col-3 text-center" >
-                   <p class="marks_head"><u>Max</u></p>
+                   <p class="marks_head"><u><strong>Max</strong></u></p>
                </div>
                <div class="col-3 text-center" >
-                   <p class="marks_head"><u>Min</u></p>
+                   <p class="marks_head"><u><strong>Min</strong></u></p>
                </div>
                <div class="col-3 text-center" >
-                   <p class="marks_head"><u>Max</u></p>
+                   <p class="marks_head"><u><strong>Max</strong></u></p>
                </div>
                <div class="col-3 text-center" >
-                   <p class="marks_head"><u>Min</u></p>
+                   <p class="marks_head"><u><strong>Min</strong></u></p>
                </div>
             </div>
               <table class='table borderless mt-3 ml-3'>
                 <tbody >
                   <tr>
-                    <td class=" marks-width" style="width: 76px;"><span>70</span></td>
-                    <td class=" marks-width " ><p>25</p></td>
-                    <td class=" marks-width"><p>25</p></td>
-                    <td class=" marks-width"><p>25</p></td>
+                    <td class=" marks-width" style="width: 76px;"><span><strong>70</strong></span></td>
+                    <td class=" marks-width " ><p><strong>25</strong></p></td>
+                    <td class=" marks-width " ><p><strong>25</strong></p></td>
+                    <td class=" marks-width " ><p><strong>25</strong></p></td>
                   </tr>
                   <tr>
-                
-                  <td class="marks-width"><p>70</p</td>
-                  <td class="marks-width"><p>25</p</td>
-                  <td class=" marks-width " ><p>25</p></td>
-                    <td class=" marks-width"><p>25</p></td>
+                  <td class="marks-width"><strong>70</strong></td>
+                  <td class="marks-width"><strong>25</strong></td>
+                  <td class="marks-width"><strong>25</strong></td>
+                  <td class="marks-width"><strong>25</strong></td>
                   </tr>
                   <tr>
-                  <td class="marks-width"><p>70</p</td>
-                  <td class="marks-width"><p>25</p</td>
-                  <td class=" marks-width " ><p>25</p></td>
-                    <td class=" marks-width"><p>25</p></td>
+                  <td class="marks-width"><strong>70</strong></td>
+                  <td class="marks-width"><strong>25</strong></td>
+                  <td class="marks-width"><strong>25</strong></td>
+                  <td class="marks-width"><strong>25</strong></td>
                   </tr>
                   <tr>
-                  <td class="marks-width"><p>70</p</td>
-                  <td class="marks-width"><p>25</p</td>
-                  <td class=" marks-width " ><p>25</p></td>
-                    <td class=" marks-width"><p>25</p></td>
+                  <td class="marks-width"><strong>70</strong></td>
+                  <td class="marks-width"><strong>25</strong></td>
+                  <td class="marks-width"><strong>25</strong></td>
+                  <td class="marks-width"><strong>25</strong></td>
                   </tr>
                   <tr>
-                  <td class="marks-width"><p>70</p</td>
-                  <td class="marks-width"><p>25</p</td>
-                  <td class=" marks-width " ><p>25</p></td>
-                    <td class=" marks-width"><p>25</p></td>
+                  <td class="marks-width"><strong>70</strong></td>
+                  <td class="marks-width"><strong>25</strong></td>
+                  <td class="marks-width"><strong>25</strong></td>
+                  <td class="marks-width"><strong>25</strong></td>
                   </tr>
                   <tr>
-                  <td class="marks-width"><p>70</p</td>
-                  <td class="marks-width"><p>25</p</td>
-                  <td class=" marks-width " ><p>25</p></td>
-                    <td class=" marks-width"><p>25</p></td>
+                  <td class="marks-width"><strong>70</strong></td>
+                  <td class="marks-width"><strong>25</strong></td>
+                  <td class="marks-width"><strong>25</strong></td>
+                  <td class="marks-width"><strong>25</strong></td>
                   </tr>
                 
                 </tbody>
@@ -188,73 +193,73 @@ h6{
           <div class="col-3">
           <div class="row">
                <div class="col-12 text-center" >
-                   <p  class="marks_head"><u>Obtained Marks</u></p>
+                   <p  class="marks_head"><u><strong>Obtained Marks</strong></u></p>
                </div>
             </div>
             <div class="row mt-2">
                <div class="col-6 text-center" >
-                   <p class="marks_head"><u>Th/Pr/Pj</u></p>
+                   <p class="marks_head"><u><strong>Th/Pr/Pj</strong></u></p>
                </div>
                <div class="col-6 text-center" >
-                   <p class="marks_head"><u>Assignment</u></p>
+                   <p class="marks_head"><u><strong>Assignment</strong></u></p>
                </div>
             </div>
            
               <table class='table borderless ml-5' style="margin-top:20px">
-                <tbody >
+                <tbody>
                 
                   <tr>
                 
-                  <td class=""><p>45</p</td>
-                  <td class=""><p>45</p</td>
+                  <td class=""><strong>45</strong></td>
+                  <td class=""><strong>45</strong></td>
                   </tr>
                   <tr>
-                  <td class=""><p>45</p</td>
-                  <td class=""><p>45</p</td>
+                  <td class=""><strong>45</strong></td>
+                  <td class=""><strong>45</strong></td>
                   </tr>
                   <tr>
-                  <td class=""><p>45</p</td>
-                  <td class=""><p>45</p</td>
+                  <td class=""><strong>45</strong></td>
+                  <td class=""><strong>45</strong></td>
                   </tr>
                   <tr>
-                  <td class=""><p>45</p</td>
-                  <td class=""><p>45</p</td>
+                  <td class=""><strong>45</strong></td>
+                  <td class=""><strong>45</strong></td>
                   </tr>
                   <tr>
-                  <td class=""><p>45</p</td>
-                  <td class=""><p>45</p</td>
+                  <td class=""><strong>45</strong></td>
+                  <td class=""><strong>45</strong></td>
                   </tr>
                   <tr>
-                  <td class=""><p>45</p</td>
-                  <td class=""><p>45</p</td>
+                  <td class=""><strong>45</strong></td>
+                  <td class=""><strong>45</strong></td>
                   </tr>
                 </tbody>
               </table>
           </div>
            <div class="row">
                <div class="col-12 text-center mt-2" >
-                   <p  class="marks_head"><u>Total</u></p>
+                   <p  class="marks_head"><u><strong>Total</strong></u></p>
                </div>
                <table class='table borderless ml-5' style="margin-top:32px">
                 <tbody >
                 
                   <tr>
-                     <td class=""><p>45</p</td>
+                     <td class=""><strong>45</strong></td>
                   </tr>
                   <tr>
-                      <td class=""><p>45</p</td>
+                  <td class=""><strong>45</strong></td>
                   </tr>
                   <tr>
-                      <td class=""><p>45</p</td>
+                  <td class=""><strong>45</strong></td>
                   </tr>
                   <tr>
-                      <td class=""><p>45</p</td>
+                  <td class=""><strong>45</strong></td>
                   </tr>
                   <tr>
-                      <td class=""><p>45</p</td>
+                  <td class=""><strong>45</strong></td>
                   </tr>
                   <tr>
-                      <td class=""><p>45</p</td>
+                  <td class=""><strong>45</strong></td>
                   </tr>
                 </tbody>
               </table>
@@ -263,37 +268,37 @@ h6{
         </div>
      
                 <div class="col-12" style="margin-top:120px ">
-                     <p class='text-right'>Total &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 666	</p>
+                     <p class='text-right'><strong><u>Total</u> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <u>666</u></strong>	</p>
                 </div>
                 <div class="col-12" >
-                     <p class='text-right'>Result &nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Pass	</p>
+                     <p class='text-right'><strong>Result&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Pass</strong></p>
                 </div>
                 <div class="row">
                     <div class="col-3">
-                        <p class='text-left'>Obtained Marks</p>
+                        <p class='text-left'><strong>Obtained Marks</strong></p>
                     </div>
                     <div class="col-9">
-                        <p class='text-left'>494</p>
+                        <p class='text-left'><strong>494</strong></p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-3">
-                        <p class='text-left'>Maximum Marks</p>
+                        <p class='text-left'><strong>Maximum Marks</strong></p>
                     </div>
                     <div class="col-9">
-                        <p class='text-left'>700</p>
+                        <p class='text-left'><strong>700</strong></p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <p class='text-left'>Total Marks Obtained (in words)  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   Four Hundred Ninety Four</p>
+                        <p class='text-left'><strong>Total Marks Obtained (in words)  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   Four Hundred Ninety Four</strong></p>
                     </div>
                 </div>
 
 
                 <div class="row">
                     <div class="col-12">
-                        <p class='text-left mt-5'>Date : 16/09/2021</p>
+                        <p class='text-left mt-5'><strong>Date</strong> : 16/09/2021</p>
                     </div>
                 </div>
         
