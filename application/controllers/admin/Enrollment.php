@@ -100,12 +100,15 @@
 				$session 		  = $this->input->post("session");
 				$mode 		  	  = $this->input->post("mode");
 				$center_id	  	  = $this->input->post("center_id");
+		      	$university_mode	  	  = $this->input->post("university_mode");
 				
 				if($mode != "all"){	 
 						
 					$dt['mode'] = $mode;
 				}
-	
+				if($university_mode!="all"){
+					$dt['student.university_mode'] = $university_mode ;
+				}
 				if($session != "All" && $session != ""  ) {	 
 					
 					$dt['session'] = $session;
