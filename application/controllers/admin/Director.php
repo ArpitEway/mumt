@@ -20,7 +20,7 @@ class Director extends CI_Controller {
 
 		if($this->session->has_userdata('adminData')){
 
-       redirect(base_url('admin/director/bulk_permission'));
+       // redirect(base_url('admin/director/bulk_permission'));
        
 			$admin_id = $this->session->admin_id;
 
