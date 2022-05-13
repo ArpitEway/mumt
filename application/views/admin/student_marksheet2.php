@@ -1,3 +1,4 @@
+
 <style>
     .table1{
        margin:auto ;
@@ -170,6 +171,53 @@ foreach($students as $student)
 
 <table class="text-center table2">
 <?php
+
+$this->db->select('*');
+$this->db->from('new_exam_form');
+$this->db->join('paper_master', 'new_exam_form.paper_id = paper_master.id');
+$this->db->where('new_exam_form.student_id',$student->student_id); 
+$paper_marks = $this->db->get()->result();
+$check_grace_marks = false;
+$fail_count = 0;
+$fali_tot_marks = 0;
+$require_tot_marks = 0;
+$tot_marks = 0;
+foreach($paper_marks as $marks){
+    if($marks->type=='theory'){
+            $tot_marks += $marks->max_theory_marks;
+        if($marks->theory_marks>=$marks->min_theory_marks){
+            $result = "उत्तीर्ण";
+        }else{
+            $result = "अनुत्तीर्ण";
+            $fail_count++;
+            $fali_tot_marks += $marks->theory_marks;
+            $require_tot_marks += $marks->min_theory_marks;
+        }
+    }else if($marks->type=='practical'){
+        $tot_std_marks += $marks->p_marks;
+        $tot_marks += $marks->max_theory_marks;
+        if($marks->p_marks>=$marks->min_theory_marks){
+            $result = "उत्तीर्ण";
+        }else{
+            $result = "अनुत्तीर्ण";
+            $fail_count++;
+            $fali_tot_marks += $marks->p_marks;
+            $require_tot_marks += $marks->min_theory_marks;
+        }
+    }
+}
+// echo 'tot_marks'.$tot_marks;
+// echo 'tot_std_marks ='.$tot_std_marks;
+
+
+$aggregate_per =   ($tot_std_marks/$tot_marks) * 100;     
+$require_grace_marks = $require_tot_marks-$fali_tot_marks;
+
+if ($fail_count<3 && $require_grace_marks<4  && $aggregate_per) {
+    $check_grace_marks = true;
+}
+
+
 foreach($papers as $paper)
 {
   ?>
@@ -219,7 +267,7 @@ foreach($papers as $paper)
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <p class='text-left'><strong>Total Marks Obtained (in words)  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   Four Hundred Ninety Four</strong></p>
+                        <p class='text-left'><strong>Total Marks Obtained (in words)  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <?php  numberTowords("$total") ;   ?></strong></p>
                     </div>
                 </div>
 
