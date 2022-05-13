@@ -125,6 +125,8 @@ font-family: "Times New Roman";
 foreach($students as $student)
 {
 
+
+  $class_details = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id'=>'27'));
   $this->db->select("*");
   $this->db->from('paper_master');
   $this->db->join("new_exam_form",'paper_master.id = new_exam_form.paper_id');
@@ -501,7 +503,8 @@ foreach($papers as $paper)
 	<tr>
 			  
 			  <td>
-			  <div style="float:left; margin-top:5px;" class='barcode'> 
+			  <div style="float:left; margin-top:5px; 
+    margin-left: -8px;" class='barcode'> 
         <svg id="barcode"></svg>
          </div>
 			  
@@ -515,12 +518,15 @@ foreach($papers as $paper)
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.min.js"></script>
 
 <script>
-  JsBarcode("#barcode", "<?php  echo $student->f_h_name;  ?>", {
-  format: "CODE39",
-  lineColor: "#0aa",
-  width: 1,
-  height: 40,
-  displayValue: false
+  JsBarcode("#barcode", "<?php  echo $student->roll_no.$class_details[0]->bar_code_no ;  ?>", {
+        format: 'code128',
+        lineColor: "#2429e",
+        width: 2,
+        height: 30,
+        displayValue: false,
+        fontSize:20,
+      
+        marginBottom  : 0,
 });
 
 </script>
