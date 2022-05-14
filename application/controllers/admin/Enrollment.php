@@ -845,7 +845,7 @@
 			if($center_id!='')
 			{
 
-           	// $this->db->where('center_id',$center_id);
+           	$this->db->where('center_id',$center_id);
 				$data['listing'] = $this->Common_model->getRecordByWhere('student',$where);
 				$this->load->view('header',array('title' => 'Center Wise Student List'));
 				$this->load->view('admin/enrollment/students_count_details',$data); 
