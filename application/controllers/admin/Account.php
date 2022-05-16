@@ -199,7 +199,8 @@
 	public function updatePaymentTransaction()
 	{
 		$id = $this->input->post('id');
-		$txnid = $this->input->post('TxnId');
+		$txnid = $this->input->post('txnid');
+	
 		$dateTime = $this->input->post('dateTime');
 		$student_id = $this->input->post('student_id');
 		$dateTime = explode(' ',$dateTime);
@@ -411,4 +412,54 @@
 			));
 		}
 	}
+
+	public function add_new_txn(){		
+		$txnid = $this->input->post('txnId');
+		$Fess_head = $this->input->post('fees_head');
+		$dateTime = $this->input->post('dateTime');
+		$student_id = $this->input->post('student_id');
+		$where = array('student_id'=>$student_id);
+		$student_details =  $this->Common_model->getRecordByWhere('student',$where);
+		$course_details =  $this->Common_model->getRecordByWhere('course',array('course_group_id'=>$student_details[0]->course_group_id,'session'=>$student_details[0]->session));
+		$center_id = $student_details[0]->center_id;
+		$course_group_id = $student_details[0]->course_group_id;
+		$remark = '';
+		$session = $student_details[0]->session;
+		$class_id = $student_details[0]->class_id;
+		$name = $student_details[0]->name;
+
+		if($Fess_head!=''){
+			$exam_fees = ($Fess_head== 'Exam Fees') ? $course_details[0]->exam_fees+$course_details[0]->program_fees : $course_details[0]->form_fees+$course_details[0]->admission_fees;
+		}
+
+		$dateTime = explode(' ',$dateTime);
+		$updateData = array('txnId' => $txnid,'fees_head'=>$Fess_head,'payment_date' => $dateTime[0],'payment_time' => $dateTime[1],'payment' => 'Y', 'payment_status' => 'success','student_id'=>$student_id
+			,'center_id'=>$center_id,'course_group_id'=>$course_group_id,'class_id'=>$class_id,'remark'=>$remark,'student_name'=>$name,'exam_session'=>$session,
+			'admission_type'=>'Regular','amount'=>
+			$exam_fees
+		);
+        if($student_details[0]->new_exam_form!='D'){
+			$transaction = $this->Common_model->insertAll('online_payment_transaction',$updateData);
+		}
+		$where1 = array('student_id' => $student_id);
+		if($Fess_head=='Admission Fees'){	
+		
+			$result = $this->Common_model->updateRecordByConditions('student',$where1,array('payment_status'=> 'Y'));
+		}elseif($Fess_head=='Exam Fees' && $student_details[0]->new_exam_form!='D'){
+			
+			$result = $this->Common_model->updateRecordByConditions('student',$where1,array('new_exam_form'=> 'Y'));
+		}
+		if($result){
+		
+			$paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student_id));
+			$data = array('paymentDetails' => $paymentDetails);
+			$htmlData = $this->load->view('admin/account_section/view_transaction_details',$data,true); 
+			$return = array('success' => 'Transaction Details Updated','data' =>$htmlData);
+		}else{
+			$return = array('error' => 'An error occurred');
+		}
+		echo json_encode($return);
+		
+	}
+
 }
