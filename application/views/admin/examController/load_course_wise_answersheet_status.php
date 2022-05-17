@@ -42,7 +42,7 @@
    
         $center_ids = $center_id[0]->center_id;
 
-            if($center_ids !=""){
+        if($center_ids !=""){
         // count for allot
         $this->db->select(' count(*) as cnt');
         $this->db->from('new_exam_form');
