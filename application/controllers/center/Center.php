@@ -232,6 +232,7 @@ class Center extends CI_Controller {
 	public function all_student()
 	{
 		$where = array('center_id' => $this->session->center_id);
+	
 		$csrf = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
@@ -816,6 +817,7 @@ class Center extends CI_Controller {
 			'center_id' => $center_id,
 		);
 		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
+		
 		$this->load->view('Centers/not_approve_student_list',$data);
 		$this->load->view('Centers/footer');
 	}

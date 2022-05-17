@@ -14,6 +14,7 @@ class Admins extends CI_Controller {
 	}
 
 	public function index(){
+		
 		if($this->session->has_userdata('adminData')){
 			$admin_id = $this->session->admin_id;
 			$where = 'admin_id='.$admin_id.' and status="Y"';
@@ -239,7 +240,7 @@ class Admins extends CI_Controller {
 			redirect(base_url($this->session->account_type));
 			exit;
 		}
-
+ 
 		$this->form_validation->set_rules('password', 'Password', 'required');
 		$this->form_validation->set_rules('username', 'username', 'required');
 
@@ -262,6 +263,7 @@ class Admins extends CI_Controller {
 					'account_type' => $check_user->account_type,
 					'admin_id' => $check_user->id
 				);
+			
 				$this->session->set_userdata($data);
 				redirect(base_url($check_user->account_type));
 			}else{

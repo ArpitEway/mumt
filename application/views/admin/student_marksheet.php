@@ -498,16 +498,14 @@ foreach($papers as $paper)
     <tr>
         <td width="17" align="center">
               <div align="left">
-              <?php echo "Date :result_date "; ?></div></td>
+              <?php echo "Date :".$class_details[0]->result_date; ?></div></td>
     </tr>
 	<tr>
-			  
 			  <td>
 			  <div style="float:left; margin-top:5px; 
     margin-left: -8px;" class='barcode'> 
         <svg id="barcode"></svg>
          </div>
-			  
 			  </td>
     </tr>
 </table>
@@ -525,7 +523,6 @@ foreach($papers as $paper)
         height: 30,
         displayValue: false,
         fontSize:20,
-      
         marginBottom  : 0,
 });
 
