@@ -228,7 +228,7 @@
 	$('#submit').on('click',function (e) {
 		e.preventDefault();
 		
-		return false ;
+		
 		let formData = $('#updateTxnForm').serialize();
 		$.ajax({
 			url: BASE_URL+ 'admin/'+account_type+'/updatePaymentTransaction',
