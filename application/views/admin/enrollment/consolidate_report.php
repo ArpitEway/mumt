@@ -104,8 +104,19 @@
 	</select>
 </div>
 
-<div class="form-group col-md-3">
-	<label for="class">Mode</label>
+	
+<div class="form-group col-md-2">
+			<label for="class">University Mode</label>
+			<select name="university_mode" id="university_mode" class="form-control" >
+				<option value="all">All </option> 
+				<option value="REG">Regular </option> 
+				<option value="PVT" >Private </option>
+			</select>
+		</div>
+		
+
+<div class="form-group col-md-2">
+	<label for="class">Course Mode</label>
     <select name="mode" id="mode" class="form-control" > 
 		<option value="all">All</option>
 		<option value="annual">Annual </option> 
@@ -124,7 +135,7 @@
 
 
 
-<div class="col-md-3 radio-inline" style="top: 7px;">
+<div class="col-md-2 radio-inline" style="top: 7px;">
 <label class="radio radio-success">
 <input type="radio" name="filter" value="list"  />
 <span></span>
@@ -141,14 +152,12 @@ List
 <div class="form-group col-md-3">
 			<label for="class">Student Count</label>
 			<select name="count_filter" id="count_filter" class="form-control" >
-
 				<option value="course_group_id">Course Wise </option> 
 				<option value="center_id" >Center Wise </option>
 				<option value="class_id" >Class Wise </option>
 			</select>
 		</div>
-		
-
+	
 
 
 
@@ -195,6 +204,7 @@ $(document).on("click","#submit_btn",function(){
 			[csrfName]:csrfHash,
 			count_filter:$("#count_filter").val(),
 			new_exam_form:$("#new_exam_form").val(),
+			university_mode:$("#university_mode").val(),
 		
 		
 			};
