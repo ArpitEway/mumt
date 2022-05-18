@@ -563,12 +563,12 @@ class ExamController extends CI_Controller {
 	}
 
 		
-	public function  teacher_alloted_exam_center($teacher_id ="",$class_id = "" , $course_group_id=""){
+	public function  teacher_alloted_exam_center($teacher_id ="",$class_id = "" , $course_group_id="" ,$paper_code=""){
 		$teacher_id = $this->Common_model->encrypt_decrypt($teacher_id,'decrypt');
 		$class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
 		$course_group_id = $this->Common_model->encrypt_decrypt($course_group_id,'decrypt');
-		$assign_answersheet_data= $this->Common_model->getRecordByWhere('assign_answersheet',array('teacher_id'=>$teacher_id , 'class_id'=>$class_id , 'course_group_id'=>$course_group_id));
-
+		$paper_code = $this->Common_model->encrypt_decrypt($paper_code,'decrypt');
+		$assign_answersheet_data= $this->Common_model->getRecordByWhere('assign_answersheet',array('teacher_id'=>$teacher_id , 'class_id'=>$class_id ,'paper_code'=>$paper_code , 'course_group_id'=>$course_group_id ));
 		$center_ids = $assign_answersheet_data[0]->center_id;
 		$data['course_name']= $this->Common_model->getCourseNameByCourseId($course_group_id);
 		$data['class']= $this->Common_model->getClassNameByClassId($class_id);
@@ -612,7 +612,7 @@ class ExamController extends CI_Controller {
 		$new_alloted_center_id=array_diff($alloted_center_id,$remove_center_id_array);
 		
 	
-		if($new_alloted_center_id==array()){
+		if(count($new_alloted_center_id)===0){
           $new_alloted_center_id = 0 ;
 		  
 		}else{
