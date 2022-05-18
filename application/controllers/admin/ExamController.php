@@ -601,11 +601,23 @@ class ExamController extends CI_Controller {
 
 	public function remove_centers_from_assign_answersheet(){
 			// code for remove centers from assign_answersheet 
+
+			
 		$assign_answersheet_data= $this->Common_model->getRecordByWhere('assign_answersheet',array('id'=>$_POST['assign_answersheet_id']));
+		    
 		$alloted_center_id = explode(',',$assign_answersheet_data[0]->center_id);
+	
 		$remove_center_id_array = $_POST['center_id'];
+	
 		$new_alloted_center_id=array_diff($alloted_center_id,$remove_center_id_array);
-		$new_alloted_center_id = implode(',',$new_alloted_center_id);
+		
+	
+		if($new_alloted_center_id==array()){
+          $new_alloted_center_id = 0 ;
+		  
+		}else{
+			$new_alloted_center_id = implode(',',$new_alloted_center_id);
+		}
 		$removed_center_id = implode(',',$remove_center_id_array);
 
 		$data=array(
@@ -631,7 +643,13 @@ class ExamController extends CI_Controller {
 	}
 
 	public function load_course_wise_answersheet_status(){
-		$data['papers']= $this->Common_model->getRecordByWhere('paper_master',array('course_group_id'=>$_POST['course_group_id']));
+
+		if($_POST['course_group_id']=='all'){
+			$where  = array('type'=>'theory');
+		}else{
+			$where = array('course_group_id'=>$_POST['course_group_id'],'type'=>'theory');
+		}
+		$data['papers']= $this->Common_model->getRecordByWhere('paper_master',$where);
 		$dt = $this->load->view('admin/examController/load_course_wise_answersheet_status',$data,true);
 		echo json_encode(array(
 			"status" => true,
