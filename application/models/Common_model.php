@@ -227,7 +227,7 @@ class Common_Model extends CI_Model{
 				$this->db->select('count(*) as cnt,'.$group_by);
 				$this->db->group_by($group_by);
 		}else{
-				$this->db->select('*');
+				$this->db->select('* , student.university_mode ');
 		}
 		$this->db->from("student");
 		$this->db->where($where);
