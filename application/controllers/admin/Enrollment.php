@@ -252,6 +252,7 @@
 				
 				$dt['payment_status'] = "Y";
 				$dt['document_uploaded'] = "Y";
+				$dt['mode'] = "regular";
 				
 				$data['students'] = $this->Common_model->student_data($dt);
 				
