@@ -20,6 +20,8 @@ class Director extends CI_Controller {
 
 		if($this->session->has_userdata('adminData')){
 
+       // redirect(base_url('admin/director/bulk_permission'));
+       
 			$admin_id = $this->session->admin_id;
 
 			$where = 'admin_id='.$admin_id.' and status="Y"';
@@ -53,6 +55,7 @@ class Director extends CI_Controller {
 
 			$this->load->view('header');
 			$this->load->view('admin/director/dashboard',$menu);
+
 			$this->load->view('footer');
 		}
 		else
@@ -101,6 +104,7 @@ class Director extends CI_Controller {
 			$filter  		  = 	$this->input->post("filter");
 			$session 		  = 	$this->input->post("session");
 			$mode 		  	  = 	$this->input->post("mode");
+			$admission_mode  = 	$this->input->post("admission_mode");
 			$center 	  	  = 	$this->input->post("center");
        
 			if($center != "all"){	 
@@ -111,6 +115,12 @@ class Director extends CI_Controller {
 
 				$dt['mode'] = $mode;
 			}
+
+         if($admission_mode != "all"){	 
+
+				$dt['student.university_mode'] = $admission_mode;
+			}
+
 			if($session != "all"){	 
 
 				$dt['session'] = $session;

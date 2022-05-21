@@ -670,6 +670,23 @@ class Admin_model extends CI_Model {
         			);
         return json_encode($response);
 	}
+
+	public function update_paper($param1 = '')
+    {
+		
+		$data['paper_name']     = html_escape($this->input->post('paper_name'));
+		$data['exam_day']       = html_escape($this->input->post('exam_day'));
+		$data['exam_date']      = html_escape($this->input->post('exam_date'));
+		$data['exam_shift']     = html_escape($this->input->post('exam_time'));
+		
+		$this->db->where('id', $param1);
+		$this->db->update('paper_master', $data);
+		
+        $response = array(
+        			'status' => true
+        			);
+        return json_encode($response);
+	}
 	public function paper_delete($param1 = '')
 	{
 		$this->db->where('id', $param1);

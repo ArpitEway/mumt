@@ -61,7 +61,7 @@ class WebSite extends REST_Controller {
         $i=0;
         while ( $i < count($departments) ) { 
             $where = array('department_id' => $departments[$i]['id']);
-            $this->db->order_by('p_order');
+            $this->db->order_by('course_type_order,p_order');
             $departments[$i]['programs'] = $this->Common_model->get_record('program','*',$where);
             $i++;
         }
@@ -71,7 +71,7 @@ class WebSite extends REST_Controller {
     public function getCourseTypeWiseCourse_get()
     {
         $where = array('course_type !=' => '');
-        $this->db->order_by('course_type,p_order');
+        $this->db->order_by('course_type_order,p_order');
         $course_type = $this->Common_model->get_record('program','DISTINCT(course_type) as course_type',$where);
         $i = 0;
         $response = array();
@@ -80,6 +80,15 @@ class WebSite extends REST_Controller {
             $response[$i]['program'] = $this->Common_model->get_record('program','*',array('course_type' => $course['course_type']));
             $i++;
         }
+        return $this->response($response, REST_Controller::HTTP_OK);
+    }
+
+    public function programDetailsById_post()
+    {
+        $program_id = html_escape($this->input->post("program_id"));
+        $where = array('id' => $program_id);
+        $response['program'] =  $this->Common_model->get_record('program','*',$where);
+        $response['department_name'] = $this->Common_model->getSinglefield('department','department_name','id='.$response['program'][0]['department_id']);
         return $this->response($response, REST_Controller::HTTP_OK);
     }
 

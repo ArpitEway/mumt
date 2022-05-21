@@ -563,12 +563,12 @@ class ExamController extends CI_Controller {
 	}
 
 		
-	public function  teacher_alloted_exam_center($teacher_id ="",$class_id = "" , $course_group_id=""){
+	public function  teacher_alloted_exam_center($teacher_id ="",$class_id = "" , $course_group_id="" ,$paper_code=""){
 		$teacher_id = $this->Common_model->encrypt_decrypt($teacher_id,'decrypt');
 		$class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
 		$course_group_id = $this->Common_model->encrypt_decrypt($course_group_id,'decrypt');
-		$assign_answersheet_data= $this->Common_model->getRecordByWhere('assign_answersheet',array('teacher_id'=>$teacher_id , 'class_id'=>$class_id , 'course_group_id'=>$course_group_id));
-
+		$paper_code = $this->Common_model->encrypt_decrypt($paper_code,'decrypt');
+		$assign_answersheet_data= $this->Common_model->getRecordByWhere('assign_answersheet',array('teacher_id'=>$teacher_id , 'class_id'=>$class_id ,'paper_code'=>$paper_code , 'course_group_id'=>$course_group_id ));
 		$center_ids = $assign_answersheet_data[0]->center_id;
 		$data['course_name']= $this->Common_model->getCourseNameByCourseId($course_group_id);
 		$data['class']= $this->Common_model->getClassNameByClassId($class_id);
@@ -601,11 +601,23 @@ class ExamController extends CI_Controller {
 
 	public function remove_centers_from_assign_answersheet(){
 			// code for remove centers from assign_answersheet 
+
+			
 		$assign_answersheet_data= $this->Common_model->getRecordByWhere('assign_answersheet',array('id'=>$_POST['assign_answersheet_id']));
+		    
 		$alloted_center_id = explode(',',$assign_answersheet_data[0]->center_id);
+	
 		$remove_center_id_array = $_POST['center_id'];
+	
 		$new_alloted_center_id=array_diff($alloted_center_id,$remove_center_id_array);
-		$new_alloted_center_id = implode(',',$new_alloted_center_id);
+		
+	
+		if(count($new_alloted_center_id)===0){
+          $new_alloted_center_id = 0 ;
+		  
+		}else{
+			$new_alloted_center_id = implode(',',$new_alloted_center_id);
+		}
 		$removed_center_id = implode(',',$remove_center_id_array);
 
 		$data=array(
@@ -631,7 +643,13 @@ class ExamController extends CI_Controller {
 	}
 
 	public function load_course_wise_answersheet_status(){
-		$data['papers']= $this->Common_model->getRecordByWhere('paper_master',array('course_group_id'=>$_POST['course_group_id']));
+
+		if($_POST['course_group_id']=='all'){
+			$where  = array('type'=>'theory');
+		}else{
+			$where = array('course_group_id'=>$_POST['course_group_id'],'type'=>'theory');
+		}
+		$data['papers']= $this->Common_model->getRecordByWhere('paper_master',$where);
 		$dt = $this->load->view('admin/examController/load_course_wise_answersheet_status',$data,true);
 		echo json_encode(array(
 			"status" => true,
@@ -702,5 +720,84 @@ class ExamController extends CI_Controller {
 			"status" => true,
 			"data" => $dt
 		));
+	}
+
+	public function answersheet_remark_status(){
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();
+		$where = array('total_marks'=>0, 'teacher_id!='=>'');
+		$data['courses'] = $this->Common_model->get_record('upload_exam_ans_sheet','DISTINCT (course_group_id),class_id',$where);
+		$this->load->view('header','Answersheet remark status ');
+		$this->load->view('admin/examController/answersheet_remark_status',$data);
+		$this->load->view('footer');
+	}
+
+	public function get_class_list_by_course()
+	{
+		if ($this->input->method() == "post") {
+			$id    = 0;
+			$count = 0;
+			$id    = $this->input->post("id");
+			if ($this->input->post("id")) {
+				$data = $this->Common_model->getAllRow("class_master", "id, class_name", array(
+					"course_group_id" => $id,
+				),'id ASC');
+				$count++;
+			}
+			if ($count > 0) {
+				$status = true;
+				$msg    = "";
+			}
+		}
+		echo json_encode(array(
+			"status" => $status,
+			"msg" => $msg,
+			"data" => $data
+		));
+	}
+
+	public function get_student_for_remark(){
+		$this->db->select('*');
+		$this->db->from('upload_exam_ans_sheet');
+		$this->db->join('student', 'upload_exam_ans_sheet.student_id = student.student_id');
+		if($_POST['course_group_id']!='all'){
+			$this->db->where('upload_exam_ans_sheet.course_group_id', $_POST['course_group_id']);
+			$this->db->where('upload_exam_ans_sheet.class_id', $_POST['class_id']);
+		}
+		$this->db->order_by('upload_exam_ans_sheet.course_group_id,upload_exam_ans_sheet.class_id');
+		$this->db->where('upload_exam_ans_sheet.remark_status','');
+		$this->db->where('upload_exam_ans_sheet.total_marks',0);
+		$this->db->where('upload_exam_ans_sheet.teacher_id!=','');
+		$data['students'] = $this->db->get()->result();
+		$dt = $this->load->view('admin/examController/get_student_for_remark',$data,true);
+		echo json_encode(array(
+			"status" => true,
+			"data" => $dt
+		));
+	}
+
+	public function update_remark_status()
+	{
+		$where = array(
+			'paper_code'=>$_POST['paper_code'],
+			'student_id'=>$_POST['student_id'],
+			'class_id'=>$_POST['class_id']
+		);
+		$data = array('remark_status' =>$_POST['remark_status']);
+		$update =  $this->Common_model->updateRecordByConditions('upload_exam_ans_sheet',$where,$data);
+		if($update){
+			echo json_encode(array('status'=>true));
+		}
+	}
+
+	public function view_answersheet_pdf($id){
+		$id=$this->Common_model->encrypt_decrypt($id,'decrypt');
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
+		$where= array('id'=>$id);
+		$data['answer'] = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',$where);
+		$this->load->view('teacher/answersheet_pdf',$data); 
 	}
 }// class

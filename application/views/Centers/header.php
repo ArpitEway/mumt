@@ -16,7 +16,7 @@
 	<link href="<?=base_url()?>assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
 	<link href="<?=base_url()?>assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css" />
 	<link href="<?=base_url()?>assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
-	<link href="<?=base_url()?>assets/css/theme.css" rel="stylesheet" type="text/css" />
+	<link href="<?=base_url()?>assets/css/theme.css?<?=date('YmdHis')?>" rel="stylesheet" type="text/css" />
 			<link href="<?=base_url()?>assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
 	<!--end::Global Theme Styles-->
 	<!--begin::Layout Themes(used by all pages)-->
@@ -48,7 +48,7 @@
 					<!--begin::Container-->
 					<div class="container-fluid">
 						<!--begin::Left-->
-						<div class="d-none d-lg-flex align-items-center mr-3">
+						<div class="d-flex align-items-center mr-3">
 							<div class="float-right">
 								<span class="text-custom font-weight-bolder">
 									Jai Guru Dev
@@ -56,25 +56,21 @@
 							</div>
 						</div>
 						<!--end::Left-->
-						<div class="float-right mt-1" style="
-						z-index: 9999999;
-						display: flex;
-						align-items: center;
-						">
+						<div class="float-right mt-1 header-buttons">
 						<?php if($this->session->has_userdata('centerdata')){ ?>
-							<a href="<?=base_url('dashboard')?>" class="btn btn-custom-white mr-3">Dashboard</a>
-							<a href="<?=base_url('logout')?>" class="btn btn-custom-white">Log Out</a>
-<!--						<div class="dropdown">
+							<a href="<?=base_url('dashboard')?>" class="btn btn-custom-white mr-3">Dashboard</a>		
+			
+					  <div class="dropdown">
  							<a class="btn btn-custom-white dropdown-toggle mr-3" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								Action
-							</a> -->
+							</a>
 
-<!-- 							<div class="dropdown-menu l-50" aria-labelledby="dropdownMenuLink">
-								<a class="dropdown-item" href="<?=base_url('center/profile')?>">Profile</a>
-								<a href="<?=base_url('center/logout')?>" class="dropdown-item">Log Out</a>
-								<a class="dropdown-item" href="<?=base_url('center/change_password')?>">Change Password</a>
+							<div class="dropdown-menu l-50" aria-labelledby="dropdownMenuLink">
+								<!-- <a class="dropdown-item" href="<?=base_url('center/profile')?>">Profile</a> -->
+									<a href="<?=base_url('logout')?>" class="btn btn-custom-white mr-3">Log Out</a>
+								<a class="btn btn-custom-white" href="<?=base_url('change_password')?>">Change Password</a>
 							</div>
-						</div> -->
+						</div>
 						
 					<?php }else{ ?>
 						<a href="<?=base_url('center/login')?>" class="btn btn-custom-white mr-3">Sign In</a>

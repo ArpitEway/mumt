@@ -470,7 +470,7 @@ public function classes($param1 = '', $param2 = '', $param3 = '')
 			}
 			if($param1 == 'update'){
 
-				$response = $this->admin_model->paper_update($param2);
+				$response = $this->admin_model->update_paper($param2);
 				$this->session->set_flashdata('ajax_flash_message','Paper Successfully Updated');
 				redirect(base_url().'paper');
 
@@ -1437,12 +1437,15 @@ public function update_doc_permission_status()
 			$session 		  = $this->input->post("session");
 			$mode 		  	  = $this->input->post("mode");
 			$center_id	  	  = $this->input->post("center_id");
+			$university_mode	  	  = $this->input->post("university_mode");
 			
 			if($mode != "all"){	 
 					
 				$dt['mode'] = $mode;
 			}
-
+            if($university_mode!="all"){
+				$dt['student.university_mode'] = $university_mode ;
+			}
 			if($session != "All") {	 
 				
 				$dt['session'] = $session;
@@ -2272,7 +2275,6 @@ public function update_exam_datewise_permission(){
 				'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash(),
 			);
-
 			$this->load->view('admin/check_student_exam_records',$data);
 			$this->load->view('footer');
 		}
@@ -2285,12 +2287,9 @@ public function update_exam_datewise_permission(){
 			redirect(base_url('admin'));
 			exit;
 		}else{
-
 			$text_val =$this->input->post('text_val');
 			$radio_val = $this->input->post('radio_val');
-
 			if($text_val !=''){
-
 				if($text_val !='' && $radio_val == 'roll_no'){
 					$student = $this->Common_model->getRecordById('student','roll_no',$text_val);
 				}
@@ -2301,7 +2300,6 @@ public function update_exam_datewise_permission(){
 				}  
 
 				$papers = $this->Common_model->getRecordByWhere('new_exam_form',array('student_id' =>$student->student_id));
-
 				$data = array(
 					'paper' => $papers,
 					'student' => $student,
@@ -2324,13 +2322,11 @@ public function update_exam_datewise_permission(){
 			redirect(base_url('admin'));
 			exit;
 		}else{
-			
 			$this->load->view('header',array('title' => 'Paper for open book'));
 			$this->db->select('*');
 			$this->db->from('class_master');
 			$this->db->join('paper_master', 'class_master.id = paper_master.class_id');
 			$this->db->where('class_master.exam_form_permission', 'Y');
-			
 			$data['classes'] = $this->db->get()->result();
 			$this->load->view('admin/paper_for_open_book',$data);
 			$this->load->view('footer');
@@ -2341,19 +2337,12 @@ public function update_exam_datewise_permission(){
 
   public function Delete_answersheet($id)
   {
-  
   	$view = $this->Common_model->get_record('upload_exam_ans_sheet','*',array('id'=>$id));
-
-  	if(file_exists(FCPATH.'/assets/exam_answersheet/'.$view[0]['upload_date'].'/'.$view[0]['answer_sheet'].'.pdf'))
-  	{
-
-
+  	if(file_exists(FCPATH.'/assets/exam_answersheet/'.$view[0]['upload_date'].'/'.$view[0]['answer_sheet'].'.pdf')){
   		$studentdata=unlink( FCPATH . '/assets/exam_answersheet/'.$view[0]['upload_date'].'/'.$view[0]['answer_sheet'].'.pdf' );
-
   	}
 
   	if($studentdata){
-
   		$where = array(
   			'id' => $id
   		);
@@ -2380,7 +2369,6 @@ public function update_exam_datewise_permission(){
 			$data['total_paper_count'] = $count[0]->num;
 			$data['uploaded'] = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array('exam_status'=> 'R','answer_sheet	!=' => ''));
 			$data['checked'] = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array('teacher_id!='=> ''));
-
 			$this->load->view('admin/answersheet_uplaod_status',$data);
 			$this->load->view('footer');
 		}
@@ -2465,17 +2453,14 @@ public function update_exam_datewise_permission(){
 			if($center != "all"){
 				$dt['center_id'] = $center;
 			}
-
 			if($mode != "all"){	 
 				$dt['mode'] = $mode;
 			}
-
 			if($session != "all"){	 
 				$dt['session'] = $session;
 			}else{
 				$dt['name!='] = '';
 			}
-
 			if($filter == "course"){
 				$data['course_count'] = $this->Common_model->student_data_consolidate($dt,'course_group_id');
 			}
@@ -2572,7 +2557,6 @@ public function update_exam_datewise_permission(){
 			if ($this->input->post("id")) 
 			{
 				$data = $this->Common_model->updateRecordByConditions("center_complaint",array("id" => $id ),array("remark" => $remark,"status" => $status));
-
 				$dt = $this->db->get_where("center_complaint",array("id" => $id ))->result_array();
 
 				if($dt[0]['remark'] == 'Invalid'){
@@ -2659,6 +2643,41 @@ public function update_exam_datewise_permission(){
 			echo json_encode(array(
 				"error" => ' error Occured',
 			));
+		}
+	}
+
+	public function UpdateStudentDataMarks()
+	{
+		$students = $this->Common_model->get_record('student_data','*');
+
+		foreach ($students as $student) {
+			$data = array();
+			$where = array('student_id' =>$student['student_id'] );
+			echo "<br><br> student_id ".$student['student_id'];
+			if($student['total_marks']<$student['marks']){
+				echo "<br> Total Marks".	$data['total_marks'] = $student['marks'];
+				echo "<br> Marks".	$data['marks'] = $student['total_marks'];
+			$this->Common_model->updateRecordByConditions('student_data',$where,$data);
+			}
+		}
+	}
+
+	public function update_fees_in_program()
+	{
+		$programs = $this->Common_model->get_record('program','id, course_group_id','course_group_id!=0' );
+
+		foreach ($programs as $program) {
+			$courseData = $this->Common_model->getRecordById('course','course_group_id',$program['course_group_id']);
+			$updateData['admission_fees'] = $courseData->form_fees+$courseData->admission_fees;
+			$updateData['program_fees'] = $courseData->program_fees;
+			$updateData['exam_fees'] = $courseData->exam_fees;
+			$courseData = $this->Common_model->getRecordByWhere('course_group',array('id' => $program['course_group_id']));
+			$updateData['min_duration'] = $courseData[0]->duration;
+			$updateData['eligibility'] = $courseData[0]->eligibility_detail;
+			$updateData['mode'] = $courseData[0]->mode;
+			$where = array('id' => $program['id']);
+			$this->Common_model->updateRecordByConditions('program',$where,$updateData);
+			echo $this->db->last_query().'<br>';
 		}
 	}
 }// class

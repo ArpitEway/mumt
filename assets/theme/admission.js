@@ -16,14 +16,15 @@ $("#course_group_id").on('change', function(){
 
 $("#eligibility").on('change', function(){
 	var eligibility = $(this).val();
+	
 	var csrfName = $('.csrfname').attr('name');
 	var csrfHash = $('.csrfname').val();
-
+	var mode = $('#mode').val();
 	$('input[name="qualifying_exam"]').val(eligibility);
 	$.ajax({
 		method: "POST",
 		url: BASE_URL+"center/center/getCourseByEligibility",
-		data: {eligibility : eligibility,[csrfName]:csrfHash},
+		data: {mode:mode,eligibility : eligibility,[csrfName]:csrfHash},
 	})
 	.done(function( msg ) {
 		$('#course_group_id').html(msg);
