@@ -100,12 +100,15 @@
 				$session 		  = $this->input->post("session");
 				$mode 		  	  = $this->input->post("mode");
 				$center_id	  	  = $this->input->post("center_id");
+		      	$university_mode	  	  = $this->input->post("university_mode");
 				
 				if($mode != "all"){	 
 						
 					$dt['mode'] = $mode;
 				}
-	
+				if($university_mode!="all"){
+					$dt['student.university_mode'] = $university_mode ;
+				}
 				if($session != "All" && $session != ""  ) {	 
 					
 					$dt['session'] = $session;
@@ -249,6 +252,7 @@
 				
 				$dt['payment_status'] = "Y";
 				$dt['document_uploaded'] = "Y";
+				$dt['university_mode'] = "REG";
 				
 				$data['students'] = $this->Common_model->student_data($dt);
 				
@@ -842,7 +846,7 @@
 			if($center_id!='')
 			{
 
-           	// $this->db->where('center_id',$center_id);
+           	$this->db->where('center_id',$center_id);
 				$data['listing'] = $this->Common_model->getRecordByWhere('student',$where);
 				$this->load->view('header',array('title' => 'Center Wise Student List'));
 				$this->load->view('admin/enrollment/students_count_details',$data); 

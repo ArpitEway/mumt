@@ -54,7 +54,7 @@ class Center extends CI_Controller {
 			$center_id =  $this->session->center_id;
 			$centerdata = $this->Common_model->getRecordById('center','id',$center_id);
 			$this->db->where('id in ('.$centerdata->allot_course_group_id.')');
-			$course_group_list = $this->Common_model->get_record('course_group','*');
+			$course_group_list = $this->Common_model->get_record('course_group','*',array('status !=' => 'D'));
 			$data = array('course_group' => $course_group_list);
 			$this->load->view('Centers/instruction',$data);
 			$this->load->view('Centers/footer');
@@ -290,11 +290,13 @@ class Center extends CI_Controller {
 			$btn = ($result->document_uploaded=='Y') ?
 			'<a href="'.base_url('show_form/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>' : '';
 			$i++;
+
 			if($result->enrolled=='N'){
 				$enrollment = '-';
 			}else{
 				$enrollment = $result->enrollment_no;
-				}
+			}
+	
 			$data[] = array($result->student_id,$enrollment,$result->name, $result->f_h_name, $result->course_name,$result->class_name,$btn);
 		}
 
