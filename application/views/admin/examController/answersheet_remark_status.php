@@ -1,11 +1,10 @@
 <style>
-
 .center {
    margin: auto;
    width: 50% !important; 
 }
 </style>
-<div class="container-fluid"   >
+<div class="container-fluid">
 	<div class="row mt-5  center">
 		<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 		<div class="form-group col-md-6">
@@ -13,14 +12,11 @@
 			<select name="course_group_id" id="course_group_id" class="form-control course_group_id" data-target="#class_id" required >
 				<option value="all">All</option>
 				<?php 
-				
 				foreach($courses as $course)
 				{
                      $course_name = $this->Common_model->getCourseNameByCourseId($course['course_group_id']);
 					?>
-
 					<option  value="<?php echo $course['course_group_id']; ?>"><?php echo $course_name; ?></option>
-
 					<?php
 				} 
 				?> 
@@ -98,14 +94,11 @@ $(document).on("change", "#course_group_id", function() {
 				if( $("#myLoader").show()){
 					$('#dt').hide();
 						// $table = $('#dt').html(status.data);
-
 					}if( $('#myLoader').hide()){
 						$table = $('#dt').html(data.data);
 						$('#dt').show();
-						
 					}
-
-					// KTDatatablesBasicBasic.init();
+					KTDatatablesBasicBasic.init();
 				},
 				complete: function()
 				{
@@ -113,7 +106,4 @@ $(document).on("change", "#course_group_id", function() {
 				},
 			})
 	};
-
-
-
 </script>
