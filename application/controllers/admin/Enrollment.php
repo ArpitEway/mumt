@@ -47,7 +47,7 @@
 				$data['title'] = "Student Verification";
 				$this->load->view('header',$dt);
 				$this->db->order_by('id', 'Desc');
-				$data['sessions'] = $this->db->get_where('session', array())->result_array();
+				$data['sessions'] = $this->db->get_where('session', array('enrollment_permission'=>'Y'))->result_array();
 				$data['name_csrf'] = $this->security->get_csrf_token_name();
 				$data['hash_csrf'] = $this->security->get_csrf_hash();
 				$this->load->view('admin/enrollment/view_student_report',$data);

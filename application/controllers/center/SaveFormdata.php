@@ -81,11 +81,11 @@ class saveFormdata extends CI_Controller {
 			$data['document_uploaded']='Y';
 			$data['approved']='Y';
 		}
-		$center_ids_dep = array( 21,22,23,24,25,26,27,28);
+		// $center_ids_dep = array( 21,22,23,24,25,26,27,28);
 		
-		if(in_array($this->session->center_id, $center_ids_dep)){
-			$data['payment_status']='Y';
-		}
+		// if(in_array($this->session->center_id, $center_ids_dep)){
+		// 	$data['payment_status']='Y';
+		// }
 
 		$this->db->trans_start();
 
@@ -116,8 +116,8 @@ class saveFormdata extends CI_Controller {
 		}
 	    
 		$OnlinePayTxnData = array('student_id' => $student_id,'center_id' => $this->session->center_id,'fees_head' => 'Admission Fees','amount' => $amount,'payment_status'=>'pending','course_group_id' => $course_group_id,'class_id' => $class_id,'student_name' => $data['name'],'admission_type'=>$admission_type);
-	
-		if(in_array($this->session->center_id, $center_ids_uni) || in_array($this->session->center_id, $center_ids_dep))
+	  // || in_array($this->session->center_id, $center_ids_dep)
+		if(in_array($this->session->center_id, $center_ids_uni))
 		{
 			$OnlinePayTxnData['payment_status']	= 'Paid By University';
 			$OnlinePayTxnData['payment'] =	'Y';
