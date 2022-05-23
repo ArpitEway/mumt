@@ -49,7 +49,7 @@ class Center extends CI_Controller {
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}else{
-			$titleData = array('title' => 'Course Fees Structure');
+			$titleData = array('title' => 'Regular Course Fees Structure');
 			$this->load->view('Centers/header',$titleData);
 			$center_id =  $this->session->center_id;
 			$centerdata = $this->Common_model->getRecordById('center','id',$center_id);
@@ -1580,7 +1580,7 @@ public function practical_assignment_marks_sub()
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}else{
-			$titleData = array('title' => 'Course Fees Structure');
+			$titleData = array('title' => 'Private Course Fees Structure');
 			$this->load->view('Centers/header',$titleData);
 			$center_id =  $this->session->center_id;
 			$centerdata = $this->Common_model->getRecordById('center','id',$center_id);
