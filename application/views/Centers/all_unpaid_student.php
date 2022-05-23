@@ -149,37 +149,7 @@ buttons: [
 });
 	});
 
-
-		// $('.student').on('click', function (e) {
-
-		// var student_id = $(this).attr('data-id');
-		// var student_name = $(this).attr('data-student_name ');
-		// var amount = $(this).attr('data-amount');
-		// $('#student_id').val(student_id);
-		// $('#student_name').html(student_name);
-		// $('#amount').val(amount);
-		// });
-/*
-	$(document).on('click','.pay',function(){
-		var student_id = $(this).data('student_id');
-		var id = $(this).data('id');
-		Swal.fire({
-				title: "Are you sure?",
-				text: "Want To Pay Fees ?",
-				icon: "info",
-				showCancelButton: true,
-				confirmButtonText: "Yes"
-			}).then(function(result) {
-				if(result.isConfirmed){
-				window.location.href = BASE_URL+"center/payment/admission/"+student_id;
-				}else{
-					return false;
-				}
-		});
-	});
-
-*/
-  $(document).on('click','.pay',function(){
+  $(document).on('click','.pay1',function(){
 	    var name_csrf = $(this).attr('data-name_csrf');
 	    var hash_csrf = $(this).attr('data-hash_csrf');
 	    var student_id = $(this).attr('data-student_id');
@@ -250,5 +220,21 @@ buttons: [
 });	
     
 
-
+		$(document).on('click','.pay',function(){
+				var student_id = $(this).data('student_id');
+				var id = $(this).data('id');
+				Swal.fire({
+						title: "Are you sure?",
+						text: "Want To Pay Fees ?",
+						icon: "info",
+						showCancelButton: true,
+						confirmButtonText: "Yes"
+					}).then(function(result) {
+						if(result.isConfirmed){
+						window.location.href = BASE_URL+"center/payment/admission/"+student_id;
+						}else{
+							return false;
+						}
+				});
+		});
 </script>
