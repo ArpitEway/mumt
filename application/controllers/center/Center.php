@@ -29,8 +29,6 @@ class Center extends CI_Controller {
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}else{
-		
-
 			
 			$titleData = array('title' => 'Center Dashboard');
 			$this->load->view('Centers/header',$titleData);
@@ -354,9 +352,11 @@ class Center extends CI_Controller {
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
 		foreach($tableData as $result){
-			$btn = '<a href="#" data-student_id="'.$this->Common_model->encrypt_decrypt($result->student_id).'" data-id="'.$this->Common_model->encrypt_decrypt($result->id).'" class="btn btn-info btn-sm pay" >Pay</a>';
+			$modal ='<a href="#"  data-student_name = "'.$result->name.'"  data-student_id="'.$this->Common_model->encrypt_decrypt($result->student_id).'" class="btn btn-primary btn-sm font-weight-bold pay" data-toggle="modal" data-target="#kt_datepicker_modal" "  data-amount= "'.$result->amount.'">Pay</a>	';
+			
+			// $btn = '<a href="#" data-student_id="'.$this->Common_model->encrypt_decrypt($result->student_id).'" data-id="'.$this->Common_model->encrypt_decrypt($result->id).'" class="btn btn-info btn-sm pay" >Pay</a>';
 			$i++;
-			$data[] = array($result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->amount,$btn);
+			$data[] = array($result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->amount,$modal);
 		}
 
 		$output = array(
@@ -1591,4 +1591,56 @@ public function practical_assignment_marks_sub()
 			$this->load->view('Centers/footer');
 		}
 	}
+
+
+	public function update_unpaid_student(){
+			
+		if ($this->input->method() == "post") 
+		{  
+
+		    
+			$payment_date  = $this->input->post("payment_date");
+			$student_id  = $this->input->post("student_id");
+	      	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+			$remark  = $this->input->post("remark");
+			$payment_mode  = $this->input->post("payment_mode");
+			$amount  = $this->input->post("amount");
+			$file_name = '';
+			if(isset($_FILES['images']) && $_FILES['images']['tmp_name']!=''){
+			$filename = $student_id.'-'.date('Ymdhis');
+			$this->upload->initialize($this->Common_model->set_upload_options('./assets/transactionImgaes/',$filename));
+			if(!$this->upload->do_upload('images')){
+				$error = $this->upload->display_errors();
+				$msg = array('error'=>$error);
+				echo json_encode($msg);
+				exit();
+				
+			}else{
+			$uploadData = $this->upload->data();
+			$file_name = $uploadData['file_name'];
+			}
+			}
+			$updateData = array(
+				'payment_date' => $payment_date,
+				'remark' => $remark,
+				'payment_mode' => $payment_mode,
+				'amount' => $amount,
+				'image' => $file_name,
+				'payment_status' => "Paid By University",
+				'payment' => 'Y'
+			);
+		
+			$where = array(
+				'fees_head'=>'Admission Fees',
+				'student_id'=> $student_id
+			);
+			$update = $this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$updateData);
+			$response = $this->Common_model->updateRecordByConditions('student',array('student_id'=> $student_id),array('payment_status'=>'Y'));
+
+			if($response){
+			echo json_encode(array("status" => 'true'));
+			}
+		}
+	}
+	
 }
