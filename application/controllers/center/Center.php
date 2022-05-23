@@ -1585,7 +1585,7 @@ public function practical_assignment_marks_sub()
 			$center_id =  $this->session->center_id;
 			$centerdata = $this->Common_model->getRecordById('center','id',$center_id);
 			$this->db->where('id in ('.$centerdata->allot_course_group_id.')');
-			$course_group_list = $this->Common_model->get_record('course_group','*',array('status !=' => 'D'));
+			$course_group_list = $this->Common_model->get_record('course_group','*',array('status !=' => 'D' ,'admission_permission_pvt'=>'Y'));
 			$data = array('course_group' => $course_group_list);
 			$this->load->view('Centers/instruction_private',$data);
 			$this->load->view('Centers/footer');
