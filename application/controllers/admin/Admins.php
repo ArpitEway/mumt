@@ -1547,22 +1547,16 @@ public function update_doc_permission_status()
 
 
 	public function course_detail(){
-
 		if(!$this->session->has_userdata('adminData')){
 			redirect(base_url());
 			exit;
-	
 		}else{
-	
 			$admin_id = $this->session->admin_id;
-			
 			$course_group = $this->db->get_where('course_group', array())->result_array();
-	
 			$data = array('course_group' => $course_group,
 				'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash()
 			);
-			
 			$this->load->view('header');
 			$this->load->view('admin/course_detail',$data);
 			$this->load->view('footer');
