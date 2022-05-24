@@ -37,12 +37,13 @@
 							<span class="nav-text">Regular Course Details</span>
 						</div>
 					</a>
-
+					<!--
 					<a class="border-0 custom-menu-item" href="<?=base_url('instruction_private');?>">
 						<div>
 							<span class="nav-text">Private Course Details</span>
 						</div>
 					</a>
+					-->
 
 				  <?php
 				  if($center->admission_permission=='Y'){
