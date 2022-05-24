@@ -216,9 +216,26 @@ class Center extends CI_Controller {
 	}
 
 	public function getClassByCourse(){
+		
 		$course = $this->input->post('course');
-	
-		$class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$course."'  and admission_permission='Y'");
+		$student_mode = $this->input->post('mode');
+	   
+		$this->db->select('*');
+		$this->db->from('class_master');
+		$this->db->join('course_group', 'class_master.course_group_id = course_group.id');
+		if($student_mode=="private"){
+			$this->db->where('course_group.private_mode','class_master.mode');
+		 }else{
+			$this->db->where('class_master.mode=course_group.mode');
+		 }
+		$this->db->where('class_master.admission_permission','Y');
+		$this->db->where('course_group_id',$course);
+		$class_list = $this->db->get()->result_array();
+		//  $this->Common_model->last_query();
+		// echo "<pre>";
+		// print_r($class_list);
+		// die ;
+		// $class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$course."'  and admission_permission='Y'");
 		$data = array(
 			'class_list' => $class_list,
 		);

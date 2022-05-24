@@ -48,9 +48,10 @@
 				</div>
 				<div class="col-md-6">
 					<div class="form-group">
-						<label>Course</label><span class="text-danger"> *</span>
+						<label>Course</label><span class="text-danger">*</span>
 						<select name="course_group_id" id="course_group_id" class="form-control " >
-							<option value="" >--Select--</option>
+							<input type="hidden" id="mode" value="<?php echo $mode ;  ?>">
+							<option value="">--Select--</option>
 						</select>
 						<div class="fv-plugins-message-container"></div>
 					</div>
@@ -60,7 +61,7 @@
 					<!--begin::Input-->
 					<div class="form-group ">
 						<label>Class</label><span class="text-danger"> *</span>
-						<select name="class_id" id="class_id" class="form-control " >
+						<select name="class_id" id="class_id" class="form-control ">
 							<option value="">Select Class</option>
 						</select>
 						<div class="fv-plugins-message-container"></div>
