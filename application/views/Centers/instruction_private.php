@@ -9,7 +9,7 @@
             <th>Admisssion Fees</th>
             <th>Program Fees</th>
             <th>Exam Fees</th>
-            <th>Syllabus</th>
+            <!--<th>Syllabus</th>-->
         </thead>
         <tbody>
         <?php
@@ -27,15 +27,15 @@
             <td><?php echo $i; ?></td>
             <td><?php echo $course_detail['course_name']; ?></td>
             <td><?php echo $course_detail['eligibility_detail']; ?></td>
-            <td><?php echo $course_detail['duration']; ?></td>
+            <td><?php echo $course_detail['private_duration']; ?></td>
             <td><?php echo $course->p_admission_fees + $course->p_form_fees; ?></td>
 
             <td><?php 
             echo $course->p_program_fees;
-            if($course_detail['mode'] == "Semester"){
+            if($course_detail['private_mode'] == "Semester"){
                 echo "/- Sem";
             }
-            else if($course_detail['mode'] == "Annual"){
+            else if($course_detail['private_mode'] == "Annual"){
                 echo "/- Year";
             }
 
@@ -43,6 +43,7 @@
             ?></td>
 
             <td><?php echo $course->p_exam_fees; ?></td>
+		    <!--
             <td center>
                 <?php
                 $course_name =  str_replace('/', ' ', $course_detail['course_name']); 
@@ -53,6 +54,7 @@
                     <a href="<?php echo site_url($url);?>" download ><img src="<?=base_url('assets/images/')?>pdf.png" width="55"></a>
                 <?php } ?>
                 </td>
+-->
             </tr>
             <?php
         $i++;
