@@ -8,8 +8,28 @@
 				<div class="col-md-6">
 					<div class="form-group ">
 						<label>Session</label><span class="text-danger"> *</span>
-
-						<input type="text" readonly="readonly" class="form-control " name="session" placeholder="session" value="<?=$session?>" >
+                        
+						<select name="session" id="session" class="form-control" >
+							<!-- <option value="">--Select--</option> -->
+							<?php 
+		                     $center_id =  $this->session->center_id;
+							 $center_ids_dep = array(21,22,23,24,25,26,27,28);
+							 if (in_array($center_id, $center_ids_dep))
+							 {
+							   ?> 
+								<option value="July 2021">July 2022</option>
+							<?php
+							 }
+							 else
+							 {
+							  ?>
+                                <option value="July 2021">July 2021</option>
+								<option value="July 2022">July 2022</option>
+							  <?php
+							 }
+							?>
+							
+						</select>
 						<div class="fv-plugins-message-container"></div>
 					</div>
 				</div>

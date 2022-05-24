@@ -144,11 +144,11 @@ class Center extends CI_Controller {
 		}
 		
 		$check = $this->Common_model->getRecordByWhere("center",$where);
-		if($check[0]->id<100){
-			$session = "July 2022";
-		}else{
-			$session = "July 2021";
-		}
+		// if($check[0]->id<100){
+		// 	$session = "July 2022";
+		// }else{
+		// 	$session = "July 2021";
+		// }
 		if(($mode=='regular' && $check[0]->admission_permission!='Y') || ($mode=='private' && $check[0]->admission_permission_private!='Y')){
 			redirect(base_url('dashboard'));
 		}
@@ -163,7 +163,7 @@ class Center extends CI_Controller {
 			'state_list' => $state_list,
 			'district_list' => $district_list,
 			'course_group_list' => $course_group_list,
-			'session' => $session ,
+			// 'session' => $session ,
 			'eligibility_list' => $eligibility_list,
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
