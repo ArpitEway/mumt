@@ -230,7 +230,6 @@ class Center extends CI_Controller {
 		$this->db->where('class_master.admission_permission','Y');
 		$this->db->where('course_group_id',$course);
 		$class_list = $this->db->get()->result_array();
-		// $class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$course."'  and admission_permission='Y'");
 		$data = array(
 			'class_list' => $class_list,
 		);
