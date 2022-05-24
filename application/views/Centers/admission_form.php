@@ -24,7 +24,7 @@
 							 {
 							  ?>
                                 <option value="July 2021">July 2021</option>
-								<option value="July 2022">July 2022</option>
+								<!-- <option value="July 2022">July 2022</option> -->
 							  <?php
 							 }
 							?>
