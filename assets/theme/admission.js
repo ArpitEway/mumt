@@ -149,7 +149,8 @@ $(document).on('click','#submit', function () {
 	if(validation()==false){
 		return false;
 	}
-
+  
+    
 	Swal.fire({
 		text: "All is good! Please confirm the form submission.",
 		icon: "success",

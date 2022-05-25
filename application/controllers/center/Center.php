@@ -212,7 +212,7 @@ class Center extends CI_Controller {
 		
 		$course = $this->input->post('course');
 		$student_mode = $this->input->post('mode');
-		$this->db->select('*');
+		$this->db->select('class_master.*');
 		$this->db->from('class_master');
 		$this->db->join('course_group', 'class_master.course_group_id = course_group.id');
 		if($student_mode=="private"){
