@@ -128,8 +128,7 @@ class Center extends CI_Controller {
 			exit;
 		}
 		$center_id =  $this->session->center_id;
-        // echo $center_id;
-		// die ;
+
 		if($mode=='regular'){
 			$where = array('admission_permission'=>'Y' ,'id'=>$center_id);
 			$head = '(Regular)';
@@ -156,7 +155,6 @@ class Center extends CI_Controller {
 			'state_list' => $state_list,
 			'district_list' => $district_list,
 			'course_group_list' => $course_group_list,
-			'session' => 'July 2021',
 			'eligibility_list' => $eligibility_list,
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
@@ -209,9 +207,20 @@ class Center extends CI_Controller {
 	}
 
 	public function getClassByCourse(){
+		
 		$course = $this->input->post('course');
-	
-		$class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$course."'  and admission_permission='Y'");
+		$student_mode = $this->input->post('mode');
+		$this->db->select('class_master.*');
+		$this->db->from('class_master');
+		$this->db->join('course_group', 'class_master.course_group_id = course_group.id');
+		if($student_mode=="private"){
+			$this->db->where('course_group.private_mode=class_master.mode');
+		 }else{
+			$this->db->where('class_master.mode=course_group.mode');
+		 }
+		$this->db->where('class_master.admission_permission','Y');
+		$this->db->where('course_group_id',$course);
+		$class_list = $this->db->get()->result_array();
 		$data = array(
 			'class_list' => $class_list,
 		);

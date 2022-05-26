@@ -1,13 +1,15 @@
 "use strict";
 $("#course_group_id").on('change', function(){
 	var course = $(this).val();
+    var mode = document.getElementById('mode').value;
+	
 	var csrfName = $('.csrfname').attr('name');
 	var csrfHash = $('.csrfname').val(); 
 
 	$.ajax({
 		method: "POST",
 		url: BASE_URL+"center/center/getClassByCourse",
-		data: {course : course,[csrfName]:csrfHash},
+		data: {course : course,[csrfName]:csrfHash , mode : mode},
 	})
 	.done(function( msg ) {
 		$('#class_id').html(msg);
@@ -147,7 +149,8 @@ $(document).on('click','#submit', function () {
 	if(validation()==false){
 		return false;
 	}
-
+  
+    
 	Swal.fire({
 		text: "All is good! Please confirm the form submission.",
 		icon: "success",
