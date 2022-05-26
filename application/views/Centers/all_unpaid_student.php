@@ -73,7 +73,6 @@
 		<option>Wallets</option>
 		<option>UPI</option>
 		<option>NEFT/RTGS</option>
-		<option>SabPaisa Payment by Link</option>
 	 </select>
 	 <div class="text-danger" id="error2"></div>
 	</div>
