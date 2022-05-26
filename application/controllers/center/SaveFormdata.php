@@ -80,6 +80,7 @@ class saveFormdata extends CI_Controller {
 			$data['payment_status']='Y';
 			$data['document_uploaded']='Y';
 			$data['approved']='Y';
+			
 		}
 		// $center_ids_dep = array( 21,22,23,24,25,26,27,28);
 		
