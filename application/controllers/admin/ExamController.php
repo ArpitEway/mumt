@@ -469,7 +469,7 @@ class ExamController extends CI_Controller {
 
    public function getPaperByClassId(){
 	// $_POST['class_id'];
-	   $data= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id']));
+	   $data= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'], 'type' => 'theory'));
 	   echo json_encode(array('data'=>$data));
    }
 
