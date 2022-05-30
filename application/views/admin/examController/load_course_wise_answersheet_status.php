@@ -38,11 +38,12 @@
             $this->db->from('assign_answersheet');
             $this->db->where('class_id',$paper->class_id);
             $this->db->where('paper_code',$paper->paper_code); 
+            $this->db->where('center_id!=',''); 
             $center_id= $this->db->get()->result();
    
         $center_ids = $center_id[0]->center_id;
 
-            if($center_ids !=""){
+        if($center_ids !=""){
         // count for allot
         $this->db->select(' count(*) as cnt');
         $this->db->from('new_exam_form');

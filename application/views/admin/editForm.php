@@ -421,20 +421,18 @@
 						<div class="fv-plugins-message-container"></div>
 					</div>
 				</div>
-
-				<div class="col-md-2">
-					<div class="form-group">
-						<input name="marks" placeholder="Marks" class="form-control" type="text" value="<?= $student_data->marks; ?>" />
-						<div class="fv-plugins-message-container"></div>
-					</div>
-				</div>
 				<div class="col-md-2">
 					<div class="form-group">
 						<input name="total_marks" placeholder='Total Marks' class="form-control" type="text" value="<?= $student_data->total_marks; ?>" />
 						<div class="fv-plugins-message-container"></div>
 					</div>
 				</div>
-				
+				<div class="col-md-2">
+					<div class="form-group">
+						<input name="marks" placeholder="Marks" class="form-control" type="text" value="<?= $student_data->marks; ?>" />
+						<div class="fv-plugins-message-container"></div>
+					</div>
+				</div>
 			</div>
 			<div class="row">
 

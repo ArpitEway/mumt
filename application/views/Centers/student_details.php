@@ -75,6 +75,8 @@
 				<th>Father Name</th>
 				<th>Course</th>
 				<th>Class</th>
+<!-- 				<th>Aadhar No</th>
+				<th>Mobile</th> -->
 				<th>View Form</th>
 			</tr>
 		</thead>

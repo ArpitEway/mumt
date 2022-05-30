@@ -23,6 +23,7 @@
 					<th>Enrolled</th>
 					<th>Exam Form</th>
 					<th>Center Code</th>
+					<th>University Mode</th>
 					<?php
 					}
 					if(isset($course_count)){
@@ -55,6 +56,7 @@
 					foreach($students as $student){
 						
 						
+						
 						?>
 						<tr>
 							<td><?php echo $i; ?></td>
@@ -85,6 +87,13 @@
 							<td><?php if( $student["new_exam_form"]=='Y'){echo 'Submit' ;}else if($student["new_exam_form"]=='D'){echo 'Not Permitted' ;}else{echo 'Not Submitted';} ; ?></td>
 							
 							<td><?php echo $student["center_code"]; ?></td> 
+							<td><?php 
+							if($student["university_mode"]=="REG"){
+								echo "Regular";
+							}else{
+								echo "Private";
+							}
+							?></td> 
 							
 						</tr>
 					<?php

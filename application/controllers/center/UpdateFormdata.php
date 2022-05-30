@@ -77,7 +77,7 @@ class updateFormdata extends CI_Controller {
 		$studentData['marks'] = html_escape($this->input->post('marks'));
 		$studentData['total_marks'] = html_escape($this->input->post('total_marks'));
 		$studentData['passing_year'] = html_escape($this->input->post('passing_year'));
-	    $studentData['percentage'] = $studentData['total_marks'] * 100/$studentData['marks'];
+
 		$studentData['board'] = html_escape($this->input->post('board'));
 		$studentData['nationality'] = html_escape($this->input->post('nationality'));
 		$studentData['minority'] = html_escape($this->input->post('minority'));

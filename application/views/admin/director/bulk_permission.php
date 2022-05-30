@@ -7,12 +7,14 @@ $center1 = $this->db->get_where('center', array("admission_permission" => 'Y'))-
 $center2 = $this->db->get_where('center', array("exam_form_permission" => 'Y'))->result_array();
 $center3 = $this->db->get_where('center', array("admit_card_permission" => 'Y'))->result_array();
 $center4 = $this->db->get_where('center', array("result_permission" => 'Y'))->result_array();
+$center5 = $this->db->get_where('center', array("admission_permission_private" => 'Y'))->result_array();
+
 
 $admission_permission_count = count($center1);
 $exam_form_permission_count = count($center2);
 $admit_card_permission_count = count($center3);
 $result_permission_count = count($center4);
-
+$admission_permission_private_count = count($center5);
 
 ?>
 
@@ -37,7 +39,25 @@ $result_permission_count = count($center4);
             </td>
             </tr>
 
+
             <tr class="text-center">
+            <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+                <td class="pt-5">Admission Permission Private</td>
+                <td id="admission_permission_private">
+                <?php if($admission_permission_private_count > 500)
+                { ?>
+                
+                <a class="btn btn-primary" onclick="update_permission('admission_permission_private','N')">All Yes</a>
+    
+                <?php }else{ ?>
+
+                <a class="btn btn-danger" onclick="update_permission('admission_permission_private','Y')">All No</a>
+             
+             <?php } ?> 
+            </td>
+            </tr>
+
+           <!--  <tr class="text-center">
                 <td class="pt-5">Exam Form Permission</td>
                 <td id="exam_form_permission">
                 <?php if($exam_form_permission_count > 500) { ?>
@@ -51,9 +71,9 @@ $result_permission_count = count($center4);
                 <?php } ?>
 
                 </td>
-            </tr>
+            </tr> -->
 
-            <tr class="text-center">
+          <!--   <tr class="text-center">
                 <td class="pt-5">Admit Card Permission</td>
                 <td id="admit_card_permission">
                 <?php if($admit_card_permission_count > 500) { ?>
@@ -67,8 +87,8 @@ $result_permission_count = count($center4);
     
                 <?php } ?>
                 </td>
-            </tr>
-
+            </tr> -->
+<!-- 
             <tr class="text-center">
                 <td class="pt-5">Result Permission</td>
                 <td id="result_permission">
@@ -84,7 +104,7 @@ $result_permission_count = count($center4);
                 <?php } ?>
 
                 </td>
-            </tr>
+            </tr> -->
             
         </table>
     </div>
