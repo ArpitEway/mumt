@@ -806,6 +806,16 @@ class Common_Model extends CI_Model{
 		}
 	
 	}
+	public function notification_marks_details_($student)
+	{
+		$this->db->select('*');
+		$this->db->from('new_exam_form');
+		$this->db->join('paper_master', 'new_exam_form.paper_id = paper_master.id');
+		$this->db->where('new_exam_form.student_id',$student); 
+		$query = $this->db->get();
+		return $query->result();
+		
+	}
 }
 
 ?>
