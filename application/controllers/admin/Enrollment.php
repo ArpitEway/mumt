@@ -47,7 +47,7 @@
 				$data['title'] = "Student Verification";
 				$this->load->view('header',$dt);
 				$this->db->order_by('id', 'Desc');
-				$data['sessions'] = $this->db->get_where('session', array())->result_array();
+				$data['sessions'] = $this->db->get_where('session', array('enrollment_permission'=>'Y'))->result_array();
 				$data['name_csrf'] = $this->security->get_csrf_token_name();
 				$data['hash_csrf'] = $this->security->get_csrf_hash();
 				$this->load->view('admin/enrollment/view_student_report',$data);
@@ -100,12 +100,15 @@
 				$session 		  = $this->input->post("session");
 				$mode 		  	  = $this->input->post("mode");
 				$center_id	  	  = $this->input->post("center_id");
+		      	$university_mode	  	  = $this->input->post("university_mode");
 				
 				if($mode != "all"){	 
 						
 					$dt['mode'] = $mode;
 				}
-	
+				if($university_mode!="all"){
+					$dt['student.university_mode'] = $university_mode ;
+				}
 				if($session != "All" && $session != ""  ) {	 
 					
 					$dt['session'] = $session;
@@ -249,6 +252,7 @@
 				
 				$dt['payment_status'] = "Y";
 				$dt['document_uploaded'] = "Y";
+				$dt['university_mode'] = "REG";
 				
 				$data['students'] = $this->Common_model->student_data($dt);
 				
@@ -603,10 +607,10 @@
 				$where = 'student_id="'.$student[0]->student_id.'" ';
 				$this->Common_model->updateRecordByConditions('student',$where,$data);
 			}
-
+		
 			$this->session->set_flashdata('ajax_flash_message','permission updated');
 			$centerCode = $this->Common_model->encrypt_decrypt($centerCode,'encrypt');
-			redirect(base_url().'admin/enrollment/enrollment_permission/'.$centerCode);		
+			redirect(base_url().'admin/enrollment/enrollment_permission/'.$centerCode);
 		}
 	}
 
@@ -842,7 +846,7 @@
 			if($center_id!='')
 			{
 
-           	// $this->db->where('center_id',$center_id);
+           	$this->db->where('center_id',$center_id);
 				$data['listing'] = $this->Common_model->getRecordByWhere('student',$where);
 				$this->load->view('header',array('title' => 'Center Wise Student List'));
 				$this->load->view('admin/enrollment/students_count_details',$data); 
@@ -964,7 +968,6 @@
 	public function complaint_form_sub(){
 		$id = $this->input->post('complain');
 		$redy = $this->input->post('redy');
-
 		$where = array('id' => $id);
 		$studentData = array('type' => $redy);
 
@@ -978,5 +981,20 @@
 				"error" => ' error Occured',
 			));
 		}
+	}
+
+	
+	public function provisional_remark_update($param){
+		$remark = html_escape($this->input->post('remark'));
+	
+		$data['provisional_remark'] = implode(",",$remark);
+		$data['approved'] = 'Y';
+		$this->db->where('student_id', $param);
+		$this->db->update('student', $data);	
+		$this->session->set_flashdata('ajax_flash_message','approved');
+		echo json_encode(array(
+		"status" => 'true',
+		));
+		//redirect(base_url().'admin/enrollment/student_report');
 	}
 }

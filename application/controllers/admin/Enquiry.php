@@ -24,14 +24,14 @@ class Enquiry extends CI_Controller {
 			"menus" => $this->Common_model->getRecordByWhereByOrder('menu',$where,'heading_id,menu_order','ASC'),
 		);
 		$this->load->view('header',array('title' => 'Enquiry Section'));
-		$this->load->view('admin/enquiry/dashboard',$menu);
+		$this->load->view('admin/Enquiry/dashboard',$menu);
 		$this->load->view('footer');	
 	}
 
     public function view_enquiry(){
         $data['inquiries'] = $this->Common_model->get_record('enquiry','*');
         $this->load->view('header',array('title' => 'Enquiry Section'));
-		$this->load->view('admin/enquiry/enquiry_list',$data);
+		$this->load->view('admin/Enquiry/enquiry_list',$data);
 		$this->load->view('footer');
     }
 
@@ -92,7 +92,7 @@ class Enquiry extends CI_Controller {
     			);
     			$data['departments'] = $this->Common_model->get_record("department","*");
     			$this->load->view('header',$title);
-    			$this->load->view('admin/enquiry/department',$data);
+    			$this->load->view('admin/Enquiry/department',$data);
     			$this->load->view('footer');
     		}
     	}
@@ -105,14 +105,20 @@ class Enquiry extends CI_Controller {
 			exit;
 		}else{
 			if($param1 == 'create'){
+				$course_type = $_POST['course_type'];
+				$course_types = array('Phd', 'PG', 'UG', 'PGDiploma', 'Diploma', 'PGDiploma', 'Certificate');
+				$course_type_order = array_search($course_type, $course_types);
 				$data = array(
 					'department_id' => $_POST['department_id'],
 					'program_name' => $_POST['program_name'],
-					'course_type' => $_POST['course_type'],
-					'status' => 'Y' );
+					'course_type' => $course_type,
+					'status' => 'Y',
+					'course_type_order' => ++$course_type_order,
+					'p_order' => 0,
+					 );
 				$insert = $this->Common_model->insertAll('program',$data);
 				if($insert){
-					redirect(base_url().'admin/enquiry/program');
+					redirect(base_url().'admin/Enquiry/program');
 				}
 			}
 			if($param1 == 'update'){
@@ -122,13 +128,13 @@ class Enquiry extends CI_Controller {
 				);
 				$update = $this->Common_model->updateRecordByConditions('program',array("id"=>$param2),$data);
 				if($update){
-					redirect(base_url().'admin/enquiry/program');
+					redirect(base_url().'admin/Enquiry/program');
 				}
 			}
 			if($param1 == 'delete'){
 				$response = $this->Common_model->deleteByWhere('program',array("id"=>$param2));
 				$this->session->set_flashdata('ajax_flash_message','Department Successfully Deleted');
-				redirect(base_url().'admin/enquiry/program');
+				redirect(base_url().'admin/Enquiry/program');
 			}
 			if(empty($param1)){
 				$data = array();
@@ -139,7 +145,7 @@ class Enquiry extends CI_Controller {
 			);
 			$data['programs'] = $this->Common_model->get_record("program","*");
 				$this->load->view('header',$title);
-				$this->load->view('admin/enquiry/program',$data);
+				$this->load->view('admin/Enquiry/program',$data);
 				$this->load->view('footer');
 			}    
 		}
@@ -149,25 +155,16 @@ class Enquiry extends CI_Controller {
 	{
 		if ($this->input->method() == "post") 
 		{
-			//$course_group_id = 0;
-			$data = array();
-			$dt   = array();
-		    $department_id  = $this->input->post("department");
-			
-			$all_programs = $this->Common_model->get_record("program","*");
-			$programs = $this->Common_model->get_record_by_order("program","*","p_order",array("department_id" => $department_id));
+			$department_id  = $this->input->post("department");
+			$programs = $this->Common_model->get_record_by_order("program","*","course_type_order,p_order",array("department_id" => $department_id));
 
 			if($department_id){
-
-			$data = array('programs' => $programs ,'name_csrf' => $this->security->get_csrf_token_name(),'hash_csrf' => $this->security->get_csrf_hash());
-			$dt =  $this->load->view('admin/enquiry/program_by_dept',$data,true);
-
+				$data = array('programs' => $programs ,'name_csrf' => $this->security->get_csrf_token_name(),'hash_csrf' => $this->security->get_csrf_hash());
+				$dt =  $this->load->view('admin/Enquiry/program_by_dept',$data,true);
 			}
 			else{
-
 				$dt =  "<p style='color:red'>Invalid Department ID</p>";
 			}
-			
 			echo json_encode(array(
 				"status" => true,
 				"data" => $dt
@@ -177,10 +174,7 @@ class Enquiry extends CI_Controller {
 
 	public function update_program_list_order()
 		{
-		
 		$allDataa = $_POST['allData'];
-
-		
 		$i = 1;
 		foreach ($allDataa as $key => $value) 
 		{
@@ -195,7 +189,5 @@ class Enquiry extends CI_Controller {
 			$this->session->set_flashdata('success','Order Updated.');
 			echo "Order Updated";	
 		}
-
 	}
-
 }// class

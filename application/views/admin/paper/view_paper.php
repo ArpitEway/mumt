@@ -9,7 +9,7 @@
 					<th>Sno</th>
 					<th>Paper</th>
 					<th>Type</th>
-					<th>CE</th> 					
+					<th>CE</th>
 					<th>Options</th>
 				</tr>
 			</thead>

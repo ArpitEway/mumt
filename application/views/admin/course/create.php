@@ -30,7 +30,7 @@
 
         <div class="form-group col-md-4">
             <label for="paper_code_pattern">Paper Code Pattern</label>
-            <input type="text" class="form-control" id="paper_code_pattern" name = "paper_code_pattern" required placeholder="Enter Paper code pattern">
+            <input type="text" class="form-control" id="paper_code_pattern" name = "paper_code_pattern"  placeholder="Enter Paper code pattern">
         </div>
 		
 		<div class="form-group col-md-4">
@@ -41,9 +41,9 @@
 		<div class="form-group col-md-3">
             <label for="session">Mode</label>
             <select name="mode" id="Mode" class="form-control" required>
-                <option value="annual">Annual</option>
-				<option value="semester">Semester</option>
-				<option value="month">Month</option>
+                <option value="Annual">Annual</option>
+				<option value="Semester">Semester</option>
+				<option value="Month">Month</option>
             </select>
         </div>
 
@@ -67,7 +67,7 @@
         </div>
 
         <div class="form-group col-md-12" style="margin-bottom: 5px;">
-            <label for="name">Regular</label>
+            <label for="name"><strong>Regular</strong></label>
         </div>
 
 		<div class="form-group col-md-3">
@@ -90,26 +90,26 @@
         </div>
 
         <div class="form-group col-md-12" style="margin-bottom: 5px;">
-            <label for="name">Private</label>
+            <label for="name"><strong>Private</strong></label>
         </div>
         <div class="form-group col-md-3">
             <label for="name">Form Fees</label>
-            <input type="text" class="form-control" id="p_form_fees" name = "p_form_fees" placeholder="Enter form fees" >
+            <input type="text" class="form-control" id="p_form_fees" value="200" name = "p_form_fees" placeholder="Enter form fees" >
            
         </div>
         <div class="form-group col-md-3">
             <label for="name">Admission Fees</label>
-            <input type="number" class="form-control" id="p_admission_fees" name = "p_admission_fees"  placeholder="Enter admission fees">
+            <input type="number" class="form-control" id="p_admission_fees" value="1300" name = "p_admission_fees"  placeholder="Enter admission fees">
            
         </div>
 		<div class="form-group col-md-3">
             <label for="name">Program Fees</label>
-            <input type="text" class="form-control" id="p_program_fees" name = "p_program_fees" placeholder="Enter program fees" >
+            <input type="text" class="form-control" id="p_program_fees" value="" name = "p_program_fees" placeholder="Enter program fees" >
            
         </div>
 		<div class="form-group col-md-3">
             <label for="name">Exam Fees</label>
-            <input type="text" class="form-control" id="p_exam_fees" name = "p_exam_fees" placeholder="Enter exam fee">
+            <input type="text" class="form-control" id="p_exam_fees" value="" name = "p_exam_fees" placeholder="Enter exam fee">
         </div>       
     </div>
 	<div class="form-group text-center">

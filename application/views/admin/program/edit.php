@@ -30,12 +30,11 @@ $program = $this->db->get_where('program', array('id' => $param1))->result_array
 
 				<option value="">Select</option>
 				<option value="Phd" <?php echo ($program[0]['course_type'] == "Phd") ? 'selected' : '' ?>>Phd</option>
-				<option value="UG"  <?php echo ($program[0]['course_type'] == "UG") ? 'selected' : '' ?>>UG</option>
 				<option value="PG"  <?php echo ($program[0]['course_type'] == "PG") ? 'selected' : '' ?>>PG</option>
+				<option value="UG"  <?php echo ($program[0]['course_type'] == "UG") ? 'selected' : '' ?>>UG</option>
 				<option value="PGDiploma" <?php echo ($program[0]['course_type'] == "PGDiploma") ? 'selected' : '' ?>>PG Diploma</option>
 				<option value="Diploma" <?php echo ($program[0]['course_type'] == "Diploma") ? 'selected' : '' ?>>Diploma</option>
-				<option value="Certificate" <?php echo ($program[0]['course_type'] == "Certificate") ? 'selected' : '' ?>>Certificate</option>		
-			
+				<option value="Certificate" <?php echo ($program[0]['course_type'] == "Certificate") ? 'selected' : '' ?>>Certificate</option>
 			</select>
 		</div>
 

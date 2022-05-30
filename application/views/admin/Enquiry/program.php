@@ -1,3 +1,6 @@
+<div class="mt-5 text-right">
+    <a type="button"  class="btn btn-outline-primary btn-rounded" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/program/create'); ?>', 'Create Program')" >Create Program </a>
+</div>
 <div class="row text-center">
 <div class="form-group col-md-4">
 </div>
@@ -9,9 +12,7 @@
 			$dt = $this->db->get_where('department', array())->result_array();
 			foreach($dt as $dept)
 			{
-
 			?>
-						
 				<option value="<?php echo $dept['id']; ?>"><?php echo $dept['department_name']; ?></option>
 						
 			<?php
@@ -77,10 +78,7 @@ $(document).on("change","#department",function(){
               {
                 $('#myLoader').hide();
               },
-            })
-
-		
-		 
+            }) 
 });
 
 </script>
