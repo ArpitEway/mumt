@@ -182,7 +182,7 @@ if (document.getElementById(`id_${i}`).value=='ABS')
 }
 
 
-var x=confirm(' Are you sure to submit marks ? \n प्रविष्ट किये जा रहे निम्न अंक Provisional Marks हैं। \n Assignments के विश्वविद्यालय में पुनर्मूल्यांकन के पश्चात ही Final Marks प्रदान किये जायेंगे।');
+var x=confirm(' Are you sure to submit marks ? \n प्रविष्ट किये जा रहे निम्न अंक Provisional Marks हैं।');
   if(x==false){
     return false; 
   }
@@ -201,9 +201,10 @@ var id = $('#student_tr').val();
         toastr.success(data.success);
          
            $('#kt_datepicker_modal').modal('toggle');
-
            $('.modal-backdrop').remove();
-            $('#student_tr_'+id).hide();
+            // $('#student_tr_'+id).hide();
+            $('#roll_'+id).hide();
+            $('#roll_num'+id).show();
             $('.child').hide();
 
 }else{

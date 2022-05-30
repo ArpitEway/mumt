@@ -34,15 +34,36 @@
 
 					<a class="border-0 custom-menu-item" href="<?=base_url('instruction');?>">
 						<div>
-							<span class="nav-text">Course Details</span>
+							<span class="nav-text">Regular Course Details</span>
 						</div>
 					</a>
-
-					<a class="border-0 custom-menu-item" href="<?=base_url('admission_instruction');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('instruction_private');?>">
 						<div>
-							<span class="nav-text">Admission Form</span>
+							<span class="nav-text">Private Course Details</span>
 						</div>
 					</a>
+				  <?php
+				  if($center->admission_permission=='Y'){
+					  ?>
+	                <a class="border-0 custom-menu-item" href="<?=base_url('admission_form/regular');?>">
+						<div>
+							<span class="nav-text">Admission Form Regular</span>
+						</div>
+					</a>
+				<?php
+				  }
+				  ?>
+				 <?php
+				  if($center->admission_permission_private=='Y'){
+					?>
+					<a class="border-0 custom-menu-item" href="<?=base_url('admission_form/private');?>">
+						<div>
+							<span class="nav-text">Admission Form Private</span>
+						</div>
+					</a>
+				<?php
+				  }
+				  ?>
 					<a class="border-0 custom-menu-item" href="<?=base_url('all_student');?>">
 						<div>
 							<span class="nav-text">Student Report</span>
@@ -94,6 +115,11 @@
 					<a class="border-0 custom-menu-item" href="<?=base_url('remaining_exam_answersheet');?>">
 						<div>
 							<span class="nav-text">Remaining Exam Answersheet</span>
+						</div>
+					</a>
+					<a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
+						<div>
+							<span class="nav-text">Practical Marks Submission</span>
 						</div>
 					</a>
 					<a class="border-0 custom-menu-item" href="<?=base_url('internal_marks_list');?>">

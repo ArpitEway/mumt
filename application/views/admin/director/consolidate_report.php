@@ -35,7 +35,17 @@
 		</select>       
 	</div>
 
-	<div class="form-group col-md-3">
+<div class="form-group col-md-2">
+		<label for="class">Admission Mode</label>
+		<select name="admission_mode" id="admission_mode" class="form-control" > 
+			<option value="all">All</option>
+			<option value="REG">Regular </option> 
+			<option value="PVT">Private</option>
+		</select>
+	</div>
+
+
+	<div class="form-group col-md-2">
 		<label for="class">Course Mode</label>
 		<select name="mode" id="mode" class="form-control" > 
 			<option value="all">All</option>
@@ -44,7 +54,7 @@
 		</select>
 	</div>
 
-	<div class="form-group col-md-3">
+	<div class="form-group col-md-2">
 		<label for="class">Student Count</label>
 		<select name="filter" id="filter" class="form-control" > 
 			<option value="course">Course wise </option> 
@@ -82,6 +92,7 @@ $(document).on("click","#submit_btn",function(){
 		document_upload : $("#document_upload").val(),
 		center : $("#center_id").val(),
 		mode : $("#mode").val(),
+		admission_mode : $("#admission_mode").val(),
 		approved : $("#approved").val(),
 		payment : $("#payment").val(),
 		filter :$("#filter").val(),

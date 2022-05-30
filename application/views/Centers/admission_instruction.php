@@ -36,6 +36,6 @@
 <p class="font-weight-bold"> मैं सत्यापित करता / करती हूँ कि मेरे द्वारा इस आवेदन पत्र में दी गई समस्त जानकारी पूर्ण एवं सत्य है| मैंने विश्विद्यालय में प्रवेश सम्बन्धी समस्त नियम एवं शर्तों को पढ़ एवं समझ लिया है एवं मै प्रवेश हेतु वांछनीय योग्यता को पूर्ण करता / करती हूँ| यदि मेरे द्वारा दी गई जानकारी झूठी एवं भ्रामक पाई जाती है तो विश्वविद्यालय किसी भी समय किसी भी स्तर पर मेरा प्रवेश निरस्त कर सकता है, जो मुझे मान्य होगा| प्रवेश निरस्त होने पर मै शुल्क वापसी हेतु कोई दावा नहीं करूँगा / करुँगी | </p>
 
 <div class="row justify-content-center">
-    <a class="btn btn-success mr-5" href="<?=base_url('admission_form')?>">Yes, I Agree</a>
+    <a class="btn btn-success mr-5" href="<?=base_url('admission_form/'.$mode)?>">Yes, I Agree</a>
     <a class="btn btn-danger ml-5" href="<?=base_url('dashboard')?>">I Don't Agree</a>
 </div>

@@ -105,11 +105,17 @@ class Enquiry extends CI_Controller {
 			exit;
 		}else{
 			if($param1 == 'create'){
+				$course_type = $_POST['course_type'];
+				$course_types = array('Phd', 'PG', 'UG', 'PGDiploma', 'Diploma', 'PGDiploma', 'Certificate');
+				$course_type_order = array_search($course_type, $course_types);
 				$data = array(
 					'department_id' => $_POST['department_id'],
 					'program_name' => $_POST['program_name'],
-					'course_type' => $_POST['course_type'],
-					'status' => 'Y' );
+					'course_type' => $course_type,
+					'status' => 'Y',
+					'course_type_order' => ++$course_type_order,
+					'p_order' => 0,
+					 );
 				$insert = $this->Common_model->insertAll('program',$data);
 				if($insert){
 					redirect(base_url().'admin/Enquiry/program');
@@ -149,25 +155,16 @@ class Enquiry extends CI_Controller {
 	{
 		if ($this->input->method() == "post") 
 		{
-			//$course_group_id = 0;
-			$data = array();
-			$dt   = array();
-		    $department_id  = $this->input->post("department");
-			
-			$all_programs = $this->Common_model->get_record("program","*");
-			$programs = $this->Common_model->get_record_by_order("program","*","p_order",array("department_id" => $department_id));
+			$department_id  = $this->input->post("department");
+			$programs = $this->Common_model->get_record_by_order("program","*","course_type_order,p_order",array("department_id" => $department_id));
 
 			if($department_id){
-
-			$data = array('programs' => $programs ,'name_csrf' => $this->security->get_csrf_token_name(),'hash_csrf' => $this->security->get_csrf_hash());
-			$dt =  $this->load->view('admin/Enquiry/program_by_dept',$data,true);
-
+				$data = array('programs' => $programs ,'name_csrf' => $this->security->get_csrf_token_name(),'hash_csrf' => $this->security->get_csrf_hash());
+				$dt =  $this->load->view('admin/Enquiry/program_by_dept',$data,true);
 			}
 			else{
-
 				$dt =  "<p style='color:red'>Invalid Department ID</p>";
 			}
-			
 			echo json_encode(array(
 				"status" => true,
 				"data" => $dt

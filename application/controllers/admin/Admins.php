@@ -1437,12 +1437,15 @@ public function update_doc_permission_status()
 			$session 		  = $this->input->post("session");
 			$mode 		  	  = $this->input->post("mode");
 			$center_id	  	  = $this->input->post("center_id");
+			$university_mode	  	  = $this->input->post("university_mode");
 			
 			if($mode != "all"){	 
 					
 				$dt['mode'] = $mode;
 			}
-
+            if($university_mode!="all"){
+				$dt['student.university_mode'] = $university_mode ;
+			}
 			if($session != "All") {	 
 				
 				$dt['session'] = $session;
@@ -1544,22 +1547,16 @@ public function update_doc_permission_status()
 
 
 	public function course_detail(){
-
 		if(!$this->session->has_userdata('adminData')){
 			redirect(base_url());
 			exit;
-	
 		}else{
-	
 			$admin_id = $this->session->admin_id;
-			
 			$course_group = $this->db->get_where('course_group', array())->result_array();
-	
 			$data = array('course_group' => $course_group,
 				'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash()
 			);
-			
 			$this->load->view('header');
 			$this->load->view('admin/course_detail',$data);
 			$this->load->view('footer');
@@ -2755,6 +2752,22 @@ public function update_student_result_permission(){
 				 $this->load->view('admin/student_marksheet',$data);
 				 $this->load->view('admin/generate_tr/footer');
 			}
+	public function update_fees_in_program()
+	{
+		$programs = $this->Common_model->get_record('program','id, course_group_id','course_group_id!=0' );
+
+		foreach ($programs as $program) {
+			$courseData = $this->Common_model->getRecordById('course','course_group_id',$program['course_group_id']);
+			$updateData['admission_fees'] = $courseData->form_fees+$courseData->admission_fees;
+			$updateData['program_fees'] = $courseData->program_fees;
+			$updateData['exam_fees'] = $courseData->exam_fees;
+			$courseData = $this->Common_model->getRecordByWhere('course_group',array('id' => $program['course_group_id']));
+			$updateData['min_duration'] = $courseData[0]->duration;
+			$updateData['eligibility'] = $courseData[0]->eligibility_detail;
+			$updateData['mode'] = $courseData[0]->mode;
+			$where = array('id' => $program['id']);
+			$this->Common_model->updateRecordByConditions('program',$where,$updateData);
+			echo $this->db->last_query().'<br>';
+		}
+	}
 }// class
-
-
