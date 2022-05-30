@@ -246,7 +246,7 @@ class Center extends CI_Controller {
 			'courses' => $this->Common_model->get_record_by_order('student','DISTINCT(course_group_id),course_name','course_name desc',$where)
 		);
 
-		$titleData = array('title' => 'Students Report' );
+		$titleData = array('title' => 'Students Report');
 		$this->load->view('Centers/header',$titleData);
 		$this->load->view('Centers/student_details',$csrf);
 		$this->load->view('Centers/footer');
@@ -1405,6 +1405,117 @@ class Center extends CI_Controller {
 		echo json_encode(array("status" => true,));
 	}
 
+	public function center_wise_student_marksheet()
+	{
+		$center_id =  $this->session->center_id;
+        $where = array(
+			'center_id'=>$center_id,
+		);
+		
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		$this->db->select('distinct(course_group_id) as course_group_id , course_group.course_name');
+		$this->db->from('student');
+		$this->db->join('course_group', 'student.course_group_id = course_group.id');
+		$this->db->where('center_id', $center_id);
+		$this->db->where('result_show','Y');
+		$data['courses'] = $this->db->get()->result();
+		$this->load->view('Centers/header');
+		$this->load->view('Centers/center_wise_student_marksheet',$data);
+		$this->load->view('Centers/footer');		
+	}
+
+	public function AllClassByCourse()
+	{
+    $course = $this->input->post('course_group_id');
+	$this->db->select('*');
+	$this->db->from('class_master');
+	$this->db->where('exam_form_permission','Y');
+	$this->db->where('course_group_id',$course);
+	$class_list = $this->db->get()->result_array();		
+		$data = array(
+			'class_list' => $class_list,
+			'all'=> true
+		);
+		echo $this->load->view('template/getclass',$data,true);
+	}
+
+
+
+	public function getStudentListForMarksheet(){
+		$data = $row = array();
+
+		$where = array(
+			'center_id' => $this->session->center_id,
+			'result_show'=>'Y'
+		);
+
+
+		if($_POST['course_group_id']!='All' and $_POST['course_group_id']!=''){
+			$where['course_group_id'] = $this->input->post('course_group_id');
+		}
+		if($_POST['class_id']!='All' and $_POST['class_id']!=''){
+			$where['class_id'] = $this->input->post('class_id');
+		}
+
+		// Fetch member's records
+		
+		$column_order = array('student.student_id','enrollment_no','name','f_h_name','course_name','class_name',null);
+		$column_search = array('student.student_id','enrollment_no','course_name','class_name','name','f_h_name');
+
+		$DataTableArray = array(
+			'column_order' => $column_order,
+			'column_search' => $column_search,
+			'where' => $where,
+			'table' => 'student',
+			'table2' => 'student_data',
+			'joinOn' => 'student.student_id=student_data.student_id'
+		);
+
+		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
+		$i = $_POST['start'];
+		foreach($tableData as $result){
+			$btn =	'<a href="'.base_url('center/Center/student_marksheet/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
+			$i++;
+			if($result->enrolled=='N'){
+				$enrollment = '-';
+			}else{
+				$enrollment = $result->enrollment_no;
+				}
+			$data[] = array($result->student_id,$enrollment,$result->name, $result->f_h_name, $result->course_name,$result->class_name,$btn);
+		}
+
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->Datatable_join_model->countAll('student',$where),
+			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
+			"data" => $data,
+		);
+
+// Output to JSON format
+		echo json_encode($output);
+	}
+
+
+	public function student_marksheet($student_id="")
+	{
+		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		$student = $this->Common_model->getRecordByWhere("student",array('exam_form'=>'Y','result_show'=>'Y','student_id'=>$student_id));
+		// echo "<pre>" ;
+		// print_r($student);
+		// die ;
+		$data['student']=$student[0];
+		$this->db->select('*');
+		$this->db->from('new_exam_form');
+		$this->db->where('new_exam_form.student_id',$data['student']->student_id); 
+		$new_exam_form = $this->db->get()->result();
+		$data['new_exam_form']  = $new_exam_form;
+		$this->load->view('students/header',array('title' => 'Student Result'));	
+		$this->load->view('Centers/student_marksheet',$data);
+		$this->load->view('students/footer');
+	}
 
 	public function exam_paper($student_id=''){
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');

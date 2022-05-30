@@ -2662,7 +2662,6 @@ public function student_notification_list($course_id="",$class_id=""){
 		}
 	}
 
-
 	public function generate_tr($course_id="",$class_id=""){
 		// $this->db->limit(20);
 	  $this->db->order_by('roll_number','ASC');
