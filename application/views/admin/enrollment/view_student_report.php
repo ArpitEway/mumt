@@ -7,7 +7,7 @@
 	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	<label for="class">Session</label>
 	<select name="session" id="session" class="form-control" >
-		<option>All</option>
+		<!-- <option>All</option> -->
 		<?php 
 		foreach($sessions as $session){
 			?>

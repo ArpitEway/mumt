@@ -22,6 +22,13 @@
 	</div>
 
 </form>
+<div align="center" id="myLoader" class="loader_div" style="display: none;" >
+  <svg>
+    <circle cx="50" cy="50" r="40" stroke="red" stroke-dasharray="78.5 235.5" stroke-width="3" fill="none" />
+    <circle cx="50" cy="50" r="30" stroke="blue" stroke-dasharray="62.8 188.8" stroke-width="3" fill="none" />
+    <circle cx="50" cy="50" r="20" stroke="green" stroke-dasharray="47.1 141.3" stroke-width="3" fill="none" />
+  </svg>
+</div>
 <div id="dt">
 </div>
 <script>
@@ -41,11 +48,16 @@ $(document).on('click', '#submit', function() {
                 type:'post',
                 dataType : 'JSON',
                 data: data,
+                beforeSend: function()
+               {
+                $("#myLoader").show();
+               },
                 success:function(data)
                 {    
                 console.log(data);
-                $("#dt").html(data.data);  
+                $("#dt").html(data.data); 
                 KTDatatablesBasicBasic.init();
+                $('#myLoader').hide() ;
 
                 }
                 

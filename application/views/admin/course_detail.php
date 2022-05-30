@@ -18,19 +18,13 @@ color:red;
         </thead>
         <tbody>
         <?php
-
             foreach($course_group as $course_detail){
-
                 $this->db->limit(1);
                 $this->db->order_by('id','desc');
                 $course = $this->db->get_where('course', array('course_group_id' => $course_detail['id']))->row();
-            
                 ?>
-
                 <tr>
-
                 <td class="course_css"></td>
-
                 <td class="course_css">
                 <?php echo $course_detail['course_name']; ?>
                 </td>
@@ -38,11 +32,10 @@ color:red;
                 <td class="course_css"><?php echo $course_detail['id']; ?></td>
                 <td></td>
                 <td class="course_css" colspan="4"><?php echo $course_detail['mode']; ?></td>
-
             </tr>
-
                 <?php 
-
+                $this->db->order_by('mode','desc');
+                $this->db->order_by('class_name','ASC');
                 $class_master = $this->db->get_where('class_master', array('course_group_id' => $course_detail['id']))->result_array();
                 
                 $i = 1; 

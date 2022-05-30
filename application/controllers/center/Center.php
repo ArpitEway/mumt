@@ -29,8 +29,6 @@ class Center extends CI_Controller {
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}else{
-		
-
 			
 			$titleData = array('title' => 'Center Dashboard');
 			$this->load->view('Centers/header',$titleData);
@@ -49,7 +47,7 @@ class Center extends CI_Controller {
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}else{
-			$titleData = array('title' => 'Course Fees Structure');
+			$titleData = array('title' => 'Regular Course Fees Structure');
 			$this->load->view('Centers/header',$titleData);
 			$center_id =  $this->session->center_id;
 			$centerdata = $this->Common_model->getRecordById('center','id',$center_id);
@@ -130,8 +128,7 @@ class Center extends CI_Controller {
 			exit;
 		}
 		$center_id =  $this->session->center_id;
-        // echo $center_id;
-		// die ;
+
 		if($mode=='regular'){
 			$where = array('admission_permission'=>'Y' ,'id'=>$center_id);
 			$head = '(Regular)';
@@ -158,7 +155,6 @@ class Center extends CI_Controller {
 			'state_list' => $state_list,
 			'district_list' => $district_list,
 			'course_group_list' => $course_group_list,
-			'session' => 'July 2021',
 			'eligibility_list' => $eligibility_list,
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
@@ -211,9 +207,20 @@ class Center extends CI_Controller {
 	}
 
 	public function getClassByCourse(){
+		
 		$course = $this->input->post('course');
-	
-		$class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$course."'  and admission_permission='Y'");
+		$student_mode = $this->input->post('mode');
+		$this->db->select('class_master.*');
+		$this->db->from('class_master');
+		$this->db->join('course_group', 'class_master.course_group_id = course_group.id');
+		if($student_mode=="private"){
+			$this->db->where('course_group.private_mode=class_master.mode');
+		 }else{
+			$this->db->where('class_master.mode=course_group.mode');
+		 }
+		$this->db->where('class_master.admission_permission','Y');
+		$this->db->where('course_group_id',$course);
+		$class_list = $this->db->get()->result_array();
 		$data = array(
 			'class_list' => $class_list,
 		);
@@ -240,7 +247,7 @@ class Center extends CI_Controller {
 			'courses' => $this->Common_model->get_record_by_order('student','DISTINCT(course_group_id),course_name','course_name desc',$where)
 		);
 
-		$titleData = array('title' => 'Students Report' );
+		$titleData = array('title' => 'Students Report');
 		$this->load->view('Centers/header',$titleData);
 		$this->load->view('Centers/student_details',$csrf);
 		$this->load->view('Centers/footer');
@@ -354,10 +361,19 @@ class Center extends CI_Controller {
 
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
+
+
+			
 		foreach($tableData as $result){
-			$btn = '<a href="#" data-student_id="'.$this->Common_model->encrypt_decrypt($result->student_id).'" data-id="'.$this->Common_model->encrypt_decrypt($result->id).'" class="btn btn-info btn-sm pay" >Pay</a>';
+			$center_ids_dep = array( 21,22,23,24,25,26,27,28);
+			if(in_array($this->session->center_id, $center_ids_dep)){
+				$modal ='<a href="#"  data-student_name = "'.$result->name.'"  data-student_id="'.$this->Common_model->encrypt_decrypt($result->student_id).'" class="btn btn-primary btn-sm font-weight-bold pay1" data-toggle="modal" data-target="#kt_datepicker_modal" "  data-amount= "'.$result->amount.'">Receive</a>';
+			}else{
+			 $modal = '<a href="#" data-student_id="'.$this->Common_model->encrypt_decrypt($result->student_id).'" data-id="'.$this->Common_model->encrypt_decrypt($result->id).'" class="btn btn-info btn-sm pay" >Pay</a>';
+			}
+			
 			$i++;
-			$data[] = array($result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->amount,$btn);
+			$data[] = array($result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->amount,$modal);
 		}
 
 		$output = array(
@@ -1391,6 +1407,117 @@ class Center extends CI_Controller {
 		echo json_encode(array("status" => true,));
 	}
 
+	public function center_wise_student_marksheet()
+	{
+		$center_id =  $this->session->center_id;
+        $where = array(
+			'center_id'=>$center_id,
+		);
+		
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		$this->db->select('distinct(course_group_id) as course_group_id , course_group.course_name');
+		$this->db->from('student');
+		$this->db->join('course_group', 'student.course_group_id = course_group.id');
+		$this->db->where('center_id', $center_id);
+		$this->db->where('result_show','Y');
+		$data['courses'] = $this->db->get()->result();
+		$this->load->view('Centers/header');
+		$this->load->view('Centers/center_wise_student_marksheet',$data);
+		$this->load->view('Centers/footer');		
+	}
+
+	public function AllClassByCourse()
+	{
+    $course = $this->input->post('course_group_id');
+	$this->db->select('*');
+	$this->db->from('class_master');
+	$this->db->where('exam_form_permission','Y');
+	$this->db->where('course_group_id',$course);
+	$class_list = $this->db->get()->result_array();		
+		$data = array(
+			'class_list' => $class_list,
+			'all'=> true
+		);
+		echo $this->load->view('template/getclass',$data,true);
+	}
+
+
+
+	public function getStudentListForMarksheet(){
+		$data = $row = array();
+
+		$where = array(
+			'center_id' => $this->session->center_id,
+			'result_show'=>'Y'
+		);
+
+
+		if($_POST['course_group_id']!='All' and $_POST['course_group_id']!=''){
+			$where['course_group_id'] = $this->input->post('course_group_id');
+		}
+		if($_POST['class_id']!='All' and $_POST['class_id']!=''){
+			$where['class_id'] = $this->input->post('class_id');
+		}
+
+		// Fetch member's records
+		
+		$column_order = array('student.student_id','enrollment_no','name','f_h_name','course_name','class_name',null);
+		$column_search = array('student.student_id','enrollment_no','course_name','class_name','name','f_h_name');
+
+		$DataTableArray = array(
+			'column_order' => $column_order,
+			'column_search' => $column_search,
+			'where' => $where,
+			'table' => 'student',
+			'table2' => 'student_data',
+			'joinOn' => 'student.student_id=student_data.student_id'
+		);
+
+		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
+		$i = $_POST['start'];
+		foreach($tableData as $result){
+			$btn =	'<a href="'.base_url('center/Center/student_marksheet/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
+			$i++;
+			if($result->enrolled=='N'){
+				$enrollment = '-';
+			}else{
+				$enrollment = $result->enrollment_no;
+				}
+			$data[] = array($result->student_id,$enrollment,$result->name, $result->f_h_name, $result->course_name,$result->class_name,$btn);
+		}
+
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->Datatable_join_model->countAll('student',$where),
+			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
+			"data" => $data,
+		);
+
+// Output to JSON format
+		echo json_encode($output);
+	}
+
+
+	public function student_marksheet($student_id="")
+	{
+		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		$student = $this->Common_model->getRecordByWhere("student",array('exam_form'=>'Y','result_show'=>'Y','student_id'=>$student_id));
+		// echo "<pre>" ;
+		// print_r($student);
+		// die ;
+		$data['student']=$student[0];
+		$this->db->select('*');
+		$this->db->from('new_exam_form');
+		$this->db->where('new_exam_form.student_id',$data['student']->student_id); 
+		$new_exam_form = $this->db->get()->result();
+		$data['new_exam_form']  = $new_exam_form;
+		$this->load->view('students/header',array('title' => 'Student Result'));	
+		$this->load->view('Centers/student_marksheet',$data);
+		$this->load->view('students/footer');
+	}
 
 	public function exam_paper($student_id=''){
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
@@ -1576,4 +1703,73 @@ public function practical_assignment_marks_sub()
 		 		"data" => $model
 		 	));
 	}
+
+	public function instruction_private(){
+
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url());
+		}else{
+			$titleData = array('title' => 'Private Course Fees Structure');
+			$this->load->view('Centers/header',$titleData);
+			$center_id =  $this->session->center_id;
+			$centerdata = $this->Common_model->getRecordById('center','id',$center_id);
+			$this->db->where('id in ('.$centerdata->allot_course_group_id.')');
+			$course_group_list = $this->Common_model->get_record('course_group','*',array('status !=' => 'D' ,'admission_permission_pvt'=>'Y'));
+			$data = array('course_group' => $course_group_list);
+			$this->load->view('Centers/instruction_private',$data);
+			$this->load->view('Centers/footer');
+		}
+	}
+
+
+	public function update_unpaid_student(){
+			
+		if ($this->input->method() == "post") 
+		{  
+
+		    
+			$payment_date  = $this->input->post("payment_date");
+			$student_id  = $this->input->post("student_id");
+	      	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+			$remark  = $this->input->post("remark");
+			$payment_mode  = $this->input->post("payment_mode");
+			$amount  = $this->input->post("amount");
+			$file_name = '';
+			if(isset($_FILES['images']) && $_FILES['images']['tmp_name']!=''){
+			$filename = $student_id.'-'.date('Ymdhis');
+			$this->upload->initialize($this->Common_model->set_upload_options('./assets/transactionImgaes/',$filename));
+			if(!$this->upload->do_upload('images')){
+				$error = $this->upload->display_errors();
+				$msg = array('error'=>$error);
+				echo json_encode($msg);
+				exit();
+				
+			}else{
+			$uploadData = $this->upload->data();
+			$file_name = $uploadData['file_name'];
+			}
+			}
+			$updateData = array(
+				'payment_date' => $payment_date,
+				'remark' => $remark,
+				'payment_mode' => $payment_mode,
+				'amount' => $amount,
+				'image' => $file_name,
+				'payment_status' => "Paid By University",
+				'payment' => 'Y'
+			);
+		
+			$where = array(
+				'fees_head'=>'Admission Fees',
+				'student_id'=> $student_id
+			);
+			$update = $this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$updateData);
+			$response = $this->Common_model->updateRecordByConditions('student',array('student_id'=> $student_id),array('payment_status'=>'Y'));
+
+			if($response){
+			echo json_encode(array("status" => 'true'));
+			}
+		}
+	}
+	
 }

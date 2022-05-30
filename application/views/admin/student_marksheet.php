@@ -556,6 +556,4 @@ foreach($papers as $paper)
 		window.print();
 		document.body.innerHTML = originalContents;
 	}
-
-  
 </script>

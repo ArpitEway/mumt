@@ -189,13 +189,13 @@
            	<label for="fees">Fees Head</label>	
 						<select name="fees_head" id="fees_head" class="form-control" >
 							<option value="">Select All</option>
-						<option selected value="Exam Fees">Exam fees</option>
-							<option value="Admission Fees">Admission fees</option>
+							<option selected value="Admission Fees">Admission fees</option>
+							<option  value="Exam Fees">Exam fees</option>
 						</select>
 					</fieldset>
 					<fieldset class="form-group col-md-6">
 						<label for="transaction">Transaction Id</label>	
-						<input type="text" required name="txnId" class="form-control" id="transaction1" placeholder="">
+						<input type="text" required name="txnId" class="form-control" id="txnId" placeholder="">
 					</fieldset>
 					<fieldset class="form-group col-md-6">
 						<label for="date"> Payment Date</label>
@@ -227,6 +227,8 @@
 
 	$('#submit').on('click',function (e) {
 		e.preventDefault();
+		
+		
 		let formData = $('#updateTxnForm').serialize();
 		$.ajax({
 			url: BASE_URL+ 'admin/'+account_type+'/updatePaymentTransaction',
@@ -243,6 +245,7 @@
 					//location.reload();
 				}else if(response.error){
 					toastr.error(response.error);
+					
 				}
 			}
 		})
@@ -255,6 +258,7 @@
 	$j=jQuery.noConflict();
 	$('#submit1').on('click',function (e) {
 		e.preventDefault();
+		
 		let formData = $('#addTxnForm').serialize();
 		$.ajax({
 			url: BASE_URL+ 'admin/'+account_type+'/add_new_txn',
@@ -270,6 +274,9 @@
 					$('.modal-backdrop').remove();
 				}else if(response.error){
 					toastr.error(response.error);
+					$('#addNewTxn').toggle();
+					$('.modal-backdrop').remove();
+
 				}
 			}
 		})

@@ -34,8 +34,9 @@
 							$course_group_id = $this->Common_model->encrypt_decrypt($teacher->course_group_id,'encrypt');
 
 							$class_id = $this->Common_model->encrypt_decrypt($teacher->class_id,'encrypt');
+							$paper_code =  $this->Common_model->encrypt_decrypt($teacher->paper_code,'encrypt');
 							?>
-							<td><a  href='<?php echo base_url('admin/ExamController/teacher_alloted_exam_center/'). $teacher_id.'/'.$class_id.'/'.$course_group_id; ?>'>View</a></td>
+							<td><a  href='<?php echo base_url('admin/ExamController/teacher_alloted_exam_center/'). $teacher_id.'/'.$class_id.'/'.$course_group_id.'/'.$paper_code; ?>'>View</a></td>
 							<?php	}else{ ?>
 							<td>NA</td>
 							<?php	}	?>
