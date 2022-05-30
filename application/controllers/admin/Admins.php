@@ -14,6 +14,7 @@ class Admins extends CI_Controller {
 	}
 
 	public function index(){
+		
 		if($this->session->has_userdata('adminData')){
 			$admin_id = $this->session->admin_id;
 			$where = 'admin_id='.$admin_id.' and status="Y"';
@@ -239,7 +240,7 @@ class Admins extends CI_Controller {
 			redirect(base_url($this->session->account_type));
 			exit;
 		}
-
+ 
 		$this->form_validation->set_rules('password', 'Password', 'required');
 		$this->form_validation->set_rules('username', 'username', 'required');
 
@@ -262,6 +263,7 @@ class Admins extends CI_Controller {
 					'account_type' => $check_user->account_type,
 					'admin_id' => $check_user->id
 				);
+			
 				$this->session->set_userdata($data);
 				redirect(base_url($check_user->account_type));
 			}else{
@@ -2775,6 +2777,7 @@ public function update_student_result_permission(){
 			}
 	public function update_fees_in_program()
 	{
+
 		$programs = $this->Common_model->get_record('program','id, course_group_id','course_group_id!=0' );
 
 		foreach ($programs as $program) {
@@ -2790,5 +2793,18 @@ public function update_student_result_permission(){
 			$this->Common_model->updateRecordByConditions('program',$where,$updateData);
 			echo $this->db->last_query().'<br>';
 		}
+	}
+
+
+	public function student_marksheet()
+	{
+
+	       $data['students']  = $this->Common_model->getRecordByWhere('student',array('exam_form'=>'Y','roll_no!='=>0 , 'student_id'=>188237));
+		//    echo "<pre>";
+		//    print_r($students);
+		//    die ;
+		      $this->load->view('admin/student_marksheet/header');
+			  $this->load->view('admin/student_marksheet',$data);
+			  $this->load->view('admin/student_marksheet/footer');
 	}
 }// class

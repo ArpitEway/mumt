@@ -540,7 +540,7 @@
 			'enrollment_permission' => 'Y',
 			);
 	$session = $this->db->get_where('session',$where)->result_array();
-
+     
 	$data['session'] = $session;
 	$data['name_csrf'] = $this->security->get_csrf_token_name();
 	$data['hash_csrf'] = $this->security->get_csrf_hash();
@@ -846,7 +846,7 @@
 			if($center_id!='')
 			{
 
-           	$this->db->where('center_id',$center_id);
+           	    $where =  $this->db->where('center_id',$center_id);
 				$data['listing'] = $this->Common_model->getRecordByWhere('student',$where);
 				$this->load->view('header',array('title' => 'Center Wise Student List'));
 				$this->load->view('admin/enrollment/students_count_details',$data); 

@@ -1,40 +1,114 @@
 
-<style>
-table, th, td {
-  border: 1px solid black;
-  padding: 5px;
-}
-/* table {
-  border-spacing: 15px;
-} */
-.table-bordered td{
-  border:0;
-}
 
-</style>
-
-<style>
-table, th, td {
-  border: 1px solid black;
-  padding: -10px;
-  font-size: 18px;
-}
-/* table {
-  border-spacing: 15px;
-} */
-.table-bordered td{
-  border:0;
-}
-.table td  {
-  padding :2px ;
-}
-.table th  {
-  padding :2px ;
-}
+<?php
+function numberTowords($num)
 {
-    height: 180px;
-    width: auto;
-    object-fit: cover;
+
+$ones = array(
+0 =>"ZERO",
+1 => "ONE",
+2 => "TWO",
+3 => "THREE",
+4 => "FOUR",
+5 => "FIVE",
+6 => "SIX",
+7 => "SEVEN",
+8 => "EIGHT",
+9 => "NINE",
+10 => "TEN",
+11 => "ELEVEN",
+12 => "TWELVE",
+13 => "THIRTEEN",
+14 => "FOURTEEN",
+15 => "FIFTEEN",
+16 => "SIXTEEN",
+17 => "SEVENTEEN",
+18 => "EIGHTEEN",
+19 => "NINETEEN",
+"014" => "FOURTEEN"
+);
+$tens = array( 
+0 => "ZERO",
+1 => "TEN",
+2 => "TWENTY",
+3 => "THIRTY", 
+4 => "FORTY", 
+5 => "FIFTY", 
+6 => "SIXTY", 
+7 => "SEVENTY", 
+8 => "EIGHTY", 
+9 => "NINETY" 
+); 
+$hundreds = array( 
+"HUNDRED", 
+"THOUSAND", 
+"MILLION", 
+"BILLION", 
+"TRILLION", 
+"QUARDRILLION" 
+); /*limit t quadrillion */
+$num = number_format($num,2,".",","); 
+$num_arr = explode(".",$num); 
+$wholenum = $num_arr[0]; 
+$decnum = $num_arr[1]; 
+$whole_arr = array_reverse(explode(",",$wholenum)); 
+krsort($whole_arr,1); 
+$rettxt = ""; 
+foreach($whole_arr as $key => $i){
+	
+while(substr($i,0,1)=="0")
+		$i=substr($i,1,5);
+if($i < 20){ 
+/* echo "getting:".$i; */
+$rettxt .= $ones[$i]; 
+}elseif($i < 100){ 
+if(substr($i,0,1)!="0")  $rettxt .= $tens[substr($i,0,1)]; 
+if(substr($i,1,1)!="0") $rettxt .= " ".$ones[substr($i,1,1)]; 
+}else{ 
+if(substr($i,0,1)!="0") $rettxt .= $ones[substr($i,0,1)]." ".$hundreds[0]; 
+if(substr($i,1,1)!="0")$rettxt .= " ".$tens[substr($i,1,1)]; 
+if(substr($i,2,1)!="0")$rettxt .= " ".$ones[substr($i,2,1)]; 
+} 
+if($key > 0){ 
+$rettxt .= " ".$hundreds[$key]." "; 
+}
+} 
+if($decnum > 0){
+$rettxt .= " and ";
+if($decnum < 20){
+$rettxt .= $ones[$decnum];
+}elseif($decnum < 100){
+$rettxt .= $tens[substr($decnum,0,1)];
+$rettxt .= " ".$ones[substr($decnum,1,1)];
+}
+}
+return $rettxt;
+}
+?>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<link href="css/print_Marksheet.css" rel="stylesheet" type="text/css">
+
+<style type="text/css">
+
+body {
+color:#000000;
+font-family: "Times New Roman";
+
+}
+
+.style1 {
+	font-size: 13px;
+	font-weight: bold;
+}
+.style4 {font-size: 14px; font-weight: bold; }
+.style7 {font-size: 12px; font-weight: bold; }
+.barcode img{
+    height: 25px;
+}
+.student_image{
+	image-orientation: none;
 }
 @media print {
 	.breakhere { page-break-before:always;  };
@@ -43,358 +117,431 @@ table, th, td {
     	vertical-align: middle;
     }
 </style>
-      <div class="form-group col-md-12 text-center mt-3"  id="print_btn">
-        <button  type="button" onclick="printDiv('printarea')"  class="btn btn-primary font-weight-bold mr-2" >Print</button>
-      </div>
- <div class="container" id="printarea" style=" margin-top: 6rem!important;">
-              <?php 
-              foreach($students  as $student)
-              {
-                ?>
-          
 
-                <div class="breakhere" style="">
-                          <div class="row " >
-                                <div class="col-12" style="color:white ; text-align:center">
-                                    <?php echo   $this->Common_model->getCenterNameById($student->center_id)  ?>
-                                </div>
-                          </div>
-                          <div class="row">
-                                      <div class="col-1 text-right">
-                                        <img src="<?=base_url()?>assets/images/maskgroup/MaskGroup1.png"  width="100px;" />
-                                      </div>
-                                      <div class="col-11">
-                                              <h3 class="text-center"  style=" font-weight: 500 !important;">महर्षि    पाणिनि    संस्कृत    एवं    वैदिक    विश्वविद्यालय,   उज्जैन  (म .प्र.)</h3>
-                                              <h3 class="text-center" style=" font-weight: 400 !important;">MAHARSHI PANINI SANSKRIT EWAM VEDIC VISHWAVIDHYALAYA , UJJAIN (M.P.) </h3>
-                                              <p class="text-center" style="margin-bottom: 0rem;">(मध्यप्रदेश साशन द्वारा स्थापित:)</p>
-                                              <p class="text-center ; " style="margin-bottom: 0rem;">(ESTABLISHED BY GOVT. OF MADHYA PRADESH) </p>
-                                      </div>
-                          </div>
-                          <div class="row mt-6">
-                              <div class="col-1 text-right">  </div>
-                                <div class="col-11">
-                                        <p class="text-center" style="margin-bottom: 0rem; color : white"><?php echo $student->name  ?></p>
-                                        <h4 class="text-center" style=" font-weight: 400 !important;">अंकपत्रम  MARKSHEET</h4>
-                                        <p class="text-center font-weight-bold" style="color:black ;margin-bottom: 0.5rem;    font-weight: 600 !important;"><?php echo $student->course_name; echo "&nbsp;&nbsp;" ;echo  $student->class_name  ?></p>
-                                       
-                                </div>
-                          </div>
-                </div>
+</head>
+<body>
+<center>
+<?php 
+foreach($students as $student)
+{
 
-                <div class="row">
-                  <?php  $year = substr($student->session, -2);  ?>
-                    <div class="col-12  ">
-                          <p class="text-left">S. No. : <span class="font-weight-bold"><?php echo  $year.'/'.$student->student_id  ?></span></p>
-                    </div>
-                </div>
-        <table border="0" class="table">
-          <tbody>
-            <tr>
-              <td  style='border:none; padding: 5px;'>छात्रस्य नाम</td>
-              <th style='border:none; padding: 5px;' scope="row"><?php  echo $student->name_hindi;  ?></th>
-              <td style='border:none; padding: 5px;'>अनुक्रमांक:</td>
-              <td style='border:none; padding: 5px;'> </td>
-            </tr>
-            <tr>
-              <td style='border:none; padding: 5px;' >Student's Name</td>
-              <th style='border:none; padding: 5px;'><?php  echo  strtoupper($student->name); ?></th>
-              <td style='border:none; padding: 5px;'>Roll No.</td>
-              <th style='border:none; padding: 5px;'><?php  echo $student->roll_no;  ?> </th>
-            </tr>
-            
-            <tr>
-              <td style='border:none; padding: 5px;'>पितुर्नाम </td>
-              <th style='border:none; padding: 5px;'><?php  echo  $student->f_h_name_hindi; ?></th>
-              <td style='border:none; padding: 5px;'>नामांकन संख्या</td>
-              <td style='border:none; padding: 5px;'></td>
-            </tr>
 
-            <tr>
-              <td style='border:none; padding: 5px;'>Father's Name </td>
-              <th style='border:none; padding: 5px;'><?php  echo  strtoupper($student->f_h_name); ?></th>
-              <td style='border:none; padding: 5px;'>Enrollment No.</td>
-              <th style='border:none; padding: 5px;'><?php  echo  $student->enrollment_no; ?></th>
-            </tr>
-            <tr>
-              <td style='border:none; padding: 5px;'>मातुर्नाम</td>
-              <th style='border:none; padding: 5px;'><?php  echo  $student->mother_name_hindi; ?></th>
-              <td style='border:none; padding: 5px;'>नियमित:/स्वाधयायी </td>
-              <td style='border:none; padding: 5px;'><?php echo ($student->mode=='regular') ? 'नियमितः' : 'स्वाध्यायी' ?></td>
-            </tr>
+  $class_details = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id'=>'27'));
+  $this->db->select("*");
+  $this->db->from('paper_master');
+  $this->db->join("new_exam_form",'paper_master.id = new_exam_form.paper_id');
+  $this->db->where('new_exam_form.student_id',$student->student_id);
+  $papers = $this->db->get()->result();
 
-            <tr>
-              <td style='border:none; padding: 5px;'>Mother's Name</td>
-              <th style='border:none; padding: 5px;'><?php  echo  strtoupper($student->mother_name); ?></th>
-              <td style='border:none; padding: 5px;'>Regular/Private</td>
-              <th style='border:none; padding: 5px;'><?php  echo  $student->mode; ?></th>
-            </tr>
-          </tbody>
-        </table>
-                <div class="container-fluid " style="margin-top: -16px; padding: 14px;    border-left: 1px solid;border-right: 1px solid;">
-                      <div class="row " >
-                            <div class="col-3">
-                              संस्थानाम 
-                            </div>
-                            <div class="col-9 font-weight-bold">
-                                <?php echo   $this->Common_model->getCenterNameById($student->center_id)  ?>
-                            </div>
-                      </div>
-                      <div class="row mt-2">
-                          <div class="col-3">
-                                Center Name
-                          </div>
-                          <div class="col-9 font-weight-bold">
-                              <?php echo  $this->Common_model->getCenterNameById($student->center_id)  ?>
-                          </div>
-                      </div>
-                </div>
-        <table class="table">
-          
-            <tbody>
-            
-              <tr>
-                <td rowspan="3" style="    border-bottom: 1px solid; border-left: 1px solid; border-top: 1px solid; text-align: center"> प्र. &nbsp; प्र. <br>   संकेतांक <br> Paper <br>Code</td>
-                <td rowspan="3" style="   border-bottom: 1px solid;border-left: 1px solid;border-top: 1px solid; vertical-align: middle;"><span class="ml-3">विषय:</span> <br> <span class="ml-3">SUBJECT</span></td>
-                <td colspan="4" style="    border-bottom: 1px solid;border-left: 1px solid;border-top: 1px solid; text-align: center">अंकयोजना &nbsp; Scheme</td>
-                <td rowspan="2"  colspan="2" style="    border-bottom: 1px solid;border-left: 1px solid;border-top: 1px solid; text-align: center ;vertical-align: middle"> प्राप्तांक <br> Marks <br> Obtained</td>
-                <td rowspan="3" style="    border-bottom: 1px solid;border-left: 1px solid;border-top: 1px solid; text-align: center ;vertical-align: middle"> विषययोग: <br> Subject <br> Total</td>
-                <td rowspan="3" style="    border-bottom: 1px solid;border-right: 1px solid;border-top: 1px solid;border-left: 1px solid; text-align: center ;vertical-align: middle">टिप्पणी  <br> Remarks</td>
-              </tr>
-              <tr>
-                <td colspan="2" style="    border-bottom: 1px solid;border-left: 1px solid; text-align: center">पूर्णांक <br> Max Marks</td>
-                <td colspan="2" style="    border-bottom: 1px solid;border-left: 1px solid; text-align: center">उत्तीर्णांक <br> Pass Marks</td>
-              </tr>
-              <tr>
-                <td style="    border-bottom: 1px solid;border-left: 1px solid; text-align: center ;vertical-align: middle">सैद्धा. <br> FE</td>
-                <td style="    border-bottom: 1px solid;border-left: 1px solid; text-align: center ;vertical-align: middle">आ. मू. <br>IA</td>
-                <td style="    border-bottom: 1px solid;border-left: 1px solid; text-align: center ;vertical-align: middle">सैद्धा. <br>FE</td>
-                <td style="    border-bottom: 1px solid;border-left: 1px solid; text-align: center ;vertical-align: middle">आ. मू. <br>IA</td>
-                <td style="    border-bottom: 1px solid;border-left: 1px solid; text-align: center ;vertical-align: middle">सैद्धा. <br>FE</td>
-                <td style="    border-bottom: 1px solid;border-left: 1px solid; text-align: center ;vertical-align: middle">आ. मू. <br>IA</td>
-              </tr>
 
-              <?php 
-                        $this->db->select('*');
-                        $this->db->from('new_exam_form');
-                        $this->db->join('paper_master', 'new_exam_form.paper_id = paper_master.id');
-                        $this->db->where('new_exam_form.student_id',$student->student_id); 
-                        $paper_marks = $this->db->get()->result();
-                        $check_grace_marks = false;
-                        $fail_count = 0;
-                        $fali_tot_marks = 0;
-                        $require_tot_marks = 0;
-                        $tot_marks = 0;
-                        foreach($paper_marks as $marks){
-                            if($marks->type=='theory'){
-                                    $tot_marks += $marks->max_theory_marks;
-                                if($marks->theory_marks>=$marks->min_theory_marks){
-                                    $result = "उत्तीर्ण";
-                                }else{
-                                    $result = "अनुत्तीर्ण";
-                                    $fail_count++;
-                                    $fali_tot_marks += $marks->theory_marks;
-                                    $require_tot_marks += $marks->min_theory_marks;
-                                }
-                            }else if($marks->type=='practical'){
-                                $tot_std_marks += $marks->p_marks;
-                                $tot_marks += $marks->max_theory_marks;
-                                if($marks->p_marks>=$marks->min_theory_marks){
-                                    $result = "उत्तीर्ण";
-                                }else{
-                                    $result = "अनुत्तीर्ण";
-                                    $fail_count++;
-                                    $fali_tot_marks += $marks->p_marks;
-                                    $require_tot_marks += $marks->min_theory_marks;
-                                }
-                            }
-                        }
-                        // echo 'tot_marks'.$tot_marks;
-                        // echo 'tot_std_marks ='.$tot_std_marks;
-                        
+?>
+<fieldset id="printarea"  style="width:90%;border: 0px solid #22316C;"> 
+<div align="left"> MS No. <?php echo $student->marksheet_no; ?> </div>
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tbody>
+<tr>
+<td height="100" colspan="2" valign="top">
+<p align="center">      
+<p align="center"> <font size="2.5"> <b>
+</b> 
+</font> 
+</br> <font size="1"><b>
+</b></font>
+
+</br> <font size="1"><b>
+</b></font>
+
+</br> <font size="1">
+</font>
+
+</br> <font size="2"><b> <U>
+</U></b> </font>     </p>
+<br>
+<center>
+<span class="style1"><strong> <font size="4">
+<?php
+//$c_name=$student['course_name'];
+echo $student->course_name .' '. $student->class_name ; ?><strong></span>
+    </center></font></td>
+    </tr>
+    <tr>
+    <td align="center" height="120" colspan="2">
+    
+    <table class="mytable" border="0" cellpadding="2" cellspacing="2" width="100%">
+    <tbody>
+    <tr>
+    <td class="Normaltext" colspan="2">
+    <div align="center"><font size="4">  &nbsp; </font></div></td>
+    <!--<td align="left" width="17%" rowspan="5">
+<img  src="images/<?php // echo $student['session']; ?>/<?php //  echo $student['photo']; ?>" width="90px" height="105px"></td>-->
+    </tr>
+    
+<tr>
+<td class="Normaltext" align="left"><div align="left">Roll No</div></td>
+<td width="53%" class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo $student->roll_no;; ?></span> <div style="float:right"> &nbsp;&nbsp;&nbsp; Mode - Distance Education </div>
+</div></td>
+<td align="left" width="18%" rowspan="4">
+<img border="1"  class="student_image" src="../admin/en/na.jpg" width="90px" height="105px">
+</td>
+</tr>
+
+
+<tr>
+<td class="Normaltext" align="left"><div align="left">Enrolment / Registration No.</div></td>
+<td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;">DE / <?php echo  $student->enrollment_no;; ?></span></div></td>
+</tr>
+
+
+<tr>
+<td class="Normaltext" align="left" width="29%"><div align="left">Name of the Candidate</div></td>
+<td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo  $student->name; ?></span></div></td>
+</tr>
+
+
+<tr>
+<td class="Normaltext" align="left" width="29%"><div align="left">Father's / Husband's Name</div></td>
+<td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo strtoupper( $student->f_h_name); ?></span></div></td>
+</tr>
+
+
+<!--<tr>
+<td class="Normaltext" align="left" width="28%"><div align="left">Name of Institute</div>
+</td>
+<td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php // echo strtoupper($student['center_name']); ?></span></div>
+</td>
+</tr>-->
+</tbody>
+</table></td></tr><tr>
+
+<td height="72" colspan="2">
+    
+<br>
+    
+		<fieldset style="border: 0px solid #22316C;">       
+        <div style="min-height:250px;">
+        <table id="" style="width:100%;" border="0" cellspacing="0" cellpadding="0" align="center">
+			<tbody>
+
+          <tr style="font-family:Arial, Helvetica, sans-serif; font-size:11px" align="center">
+              <td width="11%" rowspan="3" align="left" style="font-size:11px" scope="col"><span class="style7">Paper Code</span></td>
+              <td width="42%" rowspan="3" style="font-size:11px" scope="col"> <div align="left" class="style7">Paper Name</div></td>    
+              <td  colspan="4"><strong><u> Examination Scheme</u></strong></td>              
+              <td colspan="2"><strong><u>Obtained Marks</u></strong></td>
+              <td width="8%" rowspan="3" scope="col"><strong><u>Total</u></strong></td>
+          </tr>
                       
-                        $aggregate_per =   ($tot_std_marks/$tot_marks) * 100;     
-                        $require_grace_marks = $require_tot_marks-$fali_tot_marks;
-                      
-                        if ($fail_count<3 && $require_grace_marks<4  && $aggregate_per) {
-                            $check_grace_marks = true;
-                        }
-                
-
-
-                        $total_paper_marks = 0;
-                        $total_student_marks = 0 ;
-                        $result = "";
-                        $fail_count = 0;
-
-
-                $this->db->select('*');
-                $this->db->from('new_exam_form');
-                $this->db->join('paper_master', 'new_exam_form.paper_id = paper_master.id');
-                $this->db->where('new_exam_form.student_id',$student->student_id); 
-                $paper_marks = $this->db->get()->result();
-                // echo "<pre>";
-                // print_r($paper_marks);
-                $total_max_theory_marks = 0 ;
-               $total_max_internal_marks = 0 ;
-               $total_min_theory_marks= 0 ;
-               $total_min_internal_marks = 0 ;
-                $total_theory_marks = 0 ;
-                $total_int_marks= 0 ;
-                $total_get_marks = 0 ;
-                foreach($paper_marks as  $marks)
-                {
-                  $total_max_theory_marks = $total_max_theory_marks +$marks->max_theory_marks;
-                 $total_max_internal_marks =$total_max_internal_marks +$marks->max_internal_marks;
-                 $total_min_theory_marks=$total_min_theory_marks+$marks->min_theory_marks;
-                 $total_min_internal_marks =$total_min_internal_marks +$marks->min_internal_marks;
-                  $total_theory_marks = $total_theory_marks +$marks->theory_marks;
-                  $total_int_marks = $total_int_marks +$marks->int_marks;
-                  $total_get_marks = $total_get_marks +$marks->theory_marks + $marks->int_marks ;
-
-
-
-
-                      // final result code 
-                      if($marks->type=="theory" )
-                      {
-                            if(($marks->theory_marks<$marks->min_theory_marks || $marks->int_marks<$marks->min_internal_marks) && $check_grace_marks==false ){
-                              ++$fail_count ;
-                          }
-                      }else{
-                        if($marks->p_marks<$marks->min_theory_marks)
-                          {
-                            ++$fail_count ;
-                          }
-                      }
             
             
-                      // final result code end
+          <tr style="font-family:Verdana;font-size:9px;" align="center">
+              <td scope="col" colspan="2"><strong><u>Th/Pr/Pj</u></strong></td>
+              <td scope="col" colspan="2"><strong><u>Assignment</u></strong></td>
+
+              <td width="8%" rowspan="2" scope="col" style="text-align:left;padding-left:10px;"><strong><u>Th/Pr/Pj</u></strong></td>
+              <td width="6%" rowspan="2" scope="col"><strong><u>Assignment</u></strong></td>
+          </tr>
+
+             
+            
+            
+
+          <tr style="font-family:Verdana;font-size:9px;" align="center">
+              <td width="6%" scope="col"><strong><u>Max</u></strong></td>
+              <td width="6%" scope="col"><strong><u>Min</u></strong></td>
+              <td width="6%" scope="col"><strong><u>Max</u></strong></td>
+              <td width="6%" scope="col"><strong><u>Min</u></strong></td>
+          </tr>
+      
+
+  <tr> 
+  
+  <td colspan="9">&nbsp;</td> </tr>
 
 
-                      if($marks->type=="theory"){
-                        if($marks->theory_marks<$marks->min_theory_marks || $marks->int_marks<$marks->min_internal_marks){
-                        ($check_grace_marks) ? $res = "Pass" :   $res = "Fail";
-          
-                      
-                        }else{
-                          $res = "Pass";
-                        } 
-                      }else{
-                      
-                        if($marks->p_marks<$marks->min_theory_marks){
-                        $res = "Fail";
-                        }else{
-                        $res = "Pass";
-                        }
-                      }
-                  ?>
-                  <tr>
-                    <td style="border-left: 1px solid; vertical-align: middle;text-align: center"><?php echo $marks->paper_code ?></td>
-                    <td style="border-left: 1px solid; vertical-align: middle; padding-left: 8px;"><?php echo $marks->paper_name ?></td>
-                    <td style="border-left: 1px solid; vertical-align: middle;text-align: center"><?php  echo $marks->max_theory_marks ?></td>
-                    <td style="border-left: 1px solid; vertical-align: middle;text-align: center"><?php  echo "-" ; ?></td>
-                    <td style="border-left: 1px solid; vertical-align: middle;text-align: center"><?php  echo $marks->min_theory_marks ?></td>
-                    <td style="border-left: 1px solid; vertical-align: middle;text-align: center"><?php echo "-" ; ?></td>
-                    <td style="border-left: 1px solid; vertical-align: middle;text-align: center"><?php  
-                    
-                    if( $marks->type =='practical'){
-                      if($marks->p_marks < $marks->min_theory_marks)
-                      {
-                        echo $marks->p_marks;?><span style="">*</span> <?php
-                      }else{
-                        echo $marks->p_marks;
-                      }
-                      }else
-                      {
-                        if($marks->theory_marks<$marks->min_theory_marks)
-                        {
-                          echo $marks->theory_marks;echo ($check_grace_marks) ? ' G' : '<span style="">*</span>';?> <?php
-                        }else{
-                          echo $marks->theory_marks;
-                          }
-                      };  
-                    ?></td>
-                    <td style="border-left: 1px solid; vertical-align: middle;text-align: center"><?php  echo "-" ?></td>
-                    <td style="border-left: 1px solid; vertical-align: middle;text-align: center"><?php  echo $marks->theory_marks + $marks->int_marks ?></td>
-                    <td style="border-right: 1px solid;border-left: 1px solid; vertical-align: middle;text-align: center"></td>
-                  </tr>
-                  <?php 
-                }
-                ?>
-              <tr >
-                <td style=" border-top: 1px solid;   border-bottom: 1px solid;border-left: 1px solid; text-align: center ;vertical-align: middle"></td>
-                <td style="  border-top: 1px solid;  border-bottom: 1px solid;border-left: 1px solid; text-align: center ;vertical-align: middle">योग: &nbsp; Total</td>
-                <th style="  border-top: 1px solid;  border-bottom: 1px solid;border-left: 1px solid; text-align: center ;vertical-align: middle"><?php  echo $total_max_theory_marks ?></th>
-                <td style="  border-top: 1px solid;  border-bottom: 1px solid;border-left: 1px solid; text-align: center ;vertical-align: middle"><?php  echo "-" ?></td>
-                <th style="  border-top: 1px solid;  border-bottom: 1px solid;border-left: 1px solid; text-align: center ;vertical-align: middle"><?php  echo$total_min_theory_marks?></th>
-                <td style="  border-top: 1px solid;  border-bottom: 1px solid;border-left: 1px solid; text-align: center ;vertical-align: middle"><?php  echo "-" ?></td>
-                <th style="  border-top: 1px solid;  border-bottom: 1px solid;border-left: 1px solid; text-align: center ;vertical-align: middle"><?php  echo $total_theory_marks ?></th>
-                <td style="  border-top: 1px solid;  border-bottom: 1px solid;border-left: 1px solid; text-align: center ;vertical-align: middle"><?php  echo "-" ?></td>
-                <th style="  border-top: 1px solid;  border-bottom: 1px solid;border-left: 1px solid; text-align: center ;vertical-align: middle"><?php  echo $total_get_marks ?></th>
-                <td style="border-top: 1px solid; border-right: 1px solid;   border-bottom: 1px solid;border-left: 1px solid; text-align: center ;vertical-align: middle"></td>
-              </tr>
-            </tbody>
-          </table>
-        <table class="table">
+  <?php
 
-          <tbody>
-          <tr style="border-top: none;">
-              <td style="border-top: none;text-align:center;" scope="">वर्ष/सेमेस्टर<br> Year/Semester</td>
-              <td style="border-top: none;text-align:center;vertical-align: middle" scope="col">I</td>
-              <td style="border-top: none;text-align:center;vertical-align: middle" scope="col">II</td>
-              <td style="border-top: none;text-align:center;vertical-align: middle" scope="col">III</td>
-              <td style="border-top: none;text-align:center;vertical-align: middle" scope="col">IV</td>
-              <td  style="border-top: none;text-align:center;vertical-align: middle" scope="col">V</td>
-              <td  style="border-top: none;text-align:center;vertical-align: middle"scope="col">VI</td>   
-              <td style="border-top: none; text-align:center;vertical-align: middle" scope="col">महायोग: <br>Grand Total</td>
-              <td style="border-top: none; text-align:center;vertical-align: middle" scope="col">परिणाम: <br>Result</td>
-              <td style="border-top: none;text-align:center;vertical-align: middle" scope="col">श्रेणी <br>Division</td>
-            </tr>
-            <tr>
-              <td scope="row" style="text-align:center;">प्राप्तांक:<br>Obtained Marks</td>   
-              <th style="text-align:center;vertical-align: middle"><?php  echo $total_get_marks ?></th>
-              <td style="text-align:center;vertical-align: middle">-</td>
-              <td style="text-align:center;vertical-align: middle">-</td>
-              <td style="text-align:center;vertical-align: middle">-</td>
-              <td style="text-align:center;vertical-align: middle">-</td>
-              <td style="text-align:center;vertical-align: middle">-</td>
-              <th style="text-align:center;vertical-align: middle" scope="col"><?php  echo $total_get_marks ?></th>
-              <th style="text-align:center;vertical-align: middle" scope="col"><?php if($fail_count>0){echo "Fail";}else{echo "Pass";}  ?></th>
-              <th style="text-align:center;vertical-align: middle" scope="col">-</th>
-
-            </tr>
-            <tr>
-              
-              <td scope="row" style="text-align:center;">पूर्णांक:<br>Max. Marks</td>
-              <th style="text-align:center;vertical-align: middle"><?php  echo $total_max_theory_marks +$total_max_internal_marks; ?></th>
-              <td style="text-align:center;vertical-align: middle">-</td>
-              <td style="text-align:center;vertical-align: middle">-</td>
-              <td style="text-align:center;vertical-align: middle">-</td>
-              <td style="text-align:center;vertical-align: middle">-</td>
-              <td style="text-align:center;vertical-align: middle">-</td>
-              <th  style="text-align:center;vertical-align: middle" scope="col"><?php  echo $total_max_theory_marks +$total_max_internal_marks; ?></th>
-              <th scope="col"></th>
-              <th scope="col"></th>
-            </tr>
-          
-          </tbody>
-        </table>
-                    <div class="row  mt-20 mb-15" style="margin-top: 70px; margin-bottom:30px">
-                            <div class="col-6 ">
-                                <div class="text-left  ">Date of Result</div>
-                            </div>
-                            <div class="col-6 ">
-                                <div class="text-right  font-weight-bold">कुलसचिव:/Registrar</div>
-                            </div>
-                    </div>
-
-        <hr style="margin-bottom:20px">
-          <?php
+$this->db->select('*');
+$this->db->from('new_exam_form');
+$this->db->join('paper_master', 'new_exam_form.paper_id = paper_master.id');
+$this->db->where('new_exam_form.student_id',$student->student_id); 
+$paper_marks = $this->db->get()->result();
+$check_grace_marks = false;
+$fail_count = 0;
+$fail_tot_marks = 0;
+$require_tot_marks = 0;
+$tot_marks = 0;
+$result = "PASS";
+$int_fail_count = 0 ;
+$abs_count = 0 ;
+foreach($paper_marks as $marks){
+    if($marks->type=='theory'){
+            $tot_marks += $marks->max_theory_marks;
+        if($marks->theory_marks<$marks->min_theory_marks){
+            $result = "FAIL";
+            $fail_count++;
+            $fail_tot_marks += $marks->theory_marks;
+            $require_tot_marks += $marks->min_theory_marks;
         }
+        if($marks->theory_marks == 'ABS'){
+          $result = 'FAIL';
+          $abs_count++ ;
+        }
+        if($marks->int_marks<$marks->min_internal_marks)
+        {
+          $result ="FAIL";
+          $int_fail_count++ ;
+        }
+        if($marks->int_marks=="N")
+        {
+          $result='FAIL';
+        }
+    }else if($marks->type=='practical'){
+        $tot_std_marks += $marks->p_marks;
+        $tot_marks += $marks->max_theory_marks;
+        if($marks->p_marks<$marks->min_theory_marks){
+            $result = "FAIL";
+            $fail_count++;
+            $fali_tot_marks += $marks->p_marks;
+            $require_tot_marks += $marks->min_theory_marks;
+        }
+    }
+}
 
-        ?>
+// $aggregate_per =   ($tot_std_marks/$tot_marks) * 100;     
+$require_grace_marks = $require_tot_marks-$fail_tot_marks;
+
+if ($fail_count<3 && $require_grace_marks<4 && $int_fail_count==0 && $fail_count!=0 && $require_grace_marks!=0 && $abs_count==0) {
+  // echo $require_grace_marks ;
+
+    $check_grace_marks = true;
+    $result = "PASS BY GRACE";
+}
+
+foreach($papers as $paper)
+{
+
+  $total = $total + $paper->theory_marks +  $paper->int_marks ;
+  $maximum_marks =   $maximum_marks + $paper->max_theory_marks + $paper->max_internal_marks ;
+
+  ?>
+ <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="middle">
+    <td style="margin-top:2px;" align="left"><strong><?php echo  $paper->paper_code; ?></strong></td>
+   
+   <td align="left"><strong><?php  echo $paper->paper_name ;  ?></strong></td>
+   
+   
+    <td align="center" ><span class="style4">
+	<?php echo  $paper->max_theory_marks;?></span></td>
+    <td align="center" ><span class="style4">
+	<?php echo  $paper->min_theory_marks; ?></span></td>
+   <td align="center" ><span class="style4"><?php echo  $paper->max_internal_marks; ?></span></td>
+     <td align="center" ><span class="style4"><?php echo  $paper->min_internal_marks; ?></span></td>
+      <td align="left" ><span class="style4" style="padding-left:10px;">
+        <?php
+         if($paper->theory_marks <  $paper->min_theory_marks || $paper->int_marks <  $paper->min_internal_marks && $check_grace_marks==false)
+         {
+           echo $paper->theory_marks . '*' ;
+         }
+          elseif($paper->theory_marks<$paper->min_theory_marks)
+         {
+           echo $paper->theory_marks; echo ($check_grace_marks) ? ' G' : '';
+         }
+         elseif($paper->theory_marks=='ABS'){
+           echo 'ABS F';
+         }
+         else{
+           echo $paper->theory_marks ;
+         }
+         ?>
+      </span></td>
+     <td align="left" class="style4"><span class="style2" style="padding-left:10px;">
+       <?php echo  $paper->int_marks; ?>
+     </span></td>
+     
+     <td align="left" class="style2"><span class="style4" style="padding-left:10px;">
+	<?php 
+  if($paper->int_marks<$paper->min_internal_marks || $paper->theory_marks<$paper->min_theory_marks && $check_grace_marks==false)
+  {
+    echo  $paper->theory_marks +  $paper->int_marks . '*' ; 
+  }
+  elseif($paper->theory_marks=="ABS")
+  {
+    echo 'ABS';
+  }
+  else{
+    echo $paper->theory_marks + $paper->int_marks ;
+  }
+	?>
+     </span></td>
+  </tr>
+  <?php
+}
+
+?>
+
+</tbody></table>
 </div>
+
+
+
+
+<table border="0" cellpadding="0" height="112" width="100%">
+<tbody>
+
+<tr>
+  <td  colspan="8">  </td>
+  </tr>
+<tr>
+  <td height="20">&nbsp;</td>
+  <td align="center"></td>
+  <td align="center"> </td>
+  <td> <strong> <?php // echo  $t_max; ?></strong>  </td>
+  <td>&nbsp;</td>
+  <td>&nbsp;</td>
+  <td align=""><strong><u>Total</u></strong></td>
+  <td align="">&nbsp;&nbsp;&nbsp;&nbsp;<strong><u><?php echo $total; ?></u></strong> </td>
+</tr>
+
+<tr>
+  <td colspan="8"></td>
+</tr>
+
+
+
+<tr>
+<td width="22%" height="20"><strong><?php //echo $year; //$dt_row['year']; ?></strong></td>
+<td width="13%" style="text-align: center"><strong><?php //echo $year_num;//$dt_row['sem']; ?></strong></td>
+<td width="30%">&nbsp;</td>
+<td width="9%"><!--<div align="center"><strong>Grand-Total</strong></div>--></td>
+<td width="1%"><div align="center"></div></td>
+<td width="8%"><div align="center"><strong></strong></div></td>
+<td width="7%"><div align=""><strong>Result</strong></div></td>
+<td width="10%"><div align="center"><strong><div align="left">&nbsp;&nbsp;&nbsp;<b>
+  <?php echo $result ; ?>
+</b></div></strong></div></td>
+</tr>
+
+
+<tr>
+<td height="20" ><strong>Obtained Marks</strong></td>
+<td style="text-align: center"><b><?php echo  $total ; ?></b></td>
+<td>&nbsp;</td>
+<td> <div align="center"><b><?php // echo  $tot_obt; ?></b></div></td>
+<td>&nbsp;</td>
+<td>&nbsp;  </td>
+<td>
+<strong>&nbsp; </strong><?php /*?><div align="right"><b>
+  <?php if($all_result=='FAIL') { echo "FAIL"; } else { echo $all_result; } ?>
+</b></div><?php */?>
+</td>
+<td> <div align="center"><b> <?php
+	/*	if($all_result=='FAIL') {}
+		else if($t_max!=0)
+		{
+		$p=($tot_obt/$t_max)*100;
+		$p=substr($p,0,5);
+		if($p>=60) { echo "First";  }
+		else if($p>=46 &&$p<60) { echo "Second";  }
+		else { echo "Third";  }
+		}*/
+		?> 
+</b> </div></td>
+</tr>
+ 
+ <tr>
+<td height="20"><strong>Maximum Marks</strong></td>
+<td style="text-align: center"><b><?php echo $maximum_marks ; ?></b></td>
+<td>&nbsp;</td>
+<td><div align="center"><b><?php // echo  $t_max; ?></b></div></td>
+<td></td>
+<td><div align="center"></div></td>
+<td><strong>&nbsp;</strong></td>
+<td> <div align="center">
+  <strong>
+  <?php
+		/*if($all_result=='FAIL') {}
+		else if($t_max!=0) 
+		{
+		$p=($tot_obt/$t_max)*100;
+		$p=substr($p,0,5);
+		echo $p."%";
+		}*/
+		?>  </strong></div></td>
+</tr>
+
+
+
+<tr>
+<td colspan="8"><strong>Total Marks Obtained (in words)</strong> &nbsp;&nbsp;
+<strong><?php echo  numberTowords("$total")//strtoupper($word);?></strong></td>
+</tr>
+
+
+    </tbody>
+    </table>
+    </fieldset>
+	
+<!-- if starts -->
+<tr>
+
+<td align="left" colspan="2"> 
+           
+           <table width="100%" style="margin-top:50px">
+           <tr>
+           <!--<td>Place : Jabalpur</td>
+            <td>Dated : <b> <?php // echo date('d-m-Y'); ?> </b></td>
+             <td>Checked by ...............</td>
+              <td align="right">Controler of Exam / Asstt Registrar</td>-->
+           </tr>
+      </table>    </td></tr>
+    
+    
+    <tr>
+        <td width="17" align="center">
+              <div align="left">
+              <?php echo "Date :".$class_details[0]->result_date; ?></div></td>
+    </tr>
+	<tr>
+			  <td>
+			  <div style="float:left; margin-top:5px; 
+    margin-left: -8px;" class='barcode'> 
+        <svg id="barcode"></svg>
+         </div>
+			  </td>
+    </tr>
+</table>
+<br>
+</fieldset>
+<?php 
+?>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.min.js"></script>
+
+<script>
+  JsBarcode("#barcode", "<?php  echo $student->roll_no.$class_details[0]->bar_code_no ;  ?>", {
+        format: 'code128',
+        lineColor: "#2429e",
+        width: 2,
+        height: 30,
+        displayValue: false,
+        fontSize:20,
+        marginBottom  : 0,
+});
+
+</script>
+<?php
+
+  }
+?>
+
+</body>
+<script language="javascript">
+
+
+</script>
+</html>
 <script type="text/javascript">
+
+
+
 	function printDiv(divName) {
 		var printContents = document.getElementById(divName).innerHTML;
 		var originalContents = document.body.innerHTML;
