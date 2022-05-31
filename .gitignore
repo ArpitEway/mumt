@@ -29,3 +29,5 @@ exam_pdf/*
 assets/exam_answersheet/*
 assets/activity/*
 assets/department/*
+application/composer.lock
+application/vendor/*

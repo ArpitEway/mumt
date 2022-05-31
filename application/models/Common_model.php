@@ -792,20 +792,19 @@ class Common_Model extends CI_Model{
 		return $this->db->get()->result();
 	}
 
-	public function isFinalClass($course_id)
+	public function hasOneClass($course_id)
 	{
 		$this->db->select('*');
         $this->db->from('class_master');
         $this->db->where('course_group_id',$course_id);
 		$func =  $this->db->get()->result();
 		if(count($func)>1){
-			
-			return false ;
+			return false;
 		}elseif(count($func)==1 && $fun[0]->mode=="Annual" && $fun[0]->last_class == "Y" ){
             return true ;
 		}
-	
 	}
+
 	public function notification_marks_details_($student)
 	{
 		$this->db->select('*');
@@ -814,7 +813,6 @@ class Common_Model extends CI_Model{
 		$this->db->where('new_exam_form.student_id',$student); 
 		$query = $this->db->get();
 		return $query->result();
-		
 	}
 }
 
