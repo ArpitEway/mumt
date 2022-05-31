@@ -257,6 +257,7 @@ class Center extends CI_Controller {
 
 		$where = array(
 			'center_id' => $this->session->center_id,
+			'new_admission_permission'=>'N'
 		);
 		if($_POST['session']!='All'){
 			$where['session'] = $this->input->post('session');

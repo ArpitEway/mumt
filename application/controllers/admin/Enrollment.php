@@ -254,6 +254,7 @@
 				$dt['document_uploaded'] = "Y";
 				$dt['university_mode'] = "REG";
 				
+				$this->db->where('new_admission_permission', 'N');
 				$data['students'] = $this->Common_model->student_data($dt);
 				
 				$dt =  $this->load->view('admin/student/getstudent',$data,true);
@@ -345,7 +346,9 @@
 		public function checkDuplicateAdharNo()
 		{
 			$adhar_no = $this->input->post('adhar_no');
-			$where = array('adhar_no'=>$adhar_no,'course_complete'=>'N');
+			$where = array('adhar_no'=>$adhar_no,'course_complete'=>'N'
+				,'new_admission_permission'=>'N'  
+			);
 			$count = $this->Common_model->getCountByWhere('student',$where);
 			if($count>0){
 				echo "Duplicate Adhar Card Number";
