@@ -2,7 +2,6 @@
 	<table class="table text-uppercase">
 		<thead>
 			<tr>
-
 				<th>Sn.no</th>
 				<th>Course</th>
 				<th>Class</th>
@@ -16,53 +15,38 @@
 			<?php
 			$i = 1;
 
-			foreach($assigns as $assign){	
-
-				// $where = array(
-				// 	'center_id in ('.$assign->center_id.')',
-				// 	'paper_code' => $assign->paper_code,
-				// 	'file_exist'=>'Y',
-				// 	'class_id' => $assign->class_id,
-				// 	'course_group_id' => $assign->course_group_id
-				// );
-	           $this->db->select(' count(*) as cnt');
+			foreach($assigns as $assign){
+	           	
+	           	$this->db->select(' count(*) as cnt');
 				$this->db->from('upload_exam_ans_sheet');
 				$this->db->where('paper_code',$assign->paper_code);
 				$this->db->where('class_id',$assign->class_id); 
 				$this->db->where('course_group_id',$assign->course_group_id); 
+				$this->db->group_start();
 				$this->db->where('center_id in ('.$assign->center_id.')');
+				$this->db->or_where('teacher_id in ('.$assign->teacher_id.')');
+				$this->db->group_end();
 				$total_paper_count= $this->db->get()->result();
-			
+
 				$checked = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array('paper_code'=>$assign->paper_code,'teacher_id'=> $assign->teacher_id));
-
 				?>
-
 				<tr>
-
 					<td><?php echo $i; ?></td>
 					<td><?=$this->Common_model->getCourseNameByCourseId($assign->course_group_id); 	
 					?>
 				</td>
 				<td><?=$this->Common_model->getClassNameByClassId($assign->class_id); ?></td>
-
 				<td>
 					<?php
 					$papername=$this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$assign->paper_code));
-
 					?>
 					<?php echo '('.$assign->paper_code.')'. $papername[0]->paper_name ; ?>	
 				</td>
-
+				<td><?php echo  $total_paper_count[0]->cnt; ?></td>
 				<td>
-					<?php echo  $total_paper_count[0]->cnt; ?>
-				</td>
-
-				<td>
-					<?php echo $checked  ; ?>
+					<?php echo $checked; ?>
 				</td>
 				<td><?php  echo $total_paper_count[0]->cnt-$checked ; ?></td>
-
-
 			</tr>
 			<?php  $i++; } ?>
 		</tbody>

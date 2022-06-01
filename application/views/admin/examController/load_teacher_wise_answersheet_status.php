@@ -35,8 +35,12 @@
 				$this->db->from('upload_exam_ans_sheet');
 				$this->db->where('paper_code',$teacher->paper_code);
 				$this->db->where('class_id',$teacher->class_id); 
-				$this->db->where('center_id in ('.$teacher->center_id.')');
+				$this->db->group_start();
+				$this->db->where('center_id in ('.$assign->center_id.')');
+				$this->db->or_where('teacher_id in ('.$assign->teacher_id.')');
+				$this->db->group_end();
 				$count_for_available= $this->db->get()->result();
+
 				$count_for_checked =  $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array("paper_code"=>$teacher->paper_code,'class_id' =>$teacher->class_id,'teacher_id='=>$teacher->teacher_id));
 				?>
 				<tr>
@@ -46,7 +50,7 @@
 					<td><?php echo  $class; ?></td>
 					<td><?php echo  $paper_name[0]->paper_name; ?></td>
 					<td><?php echo  $total_count[0]->cnt ; ?></td>
-					<td><?php echo  $count_for_available[0]->cnt ; ?></td>
+					<td><?php echo  $count_for_available[0]->cnt; ?></td>
 					<td><?php echo  $count_for_checked ; ?></td>
 				</tr>
 			<?php $i++; } ?>
