@@ -31,7 +31,17 @@
 				</select>
 			</div>
 		</div>
-		<div class="col-md-4">
+ 
+       <div class="form-group col-md-3">
+			<label for="class">Admission Mode</label>
+			<select name="university_mode" id="university_mode" class="form-control" >
+			    <option>All</option>
+				<option value="REG">Regular </option> 
+				<option value="PVT" >Private</option>
+			</select>
+		</div> 
+
+		<div class="col-md-3">
 			<div class="form-group">
 				<label>Approved</label>
 				<select class="form-control filter" name="approved" id="approved">
@@ -41,7 +51,7 @@
 				</select>
 			</div>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-3">
 			<div class="form-group">
 				<label>Enrollment Status</label>
 				<select class="form-control filter" name="enrolled" id="enrolled">
@@ -51,7 +61,7 @@
 				</select>
 			</div>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-3">
 			<div class="form-group">
 				<label>Document Status</label>
 				<select class="form-control filter" name="document" id="document">
@@ -110,6 +120,8 @@
                   			approved: $('#approved').val(),
                   			enrolled: $('#enrolled').val(),
                   			document: $('#document').val(),
+                  			university_mode: $('#university_mode').val(),
+
 	                  	} );
               		},
 				},
