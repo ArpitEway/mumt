@@ -34,9 +34,9 @@
  
        <div class="form-group col-md-3">
 			<label for="class">Admission Mode</label>
-			<select name="university_mode" id="university_mode" class="form-control" >
+			<select name="university_mode" id="university_mode" class="form-control filter" >
 			    <option>All</option>
-				<option value="REG">Regular </option> 
+				<option value="REG">Regular</option> 
 				<option value="PVT" >Private</option>
 			</select>
 		</div> 
