@@ -23,31 +23,30 @@
 				$this->db->where('class_id',$assign->class_id); 
 				$this->db->where('course_group_id',$assign->course_group_id); 
 				$this->db->group_start();
+				$this->db->group_start();
 				$this->db->where('center_id in ('.$assign->center_id.')');
+				$this->db->where('teacher_id',''); 
+				$this->db->group_end();
 				$this->db->or_where('teacher_id in ('.$assign->teacher_id.')');
 				$this->db->group_end();
 				$total_paper_count= $this->db->get()->result();
-
+				// $this->Common_model->last_query();
 				$checked = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array('paper_code'=>$assign->paper_code,'teacher_id'=> $assign->teacher_id));
 				?>
 				<tr>
 					<td><?php echo $i; ?></td>
-					<td><?=$this->Common_model->getCourseNameByCourseId($assign->course_group_id); 	
-					?>
-				</td>
-				<td><?=$this->Common_model->getClassNameByClassId($assign->class_id); ?></td>
-				<td>
-					<?php
-					$papername=$this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$assign->paper_code));
-					?>
-					<?php echo '('.$assign->paper_code.')'. $papername[0]->paper_name ; ?>	
-				</td>
-				<td><?php echo  $total_paper_count[0]->cnt; ?></td>
-				<td>
-					<?php echo $checked; ?>
-				</td>
-				<td><?php  echo $total_paper_count[0]->cnt-$checked ; ?></td>
-			</tr>
+					<td><?=$this->Common_model->getCourseNameByCourseId($assign->course_group_id); 	?></td>
+					<td><?=$this->Common_model->getClassNameByClassId($assign->class_id); ?></td>
+					<td>
+						<?php
+						$papername=$this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$assign->paper_code));
+						?>
+						<?php echo '('.$assign->paper_code.')'. $papername[0]->paper_name ; ?>	
+					</td>
+					<td><?= $total_paper_count[0]->cnt; ?></td>
+					<td><?= $checked; ?></td>
+					<td><?= $total_paper_count[0]->cnt-$checked ; ?></td>
+				</tr>
 			<?php  $i++; } ?>
 		</tbody>
 	</table>
