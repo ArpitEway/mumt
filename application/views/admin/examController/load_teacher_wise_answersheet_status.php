@@ -36,8 +36,8 @@
 				$this->db->where('paper_code',$teacher->paper_code);
 				$this->db->where('class_id',$teacher->class_id); 
 				$this->db->group_start();
-				$this->db->where('center_id in ('.$assign->center_id.')');
-				$this->db->or_where('teacher_id in ('.$assign->teacher_id.')');
+				$this->db->where('center_id in ('.$teacher->center_id.')');
+				$this->db->or_where('teacher_id in ('.$teacher->teacher_id.')');
 				$this->db->group_end();
 				$count_for_available= $this->db->get()->result();
 
