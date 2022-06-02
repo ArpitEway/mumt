@@ -2699,22 +2699,51 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
+	//withheld_student_list where  remove student to show result 
+	public function remove_student_result_permission(){
+		
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}
+		if($_POST['not_permitted']){
+			$student_ids = (implode(',',$_POST['not_permitted']));
+			$data = array('result_show' => 'Y');
+			$where = 'student_id in ('.$student_ids.')';
+			$update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+		}else{
+			$student_ids = (implode(',',$_POST['permitted']));
+			$data = array('result_show' => 'N');
+			$where ='student_id in ('.$student_ids.')';
+			$update = 	$this->Common_model->updateRecordByConditions('student',$where,$data);
+		}  
+		if($update){
+			redirect(base_url().'admin/Admins/withheld_student_list/'.$_POST['course_group_id'].'/'.$_POST['class_id']);
+		}
+	}
+
 
 	public function withheld_student_list($course_id="",$class_id=""){
 		if(!$this->session->has_userdata('adminData')){
 			redirect(base_url());
 			exit;
 		}
-		$this->db->select('count(*) as cnt ,student.name,student.roll_no,student.course_name, student.class_name , student.center_code');
+		$this->db->select('count(*) as cnt ,student.name,student.roll_no,student.course_name, student.class_name , student.center_code,student.course_group_id,student.class_id,student.student_id');
 		$this->db->from('new_exam_form');
 		$this->db->join('student', 'new_exam_form.student_id = student.student_id');
 		$this->db->where('student.new_exam_form','Y'); 
+		$this->db->where('student.result_show','Y'); 
 		$this->db->where('new_exam_form.paper_type','theory'); 
 		$this->db->where('new_exam_form.theory_marks',''); 
 		$this->db->where('student.course_group_id',$course_id); 
 		$this->db->where('student.class_id',$class_id); 
 		$this->db->group_by('new_exam_form.student_id');
+		
 		$data['students'] = $this->db->get()->result();
+		
+		//$this->db->last_query(); die;
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();
 
 		$this->load->view('header',array('title' => 'List of students'));
 		$this->load->view('admin/withheld_student_list',$data);

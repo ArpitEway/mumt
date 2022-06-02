@@ -17,7 +17,7 @@
         <td></td>
 			<td><?= $class->class_name ?></td>
 			<td><a target="_blank" href="<?php echo  base_url('admin/admins/student_result_permission/'.$course['id'].'/'.$class->id)  ?>">Result permission</a></td>
-			<td><a target="_blank" href="<?php echo  base_url('admin/admins/withheld_student_list/'.$course['id'].'/'.$class->id)  ?>">Student list</a></td>
+			<td><a target="_blank" href="<?php echo  base_url('admin/admins/withheld_student_list/'.$course['id'].'/'.$class->id)  ?>">Withheld Result (WH)</a></td>
 			<td><a target="_blank" href="<?php echo  base_url('admin/admins/generate_tr/'.$course['id'].'/'.$class->id)  ?>">Generate Tr</a></td>
 			<td><a target="_blank" href="<?php echo  base_url('admin/admins/student_marksheet/'.$course['id'].'/'.$class->id)  ?>">Marksheet</a></td>
 		</tr>
