@@ -172,7 +172,7 @@
 			$total_paper = 0 ;
 			$total_checked = 0 ;
             foreach($paper_count as $paper_counts){
-		    $count_for_checked =  $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array( "file_exist"=>'Y',"paper_code"=>$paper_code,"class_id"=>$class_id,'center_id'=>$paper_counts->center_id,'teacher_id'=>$teacher_id));
+		    $count_for_checked =  $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array( "file_exist"=>'Y',"paper_code"=>$paper_code,"class_id"=>$class_id,'center_id'=>$paper_counts->center_id,'teacher_id !='=>''));
 			$total_paper = $total_paper+ $paper_counts->cnt  ;
 			$total_checked = $total_checked + $count_for_checked ;
     		?>

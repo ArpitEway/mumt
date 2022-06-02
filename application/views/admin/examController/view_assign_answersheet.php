@@ -32,7 +32,6 @@
 						if($teacher->center_id != ''){
 							$teacher_id = $this->Common_model->encrypt_decrypt($teacher->teacher_id,'encrypt');
 							$course_group_id = $this->Common_model->encrypt_decrypt($teacher->course_group_id,'encrypt');
-
 							$class_id = $this->Common_model->encrypt_decrypt($teacher->class_id,'encrypt');
 							$paper_code =  $this->Common_model->encrypt_decrypt($teacher->paper_code,'encrypt');
 							?>

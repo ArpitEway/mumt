@@ -4,6 +4,7 @@
 			<tr>
 				<th>Sno</th>
 				<th>Course Name</th>
+				<th>Class ID</th>
 				<th>Class Name</th>
 				<th>Total Exam Form</th>
 				<th>Fill Exam Form</th>
@@ -16,6 +17,7 @@
 				<tr>
 					<td><?php echo $i; ?></td>
 					<td><?php echo $count['course_name'];?></td>
+					<td><?php echo $count['class_id']; ?></td>
 					<td><?php echo $count['class_name']; ?></td>
 					<td><?php echo $count['cnt']; ?></td>
 					<?php 

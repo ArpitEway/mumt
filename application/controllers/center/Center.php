@@ -258,6 +258,7 @@ class Center extends CI_Controller {
 
 		$where = array(
 			'center_id' => $this->session->center_id,
+			'new_admission_permission'=>'N'
 		);
 		if($_POST['session']!='All'){
 			$where['session'] = $this->input->post('session');
@@ -277,6 +278,9 @@ class Center extends CI_Controller {
 		if($_POST['document']!='All'){
 			$where['document_uploaded'] = $this->input->post('document');
 		}
+		 if($_POST['university_mode']!='All'){
+			$where['university_mode'] = $this->input->post('university_mode');
+		 	}
 
 		// Fetch member's records
 
