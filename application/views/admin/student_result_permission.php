@@ -6,8 +6,8 @@
 <hr>
 <h1>Not permitted for result</h1>
 <hr>
-<table class="table table-striped my-5" id="kt_datatable">
-	<tbody>
+<table class="table table-striped my-5" id="kt_datatable_3">
+	<thead>
 		<?php $i=1; ?>
 		<tr>
             <th>#</th>
@@ -20,6 +20,8 @@
             <th>Class</th>
             <th><input type="checkbox"  id="all_checked_not_permitt"></th>
 		</tr>
+</thead>
+        <tbody>
         <?php $i=1 ;  foreach($not_permited_students as $students) {
           
         ?>
@@ -43,8 +45,8 @@
 <hr>
 <h1> Permitted for result</h1>
 <hr>
-<table class="table table-striped my-5" id="kt_datatable" >
-	<tbody>
+<table class="table table-striped my-5" id="kt_datatable_2" >
+	<thead>
 		<?php $i=1; ?>
 		<tr>
             <th>#</th>
@@ -57,6 +59,8 @@
             <th>Class</th>
             <th><input type="checkbox" id="all_checked_permitt"></th>
 		</tr>
+        </thead>
+        <tbody>
         <?php $i=1 ;  foreach($permited_students as $students) {
 
         ?>

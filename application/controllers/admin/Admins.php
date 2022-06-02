@@ -2708,7 +2708,7 @@ public function update_exam_datewise_permission(){
 		$this->db->select('count(*) as cnt ,student.name,student.roll_no,student.course_name, student.class_name , student.center_code');
 		$this->db->from('new_exam_form');
 		$this->db->join('student', 'new_exam_form.student_id = student.student_id');
-		$this->db->where('student.exam_form','Y'); 
+		$this->db->where('student.new_exam_form','Y'); 
 		$this->db->where('new_exam_form.paper_type','theory'); 
 		$this->db->where('new_exam_form.theory_marks',''); 
 		$this->db->where('student.course_group_id',$course_id); 
@@ -2723,7 +2723,7 @@ public function update_exam_datewise_permission(){
 
 	public function student_marksheet($course_id="",$class_id="")
 	{
-		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'exam_form'=>'Y','roll_no!='=>'0' ));
+		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'new_exam_form'=>'Y','roll_no!='=>'0' ));
 
 		$this->load->view('admin/generate_tr/header',array('title' => ''));
 		$this->load->view('admin/student_marksheet',$data);
