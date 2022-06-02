@@ -44,7 +44,6 @@
 
 						if($session['document_permission'] == 'Y')
 						{
-
 							?>
 							<input type="button" name="update_doc_stats" data-id = "<?=$session["id"];?>" class="btn btn-success doc_permission_check" value="Yes">
 

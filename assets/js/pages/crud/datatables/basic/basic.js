@@ -8,7 +8,29 @@ var KTDatatablesBasicBasic = function() {
 		table.DataTable({
 			responsive: true,
 
-			lengthMenu: [10, 25, 50, 100 ],
+			lengthMenu: [10, 25, 50, 100, 500, 1000 ],
+
+			pageLength: 10,
+
+			language: {
+				'lengthMenu': 'Display _MENU_',
+			},
+			sortable: true,
+			pagination: true,
+			scroll: true,
+			// Order settings
+			order: [[0, 'asc']],
+		});
+	};
+
+	var initTable3 = function() {
+		var table = $('#kt_datatable_3');
+
+		// begin first table
+		table.DataTable({
+			responsive: true,
+
+			lengthMenu: [10, 25, 50, 100, 500, 1000 ],
 
 			pageLength: 10,
 
@@ -30,7 +52,7 @@ var KTDatatablesBasicBasic = function() {
 		table.DataTable({
 			responsive: true,
 
-			lengthMenu: [10, 25, 50, 100],
+			lengthMenu: [10, 25, 50, 100, 500, 1000],
 			pageLength: 10,
 
 			language: {
@@ -119,6 +141,7 @@ var KTDatatablesBasicBasic = function() {
 		//main function to initiate the module
 		init: function() {
 			initTable2();
+			initTable3();			
 			initTable();
 			initTableScroll();
 		}

@@ -1,5 +1,5 @@
 <div class="dt-responsive">
-<table id="kt_datatable_2" class="table table-striped" >
+<table id="kt_datatable_2" class="table table-striped">
 			<thead>
 				<tr>
 					<th>Form No.</th>
