@@ -2674,4 +2674,90 @@ public function update_exam_datewise_permission(){
 			echo $this->db->last_query().'<br>';
 		}
 	}
+
+	public function updateRegStudent(){
+		$dde_students = $this->Common_model->get_record('dde_student','*');
+		foreach ($dde_students as $dde_student) {
+			$studentdata = $this->Common_model->get_record('dde_student_data','*','student_id='.$dde_student['student_id']);
+			$courseDetail = $this->Common_model->getRecordById('dde_course_reg','old_id',$dde_student['course_group_id']);
+			$dde_student['course_group_id'] = $courseDetail->new_id;
+			$dde_student['course_name'] = $courseDetail->new_name;
+			$classData = $this->Common_model->getRecordByWhere('class_master','course_group_id='.$courseDetail->new_id.' and  admission_permission="Y" ');
+			$studentCount = $this->Common_model->getCountByWhere('student',array('student_id' => $dde_student['student_id']));
+
+			if($studentCount>0){
+				continue;
+			}
+
+			$dde_student['class_id'] = $classData[0]->id;
+			unset($dde_student['enrollment_no']);
+			unset($dde_student['approved']);
+			unset($dde_student['approved_by']);
+			unset($dde_student['new_exam_form']);
+			unset($dde_student['temp_exam_form']);
+			unset($dde_student['enrolled']);
+			$dde_student['class_name'] = $classData[0]->class_name;
+			$dde_student['medium'] = $studentdata[0]['medium'];
+			$dde_student['university_mode'] = 'REG';
+			$dde_student['session'] = 'July 2021';
+			unset($dde_student['admit_card']);
+			unset($dde_student['cls_id']);
+			unset($dde_student['form_no']);
+			unset($dde_student['contact']);
+			unset($dde_student['signature']);
+			unset($dde_student['regi_date']);
+			unset($dde_student['forwarded']);
+			unset($dde_student['forward_date']);
+			unset($dde_student['marksheet_out']);
+			unset($dde_student['marksheet_remark']);
+			unset($dde_student['admission_in']);
+			unset($dde_student['addmission_remark']);
+			unset($dde_student['exam_center_id']);
+			unset($dde_student['exam_center_code']);
+			unset($dde_student['ex']);
+			unset($dde_student['delete_request']);
+			unset($dde_student['through_bpp']);
+			unset($dde_student['old_student_id']);
+			unset($dde_student['status']);
+			unset($dde_student['pattern']);
+			unset($dde_student['prev_pattern']);
+			unset($dde_student['new_exam_permission']);
+			unset($dde_student['admission_print']);
+			unset($dde_student['new_exam_center_id']);
+			unset($dde_student['new_exam_center_code']);
+			unset($dde_student['permission']);
+			unset($dde_student['problem']);
+			unset($dde_student['problem_description']);
+			unset($dde_student['book_issued']);
+			
+			$this->Common_model->insertAll('student',$dde_student);
+			echo $this->db->last_query().'<br>';
+			$compareArray = $this->Common_model->get_record('student_data','*','student_id=0');
+			$studentdata = $studentdata[0];
+			$updateData = array_diff_key($studentdata,$compareArray[0]);
+			$updateData = array_diff($studentdata,$updateData);
+			$updateData['handicapped'] = $studentdata['p_handicapped'];
+			$updateData['eligibility'] = $studentdata['ten_sub'];
+			$updateData['board'] = $studentdata['ten_board'];
+			$updateData['total_marks'] = $studentdata['ten_tmarks'];
+			$updateData['marks'] = $studentdata['ten_marks'];
+			$updateData['passing_year'] = $studentdata['ten_year'];
+			$updateData['percentage'] = $studentdata['ten_per'];
+			unset($updateData['id']);
+			$this->Common_model->insertAll('student_data',$updateData);
+			echo $this->db->last_query().'<br>';
+			$new_exam_form = $this->Common_model->get_record('dde_new_exam_form','*',array('student_id' => $dde_student['student_id']));
+
+			foreach ($new_exam_form as $papers) {
+				unset($papers['id']);
+				$papers['course_group_id'] = $courseDetail->new_id;
+				$papers['class_id'] = $classData[0]->id;
+				$papers['paper_id'] = $this->Common_model->getSinglefield('paper_master','id',array('paper_code' => $papers['paper_code']));
+				$this->Common_model->insertAll('new_exam_form',$papers);
+				echo $this->db->last_query().'<br>';
+			}
+			echo '<br>';
+		}
+	}
+
 }// class
