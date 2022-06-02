@@ -2368,6 +2368,42 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
+	public function result_uplaoding_status(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url('admin'));
+			exit;
+		}else{	
+			$this->load->view('header',array('title' => 'Main Exam Result Upload Status'));
+			$this->db->select('count(*) as num');
+			$this->db->from('new_exam_form');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+			$this->db->where('student.new_exam_form','Y');
+			//$this->db->where('new_exam_form.paper_type','theory');
+			$count = $this->db->get()->result();
+			//Absent
+			
+			$this->db->select('count(*) as num');
+			$this->db->from('new_exam_form');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+			$this->db->where('student.new_exam_form','Y');
+			$this->db->where('new_exam_form.paper_type','theory');
+			$this->db->where('new_exam_form.theory_marks','ABS');
+			$abs = $this->db->get()->result();
+			$this->db->select('count(*) as num');
+			$this->db->from('new_exam_form');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+			$this->db->where('student.new_exam_form','Y');
+			$this->db->where('new_exam_form.paper_type','theory');
+			$this->db->where(array('new_exam_form.theory_marks !='=> ''));
+			$uploaded = $this->db->get()->result();
+			$data['total_paper_count'] = $count[0]->num;
+			$data['uploaded'] = $uploaded[0]->num;
+			$data['absent'] = $abs[0]->num;
+			$this->load->view('admin/result_uplaoding_status',$data);
+			$this->load->view('footer');
+		}
+	}
+
 	public function add_new_txn(){		
 		$txnid = $this->input->post('txnId');
 		$Fess_head = $this->input->post('fees_head');
