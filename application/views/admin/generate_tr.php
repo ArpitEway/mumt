@@ -161,7 +161,7 @@
       <p align="center" class="h4"><b>Maharishi Mahesh Yogi Vedic Vishvavidyalaya, Madhya Pradesh</b></p>
       <p align="center" class="line-height">Tabulation Register for <strong><?php echo $student->course_name; echo '&nbsp'. $marksheetData[0]->class_name; ?></strong> Examination <?php echo $marksheetData[0]->exam_session;?>
       </p>
-      <p align="center" class="line-height">Directorate of Distance Education</p>
+      <!--<p align="center" class="line-height">Directorate of Distance Education</p>-->
       <div class="row">
         <div class="col-6">
           DATE: <?php echo $marksheetData[0]->result_date;?>
