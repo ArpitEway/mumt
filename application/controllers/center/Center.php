@@ -1411,11 +1411,12 @@ class Center extends CI_Controller {
 		echo json_encode(array("status" => true,));
 	}
 
-	public function center_wise_student_marksheet()
+	public function result()
 	{
 		$center_id =  $this->session->center_id;
         $where = array(
 			'center_id'=>$center_id,
+
 		);
 		
 		$data = array(
@@ -1429,7 +1430,7 @@ class Center extends CI_Controller {
 		$this->db->where('result_show','Y');
 		$data['courses'] = $this->db->get()->result();
 		$this->load->view('Centers/header');
-		$this->load->view('Centers/center_wise_student_marksheet',$data);
+		$this->load->view('Centers/result',$data);
 		$this->load->view('Centers/footer');		
 	}
 
@@ -1455,7 +1456,7 @@ class Center extends CI_Controller {
 
 		$where = array(
 			'center_id' => $this->session->center_id,
-			'result_show'=>'Y'
+			 'result_show'=>'N'
 		);
 
 
@@ -1483,7 +1484,7 @@ class Center extends CI_Controller {
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
 		foreach($tableData as $result){
-			$btn =	'<a href="'.base_url('center/Center/student_marksheet/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
+			$btn =	'<a href="'.base_url('center/Center/marksheet/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
 			$i++;
 			if($result->enrolled=='N'){
 				$enrollment = '-';
@@ -1505,10 +1506,10 @@ class Center extends CI_Controller {
 	}
 
 
-	public function student_marksheet($student_id="")
+	public function marksheet($student_id="")
 	{
 		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
-		$student = $this->Common_model->getRecordByWhere("student",array('exam_form'=>'Y','result_show'=>'Y','student_id'=>$student_id));
+		$student = $this->Common_model->getRecordByWhere("student",array('new_exam_form'=>'Y','result_show'=>'N','student_id'=>$student_id));
 		// echo "<pre>" ;
 		// print_r($student);
 		// die ;
@@ -1518,9 +1519,9 @@ class Center extends CI_Controller {
 		$this->db->where('new_exam_form.student_id',$data['student']->student_id); 
 		$new_exam_form = $this->db->get()->result();
 		$data['new_exam_form']  = $new_exam_form;
-		$this->load->view('students/header',array('title' => 'Student Result'));	
-		$this->load->view('Centers/student_marksheet',$data);
-		$this->load->view('students/footer');
+		$this->load->view('admin/generate_tr/header2');	
+		$this->load->view('Centers/marksheet',$data);
+		$this->load->view('admin/generate_tr/footer2');
 	}
 
 	public function exam_paper($student_id=''){
