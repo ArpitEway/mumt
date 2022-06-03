@@ -11,7 +11,9 @@
           <th>Class</th>
           <th>Mode</th> 
           <th>Exam Form Permission</th>
+          <th>Result Permission</th>
           <th>Admit Card Permission</th>
+          
 			</tr>
 		</thead>
 		<tbody>
@@ -20,29 +22,40 @@
     	$i = 1;
 
       foreach($classes as $class){			
-			$courses = $this->db->get_where('course_group', array('id'=>$class['course_group_id']))->row_array();     
+			$courses = $this->db->get_where('course_group', array('id'=>$class->course_group_id))->row_array();     
 			$course_name = $courses['course_name'];
     		?>
 			
 					<tr>
 						<td><?php echo $i; ?></td>
-                        <td><?php echo $class['id']; ?></td>
+                        <td><?php echo $class->id; ?></td>
 						<td><?php echo $course_name; ?></td>
-						<td><?php echo $class['class_name']; ?></td>
-						<td><?php echo $class['mode']; ?></td>
+						<td><?php echo $class->class_name; ?></td>
+						<td><?php echo $class->mode; ?></td>
             <td>
-                <button id="btn_<?php echo  $class['id']?>" <?php if($class['exam_form_permission']=='Y' ){echo "class='btn btn-success'" ;}else{echo "class='btn btn-danger' ";} ?> onclick="statusChange(<?php echo $class['id'];  ?>,'<?php echo $class['exam_form_permission'];?>')">
-                <?php if($class['exam_form_permission']=='Y' ){echo "Yes" ;}else{
+                <button id="btn_<?php echo  $class->id?>" <?php if($class->exam_form_permission=='Y' ){echo "class='btn btn-success'" ;}else{echo "class='btn btn-danger' ";} ?> onclick="statusChange(<?php echo $class->id;  ?>,'<?php echo $class->exam_form_permission;?>')">
+                <?php if($class->exam_form_permission=='Y' ){echo "Yes" ;}else{
                   echo " No";
                 } ?></button>
             </td>
+
+
+ <td>
+             <button id="btn1_<?php echo  $class->id?>" <?php if($class->result_permission=='Y' ){echo "class='btn btn-success'" ;}else{echo "class='btn btn-danger' ";} ?> onclick="statusChangeresult(<?php echo $class->id;  ?>,'<?php echo $class->result_permission;?>')">
+                <?php if($class->result_permission=='Y' ){echo "Yes" ;}else{
+                  echo " No";
+                } ?></button>
+            </td>
+            
            
             <td>
-                <button id="btn_a<?php echo  $class['id']?>" <?php if($class['admit_card_permission']	=='Y' ){echo "class='btn btn-success'" ;}else{echo "class='btn btn-danger' ";} ?> onclick="statusChangeAdmitCard(<?php echo $class['id'];   ?>,'<?php echo $class['admit_card_permission'];?>')">
-                <?php if($class['admit_card_permission']){echo "Yes" ;}else{
+                <button id="btn_a<?php echo  $class->id?>" <?php if($class->admit_card_permission	=='Y' ){echo "class='btn btn-success'" ;}else{echo "class='btn btn-danger' ";} ?> onclick="statusChangeAdmitCard(<?php echo $class->id;   ?>,'<?php echo $class->admit_card_permission;?>')">
+                <?php if($class->admit_card_permission){echo "Yes" ;}else{
                   echo " No";
                 } ?></button>
             </td>
+        
+
 					</tr>
 			<?php $i++; } ?>
 	</tbody>
@@ -103,5 +116,34 @@
     }
   });
 }
+
+ function statusChangeresult(id,result_permission){
+        var csrfName = $('.csrfname').attr('name');
+    var csrfHash = $('.csrfname').val(); 
+      $.ajax({
+       url: BASE_URL+"admin/Permission/update_result_permission",
+        type:"post",
+        dataType: 'json',
+        data:{"class_id":id,"result_permission":result_permission,[csrfName]:csrfHash},
+        success: function(response){
+          if(response.success==true){
+          $("#btn1_"+id).removeClass("btn btn-success");
+          $("#btn1_"+id).addClass("btn btn-danger");
+          $("#btn1_"+id).html("No");
+           var s="statusChangeresult("+ id +",'N')";
+          $("#btn1_"+id).attr("onclick",s);
+        }else  if(response.error==false){
+          $("#btn1_"+id).removeClass("btn btn-danger");
+          $("#btn1_"+id).addClass("btn btn-success");
+          $("#btn1_"+id).html("Yes");
+           var s="statusChangeresult("+ id +",'Y')";
+          $("#btn1_"+id).attr("onclick",s);
+        }
+      }
+    });
+  }
+
+
+
 
  </script>
