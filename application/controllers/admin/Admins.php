@@ -2634,7 +2634,7 @@ public function update_exam_datewise_permission(){
 		$data['students'] = $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y','roll_no!='=>'0', 'result_show' => 'N' ));
 		$data['class_id'] = $class_id;
 		$data['course_group_id'] = $course_group_id;
-		$title = "TR Sheet ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
+		$title = "TR ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$this->load->view('admin/generate_tr/header2',array('title' =>$title));
 		$this->load->view('admin/generate_tr',$data);
 		$this->load->view('admin/generate_tr/footer2');
