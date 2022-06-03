@@ -1427,7 +1427,7 @@ class Center extends CI_Controller {
 		$this->db->from('student');
 		$this->db->join('course_group', 'student.course_group_id = course_group.id');
 		$this->db->where('center_id', $center_id);
-		$this->db->where('result_show','N');
+		$this->db->where('result_show','Y');
 		$data['courses'] = $this->db->get()->result();
 		$this->load->view('Centers/header');
 		$this->load->view('Centers/result',$data);
@@ -1456,7 +1456,7 @@ class Center extends CI_Controller {
 
 		$where = array(
 			'center_id' => $this->session->center_id,
-			 'result_show'=>'N'
+			 'result_show'=>'Y'
 		);
 
 
@@ -1509,7 +1509,7 @@ class Center extends CI_Controller {
 	public function marksheet($student_id="")
 	{
 		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
-		$student = $this->Common_model->getRecordByWhere("student",array('new_exam_form'=>'Y','result_show'=>'N','student_id'=>$student_id));
+		$student = $this->Common_model->getRecordByWhere("student",array('new_exam_form'=>'Y','result_show'=>'Y','student_id'=>$student_id));
 		// echo "<pre>" ;
 		// print_r($student);
 		// die ;
