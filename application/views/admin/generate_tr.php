@@ -289,7 +289,7 @@
         <td class="align-middle text-center"><?php if($theory_abs_count>0){echo "-";}else{echo  $total_theory_marks_obt;} ; ?></td>
       </tr>
       <tr>
-        <td class="align-middle text-right">Asmn Marks-></td>
+        <td class="align-middle text-right">Internal Marks-></td>
       <?php foreach($marks as $paper_master){ ?>
     <td  class="align-middle text-center ">
       <?php
