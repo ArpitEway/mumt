@@ -136,7 +136,7 @@
     }else{
       $require_grace_marks = $require_tot_marks-$fail_tot_marks;
       // tot 3 grace marks in 2 subjects
-      if ($fail_count<3 && $require_grace_marks<4 && $int_fail_count==0 && $p_fail_count==0 && $rw_count==0) {
+      if ($fail_count<3 && $require_grace_marks<4 && $int_fail_count==0 && $p_fail_count==0 && $rw_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0) {
         $check_grace_marks = true;
         $final_result = "PASS BY GRACE";
       }elseif($rw_count>0){
@@ -159,7 +159,7 @@
       $page_no++;
       ?>
       <p align="center" class="h4"><b>Maharishi Mahesh Yogi Vedic Vishvavidyalaya, Madhya Pradesh</b></p>
-      <p align="center" class="line-height">Tabulation Register for <strong><?php echo $student->course_name; echo '&nbsp'. $marksheetData[0]->class_name; ?></strong>Examination <?php echo $marksheetData[0]->exam_session;?>
+      <p align="center" class="line-height">Tabulation Register for <strong><?php echo $student->course_name; echo '&nbsp'. $marksheetData[0]->class_name; ?></strong> Examination <?php echo $marksheetData[0]->exam_session;?>
       </p>
       <p align="center" class="line-height">Directorate of Distance Education</p>
       <div class="row">
@@ -170,7 +170,7 @@
           Page : <?php  echo $page_no; ?>
         </div>
       </div>
-      <table class="table table1">
+      <table class="table table1 mb-0">
         <tbody>
           <tr>
             <th class="align-middle text-center pl-5 pr-5" rowspan="<?php echo $rowspanhead ?>">Roll.No. <br> Reg.No.</th>
@@ -245,14 +245,16 @@
           if($check_grace_marks){
             echo "-";
           }else{
-            if($int_abs_count>0 ||  $theory_abs_count>0 || $p_abs_count>0){
+            if($int_abs_count>0 &&  $theory_abs_count>0 && $p_abs_count>0){
+              echo 'ABS In ALL';
+            }elseif($int_abs_count>0 ||  $theory_abs_count>0 || $p_abs_count>0){
               echo 'ABS In';
               if($theory_abs_count>0){
-                echo ' Theory'; 
+                echo ' Theory';
               }elseif($int_abs_count>0){
                 echo ' Internal'; 
               }elseif($p_abs_count>0){
-                echo ' prectical'; 
+                echo ' prectical';
               }
             }else{
               if(sizeof($atkt_paper_codes_array)>0){
@@ -321,7 +323,7 @@
         {echo " ";}
       else{
         if($new_exam_form->p_marks < $new_exam_form->min_theory_marks && $new_exam_form->p_marks!=''){
-          echo  $new_exam_form->p_marks .'*';
+          echo  $new_exam_form->p_marks .' F';
         }elseif($new_exam_form->p_marks ==''){
           echo "RWPR";
         }
@@ -341,13 +343,19 @@
       if($paper_master->paper_type=="theory"){
        if($check_grace_marks==true){
         echo $paper_master->theory_marks+ $paper_master->int_marks;
-      } elseif($paper_master->theory_marks<$paper_master->min_theory_marks){
+      } elseif(($paper_master->theory_marks<$paper_master->min_theory_marks) || ($paper_master->int_marks<$paper_master->min_internal_marks) || $theory_abs_count!=0 || $int_abs_count!=0){
         echo $paper_master->theory_marks+ $paper_master->int_marks." F";
       }else{
         echo $paper_master->theory_marks+ $paper_master->int_marks;
       }
     }else{ 
-      echo $paper_master->p_marks;
+      if($paper_master->p_marks=='ABS'){
+        echo '0 F';
+      }elseif($paper_master->p_marks<$paper_master->min_theory_marks){
+        echo $paper_master->p_marks.' F';
+      }else{
+        echo $paper_master->p_marks;
+      }
     } ?>
     </td>
     <?php } ?>
@@ -379,4 +387,22 @@
 <?php
 }
 ?>
+
+<hr>
+<table width="100%" border="0">
+<tr>
+<td colspan="3">&nbsp;</td>
+<td colspan="3" align="right">Order for Declaration & Publication of Result</td>
+</tr>
+<tr style="height:100px; vertical-align: bottom;">
+<td align="center" width="20%">Checked By</td>
+<td align="center" width="20%">Sign of 1st Tabulator</td>
+<td align="center" width="20%">Sign of 2nd Tabulator</td>
+<td align="center" width="20%">Asst. Registrar </td>
+<td align="center" width="20%">Registrar/Controller Of Examination</td>
+</tr><tr><td colspan="5">&nbsp;</td></tr><tr><td colspan="5">&nbsp;</td></tr>
+</table>
+</td>
+</tr>
+</table>
 </div>

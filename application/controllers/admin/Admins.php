@@ -2629,14 +2629,15 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
-	public function generate_tr($course_id="",$class_id=""){
+	public function generate_tr($course_group_id="",$class_id=""){
 		$this->db->order_by('roll_number','ASC');
-		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id ,'new_exam_form'=>'Y','roll_no!='=>'0', 'result_show' => 'Y' ));
+		$data['students'] = $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y','roll_no!='=>'0', 'result_show' => 'Y' ));
 		$data['class_id'] = $class_id;
-		$data['course_group_id'] = $course_id;
-		$this->load->view('header',array('title' =>"TR Sheet"));
+		$data['course_group_id'] = $course_group_id;
+		$title = "TR Sheet ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
+		$this->load->view('admin/generate_tr/header2',array('title' =>$title));
 		$this->load->view('admin/generate_tr',$data);
-		$this->load->view('footer');
+		$this->load->view('admin/generate_tr/footer2');
 	}
 
 	public function UpdateStudentDataMarks()

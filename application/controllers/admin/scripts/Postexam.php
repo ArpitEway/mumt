@@ -264,7 +264,8 @@ class Postexam extends CI_Controller {
         $this->db->where('student.new_exam_form','Y');
         $this->db->where('new_exam_form.class_id',$class_id);
         $this->db->where('new_exam_form.paper_type','theory');
-        $this->db->limit(20);
+        $this->db->where('new_exam_form.theory_marks','');
+        $this->db->limit(1000);
         $data['students'] = $this->db->get()->result();
         $this->load->view('admin/script/general_promotion_student_view',$data);
         $this->load->view('footer');
