@@ -2,7 +2,7 @@
 	<tbody>
 		<?php $i=1; ?>
 		<?php foreach ($courses as $course){
-        $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id']));
+        $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id'], 'admission_permission' => 'Y'));
         ?>
 		<tr>
 			<th><?=$i++?></th>
