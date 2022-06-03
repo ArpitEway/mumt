@@ -2169,6 +2169,129 @@ public function getStudentData()
 		$this->load->view('footer');
 	}
 
+	//Result upload report view
+	public function class_wise_result_upload_status(){
+
+		
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else{
+			$admin_id = $this->session->admin_id;
+			$course_group = $this->db->get_where('course_group', array())->result_array();
+			$data = array('course_group' => $course_group,
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash()
+			);
+			$this->load->view('header');
+			$this->load->view('admin/class_wise_result_upload_status',$data);
+			$this->load->view('footer');
+		}
+		
+	}
+
+	public function class_wise_result_upload_status_report($course_group_id,$class_id=""){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url('admin'));
+			exit;
+		}else{
+			$data=array();	
+			$course_group = $this->Common_model->get_record('course_group','*',array('id'=>$course_group_id));
+			$data['course_group']=$course_group[0]['course_name'];
+			// $classArr=array();
+			// $classArr['total_paper_count']=0;
+			// $classArr['absent']=0;
+			$total_paper_count=0;$absent=0;
+			if(!$class_id){
+				$class_master = $this->db->get_where('class_master', array('course_group_id' => $course_group_id))->result_array();
+                
+              
+				foreach($class_master as $class){
+            
+					$classArr['class_name']=$class["class_name"];
+					
+					
+					$this->db->select('count(*) as num');
+					$this->db->from('new_exam_form');
+					$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+					$this->db->where('student.new_exam_form','Y');
+					$this->db->where('new_exam_form.course_group_id',$course_group_id);
+					$this->db->where('new_exam_form.class_id',$class['id']);
+					$count = $this->db->get()->result();
+					
+					$this->db->select('count(*) as num');
+					$this->db->from('new_exam_form');
+					$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+					$this->db->where('student.new_exam_form','Y');
+					$this->db->where('new_exam_form.course_group_id',$course_group_id);
+					$this->db->where('new_exam_form.class_id',$class['id']);
+					$this->db->where('new_exam_form.theory_marks',"ABS");
+					$abs = $this->db->get()->result();
+					$this->db->select('count(*) as num');
+					$this->db->from('new_exam_form');
+					$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+					$this->db->where('student.new_exam_form','Y');
+					$this->db->where('new_exam_form.course_group_id',$course_group_id);
+					$this->db->where('new_exam_form.class_id',$class['id']);
+					$this->db->where('new_exam_form.theory_marks !=', "");
+					$uploaded = $this->db->get()->result();
+					$classArr['total_paper_count'] = $count[0]->num;
+					$classArr['absent'] = $abs[0]->num;
+					$classArr['uploaded'] = $uploaded[0]->num;
+					$data['class'][]=$classArr;
+				}	 
+					
+			}
+			else{
+				$class = $this->Common_model->get_record('class_master','*',array('id'=>$class_id));
+				
+				
+				$this->db->select('count(*) as num');
+				$this->db->from('new_exam_form');
+				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+				$this->db->where('student.new_exam_form','Y');
+				$this->db->where('new_exam_form.course_group_id',$course_group_id);
+				$this->db->where('new_exam_form.class_id',$class_id);
+				$count = $this->db->get()->result();
+				$this->db->select('count(*) as num');
+				$this->db->from('new_exam_form');
+				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+				$this->db->where('student.new_exam_form','Y');
+				$this->db->where('new_exam_form.course_group_id',$course_group_id);
+				$this->db->where('new_exam_form.class_id',$class_id);
+				$this->db->where('new_exam_form.theory_marks',"ABS");
+				$abs = $this->db->get()->result();
+				$this->db->select('count(*) as num');
+				$this->db->from('new_exam_form');
+				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+				$this->db->where('student.new_exam_form','Y');
+				$this->db->where('new_exam_form.course_group_id',$course_group_id);
+				$this->db->where('new_exam_form.class_id',$class_id);
+				$this->db->where('new_exam_form.theory_marks !=', "");
+				$uploaded = $this->db->get()->result();
+			
+				$data['class_name']=$class[0]['class_name'];
+				$data['total_paper_count'] = $count[0]->num;
+				$data['absent'] = $abs[0]->num;
+				$data['uploaded'] = $uploaded[0]->num;
+				
+			}
+			
+				$data['course_group_id']=$course_group_id;
+				$data['class_id']=$class_id;
+
+			// print_r($this->db->last_query());
+			// echo "<pre>";print_r($data);die;
+			 
+			
+			//$data['uploaded'] = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array('exam_status'=> 'R','answer_sheet	!=' => ''));
+			//$data['checked'] = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array('teacher_id!='=> ''));
+			$this->load->view('header',array('title' => 'Result Upload Status'));
+			$this->load->view('admin/class_wise_result_upload_status_report',$data);
+			$this->load->view('footer');
+		}
+	}
+
 	public function center_wise_remains_count(){
 
 		$title = array('title' => 'Center Wise Student Remaining Form List');
