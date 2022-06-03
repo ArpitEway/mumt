@@ -1427,7 +1427,7 @@ class Center extends CI_Controller {
 		$this->db->from('student');
 		$this->db->join('course_group', 'student.course_group_id = course_group.id');
 		$this->db->where('center_id', $center_id);
-		$this->db->where('result_show','Y');
+		$this->db->where('result_show','N');
 		$data['courses'] = $this->db->get()->result();
 		$this->load->view('Centers/header');
 		$this->load->view('Centers/result',$data);
