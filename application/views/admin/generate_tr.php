@@ -215,7 +215,7 @@
           <td class="align-middle text-right">Practical Marks Max/Min-></td>
           <?php foreach($marks as $paper_master){   ?>
           <td  class="align-middle text-center">
-            <?php if($paper_master->p_marks=="N"){ echo  "-";}else{echo  $paper_master->max_theory_marks .'/'.$paper_master->min_theory_marks;};  ?>
+            <?php if($paper_master->paper_type=="theory"){ echo  " ";}else{echo  $paper_master->max_theory_marks .'/'.$paper_master->min_theory_marks;};  ?>
           </td>
           <?php } ?>
           <td class="align-middle text-center"></td>
