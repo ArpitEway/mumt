@@ -2217,6 +2217,7 @@ public function getStudentData()
 					$this->db->where('student.new_exam_form','Y');
 					$this->db->where('new_exam_form.course_group_id',$course_group_id);
 					$this->db->where('new_exam_form.class_id',$class['id']);
+					$this->db->where('new_exam_form.paper_type',"theory");
 					$count = $this->db->get()->result();
 					
 					$this->db->select('count(*) as num');
@@ -2225,6 +2226,7 @@ public function getStudentData()
 					$this->db->where('student.new_exam_form','Y');
 					$this->db->where('new_exam_form.course_group_id',$course_group_id);
 					$this->db->where('new_exam_form.class_id',$class['id']);
+					$this->db->where('new_exam_form.paper_type',"theory");
 					$this->db->where('new_exam_form.theory_marks',"ABS");
 					$abs = $this->db->get()->result();
 					$this->db->select('count(*) as num');
@@ -2234,10 +2236,42 @@ public function getStudentData()
 					$this->db->where('new_exam_form.course_group_id',$course_group_id);
 					$this->db->where('new_exam_form.class_id',$class['id']);
 					$this->db->where('new_exam_form.theory_marks !=', "");
+					$this->db->where('new_exam_form.paper_type',"theory");
 					$uploaded = $this->db->get()->result();
+					
+					$this->db->select('count(*) as num');
+					$this->db->from('new_exam_form');
+					$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+					$this->db->where('student.new_exam_form','Y');
+					$this->db->where('new_exam_form.course_group_id',$course_group_id);
+					$this->db->where('new_exam_form.class_id',$class['id']);
+					$this->db->where('new_exam_form.paper_type',"theory");
+					$this->db->where('new_exam_form.int_marks !=', "");
+					$internal = $this->db->get()->result();
+					$this->db->select('count(*) as num');
+					$this->db->from('new_exam_form');
+					$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+					$this->db->where('student.new_exam_form','Y');
+					$this->db->where('new_exam_form.course_group_id',$course_group_id);
+					$this->db->where('new_exam_form.class_id',$class['id']);
+					$this->db->where('new_exam_form.paper_type',"Practical");
+					
+					$practicalTotal = $this->db->get()->result();
+					$this->db->select('count(*) as num');
+					$this->db->from('new_exam_form');
+					$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+					$this->db->where('student.new_exam_form','Y');
+					$this->db->where('new_exam_form.course_group_id',$course_group_id);
+					$this->db->where('new_exam_form.class_id',$class['id']);
+					$this->db->where('new_exam_form.paper_type',"Practical");
+					$this->db->where('new_exam_form.p_marks !=', "");$this->db->where('new_exam_form.p_marks !=', "N");
+					$practical = $this->db->get()->result();
 					$classArr['total_paper_count'] = $count[0]->num;
 					$classArr['absent'] = $abs[0]->num;
 					$classArr['uploaded'] = $uploaded[0]->num;
+					$classArr['internal'] = $internal[0]->num;
+					$classArr['practicalTotal'] = $practicalTotal[0]->num;
+					$classArr['practical'] = $practical[0]->num;
 					$data['class'][]=$classArr;
 				}	 
 					
@@ -2252,6 +2286,7 @@ public function getStudentData()
 				$this->db->where('student.new_exam_form','Y');
 				$this->db->where('new_exam_form.course_group_id',$course_group_id);
 				$this->db->where('new_exam_form.class_id',$class_id);
+				$this->db->where('new_exam_form.paper_type',"theory");
 				$count = $this->db->get()->result();
 				$this->db->select('count(*) as num');
 				$this->db->from('new_exam_form');
@@ -2259,6 +2294,7 @@ public function getStudentData()
 				$this->db->where('student.new_exam_form','Y');
 				$this->db->where('new_exam_form.course_group_id',$course_group_id);
 				$this->db->where('new_exam_form.class_id',$class_id);
+				$this->db->where('new_exam_form.paper_type',"theory");
 				$this->db->where('new_exam_form.theory_marks',"ABS");
 				$abs = $this->db->get()->result();
 				$this->db->select('count(*) as num');
@@ -2267,20 +2303,50 @@ public function getStudentData()
 				$this->db->where('student.new_exam_form','Y');
 				$this->db->where('new_exam_form.course_group_id',$course_group_id);
 				$this->db->where('new_exam_form.class_id',$class_id);
+				$this->db->where('new_exam_form.paper_type',"theory");
 				$this->db->where('new_exam_form.theory_marks !=', "");
 				$uploaded = $this->db->get()->result();
-			
+				$this->db->select('count(*) as num');
+				$this->db->from('new_exam_form');
+				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+				$this->db->where('student.new_exam_form','Y');
+				$this->db->where('new_exam_form.course_group_id',$course_group_id);
+				$this->db->where('new_exam_form.class_id',$class_id);
+				$this->db->where('new_exam_form.int_marks !=', "");
+				$this->db->where('new_exam_form.paper_type',"theory");
+				$internal = $this->db->get()->result();
+				$this->db->select('count(*) as num');
+				$this->db->from('new_exam_form');
+				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+				$this->db->where('student.new_exam_form','Y');
+				$this->db->where('new_exam_form.course_group_id',$course_group_id);
+				$this->db->where('new_exam_form.class_id',$class_id);
+				$this->db->where('new_exam_form.paper_type',"Practical");
+				
+				$practicalTotal = $this->db->get()->result();
+				$this->db->select('count(*) as num');
+				$this->db->from('new_exam_form');
+				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+				$this->db->where('student.new_exam_form','Y');
+				$this->db->where('new_exam_form.course_group_id',$course_group_id);
+				$this->db->where('new_exam_form.class_id',$class_id);
+				$this->db->where('new_exam_form.paper_type',"Practical");
+				$this->db->where('new_exam_form.p_marks !=', "");$this->db->where('new_exam_form.p_marks !=', "N");
+				$practical = $this->db->get()->result();
 				$data['class_name']=$class[0]['class_name'];
 				$data['total_paper_count'] = $count[0]->num;
 				$data['absent'] = $abs[0]->num;
 				$data['uploaded'] = $uploaded[0]->num;
+				$data['internal'] = $internal[0]->num;
+				$data['practicalTotal'] = $practicalTotal[0]->num;
+				$data['practical'] = $practical[0]->num;
 				
 			}
 			
 				$data['course_group_id']=$course_group_id;
 				$data['class_id']=$class_id;
 
-			// print_r($this->db->last_query());
+			// print_r($this->db->last_query()); die;
 			// echo "<pre>";print_r($data);die;
 			 
 			

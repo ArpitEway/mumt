@@ -8,6 +8,13 @@
                 <th>Total</th>
 				<th>Uploaded</th>
                 <th>Absent</th>
+                <th>Theory</th>
+                <th>Ass. Total</th>
+                <th>Ass. Uploaded</th>
+                <th>Ass. Rremaining</th>
+                <th>Pr. Total</th>
+                <th>Pr. Uploaded</th>
+                <th>Pr. Rremaining</th>
 				<th>Rremaining</th>
 				<!-- <th>Checked</th> -->
 			</tr>
@@ -24,6 +31,13 @@
                     <td><?php  echo  $val['total_paper_count'] ; ?></td>
                     <td><?php echo $val['uploaded'] -$val['absent']; ?></td>
                     <td><?php echo $val['absent'] ; ?></td>
+                    <td><?php echo $val['uploaded'] -$val['absent']; ?></td>
+                    <td><?php  echo  $val['total_paper_count'] ; ?></td>
+                    <td><?php  echo  $val['internal'] ; ?></td>
+                    <td><?php  echo  $val['total_paper_count'] -$val['internal'] ; ?></td>
+                    <td><?php  echo  $val['practicalTotal'] ; ?></td>
+                    <td><?php  echo  $val['practical'] ; ?></td>
+                    <td><?php  echo  $val['practicalTotal'] -$val['practical'] ; ?></td>
                     <td><?php  echo $val['total_paper_count']-$val['uploaded'] ; ?></td></tr>
                 <?php $i++;} } else{ ?>
                     <tr>
@@ -33,6 +47,13 @@
                     <td><?php echo  $total_paper_count ; ?></td>
                     <td><?php echo $uploaded -$absent; ?></td>
                     <td><?php echo $absent ; ?></td>
+                    <td><?php  echo $uploaded -$absent; ?></td>
+                    <td><?php echo  $total_paper_count ; ?></td>
+                    <td><?php echo  $internal ; ?></td>
+                    <td><?php echo  $total_paper_count-$internal ; ?></td>
+                    <td><?php echo  $practicalTotal ; ?></td>
+                    <td><?php echo  $practical ; ?></td>
+                    <td><?php echo  $practicalTotal-$practical ; ?></td>
                     <td><?php  echo $total_paper_count-$uploaded ; ?></td>  </tr>
                 <?php } ?>   
 				<!-- <td><?php echo $checked ; ?></td> -->
