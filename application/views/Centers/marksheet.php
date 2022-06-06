@@ -196,6 +196,8 @@ if ($withheld) {
     $total_paper_marks = 0;
     $total_student_marks = 0 ;
     $result = "";
+    $total_max_marks = 0 ;
+    $total_obtained_marks = 0;    
     foreach($new_exam_form as  $marks){
       $result_1_paper = '';
       $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code));
@@ -206,6 +208,8 @@ if ($withheld) {
       <th class="text-center">
         <?php
           if($marks->paper_type=='theory'){
+            $total_max_marks += $paper_master[0]->max_theory_marks+ $paper_master[0]->max_internal_marks;
+            $total_obtained_marks += $marks->theory_marks+$marks->int_marks;
             if($marks->theory_marks<$paper_master[0]->min_theory_marks || $marks->theory_marks=="ABS"){
               echo $marks->theory_marks;
               if($check_grace_marks){
@@ -220,6 +224,8 @@ if ($withheld) {
               $result_1_paper = 'PASS';
             }
           }else{
+            $total_obtained_marks += $marks->theory_marks;
+            $total_max_marks += $paper_master[0]->max_theory_marks;
             if($marks->p_marks < $paper_master[0]->min_theory_marks || $marks->p_marks=="ABS"){
               echo $marks->p_marks;
               $result_1_paper = 'FAIL';
@@ -280,7 +286,15 @@ if ($withheld) {
     <th></th>
     <th class="text-center"><?php echo  $total_max_marks?></th>
     <th class="text-center"><?php  echo  $total_obtained_marks ?></th>
-    <th></th>
+    <th><?php 
+            if($check_grace_marks){
+              echo "PASS BY GRACE";
+            }elseif($fail_count>0){
+              echo "ATKT";
+            }else{
+              echo "PASS";
+            }  ?>
+    </th>
   </tr>
 </tbody>
 </table>
