@@ -56,6 +56,7 @@
   {
     $page_break_count++;
     $marks = $this->Common_model->student_info_for_result($student->student_id);
+    $BarCodecolspan = 9 + count($marks); 
     $total_theory_marks_obt = 0;
     $total_int_marks_obt = 0;
     $total_marks_obt = 0;
@@ -76,13 +77,13 @@
     $final_result = '';
     foreach($marks as $new_exam_form)
     {
-      $total_theory_marks_obt += $new_exam_form->theory_marks;
-      $total_int_marks_obt += $new_exam_form->int_marks;
-      $total_theory_asm_marks = $new_exam_form->theory_marks+ $new_exam_form->int_marks;
-      $total_marks_obt  += $new_exam_form->theory_marks+ $new_exam_form->int_marks;
-      $total_paper_marks += $new_exam_form->max_theory_marks + $new_exam_form->max_internal_marks;
-
       if($new_exam_form->type=='theory'){
+
+        $total_theory_marks_obt += $new_exam_form->theory_marks;
+        $total_int_marks_obt += $new_exam_form->int_marks;
+        $total_theory_asm_marks = $new_exam_form->theory_marks+ $new_exam_form->int_marks;
+        $total_marks_obt  += $new_exam_form->theory_marks+ $new_exam_form->int_marks;
+        $total_paper_marks += $new_exam_form->max_theory_marks + $new_exam_form->max_internal_marks;
         $tot_std_marks += $new_exam_form->theory_marks;
         $tot_marks += $new_exam_form->max_theory_marks;
 
@@ -118,6 +119,7 @@
       }
 
       if($new_exam_form->type!='theory'){
+        $total_marks_obt += $new_exam_form->p_marks;
         if($new_exam_form->p_marks=='' || $new_exam_form->p_marks=='N'){
           $rw_count++;
         }
@@ -315,6 +317,7 @@
   <tr>
     <td class="align-middle text-right ">Practical Marks.</td>
     <?php
+    $total_p_marks = 0;
     foreach($marks as $new_exam_form)
     {
       ?>
@@ -329,11 +332,12 @@
         }
         else{
           echo  $new_exam_form->p_marks;
+          $total_p_marks += $new_exam_form->p_marks;
         }
       }
     ?></td>
     <?php } ?>
-  <td class="align-middle text-center"></td>
+  <td class="align-middle text-center"><?=$total_p_marks; ?></td>
 </tr>
 <?php } ?>
   <tr>
@@ -364,7 +368,7 @@
 <?php if($isFinalClass){ ?>
   <?php if($final_result !="PASS" && !$check_grace_marks){  ?>
     <tr>
-      <td class="text-center align-middle" colspan="15">    -   </td>
+      <td class="text-center align-middle" colspan="<?=$BarCodecolspan ?>">    -   </td>
     </tr>
     <?php }else{  ?>
       <tr class="">
@@ -378,7 +382,7 @@
   }
   ?>
   <tr class="">
-    <td  class="align-middle text-left " colspan="15">
+    <td  class="align-middle text-left " colspan="<?=$BarCodecolspan ?>">
           <?php  echo $generator->getBarcode($student->roll_no.$marksheetData[0]->bar_code_no, $generator::TYPE_CODE_128,2,25); ?>
     </td>
   </tr>
