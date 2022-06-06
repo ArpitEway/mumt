@@ -23,7 +23,7 @@ foreach($new_exam_form as $marks){
       $fali_tot_marks += $marks->theory_marks;
       $require_tot_marks +=$paper_master[0]->min_theory_marks;
     }
-    if($marks->theory_marks){
+    if($marks->theory_marks=='ABS'){
       $abs_count++;
       $result = "Fail";
       $fail_count++;
