@@ -196,10 +196,6 @@ if ($withheld) {
     $total_paper_marks = 0;
     $total_student_marks = 0 ;
     $result = "";
-    $total_max_marks = 0 ;
-    $total_obtained_marks = 0;
-    
-    
     foreach($new_exam_form as  $marks){
       $result_1_paper = '';
       $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code));
