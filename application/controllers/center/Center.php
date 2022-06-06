@@ -1414,14 +1414,11 @@ class Center extends CI_Controller {
 	public function result()
 	{
 		$center_id =  $this->session->center_id;
-        $where = array(
-			'center_id'=>$center_id,
-		);
-		
-		$data = array(
-			'name_csrf' => $this->security->get_csrf_token_name(),
+        $where = array('center_id'=>$center_id);
+		$data = array('name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 		);
+
 		$this->db->select('distinct(course_group_id) as course_group_id , course_group.course_name');
 		$this->db->from('student');
 		$this->db->join('course_group', 'student.course_group_id = course_group.id');
