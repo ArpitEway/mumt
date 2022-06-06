@@ -1,6 +1,5 @@
 <?php 
-$withheld = false;
-
+  $withheld = false;
   $check_grace_marks = false;
   $fail_count = 0;
   $fali_tot_marks = 0;
@@ -8,7 +7,6 @@ $withheld = false;
   $tot_marks = 0;
   foreach($new_exam_form as $marks){
     $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code,"class_id"=>$marks->class_id));
-
 
       if($marks->paper_type=='theory'){
               $tot_marks +=  $paper_master[0]->max_theory_marks;
@@ -120,7 +118,7 @@ $withheld = false;
             <th class="border-top-0 text-primary pl-3">Enrollment No.</th>
             <th class="border-top-0"><?php  echo $student->enrollment_no ?></th>
             <th class="border-top-0 text-primary pl-3">Roll No.</th>
-            <th class="border-top-0"><?php echo  $student->roll_number; ?></th>
+            <th class="border-top-0"><?php echo  $student->roll_no; ?></th>
             <th rowspan="4" class="border-top-0 text-center" width="170px"><img class="img img-thumbnail" src="<?=base_url('assets/student_image/').$student->photo?>" ></th>
         </tr>
         <tr>
@@ -142,8 +140,7 @@ $withheld = false;
     </tbody>
 </table>
 <?php 
-  if ($withheld) {
-  
+  if ($withheld) { 
     ?>
   <div class="text-center text-primary border-right border-left border-bottom border-dark py-3">
       <h1 class=" text-center mb-0">Statement Of Marks</h1>
@@ -198,9 +195,7 @@ $withheld = false;
              $obtain_marks= $marks->p_marks;
             }
             $total_obtained_marks = $total_obtained_marks +$obtain_marks;
-        
-       
-
+      
            // final result code 
            if($marks->paper_type=="theory" )
            {
@@ -213,7 +208,6 @@ $withheld = false;
                 ++$fail_count ;
                }
            }
-
 
            // final result code end
              if($marks->paper_type=="theory"){
@@ -235,7 +229,7 @@ $withheld = false;
             <th><?php echo $this->Common_model->getPaperNameById($marks->paper_id); ?></th>
             <th class="text-center"><?php  echo $paper_master[0]->max_theory_marks; ?></th>
             <th class="text-center"><?php  
-            if( $marks->paper_type =='practical'){
+            if( $marks->paper_type =='Practical'){
               if($marks->p_marks < $paper_master[0]->min_theory_marks)
               {
                 echo $marks->p_marks;?><span style="color:red">*</span> <?php
@@ -252,10 +246,11 @@ $withheld = false;
                   }
               };  
               ?></th>
-            <th class="text-center"><?php  if( $marks->type =='practical'){echo '-';}else{echo $paper_master[0]->max_internal_marks; }; ?></th>
+            <th class="text-center"><?php  if( $marks->type =='Practical'){echo '-';}else{echo $paper_master[0]->max_internal_marks; }; ?></th>
             <th class="text-center"><?php
-              if( $marks->paper_type =='practical')
-              {echo '-';}
+              if( $marks->paper_type =='Practical')
+              {
+              {echo '-';}}
               else{
                 if($marks->int_marks<$paper_master[0]->min_internal_marks)
                 {
@@ -265,8 +260,9 @@ $withheld = false;
                   }
                 };  ?>
                 </th>
-            <th class="text-center"><?php  if($marks->paper_type=="practical"){echo $paper_master[0]->max_theory_marks;}else{echo $paper_master[0]->max_theory_marks +$paper_master[0]->max_internal_marks;} ; ?></th>
-            <th class="text-center"><?php if($marks->paper_type=="practical"){echo $marks->p_marks;}else{ echo $marks->theory_marks + $marks->int_marks;} ?></th>
+            <th class="text-center"><?php  if($marks->paper_type=="Practical"){echo $paper_master[0]->max_theory_marks;}else{echo $paper_master[0]->max_theory_marks +$paper_master[0]->max_internal_marks;} ; ?></th>
+
+            <th class="text-center"><?php if($marks->paper_type=="Practical"){echo $marks->p_marks;}else{ echo $marks->theory_marks + $marks->int_marks;} ?></th>
             <th><?php echo $res ;?></th>
           </tr>
           <?php 
@@ -287,11 +283,10 @@ $withheld = false;
 </table>
 <div class="row mb-5">
     <div class="col-12 text-center">
-    <button type="button" style="background-color:#8db3e3; opacity: 1;" width="100%" class="btn   btn-block" disabled><h6 style="color:#000000; font-weight: bold;">Result</h6></button>
+    <button type="button" style="background-color:#fdf8d2; opacity: 1;" width="100%" class="btn   btn-block" disabled><h6 style="color:#000000; font-weight: bold;">Result</h6></button>
      <button type="button" style="opacity: 1"  width="100%" class="btn btn-light  btn-block text-dark" disabled><h6 style=" opacity: 1;color:   000000;font-weight: bold;"><?php if($fail_count>0){echo "ATKT";}else{echo "Pass";}  ?></h6></button>
     </div>
 </div>
-
 
 <div class="row" style=" margin-top: -13px;font-size: 18px;">
     <div class="col-12">

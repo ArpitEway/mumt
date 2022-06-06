@@ -1416,7 +1416,6 @@ class Center extends CI_Controller {
 		$center_id =  $this->session->center_id;
         $where = array(
 			'center_id'=>$center_id,
-
 		);
 		
 		$data = array(
