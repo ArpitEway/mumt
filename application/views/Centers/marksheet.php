@@ -133,7 +133,7 @@ document.onpaste=new Function("return false");
    <div class="text-center py-3">
     <img src="<?=base_url()?>assets/images/maskgroup/MaskGroup1.png"  width="100px;" />
     <img src="<?=base_url()?>assets/images/maskgroup/Group1.png" class="img2" alt="">
-    <h4 class="text-primary text-center mb-0">परीक्षा सत्र - जनवरी 2022</h4>
+    <h4 class="text-primary text-center mb-0">Examination Held In Feb 2022</h4>
   </div>
 </div>
 <table class="table mb-0">
@@ -143,7 +143,7 @@ document.onpaste=new Function("return false");
       <th class="border-top-0"><?php  echo $student->enrollment_no ?></th>
       <th class="border-top-0 text-primary pl-3">Roll No.</th>
       <th class="border-top-0"><?php echo  $student->roll_no; ?></th>
-      <th rowspan="4" class="border-top-0 text-center" width="170px"><img class="img img-thumbnail" src="<?=base_url('assets/student_image/').$student->session.'/'.$student->photo?>" ></th>
+      <th rowspan="3" class="border-top-0 text-center" width="120px"><img class="img img-thumbnail" src="<?=base_url('assets/student_image/').$student->session.'/'.$student->photo?>" ></th>
     </tr>
     <tr>
       <th class="border-top-0 text-primary pl-3">Name</th>
@@ -156,10 +156,6 @@ document.onpaste=new Function("return false");
       <th class="border-top-0"><?php  echo $student->course_name ?></th>
       <th class="border-top-0 text-primary pl-3">Class</th>
       <th class="border-top-0"><?php  echo $student->class_name; ?></th>
-    </tr>
-    <tr>
-      <th class="border-top-0 text-primary pl-3">College</th>
-      <th class="border-top-0" colspan="3"><?php  echo $this->Common_model->getCenterNameById($student->center_id); ?></th>
     </tr>
   </tbody>
 </table>
@@ -318,7 +314,7 @@ if ($withheld) {
   <div class="col-12">
    <span style="font-weight : 900"> Disclaimer :</span>
    <span style="font-weight : bold">This information should not be treated as Marksheet.<br> 
-    MPSVV, Ujjain is not responsible for any inadvertent error that may have crept in the results being published on INTERNET. The results published on internet are for immediate information to the examinee
+    MMYVV is not responsible for any inadvertent error that may have crept in the results being published on INTERNET. The results published on internet are for immediate information to the examinee
   </span>
 </div>
 </div>
