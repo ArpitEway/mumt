@@ -243,7 +243,7 @@ if ($withheld) {
       </th>
       <th class="text-center">
         <?php  
-          if( $marks->type =='Practical'){
+          if( $marks->paper_type =='Practical'){
             echo '-';
           }else{
             echo $paper_master[0]->max_internal_marks; 
