@@ -1418,14 +1418,13 @@ class Center extends CI_Controller {
 		$data = array('name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 		);
-
 		$this->db->select('distinct(course_group_id) as course_group_id , course_group.course_name');
 		$this->db->from('student');
 		$this->db->join('course_group', 'student.course_group_id = course_group.id');
 		$this->db->where('center_id', $center_id);
 		$this->db->where('result_show','Y');
 		$data['courses'] = $this->db->get()->result();
-		$this->load->view('Centers/header');
+		$this->load->view('Centers/header', array('title' => 'Result'));
 		$this->load->view('Centers/result',$data);
 		$this->load->view('Centers/footer');		
 	}
@@ -1445,15 +1444,11 @@ class Center extends CI_Controller {
 		echo $this->load->view('template/getclass',$data,true);
 	}
 
-
-
 	public function getStudentListForMarksheet(){
 		$data = $row = array();
 
-		$where = array(
-			'center_id' => $this->session->center_id,
-			 'result_show'=>'Y'
-		);
+		$where = array('center_id' => $this->session->center_id,
+			 'result_show'=>'Y');
 
 
 		if($_POST['course_group_id']!='All' and $_POST['course_group_id']!=''){

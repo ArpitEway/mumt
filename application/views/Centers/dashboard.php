@@ -137,6 +137,11 @@
 							<span class="nav-text">Roll No List</span>
 						</div>
 					</a>
+					<a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
+						<div>
+							<span class="nav-text">Result</span>
+						</div>
+					</a>
 				</div>
 			</div> 
 		</div>

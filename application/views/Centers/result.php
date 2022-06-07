@@ -1,5 +1,3 @@
-
-
 <div class="mt-5" >
 	<div class="row mb-4">
 		<div class="col-md-6">
@@ -23,10 +21,7 @@
 			</div>
 		</div>
 	</div>
-
-
 	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-
 	<table id="memListTable" class="table table-striped dt-responsive" style="width:100%">
 		<thead>
 			<tr>
@@ -36,7 +31,7 @@
 				<th>Father Name</th>
 				<th>Course</th>
 				<th>Class</th>
-				<th>View Form</th>
+				<th>View Result</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -81,7 +76,7 @@ $(document).ready(function(){
 					"data": function ( d ) {
                   		return $.extend( {}, d, {
                   			[csrfName]:csrfHash,
-                  			session: $('#allClassByCourse').val(),
+                  			course_group_id: $('#allClassByCourse').val(),
                   			class_id: $('#class_id').val(),
 	                  	} );
               		},
