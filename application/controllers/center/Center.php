@@ -1506,16 +1506,14 @@ class Center extends CI_Controller {
 	{
 		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		$student = $this->Common_model->getRecordByWhere("student",array('new_exam_form'=>'Y','result_show'=>'Y','student_id'=>$student_id));
-		// echo "<pre>" ;
-		// print_r($student);
-		// die ;
 		$data['student']=$student[0];
 		$this->db->select('*');
 		$this->db->from('new_exam_form');
 		$this->db->where('new_exam_form.student_id',$data['student']->student_id); 
 		$new_exam_form = $this->db->get()->result();
 		$data['new_exam_form']  = $new_exam_form;
-		$this->load->view('admin/generate_tr/header2');	
+		$title = array('title' => 'Result - '.$data['student']->enrollment_no);
+		$this->load->view('admin/generate_tr/header2',$title);	
 		$this->load->view('Centers/marksheet',$data);
 		$this->load->view('admin/generate_tr/footer2');
 	}

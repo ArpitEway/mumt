@@ -131,8 +131,10 @@ document.onpaste=new Function("return false");
 <div id="printarea" style="width:1000px; margin:auto">
  <div class="border border-dark border-bottom-0">
    <div class="text-center py-3">
-    <img src="<?=base_url()?>assets/images/maskgroup/MaskGroup1.png"  width="100px;" />
-    <img src="<?=base_url()?>assets/images/maskgroup/Group1.png" class="img2" alt="">
+    
+      <!-- <img src="<?=base_url()?>assets/images/maskgroup/MaskGroup1.png"  width="100px;" /> -->
+      <h1 class="text-center p-5" style="font-size:34px; color: #781e19;">Maharishi Mahesh Yogi Vedic Vishwavidyalaya</h1>
+    <!-- <img src="<?=base_url()?>assets/images/maskgroup/Group1.png" class="img2" alt=""> -->
     <h4 class="text-primary text-center mb-0">Examination Held In Feb 2022</h4>
   </div>
 </div>
@@ -154,11 +156,12 @@ document.onpaste=new Function("return false");
     <tr>
       <th class="border-top-0 text-primary pl-3">Course</th>
       <th class="border-top-0"><?php  echo $student->course_name ?></th>
-      <th class="border-top-0 text-primary pl-3">Class</th>
+      <th class="border-top-0 text-primary pl-3">Year / Sem </th>
       <th class="border-top-0"><?php  echo $student->class_name; ?></th>
     </tr>
   </tbody>
 </table>
+
 <?php 
 if ($withheld) { 
   ?>
@@ -170,21 +173,24 @@ if ($withheld) {
 }else{
   ?>
   <table class="table">
-   <thead >
+   <thead>
+    <tr class="border-top-0">
+      <th colspan="8" class="text-center">Statement Of Marks</th>
+    </tr>
     <tr class=" text-center" >
       <th class="border-dark text-center" rowspan="2">Subject</th>
-      <th class="border-dark text-center" colspan="2">Examination Marks</th>
+      <th class="border-dark text-center" colspan="2">Theory / Practical Marks</th>
       <th class="border-dark text-center" colspan="2">Internal Marks</th>
       <th class="border-dark text-center" colspan="2">Total</th>
       <th class="border-dark text-center" rowspan="2">Result</th>
     </tr>
     <tr>
       <th class="border-dark text-center" scope="row">Max Marks</th>
-      <th class="border-dark text-center" scope="row">Obtainded</th>
+      <th class="border-dark text-center" scope="row">Obtained</th>
       <th class="border-dark text-center" scope="row">Max Marks</th>
-      <th class="border-dark text-center" scope="row">Obtainded</th>
+      <th class="border-dark text-center" scope="row">Obtained</th>
       <th class="border-dark text-center" scope="row">Max Marks</th>
-      <th class="border-dark text-center" scope="row">Obtainded</th>
+      <th class="border-dark text-center" scope="row">Obtained</th>
     </tr>
   </thead>
   <tbody>
