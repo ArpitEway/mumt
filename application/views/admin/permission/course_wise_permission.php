@@ -5,8 +5,9 @@
       <tr>
         <th>Id</th>
         <th>Course name </th>
-        <th>Mode</th>
+        <th>Regular Mode</th>
         <th>Regular Admission</th> 
+        <th>Private Mode</th>
         <th>Private Admission</th>
       </tr>
     </thead>    
@@ -26,13 +27,13 @@
                 echo "No"; 
               } ?></button>
             </td>
-
-              <td>
+            <td><?php echo $r->private_mode; ?></td>
+            <td>
              <button id="btn_1<?php echo $r->id?>" <?php if($r->admission_permission_pvt=='Y' ){echo "class='btn btn-success'" ;}else{echo "class='btn btn-danger' ";} ?> onclick="admission_permission_pvt(<?php echo $r->id;  ?>,'<?php echo $r->admission_permission_pvt;?>')">
               <?php if($r->admission_permission_pvt =='Y'){echo "Yes" ;}else{
                 echo "No"; 
               } ?></button>
-            </td>
+           </td>
         </tr>
       <?php 
       $i++;
