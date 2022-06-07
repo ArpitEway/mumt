@@ -1506,6 +1506,9 @@ class Center extends CI_Controller {
 	{
 		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		$student = $this->Common_model->getRecordByWhere("student",array('new_exam_form'=>'Y','result_show'=>'Y','student_id'=>$student_id));
+		if (count($student)==0) {
+			redirect(base_url());
+		}
 		$data['student']=$student[0];
 		$this->db->select('*');
 		$this->db->from('new_exam_form');
