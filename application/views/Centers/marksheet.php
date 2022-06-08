@@ -288,14 +288,7 @@ if ($withheld) {
     <th></th>
     <th class="text-center"><?php echo  $total_max_marks?></th>
     <th class="text-center"><?php  echo  $total_obtained_marks ?></th>
-    <th><?php 
-            if($check_grace_marks){
-              echo "PASS BY GRACE";
-            }elseif($fail_count>0){
-              echo "ATKT";
-            }else{
-              echo "PASS";
-            }  ?>
+    <th>
     </th>
   </tr>
 </tbody>
