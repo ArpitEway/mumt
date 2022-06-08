@@ -80,105 +80,79 @@
  						</div>
  					</div>
  				</div>
- 		</div>
- 	</div>
- </div>  
- <div id="examDetails">
+ 	        </div>
+ 	    </div>
+    </div> 
+    <div id="examDetails">
+        <div class="card card-custom my-10 details-bg">	
+            <div class="container-fluid profile mt-5">
+                <div class="row">
+                   <div class="col-md-5">
+                      <label class="text-heading">Paper Name</label>
+                  </div>
+                  <div class="col-md-2">
+                      <label class="text-heading">Paper Code</label>
+                  </div>
+                  <div class="col-md-2">
+                      <label class="text-heading">Answer Sheet</label>
+                  </div>
+<!--                   <div class="col-md-2">
+                      <label class="text-heading">Delete</label>
+                  </div> -->
+                  <div class="col-md-2">
+                      <label class="text-heading">Marks</label>
+                  </div>
+              </div>
+              <?php foreach ($paper as $payment) {
+                    $where = array('student_id'=>$payment->student_id,
+                                'paper_code'=>$payment->paper_code,
+                                'answer_sheet!='=>''
+                            );
+               $view = $this->Common_model->get_record("upload_exam_ans_sheet",'*',$where);
 
- 	<div class="card card-custom my-10 details-bg">	
- 		<div class="container-fluid profile mt-5">
-
- 			<div class="row">
- 				<div class="col-md-3">
- 					<label class="text-heading">Paper Name</label>
- 				</div>
- 				<div class="col-md-2">
- 					<label class="text-heading">Paper Code</label>
- 				</div>
- 				<div class="col-md-2">
- 					<label class="text-heading">Answer Sheet</label>
- 				</div>
- 				<div class="col-md-2">
- 					<label class="text-heading">Delete</label>
- 				</div>
- 				
- 				<div class="col-md-2">
- 					<label class="text-heading">Marks</label>
- 				</div>
-
- 				
- 				
-
- 			</div>
- 			<?php foreach ($paper as $payment) {
-
-             $where = array('student_id'=>$payment->student_id,
-                       'paper_code'=>$payment->paper_code,
-                           'answer_sheet!='=>''
-                        );
-                     
-                    $view = $this->Common_model->get_record("upload_exam_ans_sheet",'*',$where);
-
-             ?>
- 				<div class="row mt-3">
-
- 					<div class="col-md-3">
- 						<label class="text-heading mt-3"><?=$this->Common_model->getPaperNameById($payment->paper_id); ?></label>
- 					</div> 
- 					<div class="col-md-2">
- 						<label class="text-heading mt-3"><?=$payment->paper_code;?></label>
- 					</div>
-           <div class="col-md-2">
+               ?>
+               <div class="row mt-3">
+                  <div class="col-md-5">
+                     <label class="text-heading mt-3"><?=$this->Common_model->getPaperNameById($payment->paper_id); ?></label>
+                 </div> 
+                 <div class="col-md-2">
+                     <label class="text-heading mt-3"><?=$payment->paper_code;?></label>
+                 </div>
+                 <div class="col-md-2">
                     <?php
                     
                     if($view){
-                      ?>
-
-                    
-                          <?php if(file_exists(FCPATH.'/assets/exam_answersheet/'.$view[0]->upload_date.'/'.$view[0]->answer_sheet)){ ?>
-
-                            <a target="_blank" href="<?php  echo  base_url('/assets/exam_answersheet/'.$view[0]['upload_date'].'/'.$view[0]['answer_sheet'].'.pdf') ?>" >View</a>
-                       <?php }else{
+                        if(file_exists(FCPATH.'/assets/exam_answersheet/'.$view[0]->upload_date.'/'.$view[0]->answer_sheet)){ ?>
+                        <a target="_blank" href="<?php  echo  base_url('/assets/exam_answersheet/'.$view[0]['upload_date'].'/'.$view[0]['answer_sheet'].'.pdf') ?>" >View</a>
+                    <?php }else{
                         echo 'N/A';
-                    } ?>
-
-                    <?php 
-                }
-                else{  
-                    echo 'N/A';}?></div>
-
-            <div class="col-md-2">
-                <?php  
-
-                  if($view){?>
-                    
-                     <?php if(file_exists(FCPATH.'/assets/exam_answersheet/'.$view[0]->upload_date.'/'.$view[0]->answer_sheet)){ ?>
-
-                        <a  onclick='javascript:confirmationDelete($(this));return false;'  href="<?php  echo  base_url('admin/admins/Delete_answersheet/').$view[0]['id']  ;?>"
-
-                            >
-                         <i class="mdi mdi-delete delete-icon"></i></a>
-                     <?php }else{
+                            }
+                    }else{  
                         echo 'N/A';
-                    } ?>
-                    <?php 
-                } else{  
-                    echo 'N/A';}?>
-                
+                    }?>
                 </div>
+                <!-- <div class="col-md-2"> -->
+                    <?php
+                        if($view){?>
 
- 					
- 					
- 					<div class="col-md-2">
- 						<label class="text-heading mt-3"><?=$payment->theory_marks;?></label>
- 					</div>
- 					
+                           <?php if(file_exists(FCPATH.'/assets/exam_answersheet/'.$view[0]->upload_date.'/'.$view[0]->answer_sheet)){ ?>
+                            <!-- <a  onclick='javascript:confirmationDelete($(this));return false;'  href="<?php  echo  base_url('admin/admins/Delete_answersheet/').$view[0]['id']  ;?>" ><i class="mdi mdi-delete delete-icon"></i></a> -->
+                            <?php }else{
+                                echo 'N/A';
+                            } ?>
+                            <?php 
+                        } else{  
+                            echo 'N/A';}?>
 
- 				</div>
- 			<?php } ?>
- 		</div>
+                        <!-- </div> -->
+                        <div class="col-md-2">
+                         <label class="text-heading mt-3"><?=$view[0]['total_marks'];?></label>
+                     </div>
+                 </div>
+             <?php } ?>
+        </div>
  	</div>
- </div>
+</div>
 
 <script type="text/javascript">
     

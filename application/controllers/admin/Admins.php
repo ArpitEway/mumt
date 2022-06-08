@@ -2268,8 +2268,7 @@ public function update_exam_datewise_permission(){
 				}else if($text_val !='' && $radio_val == 'student_id'){
 					$student = $this->Common_model->getRecordById('student','student_id',$text_val);
 				}  
-
-				$papers = $this->Common_model->getRecordByWhere('new_exam_form',array('student_id' =>$student->student_id));
+				$papers = $this->Common_model->getRecordByWhere('new_exam_form',array('student_id' =>$student->student_id, 'paper_type' => 'theory'));
 				$data = array(
 					'paper' => $papers,
 					'student' => $student,
