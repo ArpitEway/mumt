@@ -53,12 +53,6 @@
   $page_no = 0;
   foreach($students as $student)
   {
-    if (!file_exists(FCPATH.'assets/student_image/'.$student->session.'/'.$student->photo)){
-    echo $student->student_id.', ';
-    }
-  }  
-  foreach($students as $student)
-  {
 
     $page_break_count++;
     $marks = $this->Common_model->student_info_for_result($student->student_id);
