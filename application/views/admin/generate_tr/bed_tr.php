@@ -226,19 +226,19 @@
         if($classData[0]->project!='N' || $classData[0]->practical!='N'){
         ?>
         <tr>
-          <td class="align-middle text-right">Practical Internal Marks Max/Min-></td>
+          <td class="align-middle text-right">Practical External Marks Max/Min-></td>
           <?php foreach($marks as $paper_master){   ?>
           <td  class="align-middle text-center">
-            <?php if($paper_master->paper_type!="theory"){echo  $paper_master->max_internal_marks .'/'.$paper_master->min_internal_marks;};  ?>
+            <?php if($paper_master->paper_type!="theory"){echo  $paper_master->max_theory_marks .'/'.$paper_master->min_theory_marks;};  ?>
           </td>
           <?php } ?>
           <td class="align-middle text-center"></td>
         </tr>
         <tr>
-          <td class="align-middle text-right">Practical External Marks Max/Min-></td>
+          <td class="align-middle text-right">Practical Internal Marks Max/Min-></td>
           <?php foreach($marks as $paper_master){   ?>
           <td  class="align-middle text-center">
-            <?php if($paper_master->paper_type!="theory"){echo  $paper_master->max_theory_marks .'/'.$paper_master->min_theory_marks;};  ?>
+            <?php if($paper_master->paper_type!="theory"){echo  $paper_master->max_internal_marks .'/'.$paper_master->min_internal_marks;};  ?>
           </td>
           <?php } ?>
           <td class="align-middle text-center"></td>
@@ -336,6 +336,31 @@
   </tr>
   <?php if( $classData[0]->project!='N' || $classData[0]->practical!='N'){ ?>
   <tr>
+    <td class="align-middle text-right ">Practical External Marks-></td>
+    <?php
+    $total_p_marks = 0;
+    foreach($marks as $new_exam_form)
+    {
+      ?>
+      <td  class="align-middle text-center"><?php 
+      if($new_exam_form->p_marks=="N")
+        {echo " ";}
+      else{
+        if($new_exam_form->p_marks < $new_exam_form->min_theory_marks && $new_exam_form->p_marks!=''){
+          echo  $new_exam_form->p_marks .' F';
+        }elseif($new_exam_form->p_marks ==''){
+          echo "RWPR";
+        }
+        else{
+          echo  $new_exam_form->p_marks;
+          $total_p_marks += $new_exam_form->p_marks;
+        }
+      }
+    ?></td>
+    <?php } ?>
+  <td class="align-middle text-center"><?=$total_p_marks; ?></td>
+</tr>
+  <tr>
     <td class="align-middle text-right ">Practical Internal Marks-></td>
     <?php
     $total_p_marks = 0;
@@ -365,31 +390,6 @@
     <?php } ?>
   <td class="align-middle text-center"><?=$total_p_marks; ?></td>
 </tr>
-  <tr>
-    <td class="align-middle text-right ">Practical External Marks-></td>
-    <?php
-    $total_p_marks = 0;
-    foreach($marks as $new_exam_form)
-    {
-      ?>
-      <td  class="align-middle text-center"><?php 
-      if($new_exam_form->p_marks=="N")
-        {echo " ";}
-      else{
-        if($new_exam_form->p_marks < $new_exam_form->min_theory_marks && $new_exam_form->p_marks!=''){
-          echo  $new_exam_form->p_marks .' F';
-        }elseif($new_exam_form->p_marks ==''){
-          echo "RWPR";
-        }
-        else{
-          echo  $new_exam_form->p_marks;
-          $total_p_marks += $new_exam_form->p_marks;
-        }
-      }
-    ?></td>
-    <?php } ?>
-  <td class="align-middle text-center"><?=$total_p_marks; ?></td>
-</tr>
 <?php } ?>
   <tr>
     <td class="align-middle text-right ">Total Marks Obt.</td>
@@ -406,10 +406,10 @@
     }else{ 
       if($paper_master->p_marks=='ABS'){
         echo '0 F';
-      }elseif($paper_master->p_marks<$paper_master->min_theory_marks){
-        echo $paper_master->p_marks.' F';
+      }elseif($paper_master->p_marks<$paper_master->min_theory_marks || $paper_master->int_marks<$paper_master->min_internal_marks){
+        echo $paper_master->p_marks+$paper_master->int_marks.' F';
       }else{
-        echo $paper_master->p_marks;
+        echo $paper_master->p_marks+$paper_master->int_marks;
       }
     } ?>
     </td>
