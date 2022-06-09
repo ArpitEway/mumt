@@ -53,7 +53,6 @@
   $page_no = 0;
   foreach($students as $student)
   {
-
     $page_break_count++;
     $marks = $this->Common_model->student_info_for_result($student->student_id);
     $BarCodecolspan = 9 + count($marks); 
@@ -75,10 +74,12 @@
     $fail_count = 0;
     $fail_tot_marks = 0;
     $final_result = '';
+    $theory_paper_count = 0;
+    $p_paper_count = 0;
     foreach($marks as $new_exam_form)
     {
       if($new_exam_form->type=='theory'){
-
+        $theory_paper_count++;
         $total_theory_marks_obt += $new_exam_form->theory_marks;
         $total_int_marks_obt += $new_exam_form->int_marks;
         $total_theory_asm_marks = $new_exam_form->theory_marks+ $new_exam_form->int_marks;
@@ -119,6 +120,7 @@
       }
 
       if($new_exam_form->type!='theory'){
+        $p_paper_count++;
         $total_marks_obt += $new_exam_form->p_marks+$new_exam_form->int_marks;
         if($new_exam_form->p_marks=='' || $new_exam_form->p_marks=='N'){
           $rw_count++;
@@ -269,28 +271,23 @@
           <td  class="align-middle text-center width_total"  rowspan="<?php echo $rowspandata ?>"><?php 
           if($check_grace_marks){
             echo "-";
-          }else{
-            if($int_abs_count>0 &&  $theory_abs_count>0 && $p_abs_count>0){
-              echo 'ABS In ALL';
-            }elseif($int_abs_count>0 ||  $theory_abs_count>0 || $p_abs_count>0){
-              echo 'ABS In';
-              if($theory_abs_count>0){
-                echo ' Theory';
-              }elseif($int_abs_count>0){
-                echo ' Internal'; 
-              }elseif($p_abs_count>0){
-                echo ' prectical';
-              }
-            }else{
-              if(sizeof($atkt_paper_codes_array)>0){
-                echo "ATKT in";
-              }
-              $atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
-              foreach($atkt_paper_codes_array as $paper_code){
-                echo  "<br>". $paper_code;
-              }
+              }elseif($int_abs_count==$theory_paper_count &&  $theory_abs_count==$theory_paper_count && $p_abs_count==$p_paper_count){
+                  echo 'ABS In ALL';
+              }elseif($theory_paper_count==$theory_abs_count){
+                    echo 'ABS In Theory';
+              }elseif($int_abs_count==$theory_paper_count){
+                    echo 'ABS In Internal'; 
+              }elseif($p_abs_count==$p_paper_count){
+                    echo 'ABS In Practical';
+              }else{
+                if(sizeof($atkt_paper_codes_array)>0){
+                  echo "ATKT in";
+                }
+                $atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
+                foreach($atkt_paper_codes_array as $paper_code){
+                  echo  "<br>". $paper_code;
+                }
             }
-          }
           ?>
         </td>
       </tr>
@@ -400,7 +397,7 @@
       if($paper_master->paper_type=="theory"){
        if($check_grace_marks==true){
         echo $paper_master->theory_marks+ $paper_master->int_marks;
-      } elseif(($paper_master->theory_marks<$paper_master->min_theory_marks) || ($paper_master->int_marks<$paper_master->min_internal_marks) || $theory_abs_count!=0 || $int_abs_count!=0){
+      }elseif(($paper_master->theory_marks<$paper_master->min_theory_marks) || ($paper_master->int_marks<$paper_master->min_internal_marks) || $paper_master->theory_marks=='ABS'|| $paper_master->int_marks=='ABS'){
         echo $paper_master->theory_marks+ $paper_master->int_marks." F";
       }else{
         echo $paper_master->theory_marks+ $paper_master->int_marks;
