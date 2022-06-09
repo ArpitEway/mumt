@@ -1969,7 +1969,7 @@ public function getStudentData()
 		$stduent_ids = $this->Common_model->get_record('aadhar_student','*');
 		foreach ($stduent_ids as $student) {
 			$where = array('student_id' => $student['student_id']);
-			$data = array('adhar_no' => $student['adhar_no']);
+			$data = array('adhar_no' => $student['adhar_no'], 'enrollment_no' => $student['enrollment_no'], 'enrolled' => 'Y', 'approved' => 'Y', 'document_uploaded' => 'Y', 'temp_exam_form' => 'Y', 'payment_status' => 'Y');
 				// echo "<pre>";
 				// print_r($data);
 			$this->Common_model->updateRecordByConditions('student',$where,$data);
@@ -2863,4 +2863,14 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
+	public function generate_tr_bed($course_group_id="",$class_id=""){
+		$this->db->order_by('roll_number','ASC');
+		$data['students'] = $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y','roll_no!='=>'0', 'result_show' => 'N' ));
+		$data['class_id'] = $class_id;
+		$data['course_group_id'] = $course_group_id;
+		$title = "TR ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
+		$this->load->view('admin/generate_tr/header2',array('title' =>$title));
+		$this->load->view('admin/generate_tr/bed_tr',$data);
+		$this->load->view('admin/generate_tr/footer2');
+	}
 }// class

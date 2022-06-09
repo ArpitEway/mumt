@@ -45,8 +45,8 @@
   $marksheetData = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id'=>$class_id));
   $classData= $this->Common_model->getRecordByWhere('class_master',array('id' => $class_id));
   $isFinalClass = $this->Common_model->hasOneClass($course_group_id);
-  $rowspanhead = ($classData[0]->project!='N' || $classData[0]->practical!='N') ? "4" : "3";
-  $rowspandata = ($classData[0]->project!='N' || $classData[0]->practical!='N') ? "5" : "4";
+  $rowspanhead = ($classData[0]->project!='N' || $classData[0]->practical!='N') ? "5" : "3";
+  $rowspandata = ($classData[0]->project!='N' || $classData[0]->practical!='N') ? "6" : "4";
   $page_break_count = -1;
   $br_code_id = 0;
   // $roll_no = array(); 
@@ -95,15 +95,15 @@
           $rw_count++;
         }
 
-        if($new_exam_form->int_marks=='N'){
-          $rw_count++;
-        }
-
         if($new_exam_form->theory_marks<$new_exam_form->min_theory_marks  && $new_exam_form->theory_marks!=''){
           array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
           $fail_count++;
           $fail_tot_marks += $new_exam_form->theory_marks;
           $require_tot_marks += $new_exam_form->min_theory_marks;
+        }
+
+        if($new_exam_form->int_marks=='N'){
+          $rw_count++;
         }
 
         if($new_exam_form->int_marks<$new_exam_form->min_internal_marks){
@@ -118,7 +118,7 @@
       }
 
       if($new_exam_form->type!='theory'){
-        $total_marks_obt += $new_exam_form->p_marks;
+        $total_marks_obt += $new_exam_form->p_marks+$new_exam_form->int_marks;
         if($new_exam_form->p_marks=='' || $new_exam_form->p_marks=='N'){
           $rw_count++;
         }
@@ -128,6 +128,19 @@
         if($new_exam_form->p_marks<$new_exam_form->min_theory_marks){
           $p_fail_count++;
           array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
+        }
+        if($new_exam_form->int_marks=='N'){
+          $rw_count++;
+        }
+        
+        if($new_exam_form->int_marks<$new_exam_form->min_internal_marks){
+          $int_fail_count++;
+          array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
+        }
+
+        if($new_exam_form->int_marks=="ABS"){
+          $int_abs_count++;
+          $int_fail_count++;
         }
       }
     }
@@ -213,7 +226,16 @@
         if($classData[0]->project!='N' || $classData[0]->practical!='N'){
         ?>
         <tr>
-          <td class="align-middle text-right">Practical Marks Max/Min-></td>
+          <td class="align-middle text-right">Practical Internal Marks Max/Min-></td>
+          <?php foreach($marks as $paper_master){   ?>
+          <td  class="align-middle text-center">
+            <?php if($paper_master->paper_type!="theory"){echo  $paper_master->max_internal_marks .'/'.$paper_master->min_internal_marks;};  ?>
+          </td>
+          <?php } ?>
+          <td class="align-middle text-center"></td>
+        </tr>
+        <tr>
+          <td class="align-middle text-right">Practical External Marks Max/Min-></td>
           <?php foreach($marks as $paper_master){   ?>
           <td  class="align-middle text-center">
             <?php if($paper_master->paper_type!="theory"){echo  $paper_master->max_theory_marks .'/'.$paper_master->min_theory_marks;};  ?>
@@ -314,7 +336,37 @@
   </tr>
   <?php if( $classData[0]->project!='N' || $classData[0]->practical!='N'){ ?>
   <tr>
-    <td class="align-middle text-right ">Practical Marks.</td>
+    <td class="align-middle text-right ">Practical Internal Marks-></td>
+    <?php
+    $total_p_marks = 0;
+    foreach($marks as $new_exam_form)
+    {
+      if($new_exam_form->paper_type=='theory') {
+        ?>
+        <td  class="align-middle text-center">
+        </td><?php
+        continue;
+      }
+      ?>
+      <td  class="align-middle text-center"><?php 
+      if($new_exam_form->int_marks=="N"){
+        echo " ";
+      }else{
+        if($new_exam_form->int_marks < $new_exam_form->min_internal_marks && $new_exam_form->int_marks!=''){
+          echo  $new_exam_form->int_marks .' F';
+        }elseif($new_exam_form->int_marks ==''){
+          echo "RWPR";
+        }else{
+          echo  $new_exam_form->int_marks;
+          $total_p_marks += $new_exam_form->int_marks;
+        }
+      }
+    ?></td>
+    <?php } ?>
+  <td class="align-middle text-center"><?=$total_p_marks; ?></td>
+</tr>
+  <tr>
+    <td class="align-middle text-right ">Practical External Marks-></td>
     <?php
     $total_p_marks = 0;
     foreach($marks as $new_exam_form)
