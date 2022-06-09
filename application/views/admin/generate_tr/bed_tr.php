@@ -53,7 +53,7 @@
   $page_no = 0;
   foreach($students as $student)
   {
-    if (!file_exists(base_url('assets/student_image/'.$student->session.'/'.$student->photo))){
+    if (!file_exists(FCPATH.'assets/student_image/'.$student->session.'/'.$student->photo))){
     echo $student->student_id.', ';
     }
   }  
