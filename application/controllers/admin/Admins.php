@@ -2880,7 +2880,7 @@ public function update_exam_datewise_permission(){
 		$this->db->join('new_exam_form', 'student.student_id = new_exam_form.student_id');
 		$this->db->group_by('new_exam_form.student_id');
 		$this->db->Where('new_exam_form','Y');
-		$this->db->where_in('new_exam_form.int_marks',array('ABS',''));
+		$this->db->where_in('new_exam_form.int_marks',array('ABS','N'));
 		$data['students'] = $this->db->get()->result();
 		$this->load->view('admin/student_int_marks_no_list',$data);
 		$this->load->view('footer');
@@ -2982,7 +2982,7 @@ public function update_exam_datewise_permission(){
 		$this->db->join('class_master', 'student.class_id = class_master.id');
 		$this->db->group_by('new_exam_form.student_id');
 		$this->db->Where('new_exam_form','Y');
-		$this->db->where_in('new_exam_form.p_marks',array('ABS',''));
+		$this->db->where_in('new_exam_form.p_marks',array('ABS','N'));
 		$this->db->Where('(project="Y" or practical = "Y")');
 		$data['students'] = $this->db->get()->result();
 		$this->load->view('admin/student_practical_marks_no_list',$data);
