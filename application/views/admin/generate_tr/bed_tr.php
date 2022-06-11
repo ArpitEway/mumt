@@ -45,8 +45,8 @@
   $marksheetData = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id'=>$class_id));
   $classData= $this->Common_model->getRecordByWhere('class_master',array('id' => $class_id));
   $isFinalClass = $this->Common_model->hasOneClass($course_group_id);
-  $rowspanhead = ($classData[0]->project!='N' || $classData[0]->practical!='N') ? "4" : "3";
-  $rowspandata = ($classData[0]->project!='N' || $classData[0]->practical!='N') ? "5" : "4";
+  $rowspanhead = ($classData[0]->project!='N' || $classData[0]->practical!='N') ? "5" : "3";
+  $rowspandata = ($classData[0]->project!='N' || $classData[0]->practical!='N') ? "6" : "4";
   $page_break_count = -1;
   $br_code_id = 0;
   // $roll_no = array(); 
@@ -74,10 +74,12 @@
     $fail_count = 0;
     $fail_tot_marks = 0;
     $final_result = '';
+    $theory_paper_count = 0;
+    $p_paper_count = 0;
     foreach($marks as $new_exam_form)
     {
       if($new_exam_form->type=='theory'){
-
+        $theory_paper_count++;
         $total_theory_marks_obt += $new_exam_form->theory_marks;
         $total_int_marks_obt += $new_exam_form->int_marks;
         $total_theory_asm_marks = $new_exam_form->theory_marks+ $new_exam_form->int_marks;
@@ -95,15 +97,15 @@
           $rw_count++;
         }
 
-        if($new_exam_form->int_marks=='N'){
-          $rw_count++;
-        }
-
         if($new_exam_form->theory_marks<$new_exam_form->min_theory_marks  && $new_exam_form->theory_marks!=''){
           array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
           $fail_count++;
           $fail_tot_marks += $new_exam_form->theory_marks;
           $require_tot_marks += $new_exam_form->min_theory_marks;
+        }
+
+        if($new_exam_form->int_marks=='N'){
+          $rw_count++;
         }
 
         if($new_exam_form->int_marks<$new_exam_form->min_internal_marks){
@@ -118,7 +120,8 @@
       }
 
       if($new_exam_form->type!='theory'){
-        $total_marks_obt += $new_exam_form->p_marks;
+        $p_paper_count++;
+        $total_marks_obt += $new_exam_form->p_marks+$new_exam_form->int_marks;
         if($new_exam_form->p_marks=='' || $new_exam_form->p_marks=='N'){
           $rw_count++;
         }
@@ -128,6 +131,19 @@
         if($new_exam_form->p_marks<$new_exam_form->min_theory_marks){
           $p_fail_count++;
           array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
+        }
+        if($new_exam_form->int_marks=='N'){
+          $rw_count++;
+        }
+        
+        if($new_exam_form->int_marks<$new_exam_form->min_internal_marks){
+          $int_fail_count++;
+          array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
+        }
+
+        if($new_exam_form->int_marks=="ABS"){
+          $int_abs_count++;
+          $int_fail_count++;
         }
       }
     }
@@ -213,10 +229,19 @@
         if($classData[0]->project!='N' || $classData[0]->practical!='N'){
         ?>
         <tr>
-          <td class="align-middle text-right">Practical Marks Max/Min-></td>
+          <td class="align-middle text-right">Practical External Marks Max/Min-></td>
           <?php foreach($marks as $paper_master){   ?>
           <td  class="align-middle text-center">
             <?php if($paper_master->paper_type!="theory"){echo  $paper_master->max_theory_marks .'/'.$paper_master->min_theory_marks;};  ?>
+          </td>
+          <?php } ?>
+          <td class="align-middle text-center"></td>
+        </tr>
+        <tr>
+          <td class="align-middle text-right">Practical Internal Marks Max/Min-></td>
+          <?php foreach($marks as $paper_master){   ?>
+          <td  class="align-middle text-center">
+            <?php if($paper_master->paper_type!="theory"){echo  $paper_master->max_internal_marks .'/'.$paper_master->min_internal_marks;};  ?>
           </td>
           <?php } ?>
           <td class="align-middle text-center"></td>
@@ -231,9 +256,10 @@
     <table class="table table1">
       <tbody>
         <tr>
-          <th  class="align-middle text-center " style="width: 85px;" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_no ?> <br> <?php echo $student->enrollment_no  ?></th>
+          <th  class="align-middle text-center " style="width: 85px;" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_number ?> <br> <?php echo $student->enrollment_no  ?></th>
           <th class="align-middle text-center pl-5 pr-5" rowspan="<?php echo $rowspandata ?>"></th>
-          <th  class="align-middle text-center pl-4 pr-4" rowspan="<?php echo $rowspandata ?>"><img alt="N/A" src="<?= base_url('assets/student_image/'.$student->session.'/'.$student->photo) ?>" height="90px"></th>
+          <th  class="align-middle text-center pl-4 pr-4" rowspan="<?php echo $rowspandata ?>">
+            <img alt="N/A" src="<?= base_url('assets/student_image/'.$student->session.'/'.$student->photo) ?>" height="90px"></th>
           <td  class="align-middle text-center  pl-5 pr-5 custom_width"  rowspan="<?php  echo $rowspandata ?>"><?php  echo $student->name ?>/ <br><?php  echo $student->f_h_name ?></td>
           <td  class="align-middle text-right" style="width: 187px;">Paper-></td>
           <?php  foreach($marks as $paper_master){  ?>
@@ -245,28 +271,23 @@
           <td  class="align-middle text-center width_total"  rowspan="<?php echo $rowspandata ?>"><?php 
           if($check_grace_marks){
             echo "-";
-          }else{
-            if($int_abs_count>0 &&  $theory_abs_count>0 && $p_abs_count>0){
-              echo 'ABS In ALL';
-            }elseif($int_abs_count>0 ||  $theory_abs_count>0 || $p_abs_count>0){
-              echo 'ABS In';
-              if($theory_abs_count>0){
-                echo ' Theory';
-              }elseif($int_abs_count>0){
-                echo ' Internal'; 
-              }elseif($p_abs_count>0){
-                echo ' prectical';
-              }
-            }else{
-              if(sizeof($atkt_paper_codes_array)>0){
-                echo "ATKT in";
-              }
-              $atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
-              foreach($atkt_paper_codes_array as $paper_code){
-                echo  "<br>". $paper_code;
-              }
+              }elseif($int_abs_count==$theory_paper_count &&  $theory_abs_count==$theory_paper_count && $p_abs_count==$p_paper_count){
+                  echo 'ABS In ALL';
+              }elseif($theory_paper_count==$theory_abs_count){
+                    echo 'ABS In Theory';
+              }elseif($int_abs_count==$theory_paper_count){
+                    echo 'ABS In Internal'; 
+              }elseif($p_abs_count==$p_paper_count){
+                    echo 'ABS In Practical';
+              }else{
+                if(sizeof($atkt_paper_codes_array)>0){
+                  echo "ATKT in";
+                }
+                $atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
+                foreach($atkt_paper_codes_array as $paper_code){
+                  echo  "<br>". $paper_code;
+                }
             }
-          }
           ?>
         </td>
       </tr>
@@ -314,7 +335,7 @@
   </tr>
   <?php if( $classData[0]->project!='N' || $classData[0]->practical!='N'){ ?>
   <tr>
-    <td class="align-middle text-right ">Practical Marks.</td>
+    <td class="align-middle text-right ">Practical External Marks-></td>
     <?php
     $total_p_marks = 0;
     foreach($marks as $new_exam_form)
@@ -338,6 +359,36 @@
     <?php } ?>
   <td class="align-middle text-center"><?=$total_p_marks; ?></td>
 </tr>
+  <tr>
+    <td class="align-middle text-right ">Practical Internal Marks-></td>
+    <?php
+    $total_p_marks = 0;
+    foreach($marks as $new_exam_form)
+    {
+      if($new_exam_form->paper_type=='theory') {
+        ?>
+        <td  class="align-middle text-center">
+        </td><?php
+        continue;
+      }
+      ?>
+      <td  class="align-middle text-center"><?php 
+      if($new_exam_form->int_marks=="N"){
+        echo " ";
+      }else{
+        if($new_exam_form->int_marks < $new_exam_form->min_internal_marks && $new_exam_form->int_marks!=''){
+          echo  $new_exam_form->int_marks .' F';
+        }elseif($new_exam_form->int_marks ==''){
+          echo "RWPR";
+        }else{
+          echo  $new_exam_form->int_marks;
+          $total_p_marks += $new_exam_form->int_marks;
+        }
+      }
+    ?></td>
+    <?php } ?>
+  <td class="align-middle text-center"><?=$total_p_marks; ?></td>
+</tr>
 <?php } ?>
   <tr>
     <td class="align-middle text-right ">Total Marks Obt.</td>
@@ -346,7 +397,7 @@
       if($paper_master->paper_type=="theory"){
        if($check_grace_marks==true){
         echo $paper_master->theory_marks+ $paper_master->int_marks;
-      } elseif(($paper_master->theory_marks<$paper_master->min_theory_marks) || ($paper_master->int_marks<$paper_master->min_internal_marks) || $theory_abs_count!=0 || $int_abs_count!=0){
+      }elseif(($paper_master->theory_marks<$paper_master->min_theory_marks) || ($paper_master->int_marks<$paper_master->min_internal_marks) || $paper_master->theory_marks=='ABS'|| $paper_master->int_marks=='ABS'){
         echo $paper_master->theory_marks+ $paper_master->int_marks." F";
       }else{
         echo $paper_master->theory_marks+ $paper_master->int_marks;
@@ -354,10 +405,10 @@
     }else{ 
       if($paper_master->p_marks=='ABS'){
         echo '0 F';
-      }elseif($paper_master->p_marks<$paper_master->min_theory_marks){
-        echo $paper_master->p_marks.' F';
+      }elseif($paper_master->p_marks<$paper_master->min_theory_marks || $paper_master->int_marks<$paper_master->min_internal_marks){
+        echo $paper_master->p_marks+$paper_master->int_marks.' F';
       }else{
-        echo $paper_master->p_marks;
+        echo $paper_master->p_marks+$paper_master->int_marks;
       }
     } ?>
     </td>
@@ -382,7 +433,7 @@
   ?>
   <tr class="">
     <td  class="align-middle text-left " colspan="<?=$BarCodecolspan ?>">
-          <?php  echo $generator->getBarcode($student->roll_no.$marksheetData[0]->bar_code_no, $generator::TYPE_CODE_128,2,25); ?>
+          <?php  echo $generator->getBarcode($student->roll_number.$marksheetData[0]->bar_code_no, $generator::TYPE_CODE_128,2,25); ?>
     </td>
   </tr>
 </tbody>
