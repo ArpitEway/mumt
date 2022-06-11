@@ -2863,4 +2863,107 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
+
+	public function internal_marks_list(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+		}
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		$titleData = array('title' => 'Internal  Marks Submission' );
+		$this->load->view('header',$titleData);
+		$where = array('new_exam_form' => 'Y','result_show ' => 'N','int_marks'=>'ABS');
+		$this->db->order_by("int_marks_sub,student.course_group_id,student.class_id", "asc");
+		$this->db->select('*');
+		$this->db->from('student');
+		$this->db->join('new_exam_form', 'student.student_id = new_exam_form.student_id');
+		$this->db->group_by('new_exam_form.student_id');
+		$this->db->Where($where );
+		$data['students'] = $this->db->get()->result();
+		$this->load->view('admin/student_int_marks_no_list',$data);
+		$this->load->view('footer');
+	}
+
+	public function student_int_assignment_marks(){
+		$student_id = $this->input->post('student_id');
+		$where=array('student.student_id'=>$student_id,'paper_type'=>'theory');
+		$this->db->select('*');
+		$this->db->from('new_exam_form');
+		$this->db->Where($where );
+		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
+		$details = $this->db->get()->result();
+		$data = array(
+			'details' => $details,
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		if($data){
+			$model =  $this->load->view('admin/student_int_assignment_marks',$data,true);
+			$status = true;
+		}
+		echo json_encode(array(
+			"status" => $status,
+			"data" => $model
+		));
+	}
+
+	public function assignment_marks_sub()
+	{
+		$data=array();
+		$post = $this->input->post();
+		$data['paper_id'] = $this->input->post('paper_id');
+		$data['marks'] = $this->input->post('marks');
+		foreach ($data['paper_id'] as $key => $value){
+			$studentData = array(
+				'int_marks' => $data['marks'][$key],
+			);
+			$where =  array(
+				'paper_id' =>$value,
+				'student_id'  =>$_POST['student_id']
+			);
+			$Marksentry = $this->Common_model->updateRecordByConditions('new_exam_form',$where,$studentData);
+		}
+		$where1 =  array(
+			'student_id'  =>$_POST['student_id']
+		);
+		$Data = array(
+			'int_marks_sub' => 'Y',
+		);
+		$Marksentry1 = $this->Common_model->updateRecordByConditions('student',$where1,$Data);
+		if($Marksentry1)
+		{
+			$returndata = array('success'=> 'Form Has Been Submited');
+			echo json_encode($returndata);
+		}else{
+			$returndata = array('error'=> 'An Error Occured');
+			echo json_encode($returndata);
+		}
+	}
+
+	public function view_student_int_marks(){
+		$student_id = $this->input->post('student_id');
+		$where=array('student.student_id'=>$student_id,);
+		$this->db->select('*');
+		$this->db->from('new_exam_form');
+		$this->db->Where($where );
+		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
+		$details = $this->db->get()->result();
+		$data = array(
+			'detail' => $details,
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		if($data){
+			$model =  $this->load->view('admin/view_student_marks',$data,true);
+			$status = true;
+		}
+		echo json_encode(array(
+			"status" => $status,
+			"data" => $model
+		));
+	}
+
+
 }// class
