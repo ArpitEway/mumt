@@ -192,7 +192,7 @@ var id = $('#student_tr').val();
  
 
   $.ajax({
-    url: '<?php echo site_url('admin/admins/assignment_marks_sub'); ?>',
+    url: '<?php echo site_url('admin/admins/internal_assignment_marks_sub'); ?>',
     method: 'post',
     data: frm,
     dataType: 'JSON',
