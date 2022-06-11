@@ -271,26 +271,16 @@
           <td  class="align-middle text-center width_total"  rowspan="<?php echo $rowspandata ?>"><?php 
           if($check_grace_marks){
             echo "-";
-              }
-              if($theory_abs_count==1){
-               echo 'ABS In Theory';
-             }elseif($int_abs_count==1){
-               echo 'ABS In Internal';
-             }elseif($p_paper_count==1){
-               echo 'ABS In Practical';
-             }elseif($fail_count==1 || $p_fail_count==1 || $int_fail_count==1){
-               if(sizeof($atkt_paper_codes_array)>0){
+              }elseif(sizeof($atkt_paper_codes_array)==1){
                 echo "ATKT in";
+                $atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
+                foreach($atkt_paper_codes_array as $paper_code){
+                  echo  "<br>". $paper_code;
+                }
+              }else{
+                echo '';
               }
-              $atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
-              foreach($atkt_paper_codes_array as $paper_code){
-                echo  "<br>". $paper_code;
-              } 
-            }
-            else{
-              echo '';
-            }
-             
+              
             //   elseif($int_abs_count==$theory_paper_count &&  $theory_abs_count==$theory_paper_count && $p_abs_count==$p_paper_count){
             //       echo 'ABS In ALL';
             //   }elseif($theory_paper_count==$theory_abs_count){
