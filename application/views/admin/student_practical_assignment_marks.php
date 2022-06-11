@@ -152,10 +152,10 @@
   }
 
 
-  var x=confirm(' Are you sure to submit marks ? \n प्रविष्ट किये जा रहे निम्न अंक Provisional Marks हैं।');
-  if(x==false){
-    return false;
-  }
+  // var x=confirm(' Are you sure to submit marks ? \n प्रविष्ट किये जा रहे निम्न अंक Provisional Marks हैं।');
+  // if(x==false){
+  //   return false;
+  // }
 
   var frm = $('#ajaxForm').serialize();
   var id = $('#student_tr').val();
