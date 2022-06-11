@@ -1,9 +1,4 @@
-<div>
-  <div class="text-center"><label  style="color:red;">Provisional Practical Marks
-</label></div>
-<div class="text-center"><label ><strong>प्रविष्ट किये जा रहे निम्न अंक</strong> <label style="color:red;">Provisional Marks</label> <strong>हैं - </strong>
-</label></div>
-</div>
+
  <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 <div class="container-fluid mt-5 table-responsive" >
 	 <table id="kt_datatable" class="table table-striped nowrap"  >
