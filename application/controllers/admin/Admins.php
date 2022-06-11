@@ -2881,6 +2881,7 @@ public function update_exam_datewise_permission(){
 		$this->db->join('new_exam_form', 'student.student_id = new_exam_form.student_id');
 		$this->db->group_by('new_exam_form.student_id');
 		$this->db->Where('new_exam_form','Y');
+		$this->db->Where('paper_type','theory');
 		$this->db->where_in('new_exam_form.int_marks',array('ABS','N'));
 		$data['students'] = $this->db->get()->result();
 		$this->load->view('admin/student_int_marks_no_list',$data);
@@ -2974,6 +2975,7 @@ public function update_exam_datewise_permission(){
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 		);
+		$where = array('paper_type!='=>'theory');
 		$titleData = array('title' => 'Practical  Marks Submission' );
 		$this->load->view('header',$titleData);
 		$this->db->order_by("p_marks_sub,student.course_group_id,student.class_id", "asc");
@@ -2983,9 +2985,11 @@ public function update_exam_datewise_permission(){
 		$this->db->join('class_master', 'student.class_id = class_master.id');
 		$this->db->group_by('new_exam_form.student_id');
 		$this->db->Where('new_exam_form','Y');
+		$this->db->Where($where);
 		$this->db->where_in('new_exam_form.p_marks',array('ABS','N'));
 		$this->db->Where('(project="Y" or practical = "Y")');
 		$data['students'] = $this->db->get()->result();
+		 // $this->Common_model->last_query();
 		$this->load->view('admin/student_practical_marks_no_list',$data);
 		$this->load->view('footer');
 	}
