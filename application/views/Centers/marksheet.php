@@ -41,7 +41,7 @@ foreach($new_exam_form as $marks){
      $withheld = true;
    }
 
-  }else if($marks->paper_type=='practical'){
+  }else if($marks->paper_type=='Practical'){
     $tot_std_marks += $marks->p_marks;
     $tot_marks += $paper_master[0]->max_theory_marks;
 
