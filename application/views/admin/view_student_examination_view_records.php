@@ -96,6 +96,10 @@
                   <div class="col-md-2">
                       <label class="text-heading">Answer Sheet</label>
                   </div>
+
+                   <div class="col-md-1">
+                      <label class="text-heading">Status</label>
+                  </div>
 <!--                   <div class="col-md-2">
                       <label class="text-heading">Delete</label>
                   </div> -->
@@ -145,7 +149,19 @@
                             echo 'N/A';}?>
 
                         <!-- </div> -->
-                        <div class="col-md-2">
+              <div class="col-md-1 text-heading mt-3">
+                    <?php 
+                    $status = $this->Common_model->get_record("upload_exam_ans_sheet",'*',array('student_id'=>$payment->student_id,'paper_code'=>$payment->paper_code,));
+                    if($status[0]->teacher_id=='')
+                       {  echo 'Checked';
+                        ?>
+                    <?php }else{
+                        echo 'Not Checked';
+                            }
+                    ?>
+                </div>
+
+                      <div class="col-md-2">
                          <label class="text-heading mt-3"><?=$view[0]['total_marks'];?></label>
                      </div>
                  </div>
