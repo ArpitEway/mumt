@@ -151,8 +151,8 @@
                         <!-- </div> -->
               <div class="col-md-1 text-heading mt-3">
                     <?php 
-                    $status = $this->Common_model->get_record("upload_exam_ans_sheet",'*',array('student_id'=>$payment->student_id,'paper_code'=>$payment->paper_code,));
-                    if($status[0]->teacher_id=='')
+                    $status = $this->Common_model->getRecordByWhere("upload_exam_ans_sheet",array('student_id'=>$payment->student_id,'paper_code'=>$payment->paper_code,));
+                    if($status[0]->teacher_id!='')
                        {  echo 'Checked';
                         ?>
                     <?php }else{
