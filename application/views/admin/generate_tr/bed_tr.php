@@ -122,6 +122,7 @@
       if($new_exam_form->type!='theory'){
         $p_paper_count++;
         $total_marks_obt += $new_exam_form->p_marks+$new_exam_form->int_marks;
+        $total_paper_marks +=$new_exam_form->max_theory_marks+$new_exam_form->max_internal_marks;
         if($new_exam_form->p_marks=='' || $new_exam_form->p_marks=='N'){
           $rw_count++;
         }
