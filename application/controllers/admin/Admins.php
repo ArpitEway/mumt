@@ -3069,25 +3069,25 @@ public function update_exam_datewise_permission(){
 		$this->load->view('admin/generate_tr/footer2');
 	}
 
-	public function updatePaperpgd()
-	{
-		$where = 'id in (140, 139)';
-		$papers = $this->Common_model->get_record('paper_master','*',$where);
-		foreach ($papers as $paper) {
-			$paper_data = array(
-				'course_group_id' => $paper['course_group_id'],
-				'class_id' => $paper['class_id'],
-				'paper_id' => $paper['id'],
-				'paper_code' => $paper['paper_code'],
-				'paper_type' => $paper['type'],
-				'paper_order' => $paper['paper_no'],
-			);
-			$students = $this->Common_model->get_record('student','*','class_id = 172');
-			foreach ($students as $student) {
-				$paper_data['student_id'] = $student['student_id'];
+	// public function updatePaperpgd()
+	// {
+	// 	$where = 'id in (140, 139)';
+	// 	$papers = $this->Common_model->get_record('paper_master','*',$where);
+	// 	foreach ($papers as $paper) {
+	// 		$paper_data = array(
+	// 			'course_group_id' => $paper['course_group_id'],
+	// 			'class_id' => $paper['class_id'],
+	// 			'paper_id' => $paper['id'],
+	// 			'paper_code' => $paper['paper_code'],
+	// 			'paper_type' => $paper['type'],
+	// 			'paper_order' => $paper['paper_no'],
+	// 		);
+	// 		$students = $this->Common_model->get_record('student','*','class_id = 172');
+	// 		foreach ($students as $student) {
+	// 			$paper_data['student_id'] = $student['student_id'];
 
-				$this->Common_model->insertAll('new_exam_form',$paper_data);
-			}
-		}
-	}
+	// 			$this->Common_model->insertAll('new_exam_form',$paper_data);
+	// 		}
+	// 	}
+	// }
 }// class
