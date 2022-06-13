@@ -176,7 +176,7 @@
       $division = "Third";
     }
 
-    if($page_break_count%4==0 || $page_break_count==0){
+    if($page_break_count%2==0 || $page_break_count==0){
       $page_no++;
       ?>
       <p align="center" class="h4"><b>Maharishi Mahesh Yogi Vedic Vishvavidyalaya, Madhya Pradesh</b></p>
