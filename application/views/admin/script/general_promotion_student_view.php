@@ -13,7 +13,6 @@
     $i=1;
     foreach($students as $row){ 
       ?>
-
       <tr>
         <td><?php echo $i++; ?></td>
         <td><?php echo $row->enrollment_no; ?></td>
@@ -37,7 +36,7 @@
         if($obtain_theory_marks >=$min_theory_marks){
           $old_num['theory_marks'] = $anssheetData[0]->total_marks;
           $where = array('student_id'=>$paper->student_id, 'paper_code'  =>$paper->paper_code);
-          $update =$this->Common_model->updateRecordByConditions('new_exam_form', $where, $old_num);
+          $this->Common_model->updateRecordByConditions('new_exam_form', $where, $old_num);
         }
         ?>
         <tr>

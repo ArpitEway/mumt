@@ -18,10 +18,13 @@ class Permission extends CI_Controller {
        
 		$this->load->view('header',array("title"=>"Class Wise Permission"));	
 		$table ="class_master";
-		$order = 'id asc';
+		$where = array('admission_permission'=>'Y');
+		 // $order = 'id ASC';
         $data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
-		$data['classes'] = $this->Common_model->getRecordByOrder($table ,'class_name',$order);
+         $this->db->order_by("id", "asc");
+	    $data['classes'] = $this->Common_model->getRecordByWhere($table ,$where);
+		// $data['classes'] = $this->Common_model->getRecordByOrder($table ,'class_name',$order);
 		$this->load->view('admin/permission/class_wise_permission',$data);
 		$this->load->view('footer');	
 	}
@@ -111,4 +114,26 @@ class Permission extends CI_Controller {
 			echo json_encode(array('error'=>false));
 		}
 	}
+
+	public function update_result_permission(){
+		$status =  $this->input->post('result_permission');
+     
+		if(isset($_POST['class_id'])){
+			$class_id =  $this->input->post('class_id');
+			$where = array('id'=>$class_id);
+		}
+
+        if($status!=''){
+        	$st = ($status == 'Y') ? 'N' : 'Y';
+        	$data=array('result_permission'=>$st);
+        }
+        
+		$res=$this->Common_model->updateRecordByConditions('class_master',$where,$data);
+		if($status == 'Y'){
+			echo json_encode(array('success'=>true));
+		}else if($status == 'N'){
+			echo json_encode(array('error'=>false));
+		}
+	}
+
 }// class

@@ -47,7 +47,6 @@ class updateFormdata extends CI_Controller {
 		$data['course_group_id'] = $course_group_id;
 		$data['course_name'] = $this->Common_model->getCourseNameByCourseId($course_group_id);
 		$data['class_name'] = $this->Common_model->getClassNameByClassId($class_id);
-		$data['university_mode'] = 'REG';
 		$data['class_id'] = $class_id;
 		$data['medium'] = html_escape($this->input->post('medium'));
 		$data['category'] = html_escape($this->input->post('category'));

@@ -11,14 +11,12 @@
 					<option value="<?=$row['session'];?>" ><?=$row['session'];?></option>
 				<?php } ?>
 			</select>
-
 		</fieldset>
 		<fieldset class="form-group text-center">
 			<input type="hidden" name="action" value="generate_enrollment">
 			<button type="submit" class="btn btn-primary">Submit</button>
 		</fieldset>
 	</div>
-
 </form>
 <?php
 		if($_POST['action']=='generate_enrollment'){
@@ -27,7 +25,6 @@
 <table id="mytable" class="table">
 	<thead>
 		<tr>
-
 			<th>Sno.</th>
 			<th>Form No</th>
 			<th>Student Name</th>
@@ -55,6 +52,9 @@
 				'session' => $session,
 			);
 			//$this->Common_model->getCountByWhere('student',$whereEnrollmentNoCount);
+			if ($session=='July 2021') {
+				$this->db->where(' class_id not in (255,261,267)');
+			}
 			$last_enrollment = $this->Common_model->get_record('student','max(enrollment_no) as enrollment_no');
 			$last_number = substr($last_enrollment[0]['enrollment_no'], 6);
 			$lastTwoNumbers = (int) substr($session, -2);
