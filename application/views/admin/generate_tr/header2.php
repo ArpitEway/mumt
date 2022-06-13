@@ -38,6 +38,6 @@
 			<!--begin::Wrapper-->
 			<div  id="kt_wrapper">
 				<!--begin::Header-->
-		<div class="mt-5">
+		<div class="">
 			<div class="card card-custom gutter-b example example-compact">
 				<div class="card-body p-2" style="min-height: 70vh;">
