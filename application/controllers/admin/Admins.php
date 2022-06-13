@@ -2561,21 +2561,12 @@ public function update_exam_datewise_permission(){
 			));
 		}
 	}
-	public function notification_class_list(){
-
-		// $where=array('admission_permission'=>'Y');
-		$data['courses'] = $this->Common_model->get_record('course_group','*',$where);
-		$this->load->view('header',array('title' => 'CLass List'));
-		$this->load->view('admin/notification_class_list',$data);
-		$this->load->view('footer');
-	}
-
+	
 
 	public function student_notification_list($course_id="",$class_id=""){
 		$course_id1=$this->Common_model->encrypt_decrypt($course_id,'decrypt');
 		$class_id1=$this->Common_model->encrypt_decrypt($class_id,'decrypt');
-		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id1 ,'class_id' => $class_id1 ,'exam_form'=>'Y','roll_number!='=>'0','result_show'=>'Y' ));
-
+		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id1 ,'class_id' => $class_id1,'new_exam_form'=>'Y' ,'roll_no!='=>'0','result_show'=>'N'  ));
 		$this->load->view('header',array('title' => 'Student Notification List'));
 		$this->load->view('admin/student_notification_list',$data);
 		$this->load->view('footer');
