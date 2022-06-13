@@ -2171,14 +2171,12 @@ public function getStudentData()
 
 	//Result upload report view
 	public function class_wise_result_upload_status(){
-
-		
 		if(!$this->session->has_userdata('adminData')){
 			redirect(base_url());
 			exit;
 		}else{
 			$admin_id = $this->session->admin_id;
-			$course_group = $this->db->get_where('course_group', array())->result_array();
+			$course_group = $this->db->get_where('course_group', array('admission_permission' => 'Y'))->result_array();
 			$data = array('course_group' => $course_group,
 				'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash()
@@ -2367,6 +2365,7 @@ public function getStudentData()
 				$this->db->from('new_exam_form');
 				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
 				$this->db->where('student.new_exam_form','Y');
+				$this->db->where('new_exam_form.theory_marks','');
 				$this->db->where('new_exam_form.course_group_id',$course_group_id);
 				$this->db->where('new_exam_form.class_id',$class_id);
 				$this->db->where('new_exam_form.paper_type',"theory");
@@ -2383,7 +2382,6 @@ public function getStudentData()
 				$this->db->where('new_exam_form.int_marks', "N");
 				$this->db->where('new_exam_form.paper_type',"theory");
 				$data['students'] = $this->db->get()->result();
-
 			}	
 			if($remaining=="practical"){
 				$this->db->select('*');
@@ -2395,10 +2393,8 @@ public function getStudentData()
 				$this->db->where('new_exam_form.paper_type',"Practical");
 				$this->db->where('new_exam_form.p_marks', "N");
 				$data['students'] = $this->db->get()->result();
+			}
 
-			}		
-				
-			
 			$this->load->view('header',array('title' => 'Some Paper '.ucfirst($remaining).' Marks not submitted of the following Students'));
 			$this->load->view('admin/class_wise_remaining_report_table',$data);
 			$this->load->view('footer');
