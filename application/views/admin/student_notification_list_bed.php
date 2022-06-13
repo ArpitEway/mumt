@@ -40,7 +40,7 @@ $abs_count = 0 ;
 	<h3 class="text-center mb-2">	<strong><?php echo $students[0]->course_name.' - '. $students[0]->class_name .' '. $exam_session?></strong><h3>
 		<title>Notification <?php echo $students[0]->course_name?></title>
 		<div class="flex-container">
-			<div style="font-size:15px;" >Notification No : <?php echo $notification;?></div>
+			<div style="font-size:15px;" >Notification No : <?php //echo $notification;?></div>
 
 			<div style="font-size:15px;" class="flex">Date : <?php echo $date;?></div>  
 		</div>
@@ -48,8 +48,8 @@ $abs_count = 0 ;
 		<hr>
 		<table width="100%"  border="1">
 			<tr bgcolor="#FFFF00">
-				<th scope="row" width="5%"> S.No. </th>
-				<th scope="row" width="20%"><span class="style5">Roll No.</span></th>
+				<th scope="row" class="text-center" width="5%"> S.No. </th>
+				<th scope="row" class="text-center" width="20%"><span class="style5">Roll No.</span></th>
 				<th scope="row"><p class="style5">MS No.</p></th>
 				<th style="text-align:left" scope="row"  width="30%"><span class="style5" >Name and F/H Name</span></th>
 				<th scope="row"  width="15%">Result</span></th>
@@ -176,12 +176,13 @@ $abs_count = 0 ;
 						$page_no++;
 						?>
 						<tr class="alternate">
-							<td scope="row" width="5%">
+							<td scope="row" class="text-center" width="5%">
 								<?php echo $i++; ?>
 							</td>
-							<td class="style6" scope="row" width="20%">
+							<td class="style6 text-center" scope="row" width="20%">
 								<?php echo $student->roll_number; ?>
 							</td>
+							<td width="9%"></td>
 							<td width="30%" scope="row" class="style6" >
 								<?php echo $student->name  .' / '.  $student->f_h_name; ?>
 							</td>
@@ -191,7 +192,7 @@ $abs_count = 0 ;
 							<td align="center" width="10%">					
 								<?php echo $total_marks_obt.'/'.$total_paper_marks ?>
 							</td>
-							<td>
+							<td class="text-center">
 								<?php if($check_grace_marks){
 									echo " ";
 								}elseif(sizeof($atkt_paper_codes_array)==1){
@@ -241,7 +242,6 @@ $abs_count = 0 ;
 			<tr>
 				<td colspan="2" class="size">Copy of Result Notification is forwarded for information to
 					<p style="padding-top: 15px;" class="size">1.Notice Board of the University</p>
-					<p class="size">2.Directorate of Distance Education</p>
 				</td>
 			</tr>
 		</table>
