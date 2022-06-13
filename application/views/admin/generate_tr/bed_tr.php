@@ -1,4 +1,7 @@
 <style>
+  @page {
+          size: auto;
+      }
   svg {
     width: 101px;
     height: 35px;
