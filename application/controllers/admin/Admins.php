@@ -450,37 +450,29 @@ class Admins extends CI_Controller {
 	
 	public function paper($param1 = '', $param2 = '', $param3 = '')
 	{
-
 		if(!$this->session->has_userdata('adminData')){
 			redirect(base_url());
 			exit;
-		}else
-		{
-
+		}else{
 			if($param1 == 'create'){
-
 				$response = $this->admin_model->create_paper();
 				$this->session->set_flashdata('ajax_flash_message','Paper Successfully Added');
 				redirect(base_url().'paper');
-
 			}
-			if($param1 == 'update'){
 
+			if($param1 == 'update'){
 				$response = $this->admin_model->update_paper($param2);
 				$this->session->set_flashdata('ajax_flash_message','Paper Successfully Updated');
 				redirect(base_url().'paper');
-
 			}
 
 			if($param1 == 'delete'){
-
 				$response = $this->admin_model->paper_delete($param2);
 				$this->session->set_flashdata('ajax_flash_message','Paper Successfully Deleted');
 				redirect(base_url().'paper');
 			}
 
 			if(empty($param1) ){
-				
 				$data = array();
 				$data['title'] = "Paper";
 				$this->load->view('header',$data);
@@ -490,12 +482,10 @@ class Admins extends CI_Controller {
 				);
 				$this->load->view('admin/paper',$csrf);
 				$this->load->view('footer');
-			}    
-
-
+			}
 		}
-
 	}
+
 	public function paper_test($param1 = '', $param2 = '', $param3 = '')
 	{
 		if(!$this->session->has_userdata('adminData')){
@@ -503,31 +493,25 @@ class Admins extends CI_Controller {
 			exit;
 		}else
 		{
-
 			if($param1 == 'create'){
-
 				$response = $this->admin_model->create_paper();
 				$this->session->set_flashdata('ajax_flash_message','Paper Successfully Added');
 				redirect(base_url().'Paper');
-
 			}
-			if($param1 == 'update'){
 
+			if($param1 == 'update'){
 				$response = $this->admin_model->paper_update($param2);
 				$this->session->set_flashdata('ajax_flash_message','Paper Successfully Updated');
 				redirect(base_url().'Paper');
-
 			}
 
 			if($param1 == 'delete'){
-
 				$response = $this->admin_model->paper_delete($param2);
 				$this->session->set_flashdata('ajax_flash_message','Paper Successfully Deleted');
 				redirect(base_url().'Paper');
 			}
 
 			if(empty($param1) ){
-				
 				$data = array();
 				$this->load->view('header');
 				$this->load->view('admin/paper_test');
@@ -616,14 +600,11 @@ class Admins extends CI_Controller {
 
 	public function get_papers_by_class()
 	{
-
 		if ($this->input->method() == "post") {
 			$class_id    = 0;
             //$count = 0;
 			$class_id    = $this->input->post("class_id");
-			
 			if ($this->input->post("class_id")) {
-				
 				
 				$data ='<table id="basic-datatable" class="table table-striped dt-responsive nowrap" width="100%" >
 				<thead>
@@ -633,23 +614,18 @@ class Admins extends CI_Controller {
 				<th>Class</th>
 				<th>Paper</th>
 				<th>Type</th>
-				<th>CE</th> 					
-
+				<th>CE</th>
 				</tr>
 				</thead>';
 
-
 				$i = 1;
-
 				$papers = $this->db->get_where("paper_master", array("class_id" => $class_id))->result_array();
 
 				foreach($papers as $paper){
-
 					$courses = $this->db->get_where("course_group", array("id" => $paper["course_group_id"]))->row_array();
 					$classes = $this->db->get_where("class_master", array("id" => $paper["class_id"]))->row_array();
 					$course_name = $courses["course_name"];
 					$class_name  = $classes["class_name"];
-
 
 					$data .= '<tbody>
 					<tr>
@@ -660,9 +636,7 @@ class Admins extends CI_Controller {
 					<td>'.$paper["type"].'</td>
 					<td>'.$paper["ce"].'</td>
 					</tr>
-
 					</tbody>';
-
 
 					$i++; } 
 					$data .= '</table>';
@@ -672,7 +646,6 @@ class Admins extends CI_Controller {
 
 				$status = true;
 				$msg    = "";
-
 			}
 			echo json_encode(array(
 				"status" => $status,
@@ -2753,7 +2726,6 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
-
 	public function withheld_student_list($course_id="",$class_id=""){
 		if(!$this->session->has_userdata('adminData')){
 			redirect(base_url());
@@ -2789,9 +2761,9 @@ public function update_exam_datewise_permission(){
 		$this->load->view('admin/student_marksheet',$data);
 		$this->load->view('admin/generate_tr/footer');
 	}
+
 	public function update_fees_in_program()
 	{
-
 		$programs = $this->Common_model->get_record('program','id, course_group_id','course_group_id!=0' );
 
 		foreach ($programs as $program) {
@@ -2893,8 +2865,6 @@ public function update_exam_datewise_permission(){
 			echo '<br>';
 		}
 	}
-
-
 
 	public function internal_marks_list(){
 		if(!$this->session->has_userdata('adminData')){
@@ -3027,61 +2997,57 @@ public function update_exam_datewise_permission(){
 	}
 
 
-public function student_practical_assignment_marks (){
-	 	$student_id = $this->input->post('student_id');
-	 	$where=array('student.student_id'=>$student_id,
-                  'paper_type!='=>'theory', );
-	 	$this->db->select('*');
-	 	$this->db->from('new_exam_form');
-	 	$this->db->Where($where );
-	 	$this->db->join('student', 'student.student_id = new_exam_form.student_id');
-	 	$this->db->join('paper_master', 'paper_master.id = new_exam_form.paper_id');
-	 	$details = $this->db->get()->result();
-	 	$data = array(
-	 		'details' => $details,
-	 		'name_csrf' => $this->security->get_csrf_token_name(),
-	 		'hash_csrf' => $this->security->get_csrf_hash(),
-	 	);
-	 	if($data){
-	 		$model =  $this->load->view('admin/student_practical_assignment_marks',$data,true);
-	 		$status = true;
-	 	}
-	 	echo json_encode(array(
-	 		"status" => $status,
-	 		"data" => $model
-	 	));
+	public function student_practical_assignment_marks (){
+		$student_id = $this->input->post('student_id');
+		$where=array('student.student_id'=>$student_id,
+			'paper_type!='=>'theory', );
+		$this->db->select('*');
+		$this->db->from('new_exam_form');
+		$this->db->Where($where );
+		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
+		$this->db->join('paper_master', 'paper_master.id = new_exam_form.paper_id');
+		$details = $this->db->get()->result();
+		$data = array(
+			'details' => $details,
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		if($data){
+			$model =  $this->load->view('admin/student_practical_assignment_marks',$data,true);
+			$status = true;
+		}
+		echo json_encode(array(
+			"status" => $status,
+			"data" => $model
+		));
 	}
 
-public function practical_assignment_marks_sub()
+	public function practical_assignment_marks_sub()
 	{
-	 	$data=array();
-	 	$post = $this->input->post();
-	 	$data['paper_id'] = $this->input->post('paper_id');
-	 	$data['marks'] = $this->input->post('marks');
-	 	foreach ($data['paper_id'] as $key => $value){
-	 		$studentData = array('p_marks' => $data['marks'][$key]);
-	 		$where =  array(
-	 			'paper_id' =>$value,
-	 			'student_id'  =>$_POST['student_id']
-	 		);
-	 		$this->Common_model->updateRecordByConditions('new_exam_form',$where,$studentData);
-	 	}
-	 	$where1 =  array('student_id'  => $_POST['student_id'] );
-	 	$Data = array('p_marks_sub' => 'Y');
-	 	$Marksentry1 = $this->Common_model->updateRecordByConditions('student',$where1,$Data);
-	 	 $sts_btn = '<button  class="btn btn-info btn-sm font-weight-bold view"  data-toggle="modal" data-target="#kt_datepicker_modal"  data-id = '.$_POST['student_id'].'"
-	  		 onclick="view_mark('.$_POST['student_id'].'")">view</button>';
-	 	if($Marksentry1){
-				$dt =  "Marks Submited";
-			}else{
-				$dt = "Error";
-			}
-	 	echo json_encode(array(
-	 		"data" => $sts_btn,
-	 		   'msg'=>  $dt,
-			));
-	 }
-
+		$data=array();
+		$post = $this->input->post();
+		$data['paper_id'] = $this->input->post('paper_id');
+		$data['marks'] = $this->input->post('marks');
+		foreach ($data['paper_id'] as $key => $value){
+			$studentData = array('p_marks' => $data['marks'][$key]);
+			$where =  array('paper_id' =>$value,'student_id'  =>$_POST['student_id']);
+			$this->Common_model->updateRecordByConditions('new_exam_form',$where,$studentData);
+		}
+		$where1 =  array('student_id'  => $_POST['student_id'] );
+		$Data = array('p_marks_sub' => 'Y');
+		$Marksentry1 = $this->Common_model->updateRecordByConditions('student',$where1,$Data);
+		$sts_btn = '<button  class="btn btn-info btn-sm font-weight-bold view"  data-toggle="modal" data-target="#kt_datepicker_modal"  data-id = '.$_POST['student_id'].'"
+		onclick="view_mark('.$_POST['student_id'].'")">view</button>';
+		if($Marksentry1){
+			$dt =  "Marks Submited";
+		}else{
+			$dt = "Error";
+		}
+		echo json_encode(array(
+			"data" => $sts_btn,
+			'msg'=>  $dt,
+		));
+	}
 
 	public function generate_tr_bed($course_group_id="",$class_id=""){
 		$this->db->order_by('roll_number','ASC');
@@ -3103,4 +3069,25 @@ public function practical_assignment_marks_sub()
 		$this->load->view('admin/generate_tr/footer2');
 	}
 
+	public function updatePaperpgd()
+	{
+		$where = 'id in (140, 139)';
+		$papers = $this->Common_model->get_record('paper_master','*',$where);
+		foreach ($papers as $paper) {
+			$paper_data = array(
+				'course_group_id' => $paper['course_group_id'],
+				'class_id' => $paper['class_id'],
+				'paper_id' => $paper['id'],
+				'paper_code' => $paper['paper_code'],
+				'paper_type' => $paper['type'],
+				'paper_order' => $paper['paper_no'],
+			);
+			$students = $this->Common_model->get_record('student','*','class_id = 172');
+			foreach ($students as $student) {
+				$paper_data['student_id'] = $student['student_id'];
+
+				$this->Common_model->insertAll('new_exam_form',$paper_data);
+			}
+		}
+	}
 }// class
