@@ -2563,7 +2563,7 @@ public function update_exam_datewise_permission(){
 	}
 	public function notification_class_list(){
 
-		$where=array('admission_permission'=>'Y');
+		// $where=array('admission_permission'=>'Y');
 		$data['courses'] = $this->Common_model->get_record('course_group','*',$where);
 		$this->load->view('header',array('title' => 'CLass List'));
 		$this->load->view('admin/notification_class_list',$data);
@@ -3060,6 +3060,15 @@ public function practical_assignment_marks_sub()
 		$title = "TR ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$this->load->view('admin/generate_tr/header2',array('title' =>$title));
 		$this->load->view('admin/generate_tr/bed_tr',$data);
+		$this->load->view('admin/generate_tr/footer2');
+	}
+
+	public function student_notification_list_bed($course_id="",$class_id=""){
+		$course_id=$this->Common_model->encrypt_decrypt($course_id,'decrypt');
+		$class_id=$this->Common_model->encrypt_decrypt($class_id,'decrypt');
+		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id, 'class_id' => $class_id, 'exam_form'=>'Y','roll_number!='=>'0','result_show'=>'N' ));
+		$this->load->view('admin/generate_tr/header2',array('title' => 'Student Notification List'));
+		$this->load->view('admin/student_notification_list_bed',$data);
 		$this->load->view('admin/generate_tr/footer2');
 	}
 
