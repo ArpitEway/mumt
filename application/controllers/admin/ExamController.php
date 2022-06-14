@@ -768,6 +768,7 @@ class ExamController extends CI_Controller {
 		$this->db->where('upload_exam_ans_sheet.remark_status','');
 		$this->db->where('upload_exam_ans_sheet.total_marks',0);
 		$this->db->where('upload_exam_ans_sheet.teacher_id!=','');
+		$this->db->group_by('upload_exam_ans_sheet.student_id');
 		$data['students'] = $this->db->get()->result();
 		$dt = $this->load->view('admin/examController/get_student_for_remark',$data,true);
 		echo json_encode(array(
