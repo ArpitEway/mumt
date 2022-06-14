@@ -20,7 +20,6 @@
 					<?php
 					$count++; 		
 				} ?>
-	
 			</tr>
 		</thead>
 		<tbody>
@@ -42,8 +41,10 @@
 					$marksdatas =  $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',array('student_id'=>$student->student_id,'teacher_id!='=>''));	
 					$paper_count = 1;
 					foreach($marksdatas as $marksdata){
+
+						$min_theory_marks = $this->Common_model->getSinglefield('paper_master','min_theory_marks',array('paper_code' => $marksdata->paper_code, 'class_id' => $marksdata->class_id));
 						?>
-						<td><?=($marksdata->total_marks=='') ? '0 F' : $marksdata->total_marks;	?> </td>
+						<td><?=($marksdata->total_marks<$min_theory_marks) ? $marksdata->total_marks.' F' : $marksdata->total_marks;	?> </td>
 					<?php
 					$paper_count++;
 				}
