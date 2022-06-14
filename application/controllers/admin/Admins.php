@@ -3120,7 +3120,6 @@ public function update_exam_datewise_permission(){
 		$this->db->where('new_exam_form.theory_marks','');
 		$this->db->group_by('upload_exam_ans_sheet.student_id');
 		$data['students'] = $this->db->get()->result();
-		$this->Common_model->last_query();
 		$this->load->view('header',array('title' => 'Student Remaining Marks List'));
 		$this->load->view('admin/remaining_failed_student_marks',$data);
 		$this->load->view('footer');
