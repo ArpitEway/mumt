@@ -14,7 +14,7 @@
 				<th>Class</th>
 				<?php
 				$count = 1;
-				while ($count < 10) {
+				while ($count <= 10) {
 					?>
 					<th><?php echo 'paper'.$count;?></th>
 					<?php
@@ -47,7 +47,7 @@
 					<?php
 					$paper_count++;
 				}
-				while ($paper_count < 10) {
+				while ($paper_count <= 10) {
 					$paper_count++;
 					?>
 					<th></th>
