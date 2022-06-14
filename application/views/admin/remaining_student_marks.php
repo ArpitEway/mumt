@@ -39,34 +39,21 @@
 					<td><?php echo $student->course_name; ?></td>
 					<td><?php echo $student->class_name; ?></td>
 					<?php 
-					$marksdatas =  $this->Common_model->getRecordByWhere('new_exam_form',array('student_id'=>$student->student_id,'paper_type'=>'theory'));	
+					$marksdatas =  $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',array('student_id'=>$student->student_id,'teacher_id!='=>''));	
 					$paper_count = 1;
 					foreach($marksdatas as $marksdata){
 						?>
-						<td><?php if($marksdata->theory_marks==''){ 
-							echo '0 F'; 
-						}else {
-						echo $marksdata->theory_marks; 
-                         }
-						?> </td>
-						
-						
+						<td><?=($marksdata->total_marks=='') ? '0 F' : $marksdata->total_marks;	?> </td>
 					<?php
 					$paper_count++;
-					  } ?>
-					<?php
-			
+				}
 				while ($paper_count < 10) {
+					$paper_count++;
 					?>
 					<th></th>
-					<?php
-					$paper_count++; 		
-				} ?>
-				</tr>			
-				<?php
-
-			} 
-			?>
+				<?php } ?>
+				</tr>
+			<?php  }	?>
 		</tbody>
 	</table>
 </div>

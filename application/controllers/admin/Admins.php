@@ -3091,7 +3091,7 @@ public function update_exam_datewise_permission(){
 	// 	}
 	// }
 
-public function remaining_student_marks(){
+	public function remaining_student_marks(){
 		$this->db->select('*');
 		$this->db->from('upload_exam_ans_sheet');
 		$this->db->join('student', 'upload_exam_ans_sheet.student_id = student.student_id');
@@ -3106,8 +3106,4 @@ public function remaining_student_marks(){
 		$this->load->view('footer');
 		
 	}
-
-
-
-
 }// class
