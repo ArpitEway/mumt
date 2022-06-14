@@ -3106,4 +3106,22 @@ public function update_exam_datewise_permission(){
 		$this->load->view('footer');
 		
 	}
+
+	public function remaining_failed_student_marks(){
+		$this->db->select('*');
+		$this->db->from('upload_exam_ans_sheet');
+		$this->db->join('student', 'upload_exam_ans_sheet.student_id = student.student_id');
+		$this->db->join('new_exam_form', 'upload_exam_ans_sheet.student_id = new_exam_form.student_id and new_exam_form.paper_code = upload_exam_ans_sheet.paper_code');
+		$this->db->order_by('upload_exam_ans_sheet.course_group_id,upload_exam_ans_sheet.class_id','asc');
+		 // $this->db->where('upload_exam_ans_sheet.remark_status','');
+		$this->db->where('upload_exam_ans_sheet.total_marks!=',0);
+		$this->db->where('upload_exam_ans_sheet.teacher_id!=','');
+		$this->db->where('new_exam_form.paper_type','theory');
+		$this->db->where('new_exam_form.theory_marks','');
+		$this->db->group_by('upload_exam_ans_sheet.student_id');
+		$data['students'] = $this->db->get()->result();
+		$this->load->view('header',array('title' => 'Student Remaining Marks List'));
+		$this->load->view('admin/remaining_failed_student_marks',$data);
+		$this->load->view('footer');
+	}
 }// class
