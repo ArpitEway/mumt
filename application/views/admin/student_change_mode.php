@@ -38,6 +38,10 @@
 
 								 ;?></td>
 								</div>
+								<td>
+									<strong>Payment: </strong>
+									<?=($student[0]->payment_status=='N') ? 'Unpaid' : 'Paid'; ?>
+								</td>
 							</tr>			
 						  </tbody>
 						</table>
