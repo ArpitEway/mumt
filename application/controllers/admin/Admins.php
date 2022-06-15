@@ -14,7 +14,6 @@ class Admins extends CI_Controller {
 	}
 
 	public function index(){
-		
 		if($this->session->has_userdata('adminData')){
 			$admin_id = $this->session->admin_id;
 			$where = 'admin_id='.$admin_id.' and status="Y"';
@@ -3136,7 +3135,7 @@ public function update_exam_datewise_permission(){
 		$this->load->view('footer');
 	}
 
-   public function change_student_mode(){
+	public function change_student_mode(){
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
@@ -3156,38 +3155,36 @@ public function update_exam_datewise_permission(){
 		$student= $this->Common_model->getRecordByWhere('student',array("student_id"=>$student_id));
 		$course= $this->Common_model->getRecordByWhere('course_group',array("id"=>$student[0]->course_group_id));
 		if ($student[0]->university_mode=='REG') {		
-			if ($course[0]->private_mode=='Annual'){
+			
+			$updatedata=array('university_mode' => 'PVT');
+
+			if($course[0]->private_mode!=$course[0]->mode){
 				$classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$student[0]->course_group_id,'mode'=>$course[0]->private_mode));	
 				$mode = 'PVT';	
+				$updatedata['class_name'] = $classes[0]->class_name;
+				$updatedata['class_id']   = $classes[0]->id;
+				$updateOnlineTxn = array('admission_type' => 'Regular','class_id'=>$classes[0]->id);
+			}else{
+				$updateOnlineTxn = array('admission_type' => 'Private','class_id'=>$classes[0]->id);
 			}
-			$class_name  = $classes[0]->class_name;
-			$class_id =$classes[0]->id;
-			$updatedata=array(
-				'class_name'=>$class_name,
-				'class_id'   =>$class_id ,
-				'university_mode' => 'PVT',
-			);
 
-		  }else{
-			if ($course[0]->university_mode=='regular'){
+		}else{
+
+			$updatedata=array('university_mode' => 'REG');
+			
+			if($course[0]->private_mode!=$course[0]->mode){
 				$classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$student[0]->course_group_id,'mode'=>$course[0]->mode));
-				$mode = 'REG';	
+				$mode = 'REG';
+				$updatedata['class_name'] = $classes[0]->class_name;
+				$updatedata['class_id']   = $classes[0]->id;
+				$updateOnlineTxn = array('admission_type' => 'Private','class_id'=>$classes[0]->id);
+			}else{
+				$updateOnlineTxn = array('admission_type' => 'Private');
 			}
-			$class_name  = $classes[0]->class_name;
-			$class_id =$classes[0]->id;
-			$updatedata=array(
-				'class_name'=>$class_name,
-				'class_id'   =>$class_id ,
-				'university_mode' => 'REG',);
-
-
 		}
-
-		$update_mode =$this->Common_model->updateRecordByConditions('student',array('student_id'=>$student_id),$updatedata);
-		$result = array("status" => true, "mode"=> $mode);
-		
+		$this->Common_model->updateRecordByConditions('online_payment_transaction',array('student_id'=>$student_id),$updateOnlineTxn);
+		$this->Common_model->updateRecordByConditions('student',array('student_id'=>$student_id),$updatedata);
+		$result = array("status" => true, "mode"=> $mode);	
 		echo json_encode($result);
-	  }
-
-
+	}
 }// class
