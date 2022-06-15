@@ -78,7 +78,6 @@ class Admins extends CI_Controller {
 				$data['name_csrf'] = $this->security->get_csrf_token_name();
 				$data['hash_csrf'] = $this->security->get_csrf_hash();
 				$data['title']='Add Admin Menu Heading';
-
 				$this->load->view('header');
 				$this->load->view('admin/menu/add_menu_heading',$data);
 				$this->load->view('footer');
@@ -95,7 +94,6 @@ class Admins extends CI_Controller {
 			$data = array();
 			$dt   = array();
 			$dt['title'] = "Add Student Menu Heading";
-
 			if($param1 == 'create'){
 				$response = $this->admin_model->create_student_menu_heading();
 				echo json_encode(array("status" => 'true'));
@@ -103,7 +101,6 @@ class Admins extends CI_Controller {
 			if($param1 == 'update'){
 				$response = $this->admin_model->update_student_menu_heading($param2);
 				echo json_encode(array("status" => 'true'));
-
 			}
 			if($param1 == 'delete'){
 				$response = $this->admin_model->student_menu_heading_delete($param2);
@@ -128,13 +125,10 @@ class Admins extends CI_Controller {
 			redirect(base_url());
 			exit;
 		}else{
-
 			$data = array();
 			$dt = array();
 			$dt['title'] = "Add Menu";
-
 			$data['admins'] = $this->db->get_where('admin_master', array())->result_array();
-
 			$data['headings'] = $this->db->get_where('menu_heading', array())->result_array();
 
 			if($param1 == 'create'){
@@ -156,13 +150,10 @@ class Admins extends CI_Controller {
 			{
 				$data['name_csrf'] = $this->security->get_csrf_token_name();
 				$data['hash_csrf'] = $this->security->get_csrf_hash();
-
 				$this->load->view('header');
 				$this->load->view('admin/menu/add_menu',$data);
 				$this->load->view('footer');
-			}
-
-			
+			}	
 		}
 	}
 
@@ -3187,4 +3178,132 @@ public function update_exam_datewise_permission(){
 		$result = array("status" => true, "mode"=> $mode);	
 		echo json_encode($result);
 	}
+	public function updatePvtDdeStudent()
+	{
+		$dde_students = $this->Common_model->get_record('dde_student','*');
+
+		foreach ($dde_students as $dde_student) {
+			$studentdata = $this->Common_model->get_record('dde_student_data','*','student_id='.$dde_student['student_id']);
+			$courseDetail = $this->Common_model->getRecordById('dde_course','old_id',$dde_student['course_group_id']);
+			$dde_student['course_group_id'] = $courseDetail->new_id;
+			$dde_student['course_name'] = $courseDetail->new_name;
+			$courseData = $this->Common_model->get_record('course_group','*',array('id' => $dde_student['course_group_id']));
+
+			$this->db->where(array('mode' => $courseData[0]['private_mode']));
+			$classData = $this->Common_model->getRecordByWhere('class_master','course_group_id='.$courseDetail->new_id.' and  admission_permission="Y"');
+			$studentCount = $this->Common_model->getCountByWhere('student',array('student_id' => $dde_student['student_id']));
+			if($studentCount>0){
+				echo "alreay exist->". $dde_student['student_id'].'<br>';
+				continue;
+			}
+
+			$dde_student['class_id'] = $classData[0]->id;
+			unset($dde_student['enrollment_no']);
+			unset($dde_student['approved']);
+			unset($dde_student['approved_by']);
+			unset($dde_student['new_exam_form']);
+			unset($dde_student['temp_exam_form']);
+			unset($dde_student['enrolled']);
+			$dde_student['class_name'] = $classData[0]->class_name;
+			$dde_student['medium'] = $studentdata[0]['medium'];
+			$dde_student['university_mode'] = 'PVT';
+			$dde_student['session'] = 'July 2021';
+			unset($dde_student['admit_card']);
+			unset($dde_student['cls_id']);
+			unset($dde_student['form_no']);
+			unset($dde_student['contact']);
+			unset($dde_student['signature']);
+			unset($dde_student['regi_date']);
+			unset($dde_student['forwarded']);
+			unset($dde_student['forward_date']);
+			unset($dde_student['marksheet_out']);
+			unset($dde_student['marksheet_remark']);
+			unset($dde_student['admission_in']);
+			unset($dde_student['addmission_remark']);
+			unset($dde_student['exam_center_id']);
+			unset($dde_student['exam_center_code']);
+			unset($dde_student['ex']);
+			unset($dde_student['delete_request']);
+			unset($dde_student['through_bpp']);
+			unset($dde_student['old_student_id']);
+			unset($dde_student['status']);
+			unset($dde_student['pattern']);
+			unset($dde_student['prev_pattern']);
+			unset($dde_student['new_exam_permission']);
+			unset($dde_student['admission_print']);
+			unset($dde_student['new_exam_center_id']);
+			unset($dde_student['new_exam_center_code']);
+			unset($dde_student['permission']);
+			unset($dde_student['problem']);
+			unset($dde_student['problem_description']);
+			unset($dde_student['book_issued']);
+
+			$this->Common_model->insertAll('student',$dde_student);
+			echo $this->db->last_query().'<br>';
+			$compareArray = $this->Common_model->get_record('student_data','*','student_id=0');
+			$studentdata = $studentdata[0];
+			$updateData = array_diff_key($studentdata,$compareArray[0]);
+			$updateData = array_diff($studentdata,$updateData);
+			$updateData['handicapped'] = $studentdata['p_handicapped'];
+			$updateData['eligibility'] = $studentdata['ten_sub'];
+			$updateData['board'] = $studentdata['ten_board'];
+			$updateData['total_marks'] = $studentdata['ten_tmarks'];
+			$updateData['marks'] = $studentdata['ten_marks'];
+			$updateData['passing_year'] = $studentdata['ten_year'];
+			$updateData['percentage'] = $studentdata['ten_per'];
+			unset($updateData['id']);
+			$this->Common_model->insertAll('student_data',$updateData);
+			echo $this->db->last_query().'<br>';
+			$txnData = $this->Common_model->get_record('dde_online_payment_transaction','*','student_id='.$dde_student['student_id']);
+			$compareArray = $this->Common_model->get_record('online_payment_transaction','*','student_id=1');
+			$txnData = $txnData[0];
+			$updateData = array_diff_key($txnData,$compareArray[0]);
+			$updateData = array_diff($txnData,$updateData);
+			$updateData['course_group_id'] = $courseDetail->new_id;
+			$updateData['class_id'] = $classData[0]->id;
+			$updateData['txnId'] = $txnData['txnid'];
+			$updateData['fees_head'] = 'Admission Fees';
+			$updateData['admission_type'] = 'Regular';
+			unset($updateData['id']);
+			$this->Common_model->insertAll('online_payment_transaction',$updateData);
+			echo $this->db->last_query().'<br>';
+			if($dde_student['document_uploaded']=='Y'){
+				$where = array('student_id' => $dde_student['student_id']);
+				$admissionDoc = $this->Common_model->get_record('dde_admission_document','*',$where);
+				$course = $this->Common_model->getRecordById('course_group','id',$courseDetail->new_id);
+
+				$document_id = $course->document_id;
+				foreach ($admissionDoc as $docData) {
+					$where = array('category' => $document_id,
+						'document' => $docData['document_name'],
+					);
+					$data = $this->Common_model->get_record('document_category','*',$where);
+					$uploadDocData = array(
+						'student_id' => $docData['student_id'],
+						'course_group_id' => $courseDetail->new_id,
+						'document_name' => $docData['document_name'],
+						'document_image' => $docData['document_image'],
+						'date_time' => $docData['date_time'],
+						'status' => $docData['status'],
+						'document_category_id' => $data[0]['id'],
+					);
+					$docId = $this->Common_model->insertAll('admission_document',$uploadDocData);
+					echo $this->db->last_query().'<br>';
+					$org_image=FCPATH."/assets/reg_doc_image/".$docData['document_image'];
+					$ext = pathinfo($org_image, PATHINFO_EXTENSION);
+					$imgName = $docId.'.'.$ext;
+					$destination=FCPATH."/assets/documents/".$imgName;
+
+					if( rename( $org_image , $destination )){
+						echo '<br>moved!'.$destination;
+					}else{
+						echo '<br>failed'.$docData['student_id'];
+					}
+					$this->Common_model->updateRecordByConditions('admission_document',array('id'=>$docId),array('document_image' => $imgName));
+					echo $this->db->last_query().'<br>';
+				}
+			}
+		}
+	}
+
 }// class
