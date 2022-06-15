@@ -1,6 +1,6 @@
 <div id="" class="dt-responsive">
 	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-	<table id="kt_datatable" class="table table-striped nowrap">
+	<table id="kt_datatable_scroll" class="table table-striped nowrap">
 		<thead>
 			<tr>
 				<th>#</th>
