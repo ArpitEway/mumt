@@ -3124,4 +3124,70 @@ public function update_exam_datewise_permission(){
 		$this->load->view('admin/remaining_failed_student_marks',$data);
 		$this->load->view('footer');
 	}
+
+
+    public function search_student_for_mode(){
+		$this->load->view('header',array('title' => 'Search Students'));
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);	
+		$this->load->view('admin/search_student_for_mode',$data );
+		$this->load->view('footer');
+	}
+
+   public function change_student_mode(){
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);	
+		$student_id =$_POST['student_id'];
+		$data['student']= $this->Common_model->getRecordByWhere('student',array("student_id"=>$student_id));
+		$data['student_data']= $this->Common_model->getRecordByWhere('student_data',array("student_id"=>$student_id));
+		$html_comment = $this->load->view('admin/student_change_mode' ,$data,true);
+		echo json_encode(array(
+			"status" => true,
+			"data" => $html_comment
+		));
+	}
+
+	public function update_student_mode(){
+		$student_id = $_POST['student_id'];
+		$student= $this->Common_model->getRecordByWhere('student',array("student_id"=>$student_id));
+		$course= $this->Common_model->getRecordByWhere('course_group',array("id"=>$student[0]->course_group_id));
+		if ($student[0]->university_mode=='REG') {		
+			if ($course[0]->private_mode=='Annual'){
+				$classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$student[0]->course_group_id,'mode'=>$course[0]->private_mode));	
+				$mode = 'PVT';	
+			}
+			$class_name  = $classes[0]->class_name;
+			$class_id =$classes[0]->id;
+			$updatedata=array(
+				'class_name'=>$class_name,
+				'class_id'   =>$class_id ,
+				'university_mode' => 'PVT',
+			);
+
+		  }else{
+			if ($course[0]->university_mode=='regular'){
+				$classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$student[0]->course_group_id,'mode'=>$course[0]->mode));
+				$mode = 'REG';	
+			}
+			$class_name  = $classes[0]->class_name;
+			$class_id =$classes[0]->id;
+			$updatedata=array(
+				'class_name'=>$class_name,
+				'class_id'   =>$class_id ,
+				'university_mode' => 'REG',);
+
+
+		}
+
+		$update_mode =$this->Common_model->updateRecordByConditions('student',array('student_id'=>$student_id),$updatedata);
+		$result = array("status" => true, "mode"=> $mode);
+		
+		echo json_encode($result);
+	  }
+
+
 }// class
