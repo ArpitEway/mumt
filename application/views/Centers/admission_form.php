@@ -404,7 +404,7 @@
 					<div class="form-group">
 						<select class="form-control" name="passing_year">
 							<option value="">---Select---</option>
-							<?php for ($year=2021; $year > 1990; $year--) { ?>
+							<?php for ($year=2022; $year > 1990; $year--) { ?>
 								<option><?=$year?></option>
 							<?php } ?>
 						</select>
