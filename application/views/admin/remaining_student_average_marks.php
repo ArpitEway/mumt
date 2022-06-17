@@ -34,13 +34,11 @@
 					$avg_all = round($average_tot_marks/5);
 					$marks_5 = $average_tot_marks - ($avg_all*4);
 					
-					$blankmark = array('total_marks'=>$average_tot_marks ,
-						'que_1'=>$avg_all,'que_2'=>$marks_5,'que_3'=>$avg_all,'que_4'=>$avg_all,'que_5'=>$avg_all,
-
-
-					);
-					$where = array('student_id'=>$student->student_id, 'total_marks'=>'');
-					$this->Common_model->updateRecordByConditions('upload_exam_ans_sheet', $where, $blankmark);
+					// $blankmark = array('total_marks'=>$average_tot_marks ,
+					// 	'que_1'=>$avg_all,'que_2'=>$marks_5,'que_3'=>$avg_all,'que_4'=>$avg_all,'que_5'=>$avg_all,
+					// );
+					// $where = array('student_id'=>$student->student_id, 'total_marks'=>'');
+					// $this->Common_model->updateRecordByConditions('upload_exam_ans_sheet', $where, $blankmark);
 				}
 				?>	
 				<tr>
