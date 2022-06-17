@@ -3316,9 +3316,7 @@ public function remaining_student_average_marks(){
 		$this->db->where('upload_exam_ans_sheet.total_marks',0);
 		$this->db->where('upload_exam_ans_sheet.teacher_id!=','');
 		 $this->db->group_by('upload_exam_ans_sheet.student_id');
-		$this->db->having('total_marks = 1');
-		// $where=('upload_exam_ans_sheet.student_id in (684587)');
-		// $this->db->where($where);
+		 $this->db->having('total_marks = 1');
 		$data['students'] = $this->db->get()->result();
 		// $this->Common_model->last_query();
 		$this->load->view('header',array('title' => 'Student Remaining Marks List'));
