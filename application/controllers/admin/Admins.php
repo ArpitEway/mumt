@@ -3540,6 +3540,10 @@ public function update_exam_datewise_permission(){
 
 public function remaining_student_average_marks(){
 	
+	 $data = array(
+		 	'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);	
 		$this->db->select('*,count(total_marks) as total_marks');
 		$this->db->from('upload_exam_ans_sheet');
 		$this->db->join('student', 'upload_exam_ans_sheet.student_id = student.student_id');
@@ -3555,6 +3559,29 @@ public function remaining_student_average_marks(){
 		$this->load->view('admin/remaining_student_average_marks',$data);
 		$this->load->view('footer');
 		
+	}
+
+public function view_student_paper_marks_details(){
+		$student_id = $this->input->post('student_id');
+		$where=array('new_exam_form.student_id'=>$student_id,'paper_type'=>'theory');
+		$this->db->select('*');
+		$this->db->from('new_exam_form');
+		$this->db->Where($where );
+        $this->db->join('student', 'student.student_id = new_exam_form.student_id');
+		$details = $this->db->get()->result();
+		$data = array(
+			'detail' => $details,
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		if($data){
+		$model =  $this->load->view('admin/view_student_paper_marks_details',$data,true);
+			$status = true;
+		}
+		echo json_encode(array(
+			"status" => $status,
+			"data" => $model
+		));
 	}
 
 
