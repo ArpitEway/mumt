@@ -28,7 +28,7 @@
 	public function Doc_list(){
 		
 			$data = array();
-		$where = 'document_uploaded!="Y" and payment_status="Y" and center_id='.$this->session->center_id;
+		$where = "document_uploaded!='Y' and payment_status='Y' and center_id=".$this->session->center_id ."  and ( (student.class_name not like '%SEM%' and student.session='July 2021') or session!='July 2021')";
 		$column_order = array('student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name',null);
 		$column_search = array('enrollment_no', 'name', 'f_h_name', 'course_name','class_name');
 		$DataTableArray = array(
@@ -39,16 +39,17 @@
 		);
            
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
+		//print_r($this->db->last_query());    
 		$i = $_POST['start'];
 		foreach($tableData as $result){
 			$btn = '<a href="'.base_url('center/document/upload/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" target="_blank" class="btn btn-primary btn-sm" target="_blank" >Upload</a>';			
 			$i++;
 			$data[] = array($result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$btn);
 		}
-
+		$counttableData = $this->Datatable_join_model->joincountAll($_POST,$DataTableArray);
 		$output = array(
 			"draw" => $_POST['draw'],
-			"recordsTotal" => $this->Datatable_join_model->countAll('student',$where),
+			"recordsTotal" => $counttableData,//$this->Datatable_join_model->countAll('student',$where),
 			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
 			"data" => $data,
 		);
