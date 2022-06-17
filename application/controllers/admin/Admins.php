@@ -3538,4 +3538,24 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
+public function remaining_student_average_marks(){
+	
+		$this->db->select('*,count(total_marks) as total_marks');
+		$this->db->from('upload_exam_ans_sheet');
+		$this->db->join('student', 'upload_exam_ans_sheet.student_id = student.student_id');
+		$this->db->order_by('upload_exam_ans_sheet.course_group_id,upload_exam_ans_sheet.class_id','asc');
+		$this->db->where('upload_exam_ans_sheet.remark_status','');
+		$this->db->where('upload_exam_ans_sheet.total_marks',0);
+		$this->db->where('upload_exam_ans_sheet.teacher_id!=','');
+		 $this->db->group_by('upload_exam_ans_sheet.student_id');
+		 $this->db->having('total_marks = 1');
+		$data['students'] = $this->db->get()->result();
+		// $this->Common_model->last_query();
+		$this->load->view('header',array('title' => 'Student Remaining Marks List'));
+		$this->load->view('admin/remaining_student_average_marks',$data);
+		$this->load->view('footer');
+		
+	}
+
+
 }// class
