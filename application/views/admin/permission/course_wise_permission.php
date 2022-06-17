@@ -3,8 +3,9 @@
         <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
     <thead>
       <tr>
-        <th>Id</th>
-        <th>Course name </th>
+        <th>#</th>
+        <th>Course ID </th>
+        <th>Course Name </th>
         <th>Regular Mode</th>
         <th>Regular Admission</th> 
         <th>Private Mode</th>
@@ -19,6 +20,7 @@
         ?>
         <tr>
             <td><?php echo $i;?></td>
+            <td><?php echo $r->id; ?></td>
             <td><?php echo $r->course_name; ?></td>
             <td><?php echo $r->mode; ?></td>
             <td>
