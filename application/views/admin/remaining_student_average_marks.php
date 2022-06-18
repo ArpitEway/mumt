@@ -53,7 +53,7 @@ $new_exam_form_count =  $this->Common_model->getCountByWhere('new_exam_form',arr
 					//$where = array('student_id'=>$student->student_id,'paper_code'=>$student->paper_code,'teacher_id!='=>'');
 					$where = array('student_id'=>$student->student_id,'paper_code'=>$student->paper_code);
 					$this->Common_model->updateRecordByConditions('upload_exam_ans_sheet', $where, $blankmark); 
-					die;
+					//die;
 				}
 			} ?>
 		</tbody>
