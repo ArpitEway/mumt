@@ -3549,7 +3549,7 @@ public function remaining_student_average_marks(){
 		// $this->db->where('upload_exam_ans_sheet.total_marks',0);
 		$this->db->where('new_exam_form.theory_marks','');
 		$this->db->where('new_exam_form.paper_type','theory');
-		$this->db->where('upload_exam_ans_sheet.teacher_id!=','');
+		// $this->db->where('upload_exam_ans_sheet.teacher_id!=','');
 		 $this->db->group_by('upload_exam_ans_sheet.student_id');
 		 $this->db->having('num = 1');
 		$data['students'] = $this->db->get()->result();

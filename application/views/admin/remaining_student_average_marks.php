@@ -22,6 +22,9 @@
 
 		$students =  $this->Common_model->getRecordByWhere('student',array('student_id'=>$student->student_id));	
 
+$new_exam_form_count =  $this->Common_model->getCountByWhere('new_exam_form',array('student_id'=>$student->student_id,'theory_marks'=>'','paper_type'=>'theory'));	
+
+				if($new_exam_form_count==1){
 				?>	
 				<tr>
 					<td><?php echo $i++; ?></td>
@@ -33,9 +36,7 @@
 					<td></td>
 				</tr>
 			<?php  
-			$new_exam_form_count =  $this->Common_model->getCountByWhere('new_exam_form',array('student_id'=>$student->student_id,'theory_marks'=>'','paper_type'=>'theory'));	
-
-				if($new_exam_form_count==1){
+			 /*
 					$tot_papermark_count=0;				
 					$tot_papermark=0;
 					$papermarks =  $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',array('student_id'=>$student->student_id,'teacher_id!='=>'','paper_code!='=>$student->paper_code));	
@@ -50,7 +51,7 @@
 					
 					$blankmark = array('total_marks'=>$average_tot_marks,'que_1'=>$avg_all,'que_2'=>$marks_5,'que_3'=>$avg_all,'que_4'=>$avg_all,'que_5'=>$avg_all);
 					$where = array('student_id'=>$student->student_id,'paper_code'=>$student->paper_code,'teacher_id!='=>'');
-					$this->Common_model->updateRecordByConditions('upload_exam_ans_sheet', $where, $blankmark);
+					$this->Common_model->updateRecordByConditions('upload_exam_ans_sheet', $where, $blankmark); */
 					//die;
 				}
 			} ?>
