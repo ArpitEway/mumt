@@ -14,12 +14,14 @@
  padding-right: 100px;
 }
 </style>
+
+<form  id="update_remark_status"  >
 <table class= "table table-bordered">
   <tbody>
     <tr>
      <td><strong>Enrollment No: </strong> <?=$detail[0]->enrollment_no;?></td>
      <td><strong> Roll No: </strong><?=$detail[0]->roll_no;?></td>
-     <td  rowspan="5"> <img  class="student_img" src="<?php echo base_url('/assets/student_image/').$detail[0]->session.'/'.$detail[0]->photo;?>" ></td>
+
    </tr>
    <tr>
     <td><b> Name: </b> <?=$detail[0]->name;?></td>
@@ -38,13 +40,12 @@
         <th>#</th>
         <th>Paper Code</th>
         <th>Paper Name</th>
-        <th>Total Marks</th>
-        <th>Int Marks</th>
         <th>Q.1</th>
         <th>Q.2</th>
         <th>Q.3</th>
         <th>Q.4</th>
         <th>Q.5</th>
+        <th>Total Marks</th>
       </tr>
     </thead>
     <tbody>
@@ -59,13 +60,29 @@
          <td><?php echo $student->paper_code; ?></td>
          <td><?=$this->Common_model->getPaperNameById($student->paper_id); ?>
           </td>
-        <td><?php echo $paper[0]->total_marks; ?> </td>
-         <td><?php echo $student->int_marks; ?> </td>
         <td><?php echo  $paper[0]->que_1; ?> </td>
         <td><?php echo  $paper[0]->que_2; ?> </td>
         <td><?php echo  $paper[0]->que_3; ?> </td>
         <td><?php echo  $paper[0]->que_4; ?> </td>
         <td><?php echo $paper[0]->que_5; ?> </td>
+        <td>
+<?php
+if($paper[0]->total_marks==0)
+{?>
+  <input type="number" name="marks" id="marks" value="<?=$paper[0]->total_marks;?>"> 
+<?php
+  $given_marks = $_POST['marks'];
+          $que_all = round($given_marks/5);  
+          $questionmark = array('total_marks'=>$given_marks,'que_1'=>$que_all,'que_2'=>$que_all,'que_3'=>$que_all,'que_4'=>$que_all,'que_5'=>$que_all);
+
+           $where = array('student_id'=>$paper[0]->student_id,'paper_code'=>$paper[0]->paper_code);
+           $this->Common_model->updateRecordByConditions('upload_exam_ans_sheet', $where, $questionmark); ?>
+ <?php  } else {
+?>
+<input type="number" name="marks" id="marks" value="<?=$paper[0]->total_marks;?>">  
+  <?php }?>       
+      
+        </td>
     </tr>
     <?php
     $s++;
@@ -74,6 +91,35 @@
 </tbody>
 </table>
 </div>
+<!-- <div class="row m-aut" > -->
+ <div class="form-group text-center">
+       <button class="btn btn-success " type="submit" id="submit" >Submit</button>
+    </div>
 <div class="text-center py-3">
- <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
-</div>
+ <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button></div>
+<!-- </div> -->
+</form>
+
+
+<script>
+  $('#submit').on('click',function (e) {
+      
+        e.preventDefault();
+        let formData = $('#update_remark_status').serialize();
+        $.ajax({
+            url: BASE_URL+ 'admin/Admins/update_mark_for_all_question',
+            method: 'post',
+            data: formData,
+            dataType: 'JSON',
+            success: function (response) {
+               if(response.status==true){
+        
+                  $('#kt_datepicker_modal').modal('hide');
+                  toastr.success('update status remark successfully');
+              }else{
+                  toastr.error('something error');
+              }
+          }
+      })
+    })
+</script>
