@@ -30,8 +30,7 @@
       foreach ($paper_details as $paper) { 
         $min_marks = $this->Common_model->getRecordByWhere('paper_master',array('paper_code' => $paper->paper_code,'class_id' => $paper->class_id)); 
         $min_theory_marks = $min_marks[0]->min_theory_marks;
-        $anssheetData = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',array('student_id' => $row->student_id,'class_id'=>$row->class_id,'paper_code' => $paper->paper_code,'teacher_id'=>''));
-        // 'teacher_id!='=>''
+        $anssheetData = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',array('student_id' => $row->student_id,'class_id'=>$row->class_id,'paper_code' => $paper->paper_code,'teacher_id!='=>''));
         $obtain_theory_marks = $anssheetData[0]->total_marks;
         $old_num = array();
         if($obtain_theory_marks >=$min_theory_marks){
