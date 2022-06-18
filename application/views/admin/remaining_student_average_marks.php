@@ -51,6 +51,7 @@
 					$blankmark = array('total_marks'=>$average_tot_marks,'que_1'=>$avg_all,'que_2'=>$marks_5,'que_3'=>$avg_all,'que_4'=>$avg_all,'que_5'=>$avg_all);
 					$where = array('student_id'=>$student->student_id,'paper_code'=>$student->paper_code,'teacher_id!='=>'');
 					$this->Common_model->updateRecordByConditions('upload_exam_ans_sheet', $where, $blankmark);
+					die;
 				}
 			} ?>
 		</tbody>
