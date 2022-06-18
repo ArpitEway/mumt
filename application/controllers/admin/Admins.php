@@ -3540,17 +3540,19 @@ public function update_exam_datewise_permission(){
 
 public function remaining_student_average_marks(){
 	
-		$this->db->select('*,count(total_marks) as total_marks');
+		$this->db->select('*,count(total_marks) as num');
 		$this->db->from('upload_exam_ans_sheet');
-		$this->db->join('student', 'upload_exam_ans_sheet.student_id = student.student_id');
+		$this->db->join('new_exam_form', 'upload_exam_ans_sheet.student_id  = new_exam_form.student_id and upload_exam_ans_sheet.paper_code = new_exam_form.paper_code');
 		$this->db->order_by('upload_exam_ans_sheet.course_group_id,upload_exam_ans_sheet.class_id','asc');
 		$this->db->where('upload_exam_ans_sheet.remark_status','');
-		$this->db->where('upload_exam_ans_sheet.total_marks',0);
+		// $this->db->where('upload_exam_ans_sheet.total_marks',0);
+		$this->db->where('new_exam_form.theory_marks','');
+		$this->db->where('new_exam_form.paper_type','theory');
 		$this->db->where('upload_exam_ans_sheet.teacher_id!=','');
 		 $this->db->group_by('upload_exam_ans_sheet.student_id');
-		 $this->db->having('total_marks = 1');
+		 $this->db->having('num = 1');
 		$data['students'] = $this->db->get()->result();
-		// $this->Common_model->last_query();
+		 // $this->Common_model->last_query();
 		$this->load->view('header',array('title' => 'Student Remaining Marks List'));
 		$this->load->view('admin/remaining_student_average_marks',$data);
 		$this->load->view('footer');

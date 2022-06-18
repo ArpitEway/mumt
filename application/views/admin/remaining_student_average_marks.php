@@ -19,13 +19,16 @@
 
 			$i = 1;
 			foreach($students as $student){
+
+		$students =  $this->Common_model->getRecordByWhere('student',array('student_id'=>$student->student_id));	
+
 				?>	
 				<tr>
 					<td><?php echo $i++; ?></td>
-					<td><?php echo $student->student_id; ?></td>
-					<td><?php echo $student->enrollment_no; ?></td>
-					<td><?php echo $student->course_name; ?></td>
-					<td><?php echo $student->class_name; ?></td>
+					<td><?php echo $students[0]->student_id; ?></td>
+					<td><?php echo $students[0]->enrollment_no; ?></td>
+					<td><?php echo $students[0]->course_name; ?></td>
+					<td><?php echo $students[0]->class_name; ?></td>
 					<td><?php echo $student->paper_code; ?></td>
 					<td></td>
 				</tr>
