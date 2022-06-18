@@ -3584,5 +3584,29 @@ public function view_student_paper_marks_details(){
 		));
 	}
 
+	public function update_mark_for_all_question()
+	{     
+
+		$data=array();
+		$post = $this->input->post();
+		$data['paper_code'] = $this->input->post('paper_code');
+		$data['paper_marks'] = $this->input->post('marks');
+		foreach ($data['paper_marks'] as  $paper)
+		{
+ // $que_all = round ($paper / 5);		  
+		}
+    	$que_all= round($paper / 5);
+		foreach ($data['paper_code'] as $key => $value){
+			$studentData = array('total_marks' => $data['paper_marks'][$key],'que_1'=>$que_all,'que_2'=>$que_all,'que_3'=>$que_all,'que_4'=>$que_all,'que_5'=>$que_all
+		);
+			$where =  array('paper_code' =>$value,'student_id'  =>$_POST['student_id']
+		);
+			$update =	$this->Common_model->updateRecordByConditions('upload_exam_ans_sheet',$where,$studentData);
+		}
+
+		if($update){
+			echo json_encode(array('status'=>true));
+		}
+	}
 
 }// class

@@ -15,7 +15,7 @@
 }
 </style>
 
-<form  id="update_remark_status"  >
+<form  id="ajax-form" >
 <table class= "table table-bordered">
   <tbody>
     <tr>
@@ -66,22 +66,11 @@
         <td><?php echo  $paper[0]->que_4; ?> </td>
         <td><?php echo $paper[0]->que_5; ?> </td>
         <td>
-<?php
-if($paper[0]->total_marks==0)
-{?>
-  <input type="number" name="marks" id="marks" value="<?=$paper[0]->total_marks;?>"> 
-<?php
-  $given_marks = $_POST['marks'];
-          $que_all = round($given_marks/5);  
-          $questionmark = array('total_marks'=>$given_marks,'que_1'=>$que_all,'que_2'=>$que_all,'que_3'=>$que_all,'que_4'=>$que_all,'que_5'=>$que_all);
-
-           $where = array('student_id'=>$paper[0]->student_id,'paper_code'=>$paper[0]->paper_code);
-           $this->Common_model->updateRecordByConditions('upload_exam_ans_sheet', $where, $questionmark); ?>
- <?php  } else {
-?>
-<input type="number" name="marks" id="marks" value="<?=$paper[0]->total_marks;?>">  
-  <?php }?>       
-      
+          <input type="hidden" name="paper_code[]" value="<?php echo $paper[0]->paper_code; ?>">
+          <input type="hidden" name="class_id" value="<?php echo $paper[0]->class_id; ?>">
+          <input type="hidden" name="student_id" value="<?php echo $paper[0]->student_id; ?>">
+          <input type="number" name="marks" id="marks" value="<?=$paper[0]->total_marks;?>"> 
+          <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">      
         </td>
     </tr>
     <?php
@@ -105,7 +94,7 @@ if($paper[0]->total_marks==0)
   $('#submit').on('click',function (e) {
       
         e.preventDefault();
-        let formData = $('#update_remark_status').serialize();
+        let formData = $('#ajax-form').serialize();
         $.ajax({
             url: BASE_URL+ 'admin/Admins/update_mark_for_all_question',
             method: 'post',
@@ -115,7 +104,7 @@ if($paper[0]->total_marks==0)
                if(response.status==true){
         
                   $('#kt_datepicker_modal').modal('hide');
-                  toastr.success('update status remark successfully');
+                  toastr.success('update Marks successfully');
               }else{
                   toastr.error('something error');
               }
