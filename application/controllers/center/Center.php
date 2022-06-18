@@ -325,7 +325,7 @@ class Center extends CI_Controller {
 
 	public function student_list($param1 = '')
 	{
-		$csrf = array(
+		$csrf = array( 
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
 		);
@@ -345,8 +345,9 @@ class Center extends CI_Controller {
 	public function getUnpaidFeesList($param1 = ''){
 		$data = $row = array();
 		$where = 'online_payment_transaction.center_id='.$this->session->center_id.' and online_payment_transaction.payment!="Y"';
+		
 		if($param1=='Admission'){
-			$where .= ' and online_payment_transaction.fees_head="Admission Fees"';
+			$where .= " and online_payment_transaction.fees_head='Admission Fees'  and  `student.payment_status`='N' and ( (student.class_name not like '%SEM%' and student.session='July 2021') or session!='July 2021')";
 		}elseif($param1=='Exam'){
 			$where .= ' and online_payment_transaction.fees_head="Exam Fees"';
 		}
@@ -358,16 +359,20 @@ class Center extends CI_Controller {
 			'column_order' => $column_order,
 			'column_search' => $column_search,
 			'where' => $where.' and online_payment_transaction.center_id=student.center_id',
+			
 			'table' => 'student',
 			'table2' => 'online_payment_transaction',
 			'joinOn' => 'student.student_id=online_payment_transaction.student_id'
 		);
-
+		
+		 
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
+		
 		$i = $_POST['start'];
-
-
-			
+		
+	
+		 $counttableData = $this->Datatable_join_model->joincountAll($_POST,$DataTableArray);
+				  
 		foreach($tableData as $result){
 			$center_ids_dep = array( 21,22,23,24,25,26,27,28);
 			if(in_array($this->session->center_id, $center_ids_dep)){
@@ -382,7 +387,7 @@ class Center extends CI_Controller {
 
 		$output = array(
 			"draw" => $_POST['draw'],
-			"recordsTotal" => $this->Datatable_join_model->countAll('online_payment_transaction',$where),
+			"recordsTotal" => $counttableData,//$this->Datatable_join_model->countAll('online_payment_transaction',$where),
 			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
 			"data" => $data,
 		);
