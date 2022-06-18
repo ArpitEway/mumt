@@ -270,11 +270,50 @@ class Admins extends CI_Controller {
 		}else{
 
 			if($param1 == 'create'){
-
-				$response = $this->admin_model->create_session();
+				$this->db->select('session');	
+				$this->db->order_by("id", "desc");
+				$this->db->limit(1);
+				$this->db->from('session'); 
+				$query = $this->db->get();
+				$value = $query->result(); 
+				$old_session = $value[0]->session ;
+                 if($old_session==$_POST['session']){
+				$this->session->set_flashdata('ajax_flash_message','Session Already Created');
+					redirect(base_url().'session');
+				 }else{
+					$this->db->select('*');	
+					$this->db->from('course'); 
+					$this->db->where('session',$old_session);
+					$query = $this->db->get();
+					$data = $query->result(); 
+					
+				    $response = $this->admin_model->create_session();
+				if ($response){
+					foreach($data as $val){
+						$array = array(		
+							'course_group_id' => $val->course_group_id,
+							'course_name' => $val->course_name,
+							'course_code'=>$val->course_code,
+							'min_duration'=>$val->min_duration,
+							'max_duration'=>$val->max_duration,
+                            'admission_fees'=>$val->admission_fees,
+							'form_fees'=>$val->form_fees,
+							'exam_fees'=>$val->exam_fees,
+							'program_fees'=>$val->program_fees,
+							'session'=>$_POST['session'],
+							'practical_exam_fees'=>$val->practical_exam_fees,
+							'p_form_fees'=>$val->p_form_fees,
+							'p_admission_fees'=>$val->p_admission_fees,
+							'p_program_fees'=>$val->p_program_fees,
+							'p_exam_fees'=>$val->p_exam_fees,
+					   );
+						$this->db->insert('course',$array);
+					   }
+				}
 				$this->session->set_flashdata('ajax_flash_message','Session Successfully Added');
 				redirect(base_url().'session');
-
+				 }
+					
 			}
 			if($param1 == 'update'){
 
@@ -294,9 +333,9 @@ class Admins extends CI_Controller {
 				$data = array();
 				$data['title'] = "Session";
 				$csrf = array(
-					'name_csrf' => $this->security->get_csrf_token_name(),
-					'hash_csrf' => $this->security->get_csrf_hash()
-				);
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash()
+			);
 				$this->load->view('header',$data);
 				$this->load->view('admin/session',$csrf);
 				$this->load->view('footer');
@@ -306,6 +345,7 @@ class Admins extends CI_Controller {
 		}
 
 	}
+
 
 	public function course($param1 = '', $param2 = '', $param3 = '')
 	{
