@@ -3593,9 +3593,10 @@ public function view_student_paper_marks_details(){
 		$data['paper_marks'] = $this->input->post('marks');
 		foreach ($data['paper_marks'] as  $paper)
 		{
- // $que_all = round ($paper / 5);		  
+        // $que_all = round ($paper / 5);		  
 		}
     	$que_all= round($paper / 5);
+    	
 		foreach ($data['paper_code'] as $key => $value){
 			$studentData = array('total_marks' => $data['paper_marks'][$key],'que_1'=>$que_all,'que_2'=>$que_all,'que_3'=>$que_all,'que_4'=>$que_all,'que_5'=>$que_all
 		);

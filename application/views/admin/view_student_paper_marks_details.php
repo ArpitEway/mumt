@@ -80,13 +80,13 @@
 </tbody>
 </table>
 </div>
-<!-- <div class="row m-aut" > -->
- <div class="form-group text-center">
+ 
+ <div class="text-center">
        <button class="btn btn-success " type="submit" id="submit" >Submit</button>
     </div>
-<div class="text-center py-3">
- <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button></div>
-<!-- </div> -->
+<!-- <div>
+ <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button></div> -->
+ 
 </form>
 
 
