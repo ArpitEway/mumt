@@ -277,57 +277,54 @@ class Admins extends CI_Controller {
 				$query = $this->db->get();
 				$value = $query->result(); 
 				$old_session = $value[0]->session ;
-                 if($old_session==$_POST['session']){
-				$this->session->set_flashdata('ajax_flash_message','Session Already Created');
+				if($old_session==$_POST['session']){
+					$this->session->set_flashdata('ajax_flash_message','Session Already Created');
 					redirect(base_url().'session');
-				 }else{
+				}else{
 					$this->db->select('*');	
 					$this->db->from('course'); 
 					$this->db->where('session',$old_session);
 					$query = $this->db->get();
-					$data = $query->result(); 
-					
-				    $response = $this->admin_model->create_session();
-				if ($response){
-					foreach($data as $val){
-						$array = array(		
-							'course_group_id' => $val->course_group_id,
-							'course_name' => $val->course_name,
-							'course_code'=>$val->course_code,
-							'min_duration'=>$val->min_duration,
-							'max_duration'=>$val->max_duration,
-                            'admission_fees'=>$val->admission_fees,
-							'form_fees'=>$val->form_fees,
-							'exam_fees'=>$val->exam_fees,
-							'program_fees'=>$val->program_fees,
-							'session'=>$_POST['session'],
-							'practical_exam_fees'=>$val->practical_exam_fees,
-							'p_form_fees'=>$val->p_form_fees,
-							'p_admission_fees'=>$val->p_admission_fees,
-							'p_program_fees'=>$val->p_program_fees,
-							'p_exam_fees'=>$val->p_exam_fees,
-					   );
-						$this->db->insert('course',$array);
-					   }
+					$courses = $query->result(); 	
+					$response = $this->admin_model->create_session();
+					if ($response){
+						foreach($courses as $course){
+
+							$Data['course_group_id'] = $course->course_group_id;
+							$Data['course_name'] = $course->course_name;
+							$Data['course_code'] = $course->course_code;
+							$Data['min_duration'] = $course->min_duration;	  
+							$Data['max_duration'] = $course->max_duration;
+							$Data['form_fees'] = $course->form_fees;
+							$Data['admission_fees'] = $course->admission_fees;
+							$Data['program_fees'] = $course->program_fees;
+							$Data['exam_fees'] = $course->exam_fees;
+							$Data['practical_exam_fees'] = $course->practical_exam_fees;
+							$Data['p_form_fees'] = $course->p_form_fees;
+							$Data['p_admission_fees'] = $course->p_admission_fees;
+							$Data['p_program_fees'] = $course->p_program_fees;
+							$Data['p_exam_fees'] = $course->p_exam_fees;
+							$Data['session'] = $_POST['session'];
+							$this->db->insert('course',$Data);
+						}
+					}
+					$this->session->set_flashdata('ajax_flash_message','Session Successfully Added');
+					redirect(base_url().'session');
 				}
-				$this->session->set_flashdata('ajax_flash_message','Session Successfully Added');
-				redirect(base_url().'session');
-				 }
-					
 			}
-			if($param1 == 'update'){
+			// if($param1 == 'update'){
 
-				$response = $this->admin_model->session_update($param2);
-				$this->session->set_flashdata('ajax_flash_message','Session Successfully Updated');
-				redirect(base_url().'session');
-			}
+			// 	$response = $this->admin_model->session_update($param2);
+			// 	$this->session->set_flashdata('ajax_flash_message','Session Successfully Updated');
+			// 	redirect(base_url().'session');
+			// }
 
-			if($param1 == 'delete'){
+			// if($param1 == 'delete'){
 
-				$response = $this->admin_model->session_delete($param2);
-				$this->session->set_flashdata('ajax_flash_message','Session Successfully Deleted');
-				redirect(base_url().'session');
-			}
+			// 	$response = $this->admin_model->session_delete($param2);
+			// 	$this->session->set_flashdata('ajax_flash_message','Session Successfully Deleted');
+			// 	redirect(base_url().'session');
+			// }
 
 			if(empty($param1) ){
 				$data = array();
@@ -340,10 +337,7 @@ class Admins extends CI_Controller {
 				$this->load->view('admin/session',$csrf);
 				$this->load->view('footer');
 			}    
-
-
 		}
-
 	}
 
 

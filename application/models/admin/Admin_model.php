@@ -311,7 +311,7 @@ class Admin_model extends CI_Model {
     public function create_session()
     {
         $data['session'] = html_escape($this->input->post('session'));
-		$data['type'] = html_escape($this->input->post('type'));
+		// $data['type'] = html_escape($this->input->post('type'));
        $data['enrollment_code'] = html_escape($this->input->post('enrollment'));
        
         $this->db->insert('session', $data);
