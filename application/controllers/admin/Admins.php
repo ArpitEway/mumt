@@ -3200,7 +3200,6 @@ public function update_exam_datewise_permission(){
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 		);
-		$where = array('paper_type!='=>'theory','result_show'=>'Y');
 		$titleData = array('title' => 'Practical  Marks Submission' );
 		$this->load->view('header',$titleData);
 		$this->db->order_by("p_marks_sub,student.course_group_id,student.class_id", "asc");
@@ -3209,9 +3208,10 @@ public function update_exam_datewise_permission(){
 		$this->db->join('new_exam_form', 'student.student_id = new_exam_form.student_id');
 		$this->db->join('class_master', 'student.class_id = class_master.id');
 		$this->db->group_by('new_exam_form.student_id');
-		$this->db->Where('new_exam_form','Y');
+		$where = array('paper_type!='=>'theory','new_exam_form'=>'Y');
 		$this->db->Where($where);
 		$this->db->where_in('new_exam_form.p_marks',array('ABS','N'));
+	    	$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,195,197,203,211,213,227)');
 		$this->db->Where('(project="Y" or practical = "Y")');
 		$data['students'] = $this->db->get()->result();
 		 // $this->Common_model->last_query();
