@@ -69,7 +69,7 @@
           <input type="hidden" name="paper_code[]" value="<?php echo $paper[0]->paper_code; ?>">
           <input type="hidden" name="class_id" value="<?php echo $paper[0]->class_id; ?>">
           <input type="hidden" name="student_id" value="<?php echo $paper[0]->student_id; ?>">
-          <input type="number" name="marks" id="marks" value="<?=$paper[0]->total_marks;?>"> 
+          <input type="number" name="marks[]" id="marks" value="<?=$paper[0]->total_marks;?>"> 
           <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">      
         </td>
     </tr>
