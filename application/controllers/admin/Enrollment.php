@@ -539,9 +539,7 @@
 
 
 	public function generate_enrollment(){
-		$where = array(
-			'enrollment_permission' => 'Y',
-			);
+		$where = array('enrollment_permission' => 'Y');
 	$session = $this->db->get_where('session',$where)->result_array();
      
 	$data['session'] = $session;

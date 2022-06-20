@@ -17,7 +17,6 @@
 								<?php
 							}
 							?>
-							
 						</select>
 						<div class="fv-plugins-message-container"></div>
 					</div>

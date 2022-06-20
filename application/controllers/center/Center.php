@@ -588,8 +588,6 @@ class Center extends CI_Controller {
 		$mode = $this->input->post('mode');
 		$myString =$eligibility;
 		 
-		
-		
 		if($this->session->has_userdata('center_id')){
 		$center_id =  $this->session->center_id;
 		$centerdata = $this->Common_model->getRecordById('center','id',$center_id);
@@ -604,7 +602,7 @@ class Center extends CI_Controller {
 		$course_group_list = $this->Common_model->get_record('course_group','*',$where);
 		*/
 		
-		$this->db->select('course.id,course.course_name');
+		$this->db->select('course_group.id,course.course_name');
 		$this->db->from('course');
 		$this->db->join('course_group', 'course_group.id = course.course_group_id'); 
 		$this->db->where('eligibility',$eligibility);
