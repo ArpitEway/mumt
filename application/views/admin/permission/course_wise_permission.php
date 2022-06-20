@@ -34,7 +34,7 @@
       ?>
       <tr>
         <td><?php echo $i; ?></td>
-        <td><?php echo $r->id; ?></td>
+        <td><?php echo $r->course_group_id; ?></td>
         <td><?php echo $r->course_name; ?></td>
         <td><?php echo $course_group[0]['mode']; //echo $r->mode; ?></td>
         <td>
