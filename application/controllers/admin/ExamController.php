@@ -801,4 +801,195 @@ class ExamController extends CI_Controller {
 		$data['answer'] = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',$where);
 		$this->load->view('teacher/answersheet_pdf',$data); 
 	}
+
+
+	public function Teacher_paper_alloted_list(){
+		$title = array('title' => 'Check Answer Sheet');
+		$this->load->view('header',$title);	
+		// $where = array('teacher_id'=>$this->session->teacher_id);
+		$assignAnsData = $this->Common_model->getRecordByWhere('assign_answersheet','');
+		$data['assignAnsData'] = $assignAnsData;
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();
+		$this->load->view('admin/examController/teacher_paper_list_student_wise',$data); 
+		$this->load->view('footer');
+	}
+
+    public function get_paper_details(){
+     
+		$paper_code =$this->input->post('paper_code');
+		$where = array('paper_code'=> $paper_code);
+		$assignAnsData = $this->Common_model->getRecordByWhere('assign_answersheet',$where);
+	// 'teacher_id'=>$this->session->teacher_id,
+		$where = 'paper_code = "'.$paper_code.'"  and answer_sheet!="" and file_exist="Y" and new_exam_form="Y" and teacher_id=""';
+		// and upload_exam_ans_sheet.center_id in ('.$assignAnsData[0]->center_id.')
+
+		$this->db->select('roll_no,enrollment_no,course_name,class_name,paper_code,upload_exam_ans_sheet.student_id,upload_exam_ans_sheet.id');
+		$this->db->from('upload_exam_ans_sheet');
+		$this->db->Where($where );
+		$this->db->join('student', 'student.student_id = upload_exam_ans_sheet.student_id');
+		$answersheetData = $this->db->get()->result();
+		
+		$data = array(
+			'answersheetData' => $answersheetData,
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+
+		if($data){
+			$dt =  $this->load->view('admin/examController/view_student_details',$data,true);
+			$status = true;
+		}
+		echo json_encode(array(
+			"status" => $status,
+			"data" => $dt
+		));
+	}
+
+	public function student_details_uplode(){
+		$upload_exam_ans_id = $this->input->post('upload_exam_ans_id');
+		$where=array('upload_exam_ans_sheet.id'=>$upload_exam_ans_id);
+		$this->db->select('*');
+		$this->db->from('upload_exam_ans_sheet');
+		$this->db->Where($where );
+		$this->db->join('student', 'student.student_id = upload_exam_ans_sheet.student_id');
+
+		$details = $this->db->get()->result();
+		$data = array(
+			'details' => $details,
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		if($data){
+			$model =  $this->load->view('admin/examController/view_model_data',$data,true);
+			$status = true;
+		}
+		echo json_encode(array(
+			"status" => $status,
+			"data" => $model
+		));	
+	}
+
+
+	public function question_paper_sub()
+	{  
+	  $teacher_id = $this->session->teacher_id;
+		$id = $this->input->post('id');
+		$marks1 = $this->input->post('marks1');
+		$marks2 = $this->input->post('marks2');
+		$marks3 = $this->input->post('marks3');
+		$marks4 = $this->input->post('marks4');
+		$marks5 = $this->input->post('marks5');
+		$remark = $this->input->post('remark');
+		$total_marks=$marks1+$marks2+$marks3+$marks4+$marks5;
+
+		$where = array('id' => $id);
+		$updateData = array('que_1' => $marks1,'que_2' => $marks2,'que_3' => $marks3,'que_4' => $marks4,'que_5' => $marks5, 'remark'=>$remark ,'total_marks'=> $total_marks,'teacher_id'=>$teacher_id);
+		$result=	$this->Common_model->updateRecordByConditions('upload_exam_ans_sheet',$where,$updateData);
+		if($result){
+			echo json_encode(array(
+				"success" => ' Updated Successfully',
+			));
+		}else{
+			echo json_encode(array(
+				"error" => ' error Occured',
+			));
+		}
+	}
+
+    public function view_question_pdf($paper_code){
+		$paper_code=$this->Common_model->encrypt_decrypt($paper_code,'decrypt');
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
+
+		$where= array('paper_code'=>$paper_code);
+		$data['question'] = $this->Common_model->getRecordByWhere('paper_master',$where);
+		$this->load->view('teacher/view_question_pdf',$data); 
+	}
+
+
+    public function check_answersheet_pdf($id){
+		
+		$id=$this->Common_model->encrypt_decrypt($id,'decrypt');
+		
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
+		$where= array('id'=>$id);
+		$data['answer'] = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',$where);
+		$update_open_answersheet = $this->Common_model->updateRecordByConditions('upload_exam_ans_sheet',$where,array('open_answersheet'=>'Y'));
+		
+		$this->load->view('admin/examController/view_answersheet_pdf',$data); 
+	}
+
+
+	public function student_marks_entry_update()
+	{
+
+		$upload_exam_ans_sheet_id = $this->input->post('upload_exam_ans_sheet_id');
+		$json_data = $this->input->post('json_data');
+
+		$where=array('uplode_examsheet_id'=>$upload_exam_ans_sheet_id);
+		$dataCount =	$this->Common_model->getCountByWhere('answer_sheet_json_data',$where);
+		if($dataCount==""){
+			$updateData = array('uplode_examsheet_id' => $upload_exam_ans_sheet_id,'json_data' => $json_data);
+
+			$result=	$this->Common_model->insertAll('answer_sheet_json_data',$updateData);
+
+			if($result){
+				echo json_encode(array(
+					"success" => ' Updated Successfully',
+				));
+			}else{
+				echo json_encode(array(
+					"error" => ' error Occured',
+				));
+			}
+		}
+		
+		else{
+			$where=array('uplode_examsheet_id'=>$upload_exam_ans_sheet_id);
+			$updateData1 = array('json_data' => $json_data);
+			
+			$result1=	$this->Common_model->updateRecordByConditions('answer_sheet_json_data',$where,$updateData1);
+
+
+			if($result1){
+				echo json_encode(array(
+					"success" => ' Updated Successfully',
+				));
+			}else{
+				echo json_encode(array(
+					"error" => ' error Occured',
+				));
+			}
+		}
+	}
+
+
+	public function Plugin_initialized_entry_update()
+	{
+
+		$upload_exam_ans_sheet_id = $this->input->post('upload_exam_ans_sheet_id');
+		$initialize_json_data = $this->input->post('initialize_json_data');
+
+		$where=array('uplode_examsheet_id'=>$upload_exam_ans_sheet_id);
+		$jsondataCount =	$this->Common_model->getCountByWhere('answer_sheet_json_data',$where);
+
+		if(empty($jsondataCount)){
+			$updateData = array('initialize_json' => $initialize_json_data,
+				'uplode_examsheet_id'=>$upload_exam_ans_sheet_id);
+			$result=	$this->Common_model->insertAll('answer_sheet_json_data',$updateData);
+		}
+		echo json_encode(array(
+			"success" => 'update Successfully ',
+		));
+
+
+}
+
+
 }// class
