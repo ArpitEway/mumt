@@ -289,7 +289,6 @@ class Admins extends CI_Controller {
 					$response = $this->admin_model->create_session();
 					if ($response){
 						foreach($courses as $course){
-
 							$Data['course_group_id'] = $course->course_group_id;
 							$Data['course_name'] = $course->course_name;
 							$Data['course_code'] = $course->course_code;

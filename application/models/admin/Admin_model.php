@@ -311,15 +311,12 @@ class Admin_model extends CI_Model {
     public function create_session()
     {
         $data['session'] = html_escape($this->input->post('session'));
-		// $data['type'] = html_escape($this->input->post('type'));
-       $data['enrollment_code'] = html_escape($this->input->post('enrollment'));
+       	$data['enrollment_code_reg'] = html_escape($this->input->post('enrollment_reg'));
+	$data['enrollment_code_pvt'] = html_escape($this->input->post('enrollment_pvt'));
        
         $this->db->insert('session', $data);
         $session_id = $this->db->insert_id();
-        $response = array(
-        			'status' => true,
-        			'notification' => 'Session_added_successfully'
-        			);
+        $response = array('status' => true, 'notification' => 'Session_added_successfully');
         return json_encode($response);
     }
 
