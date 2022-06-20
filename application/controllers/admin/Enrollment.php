@@ -232,13 +232,17 @@
 				$course_group_id  = $this->input->post("course_group_id");
 				$approved = $this->input->post("approved");
 				$session = $this->input->post("session");
-				
+				$university_mode = $this->input->post("university_mode");
 
                   if($center != "all"){	 
 					
 					$dt['center_id'] = $center;
 				}
 
+				if($university_mode != "all"){	
+					$dt['university_mode'] = $university_mode;
+				}
+				
 
 				if($course_group_id != "all"){	
 					$dt['course_group_id'] = $course_group_id;
@@ -252,7 +256,7 @@
 				
 				$dt['payment_status'] = "Y";
 				$dt['document_uploaded'] = "Y";
-				$dt['university_mode'] = "REG";
+				// $dt['university_mode'] = "REG";
 				
 				$this->db->where('new_admission_permission', 'N');
 				$data['students'] = $this->Common_model->student_data($dt);

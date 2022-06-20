@@ -19,6 +19,14 @@
 </div>
 
 <div class="form-group col-md-3">
+			<label for="class">Admission Mode</label>
+			<select name="university_mode" id="university_mode" class="form-control" >	    
+				<option selected value="REG">Regular </option> 
+				<option value="PVT" >Private</option>
+			</select>
+		</div>
+
+<div class="form-group col-md-3">
 	<label for="center_id">Center</label>
 	<select name="center_id" id="center_id" class="form-control " data-target="#course_group_id" >
 		<option value="all">All</option>
@@ -46,6 +54,8 @@
 		} ?>
 	</select>
 </div>
+
+
 <div class="form-group col-md-3">
 	<label for="class">Approved</label>
     <select name="approved" id="approved" class="form-control"  > 
@@ -55,6 +65,8 @@
 		<option value="N">Non-Approved </option>
 	</select>
 </div>
+
+
 
 <div class="form-group col-md-12 text-center mt-10 ">
 	<label for="class"></label>
@@ -87,6 +99,7 @@ $(document).on("click","#submit_btn",function(){
 		center : $("#center_id").val(),
 		course_group_id : $("#course_group_id").val(),
 		approved : $("#approved").val(),
+		university_mode : $("#university_mode").val(),
 		[csrfName]:csrfHash
 	};
 	var url = BASE_URL+"admin/enrollment/get_student_data"; 
