@@ -64,9 +64,9 @@
 				$last_number++ ;
 				$last_number = str_pad($last_number,5,'0',STR_PAD_LEFT);
 				if($month=='Jan'){
-					$enrollment = $enrolment_code[0]['enrollment_code'].'/'.$lastTwoNumbers.'1'.$last_number;
+					$enrollment = $enrolment_code[0]['enrollment_code_reg'].'/'.$lastTwoNumbers.'1'.$last_number;
 				}else{
-					$enrollment = $enrolment_code[0]['enrollment_code'].'/'.$lastTwoNumbers.'2'.$last_number;
+					$enrollment = $enrolment_code[0]['enrollment_code_reg'].'/'.$lastTwoNumbers.'2'.$last_number;
 				}
 				
 
