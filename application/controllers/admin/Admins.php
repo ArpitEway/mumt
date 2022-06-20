@@ -2181,7 +2181,6 @@ public function getStudentData()
 			$this->load->view('admin/class_wise_result_upload_status',$data);
 			$this->load->view('footer');
 		}
-		
 	}
 
 	public function class_wise_result_upload_status_report($course_group_id,$class_id=""){

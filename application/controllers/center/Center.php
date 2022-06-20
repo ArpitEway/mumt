@@ -128,11 +128,19 @@ class Center extends CI_Controller {
 			exit;
 		}
 		$center_id =  $this->session->center_id;
+		$center_ids_dep = array(21,22,23,24,25,26,27,28);
+		$whereSession = array();
+		if (in_array($center_id, $center_ids_dep)){
+			$whereSession['admission_permission_dep'] =  'Y';
+		}else{
+			$whereSession['admission_permission_ic'] =  'Y';
+		}
+
+		$sessions = $this->Common_model->get_record('session','*',$whereSession);
 
 		if($mode=='regular'){
 			$where = array('admission_permission'=>'Y' ,'id'=>$center_id);
 			$head = '(Regular)';
-
 		}else{
 			$where = array('admission_permission_private'=>'Y','id'=>$center_id);
 			$head = '(Private)';
@@ -157,7 +165,8 @@ class Center extends CI_Controller {
 			'course_group_list' => $course_group_list,
 			'eligibility_list' => $eligibility_list,
 			'name_csrf' => $this->security->get_csrf_token_name(),
-			'hash_csrf' => $this->security->get_csrf_hash()
+			'hash_csrf' => $this->security->get_csrf_hash(),
+			'sessions' => $sessions
 		);
 		$this->load->view('Centers/header',$titleData);
 		$this->load->view('Centers/admission_form',$data);

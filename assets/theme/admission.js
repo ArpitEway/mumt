@@ -267,7 +267,7 @@ function validation(step=""){
 	var submit = true;
 	// console.log(step);
 
-	var session = $('input[name="session"]').val();
+	var session = $('select[name="session"]').val();
 	var course_group_id = $('select[name="course_group_id"]').val();
 	var class_id = $('#class_id').val();
 	var eligibility = $('select[name="eligibility"]').val();
@@ -316,11 +316,12 @@ function validation(step=""){
 		submit = false
 	}else{
 		$('select[name="religion"]').next('div').text('');
-	}if(session==''){
-		$('input[name="session"]').next('div').text('Session is Required');
+	}
+	if(session==''){
+		$('select[name="session"]').next('div').text('Session is Required');
 		submit = false
 	}else{
-		$('input[name="session"]').next('div').text('');
+		$('select[name="session"]').next('div').text('');
 	}
 	if(course_group_id==''){
 		$('select[name="course_group_id"]').next('div').text('Course is Required');
