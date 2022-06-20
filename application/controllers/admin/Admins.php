@@ -3139,7 +3139,8 @@ public function update_exam_datewise_permission(){
 		$this->db->group_by('new_exam_form.student_id');
 		$this->db->Where('new_exam_form','Y');
 		$this->db->Where('paper_type','theory');
-        $this->db->Where('result_show','Y');
+		$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,195,197,203,211,213,227)');
+        	//$this->db->Where('result_show','Y');
 		$this->db->where_in('new_exam_form.int_marks',array('ABS','N'));
 		$data['students'] = $this->db->get()->result();
 		$this->load->view('admin/student_int_marks_no_list',$data);
@@ -3233,7 +3234,6 @@ public function update_exam_datewise_permission(){
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 		);
-		$where = array('paper_type!='=>'theory','result_show'=>'Y');
 		$titleData = array('title' => 'Practical  Marks Submission' );
 		$this->load->view('header',$titleData);
 		$this->db->order_by("p_marks_sub,student.course_group_id,student.class_id", "asc");
@@ -3242,9 +3242,10 @@ public function update_exam_datewise_permission(){
 		$this->db->join('new_exam_form', 'student.student_id = new_exam_form.student_id');
 		$this->db->join('class_master', 'student.class_id = class_master.id');
 		$this->db->group_by('new_exam_form.student_id');
-		$this->db->Where('new_exam_form','Y');
+		$where = array('paper_type!='=>'theory','new_exam_form'=>'Y');
 		$this->db->Where($where);
 		$this->db->where_in('new_exam_form.p_marks',array('ABS','N'));
+	    	$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,195,197,203,211,213,227)');
 		$this->db->Where('(project="Y" or practical = "Y")');
 		$data['students'] = $this->db->get()->result();
 		 // $this->Common_model->last_query();
@@ -3574,17 +3575,19 @@ public function update_exam_datewise_permission(){
 
 public function remaining_student_average_marks(){
 	
-		$this->db->select('*,count(total_marks) as total_marks');
+		$this->db->select('*,count(total_marks) as num');
 		$this->db->from('upload_exam_ans_sheet');
-		$this->db->join('student', 'upload_exam_ans_sheet.student_id = student.student_id');
+		$this->db->join('new_exam_form', 'upload_exam_ans_sheet.student_id  = new_exam_form.student_id and upload_exam_ans_sheet.paper_code = new_exam_form.paper_code');
 		$this->db->order_by('upload_exam_ans_sheet.course_group_id,upload_exam_ans_sheet.class_id','asc');
 		$this->db->where('upload_exam_ans_sheet.remark_status','');
-		$this->db->where('upload_exam_ans_sheet.total_marks',0);
-		$this->db->where('upload_exam_ans_sheet.teacher_id!=','');
+		// $this->db->where('upload_exam_ans_sheet.total_marks',0);
+		$this->db->where('new_exam_form.theory_marks','');
+		$this->db->where('new_exam_form.paper_type','theory');
+		 $this->db->where('upload_exam_ans_sheet.teacher_id!=','');
 		 $this->db->group_by('upload_exam_ans_sheet.student_id');
-		 $this->db->having('total_marks = 1');
+		 $this->db->having('num = 1');
 		$data['students'] = $this->db->get()->result();
-		// $this->Common_model->last_query();
+		 // $this->Common_model->last_query();
 		$this->load->view('header',array('title' => 'Student Remaining Marks List'));
 		$this->load->view('admin/remaining_student_average_marks',$data);
 		$this->load->view('footer');

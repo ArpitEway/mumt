@@ -19,17 +19,20 @@
 
 			$i = 1;
 			foreach($students as $student){
+
+		$students =  $this->Common_model->getRecordByWhere('student',array('student_id'=>$student->student_id));	
+
 				?>	
 				<tr>
 					<td><?php echo $i++; ?></td>
-					<td><?php echo $student->student_id; ?></td>
-					<td><?php echo $student->enrollment_no; ?></td>
-					<td><?php echo $student->course_name; ?></td>
-					<td><?php echo $student->class_name; ?></td>
+					<td><?php echo $students[0]->student_id; ?></td>
+					<td><?php echo $students[0]->enrollment_no; ?></td>
+					<td><?php echo $students[0]->course_name; ?></td>
+					<td><?php echo $students[0]->class_name; ?></td>
 					<td><?php echo $student->paper_code; ?></td>
 					<td></td>
 				</tr>
-			<?php  
+			<?php   /*
 			$new_exam_form_count =  $this->Common_model->getCountByWhere('new_exam_form',array('student_id'=>$student->student_id,'theory_marks'=>'','paper_type'=>'theory'));	
 
 				if($new_exam_form_count==1){
@@ -48,7 +51,9 @@
 					$blankmark = array('total_marks'=>$average_tot_marks,'que_1'=>$avg_all,'que_2'=>$marks_5,'que_3'=>$avg_all,'que_4'=>$avg_all,'que_5'=>$avg_all);
 					$where = array('student_id'=>$student->student_id,'paper_code'=>$student->paper_code,'teacher_id!='=>'');
 					$this->Common_model->updateRecordByConditions('upload_exam_ans_sheet', $where, $blankmark);
-				}
+					}
+					//die;*/
+				
 			} ?>
 		</tbody>
 	</table>

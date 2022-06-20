@@ -17,6 +17,15 @@ class Datatable_join_model extends CI_Model{
         return $query->result();
     }
     
+    
+    /*
+     * Count all records
+     */
+    public function joincountAll($postData,$array){
+        $this->_get_datatables_query($postData,$array);
+        
+            return $this->db->count_all_results();
+        }
     /*
      * Count all records
      */
