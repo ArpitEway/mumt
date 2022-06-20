@@ -144,8 +144,6 @@ class Center extends CI_Controller {
 		}else{
 			$where = array('admission_permission_private'=>'Y','id'=>$center_id);
 			$head = '(Private)';
-			$where = array('admission_permission'=>'Y' ,'id'=>$center_id);
-
 		}
 		
 		$check = $this->Common_model->getRecordByWhere("center",$where);
