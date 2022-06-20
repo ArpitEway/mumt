@@ -270,42 +270,75 @@ class Admins extends CI_Controller {
 		}else{
 
 			if($param1 == 'create'){
-
-				$response = $this->admin_model->create_session();
-				$this->session->set_flashdata('ajax_flash_message','Session Successfully Added');
-				redirect(base_url().'session');
-
+				$this->db->select('session');	
+				$this->db->order_by("id", "desc");
+				$this->db->limit(1);
+				$this->db->from('session'); 
+				$query = $this->db->get();
+				$value = $query->result(); 
+				$old_session = $value[0]->session ;
+				if($old_session==$_POST['session']){
+					$this->session->set_flashdata('ajax_flash_message','Session Already Created');
+					redirect(base_url().'session');
+				}else{
+					$this->db->select('*');	
+					$this->db->from('course'); 
+					$this->db->where('session',$old_session);
+					$query = $this->db->get();
+					$courses = $query->result(); 	
+					$response = $this->admin_model->create_session();
+					if ($response){
+						foreach($courses as $course){
+							$Data['course_group_id'] = $course->course_group_id;
+							$Data['course_name'] = $course->course_name;
+							$Data['course_code'] = $course->course_code;
+							$Data['min_duration'] = $course->min_duration;	  
+							$Data['max_duration'] = $course->max_duration;
+							$Data['form_fees'] = $course->form_fees;
+							$Data['admission_fees'] = $course->admission_fees;
+							$Data['program_fees'] = $course->program_fees;
+							$Data['exam_fees'] = $course->exam_fees;
+							$Data['practical_exam_fees'] = $course->practical_exam_fees;
+							$Data['p_form_fees'] = $course->p_form_fees;
+							$Data['p_admission_fees'] = $course->p_admission_fees;
+							$Data['p_program_fees'] = $course->p_program_fees;
+							$Data['p_exam_fees'] = $course->p_exam_fees;
+							$Data['session'] = $_POST['session'];
+							$this->db->insert('course',$Data);
+						}
+					}
+					$this->session->set_flashdata('ajax_flash_message','Session Successfully Added');
+					redirect(base_url().'session');
+				}
 			}
-			if($param1 == 'update'){
+			// if($param1 == 'update'){
 
-				$response = $this->admin_model->session_update($param2);
-				$this->session->set_flashdata('ajax_flash_message','Session Successfully Updated');
-				redirect(base_url().'session');
-			}
+			// 	$response = $this->admin_model->session_update($param2);
+			// 	$this->session->set_flashdata('ajax_flash_message','Session Successfully Updated');
+			// 	redirect(base_url().'session');
+			// }
 
-			if($param1 == 'delete'){
+			// if($param1 == 'delete'){
 
-				$response = $this->admin_model->session_delete($param2);
-				$this->session->set_flashdata('ajax_flash_message','Session Successfully Deleted');
-				redirect(base_url().'session');
-			}
+			// 	$response = $this->admin_model->session_delete($param2);
+			// 	$this->session->set_flashdata('ajax_flash_message','Session Successfully Deleted');
+			// 	redirect(base_url().'session');
+			// }
 
 			if(empty($param1) ){
 				$data = array();
 				$data['title'] = "Session";
 				$csrf = array(
-					'name_csrf' => $this->security->get_csrf_token_name(),
-					'hash_csrf' => $this->security->get_csrf_hash()
-				);
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash()
+			);
 				$this->load->view('header',$data);
 				$this->load->view('admin/session',$csrf);
 				$this->load->view('footer');
 			}    
-
-
 		}
-
 	}
+
 
 	public function course($param1 = '', $param2 = '', $param3 = '')
 	{
@@ -3105,7 +3138,8 @@ public function update_exam_datewise_permission(){
 		$this->db->group_by('new_exam_form.student_id');
 		$this->db->Where('new_exam_form','Y');
 		$this->db->Where('paper_type','theory');
-        $this->db->Where('result_show','Y');
+		$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,195,197,203,211,213,227)');
+        	//$this->db->Where('result_show','Y');
 		$this->db->where_in('new_exam_form.int_marks',array('ABS','N'));
 		$data['students'] = $this->db->get()->result();
 		$this->load->view('admin/student_int_marks_no_list',$data);
@@ -3199,7 +3233,6 @@ public function update_exam_datewise_permission(){
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 		);
-		$where = array('paper_type!='=>'theory','result_show'=>'Y');
 		$titleData = array('title' => 'Practical  Marks Submission' );
 		$this->load->view('header',$titleData);
 		$this->db->order_by("p_marks_sub,student.course_group_id,student.class_id", "asc");
@@ -3208,9 +3241,10 @@ public function update_exam_datewise_permission(){
 		$this->db->join('new_exam_form', 'student.student_id = new_exam_form.student_id');
 		$this->db->join('class_master', 'student.class_id = class_master.id');
 		$this->db->group_by('new_exam_form.student_id');
-		$this->db->Where('new_exam_form','Y');
+		$where = array('paper_type!='=>'theory','new_exam_form'=>'Y');
 		$this->db->Where($where);
 		$this->db->where_in('new_exam_form.p_marks',array('ABS','N'));
+	    	$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,195,197,203,211,213,227)');
 		$this->db->Where('(project="Y" or practical = "Y")');
 		$data['students'] = $this->db->get()->result();
 		 // $this->Common_model->last_query();
@@ -3540,17 +3574,19 @@ public function update_exam_datewise_permission(){
 
 public function remaining_student_average_marks(){
 	
-		$this->db->select('*,count(total_marks) as total_marks');
+		$this->db->select('*,count(total_marks) as num');
 		$this->db->from('upload_exam_ans_sheet');
-		$this->db->join('student', 'upload_exam_ans_sheet.student_id = student.student_id');
+		$this->db->join('new_exam_form', 'upload_exam_ans_sheet.student_id  = new_exam_form.student_id and upload_exam_ans_sheet.paper_code = new_exam_form.paper_code');
 		$this->db->order_by('upload_exam_ans_sheet.course_group_id,upload_exam_ans_sheet.class_id','asc');
 		$this->db->where('upload_exam_ans_sheet.remark_status','');
-		$this->db->where('upload_exam_ans_sheet.total_marks',0);
-		$this->db->where('upload_exam_ans_sheet.teacher_id!=','');
+		// $this->db->where('upload_exam_ans_sheet.total_marks',0);
+		$this->db->where('new_exam_form.theory_marks','');
+		$this->db->where('new_exam_form.paper_type','theory');
+		 $this->db->where('upload_exam_ans_sheet.teacher_id!=','');
 		 $this->db->group_by('upload_exam_ans_sheet.student_id');
-		 $this->db->having('total_marks = 1');
+		 $this->db->having('num = 1');
 		$data['students'] = $this->db->get()->result();
-		// $this->Common_model->last_query();
+		 // $this->Common_model->last_query();
 		$this->load->view('header',array('title' => 'Student Remaining Marks List'));
 		$this->load->view('admin/remaining_student_average_marks',$data);
 		$this->load->view('footer');
