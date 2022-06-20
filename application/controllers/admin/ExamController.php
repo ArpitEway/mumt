@@ -807,6 +807,7 @@ class ExamController extends CI_Controller {
 		$title = array('title' => 'Check Answer Sheet');
 		$this->load->view('header',$title);	
 		// $where = array('teacher_id'=>$this->session->teacher_id);
+		$this->db->group_by('paper_code');
 		$assignAnsData = $this->Common_model->getRecordByWhere('assign_answersheet','');
 		$data['assignAnsData'] = $assignAnsData;
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
