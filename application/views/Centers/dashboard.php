@@ -54,7 +54,9 @@
 				  }
 				  ?>
 				 <?php
-				  if($center->admission_permission_private=='Y'){
+				$center_id =  $this->session->center_id;	
+				$center_ids_dep = array(21,22,23,24,25,26,27,28);
+				  if($center->admission_permission_private=='Y' && !in_array($center_id, $center_ids_dep)){
 					?>
 					<a class="border-0 custom-menu-item" href="<?=base_url('admission_form/private');?>">
 						<div>
