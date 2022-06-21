@@ -874,7 +874,6 @@ class ExamController extends CI_Controller {
 
 	public function question_paper_sub()
 	{  
-	  $teacher_id = $this->session->teacher_id;
 		$id = $this->input->post('id');
 		$marks1 = $this->input->post('marks1');
 		$marks2 = $this->input->post('marks2');
@@ -885,7 +884,7 @@ class ExamController extends CI_Controller {
 		$total_marks=$marks1+$marks2+$marks3+$marks4+$marks5;
 
 		$where = array('id' => $id);
-		$updateData = array('que_1' => $marks1,'que_2' => $marks2,'que_3' => $marks3,'que_4' => $marks4,'que_5' => $marks5, 'remark'=>$remark ,'total_marks'=> $total_marks,'teacher_id'=>$teacher_id);
+		$updateData = array('que_1' => $marks1,'que_2' => $marks2,'que_3' => $marks3,'que_4' => $marks4,'que_5' => $marks5, 'remark'=>$remark ,'total_marks'=> $total_marks);
 		$result=	$this->Common_model->updateRecordByConditions('upload_exam_ans_sheet',$where,$updateData);
 		if($result){
 			echo json_encode(array(
