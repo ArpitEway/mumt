@@ -270,42 +270,75 @@ class Admins extends CI_Controller {
 		}else{
 
 			if($param1 == 'create'){
-
-				$response = $this->admin_model->create_session();
-				$this->session->set_flashdata('ajax_flash_message','Session Successfully Added');
-				redirect(base_url().'session');
-
+				$this->db->select('session');	
+				$this->db->order_by("id", "desc");
+				$this->db->limit(1);
+				$this->db->from('session'); 
+				$query = $this->db->get();
+				$value = $query->result(); 
+				$old_session = $value[0]->session ;
+				if($old_session==$_POST['session']){
+					$this->session->set_flashdata('ajax_flash_message','Session Already Created');
+					redirect(base_url().'session');
+				}else{
+					$this->db->select('*');	
+					$this->db->from('course'); 
+					$this->db->where('session',$old_session);
+					$query = $this->db->get();
+					$courses = $query->result(); 	
+					$response = $this->admin_model->create_session();
+					if ($response){
+						foreach($courses as $course){
+							$Data['course_group_id'] = $course->course_group_id;
+							$Data['course_name'] = $course->course_name;
+							$Data['course_code'] = $course->course_code;
+							$Data['min_duration'] = $course->min_duration;	  
+							$Data['max_duration'] = $course->max_duration;
+							$Data['form_fees'] = $course->form_fees;
+							$Data['admission_fees'] = $course->admission_fees;
+							$Data['program_fees'] = $course->program_fees;
+							$Data['exam_fees'] = $course->exam_fees;
+							$Data['practical_exam_fees'] = $course->practical_exam_fees;
+							$Data['p_form_fees'] = $course->p_form_fees;
+							$Data['p_admission_fees'] = $course->p_admission_fees;
+							$Data['p_program_fees'] = $course->p_program_fees;
+							$Data['p_exam_fees'] = $course->p_exam_fees;
+							$Data['session'] = $_POST['session'];
+							$this->db->insert('course',$Data);
+						}
+					}
+					$this->session->set_flashdata('ajax_flash_message','Session Successfully Added');
+					redirect(base_url().'session');
+				}
 			}
-			if($param1 == 'update'){
+			// if($param1 == 'update'){
 
-				$response = $this->admin_model->session_update($param2);
-				$this->session->set_flashdata('ajax_flash_message','Session Successfully Updated');
-				redirect(base_url().'session');
-			}
+			// 	$response = $this->admin_model->session_update($param2);
+			// 	$this->session->set_flashdata('ajax_flash_message','Session Successfully Updated');
+			// 	redirect(base_url().'session');
+			// }
 
-			if($param1 == 'delete'){
+			// if($param1 == 'delete'){
 
-				$response = $this->admin_model->session_delete($param2);
-				$this->session->set_flashdata('ajax_flash_message','Session Successfully Deleted');
-				redirect(base_url().'session');
-			}
+			// 	$response = $this->admin_model->session_delete($param2);
+			// 	$this->session->set_flashdata('ajax_flash_message','Session Successfully Deleted');
+			// 	redirect(base_url().'session');
+			// }
 
 			if(empty($param1) ){
 				$data = array();
 				$data['title'] = "Session";
 				$csrf = array(
-					'name_csrf' => $this->security->get_csrf_token_name(),
-					'hash_csrf' => $this->security->get_csrf_hash()
-				);
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash()
+			);
 				$this->load->view('header',$data);
 				$this->load->view('admin/session',$csrf);
 				$this->load->view('footer');
 			}    
-
-
 		}
-
 	}
+
 
 	public function course($param1 = '', $param2 = '', $param3 = '')
 	{
@@ -2148,7 +2181,6 @@ public function getStudentData()
 			$this->load->view('admin/class_wise_result_upload_status',$data);
 			$this->load->view('footer');
 		}
-		
 	}
 
 	public function class_wise_result_upload_status_report($course_group_id,$class_id=""){

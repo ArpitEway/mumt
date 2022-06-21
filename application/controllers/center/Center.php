@@ -128,18 +128,23 @@ class Center extends CI_Controller {
 			exit;
 		}
 		$center_id =  $this->session->center_id;
-
+		$center_ids_dep = array(21,22,23,24,25,26,27,28);
+		$whereSession = array();
+		if (in_array($center_id, $center_ids_dep)){
+			$whereSession['admission_permission_dep'] =  'Y';
+		}else{
+			$whereSession['admission_permission_ic'] =  'Y';
+		}
+		
 		if($mode=='regular'){
 			$where = array('admission_permission'=>'Y' ,'id'=>$center_id);
 			$head = '(Regular)';
-
 		}else{
 			$where = array('admission_permission_private'=>'Y','id'=>$center_id);
 			$head = '(Private)';
-			$where = array('admission_permission'=>'Y' ,'id'=>$center_id);
-
+			$whereSession['pvt_admission_permission_ic'] =  'Y';
 		}
-		
+		$sessions = $this->Common_model->get_record('session','*',$whereSession);
 		$check = $this->Common_model->getRecordByWhere("center",$where);
 		if(($mode=='regular' && $check[0]->admission_permission!='Y') || ($mode=='private' && $check[0]->admission_permission_private!='Y')){
 			redirect(base_url('dashboard'));
@@ -157,7 +162,8 @@ class Center extends CI_Controller {
 			'course_group_list' => $course_group_list,
 			'eligibility_list' => $eligibility_list,
 			'name_csrf' => $this->security->get_csrf_token_name(),
-			'hash_csrf' => $this->security->get_csrf_hash()
+			'hash_csrf' => $this->security->get_csrf_hash(),
+			'sessions' => $sessions
 		);
 		$this->load->view('Centers/header',$titleData);
 		$this->load->view('Centers/admission_form',$data);
@@ -575,23 +581,39 @@ class Center extends CI_Controller {
 	public function getCourseByEligibility()
 	{
 		$eligibility = $this->input->post('eligibility');
+		$session = $this->input->post('session');
 		$mode = $this->input->post('mode');
 		$myString =$eligibility;
 		 
-		
-		
 		if($this->session->has_userdata('center_id')){
 		$center_id =  $this->session->center_id;
 		$centerdata = $this->Common_model->getRecordById('center','id',$center_id);
-		$this->db->where('id in ('.$centerdata->allot_course_group_id.')');
+		$this->db->where('course_group_id in ('.$centerdata->allot_course_group_id.')');
 		}
 		 $where['eligibility'] = $eligibility;
-		 if($mode=='regular'){
+		/* if($mode=='regular'){
 		   $where['admission_permission'] = 'Y';
 		 }else{
 			$where['admission_permission_pvt'] = 'Y';
 		 }
 		$course_group_list = $this->Common_model->get_record('course_group','*',$where);
+		*/
+		
+		$this->db->select('course_group.id,course.course_name');
+		$this->db->from('course');
+		$this->db->join('course_group', 'course_group.id = course.course_group_id'); 
+		$this->db->where('eligibility',$eligibility);
+		$this->db->where('course.session',$session);
+		if($mode=='regular'){
+			$where['admission_permission_regular'] = 'Y';
+			$this->db->where('admission_permission_regular','Y');
+		  }else{
+			 $where['admission_permission_private'] = 'Y';
+			 $this->db->where('admission_permission_private','Y');
+		  }
+		
+		$query = $this->db->get();
+		$course_group_list= $query->result_array();
 		
 		$data = array('course_group_list'=>$course_group_list);
 		echo $this->load->view('template/getcourse',$data,true);

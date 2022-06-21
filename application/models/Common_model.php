@@ -205,8 +205,7 @@ class Common_Model extends CI_Model{
 
 		if($group_by != ""){
 				$this->db->select('count(*) as cnt,course_name');
-				$this->db->group_by($group_by);
-				
+				$this->db->group_by($group_by);		
 		}else{
 			
 				$this->db->select('*');
@@ -216,7 +215,6 @@ class Common_Model extends CI_Model{
 		
 		$this->db->join("student_data", "student.student_id = student_data.student_id", 'left'); 
 		$query = $this->db->get();
-		
 		return $query->result_array();
 
 	}

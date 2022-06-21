@@ -9,7 +9,8 @@
 			<tr>
 				<th>#</th>
 				<th>Session</th>
-				<th>Enrollment code</th>
+				<th>Enrollment code Regular</th>
+				<th>Enrollment code Private</th>
 				<th>Unpaid Permission</th>
 				<th>Document Permission</th>
 				<th>Enrollment Permission</th>
@@ -25,7 +26,8 @@
 				<tr>
 					<td><?php echo $i; ?></td>
 					<td><?php echo $session['session']; ?></td>
-					<td><?php echo $session['enrollment_code']; ?></td>
+					<td><?php echo $session['enrollment_code_reg']; ?></td>
+					<td><?php echo $session['enrollment_code_pvt']; ?></td>
 					<td>
 						<?php
 						if($session['unpaid_permission'] == 'Y')
@@ -44,6 +46,7 @@
 
 						if($session['document_permission'] == 'Y')
 						{
+
 							?>
 							<input type="button" name="update_doc_stats" data-id = "<?=$session["id"];?>" class="btn btn-success doc_permission_check" value="Yes">
 
