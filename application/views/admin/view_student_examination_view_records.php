@@ -127,7 +127,7 @@
                     
                     if($view){
                         if(file_exists(FCPATH.'/assets/exam_answersheet/'.$view[0]->upload_date.'/'.$view[0]->answer_sheet)){ ?>
-                        <a target="_blank" href="<?php  echo  base_url('/assets/exam_answersheet/'.$view[0]['upload_date'].'/'.$view[0]['answer_sheet'].'.pdf') ?>" >View</a>
+                        <a target="_blank" href="<?php  echo  base_url('/assets/exam_answersheet/'.$view[0]['upload_date'].'/'.$view[0]['answer_sheet']) ?>" >View</a>
                     <?php }else{
                         echo 'N/A';
                             }
