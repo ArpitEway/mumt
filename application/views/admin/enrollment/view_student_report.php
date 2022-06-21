@@ -2,8 +2,8 @@
 <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
 <script src="<?=BASE_URL()?>assets/light_box/js/jquery.magnify.js"></script>
 <div class="">
-<div class="row mt-5">
-<div class="form-group col-md-3">
+<div class="row mt-5 justify-content-between">
+<div class="form-group col-md-2">
 	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	<label for="class">Session</label>
 	<select name="session" id="session" class="form-control" >
@@ -18,7 +18,7 @@
 	</select>
 </div>
 
-<div class="form-group col-md-3">
+<div class="form-group col-md-2">
 			<label for="class">Admission Mode</label>
 			<select name="university_mode" id="university_mode" class="form-control" >	    
 				<option selected value="REG">Regular </option> 
@@ -26,7 +26,7 @@
 			</select>
 		</div>
 
-<div class="form-group col-md-3">
+<div class="form-group col-md-2">
 	<label for="center_id">Center</label>
 	<select name="center_id" id="center_id" class="form-control " data-target="#course_group_id" >
 		<option value="all">All</option>
@@ -41,7 +41,7 @@
 		?> 
 	</select>       
 </div>
-<div class="form-group col-md-3">
+<div class="form-group col-md-2">
 	<label for="course">Course</label>
 	<select name="course_group_id" id="course_group_id" class="form-control course_group_id"  required >
 		<option value="all">All</option>
@@ -56,7 +56,7 @@
 </div>
 
 
-<div class="form-group col-md-3">
+<div class="form-group col-md-2">
 	<label for="class">Approved</label>
     <select name="approved" id="approved" class="form-control"  > 
 		<option value="all">All</option>

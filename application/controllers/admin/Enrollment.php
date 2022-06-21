@@ -46,7 +46,7 @@
 				$data = array();
 				$data['title'] = "Student Verification";
 				$this->load->view('header',$dt);
-				$this->db->order_by('id', 'Desc');
+				$this->db->order_by('id', 'ASC');
 				$data['sessions'] = $this->db->get_where('session', array('enrollment_permission'=>'Y'))->result_array();
 				$data['name_csrf'] = $this->security->get_csrf_token_name();
 				$data['hash_csrf'] = $this->security->get_csrf_hash();
