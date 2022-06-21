@@ -806,9 +806,10 @@ class ExamController extends CI_Controller {
 	public function Teacher_paper_alloted_list(){
 		$title = array('title' => 'Check Answer Sheet');
 		$this->load->view('header',$title);	
-		// $where = array('teacher_id'=>$this->session->teacher_id);
+		$where = ' answer_sheet!="" and file_exist="Y" and teacher_id="" and total_marks=0';
 		$this->db->group_by('paper_code');
-		$assignAnsData = $this->Common_model->getRecordByWhere('assign_answersheet','');
+		$assignAnsData = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',$where);
+		$this->Common_model->last_query();
 		$data['assignAnsData'] = $assignAnsData;
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
