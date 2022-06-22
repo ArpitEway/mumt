@@ -616,10 +616,21 @@
 		}
 	}
 
-	public function enrollment_status()
+	public function enrollment_status($session=0)
 	{
-			$session_july='July 2021';		// All Class
-
+		$session==0;
+			$data['sessions'] = $this->db->get_where('session', array())->result_array();
+			if($session==0)
+			{
+				$LastSessionElement = end($data['sessions']);
+				$session=$LastSessionElement['id'];
+				
+			}
+			$data['sessionsSelect'] =$session;
+			$record=$this->db->get_where('session', array("id"=>$session))->result_array();	
+			//array('session'=>$record[0]['session'])
+			//$session_july='July 2021';		// All Class
+			$session_july=$record[0]['session'];
 			$where = array('session'=>$session_july);
 			$data['total_student'] = $this->Common_model->getCountByWhere('student',$where);
 
@@ -667,6 +678,8 @@
 			$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july);
 			$data['tot_not_enrolled'] = $this->Common_model->getCountByWhere('student',$where);
 
+			
+
 			$this->load->view('header');
 			$this->load->view('admin/enrollment/enrollment_status_count',$data);
 			$this->load->view('footer');
@@ -680,7 +693,13 @@
 			
 			if($param!='')
 			{
-				$session_july='July 2021';
+			
+				//$session_july='July 2021';
+			
+				 $session_id = $this->uri->segment(5);
+				 $record=$this->db->get_where('session', array("id"=>$session_id))->result_array();
+				 $session_july=$record[0]['session'];
+				 $data['sessionsSelect'] =$session_id;
 				if($param =='paid')
 				{
                    //---paid------
@@ -760,7 +779,9 @@
 				$this->db->select('COUNT(student_id) as student_count,center_id,center_code,
 					center_name,center_id');
 				$this->db->group_by('center_id');
+				
 				$data['listing'] = $this->Common_model->getRecordByWhere('student',$where);
+				
 				$data['params'] = $param ;
 				$this->load->view('header',$msg);
 				$this->load->view('admin/enrollment/center_wise_list',$data); 
@@ -773,9 +794,13 @@
 
 		public function students_count_list()
 		{
-			$session_july='July 2021';
+			//$session_july='July 2021';
 			$center_id = $this->uri->segment(4);
 			$params_value = $this->uri->segment(5);
+			$session_id = $this->uri->segment(6);
+			$record=$this->db->get_where('session', array("id"=>$session_id))->result_array();
+			$session_july=$record[0]['session'];
+			$data['sessionsSelect'] =$session_id;
 
 			if($params_value =='paid')
 			{
@@ -844,12 +869,20 @@
 				$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july,'center_id'=>$center_id);
 				$msg = array('title' => 'Center Wise Student List(Not Enrolled)');
 			}
-			
+			if($params_value == 'all')
+				{
+
+					$where = array('session'=>$session_july);
+					$msg = array('title' => 'Center Wise Student List');
+				}
+			//	print_r($where);
+			//echo $this->db->last_query();echo "Hello";
 			if($center_id!='')
 			{
 
-           	    $where =  $this->db->where('center_id',$center_id);
+           	      $this->db->where('center_id',$center_id);
 				$data['listing'] = $this->Common_model->getRecordByWhere('student',$where);
+			//	echo $this->db->last_query();die;
 				$this->load->view('header',array('title' => 'Center Wise Student List'));
 				$this->load->view('admin/enrollment/students_count_details',$data); 
 				$this->load->view('footer');
