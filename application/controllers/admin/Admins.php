@@ -3545,7 +3545,7 @@ public function update_exam_datewise_permission(){
 			$updateData['class_id'] = $classData[0]->id;
 			$updateData['txnId'] = $txnData['txnid'];
 			$updateData['fees_head'] = 'Admission Fees';
-			$updateData['admission_type'] = 'Regular';
+			$updateData['admission_type'] = 'Private';
 			unset($updateData['id']);
 			$this->Common_model->insertAll('online_payment_transaction',$updateData);
 			echo $this->db->last_query().'<br>';
