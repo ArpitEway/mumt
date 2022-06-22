@@ -76,10 +76,9 @@ $(".mode").click(function(){
 				if(response.mode=="PVT"){
 					$('#mode').replaceWith("<td  id='mode'><b>Mode:</b> Private</td>");
 				}
+            }else{
+                toastr.error(response.message);
             }
-            // else{
-            //     toastr.error("Center dont have permission");
-            // }
         }
     });
 });
