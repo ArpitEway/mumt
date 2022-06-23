@@ -35,7 +35,7 @@
         $old_num = array();
         if($obtain_theory_marks >=$min_theory_marks){
           $old_num['theory_marks'] = $anssheetData[0]->total_marks;
-          $where = array('student_id'=>$paper->student_id, 'paper_code'  =>$paper->paper_code);
+          $where = array('student_id'=>$paper->student_id, 'paper_code'  =>$paper->paper_code,'theory_marks'=>'');
           $this->Common_model->updateRecordByConditions('new_exam_form', $where, $old_num);
         }
         ?>
