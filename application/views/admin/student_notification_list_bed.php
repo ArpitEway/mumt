@@ -23,7 +23,7 @@ $abs_count = 0 ;
 		font-size: 15px; 
 	}
 
-	.alternate:nth-child(odd) {
+	.alternate:nth-child(even) {
 		background-color: yellow;
 	}
 </style>
@@ -50,14 +50,14 @@ $abs_count = 0 ;
 			<tr bgcolor="#FFFF00">
 				<th scope="row" class="text-center" width="5%"> S.No. </th>
 				<th scope="row" class="text-center" width="20%"><span class="style5">Roll No.</span></th>
-				<th scope="row"><p class="style5">MS No.</p></th>
-				<th style="text-align:left" scope="row"  width="30%"><span class="style5" >Name</span></th>
-				<th scope="row"  width="15%">Result</span></th>
-				<th scope="row"  width="10%"><span class="style5">Total</span></th>
-				<th scope="row"><span class="style5">Remark</span></th>
+				<!-- <th scope="row"><p class="style5">MS No.</p></th> -->
+				<th style="text-align:left" class="text-center" scope="row"  width="30%"><span class="style5" >Name</span></th>
+				<th scope="row" class="text-center"  width="15%">Result</span></th>
+				<th scope="row" class="text-center" width="10%"><span class="style5">Total</span></th>
+				<th scope="row" class="text-center"><span class="style5">Remark</span></th>
 			</tr>
 		</table>
-		<center style="font-size:15px;">Directorate of Distance Education</center>
+		
 
 		<table width="100%"  border="1">
 			<tbody>
@@ -181,8 +181,8 @@ $abs_count = 0 ;
 							</td>
 							<td class="style6 text-center" scope="row" width="20%">
 								<?php echo $student->roll_number; ?>
-							</td>
-							<td width="9%"></td>
+							</td><!-- 
+							<td width="9%"></td> -->
 							<td width="30%" scope="row" class="style6" >
 								<?php echo $student->name; ?>
 							</td>
