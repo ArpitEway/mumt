@@ -133,8 +133,12 @@ $userType = $this->session->userdata['account_type'];
     //var csrfName = $('.csrfname').attr('name');
     //var csrfHash = $('.csrfname').val(); 
     var sess=$("#session").val();
-    location.href =BASE_URL+"admin/Enrollment/enrollment_status/"+sess;
-    
+    //location.href =BASE_URL+"admin/Enrollment/enrollment_status/"+sess;
+    console.log(window.location.href );
+	var currentURL= window.location.href;
+	currentURL = currentURL.split('enrollment_status')[0];
+	console.log(currentURL );
+	location.href=currentURL+"/enrollment_status/"+sess;
     }
 
 </script>
