@@ -618,16 +618,15 @@
 
 	public function enrollment_status($session=0)
 	{
-		$session==0;
-			$data['sessions'] = $this->db->get_where('session', array())->result_array();
+			$data['sessions'] = $this->db->get_where('session', array('enrollment_permission' => 'Y'))->result_array();
 			if($session==0)
 			{
-				$LastSessionElement = end($data['sessions']);
-				$session=$LastSessionElement['id'];
+				$LastSessionElement = $data['sessions'];
+				$session=$LastSessionElement[0]['id'];
 				
 			}
 			$data['sessionsSelect'] =$session;
-			$record=$this->db->get_where('session', array("id"=>$session))->result_array();	
+			$record=$this->db->get_where('session', array("id"=>$session,'enrollment_permission' => 'Y'))->result_array();	
 			//array('session'=>$record[0]['session'])
 			//$session_july='July 2021';		// All Class
 			$session_july=$record[0]['session'];
