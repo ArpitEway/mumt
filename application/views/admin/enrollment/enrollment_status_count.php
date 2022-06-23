@@ -138,7 +138,7 @@ $userType = $this->session->userdata['account_type'];
 	var currentURL= window.location.href;
 	currentURL = currentURL.split('enrollment_status')[0];
 	console.log(currentURL );
-	location.href=currentURL+"/enrollment_status/"+sess;
+	location.href=currentURL+"enrollment_status/"+sess;
     }
 
 </script>
