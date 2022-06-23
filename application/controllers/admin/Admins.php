@@ -3318,6 +3318,7 @@ public function update_exam_datewise_permission(){
 	public function student_notification_list_bed($course_id="",$class_id=""){
 		$course_id=$this->Common_model->encrypt_decrypt($course_id,'decrypt');
 		$class_id=$this->Common_model->encrypt_decrypt($class_id,'decrypt');
+		$this->db->order_by('roll_number','ASC');
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id, 'class_id' => $class_id, 'exam_form'=>'Y','roll_number!='=>'0','result_show'=>'N' ));
 		$this->load->view('admin/generate_tr/header2',array('title' => 'Student Notification List'));
 		$this->load->view('admin/student_notification_list_bed',$data);
@@ -3409,23 +3410,36 @@ public function update_exam_datewise_permission(){
 	public function update_student_mode(){
 		$student_id = $_POST['student_id'];
 		$student= $this->Common_model->getRecordByWhere('student',array("student_id"=>$student_id));
-		$course= $this->Common_model->getRecordByWhere('course_group',array("id"=>$student[0]->course_group_id));
-		if ($student[0]->university_mode=='REG') {		
+		$course = $this->Common_model->getRecordByWhere('course_group',array("id"=>$student[0]->course_group_id));
+
+		if ($student[0]->university_mode=='REG') {
+			if ($course[0]->admission_permission_pvt!='Y') {
+				$result = array("status" => false, "message"=> "COURSE NOT HAVE PERMISSION");
+				echo json_encode($result);
+				die();
+			}
 			
 			$updatedata=array('university_mode' => 'PVT');
 
 			if($course[0]->private_mode!=$course[0]->mode){
-				$classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$student[0]->course_group_id,'mode'=>$course[0]->private_mode));	
+				$classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$student[0]->course_group_id,'mode'=>$course[0]->private_mode));
 				$mode = 'PVT';	
 				$updatedata['class_name'] = $classes[0]->class_name;
 				$updatedata['class_id']   = $classes[0]->id;
-				$updateOnlineTxn = array('admission_type' => 'Regular','class_id'=>$classes[0]->id);
+				$updatedata['temp_exam_form']   = 'N';
+				$updateOnlineTxn = array('admission_type' => 'Private','class_id'=>$classes[0]->id);
+				$deletewhere = array('student_id'=> $student_id, 'class_id' => $student[0]->class_id);
+				$this->Common_model->deleteByWhere('new_exam_form',$deletewhere);
 			}else{
 				$updateOnlineTxn = array('admission_type' => 'Private','class_id'=>$classes[0]->id);
 			}
 
-		}else{
-
+		}elseif($student[0]->university_mode=='PVT'){
+			if ($course[0]->admission_permission!='Y') {
+				$result = array("status" => false, "message"=> "COURSE NOT HAVE PERMISSION");
+				echo json_encode($result);
+				die();
+			}
 			$updatedata=array('university_mode' => 'REG');
 			
 			if($course[0]->private_mode!=$course[0]->mode){
@@ -3433,16 +3447,20 @@ public function update_exam_datewise_permission(){
 				$mode = 'REG';
 				$updatedata['class_name'] = $classes[0]->class_name;
 				$updatedata['class_id']   = $classes[0]->id;
-				$updateOnlineTxn = array('admission_type' => 'Private','class_id'=>$classes[0]->id);
+				$updatedata['temp_exam_form']   = 'N';
+				$updateOnlineTxn = array('admission_type' => 'Regular','class_id'=>$classes[0]->id);
+				$deletewhere = array('student_id'=> $student_id, 'class_id' => $student[0]->class_id);
+				$this->Common_model->deleteByWhere('new_exam_form',$deletewhere);
 			}else{
-				$updateOnlineTxn = array('admission_type' => 'Private');
+				$updateOnlineTxn = array('admission_type' => 'Regular');
 			}
 		}
 		$this->Common_model->updateRecordByConditions('online_payment_transaction',array('student_id'=>$student_id),$updateOnlineTxn);
 		$this->Common_model->updateRecordByConditions('student',array('student_id'=>$student_id),$updatedata);
-		$result = array("status" => true, "mode"=> $mode);	
+		$result = array("status" => true, "mode"=> $mode);
 		echo json_encode($result);
 	}
+
 	public function updatePvtDdeStudent()
 	{
 		$dde_students = $this->Common_model->get_record('dde_student','*');
@@ -3528,7 +3546,7 @@ public function update_exam_datewise_permission(){
 			$updateData['class_id'] = $classData[0]->id;
 			$updateData['txnId'] = $txnData['txnid'];
 			$updateData['fees_head'] = 'Admission Fees';
-			$updateData['admission_type'] = 'Regular';
+			$updateData['admission_type'] = 'Private';
 			unset($updateData['id']);
 			$this->Common_model->insertAll('online_payment_transaction',$updateData);
 			echo $this->db->last_query().'<br>';

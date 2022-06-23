@@ -5,7 +5,7 @@
 	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	<label for="session_id">Session</label>
     <select name="session_id" id="session_id" class="form-control" >
-	<option value="all">All</option>
+	<option value="All">All</option>
 	<?php 
         
         foreach($sessions as $session)
@@ -191,7 +191,7 @@ $(document).on("click","#submit_btn",function(){
 		var csrfHash = $('.csrfname').val(); 
 	var data = {
 		
-		course_group_id : $("#course_group_id").val(),
+		    course_group_id : $("#course_group_id").val(),
 			class_id : $("#class_id").val(),
 			document_upload : $("#document_upload").val(),
 			center_id : $("#center_id").val(),
@@ -200,7 +200,7 @@ $(document).on("click","#submit_btn",function(){
 			payment : $("#payment").val(),
 			filter : $('input[name="filter"]:checked').val(),
 			enrolled : $("#enrolled").val(),
-			session : $("#session").val(),
+			session : $("#session_id").val(),
 			[csrfName]:csrfHash,
 			count_filter:$("#count_filter").val(),
 			new_exam_form:$("#new_exam_form").val(),

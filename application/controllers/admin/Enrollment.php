@@ -97,7 +97,7 @@
 				$enrolled 		  = $this->input->post("enrolled");
 				$document_upload  = $this->input->post("document_upload");
 				$filter  		  = $this->input->post("filter");
-				$session 		  = $this->input->post("session");
+		     	$session 		  = $this->input->post("session");
 				$mode 		  	  = $this->input->post("mode");
 				$center_id	  	  = $this->input->post("center_id");
 		      	$university_mode	  	  = $this->input->post("university_mode");
@@ -112,7 +112,8 @@
 				if($session != "All" && $session != ""  ) {	 
 					
 					$dt['session'] = $session;
-				}else  {
+				}
+				else  {
 					$dt['name!='] = '';
 				}
 	
@@ -170,7 +171,7 @@
 					$data['course_count'] = $this->Common_model->student_data_consolidate($dt,$_POST['count_filter']);
 				}
 				
-				//$this->Common_model->last_query();
+				// $this->Common_model->last_query();
 						
 				$dt = $this->load->view('admin/student/getStudentConsolidate',$data,true);
 			
@@ -603,7 +604,7 @@
 
 				$data = array('enrolled' => 'Y');
 				/*****  exam form permission *****/
-				if($exam_form_permission[0]->exam_form_permission=='Y' && $session[0]->exam_form_permission){
+				if($exam_form_permission[0]->exam_form_permission=='Y' && $session[0]->exam_form_permission &&  $student[0]->session=='July 2021'){
 					$data['new_exam_form'] ='N';
 				}
 				$where = 'student_id="'.$student[0]->student_id.'" ';
