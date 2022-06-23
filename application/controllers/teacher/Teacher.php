@@ -250,7 +250,7 @@ class Teacher extends CI_Controller {
 		$where = array('teacher_id'=>$this->session->teacher_id,'paper_code'=> $paper_code);
 		$assignAnsData = $this->Common_model->getRecordByWhere('assign_answersheet',$where);
 	
-		$where = 'paper_code = "'.$paper_code.'" and upload_exam_ans_sheet.center_id in ('.$assignAnsData[0]->center_id.') and answer_sheet!="" and file_exist="Y" and new_exam_form="Y" and teacher_id=""';
+		$where = 'paper_code = "'.$paper_code.'" and upload_exam_ans_sheet.center_id in ('.$assignAnsData[0]->center_id.') and answer_sheet!="" and file_exist="Y" and new_exam_form="Y" and teacher_id="" and total_marks=0';
 
 		$this->db->select('roll_no,enrollment_no,course_name,class_name,paper_code,upload_exam_ans_sheet.student_id,upload_exam_ans_sheet.id');
 		$this->db->from('upload_exam_ans_sheet');
