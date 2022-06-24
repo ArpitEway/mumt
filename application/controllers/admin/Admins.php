@@ -3653,9 +3653,11 @@ public function update_exam_datewise_permission(){
 			if($total_marks_count[0]->paper_code==$value){
 				$paper_no= $data['paper_marks'][$key];
 				$que_all= round($paper_no/5);
-
+				
+				$marks_5 = $paper_no - ($que_all*4);
+				
 				$studentData = array('total_marks' => $data['paper_marks'][$key]
-					,'que_1'=>$que_all,'que_2'=>$que_all,'que_3'=>$que_all,'que_4'=>$que_all,'que_5'=>$que_all
+					,'que_1'=>$marks_5,'que_2'=>$que_all,'que_3'=>$que_all,'que_4'=>$que_all,'que_5'=>$que_all
 				);
 				$where =  array('paper_code' =>$value,'student_id'  =>$_POST['student_id']
 			);
