@@ -3589,26 +3589,83 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
-public function remaining_student_average_marks(){
-	
+	public function remaining_student_average_marks($param = 1,$param1 = 0){
+
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);	
 		$this->db->select('*,count(total_marks) as num');
 		$this->db->from('upload_exam_ans_sheet');
 		$this->db->join('new_exam_form', 'upload_exam_ans_sheet.student_id  = new_exam_form.student_id and upload_exam_ans_sheet.paper_code = new_exam_form.paper_code');
 		$this->db->order_by('upload_exam_ans_sheet.course_group_id,upload_exam_ans_sheet.class_id','asc');
 		$this->db->where('upload_exam_ans_sheet.remark_status','');
-		// $this->db->where('upload_exam_ans_sheet.total_marks',0);
+		if ($param1==0) {
+			$this->db->where('upload_exam_ans_sheet.total_marks',0);
+		}
 		$this->db->where('new_exam_form.theory_marks','');
 		$this->db->where('new_exam_form.paper_type','theory');
-		 $this->db->where('upload_exam_ans_sheet.teacher_id!=','');
-		 $this->db->group_by('upload_exam_ans_sheet.student_id');
-		 $this->db->having('num = 1');
+		$this->db->where('upload_exam_ans_sheet.teacher_id!=','');
+		$this->db->group_by('upload_exam_ans_sheet.student_id');
+		$this->db->having(" num = $param ");
 		$data['students'] = $this->db->get()->result();
-		 // $this->Common_model->last_query();
 		$this->load->view('header',array('title' => 'Student Remaining Marks List'));
 		$this->load->view('admin/remaining_student_average_marks',$data);
 		$this->load->view('footer');
 		
 	}
 
+	public function view_student_paper_marks_details(){
+		$student_id = $this->input->post('student_id');
+		$where=array('new_exam_form.student_id'=>$student_id,'paper_type'=>'theory');
+		$this->db->select('*');
+		$this->db->from('new_exam_form');
+		$this->db->Where($where );
+		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
+		$details = $this->db->get()->result();
+		$data = array(
+			'detail' => $details,
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		if($data){
+			$model =  $this->load->view('admin/view_student_paper_marks_details',$data,true);
+			$status = true;
+		}
+		echo json_encode(array(
+			"status" => $status,
+			"data" => $model
+		));
+	}
+
+	public function update_mark_for_all_question()
+	{     
+
+		$data=array();
+		$post = $this->input->post();
+		$data['paper_code'] = $this->input->post('paper_code');
+		$data['paper_marks'] = $this->input->post('marks');
+
+		$total_marks_count = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet','student_id='.$_POST['student_id'].' and total_marks=0 and  class_id='.$_POST['class_id'].'');
+
+		foreach ($data['paper_code'] as $key => $value){
+
+			if($total_marks_count[0]->paper_code==$value){
+				$paper_no= $data['paper_marks'][$key];
+				$que_all= round($paper_no/5);
+
+				$studentData = array('total_marks' => $data['paper_marks'][$key]
+					,'que_1'=>$que_all,'que_2'=>$que_all,'que_3'=>$que_all,'que_4'=>$que_all,'que_5'=>$que_all
+				);
+				$where =  array('paper_code' =>$value,'student_id'  =>$_POST['student_id']
+			);
+				$update =	$this->Common_model->updateRecordByConditions('upload_exam_ans_sheet',$where,$studentData);
+			}
+		}
+
+		if($update){
+			echo json_encode(array('status'=>true));
+		}
+	}
 
 }// class
