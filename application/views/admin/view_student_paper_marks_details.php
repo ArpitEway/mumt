@@ -16,6 +16,7 @@
 </style>
 
 <form  id="ajax-form" >
+  <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 <table class= "table table-bordered">
   <tbody>
     <tr>
@@ -50,10 +51,12 @@
     </thead>
     <tbody>
       <?php
+      $avg_marks = 0;
+      $tot = 0;
       $s=1;
       foreach($detail as $student){
-
-        $paper= $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',array("student_id"=>$student->student_id,'paper_code'=>$student->paper_code));
+        $paper = $this->Common_model->getRecordByWhere('upload_exam_ans_sheet',array("student_id"=>$student->student_id,'paper_code'=>$student->paper_code));
+        $tot +=$paper[0]->total_marks;
         ?>
         <tr>
          <td><?php echo $s; ?></td>
@@ -70,13 +73,19 @@
           <input type="hidden" name="class_id" value="<?php echo $paper[0]->class_id; ?>">
           <input type="hidden" name="student_id" value="<?php echo $paper[0]->student_id; ?>">
           <input type="number" name="marks[]" id="marks" value="<?=$paper[0]->total_marks;?>"> 
-          <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">      
         </td>
     </tr>
     <?php
     $s++;
   }
+
+  $avg_marks = $tot/($s-2);
   ?>
+  <tr>
+    <td colspan="7"></td>
+    <th>Avg Marks</th>
+    <th><?php echo $avg_marks; ?></th>
+  </tr>
 </tbody>
 </table>
 </div>
@@ -84,8 +93,7 @@
  <div class="text-center">
        <button class="btn btn-success " type="submit" id="submit" >Submit</button>
     </div>
-<!-- <div>
- <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button></div> -->
+<!-- <div><button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button></div> -->
  
 </form>
 
@@ -102,7 +110,6 @@
             dataType: 'JSON',
             success: function (response) {
                if(response.status==true){
-        
                   $('#kt_datepicker_modal').modal('hide');
                   toastr.success('update Marks successfully');
               }else{
