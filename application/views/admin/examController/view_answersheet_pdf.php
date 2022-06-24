@@ -1,0 +1,1 @@
+<iframe width="100%" style="height: 95vh" src="<?php echo BASE_URL('assets/exam_answersheet/'.$answer[0]->upload_date.'/'.$answer[0]->answer_sheet); ?>" ></iframe>

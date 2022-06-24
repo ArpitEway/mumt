@@ -128,18 +128,23 @@ class Center extends CI_Controller {
 			exit;
 		}
 		$center_id =  $this->session->center_id;
-
+		$center_ids_dep = array(21,22,23,24,25,26,27,28);
+		$whereSession = array();
+		if (in_array($center_id, $center_ids_dep)){
+			$whereSession['admission_permission_dep'] =  'Y';
+		}else{
+			$whereSession['admission_permission_ic'] =  'Y';
+		}
+		
 		if($mode=='regular'){
 			$where = array('admission_permission'=>'Y' ,'id'=>$center_id);
 			$head = '(Regular)';
-
 		}else{
 			$where = array('admission_permission_private'=>'Y','id'=>$center_id);
 			$head = '(Private)';
-			$where = array('admission_permission'=>'Y' ,'id'=>$center_id);
-
+			$whereSession['pvt_admission_permission_ic'] =  'Y';
 		}
-		
+		$sessions = $this->Common_model->get_record('session','*',$whereSession);
 		$check = $this->Common_model->getRecordByWhere("center",$where);
 		if(($mode=='regular' && $check[0]->admission_permission!='Y') || ($mode=='private' && $check[0]->admission_permission_private!='Y')){
 			redirect(base_url('dashboard'));
@@ -157,7 +162,8 @@ class Center extends CI_Controller {
 			'course_group_list' => $course_group_list,
 			'eligibility_list' => $eligibility_list,
 			'name_csrf' => $this->security->get_csrf_token_name(),
-			'hash_csrf' => $this->security->get_csrf_hash()
+			'hash_csrf' => $this->security->get_csrf_hash(),
+			'sessions' => $sessions
 		);
 		$this->load->view('Centers/header',$titleData);
 		$this->load->view('Centers/admission_form',$data);
@@ -325,7 +331,7 @@ class Center extends CI_Controller {
 
 	public function student_list($param1 = '')
 	{
-		$csrf = array(
+		$csrf = array( 
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
 		);
@@ -345,8 +351,9 @@ class Center extends CI_Controller {
 	public function getUnpaidFeesList($param1 = ''){
 		$data = $row = array();
 		$where = 'online_payment_transaction.center_id='.$this->session->center_id.' and online_payment_transaction.payment!="Y"';
+		
 		if($param1=='Admission'){
-			$where .= ' and online_payment_transaction.fees_head="Admission Fees"';
+			$where .= " and online_payment_transaction.fees_head='Admission Fees'  and  `student.payment_status`='N' and ( (student.class_name not like '%SEM%' and student.session='July 2021') or session!='July 2021')";
 		}elseif($param1=='Exam'){
 			$where .= ' and online_payment_transaction.fees_head="Exam Fees"';
 		}
@@ -358,16 +365,20 @@ class Center extends CI_Controller {
 			'column_order' => $column_order,
 			'column_search' => $column_search,
 			'where' => $where.' and online_payment_transaction.center_id=student.center_id',
+			
 			'table' => 'student',
 			'table2' => 'online_payment_transaction',
 			'joinOn' => 'student.student_id=online_payment_transaction.student_id'
 		);
-
+		
+		 
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
+		
 		$i = $_POST['start'];
-
-
-			
+		
+	
+		 $counttableData = $this->Datatable_join_model->joincountAll($_POST,$DataTableArray);
+				  
 		foreach($tableData as $result){
 			$center_ids_dep = array( 21,22,23,24,25,26,27,28);
 			if(in_array($this->session->center_id, $center_ids_dep)){
@@ -382,7 +393,7 @@ class Center extends CI_Controller {
 
 		$output = array(
 			"draw" => $_POST['draw'],
-			"recordsTotal" => $this->Datatable_join_model->countAll('online_payment_transaction',$where),
+			"recordsTotal" => $counttableData,//$this->Datatable_join_model->countAll('online_payment_transaction',$where),
 			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
 			"data" => $data,
 		);
@@ -570,23 +581,39 @@ class Center extends CI_Controller {
 	public function getCourseByEligibility()
 	{
 		$eligibility = $this->input->post('eligibility');
+		$session = $this->input->post('session');
 		$mode = $this->input->post('mode');
 		$myString =$eligibility;
 		 
-		
-		
 		if($this->session->has_userdata('center_id')){
 		$center_id =  $this->session->center_id;
 		$centerdata = $this->Common_model->getRecordById('center','id',$center_id);
-		$this->db->where('id in ('.$centerdata->allot_course_group_id.')');
+		$this->db->where('course_group_id in ('.$centerdata->allot_course_group_id.')');
 		}
 		 $where['eligibility'] = $eligibility;
-		 if($mode=='regular'){
+		/* if($mode=='regular'){
 		   $where['admission_permission'] = 'Y';
 		 }else{
 			$where['admission_permission_pvt'] = 'Y';
 		 }
 		$course_group_list = $this->Common_model->get_record('course_group','*',$where);
+		*/
+		
+		$this->db->select('course_group.id,course.course_name');
+		$this->db->from('course');
+		$this->db->join('course_group', 'course_group.id = course.course_group_id'); 
+		$this->db->where('eligibility',$eligibility);
+		$this->db->where('course.session',$session);
+		if($mode=='regular'){
+			$where['admission_permission_regular'] = 'Y';
+			$this->db->where('admission_permission_regular','Y');
+		  }else{
+			 $where['admission_permission_private'] = 'Y';
+			 $this->db->where('admission_permission_private','Y');
+		  }
+		
+		$query = $this->db->get();
+		$course_group_list= $query->result_array();
 		
 		$data = array('course_group_list'=>$course_group_list);
 		echo $this->load->view('template/getcourse',$data,true);
@@ -1423,6 +1450,7 @@ class Center extends CI_Controller {
 		$this->db->join('course_group', 'student.course_group_id = course_group.id');
 		$this->db->where('center_id', $center_id);
 		$this->db->where('result_show','Y');
+		$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,197,203,211,213)');
 		$data['courses'] = $this->db->get()->result();
 		$this->load->view('Centers/header', array('title' => 'Result'));
 		$this->load->view('Centers/result',$data);

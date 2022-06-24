@@ -152,9 +152,22 @@ class Director extends CI_Controller {
 	
 
 
-	public function enrollment_status()
+	public function enrollment_status($session=0)
 	{
-		$session_july='July 2021';		// All Class
+		$data['sessions'] = $this->db->get_where('session', array('enrollment_permission' => 'Y'))->result_array();
+		//print_r($data['sessions']);die;
+		if($session==0)
+			{
+				$LastSessionElement = $data['sessions'];
+				$session=$LastSessionElement[0]['id'];
+				
+			}
+			$data['sessionsSelect'] =$session;
+			$record=$this->db->get_where('session', array("id"=>$session,'enrollment_permission' => 'Y'))->result_array();	
+			//array('session'=>$record[0]['session'])
+			//$session_july='July 2021';		// All Class
+			$session_july=$record[0]['session'];
+		//$session_july='July 2021';		// All Class
 
 		$where = array('session'=>$session_july);
 		$data['total_student'] = $this->Common_model->getCountByWhere('student',$where);
@@ -281,8 +294,11 @@ class Director extends CI_Controller {
 		
 		if($param!='')
 		{
-			$session_july='July 2021';
-		  
+			//$session_july='July 2021';
+			$session_id = $this->uri->segment(5);
+			$record=$this->db->get_where('session', array("id"=>$session_id))->result_array();
+			$session_july=$record[0]['session'];
+			$data['sessionsSelect'] =$session_id;
 			
 			if($param =='paid')
 			{
@@ -384,9 +400,13 @@ class Director extends CI_Controller {
 	}
 	public function students_count_list()
 	{
-		$session_july='July 2021';
+		//$session_july='July 2021';
 		$center_id = $this->uri->segment(4);
 		$params_value = $this->uri->segment(5);
+		$session_id = $this->uri->segment(6);
+		$record=$this->db->get_where('session', array("id"=>$session_id))->result_array();
+		$session_july=$record[0]['session'];
+		$data['sessionsSelect'] =$session_id;
 
 		if($params_value =='paid')
 		{
@@ -455,7 +475,12 @@ class Director extends CI_Controller {
 			$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july,'center_id'=>$center_id);
 			$msg = array('title' => 'Center Wise Student List(Not Enrolled)');
 		}
-		
+		if($params_value == 'all')
+				{
+
+					$where = array('session'=>$session_july);
+					$msg = array('title' => 'Center Wise Student List');
+				}
 		if($center_id!='')
 		{
         

@@ -270,4 +270,48 @@ class Postexam extends CI_Controller {
         $this->load->view('admin/script/general_promotion_student_view',$data);
         $this->load->view('footer');
     }
+
+    public function update_teacher_upload_exam_ans_sheet(){
+        echo "<pre>";
+        
+        $this->db->select('*');
+        $this->db->from('upload_exam_ans_sheet');
+        $this->db->where('file_exist','Y');
+        $this->db->where('total_marks!=',0);
+        $this->db->where('teacher_id','');
+        $rows=$this->db->get()->result();
+      
+       $a="";
+        foreach($rows as $row){
+        
+            $this->db->select('*');
+            $this->db->from('assign_answersheet');
+            $this->db->where('class_id',$row->class_id);
+            $this->db->where('paper_code',$row->paper_code);
+            $data=$this->db->get()->result();
+            
+           // $this->db->last_query();
+         
+            $student_master = $this->Common_model->getRecordByWhere('student',array('student_id'=>$row->student_id));
+            $a.= "<br>Student Center ID ".$student_master[0]->center_id ."<br>";
+            
+            foreach($data as $record){
+                $arr=explode(',',$record->center_id);
+                if(in_array($student_master[0]->center_id,$arr)){
+                  
+                    $data  = array('teacher_id'=>$record->teacher_id,);
+                    $where = array('id'=>$row->id ,);
+                    $update =$this->Common_model->updateRecordByConditions('upload_exam_ans_sheet',$where,$data);
+                    $a.=$this->db->last_query();
+                }
+                
+
+            }
+        }
+        if(!empty($a))
+            echo $a;
+        else
+            echo "No Record Found!";    
+    }
+    
 }

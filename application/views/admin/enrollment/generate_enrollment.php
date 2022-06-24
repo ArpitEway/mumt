@@ -55,19 +55,31 @@
 			if ($session=='July 2021') {
 				$this->db->where(' class_id not in (255,261,267)');
 			}
-			$last_enrollment = $this->Common_model->get_record('student','max(enrollment_no) as enrollment_no');
-			$last_number = substr($last_enrollment[0]['enrollment_no'], 6);
+			$this->db->order_by('post_enrollment_no','desc');
+			$this->db->limit(1);
+			$last_enrollment = $this->Common_model->get_record('student','enrollment_no,substring(enrollment_no,instr(enrollment_no,"/") +1) post_enrollment_no', $whereEnrollmentNoCount);
+			$last_number = substr($last_enrollment[0]['post_enrollment_no'], -5);
+			
 			$lastTwoNumbers = (int) substr($session, -2);
 			$month =  strtok($session, " ");
 
 			foreach($students as $student){
 				$last_number++ ;
 				$last_number = str_pad($last_number,5,'0',STR_PAD_LEFT);
-				if($month=='Jan'){
-					$enrollment = $enrolment_code[0]['enrollment_code'].'/'.$lastTwoNumbers.'1'.$last_number;
+				if ($student['university_mode']=='REG') {
+					if($month=='Jan'){
+						$enrollment = $enrolment_code[0]['enrollment_code_reg'].'/'.$lastTwoNumbers.'1'.$last_number;
+					}else{
+						$enrollment = $enrolment_code[0]['enrollment_code_reg'].'/'.$lastTwoNumbers.'2'.$last_number;
+					}	
 				}else{
-					$enrollment = $enrolment_code[0]['enrollment_code'].'/'.$lastTwoNumbers.'2'.$last_number;
+					if($month=='Jan'){
+						$enrollment = $enrolment_code[0]['enrollment_code_pvt'].'/'.$lastTwoNumbers.'1'.$last_number;
+					}else{
+						$enrollment = $enrolment_code[0]['enrollment_code_pvt'].'/'.$lastTwoNumbers.'2'.$last_number;
+					}	
 				}
+				
 				
 
 				$whereUpdate = array('student_id' => $student['student_id']);

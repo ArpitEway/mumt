@@ -22,11 +22,12 @@ $("#eligibility").on('change', function(){
 	var csrfName = $('.csrfname').attr('name');
 	var csrfHash = $('.csrfname').val();
 	var mode = $('#mode').val();
-	$('input[name="qualifying_exam"]').val(eligibility);
+	var session=$('#session').val();
+	$('input[name="qualifying_exam"]').val(eligibility); 
 	$.ajax({
 		method: "POST",
 		url: BASE_URL+"center/center/getCourseByEligibility",
-		data: {mode:mode,eligibility : eligibility,[csrfName]:csrfHash},
+		data: {mode:mode,session:session,eligibility : eligibility,[csrfName]:csrfHash},
 	})
 	.done(function( msg ) {
 		$('#course_group_id').html(msg);
@@ -266,7 +267,7 @@ function validation(step=""){
 	var submit = true;
 	// console.log(step);
 
-	var session = $('input[name="session"]').val();
+	var session = $('select[name="session"]').val();
 	var course_group_id = $('select[name="course_group_id"]').val();
 	var class_id = $('#class_id').val();
 	var eligibility = $('select[name="eligibility"]').val();
@@ -315,11 +316,12 @@ function validation(step=""){
 		submit = false
 	}else{
 		$('select[name="religion"]').next('div').text('');
-	}if(session==''){
-		$('input[name="session"]').next('div').text('Session is Required');
+	}
+	if(session==''){
+		$('select[name="session"]').next('div').text('Session is Required');
 		submit = false
 	}else{
-		$('input[name="session"]').next('div').text('');
+		$('select[name="session"]').next('div').text('');
 	}
 	if(course_group_id==''){
 		$('select[name="course_group_id"]').next('div').text('Course is Required');

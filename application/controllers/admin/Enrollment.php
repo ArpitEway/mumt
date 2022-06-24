@@ -46,7 +46,7 @@
 				$data = array();
 				$data['title'] = "Student Verification";
 				$this->load->view('header',$dt);
-				$this->db->order_by('id', 'Desc');
+				$this->db->order_by('id', 'ASC');
 				$data['sessions'] = $this->db->get_where('session', array('enrollment_permission'=>'Y'))->result_array();
 				$data['name_csrf'] = $this->security->get_csrf_token_name();
 				$data['hash_csrf'] = $this->security->get_csrf_hash();
@@ -97,7 +97,7 @@
 				$enrolled 		  = $this->input->post("enrolled");
 				$document_upload  = $this->input->post("document_upload");
 				$filter  		  = $this->input->post("filter");
-				$session 		  = $this->input->post("session");
+		     	$session 		  = $this->input->post("session");
 				$mode 		  	  = $this->input->post("mode");
 				$center_id	  	  = $this->input->post("center_id");
 		      	$university_mode	  	  = $this->input->post("university_mode");
@@ -112,7 +112,8 @@
 				if($session != "All" && $session != ""  ) {	 
 					
 					$dt['session'] = $session;
-				}else  {
+				}
+				else  {
 					$dt['name!='] = '';
 				}
 	
@@ -170,7 +171,7 @@
 					$data['course_count'] = $this->Common_model->student_data_consolidate($dt,$_POST['count_filter']);
 				}
 				
-				//$this->Common_model->last_query();
+				// $this->Common_model->last_query();
 						
 				$dt = $this->load->view('admin/student/getStudentConsolidate',$data,true);
 			
@@ -228,18 +229,21 @@
 				$data = array();
 				$dt   = array();
 
-				$center 	  	  = 	$this->input->post("center");
+				$center 	    = 	$this->input->post("center");
 				$course_group_id  = $this->input->post("course_group_id");
 				$approved = $this->input->post("approved");
 				$session = $this->input->post("session");
-				
+				$university_mode = $this->input->post("university_mode");
 
-                  if($center != "all"){	 
+                if($center != "all"){	 
 					
 					$dt['center_id'] = $center;
 				}
 
-
+				if($university_mode != "all"){	
+					$dt['university_mode'] = $university_mode;
+				}
+				
 				if($course_group_id != "all"){	
 					$dt['course_group_id'] = $course_group_id;
 				}
@@ -248,12 +252,10 @@
 					$dt['approved'] = $approved;
 				}if($session != "All"){
 					$dt['session'] = $session;
-				}
-				
+				}	
 				$dt['payment_status'] = "Y";
 				$dt['document_uploaded'] = "Y";
-				$dt['university_mode'] = "REG";
-				
+				// $dt['university_mode'] = "REG";	
 				$this->db->where('new_admission_permission', 'N');
 				$data['students'] = $this->Common_model->student_data($dt);
 				
@@ -539,9 +541,7 @@
 
 
 	public function generate_enrollment(){
-		$where = array(
-			'enrollment_permission' => 'Y',
-			);
+		$where = array('enrollment_permission' => 'Y');
 	$session = $this->db->get_where('session',$where)->result_array();
      
 	$data['session'] = $session;
@@ -604,7 +604,7 @@
 
 				$data = array('enrolled' => 'Y');
 				/*****  exam form permission *****/
-				if($exam_form_permission[0]->exam_form_permission=='Y' && $session[0]->exam_form_permission){
+				if($exam_form_permission[0]->exam_form_permission=='Y' && $session[0]->exam_form_permission &&  $student[0]->session=='July 2021'){
 					$data['new_exam_form'] ='N';
 				}
 				$where = 'student_id="'.$student[0]->student_id.'" ';
@@ -617,10 +617,20 @@
 		}
 	}
 
-	public function enrollment_status()
+	public function enrollment_status($session=0)
 	{
-			$session_july='July 2021';		// All Class
-
+			$data['sessions'] = $this->db->get_where('session', array('enrollment_permission' => 'Y'))->result_array();
+			if($session==0)
+			{
+				$LastSessionElement = $data['sessions'];
+				$session=$LastSessionElement[0]['id'];
+				
+			}
+			$data['sessionsSelect'] =$session;
+			$record=$this->db->get_where('session', array("id"=>$session,'enrollment_permission' => 'Y'))->result_array();	
+			//array('session'=>$record[0]['session'])
+			//$session_july='July 2021';		// All Class
+			$session_july=$record[0]['session'];
 			$where = array('session'=>$session_july);
 			$data['total_student'] = $this->Common_model->getCountByWhere('student',$where);
 
@@ -668,6 +678,8 @@
 			$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july);
 			$data['tot_not_enrolled'] = $this->Common_model->getCountByWhere('student',$where);
 
+			
+
 			$this->load->view('header');
 			$this->load->view('admin/enrollment/enrollment_status_count',$data);
 			$this->load->view('footer');
@@ -681,7 +693,13 @@
 			
 			if($param!='')
 			{
-				$session_july='July 2021';
+			
+				//$session_july='July 2021';
+			
+				 $session_id = $this->uri->segment(5);
+				 $record=$this->db->get_where('session', array("id"=>$session_id))->result_array();
+				 $session_july=$record[0]['session'];
+				 $data['sessionsSelect'] =$session_id;
 				if($param =='paid')
 				{
                    //---paid------
@@ -761,7 +779,9 @@
 				$this->db->select('COUNT(student_id) as student_count,center_id,center_code,
 					center_name,center_id');
 				$this->db->group_by('center_id');
+				
 				$data['listing'] = $this->Common_model->getRecordByWhere('student',$where);
+				
 				$data['params'] = $param ;
 				$this->load->view('header',$msg);
 				$this->load->view('admin/enrollment/center_wise_list',$data); 
@@ -774,9 +794,13 @@
 
 		public function students_count_list()
 		{
-			$session_july='July 2021';
+			//$session_july='July 2021';
 			$center_id = $this->uri->segment(4);
 			$params_value = $this->uri->segment(5);
+			$session_id = $this->uri->segment(6);
+			$record=$this->db->get_where('session', array("id"=>$session_id))->result_array();
+			$session_july=$record[0]['session'];
+			$data['sessionsSelect'] =$session_id;
 
 			if($params_value =='paid')
 			{
@@ -845,12 +869,19 @@
 				$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july,'center_id'=>$center_id);
 				$msg = array('title' => 'Center Wise Student List(Not Enrolled)');
 			}
+			if($params_value == 'all')
+				{
+
+					$where = array('session'=>$session_july);
+					$msg = array('title' => 'Center Wise Student List');
+				}
 			
 			if($center_id!='')
 			{
 
-           	    $where =  $this->db->where('center_id',$center_id);
+           	      $this->db->where('center_id',$center_id);
 				$data['listing'] = $this->Common_model->getRecordByWhere('student',$where);
+		
 				$this->load->view('header',array('title' => 'Center Wise Student List'));
 				$this->load->view('admin/enrollment/students_count_details',$data); 
 				$this->load->view('footer');
