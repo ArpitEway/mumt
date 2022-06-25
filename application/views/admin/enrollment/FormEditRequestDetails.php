@@ -3,8 +3,10 @@
 		<thead>
 			<tr>
 				<th>S.No.</th>
-				<th>Student Name</th>
+				<th>Session</th>
+				<th>Admission Mode</th>
 				<th>Form no</th>
+				<th>Student Name</th>
 				<th>Detail</th>
 				<th>Date</th>
 				<th>Status</th>
@@ -19,10 +21,12 @@
 				?>
 				<tr>
 					<td><?php echo $i; ?></td>
-					<td><?php echo $student->name; ?></td>
+					<td><?php echo $student->session; ?></td>
+					<td><?php echo ($student->university_mode=='REG') ? 'Regular' : 'Private'; ?></td>
 					<td><?php echo $center["student_id"]; ?></td>
+					<td><?php echo $student->name; ?></td>
 					<td><?php echo $center["detail"]; ?></td>
-					<td><?php echo $center["date"]; ?></td>
+					<td><?php echo $this->Common_model->viewDate($center["date"]); ?></td>
 					<td>
 						<?php if($center['status'] == 'Done'){ ?>
 							<input type="button" name="update_req_stats" data-id = "<?=$center["id"];?>" class="btn btn-success req_check" value="Done">

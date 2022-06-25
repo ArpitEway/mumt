@@ -315,7 +315,9 @@
 		public function update_aadhar($param){
 			if($this->session->has_userdata('adminData')){
 
-			$data['student_id'] = $this->Common_model->encrypt_decrypt($param,'decrypt');
+			$document_id = $this->Common_model->encrypt_decrypt($param,'decrypt');
+			$doc_details = $this->Common_model->getRecordById('admission_document','id',$document_id);
+			$data['student_id'] = $doc_details->student_id;
 			$where['student.student_id'] = $data['student_id'];
 			$data['student_detail'] = $this->Common_model->student_data($where);
 			$data['name_csrf'] = $this->security->get_csrf_token_name();

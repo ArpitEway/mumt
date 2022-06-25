@@ -15,7 +15,7 @@
     		<?php 
     		$i = 1;
 			foreach($students as $student){
-			$docs = $this->Common_model->getAllRow("admission_document",'document_name,document_image',array("student_id" => $student['student_id']),'');
+			$docs = $this->Common_model->getAllRow("admission_document",'id, document_name,document_image',array("student_id" => $student['student_id']),'');
 			?>
 			<tr>
 			<td><a target="_blank" href="<?php echo BASE_URL('show_form/'.$this->Common_model->encrypt_decrypt($student['student_id'],'encrypt')); ?>" ><?php echo $student["student_id"]; ?></a></td>
@@ -47,9 +47,10 @@
 
 					<?php }else{
 						if($doc["document_name"] == 'Aadhaar Card' || $doc["document_name"]=='Aadhaar Card Not Found'){
+							$doc_id = $this->Common_model->encrypt_decrypt($doc["id"]);
 							?>
 
-							<a href="<?php echo site_url('Enrollment/update_aadhar/'.$student_id); ?>" target="_blank">
+							<a href="<?php echo site_url('Enrollment/update_aadhar/'.$doc_id); ?>" target="_blank">
 								<?php echo $doc["document_name"]; ?>
 							</a>
 							<br>

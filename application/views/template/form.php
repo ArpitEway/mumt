@@ -123,7 +123,8 @@ hr.new2 {
 				Brahmsthan Karoundi, Post Mahner-Umariyapaan, Distt – Katni (Madhya Pradesh)
 			</div>
 			<div class="f-heading-3 text-primary">
-				APPLICATION FORM FOR REGISTRATION <span class="text-dark"><?= $student['session']; ?></span>
+				<?php $university_mode = ($student['university_mode']=='REG') ? 'Regular' : 'Private'; ?>
+				APPLICATION FORM FOR REGISTRATION <span class="text-dark"><?= $student['session'].' ( '.$university_mode.' ) '; ?></span>
 			</div>
 		</div>
 		<div class="mt-5">
