@@ -1,5 +1,6 @@
 <div class="container-fluid mt-5" >
 	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+	<input type="hidden"  class="course_type" value="<?= $course_type; ?>" >
 	<table id="memListTable" class="table table-striped dt-responsive" style="width:100%">
 		<thead>
 			<tr>
@@ -102,6 +103,7 @@
 	$(document).ready(function(){
 		var csrfName = $('.csrfname').attr('name');
 		var csrfHash = $('.csrfname').val(); 
+		var course_ty=$('.course_type').val();
 		var myTable =  $('#memListTable').DataTable({
 // Processing indicator
 "processing": true,
@@ -113,7 +115,7 @@
 "ajax": {
 	"url": BASE_URL+'center/center/getUnpaidFeesList/Admission',
 	"type": "POST",
-	"data": {[csrfName]:csrfHash}
+	"data": {[csrfName]:csrfHash,course_type:course_ty}
 },
 "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
 //Set column definition initialisation properties

@@ -18,11 +18,14 @@ li{
 <div class="card-body row text-center">
 	<div class="form-group col-md-3 m-auto">
 		<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+		<input type="hidden"  class="course_type" value="<?= $course_type; ?>" >
 		<label for="center_id">Session</label>
-		<select name="session" id="session" class="form-control" required >
+		<select name="session" id="session_course_type" class="form-control" required >
 			<option value="">Select</option>
 			<?php
-			$sessions = $this->Common_model->get_record('student','distinct(session)');
+			
+			$sessions = $this->Common_model->get_record('student','distinct(session)',array('center_id ' => $this->session->center_id));
+			
 			foreach($sessions as $session){
 				?>
 				<option value="<?php echo $session['session']; ?>"><?php echo $session['session']; ?></option>
@@ -87,6 +90,7 @@ $(document).ready(function(){
 		
 	var csrfName = $('.csrfname').attr('name');
 	var csrfHash = $('.csrfname').val(); 
+	var course_ty=$('.course_type').val();
 	var myTable =  $('#memListTable').DataTable({
 	// Processing indicator
 	"processing": true,
@@ -98,7 +102,7 @@ $(document).ready(function(){
 	"ajax": {
 		"url": BASE_URL+'center/center/getFormEditRequest',
 		"type": "POST",
-		"data": {[csrfName]:csrfHash}
+		"data": {[csrfName]:csrfHash,course_type:course_ty}
 	},
 	"lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
 	//Set column definition initialisation properties
@@ -196,6 +200,25 @@ $("#allClassBycourse").on('change', function(){
 		console.log(msg);
 	});
 
+});
+
+$("#session_course_type").on('change', function(){
+	var csrfName = $('.csrfname').attr('name');
+	var csrfHash = $('.csrfname').val(); 
+	var session = $(this).val();
+	$.ajax({
+		method: "POST",
+		url: BASE_URL+"center/center/getCourseBySession",
+		data: { 
+			session : session,
+			[csrfName]:csrfHash,
+			course_type:course_ty
+		},
+	})
+	.done(function( msg ) {
+        $('#allClassBycourse').html(msg);
+		console.log(msg);
+	});
 });
 });
 </script>

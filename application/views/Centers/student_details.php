@@ -35,9 +35,9 @@
        <div class="form-group col-md-3">
 			<label for="class">Admission Mode</label>
 			<select name="university_mode" id="university_mode" class="form-control filter" >
-			    <option>All</option>
-				<option value="REG">Regular</option> 
-				<option value="PVT" >Private</option>
+			    <!-- <option>All</option> -->
+				<option value="REG" <?php if($course_type=='REG') { echo 'selected'; } ?> >Regular</option> 
+				<option value="PVT" <?php if($course_type=='PVT') { echo 'selected'; } ?> >Private</option>
 			</select>
 		</div> 
 

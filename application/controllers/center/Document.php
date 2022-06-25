@@ -13,11 +13,12 @@
 			}
 		}
 
-	public function index(){
-		
+	public function index($course_type ="REG"){
+		//$course_type = $this->uri->segment(2);  
 		$csrf = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
-			'hash_csrf' => $this->security->get_csrf_hash()
+			'hash_csrf' => $this->security->get_csrf_hash(),
+			'course_type' =>$course_type
 		);
 		$titleData = array('title' => 'Upload Admission Document List'); 
 		$this->load->view('Centers/header',$titleData);	
@@ -26,9 +27,12 @@
 	}
 
 	public function Doc_list(){
-		
-			$data = array();
-		$where = "document_uploaded!='Y' and payment_status='Y' and center_id=".$this->session->center_id ."  and ( (student.class_name not like '%SEM%' and student.session='July 2021') or session!='July 2021')";
+		$course_type=$this->input->post('course_type');
+		$data = array();
+		$where="";
+		if(!empty($course_type))
+			$where .="student.university_mode='".$course_type."' AND ";	
+		$where.= "document_uploaded!='Y' and payment_status='Y' and center_id=".$this->session->center_id ."  and ( (student.class_name not like '%SEM%' and student.session='July 2021') or session!='July 2021')";
 		$column_order = array('student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name',null);
 		$column_search = array('enrollment_no', 'name', 'f_h_name', 'course_name','class_name');
 		$DataTableArray = array(
