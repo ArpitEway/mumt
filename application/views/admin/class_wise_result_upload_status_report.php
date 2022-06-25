@@ -1,4 +1,4 @@
-<div class="container">
+<div>
 	<table class="table text-uppercase">
 		<thead>
 			<tr>
