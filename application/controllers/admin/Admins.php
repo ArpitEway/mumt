@@ -2172,7 +2172,7 @@ public function getStudentData()
 			exit;
 		}else{
 			$admin_id = $this->session->admin_id;
-			$course_group = $this->db->get_where('course_group', array('admission_permission' => 'Y'))->result_array();
+			$course_group = $this->db->get_where('course_group', array('exam_form_permission' => 'Y'))->result_array();
 			$data = array('course_group' => $course_group,
 				'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash()
@@ -2245,7 +2245,7 @@ public function getStudentData()
 					$this->db->where('student.new_exam_form','Y');
 					$this->db->where('new_exam_form.course_group_id',$course_group_id);
 					$this->db->where('new_exam_form.class_id',$class['id']);
-					$this->db->where('new_exam_form.paper_type',"Practical");
+					$this->db->where('new_exam_form.paper_type!=',"theory");
 					
 					$practicalTotal = $this->db->get()->result();
 					$this->db->select('count(*) as num');
@@ -2254,8 +2254,9 @@ public function getStudentData()
 					$this->db->where('student.new_exam_form','Y');
 					$this->db->where('new_exam_form.course_group_id',$course_group_id);
 					$this->db->where('new_exam_form.class_id',$class['id']);
-					$this->db->where('new_exam_form.paper_type',"Practical");
-					$this->db->where('new_exam_form.p_marks !=', "");$this->db->where('new_exam_form.p_marks !=', "N");
+					$this->db->where('new_exam_form.paper_type!=',"theory");
+					$this->db->where('new_exam_form.p_marks !=', "");
+					$this->db->where('new_exam_form.p_marks !=', "N");
 					$practical = $this->db->get()->result();
 					$classArr['class_id'] = $class['id'];
 					$classArr['total_paper_count'] = $count[0]->num;
@@ -2315,7 +2316,7 @@ public function getStudentData()
 				$this->db->where('student.new_exam_form','Y');
 				$this->db->where('new_exam_form.course_group_id',$course_group_id);
 				$this->db->where('new_exam_form.class_id',$class_id);
-				$this->db->where('new_exam_form.paper_type',"Practical");
+				$this->db->where('new_exam_form.paper_type!=',"theory");
 				
 				$practicalTotal = $this->db->get()->result();
 				$this->db->select('count(*) as num');
@@ -2324,8 +2325,9 @@ public function getStudentData()
 				$this->db->where('student.new_exam_form','Y');
 				$this->db->where('new_exam_form.course_group_id',$course_group_id);
 				$this->db->where('new_exam_form.class_id',$class_id);
-				$this->db->where('new_exam_form.paper_type',"Practical");
-				$this->db->where('new_exam_form.p_marks !=', "");$this->db->where('new_exam_form.p_marks !=', "N");
+				$this->db->where('new_exam_form.paper_type!=',"theory");
+				$this->db->where('new_exam_form.p_marks !=', "");
+				$this->db->where('new_exam_form.p_marks !=', "N");
 				$practical = $this->db->get()->result();
 				$data['course_group_id']=$course_group_id;
 				$data['class_id']=$class_id;
@@ -2385,12 +2387,12 @@ public function getStudentData()
 				$this->db->where('student.new_exam_form','Y');
 				$this->db->where('new_exam_form.course_group_id',$course_group_id);
 				$this->db->where('new_exam_form.class_id',$class_id);
-				$this->db->where('new_exam_form.paper_type',"Practical");
+				$this->db->where('new_exam_form.paper_type!=',"theory");
 				$this->db->where('new_exam_form.p_marks', "N");
 				$data['students'] = $this->db->get()->result();
 			}
 
-			$this->load->view('header',array('title' => 'Some Paper '.ucfirst($remaining).' Marks not submitted of the following Students'));
+			$this->load->view('header',array('title' => ' '.ucfirst($remaining).' Marks not submitted of the following Students'));
 			$this->load->view('admin/class_wise_remaining_report_table',$data);
 			$this->load->view('footer');
 		}
