@@ -2578,7 +2578,7 @@ public function update_exam_datewise_permission(){
 			$this->db->from('new_exam_form');
 			$this->db->join('student', 'new_exam_form.student_id = student.student_id');
 			$this->db->where('student.new_exam_form','Y');
-			//$this->db->where('new_exam_form.paper_type','theory');
+			$this->db->where('new_exam_form.paper_type','theory');
 			$count = $this->db->get()->result();
 			
 			#Absent
