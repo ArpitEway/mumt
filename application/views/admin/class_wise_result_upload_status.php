@@ -22,14 +22,15 @@ color:red;
                 <td class="course_css">
                 <?php echo $course_detail['course_name']; ?>
                 </td>
-                <td class="course_css"><a href="<?php echo base_url("class_wise_result_upload_status_report")."/".$course_detail['id']; ?>" target="_blank" >Check Status</a></td>
-               
-               
+                <td class="course_css">
+			<!--<a href="<?php echo base_url("class_wise_result_upload_status_report")."/".$course_detail['id']; ?>" target="_blank" >Check Status</a>-->
+		</td>
+                      
             </tr>
                 <?php 
                 $this->db->order_by('mode','desc');
                 $this->db->order_by('class_name','ASC');
-                $class_master = $this->db->get_where('class_master', array('course_group_id' => $course_detail['id'],'admission_permission' => 'Y'))->result_array();
+                $class_master = $this->db->get_where('class_master', array('course_group_id' => $course_detail['id'],'admission_permission' => 'Y','exam_form_permission' => 'Y'))->result_array();
                 
                 $i = 1; 
 
@@ -51,9 +52,6 @@ color:red;
                 ?>
     </tbody>
     </table>  
-    <div class="text-center">
-    <a class="btn btn-success" href="dashboard">Dashboard</a>
-    </div>
   </div>
 </div>
 	
