@@ -2556,9 +2556,10 @@ public function update_exam_datewise_permission(){
 			$this->db->from('new_exam_form');
 			$this->db->join('student', 'new_exam_form.student_id = student.student_id');
 			$this->db->where('student.new_exam_form','Y');
+			$this->db->where('new_exam_form.paper_type','theory');
 			$count = $this->db->get()->result();
 			$data['total_paper_count'] = $count[0]->num;
-			$data['uploaded'] = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array('exam_status'=> 'R','answer_sheet	!=' => ''));
+			$data['uploaded'] = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array('exam_status'=> 'R','answer_sheet!=' => ''));
 			$data['checked'] = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array('teacher_id!='=> ''));
 			$this->load->view('admin/answersheet_uplaod_status',$data);
 			$this->load->view('footer');
