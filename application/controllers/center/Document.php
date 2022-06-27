@@ -20,7 +20,10 @@
 			'hash_csrf' => $this->security->get_csrf_hash(),
 			'course_type' =>$course_type
 		);
-		$titleData = array('title' => 'Upload Admission Document List'); 
+		if($course_type=="PVT")	
+			$titleData = array('title' => 'Upload Private Admission Document List'); 
+		else
+			$titleData = array('title' => 'Upload Regular Admission Document List'); 	
 		$this->load->view('Centers/header',$titleData);	
 		$this->load->view('Centers/upload_admission_document',$csrf);	
 		$this->load->view('Centers/footer');
