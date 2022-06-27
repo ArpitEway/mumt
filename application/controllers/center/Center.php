@@ -341,11 +341,18 @@ class Center extends CI_Controller {
 		);
 		 
 		if($param1=='paid'){
-		$titleData = array('title' => 'Paid Student List');
+			if($course_type=="PVT")	
+				$titleData = array('title' => 'Private Paid Student List');
+			else
+				$titleData = array('title' => 'Regular Paid Student List');
 		$this->load->view('Centers/header',$titleData);
 		$this->load->view('Centers/all_paid_student',$csrf);
 		}elseif($param1=='unpaid'){
-		$titleData = array('title' => 'Unpaid Student List');
+			if($course_type=="PVT")	
+				$titleData = array('title' => 'Private Unpaid Student List');
+			else
+				$titleData = array('title' => 'Regular Unpaid Student List');
+		//$titleData = array('title' => 'Unpaid Student List');
 		$this->load->view('Centers/header',$titleData);
 		$this->load->view('Centers/all_unpaid_student',$csrf);
 		}
@@ -753,8 +760,10 @@ class Center extends CI_Controller {
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}else{
-			  
-			$titleData = array('title' => 'Form Edit Request');
+			if($course_type=="PVT")	 
+				$titleData = array('title' => 'Private Form Edit Request');
+			else
+				$titleData = array('title' => 'Regular Form Edit Request');	
 			$this->load->view('Centers/header',$titleData);
 			$id =  $this->session->center_id;
 			$request_detail = $this->Common_model->get_record('request','*',array());
@@ -876,7 +885,10 @@ class Center extends CI_Controller {
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
-		$titleData = array('title' => 'Unapproved Student List' );
+		if($course_type=="PVT")	
+			$titleData = array('title' => 'Unapproved Private Student List' );
+		else
+			$titleData = array('title' => 'Unapproved Regular Student List' );	
 		$this->load->view('Centers/header',$titleData);
 
 		$center_id =  $this->session->center_id;
