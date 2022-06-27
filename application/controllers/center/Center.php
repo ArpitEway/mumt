@@ -341,10 +341,7 @@ class Center extends CI_Controller {
 		);
 		 
 		if($param1=='paid'){
-			if($course_type=="PVT")	
-				$titleData = array('title' => 'Private Paid Student List');
-			else
-				$titleData = array('title' => 'Regular Paid Student List');
+		$titleData = array('title' => 'Paid Student List');
 		$this->load->view('Centers/header',$titleData);
 		$this->load->view('Centers/all_paid_student',$csrf);
 		}elseif($param1=='unpaid'){
