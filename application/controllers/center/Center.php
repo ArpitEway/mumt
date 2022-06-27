@@ -163,7 +163,8 @@ class Center extends CI_Controller {
 			'eligibility_list' => $eligibility_list,
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
-			'sessions' => $sessions
+			'sessions' => $sessions,
+			'center_ids_dep' =>$center_ids_dep,
 		);
 		$this->load->view('Centers/header',$titleData);
 		$this->load->view('Centers/admission_form',$data);
@@ -245,12 +246,13 @@ class Center extends CI_Controller {
 	public function all_student()
 	{
 		$where = array('center_id' => $this->session->center_id);
-	
+		$course_type = $this->uri->segment(2);  
 		$csrf = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 			'session_list' => $this->Common_model->get_record('session','*'),
-			'courses' => $this->Common_model->get_record_by_order('student','DISTINCT(course_group_id),course_name','course_name desc',$where)
+			'courses' => $this->Common_model->get_record_by_order('student','DISTINCT(course_group_id),course_name','course_name desc',$where),
+			'course_type' => $course_type 
 		);
 
 		$titleData = array('title' => 'Students Report');
@@ -331,11 +333,13 @@ class Center extends CI_Controller {
 
 	public function student_list($param1 = '')
 	{
+		$course_type = $this->uri->segment(3); 
 		$csrf = array( 
 			'name_csrf' => $this->security->get_csrf_token_name(),
-			'hash_csrf' => $this->security->get_csrf_hash()
+			'hash_csrf' => $this->security->get_csrf_hash(),
+			'course_type' => $course_type 
 		);
-
+		 
 		if($param1=='paid'){
 		$titleData = array('title' => 'Paid Student List');
 		$this->load->view('Centers/header',$titleData);
@@ -349,6 +353,7 @@ class Center extends CI_Controller {
 	}
 
 	public function getUnpaidFeesList($param1 = ''){
+		$course_type=$this->input->post('course_type');
 		$data = $row = array();
 		$where = 'online_payment_transaction.center_id='.$this->session->center_id.' and online_payment_transaction.payment!="Y"';
 		
@@ -364,7 +369,7 @@ class Center extends CI_Controller {
 		$DataTableArray = array(
 			'column_order' => $column_order,
 			'column_search' => $column_search,
-			'where' => $where.' and online_payment_transaction.center_id=student.center_id',
+			'where' => $where.' and online_payment_transaction.center_id=student.center_id AND student.university_mode="'.$course_type.'"',
 			
 			'table' => 'student',
 			'table2' => 'online_payment_transaction',
@@ -409,11 +414,11 @@ class Center extends CI_Controller {
 
 		$column_order = array('student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','fees_head','amount','txnId',null);
 		$column_search = array('student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','fees_head','amount','txnId');
-
+		$course_type=$this->input->post('course_type');
 		$DataTableArray = array(
 			'column_order' => $column_order,
 			'column_search' => $column_search,
-			'where' => $where.' and online_payment_transaction.center_id=student.center_id',
+			'where' => $where.' and online_payment_transaction.center_id=student.center_id AND student.university_mode="'.$course_type.'"',
 			'table' => 'student',
 			'table2' => 'online_payment_transaction',
 			'joinOn' => 'student.student_id=online_payment_transaction.student_id'
@@ -656,7 +661,9 @@ class Center extends CI_Controller {
 				'account_type' => 'center'
 			);
 			$this->session->set_userdata($data);
-			redirect('https://center.mmyvvonline.com');
+			
+			//redirect('https://center.mmyvvonline.com');
+			redirect($this->index);
 		}else{
 			$this->session->set_flashdata('error','center Code Are Incorrect');
 			redirect(base_url('center'));
@@ -715,7 +722,14 @@ class Center extends CI_Controller {
 
 	public function getCourseBySession(){
 		$session = $this->input->post('session');
-		$where = "session='".$session."' and center_id=".$this->session->center_id;
+		$course_type= $this->input->post('course_type');
+		$course_type_where="";
+		if(!empty($course_type)){
+			
+				$course_type_where="student.university_mode='".$course_type."' AND ";	
+			
+		}
+		$where = $course_type_where." session='".$session."' and center_id=".$this->session->center_id;
 		$course_group_list = $this->Common_model->get_record('student','distinct(course_group_id) as id,course_name',$where);
 		$data = array(
 			'course_group_list' => $course_group_list,
@@ -734,18 +748,21 @@ class Center extends CI_Controller {
 	}
 
 
-	public function form_edit_request()
+	public function form_edit_request($course_type="REG")
 	{
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}else{
+			  
 			$titleData = array('title' => 'Form Edit Request');
 			$this->load->view('Centers/header',$titleData);
 			$id =  $this->session->center_id;
 			$request_detail = $this->Common_model->get_record('request','*',array());
 			$data = array('request_detail' => $request_detail,
 				'name_csrf' => $this->security->get_csrf_token_name(),
-				'hash_csrf' => $this->security->get_csrf_hash());
+				'hash_csrf' => $this->security->get_csrf_hash(),
+				'course_type' =>  $course_type,
+			);
 			$this->load->view('Centers/form_edit_request',$data);
 			$this->load->view('Centers/footer');
 		}
@@ -816,6 +833,10 @@ class Center extends CI_Controller {
 
 	public function getFormEditRequest()
 	{
+		$course_type=$this->input->post('course_type');
+		$course_type_where="";
+		if(!empty($course_type))
+			$course_type_where .=" AND student.university_mode='".$course_type."'  ";	
 		$data = $row = array();
 		$where = 'request.center_id='.$this->session->center_id;
 		$column_order = array(null,'name','student.student_id','detail','date','status','request_remark');
@@ -824,7 +845,7 @@ class Center extends CI_Controller {
 			'column_order' => $column_order,
 			'column_search' => $column_search,
 			'select' => 'request.request_remark,request.student_id, request.date, request.detail, name, request.status',
-			'where' => $where,
+			'where' => $where.$course_type_where,
 			'table' =>  'request',
 			'table2' => 'student',
 			'joinOn' => 'request.student_id=student.student_id'
@@ -851,6 +872,7 @@ class Center extends CI_Controller {
 	}
 
 	public function not_approve_student_list(){
+		$course_type = $this->uri->segment(2); 
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
@@ -862,6 +884,7 @@ class Center extends CI_Controller {
 		$where = array(
 			'approved' =>'N',
 			'center_id' => $center_id,
+			'university_mode' =>$course_type,
 		);
 		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
 		

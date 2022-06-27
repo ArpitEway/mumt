@@ -2,8 +2,16 @@
 	<div class="col-12 col-md-3 col-sm-12 menu-background p-3" >
 		<ul class="nav flex-column nav-pills">
 			<li class="nav-item mb-2">
-				<a class="nav-link active show border" id="Enrollment-tab" data-toggle="tab" href="#Enrollment">
-					<span class="nav-text">Enrollment</span>
+				<a class="nav-link active show  border" id="Enrollment-tab-Regular" data-toggle="tab" href="#Enrollment_Regular">
+					<span class="nav-text">Enrollment Regular</span>
+					<span class="nav-icon flot-right" >
+						<i class="flaticon2-fast-next"></i>
+					</span>
+				</a>
+			</li>
+			<li class="nav-item mb-2">
+				<a class="nav-link border" id="Enrollment-tab-Private" data-toggle="tab" href="#Enrollment_Private">
+					<span class="nav-text">Enrollment Private</span>
 					<span class="nav-icon flot-right" >
 						<i class="flaticon2-fast-next"></i>
 					</span>
@@ -29,30 +37,16 @@
 	</div>
 	<div class="col-md-8 col-12 col-sm-12 menu-background p-3">
 		<div class="tab-content">
-			<div class="tab-pane fade active show" id="Enrollment" role="tabpanel" aria-labelledby="Enrollment-tab">
+			<div class="tab-pane fade" id="Enrollment_Private" role="tabpanel" aria-labelledby="Enrollment-tab-Private">
 				<div class="row">
 
-					<a class="border-0 custom-menu-item" href="<?=base_url('instruction');?>">
-						<div>
-							<span class="nav-text">Regular Course Details</span>
-						</div>
-					</a>
+					
 					<a class="border-0 custom-menu-item" href="<?=base_url('instruction_private');?>">
 						<div>
 							<span class="nav-text">Private Course Details</span>
 						</div>
 					</a>
-				  <?php
-				  if($center->admission_permission=='Y'){
-					  ?>
-	                <a class="border-0 custom-menu-item" href="<?=base_url('admission_form/regular');?>">
-						<div>
-							<span class="nav-text">Admission Form Regular</span>
-						</div>
-					</a>
-				<?php
-				  }
-				  ?>
+				 
 				 <?php
 				$center_id =  $this->session->center_id;	
 				$center_ids_dep = array(21,22,23,24,25,26,27,28);
@@ -66,27 +60,91 @@
 				<?php
 				  }
 				  ?>
-					<a class="border-0 custom-menu-item" href="<?=base_url('all_student');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('all_student/PVT');?>">
 						<div>
 							<span class="nav-text">Student Report</span>
 						</div>
 					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('student_list/unpaid');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('student_list/unpaid/PVT');?>">
 						<div>
 							<span class="nav-text">Unpaid Student</span>
 						</div>
 					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('Document');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('Document/index/PVT');?>">
 						<div>
 							<span class="nav-text">Upload Admission Document</span>
 						</div>
 					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('not_approve_student_list');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('not_approve_student_list/PVT');?>">
 						<div>
 							<span class="nav-text">Unapproved Student List</span>
 						</div>
 					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('form_edit_request');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('form_edit_request/PVT');?>">
+						<div>
+							<span class="nav-text">Form Edit Request</span>
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class="tab-pane fade active show" id="Enrollment_Regular" role="tabpanel" aria-labelledby="Enrollment-tab-Regular">
+				<div class="row">
+
+					<a class="border-0 custom-menu-item" href="<?=base_url('instruction');?>">
+						<div>
+							<span class="nav-text">Regular Course Details</span>
+						</div>
+					</a>
+					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('instruction_private');?>">
+						<div>
+							<span class="nav-text">Private Course Details</span>
+						</div>
+					</a> -->
+				  <?php
+				  if($center->admission_permission=='Y'){
+					  ?>
+	                <a class="border-0 custom-menu-item" href="<?=base_url('admission_form/regular');?>">
+						<div>
+							<span class="nav-text">Admission Form Regular</span>
+						</div>
+					</a>
+				<?php
+				  }
+				  ?>
+				 <?php
+				/* $center_id =  $this->session->center_id;	
+				$center_ids_dep = array(21,22,23,24,25,26,27,28);
+				  if($center->admission_permission_private=='Y' && !in_array($center_id, $center_ids_dep)){
+					?>
+					<a class="border-0 custom-menu-item" href="<?=base_url('admission_form/private');?>">
+						<div>
+							<span class="nav-text">Admission Form Private</span>
+						</div>
+					</a>
+				<?php
+				  } */
+				  ?>
+					<a class="border-0 custom-menu-item" href="<?=base_url('all_student/REG');?>">
+						<div>
+							<span class="nav-text">Student Report</span>
+						</div>
+					</a>
+					<a class="border-0 custom-menu-item" href="<?=base_url('student_list/unpaid/REG');?>">
+						<div>
+							<span class="nav-text">Unpaid Student</span>
+						</div>
+					</a>
+					<a class="border-0 custom-menu-item" href="<?=base_url('Document/index/REG');?>">
+						<div>
+							<span class="nav-text">Upload Admission Document</span>
+						</div>
+					</a>
+					<a class="border-0 custom-menu-item" href="<?=base_url('not_approve_student_list/REG');?>">
+						<div>
+							<span class="nav-text">Unapproved Student List</span>
+						</div>
+					</a>
+					<a class="border-0 custom-menu-item" href="<?=base_url('form_edit_request/REG');?>">
 						<div>
 							<span class="nav-text">Form Edit Request</span>
 						</div>

@@ -1816,7 +1816,9 @@ public function getStudentData()
 		$i = $_POST['start'];
 		foreach($tableData as $result){
 			$center_code = $this->Common_model->encrypt_decrypt($result->center_code,'encrypt');
-			$btn ='<a class="btn btn-primary"  href="'.'https://center.mmyvvonline.com/center/loginAs/'.$center_code.'" target="_blank" >Log As</a>' ;
+			//$btn ='<a class="btn btn-primary"  href="'.'https://center.mmyvvonline.com/center/loginAs/'.$center_code.'" target="_blank" >Log As</a>' ;
+			$centerURL=str_replace("admin","center",base_url());
+			$btn ='<a class="btn btn-primary"  href="'.$centerURL.'/center/loginAs/'.$center_code.'" target="_blank" >Log As</a>' ;
 			$i++;
 			$data[] = array($i,$result->id, $result->center_code, $result->center_name, $result->contactpersonname,$result->mobile_no_1,$btn);
 		}
