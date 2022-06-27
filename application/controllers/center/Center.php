@@ -412,13 +412,14 @@ class Center extends CI_Controller {
 		$data = $row = array();
 		$where = 'online_payment_transaction.center_id='.$this->session->center_id.' and online_payment_transaction.payment="Y"';
 
-		$column_order = array('student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','fees_head','amount','txnId',null);
-		$column_search = array('student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','fees_head','amount','txnId');
+		$column_order = array('university_mode,student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','fees_head','amount','txnId',null);
+		$column_search = array('university_mode,student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','fees_head','amount','txnId');
 		$course_type=$this->input->post('course_type');
+		//AND student.university_mode="'.$course_type.'"
 		$DataTableArray = array(
 			'column_order' => $column_order,
 			'column_search' => $column_search,
-			'where' => $where.' and online_payment_transaction.center_id=student.center_id AND student.university_mode="'.$course_type.'"',
+			'where' => $where.' and online_payment_transaction.center_id=student.center_id',
 			'table' => 'student',
 			'table2' => 'online_payment_transaction',
 			'joinOn' => 'student.student_id=online_payment_transaction.student_id'
@@ -429,7 +430,8 @@ class Center extends CI_Controller {
 		foreach($tableData as $result){
 			$btn = '<a href="'.base_url('show_fees/'.$this->Common_model->encrypt_decrypt($result->id)).'" class="btn btn-primary btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>';
 			$i++;
-			$data[] = array($result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->fees_head,$result->amount,$result->txnId,$btn);
+			$university_mode = ($result->university_mode=='REG') ? 'Regular' : 'Private';
+			$data[] = array($university_mode, $result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->fees_head,$result->amount,$result->txnId,$btn);
 		}
 
 		$output = array(
