@@ -163,7 +163,8 @@ class Center extends CI_Controller {
 			'eligibility_list' => $eligibility_list,
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
-			'sessions' => $sessions
+			'sessions' => $sessions,
+			'center_ids_dep' =>$center_ids_dep,
 		);
 		$this->load->view('Centers/header',$titleData);
 		$this->load->view('Centers/admission_form',$data);
