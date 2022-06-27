@@ -118,6 +118,7 @@
       }
 
       if($new_exam_form->type!='theory'){
+        $total_paper_marks += $new_exam_form->max_theory_marks;
         $total_marks_obt += $new_exam_form->p_marks;
         if($new_exam_form->p_marks=='' || $new_exam_form->p_marks=='N'){
           $rw_count++;
