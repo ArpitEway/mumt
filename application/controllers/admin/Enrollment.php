@@ -1031,6 +1031,46 @@
 		echo json_encode(array(
 		"status" => 'true',
 		));
-		//redirect(base_url().'admin/enrollment/student_report');
+		
+     //redirect(base_url().'admin/enrollment/student_report');
 	}
+
+	public function provisional_remark_list(){
+
+		$this->load->view('header',array('title' => 'Provisional Students'));
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();	 
+		$where = array('','N');
+		$this->db->where_not_in('provisional_remark', $where);	
+		$data['student_list'] = $this->db->get('student')->result();
+		$this->load->view('admin/enrollment/provisional_remark_list',$data);
+		$this->load->view('footer');
+	}
+
+
+	public function update_provisional_status()
+	{ 
+		$class_ids = $this->input->post('class_ids');	
+		$student_id = $this->input->post('student_ids');
+		$class_permission= $this->Common_model->getRecordByWhere('class_master',array('id'=>$class_ids));
+		if($class_permission[0]->result_permission=='Y'){
+			$where = array(
+				'student_id'=>$student_id,	);
+			$data = array('result_show' =>'Y');
+			$update =  $this->Common_model->updateRecordByConditions('student',$where,$data);
+		      }
+		$where = array(
+			'student_id'=>$student_id,	);
+		$data = array( 'provisional_remark' =>'N');
+		$update =  $this->Common_model->updateRecordByConditions('student',$where,$data);
+		if($update){
+			$result = array("status" => "true");
+		}
+		else{
+			$result = array('error'=> "Not Remark Updated");
+		}
+		echo json_encode($result);
+	}
+
+
 }
