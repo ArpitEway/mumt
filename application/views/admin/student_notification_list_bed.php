@@ -190,7 +190,13 @@ $abs_count = 0 ;
 								<?=$final_result; ?>  	
 							</td>
 							<td align="center" width="10%">					
-								<?php echo $total_marks_obt.'/'.$total_paper_marks ?>
+								<?php 
+								if($final_result!='FAIL'){
+								echo $total_marks_obt.'/'.$total_paper_marks;
+								}else{
+								echo '-';
+								} 
+								?>
 							</td>
 							<td class="text-center">
 								<?php if($check_grace_marks){
