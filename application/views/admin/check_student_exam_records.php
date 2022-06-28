@@ -81,7 +81,7 @@
                 [csrfName]:csrfHash
             }
           $.ajax({
-                url:site_url+'admin/admins/get_student_exam_details',
+                url:site_url+'admin/<?=$this->session->account_type; ?>/get_student_exam_details',
                 type:'post',
                 dataType : 'JSON',
                 data: data,
