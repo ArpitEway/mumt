@@ -1052,16 +1052,15 @@
 	{ 
 		$class_ids = $this->input->post('class_ids');	
 		$student_id = $this->input->post('student_ids');
-		$class_permission= $this->Common_model->getRecordByWhere('class_master',array('id'=>$class_ids));
-		if($class_permission[0]->result_permission=='Y'){
-			$where = array(
-				'student_id'=>$student_id,	);
-			$data = array('result_show' =>'Y');
-			$update =  $this->Common_model->updateRecordByConditions('student',$where,$data);
-		      }
+		$class_permission= $this->Common_model->getRecordByWhere('class_master',array('id'=>$class_ids));	
 		$where = array(
 			'student_id'=>$student_id,	);
-		$data = array( 'provisional_remark' =>'N');
+		if($class_permission[0]->result_permission=='Y'){     
+		$data = array('provisional_remark' =>'N','result_show' =>'Y');
+	     }
+	     else{
+	     	$data = array('provisional_remark' =>'N');
+	     }
 		$update =  $this->Common_model->updateRecordByConditions('student',$where,$data);
 		if($update){
 			$result = array("status" => "true");
