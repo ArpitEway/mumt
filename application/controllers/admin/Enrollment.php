@@ -1022,7 +1022,6 @@
 	
 	public function provisional_remark_update($param){
 		$remark = html_escape($this->input->post('remark'));
-	
 		$data['provisional_remark'] = implode(",",$remark);
 		$data['approved'] = 'Y';
 		$this->db->where('student_id', $param);
@@ -1031,12 +1030,9 @@
 		echo json_encode(array(
 		"status" => 'true',
 		));
-		
-     //redirect(base_url().'admin/enrollment/student_report');
 	}
 
 	public function provisional_remark_list(){
-
 		$this->load->view('header',array('title' => 'Provisional Students'));
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();	 
@@ -1052,15 +1048,15 @@
 	{ 
 		$class_ids = $this->input->post('class_ids');	
 		$student_id = $this->input->post('student_ids');
+		$$new_exam_form = $this->input->post('new_exam_form');
 		$class_permission= $this->Common_model->getRecordByWhere('class_master',array('id'=>$class_ids));	
-		$where = array(
-			'student_id'=>$student_id,	);
-		if($class_permission[0]->result_permission=='Y'){     
+		$where = array('student_id'=>$student_id;
+		if($class_permission[0]->result_permission=='Y' && $new_exam_form=='Y'){     
 		$data = array('provisional_remark' =>'N','result_show' =>'Y');
-	     }
-	     else{
+	     	}
+	     	else{
 	     	$data = array('provisional_remark' =>'N');
-	     }
+	     	}
 		$update =  $this->Common_model->updateRecordByConditions('student',$where,$data);
 		if($update){
 			$result = array("status" => "true");
