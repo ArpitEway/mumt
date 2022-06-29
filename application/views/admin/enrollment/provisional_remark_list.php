@@ -34,6 +34,7 @@
 				<td>
 					<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 					<input type="hidden" class="class_id" name="class_id" value="<?= $student->class_id ; ?>">
+					<input type="hidden" class="new_exam_form" name="new_exam_form" value="<?= $student->new_exam_form; ?>">
 					<button  class="btn btn-primary remark"  onclick="student_data(<?php echo $student->student_id; ?>)">Reset</button>        
 				</td>
 			</tr>
@@ -53,9 +54,11 @@
 		var csrfName = $('.csrfname').attr('name');
 		var csrfHash = $('.csrfname').val();
 		var class_id = $('.class_id').val();
+		var new_exam_form = $('.new_exam_form').val();
 		let data = {
 			'student_ids':student_id,
 			'class_ids':class_id,
+			'new_exam_form':new_exam_form,
 			[csrfName]:csrfHash
 		}
 		Swal.fire({
