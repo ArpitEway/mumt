@@ -78,7 +78,7 @@
 				data: data,
 				success: function(response){
 					if(response.status=='true'){
-						 toastr.success('update status remark successfully');
+						 toastr.success('Reset Remark Successfully');
 						$('#student_tr_'+student_id).hide();
 					}
 					else{
