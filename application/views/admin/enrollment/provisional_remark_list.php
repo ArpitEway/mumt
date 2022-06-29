@@ -20,7 +20,10 @@
 			foreach($student_list as $student){ ?>
 				<tr  id="student_tr_<?php echo $student->student_id; ?>">
 					<td><?php echo $i; ?></td>
-					<td><?php echo $student->university_mode;?></td>
+					<td>
+					    <?php $university_mode = ($student->university_mode=='REG') ? 'Regular' : 'Private';
+					    echo $university_mode; ?>
+					</td>
 					<td><?php echo $student->student_id; ?></td>
 					<td><?php echo $student->enrollment_no; ?></td>
 					<td><?php echo $student->name; ?></td>
