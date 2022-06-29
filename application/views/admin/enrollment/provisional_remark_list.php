@@ -63,7 +63,7 @@
 		}
 		Swal.fire({
 			title: "Are you sure?",
-			text: "Want to Set Remark ?",
+			text: "Want to Remove Remark ?",
 			icon: "info",
 			showCancelButton: true,
 			confirmButtonText: "Yes"

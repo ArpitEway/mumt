@@ -1048,7 +1048,7 @@
 	{ 
 		$class_ids = $this->input->post('class_ids');	
 		$student_id = $this->input->post('student_ids');
-		$$new_exam_form = $this->input->post('new_exam_form');
+		$new_exam_form = $this->input->post('new_exam_form');
 		$class_permission= $this->Common_model->getRecordByWhere('class_master',array('id'=>$class_ids));	
 		$where = array('student_id'=>$student_id);
 		if($class_permission[0]->result_permission=='Y' && $new_exam_form=='Y'){     
