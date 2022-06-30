@@ -3145,19 +3145,30 @@ public function update_exam_datewise_permission(){
 		$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,195,197,203,211,213,227)');
         	//$this->db->Where('result_show','Y');
 		$this->db->where_in('new_exam_form.int_marks',array('ABS','N'));
-		$data['students'] = $this->db->get()->result();
+		$data['students'] = $this->db->get()->result();//echo $this->db->last_query(); die;
 		$this->load->view('admin/student_int_marks_no_list',$data);
 		$this->load->view('footer');
 	}
 
-	public function student_int_assignment_marks(){
+	public function student_int_assignment_marks(){ //$this->db->Where('practical_internal_marks','Y');
 		$student_id = $this->input->post('student_id');
+		$class_id = $this->input->post('class_id');
+		
+		$classData	= $this->Common_model->getRecordById('class_master','id',$class_id);
+		
+		//$where=array('student.student_id'=>$student_id,'paper_type'=>'theory');
 		$where=array('student.student_id'=>$student_id,'paper_type'=>'theory');
 		$this->db->select('*');
 		$this->db->from('new_exam_form');
-		$this->db->Where($where );
+		
+		$this->db->where('student.student_id',$student_id);
+		if($classData->practical_internal_marks=="N")
+			$this->db->where('paper_type','theory');
+		
 		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
+		
 		$details = $this->db->get()->result();
+	
 		$data = array(
 			'details' => $details,
 			'name_csrf' => $this->security->get_csrf_token_name(),
@@ -3208,6 +3219,8 @@ public function update_exam_datewise_permission(){
 
 	public function view_student_marks(){
 		$student_id = $this->input->post('student_id');
+		$class_id = $this->input->post('class_id');
+		$classData	= $this->Common_model->getRecordById('class_master','id',$class_id);
 		$where=array('student.student_id'=>$student_id,);
 		$this->db->select('*');
 		$this->db->from('new_exam_form');
@@ -3215,6 +3228,7 @@ public function update_exam_datewise_permission(){
 		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
 		$details = $this->db->get()->result();
 		$data = array(
+			'classData' =>$classData,
 			'detail' => $details,
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),

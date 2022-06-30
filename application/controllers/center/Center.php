@@ -1387,19 +1387,25 @@ class Center extends CI_Controller {
 	 	$this->db->from('student');
 	 	$this->db->Where($where);
 	 	//$this->db->where('`student.class_id` in (154 , 158 , 181 , 193 , 195 , 197 , 199 , 201 , 203 , 205 , 207 , 209 , 211 , 213 , 221 , 223 , 225 , 227 )');
-	 	$data['students'] = $this->db->get()->result();
+	 	$data['students'] = $this->db->get()->result();//echo $this->db->last_query(); die;
 	 	$this->load->view('Centers/student_marks_no_list',$data);
 	 	$this->load->view('Centers/footer');
 	}
 
 	public function load_student_assignment(){
 	 	$student_id = $this->input->post('student_id');
-	 	$where=array('student.student_id'=>$student_id,'paper_type'=>'theory');
+		 $class_id = $this->input->post('class_id');
+		$classData	= $this->Common_model->getRecordById('class_master','id',$class_id);
+	 	//$where=array('student.student_id'=>$student_id,'paper_type'=>'theory');
 	 	$this->db->select('*');
 	 	$this->db->from('new_exam_form');
-	 	$this->db->Where($where );
+	 	//$this->db->Where($where );
+		$this->db->where('student.student_id',$student_id);
+		if($classData->practical_internal_marks=="N")
+			$this->db->where('paper_type','theory');
 	 	$this->db->join('student', 'student.student_id = new_exam_form.student_id');
 	 	$details = $this->db->get()->result();
+		 	//echo $classData->practical_internal_marks.$this->db->last_query(); die;
 	 	$data = array(
 	 		'details' => $details,
 	 		'name_csrf' => $this->security->get_csrf_token_name(),
@@ -1742,6 +1748,8 @@ class Center extends CI_Controller {
 
 	public function view_student_marks(){
 		 	$student_id = $this->input->post('student_id');
+			$class_id = $this->input->post('class_id');
+			$classData	= $this->Common_model->getRecordById('class_master','id',$class_id); 
 		 	$where=array('student.student_id'=>$student_id,);
 		 	$this->db->select('*');
 		 	$this->db->from('new_exam_form');
@@ -1749,6 +1757,7 @@ class Center extends CI_Controller {
 		 	$this->db->join('student', 'student.student_id = new_exam_form.student_id');
 		 	$details = $this->db->get()->result();
 		 	$data = array(
+				'classData' =>$classData,
 		 		'detail' => $details,
 		 		'name_csrf' => $this->security->get_csrf_token_name(),
 		 		'hash_csrf' => $this->security->get_csrf_hash(),
