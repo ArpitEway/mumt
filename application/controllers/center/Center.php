@@ -1485,13 +1485,19 @@ class Center extends CI_Controller {
 		$data = array('name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 		);
-		$this->db->select('distinct(course_group_id) as course_group_id , course_group.course_name');
+		$this->db->select('distinct(student.course_group_id) as course_group_id , course_group.course_name');
 		$this->db->from('student');
+		
 		$this->db->join('course_group', 'student.course_group_id = course_group.id');
+		$this->db->join('class_master', 'class_master.course_group_id = course_group.id');
+		//$this->db->where('class_master.id', 'student.class_id');
+		
+		$this->db->where('class_master.result_permission', 'Y');
 		$this->db->where('center_id', $center_id);
 		$this->db->where('result_show','Y');
-		$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,197,203,211,213)');
+		//$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,197,203,211,213)');
 		$data['courses'] = $this->db->get()->result();
+		//echo $this->db->last_query(); die;
 		$this->load->view('Centers/header', array('title' => 'Result'));
 		$this->load->view('Centers/result',$data);
 		$this->load->view('Centers/footer');		
@@ -1503,8 +1509,27 @@ class Center extends CI_Controller {
 	$this->db->select('*');
 	$this->db->from('class_master');
 	$this->db->where('exam_form_permission','Y');
+	//$this->db->where('class_master.result_permission', 'Y');
 	$this->db->where('course_group_id',$course);
-	$class_list = $this->db->get()->result_array();		
+	$class_list = $this->db->get()->result_array();	
+	//echo $this->db->last_query(); 	
+		$data = array(
+			'class_list' => $class_list,
+			'all'=> true
+		);
+		echo $this->load->view('template/getclass',$data,true);
+	}
+
+	public function AllClassByCourseForResult()
+	{
+    $course = $this->input->post('course_group_id');
+	$this->db->select('*');
+	$this->db->from('class_master');
+	$this->db->where('exam_form_permission','Y');
+	$this->db->where('class_master.result_permission', 'Y');
+	$this->db->where('course_group_id',$course);
+	$class_list = $this->db->get()->result_array();	
+	//echo $this->db->last_query(); 	
 		$data = array(
 			'class_list' => $class_list,
 			'all'=> true
@@ -1514,33 +1539,36 @@ class Center extends CI_Controller {
 
 	public function getStudentListForMarksheet(){
 		$data = $row = array();
-
+	
 		$where = array('center_id' => $this->session->center_id,
 			 'result_show'=>'Y');
-
+	
 
 		if($_POST['course_group_id']!='All' and $_POST['course_group_id']!=''){
-			$where['course_group_id'] = $this->input->post('course_group_id');
+			$where['student.course_group_id'] = $this->input->post('course_group_id');
+			
 		}
 		if($_POST['class_id']!='All' and $_POST['class_id']!=''){
 			$where['class_id'] = $this->input->post('class_id');
+		
 		}
-
+		$where['result_permission'] = 'Y';
 		// Fetch member's records
 		
 		$column_order = array('student.student_id','enrollment_no','name','f_h_name','course_name','class_name',null);
 		$column_search = array('student.student_id','enrollment_no','course_name','class_name','name','f_h_name');
-
+	
 		$DataTableArray = array(
 			'column_order' => $column_order,
 			'column_search' => $column_search,
 			'where' => $where,
 			'table' => 'student',
-			'table2' => 'student_data',
-			'joinOn' => 'student.student_id=student_data.student_id'
+			'table2' => 'class_master',
+			'joinOn' => 'student.class_id=class_master.id'
 		);
 
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
+		
 		$i = $_POST['start'];
 		foreach($tableData as $result){
 			$btn =	'<a href="'.base_url('center/Center/marksheet/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
@@ -1555,7 +1583,8 @@ class Center extends CI_Controller {
 
 		$output = array(
 			"draw" => $_POST['draw'],
-			"recordsTotal" => $this->Datatable_join_model->countAll('student',$where),
+			"recordsTotal" => $this->Datatable_join_model->joincountAll($_POST,$DataTableArray),
+			//"recordsTotal" => $this->Datatable_join_model->countAll('student',$where),
 			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
 			"data" => $data,
 		);
@@ -1573,6 +1602,8 @@ class Center extends CI_Controller {
 			redirect(base_url());
 		}
 		$data['student']=$student[0];
+		$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
+		$data['practical_internal_marks']=$classData->practical_internal_marks;
 		$this->db->select('*');
 		$this->db->from('new_exam_form');
 		$this->db->where('new_exam_form.student_id',$data['student']->student_id); 
