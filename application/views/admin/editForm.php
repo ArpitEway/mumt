@@ -14,10 +14,10 @@
                 			<label>Session</label><span class="text-danger"> *</span>
 
                 			<select class="form-control" name="session" id="session">
-                				<option value="">All</option>
+       
                 				<?php foreach ($sessions as $session) {
                 					?>
-                					<option value="<?=$session['session']; ?>"><?php echo $session['session']; ?></option> 
+                					<option selected value="<?=$session['session']; ?>"><?php echo $session['session']; ?></option> 
                 					<?php 
                 				} ?>
                 			</select>
