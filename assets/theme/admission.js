@@ -245,7 +245,7 @@ $(document).on('click','#edit_submit', function () {
 					},
 					error: function (data) {
 				$('input[type="button"]').removeAttr('disabled','disabled');
-						toastr.error('An error occurred.');
+						toastr.error('Course Permission Not Permitted .');
 					},
 				});
 			
