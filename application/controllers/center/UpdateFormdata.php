@@ -93,7 +93,8 @@ class updateFormdata extends CI_Controller {
 		$session_permission= $this->Common_model->getRecordByWhere('session',array("session"=>$session));	
 		$mode= $this->Common_model->getRecordByWhere('student',array("student_id"=>$student_id ));	
 
-	if(($mode[0]->university_mode=='REG' && $course_permission[0]->admission_permission_regular=='Y' && $session_permission[0]->admission_permission=='Y' ) ||  ($mode[0]->university_mode=='PVT' &&  $course_permission[0]->admission_permission_private=='Y' && $session_permission[0]->admission_permission=='Y')){
+		if(($mode[0]->university_mode=='REG' && $course_permission[0]->admission_permission_regular=='Y' && $session_permission[0]->admission_permission=='Y' ) ||  ($mode[0]->university_mode=='PVT' &&  $course_permission[0]->admission_permission_private=='Y' && $session_permission[0]->admission_permission=='Y'))
+		   {
 			$path = 'assets/student_image/'.$session;
 			if(!file_exists($path)){
 				mkdir($path);
@@ -105,12 +106,10 @@ class updateFormdata extends CI_Controller {
 				$this->Common_model->updateRecordByConditions('student',$where,$PhotoData);
 			}
 		}
-		 else {
-		 	//$this->session->set_flashdata('ajax_flash_message','course Permission Not permitted');	
-		 	 return false;
-		 }
+		else {
+			return false;
+		}
 		
-
 		$studentData['student_id'] = $student_id;
         $this->db->where('student_id', $student_id);
 		$this->db->update('student_data', $studentData);

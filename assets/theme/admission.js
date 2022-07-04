@@ -245,7 +245,8 @@ $(document).on('click','#edit_submit', function () {
 					},
 					error: function (data) {
 				$('input[type="button"]').removeAttr('disabled','disabled');
-						toastr.error('Course Permission Not Permitted .');
+                   Swal.fire("Not Permitted For Admission ", "info","error");
+					// toastr.error('Course Permission Not Permitted .');
 					},
 				});
 			
