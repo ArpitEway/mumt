@@ -78,13 +78,13 @@
     {
       if($new_exam_form->type=='theory'){
 
-        $total_theory_marks_obt += $new_exam_form->theory_marks;
-        $total_int_marks_obt += $new_exam_form->int_marks;
-        $total_theory_asm_marks = $new_exam_form->theory_marks+ $new_exam_form->int_marks;
-        $total_marks_obt  += $new_exam_form->theory_marks+ $new_exam_form->int_marks;
-        $total_paper_marks += $new_exam_form->max_theory_marks + $new_exam_form->max_internal_marks;
-        $tot_std_marks += $new_exam_form->theory_marks;
-        $tot_marks += $new_exam_form->max_theory_marks;
+        $total_theory_marks_obt +=(int) $new_exam_form->theory_marks;
+        $total_int_marks_obt += (int) $new_exam_form->int_marks;
+        $total_theory_asm_marks = (int) $new_exam_form->theory_marks+ (int) $new_exam_form->int_marks;
+        $total_marks_obt  += (int) $new_exam_form->theory_marks+ (int) $new_exam_form->int_marks;
+        $total_paper_marks += (int) $new_exam_form->max_theory_marks + (int) $new_exam_form->max_internal_marks;
+        $tot_std_marks += (int) $new_exam_form->theory_marks;
+        $tot_marks += (int) $new_exam_form->max_theory_marks;
 
         if($new_exam_form->theory_marks=='ABS'){
           array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
@@ -118,8 +118,8 @@
       }
 
       if($new_exam_form->type!='theory'){
-        $total_paper_marks += $new_exam_form->max_theory_marks;
-        $total_marks_obt += $new_exam_form->p_marks;
+        $total_paper_marks += (int) $new_exam_form->max_theory_marks;
+        $total_marks_obt += (int) $new_exam_form->p_marks;
         if($new_exam_form->p_marks=='' || $new_exam_form->p_marks=='N'){
           $rw_count++;
         }
@@ -348,9 +348,9 @@
        if($check_grace_marks==true){
         echo $paper_master->theory_marks+ $paper_master->int_marks;
       } elseif(($paper_master->theory_marks<$paper_master->min_theory_marks) || ($paper_master->int_marks<$paper_master->min_internal_marks) || $theory_abs_count!=0 || $int_abs_count!=0){
-        echo $paper_master->theory_marks+ $paper_master->int_marks." F";
+        echo (int) $paper_master->theory_marks+ (int) $paper_master->int_marks." F";
       }else{
-        echo $paper_master->theory_marks+ $paper_master->int_marks;
+        echo (int) $paper_master->theory_marks+ (int) $paper_master->int_marks;
       }
     }else{ 
       if($paper_master->p_marks=='ABS'){

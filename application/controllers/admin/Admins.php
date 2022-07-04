@@ -2892,9 +2892,12 @@ public function update_exam_datewise_permission(){
 	}
 
 	public function generate_tr($course_group_id="",$class_id=""){
-		$this->db->order_by('roll_number','ASC');
+		$this->db->order_by('center_id','ASC');
+		$this->db->order_by('roll_no','ASC');
+		
+		
 		$data['students'] = $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y','roll_no!='=>'0', 'result_show' => 'N' ));
-		$data['class_id'] = $class_id;
+		$data['class_id'] = $class_id;//echo $this->db->last_query(); die;
 		$data['course_group_id'] = $course_group_id;
 		$title = "TR ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$this->load->view('admin/generate_tr/header2',array('title' =>$title));
