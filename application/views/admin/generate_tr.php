@@ -163,7 +163,7 @@
     }
 
     if($page_break_count%4==0 || $page_break_count==0 || $previous_center!=$current_center){
-      $page_no++;
+      $page_no++;$page_break_count=0;
       ?>
       <p align="center" class="h4"><b>Maharishi Mahesh Yogi Vedic Vishvavidyalaya, Madhya Pradesh</b></p>
       <p align="center" class="line-height">Tabulation Register for <strong><?php echo $student->course_name; echo '&nbsp'. $marksheetData[0]->class_name; ?></strong> Examination <?php echo $marksheetData[0]->exam_session;?>
@@ -230,7 +230,11 @@
         <?php }  ?>
       </tbody>
     </table>
-    <?php $center_code = substr($student->center_code, -4);
+    <?php  $ccode=substr($student->center_code,0,2);
+    if($ccode=="IC")
+              $center_code = substr($student->center_code, -4);
+          else
+              $center_code = $student->center_code;
       echo '<span>'.$center_code. '</span>';
     }
     ?>
