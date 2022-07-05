@@ -189,7 +189,7 @@ $abs_count = 0 ;
 							<th scope="row" class="text-center" width="5%"> S.No. </th>
 							<th scope="row" class="text-center" width="20%"><span class="style5">Roll No.</span></th>
 							<!-- <th scope="row"><p class="style5">MS No.</p></th> -->
-							<th style="text-align:left" class="text-center" scope="row"  width="30%"><span class="style5" >Name</span></th>
+							<th style="text-align:left" class="text-center" scope="row"  width="30%"><span class="style5" >Name and F/H Name</span></th>
 							<th scope="row" class="text-center"  width="15%">Result</span></th>
 							<th scope="row" class="text-center" width="10%"><span class="style5">Total</span></th>
 							<th scope="row" class="text-center"><span class="style5">Remark</span></th>
@@ -209,7 +209,7 @@ $abs_count = 0 ;
 							</td><!-- 
 							<td width="9%"></td> -->
 							<td width="30%" scope="row" class="style6 text-center" >
-								<?php echo $student->name; ?>
+								<?php echo $student->name .' / '.  $student->f_h_name; ?>
 							</td>
 							<td align="center" width="15%" >
 								<?=$final_result; ?>  	
