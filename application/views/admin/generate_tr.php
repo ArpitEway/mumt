@@ -50,9 +50,14 @@
   $page_break_count = -1;
   $br_code_id = 0;
   // $roll_no = array(); 
-  $page_no = 0;
+  //$page_no = 0;
+  $page_no=$pagenumber;
+  $previous_center=$current_center="";
   foreach($students as $student)
   {
+    $current_center=$student->center_id;
+    
+    
     $page_break_count++;
     $marks = $this->Common_model->student_info_for_result($student->student_id);
     $BarCodecolspan = 9 + count($marks); 
@@ -157,7 +162,7 @@
       $division = "Third";
     }
 
-    if($page_break_count%4==0 || $page_break_count==0){
+    if($page_break_count%4==0 || $page_break_count==0 || $previous_center!=$current_center){
       $page_no++;
       ?>
       <p align="center" class="h4"><b>Maharishi Mahesh Yogi Vedic Vishvavidyalaya, Madhya Pradesh</b></p>
@@ -389,6 +394,9 @@
 </tbody>
 </table>
 <?php
+
+  $previous_center=$current_center;//=$student->center_id;
+
 }
 ?>
 
