@@ -2838,10 +2838,11 @@ public function update_exam_datewise_permission(){
 	public function student_notification_list($course_id="",$class_id=""){
 		$course_id1=$this->Common_model->encrypt_decrypt($course_id,'decrypt');
 		$class_id1=$this->Common_model->encrypt_decrypt($class_id,'decrypt');
-		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id1 ,'class_id' => $class_id1,'new_exam_form'=>'Y' ,'roll_no!='=>'0','result_show'=>'N'  ));
-		$this->load->view('header',array('title' => 'Student Notification List'));
+		$this->db->order_by('roll_no','ASC');
+		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id1 ,'class_id' => $class_id1,'new_exam_form'=>'Y' ,'roll_no!='=>'0','result_show'=>'Y' ));
+		$this->load->view('admin/generate_tr/header2');
 		$this->load->view('admin/student_notification_list',$data);
-		$this->load->view('footer');
+		$this->load->view('admin/generate_tr/footer2');
 	}
 
 	public function marksheet_variable(){
@@ -3325,7 +3326,7 @@ public function update_exam_datewise_permission(){
 		$class_id=$this->Common_model->encrypt_decrypt($class_id,'decrypt');
 		$this->db->order_by('roll_number','ASC');
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id, 'class_id' => $class_id, 'exam_form'=>'Y','roll_number!='=>'0','result_show'=>'N' ));
-		$this->load->view('admin/generate_tr/header2',array('title' => 'Student Notification List'));
+		$this->load->view('admin/generate_tr/header2');
 		$this->load->view('admin/student_notification_list_bed',$data);
 		$this->load->view('admin/generate_tr/footer2');
 	}
