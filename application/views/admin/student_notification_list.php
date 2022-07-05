@@ -124,7 +124,7 @@ foreach($students as $student){
         <p align="right" class="mt-4 break size"><?php echo "Page : ". $page_no ; ?></p> 
 		<div style="width:75px;float:left"><img src="<?=base_url('assets/logo.png')?>" ></div>
 		<h3 class="text-center" ><strong> Maharishi Mahesh Yogi Vedic Vishwavidyalaya </strong> </h3>
-		<p align="center" style="line-height:0px">Head Office: Karaundi, Post-Mahner ,Distt- Katni(MP) Website www.mmyvvdde.com </p>
+		<p align="center" style="line-height:0px">Head Office: Karaundi, Post-Mahner ,Distt- Katni(MP) </p>
 		<h3 align="center"><strong>Result Notification of</strong> <br><h3>
 			<h3 align="center">	<strong><?php echo $students[0]->course_name.' - '. $students[0]->class_name .' Examination '. $exam_session?></strong><br><h3>
 				<title>Notification <?php echo $students[0]->course_name?></title> 

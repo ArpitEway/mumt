@@ -172,7 +172,7 @@ $abs_count = 0 ;
 		<h3 class="text-center">
 			<strong> Maharishi Mahesh Yogi Vedic Vishwavidyalaya </strong>
 		</h3>
-		<p align="center" style="line-height:0px">Head Office: Karaundi, Post-Mahner ,Distt- Katni(MP) Website www.mmyvvdde.com </p>
+		<p align="center" style="line-height:0px">Head Office: Karaundi, Post-Mahner ,Distt- Katni(MP)</p>
 		<h3 align="center"><strong>Result Notification of</strong> <br><h3>
 			<h3 class="text-center mb-2">	<strong><?php echo $students[0]->course_name.' - '. $students[0]->class_name .' '. $exam_session?></strong><h3>
 				<title>Notification <?php echo $students[0]->course_name?></title>
