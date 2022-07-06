@@ -247,10 +247,13 @@ foreach($students as $student){
 					<?php
 					if($marks->type=="theory" )
 					{
-                	if($marks->theory_marks=='' ){
-							echo "RW";
-						}
-						elseif(empty($ATKT_paper_codes)) {
+     //            	if($marks->theory_marks=='' || $marks->theory_marks=='ABS' ){
+					// 		// echo "RW";
+					// 	}
+					// if($marks->int_marks=='' || $marks->int_marks=='ABS' ){
+					// 		// echo "RW";
+					// 	}
+						if(empty($ATKT_paper_codes)) {
 							$remark='';
 						}		
 						else{ 
@@ -266,10 +269,13 @@ foreach($students as $student){
 						}			
 					}
 					elseif($marks->type=='Practical'){
-						if($marks->p_marks=='' || $marks->p_marks=='N'){
-							echo "RW";
-						}
-						elseif($marks->p_marks>=$marks->min_theory_marks){
+						// if($marks->p_marks=='' || $marks->p_marks=='N'){
+						// 	// echo "RW";
+						// }
+						// if($marks->p_marks=='ABS'){
+						// 	// echo "RW";
+						// }
+						if($marks->p_marks>=$marks->min_theory_marks){
 							$remark='';
 						}
 						else{ 
