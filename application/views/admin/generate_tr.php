@@ -241,7 +241,7 @@
     <table class="table table1">
       <tbody>
         <tr>
-          <th  class="align-middle text-center " style="width: 85px;" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_no ?> <br> <?php echo $student->enrollment_no  ?></th>
+          <th  class="align-middle text-center " style="width: 85px;" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_no  ?> <br> <?php echo $student->enrollment_no  ?></th>
           <th class="align-middle text-center pl-5 pr-5" rowspan="<?php echo $rowspandata ?>"></th>
           <th  class="align-middle text-center pl-4 pr-4" rowspan="<?php echo $rowspandata ?>"><img alt="N/A" src="<?= base_url('assets/student_image/'.$student->session.'/'.$student->photo) ?>" height="90px"></th>
           <td  class="align-middle text-center  pl-5 pr-5 custom_width"  rowspan="<?php  echo $rowspandata ?>"><?php  echo $student->name ?>/ <br><?php  echo $student->f_h_name ?></td>
@@ -299,29 +299,30 @@
         <?php }    ?>
         <td class="align-middle text-center"><?php if($theory_abs_count>0){echo "-";}else{echo  $total_theory_marks_obt;} ; ?></td>
       </tr>
+      <?php if($course_group_id !=36 && $course_group_id !=37 ){ ?>
       <tr>
         <td class="align-middle text-right">Internal Marks-></td>
-      <?php foreach($marks as $paper_master){ ?>
-    <td  class="align-middle text-center ">
-      <?php
-      if($paper_master->paper_type=="theory")
-      {
-       if($paper_master->int_marks=='N'){
-         echo '-';
-       }elseif($paper_master->int_marks>=$paper_master->min_internal_marks && $paper_master->int_marks!="ABS" ){
-         echo $paper_master->int_marks;
-       }elseif($paper_master->int_marks=="ABS"){
-         echo "ABS F";
-       }
-       else{
-         echo $paper_master->int_marks .' F';
-       }
-     }
-     ?>
-    </td>
-    <?php } ?>
-    <td class="align-middle text-center"><?php if($theory_abs_count>0){echo "-";}else{ echo $total_int_marks_obt;};  ?></td>
-  </tr>
+          <?php foreach($marks as $paper_master){ ?>
+        <td  class="align-middle text-center ">
+          <?php
+          if($paper_master->paper_type=="theory")
+          {
+          if($paper_master->int_marks=='N'){
+            echo '-';
+          }elseif($paper_master->int_marks>=$paper_master->min_internal_marks && $paper_master->int_marks!="ABS" ){
+            echo $paper_master->int_marks;
+          }elseif($paper_master->int_marks=="ABS"){
+            echo "ABS F";
+          }
+          else{
+            echo $paper_master->int_marks .' F';
+          }
+        }
+        ?>
+        </td>
+        <?php } ?>
+        <td class="align-middle text-center"><?php if($theory_abs_count>0){echo "-";}else{ echo $total_int_marks_obt;};  ?></td>
+    </tr> <?php } ?>
   <?php if( $classData[0]->project!='N' || $classData[0]->practical!='N'){ ?>
   <tr>
     <td class="align-middle text-right ">Practical Marks.</td>
