@@ -466,7 +466,93 @@ class ExamController extends CI_Controller {
 		$this->load->view('footer');
    } 
 
+   public function generate_counter_folio(){
+		$titleData = array('title' => 'Assign Answersheet'); 
+		$this->load->view('header',$titleData);
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();	
+		$data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id) , course_name ');
+		$this->load->view('admin/examController/search_teacher_assign_answersheet',$data);
+		$this->load->view('footer');
+	} 
 
+	public function search_assign_teacher(){
+		if($_POST['action1']=='submit'){
+			$this->db->select('GROUP_CONCAT(center_id) as center_id');
+			$this->db->from("assign_answersheet");
+			$this->db->where('paper_code',$_POST['paper_code']); 
+			$query = $this->db->get()->result_array();
+			$center_id = explode(',',$query[0]['center_id']);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+				 // it show student count for perticular center and pertical paper .	
+			$this->db->select('DISTINCT(upload_exam_ans_sheet.teacher_id),teacher.name');
+			$this->db->from('upload_exam_ans_sheet');
+			$this->db->join('teacher', 'upload_exam_ans_sheet.teacher_id = teacher.id');
+			$this->db->where('upload_exam_ans_sheet.class_id',$_POST['class_id']);
+			$this->db->where('upload_exam_ans_sheet.paper_code',$_POST['paper_code']); 
+			$this->db->where('upload_exam_ans_sheet.teacher_id!=',''); 
+			
+			$this->db->group_by('center_id');
+			
+			$data['centers'] = $this->db->get()->result();//echo $this->db->last_query();die;
+			$data['teacher_id'] = $_POST['teacher_id'];
+			$data['class_id'] = $_POST['class_id'];
+			$data['paper_code'] = $_POST['paper_code'];
+			$data['course_group_id'] = $_POST['course_group_id'];
+
+			$dt = $this->load->view('admin/examController/get_assign_teacher',$data,true);
+			echo json_encode(array(
+				"status" => true,
+				"data" => $dt
+			));
+		}
+		/*if($_POST['action']=='assign_answersheet'){
+
+			$where = array(
+				'teacher_id' => $_POST['teacher_id'],
+				'course_group_id'=> $_POST['course_group_id'],
+				'class_id'=> $_POST['class_id'],
+				'paper_code'=> $_POST['paper_code'],
+			);
+			$data= $this->Common_model->getRecordByWhere('assign_answersheet',$where);
+
+			if($data==null){
+				$data_insert['teacher_id'] = $_POST['teacher_id'];
+				$data_insert['class_id'] = $_POST['class_id'];
+				$data_insert['course_group_id'] = $_POST['course_group_id'];
+				$data_insert['paper_code'] = $_POST['paper_code'];
+				$data_insert['center_id'] =  implode(',',$_POST['center_id']);
+				$data_insert['date'] = date("Y-m-d");
+				$data_insert['exam_session'] = 'Dec 2021';
+				$insert = $this->Common_model->insertAll('assign_answersheet',$data_insert);
+				
+				if($insert){
+					echo json_encode(array(
+						"status" => true,
+					));	
+				}
+
+			}else{
+				if($data[0]->center_id!=''){
+					$center_id = implode(',',$_POST['center_id']) ;
+					$new_Center_id =$data[0]->center_id .",".$center_id;
+				}else{
+					$new_Center_id = $center_id;
+				}
+
+				$data=array(
+					'center_id' =>$new_Center_id,
+				);
+				$update = 	$this->Common_model->updateRecordByConditions('assign_answersheet',$where,$data);
+				if($update){
+					echo json_encode(array(
+						"status" => true,
+					));	
+				}
+			}
+		}*/
+	}
    public function getPaperByClassId(){
 	// $_POST['class_id'];
 	   $data= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'], 'type' => 'theory'));
