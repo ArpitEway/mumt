@@ -37,9 +37,9 @@ foreach($students as $student){
 	$check_grace_marks = false;	
 	$get_tot_marks = 0;
 	$require_tot_marks = 0;
-	$ATKT_paper_codes = array();
 	$Withheld = false; 
 	$ATKT_paper_codes = array(); 
+	$abs_count=0;
 	$paper_marks = $this->Common_model->notification_marks_details_($student->student_id);
 
 	foreach($paper_marks as  $marks){
@@ -52,7 +52,7 @@ foreach($students as $student){
 				$result = "Pass";
 			}
 			if($marks->theory_marks=="ABS"){
-				$fail_count++;
+				// $fail_count++;
 				$abs_count++;
 				array_push( $ATKT_paper_codes,$marks->paper_code );
 			}
@@ -62,13 +62,27 @@ foreach($students as $student){
 				$require_tot_marks += $marks->min_theory_marks;
 				array_push( $ATKT_paper_codes,$marks->paper_code );
 			}
+			if($marks->int_marks<$marks->min_internal_marks){
+				$fail_count++;
+				array_push($ATKT_paper_codes ,$marks->paper_code );
+					}
+			if($marks->int_marks=='N' || $marks->int_marks==''){
+				$Withheld = true;
+				}
+				if($marks->int_marks=="ABS"){
+						$abs_count++;
+						}
 		}
-		else if($marks->type=='practical'){
-			if($marks->p_marks==''){
+		else if($marks->type=='Practical'){
+			if($marks->p_marks=='' || $marks->p_marks=='N'){
 				$Withheld = true;
 			}elseif($marks->p_marks>=$marks->min_theory_marks){
 				$result = "Pass";	
-			}else{
+			}
+			elseif('p_marks'=='ABS'){
+				$abs_count++;	
+			}					
+			else{
 				$result = "Fail";
 				$fail_count +=5;
 			}
@@ -174,8 +188,8 @@ foreach($students as $student){
 							echo 'Pass';
 						}
 					}}
-					elseif($marks->type=="practical" ){
-						if($Withheld){
+					elseif($marks->type=="Practical" ){
+						if($Withheld ){
 							echo 'RW';
 						}else{
 							if($fail_count>0){
@@ -213,9 +227,9 @@ foreach($students as $student){
 							$total_obtained_marks+=  $obtain_marks;
 
 						}
-						else if($marks->type=='practical')
+						else if($marks->type=='Practical')
 						{
-							if($marks->type=="practical"){
+							if($marks->type=="Practical"){
 								$mx_marks=  $marks->max_theory_marks  ;
 
 								$total_max_marks+=$mx_marks;
@@ -251,7 +265,7 @@ foreach($students as $student){
 							}
 						}			
 					}
-					elseif($marks->type=='practical'){
+					elseif($marks->type=='Practical'){
 						if($marks->p_marks=='' || $marks->p_marks=='N'){
 							echo "RW";
 						}
