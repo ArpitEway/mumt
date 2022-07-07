@@ -1251,7 +1251,7 @@ class Center extends CI_Controller {
 	}
 
 
-	public function remaining_exam_answersheet(){
+	public function remaining_exam_answersheet_admin(){
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
