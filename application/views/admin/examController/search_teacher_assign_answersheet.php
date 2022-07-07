@@ -173,8 +173,9 @@
         return false ;
         }
 var frm = $('.answersheet').serialize();
-    $.ajax({
-    	url: '<?php echo site_url('admin/ExamController/search_assign_answersheet'); ?>',
+console.log("hello test ");
+  /*  $.ajax({
+    	url: '<?php echo site_url('admin/ExamController/show_counter_folio'); ?>',
     	type: 'POST',
     	dataType : 'json',
     	data: frm,
@@ -187,6 +188,6 @@ var frm = $('.answersheet').serialize();
                 toastr.error("Something wrong");
             }
         },
-    });
+    });*/
 });		
 </script>

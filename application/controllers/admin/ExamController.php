@@ -495,8 +495,8 @@ class ExamController extends CI_Controller {
 			
 			$this->db->group_by('center_id');
 			
-			$data['centers'] = $this->db->get()->result();//echo $this->db->last_query();die;
-			$data['teacher_id'] = $_POST['teacher_id'];
+			$data['teachers'] = $this->db->get()->result();//echo $this->db->last_query();die;
+			//$data['teacher_id'] = $_POST['teacher_id'];
 			$data['class_id'] = $_POST['class_id'];
 			$data['paper_code'] = $_POST['paper_code'];
 			$data['course_group_id'] = $_POST['course_group_id'];
@@ -507,51 +507,42 @@ class ExamController extends CI_Controller {
 				"data" => $dt
 			));
 		}
-		/*if($_POST['action']=='assign_answersheet'){
-
-			$where = array(
-				'teacher_id' => $_POST['teacher_id'],
-				'course_group_id'=> $_POST['course_group_id'],
-				'class_id'=> $_POST['class_id'],
-				'paper_code'=> $_POST['paper_code'],
-			);
-			$data= $this->Common_model->getRecordByWhere('assign_answersheet',$where);
-
-			if($data==null){
-				$data_insert['teacher_id'] = $_POST['teacher_id'];
-				$data_insert['class_id'] = $_POST['class_id'];
-				$data_insert['course_group_id'] = $_POST['course_group_id'];
-				$data_insert['paper_code'] = $_POST['paper_code'];
-				$data_insert['center_id'] =  implode(',',$_POST['center_id']);
-				$data_insert['date'] = date("Y-m-d");
-				$data_insert['exam_session'] = 'Dec 2021';
-				$insert = $this->Common_model->insertAll('assign_answersheet',$data_insert);
+		
+	}
+	public function show_counter_folio(){
+		if($_POST['action']=='assign_answersheet'){
+			$data_insert['teacher_id'] =  implode(',',$_POST['teacher_id']);
+			//echo "<pre>";
+				//print_r($_POST['teacher_id']);
+			$dataArray= array();	
+			foreach($_POST['teacher_id'] as $teacher_id){
+				$this->db->select('DISTINCT(upload_exam_ans_sheet.teacher_id),teacher.name,student.enrollment_no,student.roll_no,upload_exam_ans_sheet.total_marks');
+				$this->db->from('upload_exam_ans_sheet');
+				$this->db->join('teacher', 'upload_exam_ans_sheet.teacher_id = "'.$teacher_id.'"');
+				$this->db->join('student', 'upload_exam_ans_sheet.student_id = student.student_id');
+				$this->db->where('upload_exam_ans_sheet.class_id',$_POST['class_id']);
+				$this->db->where('upload_exam_ans_sheet.paper_code',$_POST['paper_code']); 
+				$this->db->group_by('upload_exam_ans_sheet.center_id');
+				$dataArray['data'][$teacher_id] = $this->db->get()->result();
+				$dataArray['teachername'][$teacher_id] = $this->Common_model->getSinglefield('teacher','name',array('id'=>$teacher_id));
 				
-				if($insert){
-					echo json_encode(array(
-						"status" => true,
-					));	
-				}
-
-			}else{
-				if($data[0]->center_id!=''){
-					$center_id = implode(',',$_POST['center_id']) ;
-					$new_Center_id =$data[0]->center_id .",".$center_id;
-				}else{
-					$new_Center_id = $center_id;
-				}
-
-				$data=array(
-					'center_id' =>$new_Center_id,
-				);
-				$update = 	$this->Common_model->updateRecordByConditions('assign_answersheet',$where,$data);
-				if($update){
-					echo json_encode(array(
-						"status" => true,
-					));	
-				}
-			}
-		}*/
+			}	
+			$dataArray['exam_date'] = $this->Common_model->getSinglefield('time_table','exam_start_date',array('class_id'=>$_POST['class_id']));
+				/* echo $this->db->last_query();die; */
+			$data['class_id'] = $_POST['class_id'];
+			$data['paper_code'] = $_POST['paper_code'];
+			$data['course_group_id'] = $_POST['course_group_id'];
+			$dataArray["teacher_id"]=$_POST['teacher_id'];
+			$dataArray['examname']= $this->Common_model->getCourseNameByCourseId($_POST['course_group_id']);
+			$dataArray['class_name']= $this->Common_model->getClassNameByClassId($_POST['class_id']);
+			
+			$dataArray['paper']= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'] , 'paper_code'=>$_POST['paper_code']));
+			//print_r($dataArray['paper']); echo $this->db->last_query(); die;
+			$this->load->view('admin/generate_tr/header2',array('title' =>'Folio'));
+			$this->load->view('admin/examController/show_teacher_counter_folio',$dataArray); 
+				
+		
+		}	
 	}
    public function getPaperByClassId(){
 	// $_POST['class_id'];
