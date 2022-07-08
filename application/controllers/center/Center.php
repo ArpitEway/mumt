@@ -1611,7 +1611,9 @@ class Center extends CI_Controller {
 		$data['new_exam_form']  = $new_exam_form;
 		$title = array('title' => 'Result - '.$data['student']->enrollment_no);
 		$this->load->view('admin/generate_tr/header2',$title);	
-		$this->load->view('Centers/marksheet',$data);
+		//$this->load->view('Centers/marksheet',$data);
+		$this->load->view('Centers/marksheet_top',$data);
+		$this->load->view('Centers/marksheet_bottom',$data);
 		$this->load->view('admin/generate_tr/footer2');
 	}
 
