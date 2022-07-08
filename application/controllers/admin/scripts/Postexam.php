@@ -282,6 +282,7 @@ class Postexam extends CI_Controller {
         $rows=$this->db->get()->result();
       
        $a="";
+       
         foreach($rows as $row){
         
             $this->db->select('*');
@@ -312,6 +313,45 @@ class Postexam extends CI_Controller {
             echo $a;
         else
             echo "No Record Found!";    
+    }
+
+    public function update_teacher_upload_exam_ans_sheet_to_new_exam_form($startlimit=1){
+        echo "Hello <pre>";
+        
+        $this->db->select('*');
+        $this->db->from('upload_exam_ans_sheet');
+        $this->db->where('file_exist','Y');
+        $this->db->where('total_marks!=',0);
+        $this->db->where('teacher_id !=','');
+        $start=0;
+		$start=($startlimit-1)*1000;
+		$this->db->limit(1000,$start);
+        $rows=$this->db->get()->result();
+        echo $this->db->last_query();die;
+        echo "<br><pre>";
+       // print_r($rows);
+        foreach($rows as $row){
+            $this->db->select('*');
+            $this->db->from('new_exam_form');
+            $this->db->where('class_id',$row->class_id);
+            $this->db->where('student_id',$row->student_id);
+            $this->db->where('paper_code',$row->paper_code);
+            $this->db->where('teacher_id','');
+            $data=$this->db->get()->result();
+          //  echo $this->db->last_query();
+           // print_r($data);
+           foreach($data as $record){
+           // print_r($row);
+            $data  = array('teacher_id'=>$row->teacher_id ,);
+            $where = array('id'=>$record->id,);
+            $update =$this->Common_model->updateRecordByConditions('new_exam_form',$where,$data);
+            echo $this->db->last_query();
+            echo "<br>Data <br>";
+           // print_r($record); die;
+           }
+           
+        }
+       $a="";
     }
     
 }
