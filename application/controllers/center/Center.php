@@ -1557,10 +1557,11 @@ class Center extends CI_Controller {
 		$where['result_permission'] = 'Y';
 		// Fetch member's records
 		
-		$column_order = array('student.student_id','enrollment_no','name','f_h_name','course_name','class_name',null);
-		$column_search = array('student.student_id','enrollment_no','course_name','class_name','name','f_h_name');
+		$column_order = array('student.student_id','enrollment_no','name','f_h_name','course_name','student.class_name',null);
+		$column_search = array('student.student_id','enrollment_no','course_name','student.class_name','name','f_h_name');
 	
 		$DataTableArray = array(
+			'select' => 'student.*',
 			'column_order' => $column_order,
 			'column_search' => $column_search,
 			'where' => $where,
