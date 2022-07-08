@@ -37,10 +37,6 @@ foreach($new_exam_form as $marks){
       $result = "Fail";
       $fail_count++;
     }
-    if($marks->int_marks=='N' || $marks->int_marks=='') {
-     $withheld = true;
-   }
-
   }else{
     $tot_std_marks += $marks->p_marks;
     $tot_marks += $paper_master[0]->max_theory_marks;
@@ -88,22 +84,12 @@ if ($withheld) {
     </tr>
     <tr class=" text-center" >
       <th class="border-dark text-center" rowspan="2">Subject</th>
-      <th class="border-dark text-center" colspan="2">Theory <?php if($marks->course_group_id!=36 && $marks->course_group_id!=37 ){ ?> / Practical<?php } ?> Marks </th>
-      <?php if($marks->course_group_id!=36 && $marks->course_group_id!=37 ){ ?>
-            <th class="border-dark text-center" colspan="2">Internal Marks</th>
-            <th class="border-dark text-center" colspan="2">Total</th>
-      <?php } ?>
+      <th class="border-dark text-center" colspan="2">Theory / Practical Marks </th>
       <th class="border-dark text-center" rowspan="2">Result</th>
     </tr>
     <tr>
       <th class="border-dark text-center" scope="row">Max Marks</th>
       <th class="border-dark text-center" scope="row">Obtained</th>
-      <?php if($marks->course_group_id!=36 && $marks->course_group_id!=37 ){ ?>
-            <th class="border-dark text-center" scope="row">Max Marks</th>
-            <th class="border-dark text-center" scope="row">Obtained</th>
-            <th class="border-dark text-center" scope="row">Max Marks</th>
-            <th class="border-dark text-center" scope="row">Obtained</th>
-      <?php } ?>
     </tr>
   </thead>
   <tbody>
@@ -159,64 +145,11 @@ if ($withheld) {
           }
         ?>
       </th>
-      <?php if($marks->course_group_id!=36 && $marks->course_group_id!=37 ){ ?>
-      <th class="text-center">
-        <?php  
-          if( $marks->paper_type !='theory'){
-            echo '-';
-          }else{
-            echo $paper_master[0]->max_internal_marks; 
-          } ?>
-        </th>
-      <th class="text-center"><?php
-        if( $marks->paper_type !='theory'){
-          echo '-';
-        }else{
-          if($marks->int_marks<$paper_master[0]->min_internal_marks || $marks->int_marks=='ABS'){
-            echo $marks->int_marks;
-            $result_1_paper = 'FAIL';
-            ?><span style="color:red">*</span> <?php
-          }else{
-            echo $marks->int_marks;
-          }
-        }
-        ?>
-      </th>
-      <th class="text-center">
-        <?php  
-        if($marks->paper_type!="theory" && $practical_internal_marks=='N' ){
-                       echo (int)$paper_master[0]->max_theory_marks ;
-              }
-              elseif($marks->paper_type!="theory" && $practical_internal_marks=='Y' ){  
-                echo (int) $paper_master[0]->max_theory_marks + (int) $paper_master[0]->max_internal_marks;
-                
-              }else{ 
-                echo (int) $paper_master[0]->max_theory_marks + (int) $paper_master[0]->max_internal_marks;
-              } ?>
-      </th>
-      <th class="text-center">
-        <?php if($marks->paper_type!="theory" && $practical_internal_marks=='N' ){
-                       echo (int)$marks->p_marks ;
-              }
-              elseif($marks->paper_type!="theory" && $practical_internal_marks=='Y' ){  
-                echo (int) $marks->p_marks + (int) $marks->int_marks;
-                
-              }else{ 
-                echo (int) $marks->theory_marks + (int) $marks->int_marks;
-              }  ?>
-      </th>
-      <?php } ?>
       <th><?php echo $result_1_paper;?></th>
     </tr>
   <?php } ?>
   <tr>
     <th>Total</th>
-    <?php if($marks->course_group_id!=36 && $marks->course_group_id!=37 ){ ?>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <?php } ?>
     <th class="text-center"><?php echo  $total_max_marks?></th>
     <th class="text-center"><?php  echo  $total_obtained_marks ?></th>
     <th>
