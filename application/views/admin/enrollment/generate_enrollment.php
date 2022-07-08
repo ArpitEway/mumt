@@ -31,6 +31,7 @@
 			<th>Course Name</th>
 			<th>Class Name</th>
 			<th>Center Code</th>
+			<th>Session</th>
 			<th>Enrollment no</th>
 		</tr>
 	</thead>
@@ -94,6 +95,7 @@
 					<td><?php echo $student["course_name"]; ?></td>
 					<td><?php echo $student["class_name"]; ?></td>
 					<td><?php echo $student["center_code"]; ?></td>
+					<td><?php echo $student["session"]; ?></td>
 					<td><?php echo $enrollment; ?></td>
 				</tr>
 				<?php

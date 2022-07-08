@@ -932,6 +932,7 @@ class Center extends CI_Controller {
 	}
 
 	public function exam_form_students($exam_form1 = 'notSubmitted'){
+		redirect(base_url());
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
@@ -1250,7 +1251,7 @@ class Center extends CI_Controller {
 	}
 
 
-	public function remaining_exam_answersheet(){
+	public function remaining_exam_answersheet_admin(){
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
@@ -1370,6 +1371,7 @@ class Center extends CI_Controller {
 		}
 	 }
 	public function internal_marks_list(){
+	 		redirect(base_url());
 	 	if(!$this->session->has_userdata('centerdata')){
 	 		redirect(base_url());
 	 	}
@@ -1702,6 +1704,7 @@ class Center extends CI_Controller {
 	}
 
 	public function practical_marks_list(){
+		redirect(base_url());
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
