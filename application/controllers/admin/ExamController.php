@@ -466,7 +466,84 @@ class ExamController extends CI_Controller {
 		$this->load->view('footer');
    } 
 
+   public function generate_counter_folio(){
+		$titleData = array('title' => 'Assign Answersheet'); 
+		$this->load->view('header',$titleData);
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();	
+		$data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id) , course_name ');
+		$this->load->view('admin/examController/search_teacher_assign_answersheet',$data);
+		$this->load->view('footer');
+	} 
 
+	public function search_assign_teacher(){
+		if($_POST['action1']=='submit'){
+			$this->db->select('GROUP_CONCAT(center_id) as center_id');
+			$this->db->from("assign_answersheet");
+			$this->db->where('paper_code',$_POST['paper_code']); 
+			$query = $this->db->get()->result_array();
+			$center_id = explode(',',$query[0]['center_id']);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+				 // it show student count for perticular center and pertical paper .	
+			$this->db->select('DISTINCT(upload_exam_ans_sheet.teacher_id),teacher.name');
+			$this->db->from('upload_exam_ans_sheet');
+			$this->db->join('teacher', 'upload_exam_ans_sheet.teacher_id = teacher.id');
+			$this->db->where('upload_exam_ans_sheet.class_id',$_POST['class_id']);
+			$this->db->where('upload_exam_ans_sheet.paper_code',$_POST['paper_code']); 
+			$this->db->where('upload_exam_ans_sheet.teacher_id!=',''); 
+			
+			$this->db->group_by('center_id');
+			
+			$data['teachers'] = $this->db->get()->result();//echo $this->db->last_query();die;
+			//$data['teacher_id'] = $_POST['teacher_id'];
+			$data['class_id'] = $_POST['class_id'];
+			$data['paper_code'] = $_POST['paper_code'];
+			$data['course_group_id'] = $_POST['course_group_id'];
+
+			$dt = $this->load->view('admin/examController/get_assign_teacher',$data,true);
+			echo json_encode(array(
+				"status" => true,
+				"data" => $dt
+			));
+		}
+		
+	}
+	public function show_counter_folio(){
+		if($_POST['action']=='assign_answersheet'){
+			$data_insert['teacher_id'] =  implode(',',$_POST['teacher_id']);
+			//echo "<pre>";
+				//print_r($_POST['teacher_id']);
+			$dataArray= array();	
+			foreach($_POST['teacher_id'] as $teacher_id){
+				$this->db->select('DISTINCT(upload_exam_ans_sheet.teacher_id),teacher.name,student.enrollment_no,student.roll_no,upload_exam_ans_sheet.total_marks');
+				$this->db->from('upload_exam_ans_sheet');
+				$this->db->join('teacher', 'upload_exam_ans_sheet.teacher_id = "'.$teacher_id.'"');
+				$this->db->join('student', 'upload_exam_ans_sheet.student_id = student.student_id');
+				$this->db->where('upload_exam_ans_sheet.class_id',$_POST['class_id']);
+				$this->db->where('upload_exam_ans_sheet.paper_code',$_POST['paper_code']); 
+				$this->db->group_by('upload_exam_ans_sheet.center_id');
+				$dataArray['data'][$teacher_id] = $this->db->get()->result();
+				$dataArray['teachername'][$teacher_id] = $this->Common_model->getSinglefield('teacher','name',array('id'=>$teacher_id));
+				
+			}	
+			$dataArray['exam_date'] = $this->Common_model->getSinglefield('time_table','exam_start_date',array('class_id'=>$_POST['class_id']));
+				/* echo $this->db->last_query();die; */
+			$data['class_id'] = $_POST['class_id'];
+			$data['paper_code'] = $_POST['paper_code'];
+			$data['course_group_id'] = $_POST['course_group_id'];
+			$dataArray["teacher_id"]=$_POST['teacher_id'];
+			$dataArray['examname']= $this->Common_model->getCourseNameByCourseId($_POST['course_group_id']);
+			$dataArray['class_name']= $this->Common_model->getClassNameByClassId($_POST['class_id']);
+			
+			$dataArray['paper']= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'] , 'paper_code'=>$_POST['paper_code']));
+			//print_r($dataArray['paper']); echo $this->db->last_query(); die;
+			$this->load->view('admin/generate_tr/header2',array('title' =>'Folio'));
+			$this->load->view('admin/examController/show_teacher_counter_folio',$dataArray); 
+				
+		
+		}	
+	}
    public function getPaperByClassId(){
 	// $_POST['class_id'];
 	   $data= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'], 'type' => 'theory'));
