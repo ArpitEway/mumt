@@ -162,16 +162,18 @@ if ($withheld) {
       <?php if($marks->course_group_id!=36 && $marks->course_group_id!=37 ){ ?>
       <th class="text-center">
         <?php  
-          if( $marks->paper_type !='theory'){
+          if( $marks->paper_type !='theory' && $practical_internal_marks=='N'){
             echo '-';
+          }else if($marks->paper_type !='theory' && $practical_internal_marks=='Y'){
+            echo $paper_master[0]->max_internal_marks;
           }else{
-            echo $paper_master[0]->max_internal_marks; 
+            echo $paper_master[0]->max_internal_marks;
           } ?>
         </th>
       <th class="text-center"><?php
-        if( $marks->paper_type !='theory'){
+        if( $marks->paper_type !='theory' && $practical_internal_marks=='N'){
           echo '-';
-        }else{
+        }elseif($marks->paper_type !='theory' && $practical_internal_marks=='Y') {
           if($marks->int_marks<$paper_master[0]->min_internal_marks || $marks->int_marks=='ABS'){
             echo $marks->int_marks;
             $result_1_paper = 'FAIL';
@@ -179,13 +181,15 @@ if ($withheld) {
           }else{
             echo $marks->int_marks;
           }
+        }else{
+          echo $marks->int_marks;
         }
         ?>
       </th>
       <th class="text-center">
         <?php  
         if($marks->paper_type!="theory" && $practical_internal_marks=='N' ){
-                       echo (int)$paper_master[0]->max_theory_marks ;
+                       echo (int)$paper_master[0]->max_theory_marks;
               }
               elseif($marks->paper_type!="theory" && $practical_internal_marks=='Y' ){  
                 echo (int) $paper_master[0]->max_theory_marks + (int) $paper_master[0]->max_internal_marks;
