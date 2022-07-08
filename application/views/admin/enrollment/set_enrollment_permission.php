@@ -5,10 +5,12 @@
 			<thead>
 				<tr>
 					<th>#</th>
+					<th>Form No</th>
 					<th>Name</th>
 					<th>Father's / Husband's Name</th>
 					<th>Course Name</th>
-					<th> Enrollment No</th>
+					<th>Session</th>
+					<th>Enrollment No</th>
 					<th><input type="checkbox"  id="allEnrolled"></th>
 				</tr>
 			</thead>
@@ -19,9 +21,11 @@
 					?>
 					<tr>
 						<td><?=$i++;?></td>
+						<td><?=$student->student_id;?></td>
 						<td><?=$student->name;?></td>
 						<td><?=$student->f_h_name;?></td>
 						<td><?=$student->course_name;?></td>
+						<td><?=$student->session;?></td>
 						<td><?=$student->enrollment_no;?></td>
 						<td><input type="checkbox" class="enrollment_no" name="enrollment_no[]" value="<?=$student->enrollment_no;?>"></td>
 					</tr>
