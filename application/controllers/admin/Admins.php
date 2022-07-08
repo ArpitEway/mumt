@@ -3151,14 +3151,12 @@ public function update_exam_datewise_permission(){
 		$this->load->view('footer');
 	}
 
-	public function student_int_assignment_marks(){ //$this->db->Where('practical_internal_marks','Y');
+	public function student_int_assignment_marks(){ 
 		$student_id = $this->input->post('student_id');
 		$class_id = $this->input->post('class_id');
 		
 		$classData	= $this->Common_model->getRecordById('class_master','id',$class_id);
 		
-		//$where=array('student.student_id'=>$student_id,'paper_type'=>'theory');
-		$where=array('student.student_id'=>$student_id,'paper_type'=>'theory');
 		$this->db->select('*');
 		$this->db->from('new_exam_form');
 		
