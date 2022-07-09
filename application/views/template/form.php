@@ -60,7 +60,12 @@ hr.new2 {
 	body * { visibility: hidden; margin: 0.5cm !importent; font-family: 'Roboto', sans-serif !important;}
 	#printThisDivIdOnButtonClick * {  visibility: visible; }
 	#printThisDivIdOnButtonClick * {  margin:0px  !important; font-size:14px; }
-	#printThisDivIdOnButtonClick   {  width:100%; position: absolute; left:-10px !important; padding-top: 1.0cm;margin-top:-240px !important; }
+	#printThisDivIdOnButtonClick   {  
+		width:1000px;
+		position: absolute;
+		padding-top: 1.0cm;
+		margin-top:-240px !important; 
+	}
 	#printHeaderdiv * {
 		font-size:20px !important; 
 	}
