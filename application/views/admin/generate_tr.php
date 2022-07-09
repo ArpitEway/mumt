@@ -207,6 +207,7 @@
             <?php } ?>
           <td class=""></td>
         </tr>
+        <?php if($course_group_id !=36 && $course_group_id !=37 ){ ?>
         <tr>
           <td class="align-middle text-right">Internal Marks Max/Min -></td>
           <?php  foreach($marks as $paper_master){     ?>
@@ -216,6 +217,7 @@
           <td class="align-middle text-center"></td>
         </tr>
         <?php 
+        }
         if($classData[0]->project!='N' || $classData[0]->practical!='N'){
         ?>
         <tr>
