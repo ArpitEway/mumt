@@ -100,7 +100,7 @@
           $rw_count++;
         }
 
-        if($new_exam_form->int_marks=='N'){
+        if($new_exam_form->int_marks=='N' && $course_group_id !=36 && $course_group_id !=37){
           $rw_count++;
         }
 
