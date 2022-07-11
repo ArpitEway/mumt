@@ -1115,4 +1115,98 @@ class ExamController extends CI_Controller {
 		}
 	}
 
+	public function exam_center($param1 = '', $param2 = '', $param3 = '')
+	{
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+			if($param1 == 'create'){
+				if ($this->input->method() == "post") 
+					{
+						$arr['examcentercode']    = $this->input->post("examcentercode");
+						$arr['schoolcollegename']    = $this->input->post("schoolcollegename");
+						$arr['examcenteraddress']    = $this->input->post("examcenteraddress");
+						$arr['city']    = $this->input->post("city");
+						$arr['district']    = $this->input->post("district");
+						$arr['pincode']    = $this->input->post("pin_code");
+						$arr['superintendent']    = $this->input->post("superintendent");
+						$arr['phonenumber']    = $this->input->post("phonenumber");
+						$arr['bankaccountnumber']    = $this->input->post("bankaccountnumber");
+						$arr['bankname']    = $this->input->post("bankname");
+						$arr['bankbranch']    = $this->input->post("bankbranch");
+						$arr['bankisfc']    = $this->input->post("bankisfc");
+						$arr['csname']    = $this->input->post("csname");
+						$arr['csnumber_1']    = $this->input->post("csnumber_1");
+						$arr['csnumber_2']    = $this->input->post("csnumber_2");
+					}
+				
+				//$response = $this->admin_model->create_exam_center();
+				$response=$this->Common_model->insertAll('exam_center',$arr);
+				$this->session->set_flashdata('ajax_flash_message','Exam Center Successfully Added');
+				redirect(base_url().'ExamController/exam_center');
+
+			}
+			if($param1 == 'update'){ 
+				if ($this->input->method() == "post") 
+					{
+						$arr['examcentercode']    = $this->input->post("examcentercode");
+						$arr['schoolcollegename']    = $this->input->post("schoolcollegename");
+						$arr['examcenteraddress']    = $this->input->post("examcenteraddress");
+						$arr['city']    = $this->input->post("city");
+						$arr['district']    = $this->input->post("district");
+						$arr['pincode']    = $this->input->post("pin_code");
+						$arr['superintendent']    = $this->input->post("superintendent");
+						$arr['phonenumber']    = $this->input->post("phonenumber");
+						$arr['bankaccountnumber']    = $this->input->post("bankaccountnumber");
+						$arr['bankname']    = $this->input->post("bankname");
+						$arr['bankbranch']    = $this->input->post("bankbranch");
+						$arr['bankisfc']    = $this->input->post("bankisfc");
+						$arr['csname']    = $this->input->post("csname");
+						$arr['csnumber_1']    = $this->input->post("csnumber_1");
+						$arr['csnumber_2']    = $this->input->post("csnumber_2");
+						$response=$this->Common_model->updateRecordByConditions('exam_center',array('id'=>$param2),$arr);
+					}
+				//$response = $this->admin_model->course_update($param2);
+				$this->session->set_flashdata('ajax_flash_message','Exam Center Successfully Updated');
+				redirect(base_url().'ExamController/exam_center');
+			}
+
+			if($param1 == 'delete'){
+				 $id    = $param2;
+				 $response=$this->Common_model->deleteById('exam_center','id',$id);
+				//$response = $this->admin_model->exam_center_delete($param2);
+				$this->session->set_flashdata('ajax_flash_message','Course Successfully Deleted');
+				redirect(base_url().'ExamController/exam_center');
+			}
+
+			if(empty($param1) ){
+				$data = array();
+				$data['title'] = "Exam Center";
+				$csrf = array(
+					'name_csrf' => $this->security->get_csrf_token_name(),
+					'hash_csrf' => $this->security->get_csrf_hash()
+				);
+				$this->load->view('header',$data);
+				$this->load->view('admin/examController/exam_center',$csrf);
+				$this->load->view('footer');
+			}    
+
+
+		}
+
+	}
+
+	public function allot_exam_center(){
+		$titleData = array('title' => 'Allot Exam Center'); 
+		$this->load->view('header',$titleData);
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();	
+		$data['exam_center'] = $this->Common_model->get_record('exam_center','id, examcentercode,schoolcollegename ');
+		$data['centers'] = $this->Common_model->getRecordByOrder('center',"center_code,center_name","ASC");
+		$this->load->view('admin/exam_center/allot_exam_center',$data);
+		$this->load->view('footer');
+	}
+
 }// class
