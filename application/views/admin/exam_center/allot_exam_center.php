@@ -4,7 +4,7 @@
        <div class="form-group col-md-6">
         <label for="course">Exam Center</label>
         <select  name="exam_center" readonly="readonly" id="exam_center" class="form-control course" required>
-            <option value="">Select Exam Center</option>
+            <option value="" selected >Select Exam Center</option>
             <?php 
 
             foreach($exam_center as $ecenter)
@@ -21,11 +21,7 @@
    
 
 </div>
-<!--<div class="form-group text-center">
-	<input type="hidden" class="" name="action1" value="submit">
 
-	<button class="btn btn-md btn-primary" type="button" id="submit_form">Submit</button>
-</div>-->
 
 <div align="center" id="myLoader" class="loader_div" style="display: none;" >
   <svg>
@@ -82,51 +78,14 @@
 				?>
 			</tbody>
 			<tfoot>
-		<!--	<tr>
 		
-			<td></td>
-			<td><?php //echo "Total"; ?></td>
-			<td><?php //echo $total_paper ?></td>
-			<td><?php //echo $available  ?></td>
-			<td><?php //echo $checked ?></td>
-			<td></td>
-			</tr>-->
 			<tfoot>
 		</table>
 	</div>
-	<!--<div class="text-center p-3">
-		<input type="hidden" name="action" value="assign_answersheet">
-	<input type="hidden" name="teacher_id" value="<?php echo $teacher_id ; ?>">
-		<input type="hidden" name="class_id" value="<?php echo $class_id ; ?>">
-		<input type="hidden" name="course_group_id" value="<?php  echo $course_group_id ;  ?>">
-		<input type="hidden" name="paper_code" value="<?php echo  $paper_code ; ?>">
-		<button type="submit" class="btn btn-primary" id="submit" name="submit" >submit</button>
-	</div>-->
+	
 </form>
 
-<script>
-		$('#allAssign_answersheet').on('change', function() {
-			if($('#allAssign_answersheet').is(":checked")){
-				setCheckboxes3(1);
-			}else{
-				setCheckboxes3(2);
-			}
-		});
 
-		
-function setCheckboxes3(act)
-  {
-  elts = document.getElementsByName("teacher_id[]");
-  var elts_cnt  = (typeof(elts.length) != 'undefined') ? elts.length : 0;
-  if (elts_cnt)
-    {
-    for (var i = 0; i < elts_cnt; i++)
-      {
-      elts[i].checked = (act == 1 || act == 0) ? act : (elts[i].checked ? 0 : 1);
-      }
-    }
-  }
-</script>
 
 
 
@@ -134,121 +93,3 @@ function setCheckboxes3(act)
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-<script>
-    /* $(document).ready(function() {
-
-        var csrfName = $('.csrfname').attr('name');
-        var csrfHash = $('.csrfname').val();
-        $('#class_id').change(function(){
-          var class_id =   $('#class_id').val();
-
-          var data = {
-            class_id: class_id,
-            [csrfName]: csrfHash,
-        }; 
-
-        $.ajax({
-            url:BASE_URL+'admin/ExamController/getPaperByClassId',
-            type:'post',
-            dataType : 'JSON',
-            data: data,
-           
-            success:function(data)
-            {    
-                console.log(data);
-
-                var html = '';
-                html += ('<option value="0">Select Paper</option>');
-                $.each(data.data, function (i, value) {
-                    html += (
-                        '<option value="' + value.paper_code + '">'+'('+ value.paper_code + ') '+value.paper_name + '</option>');
-
-                });
-                $("#paper_id").html(html);
-
-            }
-           
-        })
-    });
-    });
-
-    $('#course_group_id').select2({
-        placeholder : 'Search Course',
-        allowClear: true
-    })
-   
-
-
-
-   $(document).on('click', '#submit_form', function() {
-        $('#dt').hide();
-        var course = document.getElementById('course_group_id').value;
-        var class_id = document.getElementById('class_id').value;
-        var teacher = document.getElementById('teacher').value;
-        var paper_id = document.getElementById('paper_id').value;
-
-        if (course== "" || class_id =="0" || teacher =="" || paper_id=="0") {
-           toastr.error("PLease select all fields");
-           return false;
-       }
-
-       var frm = $('.ajaxForm').serialize();
-       var url = BASE_URL + "admin/ExamController/assign_answersheet_sub";
-
-       $.ajax({
-        url: url,
-        type: 'POST',
-        dataType: 'json',
-        data: frm,
-        beforeSend: function()
-			{
-				$("#myLoader").show();
-			},
-        success: function (data) {
-            if( $("#myLoader").show()){
-					$('#dt').hide();
-					// $table = $('#dt').html(status.data);
-					}if( $('#myLoader').hide()){
-                        $table = $('#dt').html(data.data);
-						$('#dt').show();
-						
-					}
-            KTDatatablesBasicBasic.init();
-        },
-        complete: function()
-				{
-					$('#myLoader').hide();
-				},
-    });
-});
-
-        function Reset() {
-        var paper_id = document.getElementById("paper_id");
-        paper_id.selectedIndex = 0;
-        $('#teacher').val('').trigger('change');
-        }
-
-        $(document).on('click', '#submit', function(e) {	
-
-        if($("input:checkbox").filter(":checked").length<1){
-        toastr.error("PLease Select atleast one");
-        return false ;
-        }
-var frm = $('.answersheet').serialize();
-    $.ajax({
-    	url: '<?php echo site_url('admin/ExamController/assign_answersheet_sub'); ?>',
-    	type: 'POST',
-    	dataType : 'json',
-    	data: frm,
-    	success: function (data) {
-            if(data){
-                $('#dt').empty();
-                Reset();
-                toastr.success("Assign Answershet Successfully");	
-            }else{
-                toastr.error("Something wrong");
-            }
-        },
-    });
-});		*/
-</script>

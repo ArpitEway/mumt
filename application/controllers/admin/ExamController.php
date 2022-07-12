@@ -1204,27 +1204,28 @@ class ExamController extends CI_Controller {
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();	
 		$data['exam_center'] = $this->Common_model->get_record('exam_center','id, examcentercode,schoolcollegename ');
-		$data['centers'] = $this->Common_model->getRecordByOrder('center',"center_code,center_name","ASC");
+		$where = "id not in (select distinct(center_id) from allot_exam_center )";
+		$data['centers'] = $this->Common_model->get_record('center','*',$where);
 		$this->load->view('admin/exam_center/allot_exam_center',$data);
 		$this->load->view('footer');
 	}
 	public function allot_exam_center_sub(){
-		if($_POST['action1']=='allot_exam_center'){
-			$data_insert['center_id'] =  implode(',',$_POST['center_id']);
-			echo "hello <pre>".$_POST['exam_center'];
-				print_r($_POST['center_id']);
-			$dataArray= array();	
-			foreach($_POST['center_id'] as $center_id){}
-				// $this->db->select('DISTINCT(upload_exam_ans_sheet.teacher_id),teacher.name,student.enrollment_no,student.roll_no,upload_exam_ans_sheet.total_marks');
-				// $this->db->from('upload_exam_ans_sheet');
-				// $this->db->join('teacher', 'upload_exam_ans_sheet.teacher_id = "'.$teacher_id.'"');
-				// $this->db->join('student', 'upload_exam_ans_sheet.student_id = student.student_id');
-				// $this->db->where('upload_exam_ans_sheet.class_id',$_POST['class_id']);
-				// $this->db->where('upload_exam_ans_sheet.paper_code',$_POST['paper_code']); 
-				// $this->db->group_by('upload_exam_ans_sheet.center_id');
-				// $dataArray['data'][$teacher_id] = $this->db->get()->result();
-				// $dataArray['teachername'][$teacher_id] = $this->Common_model->getSinglefield('teacher','name',array('id'=>$teacher_id));
+		if(($_POST['action1']=='allot_exam_center') && (!empty($_POST['exam_center'])))
+		{
+			$exam_center=$this->input->post('exam_center');	
+			$exam_centers = $this->db->get_where('exam_center', array('id' => $exam_center))->result_array();
+			foreach($_POST['center_id'] as $center_id){
+				
+				$arr['examcentercode']= $exam_centers[0]['examcentercode'];
+				$arr['center_id']=$center_id;
+				$arr['exam_center_id']=$exam_center;
+				$response=$this->Common_model->insertAll('allot_exam_center',$arr);
+				//echo $this->db->last_query();
+			}
+				
+				
 		}		
+		redirect(base_url().'admin/ExamController/allot_exam_center');	
 	}
 
 }// class
