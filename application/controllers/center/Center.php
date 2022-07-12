@@ -131,8 +131,10 @@ class Center extends CI_Controller {
 		$center_ids_dep = array(21,22,23,24,25,26,27,28);
 		$whereSession = array();
 		if (in_array($center_id, $center_ids_dep)){
+			$passing_exam_year = '2022';
 			$whereSession['admission_permission_dep'] =  'Y';
 		}else{
+			$passing_exam_year = '2021';
 			$whereSession['admission_permission_ic'] =  'Y';
 		}
 		
@@ -164,7 +166,8 @@ class Center extends CI_Controller {
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 			'sessions' => $sessions,
-			'center_ids_dep' =>$center_ids_dep,
+			'passing_exam_years' =>$passing_exam_year,
+
 		);
 		$this->load->view('Centers/header',$titleData);
 		$this->load->view('Centers/admission_form',$data);
