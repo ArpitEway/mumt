@@ -618,7 +618,7 @@ class Center extends CI_Controller {
 		$this->db->join('course_group', 'course_group.id = course.course_group_id'); 
 		$this->db->where('eligibility',$eligibility);
 		$this->db->where('course.session',$session);
-		if($mode=='regular'){
+		if($mode=='REG' || $mode=='regular'){
 			$where['admission_permission_regular'] = 'Y';
 			$this->db->where('admission_permission_regular','Y');
 		  }else{
