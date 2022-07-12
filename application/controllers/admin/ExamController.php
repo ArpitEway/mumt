@@ -1208,5 +1208,23 @@ class ExamController extends CI_Controller {
 		$this->load->view('admin/exam_center/allot_exam_center',$data);
 		$this->load->view('footer');
 	}
+	public function allot_exam_center_sub(){
+		if($_POST['action1']=='allot_exam_center'){
+			$data_insert['center_id'] =  implode(',',$_POST['center_id']);
+			echo "hello <pre>".$_POST['exam_center'];
+				print_r($_POST['center_id']);
+			$dataArray= array();	
+			foreach($_POST['center_id'] as $center_id){}
+				// $this->db->select('DISTINCT(upload_exam_ans_sheet.teacher_id),teacher.name,student.enrollment_no,student.roll_no,upload_exam_ans_sheet.total_marks');
+				// $this->db->from('upload_exam_ans_sheet');
+				// $this->db->join('teacher', 'upload_exam_ans_sheet.teacher_id = "'.$teacher_id.'"');
+				// $this->db->join('student', 'upload_exam_ans_sheet.student_id = student.student_id');
+				// $this->db->where('upload_exam_ans_sheet.class_id',$_POST['class_id']);
+				// $this->db->where('upload_exam_ans_sheet.paper_code',$_POST['paper_code']); 
+				// $this->db->group_by('upload_exam_ans_sheet.center_id');
+				// $dataArray['data'][$teacher_id] = $this->db->get()->result();
+				// $dataArray['teachername'][$teacher_id] = $this->Common_model->getSinglefield('teacher','name',array('id'=>$teacher_id));
+		}		
+	}
 
 }// class

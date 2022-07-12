@@ -1,5 +1,5 @@
-<form  class="d-block ajaxForm">
-    <div class="row  text-center">
+<form  class="d-block ajaxForm" method="post"  action="<?=base_url('admin/ExamController/allot_exam_center_sub');?>" class="mt-3 answersheet">
+    <div class="  text-center p-3">
        <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
        <div class="form-group col-md-6">
         <label for="course">Exam Center</label>
@@ -26,7 +26,7 @@
 
 	<button class="btn btn-md btn-primary" type="button" id="submit_form">Submit</button>
 </div>-->
-</form>
+
 <div align="center" id="myLoader" class="loader_div" style="display: none;" >
   <svg>
     <circle cx="50" cy="50" r="40" stroke="red" stroke-dasharray="78.5 235.5" stroke-width="3" fill="none" />
@@ -37,10 +37,14 @@
 <div id="dt">
 </div>
 
-<form method="post"  action="<?=base_url('admin/ExamController/show_counter_folio');?>" class="mt-3 answersheet" >
-	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+
+<div class="text-center p-3">
+        <input type="hidden" class="" name="action1" value="allot_exam_center">
+        <button type="submit" class="btn btn-primary" id="submit" name="submit" >submit</button>
+</div>        	
+<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	<div class="dt-responsive">
-		<table id=""  class="table table-striped" >
+		<table id="kt_datatable"  class="table table-striped" >
 			<thead>
 				<tr>
 					<th>Sno.</th>
@@ -50,7 +54,7 @@
 					<th>Address</th>
 					<th>City</th>
 					<th>Mobile</th>
-					<th><input type="checkbox" id="allAssign_answersheet"></th>
+					<th><!--<input type="checkbox" id="allAssign_answersheet">--></th>
 				</tr>
 			</thead>
 			<tbody>      
@@ -71,7 +75,7 @@
                         <td><?php echo $center['address'];?></td>
                         <td><?php echo $center['city'];?></td>
                         <td><?php echo $center['mobile_no_1'];?></td>
-						<td><input type="checkbox" class="checkbox" name="teacher_id[]" value="<?=$teacher->teacher_id;?>"></td>
+						<td><input type="checkbox" class="checkbox" name="center_id[]" value="<?=$center['id'];?>"></td>
 					</tr>
 					<?php 
 				}
@@ -90,14 +94,14 @@
 			<tfoot>
 		</table>
 	</div>
-	<div class="text-center p-3">
+	<!--<div class="text-center p-3">
 		<input type="hidden" name="action" value="assign_answersheet">
-	<!--	<input type="hidden" name="teacher_id" value="<?php echo $teacher_id ; ?>">-->
+	<input type="hidden" name="teacher_id" value="<?php echo $teacher_id ; ?>">
 		<input type="hidden" name="class_id" value="<?php echo $class_id ; ?>">
 		<input type="hidden" name="course_group_id" value="<?php  echo $course_group_id ;  ?>">
 		<input type="hidden" name="paper_code" value="<?php echo  $paper_code ; ?>">
 		<button type="submit" class="btn btn-primary" id="submit" name="submit" >submit</button>
-	</div>
+	</div>-->
 </form>
 
 <script>
