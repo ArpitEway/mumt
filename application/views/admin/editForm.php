@@ -16,8 +16,9 @@
                 			<select class="form-control" name="session" id="session">
        
                 				<?php foreach ($sessions as $session) {
+                					$selected = ($session['session']==$student_detail->session) ? 'selected' : '';
                 					?>
-                					<option selected value="<?=$session['session']; ?>"><?php echo $session['session']; ?></option> 
+                					<option <?=$selected?>><?php echo $session['session']; ?></option> 
                 					<?php 
                 				} ?>
                 			</select>
