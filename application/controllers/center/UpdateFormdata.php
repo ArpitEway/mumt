@@ -86,9 +86,6 @@ class updateFormdata extends CI_Controller {
 		
 		$this->db->trans_start();
         $student_id = html_escape($this->input->post('student_id'));
-        $this->db->where('student_id', $student_id);
-		
-
 		$course_permission= $this->Common_model->getRecordByWhere('course',array("session"=>$session,'course_group_id'=>$course_group_id ));
 		$session_permission= $this->Common_model->getRecordByWhere('session',array("session"=>$session));	
 		$mode = $this->Common_model->getRecordByWhere('student',array("student_id"=>$student_id ));	
@@ -113,6 +110,7 @@ class updateFormdata extends CI_Controller {
 			}
 		}
 		$studentData['student_id'] = $student_id;
+		$this->db->where('student_id', $student_id);
 		$this->db->update('student', $data);
         $this->db->where('student_id', $student_id);
 		$this->db->update('student_data', $studentData);
