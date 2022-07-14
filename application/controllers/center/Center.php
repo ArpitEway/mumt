@@ -219,6 +219,7 @@ class Center extends CI_Controller {
 	public function getClassByCourse(){
 		
 		$course = $this->input->post('course');
+		
 		$student_mode = $this->input->post('mode');
 		$this->db->select('class_master.*');
 		$this->db->from('class_master');

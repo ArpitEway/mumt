@@ -1250,6 +1250,28 @@ class Admins extends CI_Controller {
 			echo $this->load->view('template/getclass',$data,true);
 		}
 
+		public function getClassByCourseInAdmission(){
+			$course = $this->input->post('course_group_id');
+			
+			$student_mode = $this->input->post('mode');
+			$this->db->select('class_master.*');
+			$this->db->from('class_master');
+			$this->db->join('course_group', 'class_master.course_group_id = course_group.id');
+			if($student_mode=="private" || $student_mode=="PVT"){
+				$this->db->where('course_group.private_mode=class_master.mode');
+			}else{
+				$this->db->where('class_master.mode=course_group.mode');
+			}
+			$this->db->where('class_master.admission_permission','Y');
+			$this->db->where('course_group_id',$course);
+			$class_list = $this->db->get()->result_array();
+			$data = array(
+				'class_list' => $class_list,
+			);
+			
+			echo $this->load->view('template/getclass',$data,true);
+		}
+
 		public function add_center_menu_heading($param1 = '', $param2 = '')
 		{
 			if(!$this->session->has_userdata('adminData')){
