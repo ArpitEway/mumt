@@ -1199,15 +1199,21 @@ class ExamController extends CI_Controller {
 	}
 
 	public function allot_exam_center(){
-		$titleData = array('title' => 'Allot Exam Center'); 
-		$this->load->view('header',$titleData);
-		$data['name_csrf'] = $this->security->get_csrf_token_name();
-		$data['hash_csrf'] = $this->security->get_csrf_hash();	
-		$data['exam_center'] = $this->Common_model->get_record('exam_center','id, examcentercode,schoolcollegename ');
-		$where = "id not in (select distinct(center_id) from allot_exam_center )";
-		$data['centers'] = $this->Common_model->get_record('center','*',$where);
-		$this->load->view('admin/exam_center/allot_exam_center',$data);
-		$this->load->view('footer');
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+			$titleData = array('title' => 'Allot Exam Center'); 
+			$this->load->view('header',$titleData);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();	
+			$data['exam_center'] = $this->Common_model->get_record('exam_center','id, examcentercode,schoolcollegename ');
+			$where = "id not in (select distinct(center_id) from allot_exam_center )";
+			$data['centers'] = $this->Common_model->get_record('center','*',$where);
+			$this->load->view('admin/exam_center/allot_exam_center',$data);
+			$this->load->view('footer');
+		}
 	}
 	public function allot_exam_center_sub(){
 		if(($_POST['action1']=='allot_exam_center') && (!empty($_POST['exam_center'])))
@@ -1227,5 +1233,37 @@ class ExamController extends CI_Controller {
 		}		
 		redirect(base_url().'admin/ExamController/allot_exam_center');	
 	}
+
+	public function alloted_exam_center($param1 = '',$param2 = ''){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+			if($param1 == 'delete'){
+				$id    = $param2;
+				$response=$this->Common_model->deleteById('allot_exam_center','id',$id);
+			   //$response = $this->admin_model->exam_center_delete($param2);
+			   $this->session->set_flashdata('ajax_flash_message','Course Successfully Deleted');
+			   redirect(base_url().'ExamController/alloted_exam_center');
+		   }
+		   if(empty($param1) ){
+			$titleData = array('title' => 'List of Alloted Exam Center'); 
+			$this->load->view('header',$titleData);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$this->db->select('allot_exam_center.id,center.center_code,center.center_name,exam_center.examcentercode,exam_center.schoolcollegename,exam_center.city,exam_center.examcenteraddress');
+			$this->db->from('allot_exam_center');
+			$this->db->join('exam_center', 'allot_exam_center.exam_center_id  = exam_center.id');
+			$this->db->join('center', 'allot_exam_center.center_id  = center.id');
+			$data['exam_center_alloted'] = $this->db->get()->result();
+			//print_r($data['exam_center_alloted']);
+			
+			$this->load->view('admin/exam_center/alloted_exam_center',$data);
+			$this->load->view('footer');
+		   }
+		}	
+	}
+	
 
 }// class
