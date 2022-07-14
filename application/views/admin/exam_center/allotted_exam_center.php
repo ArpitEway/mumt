@@ -31,7 +31,7 @@
 		<?php
 		$i = 1;
       
-			foreach($exam_center_alloted as $examCenter){
+			foreach($exam_center_allotted as $examCenter){
             ?>
 					<tr>
 						<td><?php echo $i; ?></td>
@@ -44,7 +44,7 @@
 						
                 	<td>
                 	<div style="display: inline-flex;">
-						<a href="javascript:void(0);" class="dropdown-item" onclick="confirmModal('<?php echo site_url('admin/ExamController/alloted_exam_center/delete/'.$examCenter->id); ?>', showAllcourse )"><i class="mdi mdi-delete delete-icon"></i></a>
+						<a href="javascript:void(0);" class="dropdown-item" onclick="confirmModal('<?php echo site_url('admin/ExamController/allotted_exam_center/delete/'.$examCenter->id); ?>', showAllcourse )"><i class="mdi mdi-delete delete-icon"></i></a>
                 	</div>	
 
                     </td>

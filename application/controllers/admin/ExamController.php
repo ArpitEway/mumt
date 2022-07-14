@@ -1234,7 +1234,7 @@ class ExamController extends CI_Controller {
 		redirect(base_url().'admin/ExamController/allot_exam_center');	
 	}
 
-	public function alloted_exam_center($param1 = '',$param2 = ''){
+	public function allotted_exam_center($param1 = '',$param2 = ''){
 		if(!$this->session->has_userdata('adminData')){
 			redirect(base_url());
 			exit;
@@ -1245,10 +1245,10 @@ class ExamController extends CI_Controller {
 				$response=$this->Common_model->deleteById('allot_exam_center','id',$id);
 			   //$response = $this->admin_model->exam_center_delete($param2);
 			   $this->session->set_flashdata('ajax_flash_message','Course Successfully Deleted');
-			   redirect(base_url().'ExamController/alloted_exam_center');
+			   redirect(base_url().'ExamController/allotted_exam_center');
 		   }
 		   if(empty($param1) ){
-			$titleData = array('title' => 'List of Alloted Exam Center'); 
+			$titleData = array('title' => 'List of Allotted Exam Center'); 
 			$this->load->view('header',$titleData);
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
@@ -1256,10 +1256,9 @@ class ExamController extends CI_Controller {
 			$this->db->from('allot_exam_center');
 			$this->db->join('exam_center', 'allot_exam_center.exam_center_id  = exam_center.id');
 			$this->db->join('center', 'allot_exam_center.center_id  = center.id');
-			$data['exam_center_alloted'] = $this->db->get()->result();
-			//print_r($data['exam_center_alloted']);
+			$data['exam_center_allotted'] = $this->db->get()->result();
 			
-			$this->load->view('admin/exam_center/alloted_exam_center',$data);
+			$this->load->view('admin/exam_center/allotted_exam_center',$data);
 			$this->load->view('footer');
 		   }
 		}	
