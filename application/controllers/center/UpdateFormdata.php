@@ -112,6 +112,7 @@ class updateFormdata extends CI_Controller {
 		$studentData['student_id'] = $student_id;
 		$this->db->where('student_id', $student_id);
 		$this->db->update('student', $data);
+		
         $this->db->where('student_id', $student_id);
 		$this->db->update('student_data', $studentData);
 		
