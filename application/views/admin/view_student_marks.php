@@ -56,7 +56,10 @@
           if($student->paper_type=='theory'){
             echo $student->int_marks;
           }else{
-            echo $student->p_marks;
+            if($classData->practical_internal_marks=="Y")
+               echo $student->int_marks.'/'.$student->p_marks;
+            else
+                echo $student->p_marks;
           }
         ?>
       </td>

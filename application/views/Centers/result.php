@@ -48,7 +48,7 @@ $("#allClassByCourse").on('change', function(){
 	var course = $(this).val();
 	$.ajax({
 		method: "POST",
-		url: BASE_URL+"center/center/AllClassByCourse",
+		url: BASE_URL+"center/center/AllClassByCourseForResult",
 		data: { course_group_id : course,
 				[csrfName]:csrfHash
 				},

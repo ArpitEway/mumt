@@ -37,11 +37,7 @@ foreach($new_exam_form as $marks){
       $result = "Fail";
       $fail_count++;
     }
-    if($marks->int_marks=='N' || $marks->int_marks=='') {
-     $withheld = true;
-   }
-
-  }else if($marks->paper_type=='Practical'){
+  }else{
     $tot_std_marks += $marks->p_marks;
     $tot_marks += $paper_master[0]->max_theory_marks;
 
@@ -66,102 +62,11 @@ foreach($new_exam_form as $marks){
 }
 
 $require_grace_marks = $require_tot_marks-$fali_tot_marks;
-if ($fail_count<3 && $require_grace_marks<4 && $abs_count==0 && $fail_count!=0){
-  $check_grace_marks = true;
+if($fail_count<3 && $require_grace_marks<4 && $abs_count==0 && $fail_count!=0){
+      $check_grace_marks = true;
 }
+
 ?>
-<style>
-  table, th, td {
-    border: 1px solid black;
-    padding: 5px;
-    font-size: 18px;
-  }
-  .table-bordered td{
-    border:0;
-  }
-  {
-    height: 180px;
-    width: auto;
-    object-fit: cover;
-  }
-
-  .text-primary{
-    color: #16447e !important;
-  }
-
-  .table thead th, .table thead td {
-    font-size: 18px;
-    vertical-align: middle;
-    border: 1px solid #000;
-  }
-</style>
-<style>
-  @media print {
-   .breakhere { page-break-before:always;  };
- }
- th.border.border-dark {
-   vertical-align: middle;
- }
-</style>
-
-<script type="text/javascript"> 
-// below javascript is used for Disabling right-click on HTML page
-document.oncontextmenu=new Function("return false");//Disabling right-click
-
-
-//below javascript is used for Disabling text selection in web page
-document.onselectstart=new Function ("return false"); //Disabling text selection in web page
-if (window.sidebar){
-  document.onmousedown=new Function("return false"); 
-  document.onclick=new Function("return true") ; 
-
-
-//Disable Cut into HTML form using Javascript 
-document.oncut=new Function("return false"); 
-
-
-//Disable Copy into HTML form using Javascript 
-document.oncopy=new Function("return false"); 
-
-
-//Disable Paste into HTML form using Javascript  
-document.onpaste=new Function("return false"); 
-}
-</script>
-<div id="printarea" style="width:1000px; margin:auto">
- <div class="border border-dark border-bottom-0">
-   <div class="text-center py-3">
-    
-      <!-- <img src="<?=base_url()?>assets/images/maskgroup/MaskGroup1.png"  width="100px;" /> -->
-      <h1 class="text-center p-5" style="font-size:34px; color: #781e19;">Maharishi Mahesh Yogi Vedic Vishwavidyalaya</h1>
-    <!-- <img src="<?=base_url()?>assets/images/maskgroup/Group1.png" class="img2" alt=""> -->
-    <h4 class="text-primary text-center mb-0">Examination Held In Feb 2022</h4>
-  </div>
-</div>
-<table class="table mb-0">
-  <tbody>
-    <tr>
-      <th class="border-top-0 text-primary pl-3">Enrollment No.</th>
-      <th class="border-top-0"><?php  echo $student->enrollment_no ?></th>
-      <th class="border-top-0 text-primary pl-3">Roll No.</th>
-      <th class="border-top-0"><?php echo  $student->roll_no; ?></th>
-      <th rowspan="3" class="border-top-0 text-center" width="120px"><img class="img img-thumbnail" src="<?=base_url('assets/student_image/').$student->session.'/'.$student->photo?>" ></th>
-    </tr>
-    <tr>
-      <th class="border-top-0 text-primary pl-3">Name</th>
-      <th class="border-top-0"><?php  echo $student->name ?></th>
-      <th class="border-top-0 text-primary pl-3">F/H Name</th>
-      <th class="border-top-0"><?php  echo $student->f_h_name ?></th>
-    </tr>
-    <tr>
-      <th class="border-top-0 text-primary pl-3">Course</th>
-      <th class="border-top-0"><?php  echo $student->course_name ?></th>
-      <th class="border-top-0 text-primary pl-3">Year / Sem </th>
-      <th class="border-top-0"><?php  echo $student->class_name; ?></th>
-    </tr>
-  </tbody>
-</table>
-
 <?php 
 if ($withheld) { 
   ?>
@@ -179,16 +84,10 @@ if ($withheld) {
     </tr>
     <tr class=" text-center" >
       <th class="border-dark text-center" rowspan="2">Subject</th>
-      <th class="border-dark text-center" colspan="2">Theory / Practical Marks</th>
-      <th class="border-dark text-center" colspan="2">Internal Marks</th>
-      <th class="border-dark text-center" colspan="2">Total</th>
+      <th class="border-dark text-center" colspan="2">Theory / Practical Marks </th>
       <th class="border-dark text-center" rowspan="2">Result</th>
     </tr>
     <tr>
-      <th class="border-dark text-center" scope="row">Max Marks</th>
-      <th class="border-dark text-center" scope="row">Obtained</th>
-      <th class="border-dark text-center" scope="row">Max Marks</th>
-      <th class="border-dark text-center" scope="row">Obtained</th>
       <th class="border-dark text-center" scope="row">Max Marks</th>
       <th class="border-dark text-center" scope="row">Obtained</th>
     </tr>
@@ -246,55 +145,11 @@ if ($withheld) {
           }
         ?>
       </th>
-      <th class="text-center">
-        <?php  
-          if( $marks->paper_type =='Practical'){
-            echo '-';
-          }else{
-            echo $paper_master[0]->max_internal_marks; 
-          } ?>
-        </th>
-      <th class="text-center"><?php
-        if( $marks->paper_type =='Practical'){
-          echo '-';
-        }else{
-          if($marks->int_marks<$paper_master[0]->min_internal_marks || $marks->int_marks=='ABS'){
-            echo $marks->int_marks;
-            $result_1_paper = 'FAIL';
-            ?><span style="color:red">*</span> <?php
-          }else{
-            echo $marks->int_marks;
-          }
-        }
-        ?>
-      </th>
-      <th class="text-center">
-        <?php  if($marks->paper_type!="theory"){
-            echo $paper_master[0]->max_theory_marks;
-          }else{
-            echo $paper_master[0]->max_theory_marks +$paper_master[0]->max_internal_marks;
-          } ?>
-      </th>
-      <th class="text-center">
-        <?php if($marks->paper_type!="theory" && $practical_internal_marks=='N' ){
-                       echo (int)$marks->p_marks ;
-              }
-              elseif($marks->paper_type!="theory" && $practical_internal_marks=='Y' ){  
-                echo (int) $marks->p_marks + (int) $marks->int_marks;
-                
-              }else{ 
-                echo (int) $marks->theory_marks + (int) $marks->int_marks;
-              }  ?>
-      </th>
       <th><?php echo $result_1_paper;?></th>
     </tr>
   <?php } ?>
   <tr>
     <th>Total</th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
     <th class="text-center"><?php echo  $total_max_marks?></th>
     <th class="text-center"><?php  echo  $total_obtained_marks ?></th>
     <th>

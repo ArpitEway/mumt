@@ -28,6 +28,8 @@ $("#session").on('change', function(){
 	})
 	.done(function( msg ) {
         $('#allClassBycourse').html(msg);
-		console.log(msg);
+		$('#eligibility').val("");
+		$('#course_group_id').val("");
+		console.log("Test "+msg);
 	});
 });

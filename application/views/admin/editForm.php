@@ -25,7 +25,7 @@
              <?php } else { ?>
 					<div class="form-group ">
 						<label>Session</label><span class="text-danger"> *</span>
-						<input type="text" readonly="readonly" class="form-control " name="session" placeholder="session" value="<?=$session?>" >
+						<input type="text" readonly="readonly" class="form-control " name="session" id="session" placeholder="session" value="<?=$session?>" >
 						<div class="fv-plugins-message-container"></div>
 					</div>
 				<?php } ?>
@@ -46,6 +46,7 @@
 				<div class="col-md-6">
 					<div class="form-group">
 					<input type="hidden" name="old_course_group_id" id="old_course_group_id"  value="<?=$student_detail->course_group_id;?>">
+					<input type="hidden" name="mode" id="mode"  value="<?=$student_detail->university_mode;?>">
 					<label>Course</label><span class="text-danger"> *</span>
 					<select name="course_group_id" id="course_group_id" class="form-control " >
 					<option value="" >--Select--</option>

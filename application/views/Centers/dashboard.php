@@ -172,12 +172,12 @@
 							<span class="nav-text">Paper Missing List</span>
 						</div>
 					</a> -->
-					<a class="border-0 custom-menu-item" href="<?=base_url('remaining_exam_answersheet');?>">
+					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('remaining_exam_answersheet');?>">
 						<div>
 							<span class="nav-text">Remaining Exam Answersheet</span>
 						</div>
-					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
+					</a> -->
+					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
 						<div>
 							<span class="nav-text">Practical Marks Submission</span>
 						</div>
@@ -191,7 +191,7 @@
 						<div>
 							<span class="nav-text">Exam Form Dec 2021</span>
 						</div>
-					</a>
+					</a> -->
 					<a class="border-0 custom-menu-item" href="<?=base_url('student_roll_no_list');?>">
 						<div>
 							<span class="nav-text">Roll No List</span>
