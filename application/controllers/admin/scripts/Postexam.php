@@ -130,9 +130,7 @@ class Postexam extends CI_Controller {
             'mother_name' => $student->mother_name,
             'marksheet_no' =>$student->marksheet_no,
             );
-            $old_exam_data_id = $this->Common_model->insertAll('old_exam_data',$data);
             $new_exam_form = $this->Common_model->getRecordByWhere('new_exam_form',array('student_id' => $student->student_id));
-
             foreach($new_exam_form  as $marks)
             {
                 $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$marks->class_id,'paper_code'=>$marks->paper_code));
@@ -147,6 +145,7 @@ class Postexam extends CI_Controller {
                             $fali_tot_marks += $marks->theory_marks;
                             $require_tot_marks += $paper_master[0]->min_theory_marks;
                         }
+
                     }else if($marks->paper_type=='practical'){
                         $tot_std_marks += $marks->p_marks;
                         $tot_marks += $paper_master[0]->max_theory_marks;
@@ -162,12 +161,15 @@ class Postexam extends CI_Controller {
                         }
                     }
                 }
+            $old_exam_data_id = $this->Common_model->insertAll('old_exam_data',$data);
+            echo $this->db->last_query().'<br>';
                 $aggregate_per =   ($tot_std_marks/$tot_marks) * 100;
                 $require_grace_marks = $require_tot_marks-$fali_tot_marks;
                 if ($fail_count<3 && $require_grace_marks<4 && $aggregate_per>36){
                     $check_grace_marks = true;
                 }
-            }
+         
+             if($old_exam_data_id){
             foreach($new_exam_form as $marks)
             {
                 $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$marks->class_id,'paper_code'=>$marks->paper_code));
@@ -176,7 +178,8 @@ class Postexam extends CI_Controller {
                 {
                     if($marks->theory_marks==''){
                         $result = "-";
-                    }else if($marks->theory_marks>= $paper_master[0]->min_theory_marks){
+                    }
+                    else if($marks->theory_marks>= $paper_master[0]->min_theory_marks ){
                         $result = "PASS";
                     }else{
                         if($check_grace_marks){
@@ -223,8 +226,9 @@ class Postexam extends CI_Controller {
                 'p_order'=>$marks->paper_order 
                 );
             $insert = $this->Common_model->insertAll('old_result_data',$data);
-        }
-
+            echo $this->db->last_query().'<br>';
+        } 
+       }
         if($fail_result_count>0){
             $final_result = "FAIL";
         }elseif($grace_result_count>0)
@@ -233,12 +237,15 @@ class Postexam extends CI_Controller {
         }else{
             $final_result = "PASS";
         }
+        $studentData = array('upload_result'=>'Y');
+            $this->Common_model->updateRecordByConditions('student',array('student_id'=>$student->student_id),$studentData);     
         $update_old_exam_data = $this->Common_model->updateRecordByConditions('old_exam_data',array('student_id'=>$student->student_id),array('exam_result'=>$final_result));
-
         if($insert){
             echo $old_exam_data_id;
-            die;
-        }
+             echo '<hr style="margin:20px; 0px;">';
+           // die;
+        } 
+    }
     }
 
     public function general_promotion_class_list_paper_count(){
