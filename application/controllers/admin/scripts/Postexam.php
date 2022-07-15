@@ -137,7 +137,7 @@ class Postexam extends CI_Controller {
                 if($marks->paper_type=='theory'){
                     $tot_std_marks += $marks->theory_marks + $marks->int_marks;
                     $tot_marks += $paper_master[0]->max_theory_marks + $paper_master[0]->max_internal_marks;
-                        if($marks->theory_marks==''){
+                        if($marks->theory_marks=='' || $marks->theory_marks=='ABS' ){
                             $whCount++;
                         }else if($marks->theory_marks<$paper_master[0]->min_theory_marks){
                             $result = "fail";
@@ -145,7 +145,6 @@ class Postexam extends CI_Controller {
                             $fali_tot_marks += $marks->theory_marks;
                             $require_tot_marks += $paper_master[0]->min_theory_marks;
                         }
-
                     }else if($marks->paper_type=='practical'){
                         $tot_std_marks += $marks->p_marks;
                         $tot_marks += $paper_master[0]->max_theory_marks;
@@ -168,7 +167,6 @@ class Postexam extends CI_Controller {
                 if ($fail_count<3 && $require_grace_marks<4 && $aggregate_per>36){
                     $check_grace_marks = true;
                 }
-         
              if($old_exam_data_id){
             foreach($new_exam_form as $marks)
             {
@@ -176,7 +174,7 @@ class Postexam extends CI_Controller {
                 $paper_name =$this->Common_model->getPaperNameById($marks->paper_id);
                 if($marks->paper_type=="theory")
                 {
-                    if($marks->theory_marks==''){
+                    if($marks->theory_marks=='' || $marks->theory_marks=='ABS' ){
                         $result = "-";
                     }
                     else if($marks->theory_marks>= $paper_master[0]->min_theory_marks ){
@@ -192,9 +190,13 @@ class Postexam extends CI_Controller {
                     }
                 }else if($marks->paper_type=="practical")
                 {
-                    if($marks->p_marks==''){
+                    if($marks->p_marks=='' || $marks->p_marks=='N' ){
                         $result = "-";
-                    }else if($marks->p_marks>=$paper_master[0]->min_theory_marks){
+                    }
+                     if($marks->p_marks=='ABS' ){
+                        $result = "-";
+                    }
+                    else if($marks->p_marks>=$paper_master[0]->min_theory_marks){
                         $result = "PASS";
                     }else{
                         if($check_grace_marks){
