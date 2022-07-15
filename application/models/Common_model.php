@@ -812,6 +812,31 @@ class Common_Model extends CI_Model{
 		$query = $this->db->get();
 		return $query->result();
 	}
+
+/*	function getCountOnJoin($table1="",$join="",$where = ""){
+		
+		print_r($where);
+		$this->db->select('count(*) as cnt,');
+		$this->db->from($table1);
+		if(!empty($join)):
+			// foreach($join as $j):
+			// 	echo $j[0];
+			  
+			// endforeach;
+			echo $j=implode(',',$join[0]);
+			$this->db->join($j);
+		endif;
+		//$this->db->join($table2, $joincondition); 
+		foreach($where as $k =>$v):
+			$this->db->where($k,$v);
+		endforeach;
+		//echo $w=implode(',',$where[0]);
+		//$this->db->where($w);
+		$query = $this->db->get();
+		echo $this->db->last_query(); die;
+		return $query->result_array();
+
+	}*/
 }
 
 ?>

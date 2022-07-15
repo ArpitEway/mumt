@@ -1263,6 +1263,41 @@ class ExamController extends CI_Controller {
 		   }
 		}	
 	}
+	//Single Paper
+	public function testid_wise_student_count(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+			$titleData = array('title' => 'Test Id wise Student Count'); 
+			$this->load->view('header',$titleData);
+			//select *,COUNT(id) as tot from paper_master where type='Theory' and test_id!='' group by test_id having tot=1 order by test_id;
+			$this->db->select('*,COUNT(id) as tot');
+			$this->db->from('paper_master');
+			$this->db->where('type','Theory');
+			$this->db->where('test_id!=','');
+			$this->db->group_by('test_id ');
+			$this->db->having(' tot=1');
+			$this->db->order_by("test_id", "asc");
+			$data['list'] = $this->db->get()->result();
+			//echo $this->db->last_query();
+			//echo "<pre>";
+			//print_r($data['list']);
+			$this->load->view('admin/exam_center/testid_wise_student',$data);
+			$this->load->view('footer');
+		}
+	}
+	//Multiple Paper
+	public function testid_wise_student_count_multiple(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+
+		}
+	}
 	
 
 }// class
