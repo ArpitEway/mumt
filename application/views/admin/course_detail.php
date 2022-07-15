@@ -48,7 +48,8 @@ color:red;
                 <td><?php echo $class['class_name']; ?></td>
                 <td><?php echo $class['id']; ?></td>
                 <td><?php echo $class['class_order']; ?></td>
-                <td><?php echo $class['total_paper']; ?></td>
+                <td><?php echo    $this->Common_model->getCountByWhere('paper_master',array('class_id'=>$class['id']));
+                 ?></td>
                 <td ><?php echo $class['class_group']; ?></td>
                 <td ><?php echo $class['total_group'];; ?></td>
                 <td ><?php echo $class['select_group'];; ?></td>

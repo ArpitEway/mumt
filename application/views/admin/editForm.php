@@ -4,12 +4,32 @@
 		<div class="col-md-9">
 			<div class="row">
                 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">   
-				<div class="col-md-6">
+                <div class="col-md-6">
+
+                	<?php if($this->session->account_type=='Admins')
+                	{
+                	$sessions = $this->db->get_where('session', array())->result_array();
+                		?>
+                		<div class="form-group ">
+                			<label>Session</label><span class="text-danger"> *</span>
+
+                			<select class="form-control" name="session" id="session">
+       
+                				<?php foreach ($sessions as $session) {
+                					$selected = ($session['session']==$student_detail->session) ? 'selected' : '';
+                					?>
+                					<option <?=$selected?>><?php echo $session['session']; ?></option> 
+                					<?php 
+                				} ?>
+                			</select>
+					</div>
+             <?php } else { ?>
 					<div class="form-group ">
 						<label>Session</label><span class="text-danger"> *</span>
 						<input type="text" readonly="readonly" class="form-control " name="session" id="session" placeholder="session" value="<?=$session?>" >
 						<div class="fv-plugins-message-container"></div>
 					</div>
+				<?php } ?>
 				</div>
 				<div class="col-md-6">
 					<!--begin::Input-->
