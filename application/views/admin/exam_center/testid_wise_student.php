@@ -5,11 +5,11 @@
 		<thead>
 			<tr>
 				<th>#</th>
-				<th>Course Name </th>
-				<th>Class Name </th>
+				<!-- <th>Course Name </th>
+				<th>Class Name </th> -->
 				<th>Test ID</th>
 				<th>Paper Code</th>
-				<th>Paper No.</th>
+				<!-- <th>Paper No.</th> -->
 				<th>Paper Name</th>		
                 <th>ce</th>	
                 <th>Total Students</th>		
@@ -18,11 +18,11 @@
 		<tfoot>
 			<tr>
             <th>#</th>
-            <th>Course Name </th>
-				<th>Class Name </th>
+            <!-- <th>Course Name </th>
+				<th>Class Name </th> -->
 				<th>Test ID</th>
 				<th>Paper Code</th>
-				<th>Paper No.</th>
+				<!-- <th>Paper No.</th> -->
 				<th>Paper Name</th>	
                 <th>ce</th>	
                 <th>Total Students</th>				
@@ -34,39 +34,85 @@
 		$i = 1;
       
 			foreach($list as $row){
-                $class=$this->Common_model->getRecordByWhere('class_master',array("id"=>$row->class_id));
-                $table1="new_exam_form";
-                $table2="student";
-                $joincondition="e.student_id=s.student_id";
-                $join = array(
-                    array('student as s', 'e.student_id = s.student_id'),
-                   
-                );
-                $where= array(
-                    array('e.paper_code'=>$row->paper_code),
-                );
+				if($multiple){
+					$datas=$this->Common_model->getRecordByWhere('paper_master',array("test_id"=>$row->test_id));
+					$counter=0;$course_name=$class_name=$paper_code=$paper_name=$ce="";
+					foreach($datas as $data){
+						$class=$this->Common_model->getRecordByWhere('class_master',array("id"=>$row->class_id));
+						$where= array(
+							'e.paper_code'=>$data->paper_code,
+							 //'s.pattern'=>'NEW' ,
+							 's.new_exam_form!='=>'D' ,
+							 's.class_id'=>$data->class_id,
+						 );
+						 $tag='count(*) as cnt';
+						 $table="new_exam_form  as e";
+						 $join_table='student as s';
+						 $join_on='e.student_id = s.student_id';
+						 $count= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
+						 $counter+=$count[0]->cnt;
+						 $course_name.=" <br>".$data->course_name;
+						 $class_name.=" <br>".$class[0]->class_name;
+						 $paper_code.=" <br>".$data->paper_code;
+						 $paper_name.=" <br>".$data->paper_name;
+						 $ce.=" <br>".$data->ce;
+					}
+				?>	<tr>
+						<td><?php echo $i; ?></td>
+						<!-- <td><?php echo $course_name; ?></td>
+						<td><?php echo $class_name; ?></td> -->
+						<td><?php echo $row->test_id; ?></td>
+						<td><?php echo $paper_code; ?></td>
+						<!-- <td><?php //echo $row->paper_no; ?></td> -->
+                        <td><?php echo $paper_name; ?></td>
+						<td><?php echo $ce; ?></td>
+                	    <td><?php echo $counter; ?></td>
+					</tr>
+				
+			
+			<?php  $i++; 
+
+				}
+				else{
+					//$data=$row;
+					$class=$this->Common_model->getRecordByWhere('class_master',array("id"=>$row->class_id));
                 
-                //$count=$this->Common_model->getCountOnJoin("new_exam_form  as e",$join,$where);
-                //  "select COUNT(id) as total from new_exam_form as e join student as s on e.student_id=s.student_id where class_id='".$row["class_id"]."' and paper_code='".$row["papercode"]."' and s.pattern='NEW' and s.new_exam_form!='D' and cls_id='".$row["class_id"]."'"; 
-               //echo $this->db->last_query();
-               // print_r( $class);
-            ?>
+					$where= array(
+					   'e.paper_code'=>$row->paper_code,
+						//'s.pattern'=>'NEW' ,
+						's.new_exam_form!='=>'D' ,
+						's.class_id'=>$row->class_id,
+					);
+					$tag='count(*) as cnt';
+					$table="new_exam_form  as e";
+					$join_table='student as s';
+					$join_on='e.student_id = s.student_id';
+					$count= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
+					?>
 					<tr>
 						<td><?php echo $i; ?></td>
-						<td><?php echo $row->course_name; ?></td>
-						<td><?php echo $class[0]->class_name; ?></td>
+						<!-- <td><?php echo $row->course_name; ?></td>
+						<td><?php echo $class[0]->class_name; ?></td> -->
 						<td><?php echo $row->test_id; ?></td>
 						<td><?php echo $row->paper_code; ?></td>
-						<td><?php echo $row->paper_no; ?></td>
+						<!-- <td><?php //echo $row->paper_no; ?></td> -->
                         <td><?php echo $row->paper_name; ?></td>
 						<td><?php echo $row->ce; ?></td>
-                	    <td><?php echo $row->ce; ?></td>
+                	    <td><?php echo $count[0]->cnt; ?></td>
 					</tr>
 				
 			
 			<?php $i++; }
 			
-			 ?>
+			 
+				}
+				
+               
+               
+              
+               //echo $this->db->last_query(); 
+                //print_r( $count);
+           ?>
 			</tbody>
 		    
 	</table>

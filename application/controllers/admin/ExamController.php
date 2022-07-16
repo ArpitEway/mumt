@@ -1272,7 +1272,6 @@ class ExamController extends CI_Controller {
 		{
 			$titleData = array('title' => 'Test Id wise Student Count'); 
 			$this->load->view('header',$titleData);
-			//select *,COUNT(id) as tot from paper_master where type='Theory' and test_id!='' group by test_id having tot=1 order by test_id;
 			$this->db->select('*,COUNT(id) as tot');
 			$this->db->from('paper_master');
 			$this->db->where('type','Theory');
@@ -1281,9 +1280,7 @@ class ExamController extends CI_Controller {
 			$this->db->having(' tot=1');
 			$this->db->order_by("test_id", "asc");
 			$data['list'] = $this->db->get()->result();
-			//echo $this->db->last_query();
-			//echo "<pre>";
-			//print_r($data['list']);
+			$data['multiple']=false;
 			$this->load->view('admin/exam_center/testid_wise_student',$data);
 			$this->load->view('footer');
 		}
@@ -1295,7 +1292,19 @@ class ExamController extends CI_Controller {
 			exit;
 		}else
 		{
-
+			$titleData = array('title' => 'Test Id wise Student Count (Multiple Test ID)'); 
+			$this->load->view('header',$titleData);
+			$this->db->select('*,COUNT(id) as tot');
+			$this->db->from('paper_master');
+			$this->db->where('type','Theory');
+			$this->db->where('test_id!=','');
+			$this->db->group_by('test_id ');
+			$this->db->having(' tot>1');
+			$this->db->order_by("test_id", "asc");
+			$data['list'] = $this->db->get()->result();//echo $this->db->last_query();
+			$data['multiple']=true;
+			$this->load->view('admin/exam_center/testid_wise_student',$data);
+			$this->load->view('footer');
 		}
 	}
 	
