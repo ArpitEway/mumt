@@ -1307,6 +1307,41 @@ class ExamController extends CI_Controller {
 			$this->load->view('footer');
 		}
 	}
+	//Envelope cover Single Test ID 
+	public function envelope_cover_page_single_testid(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+			$titleData = array('title' => 'Envelope Cover Page Single Testid'); 
+			$this->load->view('header',$titleData);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$this->db->select('*,COUNT(id) as tot');
+			$this->db->from('paper_master');
+			$this->db->where('type','Theory');
+			$this->db->where('test_id!=','');
+			$this->db->group_by('test_id ');
+			$this->db->having(' tot=1');
+			$this->db->order_by("test_id", "asc");
+			$data['list'] = $this->db->get()->result();
+			$data['multiple']=false;
+			$this->load->view('admin/exam_center/envelope_cover_page',$data);
+			$this->load->view('footer');
+		}
+	}	
 	
-
+	public function getEnvelope(){
+		$test_id = $this->input->post('test_id');
+		$classData = $this->Common_model->get_record('paper_master','*',"test_id='".$test_id."'");
+	 	$classData[0]['course_group_id'];
+		 $classData[0]['class_id'];
+		//print_r($classData);die;
+		$data = array(
+			'class_list' => $center_list,
+			//'all' => 'All',
+		);	
+		echo $this->load->view('admin/exam_center/envelope_cover_page_single',$data, TRUE);
+	}
 }// class
