@@ -49,12 +49,26 @@
 					<input type="hidden" name="old_course_group_id" id="old_course_group_id"  value="<?=$student_detail->course_group_id;?>">
 					<input type="hidden" name="mode" id="mode"  value="<?=$student_detail->university_mode;?>">
 					<label>Course</label><span class="text-danger"> *</span>
-					<select name="course_group_id" id="course_group_id" class="form-control " >
+					<select name="course_group_id" id="course_group_id_admission" class="form-control " >
 					<option value="" >--Select--</option>
                     <?php
-                    $this->db->where(" (admission_permission = 'Y' or id=$student_detail->course_group_id) ");
-                    $course_group_list = $this->Common_model->get_record('course_group','*',array('eligibility'=> $student_data->eligibility)); 
-
+                   
+					$eligibility=$student_data->eligibility;  
+				   $this->db->select('course_group.id,course.course_name');
+				   $this->db->from('course');
+				   $this->db->join('course_group', 'course_group.id = course.course_group_id'); 
+				   $this->db->where('eligibility',$eligibility);
+				   $this->db->where('course.session',$student_detail->session);
+				   if($student_detail->university_mode=='REG' ){
+					  
+					   $this->db->where(" (admission_permission_regular = 'Y' or course_group.id=$student_detail->course_group_id) ");
+					 }else{
+					
+						$this->db->where(" (admission_permission_private = 'Y' or course_group.id=$student_detail->course_group_id) ");
+					 }
+				   
+				    $query = $this->db->get();
+				    $course_group_list= $query->result_array();
                     foreach ($course_group_list as $row) { ?>
                                 <option value="<?=$row['id'];?>" <?php if($student_detail->course_group_id == $row['id']){ echo "selected";} ?>><?=$row['course_name'];?></option>
 					<?php } ?>
