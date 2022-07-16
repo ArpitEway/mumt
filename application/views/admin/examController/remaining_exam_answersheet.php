@@ -26,8 +26,8 @@
     		$i = 1;
             foreach($students as $student){
                 $uploaded_paper  = $this->Common_model->getCountByWhere('upload_exam_ans_sheet',array('student_id'=>$student->student_id,'course_group_id'=>$student->course_group_id, 'class_id'=>$student->class_id));
-                $exam_paper  = $this->Common_model->getCountByWhere('new_exam_form',array('student_id'=>$student->student_id,'course_group_id'=>$student->course_group_id, 'class_id'=>$student->class_id,'theory_marks' ='ABS'));
-                $remaining =$student->cnt - ($uploaded_paper+$exam_paper);
+                // $exam_paper  = $this->Common_model->getCountByWhere('new_exam_form',array('student_id'=>$student->student_id,'course_group_id'=>$student->course_group_id, 'class_id'=>$student->class_id,'theory_marks' ='ABS'));
+                $remaining =$student->cnt - $uploaded_paper; //($uploaded_paper+$exam_paper);
             $mobile_no  = $this->Common_model->getMobileNoByStudentID($student->student_id);
 
             if($remaining >0 ){
