@@ -1874,13 +1874,11 @@ public function getStudentData()
 			'state_list' => $state_list,
 			'district_list' => $district_list,
 			'course_group_list' => $course_group_list,
-			'session' => 'July 2021',
 			'eligibility_list' => $eligibility_list,
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 			'student_detail' => $this->db->get_where('student', array("student_id" => $student_id))->row(),
 			'student_data'  => $this->db->get_where('student_data', array("student_id" => $student_id))->row()
-
 		);
 
 

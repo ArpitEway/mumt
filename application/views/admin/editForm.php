@@ -58,7 +58,7 @@
 				   $this->db->from('course');
 				   $this->db->join('course_group', 'course_group.id = course.course_group_id'); 
 				   $this->db->where('eligibility',$eligibility);
-				   $this->db->where('course.session',$session);
+				   $this->db->where('course.session',$student_detail->session);
 				   if($student_detail->university_mode=='REG' ){
 					  
 					   $this->db->where(" (admission_permission_regular = 'Y' or course_group.id=$student_detail->course_group_id) ");
