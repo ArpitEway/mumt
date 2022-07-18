@@ -420,8 +420,8 @@ class Center extends CI_Controller {
 		$data = $row = array();
 		$where = 'online_payment_transaction.center_id='.$this->session->center_id.' and online_payment_transaction.payment="Y"';
 
-		$column_order = array('university_mode,student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','fees_head','amount','txnId',null);
-		$column_search = array('university_mode,student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','fees_head','amount','txnId');
+		$column_order = array('student.university_mode,student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','fees_head','amount','txnId',null);
+		$column_search = array('student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','fees_head','amount','txnId');
 		$course_type=$this->input->post('course_type');
 		//AND student.university_mode="'.$course_type.'"
 		$DataTableArray = array(
