@@ -1,4 +1,5 @@
 <div class="  text-center p-3">
+       <input type="hidden" id="multiple"  value="<?= $multiple; ?>">
        <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
        <div class="form-group col-md-3">
         <label for="course">Test ID</label>
@@ -36,10 +37,12 @@
 	var csrfName = $('.csrfname').attr('name');
 	var csrfHash = $('.csrfname').val(); 
 	var test_id = $(this).val();
+  console.log($("#multiple").val());
+  var multiple=$("#multiple").val();
 		$.ajax({
 			method: "POST",
 			url: BASE_URL+"ExamController/getEnvelope",
-			data: { test_id : test_id,
+			data: { test_id : test_id,multiple:multiple,
 					[csrfName]:csrfHash
 					},
 		})
