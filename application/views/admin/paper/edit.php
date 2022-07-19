@@ -34,10 +34,29 @@
 		</select>
 		<span class="text-danger"></span>
 	</div>
-
-        <div class="form-group col-md-6">
+       <div class="form-group col-md-6">
 			<label for="code">Exam Time</label>
 			<input type="text" class="form-control" id="exam_time" name="exam_time" value="<?=$paper->exam_shift?>" placeholder="Enter Exam time ">        
+		</div>
+
+      <div class="form-group col-md-6">
+			<label for="code">Max Theory Marks</label>
+			<input type="text" class="form-control" id="max_theory" name="max_theory" value="<?=$paper->max_theory_marks?>" placeholder="Enter Max Theory Marks ">        
+		</div>
+
+      <div class="form-group col-md-6">
+			<label for="code">Min Theory Marks</label>
+			<input type="text" class="form-control" id="min_theory" name="min_theory" value="<?=$paper->min_theory_marks?>" placeholder="Enter Min Theory Marks ">        
+		</div>
+
+     <div class="form-group col-md-6">
+			<label for="code">Max Internal Marks</label>
+			<input type="text" class="form-control" id="max_int" name="max_int" value="<?=$paper->max_internal_marks?>" placeholder="Enter Max Internal Marks">        
+		</div>
+
+		<div class="form-group col-md-6">
+			<label for="code">Min Internal Marks</label>
+			<input type="text" class="form-control" id="min_int" name="min_int" value="<?=$paper->min_internal_marks?>" placeholder="Enter Min Internal Marks">        
 		</div>
 
 	</div>
