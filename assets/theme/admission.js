@@ -5,7 +5,7 @@ $("#course_group_id").on('change', function(){
 	
 	var csrfName = $('.csrfname').attr('name');
 	var csrfHash = $('.csrfname').val(); 
-
+	console.log("mode "+mode);
 	$.ajax({
 		method: "POST",
 		url: BASE_URL+"center/center/getClassByCourse",
@@ -31,6 +31,7 @@ $("#eligibility").on('change', function(){
 	})
 	.done(function( msg ) {
 		$('#course_group_id').html(msg);
+		$('#course_group_id_admission').html(msg);
 	});
 });
 
@@ -245,7 +246,8 @@ $(document).on('click','#edit_submit', function () {
 					},
 					error: function (data) {
 				$('input[type="button"]').removeAttr('disabled','disabled');
-						toastr.error('An error occurred.');
+                   Swal.fire("Not Permitted For Admission ", "info","error");
+					// toastr.error('Course Permission Not Permitted .');
 					},
 				});
 			
