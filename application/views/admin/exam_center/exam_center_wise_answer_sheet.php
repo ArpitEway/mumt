@@ -1,21 +1,27 @@
-<div class="  text-center p-3">
-       <input type="hidden" id="multiple"  value="<?= $multiple; ?>">
+ <?php //print_r($exam_centers); ?>
+ <div class="  text-center p-3">
        <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-       <div class="form-group col-md-3">
-        <label for="course">Test ID</label>
-        <select  name="test_id" readonly="readonly" id="test_id" class="form-control course" required>
-            <option value="" selected >Select Test ID</option>
+       <div class="form-group col-md-6">
+        <label for="course">Exam Center</label>
+        <select  name="exam_center" readonly="readonly" id="exam_center" class="form-control course" required>
+            <option value="" selected >Select Exam Center</option>
+            <option value="All"  >All</option>
             <?php 
 
-            foreach($list as $testid)
+            foreach($exam_centers as $ecenter)
             {
                 ?>
-                <option value="<?php echo $testid->test_id; ?>"   ><?php echo $testid->test_id; ?></option>
+                <option value="<?php echo $ecenter->id; ?>"   ><?php echo $ecenter->examcentercode.' ('.$ecenter->schoolcollegename.')'; ?></option>
                 <?php
             } 
             ?>
         </select>
     </div>
+   
+   
+   
+
+</div>
 
 <div align="center" id="myLoader" class="loader_div" style="display: none;" >
   <svg>
@@ -28,22 +34,24 @@
 </div>   
 <div class="dt-responsive">
 
-</div>  
+</div> 
+
 
 <script>
-   
-   
-    $("#test_id").on('change', function(){
+    // $(document).ready(function() {
+    //      $('#exam_center').change();
+    // });
+    $("#exam_center").on('change', function(){
 	var csrfName = $('.csrfname').attr('name');
 	var csrfHash = $('.csrfname').val(); 
-	var test_id = $(this).val();
+	var exam_center = $(this).val();
   $('.dt-responsive').html("");
-  console.log($("#multiple").val());
-  var multiple=$("#multiple").val();
+  //console.log($("#multiple").val());
+  //var multiple=$("#multiple").val();
 		$.ajax({
 			method: "POST",
-			url: BASE_URL+"ExamController/getEnvelope",
-			data: { test_id : test_id,multiple:multiple,
+			url: BASE_URL+"ExamController/get_exam_center_wise_answer_sheet_count",
+			data: { exam_center : exam_center,
 					[csrfName]:csrfHash
 					},
 		})

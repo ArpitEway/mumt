@@ -1339,8 +1339,9 @@ class ExamController extends CI_Controller {
 		$this->db->select('*');
 		$this->db->from('exam_center');
 		$this->db->join('allot_exam_center', 'allot_exam_center.exam_center_id = exam_center.id');
+		$this->db->group_by('exam_center.examcentercode');
 		$this->db->order_by("exam_center.examcentercode", "asc");
-		$data['elist'] = $this->db->get()->result();
+		$data['elist'] = $this->db->get()->result();//echo $this->db->last_query(); die;
 		if($multiple){
 			
 			$data['paperData'] =$paperData = $this->Common_model->get_record('paper_master','*',"test_id='".$test_id."'");
@@ -1385,4 +1386,36 @@ class ExamController extends CI_Controller {
 			$this->load->view('footer');
 		}
 	}	
+
+	//Exam Center Wise Answer Sheet Count
+	public function exam_center_wise_answer_sheet_count(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+			$titleData = array('title' => 'Exam Center Wise Answer Sheet Count'); 
+			$this->load->view('header',$titleData);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$this->db->select('*');
+			$this->db->from('exam_center');
+			
+			$data['exam_centers'] = $this->db->get()->result();
+
+			$this->load->view('admin/exam_center/exam_center_wise_answer_sheet',$data);
+			$this->load->view('footer');
+		}
+	}	
+
+	public function get_exam_center_wise_answer_sheet_count(){
+		$exam_center = $this->input->post('exam_center');
+		$this->db->select('*');
+		$this->db->from('exam_center');
+		if($exam_center!="All")
+		$this->db->where('id',$exam_center);	
+		$data['exam_centers'] = $this->db->get()->result();
+		echo $this->load->view('admin/exam_center/exam_center_wise_answer_sheet_count_show',$data, TRUE);
+	}
+
 }// class
