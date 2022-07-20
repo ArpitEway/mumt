@@ -1418,4 +1418,56 @@ class ExamController extends CI_Controller {
 		echo $this->load->view('admin/exam_center/exam_center_wise_answer_sheet_count_show',$data, TRUE);
 	}
 
+	//Exam Center Wise Paper Count by Date & Shift
+	public function exam_center_wise_paper_count(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+			$titleData = array('title' => 'Paper Count By Date'); 
+			$this->load->view('header',$titleData);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$this->db->select('*');
+			$this->db->from('exam_center');
+			$data['exam_centers'] = $this->db->get()->result();
+			$this->db->select('*');
+			$this->db->from('paper_master');
+			$this->db->where('exam_date!=',"");	
+			$data['examDate'] = $this->db->get()->result();
+
+			$this->load->view('admin/exam_center/exam_center_wise_paper',$data);
+			$this->load->view('footer');
+		}
+	}
+	
+	public function get_exam_center_wise_paper_count(){
+		$exam_center = $this->input->post('exam_center');
+		$exam_date = $this->input->post('exam_date');
+		$shift = $this->input->post('shift');
+		
+		$where= array(
+            'a.exam_center_id'=>$exam_center,
+         );
+         $tag='*';
+         $table="exam_center  as e";
+         $join_table='allot_exam_center as a';
+         $join_on='a.exam_center_id = e.id';
+         $data['exam_centers']= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
+
+		$this->db->select('DISTINCT(paper_master.id),exam_date,exam_shift');
+		$this->db->from('paper_master');
+		$this->db->join('new_exam_form', 'new_exam_form.paper_id = paper_master.id');
+		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
+		$this->db->where('student.new_exam_form!=','D' );
+		$this->db->where('paper_master.exam_date!=',"");
+		$this->db->where('paper_master.exam_shift',$shift);
+		$this->db->where('student.exam_center_id', $exam_center );
+		$data['paper'] = $this->db->get()->result();
+		echo $this->db->last_query(); 
+		print_r($data['paper'] );
+		echo $this->load->view('admin/exam_center/exam_center_paper_count_show',$data, TRUE);
+	}
+
 }// class

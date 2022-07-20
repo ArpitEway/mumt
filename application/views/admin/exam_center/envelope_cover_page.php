@@ -33,7 +33,7 @@
 <script>
    
    
-    $("#test_id").on('change', function(){
+  $("#test_id").on('change', function(){
 	var csrfName = $('.csrfname').attr('name');
 	var csrfHash = $('.csrfname').val(); 
 	var test_id = $(this).val();

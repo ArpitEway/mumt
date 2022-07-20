@@ -1,6 +1,23 @@
 <?php 
     foreach($exam_centers as $row)
     {
+        
+        $where= array(
+        
+            's.new_exam_form!='=>'D' ,
+            's.examcentercode'=>$row->examcentercode,
+            's.exam_center_id'=>$row->id,
+         );
+         $tag='count(*) as cnt';
+         $table="new_exam_form  as e";
+         $join_table='student as s';
+         $join_on='e.student_id = s.student_id';
+         $count= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
+      
+       
+   //  if($count[0]->cnt >0)
+    //  {
+     
 ?> 
  <br>
 
@@ -66,7 +83,7 @@
 
         <td colspan="2"> 
 
-        <center><h3>Total Answer Sheet Count 8880</h3></center>
+        <center><h3>Total Answer Sheet Count <?=$count[0]->cnt?></h3></center>
 
         </td>
 
@@ -76,4 +93,5 @@
 
     </tbody>
 </table>
-<?php } ?>
+<?php //}
+ } ?>
