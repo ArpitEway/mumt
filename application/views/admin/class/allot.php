@@ -2,8 +2,9 @@
 	$classes = $this->db->get_where('class_master', array('id' => $param1))->row();
 	$where = array('class_id' => $param1);
 	$groups = $this->Common_model->getRecordByWhere('group',$where);
-	$sub_groups = $this->Common_model->getRecordByWhere('sub_group');
+	$sub_groups = $this->Common_model->getRecordByWhere('sub_group',array('id !=' => 1));
 	$where['ce !='] = 'compulsory';
+	$this->db->order_by('id');
 	$papers = $this->Common_model->getRecordByWhere('paper_master',$where);
 
  ?>
