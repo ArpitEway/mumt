@@ -3713,4 +3713,28 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
+	public function allot_papers()
+	{
+		$groups = $_POST['group'];
+		$sub_group = $_POST['sub_group'];
+		$papers = $_POST['papers'];
+		$i = 0;
+		foreach ($groups as $group) {
+			$paper = $this->Common_model->getRecordById('paper_master','id',$papers[$i]);
+			$group_paper_data = array(
+				'group_id' => $group,
+				'paper_name' => $paper->paper_name,
+				'paper_code' => $paper->paper_code,
+				'paper_id' => $paper->id,
+				'sub_group_id' => $sub_group[$i]
+			);
+				$this->Common_model->insertAll('group_paper',$group_paper_data);
+				$paper_data = array('sub_group_id' => $paper->sub_group_id.','.$sub_group[$i]);
+				$where = array('id' => $papers[$i]);
+				$this->Common_model->updateRecordByConditions('paper_master',$where,$paper_data);
+			$i++;
+		}
+
+		redirect(base_url('admin/admins/classes'));
+	}
 }// class
