@@ -1002,9 +1002,10 @@ class Center extends CI_Controller {
     	);
     	$student = $this->Common_model->student_info($student_id);
     	$data['student'] = $student;
-    	$this->db->select('*');
+    	$this->db->select('paper_master.*,new_exam_form.sub_group_id');
     	$this->db->from('paper_master');
-    	$this->db->join('new_exam_form', 'paper_master.id = new_exam_form.paper_id');
+    	$this->db->order_by('new_exam_form.sub_group_id,paper_order');
+    	$this->db->join('new_exam_form', 'paper_master.paper_code = new_exam_form.paper_code and  paper_master.class_id = new_exam_form.class_id');
     	$where = array('paper_master.class_id' => $student['class_id'],
     		'student_id' => $student_id
     	);
@@ -1045,7 +1046,7 @@ class Center extends CI_Controller {
 		$student = $this->Common_model->student_info($student_id);
 
 		$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory"');
-		$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id where class_id='.$student['class_id'].' Order by g.id')->result();
+		$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id where class_id='.$student['class_id'].' Order by g.id,sub_group_id')->result();
 
 		$data['compulsoryPapers'] = $compulsoryPapers;
 		$data['student'] = $student;
@@ -1067,10 +1068,8 @@ class Center extends CI_Controller {
 
 
 		if($class_group[0]->group_type=='Paper'){
-
 			$this->load->view('Centers/select_papers',$data);
 		}else{
-
 			$this->load->view('Centers/select_group',$data);
 		}
 		$this->load->view('Centers/footer');
@@ -1109,17 +1108,13 @@ class Center extends CI_Controller {
 
 
 	public function submit_group(){
-		$paper_id = $_POST['compulsary_paper_id'];
-		$paper_id = implode(",",$paper_id);
-
-		if(isset($_POST['group_id'])){
-			$group_id = implode(',',$_POST['group_id']);
-			$group_paper_ids = 	$this->Common_model->get_record('group_paper','group_concat(paper_id) as paper_id ','group_id in ( '.$group_id.' ) ');
-			$group_paper_id = $group_paper_ids[0]['paper_id'];
-			$paper_id = $paper_id.",".$group_paper_id;
-		}
-		$paper_data = 	$this->Common_model->get_record('paper_master','*','id in ('.$paper_id.')');
+		$paper_code = $_POST['compulsary_paper_code'];
+		$class_id = $_POST['class_id'];
 		$student_id=$this->Common_model->encrypt_decrypt($_POST['student_id'],'decrypt');
+		$i = 1;
+		$this->db->where_in('paper_code',$paper_code);
+		$this->db->where('class_id',$class_id);
+		$paper_data = $this->Common_model->get_record('paper_master','*');
 		foreach($paper_data as $paper){
 			$data['course_group_id']=$paper['course_group_id'];
 			$data['class_id']=$paper['class_id'];
@@ -1128,8 +1123,39 @@ class Center extends CI_Controller {
 			$data['book_code']=$paper['book_code'];
 			$data['paper_id']=$paper['id'];
 			$data['student_id']=$student_id;
+			$data['paper_order']=$i;
+			$data['sub_group_id']=$paper['sub_group_id'];
 			$insert = $this->Common_model->insertAll('new_exam_form',$data);
+			$i++;
 		}
+
+		if(isset($_POST['group_id'])){
+			$group_id = $_POST['group_id'];
+			$this->db->select('paper_code,sub_group_id');
+			$this->db->from('group_paper');
+			$this->db->where_in('group_id',$group_id);
+			$groupPaperData = $this->db->get()->result_array();
+
+			$groupPaperCodes = array_column($groupPaperData, 'paper_code');
+			$this->db->where_in('paper_code',$groupPaperCodes);
+			$this->db->where('class_id',$class_id);
+			$papers = $this->Common_model->get_record('paper_master','*');
+			foreach($papers as $paper){
+				$data['course_group_id']=$paper['course_group_id'];
+				$data['class_id']=$paper['class_id'];
+				$data['paper_code']=$paper['paper_code'];
+				$data['paper_type']=$paper['type'];
+				$data['book_code']=$paper['book_code'];
+				$data['paper_id']=$paper['id'];
+				$data['student_id']=$student_id;
+				$data['paper_order']=$i;
+				$debug =  array_search($paper['paper_code'], $groupPaperCodes);
+				$data['sub_group_id'] = $groupPaperData[$debug]['sub_group_id'];
+				$insert = $this->Common_model->insertAll('new_exam_form',$data);
+				$i++;
+			}
+		}
+
 		if($insert){
 			$data = array('temp_exam_form'=>'Y');
 			$where = array('student_id'=>$student_id);
