@@ -78,6 +78,11 @@
          <td>Day</td>-->
       <td><span style="font-weight: bold">Student Count</span></td>
    </tr>
+   <?php 
+
+      foreach($papers as $paper)
+      {
+         ?>
       <tr>
       <td> 1 </td>
       <!--<td></td>-->
@@ -91,16 +96,17 @@
       </td>
       <td>1019</td>
       <td>
-         <div align="left">2DBCOM1</div>
+         <div align="left"><?= $paper->paper_code?></div>
       </td>
       <td align="left">
-         <div align="left">Maharishi Vedic Science - II</div>
+         <div align="left"><?= $paper->paper_name?></div>
       </td>
             <td>
          <div align="left">
             Morning      </div></td>
       <td>56 </td>
    </tr>
+   <?php } ?>
       <tr bgcolor="#F0F0F0">
       <td> 2 </td>
       <!--<td></td>-->
