@@ -254,10 +254,18 @@ class Payment extends CI_Controller {
 		$data['student'] = $student;
 		$data['url'] = 'paynow';
 		$data['paymentType'] = 'Exam Fees';
-		if($student['demo']=='Y'){
-			$data['txnAmt'] = $fees[0]->exam_fees;
+		if ($student['university_mode']=='REG') {
+			if($student['demo']=='Y'){
+				$data['txnAmt'] = $fees[0]->exam_fees;
+			}else{
+				$data['txnAmt'] = $fees[0]->program_fees+$fees[0]->exam_fees;
+			}
 		}else{
-			$data['txnAmt'] = $fees[0]->program_fees+$fees[0]->exam_fees;
+			if($student['demo']=='Y'){
+				$data['txnAmt'] = $fees[0]->p_exam_fees;
+			}else{
+				$data['txnAmt'] = $fees[0]->p_program_fees+$fees[0]->p_exam_fees;
+			}
 		}
 		
 		$this->load->view('Centers/header',$titleData);
@@ -274,20 +282,25 @@ class Payment extends CI_Controller {
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		if($student_id!=''){
 			$student = $this->Common_model->student_info($student_id);
-			if($student['university_mode']=='REG'){
-				$mode = "regular";
-			}else{
-				$mode = "private";
-			}
 			$where = array(
 				'session' =>$student['session'],
 				'course_group_id' => $student['course_group_id'],
 			);
 			$fees = $this->Common_model->getRecordByWhere('course',$where);
-			if($student['demo']=='Y'){
-				$txnAmt= $fees[0]->exam_fees;
+			if ($student['university_mode']=='REG') {
+				$mode = "regular";
+				if($student['demo']=='Y'){
+					$data['txnAmt'] = $fees[0]->exam_fees;
+				}else{
+					$data['txnAmt'] = $fees[0]->program_fees+$fees[0]->exam_fees;
+				}
 			}else{
-				$txnAmt=$fees[0]->program_fees+$fees[0]->exam_fees;
+				$mode = "private";
+				if($student['demo']=='Y'){
+					$data['txnAmt'] = $fees[0]->p_exam_fees;
+				}else{
+					$data['txnAmt'] = $fees[0]->p_program_fees+$fees[0]->p_exam_fees;
+				}
 			}
 			if($student['new_exam_form']=='Y'){
 				$this->session->set_flashdata('warning','Payment Already Submitted');
@@ -323,7 +336,7 @@ class Payment extends CI_Controller {
 			$posted['zipcode'] = $student['p_pin_code'];
 			$posted['udf1'] = $student_id;
 			$posted['udf2'] = $mode ;
-			$posted['udf3'] = "Dec 2021";
+			$posted['udf3'] = "June 2022";
 			$posted['udf4'] = $student["center_id"].' / '.$student['class_id'];
 			$posted['udf5'] = $student["name"]."/".$student["f_h_name"];
 			$hash = '';
