@@ -606,9 +606,9 @@
 
 				$data = array('enrolled' => 'Y');
 				/*****  exam form permission *****/
-				if($exam_form_permission[0]->exam_form_permission=='Y' && $session[0]->exam_form_permission &&  $student[0]->session=='July 2021'){
-					$data['new_exam_form'] ='N';
-				}
+				/* if($exam_form_permission[0]->exam_form_permission=='Y' && $session[0]->exam_form_permission &&  $student[0]->session=='July 2021'){
+				 	$data['new_exam_form'] ='N';
+				 } */
 				$where = 'student_id="'.$student[0]->student_id.'" ';
 				$this->Common_model->updateRecordByConditions('student',$where,$data);
 			}
