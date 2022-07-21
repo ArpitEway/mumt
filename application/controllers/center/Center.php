@@ -947,7 +947,7 @@ class Center extends CI_Controller {
 		if($exam_form1=='submitted'){
 			$where = array('new_exam_form' =>'Y','center_id' => $center_id);
 		}else if($exam_form1 =="notSubmitted"){
-			$this->db->where_in('class_id',$class_ids);
+			
 			$where = array(
 				'new_exam_form' =>'N',
 				'center_id' => $center_id,
@@ -959,6 +959,7 @@ class Center extends CI_Controller {
 			);
 		}
 		$data['exam_form_button'] = $exam_form1;
+		$this->db->where_in('class_id',$class_ids);
 		$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
 		$this->load->view('Centers/header');
 		$this->load->view('Centers/exam_form_students',$data);
