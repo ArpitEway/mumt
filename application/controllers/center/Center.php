@@ -1162,6 +1162,9 @@ class Center extends CI_Controller {
 
 		if($insert){
 			$data = array('temp_exam_form'=>'Y');
+			if (isset($_POST['group_id'])) {
+				$data['group_id'] = implode(',', $_POST['group_id']);
+			}
 			$where = array('student_id'=>$student_id);
 			$this->Common_model->updateRecordByConditions('student',$where,$data);
 			echo json_encode(array("status" => 'true','student_id' => $student_id));
