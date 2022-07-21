@@ -28,8 +28,9 @@
 			<td><?php echo $class['mode']; ?></td>
 			<td>
                 <div style="display: inline-flex;">
-					<a href="javascript:void(0);" class="dropdown-item" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/class/edit/'.$class['id']); ?>', '<?php echo 'Update class' ?>')"> <i class="mdi mdi-pencil edit-icon"></i></a>   
+					<a href="javascript:void(0);" class="dropdown-item" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/class/edit/'.$class['id']); ?>', '<?php echo 'Update class' ?>')"> <i class="mdi mdi-pencil edit-icon"></i></a>
 					<a href="javascript:void(0);" class="dropdown-item" onclick="confirmModal('<?php echo site_url('admin/Admins/classes/delete/'.$class['id']); ?>', showAllclass )"><i class="mdi mdi-delete delete-icon"></i></a>
+					<a href="javascript:void(0);" class="dropdown-item" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/class/allot/'.$class['id']); ?>', '<?php echo 'Update class' ?>')"> <i class="fas fa-plus-circle edit-icon"></i></a>
 				</div>
             </td>
 		</tr>

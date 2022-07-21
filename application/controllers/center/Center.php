@@ -936,7 +936,6 @@ class Center extends CI_Controller {
 	}
 
 	public function exam_form_students($exam_form1 = 'notSubmitted'){
-		redirect(base_url());
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()

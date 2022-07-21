@@ -26,7 +26,7 @@
              <?php } else { ?>
 					<div class="form-group ">
 						<label>Session</label><span class="text-danger"> *</span>
-						<input type="text" readonly="readonly" class="form-control " name="session" id="session" placeholder="session" value="<?=$session?>" >
+						<input type="text" readonly="readonly" class="form-control " name="session" id="session" placeholder="session" value="<?=$student_detail->session?>" >
 						<div class="fv-plugins-message-container"></div>
 					</div>
 				<?php } ?>

@@ -1,3 +1,7 @@
+<div class="text-center">
+    <h2 class="text-danger">Coming Soon</h2>
+</div>
+<?php /* ?>
 <div class=" mt-5" >
     <div class="row justify-content-around mb-10">
         <a href="<?=base_url('exam_form_students/notSubmitted')?>" class="btn btn-primary">Not Submitted</a>
