@@ -941,10 +941,13 @@ class Center extends CI_Controller {
 			'hash_csrf' => $this->security->get_csrf_hash()
 		);
 
+      $classpermission = $this->Common_model->get_record('class_master','id',array('exam_form_permission'=>'Y'));
+  		$class_ids = array_column($classpermission, 'id');
 		$center_id =  $this->session->center_id;
 		if($exam_form1=='submitted'){
 			$where = array('new_exam_form' =>'Y','center_id' => $center_id);
 		}else if($exam_form1 =="notSubmitted"){
+			
 			$where = array(
 				'new_exam_form' =>'N',
 				'center_id' => $center_id,
@@ -956,6 +959,7 @@ class Center extends CI_Controller {
 			);
 		}
 		$data['exam_form_button'] = $exam_form1;
+		$this->db->where_in('class_id',$class_ids);
 		$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
 		$this->load->view('Centers/header');
 		$this->load->view('Centers/exam_form_students',$data);

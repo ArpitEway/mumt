@@ -192,11 +192,11 @@
 							<span class="nav-text">Exam Form June 2022</span>
 						</div>
 					</a> 
-					<a class="border-0 custom-menu-item" href="<?=base_url('student_roll_no_list');?>">
+				<!--	<a class="border-0 custom-menu-item" href="<?=base_url('student_roll_no_list');?>">
 						<div>
 							<span class="nav-text">Roll No List</span>
 						</div>
-					</a>
+					</a> -->
 					<a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
 						<div>
 							<span class="nav-text">Result</span>
