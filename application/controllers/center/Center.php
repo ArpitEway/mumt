@@ -130,7 +130,6 @@ class Center extends CI_Controller {
 		$center_id =  $this->session->center_id;
 		$center_data = $this->Common_model->getRecordByWhere('center',array('id'=>$center_id));
 		$center_session_permission = $center_data[0]->old_session_permission;
-
 		$center_ids_dep = array(21,22,23,24,25,26,27,28);
 		$whereSession = array();
 		if (in_array($center_id, $center_ids_dep)){
@@ -140,23 +139,21 @@ class Center extends CI_Controller {
 			// $passing_exam_year = '2021';
 			$passing_exam_year = '2022';
 			if($center_session_permission!='Y')
-		    {
-            $whereSession['admission_permission_ic'] =  'Y';
-		    }
+			{
+				$whereSession['admission_permission_ic'] =  'Y';
+			}
 			
 		}
-		
 		if($mode=='regular'){
 			$where = array('admission_permission'=>'Y' ,'id'=>$center_id);
 			$head = '(Regular)';
 		}else{
-			$where = array('admission_permission_private'=>'Y','id'=>$center_id,);
+			$where = array('admission_permission_private'=>'Y','id'=>$center_id);
 			$head = '(Private)';
 			if($center_session_permission!='Y')
-		    {
-           $whereSession['pvt_admission_permission_ic'] =  'Y';
-		    }
-			
+			{
+				$whereSession['pvt_admission_permission_ic'] =  'Y';
+			}		
 		}
 		
 		$sessions = $this->Common_model->get_record('session','*',$whereSession);
