@@ -56,6 +56,7 @@ class Preexam extends CI_Controller {
 				$data['paper_code'] = $paper['paper_code'];
 				$data['paper_type'] = $paper['type'];
 				$data['paper_order'] = $paper['paper_no'];
+				$data['sub_group_id'] = $paper['sub_group_id'];
 				$this->Common_model->insertAll('new_exam_form',$data);
 			echo $this->db->last_query().'<br>';
 			}
