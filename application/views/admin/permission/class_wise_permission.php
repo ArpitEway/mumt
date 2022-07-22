@@ -9,11 +9,11 @@
           <th>Class Id</th>
           <th>Course name</th>
           <th>Class</th>
-          <th>Mode</th> 
+          <th>Mode</th>
+          <th>Paper Count</th>
           <th>Exam Form Permission</th>
           <th>Result Permission</th>
           <th>Admit Card Permission</th>
-          
 			</tr>
 		</thead>
 		<tbody>
@@ -32,6 +32,7 @@
 						<td><?php echo $course_name; ?></td>
 						<td><?php echo $class->class_name; ?></td>
 						<td><?php echo $class->mode; ?></td>
+            <td><?php echo $this->Common_model->getCountByWhere('paper_master',array('class_id' => $class->id)); ?></td>
             <td>
                 <button id="btn_<?php echo  $class->id?>" <?php if($class->exam_form_permission=='Y' ){echo "class='btn btn-success'" ;}else{echo "class='btn btn-danger' ";} ?> onclick="statusChange(<?php echo $class->id;  ?>,'<?php echo $class->exam_form_permission;?>')">
                 <?php if($class->exam_form_permission=='Y' ){echo "Yes" ;}else{

@@ -1115,4 +1115,54 @@ class ExamController extends CI_Controller {
 		}
 	}
 
+	public function paper()
+	{
+
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url('admin'));
+			exit;
+		}	
+		$this->load->view('header',array('title'=>'Paper'));
+		$csrf = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
+		$this->load->view('admin/examController/paper',$csrf);
+		$this->load->view('footer');
+
+	}
+
+	public function get_papers_by_class_course()
+	{
+
+		if ($this->input->method() == "post") 
+		{
+			$class_id    = 0;
+			$class_id    = $this->input->post("class_id");
+			$course_group_id    = $this->input->post("course_group_id");
+			$where = array();
+			if($course_group_id!='All'){
+				$where = array('course_group_id' => $course_group_id);
+			}
+			if($class_id!='All'){
+				$where = array('class_id' => $class_id);
+			}
+			$papers = $this->db->get_where("paper_master",$where)->result_array();
+			$htmlData = array(
+				'papers' => $papers,
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash()
+			);
+			$data = $this->load->view('admin/examController/paper_details',$htmlData,true);
+			$status = true;
+			$msg    = "";
+		   }
+		echo json_encode(array(
+			"status" => $status,
+			"msg" => $msg,
+			"data" => $data
+		));
+	}
+		
+	
 }// class

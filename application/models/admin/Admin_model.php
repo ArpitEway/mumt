@@ -675,7 +675,11 @@ class Admin_model extends CI_Model {
 		$data['exam_day']       = html_escape($this->input->post('exam_day'));
 		$data['exam_date']      = html_escape($this->input->post('exam_date'));
 		$data['exam_shift']     = html_escape($this->input->post('exam_time'));
-		
+		$data['max_theory_marks']     = html_escape($this->input->post('max_theory'));
+        $data['min_theory_marks']     = html_escape($this->input->post('min_theory'));
+        $data['max_internal_marks']     = html_escape($this->input->post('max_int'));
+        $data['min_internal_marks']     = html_escape($this->input->post('min_int'));
+        
 		$this->db->where('id', $param1);
 		$this->db->update('paper_master', $data);
 		

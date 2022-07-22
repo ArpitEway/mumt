@@ -1250,6 +1250,28 @@ class Admins extends CI_Controller {
 			echo $this->load->view('template/getclass',$data,true);
 		}
 
+		public function getClassByCourseInAdmission(){
+			$course = $this->input->post('course_group_id');
+			
+			$student_mode = $this->input->post('mode');
+			$this->db->select('class_master.*');
+			$this->db->from('class_master');
+			$this->db->join('course_group', 'class_master.course_group_id = course_group.id');
+			if($student_mode=="private" || $student_mode=="PVT"){
+				$this->db->where('course_group.private_mode=class_master.mode');
+			}else{
+				$this->db->where('class_master.mode=course_group.mode');
+			}
+			$this->db->where('class_master.admission_permission','Y');
+			$this->db->where('course_group_id',$course);
+			$class_list = $this->db->get()->result_array();
+			$data = array(
+				'class_list' => $class_list,
+			);
+			
+			echo $this->load->view('template/getclass',$data,true);
+		}
+
 		public function add_center_menu_heading($param1 = '', $param2 = '')
 		{
 			if(!$this->session->has_userdata('adminData')){
@@ -1852,13 +1874,11 @@ public function getStudentData()
 			'state_list' => $state_list,
 			'district_list' => $district_list,
 			'course_group_list' => $course_group_list,
-			'session' => 'July 2021',
 			'eligibility_list' => $eligibility_list,
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 			'student_detail' => $this->db->get_where('student', array("student_id" => $student_id))->row(),
 			'student_data'  => $this->db->get_where('student_data', array("student_id" => $student_id))->row()
-
 		);
 
 
@@ -3693,4 +3713,28 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
+	public function allot_papers()
+	{
+		$groups = $_POST['group'];
+		$sub_group = $_POST['sub_group'];
+		$papers = $_POST['papers'];
+		$i = 0;
+		foreach ($groups as $group) {
+			$paper = $this->Common_model->getRecordById('paper_master','id',$papers[$i]);
+			$group_paper_data = array(
+				'group_id' => $group,
+				'paper_name' => $paper->paper_name,
+				'paper_code' => $paper->paper_code,
+				'paper_id' => $paper->id,
+				'sub_group_id' => $sub_group[$i]
+			);
+				$this->Common_model->insertAll('group_paper',$group_paper_data);
+				$paper_data = array('sub_group_id' => $paper->sub_group_id.','.$sub_group[$i]);
+				$where = array('id' => $papers[$i]);
+				$this->Common_model->updateRecordByConditions('paper_master',$where,$paper_data);
+			$i++;
+		}
+
+		redirect(base_url('admin/admins/classes'));
+	}
 }// class
