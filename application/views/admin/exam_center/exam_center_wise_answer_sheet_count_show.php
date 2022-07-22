@@ -7,6 +7,7 @@
             's.new_exam_form!='=>'D' ,
             's.examcentercode'=>$row->examcentercode,
             's.exam_center_id'=>$row->id,
+            's.class_id'=>'e.class_id',
          );
          $tag='count(*) as cnt';
          $table="new_exam_form  as e";

@@ -10,6 +10,7 @@ foreach($elist as $row)
         's.new_exam_form!='=>'D' ,
         's.examcentercode'=>$row->examcentercode,
         's.exam_center_id'=>$row->exam_center_id,
+        's.class_id'=>'e.class_id',
      );
      $tag='count(*) as cnt';
      $table="new_exam_form  as e";
@@ -17,7 +18,7 @@ foreach($elist as $row)
      $join_on='e.student_id = s.student_id';
      $count= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
     
-     if($count[0]->cnt >0)
+    // if($count[0]->cnt >0)
      {  //echo $this->db->last_query();
 ?>
 

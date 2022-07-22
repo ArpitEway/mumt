@@ -13,6 +13,7 @@ foreach($elist as $row)
             's.exam_center_id'=>$row->exam_center_id,
             's.class_id'=>$paper['class_id'],
             's.course_group_id'=>$paper['course_group_id'],
+            's.class_id'=>'e.class_id',
         );
         $tag='count(*) as cnt';
         $table="new_exam_form  as e";

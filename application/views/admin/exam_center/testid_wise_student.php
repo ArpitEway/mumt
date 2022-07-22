@@ -82,6 +82,7 @@
 						//'s.pattern'=>'NEW' ,
 						's.new_exam_form!='=>'D' ,
 						's.class_id'=>$row->class_id,
+						's.class_id'=>'e.class_id',
 					);
 					$tag='count(*) as cnt';
 					$table="new_exam_form  as e";

@@ -1,3 +1,19 @@
+<?php
+//$counter=1;
+foreach($papers as $pap)
+{ 
+   $total=0;
+   $where= array(
+      'cls.id'=>$pap->class_id,
+      'cg.id'=>$pap->course_group_id ,
+      
+   );
+   $tag='*';
+   $table="class_master  as cls";
+   $join_table='course_group as cg';
+   $join_on='cls.course_group_id = cg.id';
+   $courseData= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
+         ?>
 <p class="break"> &nbsp;&nbsp;&nbsp; </p>
 <div style="text-align:center;">
 <table width="80%" border="1" align="center">
@@ -41,13 +57,13 @@
       <th scope="row">
          <div align="left">Date </div>
       </th>
-      <td align="left">11-07-2019</td>
+      <td align="left"><?= $pap->exam_date?></td>
    </tr>
    <tr>
       <th scope="row">
          <div align="left">Day</div>
       </th>
-      <td align="left">Thursday</td>
+      <td align="left"><?= $pap->exam_day?></td>
    </tr>
 </tbody></table>
 <span>List of Paper<b></b> </span>
@@ -79,20 +95,40 @@
       <td><span style="font-weight: bold">Student Count</span></td>
    </tr>
    <?php 
-
-      foreach($papers as $paper)
+      
+      $i=1;
+      $this->db->select('*');
+		$this->db->from('paper_master');
+	
+		$this->db->where('exam_date',$pap->exam_date);
+      $this->db->where('exam_shift',$pap->exam_shift);	
+		$paperData = $this->db->get()->result();
+      foreach($paperData as $paper)
       {
+         $where= array(
+            'e.paper_code'=>$paper->paper_code,
+            's.new_exam_form!='=>'D' ,
+            's.class_id'=>$paper->class_id,
+            's.course_group_id'=>$paper->course_group_id,
+            's.class_id'=>'e.class_id',
+         );
+         $tag='count(*) as cnt';
+         $table="new_exam_form  as e";
+         $join_table='student as s';
+         $join_on='e.student_id = s.student_id';
+         $count= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
+       //  print_r($count);
          ?>
-      <tr>
-      <td> 1 </td>
+      <tr <?php if($i%2==0) echo 'bgcolor="#F0F0F0"'; ?>>
+      <td> <?=$i ?> </td>
       <!--<td></td>-->
       <!--<td></td>-->
       <td>
-         <div align="left">Bachelor of Commerce</div>
+         <div align="left"><?=$courseData[0]->course_name?></div>
       </td>
       <td align="center">
          <div align="center">
-            II Year         </div>
+         <?=$courseData[0]->class_name?>        </div>
       </td>
       <td>1019</td>
       <td>
@@ -103,193 +139,12 @@
       </td>
             <td>
          <div align="left">
-            Morning      </div></td>
-      <td>56 </td>
+         <?= $paper->exam_shift?>      </div></td>
+      <td><?=$count[0]->cnt?> </td>
    </tr>
-   <?php } ?>
-      <tr bgcolor="#F0F0F0">
-      <td> 2 </td>
-      <!--<td></td>-->
-      <!--<td></td>-->
-      <td>
-         <div align="left">Bachelor of Arts</div>
-      </td>
-      <td align="center">
-         <div align="center">
-            II Year         </div>
-      </td>
-      <td>1019</td>
-      <td>
-         <div align="left">2DBA1</div>
-      </td>
-      <td align="left">
-         <div align="left">Maharishi Vedic Science - II</div>
-      </td>
-            <td>
-         <div align="left">
-            Morning      </div></td>
-      <td>104 </td>
-   </tr>
-      <tr>
-      <td> 3 </td>
-      <!--<td></td>-->
-      <!--<td></td>-->
-      <td>
-         <div align="left">Bachelor of Commerce in Computer Application</div>
-      </td>
-      <td align="center">
-         <div align="center">
-            II Year         </div>
-      </td>
-      <td>1019</td>
-      <td>
-         <div align="left">2DBCOMCA1</div>
-      </td>
-      <td align="left">
-         <div align="left">Maharishi Vedic Science - II</div>
-      </td>
-            <td>
-         <div align="left">
-            Morning      </div></td>
-      <td>22 </td>
-   </tr>
-      <tr bgcolor="#F0F0F0">
-      <td> 4 </td>
-      <!--<td></td>-->
-      <!--<td></td>-->
-      <td>
-         <div align="left">Diploma in Computer Application</div>
-      </td>
-      <td align="center">
-         <div align="center">
-            I SEM         </div>
-      </td>
-      <td>1165</td>
-      <td>
-         <div align="left">1DSDCA1</div>
-      </td>
-      <td align="left">
-         <div align="left">Maharishi Vedic Science - I</div>
-      </td>
-            <td>
-         <div align="left">
-            Morning      </div></td>
-      <td>30 </td>
-   </tr>
-      <tr>
-      <td> 5 </td>
-      <!--<td></td>-->
-      <!--<td></td>-->
-      <td>
-         <div align="left">Bachelor of Computer Application</div>
-      </td>
-      <td align="center">
-         <div align="center">
-            I SEM         </div>
-      </td>
-      <td>1044</td>
-      <td>
-         <div align="left">1DSBCA1</div>
-      </td>
-      <td align="left">
-         <div align="left">Maharishi Vedic Science - I</div>
-      </td>
-            <td>
-         <div align="left">
-            Morning      </div></td>
-      <td>5 </td>
-   </tr>
-      <tr bgcolor="#F0F0F0">
-      <td> 6 </td>
-      <!--<td></td>-->
-      <!--<td></td>-->
-      <td>
-         <div align="left">Post Graduate Diploma in Computer Application</div>
-      </td>
-      <td align="center">
-         <div align="center">
-            I SEM         </div>
-      </td>
-      <td>1491</td>
-      <td>
-         <div align="left">1DSPGDCA1</div>
-      </td>
-      <td align="left">
-         <div align="left">Maharishi Vedic Science - I</div>
-      </td>
-            <td>
-         <div align="left">
-            Morning      </div></td>
-      <td>23 </td>
-   </tr>
-      <tr>
-      <td> 7 </td>
-      <!--<td></td>-->
-      <!--<td></td>-->
-      <td>
-         <div align="left">Bachelor of Science (Computer Science)</div>
-      </td>
-      <td align="center">
-         <div align="center">
-            I SEM         </div>
-      </td>
-      <td>1044</td>
-      <td>
-         <div align="left">1DSBCS1</div>
-      </td>
-      <td align="left">
-         <div align="left">Fundamentals of Maharishi Vedic Science </div>
-      </td>
-            <td>
-         <div align="left">
-            Morning      </div></td>
-      <td>11 </td>
-   </tr>
-      <tr bgcolor="#F0F0F0">
-      <td> 8 </td>
-      <!--<td></td>-->
-      <!--<td></td>-->
-      <td>
-         <div align="left">Bachelor of Social Work</div>
-      </td>
-      <td align="center">
-         <div align="center">
-            II Year         </div>
-      </td>
-      <td>1019</td>
-      <td>
-         <div align="left">2DBSW1</div>
-      </td>
-      <td align="left">
-         <div align="left">Maharishi Vedic Science - II</div>
-      </td>
-            <td>
-         <div align="left">
-            Morning      </div></td>
-      <td>1 </td>
-   </tr>
-      <tr>
-      <td> 9 </td>
-      <!--<td></td>-->
-      <!--<td></td>-->
-      <td>
-         <div align="left">Master of Science (Computer Science)</div>
-      </td>
-      <td align="center">
-         <div align="center">
-            I SEM         </div>
-      </td>
-      <td>1341</td>
-      <td>
-         <div align="left">1DSMCS1</div>
-      </td>
-      <td align="left">
-         <div align="left">Maharishi Vedic Science - I</div>
-      </td>
-            <td>
-         <div align="left">
-            Morning      </div></td>
-      <td>5 </td>
-   </tr>
+   <?php $i++; $total+=$count[0]->cnt; } ?>
+      
+  
    </tbody></table>
-<h3>Total Student Count 257</h3>
+<h3>Total Student Count <?=$total?></h3>
+<?php } ?>
