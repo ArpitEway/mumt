@@ -36,6 +36,7 @@ class Postexam extends CI_Controller {
             'name_csrf' => $this->security->get_csrf_token_name(),
             'hash_csrf' => $this->security->get_csrf_hash(),
         );//'result_show'=>'Y'
+        $this->db->limit(1000);
           $data['students']= $this->Common_model->getRecordByWhere('student',array('class_id' => $class_id, 'exam_form'=>'Y' , 'promote'=>'N' ,'course_complete'=>'N' ));
           $data['course_name']= $this->Common_model->getCourseNameByCourseId($course_group_id);
           $data['class_name']= $this->Common_model->getClassNameByClassId($class_id);
@@ -103,7 +104,7 @@ class Postexam extends CI_Controller {
 
     public function upload_old_data_script($class_id=""){
         $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
-        
+        $this->db->limit(600);
         $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'N'));
         foreach($students as $student)
         {
