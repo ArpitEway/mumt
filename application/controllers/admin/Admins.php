@@ -1823,17 +1823,14 @@ public function getStudentData()
 	{
 		$data = $row = array();
 		$where = "status=   'Y' ";
-		
 		$column_order = array(null,'center_code','center_name','contactpersonname','mobile_no_1');
 		$column_search = array('center_code','center_name','contactpersonname','mobile_no_1');
-
 		$DataTableArray = array(
 			'column_order' => $column_order,
 			'column_search' => $column_search,
 			'where' => $where,
 			'table' => 'center'
 		);
-
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
 		foreach($tableData as $result){
@@ -1841,20 +1838,24 @@ public function getStudentData()
 			//$btn ='<a class="btn btn-primary"  href="'.'https://center.mmyvvonline.com/center/loginAs/'.$center_code.'" target="_blank" >Log As</a>' ;
 			$centerURL=str_replace("admin","center",base_url());
 			$btn ='<a class="btn btn-primary"  href="'.$centerURL.'/center/loginAs/'.$center_code.'" target="_blank" >Log As</a>' ;
+            $status = $result->old_session_permission;	
+				if($status == 'Y')
+				{
+				$permission_btn = '<input type="button" name="update_permission" data-id='.$result->id.' class="btn btn-success permission_checks" value="Yes">';
+				}else{
+				$permission_btn = '<input type="button" name="update_permission" data-id='.$result->id.' class="btn btn-danger permission_checks" value="No">';
+				}
 			$i++;
-			$data[] = array($i,$result->id, $result->center_code, $result->center_name, $result->contactpersonname,$result->mobile_no_1,$btn);
-		}
-		$output = array(
+			$data[] = array($i,$result->id, $result->center_code, $result->center_name, $result->contactpersonname,$result->mobile_no_1,$btn,$permission_btn);
+	     	}
+		  $output = array(
 			"draw" => $_POST['draw'],
 			"recordsTotal" => $this->Datatable_join_model->countAll('center',$where),
 			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
 			"data" => $data,
 		);
-
 		// Output to JSON format
-		echo json_encode($output);
-
-		
+		echo json_encode($output);	
 	}
 
 	public function editForm($student_id = ""){
@@ -3737,4 +3738,5 @@ public function update_exam_datewise_permission(){
 
 		redirect(base_url('admin/admins/classes'));
 	}
+
 }// class

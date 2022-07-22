@@ -302,5 +302,16 @@ class Permission extends CI_Controller {
 			echo json_encode(array('error'=>false));
 		}
 	}
-  
+
+    public function update_center_old_session_permission()
+	{	
+            $id    = $this->input->post("id");
+			$status = $this->input->post("status");	
+			$data = $this->Common_model->updateRecordByConditions("center",array("id" => $id ),array("old_session_permission" => $status ));
+				 $status = true;
+				echo json_encode(array(
+					 "status" => $status,
+					"data" => $data
+				));	 
+	}
 }// class
