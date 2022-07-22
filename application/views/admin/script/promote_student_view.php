@@ -29,17 +29,27 @@
 <table class="table table-striped" id="kt_datatable">
 	<tbody>
 		<tr>
-            <th>Institute Code</th>
-            <th>Student Name</th>
+            <th>#</th>
             <th>Session</th>
+            <th>Center Code</th>
+            <th>Form No</th>
+            <th>Enrollment No</th>
+            <th>Roll No</th>
+            <th>Student Name</th>
             <th><input type="checkbox" id="all_student_checked"></th>
 		</tr>
-        <?php foreach($students as $student) {
+        <?php 
+        $i =1;
+        foreach($students as $student) {
             ?>
         <tr>
-			<td><?= $student->center_code ?></td>
-			<td><?= $student->name ?></td>
+			<td><?= $i++; ?></td>
 			<td><?= $student->session ?></td>
+            <td><?= $student->center_code ?></td>
+			<td><?= $student->student_id ?></td>
+            <td><?= $student->enrollment_no ?></td>
+            <td><?= $student->roll_number ?></td>
+            <td><?= $student->name ?></td>
 			<td><input type="checkbox" class="checkbox" name="student_id[]" value="<?=$student->student_id;?>"></td>
 
 		</tr>
