@@ -184,4 +184,134 @@ class Permission extends CI_Controller {
 		}
 	}
 
+
+	public function center_wise_permission()
+
+	{   
+		$this->load->view('header',array("title"=>"Center Wise Permission"));	
+        $data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();
+		$data['centers'] = $this->Common_model->getRecordByWhere("center" , array());
+		$this->load->view('admin/permission/center_wise_permission',$data);
+		$this->load->view('footer');	
+	}
+
+
+	public function update_admission_permission_regular()
+
+	{
+		$status =  $this->input->post('admission_permission');
+		if(isset($_POST['center_id']))
+		{
+			$center_id =  $this->input->post('center_id');
+			$where = array('id'=>$center_id);
+		} 
+		if($status!=''){
+			$st = ($status == 'Y') ? 'N' : 'Y';
+			$data=array('admission_permission'=>$st,);
+		}
+		$res=$this->Common_model->updateRecordByConditions('center',$where,$data);
+		if($status == 'Y'){
+			echo json_encode(array('success'=>true));
+		}else if($status == 'N'){
+			echo json_encode(array('error'=>false));
+		}
+	}
+
+	public function update_admission_permission_private()
+
+	{
+		$status =  $this->input->post('admission_permission_private');
+		if(isset($_POST['center_id']))
+		{
+			$center_id =  $this->input->post('center_id');
+			$where = array('id'=>$center_id);
+		}
+		if($status!=''){
+			$st = ($status == 'Y') ? 'N' : 'Y';
+			$data=array('admission_permission_private'=>$st,);
+		}
+		$res=$this->Common_model->updateRecordByConditions('center',$where,$data);
+		if($status == 'Y'){
+			echo json_encode(array('success'=>true));
+		}else if($status == 'N'){
+			echo json_encode(array('error'=>false));
+		}
+	}
+
+	public function update_center_exam_form_permission()
+
+	{
+		$status =  $this->input->post('exam_form_permission');
+		if(isset($_POST['center_id']))
+		{
+			$center_id =  $this->input->post('center_id');
+			$where = array('id'=>$center_id);
+		} 
+		if($status!=''){
+			$st = ($status == 'Y') ? 'N' : 'Y';
+			$data=array('exam_form_permission'=>$st,);
+		}
+		$res=$this->Common_model->updateRecordByConditions('center',$where,$data);
+		if($status == 'Y'){
+			echo json_encode(array('success'=>true));
+		}else if($status == 'N'){
+			echo json_encode(array('error'=>false));
+		}
+	}
+
+	public function update_center_admit_card_permission()
+
+	{
+
+		$status =  $this->input->post('admit_card_permission');	
+		if(isset($_POST['center_id']))
+		{
+			$center_id =  $this->input->post('center_id');
+			$where = array('id'=>$center_id);
+		} 
+		if($status!=''){
+			$st = ($status == 'Y') ? 'N' : 'Y';
+			$data=array('admit_card_permission'=>$st,);
+		}
+		$res=$this->Common_model->updateRecordByConditions('center',$where,$data);
+		if($status == 'Y'){
+			echo json_encode(array('success'=>true));
+		}else if($status == 'N'){
+			echo json_encode(array('error'=>false));
+		}
+	}
+
+	public function update_center_result_permission()
+	{
+
+		$status =  $this->input->post('result_permission');
+		if(isset($_POST['center_id']))
+		{
+			$center_id =  $this->input->post('center_id');
+			$where = array('id'=>$center_id);
+		} 
+		if($status!=''){
+			$st = ($status == 'Y') ? 'N' : 'Y';
+			$data=array('result_permission'=>$st,);
+		}
+		$res=$this->Common_model->updateRecordByConditions('center',$where,$data);
+		if($status == 'Y'){
+			echo json_encode(array('success'=>true));
+		}else if($status == 'N'){
+			echo json_encode(array('error'=>false));
+		}
+	}
+
+    public function update_center_old_session_permission()
+	{	
+            $id    = $this->input->post("id");
+			$status = $this->input->post("status");	
+			$data = $this->Common_model->updateRecordByConditions("center",array("id" => $id ),array("old_session_permission" => $status ));
+				 $status = true;
+				echo json_encode(array(
+					 "status" => $status,
+					"data" => $data
+				));	 
+	}
 }// class

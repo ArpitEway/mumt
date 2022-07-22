@@ -18,7 +18,7 @@
 						<th>Contact Person</th>
 						<th>Mobile No</th>
 						<th>Options</th>
-						
+						<th>Permission</th>
 					</tr>
 				</thead>
 			<tbody>
@@ -31,7 +31,7 @@
 <script>
 	$(document).ready(function(){
 		
-	var csrfName = $('.csrfname').attr('name');
+	    var csrfName = $('.csrfname').attr('name');
 		var csrfHash = $('.csrfname').val(); 
 		var myTable =  $('#memListTable').DataTable({
 		// Processing indicator
@@ -78,41 +78,48 @@ buttons: [
 ], 
 });
 
+		$(document).on('click', '.permission_checks', function() {
+			var csrfName = $('.csrfname').attr('name');
+			var csrfHash = $('.csrfname').val(); 
+			var val = $(this).val();
+			var status = (val=='Yes') ? 'N' : 'Y';
+			var data = {
+				id: $(this).attr('data-id'),
+				status: status,
+				[csrfName]:csrfHash,
+			}; 	
+			var url = BASE_URL + "admin/Permission/update_center_old_session_permission";
+			$.ajax({
+				url: url,
+				type: 'POST',
+				data: data,
+				success: function (data) {
+				 $('#memListTable').DataTable().draw();
+				},
+			});		
+		});
 
-
-
-
-$(document).on('click', '.center_status_check', function() {
-var csrfName = $('.csrfname').attr('name');
-var csrfHash = $('.csrfname').val(); 
-var val = $(this).val();
-
-var self =this;
-
-var status = (val=='Yes') ? 'N' : 'Y';
-
-var data = {
-		  id: $(this).attr('data-id'),
-		  status: status,
-		  	[csrfName]:csrfHash,
-	  }; 
-	  
-var url = BASE_URL + "admin/Admins/update_center_status";
-
-$.ajax({
-  url: url,
-  type: 'POST',
-  dataType: 'json',
-  data: data,
-  success: function (data) {
-	  
-	  $(self).parent().html(data.data);
-	  
-  }
-});
-
-});
-
-
-});
+		$(document).on('click', '.center_status_check', function() {
+			var csrfName = $('.csrfname').attr('name');
+			var csrfHash = $('.csrfname').val(); 
+			var val = $(this).val();
+			var self =this;
+			var status = (val=='Yes') ? 'N' : 'Y';
+			var data = {
+				id: $(this).attr('data-id'),
+				status: status,
+				[csrfName]:csrfHash,
+			};   
+			var url = BASE_URL + "admin/Admins/update_center_status";
+			$.ajax({
+				url: url,
+				type: 'POST',
+				dataType: 'json',
+				data: data,
+				success: function (data) {	  
+					$(self).parent().html(data.data);	  
+				}
+			});
+		});
+       });
 </script>
