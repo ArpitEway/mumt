@@ -22,27 +22,33 @@ $userType = $this->session->userdata['account_type'];
 
 ?>
 <div class="mt-3">
-  <div class="form-group col-md-3 mx-auto mb-10">
-   <label for="class">Session</label>
-   <select name="session" id="session" class="form-control" onchange="getSessionRecord()" >
-    <!-- <option <?php //if($sessionsSelect=="All") echo "selected"; ?>>All</option> -->
-    <?php 
-    foreach($sessions as $session)
-    {
-     ?>
-     <option value="<?php echo $session['id']; ?>" <?php if($sessionsSelect==$session['id']) echo "selected"; ?>><?php echo $session['session']; ?></option>
-     <?php
-   } 
-   ?>		
- </select>
-</div>
-<div class="form-group col-md-3 mx-auto mb-10">
-   <label for="class">University Mode</label>
-   <select name="mode" id="mode" class="form-control" onchange="getSessionRecord()" >
-    <option value="" <?php if($mode=="") echo "selected"; ?>>All</option>
-	<option value="REG" <?php if($mode=="REG") echo "selected"; ?>>Regular</option>
-	<option value="PVT" <?php if($mode=="PVT") echo "selected"; ?>>Private</option>
- </select>
+<div   class="row text-center p-3">	
+	<div class="form-group col-md-3 mx-auto mb-10">
+	</div>
+	<div class="form-group col-md-3 mx-auto mb-10">
+	<label for="class">Session</label>
+	<select name="session" id="session" class="form-control" onchange="getSessionRecord()" >
+		<!-- <option <?php //if($sessionsSelect=="All") echo "selected"; ?>>All</option> -->
+		<?php 
+		foreach($sessions as $session)
+		{
+		?>
+		<option value="<?php echo $session['id']; ?>" <?php if($sessionsSelect==$session['id']) echo "selected"; ?>><?php echo $session['session']; ?></option>
+		<?php
+	} 
+	?>		
+	</select>
+	</div>
+	<div class="form-group col-md-3 mx-auto mb-10">
+	<label for="class">University Mode</label>
+	<select name="mode" id="mode" class="form-control" onchange="getSessionRecord()" >
+		<option value="" <?php if($mode=="") echo "selected"; ?>>All</option>
+		<option value="REG" <?php if($mode=="REG") echo "selected"; ?>>Regular</option>
+		<option value="PVT" <?php if($mode=="PVT") echo "selected"; ?>>Private</option>
+	</select>
+	</div>
+	<div class="form-group col-md-3 mx-auto mb-10">
+	</div>
 </div>
 <div class="row mt-5">
 	<div class="col-xl-4">
