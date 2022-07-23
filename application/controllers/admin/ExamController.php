@@ -1457,7 +1457,7 @@ class ExamController extends CI_Controller {
          $join_on='a.exam_center_id = e.id';
          $data['exam_centers']= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
 
-		$this->db->select('DISTINCT(paper_master.id),exam_date,exam_shift,paper_master.paper_code,paper_master.paper_name,paper_master.course_group_id,paper_master.class_id');
+		$this->db->select('DISTINCT(paper_master.id),exam_date,exam_shift,exam_day,paper_master.paper_code,paper_master.paper_name,paper_master.course_group_id,paper_master.class_id');
 		$this->db->from('paper_master');
 		$this->db->join('new_exam_form', 'new_exam_form.paper_id = paper_master.id');
 		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
@@ -1471,11 +1471,10 @@ class ExamController extends CI_Controller {
 		if($shift)	
 			$this->db->where('paper_master.exam_shift',$shift);
 		$this->db->where('student.exam_center_id', $exam_center );
-		$this->db->group_by('paper_master.exam_date,paper_master.exam_shift');
+		$this->db->group_by('paper_master.exam_date');
 		//$this->db->order_by('paper_master.exam_date');
 		$data['papers'] = $this->db->get()->result();
-		echo "<pre>".$this->db->last_query(); 
-		print_r($data['papers'] );
+		
 		echo $this->load->view('admin/exam_center/exam_center_paper_count_show',$data, TRUE);
 	}
 

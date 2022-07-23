@@ -101,7 +101,8 @@ foreach($papers as $pap)
 		$this->db->from('paper_master');
 	
 		$this->db->where('exam_date',$pap->exam_date);
-      $this->db->where('exam_shift',$pap->exam_shift);	
+      $this->db->order_by('exam_shift','Desc');
+     // $this->db->where('exam_shift',$pap->exam_shift);	
 		$paperData = $this->db->get()->result();
       foreach($paperData as $paper)
       {
@@ -117,7 +118,7 @@ foreach($papers as $pap)
          $join_table='student as s';
          $join_on='e.student_id = s.student_id';
          $count= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
-       //  print_r($count);
+       
          ?>
       <tr <?php if($i%2==0) echo 'bgcolor="#F0F0F0"'; ?>>
       <td> <?=$i ?> </td>
