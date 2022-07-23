@@ -22,7 +22,7 @@
 			<!-- 	<td><?php echo $list->center_id; ?></td> -->
 				<td><?= $list->center_name?></td>
 				<td><?php echo $list->center_code; ?></td>
-				<td><a target="_blank" href="<?php echo base_url().'admin/'.$this->session->account_type.'/students_count_list/'.$list->center_id.'/'.$params.'/'.$sessionsSelect.'/'.$mode ;?>"><?php echo $list->student_count; ?></a></td>
+				<td><a target="_blank" href="<?php echo base_url().'admin/'.$this->session->account_type.'/students_count_list/'.$list->center_id.'/'.$params.'/'.$sessionsSelect ;?>"><?php echo $list->student_count; ?></a></td>
 					
                  
 			</tr>
