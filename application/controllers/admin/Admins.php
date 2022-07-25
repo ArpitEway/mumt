@@ -3739,4 +3739,16 @@ public function update_exam_datewise_permission(){
 		redirect(base_url('admin/admins/classes'));
 	}
 
+	public function check_student_for_session_change_report(){
+		$dt = array();
+		$dt['title'] = "Student Consolidate Report";
+		$this->load->view('header',$dt);
+		$this->db->order_by('id', 'Desc');
+		$dt['name_csrf'] = $this->security->get_csrf_token_name();
+		$dt['hash_csrf'] = $this->security->get_csrf_hash();
+		$dt['sessions'] = $this->db->get_where('session', array())->result_array();
+		$this->load->view('admin/show_center_student_for_session_change',$dt);
+		$this->load->view('footer');
+	}
+
 }// class
