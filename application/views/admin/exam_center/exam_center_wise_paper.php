@@ -36,10 +36,10 @@
         <div class="form-group col-md-3">
             <label for="course">Shift</label>
             <select  name="shift" readonly="readonly" id="shift" class="form-control course" required>
-                <option value="" selected >Select Exam Center</option>
+                <option value="" selected="selected" >Select Exam Center</option>
                 <option value="Afternoon">Afternoon</option>
                 <option value="Early Morning">Early Morning</option>
-                <option value="Morning" selected="selected">Morning</option>
+                <option value="Morning" >Morning</option>
                 
             </select>
         </div>
@@ -70,14 +70,15 @@
     //      $('#exam_center').change();
     // });
     $("#search").on('click', function(){
-	var csrfName = $('.csrfname').attr('name');
-	var csrfHash = $('.csrfname').val(); 
-	var exam_center = $("#exam_center").val();
-    var exam_date = $("#exam_date").val();
-    var shift = $("#shift").val();
-  $('.dt-responsive').html("");
-  
-		$.ajax({
+        var csrfName = $('.csrfname').attr('name');
+        var csrfHash = $('.csrfname').val(); 
+        var exam_center = $("#exam_center").val();
+        var exam_date = $("#exam_date").val();
+        var shift = $("#shift").val();
+        $("#exam_center").css("border",""); 
+        $('.dt-responsive').html("");
+        if(exam_center){
+            $.ajax({
 			method: "POST",
 			url: BASE_URL+"ExamController/get_exam_center_wise_paper_count",
 			data: { exam_center : exam_center,
@@ -85,9 +86,18 @@
                     shift : shift,
 					[csrfName]:csrfHash
 					},
-		})
-		.done(function( msg ) {
-            $('.dt-responsive').html(msg);
-		});
+            })
+            .done(function( msg ) {
+                if(msg)
+                $('.dt-responsive').html(msg);
+                else
+                $('.dt-responsive').html("No Data Found!");
+            });
+        }
+        else{
+            $("#exam_center").css("border","solid 1px red"); 
+
+        }
+		
 	});
 </script>
