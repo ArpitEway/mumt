@@ -41,6 +41,7 @@ class Preexam extends CI_Controller {
 					'payment_status' => 'Y',
 					'temp_exam_form' => "N",
 		);
+		$this->db->order_by('id');
 		$papers = $this->Common_model->get_record('paper_master','*','class_id='.$class_id);
 		$students = $this->Common_model->get_record('student','*',$where);
 		foreach ($students as $student) {
