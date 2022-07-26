@@ -143,6 +143,7 @@ class saveFormdata extends CI_Controller {
 		$class = $this->Common_model->getRecordByWhere('class_master',array('id' =>$class_id));
        
 		if($class[0]->exam_form_permission =='Y' && $class[0]->class_group=="N"){
+			$this->db->order_by('id');
 		$papers = $this->Common_model->getRecordByWhere('paper_master',array('class_id' =>$class_id));
 	
 	
@@ -157,6 +158,7 @@ class saveFormdata extends CI_Controller {
 				'paper_type'=>$paper->type,
 				'book_code'=>$paper->book_code,
 				'paper_order'=>$paper->paper_no
+				'sub_group_id'=>$paper->sub_group_id
 			);
 	       $this->Common_model->insertAll('new_exam_form',$data);
 
