@@ -271,7 +271,7 @@ function validation(step=""){
 
 	var session = $('select[name="session"]').val();
 	var course_group_id = $('select[name="course_group_id"]').val();
-	var class_id = $('#class_id').val();
+	var class_id = $('select[name="class_id"]').val(); 
 	var eligibility = $('select[name="eligibility"]').val();
 	var course_category = $('select[name="course_category"]').val();
 	var category = $('select[name="category"]').find(":selected").val();
@@ -332,7 +332,7 @@ function validation(step=""){
 		$('select[name="course_group_id"]').next('div').text('');
 	}
 	if(class_id==''){
-		$('select[name="class_id"]').next('div').text('class is Required');
+		$('select[name="class_id"]').next('div').text('Class is Required');
 		submit = false
 	}else{
 		$('select[name="class_id"]').next('div').text('');
