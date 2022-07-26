@@ -3751,4 +3751,108 @@ public function update_exam_datewise_permission(){
 		$this->load->view('footer');
 	}
 
+	public function get_student_for_session_change_report()
+		{   
+
+			if ($this->input->method() == "post") 
+			{
+				$course_group_id = 0;
+				$data = array();
+				$dt   = array();
+				$course_group_id  = $this->input->post("course_group_id");
+				$class_id  		  = $this->input->post("class_id");
+				$approved 		  = $this->input->post("approved");
+				$new_exam_form    = $this->input->post("new_exam_form");
+
+				$payment 		  = $this->input->post("payment");
+				$enrolled 		  = $this->input->post("enrolled");
+				$document_upload  = $this->input->post("document_upload");
+				$filter  		  = $this->input->post("filter");
+				$session 		  = $this->input->post("session");
+				$mode 		  	  = $this->input->post("mode");
+				$center_id	  	  = $this->input->post("center_id");
+				$university_mode	  	  = $this->input->post("university_mode");
+
+				if($mode != "all"){	 
+					
+					$dt['mode'] = $mode;
+				}
+				if($university_mode!="all"){
+					$dt['student.university_mode'] = $university_mode ;
+				}
+				if($session != "All") {	 
+					$sessionRow = $this->db->get_where('session', array('id'=>$session))->result_array();
+					$dt['session'] = $sessionRow[0]['session'] ;
+				}else  {
+					$dt['name!='] = '';
+				}
+
+
+				if($class_id !=  "All" && $class_id !=  "" ){	 
+
+					$dt['class_id'] = $class_id;
+				}
+
+				if($approved != "all"){
+
+					$dt['approved'] = $approved;
+				}
+
+
+				if($new_exam_form != "all"){
+
+					$dt['new_exam_form'] = $new_exam_form;
+				}
+				if($course_group_id != "all"){
+
+					$dt['course_group_id'] = $course_group_id;
+				}
+
+				if($center_id != "all"){
+
+					$dt['center_id'] = $center_id;
+				}
+
+
+
+				if($payment != "all"){
+
+					$dt['payment_status'] = $payment;
+				}
+				if($enrolled != "all"){
+
+					$dt['enrolled'] = $enrolled;
+				}
+				if($document_upload != "all"){
+
+					$dt['document_uploaded'] = $document_upload;
+			//print_r($document_upload);
+				}
+
+			//print_r($dt);
+			//die;
+				if($filter == "list"){
+
+					$data['students'] = $this->Common_model->student_data_consolidate($dt);
+
+
+				}
+				if($filter == "count"){				
+					$data['course_count'] = $this->Common_model->student_data_consolidate($dt,$_POST['count_filter']);
+				}
+				//echo $this->db->last_query();
+			//$this->Common_model->last_query();
+
+				$dt = $this->load->view('admin/getStudentForSessionChangeReport',$data,true);
+
+				echo json_encode(array(
+					"status" => true,
+					"data" => $dt
+				));
+
+
+
+			}
+		}
+
 }// class

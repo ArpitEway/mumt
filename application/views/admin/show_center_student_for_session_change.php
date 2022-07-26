@@ -9,7 +9,7 @@
 				foreach($sessions as $session)
 				{
 					?>
-					<option value="<?php echo $session['session']; ?>" ><?php echo $session['session']; ?></option>
+					<option value="<?php echo $session['id']; ?>" ><?php echo $session['session']; ?></option>
 					<?php
 				} 
 				?>		
@@ -201,7 +201,7 @@
 
 
 		$.ajax({
-			url: '<?php echo site_url('admin/admins/get_student_consolidate_data'); ?>',
+			url: '<?php echo site_url('admin/admins/get_student_for_session_change_report'); ?>',
 
 			type:'post',
 			dataType : 'JSON',
@@ -230,4 +230,7 @@
 				},
 			})
 	});
+	function getList(){
+		console.log("test");
+	}
 </script>
