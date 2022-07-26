@@ -157,7 +157,7 @@ class saveFormdata extends CI_Controller {
 				'paper_code'=>$paper->paper_code,
 				'paper_type'=>$paper->type,
 				'book_code'=>$paper->book_code,
-				'paper_order'=>$paper->paper_no
+				'paper_order'=>$paper->paper_no,
 				'sub_group_id'=>$paper->sub_group_id
 			);
 	       $this->Common_model->insertAll('new_exam_form',$data);
