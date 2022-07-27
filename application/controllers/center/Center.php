@@ -1545,7 +1545,7 @@ class Center extends CI_Controller {
 		$this->db->where('result_show','Y');
 		//$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,197,203,211,213)');
 		$data['courses'] = $this->db->get()->result();
-		//echo $this->db->last_query(); die;
+		// echo $this->db->last_query(); die;
 		$this->load->view('Centers/header', array('title' => 'Result'));
 		$this->load->view('Centers/result',$data);
 		$this->load->view('Centers/footer');		
@@ -1597,7 +1597,7 @@ class Center extends CI_Controller {
 			
 		}
 		if($_POST['class_id']!='All' and $_POST['class_id']!=''){
-			$where['class_id'] = $this->input->post('class_id');
+			$where['old_class_id'] = $this->input->post('class_id');
 		
 		}
 		$where['result_permission'] = 'Y';
@@ -1613,7 +1613,7 @@ class Center extends CI_Controller {
 			'where' => $where,
 			'table' => 'student',
 			'table2' => 'class_master',
-			'joinOn' => 'student.class_id=class_master.id'
+			'joinOn' => 'student.old_class_id=class_master.id'
 		);
 
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);

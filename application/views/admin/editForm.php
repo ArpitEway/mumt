@@ -86,7 +86,7 @@
 							<option value="">Select Class</option>
                             <?php 
                             
-                            $class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$student_detail->course_group_id."'  and admission_permission='Y'");
+                            $class_list = $this->Common_model->get_record('class_master','*',"id='".$student_detail->class_id."'  ");
                             foreach ($class_list as $row) { ?>
                                 <option value="<?=$row['id'];?>" <?php if($student_detail->class_id == $row['id']){ echo "selected";} ?>><?=$row['class_name'];?></option>
 					        <?php } ?>
