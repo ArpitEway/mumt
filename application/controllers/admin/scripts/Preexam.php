@@ -174,6 +174,22 @@ class Preexam extends CI_Controller {
 			}
 		}
 	}	
+	// Update Test ID in Paper Master from paper_testid_relation table
+	public function update_testid_from_relation_table(){
+		echo "Update Test ID in Paper Master";
+		$this->db->select('*');
+        $this->db->from('paper_testid_relation');
+		$rows=$this->db->get()->result();
+		$i=1;
+		foreach($rows as $row){
+
+			echo "<br> ".$i." ".$row->paper_id ." ". $row->paper_code ." ". $row->test_id;
+			$data  = array('test_id'=>$row->test_id ,);
+            $where = array('id'=>$row->paper_id,'paper_code'=> $row->paper_code, );
+            $update =$this->Common_model->updateRecordByConditions('paper_master',$where,$data);
+			$i++;
+		}
+	}
 }
 
 ?>

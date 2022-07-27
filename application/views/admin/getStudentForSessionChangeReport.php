@@ -87,7 +87,7 @@
 				
 			<td><?php echo $i; ?></td>
 			<td><?php echo $this->Common_model->getCourseNameByCourseId($student["course_group_id"]); ?></td>
-			<td><a href="<?php echo site_url('admin/admins/get_student_list_for_session_change_report/').$session.'/'.$payment.'/'.$document_upload.'/'.$student["course_group_id"]; ?>"  ><?php echo $student["cnt"]; ?></a></td>
+			<td><a target="_blank" href="<?php echo site_url('get_student_list_for_session_change_report/').$session.'/'.$payment.'/'.$document_upload.'/'.$student["course_group_id"]; ?>"  ><?php echo $student["cnt"]; ?></a></td>
 			<?php $total = $total + $student["cnt"]; ?>
 			</tr>
 			
