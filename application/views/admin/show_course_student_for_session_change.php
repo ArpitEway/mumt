@@ -4,7 +4,7 @@
 		<div class="form-group col-md-3">
 			<label for="class">Session</label>
 			<select name="session" id="session" class="form-control" >
-				<option>All</option>
+				
 				<?php 
 				foreach($sessions as $session)
 				{
@@ -16,46 +16,7 @@
 			</select>
 		</div>
 
-		<!-- <div class="form-group col-md-3">
-			<label for="center_id">Center</label>
-			<select name="center_id" id="center_id" class="form-control "  required >
-				<option value="all">All</option>
-				<?php 
-				$centers = $this->db->get_where('center', array())->result_array();
-				foreach($centers as $center)
-				{
-					?>
-					<option value="<?php echo $center['id']; ?>"><?php echo $center['center_code'] ." - ". $center['center_name']; ?></option>
-
-					<?php
-				} 
-				?> 
-			</select>
-		</div> -->
-
-		<!-- <div class="form-group col-md-3">
-			<label for="course">Course</label>
-			<select name="course_group_id" id="course_group_id" class="form-control course_group_id" data-target="#class_id" required >
-				<option value="all">All</option>
-				<?php 
-				$courses = $this->db->get_where('course', array())->result_array();
-				foreach($courses as $course)
-				{
-					?>
-
-					<option value="<?php echo $course['course_group_id']; ?>"><?php echo $course['course_name']; ?></option>
-
-					<?php
-				} 
-				?> 
-			</select>       
-		</div> -->
-		<!-- <div class="form-group col-md-3">
-			<label for="class_id">Class</label>
-			<select name="class_id" id="class_id" class="form-control"  required >
-				<option value="">All</option>
-			</select>       
-		</div> -->
+	
 
 		<div class="form-group col-md-3">
 			<label for="class">Payment</label>
@@ -87,68 +48,8 @@
 			</select>
 		</div>
 
-		<!-- <div class="form-group col-md-3">
-			<label for="class">Enrollment Status</label>
-			<select name="enrolled" id="enrolled" class="form-control" > 
-				<option value="all">All</option>
-				<option value="Y">Enrolled </option> 
-				<option value="N">Non Enrolled</option>
-			</select>
-		</div> -->
-
-
-				
-		<!-- <div class="form-group col-md-2">
-			<label for="class">Admission Mode</label>
-			<select name="university_mode" id="university_mode" class="form-control" >
-			    <option value="all">All </option> 
-				<option value="REG">Regular </option> 
-				<option value="PVT" >Private</option>
-			</select>
-		</div> -->
-
-
-		<!-- <div class="form-group col-md-2">
-			<label for="class">Course Mode</label>
-			<select name="mode" id="mode" class="form-control" > 
-				<option value="all">All</option>
-				<option value="annual">Annual </option> 
-				<option value="semester">Semester</option>
-			</select>
-		</div> -->
-		<!-- <div class="form-group col-md-3">
-			<label for="class">Exam Form Status</label>
-			<select name="new_exam_form" id="new_exam_form" class="form-control"  > 
-				<option value="all">All</option>
-				<option value="D"> Not Permitted </option>
-				<option value="Y">Submitted </option>
-				<option value="N">Not Submitted </option>
-			</select>
-		</div> -->
-
-		<!-- <div class="col-md-2 radio-inline" style="top: 7px;">
-			<label class="radio radio-success">
-				<input type="radio" name="filter" value="list" checked />
-				<span></span>
-				List
-			</label>
-
-			<label class="radio radio-success">
-				<input type="radio" name="filter" value="count" checked/>
-				<span></span>
-				Count
-			</label>          
-		</div> -->
-
-		<!-- <div class="form-group col-md-3">
-			<label for="class">Student Count</label>
-			<select name="count_filter" id="count_filter" class="form-control" >
-				<option value="course_group_id">Course Wise </option> 
-				<option value="center_id" >Center Wise </option>
-				<option value="class_id" >Class Wise </option>
-			</select>
-		</div>
-		 -->
+		
+		
 	
 	</div>
 

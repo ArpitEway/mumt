@@ -3747,7 +3747,7 @@ public function update_exam_datewise_permission(){
 		$dt = array();
 		$dt['title'] = "Search Student For Session change";
 		$this->load->view('header',$dt);
-		$this->db->order_by('id', 'Desc');
+		$this->db->order_by('id', 'Asc');
 		$dt['name_csrf'] = $this->security->get_csrf_token_name();
 		$dt['hash_csrf'] = $this->security->get_csrf_hash();
 		$dt['sessions'] = $this->db->get_where('session', array())->result_array();
@@ -3763,90 +3763,39 @@ public function update_exam_datewise_permission(){
 				$course_group_id = 0;
 				$data = array();
 				$dt   = array();
-				$count_filter='course_group_id';
-				$course_group_id  = $this->input->post("course_group_id");
-				$class_id  		  = $this->input->post("class_id");
+				$count_filter='class_id';//array("course_group_id", "class_id"); //
+				
 				$approved 		  = $this->input->post("approved");
-				$new_exam_form    = $this->input->post("new_exam_form");
-
 				$data['payment']= $payment 		  = $this->input->post("payment");
-				$enrolled 		  = $this->input->post("enrolled");
+				
 				$data['document_upload']=$document_upload  = $this->input->post("document_upload");
 				$filter  		  = $this->input->post("filter");
 				$data['session']  =$session 		  = $this->input->post("session");
-				$mode 		  	  = $this->input->post("mode");
-				$center_id	  	  = $this->input->post("center_id");
-				$university_mode	  	  = $this->input->post("university_mode");
 
-				if($mode != "all"){	 
-					
-					$dt['mode'] = $mode;
-				}
-				if($university_mode!="all"){
-					$dt['student.university_mode'] = $university_mode ;
-				}
-				if($session != "All") {	 
+				if($session){
 					$sessionRow = $this->db->get_where('session', array('id'=>$session))->result_array();
-					$dt['session'] = $sessionRow[0]['session'] ;
-				}else  {
-					$dt['name!='] = '';
+					$this->db->where('session', $sessionRow[0]['session'] );
+					 
+					
 				}
-
-
-				if($class_id !=  "All" && $class_id !=  "" ){	 
-
-					$dt['class_id'] = $class_id;
+				
+				$this->db->select('count(*) as cnt,course_name,class_name,class_id,course_group_id');
+				$this->db->from('student');
+				
+				if($payment && $payment!="all"){
+					$this->db->where('payment_status',$payment);
 				}
-
-				if($approved != "all"){
-
-					$dt['approved'] = $approved;
+				if($document_upload && $document_upload!="all"){
+					$this->db->where('document_uploaded ',$document_upload);
 				}
-
-
-				if($new_exam_form != "all"){
-
-					$dt['new_exam_form'] = $new_exam_form;
-				}
-				if($course_group_id != "all"){
-
-					$dt['course_group_id'] = $course_group_id;
-				}
-
-				if($center_id != "all"){
-
-					$dt['center_id'] = $center_id;
-				}
-
-
-
-				if($payment != "all"){
-
-					$dt['payment_status'] = $payment;
-				}
-				if($enrolled != "all"){
-
-					$dt['enrolled'] = $enrolled;
-				}
-				if($document_upload != "all"){
-
-					$dt['document_uploaded'] = $document_upload;
-			
-				}
-
-			
-				if($filter == "list"){
-
-					$data['students'] = $this->Common_model->student_data_consolidate($dt);
-
-
-				}
-				if($filter == "count"){				
-					$data['course_count'] = $this->Common_model->student_data_consolidate($dt,$count_filter);
-				}
-			
-		
-
+				
+					$this->db->where('approved','');
+					$this->db->group_by('class_id');
+				
+				
+				$data['course_count'] = $this->db->get()->result_array();
+				
+				//echo $this->db->last_query();
 				$dt = $this->load->view('admin/getStudentForSessionChangeReport',$data,true);
 
 				echo json_encode(array(
@@ -3865,95 +3814,52 @@ public function update_exam_datewise_permission(){
 			$dat['title'] = " Student For Session change";
 			$this->load->view('header',$dat);
 		
-				$course_group_id = 0;
-				$count_filter='course_group_id';
+				$count_filter='class_id';
 				$data = array();
 				$dt   = array();
 			 	$course_group_id  = $this->uri->segment(5);
-				$class_id  		  = '';
+				$class_id  		  = $this->uri->segment(6);
 				$approved 		  = '';
-				$new_exam_form    = 'all';
-
 			 	$payment 		  = $this->uri->segment(3);
-				$enrolled 		  = 'all';
 				$document_upload  = $this->uri->segment(4);
 				$filter  		  = "list";
 				$session 		  = $this->uri->segment(2);
-				$mode 		  	  = 'all';
-				$center_id	  	  = 'all';
-				$university_mode	  	  = 'all';
-
-				if($mode != "all"){	 
-					
-					$dt['mode'] = $mode;
-				}
-				if($university_mode!="all"){
-					$dt['student.university_mode'] = $university_mode ;
-				}
-				if($session != "All") {	 
+				
+				if($session){
 					$sessionRow = $this->db->get_where('session', array('id'=>$session))->result_array();
-					$dt['session'] = $sessionRow[0]['session'] ;
-				}else  {
-					$dt['name!='] = '';
-				}
-
-
-				if($class_id !=  "All" && $class_id !=  "" ){	 
-
-					$dt['class_id'] = $class_id;
-				}
-
-				if($approved != "all"){
-
-					$dt['approved'] = $approved;
-				}
-
-
-				if($new_exam_form != "all"){
-
-					$dt['new_exam_form'] = $new_exam_form;
-				}
-				if($course_group_id != "all"){
-
-					$dt['course_group_id'] = $course_group_id;
-				}
-
-				if($center_id != "all"){
-
-					$dt['center_id'] = $center_id;
-				}
-
-
-
-				if($payment != "all"){
-
-					$dt['payment_status'] = $payment;
-				}
-				if($enrolled != "all"){
-
-					$dt['enrolled'] = $enrolled;
-				}
-				if($document_upload != "all"){
-
-					$dt['document_uploaded'] = $document_upload;
-			
-				}
-
-			
-				if($filter == "list"){
-
-					$data['students'] = $this->Common_model->student_data_consolidate($dt);
-
+					$this->db->where('session', $sessionRow[0]['session']);
 
 				}
-				if($filter == "count"){				
-					$data['course_count'] = $this->Common_model->student_data_consolidate($dt,$count_filter);
+				$this->db->select('*');
+				$this->db->from('student');
+				
+				if($payment && $payment!="all"){
+					$this->db->where('payment_status',$payment);
 				}
+				if($document_upload && $document_upload!="all"){
+					$this->db->where('document_uploaded ',$document_upload);
+				}
+				
+				if($course_group_id){
+					$this->db->where('course_group_id',$course_group_id);
+				}
+				if($class_id){
+					$this->db->where('class_id',$class_id);
+				}
+					$this->db->where('approved','');
+					//$this->db->group_by('class_id');
+				
+				
+				$data['students'] =  $this->db->get()->result_array();
+					
+				
+				//echo $this->db->last_query();
 				$data['name_csrf'] = $this->security->get_csrf_token_name();
 				$data['hash_csrf'] = $this->security->get_csrf_hash();
 				$this->db->order_by('id', 'Desc');
 				
 				$data['sessions'] = $this->db->get_where('session', array())->result_array();
+				
 				$data['listSession'] = $session;
 				$this->load->view('admin/show_student_for_session_change',$data);
 				$this->load->view('footer');
@@ -3981,7 +3887,7 @@ public function update_exam_datewise_permission(){
 							$prev_path = 'assets/student_image/'.$studentRow[0]['session'].'/'.$studentRow[0]['photo'];
 							$upload = rename($prev_path,$path); 
 							
-							$data = $this->Common_model->updateRecordByConditions("student",array("student_id" => $val ),array("session" => $sessionValue ));
+							$data = $this->Common_model->updateRecordByConditions("student",array("student_id" => $val,'approved'=>'' ),array("session" => $sessionValue ));
 						}
 					}
 					redirect(base_url('check_student_for_session_change_report'));
