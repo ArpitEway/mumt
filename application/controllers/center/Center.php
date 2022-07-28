@@ -647,7 +647,7 @@ class Center extends CI_Controller {
 	public function checkDuplicateAdharNo()
 	{
 		$adhar_no = $this->input->post('adhar_no');
-		$where = array('adhar_no'=>$adhar_no,'course_complete'=>'N');
+		$where = array('adhar_no'=>$adhar_no,'course_complete'=>'N','new_admission_permission'=>'N');
 		$count = $this->Common_model->getCountByWhere('student',$where);
 		if($count>0){
 			echo "Duplicate Adhar Card Number";
@@ -656,7 +656,7 @@ class Center extends CI_Controller {
 	public function checkDuplicateMobileNo()
 	{
 		$p_mobile_no = $this->input->post('p_mobile_no');
-		$count = $this->db->query("select * from student_data as d join student as s on s.student_id=d.student_id where s.course_complete='N' and d.p_mobile_no = '".$p_mobile_no."' limit 1")->num_rows();
+		$count = $this->db->query("select * from student_data as d join student as s on s.student_id=d.student_id where s.course_complete='N' and s.new_admission_permission='N' and d.p_mobile_no = '".$p_mobile_no."' limit 1")->num_rows();
 		if($count>0){
 			echo "Duplicate Mobile No";
 		}

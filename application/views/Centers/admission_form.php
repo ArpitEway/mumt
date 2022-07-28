@@ -425,4 +425,4 @@
 		var avatar1 = new KTImageInput('kt_image_1');
 		setTimeout(function () { document.getElementById("alert-msg").style.display="none"; }, 3000);
 	</script>
-	<script src="<?=base_url();?>assets/theme/admission.js?token=<?=date('YmdHis')?>"></script>
+	<script src="<?=base_url();?>assets/theme/admission.js?token=<?=date('Ymd')?>"></script>
