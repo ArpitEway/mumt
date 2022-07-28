@@ -2642,8 +2642,11 @@ public function update_exam_datewise_permission(){
 		$center_id = $student_details[0]->center_id;
 		$course_group_id = $student_details[0]->course_group_id;
 		$remark = '';
-		// $session = $student_details[0]->session;
-		$session = 'June 2022';
+		if($Fess_head == 'Admission Fees'){
+	     $session = $student_details[0]->session;
+		}else{
+			$session = 'June 2022';
+		}	
 		$class_id = $student_details[0]->class_id;
 		$name = $student_details[0]->name;
 
