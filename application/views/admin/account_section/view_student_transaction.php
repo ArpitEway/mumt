@@ -82,6 +82,9 @@
 			<h4 class="card-title">Transaction Details</h4>
 			<div class="row">
 				<div class="col-md-1">
+					<label class="text-heading">Session</label>
+				</div>
+				<div class="col-md-1">
 					<label class="text-heading">Class</label>
 				</div>
 				<div class="col-md-1">
@@ -90,7 +93,7 @@
 				<div class="col-md-2">
 					<label class="text-heading">Fees Head</label>
 				</div>
-				<div class="col-md-2">
+				<div class="col-md-1">
 					<label class="text-heading">Payment Status</label>
 				</div>
 				<div class="col-md-2">
@@ -105,6 +108,10 @@
 			</div>
 			<?php foreach ($paymentDetails as $payment) { ?>
 				<div class="row mt-3">
+
+					<div class="col-md-1">
+						<label class="text-heading mt-3"><?=$payment->exam_session; ?></label>
+					</div>
 					<div class="col-md-1">
 						<label class="text-heading mt-3"><?=$this->Common_model->getClassNameByClassId($payment->class_id); ?></label>
 					</div>
@@ -114,7 +121,7 @@
 					<div class="col-md-2">
 						<label class="text-heading mt-3"><?=$payment->fees_head;?></label>
 					</div>
-					<div class="col-md-2">
+					<div class="col-md-1">
 						<label class="text-heading mt-3"><?=$payment->payment_status;?></label>
 					</div>
 					<div class="col-md-2">
