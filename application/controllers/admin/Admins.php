@@ -3808,90 +3808,100 @@ public function update_exam_datewise_permission(){
 			}
 		}
 
-		public function get_student_list_for_session_change_report()
-		{   
-			$dat = array();
-			$dat['title'] = " Student For Session change";
-			$this->load->view('header',$dat);
-		
-				$count_filter='class_id';
-				$data = array();
-				$dt   = array();
-			 	$course_group_id  = $this->uri->segment(5);
-				$class_id  		  = $this->uri->segment(6);
-				$approved 		  = '';
-			 	$payment 		  = $this->uri->segment(3);
-				$document_upload  = $this->uri->segment(4);
-				$filter  		  = "list";
-				$session 		  = $this->uri->segment(2);
-				
-				if($session){
-					$sessionRow = $this->db->get_where('session', array('id'=>$session))->result_array();
-					$this->db->where('session', $sessionRow[0]['session']);
-
-				}
-				$this->db->select('*');
-				$this->db->from('student');
-				
-				if($payment && $payment!="all"){
-					$this->db->where('payment_status',$payment);
-				}
-				if($document_upload && $document_upload!="all"){
-					$this->db->where('document_uploaded ',$document_upload);
-				}
-				
-				if($course_group_id){
-					$this->db->where('course_group_id',$course_group_id);
-				}
-				if($class_id){
-					$this->db->where('class_id',$class_id);
-				}
-					$this->db->where('approved','');
-					//$this->db->group_by('class_id');
-				
-				
-				$data['students'] =  $this->db->get()->result_array();
-					
-				
-				//echo $this->db->last_query();
-				$data['name_csrf'] = $this->security->get_csrf_token_name();
-				$data['hash_csrf'] = $this->security->get_csrf_hash();
-				$this->db->order_by('id', 'Desc');
-				
-				$data['sessions'] = $this->db->get_where('session', array())->result_array();
-				
-				$data['listSession'] = $session;
-				$this->load->view('admin/show_student_for_session_change',$data);
-				$this->load->view('footer');
-
+	public function get_student_list_for_session_change_report()
+	{   
+		$dat = array();
+		$dat['title'] = " Student For Session change";
+		$this->load->view('header',$dat);
+	
+			$count_filter='class_id';
+			$data = array();
+			$dt   = array();
+			$course_group_id  = $this->uri->segment(5);
+			$class_id  		  = $this->uri->segment(6);
+			$approved 		  = '';
+			$payment 		  = $this->uri->segment(3);
+			$document_upload  = $this->uri->segment(4);
+			$filter  		  = "list";
+			$session 		  = $this->uri->segment(2);
+			
+			if($session){
+				$sessionRow = $this->db->get_where('session', array('id'=>$session))->result_array();
+				$this->db->where('session', $sessionRow[0]['session']);
 
 			}
-	
-			public function update_student_session()
-			{ 
-				if(!$this->session->has_userdata('adminData')){
-					redirect(base_url());
-					exit;
-				}else{
-					if ($this->input->method() == "post") 
-					{
-						$session    = $this->input->post("session");
-						$students    = $this->input->post("students");
-						$studentArr=explode(',',$students);
-						$sessionRow = $this->db->get_where('session', array('id'=>$session))->result_array();
-						$sessionValue = $sessionRow[0]['session'] ;
-						
-						foreach($studentArr as $k=>$val){
-							$studentRow = $this->db->get_where('student', array('student_id'=>$val))->result_array();
-							$path = 'assets/student_image/'.$sessionValue.'/'.$studentRow[0]['photo'];
-							$prev_path = 'assets/student_image/'.$studentRow[0]['session'].'/'.$studentRow[0]['photo'];
-							$upload = rename($prev_path,$path); 
-							
-							$data = $this->Common_model->updateRecordByConditions("student",array("student_id" => $val,'approved'=>'' ),array("session" => $sessionValue ));
-						}
-					}
-					redirect(base_url('check_student_for_session_change_report'));
-				}	
+			$this->db->select('*');
+			$this->db->from('student');
+			
+			if($payment && $payment!="all"){
+				$this->db->where('payment_status',$payment);
+			}
+			if($document_upload && $document_upload!="all"){
+				$this->db->where('document_uploaded ',$document_upload);
 			}
 			
+			if($course_group_id){
+				$this->db->where('course_group_id',$course_group_id);
+			}
+			if($class_id){
+				$this->db->where('class_id',$class_id);
+			}
+				$this->db->where('approved','');
+				//$this->db->group_by('class_id');
+			
+			
+			$data['students'] =  $this->db->get()->result_array();
+				
+			
+			//echo $this->db->last_query();
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$this->db->order_by('id', 'Desc');
+			
+			$data['sessions'] = $this->db->get_where('session', array())->result_array();
+			
+			$data['listSession'] = $session;
+			$this->load->view('admin/show_student_for_session_change',$data);
+			$this->load->view('footer');
+
+
+		}
+	
+	public function update_student_session()
+	{ 
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else{
+			if ($this->input->method() == "post") 
+			{
+				$session    = $this->input->post("session");
+				$students    = $this->input->post("students");
+				$studentArr=explode(',',$students);
+				$sessionRow = $this->db->get_where('session', array('id'=>$session))->result_array();
+				$sessionValue = $sessionRow[0]['session'] ;
+				
+				foreach($studentArr as $k=>$val){
+					$studentRow = $this->db->get_where('student', array('student_id'=>$val))->result_array();
+					$path = 'assets/student_image/'.$sessionValue.'/'.$studentRow[0]['photo'];
+					$prev_path = 'assets/student_image/'.$studentRow[0]['session'].'/'.$studentRow[0]['photo'];
+					$upload = rename($prev_path,$path); 
+					
+					$data = $this->Common_model->updateRecordByConditions("student",array("student_id" => $val,'approved'=>'' ),array("session" => $sessionValue ));
+				}
+			}
+			redirect(base_url('check_student_for_session_change_report'));
+		}	
+	}
+			
+	public function paper_test_id_list()
+	{	
+		$where = array('type' => 'theory');
+		$this->db->order_by('course_group_id,class_id','ASC');
+		$papers = $this->Common_model->getRecordByWhere('paper_master',$where);
+		$data = array('papers' => $papers);
+		$this->load->view('header');
+		$this->load->view('admin/paper_test_id_list',$data);
+		$this->load->view('footer');		
+	}
 }// class
