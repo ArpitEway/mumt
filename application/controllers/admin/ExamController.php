@@ -1091,14 +1091,15 @@ class ExamController extends CI_Controller {
 			$radio_val = $this->input->post('radio_val');
 			if($text_val !=''){
 				if($text_val !='' && $radio_val == 'roll_no'){
-					$student = $this->Common_model->getRecordById('student','roll_no',$text_val);
+					$student = $this->Common_model->getRecordById('student','roll_number',$text_val);
 				}
 				else if($text_val !='' && $radio_val == 'enrollment_no'){
 					$student = $this->Common_model->getRecordById('student','enrollment_no',$text_val);
 				}else if($text_val !='' && $radio_val == 'student_id'){
 					$student = $this->Common_model->getRecordById('student','student_id',$text_val);
 				}  
-				$papers = $this->Common_model->getRecordByWhere('new_exam_form',array('student_id' =>$student->student_id, 'paper_type' => 'theory'));
+				
+				$papers = $this->Common_model->getRecordByWhere('new_exam_form',array('student_id' =>$student->student_id,'class_id' =>$student->old_class_id,'paper_type' => 'theory'));
 				$data = array(
 					'paper' => $papers,
 					'student' => $student,
@@ -1163,6 +1164,35 @@ class ExamController extends CI_Controller {
 			"data" => $data
 		));
 	}
+
+	public function instruction_private(){
+
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+		}else{
+			$titleData = array('title' => 'Private Course Fees Structure');
+			$this->load->view('header',$titleData);
+			$course_group_list = $this->Common_model->get_record('course_group','*',array('status !=' => 'D' ,'admission_permission_pvt'=>'Y'));
+			$data = array('course_group' => $course_group_list);
+			$this->load->view('Centers/instruction_private',$data);
+			$this->load->view('footer');
+		}
+	  }
+
+
+	public function instruction_regular(){
+
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+		}else{
+			$titleData = array('title' => 'Regular Course Fees Structure');
+			$this->load->view('header',$titleData);
+			$course_group_list = $this->Common_model->get_record('course_group','*',array('status !=' => 'D','admission_permission'=>'Y'));
+			$data = array('course_group' => $course_group_list);
+			$this->load->view('Centers/instruction',$data);
+			$this->load->view('footer');
+		}
+	 }
 		
 	
 }// class
