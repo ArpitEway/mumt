@@ -1165,12 +1165,12 @@ class ExamController extends CI_Controller {
 		));
 	}
 
-	public function instruction_private(){
+	public function course_details_private(){
 
 		if(!$this->session->has_userdata('adminData')){
 			redirect(base_url());
 		}else{
-			$titleData = array('title' => 'Private Course Fees Structure');
+			$titleData = array('title' => 'Private Course Details');
 			$this->load->view('header',$titleData);
 			$course_group_list = $this->Common_model->get_record('course_group','*',array('status !=' => 'D' ,'admission_permission_pvt'=>'Y'));
 			$data = array('course_group' => $course_group_list);
@@ -1180,12 +1180,12 @@ class ExamController extends CI_Controller {
 	  }
 
 
-	public function instruction_regular(){
+	public function course_details_regular(){
 
 		if(!$this->session->has_userdata('adminData')){
 			redirect(base_url());
 		}else{
-			$titleData = array('title' => 'Regular Course Fees Structure');
+			$titleData = array('title' => 'Regular Course Details');
 			$this->load->view('header',$titleData);
 			$course_group_list = $this->Common_model->get_record('course_group','*',array('status !=' => 'D','admission_permission'=>'Y'));
 			$data = array('course_group' => $course_group_list);
