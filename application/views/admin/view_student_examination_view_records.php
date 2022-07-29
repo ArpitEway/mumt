@@ -27,7 +27,7 @@
                     <div class="row py-2">
                         <label class="col-sm-4 text-heading">Roll No</label>
                         <div class="col-sm-8 text-value">
-                            <?php echo $student->roll_no; ?>
+                            <?php echo $student->roll_number; ?>
                         </div>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
  					<div class="row py-2">
  						<label class="col-sm-4 text-heading">Exam form</label>
  						<div class="col-sm-8 text-value">
- 							<?php echo $student->new_exam_form;  ?>
+ 							<?php echo $student->exam_form;  ?>
  						</div>
  					</div>
  				</div>
@@ -76,7 +76,8 @@
  					<div class="row py-4">
  						<label class="col-sm-2 text-heading">Course/Class</label>
  						<div class="col-sm-8 text-value">
- 						<?php echo $student->course_name;  ?> (	<?php echo $student->class_name; ?>)
+
+ 						<?php echo $student->course_name;  ?> (	<?php echo  $this->Common_model->getClassNameByClassId($student->old_class_id); ?>)
  						</div>
  					</div>
  				</div>
