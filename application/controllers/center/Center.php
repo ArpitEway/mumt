@@ -1091,7 +1091,7 @@ class Center extends CI_Controller {
 	}
 
 	public function submit_papers(){
-		$student_id = $_POST['student_id'];
+		$student_id=$this->Common_model->encrypt_decrypt($_POST['student_id'],'decrypt');
 		$paper_id1 = $_POST['paper_id'];
 		$paper_id2 = $_POST['compulsary_paper_id'];
 		$paper_id= array_merge($paper_id1,$paper_id2);
