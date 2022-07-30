@@ -17,8 +17,8 @@
 		<tfoot>
 			<tr>
             <th>#</th>
-				<th>ICC Name </th>
-				<th>ICC Code </th>
+				<th>IC Name </th>
+				<th>IC Code </th>
 				<th>Exam Center Name</th>
 				<th>Exam Center Code</th>
 				<th>EC City</th>
