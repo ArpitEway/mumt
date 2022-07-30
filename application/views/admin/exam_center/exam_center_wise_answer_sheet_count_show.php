@@ -1,4 +1,11 @@
+<style type="text/css">
+    .break{
+        page-break-before: always;
+    }
+</style>
 <?php 
+
+$page_break_count = 0;
     foreach($exam_centers as $row)
     {
         
@@ -17,13 +24,15 @@
           
    //  if($count[0]->cnt >0)
     //  {
+         $page_break = ($page_break_count%6==0) ? 'break' : '';
+         $page_break_count++;
      
 ?> 
  <br>
 
   <br>
 
-<table width="80%" border="1" align="center">
+<table width="80%" border="1" align="center" class="<?php echo $page_break; ?>">
 
    <tbody>
        <tr>
