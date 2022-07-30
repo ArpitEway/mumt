@@ -3,7 +3,8 @@
 <!--begin::Head-->
 <head><base href="">
 	<meta charset="utf-8" />
-	<title>MMYVV || Admin</title>
+	<?php  $this->uri->segment(1); ?>
+	<title>MMYVV || Admin  <?php if($this->uri->segment(1)=="ExamController") echo $title; ?> </title>
 	<meta name="description" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 	<!--begin::Fonts-->

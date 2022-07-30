@@ -1116,6 +1116,369 @@ class ExamController extends CI_Controller {
 		}
 	}
 
+	public function exam_center($param1 = '', $param2 = '', $param3 = '')
+	{
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+			if($param1 == 'create'){
+				if ($this->input->method() == "post") 
+					{
+						$arr['examcentercode']    = $this->input->post("examcentercode");
+						$arr['schoolcollegename']    = $this->input->post("schoolcollegename");
+						$arr['examcenteraddress']    = $this->input->post("examcenteraddress");
+						$arr['city']    = $this->input->post("city");
+						$arr['district']    = $this->input->post("district");
+						$arr['pincode']    = $this->input->post("pin_code");
+						$arr['superintendent']    = $this->input->post("superintendent");
+						$arr['phonenumber']    = $this->input->post("phonenumber");
+						$arr['bankaccountnumber']    = $this->input->post("bankaccountnumber");
+						$arr['bankname']    = $this->input->post("bankname");
+						$arr['bankbranch']    = $this->input->post("bankbranch");
+						$arr['bankisfc']    = $this->input->post("bankisfc");
+						$arr['csname']    = $this->input->post("csname");
+						$arr['csnumber_1']    = $this->input->post("csnumber_1");
+						$arr['csnumber_2']    = $this->input->post("csnumber_2");
+					}
+				
+				//$response = $this->admin_model->create_exam_center();
+				$response=$this->Common_model->insertAll('exam_center',$arr);
+				$this->session->set_flashdata('ajax_flash_message','Exam Center Successfully Added');
+				redirect(base_url().'ExamController/exam_center');
+
+			}
+			if($param1 == 'update'){ 
+				if ($this->input->method() == "post") 
+					{
+						$arr['examcentercode']    = $this->input->post("examcentercode");
+						$arr['schoolcollegename']    = $this->input->post("schoolcollegename");
+						$arr['examcenteraddress']    = $this->input->post("examcenteraddress");
+						$arr['city']    = $this->input->post("city");
+						$arr['district']    = $this->input->post("district");
+						$arr['pincode']    = $this->input->post("pin_code");
+						$arr['superintendent']    = $this->input->post("superintendent");
+						$arr['phonenumber']    = $this->input->post("phonenumber");
+						$arr['bankaccountnumber']    = $this->input->post("bankaccountnumber");
+						$arr['bankname']    = $this->input->post("bankname");
+						$arr['bankbranch']    = $this->input->post("bankbranch");
+						$arr['bankisfc']    = $this->input->post("bankisfc");
+						$arr['csname']    = $this->input->post("csname");
+						$arr['csnumber_1']    = $this->input->post("csnumber_1");
+						$arr['csnumber_2']    = $this->input->post("csnumber_2");
+						$response=$this->Common_model->updateRecordByConditions('exam_center',array('id'=>$param2),$arr);
+					}
+				//$response = $this->admin_model->course_update($param2);
+				$this->session->set_flashdata('ajax_flash_message','Exam Center Successfully Updated');
+				redirect(base_url().'ExamController/exam_center');
+			}
+
+			if($param1 == 'delete'){
+				 $id    = $param2;
+				 $response=$this->Common_model->deleteById('exam_center','id',$id);
+				//$response = $this->admin_model->exam_center_delete($param2);
+				$this->session->set_flashdata('ajax_flash_message','Course Successfully Deleted');
+				redirect(base_url().'ExamController/exam_center');
+			}
+
+			if(empty($param1) ){
+				$data = array();
+				$data['title'] = "Exam Center";
+				$csrf = array(
+					'name_csrf' => $this->security->get_csrf_token_name(),
+					'hash_csrf' => $this->security->get_csrf_hash()
+				);
+				$this->load->view('header',$data);
+				$this->load->view('admin/examController/exam_center',$csrf);
+				$this->load->view('footer');
+			}    
+
+
+		}
+
+	}
+
+	public function allot_exam_center(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+			$titleData = array('title' => 'Allot Exam Center'); 
+			$this->load->view('header',$titleData);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();	
+			$data['exam_center'] = $this->Common_model->get_record('exam_center','id, examcentercode,schoolcollegename ');
+			$where = "id not in (select distinct(center_id) from allot_exam_center )";
+			$data['centers'] = $this->Common_model->get_record('center','*',$where);
+			$this->load->view('admin/exam_center/allot_exam_center',$data);
+			$this->load->view('footer');
+		}
+	}
+	public function allot_exam_center_sub(){
+		if(($_POST['action1']=='allot_exam_center') && (!empty($_POST['exam_center'])))
+		{
+			$exam_center=$this->input->post('exam_center');	
+			$exam_centers = $this->db->get_where('exam_center', array('id' => $exam_center))->result_array();
+			foreach($_POST['center_id'] as $center_id){
+				
+				$arr['examcentercode']= $exam_centers[0]['examcentercode'];
+				$arr['center_id']=$center_id;
+				$arr['exam_center_id']=$exam_center;
+				$response=$this->Common_model->insertAll('allot_exam_center',$arr);
+				//echo $this->db->last_query();
+			}
+				
+				
+		}		
+		redirect(base_url().'admin/ExamController/allot_exam_center');	
+	}
+
+	public function allotted_exam_center($param1 = '',$param2 = ''){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+			if($param1 == 'delete'){
+				$id    = $param2;
+				$response=$this->Common_model->deleteById('allot_exam_center','id',$id);
+			   //$response = $this->admin_model->exam_center_delete($param2);
+			   $this->session->set_flashdata('ajax_flash_message','Course Successfully Deleted');
+			   redirect(base_url().'ExamController/allotted_exam_center');
+		   }
+		   if(empty($param1) ){
+			$titleData = array('title' => 'List of Allotted Exam Center'); 
+			$this->load->view('header',$titleData);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$this->db->select('allot_exam_center.id,center.center_code,center.center_name,exam_center.examcentercode,exam_center.schoolcollegename,exam_center.city,exam_center.examcenteraddress');
+			$this->db->from('allot_exam_center');
+			$this->db->join('exam_center', 'allot_exam_center.exam_center_id  = exam_center.id');
+			$this->db->join('center', 'allot_exam_center.center_id  = center.id');
+			$data['exam_center_allotted'] = $this->db->get()->result();
+			
+			$this->load->view('admin/exam_center/allotted_exam_center',$data);
+			$this->load->view('footer');
+		   }
+		}	
+	}
+	//Single Paper
+	public function testid_wise_student_count(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+			$titleData = array('title' => 'Test Id wise Student Count'); 
+			$this->load->view('header',$titleData);
+			$this->db->select('*,COUNT(id) as tot');
+			$this->db->from('paper_master');
+			$this->db->where('type','Theory');
+			$this->db->where('test_id!=','');
+			$this->db->group_by('test_id ');
+			$this->db->having(' tot=1');
+			$this->db->order_by("test_id", "asc");
+			$data['list'] = $this->db->get()->result();
+			$data['multiple']=false;
+			$this->load->view('admin/exam_center/testid_wise_student',$data);
+			$this->load->view('footer');
+		}
+	}
+	//Multiple Paper
+	public function testid_wise_student_count_multiple(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+			$titleData = array('title' => 'Test Id wise Student Count (Multiple Test ID)'); 
+			$this->load->view('header',$titleData);
+			$this->db->select('*,COUNT(id) as tot');
+			$this->db->from('paper_master');
+			$this->db->where('type','Theory');
+			$this->db->where('test_id!=','');
+			$this->db->group_by('test_id ');
+			$this->db->having(' tot>1');
+			$this->db->order_by("test_id", "asc");
+			$data['list'] = $this->db->get()->result();//echo $this->db->last_query();
+			$data['multiple']=true;
+			$this->load->view('admin/exam_center/testid_wise_student',$data);
+			$this->load->view('footer');
+		}
+	}
+	//Envelope cover Single Test ID 
+	public function envelope_cover_page_single_testid(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+			$titleData = array('title' => 'Envelope Cover Page Single Testid'); 
+			$this->load->view('header',$titleData);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$this->db->select('*,COUNT(id) as tot');
+			$this->db->from('paper_master');
+			$this->db->where('type','Theory');
+			$this->db->where('test_id!=','');
+			$this->db->group_by('test_id ');
+			$this->db->having(' tot=1');
+			$this->db->order_by("test_id", "asc");
+			$data['list'] = $this->db->get()->result();
+			$data['multiple']=0;
+			$this->load->view('admin/exam_center/envelope_cover_page',$data);
+			$this->load->view('footer');
+		}
+	}	
+	
+	public function getEnvelope(){
+		$test_id = $this->input->post('test_id');
+		$multiple = $this->input->post('multiple');
+		$data['examSession'] = 'June 2022';
+		$this->db->select('*');
+		$this->db->from('exam_center');
+		$this->db->join('allot_exam_center', 'allot_exam_center.exam_center_id = exam_center.id');
+		$this->db->group_by('exam_center.examcentercode');
+		$this->db->order_by("exam_center.examcentercode", "asc");
+		$data['elist'] = $this->db->get()->result();//echo $this->db->last_query(); die;
+		if($multiple){
+			
+			$data['paperData'] =$paperData = $this->Common_model->get_record('paper_master','*',"test_id='".$test_id."'");
+			echo $this->load->view('admin/exam_center/envelope_cover_page_multiple',$data, TRUE);
+		}
+		else{
+			$data['paperData'] =$classData = $this->Common_model->get_record('paper_master','*',"test_id='".$test_id."'");
+		
+			
+			//echo $this->db->last_query(); die;
+			$this->db->select('*');
+			$this->db->from('class_master');
+			$this->db->where('class_master.id',$classData[0]['class_id']);
+			$data['classMaster'] = $this->db->get()->result();
+			
+			echo $this->load->view('admin/exam_center/envelope_cover_page_single',$data, TRUE);
+		}
+			
+	}
+
+	//Envelope cover Multiple Test ID 
+	public function envelope_cover_page_multiple_testid(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+			$titleData = array('title' => 'Envelope Cover Page Single Testid'); 
+			$this->load->view('header',$titleData);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$this->db->select('*,COUNT(id) as tot');
+			$this->db->from('paper_master');
+			$this->db->where('type','Theory');
+			$this->db->where('test_id!=','');
+			$this->db->group_by('test_id ');
+			$this->db->having(' tot>1');
+			$this->db->order_by("test_id", "asc");
+			$data['list'] = $this->db->get()->result();
+			$data['multiple']=true;
+			$this->load->view('admin/exam_center/envelope_cover_page',$data);
+			$this->load->view('footer');
+		}
+	}	
+
+	//Exam Center Wise Answer Sheet Count
+	public function exam_center_wise_answer_sheet_count(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+			$titleData = array('title' => 'Exam Center Wise Answer Sheet Count'); 
+			$this->load->view('header',$titleData);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$this->db->select('*');
+			$this->db->from('exam_center');
+			
+			$data['exam_centers'] = $this->db->get()->result();
+
+			$this->load->view('admin/exam_center/exam_center_wise_answer_sheet',$data);
+			$this->load->view('footer');
+		}
+	}	
+
+	public function get_exam_center_wise_answer_sheet_count(){
+		$exam_center = $this->input->post('exam_center');
+		$this->db->select('*');
+		$this->db->from('exam_center');
+		if($exam_center!="All")
+		$this->db->where('id',$exam_center);	
+		$data['exam_centers'] = $this->db->get()->result();
+		echo $this->load->view('admin/exam_center/exam_center_wise_answer_sheet_count_show',$data, TRUE);
+	}
+
+	//Exam Center Wise Paper Count by Date & Shift
+	public function exam_center_wise_paper_count(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+			$titleData = array('title' => 'Paper Count By Date'); 
+			$this->load->view('header',$titleData);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$this->db->select('*');
+			$this->db->from('exam_center');
+			$data['exam_centers'] = $this->db->get()->result();
+			$this->db->select('*');
+			$this->db->from('paper_master');
+			$this->db->where('exam_date!=',"");	
+			$this->db->group_by('exam_date');
+			$data['examDate'] = $this->db->get()->result();
+
+			$this->load->view('admin/exam_center/exam_center_wise_paper',$data);
+			$this->load->view('footer');
+		}
+	}
+	
+	public function get_exam_center_wise_paper_count(){
+		$exam_center = $this->input->post('exam_center');
+		$exam_date = $this->input->post('exam_date');
+		$shift = $this->input->post('shift');
+		
+		$where= array(
+            'a.exam_center_id'=>$exam_center,
+         );
+         $tag='*';
+         $table="exam_center  as e";
+         $join_table='allot_exam_center as a';
+         $join_on='a.exam_center_id = e.id';
+         $data['exam_centers']= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
+
+		$this->db->select('DISTINCT(paper_master.id),exam_date,exam_shift,exam_day,paper_master.paper_code,paper_master.paper_name,paper_master.course_group_id,paper_master.class_id');
+		$this->db->from('paper_master');
+		$this->db->join('new_exam_form', 'new_exam_form.paper_id = paper_master.id');
+		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
+		$this->db->where('student.new_exam_form!=','D' );
+		$this->db->where('paper_master.exam_date!=',"");
+		if($exam_date)	{
+			$edate=date("Y-m-d", strtotime($exam_date));
+			$this->db->where('paper_master.exam_date',$edate);
+		}
+			
+		if($shift)	
+			$this->db->where('paper_master.exam_shift',$shift);
+		$this->db->where('student.exam_center_id', $exam_center );
+		$this->db->group_by('paper_master.exam_date');
+		//$this->db->order_by('paper_master.exam_date');
+		$data['papers'] = $this->db->get()->result();
+		
+		echo $this->load->view('admin/exam_center/exam_center_paper_count_show',$data, TRUE);
+	}
+
 	public function paper()
 	{
 
