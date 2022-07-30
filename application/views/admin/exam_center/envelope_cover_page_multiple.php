@@ -13,12 +13,12 @@ foreach($elist as $row)
             's.exam_center_id'=>$row->exam_center_id,
             's.class_id'=>$paper['class_id'],
             's.course_group_id'=>$paper['course_group_id'],
-            's.class_id'=>'e.class_id',
+           
         );
         $tag='count(*) as cnt';
         $table="new_exam_form  as e";
         $join_table='student as s';
-        $join_on='e.student_id = s.student_id';
+        $join_on='e.student_id = s.student_id AND s.class_id = e.class_id';
           $count= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
         //  echo "<br>1 ".$count[0]->cnt;
          // echo $this->db->last_query();

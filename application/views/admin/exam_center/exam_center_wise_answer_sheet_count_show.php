@@ -7,16 +7,16 @@
             's.new_exam_form!='=>'D' ,
             's.examcentercode'=>$row->examcentercode,
             's.exam_center_id'=>$row->id,
-            "s.class_id"=>"e.class_id",
+           
          );
          $tag='count(*) as cnt';
          $table="new_exam_form  as e";
          $join_table='student as s';
-         $join_on='e.student_id = s.student_id';
+         $join_on='e.student_id = s.student_id AND s.class_id = e.class_id';
          $count= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
          echo $this->db->last_query();
       
-       
+      
    //  if($count[0]->cnt >0)
     //  {
      
