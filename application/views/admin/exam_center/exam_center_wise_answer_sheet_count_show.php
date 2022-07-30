@@ -14,6 +14,7 @@
          $join_table='student as s';
          $join_on='e.student_id = s.student_id';
          $count= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
+         echo $this->db->last_query();
       
        
    //  if($count[0]->cnt >0)
