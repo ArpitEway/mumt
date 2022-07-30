@@ -1208,9 +1208,10 @@ class ExamController extends CI_Controller {
 			$titleData = array('title' => 'Allot Center'); 
 			$this->load->view('header',$titleData);
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
-			$data['hash_csrf'] = $this->security->get_csrf_hash();	
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$data['exam_center'] = $this->Common_model->get_record('exam_center','id, examcentercode,schoolcollegename ');
 			$where = "id not in (select distinct(center_id) from allot_exam_center )";
+			$this->db->order_by('id');
 			$data['centers'] = $this->Common_model->get_record('center','*',$where);
 			$this->load->view('admin/exam_center/allot_exam_center',$data);
 			$this->load->view('footer');
@@ -1257,6 +1258,7 @@ class ExamController extends CI_Controller {
 			$this->db->from('allot_exam_center');
 			$this->db->join('exam_center', 'allot_exam_center.exam_center_id  = exam_center.id');
 			$this->db->join('center', 'allot_exam_center.center_id  = center.id');
+			$this->db->order_by('center.id');
 			$data['exam_center_allotted'] = $this->db->get()->result();
 			
 			$this->load->view('admin/exam_center/allotted_exam_center',$data);

@@ -1,12 +1,12 @@
 
 <div class=" mt-3">
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-<table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
+<table id="kt_datatable" class="table table-striped" width="100%" >
 		<thead>
 			<tr>
 				<th>#</th>
-				<th>ICC Name </th>
-				<th>ICC Code </th>
+				<th>IC Name </th>
+				<th>IC Code </th>
 				<th>Exam Center Name</th>
 				<th>Exam Center Code</th>
 				<th>EC City</th>
