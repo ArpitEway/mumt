@@ -18,7 +18,7 @@
 				<th>Center Supervisor Name</th>
 				<th>Center Supervisor Number-1</th>
 				<th>Center Supervisor Number-2</th>
-				<th>Options</th>
+				<!--<th>Options</th>-->
 			</tr>
 		</thead>
 		<tfoot>
@@ -34,7 +34,7 @@
 				<th>Center Supervisor Name</th>
 				<th>Center Supervisor Number-1</th>
 				<th>Center Supervisor Number-2</th>
-				<th>Options</th>
+				<!--<th>Options</th>-->
 			</tr>
 			</tfoot>
 		<tbody>
@@ -57,6 +57,7 @@
 						<td><?php echo $examCenter['exam_fees']; ?></td>
 						<td><?php echo $examCenter['csnumber_1']; ?></td>
 						<td><?php echo $examCenter['csnumber_2']; ?></td>
+						<!--
                 	<td>
                 	<div style="display: inline-flex;">
 					
@@ -65,6 +66,7 @@
                 	</div>	
 
                     </td>
+			-->
 					</tr>
 				
 			
