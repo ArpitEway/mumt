@@ -41,6 +41,7 @@ class Preexam extends CI_Controller {
 					'payment_status' => 'Y',
 					'temp_exam_form' => "N",
 		);
+		$this->db->order_by('id');
 		$papers = $this->Common_model->get_record('paper_master','*','class_id='.$class_id);
 		$students = $this->Common_model->get_record('student','*',$where);
 		foreach ($students as $student) {
@@ -56,6 +57,7 @@ class Preexam extends CI_Controller {
 				$data['paper_code'] = $paper['paper_code'];
 				$data['paper_type'] = $paper['type'];
 				$data['paper_order'] = $paper['paper_no'];
+				$data['sub_group_id'] = $paper['sub_group_id'];
 				$this->Common_model->insertAll('new_exam_form',$data);
 			echo $this->db->last_query().'<br>';
 			}
@@ -173,6 +175,22 @@ class Preexam extends CI_Controller {
 			}
 		}
 	}	
+	// Update Test ID in Paper Master from paper_testid_relation table
+	public function update_testid_from_relation_table(){
+		echo "Update Test ID in Paper Master";
+		$this->db->select('*');
+        $this->db->from('paper_testid_relation');
+		$rows=$this->db->get()->result();
+		$i=1;
+		foreach($rows as $row){
+
+			echo "<br> ".$i." ".$row->paper_id ." ". $row->paper_code ." ". $row->test_id;
+			$data  = array('test_id'=>$row->test_id ,);
+            $where = array('id'=>$row->paper_id,'paper_code'=> $row->paper_code, );
+            $update =$this->Common_model->updateRecordByConditions('paper_master',$where,$data);
+			$i++;
+		}
+	}
 }
 
 ?>

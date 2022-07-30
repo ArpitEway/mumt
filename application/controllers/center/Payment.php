@@ -164,7 +164,9 @@ class Payment extends CI_Controller {
 				"txnId" => $txnid,
 				"admission_type" =>$udf2,
 			);
-			$where = 'student_id='.$student_id.' and fees_head="'.$productinfo.'"';
+			$student = $this->Common_model->getRecordById('student','student_id',$student_id);
+
+			$where = 'student_id='.$student_id.' and fees_head="'.$productinfo.'" and class_id='.$student->class_id;
 			$txnData = $this->Common_model->get_record('online_payment_transaction','*',$where);
 
 			if($productinfo == 'Admission Fees'){
@@ -173,11 +175,10 @@ class Payment extends CI_Controller {
 				$txnid = $txnData[0]['id'];
 			}elseif($productinfo == 'Exam Fees'){
 				if(count($txnData)>0){
+					$response["exam_session"] = $udf3;
 					$this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$response);
 					$txnid = $txnData[0]['id'];
 				}else{
-
-				$student = $this->Common_model->getRecordById('student','student_id',$student_id);
 				$response['student_id'] = $student_id;
 				$response['fees_head'] = $productinfo;
 				$response['course_group_id'] = $student->course_group_id;
@@ -185,6 +186,7 @@ class Payment extends CI_Controller {
 				$response['center_id'] = $student->center_id;
 				$response['student_name'] = $student->name;
 				$response['admission_type'] = $udf2;
+				$response["exam_session"] = $udf3;
 
 				$txnid = $this->Common_model->insertAll('online_payment_transaction',$response);
 				}
@@ -254,10 +256,18 @@ class Payment extends CI_Controller {
 		$data['student'] = $student;
 		$data['url'] = 'paynow';
 		$data['paymentType'] = 'Exam Fees';
-		if($student['demo']=='Y'){
-			$data['txnAmt'] = $fees[0]->exam_fees;
+		if ($student['university_mode']=='REG') {
+			if($student['demo']=='Y'){
+				$data['txnAmt'] = $fees[0]->exam_fees;
+			}else{
+				$data['txnAmt'] = $fees[0]->program_fees+$fees[0]->exam_fees;
+			}
 		}else{
-			$data['txnAmt'] = $fees[0]->program_fees+$fees[0]->exam_fees;
+			if($student['demo']=='Y'){
+				$data['txnAmt'] = $fees[0]->p_exam_fees;
+			}else{
+				$data['txnAmt'] = $fees[0]->p_program_fees+$fees[0]->p_exam_fees;
+			}
 		}
 		
 		$this->load->view('Centers/header',$titleData);
@@ -274,20 +284,25 @@ class Payment extends CI_Controller {
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		if($student_id!=''){
 			$student = $this->Common_model->student_info($student_id);
-			if($student['university_mode']=='REG'){
-				$mode = "regular";
-			}else{
-				$mode = "private";
-			}
 			$where = array(
 				'session' =>$student['session'],
 				'course_group_id' => $student['course_group_id'],
 			);
 			$fees = $this->Common_model->getRecordByWhere('course',$where);
-			if($student['demo']=='Y'){
-				$txnAmt= $fees[0]->exam_fees;
+			if ($student['university_mode']=='REG') {
+				$mode = "regular";
+				if($student['demo']=='Y'){
+					$txnAmt = $fees[0]->exam_fees;
+				}else{
+					$txnAmt = $fees[0]->program_fees+$fees[0]->exam_fees;
+				}
 			}else{
-				$txnAmt=$fees[0]->program_fees+$fees[0]->exam_fees;
+				$mode = "private";
+				if($student['demo']=='Y'){
+					$txnAmt = $fees[0]->p_exam_fees;
+				}else{
+					$txnAmt = $fees[0]->p_program_fees+$fees[0]->p_exam_fees;
+				}
 			}
 			if($student['new_exam_form']=='Y'){
 				$this->session->set_flashdata('warning','Payment Already Submitted');
@@ -323,7 +338,7 @@ class Payment extends CI_Controller {
 			$posted['zipcode'] = $student['p_pin_code'];
 			$posted['udf1'] = $student_id;
 			$posted['udf2'] = $mode ;
-			$posted['udf3'] = "Dec 2021";
+			$posted['udf3'] = "June 2022";
 			$posted['udf4'] = $student["center_id"].' / '.$student['class_id'];
 			$posted['udf5'] = $student["name"]."/".$student["f_h_name"];
 			$hash = '';

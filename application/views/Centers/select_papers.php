@@ -1,4 +1,3 @@
-
 <style>
 	.form-block {
 		background: hsl(228deg 100% 99%);
@@ -182,6 +181,7 @@
 	</div>
 	<form>
 		<input type="hidden"  name="student_id" id="student_id" value="<?php echo $student['student_id']  ?>">
+		<input type="hidden"  name="class_id" id="class_id" value="<?php echo $student['class_id']  ?>">
         <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
         <input type="hidden"  name="student_id" id="student_id_decript"  value="<?php echo $this->Common_model->encrypt_decrypt($student['student_id']);  ?>">
 

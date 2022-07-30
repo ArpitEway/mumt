@@ -1250,6 +1250,28 @@ class Admins extends CI_Controller {
 			echo $this->load->view('template/getclass',$data,true);
 		}
 
+		public function getClassByCourseInAdmission(){
+			$course = $this->input->post('course_group_id');
+			
+			$student_mode = $this->input->post('mode');
+			$this->db->select('class_master.*');
+			$this->db->from('class_master');
+			$this->db->join('course_group', 'class_master.course_group_id = course_group.id');
+			if($student_mode=="private" || $student_mode=="PVT"){
+				$this->db->where('course_group.private_mode=class_master.mode');
+			}else{
+				$this->db->where('class_master.mode=course_group.mode');
+			}
+			$this->db->where('class_master.admission_permission','Y');
+			$this->db->where('course_group_id',$course);
+			$class_list = $this->db->get()->result_array();
+			$data = array(
+				'class_list' => $class_list,
+			);
+			
+			echo $this->load->view('template/getclass',$data,true);
+		}
+
 		public function add_center_menu_heading($param1 = '', $param2 = '')
 		{
 			if(!$this->session->has_userdata('adminData')){
@@ -1801,17 +1823,14 @@ public function getStudentData()
 	{
 		$data = $row = array();
 		$where = "status=   'Y' ";
-		
 		$column_order = array(null,'center_code','center_name','contactpersonname','mobile_no_1');
 		$column_search = array('center_code','center_name','contactpersonname','mobile_no_1');
-
 		$DataTableArray = array(
 			'column_order' => $column_order,
 			'column_search' => $column_search,
 			'where' => $where,
 			'table' => 'center'
 		);
-
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
 		foreach($tableData as $result){
@@ -1819,20 +1838,24 @@ public function getStudentData()
 			//$btn ='<a class="btn btn-primary"  href="'.'https://center.mmyvvonline.com/center/loginAs/'.$center_code.'" target="_blank" >Log As</a>' ;
 			$centerURL=str_replace("admin","center",base_url());
 			$btn ='<a class="btn btn-primary"  href="'.$centerURL.'/center/loginAs/'.$center_code.'" target="_blank" >Log As</a>' ;
+            $status = $result->old_session_permission;	
+				if($status == 'Y')
+				{
+				$permission_btn = '<input type="button" name="update_permission" data-id='.$result->id.' class="btn btn-success permission_checks" value="Yes">';
+				}else{
+				$permission_btn = '<input type="button" name="update_permission" data-id='.$result->id.' class="btn btn-danger permission_checks" value="No">';
+				}
 			$i++;
-			$data[] = array($i,$result->id, $result->center_code, $result->center_name, $result->contactpersonname,$result->mobile_no_1,$btn);
-		}
-		$output = array(
+			$data[] = array($i,$result->id, $result->center_code, $result->center_name, $result->contactpersonname,$result->mobile_no_1,$btn,$permission_btn);
+	     	}
+		  $output = array(
 			"draw" => $_POST['draw'],
 			"recordsTotal" => $this->Datatable_join_model->countAll('center',$where),
 			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
 			"data" => $data,
 		);
-
 		// Output to JSON format
-		echo json_encode($output);
-
-		
+		echo json_encode($output);	
 	}
 
 	public function editForm($student_id = ""){
@@ -1852,13 +1875,11 @@ public function getStudentData()
 			'state_list' => $state_list,
 			'district_list' => $district_list,
 			'course_group_list' => $course_group_list,
-			'session' => 'July 2021',
 			'eligibility_list' => $eligibility_list,
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 			'student_detail' => $this->db->get_where('student', array("student_id" => $student_id))->row(),
 			'student_data'  => $this->db->get_where('student_data', array("student_id" => $student_id))->row()
-
 		);
 
 
@@ -2621,7 +2642,11 @@ public function update_exam_datewise_permission(){
 		$center_id = $student_details[0]->center_id;
 		$course_group_id = $student_details[0]->course_group_id;
 		$remark = '';
-		$session = $student_details[0]->session;
+		if($Fess_head == 'Admission Fees'){
+	     $session = $student_details[0]->session;
+		}else{
+			$session = 'June 2022';
+		}	
 		$class_id = $student_details[0]->class_id;
 		$name = $student_details[0]->name;
 
@@ -3148,7 +3173,7 @@ public function update_exam_datewise_permission(){
 		$this->db->group_by('new_exam_form.student_id');
 		$this->db->Where('new_exam_form','Y');
 		$this->db->Where('paper_type','theory');
-		$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,195,197,203,211,213,227,158,166,167,172,205)');
+		//$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,195,197,203,211,213,227,158,166,167,172,205)');
         	//$this->db->Where('result_show','Y');
 		$this->db->where_in('new_exam_form.int_marks',array('ABS','N'));
 		$data['students'] = $this->db->get()->result();//echo $this->db->last_query(); die;
@@ -3266,7 +3291,7 @@ public function update_exam_datewise_permission(){
 		$where = array('paper_type!='=>'theory','new_exam_form'=>'Y');
 		$this->db->Where($where);
 		$this->db->where_in('new_exam_form.p_marks',array('ABS','N'));
-	    	$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,195,197,203,211,213,227,158,166,167,172,205)');
+	    	//$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,195,197,203,211,213,227,158,166,167,172,205)');
 		$this->db->Where('(project="Y" or practical = "Y")');
 		$data['students'] = $this->db->get()->result();
 		 // $this->Common_model->last_query();
@@ -3693,4 +3718,190 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
+	public function allot_papers()
+	{
+		$groups = $_POST['group'];
+		$sub_group = $_POST['sub_group'];
+		$papers = $_POST['papers'];
+		$i = 0;
+		foreach ($groups as $group) {
+			$paper = $this->Common_model->getRecordById('paper_master','id',$papers[$i]);
+			$group_paper_data = array(
+				'group_id' => $group,
+				'paper_name' => $paper->paper_name,
+				'paper_code' => $paper->paper_code,
+				'paper_id' => $paper->id,
+				'sub_group_id' => $sub_group[$i]
+			);
+				$this->Common_model->insertAll('group_paper',$group_paper_data);
+				$paper_data = array('sub_group_id' => $paper->sub_group_id.','.$sub_group[$i]);
+				$where = array('id' => $papers[$i]);
+				$this->Common_model->updateRecordByConditions('paper_master',$where,$paper_data);
+			$i++;
+		}
+
+		redirect(base_url('admin/admins/classes'));
+	}
+
+	public function check_student_for_session_change_report(){
+		$dt = array();
+		$dt['title'] = "Search Student For Session change";
+		$this->load->view('header',$dt);
+		$this->db->order_by('id', 'Asc');
+		$dt['name_csrf'] = $this->security->get_csrf_token_name();
+		$dt['hash_csrf'] = $this->security->get_csrf_hash();
+		$dt['sessions'] = $this->db->get_where('session', array())->result_array();
+		$this->load->view('admin/show_course_student_for_session_change',$dt);
+		$this->load->view('footer');
+	}
+
+	public function get_student_for_session_change_report()
+		{   
+
+			if ($this->input->method() == "post") 
+			{
+				$course_group_id = 0;
+				$data = array();
+				$dt   = array();
+				$count_filter='class_id';//array("course_group_id", "class_id"); //
+				
+				$approved 		  = $this->input->post("approved");
+				$data['payment']= $payment 		  = $this->input->post("payment");
+				
+				$data['document_upload']=$document_upload  = $this->input->post("document_upload");
+				$filter  		  = $this->input->post("filter");
+				$data['session']  =$session 		  = $this->input->post("session");
+
+				if($session){
+					$sessionRow = $this->db->get_where('session', array('id'=>$session))->result_array();
+					$this->db->where('session', $sessionRow[0]['session'] );
+					 
+					
+				}
+				
+				$this->db->select('count(*) as cnt,course_name,class_name,class_id,course_group_id');
+				$this->db->from('student');
+				
+				if($payment && $payment!="all"){
+					$this->db->where('payment_status',$payment);
+				}
+				if($document_upload && $document_upload!="all"){
+					$this->db->where('document_uploaded ',$document_upload);
+				}
+				
+					$this->db->where('approved','');
+					$this->db->group_by('class_id');
+				
+				
+				$data['course_count'] = $this->db->get()->result_array();
+				
+				//echo $this->db->last_query();
+				$dt = $this->load->view('admin/getStudentForSessionChangeReport',$data,true);
+
+				echo json_encode(array(
+					"status" => true,
+					"data" => $dt
+				));
+
+
+
+			}
+		}
+
+	public function get_student_list_for_session_change_report()
+	{   
+		$dat = array();
+		$dat['title'] = " Student For Session change";
+		$this->load->view('header',$dat);
+	
+			$count_filter='class_id';
+			$data = array();
+			$dt   = array();
+			$course_group_id  = $this->uri->segment(5);
+			$class_id  		  = $this->uri->segment(6);
+			$approved 		  = '';
+			$payment 		  = $this->uri->segment(3);
+			$document_upload  = $this->uri->segment(4);
+			$filter  		  = "list";
+			$session 		  = $this->uri->segment(2);
+			
+			if($session){
+				$sessionRow = $this->db->get_where('session', array('id'=>$session))->result_array();
+				$this->db->where('session', $sessionRow[0]['session']);
+
+			}
+			$this->db->select('*');
+			$this->db->from('student');
+			
+			if($payment && $payment!="all"){
+				$this->db->where('payment_status',$payment);
+			}
+			if($document_upload && $document_upload!="all"){
+				$this->db->where('document_uploaded ',$document_upload);
+			}
+			
+			if($course_group_id){
+				$this->db->where('course_group_id',$course_group_id);
+			}
+			if($class_id){
+				$this->db->where('class_id',$class_id);
+			}
+				$this->db->where('approved','');
+				//$this->db->group_by('class_id');
+			
+			
+			$data['students'] =  $this->db->get()->result_array();
+				
+			
+			//echo $this->db->last_query();
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$this->db->order_by('id', 'Desc');
+			
+			$data['sessions'] = $this->db->get_where('session', array())->result_array();
+			
+			$data['listSession'] = $session;
+			$this->load->view('admin/show_student_for_session_change',$data);
+			$this->load->view('footer');
+
+
+		}
+	
+	public function update_student_session()
+	{ 
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else{
+			if ($this->input->method() == "post") 
+			{
+				$session    = $this->input->post("session");
+				$students    = $this->input->post("students");
+				$studentArr=explode(',',$students);
+				$sessionRow = $this->db->get_where('session', array('id'=>$session))->result_array();
+				$sessionValue = $sessionRow[0]['session'] ;
+				
+				foreach($studentArr as $k=>$val){
+					$studentRow = $this->db->get_where('student', array('student_id'=>$val))->result_array();
+					$path = 'assets/student_image/'.$sessionValue.'/'.$studentRow[0]['photo'];
+					$prev_path = 'assets/student_image/'.$studentRow[0]['session'].'/'.$studentRow[0]['photo'];
+					$upload = rename($prev_path,$path); 
+					
+					$data = $this->Common_model->updateRecordByConditions("student",array("student_id" => $val,'approved'=>'' ),array("session" => $sessionValue ));
+				}
+			}
+			redirect(base_url('check_student_for_session_change_report'));
+		}	
+	}
+			
+	public function paper_test_id_list()
+	{	
+		$where = array('type' => 'theory');
+		$this->db->order_by('course_group_id,class_id','ASC');
+		$papers = $this->Common_model->getRecordByWhere('paper_master',$where);
+		$data = array('papers' => $papers);
+		$this->load->view('header');
+		$this->load->view('admin/paper_test_id_list',$data);
+		$this->load->view('footer');		
+	}
 }// class

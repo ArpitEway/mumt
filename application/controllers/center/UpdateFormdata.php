@@ -86,22 +86,33 @@ class updateFormdata extends CI_Controller {
 		
 		$this->db->trans_start();
         $student_id = html_escape($this->input->post('student_id'));
-        $this->db->where('student_id', $student_id);
-		$this->db->update('student', $data);
-		$path = 'assets/student_image/'.$session;
-
-		if(!file_exists($path)){
-			mkdir($path);
+		$course_permission= $this->Common_model->getRecordByWhere('course',array("session"=>$session,'course_group_id'=>$course_group_id ));
+		$session_permission= $this->Common_model->getRecordByWhere('session',array("session"=>$session));	
+		$mode = $this->Common_model->getRecordByWhere('student',array("student_id"=>$student_id ));	
+		if ($session!=$mode[0]->session) {
+			if(($mode[0]->university_mode=='REG' && $course_permission[0]->admission_permission_regular=='Y') ||  ($mode[0]->university_mode=='PVT' &&  $course_permission[0]->admission_permission_private=='Y'))
+			{
+				$path = 'assets/student_image/'.$session.'/'.$mode[0]->photo;
+				$prev_path = 'assets/student_image/'.$mode[0]->session.'/'.$mode[0]->photo;
+				$upload = rename($prev_path,$path);
+			}
+			else {
+				return false;
+			}
 		}
-		$upload = $this->do_upload('photo',$path,$student_id);
-		
-		if (isset($upload['file_name'])) {
-			$PhotoData = array('photo' => $upload['file_name']);
-			$where = array('student_id'=>$student_id);
-			$this->Common_model->updateRecordByConditions('student',$where,$PhotoData);
+		if (isset($_FILES['photo'])) {
+			$path = 'assets/student_image/'.$session;
+			$upload = $this->do_upload('photo',$path,$student_id);
+			if (isset($upload['file_name'])) {
+				$PhotoData = array('photo' => $upload['file_name']);
+				$where = array('student_id'=>$student_id);
+				$this->Common_model->updateRecordByConditions('student',$where,$PhotoData);
+			}
 		}
-
 		$studentData['student_id'] = $student_id;
+		$this->db->where('student_id', $student_id);
+		$this->db->update('student', $data);
+		
         $this->db->where('student_id', $student_id);
 		$this->db->update('student_data', $studentData);
 		

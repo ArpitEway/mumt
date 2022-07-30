@@ -846,6 +846,17 @@ class Common_Model extends CI_Model{
 		$this->db->where($where);  
 		$query = $this->db->get();
 		return $query->result();
+	}	
+	public function getSubGroupNameById($sub_group_id){
+		$this->db->select('sub_group_name');
+		$this->db->where('id='.$sub_group_id);
+		$qry= $this->db->get('sub_group');
+		$result = $qry->row();
+		if(isset($result->sub_group_name)){
+			return $result->sub_group_name;
+		}else{
+			return;
+		}
 	}
 }
 

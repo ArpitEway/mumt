@@ -1091,14 +1091,15 @@ class ExamController extends CI_Controller {
 			$radio_val = $this->input->post('radio_val');
 			if($text_val !=''){
 				if($text_val !='' && $radio_val == 'roll_no'){
-					$student = $this->Common_model->getRecordById('student','roll_no',$text_val);
+					$student = $this->Common_model->getRecordById('student','roll_number',$text_val);
 				}
 				else if($text_val !='' && $radio_val == 'enrollment_no'){
 					$student = $this->Common_model->getRecordById('student','enrollment_no',$text_val);
 				}else if($text_val !='' && $radio_val == 'student_id'){
 					$student = $this->Common_model->getRecordById('student','student_id',$text_val);
 				}  
-				$papers = $this->Common_model->getRecordByWhere('new_exam_form',array('student_id' =>$student->student_id, 'paper_type' => 'theory'));
+				
+				$papers = $this->Common_model->getRecordByWhere('new_exam_form',array('student_id' =>$student->student_id,'class_id' =>$student->old_class_id,'paper_type' => 'theory'));
 				$data = array(
 					'paper' => $papers,
 					'student' => $student,
@@ -1478,4 +1479,83 @@ class ExamController extends CI_Controller {
 		echo $this->load->view('admin/exam_center/exam_center_paper_count_show',$data, TRUE);
 	}
 
+	public function paper()
+	{
+
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url('admin'));
+			exit;
+		}	
+		$this->load->view('header',array('title'=>'Paper'));
+		$csrf = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
+		$this->load->view('admin/examController/paper',$csrf);
+		$this->load->view('footer');
+
+	}
+
+	public function get_papers_by_class_course()
+	{
+
+		if ($this->input->method() == "post") 
+		{
+			$class_id    = 0;
+			$class_id    = $this->input->post("class_id");
+			$course_group_id    = $this->input->post("course_group_id");
+			$where = array();
+			if($course_group_id!='All'){
+				$where = array('course_group_id' => $course_group_id);
+			}
+			if($class_id!='All'){
+				$where = array('class_id' => $class_id);
+			}
+			$papers = $this->db->get_where("paper_master",$where)->result_array();
+			$htmlData = array(
+				'papers' => $papers,
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash()
+			);
+			$data = $this->load->view('admin/examController/paper_details',$htmlData,true);
+			$status = true;
+			$msg    = "";
+		   }
+		echo json_encode(array(
+			"status" => $status,
+			"msg" => $msg,
+			"data" => $data
+		));
+	}
+
+	public function course_details_private(){
+
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+		}else{
+			$titleData = array('title' => 'Private Course Details');
+			$this->load->view('header',$titleData);
+			$course_group_list = $this->Common_model->get_record('course_group','*',array('status !=' => 'D' ,'admission_permission_pvt'=>'Y'));
+			$data = array('course_group' => $course_group_list);
+			$this->load->view('Centers/instruction_private',$data);
+			$this->load->view('footer');
+		}
+	  }
+
+
+	public function course_details_regular(){
+
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+		}else{
+			$titleData = array('title' => 'Regular Course Details');
+			$this->load->view('header',$titleData);
+			$course_group_list = $this->Common_model->get_record('course_group','*',array('status !=' => 'D','admission_permission'=>'Y'));
+			$data = array('course_group' => $course_group_list);
+			$this->load->view('Centers/instruction',$data);
+			$this->load->view('footer');
+		}
+	 }
+		
+	
 }// class

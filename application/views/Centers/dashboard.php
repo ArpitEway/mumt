@@ -186,17 +186,17 @@
 						<div>
 							<span class="nav-text">Internal Marks Submission</span>
 						</div>
-					</a>
+					</a>-->
 					<a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
 						<div>
-							<span class="nav-text">Exam Form Dec 2021</span>
+							<span class="nav-text">Exam Form June 2022</span>
 						</div>
-					</a> -->
-					<a class="border-0 custom-menu-item" href="<?=base_url('student_roll_no_list');?>">
+					</a> 
+				<!--	<a class="border-0 custom-menu-item" href="<?=base_url('student_roll_no_list');?>">
 						<div>
 							<span class="nav-text">Roll No List</span>
 						</div>
-					</a>
+					</a> -->
 					<a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
 						<div>
 							<span class="nav-text">Result</span>

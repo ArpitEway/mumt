@@ -208,19 +208,16 @@ function addMoreRows(frm){
 
 	var paper_count = $("#paper_count").val();
 	// console.log("RC"+rowCount);
-	
 	var papercode = $("#p_code").val();
 
 	paper_count++;
-
 	papercode = papercode+paper_count;
-	
 	rowCount++;
 
 	var field = '<div class=" form-group row paper_'+rowCount+' "><div class="form-group col-md-6"><label for="name">Paper name</label><input type="text" class="form-control" id="paper_name" name="paper_name[]" placeholder="Enter paper name"></div><div class="form-group col-md-6"><label for="code">Paper code</label><input type="text" class="form-control" id="paper_code" name="paper_code[]" value="'+papercode+'" placeholder="Enter paper code"></div><div class="form-group col-md-4"><label for="type">Type</label><select name="type[]" id="type" class="form-control" required ><option value="theory">Theory</option><option value="project">Project</option><option value="practical">Practical</option></select></div><div class="form-group col-md-4"><label for="ce">CE</label><select name="ce[]" id="ce" class="form-control add_ce" required ><option value="compulsory">Compulsory</option><option value="elective">Elective</option></select></div><div class="form-group col-md-4 add_div"></div><div class="form-group col-md-12" style="text-align:right;" ><br><button type="button" class="minus_btn" onclick="RemoveRow('+rowCount+');">Remove </button><input type="hidden" id="rowcount" value="1"><button  type="button" style="margin-left: 10px;"  class="plus_btn" onclick="addMoreRows(this.form);" >Add more</button></div></div></div>';
 	
 	console.log(rowCount);
-	$("#paper_count").val(rowCount);
+	$("#paper_count").val(paper_count);
 	$("#rowcount").val(rowCount);
 	$('#addedRows').append(field);
 }
