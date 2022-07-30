@@ -381,13 +381,13 @@ class Postexam extends CI_Controller {
         echo "update_stdent_allottment_exam_center<br>";
         $this->db->select('*');
         $this->db->from('student');
-        $this->db->where('exam_center_id','');
-        $this->db->where('examcentercode','');
+        $this->db->where('exam_center_id','0');
+        //$this->db->where('examcentercode','NU');
         $start=0;
 		//$start=($startlimit-1)*1000;
 		$this->db->limit(1000,$start);
         $rows=$this->db->get()->result();
-        echo $this->db->last_query();
+        //echo $this->db->last_query();
         $i=1;
          foreach($rows as $row){
             $this->db->select('*');
