@@ -108,5 +108,5 @@ $total = 0;
 </table>
 <?php //}
  }
-echo "<div class='text-center'>".$count[0]->cnt."</div>";
+echo "<div class='text-center mt-5'>".$count[0]->cnt."</div>";
 ?>
