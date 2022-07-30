@@ -9,6 +9,7 @@
 <?php 
 
 $page_break_count = 0;
+$total = 0;
     foreach($exam_centers as $row)
     {
         
@@ -24,7 +25,7 @@ $page_break_count = 0;
          $join_table='student as s';
          $join_on='e.student_id = s.student_id AND s.class_id = e.class_id';
          $count= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
-          
+         $total+=$count[0]->cnt;
    //  if($count[0]->cnt >0)
     //  {
          $page_break = ($page_break_count%6==0) ? 'break' : '';
@@ -106,4 +107,6 @@ $page_break_count = 0;
     </tbody>
 </table>
 <?php //}
- } ?>
+ }
+echo "<div class='text-center'>".$count[0]->cnt."</div>";
+?>
