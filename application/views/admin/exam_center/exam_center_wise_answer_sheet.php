@@ -1,7 +1,7 @@
  <?php //print_r($exam_centers); ?>
  <div class="  text-center p-3">
-       <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-       <div class="form-group col-md-6">
+     <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+     <div class="form-group col-md-6 mx-auto">
         <label for="course">Exam Center</label>
         <select  name="exam_center" readonly="readonly" id="exam_center" class="form-control course" required>
             <option value="" selected >Select Exam Center</option>
@@ -16,9 +16,7 @@
             } 
             ?>
         </select>
-    </div>
-   
-   
+    </div>    
    
 
 </div>

@@ -1,5 +1,5 @@
 <div class="mt-5 text-right">
-<a type="button"  class="btn btn-outline-primary btn-rounded" href="<?= base_url(); ?>ExamController/allot_exam_center" >Allote Exam Center</a>
+<!-- <a type="button"  class="btn btn-outline-primary btn-rounded" href="<?= base_url(); ?>ExamController/allot_exam_center" >Allot Exam Center</a> -->
 <a type="button"  class="btn btn-outline-primary btn-rounded" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/exam_center/create'); ?>', 'Create Exam Center')" >Create Exam Center</a>
 </div> 
 <div class=" mt-3">

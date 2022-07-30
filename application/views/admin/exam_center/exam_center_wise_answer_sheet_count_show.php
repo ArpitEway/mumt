@@ -2,6 +2,9 @@
     .break{
         page-break-before: always;
     }
+    @page {
+      size: auto;
+  }
 </style>
 <?php 
 
@@ -24,7 +27,7 @@ $page_break_count = 0;
           
    //  if($count[0]->cnt >0)
     //  {
-         $page_break = ($page_break_count%6==0) ? 'break' : '';
+         $page_break = ($page_break_count%7==0) ? 'break' : '';
          $page_break_count++;
      
 ?> 

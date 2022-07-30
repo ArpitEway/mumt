@@ -1205,7 +1205,7 @@ class ExamController extends CI_Controller {
 			exit;
 		}else
 		{
-			$titleData = array('title' => 'Allot Exam Center'); 
+			$titleData = array('title' => 'Allot Center'); 
 			$this->load->view('header',$titleData);
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();	
@@ -1249,7 +1249,7 @@ class ExamController extends CI_Controller {
 			   redirect(base_url().'ExamController/allotted_exam_center');
 		   }
 		   if(empty($param1) ){
-			$titleData = array('title' => 'List of Allotted Exam Center'); 
+			$titleData = array('title' => 'List of Allotted Center'); 
 			$this->load->view('header',$titleData);
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();

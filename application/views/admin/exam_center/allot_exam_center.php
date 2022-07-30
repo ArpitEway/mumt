@@ -1,7 +1,7 @@
 <form  class="d-block ajaxForm" method="post"  action="<?=base_url('admin/ExamController/allot_exam_center_sub');?>" class="mt-3 answersheet">
     <div class="  text-center p-3">
        <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-       <div class="form-group col-md-6">
+       <div class="form-group col-md-6 mx-auto">
         <label for="course">Exam Center</label>
         <select  name="exam_center" readonly="readonly" id="exam_center" class="form-control course" required>
             <option value="" selected >Select Exam Center</option>
