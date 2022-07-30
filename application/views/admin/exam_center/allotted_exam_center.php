@@ -11,7 +11,7 @@
 				<th>Exam Center Code</th>
 				<th>EC City</th>
 				<th>EC Address</th>
-				<th>Options</th>
+				<!-- <th>Options</th> -->
 			</tr>
 		</thead>
 		<tfoot>
@@ -23,7 +23,7 @@
 				<th>Exam Center Code</th>
 				<th>EC City</th>
 				<th>EC Address</th>
-				<th>Options</th>
+				<!-- <th>Options</th> -->
 			</tr>
 			</tfoot>
 		<tbody>
@@ -42,12 +42,12 @@
 						<td><?php echo $examCenter->city; ?></td>
                         <td><?php echo $examCenter->examcenteraddress; ?></td>
 						
-                	<td>
+                	<!-- <td>
                 	<div style="display: inline-flex;">
 						<a href="javascript:void(0);" class="dropdown-item" onclick="confirmModal('<?php echo site_url('admin/ExamController/allotted_exam_center/delete/'.$examCenter->id); ?>', showAllcourse )"><i class="mdi mdi-delete delete-icon"></i></a>
                 	</div>	
 
-                    </td>
+                    </td> -->
 					</tr>
 				
 			
