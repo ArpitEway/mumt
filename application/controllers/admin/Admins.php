@@ -3914,7 +3914,7 @@ public function update_exam_datewise_permission(){
 			'hash_csrf' => $this->security->get_csrf_hash(),
 		);
 		$where = array('new_exam_form !=' =>'D' );
-		$data['counts']=$this->Common_model->new_old_exam_form_permission_status($where);
+		$data['counts']=$this->Common_model->old_exam_form_permission_status($where);
 		$this->load->view('admin/class_wise_old_exam_from_status',$data);
 		$this->load->view('footer');
 	}

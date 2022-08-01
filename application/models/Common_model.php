@@ -859,7 +859,7 @@ class Common_Model extends CI_Model{
 		}
 	}
 
-    public function new_old_exam_form_permission_status($where){
+    public function old_exam_form_permission_status($where){
 
 		$this->db->where($where);
 		$this->db->select('count(*) as cnt,course_name,class_name,old_class_id');
