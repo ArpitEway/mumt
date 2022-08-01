@@ -7,7 +7,7 @@ class Examcenter extends CI_Controller {
 	function __construct(){
 		parent::__construct();
 		$this->load->model('admin/admin_model');
-		$this->load->model('admin/Teacher_model');
+		$this->load->model('admin/Exam_center_model');
 		$this->load->model('Common_model');
 		$this->load->model('Datatable_join_model');
 	}
@@ -51,51 +51,51 @@ class Examcenter extends CI_Controller {
 		$this->load->view('examcenter/login',$csrf);
 	}
 
-	// public function loginSub(){
+	public function loginSub(){
 
-	// 	if($this->session->has_userdata('teacherdata')){
-	// 		redirect(base_url('dashboard'));
-	// 		exit;
-	// 	}
+		if($this->session->has_userdata('Examcenterdata')){
+			redirect(base_url('dashboard'));
+			exit;
+		}
 
-	// 	$this->form_validation->set_rules('phone', 'Phone', 'required');
-	// 	$this->form_validation->set_rules('password', 'Password', 'required');
+		$this->form_validation->set_rules('exam_center', 'Phone', 'required');
+		$this->form_validation->set_rules('password', 'Password', 'required');
 
-	// 	if ($this->form_validation->run() == FALSE)
-	// 	{
-	// 		$csrf = array(
-	// 			'name_csrf' => $this->security->get_csrf_token_name(),
-	// 			'hash_csrf' => $this->security->get_csrf_hash()
-	// 		);
-	// 		$this->load->view('teacher/login',$csrf);
-	// 	}else{
+		if ($this->form_validation->run() == FALSE)
+		{
+			$csrf = array(
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash()
+			);
+			$this->load->view('examcenter/login',$csrf);
+		}else{
 
-	// 		$username = $_POST['phone'];
-	// 		$password = $_POST['password'];
-	// 		$check_user = $this->Teacher_model->checkTeacher($username,$password);
+			$username = $_POST['exam_center'];
+			$password = $_POST['password'];
+			$check_user = $this->Exam_center_model->checkcenter($username,$password);
 
-	// 		if($check_user){
+			if($check_user){
 
-	// 			$data = array(
-	// 				'loged_in' 	  => true,
-	// 				'teacherdata' => $check_user->phone,
-	// 				'password' 	  	  => $check_user->password,
-	// 				'teacher_id'  => $check_user->id
+				$data = array(
+					'loged_in' 	  => true,
+					'Examcenterdata' => $check_user->exam_center_code,
+					'password' 	  	  => $check_user->password,
+					'exam_center_id'  => $check_user->id
 
-	// 			);
+				);
 
-	// 			$this->session->set_userdata($data);
-	// 			redirect(base_url('Teacher/dashboard'));
-	// 		}else{
-	// 			$csrf = array(
-	// 				'name_csrf' => $this->security->get_csrf_token_name(),
-	// 				'hash_csrf' => $this->security->get_csrf_hash()
-	// 			);	
-	// 			$this->session->set_flashdata('error','Phone no or Password are incorrect');
-	// 			$this->load->view('teacher/login',	$csrf );
-	// 		}
-	// 	}
-	// }
+				$this->session->set_userdata($data);
+				redirect(base_url('examcenter/dashboard'));
+			}else{
+				$csrf = array(
+					'name_csrf' => $this->security->get_csrf_token_name(),
+					'hash_csrf' => $this->security->get_csrf_hash()
+				);	
+				$this->session->set_flashdata('error','Code or Password are incorrect');
+				$this->load->view('examcenter/login',	$csrf );
+			}
+		}
+	}
 
 	public function logout()
 	{
