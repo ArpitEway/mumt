@@ -1929,4 +1929,45 @@ class Center extends CI_Controller {
 		}
 	}
 	
+	public function search_exam_by_course(){
+		$dt = array();
+		$titleData = array('title' => 'Course Wise Exam Date ');
+		$this->load->view('Centers/header',$titleData);
+		$this->db->order_by('id', 'Desc');
+		$dt['name_csrf'] = $this->security->get_csrf_token_name();
+		$dt['hash_csrf'] = $this->security->get_csrf_hash();
+		$dt['sessions'] = $this->db->get_where('session', array())->result_array();
+		$this->load->view('Centers/search_exam_by_course',$dt);
+		$this->load->view('Centers/footer');
+	}
+	//For Both private & regular 
+	public function getClassByCourseForBoth(){
+		$course = $this->input->post('course');
+		//$class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$course."'");
+		$this->db->select('class_master.id,class_master.class_name');
+                $this->db->from('class_master');
+                $this->db->join('paper_master', 'paper_master.course_group_id = class_master.course_group_id');
+                $this->db->where('exam_date!=',''); 
+                $this->db->where('paper_master.type','theory'); 
+               
+                $this->db->group_by('paper_master.course_group_id');
+                
+                $class_list= $this->db->get()->result_array();
+		$data = array(
+			'class_list' => $class_list,
+			//'all' => 'All',
+		);	
+		echo $this->load->view('template/getclass',$data,true);
+	}
+	//Time Table
+	public function getExamTimeTable(){
+		$course = $this->input->post('course');
+		$class_id = $this->input->post('class_id');
+		$data['class'] = $this->Common_model->get_record('class_master','*',array("course_group_id"=>$course,"id"=>$class_id));
+		$this->db->order_by('exam_date', 'Asc');
+	//	$this->db->order_by('exam_shift', 'Desc');
+		$data['paper_list'] = $this->Common_model->get_record('paper_master','*',array("course_group_id"=>$course,"class_id"=>$class_id,"type"=>'theory'));
+		
+		echo $this->load->view('Centers/time_table',$data,true);
+	}
 }

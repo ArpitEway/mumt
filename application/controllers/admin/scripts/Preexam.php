@@ -175,19 +175,20 @@ class Preexam extends CI_Controller {
 			}
 		}
 	}	
-	// Update Test ID in Paper Master from paper_testid_relation table
-	public function update_testid_from_relation_table(){
-		echo "Update Test ID in Paper Master";
+	// Update Exam fields in Paper Master from paper_paper_master_sub table
+	public function update_exam_fields_from_paper_master_sub_table(){
+		echo "Update Exam Data in Paper Master";
 		$this->db->select('*');
-        $this->db->from('paper_testid_relation');
+        $this->db->from('paper_master_sub');
 		$rows=$this->db->get()->result();
 		$i=1;
 		foreach($rows as $row){
 
-			echo "<br> ".$i." ".$row->paper_id ." ". $row->paper_code ." ". $row->test_id;
-			$data  = array('test_id'=>$row->test_id ,);
-            $where = array('id'=>$row->paper_id,'paper_code'=> $row->paper_code, );
+			echo "<br> ".$i." ".$row->papersname ." ". $row->papercode ." ". $row->new_test_id;
+			$data  = array('exam_date'=>$row->new_exam_date , 'exam_day'=>$row->new_exam_day, 'exam_shift'=>$row->new_exam_shift);
+            $where = array('test_id'=>$row->new_test_id,'paper_code'=> $row->papercode, );
             $update =$this->Common_model->updateRecordByConditions('paper_master',$where,$data);
+			echo  $this->db->last_query(); die;
 			$i++;
 		}
 	}
