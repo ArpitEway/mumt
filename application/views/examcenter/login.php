@@ -60,7 +60,7 @@
 								<!--begin::Form-->
 								<form class="form" method="post" action="<?=BASE_URL('Examcenter/loginSub')?>" >
 									<div class="form-group py-3 m-0">
-										<input class="form-control  placeholder-dark-75" type="test" placeholder="Phone No" name="phone" autocomplete="off" />
+										<input class="form-control  placeholder-dark-75" type="text" placeholder="Exam Center" name="exam_center" autocomplete="off" />
 									</div>
 									<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 									<div class="form-group py-3 border-top m-0">

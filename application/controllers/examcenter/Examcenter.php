@@ -13,7 +13,7 @@ class Examcenter extends CI_Controller {
 	}
 
 	public function index(){
-		if($this->session->has_userdata('teacherdata')){
+		if($this->session->has_userdata('Examcenterdata')){
 			redirect(base_url('Examcenter/dashboard'));
 		}else{			
 			$csrf = array(
@@ -31,71 +31,71 @@ class Examcenter extends CI_Controller {
 		}else{
 			$titleData = array('title' => 'Exam center Dashboard'); 
 			$this->load->view('examcenter/header',$titleData);
-			$id =  $this->session->teacher_id;
-			$center = $this->Common_model->getRecordById('teacher','id',$id);
-			$data = array('teacher' => $center);
+			$id =  $this->session->exam_center_id;
+			$exam_center = $this->Common_model->getRecordById('exam_center','id',$id);
+			$data = array('teacher' => $exam_center);
 			$this->load->view('examcenter/dashboard',$data);
 			$this->load->view('examcenter/footer');
 		}
 	}
 
 	public function login(){
-		if($this->session->has_userdata('teacherdata')){
-			redirect(base_url('Teacher/dashboard'));
+		if($this->session->has_userdata('Examcenterdata')){
+			redirect(base_url('Examcenter/dashboard'));
 			exit;
 		}
 		$csrf = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
 		);
-		$this->load->view('teacher/login',$csrf);
+		$this->load->view('examcenter/login',$csrf);
 	}
 
-	public function loginSub(){
+	// public function loginSub(){
 
-		if($this->session->has_userdata('teacherdata')){
-			redirect(base_url('dashboard'));
-			exit;
-		}
+	// 	if($this->session->has_userdata('teacherdata')){
+	// 		redirect(base_url('dashboard'));
+	// 		exit;
+	// 	}
 
-		$this->form_validation->set_rules('phone', 'Phone', 'required');
-		$this->form_validation->set_rules('password', 'Password', 'required');
+	// 	$this->form_validation->set_rules('phone', 'Phone', 'required');
+	// 	$this->form_validation->set_rules('password', 'Password', 'required');
 
-		if ($this->form_validation->run() == FALSE)
-		{
-			$csrf = array(
-				'name_csrf' => $this->security->get_csrf_token_name(),
-				'hash_csrf' => $this->security->get_csrf_hash()
-			);
-			$this->load->view('teacher/login',$csrf);
-		}else{
+	// 	if ($this->form_validation->run() == FALSE)
+	// 	{
+	// 		$csrf = array(
+	// 			'name_csrf' => $this->security->get_csrf_token_name(),
+	// 			'hash_csrf' => $this->security->get_csrf_hash()
+	// 		);
+	// 		$this->load->view('teacher/login',$csrf);
+	// 	}else{
 
-			$username = $_POST['phone'];
-			$password = $_POST['password'];
-			$check_user = $this->Teacher_model->checkTeacher($username,$password);
+	// 		$username = $_POST['phone'];
+	// 		$password = $_POST['password'];
+	// 		$check_user = $this->Teacher_model->checkTeacher($username,$password);
 
-			if($check_user){
+	// 		if($check_user){
 
-				$data = array(
-					'loged_in' 	  => true,
-					'teacherdata' => $check_user->phone,
-					'password' 	  	  => $check_user->password,
-					'teacher_id'  => $check_user->id
+	// 			$data = array(
+	// 				'loged_in' 	  => true,
+	// 				'teacherdata' => $check_user->phone,
+	// 				'password' 	  	  => $check_user->password,
+	// 				'teacher_id'  => $check_user->id
 
-				);
+	// 			);
 
-				$this->session->set_userdata($data);
-				redirect(base_url('Teacher/dashboard'));
-			}else{
-				$csrf = array(
-					'name_csrf' => $this->security->get_csrf_token_name(),
-					'hash_csrf' => $this->security->get_csrf_hash()
-				);	
-				$this->session->set_flashdata('error','Phone no or Password are incorrect');
-				$this->load->view('teacher/login',	$csrf );
-			}
-		}
-	}
+	// 			$this->session->set_userdata($data);
+	// 			redirect(base_url('Teacher/dashboard'));
+	// 		}else{
+	// 			$csrf = array(
+	// 				'name_csrf' => $this->security->get_csrf_token_name(),
+	// 				'hash_csrf' => $this->security->get_csrf_hash()
+	// 			);	
+	// 			$this->session->set_flashdata('error','Phone no or Password are incorrect');
+	// 			$this->load->view('teacher/login',	$csrf );
+	// 		}
+	// 	}
+	// }
 
 	public function logout()
 	{
