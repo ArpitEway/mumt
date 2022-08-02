@@ -3904,4 +3904,42 @@ public function update_exam_datewise_permission(){
 		$this->load->view('admin/paper_test_id_list',$data);
 		$this->load->view('footer');		
 	}
+
+	//Exam Center Wise Answer Sheet Count
+	public function exam_center_wise_student_count(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+			$titleData = array('title' => 'Exam Center Wise Student Count'); 
+			$this->load->view('header',$titleData);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$this->db->select('*');
+			$this->db->from('exam_center');
+			
+			$data['exam_centers'] = $this->db->get()->result();
+			
+
+			$this->load->view('admin/exam_center/exam_center_wise_student_count',$data);
+			$this->load->view('footer');
+		}
+	}	
+
+	public function get_exam_center_wise_student_sheet_count(){
+		$exam_center = $this->input->post('exam_center');
+		$this->db->select('*');
+		$this->db->from('exam_center');
+		if($exam_center!="All")
+		$this->db->where('id',$exam_center);	
+		$data['exam_centers'] = $this->db->get()->result();
+		$this->db->select('*');
+			$this->db->from('paper_master');
+			$this->db->where('exam_date!=',"");	
+			$this->db->group_by('exam_date');
+			$data['examDate'] = $this->db->get()->result();
+		echo $this->load->view('admin/exam_center/exam_center_wise_student_count_show',$data, TRUE);
+	}
+
 }// class
