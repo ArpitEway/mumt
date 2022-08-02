@@ -212,7 +212,7 @@
 $(".kt_popup").click(function(e) {
  
 Swal.fire({
-	 text:  "एडमिशन सेशन चेक करने के बाद ही फॉर्म भरे, एक बार फॉर्म भरने के पश्चात् सेशन में कोई परिवर्तन नहीं होगा"
+	 text:  "एडमिशन सेशन चेक करने के बाद ही फॉर्म भरे, एक बार फॉर्म भरने के पश्चात् सेशन में कोई परिवर्तन नहीं होगा|"
 }).then((result) => {
   if (result.isConfirmed) {	
   	window.location.href =  "<?=base_url('admission_form/regular');?>";
@@ -224,7 +224,7 @@ Swal.fire({
 $(".kt_popup_private").click(function(e) {
  
 Swal.fire({
-	 text:  "एडमिशन सेशन चेक करने के बाद ही फॉर्म भरे, एक बार फॉर्म भरने के पश्चात् सेशन में कोई परिवर्तन नहीं होगा"
+	 text:  "एडमिशन सेशन चेक करने के बाद ही फॉर्म भरे, एक बार फॉर्म भरने के पश्चात् सेशन में कोई परिवर्तन नहीं होगा|"
 }).then((result) => {
   if (result.isConfirmed) {	
   	window.location.href =  "<?=base_url('admission_form/private');?>";

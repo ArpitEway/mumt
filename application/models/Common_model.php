@@ -858,6 +858,17 @@ class Common_Model extends CI_Model{
 			return;
 		}
 	}
+
+    public function old_exam_form_permission_status($where){
+
+		$this->db->where($where);
+		$this->db->select('count(*) as cnt,course_name,class_name,old_class_id');
+		$this->db->group_by('old_class_id');			
+		$this->db->from("student");
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+
 }
 
 ?>

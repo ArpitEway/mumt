@@ -2177,7 +2177,7 @@ public function getStudentData()
 
 	public function class_wise_exam_from_status(){
 
-		$this->load->view('header',array('title' => 'Class Wise Exam Form Status(DEC-2021)'));
+		$this->load->view('header',array('title' => 'Class Wise Exam Form Status(June 2022)'));
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
@@ -3458,6 +3458,7 @@ public function update_exam_datewise_permission(){
 	public function update_student_mode(){
 		$student_id = $_POST['student_id'];
 		$student= $this->Common_model->getRecordByWhere('student',array("student_id"=>$student_id));
+
 		$course = $this->Common_model->getRecordByWhere('course_group',array("id"=>$student[0]->course_group_id));
 
 		if ($student[0]->university_mode=='REG') {
@@ -3904,4 +3905,19 @@ public function update_exam_datewise_permission(){
 		$this->load->view('admin/paper_test_id_list',$data);
 		$this->load->view('footer');		
 	}
+
+
+	public function class_wise_old_exam_from_status(){
+
+		$this->load->view('header',array('title' => 'Class Wise Exam Form Status(DEC-2021)'));
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		$where = array('new_exam_form !=' =>'D' );
+		$data['counts']=$this->Common_model->old_exam_form_permission_status($where);
+		$this->load->view('admin/class_wise_old_exam_from_status',$data);
+		$this->load->view('footer');
+	}
+
 }// class
