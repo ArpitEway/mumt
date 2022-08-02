@@ -3459,10 +3459,10 @@ public function update_exam_datewise_permission(){
 		$student_id = $_POST['student_id'];
 		$student= $this->Common_model->getRecordByWhere('student',array("student_id"=>$student_id));
 
-		$course = $this->Common_model->getRecordByWhere('course',array("course_group_id"=>$student[0]->course_group_id,"session"=>$student[0]->session));
+		$course = $this->Common_model->getRecordByWhere('course_group',array("id"=>$student[0]->course_group_id));
 
 		if ($student[0]->university_mode=='REG') {
-			if ($course[0]->admission_permission_regular!='Y') {
+			if ($course[0]->admission_permission_pvt!='Y') {
 				$result = array("status" => false, "message"=> "COURSE NOT HAVE PERMISSION");
 				echo json_encode($result);
 				die();
@@ -3484,7 +3484,7 @@ public function update_exam_datewise_permission(){
 			}
 
 		}elseif($student[0]->university_mode=='PVT'){
-			if ($course[0]->admission_permission_private!='Y') {
+			if ($course[0]->admission_permission!='Y') {
 				$result = array("status" => false, "message"=> "COURSE NOT HAVE PERMISSION");
 				echo json_encode($result);
 				die();
