@@ -60,7 +60,7 @@
 						display: flex;
 						align-items: center;
 						">
-						<?php if($this->session->has_userdata('teacherdata')){ ?>
+						<?php if($this->session->has_userdata('Examcenterdata')){ ?>
 							<a href="<?=base_url('Examcenter/dashboard')?>" class="btn btn-custom-white mr-3">Dashboard</a>
 								
 						<div class="dropdown">
@@ -69,7 +69,7 @@
 							</a>
 
 							<div class="dropdown-menu l-50" aria-labelledby="dropdownMenuLink">
-								 <a class="dropdown-item" href="<?=base_url('Examcenter/change_password')?>">Change Password</a> 
+								<!-- <a class="dropdown-item" href="<?=base_url('Examcenter/change_password')?>">Change Password</a>  -->
 								<a href="<?=base_url('Examcenter/logout')?>" class="dropdown-item">Log Out</a>
 							</div>
 						</div>

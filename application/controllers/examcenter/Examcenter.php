@@ -20,7 +20,7 @@ class Examcenter extends CI_Controller {
 				'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash()
 			);
-			$this->load->view('examcenter/login',$csrf);
+	    	$this->load->view('examcenter/login',$csrf);
 		}
 	}
 
@@ -33,7 +33,7 @@ class Examcenter extends CI_Controller {
 			$this->load->view('examcenter/header',$titleData);
 			$id =  $this->session->exam_center_id;
 			$exam_center = $this->Common_model->getRecordById('exam_center','id',$id);
-			$data = array('teacher' => $exam_center);
+			$data = array('exam_center' => $exam_center);
 			$this->load->view('examcenter/dashboard',$data);
 			$this->load->view('examcenter/footer');
 		}
@@ -54,13 +54,11 @@ class Examcenter extends CI_Controller {
 	public function loginSub(){
 
 		if($this->session->has_userdata('Examcenterdata')){
-			redirect(base_url('dashboard'));
+			redirect(base_url('Examcenter/dashboard'));
 			exit;
 		}
-
-		$this->form_validation->set_rules('exam_center', 'Phone', 'required');
+		$this->form_validation->set_rules('exam_center', 'Exam Center', 'required');
 		$this->form_validation->set_rules('password', 'Password', 'required');
-
 		if ($this->form_validation->run() == FALSE)
 		{
 			$csrf = array(
@@ -69,38 +67,34 @@ class Examcenter extends CI_Controller {
 			);
 			$this->load->view('examcenter/login',$csrf);
 		}else{
-
 			$username = $_POST['exam_center'];
 			$password = $_POST['password'];
 			$check_user = $this->Exam_center_model->checkcenter($username,$password);
-
 			if($check_user){
-
 				$data = array(
 					'loged_in' 	  => true,
-					'Examcenterdata' => $check_user->exam_center_code,
+					'Examcenterdata' => $check_user->examcentercode,
 					'password' 	  	  => $check_user->password,
 					'exam_center_id'  => $check_user->id
-
 				);
-
 				$this->session->set_userdata($data);
-				redirect(base_url('examcenter/dashboard'));
+				redirect(base_url('Examcenter/dashboard'));
 			}else{
 				$csrf = array(
 					'name_csrf' => $this->security->get_csrf_token_name(),
 					'hash_csrf' => $this->security->get_csrf_hash()
 				);	
-				$this->session->set_flashdata('error','Code or Password are incorrect');
-				$this->load->view('examcenter/login',	$csrf );
+				$this->session->set_flashdata('error','Exam Center Code or Password are incorrect');
+				$this->load->view('examcenter/login',$csrf );
 			}
-		}
-	}
+		    }
+	        }
+
 
 	public function logout()
-	{
+	 {
 		$this->session->sess_destroy();
-		redirect(base_url('/login'));
-	}
+		redirect(base_url('Examcenter/login'));
+	 }
 
 }
