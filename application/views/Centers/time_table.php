@@ -43,24 +43,6 @@
     </table>
 </div>
 <br>
-<input type="button" class="btn btn-primary mx-auto" onclick="printdiv();" value=" Print ">
-<script>
-function printdiv() {
-        var divName='ss';    
-		var printContents = document.getElementById(divName).innerHTML;
-		var originalContents = document.body.innerHTML;
-
-		$('#'+divName).css("margin-top"," 20px");
-		// $("#first_div").css("display","none");
-		// $("#print_btn").css("display", "none");
-		// $("#submit_btn").css("display", "none");
-		// $("#title_nm").css("display", "none");
-		// $("#institute").css("display", "none");
-		// $("#head_img").css("display", "none");
-		printContents.print();
-		document.body.innerHTML = originalContents;
-	}
-
-</script>
+<input type="button" class="btn btn-primary mx-auto" onclick="PrintDiv();" value=" Print ">
 
 

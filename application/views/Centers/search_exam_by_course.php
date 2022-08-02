@@ -91,15 +91,26 @@
             });
         });    
 	
-//     function PrintDiv() 
-//    {  
-//        var divContents = document.getElementById("dt").innerHTML;  
-//        var printWindow = window.open('', '', 'height=400,width=400');  
-//        printWindow.document.write('<html><head><title>Print DIV Content</title>');  
-//        printWindow.document.write('</head><body >');  
-//        printWindow.document.write(divContents);  
-//        printWindow.document.write('</body></html>');  
-//        printWindow.document.close();  
-//        printWindow.print();  
-//     }  
+function PrintDiv() {
+    var title="Time Table 2022";
+    var contents = document.getElementById('ss').innerHTML;
+    var frame1 = document.createElement('iframe');
+    frame1.name = "frame1";
+    frame1.style.position = "absolute";
+    frame1.style.top = "-1000000px";
+    document.body.appendChild(frame1);
+    var frameDoc = frame1.contentWindow ? frame1.contentWindow : frame1.contentDocument.document ? frame1.contentDocument.document : frame1.contentDocument;
+    frameDoc.document.open();
+     frameDoc.document.write(`<style>@page{size:landscape;}@tr{border: solid 1px #000;background-color:#E8F6FF;}</style><html><head><title>${title}</title>`);
+    frameDoc.document.write('</head><body>');
+    frameDoc.document.write(contents);
+    frameDoc.document.write('</body></html>');
+    frameDoc.document.close();
+    setTimeout(function () {
+        window.frames["frame1"].focus();
+        window.frames["frame1"].print();
+        document.body.removeChild(frame1);
+    }, 500);
+    return false;
+}
 </script>
