@@ -2151,7 +2151,7 @@ public function getStudentData()
 
 	public function exam_form_status(){
 
-		$this->load->view('header',array('title' => 'Exam Wise Student Status(DEC-2021)'));
+		$this->load->view('header',array('title' => 'Exam Form Status(June 2022)'));
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
