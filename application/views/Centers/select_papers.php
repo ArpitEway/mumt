@@ -239,6 +239,8 @@
 			<script>
 				$('#payment_submit').on('click', function (e) {
 					var data = $("form").serialize(); 
+					
+		           $('#payment_submit').attr("disabled","disabled");
 					$.ajax({
 						url: "<?=base_url('center/center/submit_papers');?>",  
 

@@ -258,6 +258,8 @@
 	var select_group = <?php echo $class_group[0]->select_group; ?>;
    // alert(select_group);
 $('#group_submit').on('click', function (e) {
+	
+$('#group_submit').attr("disabled","disabled");
 if(select_group!=0){
 
 	var selectedGroups = $("input[name='group_id[]']:checked").length;
