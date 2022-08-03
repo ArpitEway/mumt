@@ -48,7 +48,7 @@
   //var multiple=$("#multiple").val();
 		$.ajax({
 			method: "POST",
-			url: BASE_URL+"admin/Admins/get_exam_center_wise_student_sheet_count",
+			url: BASE_URL+"admin/Admins/get_exam_center_wise_billing",
 			data: { exam_center : exam_center,
 					[csrfName]:csrfHash
 					},

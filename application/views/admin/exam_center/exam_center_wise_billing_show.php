@@ -13,19 +13,7 @@ $total = 0;
     foreach($exam_centers as $row)
     {
         
-        $where= array(
-        
-            's.new_exam_form!='=>'D' ,
-            's.examcentercode'=>$row->examcentercode,
-            's.exam_center_id'=>$row->id,
-           
-         );
-         $tag='count(*) as cnt';
-         $table="new_exam_form  as e";
-         $join_table='student as s';
-         $join_on='e.student_id = s.student_id AND s.class_id = e.class_id';
-         $count= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
-         $total+=$count[0]->cnt;
+       
    //  if($count[0]->cnt >0)
     //  {
          $page_break = ($page_break_count%6==0) ? 'break' : '';
@@ -114,9 +102,7 @@ $total = 0;
                 <td><strong>#</strong></td>
                 <td><strong>Shift</strong></td>
                 <td><strong>Date</strong></td> 
-                <td><strong>Main</strong></td>
-               
-                <td><strong>Total</strong></td>
+                <td><strong>Max Student</strong></td>
                 <td><strong> केन्द्राध्यक्ष </strong></td>
                 <td><strong> सहायक केन्द्राध्यक्ष  </strong></td>
                 <td><strong>वीक्षक </strong></td>
@@ -128,40 +114,88 @@ $total = 0;
                 <td><strong>Postal Charge</strong></td>
                 <td><strong>योग</strong></td>
             </tr>
-        <?php  $i=1;  foreach($examDate as $edate)
+        <?php  $i=1;$prevdate=""; $max_count=array(); foreach($examDate as $edate)
                 { 
+                    $where = array('type' => 'theory','exam_date'=>$edate->exam_date);//,'exam_shift'=>$edate->exam_shift);
+                    $papers = $this->Common_model->get_record('paper_master','id',$where);
+                    $papers = array_column($papers, 'id');
+                   // echo $this->db->last_query();
+                   
+                    $this->db->select('count(*) as cnt');
+                    $this->db->from('student as s');
+                    $this->db->join('new_exam_form  as e', 'e.student_id = s.student_id AND s.class_id = e.class_id');
+                    $this->db->where('s.new_exam_form',"Y");	
+                    $this->db->where('s.examcentercode',$row->examcentercode);	
+                    $this->db->where('s.exam_center_id',$row->id);	
+                    $this->db->where_in('paper_id', $papers );
+
+                   
+                    $count = $this->db->get()->result();
+                    array_push($max_count,$count[0]->cnt);
+                    $exam_date=$edate->exam_date;
+                    if($count[0]->cnt>0)
+                    {
                     ?>
             <tr>
                 <td> <?=$i?> </td>
                 <td><?=$edate->exam_shift?></td>
-                <td>11-07-2019</td>
-                <td>204 </td>
-                
-                <td>207</td>
+                <td><?=$edate->exam_date?></td>
+                <td><?php echo $t=$count[0]->cnt ;?> </td>
                 <td>200</td>
                 <td>
-                0</td>
-                <td>900</td>
-                <td>50</td>
+                <?php
+                $sahayak=0; 
+                if($t > 300) { $a=($t-300)/300; $b=ceil($a); $sahayak=$b*150; } //else { $sahayak=0; } 
+                echo $sahayak;?>
+                </td>
+                <td><?php $a=$t/25;  $b1=ceil($a); $vik=$b1*100; echo $vik; ?></td>
+                <td><?php echo $clerk=50; ?></td>
                 <td>
-                40</td>
-                <td>828</td>
-                <td>120</td>
+                <?php echo $adesh=50; ?></td>
+                <td><?php echo $bhavan=4*$t ;?></td>
+                <td><?php echo $jal=10*($b+$b1+3) ;?></td>
 
                 <!--<td></td>-->
 
                 <td>
-                518
+              <?php  $portal=0;
+ 
+                    $prevdate;
+                    $exam_date;
+                    if( $prevdate != $exam_date){
+                        
+                            if($t<81)
+                            {
+                            echo $portal=200;
+                            }
+                            else
+                            {
+                            echo $portal=ceil($t*2.5);
+                            }
+                    }
+                    $prevdate=$exam_date;
+                    ?>
                 </td>
 
 
                 <td>	
-                2656</td>
+                <?php 
+                    $tt=$kendra+$sahayak+$vik+$clerk+$adesh+$bhavan+$jal+$other+$portal; echo $tt;
+                    $tot=$tot+$tt;
+                    ?></td>
 
                 <!--<td></td>
                 <td></td>-->
             </tr>
-            <?php $i++;} ?>
+            <?php }$i++;} ?>
+            </tr>
+            <tr><td colspan="3" align="right" >Max Student Count (in one shift) </td><td><?php echo $mstud=max($max_count); ?></td> <td colspan="8" align="right">महायोग</td><td><?php echo $tot; 
+            //  $where = array('examcentercode' => $row->examcentercode,'id'=> $row->id);
+            //  $data=array('billing_amount'=>$tot,'max_student_count'=>$mstud);
+            //  $papers = $this->Common_model->updateRecordByConditions('exam_center',$where,$data);
+            
+          
+            ?></td></tr>
     </tbody>    
 <?php //}
  }
