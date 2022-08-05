@@ -48,7 +48,7 @@
 						 $tag='count(*) as cnt';
 						 $table="new_exam_form  as e";
 						 $join_table='student as s';
-						 $join_on='e.student_id = s.student_id';
+						 $join_on='e.student_id = s.student_id AND s.class_id = e.class_id';
 						 $count= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
 						 $counter+=$count[0]->cnt;
 						 $course_name.=" <br>".$data->course_name;
