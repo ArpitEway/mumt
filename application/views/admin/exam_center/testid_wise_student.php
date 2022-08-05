@@ -64,9 +64,10 @@
 						 $counter+=$count[0]['cnt'];
 						 $course_name.=" <br>".$data->course_name;
 						 $class_name.=" <br>".$class[0]->class_name;
-						 $paper_code.=" <br>".$data->paper_code;
+						 $paper_code.=" <br>".$data->paper_code.' ('.$all[0]['num'].')'.' ('.$count[0]['cnt'].')';
 						 $paper_name=" <br>".$data->paper_name;
 						 $ce.=" <br>".$data->ce;
+						 
 					}
 				?>	<tr>
 						<td><?php echo $i; ?></td>
