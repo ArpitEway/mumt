@@ -32,6 +32,8 @@ class Student extends CI_Controller {
 			$student = $this->Common_model->getRecordById('student','student_id',$id);
 			$data = array('student' => $student);
 			//$this->getNotification();
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->load->view('students/dashboard',$data);
 			$this->load->view('students/footer');
 		}	
