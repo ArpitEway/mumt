@@ -5,8 +5,8 @@
 		<thead>
 			<tr>
 				<th>#</th>
-				<!-- <th>Course Name </th>
-				<th>Class Name </th> -->
+				<th>Course Name </th>
+				<th>Class Name </th>
 				<th>Test ID</th>
 				<th>Paper Code</th>
 				<!-- <th>Paper No.</th> -->
@@ -19,8 +19,8 @@
 		<tfoot>
 			<tr>
             <th>#</th>
-            <!-- <th>Course Name </th>
-				<th>Class Name </th> -->
+             <th>Course Name </th>
+				<th>Class Name </th> 
 				<th>Test ID</th>
 				<th>Paper Code</th>
 				<!-- <th>Paper No.</th> -->
@@ -64,6 +64,7 @@
 						 $counter+=$count[0]['cnt'];
 						 $course_name.=" <br>".$data->course_name;
 						 $class_name.=" <br>".$class[0]->class_name;
+						 //$paper_code.=" <br>".$data->paper_code.' ( ALL - '.$all[0]['num'].')'.' ('.$count[0]['cnt'].')';
 						 $paper_code.=" <br>".$data->paper_code.' ( ALL - '.$all[0]['num'].')'.' ('.$count[0]['cnt'].')';
 						 $paper_name=" <br>".$data->paper_name;
 						 $ce.=" <br>".$data->ce;
@@ -71,8 +72,8 @@
 					}
 				?>	<tr>
 						<td><?php echo $i; ?></td>
-						<!-- <td><?php echo $course_name; ?></td>
-						<td><?php echo $class_name; ?></td> -->
+						<td><?php echo $course_name; ?></td>
+						<td><?php echo $class_name; ?></td>
 						<td><?php echo $row->test_id; ?></td>
 						<td><?php echo $paper_code; ?></td>
 						<!-- <td><?php //echo $row->paper_no; ?></td> -->
@@ -134,8 +135,8 @@
 					?>
 					<tr>
 						<td><?php echo $i; ?></td>
-						<!-- <td><?php echo $row->course_name; ?></td>
-						<td><?php echo $class[0]->class_name; ?></td> -->
+						<<td><?php echo $row->course_name; ?></td>
+						<td><?php echo $class[0]->class_name; ?></td>
 						<td><?php echo $row->test_id; ?></td>
 						<td><?php echo $row->paper_code; ?></td>
 						<!-- <td><?php //echo $row->paper_no; ?></td> -->
