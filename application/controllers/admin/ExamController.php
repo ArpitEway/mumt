@@ -1279,8 +1279,8 @@ class ExamController extends CI_Controller {
 			$this->db->from('paper_master');
 			$this->db->where('type','Theory');
 			$this->db->where('test_id!=','');
-			$this->db->where('exam_date!','0000-00-00');
-			$this->db->where('exam_date!','');
+			$this->db->where('exam_date!=','0000-00-00');
+			$this->db->where('exam_date!=','');
 			$this->db->group_by('test_id ');
 			$this->db->having(' tot=1');
 			$this->db->order_by("test_id", "asc");
@@ -1303,8 +1303,8 @@ class ExamController extends CI_Controller {
 			$this->db->from('paper_master');
 			$this->db->where('type','Theory');
 			$this->db->where('test_id!=','');
-			$this->db->where('exam_date!','0000-00-00');
-			$this->db->where('exam_date!','');
+			$this->db->where('exam_date!=','0000-00-00');
+			$this->db->where('exam_date!=','');
 			$this->db->group_by('test_id ');
 			$this->db->having(' tot>1');
 			$this->db->order_by("test_id", "asc");
