@@ -13,7 +13,8 @@
 				<th>Paper Name</th>		
                 <th>ce</th>	
                 <th>Total Students</th>		
-				<th>Paper N/A</th>		
+				<th>Paper N/A</th>
+				<th>Total Paper</th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -27,7 +28,8 @@
 				<th>Paper Name</th>	
                 <th>ce</th>	
                 <th>Total Students</th>	
-				<th>Paper N/A</th>			
+				<th>Paper N/A</th>
+				<th>Total Paper</th>
 			</tr>
 			</tfoot>
 		<tbody>
@@ -81,6 +83,7 @@
 						<td><?php echo $ce; ?></td>
                 	    <td><?php echo $counter; ?></td>
 						<td><?php echo $allcounter; ?></td>
+						<td><?php echo $counter+$allcounter; ?></td>
 					</tr>
 				
 			
@@ -144,6 +147,7 @@
 						<td><?php echo $row->ce; ?></td>
                 	    <td><?php echo $count[0]['cnt'];  ?></td>
 						<td><?php  echo $all[0]['num']; ?></td>
+						<td><?php  echo  $count[0]['cnt']+$all[0]['num']; ?></td>
 					</tr>
 				
 			
