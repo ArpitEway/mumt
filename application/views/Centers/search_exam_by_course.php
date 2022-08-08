@@ -2,8 +2,8 @@
 	
     <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	<div class="row mx-auto">	
-        <div class="form-group col-md-3 "></div>
-        <div class="form-group col-md-3 ">
+        <div class="form-group col-md-2 "></div>
+        <div class="form-group col-md-4 ">
 			<label for="course">Course</label>
 			<select name="course_group_id" id="course_group_id_both" class="form-control course_group_id" data-target="#class_id" required >
 				<option value="">Select Course</option>
@@ -21,7 +21,7 @@
 				?> 
 			</select>       
 		</div>
-		<div class="form-group col-md-3 ">
+		<div class="form-group col-md-4 ">
 			<label for="class_id">Class</label>
 			<select name="class_id" id="class_id" class="form-control"  required >
 				<option value=""></option>
