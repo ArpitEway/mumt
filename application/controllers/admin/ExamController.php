@@ -1279,6 +1279,7 @@ class ExamController extends CI_Controller {
 			$this->db->from('paper_master');
 			$this->db->where('type','Theory');
 			$this->db->where('test_id!=','');
+			$this->db->where('test_id','5263');
 			$this->db->group_by('test_id ');
 			$this->db->having(' tot=1');
 			$this->db->order_by("test_id", "asc");
