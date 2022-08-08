@@ -92,7 +92,7 @@
 				}
 				else{
 					//$data=$row;
-// 					$class=$this->Common_model->getRecordByWhere('class_master',array("id"=>$row->class_id));
+					$class=$this->Common_model->getRecordByWhere('class_master',array("id"=>$row->class_id));
                 
 // 					$where= array(
 // 					   'e.paper_code'=>$row->paper_code,
