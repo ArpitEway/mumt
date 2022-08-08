@@ -1607,7 +1607,7 @@ class Admins extends CI_Controller {
 		$dde_student['class_name'] = $classData[0]->class_name;
 		$dde_student['medium'] = $studentdata[0]['medium'];
 		$dde_student['university_mode'] = 'REG';
-		$dde_student['session'] = 'Jan 2022';
+		$dde_student['session'] = 'July 2021';
 		unset($dde_student['admit_card']);
 		unset($dde_student['cls_id']);
 		unset($dde_student['form_no']);
