@@ -88,20 +88,20 @@
 				}
 				else{
 					//$data=$row;
-					$class=$this->Common_model->getRecordByWhere('class_master',array("id"=>$row->class_id));
+// 					$class=$this->Common_model->getRecordByWhere('class_master',array("id"=>$row->class_id));
                 
-					$where= array(
-					   'e.paper_code'=>$row->paper_code,
-						//'s.pattern'=>'NEW' ,
-						's.new_exam_form!='=>'D' ,
-						's.class_id'=>$row->class_id,
+// 					$where= array(
+// 					   'e.paper_code'=>$row->paper_code,
+// 						//'s.pattern'=>'NEW' ,
+// 						's.new_exam_form!='=>'D' ,
+// 						's.class_id'=>$row->class_id,
 						
-					);
-					$tag='count(*) as cnt';
-					$table="new_exam_form  as e";
-					$join_table='student as s';
-					$join_on='e.student_id = s.student_id AND s.class_id = e.class_id';
-					$count= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
+// 					);
+// 					$tag='count(*) as cnt';
+// 					$table="new_exam_form  as e";
+// 					$join_table='student as s';
+// 					$join_on='e.student_id = s.student_id AND s.class_id = e.class_id';
+// 					$count= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
 					
 					// $this->db->select('count(*) as cnt');	
 					// $this->db->from('new_exam_form  as e'); 
