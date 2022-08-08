@@ -8,21 +8,13 @@
 			<select name="course_group_id" id="course_group_id_both" class="form-control course_group_id" data-target="#class_id" required >
 				<option value="">Select Course</option>
 				<?php 
-                $this->db->select('*');
-                $this->db->from('course');
-                $this->db->join('paper_master', 'paper_master.course_group_id = course.course_group_id');
-                $this->db->where('exam_date!=',''); 
-                $this->db->where('paper_master.type','theory'); 
                
-                $this->db->group_by('paper_master.course_group_id');
-                
-                $courses= $this->db->get()->result_array();
 				//$courses = $this->db->get_where('course', array())->result_array();
 				foreach($courses as $course)
 				{
 					?>
 
-					<option value="<?php echo $course['course_group_id']; ?>"><?php echo $course['course_name']; ?></option>
+					<option value="<?php echo $course['id']; ?>"><?php echo $course['course_name']; ?></option>
 
 					<?php
 				} 
@@ -59,6 +51,7 @@
        
             var csrfName = $('.csrfname').attr('name');
             var csrfHash = $('.csrfname').val(); 
+            $('#class_id').html("");
             $("#myLoader").show();
             $.ajax({
                 method: "POST",

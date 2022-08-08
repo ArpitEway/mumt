@@ -188,7 +188,7 @@ class Preexam extends CI_Controller {
 			$data  = array('exam_date'=>$row->new_exam_date , 'exam_day'=>$row->new_exam_day, 'exam_shift'=>$row->new_exam_shift);
             $where = array('test_id'=>$row->new_test_id,'paper_code'=> $row->papercode, );
             $update =$this->Common_model->updateRecordByConditions('paper_master',$where,$data);
-			echo  $this->db->last_query(); die;
+		//	echo  $this->db->last_query(); die;
 			$i++;
 		}
 	}

@@ -1,7 +1,8 @@
 <br>
 <br> 
 <br><?php
-//print_r($paperData);
+
+$total=0;
 foreach($elist as $row)
 {
    
@@ -17,9 +18,10 @@ foreach($elist as $row)
      $join_table='student as s';
      $join_on='e.student_id = s.student_id AND s.class_id = e.class_id';
      $count= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
-    
-    // if($count[0]->cnt >0)
-     {  //echo $this->db->last_query();
+     
+     //$total+=$count[0]->cnt;
+     if($count[0]->cnt >0)
+     {  
 ?>
 
 <table style="width:90%;text-align:center;font-size:15px" align="center" class="table table-hover table-striped" border="1">
@@ -77,4 +79,4 @@ foreach($elist as $row)
 <br> 
 <br>
 <?php }
-} ?>
+}  ?>
