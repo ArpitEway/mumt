@@ -138,7 +138,7 @@
 					?>
 					<tr>
 						<td><?php echo $i; ?></td>
-						<<td><?php echo $row->course_name; ?></td>
+						<td><?php echo $row->course_name; ?></td>
 						<td><?php echo $class[0]->class_name; ?></td>
 						<td><?php echo $row->test_id; ?></td>
 						<td><?php echo $row->paper_code; ?></td>
