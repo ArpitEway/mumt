@@ -30,7 +30,7 @@
                 <td align="center"><?=$rows['exam_day']?></td>
                 <td align="center"><?=$rows['exam_shift']?></td>
                 <td align="center"><?=$rows['course_name']?></td>
-                <td align="center"><?=$rows['paper_no']?></td>
+                <td align="center"><?=$rows['paper_no_for_time_table']?></td>
                 <td align="center"><?=$rows['paper_code']?></td>
                 <td align="center"><?=$class[0]['class_name']?>
                </td>

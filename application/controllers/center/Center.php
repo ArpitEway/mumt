@@ -1979,6 +1979,7 @@ class Center extends CI_Controller {
 		$data['class'] = $this->Common_model->get_record('class_master','*',array("course_group_id"=>$course,"id"=>$class_id));
 		$this->db->order_by('exam_date', 'Asc');
 		$this->db->order_by('exam_shift', 'Desc');
+		$this->db->order_by('paper_no', 'Asc');
 		$data['paper_list'] = $this->Common_model->get_record('paper_master','*',array("course_group_id"=>$course,"class_id"=>$class_id,"type"=>'theory','paper_master.exam_date!='=>'','paper_master.exam_date!='=>'0000-00-00'));
 	
 	//	echo $this->db->last_query();																				  
