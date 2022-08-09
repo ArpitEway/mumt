@@ -41,6 +41,7 @@
   $('.dt-responsive').html("");
   console.log($("#multiple").val());
   var multiple=$("#multiple").val();
+  $("#myLoader").show();
 		$.ajax({
 			method: "POST",
 			url: BASE_URL+"ExamController/getEnvelope",
@@ -49,6 +50,7 @@
 					},
 		})
 		.done(function( msg ) {
+            $("#myLoader").hide();
             $('.dt-responsive').html(msg);
 		});
 	});

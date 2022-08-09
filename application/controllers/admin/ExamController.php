@@ -1341,8 +1341,7 @@ class ExamController extends CI_Controller {
 		$data['examSession'] = 'June 2022';
 		$this->db->select('*');
 		$this->db->from('exam_center');
-		$this->db->join('allot_exam_center', 'allot_exam_center.exam_center_id = exam_center.id');
-		$this->db->group_by('exam_center.examcentercode');
+		//$this->db->where('examcentercode','MDE034');
 		$this->db->order_by("exam_center.examcentercode", "asc");
 		$data['elist'] = $this->db->get()->result();//echo $this->db->last_query(); die;
 		if($multiple){

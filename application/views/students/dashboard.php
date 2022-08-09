@@ -17,7 +17,7 @@ $studentData = $this->Common_model->getRecordById('student','student_id',$this->
 				
 <div class="notification"> 
 	<ul>
-		<li>July 2022 परीक्षा कार्यक्रम - <strong><a href="#" id="getTimeTable">Click Here</a>	
+		 <li>July 2022 परीक्षा कार्यक्रम - <strong>Coming Soon !!<!--<a href="#" id="getTimeTable">Click Here</a>	 -->
 			</strong>
 		</li>
 	</ul>

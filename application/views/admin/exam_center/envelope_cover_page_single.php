@@ -5,22 +5,26 @@
 $total=0;
 foreach($elist as $row)
 {
-   
-    $where= array(
-        'e.paper_code'=>$paperData[0]['paper_code'],
-        's.new_exam_form!='=>'D' ,
-        's.examcentercode'=>$row->examcentercode,
-        's.exam_center_id'=>$row->exam_center_id,
-       
-     );
-     $tag='count(*) as cnt';
-     $table="new_exam_form  as e";
-     $join_table='student as s';
-     $join_on='e.student_id = s.student_id AND s.class_id = e.class_id';
-     $count= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
      
+      $sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`examcentercode`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paperData[0]['paper_code']."' AND `s`.`class_id` = '".$paperData[0]['class_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2021' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2022' AND `s`.`class_name` = 'I SEM' ));";    
+    $query = $this->db->query($sql);
+    $count = $query->result_array();
+   
+        $qu="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paperData[0]['paper_code']."' AND `p`.`class_id` = '".$paperData[0]['class_id']."' AND `s`.`examcentercode`='".$row->examcentercode."' AND   `s`.`exam_center_id` = '".$row->id."'  AND temp_exam_form='N' and `session` = 'July 2021' AND `s`.`class_name` = 'I Year'";
+    $query = $this->db->query($qu);
+    $all = $query->result_array();
+   
+     $allElective= $all[0]['num'];
+   
+    
+   
+    if($paperData[0]['class_id']==104 && $paperData[0]['ce']=='elective' && ( $allElective>0)){
+       $allElective=round(($all[0]['num']*60)/100); 
+       
+    }
+   
      //$total+=$count[0]->cnt;
-     if($count[0]->cnt >0)
+     if(($count[0]['cnt'] >0) || ($allElective >0) )
      {  
 ?>
 
@@ -49,7 +53,10 @@ foreach($elist as $row)
             <td style="text-align:center;vertical-align:middle"><h4><?= $paperData[0]['test_id'] ?></h4></td>
             <td style="vertical-align:middle"><strong>Quantity</strong></td>
             <td colspan="" bgcolor="#FFFFFF" style="text-align:center; vertical-align:middle"><span style="font-size:20px;font-weight:bold;text-decoration:underline;font-style:italic;">
-            <?= $count[0]->cnt; ?>
+            <?php //echo "(All=> ".$allElective.") Fill=> ".$count[0]['cnt']; 
+            echo $allElective +$count[0]['cnt'];
+            ?>
+           
             </span></td>
         </tr>
         <tr>
@@ -62,9 +69,9 @@ foreach($elist as $row)
             <td><?= $paperData[0]['exam_shift'] ?></td>
             <td><strong>Time</strong></td>
             <td><?php  
-                    if($paperData[0]["exam_shift"]=='Early Morning'){echo "07:00 AM To 10:00 AM";} 
+                   // if($paperData[0]["exam_shift"]=='Early Morning'){echo "07:00 AM To 10:00 AM";} 
                     if($paperData[0]["exam_shift"]=='Morning'){echo "11:00 AM To 02:00 PM";}
-                    if($paperData[0]["exam_shift"]=='Afternoon'){echo "03:00 PM To 06:00 PM"; }  ?> 
+                    if($paperData[0]["exam_shift"]=='Evening'){echo "03:00 PM To 06:00 PM"; }  ?> 
             </td> </tr> <tr>
             <td><strong>Paper Used</strong></td>
             <td colspan="3">&nbsp;</td>
@@ -79,4 +86,5 @@ foreach($elist as $row)
 <br> 
 <br>
 <?php }
+
 }  ?>
