@@ -1,7 +1,7 @@
 
-<div class=" mt-3">
+<div class=" mt-3 dt-responsive">
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-<table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
+<table id="kt_datatable" class="table table-striped" >
 		<thead>
 			<tr>
 				<th>#</th>
