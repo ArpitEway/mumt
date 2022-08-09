@@ -4,7 +4,7 @@
        <div class="form-group col-md-3">
             <label for="course">Exam Center</label>
             <select  name="exam_center" readonly="readonly" id="exam_center" class="form-control course" required>
-                <option value="" selected >Select Exam Center</option>
+                <option value=""  >Select Exam Center</option>
                 <option value="All"  >All</option>
                 <?php 
 
@@ -20,7 +20,7 @@
         <div class="form-group col-md-3">
             <label for="course">Date Of Paper</label>
             <select  name="exam_date" readonly="readonly" id="exam_date" class="form-control course" required>
-                <option value="" selected >Select Exam Center</option>
+                <option value=""  >Select Exam Date</option>
                 <!-- <option value="All"  >All</option> -->
                 <?php 
 
@@ -75,6 +75,8 @@
         var exam_center = $("#exam_center").val();
         var exam_date = $("#exam_date").val();
         var shift = $("#shift").val();
+        console.log($("#exam_center option:selected").text());
+        $("#headerTitle").html($("#exam_center option:selected").text());
         $("#exam_center").css("border",""); 
         $('.dt-responsive').html("");
         if(exam_center){

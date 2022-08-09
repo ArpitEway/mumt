@@ -1,7 +1,7 @@
-<div class="  text-center p-3">
+<div class="  text-center p-3 ">
        <input type="hidden" id="multiple"  value="<?= $multiple; ?>">
        <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-       <div class="form-group col-md-3">
+       <div class="form-group col-md-3 mx-auto">
         <label for="course">Test ID</label>
         <select  name="test_id" readonly="readonly" id="test_id" class="form-control course" required>
             <option value="" selected >Select Test ID</option>
@@ -37,9 +37,11 @@
 	var csrfName = $('.csrfname').attr('name');
 	var csrfHash = $('.csrfname').val(); 
 	var test_id = $(this).val();
+  $("#headerTitle").html(test_id);
   $('.dt-responsive').html("");
   console.log($("#multiple").val());
   var multiple=$("#multiple").val();
+  $("#myLoader").show();
 		$.ajax({
 			method: "POST",
 			url: BASE_URL+"ExamController/getEnvelope",
@@ -48,6 +50,7 @@
 					},
 		})
 		.done(function( msg ) {
+            $("#myLoader").hide();
             $('.dt-responsive').html(msg);
 		});
 	});
