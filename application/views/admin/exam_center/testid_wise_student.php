@@ -9,7 +9,7 @@
 				<th>Class Name </th>
 				<th>Test ID</th>
 				<th>Paper Code</th>
-				<!-- <th>Paper No.</th> -->
+				<th>Paper Wise Count</th>
 				<th>Paper Name</th>		
                 <th>ce</th>	
                 <th>Total Students</th>		
@@ -24,10 +24,10 @@
 				<th>Class Name </th> 
 				<th>Test ID</th>
 				<th>Paper Code</th>
-				<!-- <th>Paper No.</th> -->
+				<th>Paper Count/No.</th>
 				<th>Paper Name</th>	
-                <th>ce</th>	
-                <th>Total Students</th>	
+                		<th>ce</th>	
+               			<th>Total Students</th>	
 				<th>Paper N/A</th>
 				<th>Total Paper</th>
 			</tr>
@@ -66,8 +66,9 @@
 						 $counter+=$count[0]['cnt'];
 						 $course_name.=" <br>".$data->course_name;
 						 $class_name=" <br>".$class[0]->class_name;
-						 //$paper_code.=" <br>".$data->paper_code.' ( ALL - '.$all[0]['num'].')'.' ('.$count[0]['cnt'].')';
 						 $paper_code.=" <br>".$data->paper_code;
+						 $paper_code_count.=" <br>".$data->paper_code.' ( ALL - '.$all[0]['num'].')'.' ('.$count[0]['cnt'].')';
+						
 						 $paper_name=" <br>".$data->paper_name;
 						 $ce.=" <br>".$data->ce;
 						 
@@ -78,10 +79,10 @@
 						<td><?php echo $class_name; ?></td>
 						<td><?php echo $row->test_id; ?></td>
 						<td><?php echo $paper_code; ?></td>
-						<!-- <td><?php //echo $row->paper_no; ?></td> -->
-                        <td><?php echo $paper_name; ?></td>
+						<td><?php echo $paper_code_count; ?></td>
+                        			<td><?php echo $paper_name; ?></td>
 						<td><?php echo $ce; ?></td>
-                	    <td><?php echo $counter; ?></td>
+                	    			<td><?php echo $counter; ?></td>
 						<td><?php echo $allcounter; ?></td>
 						<td><?php echo $counter+$allcounter; ?></td>
 					</tr>
@@ -142,12 +143,12 @@
 						<td><?php echo $class[0]->class_name; ?></td>
 						<td><?php echo $row->test_id; ?></td>
 						<td><?php echo $row->paper_code; ?></td>
-						<!-- <td><?php //echo $row->paper_no; ?></td> -->
-                        <td><?php echo $row->paper_name; ?></td>
+						<td><?php echo $row->paper_no; ?></td>
+                        			<td><?php echo $row->paper_name; ?></td>
 						<td><?php echo $row->ce; ?></td>
-                	    <td><?php echo $count[0]['cnt'];  ?></td>
-						<td><?php  echo $all[0]['num']; ?></td>
-						<td><?php  echo  $count[0]['cnt']+$all[0]['num']; ?></td>
+                	    			<td><?php echo $count[0]['cnt'];  ?></td>
+						<td><?php echo $all[0]['num']; ?></td>
+						<td><?php echo  $count[0]['cnt']+$all[0]['num']; ?></td>
 					</tr>
 				
 			
