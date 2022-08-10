@@ -1447,6 +1447,7 @@ class ExamController extends CI_Controller {
 			$this->db->from('paper_master');
 			$this->db->where('exam_date!=',"");	
 			$this->db->group_by('exam_date');
+			$this->db->order_by('exam_date', "asc");
 			$data['examDate'] = $this->db->get()->result();
 
 			$this->load->view('admin/exam_center/exam_center_wise_paper',$data);
@@ -1456,8 +1457,8 @@ class ExamController extends CI_Controller {
 	
 	public function get_exam_center_wise_paper_count(){
 		$data['exam_center']=$exam_center = $this->input->post('exam_center');
-		$exam_date = $this->input->post('exam_date');
-		$shift = $this->input->post('shift');
+		$data['exam_date']=$exam_date = $this->input->post('exam_date');
+		$data['shift']=$shift = $this->input->post('shift');
 		
 		$where= array(
             'a.exam_center_id'=>$exam_center,
@@ -1467,7 +1468,7 @@ class ExamController extends CI_Controller {
          $join_table='allot_exam_center as a';
          $join_on='a.exam_center_id = e.id';
          $data['exam_centers']= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
-
+/*
 		$this->db->select('DISTINCT(paper_master.id),exam_date,exam_shift,exam_day,paper_master.paper_code,paper_master.paper_name,paper_master.course_group_id,paper_master.class_id');
 		$this->db->from('paper_master');
 		$this->db->join('new_exam_form_report', 'new_exam_form_report.paper_id = paper_master.id');
@@ -1483,9 +1484,27 @@ class ExamController extends CI_Controller {
 			$this->db->where('paper_master.exam_shift',$shift);
 		$this->db->where('student_report.exam_center_id', $exam_center );
 		$this->db->group_by('paper_master.exam_date');
+
+		
 		//$this->db->order_by('paper_master.exam_date');
 		$data['papers'] = $this->db->get()->result();
+		echo $this->db->last_query();die; */
+		$where="";
+		if($exam_center!='All')
+			$where.="AND `student_report`.`exam_center_id` = '".$exam_center."'";
+		if($exam_date!='All')	{
+			$edate=date("Y-m-d", strtotime($exam_date));
+			$where.="AND paper_master.exam_date = '".$edate."'";
+		}
+		if($shift!='All')	
+		$where.="AND paper_master.exam_shift = '".$shift."'";
+
+		$where.="  AND (`student_report`.`new_exam_form` != 'D' OR ( `student_report`.`session` = 'July 2021' AND `student_report`.`class_name` = 'I Year' ) OR ( `student_report`.`session` = 'Jan 2022' AND `student_report`.`class_name` = 'I SEM' )) GROUP BY `paper_master`.`exam_date`";
+
+		$sql="SELECT DISTINCT(paper_master.id), `exam_date`, `exam_shift`, `exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `new_exam_form_report` ON `new_exam_form_report`.`paper_id` = `paper_master`.`id` JOIN `student_report` ON `student_report`.`student_id` = `new_exam_form_report`.`student_id` WHERE `paper_master`.`type` = 'theory' AND `paper_master`.`exam_date` != ''  ".$where; 
 		
+		$query = $this->db->query($sql);
+        $data['papers'] = $query->result();
 		echo $this->load->view('admin/exam_center/exam_center_paper_count_show',$data, TRUE);
 	}
 

@@ -3,16 +3,7 @@
 foreach($papers as $pap)
 { 
    $total=0;
-   $where= array(
-      'cls.id'=>$pap->class_id,
-      'cg.id'=>$pap->course_group_id ,
-      
-   );
-   $tag='*';
-   $table="class_master  as cls";
-   $join_table='course_group as cg';
-   $join_on='cls.course_group_id = cg.id';
-   $courseData= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
+   
          ?>
 <p class="break"> &nbsp;&nbsp;&nbsp; </p>
 <div style="text-align:center;">
@@ -99,14 +90,17 @@ foreach($papers as $pap)
       $i=1;
       $this->db->select('*');
 		$this->db->from('paper_master');
-	
-		$this->db->where('exam_date',$pap->exam_date);
+	   if($exam_date!='All')
+		   $this->db->where('exam_date',$pap->exam_date);
+
+      $this->db->where('exam_shift',$pap->exam_shift);	
+      $this->db->order_by('exam_date','Asc');
       $this->db->order_by('exam_shift','Desc');
-     // $this->db->where('exam_shift',$pap->exam_shift);	
+     
 		$paperData = $this->db->get()->result();
       foreach($paperData as $paper)
       {
-         $where= array(
+         /*$where= array(
             'e.paper_code'=>$paper->paper_code,
             's.new_exam_form!='=>'D' ,
             's.class_id'=>$paper->class_id,
@@ -118,9 +112,9 @@ foreach($papers as $pap)
          $join_table='student as s';
          $join_on='e.student_id = s.student_id AND s.class_id = e.class_id';
          $count= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
-
+         */
          // New Query start 
-         $sql="SELECT count(*) as cnt FROM `new_exam_form_report` as `e` JOIN `student_report` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`exam_center_id`='".$exam_center."'   AND  `e`.`paper_code` = '".$paper->paper_code."' AND `s`.`class_id` = '".$paper->class_id."' AND   `s`.`exam_center_id` = '".$row->id."'  AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2021' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2022' AND `s`.`class_name` = 'I SEM' ));";    
+         $sql="SELECT count(*) as cnt FROM `new_exam_form_report` as `e` JOIN `student_report` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`exam_center_id`='".$exam_center."'   AND  `e`.`paper_code` = '".$paper->paper_code."' AND `s`.`class_id` = '".$paper->class_id."' AND   `s`.`exam_center_id` = '".$exam_center."'  AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2021' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2022' AND `s`.`class_name` = 'I SEM' ));";    
          $query = $this->db->query($sql);
          $count = $query->result_array();
         
@@ -129,7 +123,7 @@ foreach($papers as $pap)
          $all = $query->result_array();
         
           $allElective= $all[0]['num'];
-          
+         
          
         
          if($paper->class_id==104 && $paper->ce=='elective' && ( $allElective>0)){
@@ -137,18 +131,22 @@ foreach($papers as $pap)
             
          }
          //New Query end 
-       
+         if(($count[0]['cnt'] >0) || ($allElective >0) )
+         { 
          ?>
       <tr <?php if($i%2==0) echo 'bgcolor="#F0F0F0"'; ?>>
       <td> <?=$i ?> </td>
       <!--<td></td>-->
       <!--<td></td>-->
       <td>
-         <div align="left"><?=$courseData[0]->course_name?></div>
+         <div align="left"><?=$paper->course_name?></div>
       </td>
       <td align="center">
          <div align="center">
-         <?=$courseData[0]->class_name?>        </div>
+            <?php 
+            echo $class_name = $this->Common_model->getClassNameByClassId($paper->class_id);
+            ?>
+                </div>
       </td>
       <td><?= $paper->test_id?></td>
       <td>
@@ -162,7 +160,7 @@ foreach($papers as $pap)
          <?= $paper->exam_shift?>      </div></td>
       <td><?php echo $count[0]['cnt']+$allElective; ?> </td>
    </tr>
-   <?php $i++; $total+= $count[0]['cnt']+$allElective; } ?>
+   <?php $i++; $total+= $count[0]['cnt']+$allElective; }  }?>
       
   
    </tbody></table>
