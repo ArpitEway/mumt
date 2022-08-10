@@ -1455,7 +1455,7 @@ class ExamController extends CI_Controller {
 	}
 	
 	public function get_exam_center_wise_paper_count(){
-		$exam_center = $this->input->post('exam_center');
+		$data['exam_center']=$exam_center = $this->input->post('exam_center');
 		$exam_date = $this->input->post('exam_date');
 		$shift = $this->input->post('shift');
 		
@@ -1470,9 +1470,9 @@ class ExamController extends CI_Controller {
 
 		$this->db->select('DISTINCT(paper_master.id),exam_date,exam_shift,exam_day,paper_master.paper_code,paper_master.paper_name,paper_master.course_group_id,paper_master.class_id');
 		$this->db->from('paper_master');
-		$this->db->join('new_exam_form', 'new_exam_form.paper_id = paper_master.id');
-		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
-		$this->db->where('student.new_exam_form!=','D' );
+		$this->db->join('new_exam_form_report', 'new_exam_form_report.paper_id = paper_master.id');
+		$this->db->join('student_report', 'student_report.student_id = new_exam_form_report.student_id');
+		$this->db->where('student_report.new_exam_form!=','D' );
 		$this->db->where('paper_master.exam_date!=',"");
 		if($exam_date)	{
 			$edate=date("Y-m-d", strtotime($exam_date));
@@ -1481,7 +1481,7 @@ class ExamController extends CI_Controller {
 			
 		if($shift)	
 			$this->db->where('paper_master.exam_shift',$shift);
-		$this->db->where('student.exam_center_id', $exam_center );
+		$this->db->where('student_report.exam_center_id', $exam_center );
 		$this->db->group_by('paper_master.exam_date');
 		//$this->db->order_by('paper_master.exam_date');
 		$data['papers'] = $this->db->get()->result();

@@ -118,6 +118,25 @@ foreach($papers as $pap)
          $join_table='student as s';
          $join_on='e.student_id = s.student_id AND s.class_id = e.class_id';
          $count= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
+
+         // New Query start 
+         $sql="SELECT count(*) as cnt FROM `new_exam_form_report` as `e` JOIN `student_report` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`exam_center_id`='".$exam_center."'   AND  `e`.`paper_code` = '".$paper->paper_code."' AND `s`.`class_id` = '".$paper->class_id."' AND   `s`.`exam_center_id` = '".$row->id."'  AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2021' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2022' AND `s`.`class_name` = 'I SEM' ));";    
+         $query = $this->db->query($sql);
+         $count = $query->result_array();
+        
+             $qu="SELECT count(*) as num FROM `student_report` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paper->paper_code."' AND `p`.`class_id` = '".$paper->class_id."' AND `s`.`exam_center_id`='".$exam_center."'   AND temp_exam_form='N' and `session` = 'July 2021' AND `s`.`class_name` = 'I Year'";
+         $query = $this->db->query($qu);
+         $all = $query->result_array();
+        
+          $allElective= $all[0]['num'];
+          
+         
+        
+         if($paper->class_id==104 && $paper->ce=='elective' && ( $allElective>0)){
+            $allElective=round(($all[0]['num']*60)/100); 
+            
+         }
+         //New Query end 
        
          ?>
       <tr <?php if($i%2==0) echo 'bgcolor="#F0F0F0"'; ?>>
@@ -131,7 +150,7 @@ foreach($papers as $pap)
          <div align="center">
          <?=$courseData[0]->class_name?>        </div>
       </td>
-      <td>1019</td>
+      <td><?= $paper->test_id?></td>
       <td>
          <div align="left"><?= $paper->paper_code?></div>
       </td>
@@ -141,9 +160,9 @@ foreach($papers as $pap)
             <td>
          <div align="left">
          <?= $paper->exam_shift?>      </div></td>
-      <td><?=$count[0]->cnt?> </td>
+      <td><?php echo $count[0]['cnt']+$allElective; ?> </td>
    </tr>
-   <?php $i++; $total+=$count[0]->cnt; } ?>
+   <?php $i++; $total+= $count[0]['cnt']+$allElective; } ?>
       
   
    </tbody></table>

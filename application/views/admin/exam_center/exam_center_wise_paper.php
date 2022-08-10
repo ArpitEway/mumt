@@ -37,9 +37,10 @@
             <label for="course">Shift</label>
             <select  name="shift" readonly="readonly" id="shift" class="form-control course" required>
                 <option value="" selected="selected" >Select Exam Center</option>
-                <option value="Afternoon">Afternoon</option>
-                <option value="Early Morning">Early Morning</option>
+                <!-- <option value="Afternoon">Afternoon</option> -->
                 <option value="Morning" >Morning</option>
+                <option value="Evening">Evening</option>
+                
                 
             </select>
         </div>
@@ -79,6 +80,7 @@
         $("#headerTitle").html($("#exam_center option:selected").text());
         $("#exam_center").css("border",""); 
         $('.dt-responsive').html("");
+        $("#myLoader").show();
         if(exam_center){
             $.ajax({
 			method: "POST",
@@ -90,6 +92,7 @@
 					},
             })
             .done(function( msg ) {
+                $("#myLoader").hide();
                 if(msg)
                 $('.dt-responsive').html(msg);
                 else
