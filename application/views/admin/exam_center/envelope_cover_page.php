@@ -1,7 +1,7 @@
-<div class="  text-center p-3 ">
+<!-- <div class="  text-center p-3 "> -->
        <input type="hidden" id="multiple"  value="<?= $multiple; ?>">
        <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-       <div class="form-group col-md-3 mx-auto">
+       <div class="form-group col-md-3 mx-auto text-center">
         <label for="course">Test ID</label>
         <select  name="test_id" readonly="readonly" id="test_id" class="form-control course" required>
             <option value="" selected >Select Test ID</option>
@@ -31,8 +31,7 @@
 </div>  
 
 <script>
-   
-   
+    
   $("#test_id").on('change', function(){
 	var csrfName = $('.csrfname').attr('name');
 	var csrfHash = $('.csrfname').val(); 
