@@ -47,7 +47,7 @@ foreach($elist as $row)
     <tbody><tr><td colspan="4" align="center"><h4 align="center">TOP SECRET</h4></td></tr>
         <tr>
             <td><strong>Exam Center Code</strong></td>
-            <td style="font-size:17px"><strong><?php echo $row->examcentercode.' '.$page_break_count; ?></strong></td>
+            <td style="font-size:17px"><strong><?php echo $row->examcentercode; ?></strong></td>
             <td>Examination</td>
             <th><?= $examSession ?></th>
         </tr>
