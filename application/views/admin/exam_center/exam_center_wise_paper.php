@@ -79,8 +79,9 @@
         $("#headerTitle").html($("#exam_center option:selected").text());
         $("#exam_center").css("border",""); 
         $('.dt-responsive').html("");
-        $("#myLoader").show();
+       
         if(exam_center){
+            $("#myLoader").show();
             $.ajax({
 			method: "POST",
 			url: BASE_URL+"ExamController/get_exam_center_wise_paper_count",

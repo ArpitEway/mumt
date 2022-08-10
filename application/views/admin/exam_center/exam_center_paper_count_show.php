@@ -1,13 +1,23 @@
-<?php
+<style type="text/css">
+    .break{
+        page-break-before: always;
+    }
+    @page {
+      size: auto;
+  }
+</style>
+<?php 
+
+$page_break_count = 0;
 //$counter=1;
 foreach($papers as $pap)
 { 
-   $total=0;
+   
    
          ?>
 <p class="break"> &nbsp;&nbsp;&nbsp; </p>
 <div style="text-align:center;">
-<table width="80%" border="1" align="center">
+<table width="80%" border="1" align="center" class="<?php echo $page_break; ?>">
    <tbody><tr>
       <th width="25%" scope="row">
          <div align="left">Exam Center Code </div>
@@ -90,16 +100,22 @@ foreach($papers as $pap)
       $i=1;
       $this->db->select('*');
 		$this->db->from('paper_master');
-	   if($exam_date!='All')
+	   //if($exam_date!='All')
 		   $this->db->where('exam_date',$pap->exam_date);
+      $this->db->where('exam_date!=',"");	
+      $this->db->where('exam_date!=',"0000-00-00");	
+      
 
       $this->db->where('exam_shift',$pap->exam_shift);	
       $this->db->order_by('exam_date','Asc');
       $this->db->order_by('exam_shift','Desc');
      
 		$paperData = $this->db->get()->result();
+      //echo $this->db->last_query();die;
+      $total=0;
       foreach($paperData as $paper)
-      {
+      { 
+         
          /*$where= array(
             'e.paper_code'=>$paper->paper_code,
             's.new_exam_form!='=>'D' ,
@@ -134,35 +150,39 @@ foreach($papers as $pap)
          if(($count[0]['cnt'] >0) || ($allElective >0) )
          { 
          ?>
-      <tr <?php if($i%2==0) echo 'bgcolor="#F0F0F0"'; ?>>
-      <td> <?=$i ?> </td>
-      <!--<td></td>-->
-      <!--<td></td>-->
-      <td>
-         <div align="left"><?=$paper->course_name?></div>
-      </td>
-      <td align="center">
-         <div align="center">
+               <tr <?php if($i%2==0) echo 'bgcolor="#F0F0F0"'; ?>>
+               <td> <?=$i ?> </td>
+               <!--<td></td>-->
+               <!--<td></td>-->
+               <td>
+                  <div align="left"><?=$paper->course_name?></div>
+               </td>
+               <td align="center">
+                  <div align="center">
+                     <?php 
+                     echo $class_name = $this->Common_model->getClassNameByClassId($paper->class_id);
+                     ?>
+                        </div>
+               </td>
+               <td><?= $paper->test_id?></td>
+               <td>
+                  <div align="left"><?= $paper->paper_code?></div>
+               </td>
+               <td align="left">
+                  <div align="left"><?= $paper->paper_name?></div>
+               </td>
+                     <td>
+                  <div align="left">
+                  <?= $paper->exam_shift?>      </div></td>
+               <td><?php echo $count[0]['cnt']+$allElective; ?> </td>
+            </tr>
             <?php 
-            echo $class_name = $this->Common_model->getClassNameByClassId($paper->class_id);
-            ?>
-                </div>
-      </td>
-      <td><?= $paper->test_id?></td>
-      <td>
-         <div align="left"><?= $paper->paper_code?></div>
-      </td>
-      <td align="left">
-         <div align="left"><?= $paper->paper_name?></div>
-      </td>
-            <td>
-         <div align="left">
-         <?= $paper->exam_shift?>      </div></td>
-      <td><?php echo $count[0]['cnt']+$allElective; ?> </td>
-   </tr>
-   <?php $i++; $total+= $count[0]['cnt']+$allElective; }  }?>
+            $i++;  $total+= $count[0]['cnt']+$allElective;
+         }  
+      } ?>
       
   
    </tbody></table>
-<h3>Total Student Count <?=$total?></h3>
-<?php } ?>
+<h3 class="mt-4">Total Student Count <?=$total?></h3>
+<?php $page_break = ($page_break_count%1==0) ? 'break' : '';
+         $page_break_count++; } ?>
