@@ -1,16 +1,23 @@
 <br>
 <br> 
-<br><?php
+<br>
+<style>
+    .table th, .table td {
+     /* border-top: 1px solid #3F4254;*/
+     border-top:none;
+}
+</style>    
+<?php
 
 $total=0;
 foreach($elist as $row)
 {
      
-      $sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`examcentercode`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paperData[0]['paper_code']."' AND `s`.`class_id` = '".$paperData[0]['class_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2021' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2022' AND `s`.`class_name` = 'I SEM' ));";    
+      $sql="SELECT count(*) as cnt FROM `new_exam_form_report` as `e` JOIN `student_report` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`examcentercode`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paperData[0]['paper_code']."' AND `s`.`class_id` = '".$paperData[0]['class_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2021' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2022' AND `s`.`class_name` = 'I SEM' ));";    
     $query = $this->db->query($sql);
     $count = $query->result_array();
    
-        $qu="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paperData[0]['paper_code']."' AND `p`.`class_id` = '".$paperData[0]['class_id']."' AND `s`.`examcentercode`='".$row->examcentercode."' AND   `s`.`exam_center_id` = '".$row->id."'  AND temp_exam_form='N' and `session` = 'July 2021' AND `s`.`class_name` = 'I Year'";
+        $qu="SELECT count(*) as num FROM `student_report` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paperData[0]['paper_code']."' AND `p`.`class_id` = '".$paperData[0]['class_id']."' AND `s`.`examcentercode`='".$row->examcentercode."' AND   `s`.`exam_center_id` = '".$row->id."'  AND temp_exam_form='N' and `session` = 'July 2021' AND `s`.`class_name` = 'I Year'";
     $query = $this->db->query($qu);
     $all = $query->result_array();
    
@@ -28,7 +35,7 @@ foreach($elist as $row)
      {  
 ?>
 
-<table style="width:90%;text-align:center;font-size:15px" align="center" class="table table-hover table-striped" border="1">
+<table style="width:90%;text-align:left;font-size:15px" align="center" class="table table-hover table-striped" border="1">
     <tbody><tr><td colspan="4" align="center"><h4 align="center">TOP SECRET</h4></td></tr>
         <tr>
             <td><strong>Exam Center Code</strong></td>

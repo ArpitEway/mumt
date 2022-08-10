@@ -1377,8 +1377,7 @@ class ExamController extends CI_Controller {
 			exit;
 		}else
 		{
-			$titleData = array('title' => 'Envelope Cover Page Single Testid'); 
-			$this->load->view('header',$titleData);
+			
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('*,COUNT(id) as tot');
@@ -1392,6 +1391,8 @@ class ExamController extends CI_Controller {
 			$this->db->order_by("test_id", "asc");
 			$data['list'] = $this->db->get()->result();
 			$data['multiple']=true;
+			$titleData = array('title' => 'Envelope Cover Page Mutiple Testid'); 
+			$this->load->view('header',$titleData);
 			$this->load->view('admin/exam_center/envelope_cover_page',$data);
 			$this->load->view('footer');
 		}
