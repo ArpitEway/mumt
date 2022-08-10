@@ -1,6 +1,3 @@
-<br>
-<br> 
-<br>
 <style>
     .table th, .table td {
      /* border-top: 1px solid #3F4254;*/
@@ -17,7 +14,7 @@
 </style>
 <?php 
 
-$page_break_count = 0;  
+$page_break_count = 1;  
 
 $total=0;
 $page_break = 'break';
@@ -46,12 +43,11 @@ foreach($elist as $row)
      if(($count[0]['cnt'] >0) || ($allElective >0) )
      {  
 ?>
-
-<table style="width:90%;text-align:left;font-size:15px" align="center" class="table table-hover table-striped <?php echo $page_break; ?> mt-10" border="1">
+<table style="width:90%;text-align:left;font-size:15px" align="center" class="table table-hover table-striped <?php echo $page_break; ?> my-10" border="1">
     <tbody><tr><td colspan="4" align="center"><h4 align="center">TOP SECRET</h4></td></tr>
         <tr>
             <td><strong>Exam Center Code</strong></td>
-            <td style="font-size:17px"><strong><?php echo $row->examcentercode; ?></strong></td>
+            <td style="font-size:17px"><strong><?php echo $row->examcentercode.' '.$page_break_count; ?></strong></td>
             <td>Examination</td>
             <th><?= $examSession ?></th>
         </tr>
@@ -101,10 +97,8 @@ foreach($elist as $row)
         </tr>
     </tbody>
 </table>
-<br>
-<br> 
-<br>
-<?php $page_break = ($page_break_count%2==0) ? 'break' : '';
-     $page_break_count++; }
-     
+<?php 
+    $page_break = ($page_break_count%2==0) ? 'break' : '';
+    $page_break_count++; 
+ }
 }  ?>

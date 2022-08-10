@@ -1,6 +1,3 @@
-<br>
-<br> 
-<br>
 <style>
     .table th, .table td {
      /* border-top: 1px solid #3F4254;*/
@@ -69,7 +66,7 @@ foreach($elist as $row)
       
 ?>
 
-<table style="width:90%;text-align:left;font-size:15px" class="table  table-hover table-striped mt-10 <?php echo $page_break; ?>" border="1" align="center">
+<table style="width:90%;text-align:left;font-size:15px" class="table  table-hover table-striped my-10 <?php echo $page_break; ?>" border="1" align="center">
         <tbody><tr><td colspan="6" align="center"><h4 align="center">TOP SECRET</h4></td></tr>
             <tr>
                 <td><strong>Exam Center Code</strong></td>
@@ -127,11 +124,7 @@ foreach($elist as $row)
                     if($examShift=='Evening'){echo "03:00 PM To 06:00 PM"; }  ?></td> </tr>
         </tbody>
 </table>
-<br> 
-<br>
-<br> 
-<br>
-            <?php  } 
+            <?php  }
             $page_break = ($page_break_count%1==0) ? 'break' : '';
             $page_break_count++;
 } ?>
