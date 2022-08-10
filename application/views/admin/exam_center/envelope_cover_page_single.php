@@ -17,9 +17,10 @@
 </style>
 <?php 
 
-$page_break_count = 2;  
+$page_break_count = 0;  
 
 $total=0;
+$page_break = 'break';
 
 foreach($elist as $row)
 {
@@ -46,7 +47,7 @@ foreach($elist as $row)
      {  
 ?>
 
-<table style="width:90%;text-align:left;font-size:15px" align="center" class="table table-hover table-striped <?php echo $page_break; ?>" border="1">
+<table style="width:90%;text-align:left;font-size:15px" align="center" class="table table-hover table-striped <?php echo $page_break; ?> mt-10" border="1">
     <tbody><tr><td colspan="4" align="center"><h4 align="center">TOP SECRET</h4></td></tr>
         <tr>
             <td><strong>Exam Center Code</strong></td>

@@ -16,8 +16,8 @@
 </style>
 <?php 
 
-$page_break_count = 1;  
-
+$page_break_count = 0;  
+$page_break = 'break';
 
 foreach($elist as $row)
 {
