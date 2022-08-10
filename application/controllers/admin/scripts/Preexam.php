@@ -179,14 +179,14 @@ class Preexam extends CI_Controller {
 	public function update_exam_fields_from_paper_master_sub_table(){
 		echo "Update Exam Data in Paper Master";
 		$this->db->select('*');
-        $this->db->from('paper_master_sub');
+       		$this->db->from('paper_master_sub');
 		$rows=$this->db->get()->result();
 		$i=1;
 		foreach($rows as $row){
 
 			echo "<br> ".$i." ".$row->papersname ." ". $row->papercode ." ". $row->new_test_id;
 			$data  = array('exam_date'=>$row->new_exam_date , 'exam_day'=>$row->new_exam_day, 'exam_shift'=>$row->new_exam_shift);
-            $where = array('test_id'=>$row->new_test_id,'paper_code'=> $row->papercode, );
+            $where = array('test_id'=>$row->new_test_id,'paper_code'=> $row->papercode,'exam_date'=>'0000-00-00');
             $update =$this->Common_model->updateRecordByConditions('paper_master',$where,$data);
 		//	echo  $this->db->last_query(); die;
 			$i++;
