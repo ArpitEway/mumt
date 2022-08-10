@@ -53,7 +53,7 @@ foreach($elist as $row)
             <td colspan="3"><?= $paperData[0]['paper_name'] ?>(&nbsp;<?= $paperData[0]['paper_code'] ?>&nbsp;)</td>
         </tr> <tr>
             <td><strong>Paper</strong></td>
-            <td colspan="3"><?= $paperData[0]['paper_no'] ?></td>
+            <td colspan="3"><?= $paperData[0]['paper_no_for_time_table'] ?></td>
         </tr>
         <tr>
             <td style="vertical-align:middle"><strong>Test Id</strong></td>

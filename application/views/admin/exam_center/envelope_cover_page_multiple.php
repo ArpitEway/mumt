@@ -48,11 +48,11 @@ foreach($elist as $row)
          }
         $count[0]['cnt'];
         $tcheck+= $allElective + $count[0]['cnt'];
-         $countData=array("fill"=>$count[0]['cnt'],"all"=>$allElective,"class_id"=>$paper['class_id'],"paper_code"=>$paper['paper_code'],"course_name"=>$paper['course_name'] ,"examDate"=>  date("d-m-Y", strtotime($paper['exam_date'])),"examDay"=> $paper['exam_day'],"test_id"=>$paper['test_id'],  "examShift"=>$paper['exam_shift'],"paper_name"=>$paper['paper_name']);
+         $countData=array("fill"=>$count[0]['cnt'],"all"=>$allElective,"class_id"=>$paper['class_id'],"paper_code"=>$paper['paper_code'],"course_name"=>$paper['course_name'] ,"exam_date"=>  date("d-m-Y", strtotime($paper['exam_date'])),"exam_day"=> $paper['exam_day'],"test_id"=>$paper['test_id'],  "exam_shift"=>$paper['exam_shift'],"paper_name"=>$paper['paper_name']);
          //$arr[]=$count[0]['cnt']+ $allElective;
          $arr[]= $countData;
-    }//die;
-   // print_r($arr);
+    }
+  
     if($tcheck >0)
      {  
     //  echo "<br>Hello". $tcheck;
@@ -72,7 +72,7 @@ foreach($elist as $row)
             <tr>
                 <td><strong>Course Name</strong></td><td><strong>Class</strong></td><td><strong>Subject</strong></td><td><strong>Quantity</strong></td><td><strong>Paper Used</strong></td><td><strong>Paper Return</strong></td></tr>
                 <?php $total=0;$i=0;
-               
+               $examShift=$examDay=$examDate="";
                 foreach($arr as $paper){ $i++;    
                     $this->db->select('*');
                     $this->db->from('class_master');
