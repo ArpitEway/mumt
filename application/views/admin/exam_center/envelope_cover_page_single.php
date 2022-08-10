@@ -4,12 +4,23 @@
 <style>
     .table th, .table td {
      /* border-top: 1px solid #3F4254;*/
-     border-top:none;
-}
-</style>    
-<?php
+        border-top:none;
+    }
+    .break{
+        
+        page-break-before: always;
+       
+    }
+    @page {
+        size: auto;
+    }
+</style>
+<?php 
+
+$page_break_count = 2;  
 
 $total=0;
+
 foreach($elist as $row)
 {
      
@@ -35,7 +46,7 @@ foreach($elist as $row)
      {  
 ?>
 
-<table style="width:90%;text-align:left;font-size:15px" align="center" class="table table-hover table-striped" border="1">
+<table style="width:90%;text-align:left;font-size:15px" align="center" class="table table-hover table-striped <?php echo $page_break; ?>" border="1">
     <tbody><tr><td colspan="4" align="center"><h4 align="center">TOP SECRET</h4></td></tr>
         <tr>
             <td><strong>Exam Center Code</strong></td>
@@ -92,6 +103,7 @@ foreach($elist as $row)
 <br>
 <br> 
 <br>
-<?php }
-
+<?php $page_break = ($page_break_count%2==0) ? 'break' : '';
+     $page_break_count++; }
+     
 }  ?>

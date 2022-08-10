@@ -6,8 +6,18 @@
      /* border-top: 1px solid #3F4254;*/
      border-top:none;
 }
-</style>    
-<?php
+
+    .break{
+        page-break-before: always;
+    }
+    @page {
+      size: auto;
+  }
+</style>
+<?php 
+
+$page_break_count = 1;  
+
 
 foreach($elist as $row)
 {
@@ -59,7 +69,7 @@ foreach($elist as $row)
       
 ?>
 
-<table style="width:90%;text-align:left;font-size:15px" class="table  table-hover table-striped " border="1" align="center">
+<table style="width:90%;text-align:left;font-size:15px" class="table  table-hover table-striped mt-10 <?php echo $page_break; ?>" border="1" align="center">
         <tbody><tr><td colspan="6" align="center"><h4 align="center">TOP SECRET</h4></td></tr>
             <tr>
                 <td><strong>Exam Center Code</strong></td>
@@ -122,4 +132,6 @@ foreach($elist as $row)
 <br> 
 <br>
             <?php  } 
+            $page_break = ($page_break_count%1==0) ? 'break' : '';
+            $page_break_count++;
 } ?>
