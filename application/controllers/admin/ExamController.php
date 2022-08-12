@@ -1445,7 +1445,8 @@ class ExamController extends CI_Controller {
 			$data['exam_centers'] = $this->db->get()->result();
 			$this->db->select('*');
 			$this->db->from('paper_master');
-			$this->db->where('exam_date!=',"");	
+			$this->db->where('exam_date!=',"");
+			$this->db->where('exam_date!=',"0000-00-00");	
 			$this->db->group_by('exam_date');
 			$this->db->order_by('exam_date', "asc");
 			$data['examDate'] = $this->db->get()->result();
