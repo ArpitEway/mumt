@@ -3906,6 +3906,42 @@ public function update_exam_datewise_permission(){
 		$this->load->view('footer');		
 	}
 
+
+   public function exam_center_login()
+	{
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else{
+				$data = array();
+				$data['title'] = "Exam Center login";
+				$this->load->view('header');
+				$data['exam_centers'] = $this->Common_model->get_record('exam_center','*');
+				$data['name_csrf'] = $this->security->get_csrf_token_name();
+				$data['hash_csrf'] = $this->security->get_csrf_hash();
+				$this->load->view('admin/exam_center_login',$data);
+				$this->load->view('footer');
+			
+		}
+	}
+
+	public function exam_center_login_sub(){
+
+		$exam_center_id = $this->input->post('id');
+		$exam_center_data = $this->Common_model->getRecordByWhere('exam_center',array('id' => $exam_center_id));
+		$exam_center_count = count($exam_center_data);
+		if($exam_center_count>0){
+			$data = array('loged_in' => true,
+				'exam_center_id' => $exam_center_data[0]->id,
+                'Examcenterdata' => $exam_center_data[0]->examcentercode,		
+			);
+			$this->session->set_userdata($data);
+			$result = array("status" => "true");
+		 }else{
+			$result = array('error'=> "USERNAME INCORRECT");
+		 }
+		 echo json_encode($result);
+	 }
 	//Exam Center Wise Billing fetch
 	public function exam_center_wise_billing(){
 		if(!$this->session->has_userdata('adminData')){
