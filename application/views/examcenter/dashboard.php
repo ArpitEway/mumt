@@ -21,6 +21,11 @@
                             <span class="nav-text">Exam Center</span>
                         </div>
                     </a>   
+                    <a class="border-0 custom-menu-item" href="<?=base_url('Examcenter/exam_center_wise_paper_count_report');?>">
+                        <div>
+                            <span class="nav-text">Exam Center Wise Paper Count Report</span>
+                        </div>
+                    </a>   
                 </div>
             </div>
             <div class="tab-pane fade" id="exam" role="tabpanel" aria-labelledby="exam-tab">
@@ -29,4 +34,6 @@
             </div> 
         </div>
     </div>
+
+    
 </div>
