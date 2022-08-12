@@ -266,7 +266,7 @@ class Postexam extends CI_Controller {
             }
              $studentData = array('upload_result'=>'Y');
              if($paper_count==$abs_count && count($course_type)!=0){  
-             $studentData['Demo'] = 'Y';
+             $studentData['demo'] = 'Y';
              $studentData['new_exam_form'] = 'N';
             } else
             {
