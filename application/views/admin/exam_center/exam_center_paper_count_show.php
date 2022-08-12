@@ -1,22 +1,24 @@
-<?php
+<style type="text/css">
+    .break{
+        page-break-before: always;
+    }
+    @page {
+      size: auto;
+  }
+</style>
+<p class="break"></p>
+<?php 
+
+$page_break_count = 1;
 //$counter=1;
+
 foreach($papers as $pap)
 { 
-   $total=0;
-   $where= array(
-      'cls.id'=>$pap->class_id,
-      'cg.id'=>$pap->course_group_id ,
-      
-   );
-   $tag='*';
-   $table="class_master  as cls";
-   $join_table='course_group as cg';
-   $join_on='cls.course_group_id = cg.id';
-   $courseData= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
+   
+   
          ?>
-<p class="break"> &nbsp;&nbsp;&nbsp; </p>
-<div style="text-align:center;">
-<table width="80%" border="1" align="center">
+
+<table width="80%" border="1" align="center" class="<?php echo $page_break; ?>">
    <tbody><tr>
       <th width="25%" scope="row">
          <div align="left">Exam Center Code </div>
@@ -66,7 +68,7 @@ foreach($papers as $pap)
       <td align="left"><?= $pap->exam_day?></td>
    </tr>
 </tbody></table>
-<span>List of Paper<b></b> </span>
+<p style="text-align:center;"><b>List of Paper</b> </p>
 <table width="80%" align="center" cellspacing="0" cellpadding="8" border="1">
    <tbody><tr bgcolor="#FFCC99">
       <td><span style="font-weight: bold">#</span></td>
@@ -99,14 +101,23 @@ foreach($papers as $pap)
       $i=1;
       $this->db->select('*');
 		$this->db->from('paper_master');
-	
-		$this->db->where('exam_date',$pap->exam_date);
+	   //if($exam_date!='All')
+		   $this->db->where('exam_date',$pap->exam_date);
+      $this->db->where('exam_date!=',"");	
+      $this->db->where('exam_date!=',"0000-00-00");	
+      
+
+      $this->db->where('exam_shift',$pap->exam_shift);	
+      $this->db->order_by('exam_date','Asc');
       $this->db->order_by('exam_shift','Desc');
-     // $this->db->where('exam_shift',$pap->exam_shift);	
+     
 		$paperData = $this->db->get()->result();
+      //echo $this->db->last_query();die;
+      $total=0;
       foreach($paperData as $paper)
-      {
-         $where= array(
+      { 
+         
+         /*$where= array(
             'e.paper_code'=>$paper->paper_code,
             's.new_exam_form!='=>'D' ,
             's.class_id'=>$paper->class_id,
@@ -118,34 +129,61 @@ foreach($papers as $pap)
          $join_table='student as s';
          $join_on='e.student_id = s.student_id AND s.class_id = e.class_id';
          $count= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
-       
+         */
+         // New Query start 
+         $sql="SELECT count(*) as cnt FROM `new_exam_form_report` as `e` JOIN `student_report` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`exam_center_id`='".$exam_center."'   AND  `e`.`paper_code` = '".$paper->paper_code."' AND `s`.`class_id` = '".$paper->class_id."' AND   `s`.`exam_center_id` = '".$exam_center."'  AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2021' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2022' AND `s`.`class_name` = 'I SEM' ));";    
+         $query = $this->db->query($sql);
+         $count = $query->result_array();
+        
+             $qu="SELECT count(*) as num FROM `student_report` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paper->paper_code."' AND `p`.`id` = '".$paper->id."' AND `p`.`class_id` = '".$paper->class_id."' AND `s`.`exam_center_id`='".$exam_center."'   AND temp_exam_form='N' and `session` = 'July 2021' AND `s`.`class_name` = 'I Year'";
+         $query = $this->db->query($qu);
+         $all = $query->result_array();
+        
+          $allElective= $all[0]['num'];
+         
+         
+        
+         if($paper->class_id==104 && $paper->ce=='elective' && ( $allElective>0)){
+            $allElective=round(($all[0]['num']*60)/100); 
+            
+         }
+         //New Query end 
+         if(($count[0]['cnt'] >0) || ($allElective >0) )
+         { 
          ?>
-      <tr <?php if($i%2==0) echo 'bgcolor="#F0F0F0"'; ?>>
-      <td> <?=$i ?> </td>
-      <!--<td></td>-->
-      <!--<td></td>-->
-      <td>
-         <div align="left"><?=$courseData[0]->course_name?></div>
-      </td>
-      <td align="center">
-         <div align="center">
-         <?=$courseData[0]->class_name?>        </div>
-      </td>
-      <td>1019</td>
-      <td>
-         <div align="left"><?= $paper->paper_code?></div>
-      </td>
-      <td align="left">
-         <div align="left"><?= $paper->paper_name?></div>
-      </td>
-            <td>
-         <div align="left">
-         <?= $paper->exam_shift?>      </div></td>
-      <td><?=$count[0]->cnt?> </td>
-   </tr>
-   <?php $i++; $total+=$count[0]->cnt; } ?>
+               <tr <?php if($i%2==0) echo 'bgcolor="#F0F0F0"'; ?>>
+               <td> <?=$i ?> </td>
+               <!--<td></td>-->
+               <!--<td></td>-->
+               <td>
+                  <div align="left"><?=$paper->course_name?></div>
+               </td>
+               <td align="center">
+                  <div align="center">
+                     <?php 
+                     echo $class_name = $this->Common_model->getClassNameByClassId($paper->class_id);
+                     ?>
+                        </div>
+               </td>
+               <td><?= $paper->test_id?></td>
+               <td>
+                  <div align="left"><?= $paper->paper_code?></div>
+               </td>
+               <td align="left">
+                  <div align="left"><?= $paper->paper_name?></div>
+               </td>
+                     <td>
+                  <div align="left">
+                  <?= $paper->exam_shift?>      </div></td>
+               <td style="text-align:center;"><?php echo $count[0]['cnt']+$allElective; ?> </td>
+            </tr>
+            <?php 
+            $i++;  $total+= $count[0]['cnt']+$allElective;
+         }  
+      } ?>
       
   
    </tbody></table>
-<h3>Total Student Count <?=$total?></h3>
-<?php } ?>
+<h3 class="mt-4" style="text-align:center;">Total Student Count <?=$total?></h3>
+<?php $page_break = ($page_break_count%1==0) ? 'break' : '';
+         $page_break_count++; } ?>

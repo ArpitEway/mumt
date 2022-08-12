@@ -5,7 +5,7 @@
             <label for="course">Exam Center</label>
             <select  name="exam_center" readonly="readonly" id="exam_center" class="form-control course" required>
                 <option value=""  >Select Exam Center</option>
-                <option value="All"  >All</option>
+               
                 <?php 
 
                 foreach($exam_centers as $ecenter)
@@ -20,8 +20,8 @@
         <div class="form-group col-md-3">
             <label for="course">Date Of Paper</label>
             <select  name="exam_date" readonly="readonly" id="exam_date" class="form-control course" required>
-                <option value=""  >Select Exam Date</option>
-                <!-- <option value="All"  >All</option> -->
+               
+                <option value="All" selected="selected" >All</option>
                 <?php 
 
                 foreach($examDate as $edate)
@@ -36,10 +36,10 @@
         <div class="form-group col-md-3">
             <label for="course">Shift</label>
             <select  name="shift" readonly="readonly" id="shift" class="form-control course" required>
-                <option value="" selected="selected" >Select Exam Center</option>
-                <option value="Afternoon">Afternoon</option>
-                <option value="Early Morning">Early Morning</option>
+                
                 <option value="Morning" >Morning</option>
+                <option value="Evening">Evening</option>
+                
                 
             </select>
         </div>
@@ -79,7 +79,9 @@
         $("#headerTitle").html($("#exam_center option:selected").text());
         $("#exam_center").css("border",""); 
         $('.dt-responsive').html("");
+       
         if(exam_center){
+            $("#myLoader").show();
             $.ajax({
 			method: "POST",
 			url: BASE_URL+"ExamController/get_exam_center_wise_paper_count",
@@ -90,6 +92,7 @@
 					},
             })
             .done(function( msg ) {
+                $("#myLoader").hide();
                 if(msg)
                 $('.dt-responsive').html(msg);
                 else
