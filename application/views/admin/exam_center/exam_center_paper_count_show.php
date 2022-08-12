@@ -178,5 +178,5 @@ foreach($papers as $pap)
          } ?>
       </tbody>
    </table>
-<h3 class="mt-4" style="text-align:center;">Total Student Count <?=$total?></h3>
+<h3 class="my-10" style="text-align:center;">Total Student Count <?=$total?></h3>
 <?php } ?>
