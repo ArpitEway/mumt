@@ -59,7 +59,7 @@ foreach($papers as $pap)
       <th scope="row">
          <div align="left">Date </div>
       </th>
-      <td align="left"><?= $pap->exam_date?></td>
+      <td align="left"><?php  echo  date("d-m-Y", strtotime($pap->exam_date))  ?></td>
    </tr>
    <tr>
       <th scope="row">

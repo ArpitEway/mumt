@@ -1459,15 +1459,12 @@ class ExamController extends CI_Controller {
 		$data['exam_center']=$exam_center = $this->input->post('exam_center');
 		$data['exam_date']=$exam_date = $this->input->post('exam_date');
 		$data['shift']=$shift = $this->input->post('shift');
-		if($exam_center!='All')
-		$where= array(
-            'a.exam_center_id'=>$exam_center,
-         );
-         $tag='*';
-         $table="exam_center  as e";
-         $join_table='allot_exam_center as a';
-         $join_on='a.exam_center_id = e.id';
-         $data['exam_centers']= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
+		$this->db->select('*');
+		$this->db->from('exam_center');
+		
+		$this->db->where('id',$exam_center);	
+		$data['exam_centers'] = $this->db->get()->result();
+
 /*
 		$this->db->select('DISTINCT(paper_master.id),exam_date,exam_shift,exam_day,paper_master.paper_code,paper_master.paper_name,paper_master.course_group_id,paper_master.class_id');
 		$this->db->from('paper_master');
@@ -1499,9 +1496,9 @@ class ExamController extends CI_Controller {
 		if($shift!='All')	
 		$where.="AND paper_master.exam_shift = '".$shift."'";
 
-		$where.="  AND (`student_report`.`new_exam_form` != 'D' OR ( `student_report`.`session` = 'July 2021' AND `student_report`.`class_name` = 'I Year' ) OR ( `student_report`.`session` = 'Jan 2022' AND `student_report`.`class_name` = 'I SEM' )) GROUP BY `paper_master`.`exam_date`";
+		$where.="   GROUP BY `paper_master`.`exam_date`";
 
-		 $sql="SELECT DISTINCT(paper_master.id), `exam_date`, `exam_shift`, `exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `new_exam_form_report` ON `new_exam_form_report`.`paper_id` = `paper_master`.`id` JOIN `student_report` ON `student_report`.`student_id` = `new_exam_form_report`.`student_id` WHERE `paper_master`.`type` = 'theory' AND `paper_master`.`exam_date` != ''  ".$where; 
+		 $sql="SELECT DISTINCT(paper_master.id), `exam_date`, `exam_shift`, `exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student_report` ON `student_report`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = 'theory' AND `paper_master`.`exam_date` != '' AND paper_master.exam_date!='0000-00-00'  ".$where; 
 		
 		$query = $this->db->query($sql);
         $data['papers'] = $query->result();
