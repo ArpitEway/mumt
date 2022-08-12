@@ -1929,4 +1929,60 @@ class Center extends CI_Controller {
 		}
 	}
 	
+	public function search_exam_by_course(){
+		$dt = array();
+		$titleData = array('title' => 'Course Wise Exam Date ');
+		$this->load->view('Centers/header',$titleData);
+		
+		$dt['name_csrf'] = $this->security->get_csrf_token_name();
+		$dt['hash_csrf'] = $this->security->get_csrf_hash();
+	
+		$this->db->select('course_group.*');
+		$this->db->from('course_group');
+		$this->db->join('paper_master', 'paper_master.course_group_id = course_group.id');
+		$this->db->where('paper_master.exam_date!=','');
+		$this->db->where('paper_master.exam_date!=','0000-00-00');  
+		$this->db->where('paper_master.type','theory'); 
+	   
+		$this->db->group_by('paper_master.course_group_id');
+		$this->db->order_by('course_group.course_name', 'Asc');
+		$dt['courses']= $this->db->get()->result_array();
+		$this->load->view('Centers/search_exam_by_course',$dt);
+		$this->load->view('Centers/footer');
+	}
+	//For Both private & regular 
+	public function getClassByCourseForBoth(){
+		$course = $this->input->post('course');
+	
+		$this->db->select('class_master.id,class_master.class_name');
+                $this->db->from('class_master');
+                $this->db->join('paper_master', 'paper_master.class_id = class_master.id');
+                $this->db->where('paper_master.exam_date!=','');
+				$this->db->where('paper_master.exam_date!=','0000-00-00'); 
+                $this->db->where('paper_master.type','theory'); 
+				$this->db->where('class_master.course_group_id',$course); 
+			 
+                $this->db->group_by('class_master.class_name');
+				$this->db->order_by('class_master.class_name', 'Asc');
+                $class_list= $this->db->get()->result_array();
+			
+		$data = array(
+			'class_list' => $class_list,
+			//'all' => 'All',
+		);	
+		echo $this->load->view('template/getclass',$data,true);
+	}
+	//Time Table
+	public function getExamTimeTable(){
+		$course = $this->input->post('course');
+		$class_id = $this->input->post('class_id');
+		$data['class'] = $this->Common_model->get_record('class_master','*',array("course_group_id"=>$course,"id"=>$class_id));
+		$this->db->order_by('exam_date', 'Asc');
+		$this->db->order_by('exam_shift', 'Desc');
+		$this->db->order_by('paper_no', 'Asc');
+		$data['paper_list'] = $this->Common_model->get_record('paper_master','*',array("course_group_id"=>$course,"class_id"=>$class_id,"type"=>'theory','paper_master.exam_date!='=>'','paper_master.exam_date!='=>'0000-00-00'));
+	
+	//	echo $this->db->last_query();																				  
+		echo $this->load->view('Centers/time_table',$data,true);
+	}
 }

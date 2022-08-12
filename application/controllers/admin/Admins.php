@@ -2151,7 +2151,7 @@ public function getStudentData()
 
 	public function exam_form_status(){
 
-		$this->load->view('header',array('title' => 'Exam Wise Student Status(DEC-2021)'));
+		$this->load->view('header',array('title' => 'Exam Form Status(June 2022)'));
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
@@ -2177,7 +2177,7 @@ public function getStudentData()
 
 	public function class_wise_exam_from_status(){
 
-		$this->load->view('header',array('title' => 'Class Wise Exam Form Status(DEC-2021)'));
+		$this->load->view('header',array('title' => 'Class Wise Exam Form Status(June 2022)'));
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
@@ -3458,6 +3458,7 @@ public function update_exam_datewise_permission(){
 	public function update_student_mode(){
 		$student_id = $_POST['student_id'];
 		$student= $this->Common_model->getRecordByWhere('student',array("student_id"=>$student_id));
+
 		$course = $this->Common_model->getRecordByWhere('course_group',array("id"=>$student[0]->course_group_id));
 
 		if ($student[0]->university_mode=='REG') {
@@ -3941,5 +3942,74 @@ public function update_exam_datewise_permission(){
 		 }
 		 echo json_encode($result);
 	 }
+	//Exam Center Wise Billing fetch
+	public function exam_center_wise_billing(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+			$titleData = array('title' => 'Exam Center Wise Billing'); 
+			$this->load->view('header',$titleData);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$this->db->select('*');
+			$this->db->from('exam_center');
+			
+			$data['exam_centers'] = $this->db->get()->result();
+			
+
+			$this->load->view('admin/exam_center/exam_center_wise_billing',$data);
+			$this->load->view('footer');
+		}
+	}	
+
+	public function get_exam_center_wise_billing(){
+		$exam_center = $this->input->post('exam_center');
+		$this->db->select('*');
+		$this->db->from('exam_center');
+		if($exam_center!="All")
+		$this->db->where('id',$exam_center);	
+		$data['exam_centers'] = $this->db->get()->result();
+		$this->db->select('*');
+			$this->db->from('paper_master');
+			$this->db->where('exam_date!=',"");	
+			$this->db->group_by(array('exam_date','exam_shift'));
+			$this->db->order_by('exam_date', "asc");
+			$this->db->order_by('exam_shift', "dsc");
+			$data['examDate'] = $this->db->get()->result();
+			//echo $this->db->last_query();
+		echo $this->load->view('admin/exam_center/exam_center_wise_billing_show',$data, TRUE);
+	}
+	public function class_wise_old_exam_from_status(){
+
+		$this->load->view('header',array('title' => 'Class Wise Exam Form Status(DEC-2021)'));
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		$where = array('new_exam_form !=' =>'D' );
+		$data['counts']=$this->Common_model->old_exam_form_permission_status($where);
+		$this->load->view('admin/class_wise_old_exam_from_status',$data);
+		$this->load->view('footer');
+	}
+	//Exam Center Wise Billing fetch
+	public function exam_center_billing_report(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+		$data = array();
+		$data['title'] = "Exam Center Billing June 2022";
+		$csrf = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
+		$this->load->view('header',$data);
+		$this->load->view('admin/exam_center/exam_center_billing_report',$csrf);
+		$this->load->view('footer');
+		}
+	}	
 
 }// class

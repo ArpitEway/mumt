@@ -385,7 +385,7 @@ class Postexam extends CI_Controller {
         //$this->db->where('examcentercode','NU');
         $start=0;
 		//$start=($startlimit-1)*1000;
-		$this->db->limit(1000,$start);
+		$this->db->limit(2000,$start);
         $rows=$this->db->get()->result();
         //echo $this->db->last_query();
         $i=1;

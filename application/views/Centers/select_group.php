@@ -275,8 +275,8 @@ if(select_group!=0){
 	
 
 	var data = $("form").serialize(); 
-
-    console.log(data);
+$('#group_submit').attr("disabled","disabled");
+    //console.log(data);
     
 	 $.ajax({
 	        	url: "<?=base_url('center/center/submit_group');?>",  

@@ -23,7 +23,7 @@ class Preexam extends CI_Controller {
 		$class_ids = $classes[0]['class_id'];
 		
 		$this->db->select('count(class_id) as num,course_name,class_name,class_id');
-		$this->db->where('class_id in ('.$class_ids.') and payment_status="Y" and temp_exam_form="N"');
+		$this->db->where('class_id in ('.$class_ids.') and temp_exam_form="N"');// and payment_status="Y"
 		$this->db->group_by('class_id');
 		$this->db->order_by('course_group_id');
 		$studentClasses = $this->db->get('student')->result();
@@ -38,7 +38,7 @@ class Preexam extends CI_Controller {
 	public function upload_exam_paper_sub($class_id)
 	{
 		$where = array('class_id' => $class_id,
-					'payment_status' => 'Y',
+					//'payment_status' => 'Y',
 					'temp_exam_form' => "N",
 		);
 		$this->db->order_by('id');
@@ -175,19 +175,20 @@ class Preexam extends CI_Controller {
 			}
 		}
 	}	
-	// Update Test ID in Paper Master from paper_testid_relation table
-	public function update_testid_from_relation_table(){
-		echo "Update Test ID in Paper Master";
+	// Update Exam fields in Paper Master from paper_paper_master_sub table
+	public function update_exam_fields_from_paper_master_sub_table(){
+		echo "Update Exam Data in Paper Master";
 		$this->db->select('*');
-        $this->db->from('paper_testid_relation');
+       		$this->db->from('paper_master_sub');
 		$rows=$this->db->get()->result();
 		$i=1;
 		foreach($rows as $row){
 
-			echo "<br> ".$i." ".$row->paper_id ." ". $row->paper_code ." ". $row->test_id;
-			$data  = array('test_id'=>$row->test_id ,);
-            $where = array('id'=>$row->paper_id,'paper_code'=> $row->paper_code, );
+			echo "<br> ".$i." ".$row->papersname ." ". $row->papercode ." ". $row->new_test_id;
+			$data  = array('exam_date'=>$row->new_exam_date , 'exam_day'=>$row->new_exam_day, 'exam_shift'=>$row->new_exam_shift);
+            $where = array('test_id'=>$row->new_test_id,'paper_code'=> $row->papercode,'exam_date'=>'0000-00-00');
             $update =$this->Common_model->updateRecordByConditions('paper_master',$where,$data);
+		//	echo  $this->db->last_query(); die;
 			$i++;
 		}
 	}

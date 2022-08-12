@@ -105,7 +105,7 @@
 		<script type='text/javascript' src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
 		<script type="text/javascript">
 			$("#dob").inputmask();
-			$("#enrollment_no").inputmask({"mask": "AG/99999999"});
+			$("#enrollment_no").inputmask({"mask": "AA/99999999"});
 		</script>
 	</body>
 	<!--end::Body-->
