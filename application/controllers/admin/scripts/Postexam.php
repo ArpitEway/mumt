@@ -106,8 +106,12 @@ class Postexam extends CI_Controller {
         $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
         $this->db->limit(600);
         $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'N'));
+      $this->db->where_in('course_group.course_type',array('Diploma','PGDiploma'));
+      $course_type = $this->Common_model->getRecordByWhere("course_group",array('id'=> $students[0]->course_group_id));
+
         foreach($students as $student)
         {
+         
             $check_grace_marks = false;
             $fail_count = 0;
             $abs_count = 0;
@@ -120,6 +124,8 @@ class Postexam extends CI_Controller {
             $fail_result_count=0;
             $final_result = '';
             $p_fail_count = 0;
+             $paper_count = 0;
+
             $examData = array(
                 'student_id' => $student->student_id,
                 'session' => $student->session,
@@ -144,8 +150,10 @@ class Postexam extends CI_Controller {
                 if($marks->paper_type=='theory'){
                     $tot_std_marks += $marks->theory_marks + $marks->int_marks;
                     $tot_marks += $paper_master[0]->max_theory_marks + $paper_master[0]->max_internal_marks;
+
                     if($marks->theory_marks==''){
                         $whCount++;
+
                     }
                     if ($marks->theory_marks=='ABS') {
                         $abs_count++;
@@ -193,7 +201,7 @@ class Postexam extends CI_Controller {
             }else{
                 $final_result = 'PASS';   
             }
-            if ($final_result=='FAIL') {
+             if ($final_result=='FAIL'  && count($course_type)==0) {
                 continue;
             }
             $examData['university_mode'] = $student->university_mode;
@@ -205,14 +213,14 @@ class Postexam extends CI_Controller {
             $examData['exam_status'] = 'R';
             $examData['exam_result'] = $final_result;
 
-            $old_exam_data_id = $this->Common_model->insertAll('old_exam_data',$examData);
+           $old_exam_data_id = $this->Common_model->insertAll('old_exam_data',$examData);
             echo $this->db->last_query().'<br>';
             if($old_exam_data_id){
                 foreach($new_exam_form as $marks)
                 {
                     $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$marks->class_id,'paper_code'=>$marks->paper_code));
                     if($marks->paper_type=="theory"){
-                        $result = "PASS";
+                        $result = "PASS";  
                         if($marks->theory_marks=='' || $marks->theory_marks=='ABS' ){
                             $result = "FAIL";
                         }
@@ -223,6 +231,7 @@ class Postexam extends CI_Controller {
                                 $result = 'FAIL';
                             }
                         }
+                       $paper_count++;    
                     }else if($marks->paper_type=="practical"){
                         $result = "PASS";
                         if($marks->p_marks=='' || $marks->p_marks=='N' || $marks->p_marks=='ABS'){
@@ -250,18 +259,28 @@ class Postexam extends CI_Controller {
                         'result' => $result ,
                         'p_order'=> $marks->paper_order 
                     );
-                    $insert = $this->Common_model->insertAll('old_result_data',$ResultData);
+                   $insert = $this->Common_model->insertAll('old_result_data',$ResultData);
                     echo $this->db->last_query().'<br>';
                 } 
+
             }
-            $studentData = array('upload_result'=>'Y', 'promote' => 'N');
-            $this->Common_model->updateRecordByConditions('student',array('student_id'=>$student->student_id),$studentData);     
+             $studentData = array('upload_result'=>'Y');
+             if($paper_count==$abs_count && count($course_type)!=0){  
+             $studentData['Demo'] = 'Y';
+             $studentData['new_exam_form'] = 'N';
+            } else
+            {
+            $studentData['promote'] = 'N';
+            }
+           $this->Common_model->updateRecordByConditions('student',array('student_id'=>$student->student_id),$studentData);     
             if($insert){
                 echo $old_exam_data_id;
                  echo '<hr style="margin:20px; 0px;">';
                // die;
             } 
         }
+     
+    
     }
 
     public function general_promotion_class_list_paper_count(){
