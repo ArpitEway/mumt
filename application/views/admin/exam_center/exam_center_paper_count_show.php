@@ -6,10 +6,12 @@
       size: auto;
   }
 </style>
+<p class="break"></p>
 <?php 
 
 $page_break_count = 1;
 //$counter=1;
+
 foreach($papers as $pap)
 { 
    
@@ -173,7 +175,7 @@ foreach($papers as $pap)
                      <td>
                   <div align="left">
                   <?= $paper->exam_shift?>      </div></td>
-               <td><?php echo $count[0]['cnt']+$allElective; ?> </td>
+               <td style="text-align:center;"><?php echo $count[0]['cnt']+$allElective; ?> </td>
             </tr>
             <?php 
             $i++;  $total+= $count[0]['cnt']+$allElective;
