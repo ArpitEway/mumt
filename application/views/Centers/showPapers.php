@@ -225,7 +225,7 @@
 			<?php
 		}else{
 			?>
-			<?php if($student['temp_exam_form']=='Y')
+			<?php if($student['temp_exam_form']=='Y' && $student['new_exam_form']=='N')
 
 			{ ?>
 				<a class="btn btn-success" href="<?= base_url('Payment/exam_form/'.$student_id) ?>">Process To Payment</a>
