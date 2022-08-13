@@ -459,7 +459,7 @@ class Postexam extends CI_Controller {
     public function diploma_demo_set($student_id,$class_id)
     {
         $where = array('student_id'=>$student_id,'new_exam_form'=>'D');
-        $data = array('demo'=>'Y','new_exam_form'=>'Y');
+        $data = array('demo'=>'Y','new_exam_form'=>'N');
         $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
         if($update){
         redirect(base_url('admin/scripts/Postexam/diploma_upload_old_data_script/'.$class_id));
