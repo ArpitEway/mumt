@@ -87,15 +87,20 @@
                </td>
             <?php
           }
-          if($exam_form_button=="submitted")
-          {
+         
+              
            ?>
            <td>
-            <a class="btn btn-primary" href="<?=base_url('showPapers/'.$student_id)?>">View Paper</a>
-        </td>
-        <?php
+               <?php  if($exam_form_button=="submitted" && $student->temp_exam_form=='Y')
+          { 
+           echo ' <a class="btn btn-primary" href="'.base_url('showPapers/'.$student_id).'">View Paper</a>';
+           
+        }else{ 
+            echo ' <a class="btn btn-primary" href="'.base_url('select_papers/'.$student_id) .'">Select Papers</a>';
         }
     ?>
+        </td>
+        
     <?php
     $i++;
         }
