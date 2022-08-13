@@ -89,19 +89,14 @@
           }
          
               
-           ?>
-           <td>
-               <?php  if($exam_form_button=="submitted" && $student->temp_exam_form=='Y')
+            if($exam_form_button=="submitted" && $student->temp_exam_form=='Y')
           { 
-           echo ' <a class="btn btn-primary" href="'.base_url('showPapers/'.$student_id).'">View Paper</a>';
+           echo ' <td><a class="btn btn-primary" href="'.base_url('showPapers/'.$student_id).'">View Paper</a></td>';
            
-        }else{ 
-            echo ' <a class="btn btn-primary" href="'.base_url('select_papers/'.$student_id) .'">Select Papers</a>';
+        }elseif($exam_form_button=="submitted" && $student->temp_exam_form=='N'){ 
+            echo '<td> <a class="btn btn-primary" href="'.base_url('select_papers/'.$student_id) .'">Select Papers</a></td>';
         }
-    ?>
-        </td>
-        
-    <?php
+   
     $i++;
         }
     ?>
