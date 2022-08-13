@@ -22,6 +22,17 @@
 	</style>
   </head>
   <body>
+ <?php foreach($exam_center_students as $student)  { 
+     $wherePaper = array('student_id' => $student->student_id,'paper_master.type'=>'theory');
+     $this->db->select('*');
+     $this->db->from('paper_master');
+     $this->db->join('new_exam_form', 'new_exam_form.paper_id = paper_master.id');
+     //$this->db->join('time_table', 'paper_master.class_id = time_table.class_id');
+     $this->db->where($wherePaper);
+     $this->db->order_by("exam_date", "asc");
+     $this->db->order_by("exam_shift", "desc");
+     $papers = $this->db->get()->result();
+     ?>   
 <section>
 	<div class="">
 	<div  id="container_content"  style="margin: auto; width:1150px;">
@@ -56,30 +67,30 @@
 				<div class="row">
 					<div class="col-12">
 						<table class="table table-bordered">
-							<input type="hidden" value="<?php echo $student[0]->student_id ; ?>" id="student_id">
+							<input type="hidden" value="<?php echo $student->student_id ; ?>" id="student_id">
 						  <tbody>
 							<!-- <tr>
-							  <td colspan="4"><b>Exam Center: </b><?= $this->Common_model->getCenterNameById($student[0]->id); ?></td>
+							  <td colspan="4"><b>Exam Center: </b><?= $this->Common_model->getCenterNameById($student->id); ?></td>
 							</tr>
 								<tr>
-							  <td colspan="4"><b>College: </b><?=$student[0]->center_name; ?></td>
+							  <td colspan="4"><b>College: </b><?=$student->center_name; ?></td>
 							    </tr> -->
 							<tr>
-								<td><b>Roll No: </b> <?=$student[0]->roll_no;?></td>
-								<td colspan="2"><b>Enrollment No: </b><?=$student[0]->enrollment_no;?></td>
-								 <td rowspan="4"><img src="<?=base_url('assets/student_image/'.$student[0]->photo);?>"  width="115px" height="166px" /></td> 
+								<td><b>Roll No: </b> <?=$student->roll_no;?></td>
+								<td colspan="2"><b>Enrollment No: </b><?=$student->enrollment_no;?></td>
+								 <td rowspan="4"><img src="<?=base_url('assets/student_image/'.$student->photo);?>"  width="115px" height="166px" /></td> 
 							</tr>
 							<tr>
-							  <td><b>Student Name: </b> <?=$student[0]->name;?></td>
-							  <td colspan="2"><b>Father/Husband Name: </b> <?=$student[0]->f_h_name;?></td>
+							  <td><b>Student Name: </b> <?=$student->name;?></td>
+							  <td colspan="2"><b>Father/Husband Name: </b> <?=$student->f_h_name;?></td>
 							</tr>
 							<tr>
-							  <td><b>Course: </b> <?=$student[0]->course_name;?></td>
-							  <td colspan="2"><b>Class: </b> <?=$student[0]->class_name;?></td>
+							  <td><b>Course: </b> <?=$student->course_name;?></td>
+							  <td colspan="2"><b>Class: </b> <?=$student->class_name;?></td>
 							</tr>
 							<tr>
 								<td><b>Mode:</b> Regular</td>
-								<td class="border border-dark" colspan="2"> <b>Mobile No. :</b> <?php 	$mobile_no =$this->Common_model->getMobileNoByStudentID($student[0]->student_id);	?><?= $mobile_no ?> </td>
+								<td class="border border-dark" colspan="2"> <b>Mobile No. :</b> <?php 	$mobile_no =$this->Common_model->getMobileNoByStudentID($student->student_id);	?><?= $mobile_no ?> </td>
 							</tr>
 						  </tbody>
 						</table>
@@ -179,7 +190,7 @@
 </div>
 </section>
     
- 
+ <?php } ?>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js" ></script>
 	<script>
