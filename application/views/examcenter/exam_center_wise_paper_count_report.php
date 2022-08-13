@@ -1,14 +1,27 @@
 <div class="row text-center p-3">
     <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+   <?php if(@$_SESSION['Examcenterdata']) {
+       $whereClass = array('examcentercode' =>$_SESSION['Examcenterdata'], );
+      $exam_center= $this->Common_model->getRecordByWhere('exam_center',$whereClass);
+      
+      $exam_center_id=$exam_center[0]->id;
+       ?>
+       <input type="hidden" name="Examcenterdata" value="<?php echo $exam_center_id; ?>" id="exam_center">
+       <?php
+   }
+                    // if($_SESSION['Examcenterdata']==$ecenter->examcentercode) 
+//$exam_center_id= $ecenter->id; 
+else{  ?>
     <div class="form-group col-md-3">
         <label for="course">Exam Center</label>
         <select  name="exam_center" readonly="readonly" id="exam_center" class="form-control course" required>
             <option value=""  >Select Exam Center</option>
 
             <?php 
-
+                $exam_center_id="";
             foreach($exam_centers as $ecenter)
             {
+               
                 ?>
                 <option value="<?php echo $ecenter->id; ?>"   ><?php echo $ecenter->examcentercode.' ('.$ecenter->schoolcollegename.')'; ?></option>
                 <?php
@@ -16,15 +29,17 @@
             ?>
         </select>
     </div>
+    <?php } ?>
     <div class="form-group col-md-3">
         <label for="course">Date Of Paper</label>
         <select  name="exam_date" readonly="readonly" id="exam_date" class="form-control course" required>
 
-            <option value="All" selected="selected" >All</option>
+            <!-- <option value="All" selected="selected" >All</option> -->
             <?php 
 
             foreach($examDate as $edate)
             {
+               
                 ?>
                 <option value="<?php echo  date("d-m-Y", strtotime($edate->exam_date)); ?>"   ><?php echo  date("d-m-Y", strtotime($edate->exam_date)); ?></option>
                 <?php
@@ -42,6 +57,7 @@
 
         </select>
     </div>
+    
     <div class="form-group col-md-3">
         <button type="button" style="margin-top: 25px;" class="btn btn-primary" id="search" name="search" >Search</button>
     </div>
@@ -58,7 +74,7 @@
 
 </div> 
 
-
+<?php //echo "<pre>"; print_r($_SESSION); ?>
 <script>
     // $(document).ready(function() {
     //      $('#exam_center').change();

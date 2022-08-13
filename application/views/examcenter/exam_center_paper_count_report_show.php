@@ -119,6 +119,7 @@ foreach($papers as $pap)
             's.new_exam_form='=>'Y' ,
             's.class_id'=>$paper->class_id,
             's.course_group_id'=>$paper->course_group_id,
+            's.exam_center_id'=>$exam_center,
            
          );
          $tag='count(*) as cnt';
@@ -128,11 +129,11 @@ foreach($papers as $pap)
          $count= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
          
          // New Query start 
-      //  echo  $sql="SELECT count(*) as cnt FROM `new_exam_form_report` as `e` JOIN `student_report` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`exam_center_id`='".$exam_center."'   AND  `e`.`paper_code` = '".$paper->paper_code."' AND `s`.`class_id` = '".$paper->class_id."' AND   `s`.`exam_center_id` = '".$exam_center."'  AND (new_exam_form='Y' );";    
-      //    $query = $this->db->query($sql);
-      //    $count = $query->result_array();
-
-       
+//         echo  $sql="SELECT count(*) as cnt FROM `new_exam_form_report` as `e` JOIN `student_report` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`exam_center_id`='".$exam_center."'   AND  `e`.`paper_code` = '".$paper->paper_code."' AND `s`.`class_id` = '".$paper->class_id."' AND   `s`.`exam_center_id` = '".$exam_center."'  AND (new_exam_form='Y' );";    
+//           $query = $this->db->query($sql);
+//           $count = $query->result_array();
+// print_r($count); die;
+      //echo $this->db->last_query();
          //New Query end 
          if(($count[0]->cnt >0) )
          { 
