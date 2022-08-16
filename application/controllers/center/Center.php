@@ -1061,12 +1061,9 @@ class Center extends CI_Controller {
 		$this->db->order_by('id');
 		$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory"');
 		$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id where class_id='.$student['class_id'].' Order by g.id,sub_group_id')->result();
-
 		$data['compulsoryPapers'] = $compulsoryPapers;
 		$data['student'] = $student;
-
 		$data['student_id'] = $student['student_id'];
-
 			// // CONDITION FOR GROUP PAPER
 		$this->db->select('class_group,select_group,group_type');
 		$this->db->from('class_master');
@@ -1985,4 +1982,46 @@ class Center extends CI_Controller {
 	//	echo $this->db->last_query();																				  
 		echo $this->load->view('Centers/time_table',$data,true);
 	}
+
+    public function backlog_exam_form_students(){
+    	$titleData = array('title' => 'Student Exam Form');
+	   $data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
+         $classpermission = $this->Common_model->get_record('class_master','id',array('exam_form_permission'=>'Y'));
+  		$class_ids = array_column($classpermission, 'id');
+	     $center_id =  $this->session->center_id;
+	    $where = array('new_exam_form' =>'N','backlog_student.center_id' => $center_id);
+        $this->db->select('*');
+        $this->db->from('backlog_student');
+        $this->db->join('student', 'student.student_id = backlog_student.student_id');
+        $this->db->join('backlog_exam_form', 'backlog_exam_form.student_id = backlog_student.student_id'); 
+        $this->db->where_in('backlog_student.class_id',$class_ids);
+        $this->db->group_by('backlog_student.student_id');
+        $this->db->where($where);
+        $data['documents']= $this->db->get()->result();
+		$this->load->view('Centers/header',$titleData);
+		$this->load->view('Centers/backlog_exam_form_students',$data);
+		$this->load->view('Centers/footer');
+	}
+
+    public function backlog_showPapers($student_id,$class_id){
+
+    	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+    	$class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
+    	$titleData = array('title' => 'Student Papers');
+    	$this->load->view('Centers/header',$titleData);
+    	$student = $this->Common_model->student_info($student_id);
+    	$data['student'] = $student;
+    	$this->db->select('*');
+    	$this->db->from('backlog_student');
+    	$this->db->join('backlog_exam_form', 'backlog_exam_form.student_id = backlog_student.student_id');
+    	$this->db->where('backlog_student.student_id',$student_id); 
+    	$this->db->where('backlog_student.class_id',$class_id);
+    	$data['papers'] = $this->db->get()->result();
+    	$this->load->view('Centers/backlog_showPapers',$data);
+    	$this->load->view('Centers/footer');
+    }
+
 }
