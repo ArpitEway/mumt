@@ -1197,7 +1197,7 @@ class Center extends CI_Controller {
 		$this->db->Where($where);
 		$this->db->join('class_master', 'class_master.id = student.class_id');
 		$data['students'] = $this->db->get()->result();
-		echo $this->db->last_query();
+		//echo $this->db->last_query();
 		 //  $this->Common_model->last_query();
 		$this->load->view('Centers/class_wise_admit_card',$data);
 		$this->load->view('Centers/footer');

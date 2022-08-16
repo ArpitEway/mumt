@@ -1,16 +1,16 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
+    
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- Bootstrap CSS -->
+   
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/admit_card.css?token=?token='.date('dmyhis'))?>">
     <link rel="shortcut icon" href="<?=base_url()?>assets/images/maskgroup/MaskGroup1.png" />
     <title>Admit Card</title>
-	    <!--[CSS/JS Files - Start]-->
+	   
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
@@ -18,12 +18,19 @@
     <script src="https://cdn.apidelv.com/libs/awesome-functions/awesome-functions.min.js"></script> 
   
     <style>
-		
+		 .break{
+        page-break-before: always;
+    }
+    @page {
+      size: auto;
+  }
+
 	</style>
   </head>
   <body>
  <?php foreach($exam_center_students as $student)  { 
-     $wherePaper = array('student_id' => $student->student_id,'paper_master.type'=>'theory');
+     $wherePaper = array('student_id' => $student->student_id,'paper_master.type'=>'theory','exam_date!='=>'0000-00-00','exam_date!='=>'' );
+	 
      $this->db->select('*');
      $this->db->from('paper_master');
      $this->db->join('new_exam_form', 'new_exam_form.paper_id = paper_master.id');
@@ -32,9 +39,11 @@
      $this->db->order_by("exam_date", "asc");
      $this->db->order_by("exam_shift", "desc");
      $papers = $this->db->get()->result();
+	 $paper_count = count($papers);
+	 if($paper_count){
      ?>   
 <section>
-	<div class="">
+	<div class="break">
 	<div  id="container_content"  style="margin: auto; width:1150px;">
 		<div class="admit-card">
 			<div class="BoxA border- padding mar-bot"> 
@@ -51,18 +60,24 @@
 			<div class="BoxC border- padding mar-bot">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Admit card For open Book  Exam AUGUST 2022</h5>
-						<!-- <h5> प्रवेश पत्र  </h5> <h5>परीक्षा (2021-22) </h5> -->
+						<h5>Attendance Sheet Examination AUGUST 2022</h5>
+						
 					</div>
 				</div>
 			</div>
-<!-- 			<div class="BoxC border- padding mar-bot">
+			<?php 
+			$where = array(
+			
+			'id' => $student->exam_center_id,
+			);
+				$exam = $this->Common_model->getRecordByWhere('exam_center',$where); ?>
+			<div class="BoxC border- padding mar-bot">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Exam Center: महर्षि पाणिनि संस्कृत एवं वैदिक विश्वविद्यालय देवास रोड उज्जैन</h5>
+						<h5>Exam Center Code: <b><?=$student->examcentercode;?> </b> Exam Center: <?=$exam[0]->schoolcollegename;?> </h5>
 					</div>
 				</div>
-			</div> -->
+			</div>
 			<div class="BoxD border- padding mar-bot">
 				<div class="row">
 					<div class="col-12">
@@ -75,23 +90,25 @@
 								<tr>
 							  <td colspan="4"><b>College: </b><?=$student->center_name; ?></td>
 							    </tr> -->
+								<tr>	<th class="td" colspan="4">Student Details</th></tr>
 							<tr>
 								<td><b>Roll No: </b> <?=$student->roll_no;?></td>
 								<td colspan="2"><b>Enrollment No: </b><?=$student->enrollment_no;?></td>
 								 <td rowspan="4"><img src="<?=base_url('assets/student_image/'.$student->photo);?>"  width="115px" height="166px" /></td> 
 							</tr>
 							<tr>
-							  <td><b>Student Name: </b> <?=$student->name;?></td>
+							  <td colspan="2"><b>Student Name: </b> <?=$student->name;?></td>
+							</tr>
+							<tr>  
 							  <td colspan="2"><b>Father/Husband Name: </b> <?=$student->f_h_name;?></td>
 							</tr>
 							<tr>
-							  <td><b>Course: </b> <?=$student->course_name;?></td>
-							  <td colspan="2"><b>Class: </b> <?=$student->class_name;?></td>
+							  <td colspan="2"><b>Course: </b> <?=$student->course_name;?> (<?=$student->class_name;?>) </td>
 							</tr>
-							<tr>
+							<!-- <tr>
 								<td><b>Mode:</b> Regular</td>
 								<td class="border border-dark" colspan="2"> <b>Mobile No. :</b> <?php 	$mobile_no =$this->Common_model->getMobileNoByStudentID($student->student_id);	?><?= $mobile_no ?> </td>
-							</tr>
+							</tr> -->
 						  </tbody>
 						</table>
 					</div>
@@ -111,24 +128,35 @@
 						<table class="table table-bordered">
 							<thead>
 								<tr>
-									<th>#</th>
-									<th>Date</th>
-									<th >Paper Name</th>
+									<th rowspan="02" width="1%" >#</th>
+									<th rowspan="02" width="11%">Date</th>
+									<th rowspan="02" width="11%">Time</th>
+									<th rowspan="02" width="22%">Paper Name</th>
+									<th rowspan="02" width="18%">Answer Sheet No.</th>
+									<th colspan="02" width="37%">Signature</th>
 									<!-- <th>प्रश्न पत्र अपलोड करने की तिथि </th>
 									<th>उत्तर पुस्तिका जमा / अपलोड करने की अंतिम तिथि</th> -->
-									<th>Time</th>
+									
+								</tr>
+								<tr >
+									<th width="18%">Student</th>
+									<th width="18%">Invigilator</th>
 								</tr>
 							</thead>
 						  <tbody>
 						  <?php
 						  $i = 1;
-						  $paper_count = count($papers);
+						
 			foreach($papers as $paper){
 				?>
 				<tr>
 					<td><?php echo $i ; ?></td>
-					<td><?php echo $paper->exam_date; ; ?></td>
+					<td><?php echo date("d-m-Y", strtotime($paper->exam_date)); ?></td>
+					<td><?= ($paper->exam_shift=='Morning') ? '11:00 AM To 2:00 PM' : '03:00 PM To 6:00 PM'; ?></td>
 					<td style="text-align:left;"><?php echo $paper->paper_name; ?></td>
+					<td ></td>
+					<td ></td>
+					<td ></td>
 					<!-- <?php //if ($i==1): ?>
 						
 					<td rowspan="<?=$paper_count?>" style="vertical-align: middle;"><?php echo  $this->Common_model->viewDate($paper->exam_start_date); ?></td>
@@ -136,7 +164,7 @@
 					
 					<?php //endif ?> -->
 					<!-- <td><?= ($paper->exam_shift=='मध्याह्न') ? '१२:०० से ०३:०० बजे तक' : ''; ?></td> -->
-					<td><?= ($paper->exam_shift=='Morning') ? '11:00 AM To 2:00 PM' : '03:00 PM To 6:00 PM'; ?></td>
+					
 			</tr>
 			<?php 
 			$i++;
@@ -148,50 +176,31 @@
 				</div>
 			</div>
 
-<div class="text-right">
-						<img src="<?=base_url('assets/images/Signature.png')?>" class="Signature">
-						<p class="font-weight-bold mb-4 mr-5">कुलसचिव</p>
-					</div>
 
-			<div class="BoxF border- padding mar-bot txt-center">
-				<div class="row">
-					<div class="col-12 text-justify">
-						<p><strong>परीक्षा हेतु निर्देश</strong><br><br>
-
-1. समस्त प्रश्नपत्र उक्त दर्शाई गई तिथि पर प्रातः 11:00 बजे विश्वविद्यालय की बेवसाइट पर एक साथ अपलोड किए जाऐंगे। छात्र  Student Login  के माध्यम से प्रश्न पत्र डाउनलोड कर उनके उत्तर लिखकर प्रश्नपत्र वार उत्तर पुस्तिका को स्कैन कर उसकी  PDF फाईल (अधिकतम साईज 5 MB)  को उक्त निर्धारित अंतिम तिथि तक अपलोड करेंगे| उत्तर पुस्तिका की PDF फाइल को निर्धारित स्थान पर/तिथि तक अपलोड नहीं करने पर छात्र/छात्रा  को अनुपस्थित माना जायेगा।</br>
-
-2. परीक्षार्थी स्वयं के पास उपलब्ध रजिस्टर के कागज/ए-4 आकार के कागज की उत्तर पुस्तिका बना कर उत्तर लिखेंगें। उत्तर पुस्तिका के प्रत्येक पृष्ठ पर ऊपर दांई ओर पृष्ठ क्रमांक अवश्य लिखें। </br>
-
-3. विश्वविद्यालय द्वारा जारी किया गया उत्तर पुस्तिका का प्रथम पृष्ठ के प्रारुप को परीक्षार्थी प्रत्येक उत्तर पुस्तिका के प्रथम पृष्ठ में संलग्न करेंगे अथवा दिये गये प्रारूप अनुसार हस्तलिखित बनायेगें। </br>
-
-4. परीक्षार्थी उत्तर पुस्तिका के प्रथम पृष्ठ में स्वयं का रोल नंबर/नामांकन/पंजीयन-क्रमांक/विषय/प्रश्न पत्र का नाम/प्रश्नपत्र क्रमांक/उत्तर पुस्तिका के हस्तलिखित पृष्ठों की संख्या अनिवार्य रूप से निर्धारित स्थान पर ही लिखेगें। </br>
-
-5. परीक्षार्थी उत्तर लिखने के लिये केवल नीले पेन का ही उपयोग करे। </br>
-
-6. परीक्षार्थियों को ओपन बुक परीक्षा प्रणाली में समस्त विषयों की प्रश्नपत्रवार पृथक-पृथक उत्तर पुस्तिकाऐं लिखना अनिवार्य होगा। उत्तर पुस्तिका स्वलिखित होनी चाहिए। उत्तर पुस्तिका स्वलिखित नहीं होने की स्थिति में परीक्षा निरस्त करने की कार्यवाही की जायेगी। </br>
-
-7. सभी प्रश्नपत्रों में अधिकतम प्रश्नों की सख्या पाँच होगी एवं सभी प्रश्नों के अंक समान होंगे। प्रत्येक प्रश्नों के उत्तर की शब्द सीमा अधिकतम 250 शब्दों की होगी। </br>
-
-8. उक्त परीक्षा में केवल वे ही छात्र समिलित होगे जिनके द्वारा परीक्षा आवेदन पत्र भरा गया है। </br>
-
-
-					
-					</div>
+			<div style="style:100%;margin-top:5px; height:auto;">
+				<div style="float:left;width:50%; height:auto;" align="left">
+					<p><strong>Principle</strong></p>
+					<p><strong>Name</strong></p>
+					<p><strong>Signature</strong></p>
+				</div>
+				<div style="float:left;width:50%; height:auto;" align="left">
+					<p><strong>Exam Center Superintendent</strong></p>
+					<p><strong>Name</strong></p>
+					<p><strong>Seal &amp; Signature</strong></p>
 				</div>
 			</div>
-			<footer class="txt-center">
-				<p>*** महर्षि महेश योगी वैदिक विश्वविद्यालय***</p>
-			</footer>
+
+			
 			
 		</div>
 	</div>
-<div class="text-center">
+<!-- <div class="text-center">
     <input type="button" id="rep" value="Download" class="btn btn-primary btn_print mb-5">
-</div>
+</div> -->
 </section>
     
- <?php } ?>
-
+ <?php } } ?>
+<!-- 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js" ></script>
 	<script>
 	$(document).ready(function($) 
@@ -215,6 +224,6 @@
             html2pdf().set(opt).from(element).save();  
         });
 	});
-	</script>
+	</script> -->
   </body>
 </html>

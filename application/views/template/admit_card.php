@@ -40,18 +40,24 @@
 			<div class="BoxC border- padding mar-bot">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Admit card For open Book  Exam AUGUST 2022</h5>
+						<h5>Exam Schedule August 2022</h5>
 						<!-- <h5> प्रवेश पत्र  </h5> <h5>परीक्षा (2021-22) </h5> -->
 					</div>
 				</div>
 			</div>
-<!-- 			<div class="BoxC border- padding mar-bot">
+			<?php 
+			$where = array(
+			
+			'id' => $student[0]->exam_center_id,
+			);
+				//$exam = $this->Common_model->getRecordByWhere('exam_center',$where); ?>
+			<div class="BoxC border- padding mar-bot">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Exam Center: महर्षि पाणिनि संस्कृत एवं वैदिक विश्वविद्यालय देवास रोड उज्जैन</h5>
+						<h5>Exam Center Code: <b><?=$student[0]->examcentercode;?> </b> </h5>
 					</div>
 				</div>
-			</div> -->
+			</div>
 			<div class="BoxD border- padding mar-bot">
 				<div class="row">
 					<div class="col-12">
@@ -116,7 +122,7 @@
 				?>
 				<tr>
 					<td><?php echo $i ; ?></td>
-					<td><?php echo $paper->exam_date; ; ?></td>
+					<td><?php echo date("d-m-Y", strtotime($paper->exam_date)); ?></td>
 					<td style="text-align:left;"><?php echo $paper->paper_name; ?></td>
 					<!-- <?php //if ($i==1): ?>
 						
@@ -136,13 +142,13 @@
 					</div>
 				</div>
 			</div>
-
+<!--
 <div class="text-right">
 						<img src="<?=base_url('assets/images/Signature.png')?>" class="Signature">
 						<p class="font-weight-bold mb-4 mr-5">कुलसचिव</p>
 					</div>
 
-			<div class="BoxF border- padding mar-bot txt-center">
+			<!-- <div class="BoxF border- padding mar-bot txt-center">
 				<div class="row">
 					<div class="col-12 text-justify">
 						<p><strong>परीक्षा हेतु निर्देश</strong><br><br>
@@ -167,7 +173,7 @@
 					
 					</div>
 				</div>
-			</div>
+			</div> -->
 			<footer class="txt-center">
 				<p>*** महर्षि महेश योगी वैदिक विश्वविद्यालय***</p>
 			</footer>

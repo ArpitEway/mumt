@@ -43,7 +43,9 @@
 	var csrfName = $('.csrfname').attr('name');
 	var csrfHash = $('.csrfname').val(); 
 	var exam_center = $(this).val();
+  $("#headerTitle").html($("#exam_center option:selected").text());
   $('.dt-responsive').html("");
+  $("#myLoader").show();
   //console.log($("#multiple").val());
   //var multiple=$("#multiple").val();
 		$.ajax({
@@ -54,6 +56,7 @@
 					},
 		})
 		.done(function( msg ) {
+            $("#myLoader").hide();
             $('.dt-responsive').html(msg);
 		});
 	});
