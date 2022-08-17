@@ -679,7 +679,24 @@ class Admin_model extends CI_Model {
         $data['min_theory_marks']     = html_escape($this->input->post('min_theory'));
         $data['max_internal_marks']     = html_escape($this->input->post('max_int'));
         $data['min_internal_marks']     = html_escape($this->input->post('min_int'));
-        
+
+        if($_FILES['file']['name']!='')
+        {
+        $config['upload_path'] = 'assets/model_paper';
+		$config['allowed_types'] = 'jpg|jpeg|png|gif';  
+		$config['encrypt_name']=TRUE;
+		$this->load->library('upload');
+		$this->upload->initialize($config);
+
+		if($this->upload->do_upload('file')){
+			$uploadicon = $this->upload->data();
+		}else{
+			$returndata = array('error'=> $this->upload->display_errors());
+			echo json_encode($returndata);	
+			exit();
+		}	
+		$data['paper_file'] =$uploadicon['file_name'];
+        }
 		$this->db->where('id', $param1);
 		$this->db->update('paper_master', $data);
 		

@@ -58,7 +58,13 @@
 			<label for="code">Min Internal Marks</label>
 			<input type="text" class="form-control" id="min_int" name="min_int" value="<?=$paper->min_internal_marks?>" placeholder="Enter Min Internal Marks">        
 		</div>
-
+          <div class="form-group col-md-6">
+			<label for="image">Uplode Paper:</label>
+			<div class="custom-file">
+				<input type="file" class="custom-file-input" accept="image/*"  id="file" name="file">
+				<label class="custom-file-label"></label>
+			</div>
+		</div>	
 	</div>
 	<div class="form-group text-center">
 		<button class="btn btn-md btn-primary" type="submit">Submit</button>
