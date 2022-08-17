@@ -185,9 +185,6 @@
 					<tr>
 						<th>#</th>
 						<th>Paper Code</th>
-					<!-- <?php if ($papers[0]->sub_group_id!=0): ?>
-						<th>Sub Group</th>
-					<?php endif ?> -->
 						<th>Paper Name</th>
 					</tr>
 				</thead>
@@ -199,36 +196,33 @@
             <tr>
             <td><?php echo $i; ?></td>
             <td><?php echo $paper->paper_code; ?></td>
-           <!--  <?php if ($paper->sub_group_id!=0): ?>
-            <td><?php echo $this->Common_model->getSubGroupNameById($paper->sub_group_id); ?></td>
-            <?php endif ?> -->
             <td><?php 
-          $paper_name  = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$paper->paper_code));
-           echo $paper_name[0]->paper_name;
+              $paper_name  = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$paper->paper_code));
+             echo $paper_name[0]->paper_name;
             ?></td>
             </tr>
             <?php
         $i++;
         } ?>
-    </tbody>
+           </tbody>
 			</table>
 		</div>
-	</div>
+	    </div>
 		<?php if ($student['new_exam_form']=='N'): ?>
-	<?php $student_id = $this->Common_model->encrypt_decrypt($student['student_id']); ?>
+	   <?php $student_id = $this->Common_model->encrypt_decrypt($student['student_id']); ?>
 			<div class="row justify-content-center mt-10">
 			<?php 
 		$center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28 );
 		if(in_array($this->session->center_id, $center_ids)){
 			?>
-     <a class="btn btn-success" href="<?= base_url('paid_by_university/'.$student_id) ?>">Paid By University</a>
+       <a class="btn btn-success" href="<?= base_url('paid_by_university/'.$student_id) ?>">Paid By University</a>
 			<?php
 		}else{
 			?>
 			<?php if($student['temp_exam_form']=='Y' && $student['new_exam_form']=='N')
 
 			{ ?>
-				<a class="btn btn-success" href="<?= base_url('Payment/exam_form/'.$student_id) ?>">Process To Payment</a>
+				<a class="btn btn-success" href="<?= base_url('Payment/backlog_exam_form/'.$student_id) ?>">Process To Payment</a>
 			<?php } ?>
 			<?php
 	     	}

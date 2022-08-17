@@ -507,6 +507,12 @@ class Postexam extends CI_Controller {
                     'int_marks' =>$old_result_data->int_marks,
                     'p_marks' => $old_result_data->p_marks,
                     'status' => 'C',
+                    'max_theory_marks' => $old_result_data->max_theory_marks,
+                    'min_theory_marks' => $old_result_data->min_theory_marks,
+                    'max_int_marks' => $old_result_data->max_int_marks,
+                    'min_int_marks' => $old_result_data->min_int_marks,  
+                    'max_p_marks' => $old_result_data->max_p_marks,
+                    'min_p_marks' => $old_result_data->min_p_marks,     
                  );
                 if ($old_result_data->result=='FAIL'){
                     $data1['status'] = 'B';

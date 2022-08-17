@@ -135,7 +135,6 @@ class Payment extends CI_Controller {
 		If (isset($_POST["additionalCharges"])) {
 
 			$additionalCharges=$_POST["additionalCharges"];
-
 			$retHashSeq = $additionalCharges.'|'.$salt.'|'.$status.'||||||'.$udf5.'|'.$udf4.'|'.$udf3.'|'.$udf2.'|'.$student_id.'|'.$email.'|'.$firstname.'|'.$productinfo.'|'.$amount.'|'.$txnid.'|'.$key;
 
 		}else {
@@ -250,9 +249,7 @@ class Payment extends CI_Controller {
 			'session' =>$student['session'],
 			'course_group_id' => $student['course_group_id'],
 		);
-
 		$fees = $this->Common_model->getRecordByWhere('course',$where);
-
 		$data['student'] = $student;
 		$data['url'] = 'paynow';
 		$data['paymentType'] = 'Exam Fees';
@@ -269,7 +266,6 @@ class Payment extends CI_Controller {
 				$data['txnAmt'] = $fees[0]->p_program_fees+$fees[0]->p_exam_fees;
 			}
 		}
-		
 		$this->load->view('Centers/header',$titleData);
 		$this->load->view('Centers/exam_form_payment',$data);
 		$this->load->view('Centers/footer');
@@ -317,7 +313,6 @@ class Payment extends CI_Controller {
 			$MERCHANT_KEY = "h9OyBB";
 			$SALT = "rzu8VRFb";
 			$PAYU_BASE_URL = "https://secure.payu.in";
-		
 			$action = '';
 			$txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);
 
@@ -360,4 +355,132 @@ class Payment extends CI_Controller {
 			$this->load->view('template/payment_submit',$posted);
 		}
 	}
+
+
+   public function backlog_exam_form($student_id){
+   	if(!$this->session->has_userdata('centerdata')){
+   		redirect(base_url('login'));
+   	}
+   	$titleData = array('title'=>'Exam Form Payment');
+   	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+   	$student = $this->Common_model->student_info($student_id);
+   	if($student['new_exam_form']=='Y'){
+   		$this->session->set_flashdata('warning','Payment Already Submitted');
+   		redirect(base_url('dashboard'));
+   	}
+   	$exam_fess = 100;
+   	$fail_count = 0;
+   	$old_result_datas = $this->Common_model->getRecordByWhere('backlog_exam_form',array('student_id'=>$student_id));
+   	foreach($old_result_datas as $old_result_data)
+   	{
+   		if($old_result_data->paper_type=='theory'){
+   			if($old_result_data->theory_marks<$old_result_data->min_theory_marks)
+   			{
+   				$fail_count++; 
+   			}     
+   			if($old_result_data->int_marks < $old_result_data->min_int_marks)
+   			{
+   				$fail_count++; 
+   			}  
+   		}
+   		else{
+   			if($old_result_data->p_marks < $old_result_data->min_p_marks)
+   			{
+   				$fail_count++; 
+   			}
+   		}
+   		$actual_fees  =  $fail_count * $exam_fess;      
+   	}  
+   	$data['txnAmt'] = $actual_fees;
+   	$data['student'] = $student;
+   	$data['url'] = 'paynow';
+   	$data['paymentType'] = 'Exam Fees';
+   	$this->load->view('Centers/header',$titleData);
+   	$this->load->view('Centers/backlog_exam_form_payment',$data);
+   	$this->load->view('Centers/footer');
+   }
+
+
+    public function backlog_exam_form_payment($student_id){
+		
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url('login'));
+		}
+		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		if($student_id!=''){
+		   $student = $this->Common_model->student_info($student_id);		
+  	       $exam_fess = 100;
+     	   $fail_count = 0;
+   	       $old_result_datas = $this->Common_model->getRecordByWhere('backlog_exam_form',array('student_id'=>$student_id));
+    	    foreach($old_result_datas as $old_result_data)
+     	    {
+   		    if($old_result_data->paper_type=='theory'){
+   			if($old_result_data->theory_marks<$old_result_data->min_theory_marks)
+   			{
+   				$fail_count++; 
+   			}     
+   			if($old_result_data->int_marks < $old_result_data->min_int_marks)
+   			{
+   				$fail_count++; 
+   			}  
+   		    }
+   		    else{
+   			if($old_result_data->p_marks < $old_result_data->min_p_marks)
+   			{
+   				$fail_count++; 
+   			}
+   		    }
+   		    $txnAmt  =  $fail_count * $exam_fess;      
+   	        }    
+			if($student['new_exam_form']=='Y'){
+				$this->session->set_flashdata('warning','Payment Already Submitted');
+				redirect(base_url('dashboard'));
+			}
+			$hash_string = '';
+		/*  testing credential 
+			$MERCHANT_KEY = "9WEOTe";
+			$SALT = "uFYw7ClQ"; 
+			$PAYU_BASE_URL = "https://test.payu.in"; */
+		/*  live credential  */
+			$MERCHANT_KEY = "h9OyBB";
+			$SALT = "rzu8VRFb";
+			$PAYU_BASE_URL = "https://secure.payu.in";
+			$action = '';
+			$txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);
+			$posted = array();
+			$posted['key'] = $MERCHANT_KEY;
+			$posted['txnid'] = $txnid;
+			$posted['surl'] =base_url('center/payment/response');
+			$posted['furl'] =base_url('center/payment/response');
+			$posted['amount'] =$txnAmt;
+			$posted['firstname'] = $student['name'];
+			$posted['email'] = $student['p_email'];
+			$posted['phone'] = $student['p_mobile_no'];
+			$posted['productinfo'] = "Exam Fees";
+			$posted['address1'] = $student['p_address'];
+			$posted['city'] = $student['p_city'];
+			$posted['state'] = $student['p_state'];
+			$posted['country'] = $student['nationality'];
+			$posted['zipcode'] = $student['p_pin_code'];
+			$posted['udf1'] = $student_id;
+			$posted['udf2'] = $mode ;
+			$posted['udf3'] = "June 2022";
+			$posted['udf4'] = $student["center_id"].' / '.$student['class_id'];
+			$posted['udf5'] = $student["name"]."/".$student["f_h_name"];
+			$hash = '';
+			$hashSequence = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10";
+			$hashVarsSeq = explode('|', $hashSequence);
+			foreach($hashVarsSeq as $hash_var) {
+				$hash_string .= isset($posted[$hash_var]) ? $posted[$hash_var] : '';
+				$hash_string .= '|';
+			}
+			$hash_string .= $SALT;
+			$hash = strtolower(hash('sha512', $hash_string));
+			$action = $PAYU_BASE_URL . '/_payment';
+			$posted['hash'] = $hash;
+			$posted['action'] = $action;
+			$this->load->view('template/payment_submit',$posted);
+		}
+	}
+
 }

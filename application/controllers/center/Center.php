@@ -1985,18 +1985,17 @@ class Center extends CI_Controller {
 
     public function backlog_exam_form_students(){
     	$titleData = array('title' => 'Student Exam Form');
-	   $data = array(
+	    $data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
 		);
-         $classpermission = $this->Common_model->get_record('class_master','id',array('exam_form_permission'=>'Y'));
+        $classpermission = $this->Common_model->get_record('class_master','id',array('exam_form_permission'=>'Y'));
   		$class_ids = array_column($classpermission, 'id');
-	     $center_id =  $this->session->center_id;
+	    $center_id =  $this->session->center_id;
 	    $where = array('new_exam_form' =>'N','backlog_student.center_id' => $center_id);
         $this->db->select('*');
         $this->db->from('backlog_student');
         $this->db->join('student', 'student.student_id = backlog_student.student_id');
-        $this->db->join('backlog_exam_form', 'backlog_exam_form.student_id = backlog_student.student_id'); 
         $this->db->where_in('backlog_student.class_id',$class_ids);
         $this->db->group_by('backlog_student.student_id');
         $this->db->where($where);
