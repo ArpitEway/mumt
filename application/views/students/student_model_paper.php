@@ -28,7 +28,7 @@
 				<td class="m-auto">
                 <?php
                     ?>
-                    <a href="<?php echo site_url($url);?>" download ><img src="<?=base_url('assets/images/')?>pdf.png" width="30"></a>
+                    <a href="<?php echo site_url($url);?>" download="<?php echo $student->paper_name ;?>"><img src="<?=base_url('assets/images/')?>pdf.png" width="30"></a>
                 <?php } ?>
 
                 </td>
