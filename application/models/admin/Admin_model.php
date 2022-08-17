@@ -670,7 +670,7 @@ class Admin_model extends CI_Model {
 
 	public function update_paper($param1 = '')
     {
-		
+
 		$data['paper_name']     = html_escape($this->input->post('paper_name'));
 		$data['exam_day']       = html_escape($this->input->post('exam_day'));
 		$data['exam_date']      = html_escape($this->input->post('exam_date'));
@@ -680,10 +680,10 @@ class Admin_model extends CI_Model {
         $data['max_internal_marks']     = html_escape($this->input->post('max_int'));
         $data['min_internal_marks']     = html_escape($this->input->post('min_int'));
 
-        if($_FILES['file']['name']!='')
+         if($_FILES['file']['name']!='')
         {
         $config['upload_path'] = 'assets/model_paper';
-		$config['allowed_types'] = 'jpg|jpeg|png|gif';  
+		$config['allowed_types'] = 'pdf|csv';  
 		$config['encrypt_name']=TRUE;
 		$this->load->library('upload');
 		$this->upload->initialize($config);
@@ -696,9 +696,11 @@ class Admin_model extends CI_Model {
 			exit();
 		}	
 		$data['paper_file'] =$uploadicon['file_name'];
-        }
+       }
+
 		$this->db->where('id', $param1);
 		$this->db->update('paper_master', $data);
+		$this->Common_model->last_query();
 		
         $response = array(
         			'status' => true
