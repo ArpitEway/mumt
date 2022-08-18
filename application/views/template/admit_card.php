@@ -63,7 +63,7 @@
 							<tr>
 								<td><b>Roll No: </b> <?=$student[0]->roll_no;?></td>
 								<td colspan="2"><b>Enrollment No: </b><?=$student[0]->enrollment_no;?></td>
-								 <td rowspan="4"><img src="<?=base_url('assets/student_image/'.$student[0]->photo);?>"  width="115px" height="166px" /></td> 
+								 <td rowspan="4"><img src="<?=base_url('assets/student_image/'.$student[0]->session.'/'.$student[0]->photo);?>"  width="115px" height="166px" /></td> 
 							</tr>
 							<tr>
 							  <td><b>Course: </b> <?=$student[0]->course_name;?> ( <?=$student[0]->class_name;?> )</td>
