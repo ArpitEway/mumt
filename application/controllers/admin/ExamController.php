@@ -1583,6 +1583,41 @@ class ExamController extends CI_Controller {
 			$this->load->view('footer');
 		}
 	 }
+
+	 //Exam Center Wise Student Attendance Sheet 
+	public function exam_center_wise_student_attendance_sheet(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+			$titleData = array('title' => 'Exam Center Wise Student Attendance Sheet '); 
+			$this->load->view('header',$titleData);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$this->db->select('*');
+			$this->db->from('exam_center');
+			
+			$data['exam_centers'] = $this->db->get()->result();
+
+			$this->load->view('admin/exam_center/exam_center_wise_student_attendance_sheet',$data);
+			$this->load->view('footer');
+		}
+	}	
+
+	//Get Exam Center Wise Student Attendance Sheet 
+	public function get_exam_center_wise_student_attendance_sheet(){
+		$exam_center = $this->input->post('exam_center');
+		$this->db->select('*');
+		$this->db->from('student');
+		$this->db->order_by("roll_no", "asc");
+		// if($exam_center!="All")
+		$where = array('exam_center_id'=>$exam_center, 'roll_no!=' => 0 );
+		$this->db->where($where);	
+		$data['exam_center_students'] = $this->db->get()->result();
+		echo $this->load->view('admin/exam_center/get_exam_center_wise_student_attendance_sheet',$data, TRUE);
+	}
+
 		
 	
 }// class
