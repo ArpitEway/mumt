@@ -17,8 +17,8 @@
 	        $paper_name =  str_replace('/', ' ', $student->test_id); 
             $url = './assets/model_paper/'.$paper_name.'.pdf';
 			?>
-			<tr>
 				<?php if(file_exists($url)) { ?>
+			<tr>
 				<td><?php echo $i++; ?></td> 
 				<td><?php echo $student->paper_code ?></td>
 				<?php if ($student->sub_group_id!=0): ?> 
@@ -29,13 +29,22 @@
                 <?php
                     ?>
                     <a href="<?php echo site_url($url);?>" download="<?php echo $student->paper_name ;?>"><img src="<?=base_url('assets/images/')?>pdf.png" width="30"></a>
-                <?php } ?>
 
                 </td>
 			</tr>		
-			<?php 
+                <?php 
+            }
 		}				
 		?>
 	</tbody>
 </table>
- 
+<?php if ($i==1): ?>
+	<div class="text-center h2">
+		Coming Soon
+	</div>
+	<style type="text/css">
+		table{
+			display: none;
+		}
+	</style>
+<?php endif ?>
