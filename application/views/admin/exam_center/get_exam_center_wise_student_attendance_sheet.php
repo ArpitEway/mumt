@@ -72,7 +72,7 @@
 							</tr>
 							<tr>
 							  <td><b>Course: </b> <?=$student->course_name;?> (<?=$student->class_name;?>) </td>
-							  <td colspan="2"><b>Exam Center Code: </b> <?=$student->examcentercode;?></td>
+							  <td colspan="2"><b>EC Code: </b> <?=$student->examcentercode;?></td>
 							</tr>
 							<tr>
 							  <td colspan="3"><b>Student Name: </b> <?=$student->name;?></td>
