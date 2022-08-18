@@ -1,7 +1,7 @@
 
 <?php $paper = $this->Common_model->getRecordById('paper_master','id',$param1);
  ?>
-<form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/Admins/paper/update/'.$param1); ?>">
+<form method="POST" enctype="multipart/form-data" class="d-block ajaxForm" action="<?php echo site_url('admin/Admins/paper/update/'.$param1); ?>">
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">	
 <div class="row">
 		<div class="form-group col-md-6">
@@ -57,8 +57,11 @@
 		<div class="form-group col-md-6">
 			<label for="code">Min Internal Marks</label>
 			<input type="text" class="form-control" id="min_int" name="min_int" value="<?=$paper->min_internal_marks?>" placeholder="Enter Min Internal Marks">        
-		</div>
-
+		</div>    
+           <div class="form-group col-md-6">
+            <label for="name">Uplode Paper</label>
+          <input type="file" class="form-control"  id="file" name="file">
+        </div>  
 	</div>
 	<div class="form-group text-center">
 		<button class="btn btn-md btn-primary" type="submit">Submit</button>

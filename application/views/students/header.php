@@ -74,6 +74,11 @@
                             <span class="menu-text">Profile</span>
                           </a>
                         </li>
+                        <li class="menu-item <?= ($page_slug=='student_model_paper') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
+                          <a href="<?=base_url('student_model_paper')?>" class="menu-link">
+                            <span class="menu-text">Model Paper</span>
+                          </a>
+                        </li>
                         <?php 
                         $studentData = $this->Common_model->getRecordById('student','student_id',$this->session->student_id);
                         $whereClass = array('class_id' => $studentData->class_id,
