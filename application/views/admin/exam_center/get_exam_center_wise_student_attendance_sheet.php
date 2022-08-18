@@ -1,22 +1,4 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-   
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/admit_card.css?token=?token='.date('dmyhis'))?>">
-    <link rel="shortcut icon" href="<?=base_url()?>assets/images/maskgroup/MaskGroup1.png" />
-    <title>Admit Card</title>
-	   
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script> 
-    <script src="https://cdn.apidelv.com/libs/awesome-functions/awesome-functions.min.js"></script> 
-  
+    <link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/admit_card.css')?>">
     <style>
 		 .break{
         page-break-before: always;
@@ -24,10 +6,11 @@
     @page {
       size: auto;
   }
-
+  table img {
+    max-width: 150px;
+    width: 100%;
+}
 	</style>
-  </head>
-  <body>
  <?php foreach($exam_center_students as $student)  { 
      $wherePaper = array('student_id' => $student->student_id,'paper_master.type'=>'theory','exam_date!='=>'0000-00-00','exam_date!='=>'' );
 	 
@@ -66,18 +49,8 @@
 				</div>
 			</div>
 			<?php 
-			$where = array(
-			
-			'id' => $student->exam_center_id,
-			);
+			$where = array('id' => $student->exam_center_id);
 				$exam = $this->Common_model->getRecordByWhere('exam_center',$where); ?>
-			<div class="BoxC border- padding mar-bot">
-				<div class="row">
-					<div class="col-12 text-center">
-						<h5>Exam Center Code: <b><?=$student->examcentercode;?> </b> Exam Center: <?=$exam[0]->schoolcollegename;?> </h5>
-					</div>
-				</div>
-			</div>
 			<div class="BoxD border- padding mar-bot">
 				<div class="row">
 					<div class="col-12">
@@ -94,16 +67,18 @@
 							<tr>
 								<td><b>Roll No: </b> <?=$student->roll_no;?></td>
 								<td colspan="2"><b>Enrollment No: </b><?=$student->enrollment_no;?></td>
-								 <td rowspan="4"><img src="<?=base_url('assets/student_image/'.$student->photo);?>"  width="115px" height="166px" /></td> 
+								<?php $img_url = (file_exists(FCPATH.'assets/student_image/'.$student->session.'/'.$student->photo)) ? base_url('assets/student_image/'.$student->session.'/'.$student->photo) : base_url('assets/images/center/student.bmp'); ?>
+								 <td rowspan="4" class="text-center"><img src="<?=$img_url;?>"  width="115px" height="166px" /></td> 
 							</tr>
 							<tr>
-							  <td colspan="2"><b>Student Name: </b> <?=$student->name;?></td>
+							  <td><b>Course: </b> <?=$student->course_name;?> (<?=$student->class_name;?>) </td>
+							  <td colspan="2"><b>Exam Center Code: </b> <?=$student->examcentercode;?></td>
+							</tr>
+							<tr>
+							  <td colspan="3"><b>Student Name: </b> <?=$student->name;?></td>
 							</tr>
 							<tr>  
-							  <td colspan="2"><b>Father/Husband Name: </b> <?=$student->f_h_name;?></td>
-							</tr>
-							<tr>
-							  <td colspan="2"><b>Course: </b> <?=$student->course_name;?> (<?=$student->class_name;?>) </td>
+							  <td colspan="3"><b>Father/Husband Name: </b> <?=$student->f_h_name;?></td>
 							</tr>
 							<!-- <tr>
 								<td><b>Mode:</b> Regular</td>
@@ -194,36 +169,6 @@
 			
 		</div>
 	</div>
-<!-- <div class="text-center">
-    <input type="button" id="rep" value="Download" class="btn btn-primary btn_print mb-5">
-</div> -->
 </section>
     
  <?php } } ?>
-<!-- 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js" ></script>
-	<script>
-	$(document).ready(function($) 
-    { 
-
-        $(document).on('click', '.btn_print', function(event) 
-        {
-            event.preventDefault();
-            var element = document.getElementById('container_content'); 
-            var student_id = document.getElementById('student_id').value;
-            //more custom settings
-            var opt = 
-            {
-             
-              filename:     'admit_card_'+student_id+'.pdf',
-              image:        { type: 'jpeg', quality: 0.98 },
-              html2canvas:  { scale: 2, width: 1150,height: 1600 },
-              jsPDF:        { unit: 'in', format: 'A4', orientation: 'portrait' }
-            };
-            // New Promise-based usage:
-            html2pdf().set(opt).from(element).save();  
-        });
-	});
-	</script> -->
-  </body>
-</html>

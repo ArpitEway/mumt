@@ -1216,6 +1216,8 @@ class Center extends CI_Controller {
 		$where = array(
 			'class_id' =>$class_id,
 			'center_id' => $center_id,
+			'roll_no!=' => 0,
+			'new_exam_form' => 'Y'
 		);
 		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
 		$this->load->view('Centers/class_wise_admit_card_list',$data);

@@ -46,18 +46,8 @@
 				</div>
 			</div>
 			<?php 
-			$where = array(
-			
-			'id' => $student[0]->exam_center_id,
-			);
+			$where = array('id' => $student[0]->exam_center_id);
 				//$exam = $this->Common_model->getRecordByWhere('exam_center',$where); ?>
-			<div class="BoxC border- padding mar-bot">
-				<div class="row">
-					<div class="col-12 text-center">
-						<h5>Exam Center Code: <b><?=$student[0]->examcentercode;?> </b> </h5>
-					</div>
-				</div>
-			</div>
 			<div class="BoxD border- padding mar-bot">
 				<div class="row">
 					<div class="col-12">
@@ -76,17 +66,16 @@
 								 <td rowspan="4"><img src="<?=base_url('assets/student_image/'.$student[0]->photo);?>"  width="115px" height="166px" /></td> 
 							</tr>
 							<tr>
-							  <td><b>Student Name: </b> <?=$student[0]->name;?></td>
-							  <td colspan="2"><b>Father/Husband Name: </b> <?=$student[0]->f_h_name;?></td>
+							  <td><b>Course: </b> <?=$student[0]->course_name;?> ( <?=$student[0]->class_name;?> )</td>
+							  <td colspan="2"><b>Exam Center Code: </b><?=$student[0]->examcentercode;?></td>
 							</tr>
 							<tr>
-							  <td><b>Course: </b> <?=$student[0]->course_name;?></td>
-							  <td colspan="2"><b>Class: </b> <?=$student[0]->class_name;?></td>
+							  <td colspan="3"><b>Student Name: </b> <?=$student[0]->name;?></td>
 							</tr>
 							<tr>
-								<td><b>Mode:</b> Regular</td>
-								<td class="border border-dark" colspan="2"> <b>Mobile No. :</b> <?php 	$mobile_no =$this->Common_model->getMobileNoByStudentID($student[0]->student_id);	?><?= $mobile_no ?> </td>
+								<td colspan="3"><b>Father/Husband Name: </b> <?=$student[0]->f_h_name;?></td>
 							</tr>
+							
 						  </tbody>
 						</table>
 					</div>
@@ -173,11 +162,11 @@
 					
 					</div>
 				</div>
-			</div> -->
+			</div> 
 			<footer class="txt-center">
 				<p>*** महर्षि महेश योगी वैदिक विश्वविद्यालय***</p>
 			</footer>
-			
+			-->
 		</div>
 	</div>
 <div class="text-center">
