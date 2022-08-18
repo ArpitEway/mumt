@@ -238,7 +238,7 @@ class Student extends CI_Controller {
 		if(!$this->session->has_userdata('studentdata')){
 			 redirect(base_url('students/login'));
 		}
-		$this->load->view('students/header',array('title'=>'Model Paper'));
+		$this->load->view('students/header',array('title'=>'Model Paper', 'page_slug' => 'student_model_paper'));
 		$student_id = $this->session->student_id;
 		$this->db->select('*');
 		$this->db->from('paper_master');
