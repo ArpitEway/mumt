@@ -14,7 +14,7 @@
 		<?php
 		$i = 1;
 		foreach($students as $student){   
-	        $paper_name =  str_replace('/', ' ', $student->test_id); 
+	         $paper_name =  $student->test_id;
             $url = './assets/model_paper/'.$paper_name.'.pdf';
 			?>
 				<?php if(file_exists($url)) { ?>
