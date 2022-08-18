@@ -683,22 +683,19 @@ class Admin_model extends CI_Model {
         $data['max_internal_marks']     = html_escape($this->input->post('max_int'));
         $data['min_internal_marks']     = html_escape($this->input->post('min_int'));
 
-       if($_FILES['file']['name']!='')
-         {
-       if(file_exists(FCPATH.'/assets/model_paper/'.$paper_testid)){
-		$filedata=unlink( FCPATH . '/assets/model_paper/'.$paper_testid);
-	    }
-         $ext1=strtolower(pathinfo($_FILES['file']['name'],PATHINFO_EXTENSION));
-			$fname= $paper_testid;
-			$document_image = $fname.".".$ext1;
-			
-      $upload_file = move_uploaded_file($_FILES['file']['tmp_name'],"assets/model_paper/".$document_image);
-
-      if($upload_file){
- 	  $data['paper_file'] =$upload_file;
-      }
-      }
-       
+        if($_FILES['file']['name']!='')
+        {
+        	if(file_exists(FCPATH.'/assets/model_paper/'.$paper_testid)){
+        		$filedata=unlink( FCPATH . '/assets/model_paper/'.$paper_testid);
+        	}
+        	$ext1=strtolower(pathinfo($_FILES['file']['name'],PATHINFO_EXTENSION));
+        	$fname= $paper_testid;
+        	$document_image = $fname.".".$ext1;	
+        	$upload_file = move_uploaded_file($_FILES['file']['tmp_name'],"assets/model_paper/".$document_image);
+        	if($upload_file){
+        		$data['paper_file'] =$document_image;
+        	}
+        }
 		$this->db->where('id', $param1);
 		$this->db->update('paper_master', $data);	
         $response = array(
@@ -706,6 +703,7 @@ class Admin_model extends CI_Model {
         			);
         return json_encode($response);
 	  }
+	
 	public function paper_delete($param1 = '')
 	{
 		$this->db->where('id', $param1);
