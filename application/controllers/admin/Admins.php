@@ -3981,6 +3981,7 @@ public function update_exam_datewise_permission(){
 			//echo $this->db->last_query();
 		echo $this->load->view('admin/exam_center/exam_center_wise_billing_show',$data, TRUE);
 	}
+	
 	public function class_wise_old_exam_from_status(){
 
 		$this->load->view('header',array('title' => 'Class Wise Exam Form Status(DEC-2021)'));
