@@ -211,15 +211,13 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
-					<button type="submit" id="submit1"  class="btn btn-primary font-weight-bold">Submit</button>
+					<button type="button" id="submit1"  class="btn btn-primary font-weight-bold">Submit</button>
 			</div>
 		</form>
 		</div>
 	</div>
 </div>
-
-
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
 	$( ".modalOpen" ).on('click', function(){
 		$('#paymentId').val($(this).attr("data-paymentId"));
