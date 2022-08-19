@@ -10,6 +10,13 @@
     max-width: 150px;
     width: 100%;
 }
+.papertable tr th,td{
+	vertical-align: middle !important;
+}
+.papertable tr td{
+	padding: 9px !important;
+}
+
 	</style>
  <?php foreach($exam_center_students as $student)  { 
      $wherePaper = array('student_id' => $student->student_id,'paper_master.type'=>'theory','exam_date!='=>'0000-00-00','exam_date!='=>'' );
@@ -103,9 +110,9 @@
 			<div class="BoxF border- padding mar-bot txt-center">
 				<div class="row">
 					<div class="col-12">
-						<table class="table table-bordered">
+						<table class="table table-bordered papertable" >
 							<thead>
-								<tr>
+								<tr >
 									<th rowspan="02" width="1%" >#</th>
 									<th rowspan="02" width="11%">Date</th>
 									<th rowspan="02" width="11%">Time</th>
