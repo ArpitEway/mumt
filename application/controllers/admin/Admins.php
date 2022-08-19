@@ -4017,4 +4017,32 @@ public function update_exam_datewise_permission(){
 		}
 	}	
 
+
+    public function center_wise_exam_form_report(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else{
+			$data['centers'] = $this->Common_model->getRecordByWhere('center',array('status'=>'Y'));
+			$this->load->view('header',array('title'=>"Center Wise Exam Form Status"));
+			$this->load->view('admin/center_wise_exam_form_report',$data);
+			$this->load->view('footer');
+		}
+	}
+
+    public function exam_center_wise_exam_form_report(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else{
+			$data['exam_centers'] = $this->Common_model->getRecordByWhere('exam_center');
+			$this->load->view('header',array('title'=>"Exam Center Wise Exam Form Status"));
+			$this->load->view('admin/exam_center_wise_exam_form_report',$data);
+			$this->load->view('footer');
+		}
+	}
+
+
+
+
 }// class
