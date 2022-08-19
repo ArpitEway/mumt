@@ -26,12 +26,9 @@
     	padding: 10px;
     }
 	</style>
- <?php $a=1;
+ <?php 
  foreach($exam_center_students as $student)  {
- 	if ($a>5) {
- 		break;
- 	}
- 	$a++;
+ 	
      $wherePaper = array('student_id' => $student->student_id,'paper_master.type'=>'theory','exam_date!='=>'0000-00-00','exam_date!='=>'' );
 	 
      $this->db->select('*');
