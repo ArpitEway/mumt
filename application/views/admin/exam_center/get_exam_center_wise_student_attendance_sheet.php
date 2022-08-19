@@ -4,19 +4,21 @@
         page-break-before: always;
     }
     @page {
-      size: auto;
-  }
-  table img {
-    max-width: 150px;
-    width: 100%;
-}
-.papertable tr th,td{
-	vertical-align: middle !important;
-}
-.papertable tr td{
-	padding: 9px !important;
-}
-
+    	size: auto;
+    }
+    table img {
+    	max-width: 150px;
+    	width: 100%;
+    }
+    .papertable tr th,td{
+    	vertical-align: middle !important;
+    }
+    .papertable tr td{
+    	padding: 9px !important;
+    }
+    .table thead th, .table thead td {
+    	font-size: 16px;
+    }
 	</style>
  <?php foreach($exam_center_students as $student)  { 
      $wherePaper = array('student_id' => $student->student_id,'paper_master.type'=>'theory','exam_date!='=>'0000-00-00','exam_date!='=>'' );
@@ -35,8 +37,6 @@
 		  $newstring = date('y')."1".substr($student->center_code, -4); 
      ?>   
 <section class="break" style="font-size: 16px;">
-	
-	
 		<div class="admit-card" style="width:1030px !important; ">
 			<div class="BoxA border- padding mar-bot"> 
 				<div class="row justify-content-center align-items-center">
@@ -110,7 +110,7 @@
 			<div class="BoxF border- padding mar-bot txt-center">
 				<div class="row">
 					<div class="col-12">
-						<table class="table table-bordered papertable" >
+						<table class="table table-bordered papertable nowrap" >
 							<thead>
 								<tr >
 									<th rowspan="02" width="1%" >#</th>
