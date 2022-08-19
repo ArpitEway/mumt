@@ -37,7 +37,7 @@
                             Enrollment No.
                         </label>
 
-                        <label class="radio radio-success">
+                        <!-- <label class="radio radio-success">
                             <input type = "radio"
                             name = "radio_stduent_search"
                             id = "radio_form_id"
@@ -52,7 +52,7 @@
                             value = "adhar_no" />
                             <span></span>
                             Aadhaar No
-                        </label>
+                        </label> -->
                     </div>
                 </div>
             </div> <!-- from-group row -->
@@ -100,9 +100,9 @@
         else if(text_val==''&& radio_val == 'student_name')
         {
             alert('Enter Student Name !');
-        }else if(text_val==''&& radio_val == 'adhar_no')
-        {
-            alert('Enter Aadhaar No Name !');
+        // }else if(text_val==''&& radio_val == 'adhar_no')
+        // {
+        //     alert('Enter Aadhaar No Name !');
         }
         else
         {

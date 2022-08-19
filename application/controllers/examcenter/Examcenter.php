@@ -181,7 +181,7 @@ class Examcenter extends CI_Controller {
 			exit;
 		}else
 		{
-			$titleData = array('title' => 'Paper Count By Date'); 
+			$titleData = array('title' => 'Search Attendance Sheet of student'); 
 			$this->load->view('examcenter/header',$titleData);
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
