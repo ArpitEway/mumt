@@ -14,13 +14,24 @@
     	vertical-align: middle !important;
     }
     .papertable tr td{
-    	padding: 9px !important;
+    	padding: 10.2px !important;
     }
     .table thead th, .table thead td {
     	font-size: 16px;
     }
+    .admit-card {
+    	margin: 10px auto;
+    }
+    .padding{
+    	padding: 10px;
+    }
 	</style>
- <?php foreach($exam_center_students as $student)  { 
+ <?php $a=1;
+ foreach($exam_center_students as $student)  {
+ 	if ($a>5) {
+ 		break;
+ 	}
+ 	$a++;
      $wherePaper = array('student_id' => $student->student_id,'paper_master.type'=>'theory','exam_date!='=>'0000-00-00','exam_date!='=>'' );
 	 
      $this->db->select('*');
@@ -49,7 +60,7 @@
 				</div>
 			</div>
 			
-			<div class="BoxC border- padding mar-bot">
+			<div class="BoxC border- padding">
 				<div class="row">
 					<div class="col-12 text-center">
 						<h5>Attendance Sheet Examination AUGUST 2022</h5>
@@ -57,7 +68,9 @@
 					</div>
 				</div>
 			</div>
-			<span style="float:right;font-size:8px;margin:2px;"><?=$newstring?></span>
+			<div style="height: 8px;text-align: right;">
+				<span style="font-size:8px;margin:2px;"><?=$newstring?></span>
+			</div>
 			<?php 
 			$where = array('id' => $student->exam_center_id);
 				$exam = $this->Common_model->getRecordByWhere('exam_center',$where); ?>
