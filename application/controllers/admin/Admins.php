@@ -4017,17 +4017,49 @@ public function update_exam_datewise_permission(){
 		}
 	}	
 
-
     public function center_wise_exam_form_report(){
 		if(!$this->session->has_userdata('adminData')){
 			redirect(base_url());
 			exit;
 		}else{
 			$data['centers'] = $this->Common_model->getRecordByWhere('center',array('status'=>'Y'));
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+				$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->load->view('header',array('title'=>"Center Wise Exam Form Status"));
 			$this->load->view('admin/center_wise_exam_form_report',$data);
 			$this->load->view('footer');
 		}
+	}
+
+	public function get_center_wise_exam_form_report()
+	{
+		$data = $row = array();
+		$where = "status=   'Y' ";
+		$column_order = array(null,'center_code','center_name','city','Distirct','contactpersonname','mobile_no_1','Total','Fill','Remaining');
+		$column_search = array('center_code','center_name','city','Distirct','contactpersonname','mobile_no_1','Total','Fill','Remaining');
+		$DataTableArray = array(
+			'column_order' => $column_order,
+			'column_search' => $column_search,
+			'where' => $where,
+			'table' => 'center'
+		);
+		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
+		$i = $_POST['start'];
+		foreach($tableData as $result){
+			$total_count = $this->Common_model->getcountbywhere('student',array('center_id'=>$result->id,'new_exam_form'=>'D'));
+			$fill_count = $this->Common_model->getcountbywhere('student',array('center_id'=>$result->id,'new_exam_form'=>'Y'));
+			 $remaining = $total_count - $fill_count;
+			$district= $this->Common_model->getDistrict($center->distt_id);
+			$i++;
+			$data[] = array($i, $result->center_code, $result->center_name,$result->city,$district ,$result->contactpersonname,$result->mobile_no_1,$total_count,$fill_count,$remaining);
+	     	}
+		  $output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->Datatable_join_model->countAll('center',$where),
+			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
+			"data" => $data,
+		);
+		echo json_encode($output);	
 	}
 
     public function exam_center_wise_exam_form_report(){
@@ -4035,14 +4067,11 @@ public function update_exam_datewise_permission(){
 			redirect(base_url());
 			exit;
 		}else{
-			$data['exam_centers'] = $this->Common_model->getRecordByWhere('exam_center');
+			$data['exam_centers'] = $this->Common_model->getRecordByWhere('exam_center');	
 			$this->load->view('header',array('title'=>"Exam Center Wise Exam Form Status"));
 			$this->load->view('admin/exam_center_wise_exam_form_report',$data);
 			$this->load->view('footer');
 		}
 	}
-
-
-
 
 }// class
