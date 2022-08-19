@@ -24,11 +24,13 @@
      $papers = $this->db->get()->result();
 	 $paper_count = count($papers);
 	 if($paper_count){
+
+		  $newstring = date('y')."1".substr($student->center_code, -4); 
      ?>   
-<section>
-	<div class="break">
-	<div  id="container_content"  style="margin: auto; width:1150px;">
-		<div class="admit-card">
+<section class="break" style="font-size: 16px;">
+	
+	
+		<div class="admit-card" style="width:1030px !important; ">
 			<div class="BoxA border- padding mar-bot"> 
 				<div class="row justify-content-center align-items-center">
 					<div class="col-3 txt-center">
@@ -48,6 +50,7 @@
 					</div>
 				</div>
 			</div>
+			<span style="float:right;font-size:8px;margin:2px;"><?=$newstring?></span>
 			<?php 
 			$where = array('id' => $student->exam_center_id);
 				$exam = $this->Common_model->getRecordByWhere('exam_center',$where); ?>
@@ -152,7 +155,7 @@
 			</div>
 
 
-			<div style="style:100%;margin-top:5px; height:auto;">
+			<div style="style:100%;margin-top:10px; height:auto;min-height: 150px;">
 				<div style="float:left;width:50%; height:auto;" align="left">
 					<p><strong>Principle</strong></p>
 					<p><strong>Name</strong></p>
@@ -167,8 +170,8 @@
 
 			
 			
-		</div>
-	</div>
+		
+	
 </section>
     
  <?php } } ?>

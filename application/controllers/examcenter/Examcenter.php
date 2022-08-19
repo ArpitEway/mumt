@@ -174,4 +174,31 @@ class Examcenter extends CI_Controller {
 		echo $this->load->view('examcenter/exam_center_paper_count_report_show',$data, TRUE);
 	}
 
+	 //Search Attendance sheet by student detail
+	 public function search_attendance_sheet(){
+		if(!$this->session->has_userdata('Examcenterdata')){
+			redirect(base_url('Examcenter/dashboard'));
+			exit;
+		}else
+		{
+			$titleData = array('title' => 'Paper Count By Date'); 
+			$this->load->view('examcenter/header',$titleData);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			// $this->db->select('*');
+			// $this->db->from('exam_center');
+			// $data['exam_centers'] = $this->db->get()->result();
+			// $this->db->select('*');
+			// $this->db->from('paper_master');
+			// $this->db->where('exam_date!=',"");
+			// $this->db->where('exam_date!=',"0000-00-00");	
+			// $this->db->group_by('exam_date');
+			// $this->db->order_by('exam_date', "asc");
+			// $data['examDate'] = $this->db->get()->result();
+
+			$this->load->view('examcenter/search_attendance_sheet',$data);
+			$this->load->view('examcenter/footer');
+		}
+	}
+
 }
