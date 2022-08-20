@@ -201,4 +201,47 @@ class Examcenter extends CI_Controller {
 		}
 	}
 
+	//Get search Student Attendance Sheet 
+	public function get_search_student_attendance_sheet(){
+
+
+		 $text_val =$this->input->post('text_val');
+		 $radio_val = $this->input->post('radio_val');
+
+
+		if($text_val !='')
+		{
+			if($text_val !='' && $radio_val == 'enrollment_no')
+			{
+				$where = array('enrollment_no'=>$text_val);
+
+			}else if($text_val !='' && $radio_val == 'roll_no')
+			{
+				$where = array('name'=>$text_val
+
+			);
+
+			}else if($text_val !='' && $radio_val == 'student_name')
+			{
+				$where = array();
+				$this->db->like('name', $text_val);
+
+			}
+
+			$data['exam_center_students'] = $this->Common_model->student_data($where);
+			//	echo "<pre>";
+			//print_r($data); die;
+			//$dt =  $this->load->view('admin/student/getStudentConsolidate',$data,true);
+			echo $this->load->view('examcenter/get_search_student_attendance_sheet',$data, TRUE);
+			// echo json_encode(array(
+			// 	"status" => true,
+			// 	"data" => $dt
+			// ));
+		}
+
+
+		
+		
+	}
+
 }

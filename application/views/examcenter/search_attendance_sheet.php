@@ -10,7 +10,7 @@
                 <label class="col-3 col-form-label" >Search By : </label>
                 <div class="col-9 col-form-label">
                     <div class="radio-inline">
-                        <label class="radio radio-success">
+                        <!-- <label class="radio radio-success">
                             <input type = "radio"
                             name = "radio_stduent_search"
                             id = "radio_name"
@@ -18,12 +18,13 @@
                             checked = "checked" />
                             <span></span>
                             Name : 
-                        </label>
+                        </label> -->
                         <label class="radio radio-success">
                             <input type = "radio"
                             name = "radio_stduent_search"
                             id = "radio_roll_no"
                             value = "roll_no" 
+                            checked = "checked"
                             />
                             <span></span>
                             Roll No : 
@@ -69,11 +70,10 @@
     <circle cx="50" cy="50" r="20" stroke="green" stroke-dasharray="47.1 141.3" stroke-width="3" fill="none" />
   </svg>
 </div>
-<div class="row" >
-    <div class="col-md-12 col-lg-12" id="student_data_tbl">
-<!-- table by ajax append here -->
-    </div>
-</div>
+
+<div class="dt-responsive" >
+
+</div> 
 <script type="text/javascript">
     var site_url = "<?php echo base_url(); ?>"
 
@@ -84,27 +84,25 @@
         var csrfName = $('.csrfname').attr('name');
         var csrfHash = $('.csrfname').val();
         var text_val = $('#search_text').val();
-        var radio_val = $('input[name="radio_stduent_search"]:checked').val();
+        var radio_val = "";
+        radio_val = $('input[name="radio_stduent_search"]:checked').val();
+        
         if(text_val =='' && radio_val == 'enrollment_no')
         { 
             alert('Enrollment Number is required !');
         }
-        else if(text_val==''&& radio_val == 'student_id')
-        {
-            alert('Form/Student Id is required !');
-        }
-        else if(text_val==''&& radio_val == 'roll_no')
+         else if(text_val==''&& radio_val == 'roll_no')
         {
             alert('Roll Number is required !');
         }
-        else if(text_val==''&& radio_val == 'student_name')
-        {
-            alert('Enter Student Name !');
+        // else if(text_val==''&& radio_val == 'student_name')
+        // {
+        //     alert('Enter Student Name !');
         // }else if(text_val==''&& radio_val == 'adhar_no')
         // {
         //     alert('Enter Aadhaar No Name !');
-        }
-        else
+        // }
+        else if(text_val!=''&& radio_val != '')
         {
           
             let data = {
@@ -113,29 +111,51 @@
                     [csrfName]:csrfHash
                 }
             $.ajax({
-                url:site_url+'admin/admins/getStudentData',
+                url:site_url+'Examcenter/get_search_student_attendance_sheet',
                 type:'post',
-                dataType : 'JSON',
+                
                 data: data,
                 beforeSend: function()
               {
+                $('.dt-responsive').html("");
                 $("#myLoader").show();
                },
-                success:function(resp)
-                {if( $("#myLoader").show()){
-						$('#student_data_tbl').hide();
-						// $table = $('#dt').html(status.data);
-
-					}if( $('#myLoader').hide()){
-                        $('#student_data_tbl').html(resp.data);
-						$('#student_data_tbl').show();
-						
-					}
+                success:function(msg)
+                {
+                    $("#myLoader").hide();
+                    $('.dt-responsive').html(msg);
                    
-                    KTDatatablesBasicBasic.init();            
+                   
+                       
                 }//success
                 
             })//ajax
         }
+        else{
+            alert('Please enter student data & select relavent match !');
+        }
     }
+
+//     function PrintDiv() {
+//     var title="Attendance Sheet";
+//     var contents = document.getElementById('ss').innerHTML;
+//     var frame1 = document.createElement('iframe');
+//     frame1.name = "frame1";
+//     frame1.style.position = "absolute";
+//     frame1.style.top = "-1000000px";
+//     document.body.appendChild(frame1);
+//     var frameDoc = frame1.contentWindow ? frame1.contentWindow : frame1.contentDocument.document ? frame1.contentDocument.document : frame1.contentDocument;
+//     frameDoc.document.open();
+//      frameDoc.document.write(`<style>@page{size:portrait;}@tr{border: solid 1px #000;background-color:#E8F6FF;}</style><html><head><title>${title}</title>`);
+//     frameDoc.document.write('</head><body>');
+//     frameDoc.document.write(contents);
+//     frameDoc.document.write('</body></html>');
+//     frameDoc.document.close();
+//     setTimeout(function () {
+//         window.frames["frame1"].focus();
+//         window.frames["frame1"].print();
+//         document.body.removeChild(frame1);
+//     }, 500);
+//     return false;
+// }
 </script>
