@@ -190,10 +190,10 @@ $total = 0;
             </tr>
             <?php }$i++;} ?>
             </tr>
-            <tr><td colspan="3" align="right" >Max Student Count (in one shift) </td><td><?php echo $mstud=max($max_count); ?></td> <td colspan="8" align="right">महायोग</td><td><?php echo $tot; 
-            //  $where = array('examcentercode' => $row->examcentercode,'id'=> $row->id);
-            //  $data=array('billing_amount'=>$tot,'max_student_count'=>$mstud);
-            //  $papers = $this->Common_model->updateRecordByConditions('exam_center',$where,$data);
+            <tr><td colspan="3" align="right" ><!-- Max Student Count (in one shift) --> </td><td><?php $mstud=max($max_count); ?></td> <td colspan="8" align="right">महायोग</td><td><?php echo $tot; 
+             $where = array('examcentercode' => $row->examcentercode,'id'=> $row->id);
+             $data=array('billing_amount'=>$tot,'max_student_count'=>$mstud);
+             $papers = $this->Common_model->updateRecordByConditions('exam_center',$where,$data);
             
           
             ?></td></tr>
