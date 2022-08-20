@@ -37,18 +37,19 @@
 							'new_exam_form' => 'Y',
 							'roll_no' =>'0',
 							'class_id' => $class->id,
+							'temp_id!=' => 0;
 						);
-
+						
 						$students = $this->Common_model->getRecordByWhereByOrder('student',$where,'center_id,name','ASC');
 						$whereRollNo = array(
 							'new_exam_form' => 'Y',
 							'roll_no !=' =>'0',
 							'class_id' => $class->id,
 						);
-						$roll_no_data = $this->Common_model->get_record('student','max(roll_no) as roll_no',$whereRollNo);
-						$last_number = ($roll_no_data[0]['roll_no']==0) ? $class->temp_id.'10001' : $roll_no_data[0]['roll_no']+1;	
+						$count = $this->Common_model->getCountByWhere('student',$whereRollNo);
+						$last_number = ($count==0) ? '10001'  : $count+10001;	
 						foreach ($students as $student) {
-								$roll_no = $last_number;
+								$roll_no = ($student->university_mode=='REG') ? '1'.$class->temp_id.$last_number : '2'.$class->temp_id.$last_number;
 							if($action=='generate'){
 								$whereUpdate = array('student_id' => $student->student_id);
 								$updateData = array('roll_no' =>$roll_no);

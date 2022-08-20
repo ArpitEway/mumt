@@ -172,15 +172,15 @@
 			</div>
 
 
-			<div style="style:100%;margin-top:10px; height:auto;min-height: 150px;">
+			<div style="style:100%;margin-top:30px; height:auto;min-height: 150px;">
 				<div style="float:left;width:50%; height:auto;" align="left">
-					<p><strong>Principle</strong></p>
-					<p><strong>Name</strong></p>
-					<p><strong>Signature</strong></p>
+					<p><!-- <strong>Principle</strong> --></p>
+					<p><!-- <strong>Name</strong> --></p>
+					<p><!-- <strong>Signature</strong> --></p>
 				</div>
 				<div style="float:left;width:50%; height:auto;" align="left">
-					<p><strong>Exam Center Superintendent</strong></p>
-					<p><strong>Name</strong></p>
+					<p><!-- <strong>Exam Center Superintendent</strong> --></p>
+					<p><!-- <strong>Name</strong> --></p>
 					<p><strong>Seal &amp; Signature</strong></p>
 				</div>
 			</div>
