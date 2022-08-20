@@ -5,6 +5,11 @@
     @page {
       size: auto;
   }
+      @media print {
+        .offcanvas-footer.text-center.p-3{
+            display: none;
+        }
+        }
 </style>
 <?php 
 
