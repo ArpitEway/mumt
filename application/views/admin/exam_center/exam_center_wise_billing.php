@@ -44,6 +44,7 @@
 	var csrfHash = $('.csrfname').val(); 
 	var exam_center = $(this).val();
   $('.dt-responsive').html("");
+  $("#headerTitle").html($("#exam_center option:selected").text());
   //console.log($("#multiple").val());
   //var multiple=$("#multiple").val();
 		$.ajax({
