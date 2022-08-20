@@ -30,14 +30,13 @@
 
 
 					$i=1;
-					$whereclass = array('exam_form_permission' => 'Y');
+					$whereclass = array('exam_form_permission' => 'Y','temp_id!=' => 0);
 					$classData = $this->Common_model->getRecordByWhere('class_master',$whereclass);
 					foreach ($classData as $class) {
 						$where = array(
 							'new_exam_form' => 'Y',
 							'roll_no' =>'0',
 							'class_id' => $class->id,
-							'temp_id!=' => 0,
 						);
 						
 						$students = $this->Common_model->getRecordByWhereByOrder('student',$where,'center_id,name','ASC');
