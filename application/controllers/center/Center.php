@@ -1997,14 +1997,14 @@ class Center extends CI_Controller {
         $classpermission = $this->Common_model->get_record('class_master','id',array('exam_form_permission'=>'Y'));
   		$class_ids = array_column($classpermission, 'id');
 	    $center_id =  $this->session->center_id;
-	    $where = array('new_exam_form' =>'N','backlog_student.center_id' => $center_id);
+	    $where = array('backlog_student.center_id' => $center_id);
         $this->db->select('*');
         $this->db->from('backlog_student');
         $this->db->join('student', 'student.student_id = backlog_student.student_id');
         $this->db->where_in('backlog_student.class_id',$class_ids);
         $this->db->group_by('backlog_student.student_id');
         $this->db->where($where);
-        $data['documents']= $this->db->get()->result();
+        $data['students']= $this->db->get()->result();
 		$this->load->view('Centers/header',$titleData);
 		$this->load->view('Centers/backlog_exam_form_students',$data);
 		$this->load->view('Centers/footer');
