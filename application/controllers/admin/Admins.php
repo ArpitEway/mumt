@@ -3977,12 +3977,13 @@ public function update_exam_datewise_permission(){
 		$data['exam_centers'] = $this->db->get()->result();
 		$this->db->select('*');
 			$this->db->from('paper_master');
-			$this->db->where('exam_date!=',"");	
+			$this->db->where('exam_date!=',"");
+			$this->db->where('exam_date!=',"0000-00-00");	
 			$this->db->group_by(array('exam_date','exam_shift'));
 			$this->db->order_by('exam_date', "asc");
-			$this->db->order_by('exam_shift', "dsc");
+			$this->db->order_by('exam_shift', "desc");
 			$data['examDate'] = $this->db->get()->result();
-			//echo $this->db->last_query();
+		//	echo $this->db->last_query(); die;
 		echo $this->load->view('admin/exam_center/exam_center_wise_billing_show',$data, TRUE);
 	}
 	
