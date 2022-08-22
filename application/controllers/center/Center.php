@@ -1988,27 +1988,38 @@ class Center extends CI_Controller {
 		echo $this->load->view('Centers/time_table',$data,true);
 	}
 
-    public function backlog_exam_form_students(){
-    	$titleData = array('title' => 'Student Exam Form');
-	    $data = array(
+
+public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
+		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
 		);
-        $classpermission = $this->Common_model->get_record('class_master','id',array('exam_form_permission'=>'Y'));
+
+      $classpermission = $this->Common_model->get_record('class_master','id',array('exam_form_permission'=>'Y'));
   		$class_ids = array_column($classpermission, 'id');
-	    $center_id =  $this->session->center_id;
-	    $where = array('backlog_student.center_id' => $center_id);
-        $this->db->select('*');
-        $this->db->from('backlog_student');
-        $this->db->join('student', 'student.student_id = backlog_student.student_id');
-        $this->db->where_in('backlog_student.class_id',$class_ids);
-        $this->db->group_by('backlog_student.student_id');
-        $this->db->where($where);
-        $data['students']= $this->db->get()->result();
-		$this->load->view('Centers/header',$titleData);
+		$center_id =  $this->session->center_id;
+		if($exam_form1=='submitted'){
+			$where = array('exam_form' =>'Y','center_id' => $center_id);
+		}else if($exam_form1 =="notSubmitted"){
+			
+			$where = array(
+				'exam_form' =>'N',
+				'center_id' => $center_id,
+			);
+		}else if($exam_form1=="skipped"){
+			$where = array(
+				'exam_form' =>'S',
+				'center_id' => $center_id,
+			);
+		}
+		$data['exam_form_button'] = $exam_form1;
+		$this->db->where_in('class_id',$class_ids);
+		$data['documents'] = $this->Common_model->getRecordByWhere('backlog_student',$where);
+		$this->load->view('Centers/header');
 		$this->load->view('Centers/backlog_exam_form_students',$data);
 		$this->load->view('Centers/footer');
 	}
+
 
     public function backlog_showPapers($student_id,$class_id){
 
@@ -2023,8 +2034,40 @@ class Center extends CI_Controller {
     	$this->db->join('backlog_exam_form', 'backlog_exam_form.student_id = backlog_student.student_id');
     	$this->db->where('backlog_student.student_id',$student_id); 
     	$this->db->where('backlog_student.class_id',$class_id);
+    	$this->db->where('status','B');
     	$data['papers'] = $this->db->get()->result();
     	$this->load->view('Centers/backlog_showPapers',$data);
     	$this->load->view('Centers/footer');
     }
+
+
+  public function change_backlog_new_exam_form_status(){
+		$id    	= 0;
+		$id    	= $this->input->post("id");
+		$status = $this->input->post("check_skipped");
+
+		if ($this->input->post("id"))
+		{
+			$status = ($status=='skipped') ? 'S' : 'N';
+			$data = $this->Common_model->updateRecordByConditions("backlog_student",array("student_id" => $id ),array("exam_form" => $status ));
+
+			$dt = $this->db->get_where("backlog_student",array("student_id" => $id ))->result_array();
+
+			if($dt[0]['exam_form'] == 'N')
+			{
+				$sts_btn = '<input type ="button" name="" data-id='.$id.' class="btn btn-danger check_skipped" value="skipped">';
+			}else{
+				$sts_btn = '<input type ="button" name="update_enroll_stats" data-id='.$id.' class="btn btn-success check_skipped" value="Unskipped">';
+			}
+			$status = true;
+			$msg    = "";
+
+			echo json_encode(array(
+				"status" => $status,
+				"msg" => $msg,
+				"data" => $sts_btn
+			));
+		}
+	}
+
 }

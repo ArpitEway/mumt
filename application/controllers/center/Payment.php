@@ -364,34 +364,9 @@ class Payment extends CI_Controller {
    	$titleData = array('title'=>'Exam Form Payment');
    	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
    	$student = $this->Common_model->student_info($student_id);
-   	if($student['new_exam_form']=='Y'){
-   		$this->session->set_flashdata('warning','Payment Already Submitted');
-   		redirect(base_url('dashboard'));
-   	}
-   	$exam_fess = 100;
-   	$fail_count = 0;
-   	$old_result_datas = $this->Common_model->getRecordByWhere('backlog_exam_form',array('student_id'=>$student_id));
-   	foreach($old_result_datas as $old_result_data)
-   	{
-   		if($old_result_data->paper_type=='theory'){
-   			if($old_result_data->theory_marks<$old_result_data->min_theory_marks)
-   			{
-   				$fail_count++; 
-   			}     
-   			if($old_result_data->int_marks < $old_result_data->min_int_marks)
-   			{
-   				$fail_count++; 
-   			}  
-   		}
-   		else{
-   			if($old_result_data->p_marks < $old_result_data->min_p_marks)
-   			{
-   				$fail_count++; 
-   			}
-   		}
-   		$actual_fees  =  $fail_count * $exam_fess;      
-   	}  
-   	$data['txnAmt'] = $actual_fees;
+    $failCount = $this->Common_model->getCountByWhere('backlog_exam_form',array('student_id'=>$student_id,'status'=>'B'));
+        $exam_fees =$failCount * 100;  
+   	$data['txnAmt'] = $exam_fees;
    	$data['student'] = $student;
    	$data['url'] = 'paynow';
    	$data['paymentType'] = 'Exam Fees';
@@ -409,33 +384,10 @@ class Payment extends CI_Controller {
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		if($student_id!=''){
 		   $student = $this->Common_model->student_info($student_id);		
-  	       $exam_fess = 100;
-     	   $fail_count = 0;
-   	       $old_result_datas = $this->Common_model->getRecordByWhere('backlog_exam_form',array('student_id'=>$student_id));
-    	    foreach($old_result_datas as $old_result_data)
-     	    {
-   		    if($old_result_data->paper_type=='theory'){
-   			if($old_result_data->theory_marks<$old_result_data->min_theory_marks)
-   			{
-   				$fail_count++; 
-   			}     
-   			if($old_result_data->int_marks < $old_result_data->min_int_marks)
-   			{
-   				$fail_count++; 
-   			}  
-   		    }
-   		    else{
-   			if($old_result_data->p_marks < $old_result_data->min_p_marks)
-   			{
-   				$fail_count++; 
-   			}
-   		    }
-   		    $txnAmt  =  $fail_count * $exam_fess;      
-   	        }    
-			if($student['new_exam_form']=='Y'){
-				$this->session->set_flashdata('warning','Payment Already Submitted');
-				redirect(base_url('dashboard'));
-			}
+  	       $exam_fess = 100; 	
+           $failCount = $this->Common_model->getCountByWhere('backlog_exam_form',array('student_id' => $student->student_id,'status'=>'B'));
+            $exam_fees =$failCount * 100;
+   		    $txnAmt  =  $exam_fees;      	
 			$hash_string = '';
 		/*  testing credential 
 			$MERCHANT_KEY = "9WEOTe";

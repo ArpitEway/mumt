@@ -106,8 +106,6 @@
 		}
 
 	}
-
-
 </style>
 <div id="printThisDivIdOnButtonClick" class="mt-10">
 	<div id="printablediv">
@@ -120,34 +118,34 @@
 
 					</div>
 					<div class="form-text-color form-group col-md-4 text-left m-auto">
-						<?php echo $student['form_no']; ?>
+						<?php echo $papers[0]->student_id; ?>
 					</div>
 
 					<div class="form-group col-md-2 text-left m-auto">
 						<label class="label_form">Enrollment :</label>
 					</div>
 					<div class=" form-text-color form-group col-md-3 text-left m-auto">
-						<?php echo $student['enrollment_no']; ?>
+						<?php echo $papers[0]->enrollment_no; ?>
 					</div>
 					<div class="form-group col-md-3 text-left m-auto">
 						<label class="label_form">Course Name:</label>
 					</div>
 					<div class="form-text-color form-group col-md-4 text-left m-auto">
-						<?php echo $student['course_name']; ?>
+				<?php echo $this->Common_model->getCourseNameByCourseId($papers[0]->course_group_id); ?>
 					</div>
 
 					<div class="form-group col-md-2 text-left m-auto">
 						<label class="label_form">Class Name:</label>
 					</div>
 					<div class="form-text-color form-group col-md-3 text-left m-auto">
-						<?php echo $student['class_name']; ?>
+					<?php echo $this->Common_model->getClassNameByClassId($papers[0]->class_id); ?>
 					</div>
 
 					<div class="form-group col-md-3 text-left m-auto">
 						<label class="label_form">Student Name :</label>
 					</div>
 					<div class="form-group form-text-color col-md-4 text-left m-auto">
-						<?php echo $student['name']; ?>
+				<?php echo $this->Common_model->getSinglefield('student','name',array('class_id'=>$papers[0]->class_id)); ?>
 					</div>
 
 					<div class="form-group col-md-2 text-left m-auto">
@@ -217,10 +215,12 @@
 			?>
        <a class="btn btn-success" href="<?= base_url('paid_by_university/'.$student_id) ?>">Paid By University</a>
 			<?php
-		}else{
+		}
+		else{
 			?>
-			<?php if($student['temp_exam_form']=='Y' && $student['new_exam_form']=='N')
-
+			<?php 
+     $exam_form_status = $this->Common_model->getRecordByWhere('backlog_student',array('student_id' => $papers[0]->student_id ));
+		if($exam_form_status[0]->exam_form=='N')
 			{ ?>
 				<a class="btn btn-success" href="<?= base_url('Payment/backlog_exam_form/'.$student_id) ?>">Process To Payment</a>
 			<?php } ?>

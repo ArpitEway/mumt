@@ -1,45 +1,111 @@
-<table id="kt_datatable_scroll" class="table table-striped nowrap" >
-  <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-  <thead>
-    <tr>
-     <th>Sno</th>
-     <th>Form No.</th>
-     <th>Enrollment No </th>
-     <th>Student Name</th>
-     <th>Course</th>
-     <th>Class</th>
-     <th>Total Fees</th>
-     <th>Action</th>
-   </tr>
-   </thead>
-   <tbody>
-   <?php
-   $i = 1;
-   $exam_fess = 100;
-   $fail_count = 0;
-   foreach($students as $student){
-
-    
-             
+<div class=" mt-5" >
+    <div class="row justify-content-around mb-10">
+        <a href="<?=base_url('backlog_exam_form_students/notSubmitted')?>" class="btn btn-primary">Not Submitted</a>
+        <a href="<?=base_url('backlog_exam_form_students/submitted')?>" class="btn btn-success">Submitted</a>
+        <a href="<?=base_url('backlog_exam_form_students/skipped')?>" class="btn btn-warning">Skipped</a>
+    </div>
+<div class="container-fluid text-center mb-10">
+    <?php if ($exam_form_button=="notSubmitted"): ?>
+        <h3 class="text-primary">Exam Form Student List</h3>
+    <?php elseif ($exam_form_button=="submitted"): ?>
+        <h3 class="text-primary"> Submitted Exam Form</h3>
+    <?php elseif ($exam_form_button=="skipped"): ?>
+        <h3 class="text-primary"> Skipped Exam Form</h3>
+    <?php endif ?>
+</div>
+<div class="table-responsive">
+    <table id="kt_datatable_scroll" class="table table-striped nowrap"  >
+        <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+        <thead>
+            <tr>
+               <th>Sno</th>
+               <!-- <th>Session </th> -->
+               <th>Form No.</th>
+               <th>Enrollment No </th>
+               <th>Student Name</th>
+               <th>Course</th>
+               <th>Class</th>
+               <th>Total Fees</th>
+               <th>Action</th>
+                <?php if($exam_form_button=="notSubmitted"){ ?>
+                    <th>Skip Exam Form</th>
+                <?php } ?>
+           </tr>
+       </thead>
+       <tbody>
+         <?php
+         $i = 1;
+         foreach($documents as $student){
+         $failCount = $this->Common_model->getCountByWhere('backlog_exam_form',array('student_id' => $student->student_id,'status'=>'B'));
+            $exam_fees =$failCount * 100;
+            ?>
+            <tr class="remove">
+               <td><?php echo $i; ?></td>
+               <!-- <td><?php echo $student->session; ?> </td> -->
+               <td><?php echo $student->student_id; ?> </td>
+               <td><?php echo $student->enrollment_no; ?> </td>
+               <td><?php echo $this->Common_model->getSinglefield('student','name',array('student_id'=>$student->student_id));  ?> </td>
+               <td><?php echo $this->Common_model->getCourseNameByCourseId($student->course_group_id); ?> </td>
+               <td><?php  echo $this->Common_model->getClassNameByClassId($student->class_id);; ?> </td>
+               <td><?php echo $exam_fees ;    
+             ?> 
+            </td>
+               <?php $student_id = $this->Common_model->encrypt_decrypt($student->student_id);
+               $class_id = $this->Common_model->encrypt_decrypt($student->class_id);
+                ?>
+               <?php if($exam_form_button=="skipped"){ ?>
+                   <td>
+                  <input type="button" data-id = "<?=$student->student_id;?>" class="btn btn-success check_skipped" value="unskippped">
+                    </td>
+                <?php } ?>    
+             <?php if($exam_form_button=="notSubmitted"){ ?>
+               <td>     
+            <a class="btn btn-primary" href="<?=base_url('backlog_showPapers/'.$student_id .'/'. $class_id)?>">View Paper</a>     
+            </td>
+             <td>
+                <input type="button" data-id = "<?=$student->student_id;?> " class="btn btn-danger check_skipped" value="skipped">
+               </td>
+            <?php
+          }        
+        // if($exam_form_button=="submitted")
+        //   { 
+        //  echo ' <td><a class="btn btn-primary" href="'.base_url('backlog_showPapers/'.$student_id).'">View Paper</a></td>';   
+        // }
+    $i++;
+        }
     ?>
-    <tr>
-     <td><?php echo $i; ?></td>
-     <td><?php echo $student->student_id; ?> </td>
-     <td><?php echo $student->enrollment_no; ?> </td>
-     <td><?php echo $student->name; ?> </td>
-     <td><?php echo $student->course_name; ?> </td>
-     <td><?php echo $student->class_name; ?> </td>
-     <td><?php echo  $actual_fess ; ?> </td>  
-     <td>    
-       <?php $student_id = $this->Common_model->encrypt_decrypt($student->student_id);
-       $class_id = $this->Common_model->encrypt_decrypt($student->class_id);
-       ?>
-       <a class="btn btn-primary" href="<?=base_url('backlog_showPapers/'.$student_id .'/'.$class_id)?>">Show Paper</a>
-     </td>    
-   </tr>         
-   <?php
-   $i++;
- }
- ?>
 </tbody>
 </table>
+</div>
+</div>
+
+<script type="text/javascript">
+ $(document).on('click', '.check_skipped', function() {
+    var c= confirm('Are you sure?');
+    if(c==true){
+        var self = $(this);
+        $(this).parent().parent().fadeOut(1500, function(){});
+           // $(this).closest('tr').remove();
+           var csrfName = $('.csrfname').attr('name');
+           var csrfHash = $('.csrfname').val(); 
+           var val = $(this).val();
+           var self =this;
+           var check_skipped = val;
+
+           var data = {
+            id: $(this).attr('data-id'),
+            [csrfName]:csrfHash,
+            check_skipped:check_skipped
+        };
+        $.ajax({
+            url: BASE_URL + 'center/center/change_backlog_new_exam_form_status',
+            type: 'POST',
+            dataType: 'json',
+            data: data,
+            success: function (data) {
+                $(self).parent().html(data.data);
+            }
+        });
+    }
+});
+</script>
