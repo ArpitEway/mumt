@@ -3959,7 +3959,7 @@ public function update_exam_datewise_permission(){
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('*');
 			$this->db->from('exam_center');
-			
+			$this->db->order_by('examcentercode', "asc");
 			$data['exam_centers'] = $this->db->get()->result();
 			
 
@@ -3974,6 +3974,7 @@ public function update_exam_datewise_permission(){
 		$this->db->from('exam_center');
 		if($exam_center!="All")
 		$this->db->where('id',$exam_center);	
+		$this->db->order_by('examcentercode', "asc");
 		$data['exam_centers'] = $this->db->get()->result();
 		$this->db->select('*');
 			$this->db->from('paper_master');
