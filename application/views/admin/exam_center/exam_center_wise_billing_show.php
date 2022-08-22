@@ -101,7 +101,7 @@ $total = 0;
     </tbody>
 </table>
 
-<table style="font-family:Arial, Helvetica, sans-serif;" width="80%" cellspacing="0" cellpadding="8" border="1" align="center">
+<table style="font-family:Arial, Helvetica, sans-serif;text-align:center;" width="80%" cellspacing="0" cellpadding="8" border="1" align="center">
         <tbody>
             <tr bgcolor="#FFCC99">
                 <td><strong>#</strong></td>
@@ -196,12 +196,12 @@ $total = 0;
                 <!--<td></td>
                 <td></td>-->
             </tr>
-            <?php }$i++;} ?>
+            <?php $i++; }} ?>
             </tr>
             <tr><td colspan="3" align="right" ><!-- Max Student Count (in one shift) --> </td><td><?php $mstud=max($max_count); ?></td> <td colspan="8" align="right">महायोग</td><td><?php echo $tot; 
              $where = array('examcentercode' => $row->examcentercode,'id'=> $row->id);
              $data=array('billing_amount'=>$tot);
-           //  $papers = $this->Common_model->updateRecordByConditions('exam_center',$where,$data);
+             $papers = $this->Common_model->updateRecordByConditions('exam_center',$where,$data);
             
           
             ?></td></tr>
