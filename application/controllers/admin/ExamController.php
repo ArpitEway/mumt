@@ -1411,7 +1411,7 @@ class ExamController extends CI_Controller {
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('*');
 			$this->db->from('exam_center');
-			
+			$this->db->order_by('examcentercode', "asc");
 			$data['exam_centers'] = $this->db->get()->result();
 
 			$this->load->view('admin/exam_center/exam_center_wise_answer_sheet',$data);
@@ -1442,6 +1442,7 @@ class ExamController extends CI_Controller {
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('*');
 			$this->db->from('exam_center');
+			$this->db->order_by('examcentercode', "asc");
 			$data['exam_centers'] = $this->db->get()->result();
 			$this->db->select('*');
 			$this->db->from('paper_master');
@@ -1597,7 +1598,7 @@ class ExamController extends CI_Controller {
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('*');
 			$this->db->from('exam_center');
-			
+			$this->db->order_by('examcentercode', "asc");
 			$data['exam_centers'] = $this->db->get()->result();
 
 			$this->load->view('admin/exam_center/exam_center_wise_student_attendance_sheet',$data);
