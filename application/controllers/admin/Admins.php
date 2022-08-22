@@ -2649,11 +2649,15 @@ public function update_exam_datewise_permission(){
 		}	
 		$class_id = $student_details[0]->class_id;
 		$name = $student_details[0]->name;
-
+        if($student_details[0]->university_mode=='REG'){
 		if($Fess_head!=''){
 			$exam_fees = ($Fess_head== 'Exam Fees') ? $course_details[0]->exam_fees+$course_details[0]->program_fees : $course_details[0]->form_fees+$course_details[0]->admission_fees;
-		}
-
+		} 
+	    }else{
+           if($Fess_head!=''){
+			$exam_fees = ($Fess_head== 'Exam Fees') ? $course_details[0]->p_exam_fees+$course_details[0]->p_program_fees : $course_details[0]->p_form_fees+$course_details[0]->p_admission_fees;
+		} 
+	    }
 		$dateTime = explode(' ',$dateTime);
 		$updateData = array('txnId' => $txnid,'fees_head'=>$Fess_head,'payment_date' => $dateTime[0],'payment_time' => $dateTime[1],'payment' => 'Y', 'payment_status' => 'success','student_id'=>$student_id
 			,'center_id'=>$center_id,'course_group_id'=>$course_group_id,'class_id'=>$class_id,'remark'=>$remark,'student_name'=>$name,'exam_session'=>$session,
@@ -3981,6 +3985,7 @@ public function update_exam_datewise_permission(){
 			//echo $this->db->last_query();
 		echo $this->load->view('admin/exam_center/exam_center_wise_billing_show',$data, TRUE);
 	}
+	
 	public function class_wise_old_exam_from_status(){
 
 		$this->load->view('header',array('title' => 'Class Wise Exam Form Status(DEC-2021)'));

@@ -1,7 +1,7 @@
 
 <?php $paper = $this->Common_model->getRecordById('paper_master','id',$param1);
  ?>
-<form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/Admins/paper/update/'.$param1); ?>">
+<form method="POST" enctype="multipart/form-data" class="d-block ajaxForm" action="<?php echo site_url('admin/Admins/paper/update/'.$param1); ?>">
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">	
 <div class="row">
 		<div class="form-group col-md-6">
@@ -10,14 +10,13 @@
 			<input type="hidden" name="paper_id" value="<?=$param1?>">
 		</div>
 		
-         <div class="form-group col-md-6"> 
+    <!--    <div class="form-group col-md-6"> 
 				<label>Exam date:</label>
 				<input type="date" id="exam_date" name="exam_date" class="form-control" placeholder="Enter exam date" data-inputmask="'alias': 'dd-mm-yyyy'" value="<?=$paper->exam_date?>">
 				<span class="form-text text-danger"></span>
-		</div>
+		</div>  -->
 
-
-		<div class="form-group col-md-6">
+		<!-- <div class="form-group col-md-6">
 			<label>Exam Day:</label>
 			<select name="exam_day" id="exam_day" class="form-control"
 			value="">
@@ -33,11 +32,11 @@
 			
 		</select>
 		<span class="text-danger"></span>
-	</div>
-       <div class="form-group col-md-6">
+	</div> -->
+       <!-- <div class="form-group col-md-6">
 			<label for="code">Exam Time</label>
 			<input type="text" class="form-control" id="exam_time" name="exam_time" value="<?=$paper->exam_shift?>" placeholder="Enter Exam time ">        
-		</div>
+		</div> -->
 
       <div class="form-group col-md-6">
 			<label for="code">Max Theory Marks</label>
@@ -57,8 +56,11 @@
 		<div class="form-group col-md-6">
 			<label for="code">Min Internal Marks</label>
 			<input type="text" class="form-control" id="min_int" name="min_int" value="<?=$paper->min_internal_marks?>" placeholder="Enter Min Internal Marks">        
-		</div>
-
+		</div>    
+           <div class="form-group col-md-6">
+            <label for="name">Uplode Paper</label>
+          <input type="file" class="form-control"  id="file" name="file">
+        </div>  
 	</div>
 	<div class="form-group text-center">
 		<button class="btn btn-md btn-primary" type="submit">Submit</button>

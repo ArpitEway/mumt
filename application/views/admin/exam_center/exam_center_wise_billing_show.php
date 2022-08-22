@@ -5,6 +5,11 @@
     @page {
       size: auto;
   }
+      @media print {
+        .offcanvas-footer.text-center.p-3{
+            display: none;
+        }
+        }
 </style>
 <?php 
 
@@ -124,7 +129,8 @@ $total = 0;
                     $this->db->select('count(*) as cnt');
                     $this->db->from('student as s');
                     $this->db->join('new_exam_form  as e', 'e.student_id = s.student_id AND s.class_id = e.class_id');
-                    $this->db->where('s.new_exam_form',"Y");	
+                    $this->db->where('s.new_exam_form',"Y");
+                    $this->db->where('s.notification_no',1);	
                     $this->db->where('s.examcentercode',$row->examcentercode);	
                     $this->db->where('s.exam_center_id',$row->id);	
                     $this->db->where_in('paper_id', $papers );
@@ -189,10 +195,10 @@ $total = 0;
             </tr>
             <?php }$i++;} ?>
             </tr>
-            <tr><td colspan="3" align="right" >Max Student Count (in one shift) </td><td><?php echo $mstud=max($max_count); ?></td> <td colspan="8" align="right">महायोग</td><td><?php echo $tot; 
-            //  $where = array('examcentercode' => $row->examcentercode,'id'=> $row->id);
-            //  $data=array('billing_amount'=>$tot,'max_student_count'=>$mstud);
-            //  $papers = $this->Common_model->updateRecordByConditions('exam_center',$where,$data);
+            <tr><td colspan="3" align="right" ><!-- Max Student Count (in one shift) --> </td><td><?php $mstud=max($max_count); ?></td> <td colspan="8" align="right">महायोग</td><td><?php echo $tot; 
+             $where = array('examcentercode' => $row->examcentercode,'id'=> $row->id);
+             $data=array('billing_amount'=>$tot);
+             $papers = $this->Common_model->updateRecordByConditions('exam_center',$where,$data);
             
           
             ?></td></tr>

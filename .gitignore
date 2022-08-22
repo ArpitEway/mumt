@@ -31,3 +31,4 @@ assets/activity/*
 assets/department/*
 application/composer.lock
 application/vendor/*
+assets/model_paper/*

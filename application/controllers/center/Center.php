@@ -1185,7 +1185,7 @@ class Center extends CI_Controller {
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
-		$titleData = array('title' => 'Admit Card List DEC 2021' );
+		$titleData = array('title' => 'Admit Card List AUGUST 2022' );
 		$this->load->view('Centers/header',$titleData);
 		$where = array('center_id'=>$this->session->center_id , 'admit_card_permission' =>'Y',"student.roll_no!="=>0);
 		$this->db->select('DISTINCT(student.class_id) as
@@ -1194,6 +1194,7 @@ class Center extends CI_Controller {
 		$this->db->Where($where);
 		$this->db->join('class_master', 'class_master.id = student.class_id');
 		$data['students'] = $this->db->get()->result();
+		//echo $this->db->last_query();
 		 //  $this->Common_model->last_query();
 		$this->load->view('Centers/class_wise_admit_card',$data);
 		$this->load->view('Centers/footer');
@@ -1206,12 +1207,14 @@ class Center extends CI_Controller {
 			redirect(base_url());
 		}
 		$class_id=$this->Common_model->encrypt_decrypt($class_id,'decrypt');
-		$titleData = array('title' => 'Admit Card Student List DEC 2021' );
+		$titleData = array('title' => 'Admit Card Student List AUGUST 2022' );
 		$this->load->view('Centers/header',$titleData);
 		$center_id =  $this->session->center_id;
 		$where = array(
 			'class_id' =>$class_id,
 			'center_id' => $center_id,
+			'roll_no!=' => 0,
+			'new_exam_form' => 'Y'
 		);
 		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
 		$this->load->view('Centers/class_wise_admit_card_list',$data);
@@ -1223,7 +1226,7 @@ class Center extends CI_Controller {
 			redirect(base_url());
 		}
 		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
-		$titleData = array('title' => 'Admit Card Dec 2021' );
+		$titleData = array('title' => 'Admit Card AUGUST 2022' );
 		$this->load->view('Centers/header',$titleData);
 		$center_id =  $this->session->center_id;
 		$where = array(
@@ -1238,12 +1241,14 @@ class Center extends CI_Controller {
 		$this->db->where($where);
 		$data['student'] = $this->db->get()->result();
 
-		$wherePaper = array('student_id' => $student_id);
+		$wherePaper = array('student_id' => $student_id,'paper_master.type'=>'theory');
 		$this->db->select('*');
 		$this->db->from('paper_master');
 		$this->db->join('new_exam_form', 'new_exam_form.paper_id = paper_master.id');
-		$this->db->join('time_table', 'paper_master.class_id = time_table.class_id');
+		//$this->db->join('time_table', 'paper_master.class_id = time_table.class_id');
 		$this->db->where($wherePaper);
+		$this->db->order_by("exam_date", "asc");
+		$this->db->order_by("exam_shift", "desc");
 		$data['papers'] = $this->db->get()->result();
 
 		$this->load->view('template/admit_card',$data);
@@ -2022,5 +2027,4 @@ class Center extends CI_Controller {
     	$this->load->view('Centers/backlog_showPapers',$data);
     	$this->load->view('Centers/footer');
     }
-
 }
