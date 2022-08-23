@@ -364,7 +364,6 @@ class Payment extends CI_Controller {
    	$titleData = array('title'=>'Exam Form Payment');
    	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
    	$class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
-
    	$student = $this->Common_model->student_info($student_id);
     $failCount = $this->Common_model->getCountByWhere('backlog_exam_form',array('student_id'=>$student_id,'status'=>'B'));
         $exam_fees =$failCount * 100;  
@@ -379,18 +378,19 @@ class Payment extends CI_Controller {
    }
 
 
-    public function backlog_exam_form_payment($student_id){
+    public function backlog_exam_form_payment($student_id,$class_id){
 		
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url('login'));
 		}
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		 $class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
 		if($student_id!=''){
 		   $student = $this->Common_model->student_info($student_id);		
   	       $exam_fess = 100; 	
-           $failCount = $this->Common_model->getCountByWhere('backlog_exam_form',array('student_id' => $student->student_id,'status'=>'B'));
+           $failCount = $this->Common_model->getCountByWhere('backlog_exam_form',array('student_id' => $student_id,'status'=>'B'));
             $exam_fees =$failCount * 100;
-   		    $txnAmt  =  $exam_fees;      	
+   		   $txnAmt  =  $exam_fees;   
 			$hash_string = '';
 		/*  testing credential 
 			$MERCHANT_KEY = "9WEOTe";
@@ -420,7 +420,7 @@ class Payment extends CI_Controller {
 			$posted['udf1'] = $student_id;
 			$posted['udf2'] = $mode ;
 			$posted['udf3'] = "June 2022";
-			$posted['udf4'] = $student["center_id"].' / '.$student['class_id'];
+			$posted['udf4'] = $student["center_id"].' / '.$class_id;
 			$posted['udf5'] = $student["name"]."/".$student["f_h_name"];
 			$hash = '';
 			$hashSequence = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10";

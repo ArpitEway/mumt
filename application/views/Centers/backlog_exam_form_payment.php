@@ -68,8 +68,9 @@
 	</div>
 	<div class="row py-3 border justify-content-center">
 	<?php
+	    $class_id = $this->Common_model->encrypt_decrypt($class_id);
 		$student_id = $this->Common_model->encrypt_decrypt($student['student_id']);
-		$url = 'payment/backlog_exam_form_payment/'.$student_id;
+		$url = 'payment/backlog_exam_form_payment/'.$student_id .'/'.$class_id;
 	?>
 	<a class="btn btn-default text-dark font-weight-bold" href="<?=base_url($url);?>">Pay Now</a>
 </div>
