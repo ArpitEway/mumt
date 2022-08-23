@@ -92,7 +92,7 @@
 								 <td rowspan="4" class="text-center"><img src="<?=$img_url;?>"  width="115px" height="166px" /></td> 
 							</tr>
 							<tr>
-							  <td><b>Course: </b> <?=$student->course_name;?> (<?=$student['class_name'];?>) </td>
+							  <td><b>Course: </b> <?=$student['course_name'];?> (<?=$student['class_name'];?>) </td>
 							  <td colspan="2"><b>EC Code: </b> <?=$student['examcentercode'];?></td>
 							</tr>
 							<tr>
@@ -101,23 +101,12 @@
 							<tr>  
 							  <td colspan="3"><b>Father/Husband Name: </b> <?=$student['f_h_name'];?></td>
 							</tr>
-							<!-- <tr>
-								<td><b>Mode:</b> Regular</td>
-								<td class="border border-dark" colspan="2"> <b>Mobile No. :</b> <?php 	$mobile_no =$this->Common_model->getMobileNoByStudentID($student->student_id);	?><?= $mobile_no ?> </td>
-							</tr> -->
+							
 						  </tbody>
 						</table>
 					</div>
 				</div>
 			</div>
-<!-- 			<div class="BoxE border- padding mar-bot txt-center">
-				<div class="row">
-					<div class="col-12">
-						<h5>EXAMINATION VENUE</h5>
-						<p>NH - 79 Gangrar Chittorgarh - 312901 <br> RAJASTHAN, INDIA</p>
-					</div>
-				</div>
-			</div> -->
 			<div class="BoxF border- padding mar-bot txt-center">
 				<div class="row">
 					<div class="col-12">
@@ -153,13 +142,6 @@
 					<td ></td>
 					<td ></td>
 					<td ></td>
-					<!-- <?php //if ($i==1): ?>
-						
-					<td rowspan="<?=$paper_count?>" style="vertical-align: middle;"><?php echo  $this->Common_model->viewDate($paper->exam_start_date); ?></td>
-					<td rowspan="<?=$paper_count?>" style="vertical-align: middle;"><?php echo $this->Common_model->viewDate($paper->exam_end_date); ?></td>
-					
-					<?php //endif ?> -->
-					<!-- <td><?= ($paper->exam_shift=='मध्याह्न') ? '१२:०० से ०३:०० बजे तक' : ''; ?></td> -->
 					
 			</tr>
 			<?php 
@@ -173,28 +155,18 @@
 			</div>
 
 
-			<div style="style:100%;margin-top:10px; height:auto;min-height: 150px;">
+			<div style="style:100%;margin-top:30px; height:auto;min-height: 150px;">
 				<div style="float:left;width:50%; height:auto;" align="left">
-					<p><strong>Principle</strong></p>
-					<p><strong>Name</strong></p>
-					<p><strong>Signature</strong></p>
+					<p><strong></strong></p>
+					<p><strong></strong></p>
+					<p><strong></strong></p>
 				</div>
 				<div style="float:left;width:50%; height:auto;" align="left">
-					<p><strong>Exam Center Superintendent</strong></p>
-					<p><strong>Name</strong></p>
+					<p><strong></strong></p>
+					<p><strong></strong></p>
 					<p><strong>Seal &amp; Signature</strong></p>
 				</div>
 			</div>
-
-			
-			
-		
-	
-</section>
+		</section>
     
  <?php }  }  ?>
-    <!-- </div>
- <div class="text-center mt-10">
-    
-<input type="button" class="btn btn-primary mx-auto" onclick="PrintDiv();" value=" Print ">
-</div> -->
