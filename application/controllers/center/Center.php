@@ -1233,24 +1233,25 @@ class Center extends CI_Controller {
 			'student_id' => $student_id,
 			'roll_no !=' => 0,
 			'center_id' => $center_id,
+			'new_exam_form' => 'Y',
 		);
 
 		$this->db->select('*');
 		$this->db->from('student');
-		$this->db->join('center', 'center.id = student.center_id');
+		
 		$this->db->where($where);
 		$data['student'] = $this->db->get()->result();
 
-		$wherePaper = array('student_id' => $student_id,'paper_master.type'=>'theory');
+		$wherePaper = array('student_id' => $student_id,'paper_master.type'=>'theory','paper_master.class_id'=>$data['student'][0]->class_id);
 		$this->db->select('*');
 		$this->db->from('paper_master');
 		$this->db->join('new_exam_form', 'new_exam_form.paper_id = paper_master.id');
-		//$this->db->join('time_table', 'paper_master.class_id = time_table.class_id');
+		
 		$this->db->where($wherePaper);
 		$this->db->order_by("exam_date", "asc");
 		$this->db->order_by("exam_shift", "desc");
 		$data['papers'] = $this->db->get()->result();
-
+		//echo $this->db->last_query(); die;
 		$this->load->view('template/admit_card',$data);
 		$this->load->view('Centers/footer');
 	}
