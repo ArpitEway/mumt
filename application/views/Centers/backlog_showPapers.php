@@ -207,7 +207,9 @@
 		</div>
 	    </div>
 		<?php if ($student['new_exam_form']=='N'): ?>
-	   <?php $student_id = $this->Common_model->encrypt_decrypt($student['student_id']); ?>
+	   <?php $student_id = $this->Common_model->encrypt_decrypt($student['student_id']);
+	     $class_id = $this->Common_model->encrypt_decrypt($papers[0]->class_id);
+	    ?>
 			<div class="row justify-content-center mt-10">
 			<?php 
 		$center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28 );
@@ -220,9 +222,10 @@
 			?>
 			<?php 
      $exam_form_status = $this->Common_model->getRecordByWhere('backlog_student',array('student_id' => $papers[0]->student_id ));
+     
 		if($exam_form_status[0]->exam_form=='N')
 			{ ?>
-				<a class="btn btn-success" href="<?= base_url('Payment/backlog_exam_form/'.$student_id) ?>">Process To Payment</a>
+				<a class="btn btn-success" href="<?= base_url('Payment/backlog_exam_form/'.$student_id .'/'. $class_id) ?>">Process To Payment</a>
 			<?php } ?>
 			<?php
 	     	}

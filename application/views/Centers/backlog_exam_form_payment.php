@@ -38,7 +38,7 @@
 	<div class="row py-3 border">
 		<div class="col-sm-4 border-right">Course / Class
 		</div>
-		<div class="col-sm-8"><?=$student['course_name']?> / <?=$student['class_name']?>
+		<div class="col-sm-8"><?=$student['course_name']?> / <?php  echo $this->Common_model->getClassNameByClassId($class_id);; ?>
 		</div>
 	</div>
 	<div class="row py-3 border">

@@ -357,17 +357,20 @@ class Payment extends CI_Controller {
 	}
 
 
-   public function backlog_exam_form($student_id){
+   public function backlog_exam_form($student_id,$class_id){
    	if(!$this->session->has_userdata('centerdata')){
    		redirect(base_url('login'));
    	}
    	$titleData = array('title'=>'Exam Form Payment');
    	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+   	$class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
+
    	$student = $this->Common_model->student_info($student_id);
     $failCount = $this->Common_model->getCountByWhere('backlog_exam_form',array('student_id'=>$student_id,'status'=>'B'));
         $exam_fees =$failCount * 100;  
    	$data['txnAmt'] = $exam_fees;
    	$data['student'] = $student;
+   	$data['class_id'] = $class_id;
    	$data['url'] = 'paynow';
    	$data['paymentType'] = 'Exam Fees';
    	$this->load->view('Centers/header',$titleData);
