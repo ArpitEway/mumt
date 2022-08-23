@@ -37,6 +37,7 @@
 							'new_exam_form' => 'Y',
 							'roll_no' =>'0',
 							'class_id' => $class->id,
+							'course_group_id' => $class->course_group_id
 						);
 						
 						$students = $this->Common_model->getRecordByWhereByOrder('student',$where,'center_id,name','ASC');
