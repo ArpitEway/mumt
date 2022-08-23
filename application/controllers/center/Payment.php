@@ -392,11 +392,11 @@ class Payment extends CI_Controller {
             $exam_fees =$failCount * 100;
    		   $txnAmt  =  $exam_fees;   
 			$hash_string = '';
-		/*  testing credential 
+		/*  testing credential  
 			$MERCHANT_KEY = "9WEOTe";
 			$SALT = "uFYw7ClQ"; 
-			$PAYU_BASE_URL = "https://test.payu.in"; */
-		/*  live credential  */
+			$PAYU_BASE_URL = "https://test.payu.in";*/
+		/*  live credential   */
 			$MERCHANT_KEY = "h9OyBB";
 			$SALT = "rzu8VRFb";
 			$PAYU_BASE_URL = "https://secure.payu.in";
@@ -411,7 +411,7 @@ class Payment extends CI_Controller {
 			$posted['firstname'] = $student['name'];
 			$posted['email'] = $student['p_email'];
 			$posted['phone'] = $student['p_mobile_no'];
-			$posted['productinfo'] = "Exam Fees";
+			$posted['productinfo'] = "Backlog Exam Fees";
 			$posted['address1'] = $student['p_address'];
 			$posted['city'] = $student['p_city'];
 			$posted['state'] = $student['p_state'];
@@ -440,8 +440,7 @@ class Payment extends CI_Controller {
 
 
     public function backlog_response(){
-    	
-		$date = date('Y-m-d'); 
+    	$date = date('Y-m-d'); 
 		$time = date('h:i:s');
 		$student_id=$_POST["udf1"];
 		$udf2=$_POST["udf2"];
@@ -458,8 +457,16 @@ class Payment extends CI_Controller {
 		$email=$_POST["email"];
 		$salt="rzu8VRFb"; 
 
-		$retHashSeq = $salt.'|'.$status.'||||||'.$udf5.'|'.$udf4.'|'.$udf3.'|'.$udf2.'|'.$student_id.'|'.$email.'|'.$firstname.'|'.$productinfo.'|'.$amount.'|'.$txnid.'|'.$key;
-		$hash = hash("sha512", $retHashSeq);
+		If (isset($_POST["additionalCharges"])) {
+			$additionalCharges=$_POST["additionalCharges"];
+			$retHashSeq = $additionalCharges.'|'.$salt.'|'.$status.'||||||'.$udf5.'|'.$udf4.'|'.$udf3.'|'.$udf2.'|'.$student_id.'|'.$email.'|'.$firstname.'|'.$productinfo.'|'.$amount.'|'.$txnid.'|'.$key;
+
+		}else {
+			$retHashSeq = $salt.'|'.$status.'||||||'.$udf5.'|'.$udf4.'|'.$udf3.'|'.$udf2.'|'.$student_id.'|'.$email.'|'.$firstname.'|'.$productinfo.'|'.$amount.'|'.$txnid.'|'.$key;
+		}
+
+			$hash = hash("sha512", $retHashSeq);
+		
 		 if ($hash != $posted_hash) {
 		 $this->session->set_flashdata('error','Transaction has been tampered. Please try again');
 	 	  redirect(base_url('center'));
@@ -480,9 +487,9 @@ class Payment extends CI_Controller {
 			);
 		$student = $this->Common_model->getRecordById('backlog_student','student_id',$student_id);
        $student_name =  $this->Common_model->getSinglefield('student','name',array('student_id'=>$student_id));
-			$where = 'student_id='.$student_id.' and fees_head="'.$productinfo.'" and class_id='.$student->class_id;
+			$where = 'student_id='.$student_id.' and fees_head="'.$productinfo.'" and class_id='.$student->class_id.' and exam_session= "'.$udf3.'"';
 			$txnData = $this->Common_model->get_record('online_payment_transaction','*',$where);
-			if($productinfo == 'Exam Fees'){
+			if($productinfo == 'Backlog Exam Fees'){
 				if(count($txnData)>0){
 					$response["exam_session"] = $udf3;
 					$this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$response);
