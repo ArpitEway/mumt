@@ -237,11 +237,20 @@ class Examcenter extends CI_Controller {
 			// 	"status" => true,
 			// 	"data" => $dt
 			// ));
-		}
-
-
-		
-		
+		}		
 	}
 
+	public function regular_exam_center($method,$exam_center_id)
+	{
+		$exam_center_id = $this->Common_model->encrypt_decrypt($exam_center_id,'decrypt');
+		$exam_center = $this->Common_model->getRecordById('exam_center','id',$exam_center_id);
+		$data = array(
+					'loged_in' 	  => true,
+					'Examcenterdata' => $exam_center->examcentercode,
+					'password' 	  	  => $exam_center->password,
+					'exam_center_id'  => $exam_center->id
+				);
+				$this->session->set_userdata($data);
+				redirect(base_url('Examcenter/'.$method));
+	}
 }
