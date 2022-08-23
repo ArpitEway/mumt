@@ -18,7 +18,9 @@
     <script src="https://cdn.apidelv.com/libs/awesome-functions/awesome-functions.min.js"></script> 
   
     <style>
-		
+		.table-bordered td, .table-bordered th, .table thead th {
+    	font-size: 16px;
+		}
 	</style>
   </head>
   <body>
@@ -40,7 +42,7 @@
 			<div class="BoxC border- padding mar-bot">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Exam Schedule August 2022</h5>
+						<h5>Schedule of Exam for Annual/Semester Examination of August 2022</h5>
 						<!-- <h5> प्रवेश पत्र  </h5> <h5>परीक्षा (2021-22) </h5> -->
 					</div>
 				</div>
@@ -162,11 +164,12 @@
 					
 					</div>
 				</div>
-			</div> 
+			</div> -->
 			<footer class="txt-center">
-				<p>*** महर्षि महेश योगी वैदिक विश्वविद्यालय***</p>
+				<!-- <p>*** महर्षि महेश योगी वैदिक विश्वविद्यालय***</p> -->
+				<strong>This is a computer-generated document. No signature is required</strong>
 			</footer>
-			-->
+			
 		</div>
 	</div>
 <div class="text-center">
