@@ -56,7 +56,7 @@
 	<div class="row py-3 border">
 		<div class="col-sm-5 border-right">Class
 		</div>
-		<div class="col-sm-7 "><?=$this->Common_model->getClassNameByClassId($student['class_id'])?>
+		<div class="col-sm-7 "><?=$this->Common_model->getClassNameByClassId($transaction['class_id'])?>
 		</div>
 	</div>
 	<div class="row border border-primary bg-primary text-custom p-2">

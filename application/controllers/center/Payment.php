@@ -177,7 +177,7 @@ class Payment extends CI_Controller {
 					$response["exam_session"] = $udf3;
 					$this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$response);
 					$txnid = $txnData[0]['id'];
-				}else{
+				}else{ 
 				$response['student_id'] = $student_id;
 				$response['fees_head'] = $productinfo;
 				$response['course_group_id'] = $student->course_group_id;
@@ -405,8 +405,8 @@ class Payment extends CI_Controller {
 			$posted = array();
 			$posted['key'] = $MERCHANT_KEY;
 			$posted['txnid'] = $txnid;
-			$posted['surl'] =base_url('center/payment/response');
-			$posted['furl'] =base_url('center/payment/response');
+			$posted['surl'] =base_url('center/payment/backlog_response');
+			$posted['furl'] =base_url('center/payment/backlog_response');
 			$posted['amount'] =$txnAmt;
 			$posted['firstname'] = $student['name'];
 			$posted['email'] = $student['p_email'];
@@ -438,4 +438,77 @@ class Payment extends CI_Controller {
 		}
 	}
 
+
+    public function backlog_response(){
+    	
+		$date = date('Y-m-d'); 
+		$time = date('h:i:s');
+		$student_id=$_POST["udf1"];
+		$udf2=$_POST["udf2"];
+		$udf3=$_POST["udf3"];
+		$udf4=$_POST["udf4"];
+		$udf5=$_POST["udf5"];
+		$status=$_POST["status"];
+		$firstname=$_POST["firstname"];
+		$amount=$_POST["amount"]; 
+		$txnid=$_POST["txnid"];
+		$posted_hash=$_POST["hash"];
+		$key=$_POST["key"]; 
+		$productinfo=$_POST["productinfo"];
+		$email=$_POST["email"];
+		$salt="rzu8VRFb"; 
+
+		$retHashSeq = $salt.'|'.$status.'||||||'.$udf5.'|'.$udf4.'|'.$udf3.'|'.$udf2.'|'.$student_id.'|'.$email.'|'.$firstname.'|'.$productinfo.'|'.$amount.'|'.$txnid.'|'.$key;
+		$hash = hash("sha512", $retHashSeq);
+		 if ($hash != $posted_hash) {
+		 $this->session->set_flashdata('error','Transaction has been tampered. Please try again');
+	 	  redirect(base_url('center'));
+		 }else{
+    	$payment = ($status=='success') ? 'Y' : 'N';
+			$remsg = ($status=='success') ? 'success' : 'error';
+			$msg = ($status=='success') ? 'Payment submitted Successfully' : 'An error occurred';
+			$response = array(
+				"student_id" => $student_id,
+				"amount" => $amount,
+				"fees_head" => $productinfo,
+				"payment" => $payment, 
+				"payment_status" => $status,
+				"payment_date" => $date,
+				"payment_time" => $time,
+				"txnId" => $txnid,
+				"admission_type" =>$udf2,
+			);
+		$student = $this->Common_model->getRecordById('backlog_student','student_id',$student_id);
+       $student_name =  $this->Common_model->getSinglefield('student','name',array('student_id'=>$student_id));
+			$where = 'student_id='.$student_id.' and fees_head="'.$productinfo.'" and class_id='.$student->class_id;
+			$txnData = $this->Common_model->get_record('online_payment_transaction','*',$where);
+			if($productinfo == 'Exam Fees'){
+				if(count($txnData)>0){
+					$response["exam_session"] = $udf3;
+					$this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$response);
+					$txnid = $txnData[0]['id'];
+				}else{
+				$response['student_id'] = $student_id;
+				$response['fees_head'] = $productinfo;
+				$response['course_group_id'] = $student->course_group_id;
+				$response['class_id'] = $student->class_id;
+				$response['center_id'] = $student->center_id;
+				$response['student_name'] = $student_name;
+				$response['admission_type'] = $udf2;
+				$response["exam_session"] = $udf3;
+
+				$txnid = $this->Common_model->insertAll('online_payment_transaction',$response);
+				}
+				$status = 'exam_form';
+			}
+			if($payment=='Y'){
+				$where = 'student_id='.$student_id;
+				$student = array($status=>'Y');
+				$this->Common_model->updateRecordByConditions('backlog_student',$where,$student);
+			}
+			$this->session->set_flashdata($remsg,$msg);
+			$id = $this->Common_model->encrypt_decrypt($txnid);
+			redirect(base_url('center/payment/detail/'.$id));
+		}
+	}		
 }
