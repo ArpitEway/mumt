@@ -25,6 +25,11 @@
     .padding{
     	padding: 10px;
     }
+          @media print {
+		.offcanvas-footer.text-center.p-3{
+			display: none;
+		}
+		}
 	</style>
  <?php 
  foreach($exam_center_students as $student)  {

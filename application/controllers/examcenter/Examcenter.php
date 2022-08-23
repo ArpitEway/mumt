@@ -215,28 +215,14 @@ class Examcenter extends CI_Controller {
 			{
 				$where = array('enrollment_no'=>$text_val);
 
-			}else if($text_val !='' && $radio_val == 'roll_no')
-			{
-				$where = array('name'=>$text_val
-
-			);
-
-			}else if($text_val !='' && $radio_val == 'student_name')
-			{
-				$where = array();
-				$this->db->like('name', $text_val);
-
+			}else if($text_val !='' && $radio_val == 'roll_no'){
+				$where = array('roll_no'=>$text_val);
 			}
 
 			$data['exam_center_students'] = $this->Common_model->student_data($where);
-			//	echo "<pre>";
-			//print_r($data); die;
-			//$dt =  $this->load->view('admin/student/getStudentConsolidate',$data,true);
+			
 			echo $this->load->view('examcenter/get_search_student_attendance_sheet',$data, TRUE);
-			// echo json_encode(array(
-			// 	"status" => true,
-			// 	"data" => $dt
-			// ));
+			
 		}		
 	}
 
