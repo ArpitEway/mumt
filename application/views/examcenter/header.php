@@ -61,7 +61,7 @@
 						align-items: center;
 						">
 						<?php if($this->session->has_userdata('Examcenterdata')){ ?>
-							<a href="<?=base_url('Examcenter/dashboard')?>" class="btn btn-custom-white mr-3">Dashboard</a>
+							<a href="http://162.144.38.91/~mmyvvdde/main/examcenter/home.php" class="btn btn-custom-white mr-3">Dashboard</a>
 								
 						<div class="dropdown">
 							<a class="btn btn-custom-white dropdown-toggle mr-3" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
