@@ -27,6 +27,13 @@
                         </div>
                     </a>   
                 </div>
+                <div class="row">
+                     <a class="border-0 custom-menu-item" href="<?=base_url('Examcenter/search_attendance_sheet');?>">
+                        <div>
+                            <span class="nav-text">Search Attendance Sheet </span>
+                        </div>
+                    </a> 
+                </div>    
             </div>
             <div class="tab-pane fade" id="exam" role="tabpanel" aria-labelledby="exam-tab">
                 <div class="row">           

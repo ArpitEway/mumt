@@ -2649,11 +2649,15 @@ public function update_exam_datewise_permission(){
 		}	
 		$class_id = $student_details[0]->class_id;
 		$name = $student_details[0]->name;
-
+        if($student_details[0]->university_mode=='REG'){
 		if($Fess_head!=''){
 			$exam_fees = ($Fess_head== 'Exam Fees') ? $course_details[0]->exam_fees+$course_details[0]->program_fees : $course_details[0]->form_fees+$course_details[0]->admission_fees;
-		}
-
+		} 
+	    }else{
+           if($Fess_head!=''){
+			$exam_fees = ($Fess_head== 'Exam Fees') ? $course_details[0]->p_exam_fees+$course_details[0]->p_program_fees : $course_details[0]->p_form_fees+$course_details[0]->p_admission_fees;
+		} 
+	    }
 		$dateTime = explode(' ',$dateTime);
 		$updateData = array('txnId' => $txnid,'fees_head'=>$Fess_head,'payment_date' => $dateTime[0],'payment_time' => $dateTime[1],'payment' => 'Y', 'payment_status' => 'success','student_id'=>$student_id
 			,'center_id'=>$center_id,'course_group_id'=>$course_group_id,'class_id'=>$class_id,'remark'=>$remark,'student_name'=>$name,'exam_session'=>$session,
@@ -3955,7 +3959,7 @@ public function update_exam_datewise_permission(){
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('*');
 			$this->db->from('exam_center');
-			
+			$this->db->order_by('examcentercode', "asc");
 			$data['exam_centers'] = $this->db->get()->result();
 			
 
@@ -3970,17 +3974,20 @@ public function update_exam_datewise_permission(){
 		$this->db->from('exam_center');
 		if($exam_center!="All")
 		$this->db->where('id',$exam_center);	
+		$this->db->order_by('examcentercode', "asc");
 		$data['exam_centers'] = $this->db->get()->result();
 		$this->db->select('*');
 			$this->db->from('paper_master');
-			$this->db->where('exam_date!=',"");	
+			$this->db->where('exam_date!=',"");
+			$this->db->where('exam_date!=',"0000-00-00");	
 			$this->db->group_by(array('exam_date','exam_shift'));
 			$this->db->order_by('exam_date', "asc");
-			$this->db->order_by('exam_shift', "dsc");
+			$this->db->order_by('exam_shift', "desc");
 			$data['examDate'] = $this->db->get()->result();
-			//echo $this->db->last_query();
+		//	echo $this->db->last_query(); die;
 		echo $this->load->view('admin/exam_center/exam_center_wise_billing_show',$data, TRUE);
 	}
+	
 	public function class_wise_old_exam_from_status(){
 
 		$this->load->view('header',array('title' => 'Class Wise Exam Form Status(DEC-2021)'));

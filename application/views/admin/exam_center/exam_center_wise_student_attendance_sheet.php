@@ -43,20 +43,20 @@
 	var csrfName = $('.csrfname').attr('name');
 	var csrfHash = $('.csrfname').val(); 
 	var exam_center = $(this).val();
+  $("#headerTitle").html($("#exam_center option:selected").text());
   $('.dt-responsive').html("");
   $("#myLoader").show();
-  $("#headerTitle").html($("#exam_center option:selected").text());
   //console.log($("#multiple").val());
   //var multiple=$("#multiple").val();
 		$.ajax({
 			method: "POST",
-			url: BASE_URL+"admin/Admins/get_exam_center_wise_billing",
+			url: BASE_URL+"ExamController/get_exam_center_wise_student_attendance_sheet",
 			data: { exam_center : exam_center,
 					[csrfName]:csrfHash
 					},
 		})
 		.done(function( msg ) {
-      $("#myLoader").hide();
+            $("#myLoader").hide();
             $('.dt-responsive').html(msg);
 		});
 	});

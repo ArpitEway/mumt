@@ -5,6 +5,11 @@
     @page {
       size: auto;
   }
+      @media print {
+        .offcanvas-footer.text-center.p-3{
+            display: none;
+        }
+        }
 </style>
 <?php 
 
@@ -96,13 +101,13 @@ $total = 0;
     </tbody>
 </table>
 
-<table style="font-family:Arial, Helvetica, sans-serif;" width="80%" cellspacing="0" cellpadding="8" border="1" align="center">
+<table style="font-family:Arial, Helvetica, sans-serif;text-align:center;" width="80%" cellspacing="0" cellpadding="8" border="1" align="center">
         <tbody>
             <tr bgcolor="#FFCC99">
                 <td><strong>#</strong></td>
                 <td><strong>Shift</strong></td>
                 <td><strong>Date</strong></td> 
-                <td><strong>Max Student</strong></td>
+                <td><strong> Student</strong></td>
                 <td><strong> केन्द्राध्यक्ष </strong></td>
                 <td><strong> सहायक केन्द्राध्यक्ष  </strong></td>
                 <td><strong>वीक्षक </strong></td>
@@ -116,15 +121,17 @@ $total = 0;
             </tr>
         <?php  $i=1;$prevdate=""; $max_count=array(); foreach($examDate as $edate)
                 { 
-                    $where = array('type' => 'theory','exam_date'=>$edate->exam_date);//,'exam_shift'=>$edate->exam_shift);
+                    $where = array('type' => 'theory','exam_date'=>$edate->exam_date,'exam_shift'=>$edate->exam_shift );
+                    $this->db->where_not_in('paper_no_for_time_table', array('1B','2B'));
                     $papers = $this->Common_model->get_record('paper_master','id',$where);
                     $papers = array_column($papers, 'id');
-                   // echo $this->db->last_query();
+                  // echo $this->db->last_query(); die;
                    
                     $this->db->select('count(*) as cnt');
                     $this->db->from('student as s');
                     $this->db->join('new_exam_form  as e', 'e.student_id = s.student_id AND s.class_id = e.class_id');
-                    $this->db->where('s.new_exam_form',"Y");	
+                    $this->db->where('s.new_exam_form',"Y");
+                    $this->db->where('s.notification_no',1);	
                     $this->db->where('s.examcentercode',$row->examcentercode);	
                     $this->db->where('s.exam_center_id',$row->id);	
                     $this->db->where_in('paper_id', $papers );
@@ -133,6 +140,8 @@ $total = 0;
                     $count = $this->db->get()->result();
                     array_push($max_count,$count[0]->cnt);
                     $exam_date=$edate->exam_date;
+                   
+                    
                     if($count[0]->cnt>0)
                     {
                     ?>
@@ -140,7 +149,7 @@ $total = 0;
                 <td> <?=$i?> </td>
                 <td><?=$edate->exam_shift?></td>
                 <td><?=$edate->exam_date?></td>
-                <td><?php echo $t=$count[0]->cnt ;?> </td>
+                <td><?php   echo $t=$count[0]->cnt ;  ?> </td>
                 <td>200</td>
                 <td>
                 <?php
@@ -187,12 +196,12 @@ $total = 0;
                 <!--<td></td>
                 <td></td>-->
             </tr>
-            <?php }$i++;} ?>
+            <?php $i++; }} ?>
             </tr>
-            <tr><td colspan="3" align="right" >Max Student Count (in one shift) </td><td><?php echo $mstud=max($max_count); ?></td> <td colspan="8" align="right">महायोग</td><td><?php echo $tot; 
-            //  $where = array('examcentercode' => $row->examcentercode,'id'=> $row->id);
-            //  $data=array('billing_amount'=>$tot,'max_student_count'=>$mstud);
-            //  $papers = $this->Common_model->updateRecordByConditions('exam_center',$where,$data);
+            <tr><td colspan="3" align="right" ><!-- Max Student Count (in one shift) --> </td><td><?php $mstud=max($max_count); ?></td> <td colspan="8" align="right">महायोग</td><td><?php echo $tot; 
+             $where = array('examcentercode' => $row->examcentercode,'id'=> $row->id);
+             $data=array('billing_amount'=>$tot);
+             $papers = $this->Common_model->updateRecordByConditions('exam_center',$where,$data);
             
           
             ?></td></tr>
