@@ -29,7 +29,7 @@
  <?php 
  foreach($exam_center_students as $student)  {
  	
-     $wherePaper = array('student_id' => $student['student_id'],'paper_master.type'=>'theory','exam_date!='=>'0000-00-00','exam_date!='=>'' ,'paper_master.course_group_id'=> $student['course_group_id']);
+     $wherePaper = array('student_id' => $student['student_id'],'paper_master.type'=>'theory','exam_date!='=>'0000-00-00','exam_date!='=>'' ,'paper_master.course_group_id'=> $student['course_group_id'],'paper_master.class_id'=> $student['class_id']);
 	 
      $this->db->select('*');
      $this->db->from('paper_master');
