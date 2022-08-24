@@ -1228,6 +1228,7 @@ class Center extends CI_Controller {
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
+		$en_student_id = $student_id;
 		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		$titleData = array('title' => 'Admit Card AUGUST 2022' );
 		$this->load->view('Centers/header',$titleData);
@@ -1244,7 +1245,9 @@ class Center extends CI_Controller {
 		
 		$this->db->where($where);
 		$data['student'] = $this->db->get()->result();
-
+		if ($data['student'][0]->temp_exam_form=='N') {
+			redirect(base_url('select_papers/'.$en_student_id));
+		}
 		$wherePaper = array('student_id' => $student_id,'paper_master.type'=>'theory','paper_master.class_id'=>$data['student'][0]->class_id,'paper_master.course_group_id'=>$data['student'][0]->course_group_id);
 		$this->db->select('*');
 		$this->db->from('paper_master');

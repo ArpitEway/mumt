@@ -1488,19 +1488,20 @@ class ExamController extends CI_Controller {
 		//$this->db->order_by('paper_master.exam_date');
 		$data['papers'] = $this->db->get()->result();
 		echo $this->db->last_query();die; */
+
 		$where="";
 		if($exam_center!='All')
-			$where.="AND `student_report`.`exam_center_id` = '".$exam_center."'";
+			$where.="AND `student`.`exam_center_id` = '".$exam_center."'";
 		if($exam_date!='All')	{
 			$edate=date("Y-m-d", strtotime($exam_date));
 			$where.="AND paper_master.exam_date = '".$edate."'";
 		}
-		if($shift!='All')	
+		if($shift!='All')
 		$where.="AND paper_master.exam_shift = '".$shift."'";
 
 		$where.="   GROUP BY `paper_master`.`exam_date`";
 
-		 $sql="SELECT DISTINCT(paper_master.id), `exam_date`, `exam_shift`, `exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student_report` ON `student_report`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = 'theory' AND `paper_master`.`exam_date` != '' AND paper_master.exam_date!='0000-00-00'  ".$where; 
+		 $sql="SELECT DISTINCT(paper_master.id), `exam_date`, `exam_shift`, `exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student` ON `student`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = 'theory' AND `paper_master`.`exam_date` != '' AND paper_master.exam_date!='0000-00-00'  ".$where; 
 		
 		$query = $this->db->query($sql);
         $data['papers'] = $query->result();
