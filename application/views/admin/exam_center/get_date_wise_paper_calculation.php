@@ -44,7 +44,9 @@ $page_break_count = 1;
             <td>
                <div align="left"><span style="font-weight: bold">Shift</span></div>
             </td>
-         
+            <td>
+               <div align="left"><span style="font-weight: bold">Status</span></div>
+            </td>
             <td><span style="font-weight: bold">Student Count</span></td>
          </tr>
          <?php
@@ -119,6 +121,17 @@ $page_break_count = 1;
                   <div align="left"><?= $paper->paper_name?></div>
                </td>
                <td><div align="left"><?= $paper->exam_shift?></div></td>
+              <td> <?php //http://162.144.38.91/~mmyvvdde/main/examcenter/paper/1050.pdf
+                if(file_exists('http://162.144.38.91/~mmyvvdde/main/examcenter/paper/'.$paper->test_id.'pdf'))
+                {?>
+                <a href="<?php echo 'http://162.144.38.91/~mmyvvdde/main/examcenter/paper/'.$paper->test_id.'pdf'?>">Available</a>
+                <?php }
+                else
+                {
+                echo "Not Available";
+                }
+                ?></td>
+               
                <td style="text-align:center;"><?php echo $count[0]['cnt']; ?> </td>
             </tr>
             <?php 
