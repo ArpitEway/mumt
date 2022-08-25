@@ -1702,7 +1702,7 @@ class ExamController extends CI_Controller {
 		$admin_id = $this->Common_model->encrypt_decrypt($admin_id,'decrypt');
 		
 		$check_user = $this->Common_model->getRecordById('admin_master','id',$admin_id);
-			if($check_user){	
+				
 				$data = array('loged_in' => true,
 					'adminData' => $check_user->name,
 					'account_type' => $check_user->account_type,
