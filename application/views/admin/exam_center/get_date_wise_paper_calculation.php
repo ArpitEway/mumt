@@ -97,8 +97,8 @@ $page_break_count = 1;
 
         
          //New Query end 
-         if(($count[0]['cnt'] >0)  )
-         { 
+       //  if(($count[0]['cnt'] >0)  )
+        // { 
             ?>
             <tr <?php if($i%2==0) echo 'bgcolor="#F0F0F0"'; ?>>
                <td> <?=$i ?> </td>
@@ -148,7 +148,7 @@ if($responseCode == 200){
             </tr>
             <?php 
                $i++;  $total+= $count[0]['cnt'];
-               }  
+             //  }  
          } ?>
       </tbody>
    </table>
