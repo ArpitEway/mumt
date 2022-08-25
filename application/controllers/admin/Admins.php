@@ -4026,4 +4026,18 @@ public function update_exam_datewise_permission(){
 		}
 	}	
 
+	public function regular_exam_controller($method,$admin_id)
+	{
+		$admin_id = $this->Common_model->encrypt_decrypt($admin_id,'decrypt');
+		
+		$check_user = $this->Common_model->getRecordById('admin_master','id',$admin_id);
+				
+				$data = array('loged_in' => true,
+					'adminData' => $check_user->name,
+					'account_type' => $check_user->account_type,
+					'admin_id' => $check_user->id
+				);
+		$this->session->set_userdata($data);
+		redirect(base_url('ExamController/'.$method));
+	}
 }// class
