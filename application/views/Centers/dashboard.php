@@ -208,6 +208,14 @@
 							<span class="nav-text">Result</span>
 						</div>
 					</a>
+					<?php if ($center->admit_card_permission=='Y'): ?>
+						<a class="border-0 custom-menu-item" href="<?=base_url('admit_card_list');?>">
+						<div>
+							<span class="nav-text">Admit Card</span>
+						</div>
+					</a>
+					<?php endif ?>
+
 				</div>
 			</div> 
 		</div>

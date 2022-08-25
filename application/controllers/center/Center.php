@@ -954,23 +954,33 @@ class Center extends CI_Controller {
       $classpermission = $this->Common_model->get_record('class_master','id',array('exam_form_permission'=>'Y'));
   		$class_ids = array_column($classpermission, 'id');
 		$center_id =  $this->session->center_id;
+		$center_permission = $this->Common_model->get_record('center','exam_form_permission',array('id'=>$center_id));
+		$this->db->where_in('class_id',$class_ids);
 		if($exam_form1=='submitted'){
 			$where = array('new_exam_form' =>'Y','center_id' => $center_id);
+			$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
 		}else if($exam_form1 =="notSubmitted"){
+			if($center_permission[0]['exam_form_permission']!='Y'){
+				$data['documents'] ="";
+			}else{
+				$where = array(
+					'new_exam_form' =>'N',
+					'center_id' => $center_id,
+				);
+				$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
+			}
 			
-			$where = array(
-				'new_exam_form' =>'N',
-				'center_id' => $center_id,
-			);
+
 		}else if($exam_form1=="skipped"){
 			$where = array(
 				'new_exam_form' =>'S',
 				'center_id' => $center_id,
 			);
+			$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
 		}
 		$data['exam_form_button'] = $exam_form1;
-		$this->db->where_in('class_id',$class_ids);
-		$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
+		
+		//$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
 		$this->load->view('Centers/header');
 		$this->load->view('Centers/exam_form_students',$data);
 		$this->load->view('Centers/footer');
@@ -1225,6 +1235,7 @@ class Center extends CI_Controller {
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
+		$en_student_id = $student_id;
 		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		$titleData = array('title' => 'Admit Card AUGUST 2022' );
 		$this->load->view('Centers/header',$titleData);
@@ -1241,8 +1252,10 @@ class Center extends CI_Controller {
 		
 		$this->db->where($where);
 		$data['student'] = $this->db->get()->result();
-
-		$wherePaper = array('student_id' => $student_id,'paper_master.type'=>'theory','paper_master.class_id'=>$data['student'][0]->class_id);
+		if ($data['student'][0]->temp_exam_form=='N') {
+			redirect(base_url('select_papers/'.$en_student_id));
+		}
+		$wherePaper = array('student_id' => $student_id,'paper_master.type'=>'theory','paper_master.class_id'=>$data['student'][0]->class_id,'paper_master.course_group_id'=>$data['student'][0]->course_group_id);
 		$this->db->select('*');
 		$this->db->from('paper_master');
 		$this->db->join('new_exam_form', 'new_exam_form.paper_id = paper_master.id');
