@@ -145,7 +145,7 @@
 						<label class="label_form">Student Name :</label>
 					</div>
 					<div class="form-group form-text-color col-md-4 text-left m-auto">
-				<?php echo $this->Common_model->getSinglefield('student','name',array('class_id'=>$papers[0]->class_id)); ?>
+				<?php echo $this->Common_model->getSinglefield('student','name',array('student_id'=>$papers[0]->student_id)); ?>
 					</div>
 
 					<div class="form-group col-md-2 text-left m-auto">
