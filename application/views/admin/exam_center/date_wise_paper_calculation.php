@@ -4,8 +4,8 @@
     <div class="form-group col-md-3">
         <label for="course">Date Of Paper</label>
         <select  name="exam_date" readonly="readonly" id="exam_date" class="form-control course" required>
-
-            <option value="All" selected="selected" >All</option>
+        <option >Select Date</option>
+            <!-- <option value="All" selected="selected" >All</option> -->
             <?php 
 
             foreach($examDate as $edate)
@@ -18,8 +18,8 @@
         </select>
     </div>
     <div class="form-group col-md-3">
-        <label for="course">Shift</label>
-        <select  name="shift" readonly="readonly" id="shift" class="form-control course" required>
+        <label for="Shift">Shift</label>
+        <select  name="shift" readonly="readonly" id="shift" class="form-control Shift" required>
 
             <option value="Morning" >Morning</option>
             <option value="Evening">Evening</option>
@@ -29,7 +29,7 @@
     </div>
     <div class="form-group col-md-3">
     <label for="course">Category</label>
-        <select name="cat" id="cat" class="form-control course" required>
+        <select name="category" id="category" class="form-control course" required>
             <option value="Uniqe">Unique</option>
             <option value="All">All</option>
         </select>
@@ -52,26 +52,24 @@
 
 
 <script>
-    // $(document).ready(function() {
-    //      $('#exam_center').change();
-    // });
+   
     $("#search").on('click', function(){
         var csrfName = $('.csrfname').attr('name');
         var csrfHash = $('.csrfname').val(); 
-        var exam_center = $("#exam_center").val();
         var exam_date = $("#exam_date").val();
+        var category = $("#category").val();
         var shift = $("#shift").val();
-        console.log($("#exam_center option:selected").text());
-        $("#headerTitle").html($("#exam_center option:selected").text());
-        $("#exam_center").css("border",""); 
+        console.log($("#exam_date option:selected").text());
+        $("#headerTitle").html($("#exam_date option:selected").text());
+        $("#exam_date").css("border",""); 
         $('#dt').html("");
 
-        if(exam_center){
+        if(exam_date){
             $("#myLoader").show();
             $.ajax({
              method: "POST",
-             url: BASE_URL+"ExamController/get_exam_center_wise_paper_count",
-             data: { exam_center : exam_center,
+             url: BASE_URL+"ExamController/get_date_wise_paper_calculation",
+             data: { category : category,
                 exam_date : exam_date,
                 shift : shift,
                 [csrfName]:csrfHash
@@ -86,7 +84,7 @@
             });
         }
         else{
-            $("#exam_center").css("border","solid 1px red"); 
+            $("#exam_date").css("border","solid 1px red"); 
 
         }
 
