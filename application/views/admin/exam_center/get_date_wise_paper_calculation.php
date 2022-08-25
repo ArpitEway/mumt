@@ -53,13 +53,13 @@ $page_break_count = 1;
       $i=1;
       $this->db->select('*');
       $this->db->from('paper_master');
-	  
+     
        $edate=date("Y-m-d", strtotime($exam_date));
-		
+      
       $this->db->where('exam_date',$edate);
-      $this->db->where('exam_date!=',"");	
-      $this->db->where('exam_date!=',"0000-00-00");	
-      $this->db->where('exam_shift',$shift);	
+      $this->db->where('exam_date!=',""); 
+      $this->db->where('exam_date!=',"0000-00-00");   
+      $this->db->where('exam_shift',$shift); 
       if($category=='Uniqe'){
         $this->db->group_by('test_id');
       }
@@ -122,14 +122,26 @@ $page_break_count = 1;
                </td>
                <td><div align="left"><?= $paper->exam_shift?></div></td>
               <td> <?php //http://162.144.38.91/~mmyvvdde/main/examcenter/paper/1050.pdf
-                if(file_exists('http://162.144.38.91/~mmyvvdde/main/examcenter/paper/'.$paper->test_id.'pdf'))
-                {?>
-                <a href="<?php echo 'http://162.144.38.91/~mmyvvdde/main/examcenter/paper/'.$paper->test_id.'pdf'?>">Available</a>
-                <?php }
-                else
-                {
-                echo "Not Available";
-                }
+              $pdf = 'http://162.144.38.91/~mmyvvdde/main/examcenter/paper/'.$paper->test_id.'.pdf';
+              
+              
+
+// Initialize cURL
+$ch = curl_init($pdf);
+curl_setopt($ch, CURLOPT_NOBODY, true);
+curl_exec($ch);
+$responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
+
+// Check the response code
+if($responseCode == 200){
+    ?>
+     <a href="<?php echo 'http://162.144.38.91/~mmyvvdde/main/examcenter/paper/'.$paper->test_id.'.pdf'?>">Available</a>
+     <?php
+}else{
+    echo "Not Available";
+}
+               
                 ?></td>
                
                <td style="text-align:center;"><?php echo $count[0]['cnt']; ?> </td>
@@ -141,4 +153,3 @@ $page_break_count = 1;
       </tbody>
    </table>
 <h3 class="my-10" style="text-align:center;">Total Student Count <?=$total?></h3>
-
