@@ -1709,6 +1709,6 @@ class ExamController extends CI_Controller {
 					'admin_id' => $check_user->id
 				);
 		$this->session->set_userdata($data);
-		redirect(base_url('examController/'.$method));
+		redirect(base_url('ExamController/'.$method));
 	}
 }// class
