@@ -213,7 +213,7 @@ class Examcenter extends CI_Controller {
 		{
 			if($text_val !='' && $radio_val == 'enrollment_no')
 			{
-				$where = array('enrollment_no'=>$text_val);
+				$where = array('enrollment_no'=>$text_val,'new_exam_form'=>'Y');
 
 			}else if($text_val !='' && $radio_val == 'roll_no'){
 				$where = array('roll_no'=>$text_val);
