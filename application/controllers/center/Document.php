@@ -35,7 +35,8 @@
 		$where="";
 		if(!empty($course_type))
 			$where .="student.university_mode='".$course_type."' AND ";	
-		$where.= "document_uploaded!='Y' and payment_status='Y' and center_id=".$this->session->center_id ."  and ( (student.class_name not like '%SEM%' and student.session='July 2021') or session!='July 2021')";
+		$where.= "document_uploaded!='Y' and payment_status='Y' and center_id=".$this->session->center_id ."  and session='July 2022')";
+		// $where.= "document_uploaded!='Y' and payment_status='Y' and center_id=".$this->session->center_id ."  and ( (student.class_name not like '%SEM%' and student.session='July 2021') or session!='July 2021')";
 		$column_order = array('student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name',null);
 		$column_search = array('enrollment_no', 'name', 'f_h_name', 'course_name','class_name');
 		$DataTableArray = array(

@@ -376,7 +376,8 @@ class Center extends CI_Controller {
 		$where = 'online_payment_transaction.center_id='.$this->session->center_id.' and online_payment_transaction.payment!="Y"';
 		
 		if($param1=='Admission'){
-			$where .= " and online_payment_transaction.fees_head='Admission Fees'  and  `student.payment_status`='N' and ( (student.class_name not like '%SEM%' and student.session='July 2021') or session!='July 2021')";
+			$where .= " and online_payment_transaction.fees_head='Admission Fees'  and  `student.payment_status`='N' && session='July 2022')";
+			// $where .= " and online_payment_transaction.fees_head='Admission Fees'  and  `student.payment_status`='N' and ( (student.class_name not like '%SEM%' and student.session='July 2021') or session!='July 2021')";
 		}elseif($param1=='Exam'){
 			$where .= ' and online_payment_transaction.fees_head="Exam Fees"';
 		}
