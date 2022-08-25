@@ -137,9 +137,9 @@ class Examcenter extends CI_Controller {
 
 		$this->db->select('DISTINCT(paper_master.id),exam_date,exam_shift,exam_day,paper_master.paper_code,paper_master.paper_name,paper_master.course_group_id,paper_master.class_id');
 		$this->db->from('paper_master');
-		$this->db->join('new_exam_form_report', 'new_exam_form_report.paper_id = paper_master.id');
-		$this->db->join('student_report', 'student_report.student_id = new_exam_form_report.student_id');
-		$this->db->where('student_report.new_exam_form=','Y' );
+		$this->db->join('new_exam_form', 'new_exam_form.paper_id = paper_master.id');
+		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
+		$this->db->where('student.new_exam_form=','Y' );
 		$this->db->where('paper_master.exam_date!=',"");
 		if($exam_date!='All')	{
 			$edate=date("Y-m-d", strtotime($exam_date));
@@ -148,7 +148,7 @@ class Examcenter extends CI_Controller {
 			
 		if($shift)	
 			$this->db->where('paper_master.exam_shift',$shift);
-		$this->db->where('student_report.exam_center_id', $exam_center );
+		$this->db->where('student.exam_center_id', $exam_center );
 		$this->db->group_by('paper_master.exam_date');
 
 		
