@@ -236,39 +236,47 @@ class Payment extends CI_Controller {
 	public function exam_form($student_id){
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url('login'));
-		}
-		$titleData = array('title'=>'Exam Form Payment');
-		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
-		$student = $this->Common_model->student_info($student_id);
-		if($student['new_exam_form']=='Y'){
-			$this->session->set_flashdata('warning','Payment Already Submitted');
-			redirect(base_url('dashboard'));
-		}
-
-		$where = array(
-			'session' =>$student['session'],
-			'course_group_id' => $student['course_group_id'],
-		);
-		$fees = $this->Common_model->getRecordByWhere('course',$where);
-		$data['student'] = $student;
-		$data['url'] = 'paynow';
-		$data['paymentType'] = 'Exam Fees';
-		if ($student['university_mode']=='REG') {
-			if($student['demo']=='Y'){
-				$data['txnAmt'] = $fees[0]->exam_fees;
-			}else{
-				$data['txnAmt'] = $fees[0]->program_fees+$fees[0]->exam_fees;
-			}
 		}else{
-			if($student['demo']=='Y'){
-				$data['txnAmt'] = $fees[0]->p_exam_fees;
-			}else{
-				$data['txnAmt'] = $fees[0]->p_program_fees+$fees[0]->p_exam_fees;
-			}
-		}
-		$this->load->view('Centers/header',$titleData);
-		$this->load->view('Centers/exam_form_payment',$data);
-		$this->load->view('Centers/footer');
+				$center_id =  $this->session->center_id;
+				$center_permission = $this->Common_model->get_record('center','exam_form_permission',array('id'=>$center_id));
+				if($center_permission[0]['exam_form_permission']!='Y'){
+					$this->session->set_flashdata('error','Exam form fill & Payment Permission is denied !');
+					redirect(base_url());
+				}else{
+						$titleData = array('title'=>'Exam Form Payment');
+						$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+						$student = $this->Common_model->student_info($student_id);
+						if($student['new_exam_form']=='Y'){
+							$this->session->set_flashdata('warning','Payment Already Submitted');
+							redirect(base_url('dashboard'));
+						}
+
+						$where = array(
+							'session' =>$student['session'],
+							'course_group_id' => $student['course_group_id'],
+						);
+						$fees = $this->Common_model->getRecordByWhere('course',$where);
+						$data['student'] = $student;
+						$data['url'] = 'paynow';
+						$data['paymentType'] = 'Exam Fees';
+						if ($student['university_mode']=='REG') {
+							if($student['demo']=='Y'){
+								$data['txnAmt'] = $fees[0]->exam_fees;
+							}else{
+								$data['txnAmt'] = $fees[0]->program_fees+$fees[0]->exam_fees;
+							}
+						}else{
+							if($student['demo']=='Y'){
+								$data['txnAmt'] = $fees[0]->p_exam_fees;
+							}else{
+								$data['txnAmt'] = $fees[0]->p_program_fees+$fees[0]->p_exam_fees;
+							}
+						}
+						$this->load->view('Centers/header',$titleData);
+						$this->load->view('Centers/exam_form_payment',$data);
+						$this->load->view('Centers/footer');
+					}	
+			}			
 	}
 
 
