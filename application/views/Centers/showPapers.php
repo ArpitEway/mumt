@@ -227,9 +227,13 @@
 			?>
 			<?php if($student['temp_exam_form']=='Y' && $student['new_exam_form']=='N')
 
-			{ ?>
+			{ 
+				$center_id =  $this->session->center_id;
+				$center_permission = $this->Common_model->get_record('center','exam_form_permission',array('id'=>$center_id));
+				if($center_permission[0]['exam_form_permission']=='Y'){
+				?>
 				<a class="btn btn-success" href="<?= base_url('Payment/exam_form/'.$student_id) ?>">Process To Payment</a>
-			<?php } ?>
+			<?php } } ?>
 			<?php
 		}
   ?>

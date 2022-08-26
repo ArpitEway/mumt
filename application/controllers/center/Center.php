@@ -1018,27 +1018,29 @@ class Center extends CI_Controller {
 	}
 
     public function showPapers($student_id){
-    	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
-    	$titleData = array('title' => 'Student Papers');
-    	$this->load->view('Centers/header',$titleData);
+		
+			$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+			$titleData = array('title' => 'Student Papers');
+			$this->load->view('Centers/header',$titleData);
 
-    	$where = array(
-    		'student_id' => $student_id,
-    	);
-    	$student = $this->Common_model->student_info($student_id);
-    	$data['student'] = $student;
-    	$this->db->select('paper_master.*,new_exam_form.sub_group_id');
-    	$this->db->from('paper_master');
-    	$this->db->order_by('new_exam_form.sub_group_id,paper_order');
-    	$this->db->join('new_exam_form', 'paper_master.paper_code = new_exam_form.paper_code and  paper_master.class_id = new_exam_form.class_id');
-    	$where = array('paper_master.class_id' => $student['class_id'],
-    		'student_id' => $student_id
-    	);
-    	$this->db->where($where);
-    	$data['papers'] = $this->db->get()->result();
-    	// $this->Common_model->last_query();
-    	$this->load->view('Centers/showPapers',$data);
-    	$this->load->view('Centers/footer');
+			$where = array(
+				'student_id' => $student_id,
+			);
+			$student = $this->Common_model->student_info($student_id);
+			$data['student'] = $student;
+			$this->db->select('paper_master.*,new_exam_form.sub_group_id');
+			$this->db->from('paper_master');
+			$this->db->order_by('new_exam_form.sub_group_id,paper_order');
+			$this->db->join('new_exam_form', 'paper_master.paper_code = new_exam_form.paper_code and  paper_master.class_id = new_exam_form.class_id');
+			$where = array('paper_master.class_id' => $student['class_id'],
+				'student_id' => $student_id
+			);
+			$this->db->where($where);
+			$data['papers'] = $this->db->get()->result();
+			// $this->Common_model->last_query();
+			$this->load->view('Centers/showPapers',$data);
+			$this->load->view('Centers/footer');
+		
     }
 
 	public function paper_missing_list(){
