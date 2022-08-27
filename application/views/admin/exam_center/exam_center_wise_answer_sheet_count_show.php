@@ -68,6 +68,9 @@ $total = 0;
     </tbody>
 </table>
 <?php //}
+$data['study_center_id'] = $count[0]->cnt;
+$update = $this->Common_model->updateRecordByConditions('exam_center', array('id'=>$row->id,'examcentercode'=>$row->examcentercode) ,$data);
  }
 echo "<div class='text-center mt-5'>".$total."</div>";
+
 ?>

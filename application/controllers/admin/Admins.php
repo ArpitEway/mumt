@@ -4020,6 +4020,8 @@ public function update_exam_datewise_permission(){
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
 		);
+		$this->db->order_by('examcentercode');
+		$data['examCenters'] = $this->db->get_where('exam_center', array())->result_array();
 		$this->load->view('header',$data);
 		$this->load->view('admin/exam_center/exam_center_billing_report',$csrf);
 		$this->load->view('footer');
