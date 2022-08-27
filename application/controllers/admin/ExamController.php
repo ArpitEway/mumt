@@ -1424,7 +1424,7 @@ class ExamController extends CI_Controller {
 		$this->db->select('*');
 		$this->db->from('exam_center');
 		if($exam_center!="All")
-		$this->db->where('id',$exam_center);	
+		$this->db->where('id',$exam_center);
 		$data['exam_centers'] = $this->db->get()->result();
 		echo $this->load->view('admin/exam_center/exam_center_wise_answer_sheet_count_show',$data, TRUE);
 	}
