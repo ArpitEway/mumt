@@ -40,7 +40,7 @@
 	</div>
 	<div class="text-center p-3">
 		<input type="hidden" name="action" value="assign_examcenter">
-	<!--	<input type="hidden" name="teacher_id" value="<?php echo $teacher_id ; ?>">-->
+		<input type="hidden" name="university_mode" value="<?php echo $university_mode ; ?>">
 		<input type="hidden" name="class_id" value="<?php echo $class_id ; ?>">
 		<input type="hidden" name="course_group_id" value="<?php  echo $course_group_id ;  ?>">
 		<input type="hidden" name="paper_code" value="<?php echo  $paper_code ; ?>">

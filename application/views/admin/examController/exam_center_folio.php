@@ -29,6 +29,15 @@
             <option value="0">Select Paper</option>
         </select>
     </div>
+    <div class="form-group col-md-2">
+			<label for="class">Admission Mode</label>
+			<select name="university_mode" id="university_mode" class="form-control" >
+			 
+				<option value="REG">Regular </option> 
+				<option value="PVT" >Private</option>
+			</select>
+	</div>
+
     <!--<div class="form-group col-md-3">
 
         <label for="Teacher">Teacher</label>
@@ -122,7 +131,7 @@
         $('#dt').hide();
         var course = document.getElementById('course_group_id').value;
         var class_id = document.getElementById('class_id').value;
-        //var teacher = document.getElementById('teacher').value;
+        var university_mode = document.getElementById('university_mode').value;
         var paper_id = document.getElementById('paper_id').value;
 
         if (course== "" || class_id =="0" ||  paper_id=="0") {
