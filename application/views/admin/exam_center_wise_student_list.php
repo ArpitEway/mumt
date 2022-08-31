@@ -19,10 +19,9 @@
 		foreach($listing as $list)
 		{ ?>
 			<tr>
-     
 				<td><?= $i; ?></td>
 				<td>
-				<img src="<?= base_url('assets/student_image/'.$list->session.'/'.$list->photo) ?>" height="100px" style="horizontal-align:top;">
+				<img src="<?= base_url('assets/student_image/'.$list->session.'/'.$list->photo) ?>" height="100px" style="vertical-align:top;">
 				</td>
 				<td><?= $list->enrollment_no; ?></td>
 				<td><?= $list->roll_no; ?></td>
