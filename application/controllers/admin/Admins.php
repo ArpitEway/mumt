@@ -4046,7 +4046,7 @@ public function update_exam_datewise_permission(){
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
 		foreach($tableData as $result){
-			$total_count = $this->Common_model->getcountbywhere('student',array('center_id'=>$result->id,'new_exam_form'=>'D'));
+			$total_count = $this->Common_model->getcountbywhere('student',array('center_id'=>$result->id,'new_exam_form !='=>'D'));
 			$fill_count = $this->Common_model->getcountbywhere('student',array('center_id'=>$result->id,'new_exam_form'=>'Y'));
 			 $remaining = $total_count - $fill_count;
 			$district= $this->Common_model->getDistrict($center->distt_id);
@@ -4070,6 +4070,29 @@ public function update_exam_datewise_permission(){
 			$data['exam_centers'] = $this->Common_model->getRecordByWhere('exam_center');	
 			$this->load->view('header',array('title'=>"Exam Center Wise Exam Form Status"));
 			$this->load->view('admin/exam_center_wise_exam_form_report',$data);
+			$this->load->view('footer');
+		}
+	}
+
+	public function exam_center_wise_student_list($center_id,$param='')
+	{
+		if($param=='fill')
+		{
+			$where = array('new_exam_form'=>'Y','exam_center_id'=>$center_id);		
+		}
+		else{
+	     $this->db->group_start();
+		 $this->db->where('new_exam_form','N');
+		 $this->db->or_where('new_exam_form', 'S');
+		 // $this->db->or_where('new_exam_form', 'D');
+		 $this->db->group_end();
+		 $where = array('exam_center_id'=>$center_id);
+		}
+		if($center_id!='')
+		{
+			$data['listing'] = $this->Common_model->getRecordByWhere('student',$where);
+			$this->load->view('header',array('title' => 'Exam Center Wise Student List'));
+			$this->load->view('admin/exam_center_wise_student_list',$data); 
 			$this->load->view('footer');
 		}
 	}

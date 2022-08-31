@@ -5,7 +5,7 @@
 			<th>Exam Center Code</th>
 			<th>Exam Center Name</th>
 			<th>City</th>
-			 <th>Total Exam Form</th>
+			<th>Total Exam Form</th>
 			<th>Fill Exam Form</th>
 			<th>Remaining Exam Form</th>
 			
@@ -14,24 +14,23 @@
 	<tbody>      
 		<?php
 		$i=1;
-		  
-			foreach ($exam_centers as $center) {
-
-			$total_count = $this->Common_model->getcountbywhere('student',array('exam_center_id'=>$center->id,'new_exam_form'=>'D'));
+		$param  =  'fill';
+		foreach ($exam_centers as $center) {
+			$total_count = $this->Common_model->getcountbywhere('student',array('exam_center_id'=>$center->id,'new_exam_form != '=>'D'));
 			$fill_count = $this->Common_model->getcountbywhere('student',array('exam_center_id'=>$center->id,'new_exam_form'=>'Y'));
+		//	$this->Common_model->last_query();
 			?>
 			<tr>
 				<td><?php echo $i++; ?></td>
-                <td><?php echo $center->examcentercode; ?></td>
-                <td><?php echo $center->schoolcollegename; ?></td>
-                <td><?php echo $center->city; ?></td>
+				<td><?php echo $center->examcentercode; ?></td>
+				<td><?php echo $center->schoolcollegename; ?></td>
+				<td><?php echo $center->city; ?></td>
 				<td><?php echo $total_count ;?></td>
-				 <td><?php echo $fill_count ;?></td>
-				<td><?php echo ($total_count-$fill_count);?></td> 
-	
+				<td><a target="_blank" href="<?php echo base_url().'admin/admins/exam_center_wise_student_list/'.$center->id .'/'.$param ;?>"><?php echo $fill_count ;?></a></td>
+				<td><a target="_blank" href="<?php echo base_url().'admin/exam_center_wise_student_list/'.$center->id ;?>"><?php echo ($total_count-$fill_count);?></a></td>	
 			</tr>
 			<?php 
-			}
+		}
 		?>
 	</tbody>
 </table>
