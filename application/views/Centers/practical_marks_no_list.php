@@ -41,7 +41,7 @@
 						<?php }
 						else{
 							?>
-							<button  class="btn btn-info btn-sm font-weight-bold view" id="<?="roll_num_{$student->student_id}"; ?>" data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$student->student_id;?>" onclick="view_mark(<?=$student->student_id;?>)">view</button>
+							<button  class="btn btn-info btn-sm font-weight-bold view" id="<?="roll_num_{$student->student_id}"; ?>" data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$student->student_id;?>" onclick="view_mark(<?=$student->student_id;?>,<?=$student->class_id; ?>)">view</button>
 						<?php }	?></td>
 
 				</tr>
@@ -82,15 +82,16 @@
 			});
 		}
 
-		function view_mark(student_id){
+		function view_mark(student_id,class_id){
 			var student_id = student_id;
+			var class_id = class_id;
 			var csrfName = $('.csrfname').attr('name');
 			var csrfHash = $('.csrfname').val();
 			$.ajax({
 				type: "POST",
 				url: BASE_URL+"center/center/view_student_marks",
 				dataType:"JSON",
-				data: {student_id: student_id, [csrfName]:csrfHash},
+				data: {student_id: student_id,class_id: class_id, [csrfName]:csrfHash},
 				success: function(response){
 					$('.modal-body').html(response.data);
 				},

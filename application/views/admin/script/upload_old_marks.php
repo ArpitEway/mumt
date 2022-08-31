@@ -23,7 +23,7 @@
                     <td><?php echo $course->course_name; ?></td>
                     <td><?php echo $course->class_name; ?></td>
                     <td><?php echo $course->cnt; ?></td>
-                    <td><a href="<?=base_url('admin/scripts/Postexam/upload_old_data_script/'.$course->class_id)?>">upload</a></td>
+                    <td><a target="_blank" href="<?=base_url('admin/scripts/Postexam/upload_old_data_script/'.$course->class_id)?>">upload</a></td>
                 </tr>
             
         

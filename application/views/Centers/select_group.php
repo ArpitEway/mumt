@@ -182,7 +182,10 @@
     <div class="row border border-primary bg-primary text-white p-2 mt-5">
         <div class="col-2"><strong>#</strong></div>
         <div class="col-3"><strong>Paper code</strong></div>
-        <div class="col-7"><strong>Subjects Name</strong></div>
+        <div class="col-2"> <?php if ($compulsoryPapers[0]['sub_group_id']!=0): ?>
+        	<strong>Sub Group</strong>
+        <?php endif ?></div>
+        <div class="col-5"><strong>Subjects Name</strong></div>
     </div>
     <?php
 
@@ -191,6 +194,7 @@
         <input type="hidden" id="updatepaper" value='Y'>
 		<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 		<input type="hidden"  name="student_id" id="student_id"  value="<?php echo $student['student_id']  ?>">
+		<input type="hidden"  name="class_id" id="class_id" value="<?php echo $student['class_id']  ?>">
 		<input type="hidden"  name="student_id" id="student_id_decript"  value="<?php echo $this->Common_model->encrypt_decrypt($student['student_id']);  ?>">
         <?php
             foreach($compulsoryPapers as $paper){
@@ -199,8 +203,15 @@
             <div class="row border border-default p-2">
                 <div class="col-2"><?=++$i; ?></div>
                 <div class="col-3"><?=$paper['paper_code']; ?></div>
-                <div class="col-7"><?=$paper['paper_name']?>  </div>
-                <input type="hidden"  name="compulsary_paper_id[]<?php echo  $paper['id'] ;?>" id="" value="<?php echo $paper['id'];  ?>">
+                <div class="col-2">
+                	<?php
+                	if ($paper['sub_group_id']!=0) {
+                		echo $this->Common_model->getSubGroupNameById($paper['sub_group_id']); 
+                	}
+            		?>  
+            	</div>
+                <div class="col-5"><?=$paper['paper_name']?>  </div>
+                <input type="hidden"  name="compulsary_paper_code[]" id="" value="<?php echo $paper['paper_code'];  ?>">
 				
             </div>
             <?php } 
@@ -231,7 +242,8 @@
                 <div class="row border border-default p-2">
                     <div class="col-2"><?=++$i; ?></div>
                     <div class="col-3"><?=$paper->paper_code; ?></div>
-                    <div class="col-7"><?=$paper->paper_name; ?></div>
+                    <div class="col-2"><?=$this->Common_model->getSubGroupNameById($paper->sub_group_id); ?></div>
+                    <div class="col-5"><?=$paper->paper_name; ?></div>
                 </div>
                 <?php }    
             }
@@ -263,8 +275,8 @@ if(select_group!=0){
 	
 
 	var data = $("form").serialize(); 
-
-    console.log(data);
+$('#group_submit').attr("disabled","disabled");
+    //console.log(data);
     
 	 $.ajax({
 	        	url: "<?=base_url('center/center/submit_group');?>",  

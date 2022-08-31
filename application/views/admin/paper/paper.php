@@ -10,14 +10,16 @@
 				<th>Paper Name</th>
 				<th>Type</th>
 				<th>CE</th>
-				<th>Max Theory Marks</th>
+				<th>Paper</th>
+			<!-- <th>Max Theory Marks</th>
 				<th>Min Theory Marks</th>
 				<th>Max Internal Marks</th>
-				<th>Min Internal Marks</th>
+				<th>Min Internal Marks</th> -->
 <!--            <th>Exam Date</th>
 				<th>Exam Day</th>
 				<th>Exam Time</th>
- -->				<th>Option</th>
+ -->		
+           <th>Option</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -34,10 +36,10 @@
 					<td><?=$paper["paper_name"]?></td>
 					<td><?=$paper["type"]?></td>
 					<td><?=$paper["ce"]?></td>
-					<td><?=$paper["max_theory_marks"]?></td>
+					<!-- <td><?=$paper["max_theory_marks"]?></td>
 					<td><?=$paper["min_theory_marks"]?></td>
 					<td><?=$paper["max_internal_marks"]?></td>
-					<td><?=$paper["min_internal_marks"]?></td>
+					<td><?=$paper["min_internal_marks"]?></td> -->
                    <!--  <td>
 						<?php 
 						// if($paper["exam_date"] != "0000-00-00" ){
@@ -47,6 +49,15 @@
                     </td>
 					<td><?=$paper["exam_day"]?></td>
 					<td><?=$paper["exam_shift"]?></td> -->
+                 <td>
+                 	<?php
+                  $url = './assets/model_paper/'.$paper['test_id'].'.pdf';
+                  if(file_exists($url)) { 
+                 	?>
+                 	<a href="<?php echo site_url($url);?>" download><img src="<?=base_url('assets/images/')?>pdf.png" width="30"></a>
+                 	  <?php } ?>
+                 </td>
+             
 					<td>
 						<div style="display: inline-flex;">
 							<a href="javascript:void(0);" class="dropdown-item" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/paper/edit/'.$paper['id']); ?>', '<?php echo 'Update Paper' ?>')"> <i class="mdi mdi-pencil edit-icon"></i></a>   

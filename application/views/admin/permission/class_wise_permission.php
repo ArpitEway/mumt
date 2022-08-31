@@ -1,7 +1,7 @@
 <div class="text-right mt-3">
 </div>
 <div class=" mt-5" >
-	<table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
+	<table id="kt_datatable_scroll" class="table table-striped dt-responsive" width="100%" >
     <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 		<thead>
 			<tr>
@@ -9,11 +9,11 @@
           <th>Class Id</th>
           <th>Course name</th>
           <th>Class</th>
-          <th>Mode</th> 
+          <th>Mode</th>
+          <th>Paper Count</th>
           <th>Exam Form Permission</th>
           <th>Result Permission</th>
           <th>Admit Card Permission</th>
-          
 			</tr>
 		</thead>
 		<tbody>
@@ -28,16 +28,18 @@
 			
 					<tr>
 						<td><?php echo $i; ?></td>
-                        <td><?php echo $class->id; ?></td>
+            <td><?php echo $class->id; ?></td>
 						<td><?php echo $course_name; ?></td>
 						<td><?php echo $class->class_name; ?></td>
 						<td><?php echo $class->mode; ?></td>
+            <td><?php echo $this->Common_model->getCountByWhere('paper_master',array('class_id' => $class->id)); ?></td>
             <td>
                 <button id="btn_<?php echo  $class->id?>" <?php if($class->exam_form_permission=='Y' ){echo "class='btn btn-success'" ;}else{echo "class='btn btn-danger' ";} ?> onclick="statusChange(<?php echo $class->id;  ?>,'<?php echo $class->exam_form_permission;?>')">
                 <?php if($class->exam_form_permission=='Y' ){echo "Yes" ;}else{
                   echo " No";
                 } ?></button>
             </td>
+            
 
 
  <td>
@@ -49,12 +51,13 @@
             
            
             <td>
-                <button id="btn_a<?php echo  $class->id?>" <?php if($class->admit_card_permission	=='Y' ){echo "class='btn btn-success'" ;}else{echo "class='btn btn-danger' ";} ?> onclick="statusChangeAdmitCard(<?php echo $class->id;   ?>,'<?php echo $class->admit_card_permission;?>')">
-                <?php if($class->admit_card_permission){echo "Yes" ;}else{
+                <button id="btn_a_<?php echo  $class->id?>" <?php if($class->admit_card_permission	=='Y' ){echo "class='btn btn-success'" ;}else{echo "class='btn btn-danger' ";} ?> onclick="statusChangeAdmitCard(<?php echo $class->id;   ?>,'<?php echo $class->admit_card_permission;?>')">
+                <?php if($class->admit_card_permission=='Y'){echo "Yes" ;}else{
                   echo " No";
                 } ?></button>
             </td>
         
+       
 
 					</tr>
 			<?php $i++; } ?>
@@ -101,21 +104,22 @@
       success: function(response){
         console.log(response);
         if(response.success==true){
-        $("#btn_a"+id).removeClass("btn btn-success");
-        $("#btn_a"+id).addClass("btn btn-danger");
-        $("#btn_a"+id).html("No");
+        $("#btn_a_"+id).removeClass("btn btn-success");
+        $("#btn_a_"+id).addClass("btn btn-danger");
+        $("#btn_a_"+id).html("No");
          var s="statusChangeAdmitCard("+ id +",'N')";
-        $("#btn_a"+id).attr("onclick",s);
+        $("#btn_a_"+id).attr("onclick",s);
       }else  if(response.error==false){
-        $("#btn_a"+id).removeClass("btn btn-danger");
-        $("#btn_a"+id).addClass("btn btn-success");
-        $("#btn_a"+id).html("Yes");
+        $("#btn_a_"+id).removeClass("btn btn-danger");
+        $("#btn_a_"+id).addClass("btn btn-success");
+        $("#btn_a_"+id).html("Yes");
          var s="statusChangeAdmitCard("+ id +",'Y')";
-        $("#btn_a"+id).attr("onclick",s);
+        $("#btn_a_"+id).attr("onclick",s);
       }
     }
   });
 }
+
 
  function statusChangeresult(id,result_permission){
         var csrfName = $('.csrfname').attr('name');

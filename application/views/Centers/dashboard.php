@@ -52,7 +52,7 @@
 				$center_ids_dep = array(21,22,23,24,25,26,27,28);
 				  if($center->admission_permission_private=='Y' && !in_array($center_id, $center_ids_dep)){
 					?>
-					<a class="border-0 custom-menu-item" href="<?=base_url('admission_form/private');?>">
+					<a class="border-0 custom-menu-item kt_popup_private">
 						<div>
 							<span class="nav-text">Admission Form Private</span>
 						</div>
@@ -103,7 +103,7 @@
 				  <?php
 				  if($center->admission_permission=='Y'){
 					  ?>
-	                <a class="border-0 custom-menu-item" href="<?=base_url('admission_form/regular');?>">
+	                <a class="border-0 custom-menu-item kt_popup" >
 						<div>
 							<span class="nav-text">Admission Form Regular</span>
 						</div>
@@ -172,12 +172,12 @@
 							<span class="nav-text">Paper Missing List</span>
 						</div>
 					</a> -->
-					<a class="border-0 custom-menu-item" href="<?=base_url('remaining_exam_answersheet');?>">
+					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('remaining_exam_answersheet');?>">
 						<div>
 							<span class="nav-text">Remaining Exam Answersheet</span>
 						</div>
-					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
+					</a> -->
+					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
 						<div>
 							<span class="nav-text">Practical Marks Submission</span>
 						</div>
@@ -186,24 +186,65 @@
 						<div>
 							<span class="nav-text">Internal Marks Submission</span>
 						</div>
-					</a>
+					</a>-->
+					<a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
+						<div>
+							<span class="nav-text">Time Table June 2022</span>
+						</div>
+					</a> 
 					<a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
 						<div>
-							<span class="nav-text">Exam Form Dec 2021</span>
+							<span class="nav-text">Exam Form June 2022</span>
 						</div>
-					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('student_roll_no_list');?>">
+					</a> 
+
+				<!--	<a class="border-0 custom-menu-item" href="<?=base_url('student_roll_no_list');?>">
 						<div>
 							<span class="nav-text">Roll No List</span>
 						</div>
-					</a>
+					</a> -->
 					<a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
 						<div>
 							<span class="nav-text">Result</span>
 						</div>
 					</a>
+					<?php if ($center->admit_card_permission=='Y'): ?>
+						<a class="border-0 custom-menu-item" href="<?=base_url('admit_card_list');?>">
+						<div>
+							<span class="nav-text">Admit Card</span>
+						</div>
+					</a>
+					<?php endif ?>
+
 				</div>
 			</div> 
 		</div>
 	</div>
 </div>
+
+	<script type="text/javascript">
+$(".kt_popup").click(function(e) {
+ 
+Swal.fire({
+	 text:  "एडमिशन सेशन चेक करने के बाद ही फॉर्म भरे, एक बार फॉर्म भरने के पश्चात् सेशन में कोई परिवर्तन नहीं होगा|"
+}).then((result) => {
+  if (result.isConfirmed) {	
+  	window.location.href =  "<?=base_url('admission_form/regular');?>";
+      }
+})
+
+});
+
+$(".kt_popup_private").click(function(e) {
+ 
+Swal.fire({
+	 text:  "एडमिशन सेशन चेक करने के बाद ही फॉर्म भरे, एक बार फॉर्म भरने के पश्चात् सेशन में कोई परिवर्तन नहीं होगा|"
+}).then((result) => {
+  if (result.isConfirmed) {	
+  	window.location.href =  "<?=base_url('admission_form/private');?>";
+      }
+})
+
+});
+
+</script>

@@ -22,19 +22,33 @@ $userType = $this->session->userdata['account_type'];
 
 ?>
 <div class="mt-3">
-  <div class="form-group col-md-3 mx-auto mb-10">
-   <label for="class">Session</label>
-   <select name="session" id="session" class="form-control" onchange="getSessionRecord()" >
-    <!-- <option <?php //if($sessionsSelect=="All") echo "selected"; ?>>All</option> -->
-    <?php 
-    foreach($sessions as $session)
-    {
-     ?>
-     <option value="<?php echo $session['id']; ?>" <?php if($sessionsSelect==$session['id']) echo "selected"; ?>><?php echo $session['session']; ?></option>
-     <?php
-   } 
-   ?>		
- </select>
+<div   class="row text-center p-3">	
+	<div class="form-group col-md-3 mx-auto mb-10">
+	</div>
+	<div class="form-group col-md-3 mx-auto mb-10">
+	<label for="class">Session</label>
+	<select name="session" id="session" class="form-control" onchange="getSessionRecord()" >
+		<!-- <option <?php //if($sessionsSelect=="All") echo "selected"; ?>>All</option> -->
+		<?php 
+		foreach($sessions as $session)
+		{
+		?>
+		<option value="<?php echo $session['id']; ?>" <?php if($sessionsSelect==$session['id']) echo "selected"; ?>><?php echo $session['session']; ?></option>
+		<?php
+	} 
+	?>		
+	</select>
+	</div>
+	<div class="form-group col-md-3 mx-auto mb-10">
+	<label for="class">University Mode</label>
+	<select name="mode" id="mode" class="form-control" onchange="getSessionRecord()" >
+		<option value="" <?php if($mode=="") echo "selected"; ?>>All</option>
+		<option value="REG" <?php if($mode=="REG") echo "selected"; ?>>Regular</option>
+		<option value="PVT" <?php if($mode=="PVT") echo "selected"; ?>>Private</option>
+	</select>
+	</div>
+	<div class="form-group col-md-3 mx-auto mb-10">
+	</div>
 </div>
 <div class="row mt-5">
 	<div class="col-xl-4">
@@ -44,7 +58,7 @@ $userType = $this->session->userdata['account_type'];
 			<div class="card-body">
 				<span class="text-white fas fa-graduation-cap icon-3x"></span><br><br>
 				<div class="text-inverse-danger font-weight-bolder font-size-h5 mb-2 mt-5">Students</div>
-				<a target="_blank" href="<?= base_url('admin/'.$userType.'/center_wise_list/all/'.$sessionsSelect.'/');?>" class="font-weight-bold text-inverse-danger font-size-sm">Total Student : <?=$total_student;?></a>
+				<a target="_blank" href="<?= base_url('admin/'.$userType.'/center_wise_list/all/'.$sessionsSelect.'/'.$mode.'/');?>" class="font-weight-bold text-inverse-danger font-size-sm">Total Student : <?=$total_student;?></a>
 				
 			</div>
 			<!--end::Body-->
@@ -58,8 +72,8 @@ $userType = $this->session->userdata['account_type'];
 			<div class="card-body">
 				<span class="text-white fas fa-rupee-sign icon-3x"></span><br><br>
 				<div class="text-inverse-primary font-weight-bolder font-size-h5 mb-2 mt-5">Admission Fee Payments</div>
-				<a target="_blank" href="<?= base_url('admin/'.$userType.'/center_wise_list/paid/'.$sessionsSelect.'/')?>" class="font-weight-bold text-inverse-primary font-size-sm">Paid Student: <?=$tot_paid;?></a><br>
-				<a target="_blank" href="<?= base_url('admin/'.$userType.'/center_wise_list/not_paid/'.$sessionsSelect.'/')?>" class="font-weight-bold text-inverse-primary font-size-sm">Unpaid Student: <?=$tot_unpaid;?></a>
+				<a target="_blank" href="<?= base_url('admin/'.$userType.'/center_wise_list/paid/'.$sessionsSelect.'/'.$mode.'/')?>" class="font-weight-bold text-inverse-primary font-size-sm">Paid Student: <?=$tot_paid;?></a><br>
+				<a target="_blank" href="<?= base_url('admin/'.$userType.'/center_wise_list/not_paid/'.$sessionsSelect.'/'.$mode.'/')?>" class="font-weight-bold text-inverse-primary font-size-sm">Unpaid Student: <?=$tot_unpaid;?></a>
 			</div>
 			<!--end::Body-->
 		</div>
@@ -72,8 +86,8 @@ $userType = $this->session->userdata['account_type'];
 			<div class="card-body">
 				<span class="text-white fas fa-file-upload icon-3x"></span><br><br>
 				<div class="text-inverse-success font-weight-bolder font-size-h5 mb-2 mt-5">Document</div>
-				<a target="_blank" href="<?= base_url('admin/'.$userType.'/center_wise_list/uploaded/'.$sessionsSelect.'/')?>" class="font-weight-bold text-inverse-success font-size-sm">Student's Document Uploaded: <?=$uploaded;?></a><br>
-				<a target="_blank" href="<?= base_url('admin/'.$userType.'/center_wise_list/not_uploaded/'.$sessionsSelect.'/')?>" class="font-weight-bold text-inverse-success font-size-sm">Student's Document Not Uploaded: <?=$not_uploaded;?></a>
+				<a target="_blank" href="<?= base_url('admin/'.$userType.'/center_wise_list/uploaded/'.$sessionsSelect.'/'.$mode.'/')?>" class="font-weight-bold text-inverse-success font-size-sm">Student's Document Uploaded: <?=$uploaded;?></a><br>
+				<a target="_blank" href="<?= base_url('admin/'.$userType.'/center_wise_list/not_uploaded/'.$sessionsSelect.'/'.$mode.'/')?>" class="font-weight-bold text-inverse-success font-size-sm">Student's Document Not Uploaded: <?=$not_uploaded;?></a>
 			</div>
 			<!--end::Body-->
 		</div>
@@ -86,9 +100,9 @@ $userType = $this->session->userdata['account_type'];
 			<div class="card-body">
 				<span class="text-white fas fa-check-double icon-3x"></span><br><br>
 				<div class="text-inverse-success font-weight-bolder font-size-h5 mb-2 mt-5">Verification</div>
-				<a target="_blank"href="<?= base_url('admin/'.$userType.'/center_wise_list/approved/'.$sessionsSelect.'/')?>" class="font-weight-bold text-inverse-danger font-size-sm">Approved Students : <?=$approved;?></a><br>
-				<a target="_blank" href="<?= base_url('admin/'.$userType.'/center_wise_list/not_verified/'.$sessionsSelect.'/')?>" class="font-weight-bold text-inverse-success font-size-sm">Not Verified Student : <?=$not_verified;?></a><br>
-				<a target="_blank" href="<?= base_url('admin/'.$userType.'/center_wise_list/non_approved/'.$sessionsSelect.'/')?>" class="font-weight-bold text-inverse-danger font-size-sm">Non-Approved Students : <?=$non_approved;?></a>
+				<a target="_blank"href="<?= base_url('admin/'.$userType.'/center_wise_list/approved/'.$sessionsSelect.'/'.$mode.'/')?>" class="font-weight-bold text-inverse-danger font-size-sm">Approved Students : <?=$approved;?></a><br>
+				<a target="_blank" href="<?= base_url('admin/'.$userType.'/center_wise_list/not_verified/'.$sessionsSelect.'/'.$mode.'/')?>" class="font-weight-bold text-inverse-success font-size-sm">Not Verified Student : <?=$not_verified;?></a><br>
+				<a target="_blank" href="<?= base_url('admin/'.$userType.'/center_wise_list/non_approved/'.$sessionsSelect.'/'.$mode.'/')?>" class="font-weight-bold text-inverse-danger font-size-sm">Non-Approved Students : <?=$non_approved;?></a>
 			</div>
 
 
@@ -103,8 +117,8 @@ $userType = $this->session->userdata['account_type'];
 			<div class="card-body" >
 				<span class="text-white fas fa-money-check-alt icon-3x"></span><br><br>
 				<div style="color:white!important;" class="text-custom font-weight-bolder font-size-h5 mb-2 mt-5">Generating Enrollment</div>
-				<a target="_blank"href="<?= base_url('admin/'.$userType.'/center_wise_list/generated/'.$sessionsSelect.'/')?>" class="font-weight-bold text-inverse-danger font-size-sm">Total Generated : <?=$en_generated?></a><br>
-				<a target="_blank"href="<?= base_url('admin/'.$userType.'/center_wise_list/not_generated/'.$sessionsSelect.'/')?>"style="color:white!important;" class="font-weight-bold text-custom font-size-sm">Remain to generate: <?=$not_en_generated;?></a>
+				<a target="_blank"href="<?= base_url('admin/'.$userType.'/center_wise_list/generated/'.$sessionsSelect.'/'.$mode.'/')?>" class="font-weight-bold text-inverse-danger font-size-sm">Total Generated : <?=$en_generated?></a><br>
+				<a target="_blank"href="<?= base_url('admin/'.$userType.'/center_wise_list/not_generated/'.$sessionsSelect.'/'.$mode.'/')?>"style="color:white!important;" class="font-weight-bold text-custom font-size-sm">Remain to generate: <?=$not_en_generated;?></a>
 		
 		
 			</div>
@@ -119,8 +133,8 @@ $userType = $this->session->userdata['account_type'];
 			<div class="card-body" >
 				<span class="text-white fas fa-user-plus icon-3x"></span><br><br>
 				<div class="text-inverse-success font-weight-bolder font-size-h5 mb-2 mt-5">Enrolled Status</div>
-				<a target="_blank" href="<?= base_url('admin/'.$userType.'/center_wise_list/enrolled/'.$sessionsSelect.'/')?>" class="font-weight-bold text-white font-size-sm">Total Enrolled: <?=$tot_enrolled;?></a><br>
-				<a target="_blank" href="<?= base_url('admin/'.$userType.'/center_wise_list/not_enrolled/'.$sessionsSelect.'/')?>" class="font-weight-bold text-inverse-success font-size-sm">Remain to Enrolled : <?=$tot_not_enrolled;?></a>
+				<a target="_blank" href="<?= base_url('admin/'.$userType.'/center_wise_list/enrolled/'.$sessionsSelect.'/'.$mode.'/')?>" class="font-weight-bold text-white font-size-sm">Total Enrolled: <?=$tot_enrolled;?></a><br>
+				<a target="_blank" href="<?= base_url('admin/'.$userType.'/center_wise_list/not_enrolled/'.$sessionsSelect.'/'.$mode.'/')?>" class="font-weight-bold text-inverse-success font-size-sm">Remain to Enrolled : <?=$tot_not_enrolled;?></a>
 			</div>
 			<!--end::Body-->
 		</div>
@@ -133,12 +147,13 @@ $userType = $this->session->userdata['account_type'];
     //var csrfName = $('.csrfname').attr('name');
     //var csrfHash = $('.csrfname').val(); 
     var sess=$("#session").val();
+	var mode=$("#mode").val();
     //location.href =BASE_URL+"admin/Enrollment/enrollment_status/"+sess;
     console.log(window.location.href );
 	var currentURL= window.location.href;
 	currentURL = currentURL.split('enrollment_status')[0];
 	console.log(currentURL );
-	location.href=currentURL+"enrollment_status/"+sess;
+	location.href=currentURL+"enrollment_status/"+sess+"/"+mode;
     }
 
 </script>

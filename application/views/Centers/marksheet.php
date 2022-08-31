@@ -227,6 +227,11 @@ if ($withheld) {
             }
           }else{
             $total_obtained_marks += $marks->p_marks;
+            if($marks->paper_type!="theory" && $practical_internal_marks=='Y' )
+              {
+                $total_obtained_marks+=(int) $marks->int_marks;
+                $total_max_marks += $paper_master[0]->max_internal_marks;
+              }  
             $total_max_marks += $paper_master[0]->max_theory_marks;
             if($marks->p_marks < $paper_master[0]->min_theory_marks || $marks->p_marks=="ABS"){
               echo $marks->p_marks;
@@ -264,18 +269,22 @@ if ($withheld) {
         ?>
       </th>
       <th class="text-center">
-        <?php  if($marks->paper_type=="Practical"){
+        <?php  if($marks->paper_type!="theory"){
             echo $paper_master[0]->max_theory_marks;
           }else{
             echo $paper_master[0]->max_theory_marks +$paper_master[0]->max_internal_marks;
           } ?>
       </th>
       <th class="text-center">
-        <?php if($marks->paper_type=="Practical"){
-                echo $marks->p_marks;
+        <?php if($marks->paper_type!="theory" && $practical_internal_marks=='N' ){
+                       echo (int)$marks->p_marks ;
+              }
+              elseif($marks->paper_type!="theory" && $practical_internal_marks=='Y' ){  
+                echo (int) $marks->p_marks + (int) $marks->int_marks;
+                
               }else{ 
-                echo $marks->theory_marks + $marks->int_marks;
-              } ?>
+                echo (int) $marks->theory_marks + (int) $marks->int_marks;
+              }  ?>
       </th>
       <th><?php echo $result_1_paper;?></th>
     </tr>

@@ -186,8 +186,10 @@
 				<thead>
 					<tr>
 						<th>#</th>
-
 						<th>Paper Code</th>
+					<?php if ($papers[0]->sub_group_id!=0): ?>
+						<th>Sub Group</th>
+					<?php endif ?>
 						<th>Paper Name</th>
 					</tr>
 				</thead>
@@ -200,6 +202,9 @@
             <tr>
             <td><?php echo $i; ?></td>
             <td><?php echo $paper->paper_code; ?></td>
+            <?php if ($paper->sub_group_id!=0): ?>
+            <td><?php echo $this->Common_model->getSubGroupNameById($paper->sub_group_id); ?></td>
+            <?php endif ?>
             <td><?php echo $paper->paper_name; ?></td>
             </tr>
             <?php
@@ -220,7 +225,15 @@
 			<?php
 		}else{
 			?>
+			<?php if($student['temp_exam_form']=='Y' && $student['new_exam_form']=='N')
+
+			{ 
+				$center_id =  $this->session->center_id;
+				$center_permission = $this->Common_model->get_record('center','exam_form_permission',array('id'=>$center_id));
+				if($center_permission[0]['exam_form_permission']=='Y'){
+				?>
 				<a class="btn btn-success" href="<?= base_url('Payment/exam_form/'.$student_id) ?>">Process To Payment</a>
+			<?php } } ?>
 			<?php
 		}
   ?>

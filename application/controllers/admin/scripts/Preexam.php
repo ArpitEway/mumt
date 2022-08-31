@@ -23,7 +23,7 @@ class Preexam extends CI_Controller {
 		$class_ids = $classes[0]['class_id'];
 		
 		$this->db->select('count(class_id) as num,course_name,class_name,class_id');
-		$this->db->where('class_id in ('.$class_ids.') and payment_status="Y" and temp_exam_form="N"');
+		$this->db->where('class_id in ('.$class_ids.') and temp_exam_form="N"');// and payment_status="Y"
 		$this->db->group_by('class_id');
 		$this->db->order_by('course_group_id');
 		$studentClasses = $this->db->get('student')->result();
@@ -38,9 +38,10 @@ class Preexam extends CI_Controller {
 	public function upload_exam_paper_sub($class_id)
 	{
 		$where = array('class_id' => $class_id,
-					'payment_status' => 'Y',
+					//'payment_status' => 'Y',
 					'temp_exam_form' => "N",
 		);
+		$this->db->order_by('id');
 		$papers = $this->Common_model->get_record('paper_master','*','class_id='.$class_id);
 		$students = $this->Common_model->get_record('student','*',$where);
 		foreach ($students as $student) {
@@ -56,6 +57,7 @@ class Preexam extends CI_Controller {
 				$data['paper_code'] = $paper['paper_code'];
 				$data['paper_type'] = $paper['type'];
 				$data['paper_order'] = $paper['paper_no'];
+				$data['sub_group_id'] = $paper['sub_group_id'];
 				$this->Common_model->insertAll('new_exam_form',$data);
 			echo $this->db->last_query().'<br>';
 			}
@@ -173,6 +175,41 @@ class Preexam extends CI_Controller {
 			}
 		}
 	}	
+	// Update Exam fields in Paper Master from paper_paper_master_sub table
+	public function update_exam_fields_from_paper_master_sub_table(){
+		echo "Update Exam Data in Paper Master";
+		$this->db->select('*');
+       		$this->db->from('paper_master_sub');
+		$rows=$this->db->get()->result();
+		$i=1;
+		foreach($rows as $row){
+
+			echo "<br> ".$i." ".$row->papersname ." ". $row->papercode ." ". $row->new_test_id;
+			$data  = array('exam_date'=>$row->new_exam_date , 'exam_day'=>$row->new_exam_day, 'exam_shift'=>$row->new_exam_shift);
+            $where = array('test_id'=>$row->new_test_id,'paper_code'=> $row->papercode,'exam_date'=>'0000-00-00');
+            $update =$this->Common_model->updateRecordByConditions('paper_master',$where,$data);
+		//	echo  $this->db->last_query(); die;
+			$i++;
+		}
+	}
+	// Update exam center code in allot_exam_center table
+	// public function update_exam_center_code_in_allot(){
+	// 	$this->db->select('*');
+    //     $this->db->from('allot_exam_center');
+	// 	$rows=$this->db->get()->result();
+	// 	$i=1;
+	// 	foreach($rows as $row){
+
+	// 		echo "<br> ".$i." ".$row->exam_center_id ." ". $row->center_id ." ". $row->examcentercode;
+	// 		$examCenterData = $this->Common_model->getRecordById('exam_center','id',$row->exam_center_id);
+	// 		$data  = array('examcentercode'=>$examCenterData->examcentercode ,);
+    //         $where = array('id'=>$row->id,'exam_center_id'=> $row->exam_center_id, );
+    //         $update =$this->Common_model->updateRecordByConditions('allot_exam_center',$where,$data);
+	
+	// 		$i++;
+	// 	}
+
+	// }
 }
 
 ?>

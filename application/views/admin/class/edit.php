@@ -61,9 +61,9 @@ $group_info = $this->db->get_where('group', array('class_id' => $class['id']))->
 		<div class="form-group col-md-3">
             <label for="session">Mode</label>
             <select name="mode" id="mode" class="form-control" required>
-                <option value="annual" <?php if($class['mode'] == 'annual' ){ echo "selected"; }  ?>>Annual</option>
-				<option value="semester" <?php if($class['mode'] == 'semester' ){ echo "selected"; }  ?>>Semester</option>
-				<option value="month" <?php if($class['mode'] == 'month' ){ echo "selected"; }  ?>>Month</option>
+                <option value="Annual" <?php if($class['mode'] == 'Annual' ){ echo "selected"; }  ?>>Annual</option>
+				<option value="Semester" <?php if($class['mode'] == 'Semester' ){ echo "selected"; }  ?>>Semester</option>
+				<option value="Month" <?php if($class['mode'] == 'Month' ){ echo "selected"; }  ?>>Month</option>
             </select>
             
         </div>

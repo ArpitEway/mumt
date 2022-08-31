@@ -18,7 +18,9 @@
     <script src="https://cdn.apidelv.com/libs/awesome-functions/awesome-functions.min.js"></script> 
   
     <style>
-		
+		.table-bordered td, .table-bordered th, .table thead th {
+    	font-size: 16px;
+		}
 	</style>
   </head>
   <body>
@@ -40,18 +42,14 @@
 			<div class="BoxC border- padding mar-bot">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Admit card For open Book  Exam DEC 2021</h5>
+						<h5>Schedule of Exam for Annual/Semester Examination of August 2022</h5>
 						<!-- <h5> प्रवेश पत्र  </h5> <h5>परीक्षा (2021-22) </h5> -->
 					</div>
 				</div>
 			</div>
-<!-- 			<div class="BoxC border- padding mar-bot">
-				<div class="row">
-					<div class="col-12 text-center">
-						<h5>Exam Center: महर्षि पाणिनि संस्कृत एवं वैदिक विश्वविद्यालय देवास रोड उज्जैन</h5>
-					</div>
-				</div>
-			</div> -->
+			<?php 
+			$where = array('id' => $student[0]->exam_center_id);
+				//$exam = $this->Common_model->getRecordByWhere('exam_center',$where); ?>
 			<div class="BoxD border- padding mar-bot">
 				<div class="row">
 					<div class="col-12">
@@ -67,20 +65,19 @@
 							<tr>
 								<td><b>Roll No: </b> <?=$student[0]->roll_no;?></td>
 								<td colspan="2"><b>Enrollment No: </b><?=$student[0]->enrollment_no;?></td>
-								 <td rowspan="4"><img src="<?=base_url('assets/student_image/'.$student[0]->photo);?>"  width="115px" height="166px" /></td> 
+								 <td rowspan="4"><img src="<?=base_url('assets/student_image/'.$student[0]->session.'/'.$student[0]->photo);?>"  width="115px" height="166px" /></td> 
 							</tr>
 							<tr>
-							  <td><b>Student Name: </b> <?=$student[0]->name;?></td>
-							  <td colspan="2"><b>Father/Husband Name: </b> <?=$student[0]->f_h_name;?></td>
+							  <td><b>Course: </b> <?=$student[0]->course_name;?> ( <?=$student[0]->class_name;?> )</td>
+							  <td colspan="2"><b>EC Code: </b><?=$student[0]->examcentercode;?></td>
 							</tr>
 							<tr>
-							  <td><b>Course: </b> <?=$student[0]->course_name;?></td>
-							  <td colspan="2"><b>Class: </b> <?=$student[0]->class_name;?></td>
+							  <td colspan="3"><b>Student Name: </b> <?=$student[0]->name;?></td>
 							</tr>
 							<tr>
-								<td><b>Mode:</b> Regular</td>
-								<td class="border border-dark" colspan="2"> <b>Mobile No. :</b> <?php 	$mobile_no =$this->Common_model->getMobileNoByStudentID($student[0]->student_id);	?><?= $mobile_no ?> </td>
+								<td colspan="3"><b>Father/Husband Name: </b> <?=$student[0]->f_h_name;?></td>
 							</tr>
+							
 						  </tbody>
 						</table>
 					</div>
@@ -101,10 +98,11 @@
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>Subject/Paper</th>
-									<th>प्रश्न पत्र अपलोड करने की तिथि </th>
-									<th>उत्तर पुस्तिका जमा / अपलोड करने की अंतिम तिथि</th>
-								<!-- 	<th>Time</th> -->
+									<th>Date</th>
+									<th >Paper Name</th>
+									<!-- <th>प्रश्न पत्र अपलोड करने की तिथि </th>
+									<th>उत्तर पुस्तिका जमा / अपलोड करने की अंतिम तिथि</th> -->
+									<th>Time</th>
 								</tr>
 							</thead>
 						  <tbody>
@@ -115,14 +113,16 @@
 				?>
 				<tr>
 					<td><?php echo $i ; ?></td>
-					<td><?php echo $paper->paper_name; ?></td>
-					<?php if ($i==1): ?>
+					<td><?php echo date("d-m-Y", strtotime($paper->exam_date)); ?></td>
+					<td style="text-align:left;"><?php echo $paper->paper_name; ?></td>
+					<!-- <?php //if ($i==1): ?>
 						
 					<td rowspan="<?=$paper_count?>" style="vertical-align: middle;"><?php echo  $this->Common_model->viewDate($paper->exam_start_date); ?></td>
 					<td rowspan="<?=$paper_count?>" style="vertical-align: middle;"><?php echo $this->Common_model->viewDate($paper->exam_end_date); ?></td>
 					
-					<?php endif ?>
+					<?php //endif ?> -->
 					<!-- <td><?= ($paper->exam_shift=='मध्याह्न') ? '१२:०० से ०३:०० बजे तक' : ''; ?></td> -->
+					<td><?= ($paper->exam_shift=='Morning') ? '11:00 AM To 2:00 PM' : '03:00 PM To 6:00 PM'; ?></td>
 			</tr>
 			<?php 
 			$i++;
@@ -133,13 +133,13 @@
 					</div>
 				</div>
 			</div>
-
+<!--
 <div class="text-right">
 						<img src="<?=base_url('assets/images/Signature.png')?>" class="Signature">
 						<p class="font-weight-bold mb-4 mr-5">कुलसचिव</p>
 					</div>
 
-			<div class="BoxF border- padding mar-bot txt-center">
+			<!-- <div class="BoxF border- padding mar-bot txt-center">
 				<div class="row">
 					<div class="col-12 text-justify">
 						<p><strong>परीक्षा हेतु निर्देश</strong><br><br>
@@ -164,9 +164,10 @@
 					
 					</div>
 				</div>
-			</div>
+			</div> -->
 			<footer class="txt-center">
-				<p>*** महर्षि महेश योगी वैदिक विश्वविद्यालय***</p>
+				<!-- <p>*** महर्षि महेश योगी वैदिक विश्वविद्यालय***</p> -->
+				<strong>This is a computer-generated document. No signature is required</strong>
 			</footer>
 			
 		</div>

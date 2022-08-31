@@ -392,10 +392,8 @@
 					<div class="form-group">
 						<select class="form-control" name="passing_year">
 							<option value="">---Select---</option>
-							<?php if (in_array($center_id, $center_ids_dep)): ?>
-							<option>2022</option>
-							<?php endif ?>
-							<?php for ($year=2021; $year > 1990; $year--) { ?>
+							
+							<?php for ($year=$passing_exam_years; $year > 1990; $year--) { ?>
 								<option><?=$year?></option>
 							<?php } ?>
 						</select>
@@ -427,4 +425,4 @@
 		var avatar1 = new KTImageInput('kt_image_1');
 		setTimeout(function () { document.getElementById("alert-msg").style.display="none"; }, 3000);
 	</script>
-	<script src="<?=base_url();?>assets/theme/admission.js?token=<?=date('YmdHis')?>"></script>
+	<script src="<?=base_url();?>assets/theme/admission.js?token=<?=date('Ymd')?>"></script>

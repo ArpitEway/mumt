@@ -32,6 +32,8 @@ class Student extends CI_Controller {
 			$student = $this->Common_model->getRecordById('student','student_id',$id);
 			$data = array('student' => $student);
 			//$this->getNotification();
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->load->view('students/dashboard',$data);
 			$this->load->view('students/footer');
 		}	
@@ -231,4 +233,20 @@ class Student extends CI_Controller {
 		$this->Common_model->updateRecordByConditions('upload_exam_ans_sheet',$where,$data);
 		redirect(base_url('exam_paper'));
 	}
+
+    public function student_model_paper(){
+		if(!$this->session->has_userdata('studentdata')){
+			 redirect(base_url('students/login'));
+		}
+		$this->load->view('students/header',array('title'=>'Model Paper', 'page_slug' => 'student_model_paper'));
+		$student_id = $this->session->student_id;
+		$this->db->select('*');
+		$this->db->from('paper_master');
+		$this->db->where('student_id',$student_id);
+		$this->db->join('new_exam_form', 'new_exam_form.paper_id = paper_master.id');
+		$data['students'] = $this->db->get()->result();
+		$this->load->view('students/student_model_paper',$data);
+		$this->load->view('students/footer');					
+	}
+
 }
