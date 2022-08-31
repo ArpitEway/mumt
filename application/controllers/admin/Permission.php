@@ -315,4 +315,15 @@ class Permission extends CI_Controller {
 					"data" => $data
 				));	 
 	}
+	public function update_exam_form_permission_notSubmitted()
+	{	
+            $id    = $this->input->post("id");
+			$exam_form_permission = $this->input->post("exam_form_permission");	
+			$data = $this->Common_model->updateRecordByConditions("center",array("id" => $id ),array("exam_form_permission" => $exam_form_permission ));
+				 $status = true;
+				echo json_encode(array(
+					 "status" => $status,
+					"data" => $data
+				));	 
+	}
 }// class

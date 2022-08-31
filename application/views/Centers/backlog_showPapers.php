@@ -106,8 +106,6 @@
 		}
 
 	}
-
-
 </style>
 <div id="printThisDivIdOnButtonClick" class="mt-10">
 	<div id="printablediv">
@@ -120,34 +118,34 @@
 
 					</div>
 					<div class="form-text-color form-group col-md-4 text-left m-auto">
-						<?php echo $student['form_no']; ?>
+						<?php echo $papers[0]->student_id; ?>
 					</div>
 
 					<div class="form-group col-md-2 text-left m-auto">
 						<label class="label_form">Enrollment :</label>
 					</div>
 					<div class=" form-text-color form-group col-md-3 text-left m-auto">
-						<?php echo $student['enrollment_no']; ?>
+						<?php echo $papers[0]->enrollment_no; ?>
 					</div>
 					<div class="form-group col-md-3 text-left m-auto">
 						<label class="label_form">Course Name:</label>
 					</div>
 					<div class="form-text-color form-group col-md-4 text-left m-auto">
-						<?php echo $student['course_name']; ?>
+				<?php echo $this->Common_model->getCourseNameByCourseId($papers[0]->course_group_id); ?>
 					</div>
 
 					<div class="form-group col-md-2 text-left m-auto">
 						<label class="label_form">Class Name:</label>
 					</div>
 					<div class="form-text-color form-group col-md-3 text-left m-auto">
-						<?php echo $student['class_name']; ?>
+					<?php echo $this->Common_model->getClassNameByClassId($papers[0]->class_id); ?>
 					</div>
 
 					<div class="form-group col-md-3 text-left m-auto">
 						<label class="label_form">Student Name :</label>
 					</div>
 					<div class="form-group form-text-color col-md-4 text-left m-auto">
-						<?php echo $student['name']; ?>
+				<?php echo $student['name']; ?>
 					</div>
 
 					<div class="form-group col-md-2 text-left m-auto">
@@ -170,13 +168,11 @@
 					<div class="form-group col-md-3 text-left m-auto form-text-color">
 						<?php echo $student['p_mobile_no']; ?>
 					</div>
-
 				</div>
 				<div class="row col-md-2">
 					<img class="student_form_img" src="<?php echo base_url('/assets/student_image/').$student['session'].'/'.$student['photo'];?>">
 				</div>
-			</div>
-			
+			</div>	
 		</div>
 	</div>
 	<label class="label_form mt-5 label_heading"><b>Paper Details</b></label>
@@ -187,60 +183,53 @@
 					<tr>
 						<th>#</th>
 						<th>Paper Code</th>
-					<?php if ($papers[0]->sub_group_id!=0): ?>
-						<th>Sub Group</th>
-					<?php endif ?>
 						<th>Paper Name</th>
 					</tr>
 				</thead>
                 <tbody>
-        <?php
-
+             <?php
             $i = 1;
             foreach($papers as $paper){
             ?>
             <tr>
             <td><?php echo $i; ?></td>
             <td><?php echo $paper->paper_code; ?></td>
-            <?php if ($paper->sub_group_id!=0): ?>
-            <td><?php echo $this->Common_model->getSubGroupNameById($paper->sub_group_id); ?></td>
-            <?php endif ?>
-            <td><?php echo $paper->paper_name; ?></td>
+            <td><?php 
+              $paper_name  = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$paper->paper_code));
+             echo $paper_name[0]->paper_name;
+            ?></td>
             </tr>
             <?php
         $i++;
         } ?>
-    </tbody>
+           </tbody>
 			</table>
 		</div>
-	</div>
+	    </div>
 		<?php if ($student['new_exam_form']=='N'): ?>
-	<?php $student_id = $this->Common_model->encrypt_decrypt($student['student_id']); ?>
+	   <?php $student_id = $this->Common_model->encrypt_decrypt($student['student_id']);
+	     $class_id = $this->Common_model->encrypt_decrypt($papers[0]->class_id);
+	    ?>
 			<div class="row justify-content-center mt-10">
 			<?php 
 		$center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28 );
 		if(in_array($this->session->center_id, $center_ids)){
 			?>
-<a class="btn btn-success" href="<?= base_url('paid_by_university/'.$student_id) ?>">Paid By University</a>
-			<?php
-		}else{
-			?>
-			<?php if($student['temp_exam_form']=='Y' && $student['new_exam_form']=='N')
-
-			{ 
-				$center_id =  $this->session->center_id;
-				$center_permission = $this->Common_model->get_record('center','exam_form_permission',array('id'=>$center_id));
-				if($center_permission[0]['exam_form_permission']=='Y'){
-				?>
-				<a class="btn btn-success" href="<?= base_url('Payment/exam_form/'.$student_id) ?>">Process To Payment</a>
-			<?php } } ?>
+       <a class="btn btn-success" href="<?= base_url('paid_by_university/'.$student_id) ?>">Paid By University</a>
 			<?php
 		}
-  ?>
-		
-				
- 
-		
-			</div>
-		<?php endif ?>
+		else{
+			?>
+			<?php 
+     $exam_form_status = $this->Common_model->getRecordByWhere('backlog_student',array('student_id' => $papers[0]->student_id ));
+     
+		if($exam_form_status[0]->exam_form=='N')
+			{ ?>
+				<a class="btn btn-success" href="<?= base_url('Payment/backlog_exam_form/'.$student_id .'/'. $class_id) ?>">Process To Payment</a>
+			<?php } ?>
+			<?php
+	     	}
+           ?>
+	  </div>
+    <?php endif ?>
 </div>

@@ -37,18 +37,16 @@
 							'new_exam_form' => 'Y',
 							'roll_no' =>'0',
 							'class_id' => $class->id,
+							'course_group_id' => $class->course_group_id
 						);
 						
 						$students = $this->Common_model->getRecordByWhereByOrder('student',$where,'center_id,name','ASC');
-						$whereRollNo = array(
-							'new_exam_form' => 'Y',
-							'roll_no !=' =>'0',
-							'class_id' => $class->id,
-						);
-						$count = $this->Common_model->getCountByWhere('student',$whereRollNo);
-						$last_number = ($count==0) ? '10001'  : $count+10001;	
+						$whereRollNo = "new_exam_form = 'Y' and roll_no !='0' and class_id = $class->id";
+						$countData = $this->db->query("Select max(substr(`roll_no`, 2, 8)) as afterRemove from student WHERE $whereRollNo")->row();
+						$count = $countData->afterRemove;
+						$last_number = ($count==0) ? $class->temp_id.'10001'  : $count+1;
 						foreach ($students as $student) {
-								$roll_no = ($student->university_mode=='REG') ? '1'.$class->temp_id.$last_number : '2'.$class->temp_id.$last_number;
+								$roll_no = ($student->university_mode=='REG') ? '1'.$last_number : '2'.$last_number;
 							if($action=='generate'){
 								$whereUpdate = array('student_id' => $student->student_id);
 								$updateData = array('roll_no' =>$roll_no);

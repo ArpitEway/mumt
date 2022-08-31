@@ -37,23 +37,6 @@
                             <span></span>
                             Enrollment No.
                         </label>
-
-                        <!-- <label class="radio radio-success">
-                            <input type = "radio"
-                            name = "radio_stduent_search"
-                            id = "radio_form_id"
-                            value = "student_id" />
-                            <span></span>
-                            Form Id
-                        </label>
-                         <label class="radio radio-success">
-                            <input type = "radio"
-                            name = "radio_stduent_search"
-                            id = "radio_form_id"
-                            value = "adhar_no" />
-                            <span></span>
-                            Aadhaar No
-                        </label> -->
                     </div>
                 </div>
             </div> <!-- from-group row -->

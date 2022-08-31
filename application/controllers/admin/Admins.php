@@ -1845,8 +1845,15 @@ public function getStudentData()
 				}else{
 				$permission_btn = '<input type="button" name="update_permission" data-id='.$result->id.' class="btn btn-danger permission_checks" value="No">';
 				}
+			$exam_form_permission = $result->exam_form_permission;	
+			if($exam_form_permission == 'Y')
+			{
+			$exam_form_permission_btn = '<input type="button" name="update_exam_form_permission" data-id='.$result->id.' class="btn btn-success exam_form_permission_checks" value="Yes">';
+			}else{
+			$exam_form_permission_btn = '<input type="button" name="update_exam_form_permission" data-id='.$result->id.' class="btn btn-danger exam_form_permission_checks" value="No">';
+			}	
 			$i++;
-			$data[] = array($i,$result->id, $result->center_code, $result->center_name, $result->contactpersonname,$result->mobile_no_1,$btn,$permission_btn);
+			$data[] = array($i,$result->id, $result->center_code, $result->center_name, $result->contactpersonname,$result->mobile_no_1,$btn,$permission_btn,$exam_form_permission_btn);
 	     	}
 		  $output = array(
 			"draw" => $_POST['draw'],
@@ -4013,16 +4020,15 @@ public function update_exam_datewise_permission(){
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
 		);
+		$this->db->order_by('examcentercode');
+		$data['examCenters'] = $this->db->get_where('exam_center', array())->result_array();
 		$this->load->view('header',$data);
 		$this->load->view('admin/exam_center/exam_center_billing_report',$csrf);
 		$this->load->view('footer');
 		}
 	}	
-
-
 	
-		
-		public function show_paper($student_id){
+	public function show_paper($student_id){
     	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
     	$titleData = array('title' => 'Student Papers');
     	$this->load->view('header',$titleData);
@@ -4049,9 +4055,7 @@ public function update_exam_datewise_permission(){
     	$this->load->view('footer');
     }
 
-
-
-	   public function student_paper_delete()
+	public function student_paper_delete()
 	{
   		 $student_id = $this->input->post('student_id');
 		$response = $this->Common_model->deleteById('new_exam_form','student_id',$student_id);
@@ -4062,10 +4066,20 @@ public function update_exam_datewise_permission(){
 		$response= $this->Common_model->updateRecordByConditions('student',$where,$data );
 		
 		$this->session->set_flashdata('ajax_flash_message','Status Successfully Updated');
+	}
 
-	
-}
-
-	
-
-}
+	public function regular_exam_controller($method,$admin_id)
+	{
+		$admin_id = $this->Common_model->encrypt_decrypt($admin_id,'decrypt');
+		
+		$check_user = $this->Common_model->getRecordById('admin_master','id',$admin_id);
+				
+				$data = array('loged_in' => true,
+					'adminData' => $check_user->name,
+					'account_type' => $check_user->account_type,
+					'admin_id' => $check_user->id
+				);
+		$this->session->set_userdata($data);
+		redirect(base_url('ExamController/'.$method));
+	}
+}// class

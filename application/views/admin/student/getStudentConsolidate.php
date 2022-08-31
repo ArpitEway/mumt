@@ -88,7 +88,7 @@
 								echo $student["class_name"];
 							 ?></td>
 							<td>
-							<?php if(($this->session->account_type == "Admins" || $this->session->account_type == "Enrollment") && $student['approved']!='Y'){ ?> 
+							<?php if(($this->session->account_type == "Admins" || $this->session->account_type == "Enrollment") && $student['enrolled']!='Y'){ ?> 
 								<a target="_blank"  href='<?php echo base_url($this->session->account_type.'/editForm/').$this->Common_model->encrypt_decrypt($student["student_id"],'encrypt'); ?>'><i class="fa fa-pen"></i></a> 
 							<?php } ?></td>
 							<td><?php echo $this->Common_model->getMobileNoByStudentID($student["student_id"]) ?></td>
