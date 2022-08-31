@@ -5,8 +5,7 @@
         <label for="course">Course</label>
         <select  name="course_group_id" readonly="readonly" name='course_group_id' id="course_group_id" class="form-control course" required>
             <option value="">Select course</option>
-            <?php 
-
+            <?php
             foreach($courses as $course)
             {
                 ?>
