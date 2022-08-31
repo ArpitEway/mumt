@@ -9,7 +9,7 @@
 			<th>Father Name</th>
 			<th>Course Name</th>
             <th>Class Name</th>
-            <th>Adhar No</th>
+            <th>Aadhar No</th>
             <th>Contact No</th>
 		</tr>
 	</thead>
