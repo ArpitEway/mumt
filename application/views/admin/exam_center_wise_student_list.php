@@ -20,8 +20,8 @@
 		{ ?>
 			<tr>
 				<td><?= $i; ?></td>
-				<td>
-				<img src="<?= base_url('assets/student_image/'.$list->session.'/'.$list->photo) ?>" height="100px" style="vertical-align:top;">
+				<td> <a href="<?php echo base_url('assets/student_image/'.$list->session.'/'.$list->photo);?>" download="<?php echo $student->student_id ;?>">
+				<img src="<?= base_url('assets/student_image/'.$list->session.'/'.$list->photo) ?>" height="50px"  width="50" style="vertical-align:top;"></a>
 				</td>
 				<td><?= $list->enrollment_no; ?></td>
 				<td><?= $list->roll_no; ?></td>
