@@ -10,11 +10,11 @@
     }
     .tdheight{line-height:21px; }
     td{
-       line-height:42px;
-   }
-   .font-19{
-        font-size: 15px;
-    }
+     line-height:42px;
+ }
+ .font-19{
+    font-size: 15px;
+}
 </style>
 <?php 
 $pageCounter=30;
@@ -29,14 +29,12 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
     '60' => 'Sixty', '70' => 'Seventy',
     '80' => 'Eighty', '90' => 'Ninety');
     foreach($data as $teacher){ ?> 
-        <div class="row form-group col-md-12">
+        <div class="d-flex" style="justify-content: space-evenly;">
             <?php for($two=0;$two<2;$two++){ $rowCounter=0; ?>
-                <div class=" form-group col-md-6">
+                <div style="width:47%">
                     <table   class="form-group col-md-12 mt-2 mb-2">
                         <tr><td colspan="2" class="tdheight"><h4 align="center">Maharishi Mahesh Yogi Vedic Vishwavidyalaya</h4></td></tr>
-                        <tr><td colspan="2" class="tdheight"><h4 align="center">  </h4></td></tr>
                         <tr><td colspan="2" class="tdheight"><h4 align="center">Madhya Pradesh</h4></td></tr>
-                        <tr><td colspan="2" class="tdheight"><h4 align="center">  </h4></td></tr>
                         <tr><td colspan="2" class="tdheight"><h4 align="center"><?php if($two==0) echo '(FOIL)'; else echo "(COUNTERFOIL)"; ?></h4></td></tr><tr></tr>
                         <tr><td colspan="2" class="tdheight"><strong>Name of Exam:</strong>&nbsp;<?php echo $examname;?></td></tr>
                         <tr><td colspan="2" class="tdheight"><strong>Year / Sem:</strong>&nbsp;<?php echo $class_name;?></td></tr>
@@ -70,35 +68,35 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
 
                                         $digits = array('', 'hundred', 'thousand', 'lakh', 'crore');
                                         while ($i < $digits_1) {
-                                                $divider = ($i == 2) ? 10 : 100;
-                                                $number = floor($no % $divider);
-                                                $no = floor($no / $divider);
-                                                $i += ($divider == 10) ? 1 : 2;
-                                                if ($number) {
-                                                        $plural = (($counter = count($str)) && $number > 9) ? 's' : null;
-                                                        $hundred = ($counter == 1 && $str[0]) ? ' and ' : null;
-                                                        $str [] = ($number < 21) ? $words[$number] .
-                                                        " " . $digits[$counter] . $plural . " " . $hundred
-                                                        :
-                                                        $words[floor($number / 10) * 10]
-                                                        . " " . $words[$number % 10] . " "
-                                                        . $digits[$counter] . $plural . " " . $hundred;
-                                                    } else $str[] = null;
+                                            $divider = ($i == 2) ? 10 : 100;
+                                            $number = floor($no % $divider);
+                                            $no = floor($no / $divider);
+                                            $i += ($divider == 10) ? 1 : 2;
+                                            if ($number) {
+                                                $plural = (($counter = count($str)) && $number > 9) ? 's' : null;
+                                                $hundred = ($counter == 1 && $str[0]) ? ' and ' : null;
+                                                $str [] = ($number < 21) ? $words[$number] .
+                                                " " . $digits[$counter] . $plural . " " . $hundred
+                                                :
+                                                $words[floor($number / 10) * 10]
+                                                . " " . $words[$number % 10] . " "
+                                                . $digits[$counter] . $plural . " " . $hundred;
+                                            } else $str[] = null;
                                         }
-                                   $str = array_reverse($str);
-                                   $result = implode('', $str);
-                                   $points = ($point) ?
-                                   "." . $words[$point / 10] . " " . 
-                                   $words[$point = $point % 10] : '';
-                                   ?>
-                                    <td class="font-19">&nbsp;&nbsp;<?php echo $result; ?></td>
+                                        $str = array_reverse($str);
+                                        $result = implode('', $str);
+                                        $points = ($point) ?
+                                        "." . $words[$point / 10] . " " . 
+                                        $words[$point = $point % 10] : '';
+                                        ?>
+                                        <td class="font-19">&nbsp;&nbsp;<?php echo $result; ?></td>
                                     </tr>
                                     <?php  $teacherID=$student->teacher_id; 
-                                   
+
                                     if($rowCounter%$pageCounter==0){
                                         ?>                                       
                                     </table>
-                                    <table   class="form-group col-md-12 >
+                                    <table   class="form-group col-md-12" >
                                         <tr><td colspan="2" style="text-align:left"><strong>Date :</strong> ____/_____/_________</td></tr>
                                         <!-- <tr>
                                             <td style="text-align:left">&nbsp;</td> 
@@ -109,34 +107,34 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
                                                 <tr><td style="text-align:center" colspan="2"><p style="font-size:12px"><strong>Note:Please see instruction being issued separately</strong></p></td></tr>
                                             </table>
                                             <p class="break"></p>
-                                                                         
-                                        <table   class="form-group col-md-12 mt-2 mb-2">
-                                        <tr><td colspan="2" class="tdheight"><h4 align="center">Maharishi Mahesh Yogi Vedic Vishwavidyalaya</h4></td></tr>
-                                        <tr><td colspan="2" class="tdheight"><h4 align="center">  </h4></td></tr>
-                                        <tr><td colspan="2" class="tdheight"><h4 align="center">Madhya Pradesh</h4></td></tr>
-                                        <tr><td colspan="2" class="tdheight"><h4 align="center">  </h4></td></tr>
-                                        <tr><td colspan="2" class="tdheight"><h4 align="center">(FOIL)</h4></td></tr><tr></tr>
-                                        <tr><td colspan="2" class="tdheight"><strong>Name of Exam:</strong>&nbsp;<?php echo $examname;?></td></tr>
-                                        <tr><td colspan="2" class="tdheight"><strong>Year / Sem:</strong>&nbsp;<?php echo $class_name;?></td></tr>
-                                        <tr>
-                                            <td style="text-align:left;" colspan="2" class="tdheight"><strong>Exam Session:</strong>&nbsp;<?php echo 'Feb 2022';?></td></tr>
-                                            <tr><td colspan="2" class="tdheight"><strong>Subject : </strong>&nbsp;&nbsp;<?php  echo $paper[0]->paper_name;?></td></tr>
-                                            <tr><td class="tdheight"><strong>Date of Exam :</strong>&nbsp;<?php echo $this->Common_model->viewDate($exam_date); ?></td><td style="text-align:left;" class="tdheight"><strong>Max.Marks :</strong>&nbsp;<?php echo $paper[0]->max_theory_marks;?></td></tr>
-                                        </table>
-                                        <table   border="1" class="form-group col-md-12">
-                                            <tr style="text-align:center;">
-                                                <td rowspan="2"  width="77"><strong>En.No. DE/</strong></td>
-                                                <td rowspan="2"  width="50"><strong>Roll No.</strong></td>
-                                                <td colspan="2"><strong>Marks Awarded</strong></td></tr>
-                                                <tr style="text-align:center;">
-                                                    <td width="61"><strong>In Fig.</strong></td><td width="344"><strong>In Words</strong></td>
-                                                </tr>
-                                        
+
+                                            <table   class="form-group col-md-12 mt-2 mb-2">
+                                                <tr><td colspan="2" class="tdheight"><h4 align="center">Maharishi Mahesh Yogi Vedic Vishwavidyalaya</h4></td></tr>
+                                                <tr><td colspan="2" class="tdheight"><h4 align="center">  </h4></td></tr>
+                                                <tr><td colspan="2" class="tdheight"><h4 align="center">Madhya Pradesh</h4></td></tr>
+                                                <tr><td colspan="2" class="tdheight"><h4 align="center">  </h4></td></tr>
+                                                <tr><td colspan="2" class="tdheight"><h4 align="center">(FOIL)</h4></td></tr><tr></tr>
+                                                <tr><td colspan="2" class="tdheight"><strong>Name of Exam:</strong>&nbsp;<?php echo $examname;?></td></tr>
+                                                <tr><td colspan="2" class="tdheight"><strong>Year / Sem:</strong>&nbsp;<?php echo $class_name;?></td></tr>
+                                                <tr>
+                                                    <td style="text-align:left;" colspan="2" class="tdheight"><strong>Exam Session:</strong>&nbsp;<?php echo 'Feb 2022';?></td></tr>
+                                                    <tr><td colspan="2" class="tdheight"><strong>Subject : </strong>&nbsp;&nbsp;<?php  echo $paper[0]->paper_name;?></td></tr>
+                                                    <tr><td class="tdheight"><strong>Date of Exam :</strong>&nbsp;<?php echo $this->Common_model->viewDate($exam_date); ?></td><td style="text-align:left;" class="tdheight"><strong>Max.Marks :</strong>&nbsp;<?php echo $paper[0]->max_theory_marks;?></td></tr>
+                                                </table>
+                                                <table   border="1" class="form-group col-md-12">
+                                                    <tr style="text-align:center;">
+                                                        <td rowspan="2"  width="77"><strong>En.No. DE/</strong></td>
+                                                        <td rowspan="2"  width="50"><strong>Roll No.</strong></td>
+                                                        <td colspan="2"><strong>Marks Awarded</strong></td></tr>
+                                                        <tr style="text-align:center;">
+                                                            <td width="61"><strong>In Fig.</strong></td><td width="344"><strong>In Words</strong></td>
+                                                        </tr>
+
                                          <?php }//rowCounter condition end
-                                } ?>
-                           </table>
-                           <table   class="form-group col-md-12">
-                            <tr><td colspan="2" style="text-align:left"><strong>Date :</strong> ____/_____/_________</td></tr>
+                                     } ?>
+                                 </table>
+                                 <table   class="form-group col-md-12">
+                                    <tr><td colspan="2" style="text-align:left"><strong>Date :</strong> ____/_____/_________</td></tr>
                             <!-- <tr>
                                 <td style="text-align:left">&nbsp;</td> 
                                 <td style="text-align:right">&nbsp;</td></tr> -->
@@ -146,8 +144,8 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
                                     <tr><td style="text-align:center" colspan="2"><p style="font-size:12px"><strong>Note:Please see instruction being issued separately</strong></p></td></tr>
                                 </table>
                                 <p class="break"></p>
-                               
+
                             </div>	
                         <?php } ?>
                     </div>	
-                <?php } ?>	
+                    <?php } ?>
