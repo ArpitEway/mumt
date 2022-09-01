@@ -73,7 +73,7 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
                                     <td  style="text-align:center;"><?php  echo $student->enrollment_no; ?></td>
                                     <td style="text-align:center;padding: 0px 3px 0px 3px;"><?php echo $student->roll_no;;?></td>
 
-                                    <td style='text-align:center;'><?php echo $student->total_marks; ?></td>
+                                    <td style='text-align:center;'><?php //echo $student->total_marks; ?></td>
 
                                     <td class="font-19">&nbsp;&nbsp;<?php //echo $result; ?></td>
                                 </tr>
@@ -130,8 +130,8 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
                                                 <td style="text-align:left">&nbsp;</td> 
                                                 <td style="text-align:right">&nbsp;</td></tr>
                                                 <tr><td colspan="2" style="text-align:right"><strong>(Examiner's Signature)</strong></td></tr>
-                                                <tr><td style="text-align:left;line-height: 20px;"><strong>&nbsp;</strong></td>
-                                                    <td style="text-align:right;line-height: 20px;"><?php echo $detail[$examcenter][0]->superintendent; ?></td></tr>
+                                                <tr>
+                                                    <td colspan="2" style="text-align:left;line-height: 20px;"><strong>Full Name :</strong></td></tr>
                                                     <tr><td style="text-align:center" colspan="2"><p style="font-size:12px"><strong>Note:Please see instruction being issued separately</strong></p></td></tr>
                                                 </table>
 
