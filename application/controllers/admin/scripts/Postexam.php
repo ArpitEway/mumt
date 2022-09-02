@@ -111,7 +111,6 @@ class Postexam extends CI_Controller {
 
         foreach($students as $student)
         {
-         
             $check_grace_marks = false;
             $fail_count = 0;
             $abs_count = 0;
@@ -201,7 +200,7 @@ class Postexam extends CI_Controller {
             }else{
                 $final_result = 'PASS';   
             }
-             if ($final_result=='FAIL'  && count($course_type)==0) {
+             if ($final_result=='FAIL'  && count($course_type)==0 && $student->course_group_id!=76) {
                 continue;
             }
             $examData['university_mode'] = $student->university_mode;
@@ -264,13 +263,14 @@ class Postexam extends CI_Controller {
                 } 
 
             }
-             $studentData = array('upload_result'=>'Y');
-             if($paper_count==$abs_count && count($course_type)!=0){  
-             $studentData['demo'] = 'Y';
-             $studentData['new_exam_form'] = 'N';
-            } else
-            {
-            $studentData['promote'] = 'N';
+            $studentData = array('upload_result'=>'Y');
+            if($paper_count==$abs_count && count($course_type)!=0){  
+                $studentData['demo'] = 'Y';
+                $studentData['new_exam_form'] = 'N';
+            }elseif($fail_count>1 && $student->course_group_id==76){
+                $studentData['promote'] = 'D';    
+            }else{
+                $studentData['promote'] = 'N';
             }
            $this->Common_model->updateRecordByConditions('student',array('student_id'=>$student->student_id),$studentData);     
             if($insert){
