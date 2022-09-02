@@ -1073,7 +1073,7 @@ class Center extends CI_Controller {
 		$student = $this->Common_model->student_info($student_id);
 		$this->db->order_by('id');
 		$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory"');
-		$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id where class_id='.$student['class_id'].' Order by g.id,sub_group_id')->result();
+		$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id where class_id='.$student['class_id'].' Order by g.id,sub_group_id,p.id')->result();
 		$data['compulsoryPapers'] = $compulsoryPapers;
 		$data['student'] = $student;
 		$data['student_id'] = $student['student_id'];
