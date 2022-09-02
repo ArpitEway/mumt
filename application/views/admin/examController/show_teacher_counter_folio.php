@@ -1,7 +1,10 @@
 <?php $student=array(); ?>
 <style>
     h4{font-size:16px;}
-    .break{page-break-before: always;}
+    .break{
+        page-break-before: always;
+        height: 20px;
+    }
     table {
         background-color: transparent;
         border-collapse: collapse;
@@ -10,7 +13,7 @@
     }
     .tdheight{line-height:21px; }
     td{
-     line-height:42px;
+     line-height:35px;
  }
  .font-19{
     font-size: 15px;
@@ -30,6 +33,7 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
     '80' => 'Eighty', '90' => 'Ninety');
     foreach($data as $teacher){ ?> 
         <div class="d-flex" style="justify-content: space-evenly;">
+            <p class="break"></p>
             <?php for($two=0;$two<2;$two++){ $rowCounter=0; ?>
                 <div style="width:47%">
                     <table   class="form-group col-md-12 mt-2 mb-2">
@@ -106,8 +110,7 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
                                                 <td style="text-align:right;line-height: 20px;"><?php echo $teachername[$teacherID]; ?></td></tr>
                                                 <tr><td style="text-align:center" colspan="2"><p style="font-size:12px"><strong>Note:Please see instruction being issued separately</strong></p></td></tr>
                                             </table>
-                                            <p class="break"></p>
-
+                                            <p style="height:20px"></p>
                                             <table   class="form-group col-md-12 mt-2 mb-2">
                                                 <tr><td colspan="2" class="tdheight"><h4 align="center">Maharishi Mahesh Yogi Vedic Vishwavidyalaya</h4></td></tr>
                                                 <tr><td colspan="2" class="tdheight"><h4 align="center">  </h4></td></tr>
@@ -144,8 +147,7 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
                                     <tr><td style="text-align:center" colspan="2"><p style="font-size:12px"><strong>Note:Please see instruction being issued separately</strong></p></td></tr>
                                 </table>
                                 <p class="break"></p>
-
-                            </div>	
+                            </div>
                         <?php } ?>
                     </div>	
                     <?php } ?>
