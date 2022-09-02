@@ -1,4 +1,8 @@
-<?php //print_r($exam_centers); ?>
+<style>
+  .offcanvas-footer {
+    display: none;
+  }
+</style>  
  <div class="  text-center p-3">
      <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
      <div class="form-group col-md-6 mx-auto">
@@ -43,7 +47,9 @@
 	var csrfName = $('.csrfname').attr('name');
 	var csrfHash = $('.csrfname').val(); 
 	var exam_center = $(this).val();
-  $("#headerTitle").html($("#exam_center option:selected").text());
+  var str = $("#exam_center option:selected").text();
+    stripped = str.substring(0, str.indexOf('(') + '('.length-1);
+  $("#headerTitle").html(stripped);
   $('.dt-responsive').html("");
   $("#myLoader").show();
   //console.log($("#multiple").val());

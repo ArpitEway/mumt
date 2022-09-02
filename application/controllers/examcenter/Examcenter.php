@@ -94,7 +94,7 @@ class Examcenter extends CI_Controller {
 	public function logout()
 	 {
 		$this->session->sess_destroy();
-		redirect(base_url('Examcenter/login'));
+		redirect('http://162.144.38.91/~mmyvvdde/main/examcenter/index.php');
 	 }
 
 	 //Exam Center Wise Paper Count by Date & Shift
@@ -137,9 +137,9 @@ class Examcenter extends CI_Controller {
 
 		$this->db->select('DISTINCT(paper_master.id),exam_date,exam_shift,exam_day,paper_master.paper_code,paper_master.paper_name,paper_master.course_group_id,paper_master.class_id');
 		$this->db->from('paper_master');
-		$this->db->join('new_exam_form_report', 'new_exam_form_report.paper_id = paper_master.id');
-		$this->db->join('student_report', 'student_report.student_id = new_exam_form_report.student_id');
-		$this->db->where('student_report.new_exam_form=','Y' );
+		$this->db->join('new_exam_form', 'new_exam_form.paper_id = paper_master.id');
+		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
+		$this->db->where('student.new_exam_form=','Y' );
 		$this->db->where('paper_master.exam_date!=',"");
 		if($exam_date!='All')	{
 			$edate=date("Y-m-d", strtotime($exam_date));
@@ -148,7 +148,7 @@ class Examcenter extends CI_Controller {
 			
 		if($shift)	
 			$this->db->where('paper_master.exam_shift',$shift);
-		$this->db->where('student_report.exam_center_id', $exam_center );
+		$this->db->where('student.exam_center_id', $exam_center );
 		$this->db->group_by('paper_master.exam_date');
 
 		
@@ -172,6 +172,94 @@ class Examcenter extends CI_Controller {
 		$query = $this->db->query($sql);
         $data['papers'] = $query->result();*/
 		echo $this->load->view('examcenter/exam_center_paper_count_report_show',$data, TRUE);
+	}
+
+	 //Search Attendance sheet by student detail
+	 public function search_attendance_sheet(){
+		if(!$this->session->has_userdata('Examcenterdata')){
+			redirect(base_url('Examcenter/dashboard'));
+			exit;
+		}else
+		{
+			$titleData = array('title' => 'Search Attendance Sheet of student'); 
+			$this->load->view('examcenter/header',$titleData);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			// $this->db->select('*');
+			// $this->db->from('exam_center');
+			// $data['exam_centers'] = $this->db->get()->result();
+			// $this->db->select('*');
+			// $this->db->from('paper_master');
+			// $this->db->where('exam_date!=',"");
+			// $this->db->where('exam_date!=',"0000-00-00");	
+			// $this->db->group_by('exam_date');
+			// $this->db->order_by('exam_date', "asc");
+			// $data['examDate'] = $this->db->get()->result();
+
+			$this->load->view('examcenter/search_attendance_sheet',$data);
+			$this->load->view('examcenter/footer');
+		}
+	}
+
+	//Get search Student Attendance Sheet 
+	public function get_search_student_attendance_sheet(){
+
+
+		 $text_val =$this->input->post('text_val');
+		 $radio_val = $this->input->post('radio_val');
+
+
+		if($text_val !='')
+		{
+			if($text_val !='' && $radio_val == 'enrollment_no')
+			{
+				$where = array('enrollment_no'=>$text_val,'new_exam_form'=>'Y');
+
+			}else if($text_val !='' && $radio_val == 'roll_no'){
+				$where = array('roll_no'=>$text_val);
+			}
+
+			$data['exam_center_students'] = $this->Common_model->student_data($where);
+			
+			echo $this->load->view('examcenter/get_search_student_attendance_sheet',$data, TRUE);
+			
+		}		
+	}
+
+	public function regular_exam_center($method,$exam_center_id)
+	{
+		$exam_center_id = $this->Common_model->encrypt_decrypt($exam_center_id,'decrypt');
+		$exam_center = $this->Common_model->getRecordById('exam_center','id',$exam_center_id);
+		$data = array(
+					'loged_in' 	  => true,
+					'Examcenterdata' => $exam_center->examcentercode,
+					'password' 	  	  => $exam_center->password,
+					'exam_center_id'  => $exam_center->id
+				);
+				$this->session->set_userdata($data);
+				redirect(base_url('Examcenter/'.$method));
+	}
+
+	public function search_exam_by_course(){
+		$dt = array();
+		$titleData = array('title' => 'Course Wise Exam Date ');
+		$this->load->view('examcenter/header',$titleData);
+		
+		$dt['name_csrf'] = $this->security->get_csrf_token_name();
+		$dt['hash_csrf'] = $this->security->get_csrf_hash();
+	
+		$this->db->select('course_group.*');
+		$this->db->from('course_group');
+		$this->db->join('paper_master', 'paper_master.course_group_id = course_group.id');
+		$this->db->where('paper_master.exam_date!=','');
+		$this->db->where('paper_master.exam_date!=','0000-00-00');  
+		$this->db->where('paper_master.type','theory'); 
+	   
+		$this->db->group_by('paper_master.course_group_id');
+		$this->db->order_by('course_group.course_name', 'Asc');
+		$dt['courses']= $this->db->get()->result_array();
+		$this->load->view('Centers/search_exam_by_course',$dt);
+		$this->load->view('examcenter/footer');
 	}
 
 }

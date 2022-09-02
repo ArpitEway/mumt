@@ -478,49 +478,45 @@ class ExamController extends CI_Controller {
 
 	public function search_assign_teacher(){
 		if($_POST['action1']=='submit'){
-			$this->db->select('GROUP_CONCAT(center_id) as center_id');
-			$this->db->from("assign_answersheet");
-			$this->db->where('paper_code',$_POST['paper_code']); 
-			$query = $this->db->get()->result_array();
-			$center_id = explode(',',$query[0]['center_id']);
+		// 	$this->db->select('GROUP_CONCAT(center_id) as center_id');
+		// 	$this->db->from("assign_answersheet");
+		// 	$this->db->where('paper_code',$_POST['paper_code']); 
+		// 	$query = $this->db->get()->result_array();
+		// 	$center_id = explode(',',$query[0]['center_id']);
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
-				 // it show student count for perticular center and pertical paper .	
+				 
+			// it show student count for perticular center and pertical paper .	
 			$this->db->select('DISTINCT(upload_exam_ans_sheet.teacher_id),teacher.name');
 			$this->db->from('upload_exam_ans_sheet');
 			$this->db->join('teacher', 'upload_exam_ans_sheet.teacher_id = teacher.id');
 			$this->db->where('upload_exam_ans_sheet.class_id',$_POST['class_id']);
-			$this->db->where('upload_exam_ans_sheet.paper_code',$_POST['paper_code']); 
+			$this->db->where('upload_exam_ans_sheet.paper_code',$_POST['paper_code']);
 			$this->db->where('upload_exam_ans_sheet.teacher_id!=',''); 
-			
-			$this->db->group_by('center_id');
-			
-			$data['teachers'] = $this->db->get()->result();//echo $this->db->last_query();die;
-			//$data['teacher_id'] = $_POST['teacher_id'];
+			// $this->db->group_by('center_id');
+			$data['teachers'] = $this->db->get()->result();
 			$data['class_id'] = $_POST['class_id'];
 			$data['paper_code'] = $_POST['paper_code'];
 			$data['course_group_id'] = $_POST['course_group_id'];
-
 			$dt = $this->load->view('admin/examController/get_assign_teacher',$data,true);
 			echo json_encode(array(
 				"status" => true,
 				"data" => $dt
 			));
 		}
-		
 	}
+
 	public function show_counter_folio(){
 		if($_POST['action']=='assign_answersheet'){
 			$data_insert['teacher_id'] =  implode(',',$_POST['teacher_id']);
-			//echo "<pre>";
-				//print_r($_POST['teacher_id']);
 			$dataArray= array();	
 			foreach($_POST['teacher_id'] as $teacher_id){
-				$this->db->select('DISTINCT(upload_exam_ans_sheet.teacher_id),teacher.name,student.enrollment_no,student.roll_no,upload_exam_ans_sheet.total_marks');
+				$this->db->select('DISTINCT(upload_exam_ans_sheet.teacher_id),teacher.name,student.enrollment_no,student.roll_number,upload_exam_ans_sheet.total_marks');
 				$this->db->from('upload_exam_ans_sheet');
 				$this->db->join('teacher', 'upload_exam_ans_sheet.teacher_id = "'.$teacher_id.'"');
 				$this->db->join('student', 'upload_exam_ans_sheet.student_id = student.student_id');
 				$this->db->where('upload_exam_ans_sheet.class_id',$_POST['class_id']);
+				$this->db->where('student.old_class_id',$_POST['class_id']);
 				$this->db->where('upload_exam_ans_sheet.paper_code',$_POST['paper_code']); 
 				$this->db->group_by('upload_exam_ans_sheet.center_id');
 				$dataArray['data'][$teacher_id] = $this->db->get()->result();
@@ -528,7 +524,7 @@ class ExamController extends CI_Controller {
 				
 			}	
 			$dataArray['exam_date'] = $this->Common_model->getSinglefield('time_table','exam_start_date',array('class_id'=>$_POST['class_id']));
-				/* echo $this->db->last_query();die; */
+				
 			$data['class_id'] = $_POST['class_id'];
 			$data['paper_code'] = $_POST['paper_code'];
 			$data['course_group_id'] = $_POST['course_group_id'];
@@ -537,11 +533,9 @@ class ExamController extends CI_Controller {
 			$dataArray['class_name']= $this->Common_model->getClassNameByClassId($_POST['class_id']);
 			
 			$dataArray['paper']= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'] , 'paper_code'=>$_POST['paper_code']));
-			//print_r($dataArray['paper']); echo $this->db->last_query(); die;
 			$this->load->view('admin/generate_tr/header2',array('title' =>'Folio'));
-			$this->load->view('admin/examController/show_teacher_counter_folio',$dataArray); 
-				
-		
+			$this->load->view('admin/examController/show_teacher_counter_folio',$dataArray);
+			// $this->load->view('admin/generate_tr/footer2',array('title' =>'Folio'));
 		}	
 	}
    public function getPaperByClassId(){
@@ -1411,7 +1405,7 @@ class ExamController extends CI_Controller {
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('*');
 			$this->db->from('exam_center');
-			
+			$this->db->order_by('examcentercode', "asc");
 			$data['exam_centers'] = $this->db->get()->result();
 
 			$this->load->view('admin/exam_center/exam_center_wise_answer_sheet',$data);
@@ -1424,7 +1418,7 @@ class ExamController extends CI_Controller {
 		$this->db->select('*');
 		$this->db->from('exam_center');
 		if($exam_center!="All")
-		$this->db->where('id',$exam_center);	
+		$this->db->where('id',$exam_center);
 		$data['exam_centers'] = $this->db->get()->result();
 		echo $this->load->view('admin/exam_center/exam_center_wise_answer_sheet_count_show',$data, TRUE);
 	}
@@ -1442,6 +1436,7 @@ class ExamController extends CI_Controller {
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('*');
 			$this->db->from('exam_center');
+			$this->db->order_by('examcentercode', "asc");
 			$data['exam_centers'] = $this->db->get()->result();
 			$this->db->select('*');
 			$this->db->from('paper_master');
@@ -1487,19 +1482,20 @@ class ExamController extends CI_Controller {
 		//$this->db->order_by('paper_master.exam_date');
 		$data['papers'] = $this->db->get()->result();
 		echo $this->db->last_query();die; */
+
 		$where="";
 		if($exam_center!='All')
-			$where.="AND `student_report`.`exam_center_id` = '".$exam_center."'";
+			$where.="AND `student`.`exam_center_id` = '".$exam_center."'";
 		if($exam_date!='All')	{
 			$edate=date("Y-m-d", strtotime($exam_date));
 			$where.="AND paper_master.exam_date = '".$edate."'";
 		}
-		if($shift!='All')	
+		if($shift!='All')
 		$where.="AND paper_master.exam_shift = '".$shift."'";
 
 		$where.="   GROUP BY `paper_master`.`exam_date`";
 
-		 $sql="SELECT DISTINCT(paper_master.id), `exam_date`, `exam_shift`, `exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student_report` ON `student_report`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = 'theory' AND `paper_master`.`exam_date` != '' AND paper_master.exam_date!='0000-00-00'  ".$where; 
+		 $sql="SELECT DISTINCT(paper_master.id), `exam_date`, `exam_shift`, `exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student` ON `student`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = 'theory' AND `paper_master`.`exam_date` != '' AND paper_master.exam_date!='0000-00-00'  ".$where; 
 		
 		$query = $this->db->query($sql);
         $data['papers'] = $query->result();
@@ -1597,7 +1593,7 @@ class ExamController extends CI_Controller {
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('*');
 			$this->db->from('exam_center');
-			
+			$this->db->order_by('examcentercode', "asc");
 			$data['exam_centers'] = $this->db->get()->result();
 
 			$this->load->view('admin/exam_center/exam_center_wise_student_attendance_sheet',$data);
@@ -1612,12 +1608,179 @@ class ExamController extends CI_Controller {
 		$this->db->from('student');
 		$this->db->order_by("roll_no", "asc");
 		// if($exam_center!="All")
-		$where = array('exam_center_id'=>$exam_center, 'roll_no!=' => 0 );
+		$where = array('exam_center_id'=>$exam_center, 'roll_no!=' => 0 ,'notification_no'=>3);
 		$this->db->where($where);	
 		$data['exam_center_students'] = $this->db->get()->result();
 		echo $this->load->view('admin/exam_center/get_exam_center_wise_student_attendance_sheet',$data, TRUE);
 	}
 
+		//Date Wise Paper Count by All & Unique category
+	public function date_wise_paper_calculation(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+			$titleData = array('title' => 'Paper Count By Date'); 
+			$this->load->view('header',$titleData);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			
+			$this->db->select('*');
+			$this->db->from('paper_master');
+			$this->db->where('exam_date!=',"");
+			$this->db->where('exam_date!=',"0000-00-00");	
+			$this->db->group_by('exam_date');
+			$this->db->order_by('exam_date', "asc");
+			$data['examDate'] = $this->db->get()->result();
+
+			$this->load->view('admin/exam_center/date_wise_paper_calculation',$data);
+			$this->load->view('footer');
+		}
+	}
+
+	public function get_date_wise_paper_calculation(){
+		$data['category']=$exam_center = $this->input->post('category');
+		$data['exam_date']=$exam_date = $this->input->post('exam_date');
+		$data['shift']=$shift = $this->input->post('shift');
+		$this->db->select('*');
+		$this->db->from('exam_center');
 		
-	
+		$this->db->where('id',$exam_center);	
+		$data['exam_centers'] = $this->db->get()->result();
+
+/*
+		$this->db->select('DISTINCT(paper_master.id),exam_date,exam_shift,exam_day,paper_master.paper_code,paper_master.paper_name,paper_master.course_group_id,paper_master.class_id');
+		$this->db->from('paper_master');
+		$this->db->join('new_exam_form_report', 'new_exam_form_report.paper_id = paper_master.id');
+		$this->db->join('student_report', 'student_report.student_id = new_exam_form_report.student_id');
+		$this->db->where('student_report.new_exam_form!=','D' );
+		$this->db->where('paper_master.exam_date!=',"");
+		if($exam_date)	{
+			$edate=date("Y-m-d", strtotime($exam_date));
+			$this->db->where('paper_master.exam_date',$edate);
+		}
+			
+		if($shift)	
+			$this->db->where('paper_master.exam_shift',$shift);
+		$this->db->where('student_report.exam_center_id', $exam_center );
+		$this->db->group_by('paper_master.exam_date');
+
+		
+		//$this->db->order_by('paper_master.exam_date');
+		$data['papers'] = $this->db->get()->result();
+		echo $this->db->last_query();die; */
+
+		$where="";
+		//if($exam_center!='All')
+		//	$where.="AND `student`.`exam_center_id` = '".$exam_center."'";
+		if($exam_date!='All')	{
+			$edate=date("Y-m-d", strtotime($exam_date));
+			$where.="AND paper_master.exam_date = '".$edate."'";
+		}
+		if($shift!='All')
+		$where.="AND paper_master.exam_shift = '".$shift."'";
+
+		$where.="   GROUP BY `paper_master`.`exam_date`";
+
+		 $sql="SELECT DISTINCT(paper_master.id), `exam_date`, `exam_shift`, `exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student` ON `student`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = 'theory' AND `paper_master`.`exam_date` != '' AND paper_master.exam_date!='0000-00-00'  ".$where; 
+		
+		$query = $this->db->query($sql);
+        $data['papers'] = $query->result();
+		//echo $this->db->last_query(); die;
+		echo $this->load->view('admin/exam_center/get_date_wise_paper_calculation',$data, TRUE);
+	}
+
+	public function regular_exam_controller($method,$admin_id)
+	{
+		$admin_id = $this->Common_model->encrypt_decrypt($admin_id,'decrypt');
+		
+		$check_user = $this->Common_model->getRecordById('admin_master','id',$admin_id);
+				
+				$data = array('loged_in' => true,
+					'adminData' => $check_user->name,
+					'account_type' => $check_user->account_type,
+					'admin_id' => $check_user->id
+				);
+		$this->session->set_userdata($data);
+		redirect(base_url('ExamController/'.$method));
+	}
+
+	public function exam_center_folio(){
+		$titleData = array('title' => 'Exam Center Folio'); 
+		$this->load->view('header',$titleData);
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();	
+		$data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id), course_name ','new_exam_form="Y"');
+		$this->load->view('admin/examController/exam_center_folio',$data);
+		$this->load->view('footer');
+	} 
+
+	public function search_assign_exam_center(){
+		if($_POST['action1']=='submit'){
+			$this->db->select('Distinct(examcentercode) ,exam_center_id');
+			$this->db->from("student");
+			$this->db->join('new_exam_form', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id=student.class_id');
+			$this->db->where('new_exam_form.paper_code',$_POST['paper_code']);
+			$this->db->where('new_exam_form.course_group_id',$_POST['course_group_id']);
+			$this->db->where('new_exam_form.class_id',$_POST['class_id']);
+			$this->db->where('student.exam_center_id!=',0);
+			$this->db->where('student.new_exam_form','Y');
+			$this->db->where('student.university_mode',$_POST['university_mode']);
+			$this->db->where('student.roll_no!=',0);
+			$this->db->order_by('student.examcentercode');
+			$data['examcenters'] = $this->db->get()->result();
+			$data['university_mode'] = $_POST['university_mode'];
+			$data['class_id'] = $_POST['class_id'];
+			$data['paper_code'] = $_POST['paper_code'];
+			$data['course_group_id'] = $_POST['course_group_id'];
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();	
+			//echo $this->db->last_query();die; 
+			$dt = $this->load->view('admin/examController/get_assign_examcenter',$data,true);
+			echo json_encode(array(
+				"status" => true,
+				"data" => $dt
+			));
+		}
+		
+		
+	}
+
+	public function show_examcenter_folio(){
+		if($_POST['action']=='assign_examcenter'){
+			$data_insert['exam_center_id'] =  implode(',',$_POST['exam_center_id']);
+			
+			$dataArray= array();	
+			foreach($_POST['exam_center_id'] as $exam_center_id){
+				$this->db->select('*');
+				$this->db->from("student");
+				$this->db->join('new_exam_form', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id=student.class_id');
+				$this->db->where('new_exam_form.paper_code',$_POST['paper_code']);
+				$this->db->where('new_exam_form.course_group_id',$_POST['course_group_id']);
+				$this->db->where('new_exam_form.class_id',$_POST['class_id']);
+				$this->db->where('student.exam_center_id',$exam_center_id);
+				$this->db->where('student.roll_no!=',0);
+				$this->db->where('student.new_exam_form','Y');
+				$this->db->where('student.university_mode',$_POST['university_mode']);
+				$this->db->order_by('student.roll_no');
+				$dataArray['students'][$exam_center_id] = $this->db->get()->result();
+				$dataArray['teachername'][$exam_center_id] = $this->Common_model->getSinglefield('exam_center','superintendent',array('id'=>$exam_center_id));
+				$dataArray['detail'][$exam_center_id] = $this->Common_model->getRecordByWhere('exam_center',array('id'=>$exam_center_id));	
+			}
+
+			$dataArray['class_id'] = $_POST['class_id'];
+			$dataArray['paper_code'] = $_POST['paper_code'];
+			$dataArray['course_group_id'] = $_POST['course_group_id'];
+			$dataArray["exam_center_id"]=$_POST['exam_center_id'];
+			$dataArray['examname']= $this->Common_model->getCourseNameByCourseId($_POST['course_group_id']);
+			$dataArray['class_name']= $this->Common_model->getClassNameByClassId($_POST['class_id']);
+			$this->db->where('exam_date!=',"");
+			$this->db->where('exam_date!=',"0000-00-00");	
+			$dataArray['paper']= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'] , 'paper_code'=>$_POST['paper_code']));
+			$this->load->view('admin/generate_tr/header2',array('title' =>'COUNTERFOIL'));
+			$this->load->view('admin/examController/show_examcenter_folio',$dataArray);
+		}
+	}
+
 }// class

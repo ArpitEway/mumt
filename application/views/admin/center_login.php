@@ -19,6 +19,7 @@
 						<th>Mobile No</th>
 						<th>Options</th>
 						<th>Permission</th>
+						<th>Exam Form Show</th>
 					</tr>
 				</thead>
 			<tbody>
@@ -89,6 +90,26 @@ buttons: [
 				[csrfName]:csrfHash,
 			}; 	
 			var url = BASE_URL + "admin/Permission/update_center_old_session_permission";
+			$.ajax({
+				url: url,
+				type: 'POST',
+				data: data,
+				success: function (data) {
+				 $('#memListTable').DataTable().draw();
+				},
+			});		
+		});
+		$(document).on('click', '.exam_form_permission_checks', function() {
+			var csrfName = $('.csrfname').attr('name');
+			var csrfHash = $('.csrfname').val(); 
+			var val = $(this).val();
+			var exam_form_permission = (val=='Yes') ? 'N' : 'Y';
+			var data = {
+				id: $(this).attr('data-id'),
+				exam_form_permission: exam_form_permission,
+				[csrfName]:csrfHash,
+			}; 	
+			var url = BASE_URL + "admin/Permission/update_exam_form_permission_notSubmitted";
 			$.ajax({
 				url: url,
 				type: 'POST',

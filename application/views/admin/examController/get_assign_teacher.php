@@ -1,4 +1,4 @@
-<form method="post"  action="<?=base_url('admin/ExamController/show_counter_folio');?>" class="mt-3 answersheet" >
+<form method="post"  action="<?=base_url('admin/ExamController/show_counter_folio');?>" class="mt-3 answersheet" target="_blank" >
 	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	<div class="dt-responsive">
 		<table id=""  class="table table-striped" >
@@ -64,7 +64,7 @@
 		<input type="hidden" name="class_id" value="<?php echo $class_id ; ?>">
 		<input type="hidden" name="course_group_id" value="<?php  echo $course_group_id ;  ?>">
 		<input type="hidden" name="paper_code" value="<?php echo  $paper_code ; ?>">
-		<button type="submit" class="btn btn-primary" id="submit" name="submit" >submit</button>
+		<button type="submit" target="_blank" class="btn btn-primary" id="submit" name="submit" >submit</button>
 	</div>
 </form>
 

@@ -54,6 +54,7 @@ class Permission extends CI_Controller {
 		}
 	}
    
+   
 	public function update_admit_card_permission(){
 		$status =  $this->input->post('admit_card_permission');
      
@@ -308,6 +309,17 @@ class Permission extends CI_Controller {
             $id    = $this->input->post("id");
 			$status = $this->input->post("status");	
 			$data = $this->Common_model->updateRecordByConditions("center",array("id" => $id ),array("old_session_permission" => $status ));
+				 $status = true;
+				echo json_encode(array(
+					 "status" => $status,
+					"data" => $data
+				));	 
+	}
+	public function update_exam_form_permission_notSubmitted()
+	{	
+            $id    = $this->input->post("id");
+			$exam_form_permission = $this->input->post("exam_form_permission");	
+			$data = $this->Common_model->updateRecordByConditions("center",array("id" => $id ),array("exam_form_permission" => $exam_form_permission ));
 				 $status = true;
 				echo json_encode(array(
 					 "status" => $status,

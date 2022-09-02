@@ -9,6 +9,7 @@
 				<th>School/College Name </th>
 				<th>City</th>
                 <th>Max Student</th>
+				<th>Ans Sheet</th>
 				<th>Amount</th>
 			</tr>
 		</thead>
@@ -19,6 +20,7 @@
 				<th>School/College Name </th>
 				<th>City</th>
                 <th>Max Student</th>
+				<th>Ans Sheet</th>
 				<th>Amount</th>
 				
 			</tr>
@@ -28,7 +30,7 @@
 		<?php
 		$i = 1;
       
-			$examCenters = $this->db->get_where('exam_center', array())->result_array();
+			
 			foreach($examCenters as $examCenter){
                
                 $this->db->select('count(*) as cnt');
@@ -52,7 +54,8 @@
 						<td><?php echo $examCenter['schoolcollegename']; ?></td>
 						
 						<td><?php echo $examCenter['city']; ?></td>
-                        <td><?php echo $count[0]->cnt; ?></td>
+                        <td><?php  echo $count[0]->cnt; ?></td>
+						<td><?php  echo $examCenter['study_center_id']; ?></td>
 						
 						<td><?php echo $examCenter['billing_amount']; ?></td>
 						

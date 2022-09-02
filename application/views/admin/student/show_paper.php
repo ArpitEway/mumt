@@ -109,11 +109,14 @@
 
 
 </style>
+
 <div id="printThisDivIdOnButtonClick" class="mt-10">
+
 	<div id="printablediv">
 		<div class="mt-5">
 			<label class="label_form label_heading "><b>Student Details</b></label>
 			<div class="form-block row text-center">
+				
 				<div class="row col-md-10 m-auto">
 					<div class="form-group col-md-3 text-left m-auto">
 						<label class="label_form">Form Number :</label>
@@ -121,6 +124,7 @@
 					</div>
 					<div class="form-text-color form-group col-md-4 text-left m-auto">
 						<?php echo $student['form_no']; ?>
+
 					</div>
 
 					<div class="form-group col-md-2 text-left m-auto">
@@ -183,18 +187,20 @@
 	<div class="form-block row ">
 		<div class=" table-responsive">
 			<table class="table " style="text-transform: uppercase;">
+
 				<thead>
-					<tr>
-						<th>#</th>
-						<th>Paper Code</th>
+				<tr>
+					<th>#</th>
+					<th>Paper Code</th>
 					<?php if ($papers[0]->sub_group_id!=0): ?>
-						<th>Sub Group</th>
+					<th>Sub Group</th>
 					<?php endif ?>
-						<th>Paper Name</th>
+					<th>Paper Name</th>
 					</tr>
 				</thead>
+
                 <tbody>
-        <?php
+            <?php
 
             $i = 1;
             foreach($papers as $paper){
@@ -214,33 +220,6 @@
 			</table>
 		</div>
 	</div>
-		<?php if ($student['new_exam_form']=='N'): ?>
-	<?php $student_id = $this->Common_model->encrypt_decrypt($student['student_id']); ?>
-			<div class="row justify-content-center mt-10">
-			<?php 
-		$center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28 );
-		if(in_array($this->session->center_id, $center_ids)){
-			?>
-<a class="btn btn-success" href="<?= base_url('paid_by_university/'.$student_id) ?>">Paid By University</a>
-			<?php
-		}else{
-			?>
-			<?php if($student['temp_exam_form']=='Y' && $student['new_exam_form']=='N')
-
-			{ 
-				$center_id =  $this->session->center_id;
-				$center_permission = $this->Common_model->get_record('center','exam_form_permission',array('id'=>$center_id));
-				if($center_permission[0]['exam_form_permission']=='Y'){
-				?>
-				<a class="btn btn-success" href="<?= base_url('Payment/exam_form/'.$student_id) ?>">Process To Payment</a>
-			<?php } } ?>
-			<?php
-		}
-  ?>
 		
-				
- 
 		
-			</div>
-		<?php endif ?>
 </div>
