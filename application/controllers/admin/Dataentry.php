@@ -61,21 +61,21 @@ class Dataentry extends CI_Controller {
 		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
 		$this->db->where('student.class_id = new_exam_form.class_id');
 		$this->db->where($where); 
-		$this->db->limit(5,$page);
+		$this->db->limit(3,$page);
 		$counts = $this->db->get();
 		$data['counts'] = $counts->result();
-    
+
 		$config = array();
 		$config["base_url"] = base_url() . "admin/Dataentry/marks_entry_form/".$mode."/".$paper_code;
 		$this->db->where('`student_id` IN (SELECT `student_id` FROM `student` where  university_mode="'.$mode.'")', NULL, FALSE);
-		$config["total_rows"] = $this->Common_model->getCountByWhere('new_exam_form',array('paper_code' => $paper_code,'theory_marks' => ''));
-		// $this->Common_model->last_query();
-		 $config["per_page"] = 5;
-	     $config["uri_segment"] = 5;
-	      // $config['use_page_numbers']=TRUE;
-		 $this->pagination->initialize($config);
-	     $data["links"] = $this->pagination->create_links();
-
+		$config["total_rows"] = $this->Common_model->getCountByWhere('new_exam_form',array('paper_code' => $paper_code,'theory_marks' => '','paper_type' => 'theory'));
+		
+		$config["per_page"] = 3;
+	    $config["uri_segment"] = 2;
+	     $config['use_page_numbers']=TRUE;
+		$this->pagination->initialize($config);
+	    $data["links"] = $this->pagination->create_links();
+	    
         $data['paper_code'] = $paper_code ;
 		$where = array('new_exam_form.paper_code' => $paper_code);
 		$this->db->select('*');

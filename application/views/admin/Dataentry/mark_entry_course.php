@@ -139,37 +139,5 @@
 			// 		$('#myLoader').hide();
 			// 	},
    //  });
-   //  });
-
-//         function Reset() {
-//         var paper_id = document.getElementById("paper_id");
-//         paper_id.selectedIndex = 0;
-//       //  $('#teacher').val('').trigger('change');
-//         }
-
-//         $(document).on('click', '#submit', function(e) {	
-
-//         if($("input:checkbox").filter(":checked").length<1){
-//         toastr.error("PLease Select atleast one");
-//         return false ;
-//         }
-//        var frm = $('.answersheet').serialize();
-//        console.log("hello test ");
-//   /*  $.ajax({
-//     	url: '<?php echo site_url('admin/ExamController/show_counter_folio'); ?>',
-//     	type: 'POST',
-//     	dataType : 'json',
-//     	data: frm,
-//     	success: function (data) {
-//             if(data){
-//                 $('#dt').empty();
-//                 Reset();
-//                 toastr.success("Assign Answershet Successfully");	
-//             }else{
-//                 toastr.error("Something wrong");
-//             }
-//         },
-//     });*/
-// });	
-
+   //  });     
 </script>
