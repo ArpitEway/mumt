@@ -26,7 +26,12 @@
 					<th>Approved</th>
 					<th>Enrolled</th>
 					<th>Exam Form</th>
-					<th>Paper</th> 
+						<th>
+						<?php if($this->session->account_type == "Admins"  ){ ?>	
+							Select Papers
+						<?php } ?>
+					</th>
+					<th>Paper</th>
 					<?php
 					}
 					if(isset($course_count)){
@@ -103,14 +108,21 @@
 							
 
 							
+					<td>
+							<?php $student_id = $this->Common_model->encrypt_decrypt($student['student_id']); ?>
+						<?php if(($this->session->account_type == "Admins"  )&& $student["temp_exam_form"]=='N'){ ?>
+						<a target="_blank"  class="" href="<?=base_url('admin/Admins/select_paper/' .$student_id);?>"><i class="fa fa-plus" aria-hidden="true"></i></a>
+					 
+					<?php } ?>
+				</td> 
 
 					<td>
 							<?php $student_id = $this->Common_model->encrypt_decrypt($student['student_id']); ?>
 						<?php if($student["temp_exam_form"]=='Y'){ ?>
 						<a target="_blank"  class="" href="<?=base_url('admin/Admins/show_paper/' .$student_id);?>"><i class="fa fa-eye" aria-hidden="true"></i></a>
-					 
+					 	<?php if($this->session->account_type =="Admins"){?>
 					  <button  class="btn btn-sm  " onclick="delete__student_paper(this)" data-id = "<?=$student['student_id']; ?>"><i class="fa fa-trash" aria-hidden="true"></i></button>   
-					 
+					 <?php }?>
 				
 					<?php } ?>
 				</td>  

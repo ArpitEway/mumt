@@ -4083,4 +4083,139 @@ public function update_exam_datewise_permission(){
 		$this->session->set_userdata($data);
 		redirect(base_url('ExamController/'.$method));
 	}
+
+	public function select_paper($student_id){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+		}
+		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		$titleData['title'] = 'Select Papers';
+		$this->load->view('header',$titleData);
+		$student = $this->Common_model->student_info($student_id);
+		$this->db->order_by('id');
+		$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory"');
+		$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id where class_id='.$student['class_id'].' Order by g.id,sub_group_id')->result();
+		$data['compulsoryPapers'] = $compulsoryPapers;
+		$data['student'] = $student;
+		$data['student_id'] = $student['student_id'];
+			// // CONDITION FOR GROUP PAPER
+		$this->db->select('class_group,select_group,group_type');
+		$this->db->from('class_master');
+		$this->db->join('student', 'class_master.id = student.class_id');
+		$this->db->where(array('class_master.id' => $data['student']['class_id'],
+			'student_id' => $student['student_id']
+		));
+		$class_group = $this->db->get()->result();
+
+		$data['class_group'] = $class_group;
+
+		$data['groupPaper'] = $groupPaper;
+
+
+		if($class_group[0]->group_type=='Paper'){
+			$this->load->view('admin/student/select_paper',$data);
+		}else{
+			$this->load->view('admin/student/select_group',$data);
+		}
+		$this->load->view('footer');
+
+	}
+
+	public function submit_papers(){
+		$student_id=$this->Common_model->encrypt_decrypt($_POST['student_id'],'decrypt');
+		$paper_id1 = $_POST['paper_id'];
+		$paper_id2 = $_POST['compulsary_paper_id'];
+		$paper_id= array_merge($paper_id1,$paper_id2);
+		$paper_id = implode(",",$paper_id);
+		$paper_data = 	$this->Common_model->get_record('paper_master','*','id in ('.$paper_id.')');
+
+		foreach($paper_data as $paper){
+			$data['course_group_id']=$paper['course_group_id'];
+			$data['class_id']=$paper['class_id'];
+			$data['paper_code']=$paper['paper_code'];
+			$data['paper_type']=$paper['type'];
+			$data['book_code']=$paper['book_code'];
+			$data['paper_id']=$paper['id'];
+			$data['student_id']=$student_id;
+			$insert = $this->Common_model->insertAll('new_exam_form',$data);
+		}
+
+
+		if($insert){
+			$data = array('temp_exam_form'=>'Y');
+			$where = array('student_id'=>$student_id);
+			$this->Common_model->updateRecordByConditions('student',$where,$data);
+			echo json_encode(array("status" => 'true','student_id' => $student_id));
+		}else{
+			echo json_encode(array("status" => 'false','student_id' => $student_id));
+		}
+	}
+
+
+	public function submit_group(){
+		$paper_code = $_POST['compulsary_paper_code'];
+		$class_id = $_POST['class_id'];
+		$student_id=$this->Common_model->encrypt_decrypt($_POST['student_id'],'decrypt');
+		$i = 1;
+		$this->db->where_in('paper_code',$paper_code);
+		$this->db->where('class_id',$class_id);
+		$paper_data = $this->Common_model->get_record('paper_master','*');
+		foreach($paper_data as $paper){
+			$data['course_group_id']=$paper['course_group_id'];
+			$data['class_id']=$paper['class_id'];
+			$data['paper_code']=$paper['paper_code'];
+			$data['paper_type']=$paper['type'];
+			$data['book_code']=$paper['book_code'];
+			$data['paper_id']=$paper['id'];
+			$data['student_id']=$student_id;
+			$data['paper_order']=$i;
+			$data['sub_group_id']=$paper['sub_group_id'];
+			$insert = $this->Common_model->insertAll('new_exam_form',$data);
+			$i++;
+		}
+
+		if(isset($_POST['group_id'])){
+			$group_id = $_POST['group_id'];
+			$this->db->select('paper_code,sub_group_id');
+			$this->db->from('group_paper');
+			$this->db->where_in('group_id',$group_id);
+			$groupPaperData = $this->db->get()->result_array();
+
+			$groupPaperCodes = array_column($groupPaperData, 'paper_code');
+			$this->db->where_in('paper_code',$groupPaperCodes);
+			$this->db->where('class_id',$class_id);
+			$papers = $this->Common_model->get_record('paper_master','*');
+			foreach($papers as $paper){
+				$data['course_group_id']=$paper['course_group_id'];
+				$data['class_id']=$paper['class_id'];
+				$data['paper_code']=$paper['paper_code'];
+				$data['paper_type']=$paper['type'];
+				$data['book_code']=$paper['book_code'];
+				$data['paper_id']=$paper['id'];
+				$data['student_id']=$student_id;
+				$data['paper_order']=$i;
+				$debug =  array_search($paper['paper_code'], $groupPaperCodes);
+				$data['sub_group_id'] = $groupPaperData[$debug]['sub_group_id'];
+				$insert = $this->Common_model->insertAll('new_exam_form',$data);
+				$i++;
+			}
+		}
+
+		if($insert){
+			$data = array('temp_exam_form'=>'Y');
+			if (isset($_POST['group_id'])) {
+				$data['group_id'] = implode(',', $_POST['group_id']);
+			}
+			$where = array('student_id'=>$student_id);
+			$this->Common_model->updateRecordByConditions('student',$where,$data);
+			echo json_encode(array("status" => 'true','student_id' => $student_id));
+		}else{
+			echo json_encode(array("status" => 'false','student_id' => $student_id));
+		}
+
+	}
 }// class
