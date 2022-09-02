@@ -27,7 +27,7 @@
 				<td><?php echo $center->city; ?></td>
 				<td><?php echo $total_count ;?></td>
 				<td><a target="_blank" href="<?php echo base_url().'admin/admins/exam_center_wise_student_list/'.$center->id .'/'.$param ;?>"><?php echo $fill_count ;?></a></td>
-				<td><a target="_blank" href="<?php echo base_url().'admin/exam_center_wise_student_list/'.$center->id ;?>"><?php echo ($total_count-$fill_count);?></a></td>	
+				<td><a target="_blank" href="<?php echo base_url().'admin/admins/exam_center_wise_student_list/'.$center->id ;?>"><?php echo ($total_count-$fill_count);?></a></td>	
 			</tr>
 			<?php 
 		}
