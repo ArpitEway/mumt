@@ -25,7 +25,7 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 		<h3>Maharshi Panini Sanskrit Evam Vedic Vishwavidyalaya</h3>
 		<h3>Madhypradesh</h3>
 	</div>
-	<table class="w-100 mt-10 table-secondary table">			
+	<table class="w-100 mt-10 table-secondary table ">			
 		<tr>
 			<th>Name of Exam:</th>
 			<td><?php echo $papers->course_name; ?></td>
@@ -67,7 +67,7 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 		</table>
 		<form id="ajaxForm" class="mt-10" > 
 		<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" id="csrf" value="<?= $hash_csrf; ?>">
-			<table  class="table table-bordered m-auto" >
+			<table  class="table table-bordered m-auto" id="kt_datatable">
 				<thead>
 					<tr>
 						<th>Enrollment no.</th>

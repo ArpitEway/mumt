@@ -11,6 +11,7 @@ class Dataentry extends CI_Controller {
 		$this->load->model('Common_model');
 		$this->load->model('Datatable_model');
 		$this->load->model('Datatable_join_model');
+
 		if($this->session->account_type!='DataEntry'){
 				redirect(base_url('admin/logout')); 
 		}
@@ -47,11 +48,16 @@ class Dataentry extends CI_Controller {
 
      }
 
-	public function marks_entry_form($mode='',$paper_code='', $page = 0)
+	public function marks_entry_form($mode='' ,$paper_code='', $page = 0)
 	{
-          
-        $paper_code =  $this->input->post('paper_code');
-        $mode =  $this->input->post('university_mode');
+         if (isset($_POST['paper_code'])) {
+         $paper_code =  $this->input->post('paper_code');
+         $mode =  $this->input->post('university_mode');
+          }else{
+              $mode  = $mode ;
+              $paper_code  = $paper_code ;
+              $page  = $page;
+          }
 		$titleData = array('title' => 'Marks Entry Form'); 
 		$this->load->view('header',$titleData);
 		$where = array('new_exam_form.paper_code' => $paper_code, 'theory_marks' => '','university_mode' => $mode,'paper_type' => 'theory');
@@ -64,18 +70,14 @@ class Dataentry extends CI_Controller {
 		$this->db->limit(3,$page);
 		$counts = $this->db->get();
 		$data['counts'] = $counts->result();
-
 		$config = array();
-		$config["base_url"] = base_url() . "admin/Dataentry/marks_entry_form/".$mode."/".$paper_code;
+		 $config["base_url"] = base_url() . "admin/Dataentry/marks_entry_form/".$mode."/".$paper_code;
 		$this->db->where('`student_id` IN (SELECT `student_id` FROM `student` where  university_mode="'.$mode.'")', NULL, FALSE);
 		$config["total_rows"] = $this->Common_model->getCountByWhere('new_exam_form',array('paper_code' => $paper_code,'theory_marks' => '','paper_type' => 'theory'));
-		
 		$config["per_page"] = 3;
-	    $config["uri_segment"] = 2;
-	     $config['use_page_numbers']=TRUE;
+	    $config["uri_segment"] = 6;
 		$this->pagination->initialize($config);
 	    $data["links"] = $this->pagination->create_links();
-	    
         $data['paper_code'] = $paper_code ;
 		$where = array('new_exam_form.paper_code' => $paper_code);
 		$this->db->select('*');
