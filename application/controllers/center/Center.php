@@ -1115,6 +1115,7 @@ class Center extends CI_Controller {
 			$data['paper_type']=$paper['type'];
 			$data['book_code']=$paper['book_code'];
 			$data['paper_id']=$paper['id'];
+			$data['paper_order']=$paper['paper_no'];
 			$data['student_id']=$student_id;
 			$insert = $this->Common_model->insertAll('new_exam_form',$data);
 		}
