@@ -50,15 +50,15 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 				<th>Max.Marks:</th>
 				<td>
 					<?php 
-					if ($mode=='private'){
-					echo $max_marks =$papers->pvt_max_marks;
+					if ($university_mode=='PVT'){
+					echo $max_marks =$papers->max_theory_marks;
 					echo ' ( Theory marks ) ';
 					$max_int_marks = 0;
-					 }elseif($mode=='regular'){ 
-					echo $max_marks = $papers->reg_max_marks;
+					 }elseif($university_mode=='REG'){ 
+					echo $max_marks = $papers->max_theory_marks;
 					echo ' ( Theory marks ) ';
 					echo '+';
-					echo $max_int_marks = $papers->reg_max_int_marks;
+					echo $max_int_marks = $papers->max_internal_marks;
 					echo ' ( Internal marks ) ';
 					} 
 					?>
@@ -66,6 +66,7 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 			</tr>
 		</table>
 		<form id="ajaxForm" class="mt-10" > 
+		<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" id="csrf" value="<?= $hash_csrf; ?>">
 			<table  class="table table-bordered m-auto" >
 				<thead>
 					<tr>
@@ -89,7 +90,7 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 							</td>
 							<td><?php echo $dt->roll_no; ?>  
 								<input type="hidden" name="student_id[]" value="<?=$dt->student_id?>">
-								<input type="hidden" name="paper_id" value="<?=$paper_id?>">
+								<input type="hidden" name="paper_code" value="<?=$paper_code?>">
 							</td>
 							
 							<td class="fit">
@@ -134,7 +135,6 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 				var max_int_marks = <?php echo $max_int_marks; ?>;
 			} 
 		
-
 			$("#submit").on('click',function (){
 				 var marks = $('#marks').val();
 				 var submit = true;
