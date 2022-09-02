@@ -42,10 +42,8 @@ class Dataentry extends CI_Controller {
 	} 
 
     public function getPaperByClassId(){
-
 	   $data= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'], 'type' => 'theory'));
 	   echo json_encode(array('data'=>$data));
-
      }
 
 	public function marks_entry_form($mode='' ,$paper_code='', $page = 0)
@@ -92,7 +90,7 @@ class Dataentry extends CI_Controller {
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
 		$this->load->view('admin/Dataentry/marks_entry_form',$data );		
 		$this->load->view('footer');
-	}
+	 }
 
 
 	public function marks_entry_form_sub(){
@@ -120,6 +118,6 @@ class Dataentry extends CI_Controller {
 			$returndata = array('error'=> 'An Error Occured');
 			echo json_encode($returndata);		
 		}
-	}
+	    }
 
 }

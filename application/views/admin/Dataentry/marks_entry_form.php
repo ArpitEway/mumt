@@ -22,7 +22,7 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 </style>
 <div class="container">
 	<div class="text-center">
-		<h3>Maharshi Panini Sanskrit Evam Vedic Vishwavidyalaya</h3>
+		<h3>Maharishi Mahesh Yogi Vedic Vishwavidyalaya</h3>
 		<h3>Madhypradesh</h3>
 	</div>
 	<table class="w-100 mt-10 table-secondary table ">			
@@ -65,13 +65,14 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 				</td>
 			</tr>
 		</table>
+		<div></div>
 		<form id="ajaxForm" class="mt-10" > 
 		<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" id="csrf" value="<?= $hash_csrf; ?>">
 			<table  class="table table-bordered m-auto" id="kt_datatable">
 				<thead>
 					<tr>
 						<th>Enrollment no.</th>
-						<th>Name</th>
+						<!-- <th>Name</th> -->
 						<th>Roll No.</th>
 						<th>Theory Marks</th>
 					</tr>
@@ -85,9 +86,9 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 							<td>
 								<?php echo $dt->enrollment_no; ?>
 							</td>
-							<td>
+							<!-- <td>
 								<?php echo $dt->name; ?>
-							</td>
+							</td> -->
 							<td><?php echo $dt->roll_no; ?>  
 								<input type="hidden" name="student_id[]" value="<?=$dt->student_id?>">
 								<input type="hidden" name="paper_code" value="<?=$paper_code?>">
@@ -117,13 +118,12 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 					}
 					?>
 					<input type="hidden" id="total_count" value="<?= $count ?>">
-					<tr>
-						<td colspan="4"> <div class="row">
-							<button type="button"  id="submit" class="btn btn-primary m-auto">submit</button>
-						</div></td>
-					</tr>
+				
 				</tbody>
 			</table>
+			<div class="row">
+			<button type="button"  id="submit" class="btn btn-primary m-auto">submit</button>
+			</div>
 		</form> 
 		<p class="pagination-new text-center"><?php echo $links; ?></p>
 	</div>
