@@ -1242,6 +1242,7 @@ class Admins extends CI_Controller {
 
 		public function getClassByCourse(){
 			$course = $this->input->post('course_group_id');
+			$this->db->order_by('id');
 			$class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$course."'");
 			$data = array(
 				'class_list' => $class_list,
@@ -4027,6 +4028,46 @@ public function update_exam_datewise_permission(){
 		$this->load->view('footer');
 		}
 	}	
+	
+	public function show_paper($student_id){
+    	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+    	$titleData = array('title' => 'Student Papers');
+    	$this->load->view('header',$titleData);
+
+    	$where = array(
+    		'student_id' => $student_id,
+    	);
+    	$student = $this->Common_model->student_info($student_id);
+    	$data['student'] = $student;
+    	// print_r($data);
+	 	// die;
+    	$this->db->select('paper_master.*,new_exam_form.sub_group_id');
+    	$this->db->from('paper_master');
+    	$this->db->order_by('new_exam_form.sub_group_id,paper_order');
+    	$this->db->join('new_exam_form', 'paper_master.paper_code = new_exam_form.paper_code and  paper_master.class_id = new_exam_form.class_id');
+    	$where = array('paper_master.class_id' => $student['class_id'],
+    		'student_id' => $student_id
+    	);
+    	$this->db->where($where);
+    	$data['papers'] = $this->db->get()->result();
+    	// $this->Common_model->last_query();
+
+    	$this->load->view('admin/student/show_paper',$data);
+    	$this->load->view('footer');
+    }
+
+	public function student_paper_delete()
+	{
+  		 $student_id = $this->input->post('student_id');
+		$response = $this->Common_model->deleteById('new_exam_form','student_id',$student_id);
+		echo json_encode(array("status" => 'true'));
+		$where = array('student_id' => $student_id);
+		$data = array('temp_exam_form' => 'N');
+		
+		$response= $this->Common_model->updateRecordByConditions('student',$where,$data );
+		
+		$this->session->set_flashdata('ajax_flash_message','Status Successfully Updated');
+	}
 
 	public function regular_exam_controller($method,$admin_id)
 	{
