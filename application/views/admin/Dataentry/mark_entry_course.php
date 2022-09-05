@@ -1,4 +1,4 @@
-<form  class="d-block ajaxForm"  method="POST"  action="<?php echo site_url ('admin/Dataentry/marks_entry_form'); ?>">
+<form  class="d-block ajaxForm" target="_blank" method="POST"  action="<?php echo site_url ('admin/Dataentry/marks_entry_form'); ?>">
      <div class="row">
        <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
        <div class="form-group col-md-3">
@@ -23,7 +23,7 @@
         </select>
     </div>
 
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-3">
         <label for="paper">Paper</label>
         <select name="paper_code" id="paper_id" class="form-control paper" required>
             <option value="0">Select Paper</option>
@@ -31,32 +31,36 @@
     </div>
 
     <div class="form-group col-md-2">
+        <label for="exam_center">Exam Center</label>
+        <select name="exam_center"  id="exam_center" class="form-control exam_center">
+            <option value="all">All</option>
+            <?php  
+            $exam_centers= $this->Common_model->getRecordByWhere('exam_center',array());
+            foreach($exam_centers as $exam_center){
+               ?>
+            <option value="<?php echo $exam_center->id; ?>"><?php echo  $exam_center->examcentercode .'-'. $exam_center->schoolcollegename; ?></option>
+               <?php
+           } 
+           ?>
+       </select>
+     </div>
+
+    <div class="form-group col-md-2">
 			<label for="class">Admission Mode</label>
-			<select name="university_mode" id="university_mode" class="form-control" >
-			 
+			<select name="university_mode" id="university_mode" class="form-control" >	 
 				<option value="REG">Regular </option> 
 				<option value="PVT" >Private</option>
 			</select>
 	</div>
-</div>
+   </div>
+
 <div class="form-group text-center">
 	<input type="hidden" class="" name="action1" value="submit">
-
 	<button class="btn btn-md btn-primary" type="submit" id="submit_form">Search</button>
 </div>
-</form>
-<div align="center" id="myLoader" class="loader_div" style="display: none;" >
-  <svg>
-    <circle cx="50" cy="50" r="40" stroke="red" stroke-dasharray="78.5 235.5" stroke-width="3" fill="none" />
-    <circle cx="50" cy="50" r="30" stroke="blue" stroke-dasharray="62.8 188.8" stroke-width="3" fill="none" />
-    <circle cx="50" cy="50" r="20" stroke="green" stroke-dasharray="47.1 141.3" stroke-width="3" fill="none" />
-  </svg>
-</div>
-<!-- <div id="dt">
-</div> -->
-<!-- select2 cdn -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 
+</form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script>
     $(document).ready(function() {
@@ -97,47 +101,5 @@
     $('#course_group_id').change(function(){
         var value = $(this).val();
         $('#course_group_id').trigger('change');
-    });
-
-   //  $(document).on('click', '#submit_form', function() {
-   //      $('#dt').hide();
-   //      var course = document.getElementById('course_group_id').value;
-   //      var class_id = document.getElementById('class_id').value;
-   //      var university_mode = document.getElementById('university_mode').value;
-   //      var paper_id = document.getElementById('paper_id').value;
-
-   //      if (course== "" || class_id =="0" ||  paper_id=="0") {
-   //         toastr.error("PLease select all fields");
-   //          return false;
-   //      }
-
-   //     var frm = $('.ajaxForm').serialize();
-   //     var url = BASE_URL + "admin/Dataentry/search_exar";
-
-   //     $.ajax({
-   //      url: url,
-   //      type: 'POST',
-   //      dataType: 'json',
-   //      data: frm,
-   //      beforeSend: function()
-			// {
-			// 	$("#myLoader").show();
-			// },
-   //      success: function (data) {
-   //          if( $("#myLoader").show()){
-			// 		$('#dt').hide();
-			// 		// $table = $('#dt').html(status.data);
-			// 		}if( $('#myLoader').hide()){
-   //                      $table = $('#dt').html(data.data);
-			// 			$('#dt').show();
-						
-			// 		}
-   //          KTDatatablesBasicBasic.init();
-   //      },
-   //      complete: function()
-			// 	{
-			// 		$('#myLoader').hide();
-			// 	},
-   //  });
-   //  });     
+    });   
 </script>

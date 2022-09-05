@@ -46,33 +46,43 @@ class Dataentry extends CI_Controller {
 	   echo json_encode(array('data'=>$data));
      }
 
-	public function marks_entry_form($mode='' ,$paper_code='', $page = 0)
+	public function marks_entry_form($mode='' ,$paper_code='',$exam_centers='' , $page = 0)
 	{
          if (isset($_POST['paper_code'])) {
          $paper_code =  $this->input->post('paper_code');
          $mode =  $this->input->post('university_mode');
+         $exam_center =  $this->input->post('exam_center');
+         if($exam_center != "all"){	 		
+          $exam_centers =  $exam_center;
+	  	  }
           }else{
               $mode  = $mode ;
               $paper_code  = $paper_code ;
               $page  = $page;
+              $exam_center  = $exam_centers;
           }
-		$titleData = array('title' => 'Marks Entry Form'); 
+        if($exam_center != "all"){	 		
+        $this->db->where('student.exam_center_id',$exam_center);
+		}	
+
+		$titleData = array('title' => 'Theory Marks Entry Form'); 
 		$this->load->view('header',$titleData);
 		$where = array('new_exam_form.paper_code' => $paper_code, 'theory_marks' => '','university_mode' => $mode,'paper_type' => 'theory');
 		$this->db->select('student.student_id, student.name,enrollment_no,roll_no');
 		$this->db->from('new_exam_form');
 		$this->db->order_by("student.roll_no","student.enrollment_no","asc");
 		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
-		$this->db->where('student.class_id = new_exam_form.class_id');
+		$this->db->where('student.old_class_id = new_exam_form.class_id');
 		$this->db->where($where); 
-		$this->db->limit(3,$page);
+		$this->db->limit(2,$page);
 		$counts = $this->db->get();
 		$data['counts'] = $counts->result();
+        //  $this->Common_model->last_query();
 		$config = array();
-		 $config["base_url"] = base_url() . "admin/Dataentry/marks_entry_form/".$mode."/".$paper_code;
+		 $config["base_url"] = base_url() . "admin/Dataentry/marks_entry_form/".$mode."/".$paper_code ."/".$exam_centers;
 		$this->db->where('`student_id` IN (SELECT `student_id` FROM `student` where  university_mode="'.$mode.'")', NULL, FALSE);
 		$config["total_rows"] = $this->Common_model->getCountByWhere('new_exam_form',array('paper_code' => $paper_code,'theory_marks' => '','paper_type' => 'theory'));
-		$config["per_page"] = 3;
+		$config["per_page"] = 2;
 	    $config["uri_segment"] = 6;
 		$this->pagination->initialize($config);
 	    $data["links"] = $this->pagination->create_links();
@@ -90,6 +100,7 @@ class Dataentry extends CI_Controller {
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
 		$this->load->view('admin/Dataentry/marks_entry_form',$data );		
 		$this->load->view('footer');
+
 	 }
 
 
