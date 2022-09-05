@@ -451,7 +451,7 @@ class Admins extends CI_Controller {
 			if($class_id!='All'){
 				$where = array('class_id' => $class_id);
 			}
-
+			$this->db->order_by("course_group_id,class_id,paper_no ","asc");
 			$papers = $this->db->get_where("paper_master",$where)->result_array();
 
 			$htmlData = array(
