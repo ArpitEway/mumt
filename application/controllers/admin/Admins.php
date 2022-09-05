@@ -4142,6 +4142,8 @@ public function update_exam_datewise_permission(){
 
 	public function exam_center_wise_student_list($center_id,$param='')
 	{
+	 $center_id = $this->Common_model->encrypt_decrypt($center_id,'decrypt');
+	 $param = $this->Common_model->encrypt_decrypt($param,'decrypt');
 		if($param=='fill')
 		{
 			$where = array('new_exam_form'=>'Y','exam_center_id'=>$center_id);		
