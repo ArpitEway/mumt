@@ -11,11 +11,11 @@
 				<th>Type</th>
 				<th>CE</th>
 				<th>Paper</th>
-			<!-- <th>Max Theory Marks</th>
+				<th>Max Theory Marks</th>
 				<th>Min Theory Marks</th>
 				<th>Max Internal Marks</th>
-				<th>Min Internal Marks</th> -->
-<!--            <th>Exam Date</th>
+				<th>Min Internal Marks</th>
+<!--            		<th>Exam Date</th>
 				<th>Exam Day</th>
 				<th>Exam Time</th>
  -->		
@@ -36,10 +36,10 @@
 					<td><?=$paper["paper_name"]?></td>
 					<td><?=$paper["type"]?></td>
 					<td><?=$paper["ce"]?></td>
-					<!-- <td><?=$paper["max_theory_marks"]?></td>
+					<td><?=$paper["max_theory_marks"]?></td>
 					<td><?=$paper["min_theory_marks"]?></td>
 					<td><?=$paper["max_internal_marks"]?></td>
-					<td><?=$paper["min_internal_marks"]?></td> -->
+					<td><?=$paper["min_internal_marks"]?></td>
                    <!--  <td>
 						<?php 
 						// if($paper["exam_date"] != "0000-00-00" ){
