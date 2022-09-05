@@ -64,8 +64,7 @@ class Dataentry extends CI_Controller {
         if($exam_center != "all"){	 		
         $this->db->where('student.exam_center_id',$exam_center);
 		}	
-
-		$titleData = array('title' => 'Theory Marks Entry Form'); 
+		$titleData = array('title' => 'Marks Entry Form'); 
 		$this->load->view('header',$titleData);
 		$where = array('new_exam_form.paper_code' => $paper_code, 'theory_marks' => '','university_mode' => $mode,'paper_type' => 'theory');
 		$this->db->select('student.student_id, student.name,enrollment_no,roll_no');
@@ -79,7 +78,7 @@ class Dataentry extends CI_Controller {
 		$data['counts'] = $counts->result();
         //  $this->Common_model->last_query();
 		$config = array();
-		 $config["base_url"] = base_url() . "admin/Dataentry/marks_entry_form/".$mode."/".$paper_code ."/".$exam_centers;
+		$config["base_url"] = base_url() ."marks_entry_form/".$mode."/".$paper_code ."/".$exam_centers;
 		$this->db->where('`student_id` IN (SELECT `student_id` FROM `student` where  university_mode="'.$mode.'")', NULL, FALSE);
 		$config["total_rows"] = $this->Common_model->getCountByWhere('new_exam_form',array('paper_code' => $paper_code,'theory_marks' => '','paper_type' => 'theory'));
 		$config["per_page"] = 2;
@@ -100,7 +99,6 @@ class Dataentry extends CI_Controller {
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
 		$this->load->view('admin/Dataentry/marks_entry_form',$data );		
 		$this->load->view('footer');
-
 	 }
 
 
