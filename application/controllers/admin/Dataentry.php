@@ -56,14 +56,14 @@ class Dataentry extends CI_Controller {
           $exam_centers =  $exam_center;
 	  	  }
           }else{
-              $mode  = $mode ;
-              $paper_code  = $paper_code ;
+              $mode  = $this->Common_model->encrypt_decrypt($mode,'decrypt');
+              $paper_code  = $this->Common_model->encrypt_decrypt($paper_code,'decrypt'); 
               $page  = $page;
               $exam_center  = $exam_centers;
           }
         if($exam_center != "all"){	 		
         $this->db->where('student.exam_center_id',$exam_center);
-		}	
+		}
 		$titleData = array('title' => 'Marks Entry Form'); 
 		$this->load->view('header',$titleData);
 		$where = array('new_exam_form.paper_code' => $paper_code, 'theory_marks' => '','university_mode' => $mode,'paper_type' => 'theory');
@@ -76,9 +76,8 @@ class Dataentry extends CI_Controller {
 		$this->db->limit(2,$page);
 		$counts = $this->db->get();
 		$data['counts'] = $counts->result();
-        //  $this->Common_model->last_query();
 		$config = array();
-		$config["base_url"] = base_url() ."marks_entry_form/".$mode."/".$paper_code ."/".$exam_centers;
+		$config["base_url"] = base_url() ."marks_entry_form/".$this->Common_model->encrypt_decrypt($mode,'encrypt')."/".$this->Common_model->encrypt_decrypt($paper_code,'encrypt')."/".$exam_centers;
 		$this->db->where('`student_id` IN (SELECT `student_id` FROM `student` where  university_mode="'.$mode.'")', NULL, FALSE);
 		$config["total_rows"] = $this->Common_model->getCountByWhere('new_exam_form',array('paper_code' => $paper_code,'theory_marks' => '','paper_type' => 'theory'));
 		$config["per_page"] = 2;
