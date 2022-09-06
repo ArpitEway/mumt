@@ -1,7 +1,7 @@
 <form  class="d-block ajaxForm" target="_blank" method="POST"  action="<?php echo site_url ('marks_entry_form'); ?>">
      <div class="row">
        <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-       <div class="form-group col-md-3">
+       <div class="form-group col-md-4">
         <label for="course">Course</label>
         <select  name="course_group_id" readonly="readonly" name='course_group_id' id="course_group_id" class="form-control course" required>
             <option value="">Select course</option>
@@ -16,24 +16,24 @@
         </select>
        </div>
 
-    <div class="form-group col-md-2">
+    <div class="form-group col-md-4">
         <label for="course">Class</label>
         <select name="class_id" name='class_id' id="class_id" class="form-control class" required>
             <option value="0">Select Class</option>
         </select>
     </div>
 
-    <div class="form-group col-md-3">
+    <div class="form-group col-md-4">
         <label for="paper">Paper</label>
         <select name="paper_code" id="paper_id" class="form-control paper" required>
             <option value="0">Select Paper</option>
         </select>
     </div>
 
-    <div class="form-group col-md-2">
+    <div class="form-group col-md-4">
         <label for="exam_center">Exam Center</label>
         <select name="exam_center"  id="exam_center" class="form-control exam_center">
-            <option value="all">All</option>
+            <option value="all">Select Center</option>
             <?php  
             $exam_centers= $this->Common_model->getRecordByWhere('exam_center',array());
             foreach($exam_centers as $exam_center){
@@ -45,13 +45,19 @@
        </select>
      </div>
 
-    <div class="form-group col-md-2">
+    <div class="form-group col-md-4">
 			<label for="class">Admission Mode</label>
 			<select name="university_mode" id="university_mode" class="form-control" >	 
 				<option value="REG">Regular </option> 
 				<option value="PVT" >Private</option>
 			</select>
 	</div>
+
+<div class="form-group col-md-4">
+    <label for="class">Session</label>
+    <input name="session" readonly="readonly" placeholder='session'  class="form-control " type="text" value="Session"/>
+</div>
+
    </div>
 
 <div class="form-group text-center">

@@ -52,21 +52,15 @@ class Dataentry extends CI_Controller {
          $paper_code =  $this->input->post('paper_code');
          $mode =  $this->input->post('university_mode');
          $exam_center =  $this->input->post('exam_center');
-         if($exam_center != "all"){	 		
-          $exam_centers =  $exam_center;
-	  	  }
           }else{
               $mode  = $this->Common_model->encrypt_decrypt($mode,'decrypt');
               $paper_code  = $this->Common_model->encrypt_decrypt($paper_code,'decrypt'); 
               $page  = $page;
               $exam_center  = $exam_centers;
           }
-        if($exam_center != "all"){	 		
-        $this->db->where('student.exam_center_id',$exam_center);
-		}
 		$titleData = array('title' => 'Marks Entry Form'); 
 		$this->load->view('header',$titleData);
-		$where = array('new_exam_form.paper_code' => $paper_code, 'theory_marks' => '','university_mode' => $mode,'paper_type' => 'theory');
+		$where = array('new_exam_form.paper_code' => $paper_code, 'theory_marks' => '','university_mode' => $mode,'paper_type' => 'theory','exam_center_id'=>$exam_center);
 		$this->db->select('student.student_id, student.name,enrollment_no,roll_no');
 		$this->db->from('new_exam_form');
 		$this->db->order_by("student.roll_no","student.enrollment_no","asc");
@@ -77,7 +71,7 @@ class Dataentry extends CI_Controller {
 		$counts = $this->db->get();
 		$data['counts'] = $counts->result();
 		$config = array();
-		$config["base_url"] = base_url() ."marks_entry_form/".$this->Common_model->encrypt_decrypt($mode,'encrypt')."/".$this->Common_model->encrypt_decrypt($paper_code,'encrypt')."/".$exam_centers;
+		$config["base_url"] = base_url() ."marks_entry_form/".$this->Common_model->encrypt_decrypt($mode,'encrypt')."/".$this->Common_model->encrypt_decrypt($paper_code,'encrypt')."/".$exam_center;
 		$this->db->where('`student_id` IN (SELECT `student_id` FROM `student` where  university_mode="'.$mode.'")', NULL, FALSE);
 		$config["total_rows"] = $this->Common_model->getCountByWhere('new_exam_form',array('paper_code' => $paper_code,'theory_marks' => '','paper_type' => 'theory'));
 		$config["per_page"] = 2;
