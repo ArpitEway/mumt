@@ -1,5 +1,5 @@
 <div class="dt-responsive">
-	<table class="table table-striped">
+	<table class="table table-striped" id="kt_datatable">
 		<thead>
 			<tr>
 				<th>Sno</th>
@@ -8,6 +8,8 @@
 				<th>Class Name</th>
 				<th>Total Exam Form</th>
 				<th>Fill Exam Form</th>
+				<th>Regular Fill Form</th>
+				<th>Private Fill Form</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -23,8 +25,15 @@
 					<?php 
 					$where = array('new_exam_form'  =>'Y','class_id'=>$count['class_id']);
 					$Permitted = $this->Common_model->getCountByWhere('student',$where);
-					?>
+					$where_reg = array('new_exam_form'  =>'Y','university_mode'  =>'REG','class_id'=>$count['class_id']);
+					$Permitted_reg = $this->Common_model->getCountByWhere('student',$where_reg);
+					$where_pvt = array('new_exam_form'  =>'Y','university_mode'  =>'PVT','class_id'=>$count['class_id']);
+					$Permitted_pvt = $this->Common_model->getCountByWhere('student',$where_pvt);
+					
+					?> 
 					<td><?php echo $Permitted; ?></td>
+					<td><?php echo $Permitted_reg; ?></td>
+					<td><?php echo $Permitted_pvt; ?></td>
 				</tr>
 			<?php
 				$i++; 
