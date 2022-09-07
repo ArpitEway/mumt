@@ -31,9 +31,7 @@ $abs_count = 0 ;
 		display: inline-flex;
 		flex-wrap: wrap;
 	}
-	.flex  {
-		padding-left: 1000px; 
-	}
+	
 	.size  {
 		font-size: 15px; 
 	}
@@ -111,13 +109,13 @@ foreach($students as $student){
 			if($marks->p_marks=='' || $marks->p_marks=='N'){
 				$Withheld = true;
 			}elseif($marks->p_marks>=$marks->min_theory_marks){
-				$result = "Pass";	
+				$result = "PASS";	
 			}
 			elseif('p_marks'=='ABS'){
 				$abs_count++;	
 			}					
 			else{
-				$result = "Fail";
+				$result = "FAIL";
 				$fail_count +=5;
 			}
 		}
@@ -125,7 +123,7 @@ foreach($students as $student){
 	$require_grace_marks = $require_tot_marks-$get_tot_marks;
 			              // echo $fail_count;
 			              // echo $require_grace_marks;
-	if ($fail_count<3 && $require_grace_marks<4  && $abs_count==0) {
+	if ($fail_count<2 && $require_grace_marks<4  && $abs_count==0) {
 		$check_grace_marks = true;
 	}
 	?>
@@ -138,13 +136,6 @@ foreach($students as $student){
 		</table>
 	 <table width="100%">
 	<hr>
-	<tr>
-		<td>&nbsp;
-		</td>
-		<td class="size" colspan="2" align="right" >
-			Order for Declaration of Result & Publication
-		</td>
-	</tr>
 	<tr>
 		<td colspan="3">
 			<p class="size" style="line-height:2px">RW-Result Withheld</p>
@@ -164,7 +155,7 @@ foreach($students as $student){
 }  
 ?>      
 
-        <p align="right" class="mt-4 break"><?php echo "Page : ". $page_no ; ?></p> 
+        <p align="right" class="mt-4 <?=($page_no!=1) ? 'break' : ''; ?>"><?php echo "Page : ". $page_no ; ?></p> 
 		<div style="width:50px;float:left"><img src="<?=base_url('assets/logo.png')?>" ></div>
 		<div>
 			<h1 class="text-center" ><strong> Maharishi Mahesh Yogi Vedic Vishwavidyalaya </strong> </h1>
@@ -211,9 +202,9 @@ foreach($students as $student){
 								echo 'RW';
 							}else{
 								if($fail_count>0 || $abs_count>0){
-									echo ($check_grace_marks) ? 'Pass by grace' : 'Fail';
+									echo ($check_grace_marks) ? 'PASS BY GRACE' : 'FAIL';
 								}else{
-									echo 'Pass';
+									echo 'PASS';
 								}
 							}}
 							elseif($marks->type=="Practical" ){
@@ -221,15 +212,15 @@ foreach($students as $student){
 									echo 'RW';
 								}else{
 									if($fail_count>0){
-										echo ($check_grace_marks) ? 'Pass by grace' : 'Fail';
+										echo ($check_grace_marks) ? 'PASS BY GRACE' : 'FAIL';
 									}else{
-										echo 'Pass';
+										echo 'PASS';
 									}
 								}
 							}
 							?> 	
 				</td>
-				<td  class="text-center" align="center">					
+				<td  class="text-center" style="padding:0px" align="center">					
 					<?php 
 					$total_max_marks = 0 ;
 					$total_obtained_marks = 0;
@@ -285,7 +276,7 @@ foreach($students as $student){
 						else{ 
 							if(($require_grace_marks>=4 || $abs_count!=0 ) &&  $marks->theory_marks!=''){
 
-								$remark= ($check_grace_marks) ? 'Fail' : 'ATKT IN';
+								$remark= ($check_grace_marks) ? 'FAIL' : 'ATKT IN';
 								echo $remark;
 
 								foreach($ATKT_paper_codes as $paper_code){
@@ -306,7 +297,7 @@ foreach($students as $student){
 						}
 						else{ 
 							if($fail_count>3){
-								$remark= ($check_grace_marks) ? 'Fail' : 'ATKT IN';
+								$remark= ($check_grace_marks) ? 'FAIL' : 'ATKT IN';
 								echo $remark;
 
 								foreach($ATKT_paper_codes as $paper_code){
@@ -349,7 +340,6 @@ foreach($students as $student){
 	<tr><td>&nbsp;</td> <td class="size" align="right">Asst. Registrar</td><td class="size"align="center">Registrar/Controller Of Examination</td></tr>
 	<tr><td colspan="2" class="size">Copy of Result Notification is forwarded for information to
 		<p style="padding-top: 15px;" class="size">1.Notice Board of the University</p>
-		<p class="size">2.Directorate of Distance Education</p></td></tr>
 	</table>
 	</body>
 </html>

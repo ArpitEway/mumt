@@ -30,9 +30,7 @@ $abs_count = 0 ;
 		display: inline-flex;
 		flex-wrap: wrap;
 	}
-	.flex  {
-		padding-left: 1000px; 
-	}
+	
 	.size  {
 		font-size: 15px; 
 	}
@@ -151,8 +149,8 @@ $abs_count = 0 ;
 						$final_result = "PASS";
 					}else{
 						$require_grace_marks = $require_tot_marks-$fail_tot_marks;
-      // tot 3 grace marks in 2 subjects
-						if ($fail_count<3 && $require_grace_marks<4 && $int_fail_count==0 && $p_fail_count==0 && $rw_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0) {
+      // tot 3 grace marks in 1 subjects
+						if ($fail_count<2 && $require_grace_marks<4 && $int_fail_count==0 && $p_fail_count==0 && $rw_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0) {
 							$check_grace_marks = true;
 							$final_result = "PASS BY GRACE";
 						}elseif($rw_count>0){
@@ -229,7 +227,7 @@ $abs_count = 0 ;
 							<td align="center" >
 								<?=$final_result; ?>  	
 							</td>
-							<td align="center">					
+							<td align="center" style="padding:0px">					
 								<?php 
 								if($final_result!='FAIL'){
 									echo $total_marks_obt.'/'.$total_paper_marks;
