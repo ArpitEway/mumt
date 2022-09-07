@@ -11,6 +11,7 @@ class Admins extends CI_Controller {
 		$this->load->model('Common_model');
 		$this->load->model('Datatable_model');
 		$this->load->model('Datatable_join_model');
+		$this->load->library('numbertowordconvertsconver');
 	}
 
 	public function index(){
@@ -2873,13 +2874,12 @@ public function update_exam_datewise_permission(){
 	
 
 	public function student_notification_list($course_id="",$class_id=""){
-		$course_id1=$this->Common_model->encrypt_decrypt($course_id,'decrypt');
-		$class_id1=$this->Common_model->encrypt_decrypt($class_id,'decrypt');
-		$this->db->order_by('roll_no','ASC');
-		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id1 ,'class_id' => $class_id1,'new_exam_form'=>'Y' ,'roll_no!='=>'0','result_show'=>'Y' ));
-		$this->load->view('admin/generate_tr/header2');
+		$course_id = $this->Common_model->encrypt_decrypt($course_id,'decrypt');
+		$class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
+		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
+		$this->db->order_by('roll_number','ASC');
+		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y' ,'roll_number!='=>'0','result_show'=>'Y' ));
 		$this->load->view('admin/student_notification_list',$data);
-		$this->load->view('admin/generate_tr/footer2');
 	}
 
 	public function marksheet_variable(){
@@ -2936,14 +2936,12 @@ public function update_exam_datewise_permission(){
 		$start=($startlimit-1)*1000;
 		$this->db->limit(1000,$start);
 		
-		$data['students'] = $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y','roll_no!='=>'0' ));
+		$data['students'] = $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y','roll_number!='=>'0' ));
 		$data['class_id'] = $class_id;
 		$data['pagenumber']=$pagenumber-1;
 		$data['course_group_id'] = $course_group_id;
 		$title = "TR ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
-		$this->load->view('admin/generate_tr/header2',array('title' =>$title));
 		$this->load->view('admin/generate_tr',$data);
-		$this->load->view('admin/generate_tr/footer2');
 	}
 
 	public function UpdateStudentDataMarks()
@@ -3058,11 +3056,10 @@ public function update_exam_datewise_permission(){
 
 	public function student_marksheet($course_id="",$class_id="")
 	{
-		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'new_exam_form'=>'Y','roll_no!='=>'0' ));
-
-		$this->load->view('admin/generate_tr/header',array('title' => ''));
+		$data = array('class_id' => $class_id,'course_group_id' =>$course_id );
+		$this->db->limit(200);
+		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0' ));
 		$this->load->view('admin/student_marksheet',$data);
-		$this->load->view('admin/generate_tr/footer');
 	}
 
 	public function update_fees_in_program()
@@ -3367,23 +3364,25 @@ public function update_exam_datewise_permission(){
 
 	public function generate_tr_bed($course_group_id="",$class_id=""){
 		$this->db->order_by('roll_number','ASC');
-		$data['students'] = $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'exam_form'=>'Y','roll_number!='=>'0', 'result_show' => 'N' ));
+		$data['students'] = $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y','roll_number!='=>'0' ));
+		//'result_show' => 'N'
 		$data['class_id'] = $class_id;
 		$data['course_group_id'] = $course_group_id;
 		$title = "TR ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
-		$this->load->view('admin/generate_tr/header2',array('title' =>$title));
+		// $this->load->view('admin/generate_tr/header2',array('title' =>$title));
 		$this->load->view('admin/generate_tr/bed_tr',$data);
-		$this->load->view('admin/generate_tr/footer2');
+		// $this->load->view('admin/generate_tr/footer2');
 	}
 
 	public function student_notification_list_bed($course_id="",$class_id=""){
 		$course_id=$this->Common_model->encrypt_decrypt($course_id,'decrypt');
 		$class_id=$this->Common_model->encrypt_decrypt($class_id,'decrypt');
 		$this->db->order_by('roll_number','ASC');
-		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id, 'class_id' => $class_id, 'exam_form'=>'Y','roll_number!='=>'0','result_show'=>'N' ));
-		$this->load->view('admin/generate_tr/header2');
+		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
+		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id, 'old_class_id' => $class_id, 'exam_form'=>'Y','roll_number!='=>'0','result_show'=>'N' ));
+		// $this->load->view('admin/generate_tr/header2');
 		$this->load->view('admin/student_notification_list_bed',$data);
-		$this->load->view('admin/generate_tr/footer2');
+		// $this->load->view('admin/generate_tr/footer2');
 	}
 
 	// public function updatePaperpgd()

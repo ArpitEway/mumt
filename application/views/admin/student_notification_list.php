@@ -1,5 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+	<br>
 <?php
-$notification_no = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id' => $students[0]->class_id));
+$notification_no = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id' => $class_id));
 $notification=$notification_no[0]->notification_no;
 $date=$notification_no[0]->result_date;
 $exam_session=$notification_no[0]->exam_session;
@@ -7,22 +16,47 @@ $page_no = 0 ;
 $abs_count = 0 ;
 ?>
 <style>
-	.break { page-break-before: always; }
+	body{
+		font-size: 12px;
+		font-family: Arial, Helvetica, sans-serif;
+		padding: 5px 15px;
+	}
+	.text-center {
+		text-align: center;
+	}
+	.break{
+		page-break-before: always;
+	}
 	.flex-container {
 		display: inline-flex;
 		flex-wrap: wrap;
 	}
-
 	.flex  {
 		padding-left: 1000px; 
 	}
 	.size  {
 		font-size: 15px; 
 	}
-
 	.alternate:nth-child(even)  {
 		background-color: yellow;
-	}	
+	}
+	h1{
+    	line-height: 15px;
+   	font-size: 20px;
+      margin-bottom: 0;
+	}
+	th,td{
+		padding: 10px;
+	}
+	@page{
+		size: auto;
+	}
+	.style-p-0 th{
+		padding: 0;
+	}
+	h2{
+		font-size: 16px;
+	}
 </style>
 
 <?php	  
@@ -40,7 +74,7 @@ foreach($students as $student){
 	$Withheld = false; 
 	$ATKT_paper_codes = array(); 
 	$abs_count=0;
-	$paper_marks = $this->Common_model->notification_marks_details_($student->student_id);
+	$paper_marks = $this->Common_model->notification_marks_details_($student->student_id,$student->old_class_id);
 
 	foreach($paper_marks as  $marks){
 		if($marks->type=="theory" )
@@ -96,7 +130,7 @@ foreach($students as $student){
 	}
 	?>
 	<?php 
-	if($page_break_count%20==0 || $page_break_count==0){
+	if($page_break_count%12==0 || $page_break_count==0){
 		$page_no++ ;
 		if ($page_break_count>1) {
 			?>
@@ -125,41 +159,36 @@ foreach($students as $student){
 			<p class="size" style="line-height:2px">VCG-Vice-Chancellor's One Grace Mark In Division</p>
 		</td>
 	</tr>
-	<tr><td>&nbsp;</td> <td class="size" align="right">Asst. Registrar</td><td class="size"align="center">Registrar/Controller Of Examination</td></tr>
-	<tr><td colspan="2" class="size">Copy of Result Notification is forwarded for information to
-
-		<p style="padding-top: 15px;" class="size">1.Notice Board of the University</p>
-		<p class="size">2.Directorate of Distance Education</p></td></tr>
 	</table> 
 	<?php
 }  
 ?>      
 
-        <p align="right" class="mt-4 break size"><?php echo "Page : ". $page_no ; ?></p> 
-		<div style="width:75px;float:left"><img src="<?=base_url('assets/logo.png')?>" ></div>
-		<h3 class="text-center" ><strong> Maharishi Mahesh Yogi Vedic Vishwavidyalaya </strong> </h3>
+        <p align="right" class="mt-4 break"><?php echo "Page : ". $page_no ; ?></p> 
+		<div style="width:50px;float:left"><img src="<?=base_url('assets/logo.png')?>" ></div>
+		<div>
+			<h1 class="text-center" ><strong> Maharishi Mahesh Yogi Vedic Vishwavidyalaya </strong> </h1>
 		<p align="center" style="line-height:0px">Head Office: Karaundi, Post-Mahner ,Distt- Katni(MP) </p>
-		<h3 align="center"><strong>Result Notification of</strong> <br><h3>
-			<h3 align="center">	<strong><?php echo $students[0]->course_name.' - '. $students[0]->class_name .' Examination '. $exam_session?></strong><br><h3>
-				<title>Notification <?php echo $students[0]->course_name?></title> 
+		<h2 align="center"><strong>Result Notification of</strong><br><p style="margin-top:8px"><strong><?php echo $this->Common_model->getCourseNameByCourseId($course_group_id).' - '. $this->Common_model->getClassNameByClassId($class_id) .'  '. $exam_session?></strong></p></h2>
+		</div>
+				<title>Notification <?php echo $this->Common_model->getCourseNameByCourseId($course_group_id)?></title> 
 
-				<div class="flex-container">
-					<div style="font-size:15px;" >Notification No : <?php echo $notification;?></div>
-
-					<div style="font-size:15px;" class="flex">Date : <?php echo $date;?></div>  
-				</div>
-				<div style="font-size:15px;" align="center">The Result of the following examinees of the above exam is hereby declared as under : </div>
+				<table class="style-p-0" width="100%">
+					<tr>
+						<th align="left">Notification No :  <?php echo $notification;?></th>
+						<th align="right">Date : <?php echo $date;?></th>
+					</tr>
+					<tr> <th class="text-center" colspan="2">The Result of the following examinees of the above exam is hereby declared as under :</th> </tr>
+				</table>
 				<hr>
 				<table width="100%"  border="1">
 				<thead>
 					<tr bgcolor="#FFFF00">
-						<th class="text-center" scope="row" width="5%"> S.No. </th>
-						<th class="text-center" scope="row" width="20%"><span class="style5">Roll No.</span></th>
-					   <!-- <th scope="row"><p class="style5">MS No.</p></th>--> 
-					   <th  class="text-center" style="text-align:left" scope="row"  width="30%"><span class="style5" >Name and F/H Name</span></th>
-					   <th  class="text-center" scope="row"  width="15%">Result</span></th>
+						<th class="text-center" scope="row" width="10%"><span class="style5">Roll No.</span></th>
+					   <th  class="text-center" style="text-align:left" scope="row"  width="45%"><span class="style5" style="padding-left: 10px;" >Name and F/H Name</span></th>
+					   <th class="text-center" scope="row"  width="15%">Result</span></th>
 					   <th class="text-center" scope="row"  width="10%"><span class="style5">Total</span></th>
-					   <th class="text-center" scope="row"><span class="style5">Remark</span></th>
+					   <th class="text-center" scope="row" width="20%"><span class="style5">Remark</span></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -168,43 +197,40 @@ foreach($students as $student){
 				$page_break_count++;	
 				?>
 				<tr class="alternate">
-					<td class="text-center"  scope="row" width="5%"><?php echo $i++; ?></td>
-					<td class="style6 text-center" scope="row" width="20%">
-						<?php echo $student->roll_no; ?>
+					<td class="text-center">
+						<?php echo $student->roll_number; ?>
 					</td>
-					<td class="text-center" width="30%" scope="row" class="style6" >
+					<td scope="row" style="padding-left: 10px;" >
 						<?php echo $student->name  .' / '.  $student->f_h_name; ?>
 					</td>
-					<td  class="text-center" align="center" width="15%" >
-					<?php
-				if($marks->type=="theory" )
-				{
-					if($Withheld  && $abs_count!=0){
-						echo 'RW';
-					}else{
-						if($fail_count>0 || $abs_count>0){
-							echo ($check_grace_marks) ? 'Pass by grace' : 'Fail';
-						}else{
-							echo 'Pass';
-						}
-					}}
-					elseif($marks->type=="Practical" ){
-						if($Withheld ){
-							echo 'RW';
-						}else{
-							if($fail_count>0){
-								echo ($check_grace_marks) ? 'Pass by grace' : 'Fail';
+					<td class="text-center" align="center" >
+						<?php
+						if($marks->type=="theory" )
+						{
+							if($Withheld  && $abs_count!=0){
+								echo 'RW';
 							}else{
-								echo 'Pass';
+								if($fail_count>0 || $abs_count>0){
+									echo ($check_grace_marks) ? 'Pass by grace' : 'Fail';
+								}else{
+									echo 'Pass';
+								}
+							}}
+							elseif($marks->type=="Practical" ){
+								if($Withheld ){
+									echo 'RW';
+								}else{
+									if($fail_count>0){
+										echo ($check_grace_marks) ? 'Pass by grace' : 'Fail';
+									}else{
+										echo 'Pass';
+									}
+								}
 							}
-						}
-					}
-					?>	  	
+							?> 	
 				</td>
-				<td  class="text-center" align="center" width="10%">					
+				<td  class="text-center" align="center">					
 					<?php 
-					$paper_marks = $this->Common_model->notification_marks_details_($student->student_id);
-
 					$total_max_marks = 0 ;
 					$total_obtained_marks = 0;
 
@@ -243,7 +269,7 @@ foreach($students as $student){
 					echo $total_obtained_marks .' / '. $total_max_marks;
 					?>
 				</td>
-				<td class="text-center">
+				<td class="text-center" >
 					<?php
 					if($marks->type=="theory" )
 					{
@@ -263,7 +289,7 @@ foreach($students as $student){
 								echo $remark;
 
 								foreach($ATKT_paper_codes as $paper_code){
-									echo  "<br>". $paper_code ;
+									echo  "". $paper_code ;
 								}  
 							}
 						}			
@@ -284,7 +310,7 @@ foreach($students as $student){
 								echo $remark;
 
 								foreach($ATKT_paper_codes as $paper_code){
-									echo  "<br>". $paper_code ;
+									echo  "". $paper_code ;
 								}  
 							}
 						}	
@@ -324,4 +350,6 @@ foreach($students as $student){
 	<tr><td colspan="2" class="size">Copy of Result Notification is forwarded for information to
 		<p style="padding-top: 15px;" class="size">1.Notice Board of the University</p>
 		<p class="size">2.Directorate of Distance Education</p></td></tr>
-	</table> 
+	</table>
+	</body>
+</html>

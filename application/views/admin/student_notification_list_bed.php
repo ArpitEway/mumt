@@ -1,5 +1,13 @@
-<?php
-$notification_no = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id' => $students[0]->class_id));
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+	<br><?php
+$notification_no = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id' => $students[0]->old_class_id));
 $notification=$notification_no[0]->notification_no;
 $date=$notification_no[0]->result_date;
 $exam_session=$notification_no[0]->exam_session;
@@ -7,23 +15,47 @@ $page_no = 0 ;
 $abs_count = 0 ;
 ?>
 <style>
-	.break { page-break-before: always; }
+	body{
+		font-size: 12px;
+		font-family: Arial, Helvetica, sans-serif;
+		padding: 5px 15px;
+	}
+	.text-center {
+		text-align: center;
+	}
+	.break{
+		page-break-before: always;
+	}
 	.flex-container {
 		display: inline-flex;
 		flex-wrap: wrap;
 	}
-
 	.flex  {
 		padding-left: 1000px; 
 	}
 	.size  {
 		font-size: 15px; 
 	}
-
-	.alternate:nth-child(even) {
+	.alternate:nth-child(even)  {
 		background-color: yellow;
 	}
-
+	h1{
+    	line-height: 15px;
+   	font-size: 20px;
+      margin-bottom: 0;
+	}
+	th,td{
+		padding: 10px;
+	}
+	@page{
+		size: auto;
+	}
+	.style-p-0 th{
+		padding: 0;
+	}
+	h2{
+		font-size: 16px;
+	}
 </style>
 
 	            <?php
@@ -50,7 +82,7 @@ $abs_count = 0 ;
 					$final_result = '';
 					$theory_paper_count = 0;
 					$p_paper_count = 0;
-					$paper_marks = $this->Common_model->notification_marks_details_($student->student_id);
+					$paper_marks = $this->Common_model->notification_marks_details_($student->student_id,$student->old_class_id);
 					foreach($paper_marks as  $new_exam_form){
 
 						if($new_exam_form->type=='theory'){
@@ -129,21 +161,14 @@ $abs_count = 0 ;
 							$final_result = "FAIL";
 						}
 					}
-		    if($page_break_count%20==0 ||  $page_break_count==0 ){
+		    if($page_break_count%18==0 ||  $page_break_count==0 ){
 			$page_no++;
 		   if ($page_break_count>1) {
            ?>
            </tbody>
            </table>
-      <table width="100%" >
 	  <hr>
-	  <tr>
-	  <td>&nbsp;
-	  </td>
-      <td class="size" colspan="2" align="right" >
-	  Order for Declaration of Result & Publication
-	  </td>
-	  </tr>
+      <table width="100%" >
 	  <tr>
 		<td colspan="3">
 			<p class="size" style="line-height:2px">RW-Result Withheld</p>
@@ -158,41 +183,35 @@ $abs_count = 0 ;
 			<p class="size" style="line-height:2px">VCG-Vice-Chancellor's One Grace Mark In Division</p>
 		</td>
 	</tr>
-	<tr><td>&nbsp;</td> <td class="size" align="right">Asst. Registrar</td><td class="size"align="center">Registrar/Controller Of Examination</td></tr>
-	<tr><td colspan="2" class="size">Copy of Result Notification is forwarded for information to
-
-		<p style="padding-top: 15px;" class="size">1.Notice Board of the University</p>
-		<p class="size">2.Directorate of Distance Education</p></td></tr>
 	</table> 
 		<?php
-		  }  
+		  }
 		?>
-		<p align="right"  class="mt-4 break size"><?php echo "Page : ". $page_no ; ?></p> 
+		<p align="right"  class="mt-4 <?=($page_no!=1) ? 'break' : ''; ?> size"><?php echo "Page : ". $page_no ; ?></p> 
+		
 		<div style="width:75px;float:left"><img src="<?=base_url('assets/logo.png')?>" ></div>
-		<h3 class="text-center">
-			<strong> Maharishi Mahesh Yogi Vedic Vishwavidyalaya </strong>
-		</h3>
-		<p align="center" style="line-height:0px">Head Office: Karaundi, Post-Mahner ,Distt- Katni(MP)</p>
-		<h3 align="center"><strong>Result Notification of</strong> <br><h3>
-			<h3 class="text-center mb-2">	<strong><?php echo $students[0]->course_name.' - '. $students[0]->class_name .' '. $exam_session?></strong><h3>
-				<title>Notification <?php echo $students[0]->course_name?></title>
-				<div class="flex-container">
-					<div style="font-size:15px;" >Notification No : <?php echo $notification;?></div>
-
-					<div style="font-size:15px;" class="flex">Date : <?php echo $date;?></div>  
-				</div>
-				<div style="font-size:15px;" align="center">The Result of the following examinees of the above exam is hereby declared as under : </div>
+		<div>
+			<h1 class="text-center" ><strong> Maharishi Mahesh Yogi Vedic Vishwavidyalaya </strong> </h1>
+		<p align="center" style="line-height:0px">Head Office: Karaundi, Post-Mahner ,Distt- Katni(MP) </p>
+		<h2 align="center"><strong>Result Notification of</strong><br><p style="margin-top:8px"><strong><?php echo $this->Common_model->getCourseNameByCourseId($course_group_id).' - '. $this->Common_model->getClassNameByClassId($class_id) .'  '. $exam_session?></strong></p></h2>
+		</div>
+				<title>Notification <?php echo $this->Common_model->getCourseNameByCourseId($course_group_id)?></title>
+				<table class="style-p-0" width="100%">
+					<tr>
+						<th align="left">Notification No :  <?php echo $notification;?></th>
+						<th align="right">Date : <?php echo $date;?></th>
+					</tr>
+					<tr> <th class="text-center" colspan="2">The Result of the following examinees of the above exam is hereby declared as under :</th> </tr>
+				</table>
 				<hr>
 				<table width="100%"  class="fully_size"  border="1">
 					<thead>
 						<tr bgcolor="#FFFF00">
-							<th scope="row" class="text-center" width="5%"> S.No. </th>
-							<th scope="row" class="text-center" width="20%"><span class="style5">Roll No.</span></th>
-							<!-- <th scope="row"><p class="style5">MS No.</p></th> -->
-							<th style="text-align:left" class="text-center" scope="row"  width="30%"><span class="style5" >Name and F/H Name</span></th>
+							<th scope="row" class="text-center" width="10%"><span class="style5">Roll No.</span></th>
+							<th style="text-align:left" scope="row"  width="45%"><span class="style5" >Name and F/H Name</span></th>
 							<th scope="row" class="text-center"  width="15%">Result</span></th>
 							<th scope="row" class="text-center" width="10%"><span class="style5">Total</span></th>
-							<th scope="row" class="text-center"><span class="style5">Remark</span></th>
+							<th scope="row" class="text-center" width="20%"><span class="style5">Remark</span></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -201,20 +220,16 @@ $abs_count = 0 ;
 					$page_break_count++;	
 					?>
 					<tr class="alternate">
-						<td scope="row" class="text-center" width="5%">
-							<?php echo $i++; ?>
-						</td>
-						<td class="style6 text-center" scope="row" width="20%">
+						<td class="text-center" scope="row">
 							<?php echo $student->roll_number; ?>
-							</td><!-- 
-							<td width="9%"></td> -->
-							<td width="30%" scope="row" class="style6 text-center" >
+							</td>
+							<td scope="row"  style="padding-left: 10px;" >
 								<?php echo $student->name .' / '.  $student->f_h_name; ?>
 							</td>
-							<td align="center" width="15%" >
+							<td align="center" >
 								<?=$final_result; ?>  	
 							</td>
-							<td align="center" width="10%">					
+							<td align="center">					
 								<?php 
 								if($final_result!='FAIL'){
 									echo $total_marks_obt.'/'.$total_paper_marks;
@@ -276,3 +291,5 @@ $abs_count = 0 ;
 				</td>
 			</tr>
 		</table>
+	</body>
+</html>
