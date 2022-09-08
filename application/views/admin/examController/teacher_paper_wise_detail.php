@@ -1,33 +1,33 @@
 
 <div class=" mt-3">
 
-<table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
+<table id="kt_datatable" class="table  dt-responsive table-bordered "  style="width:100%;text-align:left;" >
 		<thead>
 			<tr>
-				<th  class="col-md-1">#</th>
-				<th class="col-md-1">Name </th>
-				<!-- <th style="width: 10% !important;">Phone No. </th> -->
-				<th class="col-md-1">Course Name</th>
-				<th class="col-md-1">Class Name</th>
-                <th class="col-md-1">Paper Code</th>
-                <th class="col-md-1">Paper Name</th>
-                <th class="col-md-1">Answersheet Count</th>
-                <th class="col-md-1">Total </th>
+				<th  width="1%">#</th>
+				<th width="20%">Name </th>
+				<th width="4%">Phone No. </th>
+				<th width="20%">Course Name</th>
+				<th width="5%">Class Name</th>
+                <th width="5%">Paper Code</th>
+                <th width="30%">Paper Name</th>
+                <th width="5%">Answersheet Count</th>
+                <th width="5%">Total </th>
                
 				
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-            <th  class="col-md-1">#</th>
-				<th class="col-md-1">Name </th>
-				<!-- <th style="width: 10% !important;">Phone No. </th> -->
-				<th class="col-md-1">Course Name</th>
-				<th class="col-md-1">Class Name</th>
-                <th class="col-md-1">Paper Code</th>
-                <th class="col-md-1">Paper Name</th>
-                <th class="col-md-1">Answersheet Count</th>
-                <th class="col-md-1">Total </th>
+            <th  width="1%">#</th>
+				<th width="20%">Name </th>
+				<th width="4%">Phone No. </th>
+				<th width="20%">Course Name</th>
+				<th width="5%">Class Name</th>
+                <th width="5%">Paper Code</th>
+                <th width="30%">Paper Name</th>
+                <th width="5%">Answersheet Count</th>
+                <th width="5%">Total </th>
 			</tr>
 			</tfoot>
 		<tbody>
@@ -58,9 +58,9 @@
                 ?>
 					<tr>
                         <?php  if($p== 0) { ?>
-                            <td width="1" style="vertical-align: middle;" rowspan="<?= $rowCount; ?>"><?=  $i; ?></td>
+                            <td  style="vertical-align: middle;" rowspan="<?= $rowCount; ?>"><?=  $i; ?></td>
                             <td style="vertical-align: middle;"rowspan="<?= $rowCount; ?>"><?= $teacher['name']; ?></td>
-                            <!-- <td style="vertical-align: middle;" rowspan="<?= $rowCount; ?>"><?= $teacher['phone']; ?></td> -->
+                            <td style="vertical-align: middle;" rowspan="<?= $rowCount; ?>"><?= $teacher['phone']; ?></td>
                         <?php } ?>
                             <td ><?= $course; ?></td>
                             <td ><?= $class; ?></td>
