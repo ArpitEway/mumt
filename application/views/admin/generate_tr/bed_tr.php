@@ -54,13 +54,16 @@
   }
   table {
     border-spacing: 2px;
-    width: 1325px;
+    width: 100%;
     margin-bottom: 6px;
   }
   .text-center {
     text-align: center;
   }
-
+  table.last_table, .last_table td, .last_table th{
+    border: none;
+  }
+  
 /*table marks css*/
   .roll_no {
     width: 7%;
@@ -76,6 +79,7 @@
   }
   .paper {
     width: 15%;
+    min-width: 85px;
   }
   .paper_code {
     width: auto;
@@ -531,7 +535,7 @@
 ?>
 
 <hr>
-<table width="100%" border="0">
+<table width="100%" class="last_table" border="0">
 <tr>
 <td colspan="3">&nbsp;</td>
 <td colspan="3" align="right">Order for Declaration & Publication of Result</td>

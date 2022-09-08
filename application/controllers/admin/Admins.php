@@ -2930,12 +2930,11 @@ public function update_exam_datewise_permission(){
 	}
 
 	public function generate_tr($course_group_id="",$class_id="",$startlimit=1,$pagenumber=1){
-		$this->db->order_by('center_id','ASC');
-		$this->db->order_by('roll_no','ASC');
 		$start=0;
 		$start=($startlimit-1)*1000;
 		$this->db->limit(1000,$start);
-		
+		$this->db->order_by('center_id','ASC');
+		$this->db->order_by('roll_number','ASC');
 		$data['students'] = $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y','roll_number!='=>'0' ));
 		$data['class_id'] = $class_id;
 		$data['pagenumber']=$pagenumber-1;
@@ -3058,6 +3057,7 @@ public function update_exam_datewise_permission(){
 	{
 		$data = array('class_id' => $class_id,'course_group_id' =>$course_id );
 		$this->db->limit(200);
+		$this->db->order_by('center_id,roll_number','ASC');
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0' ));
 		$this->load->view('admin/student_marksheet',$data);
 	}
@@ -3363,7 +3363,7 @@ public function update_exam_datewise_permission(){
 	}
 
 	public function generate_tr_bed($course_group_id="",$class_id=""){
-		$this->db->order_by('roll_number','ASC');
+		$this->db->order_by('center_id,roll_number','ASC');
 		$data['students'] = $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y','roll_number!='=>'0' ));
 		//'result_show' => 'N'
 		$data['class_id'] = $class_id;
@@ -3380,9 +3380,7 @@ public function update_exam_datewise_permission(){
 		$this->db->order_by('roll_number','ASC');
 		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id, 'old_class_id' => $class_id, 'exam_form'=>'Y','roll_number!='=>'0','result_show'=>'N' ));
-		// $this->load->view('admin/generate_tr/header2');
 		$this->load->view('admin/student_notification_list_bed',$data);
-		// $this->load->view('admin/generate_tr/footer2');
 	}
 
 	// public function updatePaperpgd()
