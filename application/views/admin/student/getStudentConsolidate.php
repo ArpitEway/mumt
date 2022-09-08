@@ -11,7 +11,6 @@
 					<th>Enrollment no</th>
 					<th>Name</th>
 					<th>F/H Name</th>
-		
 					<th>DOB</th>
 					<th>Course</th>
 					<th>Class</th>
@@ -26,10 +25,10 @@
 					<th>Approved</th>
 					<th>Enrolled</th>
 					<th>Exam Form</th>
-						<th>
-						<?php if($this->session->account_type == "Admins"  ){ ?>	
-							Select Papers
-						<?php } ?>
+					<th>
+					<?php if($this->session->account_type == "Admins"  ){ ?>	
+						Select Papers
+					<?php } ?>
 					</th>
 					<th>Paper</th>
 					<?php
@@ -62,14 +61,9 @@
 				$i = 1;
 				if(isset($students)){
 					foreach($students as $student){
-						
-						
-						
 						?>
-						<tr data-id="tr_<?= $student['student_id']?>" id="<?= $student['student_id'];?>">
+					<tr data-id="tr_<?= $student['student_id']?>" id="<?= $student['student_id'];?>">
 							<td><?php echo $i; ?></td>
-
-
 							<td><?php echo $student["center_code"]; ?></td> 
 							<td><?php 
 							if($student["university_mode"]=="REG"){
@@ -104,28 +98,25 @@
 
 							<td><?php if( $student["enrolled"]=='Y'){echo 'Enrolled' ;}else{echo 'Non Enrolled' ;} ?></td>
 
-							<td><?php if( $student["new_exam_form"]=='Y'){echo 'Submit' ;}else if($student["new_exam_form"]=='D'){echo 'Not Permitted' ;}else{echo 'Not Submitted';} ; ?></td>
-							
-
-							
+							<td><?php if( $student["new_exam_form"]=='Y'){echo 'Submit' ;}else if($student["new_exam_form"]=='D'){echo 'Not Permitted' ;}else{echo 'Not Submitted';} ; ?></td>					
 					<td>
-							<?php $student_id = $this->Common_model->encrypt_decrypt($student['student_id']); ?>
+						<?php $student_id = $this->Common_model->encrypt_decrypt($student['student_id']); ?>
 						<?php if(($this->session->account_type == "Admins"  )&& $student["temp_exam_form"]=='N'){ ?>
-						<a target="_blank"  class="" href="<?=base_url('admin/Admins/select_paper/' .$student_id);?>"><i class="fa fa-plus" aria-hidden="true"></i></a>
+						<a target="_blank"  class="" href="<?=base_url('select_paper/'.$student_id);?>"><i class="fa fa-plus" aria-hidden="true"></i></a>
 					 
 					<?php } ?>
-				</td> 
+				  </td> 
 
 					<td>
-							<?php $student_id = $this->Common_model->encrypt_decrypt($student['student_id']); ?>
+						<?php $student_id = $this->Common_model->encrypt_decrypt($student['student_id']); ?>
 						<?php if($student["temp_exam_form"]=='Y'){ ?>
-						<a target="_blank"  class="" href="<?=base_url('admin/Admins/show_paper/' .$student_id);?>"><i class="fa fa-eye" aria-hidden="true"></i></a>
+						<a target="_blank"  class="" href="<?=base_url('show_paper/'.$student_id);?>"><i class="fa fa-eye" aria-hidden="true"></i></a>
 					 	<?php if($this->session->account_type =="Admins"){?>
 					  <button  class="btn btn-sm  " onclick="delete__student_paper(this)" data-id = "<?=$student['student_id']; ?>"><i class="fa fa-trash" aria-hidden="true"></i></button>   
 					 <?php }?>
 				
 					<?php } ?>
-				</td>  
+				   </td>  
 				
 						</tr>
 					<?php
