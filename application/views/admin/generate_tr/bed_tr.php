@@ -1,3 +1,4 @@
+<title><?php echo (isset($title)) ? $title : ''; ?></title>
 <style>
   @page {
           size: auto;

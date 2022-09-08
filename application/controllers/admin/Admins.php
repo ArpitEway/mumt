@@ -2879,6 +2879,7 @@ public function update_exam_datewise_permission(){
 		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
 		$this->db->order_by('roll_number','ASC');
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y' ,'roll_number!='=>'0','result_show'=>'Y' ));
+		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$this->load->view('admin/student_notification_list',$data);
 	}
 
@@ -3059,6 +3060,7 @@ public function update_exam_datewise_permission(){
 		$this->db->limit(200);
 		$this->db->order_by('center_id,roll_number','ASC');
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0' ));
+		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$this->load->view('admin/student_marksheet',$data);
 	}
 
@@ -3368,7 +3370,7 @@ public function update_exam_datewise_permission(){
 		//'result_show' => 'N'
 		$data['class_id'] = $class_id;
 		$data['course_group_id'] = $course_group_id;
-		$title = "TR ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
+		$data['title'] = "TR ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		// $this->load->view('admin/generate_tr/header2',array('title' =>$title));
 		$this->load->view('admin/generate_tr/bed_tr',$data);
 		// $this->load->view('admin/generate_tr/footer2');
@@ -3380,6 +3382,7 @@ public function update_exam_datewise_permission(){
 		$this->db->order_by('roll_number','ASC');
 		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id, 'old_class_id' => $class_id, 'exam_form'=>'Y','roll_number!='=>'0','result_show'=>'N' ));
+		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$this->load->view('admin/student_notification_list_bed',$data);
 	}
 

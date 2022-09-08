@@ -1,3 +1,4 @@
+<title><?php echo (isset($title)) ? $title : ''; ?></title>
 <style>
   svg {
     width: 101px;

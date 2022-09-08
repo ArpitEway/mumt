@@ -2,6 +2,7 @@
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link href="css/print_Marksheet.css" rel="stylesheet" type="text/css">
+  <title><?php echo (isset($title)) ? $title : ''; ?></title>
   <style type="text/css">
     body {
       color:#000000;
@@ -68,7 +69,7 @@
                         </div>
                       </td>
                       <td align="left" width="18%" rowspan="4">
-                        <img border="1"  class="student_image" src="../admin/en/na.jpg" width="90px" height="105px">
+                        <img border="1"  class="student_image" src="<?= base_url('assets/student_image/'.$student->session.'/'.$student->photo) ?>" width="90px" height="105px">
                       </td>
                     </tr>
                     <tr>
