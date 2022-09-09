@@ -2,6 +2,7 @@
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link href="css/print_Marksheet.css" rel="stylesheet" type="text/css">
+  <title><?php echo (isset($title)) ? $title : ''; ?></title>
   <style type="text/css">
     body {
       color:#000000;
@@ -68,7 +69,7 @@
                         </div>
                       </td>
                       <td align="left" width="18%" rowspan="4">
-                        <img border="1"  class="student_image" src="../admin/en/na.jpg" width="90px" height="105px">
+                        <img border="1"  class="student_image" src="<?= base_url('assets/student_image/'.$student->session.'/'.$student->photo) ?>" width="90px" height="105px">
                       </td>
                     </tr>
                     <tr>
@@ -202,9 +203,10 @@
                             <td align="center" ><span class="style4">
                               <?php echo  $paper->min_theory_marks; ?></span>
                             </td>
-                            <td align="center" ><span class="style4"><?php echo  $paper->max_internal_marks; ?></span>
+                            <td align="center" ><span class="style4"><?=($paper->type=='theory' || $paper->practical_internal_marks=='Y') ? $paper->max_internal_marks : '-'; ?></span>
                             </td>
-                            <td align="center" ><span class="style4"><?php echo  $paper->min_internal_marks; ?></span>
+                            <td align="center" ><span class="style4">
+                              <?=($paper->type=='theory' || $paper->practical_internal_marks=='Y') ? $paper->min_internal_marks : '-'; ?></span>
                             </td>
                             <td align="left" ><span class="style4" style="padding-left:10px;">
                               <?php
@@ -241,7 +243,7 @@
                               ?>
                             </span></td>
                             <td align="left" class="style4"><span class="style2" style="padding-left:10px;">
-                              <?php echo $paper->int_marks;  ?></span>
+                              <?=($paper->type=='theory' || $paper->practical_internal_marks=='Y') ? $paper->int_marks : '-'; ?></span>
                             </td>
                             <td align="left" class="style2"><span class="style4" style="padding-left:10px;">
                               <?php 
