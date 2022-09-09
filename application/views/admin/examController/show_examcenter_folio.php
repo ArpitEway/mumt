@@ -3,10 +3,11 @@ $student=array(); ?>
 
 <style>
     h4{
-        line-height:1px;font-size:16px;
+        font-size:16px;
     }
     .break{
         page-break-before: always;
+        height: 20px;
     }
     table {
         background-color: transparent;
@@ -18,7 +19,7 @@ $student=array(); ?>
         line-height:21px;
     }
     td{
-        line-height:42px;
+        line-height:35px;
     }
    .font-19{
         font-size: 19px;
@@ -39,10 +40,11 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
     '60' => 'Sixty', '70' => 'Seventy',
     '80' => 'Eighty', '90' => 'Ninety');
     foreach($exam_center_id as $examcenter){  $examcenterCounter++;?> 
-        <div class="row form-group col-md-12" style="padding-top: 10px;" >
+        <div class="d-flex" style="justify-content: space-evenly;" >
+            <p class="break"></p>
             <?php for($two=0;$two<2;$two++){  $rowCounter=0;?>
-                <div class=" form-group col-md-6">
-                    <table   class="form-group col-md-12 mt-20" >
+                <div style="width:47%">
+                    <table class="form-group col-md-12 mt-2 mb-2" >
                         <tr><td colspan="2" class="tdheight"><h4 align="center">Maharishi Mahesh Yogi Vedic Vishwavidyalaya</h4></td></tr>
                         <tr><td colspan="2" class="tdheight"><h4 align="center">  </h4></td></tr>
                         <tr><td colspan="2" class="tdheight"><h4 align="center">Madhya Pradesh</h4></td></tr>
@@ -73,7 +75,7 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
                                     <td  style="text-align:center;"><?php  echo $student->enrollment_no; ?></td>
                                     <td style="text-align:center;padding: 0px 3px 0px 3px;"><?php echo $student->roll_no;;?></td>
 
-                                    <td style='text-align:center;'><?php echo $student->total_marks; ?></td>
+                                    <td style='text-align:center;'><?php //echo $student->total_marks; ?></td>
 
                                     <td class="font-19">&nbsp;&nbsp;<?php //echo $result; ?></td>
                                 </tr>
@@ -91,11 +93,11 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
                                         <tr><td style="text-align:left;line-height: 20px;"><strong>&nbsp;</strong></td>
                                             <td style="text-align:right;line-height: 20px;"><?php echo $detail[$examcenter][0]->superintendent; ?></td></tr>
                                             <tr><td style="text-align:center" colspan="2"><p style="font-size:12px"><strong>Note:Please see instruction being issued separately</strong></p></td></tr>
-                                        </table> 
-                                        <p class="break"></p>
+                                        </table>
+                                        <p style="height:20px"></p>
 
                                         <!---Header Part--->
-                                        <table   class="form-group col-md-12 mt-20" >
+                                        <table   class="form-group col-md-12 mt-2 mb-2" >
                                             <tr><td colspan="2" class="tdheight"><h4 align="center">Maharishi Mahesh Yogi Vedic Vishwavidyalaya</h4></td></tr>
                                             <tr><td colspan="2" class="tdheight"><h4 align="center">  </h4></td></tr>
                                             <tr><td colspan="2" class="tdheight"><h4 align="center">Madhya Pradesh</h4></td></tr>
@@ -130,13 +132,11 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
                                                 <td style="text-align:left">&nbsp;</td> 
                                                 <td style="text-align:right">&nbsp;</td></tr>
                                                 <tr><td colspan="2" style="text-align:right"><strong>(Examiner's Signature)</strong></td></tr>
-                                                <tr><td style="text-align:left;line-height: 20px;"><strong>&nbsp;</strong></td>
-                                                    <td style="text-align:right;line-height: 20px;"><?php echo $detail[$examcenter][0]->superintendent; ?></td></tr>
+                                                <tr>
+                                                    <td colspan="2" style="text-align:left;line-height: 20px;"><strong>Full Name :</strong></td></tr>
                                                     <tr><td style="text-align:center" colspan="2"><p style="font-size:12px"><strong>Note:Please see instruction being issued separately</strong></p></td></tr>
                                                 </table>
-
                                                 <p class="break"></p>
-
                                             </div>	
                                         <?php } ?>
                                     </div>	

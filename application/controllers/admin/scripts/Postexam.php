@@ -85,18 +85,22 @@ class Postexam extends CI_Controller {
             212 - Dec 2021
             221 - June 2022
         */
-            $data['students'] = $this->Common_model->getRecordByWhere('student', array('new_exam_form'=>'Y' ,'roll_no!='=>0 ,'marksheet_no'=>''));
+            $data['students'] = $this->Common_model->getRecordByWhere('student', array('exam_form'=>'Y' ,'roll_number!='=>0 ,'marksheet_no'=>''));
             $starting_no = 10001 ;
-            foreach($data['students'] as $student){
+            foreach($data['students']  as $key =>  $student){
                 $f_l_center_code = substr($student->center_code, 0, 1);
                 $l_l_center_code =  substr($student->center_code,-4);           
                 $marksheet_no = $f_l_center_code.$starting_no.'212'.$l_l_center_code ;
-                $data  = array('marksheet_no'=>$marksheet_no,);
-                $where = array('student_id'=>$student->student_id ,);
-                $this->Common_model->updateRecordByConditions('student',$where,$data); 
+                
+                // $data['students'][$key]->marksheet_no = $marksheet_no;
+                $updateData  = array('marksheet_no'=>$marksheet_no);
+                $where = array('student_id'=>$student->student_id);
+                $this->Common_model->updateRecordByConditions('student',$where,$updateData); 
+                $this->Common_model->updateRecordByConditions('old_exam_data',$where,$updateData); 
                 $starting_no++ ;
            }
-           $data['students']  = $this->Common_model->getRecordByWhere('student', array('new_exam_form'=>'Y' ,'roll_no!='=>0 ,'marksheet_no!='=>''));
+
+           $data['students'] = $this->Common_model->getRecordByWhere('student', array('exam_form' => 'Y' ,'roll_number!=' => 0 ,'marksheet_no!='=>''));
             $this->load->view('admin/script/header');
             $this->load->view('admin/script/student_marksheet_no',$data);
             $this->load->view('admin/script/footer');
@@ -111,7 +115,6 @@ class Postexam extends CI_Controller {
 
         foreach($students as $student)
         {
-         
             $check_grace_marks = false;
             $fail_count = 0;
             $abs_count = 0;
@@ -201,7 +204,7 @@ class Postexam extends CI_Controller {
             }else{
                 $final_result = 'PASS';   
             }
-             if ($final_result=='FAIL'  && count($course_type)==0) {
+             if ($final_result=='FAIL'  && count($course_type)==0 && $student->course_group_id!=76) {
                 continue;
             }
             $examData['university_mode'] = $student->university_mode;
@@ -264,13 +267,14 @@ class Postexam extends CI_Controller {
                 } 
 
             }
-             $studentData = array('upload_result'=>'Y');
-             if($paper_count==$abs_count && count($course_type)!=0){  
-             $studentData['demo'] = 'Y';
-             $studentData['new_exam_form'] = 'N';
-            } else
-            {
-            $studentData['promote'] = 'N';
+            $studentData = array('upload_result'=>'Y');
+            if($paper_count==$abs_count && count($course_type)!=0){  
+                $studentData['demo'] = 'Y';
+                $studentData['new_exam_form'] = 'N';
+            }elseif($fail_count>1 && $student->course_group_id==76){
+                $studentData['promote'] = 'D';    
+            }else{
+                $studentData['promote'] = 'N';
             }
            $this->Common_model->updateRecordByConditions('student',array('student_id'=>$student->student_id),$studentData);     
             if($insert){
