@@ -26,7 +26,7 @@
 
 		var frm = $('.ajaxForm').serialize()
 		$.ajax({
-			url: BASE_URL+ 'admin/'+account_type+'/change_password_sub/'+admin_id,
+			url: BASE_URL+ 'change_password_sub/'+admin_id,
 			type: 'POST',
 			dataType : 'json',
 			data: frm,

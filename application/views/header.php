@@ -68,7 +68,7 @@
 							</a>
 
 							<div class="dropdown-menu l-50" aria-labelledby="dropdownMenuLink">
-								 <a class="dropdown-item" href="<?=base_url('admin/change_password')?>">Change Password</a> 
+								 <a class="dropdown-item" href="<?=base_url('change_password')?>">Change Password</a> 
 								<a href="<?=base_url('logout')?>" class="dropdown-item">Log Out</a>
 							</div>
 						</div>
