@@ -25,11 +25,6 @@
 					<th>Approved</th>
 					<th>Enrolled</th>
 					<th>Exam Form</th>
-					<th>
-					<?php if($this->session->account_type == "Admins"  ){ ?>	
-						Select Papers
-					<?php } ?>
-					</th>
 					<th>Paper</th>
 					<?php
 					}
@@ -99,44 +94,28 @@
 							<td><?php if( $student["enrolled"]=='Y'){echo 'Enrolled' ;}else{echo 'Non Enrolled' ;} ?></td>
 
 							<td><?php if( $student["new_exam_form"]=='Y'){echo 'Submit' ;}else if($student["new_exam_form"]=='D'){echo 'Not Permitted' ;}else{echo 'Not Submitted';} ; ?></td>					
-					<td>
 						<?php $student_id = $this->Common_model->encrypt_decrypt($student['student_id']); ?>
-						<?php if(($this->session->account_type == "Admins"  )&& $student["temp_exam_form"]=='N'){ ?>
-						<a target="_blank"  class="" href="<?=base_url('select_paper/'.$student_id);?>"><i class="fa fa-plus" aria-hidden="true"></i></a>
-					 
-					<?php } ?>
-				  </td> 
-
+					</td>
 					<td>
-						<?php $student_id = $this->Common_model->encrypt_decrypt($student['student_id']); ?>
 						<?php if($student["temp_exam_form"]=='Y'){ ?>
 						<a target="_blank"  class="" href="<?=base_url('show_paper/'.$student_id);?>"><i class="fa fa-eye" aria-hidden="true"></i></a>
 					 	<?php if($this->session->account_type =="Admins"){?>
 					  <button  class="btn btn-sm  " onclick="delete__student_paper(this)" data-id = "<?=$student['student_id']; ?>"><i class="fa fa-trash" aria-hidden="true"></i></button>   
-					 <?php }?>
-				
-					<?php } ?>
-				   </td>  
-				
+					 <?php }
+					 }else{ ?>
+							<a target="_blank"  class="" href="<?=base_url('select_paper/'.$student_id);?>"><i class="fa fa-plus" aria-hidden="true"></i></a>
+							<?php } ?>
+				   </td>
 						</tr>
 					<?php
 					$i++; 
 				}
 			}
-		?>
 		
-    
-			<?php	
-			if(isset($course_count)){ ?>
-		    
-			<?php
-			
-			$total = 0;
-			foreach($course_count as $student){	
+			if(isset($course_count)){
+				$total = 0;
+				foreach($course_count as $student){	
 				
-				//echo"<pre>";
-				
-			
 		   $class = $this->db->get_where("class_master",array('id'=>$student['class_id']))->result_array();
 		   $course_group_id = $class[0]['course_group_id'];
 		   $course = $this->db->get_where("course_group",array('id'=>$course_group_id))->result_array();
