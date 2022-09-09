@@ -312,7 +312,7 @@
         if($classData[0]->project!='N' || $classData[0]->practical!='N'){
         ?>
         <tr>
-          <td class="align-middle text-right">Practical External Marks Max/Min-></td>
+          <td class="align-middle text-right"><?=($classData[0]->project=='Y') ? 'Project' : 'Practical' ?> External Marks Max/Min-></td>
           <?php foreach($marks as $paper_master){   ?>
           <td  class="align-middle text-center">
             <?php if($paper_master->paper_type!="theory"){echo  $paper_master->max_theory_marks .'/'.$paper_master->min_theory_marks;};  ?>
@@ -321,7 +321,7 @@
           <td class="align-middle text-center"></td>
         </tr>
         <tr>
-          <td class="align-middle text-right">Practical Internal Marks Max/Min-></td>
+          <td class="align-middle text-right"><?=($classData[0]->project=='Y') ? 'Project' : 'Practical' ?> Internal Marks Max/Min-></td>
           <?php foreach($marks as $paper_master){   ?>
           <td  class="align-middle text-center">
             <?php if($paper_master->paper_type!="theory"){echo  $paper_master->max_internal_marks .'/'.$paper_master->min_internal_marks;};  ?>

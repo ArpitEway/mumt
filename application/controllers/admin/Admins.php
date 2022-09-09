@@ -2941,6 +2941,8 @@ public function update_exam_datewise_permission(){
 		$data['pagenumber']=$pagenumber-1;
 		$data['course_group_id'] = $course_group_id;
 		$title = "TR ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
+		$title .= ($startlimit!=1) ? ' Part - '.$startlimit : '';
+		$data['title'] .= $title;
 		$this->load->view('admin/generate_tr',$data);
 	}
 
@@ -3054,13 +3056,17 @@ public function update_exam_datewise_permission(){
 		$this->load->view('footer');
 	}
 
-	public function student_marksheet($course_id="",$class_id="")
+	public function student_marksheet($course_id="",$class_id="",$startlimit=1)
 	{
 		$data = array('class_id' => $class_id,'course_group_id' =>$course_id );
-		$this->db->limit(200);
+				$start=0;
+		$start=($startlimit-1)*1000;
+		$this->db->limit(1000,$start);
 		$this->db->order_by('center_id,roll_number','ASC');
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0' ));
-		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
+		$title = "Marksheet ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
+		$title .= ($startlimit!=1) ? ' Part - '.$startlimit : '';
+		$data['title'] = $title;
 		$this->load->view('admin/student_marksheet',$data);
 	}
 
