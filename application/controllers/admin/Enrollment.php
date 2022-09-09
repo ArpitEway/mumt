@@ -1124,38 +1124,34 @@
 		}
 	}
 
-    public function change_password_sub($id)
+	public function change_password_sub($id)
 
 	{ 
-		// $id = $this->Common_model->encrypt_decrypt($id,'decrypt');
-		// $where = array("id" => $id);
-		// $data = $this->Common_model->getRecordById('admin_master','id',$id);
-	    // $old_password = $data->password;
-				$new_password 	  = $this->input->post('new_password');
-				$confirm_password = $this->input->post('passconf');
-                $new_password_change = md5($new_password);
-          
-				if($this->input->post('new_password') != "")
-				{
-						if($new_password == $confirm_password)
-						{
-						$data_update = array("password" =>  $new_password_change);
-							$this->db->where('id', $id);
-							$this->db->update('admin_master', $data_update);
-							echo json_encode(array(
-								"success" => 'Password Updated Successfully',
-							));
-						}
-						else{
-							echo json_encode(array(
-								"error" => 'Password does not match',
-							));
-						}
-				}else{
-					echo json_encode(array(
-						"error" => 'Please enter New Password',
-					));
-				}
-    }
+		$new_password 	  = $this->input->post('new_password');
+		$confirm_password = $this->input->post('passconf');
+		$new_password_change = md5($new_password);
+
+		if($this->input->post('new_password') != "")
+		{
+			if($new_password == $confirm_password)
+			{
+				$data_update = array("password" =>  $new_password_change);
+				$this->db->where('id', $id);
+				$this->db->update('admin_master', $data_update);
+				echo json_encode(array(
+					"success" => 'Password Updated Successfully',
+				));
+			}
+			else{
+				echo json_encode(array(
+					"error" => 'Password does not match',
+				));
+			}
+		}else{
+			echo json_encode(array(
+				"error" => 'Please enter New Password',
+			));
+		}
+	}
 
 }
