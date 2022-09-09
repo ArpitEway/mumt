@@ -109,14 +109,11 @@
 
 
 </style>
-
 <div id="printThisDivIdOnButtonClick" class="mt-10">
-
 	<div id="printablediv">
 		<div class="mt-5">
-			<label class="label_form label_heading "><b>Student Details</b></label>
+			<label class="label_form label_heading "><b>Student details</b></label>
 			<div class="form-block row text-center">
-				
 				<div class="row col-md-10 m-auto">
 					<div class="form-group col-md-3 text-left m-auto">
 						<label class="label_form">Form Number :</label>
@@ -124,7 +121,6 @@
 					</div>
 					<div class="form-text-color form-group col-md-4 text-left m-auto">
 						<?php echo $student['form_no']; ?>
-
 					</div>
 
 					<div class="form-group col-md-2 text-left m-auto">
@@ -183,73 +179,85 @@
 			
 		</div>
 	</div>
-	<label class="label_form mt-5 label_heading"><b>Paper Details</b></label>
-	<div class="form-block row ">
-		<div class=" table-responsive">
-			<table class="table " style="text-transform: uppercase;">
+	<form>
+		<input type="hidden"  name="student_id" id="student_id" value="<?php echo $student['student_id']  ?>">
+		<input type="hidden"  name="class_id" id="class_id" value="<?php echo $student['class_id']  ?>">
+        <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+        <input type="hidden"  name="student_id" id="student_id_decript"  value="<?php echo $this->Common_model->encrypt_decrypt($student['student_id']);  ?>">
 
-				<thead>
-				<tr>
-					<th>#</th>
-					<th>Paper Code</th>
-					<?php if ($papers[0]->sub_group_id!=0): ?>
-					<th>Sub Group</th>
-					<?php endif ?>
-					<th>Paper Name</th>
-					</tr>
-				</thead>
-
-                <tbody>
-            <?php
-
-            $i = 1;
-            foreach($papers as $paper){
-            ?>
-            <tr>
-            <td><?php echo $i; ?></td>
-            <td><?php echo $paper->paper_code; ?></td>
-            <?php if ($paper->sub_group_id!=0): ?>
-            <td><?php echo $this->Common_model->getSubGroupNameById($paper->sub_group_id); ?></td>
-            <?php endif ?>
-            <td><?php echo $paper->paper_name; ?></td>
-            </tr>
-            <?php
-        $i++;
-        } ?>
-    </tbody>
-			</table>
-		</div>
-	</div>
-		
-		<?php if ($student['new_exam_form']=='N'): ?>
-	<?php $student_id = $this->Common_model->encrypt_decrypt($student['student_id']); ?>
-			<div class="row justify-content-center mt-10">
-			<?php 
-		$center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28 );
-		if(in_array($this->session->center_id, $center_ids)){
-			?>
-<a class="btn btn-success" href="<?= base_url('paid_by_university/'.$student_id) ?>">Paid By University</a>
-			<?php
-		}else{
-			?>
-			<?php if($student['temp_exam_form']=='Y' && $student['new_exam_form']=='N')
-
-			{ 
-				$center_id =  $this->session->center_id;
-				$center_permission = $this->Common_model->get_record('center','exam_form_permission',array('id'=>$center_id));
-				if($center_permission[0]['exam_form_permission']=='Y'){
-				?>
-				<a class="btn btn-success" href="<?= base_url('Payment/exam_form/'.$student_id) ?>">Process To Payment</a>
-			<?php } } ?>
-			<?php
-		}
-  ?>
-		
-				
- 
-		
+		<div class="mt-5">
+			<div class="row border border-primary bg-primary text-white p-2">
+				<div class="col-2"><strong>#</strong></div>
+				<div class="col-3"><strong>Paper code</strong></div>
+				<div class="col-7"><strong>Subjects Name</strong></div>
 			</div>
-		<?php endif ?>
+			<?php
+			$i=0;
+			?>
 
+			<?php
+			foreach($compulsoryPapers as $paper){
+           
+				?>
+				<div class="row border border-default p-2">
+					<div class="col-2"><?=++$i; ?></div>
+					<div class="col-3"><?=$paper['paper_code']; ?></div>
+					<div class="col-7"> <span class="ml-5"><?=$paper['paper_name']?></span></div>					
+					<input type="hidden"  name="compulsary_paper_id[]<?php echo  $paper['id'] ;?>" id="" value="<?php echo $paper['id'];  ?>">
 
-</div>
+				</div>
+			<?php } 	?>
+			<?php
+			$group_name = '';
+			
+				foreach($groupPaper as $paper){
+					if($group_name!=$paper->group_name){
+						$group_name=$paper->group_name;
+						?>
+						<div class="row border border-primary bg-primary p-2 mt-3 text-white">
+							<div class="col-2">#</div>
+							<div class="col-3">	
+							</div>
+							<div class="col-7"><?=$paper->group_name; ?></div>
+						</div>
+					<?php }  ?>
+					<div class="row border border-default p-2">
+						<div class="col-2"><?=++$i; ?></div>
+						<div class="col-3"><?=$paper->paper_code; ?></div>
+						<div class="col-7 "><input  name='paper_id[]<?php echo $paper->group_id ?>' class="paper" value="<?=$paper->paper_id; ?>" type="radio"  checked> <span class="ml-3"><?=$paper->paper_name; ?></span></div>
+
+						</div>
+
+					<?php 	}?>
+				</div>
+			</form>
+			<div class="d-flex justify-content-center mt-10">
+				<button type="reset" class="btn btn-primary  col-3 btn-block mr-2" id="payment_submit">Submit</button>
+
+			</div>
+		</div>
+			<script>
+				$('#payment_submit').on('click', function (e) {
+					var data = $("form").serialize(); 
+
+					//alert('data');
+		           $('#payment_submit').attr("disabled","disabled");
+					$.ajax({
+						url: "<?=base_url('admin/Admins/submit_papers');?>",  
+
+						type:'post',
+						dataType : 'JSON',
+						data:data,
+						success:function(data){
+							console.log(data);
+
+							if(data.status=='true'){
+								window.location.href =  "<?=base_url('admin/Admins/show_paper/');?>"+$('#student_id_decript').val();
+								return false;
+							}else{
+								return false;
+							}
+						}
+					});   
+				});
+			</script>
