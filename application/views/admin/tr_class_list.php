@@ -22,14 +22,14 @@
 			<td><?= $class->class_name ?></td>
 			<td><a target="_blank" href="<?php echo  base_url('admin/admins/student_result_permission/'.$course['id'].'/'.$class->id)  ?>">Result permission</a></td>
 			<td>
-				<?php if ($class->course_group_id==76): ?>
+				<?php if ($class->practical_internal_marks=='Y'): ?>
 				<a target="_blank" href="<?php echo  base_url('admin/admins/generate_tr_bed/'.$course['id'].'/'.$class->id)  ?>">Generate Tr</a>
 					<?php else: ?>
 				<a target="_blank" href="<?php echo  base_url('admin/admins/generate_tr/'.$course['id'].'/'.$class->id)  ?>">Generate Tr</a>
 				<?php endif ?>
 			</td>
 			<td>
-				<?php if ($class->course_group_id==76): ?>
+				<?php if ($class->practical_internal_marks=='Y'): ?>
 				<a target="_blank" href="<?php echo  base_url('admin/admins/student_notification_list_bed/'.$course_id.'/'.$class_id)  ?>">Notification</a>
 				<?php else:?>
 				<a target="_blank" href="<?php echo  base_url('admin/admins/student_notification_list/'.$course_id.'/'.$class_id)  ?>">Notification</a>
