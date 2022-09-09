@@ -4170,4 +4170,52 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
+
+	public function change_password(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+		}else{
+			$titleData = array('title' => 'Change Password');
+			$this->load->view('header',$titleData);
+            $admin_id = $this->session->admin_id;
+			$admin_master_data = $this->Common_model->getRecordById('admin_master','id',$admin_id);
+			$data = array('admin_data' => $admin_master_data,
+                'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(), );
+			$this->load->view('admin/enrollment/change_password',$data);
+			$this->load->view('footer');
+		}
+	}
+
+
+	public function change_password_sub($id)
+
+	{ 
+		$new_password 	  = $this->input->post('new_password');
+		$confirm_password = $this->input->post('passconf');
+		$new_password_change = md5($new_password);
+		if($this->input->post('new_password') != "")
+		{
+			if($new_password == $confirm_password)
+			{
+				$data_update = array("password" =>  $new_password_change);
+				$this->db->where('id', $id);
+				$this->db->update('admin_master', $data_update);
+				echo json_encode(array(
+					"success" => 'Password Updated Successfully',
+				));
+			}
+			else{
+				echo json_encode(array(
+					"error" => 'Password does not match',
+				));
+			}
+		}else{
+			echo json_encode(array(
+				"error" => 'Please enter New Password',
+			));
+		}
+	}
+
+
 }// class
