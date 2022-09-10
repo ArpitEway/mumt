@@ -249,7 +249,7 @@
                               <?php 
                               if ($paper->type=='theory') {
                                 if($paper->int_marks<$paper->min_internal_marks || $paper->theory_marks<$paper->min_theory_marks && $check_grace_marks==false){
-                                  echo  $paper->theory_marks +  $paper->int_marks . 'F' ; 
+                                  echo  $paper->theory_marks +  $paper->int_marks . ' F' ;
                                 }elseif($paper->theory_marks=="ABS"){
                                   echo 'ABS'. ' F' ;
                                 }else{
