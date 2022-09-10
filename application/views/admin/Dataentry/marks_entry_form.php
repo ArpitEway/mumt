@@ -18,8 +18,8 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
     box-shadow: 0px 0px 2px 1px;
     margin: 0 10px;
 }
-
 </style>
+
 <div class="container">
 	<div class="text-center">
 		<h3>Maharishi Mahesh Yogi Vedic Vishwavidyalaya</h3>
@@ -40,13 +40,8 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 		</tr>
 		<tr>
 			<th>Exam Session:</th>
-			<td><?php echo 2021 ?></td>
-				<!-- <th>Paper code:</th>
-				<td><?php echo $papers->paper_code; ?></td>
-			</tr>
-			<tr>
-				<th >Q.Paper:</th>
-				<td>4</td> -->
+			<!-- <td><?php echo 2021 ?></td> -->
+			<td><?php echo $papers->session; ?></td>	
 				<th>Max.Marks:</th>
 				<td>
 					<?php 
@@ -57,7 +52,7 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 					 }elseif($university_mode=='REG'){ 
 					echo $max_marks = $papers->max_theory_marks;
 					echo ' ( Theory marks ) ';
-					echo '+';
+					echo ' + ';
 					echo $max_int_marks = $papers->max_internal_marks;
 					echo ' ( Internal marks ) ';
 					} 
@@ -72,7 +67,6 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 				<thead>
 					<tr>
 						<th>Enrollment no.</th>
-						<!-- <th>Name</th> -->
 						<th>Roll No.</th>
 						<th>Theory Marks</th>
 					</tr>
@@ -86,17 +80,12 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 							<td>
 								<?php echo $dt->enrollment_no; ?>
 							</td>
-							<!-- <td>
-								<?php echo $dt->name; ?>
-							</td> -->
 							<td><?php echo $dt->roll_no; ?>  
 								<input type="hidden" name="student_id[]" value="<?=$dt->student_id?>">
 								<input type="hidden" name="paper_code" value="<?=$paper_code?>">
 							</td>
-							
-							<td class="fit">
-								
-								<select name="marks[]" class="form-control" id="marks<?php echo $count ?>">
+							<td class="fit">	
+							<select name="marks[]" class="form-control" id="marks<?php echo $count ?>">
 									<option value="">Select</option>
 									<option>ABS</option>
 									<?php
@@ -107,20 +96,18 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 										<?php
 									} 
 									?>
-								</select>
-								
+								</select>	
 							</td>
 							<?php
 							$count++;
 							?>
 						</tr>
 						<?php
-					}
+				    	}
 					?>
 					<input type="hidden" id="total_count" value="<?= $count ?>">
-				
 				</tbody>
-			</table>
+			  </table>
 			<div class="row">
 			<button type="button"  id="submit" class="btn btn-primary m-auto">submit</button>
 			</div>
@@ -128,8 +115,7 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 		<p class="pagination-new text-center"><?php echo $links; ?></p>
 	</div>
 	<script>
-		$(document).ready(function(){
-			
+		$(document).ready(function(){	
 			var max_marks = <?php echo $max_marks ?>;
 			if ($('#int_marks1').length>0) {
 				var max_int_marks = <?php echo $max_int_marks; ?>;
@@ -149,14 +135,12 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 				 if(submit==false){
 				 	return false;
 				 }
-
 				 var  serialized = $('#ajaxForm').serialize();
 				 $.ajax({
 				 	url: BASE_URL+"admin/Dataentry/marks_entry_form_sub",
 				 	type: 'POST',
 				 	dataType : 'json',
 				 	data: serialized ,
-
 				 	success: function (data) {
 				 		if(data.success){
 				 			toastr.success(data.success);
@@ -166,11 +150,10 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 				 		}
 				 	},
 				 });
-			});
+			     });
 
-			var marks_array = [];
-			var int_marks_array = [ ];
-		
+		var marks_array = [];
+		var int_marks_array = [ ];
 		for(var i = 0; i <= max_marks; i++){
 			marks_array.push(i);
 		}
