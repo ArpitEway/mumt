@@ -533,9 +533,8 @@ class ExamController extends CI_Controller {
 			$dataArray['class_name']= $this->Common_model->getClassNameByClassId($_POST['class_id']);
 			
 			$dataArray['paper']= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'] , 'paper_code'=>$_POST['paper_code']));
-			$this->load->view('admin/generate_tr/header2',array('title' =>'Folio'));
+			$dataArray['title'] ='Folio';
 			$this->load->view('admin/examController/show_teacher_counter_folio',$dataArray);
-			// $this->load->view('admin/generate_tr/footer2',array('title' =>'Folio'));
 		}	
 	}
    public function getPaperByClassId(){
@@ -1778,7 +1777,7 @@ class ExamController extends CI_Controller {
 			$this->db->where('exam_date!=',"");
 			$this->db->where('exam_date!=',"0000-00-00");	
 			$dataArray['paper']= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'] , 'paper_code'=>$_POST['paper_code']));
-			$this->load->view('admin/generate_tr/header2',array('title' =>'COUNTERFOIL'));
+			$dataArray['title'] = 'COUNTERFOIL';
 			$this->load->view('admin/examController/show_examcenter_folio',$dataArray);
 		}
 	}
