@@ -211,14 +211,15 @@
                             <td align="left" ><span class="style4" style="padding-left:10px;">
                               <?php
                               if ($paper->type=='theory') {
-                                if($paper->theory_marks <  $paper->min_theory_marks || $paper->int_marks <  $paper->min_internal_marks && $check_grace_marks==false){
+                                if(($paper->theory_marks <  $paper->min_theory_marks || $paper->int_marks <  $paper->min_internal_marks) && $check_grace_marks==false){
                                   echo $paper->theory_marks . ' F' ;
                                 }elseif($paper->theory_marks<$paper->min_theory_marks){
-                                  echo $paper->theory_marks; echo ($check_grace_marks) ? ' G' : '';
+                                  echo $paper->theory_marks; 
+                                  echo ($check_grace_marks) ? ' G' : '';
                                 }elseif($paper->theory_marks=='ABS'){
                                   echo 'ABS F';
                                 }else{
-                                  echo $paper->theory_marks ;
+                                  echo $paper->theory_marks;
                                 }
                               }else{
                                 if ($classData->practical_internal_marks=='Y') {
@@ -248,12 +249,13 @@
                             <td align="left" class="style2"><span class="style4" style="padding-left:10px;">
                               <?php 
                               if ($paper->type=='theory') {
-                                if($paper->int_marks<$paper->min_internal_marks || $paper->theory_marks<$paper->min_theory_marks && $check_grace_marks==false){
-                                  echo  $paper->theory_marks +  $paper->int_marks . ' F' ;
+                                if($paper->int_marks<$paper->min_internal_marks || $paper->theory_marks<$paper->min_theory_marks){
+                                  echo  $paper->theory_marks +  $paper->int_marks . '' ;
+                                  echo ($check_grace_marks) ? ' G' : ' F';
                                 }elseif($paper->theory_marks=="ABS"){
                                   echo 'ABS'. ' F' ;
                                 }else{
-                                  echo $paper->theory_marks + $paper->int_marks ;
+                                  echo $paper->theory_marks + $paper->int_marks;
                                 }
                               }else{
                                 if($classData->practical_internal_marks=='Y') {
