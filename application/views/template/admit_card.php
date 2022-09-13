@@ -122,7 +122,9 @@
 					
 					<?php //endif ?> -->
 					<!-- <td><?= ($paper->exam_shift=='मध्याह्न') ? '१२:०० से ०३:०० बजे तक' : ''; ?></td> -->
-					<td><?= ($paper->exam_shift=='Morning') ? '11:00 AM To 2:00 PM' : '03:00 PM To 6:00 PM'; ?></td>
+					<td><?= 
+					($paper->exam_shift=='Morning') ? '11:00 AM To 2:00 PM'   : ($paper->exam_shift=='Evening') ? '03:00 PM To 6:00 PM'  : '12:00 To 3:00 PM'
+					; ?></td>
 			</tr>
 			<?php 
 			$i++;
