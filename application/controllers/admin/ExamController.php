@@ -1607,7 +1607,7 @@ class ExamController extends CI_Controller {
 		$this->db->from('student');
 		$this->db->order_by("roll_no", "asc");
 		// if($exam_center!="All")
-		$where = array('exam_center_id'=>$exam_center, 'roll_no!=' => 0 ,'notification_no'=>3);
+		$where = array('exam_center_id'=>$exam_center, 'roll_no!=' => 0 ,'notification_no'=>4);
 		$this->db->where($where);	
 		$data['exam_center_students'] = $this->db->get()->result();
 		echo $this->load->view('admin/exam_center/get_exam_center_wise_student_attendance_sheet',$data, TRUE);
