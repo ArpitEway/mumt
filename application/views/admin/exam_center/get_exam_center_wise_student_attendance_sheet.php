@@ -60,7 +60,7 @@
 			<div class="BoxC border- padding">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Attendance Sheet Examination AUGUST 2022</h5>
+						<h5>Attendance Sheet Examination <?=($student->class_id==256 || $student->class_id==262) ? 'SEPTEMBER' : 'AUGUST' ?> 2022</h5>
 						
 					</div>
 				</div>
