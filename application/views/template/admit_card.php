@@ -42,7 +42,7 @@
 			<div class="BoxC border- padding mar-bot">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Schedule of Exam for Annual/Semester Examination of August 2022</h5>
+						<h5>Schedule of Exam for Annual/Semester Examination of <?=($student[0]->class_id==256 || $student[0]->class_id==262) ? 'September' : 'August' ?> 2022</h5>
 						<!-- <h5> प्रवेश पत्र  </h5> <h5>परीक्षा (2021-22) </h5> -->
 					</div>
 				</div>

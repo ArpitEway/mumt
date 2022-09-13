@@ -18,7 +18,6 @@
 		foreach ($exam_centers as $center) {
 			$total_count = $this->Common_model->getcountbywhere('student',array('exam_center_id'=>$center->id,'new_exam_form != '=>'D'));
 			$fill_count = $this->Common_model->getcountbywhere('student',array('exam_center_id'=>$center->id,'new_exam_form'=>'Y'));
-		//	$this->Common_model->last_query();
 			?>
 			<tr>
 				<td><?php echo $i++; ?></td>
@@ -26,8 +25,9 @@
 				<td><?php echo $center->schoolcollegename; ?></td>
 				<td><?php echo $center->city; ?></td>
 				<td><?php echo $total_count ;?></td>
-				<td><a target="_blank" href="<?php echo base_url().'admin/admins/exam_center_wise_student_list/'.$center->id .'/'.$param ;?>"><?php echo $fill_count ;?></a></td>
-				<td><a target="_blank" href="<?php echo base_url().'admin/exam_center_wise_student_list/'.$center->id ;?>"><?php echo ($total_count-$fill_count);?></a></td>	
+				<td>
+			    <a target="_blank" href="<?php echo base_url().'exam_center_wise_student_list/'.$this->Common_model->encrypt_decrypt($center->id,'encrypt') .'/'.$this->Common_model->encrypt_decrypt($param,'encrypt') ;?>"><?php echo $fill_count ;?></a></td>
+				<td><a target="_blank" href="<?php echo base_url().'exam_center_wise_student_list/'.$this->Common_model->encrypt_decrypt($center->id,'encrypt');?>"><?php echo ($total_count-$fill_count);?></a></td>	
 			</tr>
 			<?php 
 		}
