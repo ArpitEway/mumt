@@ -320,8 +320,9 @@ class Center extends CI_Controller {
 
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
+		$center_ids_dep = array( 21,22,23,24,25,26,27,28);
 		foreach($tableData as $result){
-			$btn = ($result->document_uploaded=='Y') ?
+			$btn = ($result->document_uploaded=='Y' || in_array($this->session->center_id, $center_ids_dep)) ?
 			'<a href="'.base_url('show_form/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>' : '';
 			$i++;
 
@@ -1115,6 +1116,7 @@ class Center extends CI_Controller {
 			$data['paper_type']=$paper['type'];
 			$data['book_code']=$paper['book_code'];
 			$data['paper_id']=$paper['id'];
+			$data['paper_order']=$paper['paper_no'];
 			$data['student_id']=$student_id;
 			$insert = $this->Common_model->insertAll('new_exam_form',$data);
 		}

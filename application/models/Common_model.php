@@ -781,12 +781,14 @@ class Common_Model extends CI_Model{
 		// die;
 	}
      
-	public function student_info_for_result($student_id)
+	public function student_info_for_result($student_id,$class_id)
 	{
 		$this->db->select('*');
         $this->db->from('paper_master');
+        $this->db->order_by('new_exam_form.sub_group_id,paper_order,paper_no','ASC');
         $this->db->join('new_exam_form', 'paper_master.id = new_exam_form.paper_id');
         $this->db->where('new_exam_form.student_id',$student_id);
+        $this->db->where('new_exam_form.class_id',$class_id);
 		return $this->db->get()->result();
 	}
 
@@ -803,11 +805,12 @@ class Common_Model extends CI_Model{
 		}
 	}
 
-	public function notification_marks_details_($student)
+	public function notification_marks_details_($student,$class_id)
 	{
 		$this->db->select('*');
 		$this->db->from('new_exam_form');
 		$this->db->join('paper_master', 'new_exam_form.paper_id = paper_master.id');
+		$this->db->where('new_exam_form.class_id',$class_id); 
 		$this->db->where('new_exam_form.student_id',$student); 
 		$query = $this->db->get();
 		return $query->result();
@@ -869,6 +872,16 @@ class Common_Model extends CI_Model{
 		return $query->result_array();
 	}
 
+	public function romanClassName($class_name)
+	{
+		$return = '';
+		$arr = explode(' ', $class_name);
+		$romanArray = array('I'=>'First','II'=>'Second','III'=>'Third','IV'=>'Fourth','V'=>'Fifth','VI'=>'Sixth','VII'=>'Seventh','VI'=>'eighth');
+		$return .=$romanArray[$arr[0]];
+
+		$return .= ($arr[1]=='SEM') ? ' Semester' : ' Year';
+		return $return;
+	}
 }
 
 ?>

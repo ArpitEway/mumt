@@ -1,7 +1,7 @@
 
 <div class=" mt-5" >
     
-	<table id="" class="table table-striped dt-responsive nowrap" width="100%" >
+	<table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
 		<thead>
 			<tr>
                 <!--  Form , Enrollment , Roll , Name , Course , class , centercode , marksheet no -->
@@ -12,6 +12,7 @@
 				<th>Student Name </th>
 				<th>Course</th>
 				<th>Class</th>
+				<th>Center Code</th>
 				<th>Marksheet No.</th>
 			</tr>
 		</thead>
@@ -24,10 +25,11 @@
 					<td><?php echo $i; ?></td>
 					<td><?php echo $student->student_id; ?></td>
 					<td><?php echo $student->enrollment_no; ?></td>
-					<td><?php echo $student->roll_no; ?></td>
+					<td><?php echo $student->roll_number; ?></td>
 					<td><?php echo $student->name; ?></td>
 					<td><?php echo $student->course_name; ?></td>
 					<td><?php echo $student->class_name; ?></td>
+					<td><?php echo $student->center_code; ?></td>
 					<td><?php echo $student->marksheet_no; ?></td>
 				</tr>
 				<?php $i++; } ?>
