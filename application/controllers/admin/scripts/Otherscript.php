@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Documentmove extends CI_Controller {
+class Otherscript extends CI_Controller {
 
 	function __construct(){
 		parent::__construct();
@@ -32,26 +32,26 @@ class Documentmove extends CI_Controller {
 
 		 	echo "<br> ".$i." ".$row->student_id ." ". $row->firstname ." ". $row->session;
 		
-		// //	echo  $this->db->last_query(); die;
-         $source=FCPATH."/assets/documents/".$row->document_image;
-     
-        $destination=FCPATH."/assets/documents/".$row->session."/".$row->document_image;
-      
-        $dirname = FCPATH."/assets/documents/".$row->session;
+	
+			$source=FCPATH."/assets/documents/".$row->document_image;
+		
+			$destination=FCPATH."/assets/documents/".$row->session."/".$row->document_image;
+		
+			$dirname = FCPATH."/assets/documents/".$row->session;
 
-        if(!is_dir($dirname)){
-            mkdir( $dirname, 0777);
-            echo "The directory $dirname was successfully created.";
-          
-        } 
+			if(!is_dir($dirname)){
+				mkdir( $dirname, 0777);
+				echo "The directory $dirname was successfully created.";
+			
+			} 
 
-        if( rename( $source , $destination )){
-            echo '<br>moved!'.$destination;
-            $data  = array('move'=>'Y' );
-            $where = array('student_id'=>$row->student_id,'id'=> $row->id);
-            
-            $update =$this->Common_model->updateRecordByConditions('admission_document',$where,$data);
-        } 
+			if( rename( $source , $destination )){
+				echo '<br>moved!'.$destination;
+				$data  = array('move'=>'Y' );
+				$where = array('student_id'=>$row->student_id,'id'=> $row->id);
+				
+				$update =$this->Common_model->updateRecordByConditions('admission_document',$where,$data);
+			} 
 
 		 	$i++;
 		}
