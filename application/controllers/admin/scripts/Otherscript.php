@@ -35,9 +35,9 @@ class Otherscript extends CI_Controller {
 	
 			$source=FCPATH."/assets/documents/".$row->document_image;
 		
-			$destination=FCPATH."/assets/documents/".$row->session."/".$row->document_image;
+			$destination=FCPATH."/assets/enrolled_documents/".$row->session."/".$row->document_image;
 		
-			$dirname = FCPATH."/assets/documents/".$row->session;
+			$dirname = FCPATH."/assets/enrolled_documents/".$row->session;
 
 			if(!is_dir($dirname)){
 				mkdir( $dirname, 0777);

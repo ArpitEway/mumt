@@ -617,9 +617,9 @@
 				foreach($admissionDoc as $row){
 					$source=FCPATH."/assets/documents/".$row['document_image'];
 				
-					$destination=FCPATH."/assets/documents/".$student[0]->session."/".$row['document_image'];
+					$destination=FCPATH."/assets/enrolled_documents/".$student[0]->session."/".$row['document_image'];
 				
-					$dirname = FCPATH."/assets/documents/".$student[0]->session;
+					$dirname = FCPATH."/assets/enrolled_documents/".$student[0]->session;
 
 					if(!is_dir($dirname)){
 						mkdir( $dirname, 0777);
