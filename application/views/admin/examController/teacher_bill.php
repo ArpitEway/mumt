@@ -35,13 +35,17 @@
 
 		<?php
 		$i = 1;
-        $ug_id =$this->Common_model->get_record('course_group','id',array('course_type ' => 'UG' ));
+        $ugwhere = "course_type in ('UG', 'Diploma','Certificate')";
+        $ug_id = $this->Common_model->get_record('course_group','id',$ugwhere);
+        
         $ug_array=array();$n=0;
         foreach($ug_id as $key=> $val){
              $ug_array[$n]=$val['id'];
             $n++;
         }
-        $pg_id =$this->Common_model->get_record('course_group','id',array('course_type ' => 'PG' ));
+        $pgwhere = "course_type in ('PG', 'PGDiploma')";
+        $pg_id = $this->Common_model->get_record('course_group','id',$pgwhere);
+        
         $pg_array=array();$n=0;
         foreach($pg_id as $key=> $val){
              $pg_array[$n]=$val['id'];
