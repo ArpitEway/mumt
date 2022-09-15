@@ -38,12 +38,13 @@
 			<select name="course_group_id" id="course_group_id" class="form-control course_group_id" data-target="#class_id" required >
 				<option value="all">All</option>
 				<?php 
-				$courses = $this->db->get_where('course', array())->result_array();
+
+            $courses = $this->Common_model->get_record('course_group','id,course_name');
+				// $courses = $this->db->get_where('course', array())->result_array();
 				foreach($courses as $course)
 				{
 					?>
-
-					<option value="<?php echo $course['course_group_id']; ?>"><?php echo $course['course_name']; ?></option>
+					<option value="<?php echo $course['id']; ?>"><?php echo $course['course_name']; ?></option>
 
 					<?php
 				} 

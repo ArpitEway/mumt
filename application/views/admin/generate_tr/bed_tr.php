@@ -1,3 +1,4 @@
+<title><?php echo (isset($title)) ? $title : ''; ?></title>
 <style>
   @page {
           size: auto;
@@ -54,13 +55,16 @@
   }
   table {
     border-spacing: 2px;
-    width: 1325px;
+    width: 100%;
     margin-bottom: 6px;
   }
   .text-center {
     text-align: center;
   }
-
+  table.last_table, .last_table td, .last_table th{
+    border: none;
+  }
+  
 /*table marks css*/
   .roll_no {
     width: 7%;
@@ -76,6 +80,7 @@
   }
   .paper {
     width: 15%;
+    min-width: 85px;
   }
   .paper_code {
     width: auto;
@@ -307,7 +312,7 @@
         if($classData[0]->project!='N' || $classData[0]->practical!='N'){
         ?>
         <tr>
-          <td class="align-middle text-right">Practical External Marks Max/Min-></td>
+          <td class="align-middle text-right"><?=($classData[0]->project=='Y') ? 'Project' : 'Practical' ?> External Marks Max/Min-></td>
           <?php foreach($marks as $paper_master){   ?>
           <td  class="align-middle text-center">
             <?php if($paper_master->paper_type!="theory"){echo  $paper_master->max_theory_marks .'/'.$paper_master->min_theory_marks;};  ?>
@@ -316,7 +321,7 @@
           <td class="align-middle text-center"></td>
         </tr>
         <tr>
-          <td class="align-middle text-right">Practical Internal Marks Max/Min-></td>
+          <td class="align-middle text-right"><?=($classData[0]->project=='Y') ? 'Project' : 'Practical' ?> Internal Marks Max/Min-></td>
           <?php foreach($marks as $paper_master){   ?>
           <td  class="align-middle text-center">
             <?php if($paper_master->paper_type!="theory"){echo  $paper_master->max_internal_marks .'/'.$paper_master->min_internal_marks;};  ?>
@@ -335,7 +340,7 @@
       <tbody>
         <tr>
           <th  class="align-middle text-center roll_no" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_number ?> <br> <?php echo $student->enrollment_no  ?></th>
-          <th class="align-middle text-center ms_no" rowspan="<?php echo $rowspandata ?>"></th>
+          <th class="align-middle text-center ms_no" rowspan="<?php echo $rowspandata ?>"><?=$student->marksheet_no ?></th>
           <th  class="align-middle text-center photo" rowspan="<?php echo $rowspandata ?>">
             <img alt="N/A" src="<?= base_url('assets/student_image/'.$student->session.'/'.$student->photo) ?>" height="90px"></th>
           <td  class="align-middle text-center name"  rowspan="<?php  echo $rowspandata ?>"><?php  echo $student->name ?>/ <br><?php  echo $student->f_h_name ?></td>
@@ -531,7 +536,7 @@
 ?>
 
 <hr>
-<table width="100%" border="0">
+<table width="100%" class="last_table" border="0">
 <tr>
 <td colspan="3">&nbsp;</td>
 <td colspan="3" align="right">Order for Declaration & Publication of Result</td>

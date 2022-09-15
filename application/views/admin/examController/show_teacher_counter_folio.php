@@ -1,26 +1,38 @@
-<?php $student=array(); ?>
-<style>
-    h4{font-size:16px;}
-    .break{
-        page-break-before: always;
-        height: 20px;
-    }
-    table {
-        background-color: transparent;
-        border-collapse: collapse;
-        border-spacing: 0;
-        max-width: 100%;
-    }
-    .tdheight{line-height:21px; }
-    td{
-     line-height:35px;
- }
- .font-19{
-    font-size: 15px;
-}
-</style>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+</head>
+<body>
+    <style>
+        h4{
+            font-size:16px;
+            margin: 0;
+        }
+        .break{
+            page-break-before: always;
+        }
+        table {
+            background-color: transparent;
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+        }
+        .tdheight{line-height:21px; }
+        td{
+           line-height:30px;
+       }
+       .font-19{
+            font-size: 15px;
+        }
+        .d-flex{
+            display: flex;
+        }
+    </style>
 <?php 
-$pageCounter=30;
+$pageCounter=26;
 $words = array('0' => '', '1' => 'One', '2' => 'Two',
     '3' => 'Three', '4' => 'Four', '5' => 'Five', '6' => 'Six',
     '7' => 'Seven', '8' => 'Eight', '9' => 'Nine',
@@ -32,10 +44,9 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
     '60' => 'Sixty', '70' => 'Seventy',
     '80' => 'Eighty', '90' => 'Ninety');
     foreach($data as $teacher){ ?> 
-        <div class="d-flex" style="justify-content: space-evenly;">
-            <p class="break"></p>
+        <div class="d-flex" style="justify-content: space-between;">
             <?php for($two=0;$two<2;$two++){ $rowCounter=0; ?>
-                <div style="width:47%">
+                <div style="width:48%">
                     <table   class="form-group col-md-12 mt-2 mb-2">
                         <tr><td colspan="2" class="tdheight"><h4 align="center">Maharishi Mahesh Yogi Vedic Vishwavidyalaya</h4></td></tr>
                         <tr><td colspan="2" class="tdheight"><h4 align="center">Madhya Pradesh</h4></td></tr>
@@ -49,11 +60,11 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
                         </table>
                         <table   border="1" class="form-group col-md-12">
                             <tr style="text-align:center;">
-                                <td rowspan="2"  width="77"><strong>En.No. DE/</strong></td>
-                                <td rowspan="2"  width="50"><strong>Roll No.</strong></td>
+                                <td rowspan="2"><strong>En.No.</strong></td>
+                                <td rowspan="2"><strong>Roll No.</strong></td>
                                 <td colspan="2"><strong>Marks Awarded</strong></td></tr>
                                 <tr style="text-align:center;">
-                                    <td width="61"><strong>In Fig.</strong></td><td width="344"><strong>In Words</strong></td>
+                                    <td><strong>In Fig.</strong></td><td><strong>In Words</strong></td>
                                 </tr>
                                 <?php foreach($teacher as $student){ $rowCounter++;?> 
                                     <tr>
@@ -110,7 +121,7 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
                                                 <td style="text-align:right;line-height: 20px;"><?php echo $teachername[$teacherID]; ?></td></tr>
                                                 <tr><td style="text-align:center" colspan="2"><p style="font-size:12px"><strong>Note:Please see instruction being issued separately</strong></p></td></tr>
                                             </table>
-                                            <p style="height:20px"></p>
+                                            <p class="break"></p>
                                             <table   class="form-group col-md-12 mt-2 mb-2">
                                                 <tr><td colspan="2" class="tdheight"><h4 align="center">Maharishi Mahesh Yogi Vedic Vishwavidyalaya</h4></td></tr>
                                                 <tr><td colspan="2" class="tdheight"><h4 align="center">  </h4></td></tr>
@@ -126,11 +137,11 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
                                                 </table>
                                                 <table   border="1" class="form-group col-md-12">
                                                     <tr style="text-align:center;">
-                                                        <td rowspan="2"  width="77"><strong>En.No. DE/</strong></td>
-                                                        <td rowspan="2"  width="50"><strong>Roll No.</strong></td>
+                                                        <td rowspan="2"  width="77"><strong>En.No.</strong></td>
+                                                        <td rowspan="2" ><strong>Roll No.</strong></td>
                                                         <td colspan="2"><strong>Marks Awarded</strong></td></tr>
                                                         <tr style="text-align:center;">
-                                                            <td width="61"><strong>In Fig.</strong></td><td width="344"><strong>In Words</strong></td>
+                                                            <td><strong>In Fig.</strong></td><td ><strong>In Words</strong></td>
                                                         </tr>
 
                                          <?php }//rowCounter condition end
@@ -150,4 +161,6 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
                             </div>
                         <?php } ?>
                     </div>	
-                    <?php } ?>
+                <?php } ?>
+            </body>
+            </html>

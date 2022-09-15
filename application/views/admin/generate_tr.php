@@ -1,3 +1,4 @@
+<title><?php echo (isset($title)) ? $title : ''; ?></title>
 <style>
   svg {
     width: 101px;
@@ -38,7 +39,7 @@
   }
   table {
     border-spacing: 2px;
-    width: 1325px;
+    width: 100%;
     margin-bottom: 6px;
   }
   .text-center {
@@ -66,6 +67,7 @@ table.last_table, .last_table td, .last_table th{
   }
   .paper {
     width: 15%;
+    min-width: 85px;
   }
   .paper_code {
     width: auto;
@@ -292,7 +294,7 @@ table.last_table, .last_table td, .last_table th{
         if($classData[0]->project!='N' || $classData[0]->practical!='N'){
         ?>
         <tr>
-          <td class="align-middle text-right paper">Practical Marks Max/Min-></td>
+          <td class="align-middle text-right paper"> <?=($classData[0]->project=='Y') ? 'Project' : 'Practical' ?> Marks Max/Min-></td>
           <?php foreach($marks as $paper_master){   ?>
           <td  class="align-middle text-center practical_marks">
             <?php if($paper_master->paper_type!="theory"){echo  $paper_master->max_theory_marks .'/'.$paper_master->min_theory_marks;};  ?>

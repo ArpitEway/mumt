@@ -1200,7 +1200,7 @@ class Center extends CI_Controller {
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
-		$titleData = array('title' => 'Admit Card List AUGUST 2022' );
+		$titleData = array('title' => 'Admit Card List 2022' );
 		$this->load->view('Centers/header',$titleData);
 		$where = array('center_id'=>$this->session->center_id , 'admit_card_permission' =>'Y',"student.roll_no!="=>0);
 		$this->db->select('DISTINCT(student.class_id) as
@@ -1222,7 +1222,7 @@ class Center extends CI_Controller {
 			redirect(base_url());
 		}
 		$class_id=$this->Common_model->encrypt_decrypt($class_id,'decrypt');
-		$titleData = array('title' => 'Admit Card Student List AUGUST 2022' );
+		$titleData = array('title' => 'Admit Card Student List 2022' );
 		$this->load->view('Centers/header',$titleData);
 		$center_id =  $this->session->center_id;
 		$where = array(
@@ -1242,7 +1242,7 @@ class Center extends CI_Controller {
 		}
 		$en_student_id = $student_id;
 		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
-		$titleData = array('title' => 'Admit Card AUGUST 2022' );
+		$titleData = array('title' => 'Admit Card 2022' );
 		$this->load->view('Centers/header',$titleData);
 		$center_id =  $this->session->center_id;
 		$where = array(

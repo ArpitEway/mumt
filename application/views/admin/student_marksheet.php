@@ -2,6 +2,7 @@
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link href="css/print_Marksheet.css" rel="stylesheet" type="text/css">
+  <title><?php echo (isset($title)) ? $title : ''; ?></title>
   <style type="text/css">
     body {
       color:#000000;
@@ -68,7 +69,7 @@
                         </div>
                       </td>
                       <td align="left" width="18%" rowspan="4">
-                        <img border="1"  class="student_image" src="../admin/en/na.jpg" width="90px" height="105px">
+                        <img border="1"  class="student_image" src="<?= base_url('assets/student_image/'.$student->session.'/'.$student->photo) ?>" width="90px" height="105px">
                       </td>
                     </tr>
                     <tr>
@@ -202,26 +203,28 @@
                             <td align="center" ><span class="style4">
                               <?php echo  $paper->min_theory_marks; ?></span>
                             </td>
-                            <td align="center" ><span class="style4"><?php echo  $paper->max_internal_marks; ?></span>
+                            <td align="center" ><span class="style4"><?=($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->max_internal_marks : '-'; ?></span>
                             </td>
-                            <td align="center" ><span class="style4"><?php echo  $paper->min_internal_marks; ?></span>
+                            <td align="center" ><span class="style4">
+                              <?=($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->min_internal_marks : '-'; ?></span>
                             </td>
                             <td align="left" ><span class="style4" style="padding-left:10px;">
                               <?php
                               if ($paper->type=='theory') {
-                                if($paper->theory_marks <  $paper->min_theory_marks || $paper->int_marks <  $paper->min_internal_marks && $check_grace_marks==false){
-                                  echo $paper->theory_marks . '*' ;
+                                if(($paper->theory_marks <  $paper->min_theory_marks || $paper->int_marks <  $paper->min_internal_marks) && $check_grace_marks==false){
+                                  echo $paper->theory_marks . ' F' ;
                                 }elseif($paper->theory_marks<$paper->min_theory_marks){
-                                  echo $paper->theory_marks; echo ($check_grace_marks) ? ' G' : '';
+                                  echo $paper->theory_marks; 
+                                  echo ($check_grace_marks) ? ' G' : '';
                                 }elseif($paper->theory_marks=='ABS'){
                                   echo 'ABS F';
                                 }else{
-                                  echo $paper->theory_marks ;
+                                  echo $paper->theory_marks;
                                 }
                               }else{
                                 if ($classData->practical_internal_marks=='Y') {
                                   if($paper->p_marks<$paper->min_theory_marks || $paper->int_marks<$paper->min_internal_marks){
-                                    echo $paper->p_marks.' *';
+                                    echo $paper->p_marks.' F';
                                   }elseif($paper->p_marks=='ABS'){
                                     echo 'ABS F';
                                   }else{
@@ -229,7 +232,7 @@
                                   }
                                 }else{
                                   if($paper->p_marks<$paper->min_theory_marks){
-                                    echo $paper->p_marks.' *';
+                                    echo $paper->p_marks.' F';
                                   }elseif($paper->p_marks=='ABS'){
                                     echo 'ABS F';
                                   }else{
@@ -241,32 +244,33 @@
                               ?>
                             </span></td>
                             <td align="left" class="style4"><span class="style2" style="padding-left:10px;">
-                              <?php echo $paper->int_marks;  ?></span>
+                              <?=($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->int_marks : '-'; ?></span>
                             </td>
                             <td align="left" class="style2"><span class="style4" style="padding-left:10px;">
                               <?php 
                               if ($paper->type=='theory') {
-                                if($paper->int_marks<$paper->min_internal_marks || $paper->theory_marks<$paper->min_theory_marks && $check_grace_marks==false){
-                                  echo  $paper->theory_marks +  $paper->int_marks . '*' ; 
+                                if($paper->int_marks<$paper->min_internal_marks || $paper->theory_marks<$paper->min_theory_marks){
+                                  echo  $paper->theory_marks +  $paper->int_marks . '' ;
+                                  echo ($check_grace_marks) ? ' G' : ' F';
                                 }elseif($paper->theory_marks=="ABS"){
-                                  echo 'ABS';
+                                  echo 'ABS'. ' F' ;
                                 }else{
-                                  echo $paper->theory_marks + $paper->int_marks ;
+                                  echo $paper->theory_marks + $paper->int_marks;
                                 }
                               }else{
                                 if($classData->practical_internal_marks=='Y') {
                                   if($paper->int_marks<$paper->min_internal_marks || $paper->p_marks<$paper->min_theory_marks && $check_grace_marks==false){
-                                    echo  $paper->p_marks +  $paper->int_marks . '*' ; 
+                                    echo  $paper->p_marks +  $paper->int_marks . ' F' ; 
                                   }elseif($paper->p_marks=="ABS" || $paper->int_marks=="ABS"){
-                                    echo 'ABS';
+                                    echo 'ABS'. ' F' ;
                                   }else{
                                     echo $paper->p_marks + $paper->int_marks ;
                                   } 
                                 }else{
                                   if($paper->p_marks<$paper->min_theory_marks && $check_grace_marks==false){
-                                    echo  $paper->p_marks . '*' ; 
+                                    echo  $paper->p_marks . ' F' ; 
                                   }elseif($paper->p_marks=="ABS"){
-                                    echo 'ABS';
+                                    echo 'ABS'. ' F';
                                   }else{
                                     echo $paper->p_marks;
                                   }

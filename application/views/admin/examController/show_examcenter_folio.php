@@ -1,28 +1,34 @@
-<?php 
-$student=array(); ?>
-
-<style>
-    h4{
-        font-size:16px;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+</head>
+<body>
+    <style>
+        h4{
+            font-size:16px;
+            margin: 0;
+        }
+        .break{
+            page-break-before: always;
+        }
+        table {
+            background-color: transparent;
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+        }
+        .tdheight{line-height:21px; }
+        td{
+         line-height:30px;
+     }
+     .font-19{
+        font-size: 15px;
     }
-    .break{
-        page-break-before: always;
-        height: 20px;
-    }
-    table {
-        background-color: transparent;
-        border-collapse: collapse;
-        border-spacing: 0;
-        max-width: 100%;
-    }
-    .tdheight{
-        line-height:21px;
-    }
-    td{
-        line-height:35px;
-    }
-   .font-19{
-        font-size: 19px;
+    .d-flex{
+        display: flex;
     }
 </style>
 <?php 
@@ -40,10 +46,10 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
     '60' => 'Sixty', '70' => 'Seventy',
     '80' => 'Eighty', '90' => 'Ninety');
     foreach($exam_center_id as $examcenter){  $examcenterCounter++;?> 
-        <div class="d-flex" style="justify-content: space-evenly;" >
+        <div class="d-flex" style="justify-content: space-between;" >
             <p class="break"></p>
             <?php for($two=0;$two<2;$two++){  $rowCounter=0;?>
-                <div style="width:47%">
+                <div style="width:48%">
                     <table class="form-group col-md-12 mt-2 mb-2" >
                         <tr><td colspan="2" class="tdheight"><h4 align="center">Maharishi Mahesh Yogi Vedic Vishwavidyalaya</h4></td></tr>
                         <tr><td colspan="2" class="tdheight"><h4 align="center">  </h4></td></tr>
@@ -94,7 +100,7 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
                                             <td style="text-align:right;line-height: 20px;"><?php echo $detail[$examcenter][0]->superintendent; ?></td></tr>
                                             <tr><td style="text-align:center" colspan="2"><p style="font-size:12px"><strong>Note:Please see instruction being issued separately</strong></p></td></tr>
                                         </table>
-                                        <p style="height:20px"></p>
+                                        <p class="break"></p>
 
                                         <!---Header Part--->
                                         <table   class="form-group col-md-12 mt-2 mb-2" >
@@ -141,3 +147,5 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
                                         <?php } ?>
                                     </div>	
                                 <?php } ?>	
+                            </body>
+                            </html>

@@ -66,7 +66,7 @@
 			<div class="BoxC border- padding">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Attendance Sheet Examination AUGUST 2022</h5>
+						<h5>Attendance Sheet Examination <?=($student['class_id']==256 || $student['class_id']==262) ? 'SEPTEMBER' : 'AUGUST' ?> 2022</h5>
 						
 					</div>
 				</div>
@@ -142,7 +142,9 @@
 				<tr>
 					<td><?php echo $i ; ?></td>
 					<td><?php echo date("d-m-Y", strtotime($paper->exam_date)); ?></td>
-					<td><?= ($paper->exam_shift=='Morning') ? '11:00 AM To 2:00 PM' : '03:00 PM To 6:00 PM'; ?></td>
+					<td><?= 
+					($paper->exam_shift=='Morning') ? '11:00 AM To 2:00 PM'   : ($paper->exam_shift=='Evening') ? '03:00 PM To 6:00 PM'  : '12:00 To 3:00 PM'
+					; ?></td>
 					<td style="text-align:left;"><?php echo $paper->paper_name; ?></td>
 					<td ></td>
 					<td ></td>
