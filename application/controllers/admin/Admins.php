@@ -4353,5 +4353,80 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
+	public function check_student_result(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url('admin'));
+			exit;
+		}else{
+			$this->load->view('header',array('title' =>'Search Student Result'));
+			$data = array(
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+			);
+			$this->load->view('admin/check_student_result',$data);
+			$this->load->view('footer');
+		}
+
+	}
+
+	public function get_student_result(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url('admin'));
+			exit;
+		}else{
+			$text_val =$this->input->post('text_val');
+			$radio_val = $this->input->post('radio_val');
+			if($text_val !=''){
+				 if($text_val !='' && $radio_val == 'enrollment_no'){
+					$student = $this->Common_model->getRecordById('student','enrollment_no',$text_val);
+				}else if($text_val !='' && $radio_val == 'student_id'){
+					$student = $this->Common_model->getRecordById('student','student_id',$text_val);
+				}  
+				$result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id' =>$student->student_id));
+				$data = array(
+					'result' => $result,
+					'student' => $student,
+					'name_csrf' => $this->security->get_csrf_token_name(),
+					'hash_csrf' => $this->security->get_csrf_hash(),
+				);
+
+				$dt =  $this->load->view('admin/view_student_result',$data,true);
+				echo json_encode(array(
+					"status" => true,
+					"data" => $dt
+				));
+			}
+		}
+	}
+
+	public function marksheet($student_id="")
+	{
+		echo $student_id=$this->uri->segment(4);die;
+		$student = $this->Common_model->getRecordByWhere("student",array('exam_form'=>'Y','result_show'=>'Y','student_id'=>$student_id));
+		// if (count($student)==0) {
+		// 	redirect(base_url());
+		// }
+		$data['student']=$student[0];
+		$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
+		$data['practical_internal_marks']=$classData->practical_internal_marks;
+		$this->db->select('*');
+		$this->db->from('old_result_data');
+		$this->db->where('old_result_data.student_id',$data['student']->student_id);
+		$this->db->where('old_result_data.class_id',$data['student']->old_class_id); 
+		$new_exam_form = $this->db->get()->result();
+		$data['old_result_data']  = $new_exam_form;
+		$title = array('title' => 'Result - '.$data['student']->enrollment_no);
+		$this->load->view('admin/generate_tr/header2',$title);	
+		//$this->load->view('Centers/marksheet',$data);
+		$this->load->view('Centers/marksheet_top',$data);
+		if ($student[0]->course_group_id==36 || $student[0]->course_group_id==37) {
+			$this->load->view('admin/marksheet_student',$data);
+		}else{
+			$this->load->view('Centers/marksheet_bottom',$data);
+		}
+		$this->load->view('admin/generate_tr/footer2');
+	}
+
+
 
 }// class
