@@ -35,7 +35,15 @@
 		$where="";
 		if(!empty($course_type))
 			$where .="student.university_mode='".$course_type."' AND ";	
-		$where.= "document_uploaded!='Y' and payment_status='Y' and center_id=".$this->session->center_id ."  and session='July 2022'";
+		$permission_session= $this->Common_model->getRecordByWhere('session',array('session'=>'July 2022' ));
+		
+		$annual_permission = $permission_session[0]->annual_permission;
+		$semester_permission = $permission_session[0]->semester_permission;	
+		$where.= "document_uploaded!='Y' and payment_status='Y' and center_id=".$this->session->center_id ."  and session='".$permission_session[0]->session."'";
+		if($semester_permission=="N")
+		$where.="and  student.class_name  not like '%SEM%' ";
+		if($annual_permission=="N")
+		$where.="and  student.class_name  not like '%YEAR%' ";
 		// $where.= "document_uploaded!='Y' and payment_status='Y' and center_id=".$this->session->center_id ."  and ( (student.class_name not like '%SEM%' and student.session='July 2021') or session!='July 2021')";
 		$column_order = array('student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name',null);
 		$column_search = array('enrollment_no', 'name', 'f_h_name', 'course_name','class_name');

@@ -374,10 +374,21 @@ class Center extends CI_Controller {
 	public function getUnpaidFeesList($param1 = ''){
 		$course_type=$this->input->post('course_type');
 		$data = $row = array();
+		
+		
 		$where = 'online_payment_transaction.center_id='.$this->session->center_id.' and online_payment_transaction.payment!="Y"';
 		
 		if($param1=='Admission'){
-			$where .= " and online_payment_transaction.fees_head='Admission Fees'  and  student.payment_status='N' && session='July 2022'";
+			$permission_session= $this->Common_model->getRecordByWhere('session',array('session'=>'July 2022' ));
+			
+			 $annual_permission = $permission_session[0]->annual_permission;
+			$semester_permission = $permission_session[0]->semester_permission;
+			
+			$where .= " and online_payment_transaction.fees_head='Admission Fees'  and  student.payment_status='N' and student.session='".$permission_session[0]->session."'"; 
+			if($semester_permission=="N")
+			$where.="and  student.class_name  not like '%SEM%' ";
+			if($annual_permission=="N")
+			$where.="and  student.class_name  not like '%YEAR%' ";
 			// $where .= " and online_payment_transaction.fees_head='Admission Fees'  and  `student.payment_status`='N' and ( (student.class_name not like '%SEM%' and student.session='July 2021') or session!='July 2021')";
 		}elseif($param1=='Exam'){
 			$where .= ' and online_payment_transaction.fees_head="Exam Fees"';
