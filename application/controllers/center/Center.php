@@ -379,16 +379,22 @@ class Center extends CI_Controller {
 		$where = 'online_payment_transaction.center_id='.$this->session->center_id.' and online_payment_transaction.payment!="Y"';
 		
 		if($param1=='Admission'){
-			$permission_session= $this->Common_model->getRecordByWhere('session',array('session'=>'July 2022' ));
+			$permission_session= $this->Common_model->getRecordByWhere('session',array('unpaid_permission'=>'Y' ));
+			$where .= " and online_payment_transaction.fees_head='Admission Fees'  and  student.payment_status='N' and ( "; 
+			foreach($permission_session as $key=>$row){
 			
-			 $annual_permission = $permission_session[0]->annual_permission;
-			$semester_permission = $permission_session[0]->semester_permission;
+				if($row->semester_permission=='N' && $row->annual_permission=='Y' )
+				$where.=" (student.class_name not like '%SEM%' and student.session='".$row->session."') or ";
+				else if($row->annual_permission=='N' && $row->semester_permission=='Y')
+				$where.="  (student.class_name not like '%YEAR%' and student.session='".$row->session."') or ";
+				else if($row->annual_permission=='Y' && $row->semester_permission=='Y')
+				$where.="   session='".$row->session."'";
+				
+			}
 			
-			$where .= " and online_payment_transaction.fees_head='Admission Fees'  and  student.payment_status='N' and student.session='".$permission_session[0]->session."'"; 
-			if($semester_permission=="N")
-			$where.="and  student.class_name  not like '%SEM%' ";
-			if($annual_permission=="N")
-			$where.="and  student.class_name  not like '%YEAR%' ";
+			
+			$where .= " ) "; 
+			
 			// $where .= " and online_payment_transaction.fees_head='Admission Fees'  and  `student.payment_status`='N' and ( (student.class_name not like '%SEM%' and student.session='July 2021') or session!='July 2021')";
 		}elseif($param1=='Exam'){
 			$where .= ' and online_payment_transaction.fees_head="Exam Fees"';
