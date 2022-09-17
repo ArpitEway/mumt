@@ -925,12 +925,35 @@ class Center extends CI_Controller {
 
 		$center_id =  $this->session->center_id;
 
-		$where = array(
-			'approved' =>'N',
-			'center_id' => $center_id,
-			'university_mode' =>$course_type,
-		);
-		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
+		// $where = array(
+		// 	'approved' =>'N',
+		// 	'center_id' => $center_id,
+		// 	'university_mode' =>$course_type,
+		// );
+		// $data['students'] = $this->Common_model->getRecordByWhere('student',$where);
+		// echo $this->db->last_query(); //die;
+		$where=" AND ( ";
+		$permission_session= $this->Common_model->getRecordByWhere('session',array('document_permission'=>'Y' )); 
+		foreach($permission_session as $key=>$row){
+			
+			if($row->semester_permission=='N' && $row->annual_permission=='Y' )
+			$where.=" (student.class_name not like '%SEM%' and student.session='".$row->session."') or ";
+			else if($row->annual_permission=='N' && $row->semester_permission=='Y')
+			$where.="  (student.class_name not like '%YEAR%' and student.session='".$row->session."') or ";
+			else if($row->annual_permission=='Y' && $row->semester_permission=='Y')
+			$where.="   session='".$row->session."'";
+			
+		}
+		
+		
+		$where .= " ) "; 
+		
+
+		 $sql="SELECT * FROM `student`  WHERE approved = 'N' AND center_id = '".$center_id."' AND university_mode='".$course_type."'  ".$where; 
+		
+		$query = $this->db->query($sql);
+		
+		$data['students'] =  $query->result();
 		
 		$this->load->view('Centers/not_approve_student_list',$data);
 		$this->load->view('Centers/footer');
