@@ -15,6 +15,8 @@
 				<th>Document Permission</th>
 				<th>Enrollment Permission</th>
 				<th>Exam Form Permission</th>
+				<th>Annual Permission</th>
+				<th>Semester Permission</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -85,6 +87,30 @@
 							<input type="button" name="update_exam_form_stats" data-id = "<?=$session["id"];?>" class="btn btn-success exam_form_permission_check" value="Yes">
 						<?php }else{ ?>
 							<input type="button" name="update_exam_form_stats" data-id = "<?=$session["id"];?> " class="btn btn-danger exam_form_permission_check" value="No">
+							<?php 
+						}
+						?>
+					</td>
+					<td>
+						<?php
+						if($session['annual_permission'] == 'Y')
+						{
+							?>
+							<input type="button" name="annual_permission_stats" data-id = "<?=$session["id"];?>" class="btn btn-success annual_permission_check" value="Yes">
+						<?php }else{ ?>
+							<input type="button" name="annual_permission_stats" data-id = "<?=$session["id"];?> " class="btn btn-danger annual_permission_check" value="No">
+							<?php 
+						}
+						?>
+					</td>
+					<td>
+						<?php
+						if($session['semester_permission'] == 'Y')
+						{
+							?>
+							<input type="button" name="semester_permission_stats" data-id = "<?=$session["id"];?>" class="btn btn-success semester_permission_check" value="Yes">
+						<?php }else{ ?>
+							<input type="button" name="semester_permission_stats" data-id = "<?=$session["id"];?> " class="btn btn-danger semester_permission_check" value="No">
 							<?php 
 						}
 						?>
@@ -218,6 +244,58 @@
 		}; 
 
 		var url = BASE_URL + "admin/Admins/update_exam_form_permission_status";
+
+		$.ajax({
+			url: url,
+			type: 'POST',
+			dataType: 'json',
+			data: data,
+			success: function (data) {
+				$(self).parent().html(data.data);
+			}
+		});
+
+	});
+
+	$(document).on('click', '.annual_permission_check', function() {
+		var val = $(this).val();
+		var self =this;
+		var status = (val=='Yes') ? 'N' : 'Y';
+		var csrfName = $('.csrfname').attr('name');
+		var csrfHash = $('.csrfname').val();
+		var data = {
+			id: $(this).attr('data-id'),
+			status: status,
+			[csrfName]: csrfHash,
+		}; 
+
+		var url = BASE_URL + "admin/Admins/annual_permission_status";
+
+		$.ajax({
+			url: url,
+			type: 'POST',
+			dataType: 'json',
+			data: data,
+			success: function (data) {
+				$(self).parent().html(data.data);
+			}
+		});
+
+	});
+
+	$(document).on('click', '.semester_permission_check', function() {
+		var val = $(this).val();
+		var self =this;
+		var status = (val=='Yes') ? 'N' : 'Y';
+		var csrfName = $('.csrfname').attr('name');
+		var csrfHash = $('.csrfname').val();
+		var data = {
+			id: $(this).attr('data-id'),
+			status: status,
+			[csrfName]: csrfHash,
+		}; 
+
+		var url = BASE_URL + "admin/Admins/semester_permission_status";
 
 		$.ajax({
 			url: url,
