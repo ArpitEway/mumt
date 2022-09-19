@@ -4401,29 +4401,22 @@ public function update_exam_datewise_permission(){
 
 	public function marksheet($student_id="")
 	{
-		echo $student_id=$this->uri->segment(4);die;
-		$student = $this->Common_model->getRecordByWhere("student",array('exam_form'=>'Y','result_show'=>'Y','student_id'=>$student_id));
-		// if (count($student)==0) {
-		// 	redirect(base_url());
-		// }
-		$data['student']=$student[0];
-		$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
-		$data['practical_internal_marks']=$classData->practical_internal_marks;
+		 $std_id=$this->uri->segment(4);
+		$student_id =  $this->Common_model->encrypt_decrypt($std_id,'decrypt');
 		$this->db->select('*');
 		$this->db->from('old_result_data');
-		$this->db->where('old_result_data.student_id',$data['student']->student_id);
-		$this->db->where('old_result_data.class_id',$data['student']->old_class_id); 
+		$this->db->where('old_result_data.exam_data_id',$student_id);
+		
 		$new_exam_form = $this->db->get()->result();
+		
 		$data['old_result_data']  = $new_exam_form;
-		$title = array('title' => 'Result - '.$data['student']->enrollment_no);
+		$title = array('title' => 'Result');
 		$this->load->view('admin/generate_tr/header2',$title);	
-		//$this->load->view('Centers/marksheet',$data);
-		$this->load->view('Centers/marksheet_top',$data);
-		if ($student[0]->course_group_id==36 || $student[0]->course_group_id==37) {
+		
+		 $this->load->view('admin/old_marksheet_top',$data);
+		
 			$this->load->view('admin/marksheet_student',$data);
-		}else{
-			$this->load->view('Centers/marksheet_bottom',$data);
-		}
+		
 		$this->load->view('admin/generate_tr/footer2');
 	}
 

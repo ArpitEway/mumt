@@ -170,18 +170,18 @@
                  </div> 
               <div class="col-md-2 text-heading mt-3">
                     <?php 
-                    
-                    if($res->exam_status='R')
-                       {  echo 'Regular';
-                        ?>
-                    <?php }else{
-                        echo 'Private';
-                            }
+                    if($res->exam_status == "B"){
+                        echo "Backlog";
+                      }else{
+                        echo "Regular";
+                      }
+                   
                     ?>
                 </div>
 
                       <div class="col-md-2">
-                         <label class="text-heading mt-3"><a href="<?= base_url('admin/admins/marksheet/'.$res->marksheet_no.'')?>">view marksheet</a></label>
+                        <?php $id = $this->Common_model->encrypt_decrypt($res->id,'encrypt');?>
+                         <label class="text-heading mt-3"><a href="<?= base_url('admin/admins/marksheet/'.$id.'')?>" target="_blank"><i class="fa fa-eye"></i></a></label>
                      </div>
                  </div>
              <?php } ?>
