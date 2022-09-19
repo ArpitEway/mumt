@@ -1,5 +1,13 @@
 <title><?php echo (isset($title)) ? $title : ''; ?></title>
 <style>
+  @media print {
+    body {
+      -webkit-print-color-adjust: exact;
+      -moz-print-color-adjust: exact;
+      -ms-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
   svg {
     width: 101px;
     height: 35px;
@@ -328,11 +336,8 @@ table.last_table, .last_table td, .last_table th{
             <td  class="align-middle text-center paper_code"><?php echo  $paper_master->paper_code;  ?></td>
           <?php   }  ?>
           <td  class="align-middle text-center total">Total</td>
-          <td  class="align-middle text-center obtained" rowspan="<?php echo $rowspandata ?>"><?php if($theory_abs_count>0){
-                  echo "-";
-                }else{
+          <td  class="align-middle text-center obtained" rowspan="<?php echo $rowspandata ?>"><?php 
                   echo $total_marks_obt .'/'. $total_paper_marks;
-                }
           ?></td>
           <td  class="align-middle text-center result" rowspan="<?php echo $rowspandata ?>"><?php echo $final_result; ?></td>
           <td  class="align-middle text-cente remarks"  rowspan="<?php echo $rowspandata ?>"><?php 
@@ -380,7 +385,7 @@ table.last_table, .last_table td, .last_table th{
           ?>
           </td>
         <?php }    ?>
-        <td class="align-middle text-center result"><?php if($theory_abs_count>0){echo "-";}else{echo  $total_theory_marks_obt;} ; ?></td>
+        <td class="align-middle text-center result"><?php echo  $total_theory_marks_obt;  ?></td>
       </tr>
       <?php if($course_group_id !=36 && $course_group_id !=37 ){ ?>
       <tr>
@@ -404,7 +409,7 @@ table.last_table, .last_table td, .last_table th{
         ?>
         </td>
         <?php } ?>
-        <td class="align-middle text-center result"><?php if($theory_abs_count>0){echo "-";}else{ echo $total_int_marks_obt;};  ?></td>
+        <td class="align-middle text-center result"><?php echo $total_int_marks_obt;  ?></td>
     </tr> <?php } ?>
   <?php if( $classData[0]->project!='N' || $classData[0]->practical!='N'){ ?>
   <tr>
@@ -456,7 +461,7 @@ table.last_table, .last_table td, .last_table th{
     } ?>
     </td>
     <?php } ?>
-    <td class="align-middle text-center"><?php if($theory_abs_count>0){echo "-";}else{ echo $total_marks_obt;} ?></td>
+    <td class="align-middle text-center"><?php echo $total_marks_obt; ?></td>
   </tr>
 <?php if($isFinalClass){ ?>
   <?php if($final_result !="PASS" && !$check_grace_marks){  ?>
