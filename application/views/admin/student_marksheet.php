@@ -119,10 +119,10 @@
                         </tr>
                         <tr style="font-family:Verdana;font-size:9px;" align="center">
                           <td scope="col" colspan="2"><strong><u>Th/Pr/Pj</u></strong></td>
-                          <td scope="col" colspan="2"><strong><u>Assignment</u></strong></td>
+                          <td scope="col" colspan="2"><strong><u>Internal</u></strong></td>
 
                           <td width="8%" rowspan="2" scope="col" style="text-align:left;padding-left:10px;"><strong><u>Th/Pr/Pj</u></strong></td>
-                          <td width="6%" rowspan="2" scope="col"><strong><u>Assignment</u></strong></td>
+                          <td width="6%" rowspan="2" scope="col"><strong><u>Internal</u></strong></td>
                         </tr>
                         <tr style="font-family:Verdana;font-size:9px;" align="center">
                           <td width="6%" scope="col"><strong><u>Max</u></strong></td>
