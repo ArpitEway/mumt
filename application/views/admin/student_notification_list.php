@@ -82,6 +82,7 @@
 		$p_fail_count=0;
 		$int_fail_count=0;
 		$total_obtained_marks=0;
+		$total_max_marks=0;
 		$paper_marks = $this->Common_model->notification_marks_details_($student->student_id,$student->old_class_id);
 
 		foreach($paper_marks as  $marks){
