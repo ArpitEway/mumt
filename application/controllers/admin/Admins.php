@@ -3086,7 +3086,11 @@ public function update_exam_datewise_permission(){
 		$title = "Marksheet ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$title .= ($startlimit!=1) ? ' Part - '.$pagetitle : '';
 		$data['title'] = $title;
-		$this->load->view('admin/student_marksheet',$data);
+	 	if($course_id !=36 && $course_id !=37 ){ 
+			$this->load->view('admin/student_marksheet',$data);
+		}else{
+			$this->load->view('admin/student_marksheet_certificate',$data);
+		}
 	}
 
 	public function update_fees_in_program()
