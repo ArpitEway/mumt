@@ -2935,19 +2935,25 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
-	public function generate_tr($course_group_id="",$class_id="",$startlimit=1,$pagenumber=1){
+	public function generate_tr($course_group_id="",$class_id="",$startlimit=0,$pagenumber=0){
 		$start=0;
-		$start=($startlimit-1)*1000;
-		$this->db->limit(1000,$start);
+		if($startlimit==!0){
+			$start=($startlimit-1)*1000;
+			$this->db->limit(1000,$start);
+			$pagetitle=$startlimit;
+		}
+		else{
+			$pagetitle="All";
+		}
 		$this->db->order_by('center_id','ASC');
 		$this->db->order_by('roll_number','ASC');
 		$data['students'] = $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y','roll_number!='=>'0' ));
 		$data['class_id'] = $class_id;
-		$data['pagenumber']=$pagenumber-1;
+		$data['pagenumber']=$pagenumber;
 		$data['course_group_id'] = $course_group_id;
 		$title = "TR ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
-		$title .= ($startlimit!=1) ? ' Part - '.$startlimit : '';
-		$data['title'] .= $title;
+		$title .= ($startlimit!=1) ? ' Part - '.$pagetitle : '';
+		$data['title'] .= $title;//echo $this->db->last_query(); die;
 		$this->load->view('admin/generate_tr',$data);
 	}
 
@@ -3062,16 +3068,23 @@ public function update_exam_datewise_permission(){
 		$this->load->view('footer');
 	}
 
-	public function student_marksheet($course_id="",$class_id="",$startlimit=1)
+	public function student_marksheet($course_id="",$class_id="",$startlimit=0)
 	{
 		$data = array('class_id' => $class_id,'course_group_id' =>$course_id );
 				$start=0;
-		$start=($startlimit-1)*1000;
-		$this->db->limit(1000,$start);
+		if($startlimit!=0){
+			$start=($startlimit-1)*1000;
+			$this->db->limit(1000,$start);
+			$pagetitle=$startlimit;
+		}
+		else{
+			$pagetitle='All';
+		}		
+		
 		$this->db->order_by('center_id,roll_number','ASC');
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0' ));
 		$title = "Marksheet ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
-		$title .= ($startlimit!=1) ? ' Part - '.$startlimit : '';
+		$title .= ($startlimit!=1) ? ' Part - '.$pagetitle : '';
 		$data['title'] = $title;
 	 	if($course_id !=36 && $course_id !=37 ){ 
 			$this->load->view('admin/student_marksheet',$data);
