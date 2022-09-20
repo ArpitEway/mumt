@@ -87,8 +87,13 @@
 		foreach($paper_marks as  $marks){
 			if($marks->type=="theory" ){
 				$theory_paper_count++;
-				$total_obtained_marks +=$marks->theory_marks+$marks->int_marks;
-				$total_max_marks +=$marks->max_theory_marks+$marks->max_internal_marks;
+				if($course_group_id !=36 && $course_group_id !=37 ){ 
+					$total_obtained_marks +=$marks->theory_marks+$marks->int_marks;
+					$total_max_marks +=$marks->max_theory_marks+$marks->max_internal_marks;
+				}else{
+					$total_obtained_marks +=$marks->theory_marks;
+					$total_max_marks +=$marks->max_theory_marks;
+				}
 				if($marks->theory_marks==''){
 					$Withheld = true;
 				}
@@ -103,15 +108,17 @@
 					$require_tot_marks += $marks->min_theory_marks;
 					array_push( $ATKT_paper_codes,$marks->paper_code );
 				}
-				if($marks->int_marks<$marks->min_internal_marks){
-					$int_fail_count++;
-					array_push($ATKT_paper_codes ,$marks->paper_code );
-				}
-				if($marks->int_marks=='N' || $marks->int_marks==''){
-					$Withheld = true;
-				}
-				if($marks->int_marks=="ABS"){
-					$abs_count++;
+				if($course_group_id !=36 && $course_group_id !=37 ){ 
+					if($marks->int_marks<$marks->min_internal_marks){
+						$int_fail_count++;
+						array_push($ATKT_paper_codes ,$marks->paper_code );
+					}
+					if($marks->int_marks=='N' || $marks->int_marks==''){
+						$Withheld = true;
+					}
+					if($marks->int_marks=="ABS"){
+						$abs_count++;
+					}
 				}
 			}else{
 				$total_obtained_marks +=$marks->p_marks;
