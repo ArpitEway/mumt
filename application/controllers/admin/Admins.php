@@ -2935,7 +2935,7 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
-	public function generate_tr($course_group_id="",$class_id="",$startlimit=0,$pagenumber=1){
+	public function generate_tr($course_group_id="",$class_id="",$startlimit=0,$pagenumber=0){
 		$start=0;
 		if($startlimit==!0){
 			$start=($startlimit-1)*1000;
@@ -2949,7 +2949,7 @@ public function update_exam_datewise_permission(){
 		$this->db->order_by('roll_number','ASC');
 		$data['students'] = $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y','roll_number!='=>'0' ));
 		$data['class_id'] = $class_id;
-		$data['pagenumber']=$pagenumber-1;
+		$data['pagenumber']=$pagenumber;
 		$data['course_group_id'] = $course_group_id;
 		$title = "TR ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$title .= ($startlimit!=1) ? ' Part - '.$pagetitle : '';
