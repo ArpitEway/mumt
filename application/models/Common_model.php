@@ -882,6 +882,26 @@ class Common_Model extends CI_Model{
 		$return .= ($arr[1]=='SEM') ? ' Semester' : ' Year';
 		return $return;
 	}
+
+function student_data_consolidate_campus($where = "",$group_by = ""){
+		
+		if($group_by != ""){
+				$this->db->select('count(*) as cnt,'.$group_by);
+				$this->db->group_by($group_by);
+		}else{
+				$this->db->select('* , student.university_mode ');
+		}
+		$this->db->where_in('center_id',array('20','21','22','23','24','25','26','27','28'));
+		$this->db->from("student");
+		$this->db->where($where);
+		$this->db->join("course_group", "student.course_group_id = course_group.id", 'left'); 
+		$query = $this->db->get();
+			
+		return $query->result_array();
+
+	}
+
+
 }
 
 ?>
