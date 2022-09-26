@@ -31,7 +31,7 @@ class CampusIncharge extends CI_Controller {
 	}
 
 
-	public function consolidate_report_campus(){
+	public function consolidate_report(){
 
 		$dt = array();
 		$dt['title'] = "Student Consolidate Report";
@@ -145,7 +145,7 @@ class CampusIncharge extends CI_Controller {
 	}
 
 
-	public function student_search(){
+	public function search_student(){
 
 		$this->load->view('header',array('title' => 'Search Students'));
 
