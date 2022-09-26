@@ -82,7 +82,6 @@ class CampusIncharge extends CI_Controller {
 				$dt['name!='] = '';
 			}
 
-
 			if($class_id !=  "All" && $class_id !=  "" ){	 
 
 				$dt['class_id'] = $class_id;
@@ -103,11 +102,7 @@ class CampusIncharge extends CI_Controller {
 
 				$dt['course_group_id'] = $course_group_id;
 			}
-				// else{
-				// $dt = 'center_id in (20,21,22,23,24,25,26,27,28) ';
-
-				// }
-
+			
 			if($center_id != "all"){
 
 				$dt['center_id'] = $center_id;
@@ -140,7 +135,6 @@ class CampusIncharge extends CI_Controller {
 				$data['course_count'] = $this->Common_model->student_data_consolidate($dt,$_POST['count_filter']);
 			}
 
-              //$this->Common_model->last_query();
 			$dt = $this->load->view('admin/student/getStudentConsolidate',$data,true);
 			echo json_encode(array(
 				"status" => true,
