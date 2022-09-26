@@ -122,13 +122,16 @@ class CampusIncharge extends CI_Controller {
 
 			}
 
+
+     $this->db->where_in('center_id',array('20','21','22','23','24','25','26','27','28'));
 			if($filter == "list"){
 
-				$data['students'] = $this->Common_model->student_data_consolidate_campus($dt);
+				$data['students'] = $this->Common_model->student_data_consolidate($dt);
 			}
 
-			if($filter == "count"){				
-				$data['course_count'] = $this->Common_model->student_data_consolidate_campus($dt,$_POST['count_filter']);
+			if($filter == "count"){		
+
+				$data['course_count'] = $this->Common_model->student_data_consolidate($dt,$_POST['count_filter']);
 			}
 
 //$this->Common_model->last_query();
@@ -191,10 +194,11 @@ class CampusIncharge extends CI_Controller {
 			}else if($text_val !='' && $radio_val == 'adhar_no')
 			{
 				$where =  array('adhar_no' => $text_val);
+
 			}
 
+          $this->db->where_in('center_id',array('20','21','22','23','24','25','26','27','28'));
 			$data['students'] = $this->Common_model->student_data($where);
-
 
 			$dt =  $this->load->view('admin/student/getStudentConsolidate',$data,true);
 			echo json_encode(array(
