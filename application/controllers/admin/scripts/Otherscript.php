@@ -17,15 +17,14 @@ class Otherscript extends CI_Controller {
 	
 	
 	// Update Exam fields in Paper Master from paper_paper_master_sub table
-	public function move_student_document($startlimit=1){
+	public function move_student_document(){
 		echo "Move Student Document  ";
 		$this->db->select('*');
        	$this->db->from('student');
         $this->db->join('admission_document', 'admission_document.student_id = student.student_id');   
         $this->db->where('approved ="Y" and document_uploaded ="Y" and enrolled = "Y" and move="N"');   
         $start=0;
-		$start=($startlimit-1)*1000;
-		$this->db->limit(10,$start);
+		$this->db->limit(1000,$start);
 		$rows=$this->db->get()->result();
 		$i=1;
 		foreach($rows as $row){
