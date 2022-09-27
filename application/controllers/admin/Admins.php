@@ -2529,7 +2529,7 @@ public function update_exam_datewise_permission(){
 				}else if($text_val !='' && $radio_val == 'student_id'){
 					$student = $this->Common_model->getRecordById('student','student_id',$text_val);
 				}  
-				$papers = $this->Common_model->getRecordByWhere('new_exam_form',array('student_id' =>$student->student_id, 'paper_type' => 'theory'));
+				$papers = $this->Common_model->getRecordByWhere('new_exam_form',array('student_id' =>$student->student_id, 'paper_type' => 'theory','class_id'=>$student->old_class_id));
 				$data = array(
 					'paper' => $papers,
 					'student' => $student,
@@ -4371,5 +4371,71 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
+	public function annual_permission_status()
+	{
 
+		if ($this->input->method() == "post") 
+		{
+			$id    	= 0;
+			$id    	= $this->input->post("id");
+			$status = $this->input->post("status");
+
+			if ($this->input->post("id")) 
+			{
+				$data = $this->Common_model->updateRecordByConditions("session",array("id" => $id ),array("annual_permission" => $status ));
+
+				$dt = $this->db->get_where("session",array("id" => $id ))->result_array();
+
+				if($dt[0]['annual_permission'] == 'Y')
+				{
+					$sts_btn = '<input type ="button" name="annual_permission_stats" data-id='.$id.' class="btn btn-success annual_permission_check" value="Yes">';
+				}else{
+					$sts_btn = '<input type ="button" name="annual_permission_stats" data-id='.$id.' class="btn btn-danger annual_permission_check" value="No">';
+				}
+				$status = true;
+				$msg    = "";
+				
+				echo json_encode(array(
+					"status" => $status,
+					"msg" => $msg,
+					"data" => $sts_btn
+				));
+			}
+		}
+	}
+
+	public function semester_permission_status()
+	{
+
+		if ($this->input->method() == "post") 
+		{
+			$id    	= 0;
+			$id    	= $this->input->post("id");
+			$status = $this->input->post("status");
+
+			if ($this->input->post("id")) 
+			{
+				$data = $this->Common_model->updateRecordByConditions("session",array("id" => $id ),array("semester_permission" => $status ));
+
+				$dt = $this->db->get_where("session",array("id" => $id ))->result_array();
+
+				if($dt[0]['semester_permission'] == 'Y')
+				{
+					$sts_btn = '<input type ="button" name="semester_permission_stats" data-id='.$id.' class="btn btn-success semester_permission_check" value="Yes">';
+				}else{
+					$sts_btn = '<input type ="button" name="semester_permission_stats" data-id='.$id.' class="btn btn-danger semester_permission_check" value="No">';
+				}
+				$status = true;
+				$msg    = "";
+				
+				echo json_encode(array(
+					"status" => $status,
+					"msg" => $msg,
+					"data" => $sts_btn
+				));
+			}
+		}
+	}
+
+	
 }// class
