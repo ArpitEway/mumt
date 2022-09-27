@@ -32,7 +32,7 @@
     }
 </style>
 <?php 
-$pageCounter=30;
+$pageCounter=26;
 $totalExamcenterCounter=count($exam_center_id);
 $examcenterCounter=0;
 $words = array('0' => '', '1' => 'One', '2' => 'Two',
