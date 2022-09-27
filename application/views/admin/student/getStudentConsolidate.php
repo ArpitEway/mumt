@@ -14,9 +14,11 @@
 					<th>DOB</th>
 					<th>Course</th>
 					<th>Class</th>
+					<th>
 					<?php if($this->session->account_type == "Admins" || $this->session->account_type == "Enrollment"){ ?>	
-					<th>Edit</th>	
+					Edit	
 					<?php } ?>
+					</th>
 					<th>Mobile no</th>
 					<th>Payment</th>
 					<th>Document Uploaded</th>
@@ -79,12 +81,12 @@
 							<td><?php 
 								echo $student["class_name"];
 							 ?></td>
-							
+							<td>
 							<?php if(($this->session->account_type == "Admins" || $this->session->account_type == "Enrollment") && $student['enrolled']!='Y'){ ?> 
-								<td>
+								
 								<a target="_blank"  href='<?php echo base_url($this->session->account_type.'/editForm/').$this->Common_model->encrypt_decrypt($student["student_id"],'encrypt'); ?>'><i class="fa fa-pen"></i></a> 
-								</td>
-							<?php } ?>
+								
+							<?php } ?></td>
 							<td><?php echo $this->Common_model->getMobileNoByStudentID($student["student_id"]) ?></td>
 							<td><?php if( $student["payment_status"]=='Y'){echo 'Paid' ;}else{echo 'Unpaid' ;} ?></td>
 							<td><?php if( $student["document_uploaded"]=='Y'){echo 'Uploaded' ;}else{echo 'Not Uploaded' ;} ?></td>
