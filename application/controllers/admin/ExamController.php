@@ -1782,4 +1782,21 @@ class ExamController extends CI_Controller {
 		}
 	}
 
+	public function teacher_bill(){
+		$data = array();
+		$data['title'] = "Teacher Bill Report";
+		$data['teacher_list'] = $this->Common_model->get_record('teacher','*',array('status ' => 'Y' ));
+		$this->load->view('header',$data);
+		$this->load->view('admin/examController/teacher_bill');
+		$this->load->view('footer');
+	}
+	public function teacher_paper_wise_detail(){
+		$data = array();
+		$data['title'] = "Paper Wise Teacher Answersheet Details";
+		$data['teacher_list'] = $this->Common_model->get_record('teacher','*',array('status ' => 'Y' ));
+		$this->load->view('header',$data);
+		$this->load->view('admin/examController/teacher_paper_wise_detail');
+		$this->load->view('footer');
+	}
+
 }// class
