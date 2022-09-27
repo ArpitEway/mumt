@@ -5,15 +5,21 @@
         <?php
         $docs = $this->Common_model->getAllRow("admission_document",'document_image',array("student_id" => $student_id,"document_name" => 'Aadhaar card'),'');
         $ext = explode(".",$docs[0]["document_image"]);
+        $pathURL="";
+        if($student_detail[0]["enrolled"]=='Y'){
+          $pathURL= BASE_URL('assets/enrolled_documents/'.$student_detail[0]['session'].'/'.$docs[0]["document_image"]);
+        }
+        else
+         $pathURL=BASE_URL('assets/documents/'.$docs[0]["document_image"]);
         if($ext[1] == "pdf"){
           ?>
-          <a target="_blank" href="<?php echo BASE_URL('assets/documents/'.$docs[0]["document_image"]); ?>">
-           <iframe src="<?php echo BASE_URL('assets/documents/'.$docs[0]["document_image"]); ?>" width="600" height="400"></iframe>
+          <a target="_blank" href="<?php echo $pathURL; ?>">
+           <iframe src="<?php echo $pathURL ?>" width="600" height="400"></iframe>
          </a>
 
        <?php }else{ ?>
-        <a data-magnify="gallery" data-src="" data-caption="<?php echo $docs[0]["document_name"] ?>" data-group="a" href="<?php echo BASE_URL('assets/documents/'.$docs[0]["document_image"]); ?>">
-          <img src="<?php echo BASE_URL('assets/documents/'.$docs[0]['document_image']); ?>" class="img img-fluid w-75"> 
+        <a data-magnify="gallery" data-src="" data-caption="<?php echo $docs[0]["document_name"] ?>" data-group="a" href="<?php echo $pathURL; ?>">
+          <img src="<?php echo $pathURL; ?>" class="img img-fluid w-75"> 
         </a>
       <?php } ?>
     </div>
