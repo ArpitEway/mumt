@@ -1,5 +1,13 @@
 <title><?php echo (isset($title)) ? $title : ''; ?></title>
 <style>
+  @media print {
+    body {
+      -webkit-print-color-adjust: exact;
+      -moz-print-color-adjust: exact;
+      -ms-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
   @page {
           size: auto;
       }
@@ -349,7 +357,8 @@
             <td  class="align-middle text-center paper_code"><?php echo  $paper_master->paper_code;  ?></td>
           <?php   }  ?>
           <td  class="align-middle text-center total">Total</td>
-          <td  class="align-middle text-center obtained" rowspan="<?php echo $rowspandata ?>"><?php if($theory_abs_count>0){echo "-";}else{echo $total_marks_obt .'/'. $total_paper_marks;}?></td>
+          <td  class="align-middle text-center obtained" rowspan="<?php echo $rowspandata ?>"><?php echo $total_marks_obt .'/'. $total_paper_marks;
+            ?></td>
           <td  class="align-middle text-center result" rowspan="<?php echo $rowspandata ?>"><?php echo $final_result; ?></td>
           <td  class="align-middle text-center remarks"  rowspan="<?php echo $rowspandata ?>"><?php 
           if($check_grace_marks){
@@ -401,7 +410,7 @@
           ?>
           </td>
         <?php }    ?>
-        <td class="align-middle text-center total"><?php if($theory_abs_count>0){echo "-";}else{echo  $total_theory_marks_obt;} ; ?></td>
+        <td class="align-middle text-center total"><?php echo  $total_theory_marks_obt; ?></td>
       </tr>
       <tr>
         <td class="align-middle text-right paper">Internal Marks-></td>
@@ -424,7 +433,7 @@
      ?>
     </td>
     <?php } ?>
-    <td class="align-middle text-center total"><?php if($theory_abs_count>0){echo "-";}else{ echo $total_int_marks_obt;};  ?></td>
+    <td class="align-middle text-center total"><?php echo $total_int_marks_obt;  ?></td>
   </tr>
   <?php if( $classData[0]->project!='N' || $classData[0]->practical!='N'){ ?>
   <tr>
@@ -506,7 +515,7 @@
     } ?>
     </td>
     <?php } ?>
-    <td class="align-middle text-center total"><?php if($theory_abs_count>0){echo "-";}else{ echo $total_marks_obt;} ?></td>
+    <td class="align-middle text-center total"><?php  echo $total_marks_obt; ?></td>
   </tr>
 <?php if($isFinalClass){ ?>
   <?php if($final_result !="PASS" && !$check_grace_marks){  ?>

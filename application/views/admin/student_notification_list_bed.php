@@ -15,6 +15,14 @@ $page_no = 0 ;
 $abs_count = 0 ;
 ?>
 <style>
+	@media print {
+		body {
+			-webkit-print-color-adjust: exact;
+			-moz-print-color-adjust: exact;
+			-ms-print-color-adjust: exact;
+			print-color-adjust: exact;
+		}
+	}
 	body{
 		font-size: 12px;
 		font-family: Arial, Helvetica, sans-serif;
