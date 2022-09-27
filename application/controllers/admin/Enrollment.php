@@ -611,6 +611,30 @@
 				 } 
 				$where = 'student_id="'.$student[0]->student_id.'" ';
 				$this->Common_model->updateRecordByConditions('student',$where,$data);
+				//Move Documents as per session
+				$where = array('student_id' => $student[0]->student_id);
+				$admissionDoc = $this->Common_model->get_record('admission_document','*',$where);
+				foreach($admissionDoc as $row){
+					$source=FCPATH."/assets/documents/".$row['document_image'];
+				
+					$destination=FCPATH."/assets/enrolled_documents/".$student[0]->session."/".$row['document_image'];
+				
+					$dirname = FCPATH."/assets/enrolled_documents/".$student[0]->session;
+
+					if(!is_dir($dirname)){
+						mkdir( $dirname, 0777);
+						
+					
+					} 
+
+					if( rename( $source , $destination )){
+					
+						$data  = array('move'=>'Y' );
+						$where = array('student_id'=>$row['student_id'],'id'=> $row['id']);
+						
+						$update =$this->Common_model->updateRecordByConditions('admission_document',$where,$data);
+					} 
+				}	
 			}
 		
 			$this->session->set_flashdata('ajax_flash_message','permission updated');
