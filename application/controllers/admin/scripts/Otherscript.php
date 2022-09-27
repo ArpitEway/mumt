@@ -24,7 +24,7 @@ class Otherscript extends CI_Controller {
         $this->db->join('admission_document', 'admission_document.student_id = student.student_id');   
         $this->db->where('approved ="Y" and document_uploaded ="Y" and enrolled = "Y" and move="N"');   
         $start=0;
-		$start=($startlimit-1)*10;
+		$start=($startlimit-1)*1000;
 		$this->db->limit(10,$start);
 		$rows=$this->db->get()->result();
 		$i=1;
