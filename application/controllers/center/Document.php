@@ -38,7 +38,7 @@
 		
 		
 		
-		$where.= "document_uploaded!='Y' and payment_status='Y' and center_id=".$this->session->center_id ."' and ( ";
+		$where.= "document_uploaded!='Y' and payment_status='Y' and center_id=".$this->session->center_id ." and ( ";
 		$permission_session= $this->Common_model->getRecordByWhere('session',array('document_permission'=>'Y' )); 
 		foreach($permission_session as $key=>$row){
 			
