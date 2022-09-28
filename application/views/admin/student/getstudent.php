@@ -32,9 +32,10 @@
 					if($ext[1] == "pdf")
 					{
 						if($doc["document_name"] == 'Aadhaar Card'){
+							$doc_id = $this->Common_model->encrypt_decrypt($doc["id"]);
 							?>
 
-							<a href="<?php echo site_url('Enrollment/update_aadhar/'.$student_id); ?>" target="_blank">
+							<a href="<?php echo site_url('Enrollment/update_aadhar/'.$doc_id); ?>" target="_blank">
 								<?php echo $doc["document_name"]; ?>
 							</a>
 							<br>
