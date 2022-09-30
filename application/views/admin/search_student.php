@@ -113,7 +113,7 @@
                     [csrfName]:csrfHash
                 }
             $.ajax({
-                url:site_url+'admin/<?=$this->session->account_type; ?>/getStudentData',
+                url:site_url+'admin/admins/getStudentData',
                 type:'post',
                 dataType : 'JSON',
                 data: data,
