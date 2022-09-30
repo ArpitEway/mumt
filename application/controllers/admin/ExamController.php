@@ -1790,6 +1790,7 @@ class ExamController extends CI_Controller {
 		$this->load->view('admin/examController/teacher_bill');
 		$this->load->view('footer');
 	}
+
 	public function teacher_paper_wise_detail(){
 		$data = array();
 		$data['title'] = "Paper Wise Teacher Answersheet Details";
@@ -1798,5 +1799,54 @@ class ExamController extends CI_Controller {
 		$this->load->view('admin/examController/teacher_paper_wise_detail');
 		$this->load->view('footer');
 	}
+
+public function getStudentData()
+{
+	if(!$this->session->has_userdata('adminData')){
+		redirect(base_url());
+		exit;
+	}
+
+	$text_val =$this->input->post('text_val');
+	$radio_val = $this->input->post('radio_val');
+
+
+	if($text_val !='')
+	{
+		if($text_val !='' && $radio_val == 'enrollment_no')
+		{
+			$where = array('enrollment_no'=>$text_val);
+
+		}else if($text_val !='' && $radio_val == 'student_id')
+		{
+			$where = array('student.student_id'=>$text_val);
+
+		}else if($text_val !='' && $radio_val == 'roll_no')
+		{
+			$where = array('name'=>$text_val
+
+		);
+
+		}else if($text_val !='' && $radio_val == 'student_name')
+		{
+			$where = array();
+			$this->db->like('name', $text_val);
+
+		}else if($text_val !='' && $radio_val == 'adhar_no')
+		{
+			$where =  array('adhar_no' => $text_val);
+		}
+
+		$data['students'] = $this->Common_model->student_data($where);
+
+
+		$dt =  $this->load->view('admin/student/getStudentConsolidate',$data,true);
+		echo json_encode(array(
+			"status" => true,
+			"data" => $dt
+		));
+	}
+	}//fun
+
 
 }// class

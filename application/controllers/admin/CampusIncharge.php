@@ -199,4 +199,53 @@ class CampusIncharge extends CI_Controller {
     }
 
 
+    public function getStudentData()
+	{
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}
+
+		$text_val =$this->input->post('text_val');
+		$radio_val = $this->input->post('radio_val');
+
+
+		if($text_val !='')
+		{
+			if($text_val !='' && $radio_val == 'enrollment_no')
+			{
+				$where = array('enrollment_no'=>$text_val);
+
+			}else if($text_val !='' && $radio_val == 'student_id')
+			{
+				$where = array('student.student_id'=>$text_val);
+
+			}else if($text_val !='' && $radio_val == 'roll_no')
+			{
+				$where = array('name'=>$text_val
+
+			);
+
+			}else if($text_val !='' && $radio_val == 'student_name')
+			{
+				$where = array();
+				$this->db->like('name', $text_val);
+
+			}else if($text_val !='' && $radio_val == 'adhar_no')
+			{
+				$where =  array('adhar_no' => $text_val);
+
+			}
+
+          $this->db->where_in('center_id',array('20','21','22','23','24','25','26','27','28'));
+			$data['students'] = $this->Common_model->student_data($where);
+
+			$dt =  $this->load->view('admin/student/getStudentConsolidate',$data,true);
+			echo json_encode(array(
+				"status" => true,
+				"data" => $dt
+			));
+		}
+	    }//fun
+
 }
