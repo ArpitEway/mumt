@@ -22,9 +22,9 @@
 				$this->db->select(' count(*) as cnt ,center_code,center_id');
 				$this->db->from('new_exam_form');
 				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
-				$this->db->where('new_exam_form.class_id',$teacher->class_id);
+				$this->db->where('student.old_class_id',$teacher->class_id);
 				$this->db->where('new_exam_form.paper_code',$teacher->paper_code); 
-				$this->db->where('student.new_exam_form','Y');
+				$this->db->where('student.exam_form','Y');
 				$this->db->where('student.center_id in ('.$teacher->center_id.')');
 				$total_count= $this->db->get()->result();
 

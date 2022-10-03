@@ -71,9 +71,9 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
                                         <td  style="text-align:center;"><?php  echo $student->enrollment_no; ?></td>
                                         <td style="text-align:center;padding: 0px 3px 0px 3px;"><?php echo $student->roll_number;?></td>
 
-                                        <td style='text-align:center;'><?php echo $student->total_marks; ?></td>
+                                        <td style='text-align:center;'><?php echo $student->theory_marks; ?></td>
                                         <?php 
-                                        $number = $student->total_marks;
+                                        $number = $student->theory_marks;
                                         $no = floor($number);
                                         $point = round($number - $no, 2) * 100;
                                         $hundred = null;
@@ -104,7 +104,12 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
                                         "." . $words[$point / 10] . " " . 
                                         $words[$point = $point % 10] : '';
                                         ?>
-                                        <td class="font-19">&nbsp;&nbsp;<?php echo $result; ?></td>
+                                        <td class="font-19">&nbsp;&nbsp;<?php 
+                                     if($student->theory_marks=='ABS'){
+                                     echo "ABSENT";
+                                     }else{
+                                        echo $result; 
+                                         }?></td>
                                     </tr>
                                     <?php  $teacherID=$student->teacher_id; 
 
