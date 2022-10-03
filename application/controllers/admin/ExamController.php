@@ -511,15 +511,20 @@ class ExamController extends CI_Controller {
 			$data_insert['teacher_id'] =  implode(',',$_POST['teacher_id']);
 			$dataArray= array();	
 			foreach($_POST['teacher_id'] as $teacher_id){
-				$this->db->select('DISTINCT(upload_exam_ans_sheet.teacher_id),teacher.name,student.enrollment_no,student.roll_number,upload_exam_ans_sheet.total_marks');
-				$this->db->from('upload_exam_ans_sheet');
-				$this->db->join('teacher', 'upload_exam_ans_sheet.teacher_id = "'.$teacher_id.'"');
-				$this->db->join('student', 'upload_exam_ans_sheet.student_id = student.student_id');
-				$this->db->where('upload_exam_ans_sheet.class_id',$_POST['class_id']);
+
+           
+				$this->db->select('DISTINCT(new_exam_form.teacher_id),teacher.name,student.enrollment_no,student.roll_number,new_exam_form.theory_marks');
+				$this->db->from('new_exam_form');
+				$this->db->join('teacher', 'new_exam_form.teacher_id = "'.$teacher_id.'"');
+				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+				$this->db->where('student.exam_form','Y');
+				$this->db->where('new_exam_form.class_id',$_POST['class_id']);
 				$this->db->where('student.old_class_id',$_POST['class_id']);
-				$this->db->where('upload_exam_ans_sheet.paper_code',$_POST['paper_code']); 
-				$this->db->group_by('upload_exam_ans_sheet.center_id');
+				$this->db->where('new_exam_form.paper_code',$_POST['paper_code']); 
+				$this->db->order_by('student.roll_number');
+				$this->db->group_by('student.student_id');
 				$dataArray['data'][$teacher_id] = $this->db->get()->result();
+				//$this->Common_model->last_query();
 				$dataArray['teachername'][$teacher_id] = $this->Common_model->getSinglefield('teacher','name',array('id'=>$teacher_id));
 				
 			}	

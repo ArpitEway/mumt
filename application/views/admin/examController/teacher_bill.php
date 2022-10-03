@@ -67,6 +67,7 @@
                 $this->db->where_in('course_group_id', $pg_array );
                 $pgcount= $this->db->get()->result();
                 $amt=($ugcount[0]->cnt *10)+($pgcount[0]->cnt *15);
+                if($amt!=0){
              // print_r($ugcount[0]->cnt);
             ?>
 					<tr>
@@ -86,7 +87,7 @@
 					</tr>
 				
 			
-			<?php $i++; }
+			<?php $i++; }}
 			
 			 ?>
 			</tbody>
