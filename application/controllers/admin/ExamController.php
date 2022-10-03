@@ -467,7 +467,7 @@ class ExamController extends CI_Controller {
    } 
 
    public function generate_counter_folio(){
-		$titleData = array('title' => 'Assign Answersheet'); 
+		$titleData = array('title' => 'Counter File'); 
 		$this->load->view('header',$titleData);
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();	
