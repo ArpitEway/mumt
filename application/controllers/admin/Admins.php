@@ -4067,7 +4067,7 @@ public function update_exam_datewise_permission(){
 	 	// die;
     	$this->db->select('paper_master.*,new_exam_form.sub_group_id');
     	$this->db->from('paper_master');
-    	$this->db->order_by('new_exam_form.sub_group_id,paper_order');
+    	$this->db->order_by('new_exam_form.sub_group_id,paper_order,paper_no');
     	$this->db->join('new_exam_form', 'paper_master.paper_code = new_exam_form.paper_code and  paper_master.class_id = new_exam_form.class_id');
     	$where = array('paper_master.class_id' => $student['class_id'],
     		'student_id' => $student_id
