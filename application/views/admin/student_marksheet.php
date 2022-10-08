@@ -67,6 +67,9 @@
                       <td class="Normaltext" colspan="2">
                         <div align="center"><font size="4">  &nbsp; </font></div>
                       </td>
+                      <td class="Normaltext">
+                        <div align="left"><font size="4">  Regular </font></div>
+                      </td>
                     </tr>
                     <tr>
                       <td width="35%" class="Normaltext" align="left"><div align="left">Roll No</div></td>
