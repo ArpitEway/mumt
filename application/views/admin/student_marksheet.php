@@ -68,7 +68,7 @@
                         <div align="center"><font size="4">  &nbsp; </font></div>
                       </td>
                       <td class="Normaltext">
-                        <div align="left"><font size="4">  Regular </font></div>
+                        <div align="center"><font size="4">  Regular </font></div>
                       </td>
                     </tr>
                     <tr>
@@ -79,7 +79,7 @@
                           <!-- <div style="float:right"> &nbsp;&nbsp;&nbsp; Mode - Distance Education </div> -->
                         </div>
                       </td>
-                      <td align="left" width="18%" rowspan="4">
+                      <td align="center" width="18%" rowspan="4">
                         <img border="1"  class="student_image" src="<?= base_url('assets/student_image/'.$student->session.'/'.$student->photo) ?>" width="90px" height="105px">
                       </td>
                     </tr>
