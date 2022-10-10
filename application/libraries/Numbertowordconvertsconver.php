@@ -30,7 +30,7 @@ class numbertowordconvertsconver {
             $result .= (empty($result) ? "" : " ") .$this->convert_number($hecto) . " Hundred";
         }
         $ones = array("", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eightteen", "Nineteen");
-        $tens = array("", "", "Twenty", "Thirty", "Fourty", "Fifty", "Sixty", "Seventy", "Eigthy", "Ninety");
+        $tens = array("", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eigthy", "Ninety");
         if ($deca || $n) {
             if (!empty($result)) {
                 // $result .= " and ";
