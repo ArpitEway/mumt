@@ -1853,5 +1853,49 @@ public function getStudentData()
 	}
 	}//fun
 
+	 // Center Wise Marksheet dispatch
+	 public function center_wise_marksheet_dispatch(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+			$titleData = array('title' => 'Center Wise MarkSheet Dispatch '); 
+			$this->load->view('header',$titleData);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$this->db->select('*');
+			$this->db->from('center');
+			$this->db->order_by('center_code', "asc");
+			$data['centers'] = $this->db->get()->result();
+
+			$this->load->view('admin/examController/center_wise_marksheet_dispatch',$data);
+			$this->load->view('footer');
+		}
+	}
+
+	//Get Center Wise Student Marksheet dispatch 
+	public function get_center_wise_marksheet_dispatchlist(){
+		$center = $this->input->post('center');
+
+		// $this->db->select('*');
+		// $this->db->from('student');
+		// $this->db->order_by("roll_no", "asc");
+		// // if($exam_center!="All")
+		// $where = array('center_id'=>$center, 'roll_no!=' => 0 ,'new_exam_form'=>'Y');
+		// $this->db->where($where);	
+		// $data['center_students'] = $this->db->get()->result();
+		$this->db->select('*');
+		$this->db->from('center');
+		if($center!="All")
+		$this->db->where( array('id'=>$center));
+		$this->db->order_by('center_code', "asc");
+		$data['centers'] = $this->db->get()->result();
+		
+		
+	//echo $this->db->last_query(); die;
+		//print_r($data['center_students']); die;
+		echo $this->load->view('admin/examController/get_center_wise_marksheet_dispatchlist',$data, TRUE);
+	}
 
 }// class
