@@ -4,6 +4,7 @@
 			<tr>
 				<th>Sno</th>
 				<th>Admission Mode</th>
+				<th>Center Code</th>
 				<th>Form No</th>
 				<th>Enrollment No</th>
 				<th>Student Name</th>
@@ -24,6 +25,7 @@
 					    <?php $university_mode = ($student->university_mode=='REG') ? 'Regular' : 'Private';
 					    echo $university_mode; ?>
 					</td>
+					<td><?php echo $student->center_code; ?></td>
 					<td><?php echo $student->student_id; ?></td>
 					<td><?php echo $student->enrollment_no; ?></td>
 					<td><?php echo $student->name; ?></td>

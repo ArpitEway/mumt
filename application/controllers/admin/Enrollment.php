@@ -1103,6 +1103,7 @@
 		$data['hash_csrf'] = $this->security->get_csrf_hash();	 
 		$where = array('','N');
 		$this->db->where_not_in('provisional_remark', $where);	
+		$this->db->order_by('center_id', 'ASC');
 		$data['student_list'] = $this->db->get('student')->result();
 		$this->load->view('admin/enrollment/provisional_remark_list',$data);
 		$this->load->view('footer');
