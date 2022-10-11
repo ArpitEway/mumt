@@ -30,7 +30,11 @@
 </div>
 <div id="dt">
 </div>   
-<div class="dt-responsive"></div> 
+<div class="dt-responsive">
+
+</div> 
+
+
 <script>
    
     $("#centerc").on('change', function(){
@@ -42,7 +46,7 @@
  $("#myLoader").show();
 		$.ajax({
 			method: "POST",
-			url: BASE_URL+"ExamController/get_center_wise_marksheet_dispatchlist",
+			url: BASE_URL+"ExamController/get_center_wise_marksheet_dispatch_rolllist",
 			data: { center : center,
 					[csrfName]:csrfHash
 					},
