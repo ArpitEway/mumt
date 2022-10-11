@@ -1878,23 +1878,15 @@ public function getStudentData()
 	public function get_center_wise_marksheet_dispatchlist(){
 		$center = $this->input->post('center');
 
-		// $this->db->select('*');
-		// $this->db->from('student');
-		// $this->db->order_by("roll_no", "asc");
-		// // if($exam_center!="All")
-		// $where = array('center_id'=>$center, 'roll_no!=' => 0 ,'new_exam_form'=>'Y');
-		// $this->db->where($where);	
-		// $data['center_students'] = $this->db->get()->result();
+	
 		$this->db->select('*');
 		$this->db->from('center');
 		if($center!="All")
 		$this->db->where( array('id'=>$center));
 		$this->db->order_by('center_code', "asc");
 		$data['centers'] = $this->db->get()->result();
+		$data['examTitle'] = "Feb 2022";
 		
-		
-	//echo $this->db->last_query(); die;
-		//print_r($data['center_students']); die;
 		echo $this->load->view('admin/examController/get_center_wise_marksheet_dispatchlist',$data, TRUE);
 	}
 
