@@ -55,7 +55,7 @@
             <tr>
               <td height="100" colspan="2" valign="bottom">
                 <center>
-                  <strong><?php echo $student->course_name .' '. $this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->old_class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
+                  <strong><?php echo $student->course_name .' '; ?> Six Months Course <?=$marksheet_variables->exam_session ?></strong>
                 </center>
               </td>
             </tr>
@@ -67,6 +67,9 @@
                       <td class="Normaltext" colspan="2">
                         <div align="center"><font size="4">  &nbsp; </font></div>
                       </td>
+                      <td class="Normaltext">
+                        <div align="center"><font size="4">  Regular </font></div>
+                      </td>
                     </tr>
                     <tr>
                       <td width="35%" class="Normaltext" align="left"><div align="left">Roll No</div></td>
@@ -76,7 +79,7 @@
                           <!-- <div style="float:right"> &nbsp;&nbsp;&nbsp; Mode - Distance Education </div> -->
                         </div>
                       </td>
-                      <td align="left" width="18%" rowspan="4">
+                      <td align="center" width="18%" rowspan="4">
                         <img border="1"  class="student_image" src="<?= base_url('assets/student_image/'.$student->session.'/'.$student->photo) ?>" width="90px" height="105px">
                       </td>
                     </tr>

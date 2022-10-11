@@ -13,6 +13,7 @@
         }
         .break{
             page-break-before: always;
+            break-after: always;
         }
         table {
             background-color: transparent;
