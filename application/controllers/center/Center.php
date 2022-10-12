@@ -1478,7 +1478,7 @@ class Center extends CI_Controller {
 		}
 	 }
 	public function internal_marks_list(){
-	 		redirect(base_url());
+	 		// redirect(base_url());
 	 	if(!$this->session->has_userdata('centerdata')){
 	 		redirect(base_url());
 	 	}
@@ -1490,12 +1490,14 @@ class Center extends CI_Controller {
 	 	$titleData = array('title' => 'Internal  Marks Submission' );
 	 	$this->load->view('Centers/header',$titleData);
 	 	$center_id =  $this->session->center_id;
-	 	$where = array('center_id' => $center_id,'new_exam_form' => 'Y','result_show ' => 'N');
+	 	$where = array('center_id' => $center_id,'new_exam_form' => 'Y','internal'=>"Y");
+		//  ,'result_show ' => 'N'
 	 	$this->db->order_by("int_marks_sub,student.course_group_id,student.class_id", "asc");
 	 	$this->db->select('*');
 	 	$this->db->from('student');
+		 $this->db->join('class_master', 'student.class_id = class_master.id');
 	 	$this->db->Where($where);
-	 	//$this->db->where('`student.class_id` in (154 , 158 , 181 , 193 , 195 , 197 , 199 , 201 , 203 , 205 , 207 , 209 , 211 , 213 , 221 , 223 , 225 , 227 )');
+		
 	 	$data['students'] = $this->db->get()->result();//echo $this->db->last_query(); die;
 	 	$this->load->view('Centers/student_marks_no_list',$data);
 	 	$this->load->view('Centers/footer');
@@ -1513,8 +1515,9 @@ class Center extends CI_Controller {
 		if($classData->practical_internal_marks=="N")
 			$this->db->where('paper_type','theory');
 	 	$this->db->join('student', 'student.student_id = new_exam_form.student_id');
+		 $this->db->order_by('new_exam_form.sub_group_id,paper_order');
 	 	$details = $this->db->get()->result();
-		 	//echo $classData->practical_internal_marks.$this->db->last_query(); die;
+		 	// echo $classData->practical_internal_marks.$this->db->last_query(); die;
 	 	$data = array(
 	 		'details' => $details,
 	 		'name_csrf' => $this->security->get_csrf_token_name(),
@@ -1818,7 +1821,7 @@ class Center extends CI_Controller {
 	}
 
 	public function practical_marks_list(){
-		redirect(base_url());
+		// redirect(base_url());
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
@@ -1829,7 +1832,8 @@ class Center extends CI_Controller {
 		$titleData = array('title' => 'Practical  Marks Submission' );
 		$this->load->view('Centers/header',$titleData);
 		$center_id =  $this->session->center_id;
-		$where = array('center_id' => $center_id,'new_exam_form' => 'Y','result_show' => 'N');
+		$where = array('center_id' => $center_id,'new_exam_form' => 'Y');
+		// ,'result_show' => 'N'
 		$this->db->order_by("p_marks_sub,student.course_group_id,student.class_id", "asc");
 		$this->db->select('*');
 		$this->db->from('student');
@@ -1900,11 +1904,13 @@ class Center extends CI_Controller {
 		 	$student_id = $this->input->post('student_id');
 			$class_id = $this->input->post('class_id');
 			$classData	= $this->Common_model->getRecordById('class_master','id',$class_id); 
-		 	$where=array('student.student_id'=>$student_id,);
+		 	$where=array('student.student_id'=>$student_id,'paper_master.sub_group_id !='=>1);
 		 	$this->db->select('*');
 		 	$this->db->from('new_exam_form');
 		 	$this->db->Where($where );
-		 	$this->db->join('student', 'student.student_id = new_exam_form.student_id');
+		 	$this->db->join('student', 'student.student_id = new_exam_form.student_id and student.class_id = new_exam_form.class_id');
+			$this->db->join('paper_master','student.class_id= paper_master.class_id and paper_master.paper_code = new_exam_form.paper_code');
+			$this->db->order_by('new_exam_form.sub_group_id,paper_order,paper_no');
 		 	$details = $this->db->get()->result();
 		 	$data = array(
 				'classData' =>$classData,
