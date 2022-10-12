@@ -1853,5 +1853,104 @@ public function getStudentData()
 	}
 	}//fun
 
+	 // Center Wise Marksheet dispatch
+	 public function center_wise_marksheet_dispatch(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+			$titleData = array('title' => 'Center Wise MarkSheet Dispatch '); 
+			$this->load->view('header',$titleData);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$this->db->select('DISTINCT(center_id)');
+			$this->db->from('student');
+			$this->db->where(array('exam_form'=>'Y'));
+			$centers = $this->db->get()->result_array();
+			$ids = array_column($centers, 'center_id');
+			//print_r($ids);die;
+			$this->db->select('*');
+			$this->db->from('center');
+			$this->db->where_in('id',$ids);
+			$this->db->order_by('center_code', "asc");
+			$data['centers'] = $this->db->get()->result();
+			
+			$this->load->view('admin/examController/center_wise_marksheet_dispatch',$data);
+			$this->load->view('footer');
+		}
+	}
+
+	//Get Center Wise Student Marksheet dispatch 
+	public function get_center_wise_marksheet_dispatchlist(){
+		$center = $this->input->post('center');
+		$this->db->select('DISTINCT(center_id)');
+		$this->db->from('student');
+		$this->db->where(array('exam_form'=>'Y'));
+		$centers = $this->db->get()->result_array();
+		$ids = array_column($centers, 'center_id');
+	
+		$this->db->select('*');
+		$this->db->from('center');
+		if($center!="All")
+			$this->db->where( array('id'=>$center));
+		else
+			$this->db->where_in('id',$ids);
+		$this->db->order_by('center_code', "asc");
+		$data['centers'] = $this->db->get()->result();
+		$data['examTitle'] = "Feb 2022";
+		
+		echo $this->load->view('admin/examController/get_center_wise_marksheet_dispatchlist',$data, TRUE);
+	}
+
+	 // Center Wise Marksheet dispatch
+	 public function center_wise_marksheet_dispatch_rolllist(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+			$titleData = array('title' => 'Center Wise MarkSheet Dispatch '); 
+			$this->load->view('header',$titleData);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$this->db->select('DISTINCT(center_id)');
+			$this->db->from('student');
+			$this->db->where(array('exam_form'=>'Y'));
+			$centers = $this->db->get()->result_array();
+			$ids = array_column($centers, 'center_id');
+			//print_r($ids);die;
+			$this->db->select('*');
+			$this->db->from('center');
+			$this->db->where_in('id',$ids);
+			$this->db->order_by('center_code', "asc");
+			$data['centers'] = $this->db->get()->result();
+			
+			$this->load->view('admin/examController/center_wise_marksheet_dispatch_rolllist',$data);
+			$this->load->view('footer');
+		}
+	}
+
+	//Get Center Wise Student Marksheet dispatch 
+	public function get_center_wise_marksheet_dispatch_rolllist(){
+		$center = $this->input->post('center');
+		$this->db->select('DISTINCT(center_id)');
+		$this->db->from('student');
+		$this->db->where(array('exam_form'=>'Y'));
+		$centers = $this->db->get()->result_array();
+		$ids = array_column($centers, 'center_id');
+	
+		$this->db->select('*');
+		$this->db->from('center');
+		if($center!="All")
+			$this->db->where( array('id'=>$center));
+		else
+			$this->db->where_in('id',$ids);
+		$this->db->order_by('center_code', "asc");
+		$data['centers'] = $this->db->get()->result();
+		$data['examTitle'] = "Feb 2022";
+		
+		echo $this->load->view('admin/examController/get_center_wise_marksheet_dispatch_rolllist',$data, TRUE);
+	}
 
 }// class
