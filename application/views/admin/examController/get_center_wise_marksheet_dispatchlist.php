@@ -43,7 +43,7 @@
     $studentCount=0;
      ?>
      <p class="break" style="font-size: 16px;"></p>
-	 <p align="center" style="margin-top:10px;line-height:12px;font-size:15px;"><b>Maharishi Mahesh Yogi Vedic Vishvavidyalaya DDE, Jabalpur</b></p>
+	 <p align="center" style="margin-top:10px;line-height:15px;font-size:15px;"><b>Maharishi Mahesh Yogi Vedic Vishvavidyalaya DDE, Jabalpur</b></p>
      <p align="center" style="line-height:12px;font-size:14px;"><b>Regular List of Roll No. Exam <?=$examTitle?></b></p>
      <p align="center" style="line-height:12px;font-size:12px;"><b><i> Center : <?php echo $center->center_code;?> </i></b> </p>
      <p align="right">Page No :<?php echo $pageno++; ?> </p>
@@ -65,24 +65,24 @@
                             <td valign="middle"><?php	echo $studentCount ;?></td>
                             <td valign="middle"><?php	echo $student->roll_number ;?></td>
                             <td valign="middle"><?php	echo $student->enrollment_no ;?></td>
-                            <td valign="middle"><?php	echo $student->name ;?></td>
-                            <td valign="middle"><?php	echo $student->course_name ;?></td>
+                            <td valign="middle"  align="left"><?php	echo $student->name ;?></td>
+                            <td valign="middle" align="left"><?php	echo $student->course_name ;?></td>
                             <td valign="middle"><?php	echo $student->class_name ;?></td>
-                            <td valign="middle"></td>
+                            <td valign="middle" style="width: 20%;"></td>
                     </tr>
                      <?php  if( $count==30 ) { $flag=false;  $trow=0;  $sno=-1; if($totalStudent>$studentCount)?>
                      </table>
                             <p class="break" style="font-size: 16px;"></p>
-                            <p align="center" style="margin-top:15px;line-height:12px;font-size:15px;"><b>Maharishi Mahesh Yogi Vedic Vishvavidyalaya DDE, Jabalpur</b></p>
+                            <p align="center" style="margin-top:15px;line-height:15px;font-size:15px;"><b>Maharishi Mahesh Yogi Vedic Vishvavidyalaya DDE, Jabalpur</b></p>
                             <p align="center" style="line-height:12px;font-size:14px;"><b>Regular List of Roll No. Exam <?=$examTitle?> </b></p>
                             <p align="center" style="line-height:12px;font-size:12px;"> <b><i> Center : <?php echo $center->center_code;?> </i></b> </p>
                             <p align="right">Page No :<?php echo $pageno++; ?></p>
                             <table align="center" cellpadding="6" border="1" width="90%">
                         <?php }  $sno++; $count++; }     ?><tr>
         <td valign="middle" colspan="3">
-           <p>Total Marksheet:.......</p>
-           <p>Dispatch No:.......</p>
-           <p>Dispatch Dt:.......</p>
+           <p style="margin-top: 1rem;">Total Marksheet:</p>
+           <p>Dispatch No:</p>
+           <p>Dispatch Dt:</p>
         </td>
         <td valign="bottom" colspan="4">
              <p align="center">Assistant Registrar</p>

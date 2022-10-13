@@ -1,3 +1,8 @@
+<style>
+  .offcanvas-footer{
+    display:none;
+  }
+</style>
 <?php //print_r($exam_centers); ?>
  <div class="  text-center p-3">
      <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
