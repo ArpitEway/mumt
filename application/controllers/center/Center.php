@@ -1513,11 +1513,12 @@ class Center extends CI_Controller {
 	 	//$this->db->Where($where );
 		$this->db->where('student.student_id',$student_id);
 		if($classData->practical_internal_marks=="N")
-			$this->db->where('paper_type','theory');
+			// $this->db->where('paper_type','theory');
+			$this->db->where_in('paper_type',array('Sessional','theory'));
 	 	$this->db->join('student', 'student.student_id = new_exam_form.student_id');
 		 $this->db->order_by('new_exam_form.sub_group_id,paper_order');
 	 	$details = $this->db->get()->result();
-		 	// echo $classData->practical_internal_marks.$this->db->last_query(); die;
+		//  echo $classData->practical_internal_marks.$this->db->last_query(); die;
 	 	$data = array(
 	 		'details' => $details,
 	 		'name_csrf' => $this->security->get_csrf_token_name(),
@@ -1719,9 +1720,9 @@ class Center extends CI_Controller {
 		$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
 		$data['practical_internal_marks']=$classData->practical_internal_marks;
 		$this->db->select('*');
-		$this->db->from('new_exam_form');
-		$this->db->where('new_exam_form.student_id',$data['student']->student_id);
-		$this->db->where('new_exam_form.class_id',$data['student']->old_class_id); 
+		$this->db->from('exam_form');
+		$this->db->where('exam_form.student_id',$data['student']->student_id);
+		$this->db->where('exam_form.class_id',$data['student']->old_class_id); 
 		$new_exam_form = $this->db->get()->result();
 		$data['new_exam_form']  = $new_exam_form;
 		$title = array('title' => 'Result - '.$data['student']->enrollment_no);
@@ -1847,11 +1848,11 @@ class Center extends CI_Controller {
 
 	public function load_student_practical_assignment (){
 		$student_id = $this->input->post('student_id');
-		$where=array('student.student_id'=>$student_id,
-			'paper_type!='=>'theory', );
+		$where=array('student.student_id'=>$student_id, );
 		$this->db->select('*');
 		$this->db->from('new_exam_form');
 		$this->db->Where($where );
+		$this->db->where_not_in('paper_type',array('Sessional','theory'));
 		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
 		$this->db->join('paper_master', 'paper_master.id = new_exam_form.paper_id');
 		$details = $this->db->get()->result();

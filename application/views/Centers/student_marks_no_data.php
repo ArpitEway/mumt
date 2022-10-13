@@ -53,11 +53,11 @@
               </td>
             <td class="text-center">
           <?php
-              if($student->paper_type=='theory'){
+              if($student->paper_type=='theory' || $student->paper_type=='Sessional' ){
                 echo $student->int_marks;
               }else{
               
-                if($classData->practical_internal_marks=="Y")
+                if($classData->practical_internal_marks=="Y" && $student->max_internal_marks !=0)
                   echo $student->int_marks.'/'.$student->p_marks;
                 else
                   echo $student->p_marks;
