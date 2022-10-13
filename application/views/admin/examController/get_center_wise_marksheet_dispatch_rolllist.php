@@ -44,7 +44,7 @@
      ?>
      <p class="break" style="font-size: 16px;"> </p>
 		
-        <p align="center" style="margin-top:10px;line-height:12px;font-size:15px;"><b>Maharishi Mahesh Yogi Vedic Vishvavidyalaya DDE, Jabalpur</b></p>
+        <p align="center" style="margin-top:10px;line-height:15px;font-size:15px;"><b>Maharishi Mahesh Yogi Vedic Vishvavidyalaya DDE, Jabalpur</b></p>
         
         <p align="center" style="line-height:12px;font-size:14px;"><b>Regular List of Roll No. Exam <?=$examTitle?> <?php //echo $exam_session; ?></b></p>
         
@@ -52,7 +52,7 @@
         
         <p align="right">Page No :<?php echo $pageno++; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </p>
         
-        <table align="center" cellpadding="6" border="1" width="90%">
+        <table align="center" cellpadding="6" border="1" width="95%">
         <tr class="rowstart">
             
             
@@ -66,7 +66,7 @@
               
                     <?php if((($sno%21==0 /*&& $sno%90!=0*/) )|| $sno==0 ) { $count=1; $trow++; ?>
                         <td style="width:20%;"  valign="top">
-                        <table align="center" cellpadding="6" border="1" width="100%">
+                        <table align="center" cellpadding="10" border="1" width="100%">
                             <tr bgcolor="#FFCC99" style="text-align:center;">
                                 <th>Roll No. / Enrollment No.</th>
                             </tr>
@@ -79,10 +79,10 @@
                         </table>
                         </td>
                         <?php if($trow==5 &&  $count==21  ) {  $trow=0;  $sno=-1; if($totalStudent>$studentCount)?>
-                            <!-- </tr><tr class="rowchange"> -->
+                           
                         </tr></table>
                              <p class="break" style="font-size: 16px;"> </p>
-                            <p align="center" style="margin-top:15px;line-height:12px;font-size:15px;"><b>Maharishi Mahesh Yogi Vedic Vishvavidyalaya DDE, Jabalpur</b></p>
+                            <p align="center" style="margin-top:15px;line-height:15px;font-size:15px;"><b>Maharishi Mahesh Yogi Vedic Vishvavidyalaya DDE, Jabalpur</b></p>
         
                             <p align="center" style="line-height:12px;font-size:14px;"><b>Regular List of Roll No. Exam <?=$examTitle?> <?php //echo $exam_session; ?></b></p>
                             
@@ -90,7 +90,7 @@
                             
                             <p align="right">Page No :<?php echo $pageno++; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </p>
                             
-                            <table align="center" cellpadding="6" border="1" width="90%">
+                            <table align="center" cellpadding="6" border="1" width="95%">
                             <tr class="rowstart">
                         <?php } ?>  
                     <?php } ?>      
@@ -99,5 +99,5 @@
         ?>   </table><?php }// student loop ?>
            
  <?php $centerCount++;
- //if($centerCount==15) break;
+ 
 } //center loop ?>
