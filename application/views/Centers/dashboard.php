@@ -186,7 +186,7 @@
 						<div>
 							<span class="nav-text">Internal Marks Submission</span>
 						</div>
-					</a>-->
+					</a> -->
 					<a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
 						<div>
 							<span class="nav-text">Time Table June 2022</span>
