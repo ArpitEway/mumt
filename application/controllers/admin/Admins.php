@@ -3803,7 +3803,7 @@ public function update_exam_datewise_permission(){
 				$dt   = array();
 				$count_filter='class_id';//array("course_group_id", "class_id"); //
 				
-				$approved 		  = $this->input->post("approved");
+				$data['approved']=$approved 		  = $this->input->post("approved");
 				$data['payment']= $payment 		  = $this->input->post("payment");
 				
 				$data['document_upload']=$document_upload  = $this->input->post("document_upload");
@@ -3827,7 +3827,7 @@ public function update_exam_datewise_permission(){
 					$this->db->where('document_uploaded ',$document_upload);
 				}
 				
-					$this->db->where('approved','');
+					$this->db->where('approved',$approved);
 					$this->db->group_by('class_id');
 				
 				
@@ -3857,7 +3857,9 @@ public function update_exam_datewise_permission(){
 			$dt   = array();
 			$course_group_id  = $this->uri->segment(5);
 			$class_id  		  = $this->uri->segment(6);
-			$approved 		  = '';
+			$approved 		  = $this->uri->segment(7);
+			if(empty($approved)){$approved="";}
+			$data['approved']=$approved;
 			$payment 		  = $this->uri->segment(3);
 			$document_upload  = $this->uri->segment(4);
 			$filter  		  = "list";
@@ -3884,7 +3886,7 @@ public function update_exam_datewise_permission(){
 			if($class_id){
 				$this->db->where('class_id',$class_id);
 			}
-				$this->db->where('approved','');
+				$this->db->where('approved',$approved);
 				//$this->db->group_by('class_id');
 			
 			
@@ -3914,6 +3916,7 @@ public function update_exam_datewise_permission(){
 			if ($this->input->method() == "post") 
 			{
 				$session    = $this->input->post("session");
+				$approved    = $this->input->post("approved");
 				$students    = $this->input->post("students");
 				$studentArr=explode(',',$students);
 				$sessionRow = $this->db->get_where('session', array('id'=>$session))->result_array();
@@ -3925,7 +3928,8 @@ public function update_exam_datewise_permission(){
 					$prev_path = 'assets/student_image/'.$studentRow[0]['session'].'/'.$studentRow[0]['photo'];
 					$upload = rename($prev_path,$path); 
 					
-					$data = $this->Common_model->updateRecordByConditions("student",array("student_id" => $val,'approved'=>'' ),array("session" => $sessionValue ));
+					$data = $this->Common_model->updateRecordByConditions("student",array("student_id" => $val,'approved'=>$approved ),array("session" => $sessionValue ));
+					
 				}
 			}
 			redirect(base_url('check_student_for_session_change_report'));

@@ -1607,7 +1607,7 @@ class Center extends CI_Controller {
 		
 		$this->db->where('class_master.result_permission', 'Y');
 		$this->db->where('center_id', $center_id);
-		$this->db->where('result_show','Y');
+		// $this->db->where('result_show','Y');
 		//$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,197,203,211,213)');
 		$data['courses'] = $this->db->get()->result();
 		// echo $this->db->last_query(); die;
@@ -1653,9 +1653,8 @@ class Center extends CI_Controller {
 	public function getStudentListForMarksheet(){
 		$data = $row = array();
 	
-		$where = array('center_id' => $this->session->center_id,
-			 'result_show'=>'Y');
-	
+		$where = array('center_id' => $this->session->center_id,);
+		// 'result_show','Y'
 
 		if($_POST['course_group_id']!='All' and $_POST['course_group_id']!=''){
 			$where['student.course_group_id'] = $this->input->post('course_group_id');
@@ -1668,7 +1667,7 @@ class Center extends CI_Controller {
 		$where['result_permission'] = 'Y';
 		// Fetch member's records
 		
-		$column_order = array('student.student_id','enrollment_no','name','f_h_name','course_name','student.class_name',null);
+		$column_order = array('student.student_id','enrollment_no','name','f_h_name','course_name','student.class_name','provisional_remark',null);
 		$column_search = array('student.student_id','enrollment_no','course_name','student.class_name','name','f_h_name');
 	
 		$DataTableArray = array(
@@ -1685,7 +1684,20 @@ class Center extends CI_Controller {
 		
 		$i = $_POST['start'];
 		foreach($tableData as $result){
-			$btn =	'<a href="'.base_url('center/Center/marksheet/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
+			   
+			if($result->provisional_remark=="N" || $result->provisional_remark==""){
+			$btn =	'<a href="'.base_url('center/Center/marksheet/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm dt-center" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
+			}else{
+				$this->db->select('provisional_remarks');
+				$this->db->from('provisional_remark_details');
+	             $this->db->where('document_category_id',$result->provisional_remark);
+				 $remark = $this->db->get()->row();
+				 if($remark->provisional_remarks == "Enrollment List"){
+					$btn = "Documents are not recieved at university";
+				 }else{
+			    $btn = $remark->provisional_remarks." are not recieved at university";
+				 }
+			}
 			$i++;
 			if($result->enrolled=='N'){
 				$enrollment = '-';
