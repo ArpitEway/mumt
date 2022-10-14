@@ -15,7 +15,7 @@
 </thead>
 <tbody>
     	
-			<?php	
+			<?php	 $i=1;
 			if(isset($course_count)){ ?>
 			
 			<?php
@@ -24,16 +24,16 @@
 			?>
 			<tr>
 				
-			<td><?php echo $i; ?></td>
+			<td><?php echo  $i++; ?></td>
 			<td><?php echo $student["course_name"]; ?></td>
 			<td><?php echo $student["class_name"]; ?></td>
-			<td><a target="_blank" href="<?php echo site_url('get_student_list_for_session_change_report/').$session.'/'.$payment.'/'.$document_upload.'/'.$student["course_group_id"].'/'.$student["class_id"]; ?>"  ><?php echo $student["cnt"]; ?></a></td>
+			<td><a target="_blank" href="<?php echo site_url('get_student_list_for_session_change_report/').$session.'/'.$payment.'/'.$document_upload.'/'.$student["course_group_id"].'/'.$student["class_id"].'/'.$approved; ?>"  ><?php echo $student["cnt"]; ?></a></td>
 			<?php $total = $total + $student["cnt"]; ?>
 			</tr>
 			
 			
 			
-			<?php $i++; } ?>
+			<?php } ?>
 			<tfoot>
 			<tr>
 			<td></td>
