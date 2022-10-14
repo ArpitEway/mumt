@@ -26,7 +26,7 @@
     <tr>          
       <td><strong>Enrollment No: </strong> <?=$details[0]->enrollment_no;?></td>
       <td><strong> Roll No: </strong><?=$details[0]->roll_no;?></td>
-        <td  rowspan="5"> <img  class="student_img" src="<?php echo base_url('/assets/student_i').$details[0]->session.'/'.$details[0]->photo;?>" ></td> 
+        <td  rowspan="5"> <img  class="student_img" src="<?php echo base_url('/assets/student_image').$details[0]->session.'/'.$details[0]->photo;?>" ></td> 
     </tr>
     <tr> 
       <td><b> Name: </b> <?=$details[0]->name;?></td>
@@ -79,7 +79,7 @@
                 
         <td><?php echo $s; ?></td>
                   <td><?php echo $student->paper_code; ?></td>
-                  <td><?=$this->Common_model->getPaperNameById($student->paper_id); ?>
+                  <td><?= $paper_data[0]->$paper_name;?>
 
           <input  type="hidden" name="remove" id="student_tr" value="<?= $student->student_id ?>">  
           <input  type="hidden"  name="student_id" value="<?=$student->student_id?>"> 
