@@ -110,7 +110,7 @@
 							
 						</tr>
 					<?php
-					$i++; 
+					//$i++; 
 				}
 			}
 		?>
@@ -125,6 +125,7 @@
 <form action="<?php echo site_url('admin/admins/update_student_session'); ?>" method="POST">
     <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
     <input type="hidden" name="session" id="newSession">
+	<input type="hidden" name="approved" value="<?php echo $approved; ?>">
     <input type="hidden" name="students" value="<?php echo  implode(',',$st);?>">
     <input type="submit" style="display:none" name="submit" value="submit" id="submitForm">
  </form>
