@@ -1608,6 +1608,7 @@ class Center extends CI_Controller {
 		$this->db->where('class_master.result_permission', 'Y');
 		$this->db->where('center_id', $center_id);
 		// $this->db->where('result_show','Y');
+		$this->db->where('exam_form','Y');
 		//$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,197,203,211,213)');
 		$data['courses'] = $this->db->get()->result();
 		// echo $this->db->last_query(); die;
@@ -1653,7 +1654,7 @@ class Center extends CI_Controller {
 	public function getStudentListForMarksheet(){
 		$data = $row = array();
 	
-		$where = array('center_id' => $this->session->center_id,);
+		$where = array('center_id' => $this->session->center_id,'exam_form'=>'Y');
 		// 'result_show','Y'
 
 		if($_POST['course_group_id']!='All' and $_POST['course_group_id']!=''){
