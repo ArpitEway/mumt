@@ -120,7 +120,7 @@
             <tr>
               <td height="72" colspan="2">
                 <fieldset style="border: 0px solid #22316C;">       
-                  <div style="min-height:420px;margin-top: 20px;">
+                  <div style="min-height:450px;margin-top: 20px;">
                     <table id="" style="width:100%;" border="0" cellspacing="0" cellpadding="0" align="center">
                       <tbody>
                         <tr style="font-family:Arial, Helvetica, sans-serif; font-size:11px" align="center">
