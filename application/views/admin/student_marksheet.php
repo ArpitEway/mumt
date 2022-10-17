@@ -103,6 +103,16 @@
                       <td class="Normaltext" align="left" width="29%"><div align="left">Father's / Husband's Name</div></td>
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo strtoupper( $student->f_h_name); ?></span></div></td>
                     </tr>
+                    <tr>
+                      <td class="Normaltext" align="left" width="29%"><div align="left">Department</div></td>
+                      <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;">
+                        <?php if ($student->center_id==10) {
+                          echo "University Teaching Department Karaundi";
+                        }else if ($student->center_id==12) {
+                          echo "Shiksha Vibhag, Lamti Jabalpur";
+                        } ?>
+                      </span></div></td>
+                    </tr>
                   </tbody>
                 </table>
               </td>
