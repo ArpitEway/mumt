@@ -57,7 +57,7 @@
                     <td><?php echo  $course_group ; ?></td>
                     <td><?php echo  $class_name ; ?></td>
                     <td><?php echo  $total_paper_count ; ?></td>
-                    <td><?php echo $uploaded -$absent; ?></td>
+                    <td><?php echo $uploaded - $absent; ?></td>
                     <td><?php echo $absent ; ?></td>
                     <td>
                         <a href="<?php echo base_url("class_wise_remaining_report")."/theory/".$course_group_id."/".$class_id; ?>" target="_blank" >
