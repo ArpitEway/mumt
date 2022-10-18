@@ -40,8 +40,7 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 		</tr>
 		<tr>
 			<th>Exam Session:</th>
-			<!-- <td><?php echo 2021 ?></td> -->
-			<td><?php echo $papers->session; ?></td>	
+			<td>Feb 2022</td>
 				<th>Max.Marks:</th>
 				<td>
 					<?php 
@@ -63,7 +62,7 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 		<div></div>
 		<form id="ajaxForm" class="mt-10" > 
 		<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" id="csrf" value="<?= $hash_csrf; ?>">
-			<table  class="table table-bordered m-auto" id="kt_datatable">
+			<table  class="table table-bordered mx-auto mb-4">
 				<thead>
 					<tr>
 						<th>Enrollment no.</th>
@@ -74,7 +73,7 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 				<tbody>
 					<?php
 					$count = 1 ;
-					foreach($counts as $dt){
+					foreach($resultData as $dt){
 						?>
 						<tr>
 							<td>
@@ -85,7 +84,7 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 								<input type="hidden" name="paper_code" value="<?=$paper_code?>">
 							</td>
 							<td class="fit">	
-							<select name="marks[]" class="form-control" id="marks<?php echo $count ?>">
+								<select name="marks[]" class="form-control" id="marks<?php echo $count ?>">
 									<option value="">Select</option>
 									<option>ABS</option>
 									<?php

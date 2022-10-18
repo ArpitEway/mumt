@@ -28,39 +28,38 @@
         </select>
     </div>
     <div class="form-group col-md-4">
-        <label for="exam_center">Exam Center</label>
-        <select name="exam_center"  id="exam_center" class="form-control exam_center">
-            <option value="all">Select Center</option>
-            <?php  
-            $exam_centers= $this->Common_model->getRecordByWhere('exam_center',array());
-            foreach($exam_centers as $exam_center){
+            <label for="exam_center">Exam Center</label>
+            <select name="exam_center"  id="exam_center" class="form-control exam_center">
+                <option value="all">Select Center</option>
+                <?php  
+                $exam_centers= $this->Common_model->getRecordByWhere('exam_center',array());
+                foreach($exam_centers as $exam_center){
+                 ?>
+                 <option value="<?php echo $exam_center->id; ?>"><?php echo  $exam_center->examcentercode .'-'. $exam_center->schoolcollegename; ?></option>
+                 <?php
+             } 
              ?>
-             <option value="<?php echo $exam_center->id; ?>"><?php echo  $exam_center->examcentercode .'-'. $exam_center->schoolcollegename; ?></option>
-             <?php
-         } 
-         ?>
-     </select>
- </div>
- <div class="form-group col-md-4">
-     <label for="class">Admission Mode</label>
-     <select name="university_mode" id="university_mode" class="form-control" >	 
-        <option value="REG">Regular </option> 
-        <option value="PVT" >Private</option>
-    </select>
-</div>
-<div class="form-group col-md-4">
-    <label for="class">Session</label>
-    <input name="session" readonly="readonly" placeholder='session'  class="form-control " type="text" value="Session"/>
-</div>
-</div>
+        </select>
+    </div>
+    <div class="form-group col-md-4">
+         <label for="class">Admission Mode</label>
+         <select name="university_mode" id="university_mode" class="form-control" >	 
+            <option value="REG">Regular </option> 
+            <option value="PVT" >Private</option>
+        </select>
+    </div>
+<!--     <div class="form-group col-md-4">
+        <label for="class">Exam Session</label>
+        <input name="session" readonly="readonly" placeholder='session'  class="form-control " type="text" value="Feb 2022"/>
+    </div> -->
+    </div>
 
-<div class="form-group text-center">
-	<input type="hidden" class="" name="action1" value="submit">
-	<button class="btn btn-md btn-primary" type="submit" id="submit_form">Search</button>
-</div>
+    <div class="form-group text-center">
+    	<input type="hidden" class="" name="action1" value="submit">
+    	<button class="btn btn-md btn-primary" type="submit" id="submit_form">Search</button>
+    </div>
 </form>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 
 <script>

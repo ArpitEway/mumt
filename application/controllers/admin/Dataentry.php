@@ -11,10 +11,10 @@ class Dataentry extends CI_Controller {
 		$this->load->model('Common_model');
 		$this->load->model('Datatable_model');
 		$this->load->model('Datatable_join_model');
-		if($this->session->account_type!='DataEntry'){
-				redirect(base_url('admin/logout')); 
+		if($this->session->account_type!='Dataentry'){
+			redirect(base_url('admin/logout')); 
 		}
-	    }
+	}
 
 	public function index(){
 
@@ -27,10 +27,10 @@ class Dataentry extends CI_Controller {
 		$this->load->view('header',array('title' => 'Data Entry Section'));
 		$this->load->view('admin/Dataentry/dashboard',$menu);
 		$this->load->view('footer');	
-    	}
+	}
 
 
-    public function mark_entry_file(){
+	public function mark_entry_file(){
 
 		$titleData = array('title' => 'Marks Entry Section'); 
 		$this->load->view('header',$titleData);
@@ -41,61 +41,65 @@ class Dataentry extends CI_Controller {
 		$this->load->view('footer');
 	} 
 
-    public function getPaperByClassId(){
+	public function getPaperByClassId(){
 
-	   $data= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'], 'type' => 'theory'));
-	   echo json_encode(array('data'=>$data));
-     }
+		$data= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'], 'type' => 'theory'));
+		echo json_encode(array('data'=>$data));
+	}
 
-	public function marks_entry_form($mode='' ,$paper_code='',$exam_centers='' , $page = 0)
+	public function marks_entry_form($mode='' ,$paper_code='',$exam_centers='',$page = 0)
 
 	{
-         if (isset($_POST['paper_code'])) {
-         $paper_code =  $this->input->post('paper_code');
-         $mode =  $this->input->post('university_mode');
-         $exam_center =  $this->input->post('exam_center');
-          }else{
-              $mode  = $this->Common_model->encrypt_decrypt($mode,'decrypt');
-              $paper_code  = $this->Common_model->encrypt_decrypt($paper_code,'decrypt'); 
-              $page  = $page;
-              $exam_center  = $exam_centers;
-          }
+		if (isset($_POST['paper_code'])) {
+			$paper_code =  $this->input->post('paper_code');
+			$mode =  $this->input->post('university_mode');
+			$exam_center =  $this->input->post('exam_center');
+		}else{
+			$mode  = $this->Common_model->encrypt_decrypt($mode,'decrypt');
+			$paper_code  = $this->Common_model->encrypt_decrypt($paper_code,'decrypt'); 
+			$page  = $page;
+			$exam_center  = $exam_centers;
+		}
 
 		$titleData = array('title' => 'Marks Entry Form'); 
 		$this->load->view('header',$titleData);
-		$where = array('new_exam_form.paper_code' => $paper_code, 'theory_marks' => '','university_mode' => $mode,'paper_type' => 'theory','exam_center_id'=>$exam_center);
+
+		$where = array('new_exam_form.paper_code' => $paper_code, 'theory_marks' => '','university_mode' => $mode,'paper_type' => 'theory','exam_center_id'=>$exam_center,'student.new_exam_form' => 'Y');
 		$this->db->select('student.student_id, student.name,enrollment_no,roll_no');
 		$this->db->from('new_exam_form');
 		$this->db->order_by("student.roll_no","student.enrollment_no","asc");
 		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
-		$this->db->where('student.old_class_id = new_exam_form.class_id');
+		$this->db->where('student.class_id = new_exam_form.class_id');
 		$this->db->where($where); 
 		$this->db->limit(10,$page);
-		$counts = $this->db->get();
-		$data['counts'] = $counts->result();
+		$resultData = $this->db->get();
+		$data['resultData'] = $resultData->result();
+
 		$config = array();
 		$config["base_url"] = base_url() ."marks_entry_form/".$this->Common_model->encrypt_decrypt($mode,'encrypt')."/".$this->Common_model->encrypt_decrypt($paper_code,'encrypt')."/".$exam_center;
-		$this->db->where('`student_id` IN (SELECT `student_id` FROM `student` where  university_mode="'.$mode.'")', NULL, FALSE);
-		$config["total_rows"] = $this->Common_model->getCountByWhere('new_exam_form',array('paper_code' => $paper_code,'theory_marks' => '','paper_type' => 'theory'));
-		$config["per_page"] = 10;
-	    $config["uri_segment"] = 6;
-		$this->pagination->initialize($config);
-	    $data["links"] = $this->pagination->create_links();
-        $data['paper_code'] = $paper_code ;
-		$where = array('new_exam_form.paper_code' => $paper_code);
-		$this->db->select('*');
+
+				$this->db->select('student.student_id, student.name,enrollment_no,roll_no');
 		$this->db->from('new_exam_form');
+		$this->db->order_by("student.roll_no","student.enrollment_no","asc");
 		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
 		$this->db->where('student.class_id = new_exam_form.class_id');
-		$this->db->join('paper_master', 'paper_master.id = new_exam_form.paper_id');
-		$this->db->where($where); 
-		$data['papers'] = $this->db->get()->row();
+		$this->db->where($where);
+		$config["total_rows"] = $this->db->get()->num_rows();		
+		$config["per_page"] = 10;
+		$config["uri_segment"] = 5;
+		$this->pagination->initialize($config);
+		$data["links"] = $this->pagination->create_links();
+
+		$data['paper_code'] = $paper_code ;
+		
+		$data['papers'] =  $this->Common_model->getRecordById('paper_master','paper_code',$paper_code);
+
 		$data['university_mode'] = $mode;
-        $data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
 		$this->load->view('admin/Dataentry/marks_entry_form',$data );		
 		$this->load->view('footer');
-	 }
+	}
 
 
 	public function marks_entry_form_sub(){
@@ -123,6 +127,5 @@ class Dataentry extends CI_Controller {
 			$returndata = array('error'=> 'An Error Occured');
 			echo json_encode($returndata);		
 		}
-	    }
-	    
-        }
+	}	
+}
