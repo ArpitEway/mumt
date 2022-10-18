@@ -872,6 +872,23 @@ class Common_Model extends CI_Model{
 		return $query->result_array();
 	}
 
+
+	public function get_paper_count_list($class_id = ''){
+		$this->db->select('count(*) as num, paper_id, paper_code, student.class_id, student.class_id, student.course_group_id,paper_type');
+		$this->db->from("student");
+		$this->db->group_by("new_exam_form.paper_id"); 
+		$this->db->order_by("student.course_group_id,student.class_id,new_exam_form.paper_code","asc");
+		if($class_id!=''){
+			$this->db->Where("student.class_id",$class_id);
+		}
+		$this->db->Where("student.class_id = new_exam_form.class_id");
+		$this->db->Where("student.new_exam_form","Y");
+		$this->db->Where("new_exam_form.paper_type","theory");
+		$this->db->join("new_exam_form", "student.student_id = new_exam_form.student_id", 'left');
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+
 	public function romanClassName($class_name)
 	{
 		$return = '';
@@ -882,8 +899,6 @@ class Common_Model extends CI_Model{
 		$return .= ($arr[1]=='SEM') ? ' Semester' : ' Year';
 		return $return;
 	}
-
-
 }
 
 ?>
