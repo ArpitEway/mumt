@@ -611,6 +611,30 @@
 				 } 
 				$where = 'student_id="'.$student[0]->student_id.'" ';
 				$this->Common_model->updateRecordByConditions('student',$where,$data);
+				//Move Documents as per session
+				$where = array('student_id' => $student[0]->student_id);
+				$admissionDoc = $this->Common_model->get_record('admission_document','*',$where);
+				foreach($admissionDoc as $row){
+					$source=FCPATH."/assets/documents/".$row['document_image'];
+				
+					$destination=FCPATH."/assets/enrolled_documents/".$student[0]->session."/".$row['document_image'];
+				
+					$dirname = FCPATH."/assets/enrolled_documents/".$student[0]->session;
+
+					if(!is_dir($dirname)){
+						mkdir( $dirname, 0777);
+						
+					
+					} 
+
+					if( rename( $source , $destination )){
+					
+						$data  = array('move'=>'Y' );
+						$where = array('student_id'=>$row['student_id'],'id'=> $row['id']);
+						
+						$update =$this->Common_model->updateRecordByConditions('admission_document',$where,$data);
+					} 
+				}	
 			}
 		
 			$this->session->set_flashdata('ajax_flash_message','permission updated');
@@ -1079,6 +1103,7 @@
 		$data['hash_csrf'] = $this->security->get_csrf_hash();	 
 		$where = array('','N');
 		$this->db->where_not_in('provisional_remark', $where);	
+		$this->db->order_by('center_id', 'ASC');
 		$data['student_list'] = $this->db->get('student')->result();
 		$this->load->view('admin/enrollment/provisional_remark_list',$data);
 		$this->load->view('footer');
@@ -1107,6 +1132,102 @@
 		}
 		echo json_encode($result);
 	}
+
+	public function change_password(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+		}else{
+			$titleData = array('title' => 'Change Password');
+			$this->load->view('header',$titleData);
+            $admin_id = $this->session->admin_id;
+			$admin_master_data = $this->Common_model->getRecordById('admin_master','id',$admin_id);
+			$data = array('admin_data' => $admin_master_data,
+                'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(), );
+			$this->load->view('admin/enrollment/change_password',$data);
+			$this->load->view('footer');
+		}
+	}
+
+	public function change_password_sub($id)
+
+	{ 
+		$new_password 	  = $this->input->post('new_password');
+		$confirm_password = $this->input->post('passconf');
+		$new_password_change = md5($new_password);
+
+		if($this->input->post('new_password') != "")
+		{
+			if($new_password == $confirm_password)
+			{
+				$data_update = array("password" =>  $new_password_change);
+				$this->db->where('id', $id);
+				$this->db->update('admin_master', $data_update);
+				echo json_encode(array(
+					"success" => 'Password Updated Successfully',
+				));
+			}
+			else{
+				echo json_encode(array(
+					"error" => 'Password does not match',
+				));
+			}
+		}else{
+			echo json_encode(array(
+				"error" => 'Please enter New Password',
+			));
+		}
+	}
+
+
+
+public function getStudentData()
+{
+	if(!$this->session->has_userdata('adminData')){
+		redirect(base_url());
+		exit;
+	}
+
+	$text_val =$this->input->post('text_val');
+	$radio_val = $this->input->post('radio_val');
+
+
+	if($text_val !='')
+	{
+		if($text_val !='' && $radio_val == 'enrollment_no')
+		{
+			$where = array('enrollment_no'=>$text_val);
+
+		}else if($text_val !='' && $radio_val == 'student_id')
+		{
+			$where = array('student.student_id'=>$text_val);
+
+		}else if($text_val !='' && $radio_val == 'roll_no')
+		{
+			$where = array('name'=>$text_val
+
+		);
+
+		}else if($text_val !='' && $radio_val == 'student_name')
+		{
+			$where = array();
+			$this->db->like('name', $text_val);
+
+		}else if($text_val !='' && $radio_val == 'adhar_no')
+		{
+			$where =  array('adhar_no' => $text_val);
+		}
+
+		$data['students'] = $this->Common_model->student_data($where);
+
+
+		$dt =  $this->load->view('admin/student/getStudentConsolidate',$data,true);
+		echo json_encode(array(
+			"status" => true,
+			"data" => $dt
+		));
+	}
+	}//fun
 
 
 }

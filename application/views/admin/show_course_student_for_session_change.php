@@ -43,8 +43,8 @@
 			<select name="approved" id="approved" class="form-control"  > 
 				<!-- <option value="all">All</option> -->
 				<option value=""> Non-verified </option>
-				<!-- <option value="Y">Approved </option>
-				<option value="N">Non-Approved </option> -->
+				 <!-- <option value="Y">Approved </option> -->
+				<option value="N">Non-Approved </option>
 			</select>
 		</div>
 

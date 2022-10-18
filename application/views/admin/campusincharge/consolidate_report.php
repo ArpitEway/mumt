@@ -21,12 +21,12 @@
 			<select name="center_id" id="center_id" class="form-control "  required >
 				<option value="all">All</option>
 				<?php 
-				$centers = $this->db->get_where('center', array())->result_array();
+				$this->db->where_in('id',array('20','21','22','23','24','25','26','27','28'));
+				$centers = $this->db->get('center')->result_array();
 				foreach($centers as $center)
 				{
 					?>
-					<option value="<?php echo $center['id']; ?>"><?php echo $center['center_code'] ." - ". $center['center_name']; ?></option>
-
+				<option value="<?php echo $center['id']; ?>"><?php echo $center['center_code'] ." - ". $center['center_name']; ?></option>
 					<?php
 				} 
 				?> 
@@ -198,10 +198,8 @@
 			university_mode:$('#university_mode').val()
 		};
 
-
-
 		$.ajax({
-			url: '<?php echo site_url('admin/admins/get_student_consolidate_data'); ?>',
+			url: '<?php echo site_url('admin/CampusIncharge/get_student_consolidate_data'); ?>',
 
 			type:'post',
 			dataType : 'JSON',

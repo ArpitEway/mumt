@@ -18,7 +18,7 @@ $total = 0;
     foreach($exam_centers as $row)
     {
         $where= array(
-            's.new_exam_form!='=>'D' ,
+            's.new_exam_form'=>'Y' ,
             's.examcentercode'=>$row->examcentercode,
             's.exam_center_id'=>$row->id,
          );

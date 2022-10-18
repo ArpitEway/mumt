@@ -11,14 +11,13 @@
 					<th>Enrollment no</th>
 					<th>Name</th>
 					<th>F/H Name</th>
-		
 					<th>DOB</th>
 					<th>Course</th>
 					<th>Class</th>
 					<th>
-						<?php if($this->session->account_type == "Admins" || $this->session->account_type == "Enrollment"){ ?>	
-							Edit
-						<?php } ?>
+					<?php if($this->session->account_type == "Admins" || $this->session->account_type == "Enrollment"){ ?>	
+					Edit	
+					<?php } ?>
 					</th>
 					<th>Mobile no</th>
 					<th>Payment</th>
@@ -26,7 +25,7 @@
 					<th>Approved</th>
 					<th>Enrolled</th>
 					<th>Exam Form</th>
-					<th>Paper</th> 
+					<th>Paper</th>
 					<?php
 					}
 					if(isset($course_count)){
@@ -57,14 +56,9 @@
 				$i = 1;
 				if(isset($students)){
 					foreach($students as $student){
-						
-						
-						
 						?>
-						<tr data-id="tr_<?= $student['student_id']?>" id="<?= $student['student_id'];?>">
+					<tr data-id="tr_<?= $student['student_id']?>" id="<?= $student['student_id'];?>">
 							<td><?php echo $i; ?></td>
-
-
 							<td><?php echo $student["center_code"]; ?></td> 
 							<td><?php 
 							if($student["university_mode"]=="REG"){
@@ -89,7 +83,9 @@
 							 ?></td>
 							<td>
 							<?php if(($this->session->account_type == "Admins" || $this->session->account_type == "Enrollment") && $student['enrolled']!='Y'){ ?> 
+								
 								<a target="_blank"  href='<?php echo base_url($this->session->account_type.'/editForm/').$this->Common_model->encrypt_decrypt($student["student_id"],'encrypt'); ?>'><i class="fa fa-pen"></i></a> 
+								
 							<?php } ?></td>
 							<td><?php echo $this->Common_model->getMobileNoByStudentID($student["student_id"]) ?></td>
 							<td><?php if( $student["payment_status"]=='Y'){echo 'Paid' ;}else{echo 'Unpaid' ;} ?></td>
@@ -99,41 +95,29 @@
 
 							<td><?php if( $student["enrolled"]=='Y'){echo 'Enrolled' ;}else{echo 'Non Enrolled' ;} ?></td>
 
-							<td><?php if( $student["new_exam_form"]=='Y'){echo 'Submit' ;}else if($student["new_exam_form"]=='D'){echo 'Not Permitted' ;}else{echo 'Not Submitted';} ; ?></td>
-							
-
-							
-
+							<td><?php if( $student["new_exam_form"]=='Y'){echo 'Submit' ;}else if($student["new_exam_form"]=='D'){echo 'Not Permitted' ;}else{echo 'Not Submitted';} ; ?></td>					
+						<?php $student_id = $this->Common_model->encrypt_decrypt($student['student_id']); ?>
+					</td>
 					<td>
-							<?php $student_id = $this->Common_model->encrypt_decrypt($student['student_id']); ?>
 						<?php if($student["temp_exam_form"]=='Y'){ ?>
-						<a target="_blank"  class="" href="<?=base_url('admin/Admins/show_paper/' .$student_id);?>"><i class="fa fa-eye" aria-hidden="true"></i></a>
-					 
+						<a target="_blank"  class="" href="<?=base_url('show_paper/'.$student_id);?>"><i class="fa fa-eye" aria-hidden="true"></i></a>
+					 	<?php if($this->session->account_type =="Admins"){?>
 					  <button  class="btn btn-sm  " onclick="delete__student_paper(this)" data-id = "<?=$student['student_id']; ?>"><i class="fa fa-trash" aria-hidden="true"></i></button>   
-					 
-				
-					<?php } ?>
-				</td>  
-				
+					 <?php }
+					 }else{ ?>
+							<a target="_blank"  class="" href="<?=base_url('select_paper/'.$student_id);?>"><i class="fa fa-plus" aria-hidden="true"></i></a>
+							<?php } ?>
+				   </td>
 						</tr>
 					<?php
 					$i++; 
 				}
 			}
-		?>
 		
-    
-			<?php	
-			if(isset($course_count)){ ?>
-		    
-			<?php
-			
-			$total = 0;
-			foreach($course_count as $student){	
+			if(isset($course_count)){
+				$total = 0;
+				foreach($course_count as $student){	
 				
-				//echo"<pre>";
-				
-			
 		   $class = $this->db->get_where("class_master",array('id'=>$student['class_id']))->result_array();
 		   $course_group_id = $class[0]['course_group_id'];
 		   $course = $this->db->get_where("course_group",array('id'=>$course_group_id))->result_array();

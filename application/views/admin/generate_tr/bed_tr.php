@@ -1,4 +1,13 @@
+<title><?php echo (isset($title)) ? $title : ''; ?></title>
 <style>
+  @media print {
+    body {
+      -webkit-print-color-adjust: exact;
+      -moz-print-color-adjust: exact;
+      -ms-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
   @page {
           size: auto;
       }
@@ -48,10 +57,83 @@
           size: auto;
       }
     }
-    td, th, table{
-      font-size: 11.8px;
+  td, th, table {
+    font-size: 11.8px;
+    border: 1px solid #000;
+  }
+  table {
+    border-spacing: 2px;
+    width: 100%;
+    margin-bottom: 6px;
+  }
+  .text-center {
+    text-align: center;
+  }
+  table.last_table, .last_table td, .last_table th{
+    border: none;
+  }
+  
+/*table marks css*/
+  .roll_no {
+    width: 7%;
+  }
+  .ms_no {
+    width: 7%;
+  }
+  .photo {
+    width: 6%;
+  }
+  .name {
+    width: 10%;
+  }
+  .paper {
+    width: 15%;
+    min-width: 85px;
+  }
+  .paper_code {
+    width: auto;
+  }
+  .total {
+    width: 4%;
+  }
+  .obtained {
+    width: 5%;
+    min-width: 50px;
+  }
+  .result {
+    width: 5%;
+  }
+  .remarks {
+    width: 5%;
+    min-width: 50px;
+  }
+   @media screen 
+  {
+    div#footer_wrapper 
+  {
+      display: none;
     }
+  }
+
+  @media print {
+    tfoot { visibility: hidden; }
+
+    div#footer_wrapper {
+      margin: 0px 1px 0px 7px;
+      position: fixed;
+      bottom: 0;
+    }
+
+    div#footer_content {
+      font-weight: bold;
+    }
+  
 </style>
+<div id="footer_wrapper">
+  <div id="footer_content">
+   RW-Result Withheld, RWE-Want of Enrolment, RWPM-Want of Prev. Sem/Year Marks, RWPR-Practical Marks Not Received, RWAS-Assignment Marks Not Received, RWPJ-Project Marks Not Received, UFM-Unfair Means,GR-Grace Mark In One Theory Paper For Passing, VCG-Vice-Chancellor's One Grace Mark In Division
+  </div>
+</div>
 <?php
   $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
   $marksheetData = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id'=>$class_id));
@@ -66,7 +148,7 @@
   foreach($students as $student)
   {
     $page_break_count++;
-    $marks = $this->Common_model->student_info_for_result($student->student_id);
+    $marks = $this->Common_model->student_info_for_result($student->student_id,$student->old_class_id);
     $BarCodecolspan = 9 + count($marks); 
     $total_theory_marks_obt = 0;
     $total_int_marks_obt = 0;
@@ -165,8 +247,8 @@
        $final_result = "PASS";
     }else{
       $require_grace_marks = $require_tot_marks-$fail_tot_marks;
-      // tot 3 grace marks in 2 subjects
-      if ($fail_count<3 && $require_grace_marks<4 && $int_fail_count==0 && $p_fail_count==0 && $rw_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0) {
+      // tot 3 grace marks in 1 subjects
+      if ($fail_count<2 && $require_grace_marks<4 && $int_fail_count==0 && $p_fail_count==0 && $rw_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0) {
         $check_grace_marks = true;
         $final_result = "PASS BY GRACE";
       }elseif($rw_count>0){
@@ -192,36 +274,32 @@
       <p align="center" class="line-height">Tabulation Register for <strong><?php echo $student->course_name; echo '&nbsp'. $marksheetData[0]->class_name; ?></strong> Examination <?php echo $marksheetData[0]->exam_session;?>
       </p>
       <!--<p align="center" class="line-height">Directorate of Distance Education</p>-->
-      <div class="row">
-        <div class="col-6">
-          DATE: <?php echo $marksheetData[0]->result_date;?>
-        </div>
-        <div class="col-6 text-right">
-          Page : <?php  echo $page_no; ?>
-        </div>
+      <div>
+        <div style="float: left;">DATE: <?php echo $marksheetData[0]->result_date;?></div>
+        <div style="float: right;">Page : <?php  echo $page_no; ?></div>
       </div>
       <table class="table table1 mb-0">
         <tbody>
           <tr>
-            <th class="align-middle text-center pl-5 pr-5" rowspan="<?php echo $rowspanhead ?>">Roll.No. <br> Reg.No.</th>
-            <th class="align-middle text-center" rowspan="<?php echo $rowspanhead ?>">M.S. <br> No.</th>
-            <th class="align-middle text-center pl-5 pr-5" rowspan="<?php echo $rowspanhead ?>">Photo</th>
-            <td class="align-middle text-center  custom_width" rowspan="<?php echo $rowspanhead ?>">Name of the <br> Student and <br> F/H Name</td>
-            <td class="align-middle text-right">Paper-></td>
+            <th class="align-middle text-center roll_no" rowspan="<?php echo $rowspanhead ?>">Roll.No. <br> Reg.No.</th>
+            <th class="align-middle text-center ms_no" rowspan="<?php echo $rowspanhead ?>">M.S. <br> No.</th>
+            <th class="align-middle text-center photo" rowspan="<?php echo $rowspanhead ?>">Photo</th>
+            <td class="align-middle text-center name" rowspan="<?php echo $rowspanhead ?>">Name of the <br> Student and <br> F/H Name</td>
+            <td class="align-middle text-right paper">Paper-></td>
             <?php
               foreach($marks as $paper_master){
             ?>
-              <td class="align-middle text-center "><?php echo  $paper_master->paper_code;  ?></td>
+              <td class="align-middle text-center paper_code"><?php echo  $paper_master->paper_code;  ?></td>
             <?php } ?>
-            <td class="align-middle text-center  pl-5 pr-5">Total</td>
-            <td class="align-middle text-center pl-5 pr-5" rowspan="<?php echo $rowspanhead ?>" >Marks <br> Obtained</td>
-            <td  class="align-middle text-center" rowspan="<?php echo $rowspanhead ?>">Result</td>
-            <td class="align-middle text-center" rowspan="<?php  echo $rowspanhead ?>">Remarks</td>
+            <td class="align-middle text-center total">Total</td>
+            <td class="align-middle text-center obtained" rowspan="<?php echo $rowspanhead ?>" >Marks <br> Obtained</td>
+            <td  class="align-middle text-center result" rowspan="<?php echo $rowspanhead ?>">Result</td>
+            <td class="align-middle text-center remarks" rowspan="<?php  echo $rowspanhead ?>">Remarks</td>
           </tr>
           <tr>
-            <td class="align-middle text-right " >Theory Marks Max/Min -></td>
+            <td class="align-middle text-right paper" >Theory Marks Max/Min -></td>
             <?php foreach($marks as $paper_master){ ?>
-              <td  class="align-middle text-center "><?php
+              <td  class="align-middle text-center paper_code"><?php
               if($paper_master->paper_type=='theory'){ 
                 echo  $paper_master->max_theory_marks .'/'.$paper_master->min_theory_marks;
               }
@@ -242,7 +320,7 @@
         if($classData[0]->project!='N' || $classData[0]->practical!='N'){
         ?>
         <tr>
-          <td class="align-middle text-right">Practical External Marks Max/Min-></td>
+          <td class="align-middle text-right"><?=($classData[0]->project=='Y') ? 'Project' : 'Practical' ?> External Marks Max/Min-></td>
           <?php foreach($marks as $paper_master){   ?>
           <td  class="align-middle text-center">
             <?php if($paper_master->paper_type!="theory"){echo  $paper_master->max_theory_marks .'/'.$paper_master->min_theory_marks;};  ?>
@@ -251,7 +329,7 @@
           <td class="align-middle text-center"></td>
         </tr>
         <tr>
-          <td class="align-middle text-right">Practical Internal Marks Max/Min-></td>
+          <td class="align-middle text-right"><?=($classData[0]->project=='Y') ? 'Project' : 'Practical' ?> Internal Marks Max/Min-></td>
           <?php foreach($marks as $paper_master){   ?>
           <td  class="align-middle text-center">
             <?php if($paper_master->paper_type!="theory"){echo  $paper_master->max_internal_marks .'/'.$paper_master->min_internal_marks;};  ?>
@@ -269,19 +347,20 @@
     <table class="table table1">
       <tbody>
         <tr>
-          <th  class="align-middle text-center " style="width: 85px;" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_number ?> <br> <?php echo $student->enrollment_no  ?></th>
-          <th class="align-middle text-center pl-5 pr-5" rowspan="<?php echo $rowspandata ?>"></th>
-          <th  class="align-middle text-center" rowspan="<?php echo $rowspandata ?>">
+          <th  class="align-middle text-center roll_no" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_number ?> <br> <?php echo $student->enrollment_no  ?></th>
+          <th class="align-middle text-center ms_no" rowspan="<?php echo $rowspandata ?>"><?=$student->marksheet_no ?></th>
+          <th  class="align-middle text-center photo" rowspan="<?php echo $rowspandata ?>">
             <img alt="N/A" src="<?= base_url('assets/student_image/'.$student->session.'/'.$student->photo) ?>" height="90px"></th>
-          <td  class="align-middle text-center  pl-5 pr-5 custom_width"  rowspan="<?php  echo $rowspandata ?>"><?php  echo $student->name ?>/ <br><?php  echo $student->f_h_name ?></td>
-          <td  class="align-middle text-right" style="width: 187px;">Paper-></td>
+          <td  class="align-middle text-center name"  rowspan="<?php  echo $rowspandata ?>"><?php  echo $student->name ?>/ <br><?php  echo $student->f_h_name ?></td>
+          <td  class="align-middle text-right paper">Paper-></td>
           <?php  foreach($marks as $paper_master){  ?>
-            <td  class="align-middle text-center"><?php echo  $paper_master->paper_code;  ?></td>
+            <td  class="align-middle text-center paper_code"><?php echo  $paper_master->paper_code;  ?></td>
           <?php   }  ?>
-          <td  class="align-middle text-center  width_total">Total</td>
-          <td  class="align-middle text-center pl-5 pr-5" rowspan="<?php echo $rowspandata ?>"><?php if($theory_abs_count>0){echo "-";}else{echo $total_marks_obt .'/'. $total_paper_marks;}?></td>
-          <td  class="align-middle text-center" style="width: 48px;" rowspan="<?php echo $rowspandata ?>"><?php echo $final_result; ?></td>
-          <td  class="align-middle text-center width_total"  rowspan="<?php echo $rowspandata ?>"><?php 
+          <td  class="align-middle text-center total">Total</td>
+          <td  class="align-middle text-center obtained" rowspan="<?php echo $rowspandata ?>"><?php echo $total_marks_obt .'/'. $total_paper_marks;
+            ?></td>
+          <td  class="align-middle text-center result" rowspan="<?php echo $rowspandata ?>"><?php echo $final_result; ?></td>
+          <td  class="align-middle text-center remarks"  rowspan="<?php echo $rowspandata ?>"><?php 
           if($check_grace_marks){
             echo "-";
               }elseif(sizeof($atkt_paper_codes_array)==1){
@@ -315,9 +394,9 @@
         </td>
       </tr>
       <tr>
-        <td class="align-middle text-right">Theory Marks-></td>
+        <td class="align-middle text-right paper">Theory Marks-></td>
         <?php foreach($marks as $new_exam_form){ ?>
-          <td  class="align-middle text-center">
+          <td  class="align-middle text-center paper_code">
           <?php if($new_exam_form->paper_type=="theory"){
               if($new_exam_form->theory_marks==''){
                 echo '-';
@@ -331,12 +410,12 @@
           ?>
           </td>
         <?php }    ?>
-        <td class="align-middle text-center"><?php if($theory_abs_count>0){echo "-";}else{echo  $total_theory_marks_obt;} ; ?></td>
+        <td class="align-middle text-center total"><?php echo  $total_theory_marks_obt; ?></td>
       </tr>
       <tr>
-        <td class="align-middle text-right">Internal Marks-></td>
+        <td class="align-middle text-right paper">Internal Marks-></td>
       <?php foreach($marks as $paper_master){ ?>
-    <td  class="align-middle text-center ">
+    <td  class="align-middle text-center paper_code">
       <?php
       if($paper_master->paper_type=="theory")
       {
@@ -354,17 +433,17 @@
      ?>
     </td>
     <?php } ?>
-    <td class="align-middle text-center"><?php if($theory_abs_count>0){echo "-";}else{ echo $total_int_marks_obt;};  ?></td>
+    <td class="align-middle text-center total"><?php echo $total_int_marks_obt;  ?></td>
   </tr>
   <?php if( $classData[0]->project!='N' || $classData[0]->practical!='N'){ ?>
   <tr>
-    <td class="align-middle text-right ">Practical External Marks-></td>
+    <td class="align-middle text-right paper">Practical External Marks-></td>
     <?php
     $total_p_marks = 0;
     foreach($marks as $new_exam_form)
     {
       ?>
-      <td  class="align-middle text-center"><?php 
+      <td  class="align-middle text-center paper_code"><?php 
       if($new_exam_form->p_marks=="N")
         {echo " ";}
       else{
@@ -380,10 +459,10 @@
       }
     ?></td>
     <?php } ?>
-  <td class="align-middle text-center"><?=$total_p_marks; ?></td>
+  <td class="align-middle text-center total"><?=$total_p_marks; ?></td>
 </tr>
   <tr>
-    <td class="align-middle text-right ">Practical Internal Marks-></td>
+    <td class="align-middle text-right paper">Practical Internal Marks-></td>
     <?php
     $total_p_marks = 0;
     foreach($marks as $new_exam_form)
@@ -395,7 +474,7 @@
         continue;
       }
       ?>
-      <td  class="align-middle text-center"><?php 
+      <td  class="align-middle text-center paper_code"><?php 
       if($new_exam_form->int_marks=="N"){
         echo " ";
       }else{
@@ -410,13 +489,13 @@
       }
     ?></td>
     <?php } ?>
-  <td class="align-middle text-center"><?=$total_p_marks; ?></td>
+  <td class="align-middle text-center total"><?=$total_p_marks; ?></td>
 </tr>
 <?php } ?>
   <tr>
-    <td class="align-middle text-right ">Total Marks Obt.</td>
+    <td class="align-middle text-right paper">Total Marks Obt.</td>
     <?php foreach($marks as $paper_master){ ?>
-      <td  class="align-middle text-center pl-5 pr-5"><?php
+      <td  class="align-middle text-center paper_code"><?php
       if($paper_master->paper_type=="theory"){
        if($check_grace_marks==true){
         echo $paper_master->theory_marks+ $paper_master->int_marks;
@@ -436,7 +515,7 @@
     } ?>
     </td>
     <?php } ?>
-    <td class="align-middle text-center"><?php if($theory_abs_count>0){echo "-";}else{ echo $total_marks_obt;} ?></td>
+    <td class="align-middle text-center total"><?php  echo $total_marks_obt; ?></td>
   </tr>
 <?php if($isFinalClass){ ?>
   <?php if($final_result !="PASS" && !$check_grace_marks){  ?>
@@ -466,7 +545,7 @@
 ?>
 
 <hr>
-<table width="100%" border="0">
+<table width="100%" class="last_table" border="0">
 <tr>
 <td colspan="3">&nbsp;</td>
 <td colspan="3" align="right">Order for Declaration & Publication of Result</td>

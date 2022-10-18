@@ -1,3 +1,8 @@
+<style>
+	td,th{
+		text-align:center;
+	}
+</style>
 <div class="mt-5" >
 	<div class="row mb-4">
 		<div class="col-md-6">

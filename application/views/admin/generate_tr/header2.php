@@ -40,4 +40,4 @@
 				<!--begin::Header-->
 		<div class="">
 			<div class="card card-custom gutter-b example example-compact">
-				<div class="card-body p-2" style="min-height: 70vh;">
+				<div class="card-body p-2">
