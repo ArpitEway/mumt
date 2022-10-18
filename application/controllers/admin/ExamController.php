@@ -1793,12 +1793,13 @@ class ExamController extends CI_Controller {
 			redirect(base_url('admin'));
 			exit;
 		}else{	
+			
 			$this->load->view('header',array('title' => 'Main Exam Result Upload Status'));
 			
 			#total
 			$this->db->select('count(*) as num');
 			$this->db->from('new_exam_form');
-			$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id');
 			$this->db->where('student.new_exam_form','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
 			$count = $this->db->get()->result();
@@ -1806,7 +1807,7 @@ class ExamController extends CI_Controller {
 			#Absent
 			$this->db->select('count(*) as num');
 			$this->db->from('new_exam_form');
-			$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.class_id');
 			$this->db->where('student.new_exam_form','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
 			$this->db->where('new_exam_form.theory_marks','ABS');
@@ -1815,7 +1816,7 @@ class ExamController extends CI_Controller {
 			#uploaded
 			$this->db->select('count(*) as num');
 			$this->db->from('new_exam_form');
-			$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.class_id');
 			$this->db->where('student.new_exam_form','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
 			$this->db->where(array('new_exam_form.theory_marks !='=> ''));
