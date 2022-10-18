@@ -1,4 +1,4 @@
-<form  class="d-block ajaxForm" target="_blank" method="POST"  action="<?php echo site_url ('marks_entry_form'); ?>">
+<form  class="d-block ajaxForm" target="_blank" method="POST"  action="<?php echo site_url ('Dataentry/marks_entry_form'); ?>">
    <div class="row">
      <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
      <div class="form-group col-md-4">

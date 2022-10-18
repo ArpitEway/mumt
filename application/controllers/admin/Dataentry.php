@@ -76,7 +76,7 @@ class Dataentry extends CI_Controller {
 		$data['resultData'] = $resultData->result();
 
 		$config = array();
-		$config["base_url"] = base_url() ."marks_entry_form/".$this->Common_model->encrypt_decrypt($mode,'encrypt')."/".$this->Common_model->encrypt_decrypt($paper_code,'encrypt')."/".$exam_center;
+		$config["base_url"] = base_url() ."Dataentry/marks_entry_form/".$this->Common_model->encrypt_decrypt($mode,'encrypt')."/".$this->Common_model->encrypt_decrypt($paper_code,'encrypt')."/".$exam_center;
 
 				$this->db->select('student.student_id, student.name,enrollment_no,roll_no');
 		$this->db->from('new_exam_form');
