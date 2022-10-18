@@ -121,7 +121,7 @@ class Dataentry extends CI_Controller {
 			$Marksentry = $this->Common_model->updateRecordByConditions('new_exam_form',$where,$studentData);	
 		}
 		if($Marksentry){
-			$returndata = array('success'=> 'Form Has Been Submited');
+			$returndata = array('success'=> 'Marks Has Been Submited');
 			echo json_encode($returndata);
 		}else{
 			$returndata = array('error'=> 'An Error Occured');
