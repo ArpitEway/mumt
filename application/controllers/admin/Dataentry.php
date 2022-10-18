@@ -61,7 +61,7 @@ class Dataentry extends CI_Controller {
 			$exam_center  = $exam_centers;
 		}
 
-		$titleData = array('title' => 'Marks Entry Form'); 
+		$titleData = array('title' => 'Marks Entry'); 
 		$this->load->view('header',$titleData);
 
 		$where = array('new_exam_form.paper_code' => $paper_code, 'theory_marks' => '','university_mode' => $mode,'paper_type' => 'theory','exam_center_id'=>$exam_center,'student.new_exam_form' => 'Y');
