@@ -79,7 +79,7 @@
                 
         <td><?php echo $s; ?></td>
                   <td><?php echo $student->paper_code; ?></td>
-                  <td><?= $paper_data[0]->$paper_name;?>
+                  <td><?= $paper_data[0]->paper_name;?>
 
           <input  type="hidden" name="remove" id="student_tr" value="<?= $student->student_id ?>">  
           <input  type="hidden"  name="student_id" value="<?=$student->student_id?>"> 
