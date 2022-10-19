@@ -1861,12 +1861,12 @@ class Center extends CI_Controller {
 
 	public function load_student_practical_assignment (){
 		$student_id = $this->input->post('student_id');
-		$where=array('student.student_id'=>$student_id, );
+		$where=array('student.student_id'=>$student_id);
 		$this->db->select('*');
 		$this->db->from('new_exam_form');
 		$this->db->Where($where );
 		$this->db->where_not_in('paper_type',array('Sessional','theory'));
-		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
+		$this->db->join('student', 'student.student_id = new_exam_form.student_id and student.class_id =new_exam_form.class_id');
 		$this->db->join('paper_master', 'paper_master.id = new_exam_form.paper_id');
 		$details = $this->db->get()->result();
 		$data = array(

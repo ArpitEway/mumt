@@ -75,7 +75,7 @@
 				type: "POST",
 				url: BASE_URL+"center/center/load_student_practical_assignment",
 				dataType:"JSON",
-				data: {student_id: student_id, [csrfName]:csrfHash},
+				data: {student_id: student_id,[csrfName]:csrfHash},
 				success: function(response){
 					$('.modal-body').html(response.data);
 				},
