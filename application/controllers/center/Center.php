@@ -1861,7 +1861,8 @@ class Center extends CI_Controller {
 
 	public function load_student_practical_assignment (){
 		$student_id = $this->input->post('student_id');
-		$where=array('student.student_id'=>$student_id, );
+		$class_id = $this->input->post('class_id');
+		$where=array('student.student_id'=>$student_id, 'student.class_id' =>$class_id);
 		$this->db->select('*');
 		$this->db->from('new_exam_form');
 		$this->db->Where($where );
