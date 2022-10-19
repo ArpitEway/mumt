@@ -30,7 +30,7 @@ color:red;
                 <?php 
                 $this->db->order_by('mode','desc');
                 $this->db->order_by('class_name','ASC');
-                $class_master = $this->db->get_where('class_master', array('course_group_id' => $course_detail['id'],'exam_form_permission' => 'Y'))->result_array();
+                $class_master = $this->db->get_where('class_master', array('course_group_id' => $course_detail['course_group_id'],'exam_form_permission' => 'Y'))->result_array();
                 $i = 1;
                $account_type = ($this->session->account_type=='Admins') ? '' : $this->session->account_type.'/';
                 foreach($class_master as $class){
