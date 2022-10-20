@@ -91,12 +91,10 @@ class Otherscript extends CI_Controller {
 		$this->db->where($where);
 		$data = $this->db->get()->result();
 		
-        foreach($data as $dt){
-			
+        	foreach($data as $dt){
 			$pmark  = array('p_marks'=>$dt->p_marks);
 			$where = array('id'=> $dt->id);
-				
-			$update =$this->Common_model->updateRecordByConditions('new_exam_form',$where,$pmark);
+			//$update =$this->Common_model->updateRecordByConditions('new_exam_form',$where,$pmark);
 		}
 		
 	}
