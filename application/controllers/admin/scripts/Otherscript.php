@@ -79,6 +79,28 @@ class Otherscript extends CI_Controller {
 			}
 		}	
 	}
+	 
+	public function move_practical_marks(){
+		
+		$this->db->select('exam_form.*');
+		$this->db->from('exam_form');
+		
+		$this->db->join('new_exam_form', 'exam_form.student_id=new_exam_form.student_id and exam_form.p_marks != new_exam_form.p_marks and exam_form.class_id = new_exam_form.class_id and exam_form.paper_code = new_exam_form.paper_code');
+		$this->db->join('student', 'exam_form.student_id=student.student_id');
+		$where = array('exam_form.paper_type !='=>'theory','new_exam_form.p_marks !='=>'N','student.new_exam_form'=>'Y','student.p_marks_sub'=>'Y','demo'=>'N');
+		$this->db->where($where);
+		$data = $this->db->get()->result();
+		
+        foreach($data as $dt){
+			
+			$pmark  = array('p_marks'=>$dt->p_marks);
+			$where = array('id'=> $dt->id);
+				
+			$update =$this->Common_model->updateRecordByConditions('new_exam_form',$where,$pmark);
+		}
+		
+	}
+	
 }
 
 ?>
