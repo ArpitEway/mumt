@@ -58,7 +58,8 @@ class Otherscript extends CI_Controller {
 	
 	public function update_extra_papers_in_new_exam()
 	{
-		$where = " paper_code in ('2RMAEDU5', '2RMAGEO6', '2RMAGEO7', '2RMAGEO8', '2RMAPSY5', '2RMSCC7', '2RMSCC8', '2RMSCM7', '2RMSW7')";
+		//$where = " paper_code in ('2RMAEDU5', '2RMAGEO6', '2RMAGEO7', '2RMAGEO8', '2RMAPSY5', '2RMSCC7', '2RMSCC8', '2RMSCM7', '2RMSW7')";
+		$where = " paper_code in ('2RBED6')";
 		$papers = $this->Common_model->get_record('paper_master','*',$where);
 
 		foreach ($papers as $paper) {
@@ -74,7 +75,7 @@ class Otherscript extends CI_Controller {
 			);
 			foreach ($students as $student) {
 				$studentData['student_id'] = $student['student_id'];
-				// $this->Common_model->insertAll('new_exam_form',$studentData);
+				$this->Common_model->insertAll('new_exam_form',$studentData);
 				echo $this->db->last_query().'<br>';
 			}
 		}	
