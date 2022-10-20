@@ -513,14 +513,14 @@ class ExamController extends CI_Controller {
 			foreach($_POST['teacher_id'] as $teacher_id){
 
            
-				$this->db->select('DISTINCT(new_exam_form.teacher_id),teacher.name,student.enrollment_no,student.roll_number,new_exam_form.theory_marks');
-				$this->db->from('new_exam_form');
-				$this->db->join('teacher', 'new_exam_form.teacher_id = "'.$teacher_id.'"');
-				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+				$this->db->select('DISTINCT(exam_form.teacher_id),teacher.name,student.enrollment_no,student.roll_number,exam_form.theory_marks');
+				$this->db->from('exam_form');
+				$this->db->join('teacher', 'exam_form.teacher_id = "'.$teacher_id.'"');
+				$this->db->join('student', 'exam_form.student_id = student.student_id');
 				$this->db->where('student.exam_form','Y');
-				$this->db->where('new_exam_form.class_id',$_POST['class_id']);
+				$this->db->where('exam_form.class_id',$_POST['class_id']);
 				$this->db->where('student.old_class_id',$_POST['class_id']);
-				$this->db->where('new_exam_form.paper_code',$_POST['paper_code']); 
+				$this->db->where('exam_form.paper_code',$_POST['paper_code']); 
 				$this->db->order_by('student.roll_number');
 				$this->db->group_by('student.student_id');
 				$dataArray['data'][$teacher_id] = $this->db->get()->result();
