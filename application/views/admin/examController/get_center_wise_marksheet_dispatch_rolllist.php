@@ -35,7 +35,7 @@ foreach($centers as $center)  {
 					<td style="width:20%;"  valign="top">
 						<table align="center" cellpadding="10" border="1" width="100%">
 							<tr bgcolor="#FFCC99" style="text-align:center;">
-								<th>Roll No. / Enrollment No./Paper Code</th>
+								<th>Roll No. / Enrollment No. / Course Code</th>
 							</tr>
 						<?php } ?>      
 						<tr style="text-align:center;"> 
