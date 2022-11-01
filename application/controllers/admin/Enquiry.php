@@ -25,7 +25,7 @@ class Enquiry extends CI_Controller {
 		);
 		$this->load->view('header',array('title' => 'Enquiry Section'));
 		$this->load->view('admin/Enquiry/dashboard',$menu);
-		$this->load->view('footer');	
+		$this->load->view('footer');
 	}
 
     public function view_enquiry(){

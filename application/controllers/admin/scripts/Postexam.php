@@ -352,7 +352,6 @@ class Postexam extends CI_Controller {
                     $a.=$this->db->last_query();
                 }
                 
-
             }
         }
         if(!empty($a))
@@ -362,7 +361,7 @@ class Postexam extends CI_Controller {
     }
 
     public function update_teacher_upload_exam_ans_sheet_to_new_exam_form($startlimit=1){
-        echo "Hello <pre>";
+       // echo "Hello <pre>";
         
         $this->db->select('*');
         $this->db->from('upload_exam_ans_sheet');
@@ -370,12 +369,9 @@ class Postexam extends CI_Controller {
         $this->db->where('total_marks!=',0);
         $this->db->where('teacher_id !=','');
         $start=0;
-		$start=($startlimit-1)*1000;
-		$this->db->limit(1000,$start);
+		$start=($startlimit-1)*10000;
+		$this->db->limit(10000,$start);
         $rows=$this->db->get()->result();
-        echo $this->db->last_query();die;
-        echo "<br><pre>";
-       // print_r($rows);
         foreach($rows as $row){
             $this->db->select('*');
             $this->db->from('new_exam_form');
@@ -399,6 +395,52 @@ class Postexam extends CI_Controller {
         }
        $a="";
     }
+
+
+    public function update_teacher_id_to_new_exam_form(){
+       // echo "Hello <pre>";
+        $this->db->select('*');
+        $this->db->from('student');
+        $this->db->join('new_exam_form', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.old_class_id');
+        $this->db->where('student.exam_form','Y');
+        $this->db->where('teacher_id','');
+        $this->db->where('new_exam_form.paper_type','theory');
+        $ignore = array(75, 76,77);
+        $this->db->where_not_in('student.course_group_id', $ignore);
+        $this->db->limit(10000);
+        $rows=$this->db->get()->result();
+        foreach($rows as $row){
+            $this->db->select('*');
+            $this->db->from('upload_exam_ans_sheet');
+            $this->db->where('file_exist','Y');
+            $this->db->where('total_marks!=',0);
+            $this->db->where('teacher_id !=','');
+            $this->db->where('class_id',$row->class_id);
+            $this->db->where('student_id',$row->student_id);
+            $this->db->where('paper_code',$row->paper_code);
+            $data=$this->db->get()->result();
+            $teacher_id=$data[0]->teacher_id;
+            if($teacher_id=='')  {
+                $this->db->select('*');
+                $this->db->from('assign_answersheet');
+                $this->db->where('class_id',$row->class_id);
+                $this->db->where('paper_code',$row->paper_code);
+                $data=$this->db->get()->result();
+                foreach($data as $record){
+                    $arr=explode(',',$record->center_id);
+                    if(in_array($row->center_id,$arr)){ 
+                        $teacher_id=$record->teacher_id;
+                    }
+                }
+            }
+            $data  = array('teacher_id'=> $teacher_id);
+            $where = array('id'=>$row->id);
+            $update =$this->Common_model->updateRecordByConditions('new_exam_form',$where,$data);
+            echo $this->db->last_query();
+            echo "<br>";      
+        }  
+    }
+ 
     // Fetching Student record & Update  exam center by Center ID 
     public function update_stdent_allottment_exam_center($startlimit=1){
         echo "update_stdent_allottment_exam_center<br>";

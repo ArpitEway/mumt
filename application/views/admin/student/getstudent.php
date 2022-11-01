@@ -32,16 +32,24 @@
 					if($ext[1] == "pdf")
 					{
 						if($doc["document_name"] == 'Aadhaar Card'){
+							$doc_id = $this->Common_model->encrypt_decrypt($doc["id"]);
 							?>
 
-							<a href="<?php echo site_url('Enrollment/update_aadhar/'.$student_id); ?>" target="_blank">
+							<a href="<?php echo site_url('Enrollment/update_aadhar/'.$doc_id); ?>" target="_blank">
 								<?php echo $doc["document_name"]; ?>
 							</a>
 							<br>
-						<?php }else{ ?>
+						<?php }else{ 
+							if($student["enrolled"]=='Y'){
+							?>
+
+								<a target="_blank" href="<?php echo BASE_URL('assets/enrolled_documents/'.$student['session'].'/'.$doc["document_image"]); ?>">
+									<?php	
+							} else{
+							?>
 
 							<a target="_blank" href="<?php echo BASE_URL('assets/documents/'.$doc["document_image"]); ?>">
-								<?php echo $doc["document_name"]; 
+								<?php } echo $doc["document_name"]; 
 							} ?> 
 						</a><br>
 
@@ -54,10 +62,17 @@
 								<?php echo $doc["document_name"]; ?>
 							</a>
 							<br>
-						<?php }else{ ?>
+						<?php }else{ 
+							if($student["enrolled"]=='Y'){
+							?>
+
+								<a data-magnify="gallery" data-src="" data-caption="<?php echo $doc["document_name"] ?>" data-group="a" href="<?php echo BASE_URL('assets/enrolled_documents/'.$student['session'].'/'.$doc["document_image"]); ?>">
+									<?php	
+							} else{
+							?>
 
 							<a data-magnify="gallery" data-src="" data-caption="<?php echo $doc["document_name"] ?>" data-group="a" href="<?php echo BASE_URL('assets/documents/'.$doc["document_image"]); ?>">
-								<?php echo $doc["document_name"]; ?>  
+								<?php } echo $doc["document_name"]; ?>  
 							</a>
 							<br>
 							<?php 

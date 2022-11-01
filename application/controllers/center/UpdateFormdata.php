@@ -28,6 +28,10 @@ class updateFormdata extends CI_Controller {
 							'class_id' =>$_POST['class_id'],
 							'paper_id' =>$paper->id,
 							'paper_code' =>$paper->paper_code,
+							'paper_type'=>$paper->type,
+							'book_code'=>$paper->book_code,
+							'paper_order'=>$paper->paper_no,
+							'sub_group_id'=>$paper->sub_group_id
 						);
 						$insert = $this->Common_model->insertAll('new_exam_form',$insert_paper);
 					}

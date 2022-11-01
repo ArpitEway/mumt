@@ -19,6 +19,7 @@ application/logs/*
 application/config/config.php
 application/config/database.php
 assets/documents/*
+assets/enrolled_documents/*
 assets/student_image/*
 assets/transactionImgaes/*
 .htaccess

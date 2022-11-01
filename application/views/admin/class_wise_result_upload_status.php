@@ -30,21 +30,17 @@ color:red;
                 <?php 
                 $this->db->order_by('mode','desc');
                 $this->db->order_by('class_name','ASC');
-                $class_master = $this->db->get_where('class_master', array('course_group_id' => $course_detail['id'],'admission_permission' => 'Y','exam_form_permission' => 'Y'))->result_array();
-                
-                $i = 1; 
-
+                $class_master = $this->db->get_where('class_master', array('course_group_id' => $course_detail['course_group_id'],'exam_form_permission' => 'Y'))->result_array();
+                $i = 1;
+               $account_type = ($this->session->account_type=='Admins') ? '' : $this->session->account_type.'/';
                 foreach($class_master as $class){
+                
                 ?>
-
                 <tr>
-                <td><?php echo $i; ?></td>
-                <td><?php echo $class['class_name']; ?></td>
-                <td><a href="<?php echo base_url("class_wise_result_upload_status_report")."/".$course_detail['id']."/".$class['id']; ?>" target="_blank" >Check Status</a></td>
-               
-
+                    <td><?php echo $i; ?></td>
+                    <td><?php echo $class['class_name']; ?></td>
+                    <td><a href="<?php echo base_url($account_type."class_wise_result_upload_status_report")."/".$course_detail['id']."/".$class['id']; ?>" target="_blank" >Check Status</a></td>
                 </tr>
-
                 <?php
                     $i++;
                 } 
