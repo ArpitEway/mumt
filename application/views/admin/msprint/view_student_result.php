@@ -58,14 +58,6 @@
  				</div>
                 <div class="col-md-4">
  					<div class="row py-2">
- 						<label class="col-sm-4 text-heading">Exam form</label>
- 						<div class="col-sm-8 text-value">
- 							<?php echo $student->exam_form;  ?>
- 						</div>
- 					</div>
- 				</div>
- 				<div class="col-md-4">
- 					<div class="row py-2">
  						<label class="col-sm-4 text-heading">Center Code</label>
  						<div class="col-sm-8 text-value">
  							<?php echo $student->center_code; ?>
@@ -80,7 +72,16 @@
  						</div>
  					</div>
  				</div>
-                 <div class="col-md-4">
+<!--            
+    <div class="col-md-4">
+                    <div class="row py-2">
+                        <label class="col-sm-4 text-heading">Exam form</label>
+                        <div class="col-sm-8 text-value">
+                            <?php echo $student->exam_form;  ?>
+                        </div>
+                    </div>
+                </div>
+     <div class="col-md-4">
  					<div class="row py-2">
  						<label class="col-sm-4 text-heading"> Course Complete</label>
  						<div class="col-sm-8 text-value">
@@ -88,7 +89,7 @@
  						</div>
  					</div>
  				</div>
-                 <div class="col-md-4">
+                  <div class="col-md-4">
  					<div class="row py-2">
  						<label class="col-sm-4 text-heading">Max Course Duration</label>
  						<div class="col-sm-8 text-value">
@@ -108,7 +109,7 @@
  						</div>
  					</div>
  				</div>
-                <div class="col-md-12">
+ -->                <div class="col-md-12">
  					<div class="row py-4">
  						<label class="col-sm-2 text-heading">Course/Class</label>
  						<div class="col-sm-8 text-value">
@@ -150,7 +151,6 @@
               <?php 
               $i=1;
               foreach ($result as $res) {
-                  
                ?>
                <div class="row mt-3">
                   <div class="col-md-1">
@@ -181,7 +181,7 @@
 
                       <div class="col-md-2">
                         <?php $id = $this->Common_model->encrypt_decrypt($res->id,'encrypt');?>
-                         <label class="text-heading mt-3"><a href="<?= base_url('admin/admins/marksheet/'.$id.'')?>" target="_blank"><i class="fa fa-eye"></i></a></label>
+                         <label class="text-heading mt-3"><a href="<?= base_url('MsPrint/marksheet/'.$id.'')?>" target="_blank"><i class="fa fa-eye"></i></a></label>
                      </div>
                  </div>
              <?php } ?>

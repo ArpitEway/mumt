@@ -10,12 +10,12 @@
                 <label class="col-3 col-form-label" >Search By : </label>
                 <div class="col-9 col-form-label">
                     <div class="radio-inline">
-                       
+
                         <label class="radio radio-success">
                             <input type = "radio"
                             name = "radio_stduent_search"
                             id = "radio_enroll_no"
-                            value = "enrollment_no" />
+                            value = "enrollment_no" checked />
                             <span></span>
                             Enrollment No.
                         </label>
@@ -23,7 +23,7 @@
                             <input type = "radio"
                             name = "radio_stduent_search"
                             id = "radio_form_id"
-                            value = "student_id" checked />
+                            value = "student_id"  />
                             <span></span>
                             Form Id
                         </label>
@@ -41,11 +41,11 @@
     <circle cx="50" cy="50" r="40" stroke="red" stroke-dasharray="78.5 235.5" stroke-width="3" fill="none" />
     <circle cx="50" cy="50" r="30" stroke="blue" stroke-dasharray="62.8 188.8" stroke-width="3" fill="none" />
     <circle cx="50" cy="50" r="20" stroke="green" stroke-dasharray="47.1 141.3" stroke-width="3" fill="none" />
-  </svg>
+</svg>
 </div>
 <div class="row" >
     <div class="col-md-12 col-lg-12" id="student_data_tbl">
-<!-- table by ajax append here -->
+        <!-- table by ajax append here -->
     </div>
 </div>
 <script type="text/javascript">
@@ -60,7 +60,7 @@
         var text_val = $('#search_text').val();
         var radio_val = $('input[name="radio_stduent_search"]:checked').val();
 
-       
+
         if(text_val =='' && radio_val == 'enrollment_no'){ 
             alert('Enrollment Number is required !');
         }else if(text_val==''&& radio_val == 'student_id'){
@@ -71,18 +71,18 @@
                 'radio_val':radio_val,
                 [csrfName]:csrfHash
             }
-          $.ajax({
+            $.ajax({
                 url:site_url+'admin/<?=$this->session->account_type; ?>/get_student_result',
                 type:'post',
                 dataType : 'JSON',
                 data: data,
                 beforeSend: function()
-               {
-                $("#myLoader").show();
-               },
+                {
+                    $("#myLoader").show();
+                },
                 success:function(resp)
                 {if( $("#myLoader").show()){
-                        $('#student_data_tbl').hide();
+                    $('#student_data_tbl').hide();
                         // $table = $('#dt').html(status.data);
 
                     }if( $('#myLoader').hide()){
@@ -90,11 +90,10 @@
                         $('#student_data_tbl').show();
                         
                     }
-                   
                     KTDatatablesBasicBasic.init();            
                 }//success
                 
             })//ajax
-    }
-});
+        }
+    });
 </script>
