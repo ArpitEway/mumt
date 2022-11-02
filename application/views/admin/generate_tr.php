@@ -133,6 +133,9 @@ table.last_table, .last_table td, .last_table th{
   $isFinalClass = $this->Common_model->hasOneClass($course_group_id);
   $rowspanhead = ($classData->project!='N' || $classData->practical!='N') ? "4" : "3";
   $rowspandata = ($classData->project!='N' || $classData->practical!='N') ? "5" : "4";
+  if($classData->internal=='N'){
+    $rowspandata--;  
+  }
   $page_break_count = -1;
   $br_code_id = 0;
   // $roll_no = array(); 

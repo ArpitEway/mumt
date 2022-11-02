@@ -3011,7 +3011,7 @@ public function update_exam_datewise_permission(){
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
 		$data['title'] = $title;
 		$class = $this->Common_model->getRecordByID('class_master','id',$class_id);
-	 	if($class->internal="Y"){ 
+	 	if($class->internal=="Y"){
 			$this->load->view('admin/student_marksheet',$data);
 		}else{
 			$this->load->view('admin/student_marksheet_certificate',$data);
