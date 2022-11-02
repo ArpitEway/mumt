@@ -83,7 +83,7 @@
 		$int_fail_count=0;
 		$total_obtained_marks=0;
 		$total_max_marks=0;
-		$paper_marks = $this->Common_model->notification_marks_details_($student->student_id,$student->old_class_id);
+		$paper_marks = $this->Common_model->notification_marks_details_($student->student_id,$student->class_id);
 
 		foreach($paper_marks as  $marks){
 			if($marks->type=="theory" ){
@@ -206,7 +206,7 @@
 		?>
 		<tr class="alternate">
 			<td class="text-center">
-				<?php echo $student->roll_number; ?>
+				<?php echo $student->roll_no; ?>
 			</td>
 			<td scope="row" style="padding-left: 10px;" >
 				<?php echo $student->name  .' / '.  $student->f_h_name; ?>

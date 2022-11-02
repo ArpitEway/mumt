@@ -5,7 +5,7 @@
       -webkit-print-color-adjust: exact;
       -moz-print-color-adjust: exact;
       -ms-print-color-adjust: exact;
-      print-color-adjust: exact;
+      -ms-print-color-adjust: exact;
     }
   }
   svg {
@@ -120,7 +120,6 @@ table.last_table, .last_table td, .last_table th{
     div#footer_content {
       font-weight: bold;
     }
-  
 </style>
 <div id="footer_wrapper">
   <div id="footer_content">
@@ -130,10 +129,10 @@ table.last_table, .last_table td, .last_table th{
 <?php
   $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
   $marksheetData = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id'=>$class_id));
-  $classData= $this->Common_model->getRecordByWhere('class_master',array('id' => $class_id));
+  $classData= $this->Common_model->getRecordById('class_master','id', $class_id);
   $isFinalClass = $this->Common_model->hasOneClass($course_group_id);
-  $rowspanhead = ($classData[0]->project!='N' || $classData[0]->practical!='N') ? "4" : "3";
-  $rowspandata = ($classData[0]->project!='N' || $classData[0]->practical!='N') ? "5" : "4";
+  $rowspanhead = ($classData->project!='N' || $classData->practical!='N') ? "4" : "3";
+  $rowspandata = ($classData->project!='N' || $classData->practical!='N') ? "5" : "4";
   $page_break_count = -1;
   $br_code_id = 0;
   // $roll_no = array(); 
@@ -144,7 +143,7 @@ table.last_table, .last_table td, .last_table th{
   {
     $current_center=$student->center_id;
     $page_break_count++;
-    $marks = $this->Common_model->student_info_for_result($student->student_id,$student->old_class_id);
+    $marks = $this->Common_model->student_info_for_result($student->student_id,$student->class_id);
     $BarCodecolspan = 9 + count($marks); 
     $total_theory_marks_obt = 0;
     $total_int_marks_obt = 0;
@@ -185,7 +184,7 @@ table.last_table, .last_table td, .last_table th{
           $rw_count++;
         }
 
-        if($new_exam_form->int_marks=='N' && $course_group_id !=36 && $course_group_id !=37){
+        if($new_exam_form->int_marks=='N' && $classData->internal=="Y"){
           $rw_count++;
         }
 
@@ -288,7 +287,7 @@ table.last_table, .last_table td, .last_table th{
             <?php } ?>
           <td class=""></td>
         </tr>
-        <?php if($course_group_id !=36 && $course_group_id !=37 ){ ?>
+        <?php if($classData->internal=="Y"){ ?>
         <tr>
           <td class="align-middle text-right paper">Internal Marks Max/Min -></td>
           <?php  foreach($marks as $paper_master){     ?>
@@ -299,10 +298,10 @@ table.last_table, .last_table td, .last_table th{
         </tr>
         <?php 
         }
-        if($classData[0]->project!='N' || $classData[0]->practical!='N'){
+        if($classData->project!='N' || $classData->practical!='N'){
         ?>
         <tr>
-          <td class="align-middle text-right paper"> <?=($classData[0]->project=='Y') ? 'Project' : 'Practical' ?> Marks Max/Min-></td>
+          <td class="align-middle text-right paper"> <?=($classData->project=='Y') ? 'Project' : 'Practical' ?> Marks Max/Min-></td>
           <?php foreach($marks as $paper_master){   ?>
           <td  class="align-middle text-center practical_marks">
             <?php if($paper_master->paper_type!="theory"){echo  $paper_master->max_theory_marks .'/'.$paper_master->min_theory_marks;};  ?>
@@ -325,7 +324,7 @@ table.last_table, .last_table td, .last_table th{
     <table class="table table1">
       <tbody>
         <tr>
-          <th  class="align-middle text-center roll_no" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_number  ?> <br> <?php echo $student->enrollment_no  ?></th>
+          <th  class="align-middle text-center roll_no" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_no  ?> <br> <?php echo $student->enrollment_no  ?></th>
           <th class="align-middle text-center ms_no" rowspan="<?php echo $rowspandata ?>">
             <?php  echo $student->marksheet_no  ?>
           </th>
@@ -387,7 +386,7 @@ table.last_table, .last_table td, .last_table th{
         <?php }    ?>
         <td class="align-middle text-center result"><?php echo  $total_theory_marks_obt;  ?></td>
       </tr>
-      <?php if($course_group_id !=36 && $course_group_id !=37 ){ ?>
+      <?php if($classData->internal=="Y"){ ?>
       <tr>
         <td class="align-middle text-right paper">Internal Marks-></td>
           <?php foreach($marks as $paper_master){ ?>
@@ -411,7 +410,7 @@ table.last_table, .last_table td, .last_table th{
         <?php } ?>
         <td class="align-middle text-center result"><?php echo $total_int_marks_obt;  ?></td>
     </tr> <?php } ?>
-  <?php if( $classData[0]->project!='N' || $classData[0]->practical!='N'){ ?>
+  <?php if( $classData->project!='N' || $classData->practical!='N'){ ?>
   <tr>
     <td class="align-middle text-right paper">Practical Marks.</td>
     <?php
@@ -464,7 +463,7 @@ table.last_table, .last_table td, .last_table th{
     <td class="align-middle text-center"><?php echo $total_marks_obt; ?></td>
   </tr>
 <?php if($isFinalClass){ ?>
-  <?php if($final_result !="PASS" && !$check_grace_marks){  ?>
+  <?php if($final_result !="PASS" && !$check_grace_marks){ ?>
     <tr>
       <td class="text-center align-middle" colspan="<?=$BarCodecolspan ?>">    -   </td>
     </tr>
@@ -481,18 +480,16 @@ table.last_table, .last_table td, .last_table th{
   ?>
   <tr class="">
     <td  class="align-middle text-left " colspan="<?=$BarCodecolspan ?>">
-          <?php  echo $generator->getBarcode($marksheetData[0]->bar_code_no.$student->roll_number, $generator::TYPE_CODE_128,2,25); ?>
+          <?php  echo $generator->getBarcode($marksheetData[0]->bar_code_no.$student->roll_no, $generator::TYPE_CODE_128,2,25); ?>
     </td>
   </tr>
 </tbody>
 </table>
 <?php
-
-  $previous_center=$current_center;//=$student->center_id;
-
-}
+  $previous_center=$current_center; 
+  //=$student->center_id;
+  }
 ?>
-
 <hr>
 <table width="100%" class="last_table" border="0">
 <tr>
