@@ -233,7 +233,7 @@
 		</td>
 		<td class="text-center" >
 			<?php
-			if(count($ATKT_paper_codes)==0) {
+			if(count($ATKT_paper_codes)==0 || $Withheld) {
 				$remark='';
 			}elseif($theory_paper_count==$theory_abs_count){
 				echo 'ABS In Theory';

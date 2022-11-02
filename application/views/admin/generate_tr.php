@@ -448,7 +448,11 @@ table.last_table, .last_table td, .last_table th{
        if($check_grace_marks==true){
         echo $paper_master->theory_marks+ $paper_master->int_marks;
       } elseif(($paper_master->theory_marks<$paper_master->min_theory_marks) || ($paper_master->int_marks<$paper_master->min_internal_marks) || $theory_abs_count!=0 || $int_abs_count!=0){
-        echo (int) $paper_master->theory_marks+ (int) $paper_master->int_marks." F";
+        if($paper_master->theory_marks==''){
+          echo "-";
+        }else{
+          echo (int) $paper_master->theory_marks+ (int) $paper_master->int_marks." F";
+        }
       }else{
         echo (int) $paper_master->theory_marks+ (int) $paper_master->int_marks;
       }
