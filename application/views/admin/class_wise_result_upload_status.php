@@ -39,7 +39,7 @@ color:red;
                 <tr>
                     <td><?php echo $i; ?></td>
                     <td><?php echo $class['class_name']; ?></td>
-                    <td><a href="<?php echo base_url($account_type."class_wise_result_upload_status_report")."/".$course_detail['id']."/".$class['id']; ?>" target="_blank" >Check Status</a></td>
+                    <td><a href="<?php echo base_url($account_type."class_wise_result_upload_status_report")."/".$course_detail['course_group_id']."/".$class['id']; ?>" target="_blank" >Check Status</a></td>
                 </tr>
                 <?php
                     $i++;
