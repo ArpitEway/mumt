@@ -131,6 +131,7 @@ table.last_table, .last_table td, .last_table th{
   $marksheetData = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id'=>$class_id));
   $classData= $this->Common_model->getRecordById('class_master','id', $class_id);
   $isFinalClass = $this->Common_model->hasOneClass($course_group_id);
+  $course_duration = ($isFinalClass) ? "One Year Course" : $classData->class_name;
   $rowspanhead = ($classData->project!='N' || $classData->practical!='N') ? "4" : "3";
   $rowspandata = ($classData->project!='N' || $classData->practical!='N') ? "5" : "4";
   if($classData->internal=='N'){
@@ -253,7 +254,7 @@ table.last_table, .last_table td, .last_table th{
       $page_no++;$page_break_count=0;
       ?>
       <h3 align="center" class="h4 break"><b>Maharishi Mahesh Yogi Vedic Vishvavidyalaya, Madhya Pradesh</b></h3>
-      <p align="center" class="line-height">Tabulation Register for <strong><?php echo $student->course_name; echo '&nbsp'. $marksheetData[0]->class_name; ?></strong> <?php echo $marksheetData[0]->exam_session;?>
+      <p align="center" class="line-height">Tabulation Register for <strong><?php echo $student->course_name; echo '&nbsp'. $course_duration; ?></strong> <?php echo $marksheetData[0]->exam_session;?>
       </p>
       <div>
         <div style="float: left;">DATE: <?php echo $marksheetData[0]->result_date;?></div>
@@ -386,7 +387,7 @@ table.last_table, .last_table td, .last_table th{
             }
           ?>
           </td>
-        <?php }    ?>
+        <?php }  ?>
         <td class="align-middle text-center result"><?php echo  $total_theory_marks_obt;  ?></td>
       </tr>
       <?php if($classData->internal=="Y"){ ?>
@@ -476,10 +477,10 @@ table.last_table, .last_table td, .last_table th{
     </tr>
     <?php }else{  ?>
       <tr class="">
-        <td  class="align-middle text-center " colspan="4"><?php  echo 'Tot:'. $total_marks_obt .'/'. $total_paper_marks; ?></td>
+        <td  class="align-middle text-center " colspan="4"><?php  echo 'Tot : '. $total_marks_obt .'/'. $total_paper_marks; ?></td>
         <td class="align-middle text-center "  colspan="3"><?php  echo  'Per : '.$percentage .'%'; ?></td>
         <td class="align-middle text-center "  colspan="3"><?php  echo $final_result;?></td>
-        <td class="align-middle text-center " colspan="5"> <?php  echo $division;  ?></td>
+        <td class="align-middle text-center " colspan="5"> <?php  echo 'Division : '.$division;  ?></td>
       </tr>
       <?php
     }
@@ -507,7 +508,7 @@ table.last_table, .last_table td, .last_table th{
 <td align="center" width="20%">Checked By</td>
 <td align="center" width="20%">Sign of 1st Tabulator</td>
 <td align="center" width="20%">Sign of 2nd Tabulator</td>
-<td align="center" width="20%">Asst. Registrar </td>
+<td align="center" width="20%"><!-- Asst. Registrar --> </td>
 <td align="center" width="20%">Registrar/Controller Of Examination</td>
 </tr><tr><td colspan="5">&nbsp;</td></tr><tr><td colspan="5">&nbsp;</td></tr>
 </table>

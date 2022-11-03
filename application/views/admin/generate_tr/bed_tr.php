@@ -554,7 +554,7 @@
 <td align="center" width="20%">Checked By</td>
 <td align="center" width="20%">Sign of 1st Tabulator</td>
 <td align="center" width="20%">Sign of 2nd Tabulator</td>
-<td align="center" width="20%">Asst. Registrar </td>
+<td align="center" width="20%"><!-- Asst. Registrar --> </td>
 <td align="center" width="20%">Registrar/Controller Of Examination</td>
 </tr><tr><td colspan="5">&nbsp;</td></tr><tr><td colspan="5">&nbsp;</td></tr>
 </table>
