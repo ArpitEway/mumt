@@ -86,7 +86,7 @@ class Dataentry extends CI_Controller {
 		$this->db->where($where);
 		$config["total_rows"] = $this->db->get()->num_rows();		
 		$config["per_page"] = 10;
-		$config["uri_segment"] = 5;
+		$config["uri_segment"] = 6;
 		$this->pagination->initialize($config);
 		$data["links"] = $this->pagination->create_links();
 

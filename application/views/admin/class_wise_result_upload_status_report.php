@@ -21,7 +21,10 @@
 		</thead>
 		<tbody>
         <!-- <a href="<?php echo base_url("class_wise_result_upload_status_report")."/".$course_detail['id']."/".$class['id']; ?>" target="_blank" > -->
-                <?php if(!$class_id){ $i=1;
+                <?php 
+                $account_type = ($this->session->account_type=='Admins') ? '' : $this->session->account_type.'/';
+                if(!$class_id){
+                    $i=1;
                     foreach($class as $k=>$val){
                     ?>
                     <tr>
@@ -32,21 +35,21 @@
                     <td><?php echo $val['uploaded'] -$val['absent']; ?></td>
                     <td><?php echo $val['absent'] ; ?></td>
                     <td>
-                        <a href="<?php echo base_url("class_wise_remaining_report")."/theory/".$course_group_id."/".$val['class_id']; ?>" target="_blank" >
+                        <a href="<?php echo base_url($account_type."class_wise_remaining_report")."/theory/".$course_group_id."/".$val['class_id']; ?>" target="_blank" >
                             <?php  echo $val['total_paper_count']-$val['uploaded'] ; ?>
                         </a>
                     </td>
                     <td><?php  echo  $val['total_paper_count'] ; ?></td>
                     <td><?php  echo  $val['internal'] ; ?></td>
                     <td>
-                        <a href="<?php echo base_url("class_wise_remaining_report")."/internal/".$course_group_id."/".$val['class_id']; ?>" target="_blank" >
+                        <a href="<?php echo base_url($account_type."class_wise_remaining_report")."/internal/".$course_group_id."/".$val['class_id']; ?>" target="_blank" >
                         <?php  echo  $val['total_paper_count'] -$val['internal'] ; ?>
                         </a>
                     </td>
                     <td><?php  echo  $val['practicalTotal'] ; ?></td>
                     <td><?php  echo  $val['practical'] ; ?></td>
                     <td>
-                        <a href="<?php echo base_url("class_wise_remaining_report")."/practical/".$course_group_id."/".$val['class_id']; ?>" target="_blank" >    
+                        <a href="<?php echo base_url($account_type."class_wise_remaining_report")."/practical/".$course_group_id."/".$val['class_id']; ?>" target="_blank" >    
                             <?php  echo  $val['practicalTotal'] -$val['practical'] ; ?>
                         </a>    
                     </td>
@@ -60,7 +63,7 @@
                     <td><?php echo $uploaded - $absent; ?></td>
                     <td><?php echo $absent ; ?></td>
                     <td>
-                        <a href="<?php echo base_url("class_wise_remaining_report")."/theory/".$course_group_id."/".$class_id; ?>" target="_blank" >
+                        <a href="<?php echo base_url($account_type."class_wise_remaining_report")."/theory/".$course_group_id."/".$class_id; ?>" target="_blank" >
                            <?php  echo $total_paper_count-$uploaded ; ?>
                         </a>
                     </td>

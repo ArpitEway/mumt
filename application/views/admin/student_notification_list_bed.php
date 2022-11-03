@@ -7,7 +7,7 @@
 </head>
 <body>
 	<br><?php
-$notification_no = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id' => $students[0]->old_class_id));
+$notification_no = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id' => $students[0]->class_id));
 $notification=$notification_no[0]->notification_no;
 $date=$notification_no[0]->result_date;
 $exam_session=$notification_no[0]->exam_session;
@@ -88,7 +88,7 @@ $abs_count = 0 ;
 					$final_result = '';
 					$theory_paper_count = 0;
 					$p_paper_count = 0;
-					$paper_marks = $this->Common_model->notification_marks_details_($student->student_id,$student->old_class_id);
+					$paper_marks = $this->Common_model->notification_marks_details_($student->student_id,$student->class_id);
 					foreach($paper_marks as  $new_exam_form){
 
 						if($new_exam_form->type=='theory'){
@@ -227,7 +227,7 @@ $abs_count = 0 ;
 					?>
 					<tr class="alternate">
 						<td class="text-center" scope="row">
-							<?php echo $student->roll_number; ?>
+							<?php echo $student->roll_no; ?>
 							</td>
 							<td scope="row"  style="padding-left: 10px;" >
 								<?php echo $student->name .' / '.  $student->f_h_name; ?>

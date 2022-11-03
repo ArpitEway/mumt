@@ -39,23 +39,20 @@
 </head>
 <body>
   <center>
-    <?php 
-
+    <?php
     $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
     $marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
-    foreach($students as $student)
-    {
-      $papers = $this->Common_model->student_info_for_result($student->student_id,$student->class_id);
-      ?>
+    $papers = $old_result_data;
+    ?>
       <fieldset id="printarea" class="breakhere" style="width:90%;border: 0px solid #22316C;"> 
-        <div align="left"> MS No. <?php echo $student->marksheet_no; ?> </div>
+        <div align="left"> MS No. <?php echo $exam_data->marksheet_no; ?> </div>
         <table align="center" border="0" width="100%">
           <tbody>
             <tr>
               <td height="100" colspan="2" valign="bottom">
                 <center>
-                  <strong><?php echo $student->course_name .' '. $this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
+                  <strong><?php echo $exam_data->course_name .' '. $this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
                 </center>
               </td>
             </tr>
@@ -75,12 +72,12 @@
                       <td width="35%" class="Normaltext" align="left"><div align="left">Roll No</div></td>
                       <td width="53%" class="resultText">
                         <div align="left">
-                          <span id="lblSemesterGrading" style="color:Black;"><?php echo $student->roll_no; ?></span>
+                          <span id="lblSemesterGrading" style="color:Black;"><?php echo $exam_data->roll_no; ?></span>
                           <!-- <div style="float:right"> &nbsp;&nbsp;&nbsp; Mode - Distance Education </div> -->
                         </div>
                       </td>
                       <td align="center" width="18%" rowspan="4">
-                        <img border="1"  class="student_image" src="<?= base_url('assets/student_image/'.$student->session.'/'.$student->photo) ?>" width="90px" height="105px">
+                        <img border="1"  class="student_image" src="<?= base_url('assets/student_image/'.$exam_data->session.'/'.$exam_data->photo) ?>" width="90px" height="105px">
                       </td>
                     </tr>
                     <tr>
@@ -88,7 +85,7 @@
                         <div align="left">Enrolment / Registration No.</div>
                       </td>
                       <td class="resultText">
-                        <div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo  $student->enrollment_no;; ?></span></div>
+                        <div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo  $exam_data->enrollment_no;; ?></span></div>
                       </td>
                     </tr>
                     <tr>
@@ -96,23 +93,25 @@
                         <div align="left">Name of the Candidate</div>
                       </td>
                       <td class="resultText"><div align="left">
-                        <span id="lblSemesterGrading" style="color:Black;"><?php echo  $student->name; ?></span></div>
+                        <span id="lblSemesterGrading" style="color:Black;"><?php echo  $exam_data->name; ?></span></div>
                       </td>
                     </tr>
                     <tr>
                       <td class="Normaltext" align="left" width="29%"><div align="left">Father's / Husband's Name</div></td>
-                      <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo strtoupper( $student->f_h_name); ?></span></div></td>
+                      <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo strtoupper( $exam_data->f_h_name); ?></span></div></td>
                     </tr>
+                    <?php if ($exam_data->center_id==10 || $exam_data->center_id==12): ?>
                     <tr>
                       <td class="Normaltext" align="left" width="29%"><div align="left">Department</div></td>
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;">
-                        <?php if ($student->center_id==10) {
+                        <?php if ($exam_data->center_id==10) {
                           echo "University Teaching Department Karaundi";
-                        }else if ($student->center_id==12) {
+                        }else if ($exam_data->center_id==12) {
                           echo "Shiksha Vibhag, Lamti Jabalpur";
                         } ?>
                       </span></div></td>
                     </tr>
+                  <?php endif ?>
                   </tbody>
                 </table>
               </td>
@@ -159,7 +158,7 @@
                         foreach($papers as $marks){
                           if($marks->type=='theory'){
                             $tot_std_marks += $marks->theory_marks+$marks->int_marks;
-                            $tot_marks += $marks->max_theory_marks+$marks->max_internal_marks;
+                            $tot_marks += $marks->max_theory_marks+$marks->max_int_marks;
                             if($marks->theory_marks<$marks->min_theory_marks){
                               $result = "FAIL";
                               $fail_count++;
@@ -170,7 +169,7 @@
                               $result = 'FAIL';
                               $abs_count++ ;
                             }
-                            if($marks->int_marks<$marks->min_internal_marks)
+                            if($marks->int_marks<$marks->min_int_marks)
                             {
                               $result ="FAIL";
                               $int_fail_count++ ;
@@ -182,7 +181,7 @@
                           }else{
                             if ($classData->practical_internal_marks=='Y') {
                               $tot_std_marks += $marks->p_marks+$marks->int_marks;
-                              $tot_marks += $marks->max_theory_marks+$marks->max_internal_marks;
+                              $tot_marks += $marks->max_theory_marks+$marks->max_int_marks;
                               if($marks->p_marks<$marks->min_theory_marks){
                                 $result = "FAIL";
                                 $fail_count++;
@@ -224,15 +223,15 @@
                             <td align="center" ><span class="style4">
                               <?php echo  $paper->min_theory_marks; ?></span>
                             </td>
-                            <td align="center" ><span class="style4"><?=($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->max_internal_marks : '-'; ?></span>
+                            <td align="center" ><span class="style4"><?=($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->max_int_marks : '-'; ?></span>
                             </td>
                             <td align="center" ><span class="style4">
-                              <?=($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->min_internal_marks : '-'; ?></span>
+                              <?=($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->min_int_marks : '-'; ?></span>
                             </td>
                             <td align="left" ><span class="style4" style="padding-left:10px;">
                               <?php
                               if ($paper->type=='theory') {
-                                if(($paper->theory_marks <  $paper->min_theory_marks || $paper->int_marks <  $paper->min_internal_marks) && $check_grace_marks==false){
+                                if(($paper->theory_marks <  $paper->min_theory_marks || $paper->int_marks <  $paper->min_int_marks) && $check_grace_marks==false){
                                   echo $paper->theory_marks . ' F' ;
                                 }elseif($paper->theory_marks<$paper->min_theory_marks){
                                   echo $paper->theory_marks; 
@@ -244,7 +243,7 @@
                                 }
                               }else{
                                 if ($classData->practical_internal_marks=='Y') {
-                                  if($paper->p_marks<$paper->min_theory_marks || $paper->int_marks<$paper->min_internal_marks){
+                                  if($paper->p_marks<$paper->min_theory_marks || $paper->int_marks<$paper->min_int_marks){
                                     echo $paper->p_marks.' F';
                                   }elseif($paper->p_marks=='ABS'){
                                     echo 'ABS F';
@@ -270,7 +269,7 @@
                             <td align="left" class="style2"><span class="style4" style="padding-left:10px;">
                               <?php 
                               if ($paper->type=='theory') {
-                                if($paper->int_marks<$paper->min_internal_marks || $paper->theory_marks<$paper->min_theory_marks){
+                                if($paper->int_marks<$paper->min_int_marks || $paper->theory_marks<$paper->min_theory_marks){
                                   echo  $paper->theory_marks +  $paper->int_marks . '' ;
                                   echo ($check_grace_marks) ? ' G' : ' F';
                                 }elseif($paper->theory_marks=="ABS"){
@@ -280,7 +279,7 @@
                                 }
                               }else{
                                 if($classData->practical_internal_marks=='Y') {
-                                  if($paper->int_marks<$paper->min_internal_marks || $paper->p_marks<$paper->min_theory_marks && $check_grace_marks==false){
+                                  if($paper->int_marks<$paper->min_int_marks || $paper->p_marks<$paper->min_theory_marks && $check_grace_marks==false){
                                     echo  $paper->p_marks +  $paper->int_marks . ' F' ; 
                                   }elseif($paper->p_marks=="ABS" || $paper->int_marks=="ABS"){
                                     echo 'ABS'. ' F' ;
@@ -381,7 +380,7 @@
                   </tr>
                   <tr class="">
                     <td colspan="">
-                      <?php  echo $generator->getBarcode($marksheet_variables->bar_code_no.$student->roll_no, $generator::TYPE_CODE_128,2,25); ?>
+                      <?php  echo $generator->getBarcode($marksheet_variables->bar_code_no.$exam_data->roll_no, $generator::TYPE_CODE_128,2,25); ?>
                     </td>
                   </tr>
                   <tr>
@@ -393,7 +392,6 @@
           </tbody>
         </table>
       </fieldset>
-    <?php } ?>
   </center>
 </body>
 </html>
