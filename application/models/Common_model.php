@@ -800,7 +800,7 @@ class Common_Model extends CI_Model{
 		$func =  $this->db->get()->result();
 		if(count($func)>1){
 			return false;
-		}elseif(count($func)==1 && $fun[0]->mode=="Annual" && $fun[0]->last_class == "L" ){
+		}elseif(count($func)==1 && $func[0]->mode=="Annual" && $func[0]->last_class == "L" ){
             return true ;
 		}
 	}
