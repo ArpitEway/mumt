@@ -131,7 +131,7 @@ table.last_table, .last_table td, .last_table th{
   $marksheetData = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id'=>$class_id));
   $classData= $this->Common_model->getRecordById('class_master','id', $class_id);
   $isFinalClass = $this->Common_model->hasOneClass($course_group_id);
-  $course_duration = ($isFinalClass) ? "One Year Course" : $classData->class_name;
+  $course_duration = ($isFinalClass) ? "Annual" : $classData->class_name;
   $rowspanhead = ($classData->project!='N' || $classData->practical!='N') ? "4" : "3";
   $rowspandata = ($classData->project!='N' || $classData->practical!='N') ? "5" : "4";
   if($classData->internal=='N'){
