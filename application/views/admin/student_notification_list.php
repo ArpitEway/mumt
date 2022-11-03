@@ -180,7 +180,7 @@
 	<div>
 		<h1 class="text-center" ><strong> Maharishi Mahesh Yogi Vedic Vishwavidyalaya </strong> </h1>
 		<p align="center" style="line-height:0px">Head Office: Karaundi, Post-Mahner ,Distt- Katni(MP) </p>
-		<h2 align="center"><strong>Result Notification of</strong><br><p style="margin-top:8px"><strong><?php echo $this->Common_model->getCourseNameByCourseId($course_group_id).' - '. $course_duration .'  '. $exam_session?></strong></p></h2>
+		<h2 align="center"><strong>Result Notification of</strong><br><p style="margin-top:8px"><strong><?php echo $this->Common_model->getCourseNameByCourseId($course_group_id).' '. $course_duration .'  '. $exam_session?></strong></p></h2>
 	</div>
 	<title>Notification <?php echo $this->Common_model->getCourseNameByCourseId($course_group_id)?></title> 
 
