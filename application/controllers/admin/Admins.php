@@ -3506,7 +3506,7 @@ public function update_exam_datewise_permission(){
 			$dde_student['class_name'] = $classData[0]->class_name;
 			$dde_student['medium'] = $studentdata[0]['medium'];
 			$dde_student['university_mode'] = 'PVT';
-			$dde_student['session'] = 'July 2021';
+			$dde_student['session'] = 'July 2022';
 			unset($dde_student['admit_card']);
 			unset($dde_student['cls_id']);
 			unset($dde_student['form_no']);
