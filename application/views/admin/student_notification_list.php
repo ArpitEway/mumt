@@ -61,7 +61,7 @@
 	$notification_no = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id' => $class_id));
 	$classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 	$isFinalClass = $this->Common_model->hasOneClass($course_group_id);
-	$course_duration = ($isFinalClass) ? "One Year Course" : $classData->class_name;
+	$course_duration = ($isFinalClass) ? "(One Year Course)" : $classData->class_name;
 	$notification=$notification_no[0]->notification_no;
 	$date=$notification_no[0]->result_date;
 	$exam_session=$notification_no[0]->exam_session;
