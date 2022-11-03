@@ -502,7 +502,7 @@ table.last_table, .last_table td, .last_table th{
 <table width="100%" class="last_table" border="0">
 <tr>
 <td colspan="3">&nbsp;</td>
-<td colspan="3" align="right">Order for Declaration & Publication of Result</td>
+<td colspan="3" align="center">Order for Declaration & Publication of Result</td>
 </tr>
 <tr style="height:100px; vertical-align: bottom;">
 <td align="center" width="25%">Checked By</td>
