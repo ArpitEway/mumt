@@ -44,6 +44,8 @@
     $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
     $marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+    $isFinalClass = $this->Common_model->hasOneClass($course_group_id);
+    $course_duration  = ($isFinalClass!='')? 'One Year Course' : 'Six Months Course';
     foreach($students as $student)
     {
       $papers = $this->Common_model->student_info_for_result($student->student_id,$student->class_id);
@@ -55,7 +57,8 @@
             <tr>
               <td height="100" colspan="2" valign="bottom">
                 <center>
-                  <strong><?php echo $student->course_name .' '; ?> Six Months Course <?=$marksheet_variables->exam_session ?></strong>
+                  
+                  <strong><?php echo $student->course_name .' '.$course_duration.' '.$marksheet_variables->exam_session ?></strong>
                 </center>
               </td>
             </tr>
