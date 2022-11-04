@@ -179,12 +179,12 @@
 					</a> -->
 					<a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
 						<div>
-							<span class="nav-text">Practical Marks Submission</span>
+							<span class="nav-text">Regular Practical Marks Submission</span>
 						</div>
 					</a>
 					<a class="border-0 custom-menu-item" href="<?=base_url('internal_marks_list');?>">
 						<div>
-							<span class="nav-text">Internal Marks Submission</span>
+							<span class="nav-text">Regular Internal Marks Submission</span>
 						</div>
 					</a>
 					<a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">

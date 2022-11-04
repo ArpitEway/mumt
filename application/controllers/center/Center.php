@@ -1487,10 +1487,10 @@ class Center extends CI_Controller {
 	 		'hash_csrf' => $this->security->get_csrf_hash(),
 	 	);
 
-	 	$titleData = array('title' => 'Internal  Marks Submission' );
+	 	$titleData = array('title' => 'Regular Internal Marks Submission' );
 	 	$this->load->view('Centers/header',$titleData);
 	 	$center_id =  $this->session->center_id;
-	 	$where = array('center_id' => $center_id,'new_exam_form' => 'Y','internal'=>"Y");
+	 	$where = array('university_mode' => 'REG','center_id' => $center_id,'new_exam_form' => 'Y','internal'=>"Y");
 		//  ,'result_show ' => 'N'
 	 	$this->db->order_by("int_marks_sub,student.course_group_id,student.class_id", "asc");
 	 	$this->db->select('*');
@@ -1843,10 +1843,10 @@ class Center extends CI_Controller {
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 		);
-		$titleData = array('title' => 'Practical  Marks Submission' );
+		$titleData = array('title' => 'Regular Practical Marks Submission' );
 		$this->load->view('Centers/header',$titleData);
 		$center_id =  $this->session->center_id;
-		$where = array('center_id' => $center_id,'new_exam_form' => 'Y');
+		$where = array('university_mode' => 'REG','center_id' => $center_id,'new_exam_form' => 'Y');
 		// ,'result_show' => 'N'
 		$this->db->order_by("p_marks_sub,student.course_group_id,student.class_id", "asc");
 		$this->db->select('*');
