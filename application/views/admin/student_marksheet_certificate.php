@@ -44,6 +44,8 @@
     $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
     $marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+    $isFinalClass = $this->Common_model->hasOneClass($course_group_id);
+    $course_duration  = ($isFinalClass!='')? '(One Year Course)' : 'Six Months Course';
     foreach($students as $student)
     {
       $papers = $this->Common_model->student_info_for_result($student->student_id,$student->class_id);
@@ -55,7 +57,8 @@
             <tr>
               <td height="100" colspan="2" valign="bottom">
                 <center>
-                  <strong><?php echo $student->course_name .' '; ?> Six Months Course <?=$marksheet_variables->exam_session ?></strong>
+                  
+                  <strong><?php echo $student->course_name .' '.$course_duration.' '.$marksheet_variables->exam_session ?></strong>
                 </center>
               </td>
             </tr>
@@ -267,9 +270,7 @@
                         <td width="1%"><div align="center"></div></td>
                         <td width="8%"><div align="center"><strong></strong></div></td>
                         <td width="7%"><div align=""><strong>Result</strong></div></td>
-                        <td width="10%"><div align="center"><strong><div align="left">&nbsp;&nbsp;&nbsp;<b>
-                          <?php echo $result ; ?>
-                        </b></div></strong></div>
+                        <td width="10%"><strong><?php echo $result ; ?></strong>
                       </td>
                     </tr>
                     <tr>
@@ -280,10 +281,27 @@
                       <td>&nbsp;</td>
                       <td>&nbsp;  </td>
                       <td>
-                        <strong>&nbsp; </strong>
+                      <?php
+                          $percentage = round(($tot_std_marks/$tot_marks)*100,2);    
+                          if($percentage>=60){
+                            $division = "First";
+                          }elseif($percentage<60 && $percentage>=40){
+                            $division  = "Second";
+                          }else{
+                            $division = "Third";
+                          }
+
+                        if ($classData->last_class=="L") {
+                          ?><strong>Division</strong><?php
+                        }
+                        ?>
                       </td>
-                      <td> <div align="center"><b> 
-                      </b></div></td>
+                      <td><?php
+                        if ($classData->last_class=="L") {
+                          ?><strong><?=$division?></strong><?php
+                        }
+                        ?>
+                      </td>
                     </tr>
                     <tr>
                       <td height="20"><strong>Maximum Marks</strong></td>
@@ -292,8 +310,10 @@
                       <td><div align="center"><b></b></div></td>
                       <td></td>
                       <td><div align="center"></div></td>
-                      <td><strong>&nbsp;</strong></td>
-                      <td> <div align="center"><strong></strong></div></td>
+                      <td> <?php if ($classData->last_class=="L") {
+                          ?><strong>Percentage</strong>
+                          <?php } ?></td>
+                      <td><strong><?= ($classData->last_class=="L") ? $percentage.' %' : '';?></strong></td>
                     </tr>
                     <tr>
                       <td colspan="8">

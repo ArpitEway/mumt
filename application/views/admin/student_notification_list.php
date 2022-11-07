@@ -60,6 +60,8 @@
 	<?php
 	$notification_no = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id' => $class_id));
 	$classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+	$isFinalClass = $this->Common_model->hasOneClass($course_group_id);
+	$course_duration = ($isFinalClass) ? "(One Year Course)" : $classData->class_name;
 	$notification=$notification_no[0]->notification_no;
 	$date=$notification_no[0]->result_date;
 	$exam_session=$notification_no[0]->exam_session;
@@ -178,7 +180,7 @@
 	<div>
 		<h1 class="text-center" ><strong> Maharishi Mahesh Yogi Vedic Vishwavidyalaya </strong> </h1>
 		<p align="center" style="line-height:0px">Head Office: Karaundi, Post-Mahner ,Distt- Katni(MP) </p>
-		<h2 align="center"><strong>Result Notification of</strong><br><p style="margin-top:8px"><strong><?php echo $this->Common_model->getCourseNameByCourseId($course_group_id).' - '. $this->Common_model->getClassNameByClassId($class_id) .'  '. $exam_session?></strong></p></h2>
+		<h2 align="center"><strong>Result Notification of</strong><br><p style="margin-top:8px"><strong><?php echo $this->Common_model->getCourseNameByCourseId($course_group_id).' '. $course_duration .'  '. $exam_session?></strong></p></h2>
 	</div>
 	<title>Notification <?php echo $this->Common_model->getCourseNameByCourseId($course_group_id)?></title> 
 
@@ -197,6 +199,9 @@
 				<th  class="text-center" style="text-align:left" scope="row"  width="45%"><span class="style5" style="padding-left: 10px;" >Name and F/H Name</span></th>
 				<th class="text-center" scope="row"  width="15%">Result</span></th>
 				<th class="text-center" scope="row"  width="10%"><span class="style5">Total</span></th>
+				<?php	if ($isFinalClass) {	?>
+					<th class="text-center" scope="row"  width="10%"><span class="style5">Division</span></th>
+				<?php	}	?>
 				<th class="text-center" scope="row" width="20%"><span class="style5">Remark</span></th>
 			</tr>
 		</thead>
@@ -229,6 +234,18 @@
 			if($fail_count==0 && $abs_count==0 && $p_fail_count==0 && $int_fail_count==0){
 				echo $total_obtained_marks .' / '. $total_max_marks;
 			}
+			?>
+		</td>
+		<td  class="text-center" style="padding:0px" align="center"><?php
+			$percentage = round(($total_obtained_marks/$total_max_marks)*100,2);    
+			if($percentage>=60){
+			  $division = "First";
+			}elseif($percentage<60 && $percentage>=40){
+			  $division  = "Second";
+			}else{
+			  $division = "Third";
+			}
+			echo ($Withheld && $isFinalClass) ? '' : $division;
 			?>
 		</td>
 		<td class="text-center" >
@@ -279,7 +296,8 @@
 			<p class="size" style="line-height:2px">VCG-Vice-Chancellor's One Grace Mark In Division</p>
 		</td>
 	</tr>
-	<tr><td>&nbsp;</td> <td class="size" align="right">Asst. Registrar</td><td class="size"align="center">Registrar/Controller Of Examination</td></tr>
+	<tr><td>&nbsp;</td> <td class="size" align="right"><!-- Asst. Registrar --></td>
+	<td class="size"align="center">Registrar/Controller Of Examination</td></tr>
 	<tr><td colspan="2" class="size">Copy of Result Notification is forwarded for information to
 		<p style="padding-top: 15px;" class="size">1.Notice Board of the University</p>
 	</table>

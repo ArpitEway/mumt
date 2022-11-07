@@ -548,14 +548,14 @@
 <table width="100%" class="last_table" border="0">
 <tr>
 <td colspan="3">&nbsp;</td>
-<td colspan="3" align="right">Order for Declaration & Publication of Result</td>
+<td colspan="3" align="center">Order for Declaration & Publication of Result</td>
 </tr>
 <tr style="height:100px; vertical-align: bottom;">
-<td align="center" width="20%">Checked By</td>
-<td align="center" width="20%">Sign of 1st Tabulator</td>
-<td align="center" width="20%">Sign of 2nd Tabulator</td>
-<td align="center" width="20%">Asst. Registrar </td>
-<td align="center" width="20%">Registrar/Controller Of Examination</td>
+<td align="center" width="25%">Checked By</td>
+<td align="center" width="25%">Sign of 1st Tabulator</td>
+<td align="center" width="25%">Sign of 2nd Tabulator</td>
+<!-- <td align="center" width="20%">Asst. Registrar</td> -->
+<td align="center" width="25%">Registrar/Controller Of Examination</td>
 </tr><tr><td colspan="5">&nbsp;</td></tr><tr><td colspan="5">&nbsp;</td></tr>
 </table>
 </td>

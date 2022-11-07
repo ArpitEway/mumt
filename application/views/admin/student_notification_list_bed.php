@@ -288,7 +288,7 @@ $abs_count = 0 ;
 			</tr>
 			<tr>
 				<td>&nbsp;</td>
-				<td class="size" align="right">Asst. Registrar</td>
+				<td class="size" align="right"><!-- Asst. Registrar --></td>
 				<td class="size"align="center">Registrar/Controller Of Examination</td>
 			</tr>
 			<tr>
