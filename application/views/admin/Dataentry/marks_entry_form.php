@@ -18,6 +18,9 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
     box-shadow: 0px 0px 2px 1px;
     margin: 0 10px;
 }
+.float-right.mt-1{
+	display: none !important;
+}
 </style>
 
 <div class="container">
