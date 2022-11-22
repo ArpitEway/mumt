@@ -204,7 +204,7 @@ class Postexam extends CI_Controller {
             }else{
                 $final_result = 'PASS';   
             }
-             if ($final_result=='FAIL'  && count($course_type)==0 && $student->course_group_id!=76) {
+             if ($final_result=='FAIL'  && count($course_type)==0 && $student->course_group_id!=76 && $student->course_group_id!=77) {
                 continue;
             }
             $examData['university_mode'] = $student->university_mode;
