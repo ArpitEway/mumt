@@ -26,9 +26,6 @@
     .barcode img{
       height: 25px;
     }
-    .student_image{
-      image-orientation: none;
-    }
     @media print {
       .breakhere { page-break-after:always;  };
     }

@@ -1,3 +1,9 @@
+<style type="text/css">
+	
+#kt_image_1.image-input .image-input-wrapper {
+    background-size: contain;
+}
+</style>
 <form class="p-5">
 	<h4 class="my-5 font-weight-bold text-dark">Educational Details</h4>
 	<div class="row">
