@@ -243,7 +243,7 @@
       }
     }
 
-    if ($fail_count==0 && $rw_count==0 && $p_fail_count==0 && $int_fail_count==0 && $theory_abs_count==0) {
+    if ($fail_count==0 && $rw_count==0 && $p_fail_count==0 && $int_fail_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0) {
        $final_result = "PASS";
     }else{
       $require_grace_marks = $require_tot_marks-$fail_tot_marks;
