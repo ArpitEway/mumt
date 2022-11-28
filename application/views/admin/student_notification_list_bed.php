@@ -183,7 +183,7 @@ $abs_count = 0 ;
 			<p class="size"style="line-height:2px">RWPR-Practical Marks Not Received</p>
 			<p class="size" style="line-height:2px">RWAS-Assignment Marks Not Received</p>
 			<p class="size"style="line-height:2px">RWPJ-Project Marks Not Received</p>
-			<p class="size" style="line-height:2px">RWPM-Project Marks Not Received</p>
+			<!-- <p class="size" style="line-height:2px">RWPM-Project Marks Not Received</p> -->
 			<p class="size" style="line-height:2px">UFM-Unfair Means</p>
 			<p class="size" style="line-height:2px">GR-Grace Mark In One Theory Paper For Passing</p>
 			<p class="size" style="line-height:2px">VCG-Vice-Chancellor's One Grace Mark In Division</p>
