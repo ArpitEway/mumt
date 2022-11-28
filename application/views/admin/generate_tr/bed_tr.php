@@ -447,7 +447,7 @@
       if($new_exam_form->p_marks=="N")
         {echo " ";}
       else{
-        if($new_exam_form->p_marks < $new_exam_form->min_theory_marks && $new_exam_form->p_marks!=''){
+        if($new_exam_form->p_marks < $new_exam_form->min_theory_marks || $new_exam_form->p_marks=='ABS'){
           echo  $new_exam_form->p_marks .' F';
         }elseif($new_exam_form->p_marks ==''){
           echo "RWPR";
@@ -478,7 +478,7 @@
       if($new_exam_form->int_marks=="N"){
         echo " ";
       }else{
-        if($new_exam_form->int_marks < $new_exam_form->min_internal_marks && $new_exam_form->int_marks!=''){
+        if($new_exam_form->int_marks < $new_exam_form->min_internal_marks || $new_exam_form->int_marks=='ABS'){
           echo  $new_exam_form->int_marks .' F';
         }elseif($new_exam_form->int_marks ==''){
           echo "RWPR";
