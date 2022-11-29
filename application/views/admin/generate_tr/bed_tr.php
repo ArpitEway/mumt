@@ -170,6 +170,7 @@
     $final_result = '';
     $theory_paper_count = 0;
     $p_paper_count = 0;
+    $rwpr_count = 0;
     foreach($marks as $new_exam_form)
     {
       if($new_exam_form->type=='theory'){
@@ -218,7 +219,7 @@
         $total_marks_obt += $new_exam_form->p_marks+$new_exam_form->int_marks;
         $total_paper_marks +=$new_exam_form->max_theory_marks+$new_exam_form->max_internal_marks;
         if($new_exam_form->p_marks=='' || $new_exam_form->p_marks=='N'){
-          $rw_count++;
+          $rwpr_count++;
         }
         if($new_exam_form->p_marks=='ABS'){
           $p_abs_count++;
@@ -228,7 +229,7 @@
           array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
         }
         if($new_exam_form->int_marks=='N'){
-          $rw_count++;
+            $rwpr_count++;
         }
         
         if($new_exam_form->int_marks<$new_exam_form->min_internal_marks){
@@ -243,16 +244,18 @@
       }
     }
 
-    if ($fail_count==0 && $rw_count==0 && $p_fail_count==0 && $int_fail_count==0 && $theory_abs_count==0) {
+    if ($fail_count==0 && $rw_count==0 && $p_fail_count==0 && $int_fail_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0 && $rwpr_count==0) {
        $final_result = "PASS";
     }else{
       $require_grace_marks = $require_tot_marks-$fail_tot_marks;
       // tot 3 grace marks in 1 subjects
-      if ($fail_count<2 && $require_grace_marks<4 && $int_fail_count==0 && $p_fail_count==0 && $rw_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0) {
+      if ($fail_count<2 && $require_grace_marks<4 && $int_fail_count==0 && $p_fail_count==0 && $rw_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0 && $rwpr_count==0) {
         $check_grace_marks = true;
         $final_result = "PASS BY GRACE";
       }elseif($rw_count>0){
         $final_result = "RW";
+      }elseif($rwpr_count>0){
+        $final_result = "RWPR";
       }else{
         $final_result = "FAIL";
       }
@@ -444,17 +447,16 @@
     {
       ?>
       <td  class="align-middle text-center paper_code"><?php 
-      if($new_exam_form->p_marks=="N")
-        {echo " ";}
-      else{
-        if($new_exam_form->p_marks < $new_exam_form->min_theory_marks && $new_exam_form->p_marks!=''){
-          echo  $new_exam_form->p_marks .' F';
-        }elseif($new_exam_form->p_marks ==''){
-          echo "RWPR";
-        }
-        else{
-          echo  $new_exam_form->p_marks;
-          $total_p_marks += $new_exam_form->p_marks;
+      if ($new_exam_form->paper_type!='theory') {
+        if($new_exam_form->p_marks=="N"){
+          echo " - ";
+        }else{
+          if($new_exam_form->p_marks < $new_exam_form->min_theory_marks || $new_exam_form->p_marks=='ABS'){
+            echo  $new_exam_form->p_marks .' F';
+          }else{
+            echo  $new_exam_form->p_marks;
+            $total_p_marks += $new_exam_form->p_marks;
+          }
         }
       }
     ?></td>
@@ -478,7 +480,7 @@
       if($new_exam_form->int_marks=="N"){
         echo " ";
       }else{
-        if($new_exam_form->int_marks < $new_exam_form->min_internal_marks && $new_exam_form->int_marks!=''){
+        if($new_exam_form->int_marks < $new_exam_form->min_internal_marks || $new_exam_form->int_marks=='ABS'){
           echo  $new_exam_form->int_marks .' F';
         }elseif($new_exam_form->int_marks ==''){
           echo "RWPR";
@@ -504,7 +506,7 @@
       }else{
         echo $paper_master->theory_marks+ $paper_master->int_marks;
       }
-    }else{ 
+    }else{
       if($paper_master->p_marks=='ABS'){
         echo '0 F';
       }elseif($paper_master->p_marks<$paper_master->min_theory_marks || $paper_master->int_marks<$paper_master->min_internal_marks){
