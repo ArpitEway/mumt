@@ -47,11 +47,11 @@
 	}else{
 		?>
 		<div class="row py-3 border">
-		<div class="col-sm-4 border-right">Course 
+			<div class="col-sm-4 border-right">Course 
+			</div>
+			<div class="col-sm-8"><?=$student['course_name'] ?>
+			</div>
 		</div>
-		<div class="col-sm-8"><?=$student['course_name'] ?>
-		</div>
-	</div>
 <?php
 	} ?>
 	<div class="row py-3 border">

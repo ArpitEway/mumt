@@ -19,12 +19,22 @@
                 $mode = $this->Common_model->getRecordByWhere('class_master',array('course_group_id'=>$course_group[0]->id,'mode'=>$course_group[0]->private_mode));
               
             }
+            print_r($students[0]['course_complete'])
             ?>
             <div class="form-group col-md-6">
                 <label>Apply For</label>
                 <select name="apply_for" class="form-control" id="apply">
                 <option value="">Select</option>
-                <?php $field = $this->Common_model->getRecordByWhere('application_field');
+                <?php 
+                if($course_group[0]->course_type == 'PGDiploma' || $course_group[0]->course_type == 'Diploma'){
+                    $field = $this->Common_model->getRecordByWhere('application_field',array('field !='=>'DEGREE'));
+                }elseif($students[0]['course_complete'] == 'N'){
+                    $field = $this->Common_model->getRecordByWhere('application_field',array('field'=>'DUPLICATE-MARKSHEET'));
+                }
+                else{
+                    $field = $this->Common_model->getRecordByWhere('application_field',array('field !='=>'DIPLOMA')); 
+                }
+               
                      foreach($field as $row){?>
                     
                     <option value="<?= $row->field?>"><?= $row->field?></option>
