@@ -177,5 +177,5 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 		// 	    e.stopPropagation();
 		// 	  });
 		// 	});
-		// });
+		 });
 	</script>
