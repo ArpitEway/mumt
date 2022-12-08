@@ -1943,6 +1943,61 @@ class Center extends CI_Controller {
 		 		"data" => $model
 		 	));
 	}
+	public function edit_student_marks(){
+		$student_id = $this->input->post('student_id');
+	   $class_id = $this->input->post('class_id');
+	   $classData	= $this->Common_model->getRecordById('class_master','id',$class_id); 
+		$where=array('student.student_id'=>$student_id);
+		$this->db->select('*');
+		$this->db->from('new_exam_form');
+		$this->db->Where($where );
+		$this->db->join('student', 'student.student_id = new_exam_form.student_id and student.class_id = new_exam_form.class_id');
+	//    $this->db->join('paper_master','student.class_id= paper_master.class_id and paper_master.paper_code = new_exam_form.paper_code');
+	   $this->db->order_by('new_exam_form.sub_group_id,paper_order');
+		$details = $this->db->get()->result();
+		$data = array(
+		   'classData' =>$classData,
+			'detail' => $details,
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		if($data){
+			$model =  $this->load->view('Centers/student_marks_edit_data',$data,true);
+			$status = true;
+		}
+		echo json_encode(array(
+			"status" => $status,
+			"data" => $model
+		));
+}
+public function practical_assignment_marks_edit(){
+	$student_id = $this->input->post('student_id');
+   $class_id = $this->input->post('class_id');
+   $classData	= $this->Common_model->getRecordById('class_master','id',$class_id); 
+	$where=array('student.student_id'=>$student_id,'paper_master.sub_group_id !='=>1);
+	$this->db->select('*');
+	$this->db->from('new_exam_form');
+	$this->db->Where($where );
+	$this->db->where_not_in('paper_type',array('Sessional','theory'));
+	$this->db->join('student', 'student.student_id = new_exam_form.student_id and student.class_id = new_exam_form.class_id');
+    $this->db->join('paper_master','student.class_id= paper_master.class_id and paper_master.paper_code = new_exam_form.paper_code');
+   $this->db->order_by('new_exam_form.sub_group_id,paper_order,paper_no');
+	$details = $this->db->get()->result();
+	$data = array(
+	   'classData' =>$classData,
+		'detail' => $details,
+		'name_csrf' => $this->security->get_csrf_token_name(),
+		'hash_csrf' => $this->security->get_csrf_hash(),
+	);
+	if($data){
+		$model =  $this->load->view('Centers/practical_marks_edit_data',$data,true);
+		$status = true;
+	}
+	echo json_encode(array(
+		"status" => $status,
+		"data" => $model
+	));
+}
 
 	public function instruction_private(){
 
