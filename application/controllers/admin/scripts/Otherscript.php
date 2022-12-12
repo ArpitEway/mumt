@@ -99,6 +99,19 @@ class Otherscript extends CI_Controller {
 		}
 		
 	}
+
+	public function update_old_result_show(){
+		
+		$result = $this->Common_model->getRecordByWhere("student",array("exam_form"=>'Y'));
+		
+		foreach($result as $row){
+			
+			    $data  = array('old_result_show'=>$row->result_show);
+				$where = array('exam_form'=>'Y','student_id'=>$row->student_id);
+				
+				// $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+		}
+	}
 	
 }
 
