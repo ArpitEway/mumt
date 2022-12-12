@@ -2207,6 +2207,10 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 	}
 
 	public function application_form(){
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url());
+			die();
+		}
 		$center_id =  $this->session->center_id;
 		$this->load->view('Centers/header');
 		$data = array(
@@ -2305,6 +2309,10 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 	}
 
 	public function application_list(){
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url());
+			die();
+		}
 
 		
 		$csrf = array( 
@@ -2321,10 +2329,11 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 	}
 
 	public function getApplicationList(){
+		
 		$data = $row = array();
 		$where = 'application_form.center_id='.$this->session->center_id.'';
 
-		$column_order = array('student.university_mode,application_form.student_uid','application_form_enrollment', 'application_form.name_eng', 'application_form.fname_eng', 'course_name','class_name','application_form.apply_for',null);
+		$column_order = array('student.university_mode','application_form.student_uid','application_form_enrollment', 'application_form.name_eng', 'application_form.fname_eng', 'course_name','class_name','application_form.apply_for',null);
 		$column_search = array('student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','application_form.apply_for',);
 		$course_type=$this->input->post('course_type');
 		//AND student.university_mode="'.$course_type.'"
