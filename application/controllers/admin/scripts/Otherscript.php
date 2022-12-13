@@ -101,34 +101,45 @@ class Otherscript extends CI_Controller {
 	}
 
 	public function student_photo(){
-		// SELECT * FROM `student` WHERE `photo` ='';
-		// $student = $this->Common_model->getRecordByWhere('student');
+	
 		$this->db->select('student_id,name,photo,session');
 		$this->db->from('student');
-		// $this->db->limit(10);
+		
 		$start=0;
 		$this->db->limit(30,$start);
 		$result = $this->db->get()->result();
-		// print_r($result[0]->session);die;
-
-		$path = './assets/student_image/'.$session;
+		
 		foreach ($result as $row){
-		$files = scandir('./assets/student_image/'.$row->session);
-foreach ($files as $file) {
-    if (strpos($row->photo, $file) !== false) {
-        
-		 if($file){
-			echo $file.'<br>';
-		 }
-		// continue;
-    }
+			$dir = './assets/student_image/'.$row->session;
+		
+			$files = glob( './assets/student_image/'.$row->session.'/'.$row->photo.'');
 
-}
-// echo $row->student_id."<br>";
+			foreach($files as $key => $value){
+				if($value){
+					$std .=  $row->student_id.'/';
+				}
+
+			
+			} 
 		}
-		// 
+
+		$de = explode('/',$std);
+			
+		$this->db->select('student_id');
+		$this->db->from('student');
+		$this->db->where_not_in('student_id',$de);
+	
+		$this->db->limit(10);
+		$rs = $this->db->get()->result();
+		// echo $this->db->last_query().'<br>';
+		foreach ($rs as  $val) {
+			echo $val->student_id.",";
+		}
+				
+			
 	}
 	
 }
+
 
 ?>
