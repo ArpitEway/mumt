@@ -2215,7 +2215,7 @@ public function getStudentData()
 		}
 	}
 
-	public function class_wise_result_upload_status_report($course_group_id,$class_id=""){
+	public function class_wise_result_upload_status_report($courseType="ALL",$course_group_id,$class_id=""){
 		if(!$this->session->has_userdata('adminData')){
 			redirect(base_url('admin'));
 			exit;
@@ -2238,6 +2238,8 @@ public function getStudentData()
 				$this->db->from('new_exam_form');
 				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
 				$this->db->where('student.new_exam_form','Y');
+				if($courseType!="ALL")
+					$this->db->where('student.university_mode',$courseType);
 				$this->db->where('new_exam_form.course_group_id',$course_group_id);
 				$this->db->where('new_exam_form.class_id',$class['id']);
 				$this->db->where('new_exam_form.paper_type',"theory");
@@ -2247,6 +2249,8 @@ public function getStudentData()
 				$this->db->from('new_exam_form');
 				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
 				$this->db->where('student.new_exam_form','Y');
+				if($courseType!="ALL")
+					$this->db->where('student.university_mode',$courseType);
 				$this->db->where('new_exam_form.course_group_id',$course_group_id);
 				$this->db->where('new_exam_form.class_id',$class['id']);
 				$this->db->where('new_exam_form.paper_type',"theory");
@@ -2256,25 +2260,65 @@ public function getStudentData()
 				$this->db->from('new_exam_form');
 				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
 				$this->db->where('student.new_exam_form','Y');
+				if($courseType!="ALL")
+					$this->db->where('student.university_mode',$courseType);
 				$this->db->where('new_exam_form.course_group_id',$course_group_id);
 				$this->db->where('new_exam_form.class_id',$class['id']);
 				$this->db->where('new_exam_form.theory_marks !=', "");
 				$this->db->where('new_exam_form.paper_type',"theory");
 				$uploaded = $this->db->get()->result();
 
+				// $this->db->select('count(*) as num');
+				// $this->db->from('new_exam_form');
+				// $this->db->join('student', 'new_exam_form.student_id = student.student_id');
+				// $this->db->where('student.new_exam_form','Y');
+				// if($courseType!="ALL")
+				// 	$this->db->where('student.university_mode',$courseType);
+				// $this->db->where('new_exam_form.course_group_id',$course_group_id);
+				// $this->db->where('new_exam_form.class_id',$class['id']);
+				// $this->db->where('new_exam_form.paper_type',"theory");
+				// $this->db->where('new_exam_form.int_marks !=', "N");
+				// $internal = $this->db->get()->result();
+				$internalVar = 0;
+					$internalcountVar =0;
+				if($courseType=="PVT"){
+					$internalVar = 0;
+					$internalcountVar =0;
+				}else{
+					$this->db->select('count(*) as num');
+					$this->db->from('new_exam_form');
+					$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.class_id ');
+					$this->db->where('student.new_exam_form','Y');
+					if($courseType!="PVT")
+						$this->db->where('student.university_mode',"REG");
+					$this->db->where('new_exam_form.course_group_id',$course_group_id);
+					$this->db->where('new_exam_form.class_id',$class['id']);
+					$this->db->where('new_exam_form.paper_type',"theory");
+					$this->db->join('paper_master', 'new_exam_form.class_id = paper_master.class_id  and new_exam_form.paper_code = paper_master.paper_code ');
+					$this->db->where('paper_master.max_internal_marks!=',"0");
+					$internalcount = $this->db->get()->result();
+
+					$this->db->select('count(*) as num');
+					$this->db->from('new_exam_form');
+					$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id ');
+					$this->db->where('student.new_exam_form','Y');
+					if($courseType!="ALL")
+						$this->db->where('student.university_mode',$courseType);
+					$this->db->where('new_exam_form.course_group_id',$course_group_id);
+					$this->db->where('new_exam_form.class_id',$class['id']);
+					$this->db->where('new_exam_form.paper_type',"theory");
+					$this->db->where('new_exam_form.int_marks !=', "N");
+					$internal = $this->db->get()->result();
+					$internalVar = $internal[0]->num;
+					$internalcountVar =$internalcount[0]->num;;
+				}
+
 				$this->db->select('count(*) as num');
 				$this->db->from('new_exam_form');
 				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
 				$this->db->where('student.new_exam_form','Y');
-				$this->db->where('new_exam_form.course_group_id',$course_group_id);
-				$this->db->where('new_exam_form.class_id',$class['id']);
-				$this->db->where('new_exam_form.paper_type',"theory");
-				$this->db->where('new_exam_form.int_marks !=', "N");
-				$internal = $this->db->get()->result();
-				$this->db->select('count(*) as num');
-				$this->db->from('new_exam_form');
-				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
-				$this->db->where('student.new_exam_form','Y');
+				if($courseType!="ALL")
+					$this->db->where('student.university_mode',$courseType);
 				$this->db->where('new_exam_form.course_group_id',$course_group_id);
 				$this->db->where('new_exam_form.class_id',$class['id']);
 				$this->db->where('new_exam_form.paper_type!=',"theory");
@@ -2284,6 +2328,8 @@ public function getStudentData()
 				$this->db->from('new_exam_form');
 				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
 				$this->db->where('student.new_exam_form','Y');
+				if($courseType!="ALL")
+					$this->db->where('student.university_mode',$courseType);
 				$this->db->where('new_exam_form.course_group_id',$course_group_id);
 				$this->db->where('new_exam_form.class_id',$class['id']);
 				$this->db->where('new_exam_form.paper_type!=',"theory");
@@ -2294,7 +2340,9 @@ public function getStudentData()
 				$classArr['total_paper_count'] = $count[0]->num;
 				$classArr['absent'] = $abs[0]->num;
 				$classArr['uploaded'] = $uploaded[0]->num;
-				$classArr['internal'] = $internal[0]->num;
+				//$classArr['internal'] = $internal[0]->num;
+				$classArr['internal'] = $internalVar;
+				$classArr['internalcount'] = $internalcountVar;
 				$classArr['practicalTotal'] = $practicalTotal[0]->num;
 				$classArr['practical'] = $practical[0]->num;
 				$data['class'][]=$classArr;
