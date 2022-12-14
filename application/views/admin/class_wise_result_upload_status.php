@@ -24,7 +24,7 @@ color:red;
                 </td>
                 <td class="course_css">
 			<!--<a href="<?php echo base_url("class_wise_result_upload_status_report")."/".$course_detail['id']; ?>" target="_blank" >Check Status</a>-->
-            	<a href="<?php echo base_url("class_wise_result_upload_status_report")."/ALL/".$course_detail['course_group_id']; ?>" target="_blank" >11Check Status</a>
+            	<a href="<?php echo base_url("class_wise_result_upload_status_report")."/ALL/".$course_detail['course_group_id']; ?>" target="_blank" >Check Status</a>
 		</td>
                       
             </tr>
