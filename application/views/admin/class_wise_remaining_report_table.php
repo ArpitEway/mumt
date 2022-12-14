@@ -3,8 +3,9 @@
 <hr>
 
 
-    <table class="table table-striped" id="kt_datatable">
-        <tbody>
+    <table class="table table-striped dt-responsive nowrap" id="kt_datatable"  width="100%">
+        
+        <thead>
             <tr>
                 <th>#</th>
                 <th>Roll No</th>
@@ -17,6 +18,22 @@
                 <th>Paper Code</th>
                
             </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>#</th>
+                <th>Roll No</th>
+                <th>ICCode </th>
+                <th>Enrollment No </th>
+                <th>Student Name </th>
+                <th>Course Name</th>
+                <th>Class</th>
+                <th>Session</th>
+                <th>Paper Code</th>
+               
+            </tr>
+        </tfoot>
+        <tbody>
             <?php $i=0;foreach($students as $student) {
                 
                 $i++;
@@ -34,7 +51,12 @@
               
             </tr>
             <?php  }  ?>
+          
         </tbody>
     </table>
-
+    <script>
+// $(document).ready(function(){
+//     $("#kt_datatable").Datatable();
+// });
+<script>
 
