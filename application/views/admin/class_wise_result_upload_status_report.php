@@ -52,9 +52,11 @@
                     <td><?php  echo  $val['practicalTotal'] ; ?></td>
                     <td><?php  echo  $val['practical'] ; ?></td>
                     <td>
+                    <?php if($courseType!="PVT"){  ?>
                         <a href="<?php echo base_url($account_type."class_wise_remaining_report")."/practical/".$course_group_id."/".$val['class_id']."/".$courseType; ?>" target="_blank" >    
                             <?php  echo  $val['practicalTotal'] -$val['practical'] ; ?>
-                        </a>    
+                        </a>   
+                        <?php } else { echo "0";}?> 
                     </td>
                     </tr>
                 <?php $i++;} } else{ ?>

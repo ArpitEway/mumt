@@ -1907,11 +1907,13 @@ class ExamController extends CI_Controller {
 				$this->db->where('new_exam_form.theory_marks !=', "");
 				$this->db->where('new_exam_form.paper_type',"theory");
 				$uploaded = $this->db->get()->result();
-				$internalVar = 0;
-					$internalcountVar =0;
+				
+					
 				if($courseType=="PVT"){
 					$internalVar = 0;
 					$internalcountVar =0;
+					$practicalTotalVar=0;
+					$practicalVar=0;
 				}else{
 					$this->db->select('count(*) as num');
 					$this->db->from('new_exam_form');
@@ -1939,31 +1941,35 @@ class ExamController extends CI_Controller {
 					$internal = $this->db->get()->result();
 					$internalVar = $internal[0]->num;
 					$internalcountVar =$internalcount[0]->num;;
+
+					$this->db->select('count(*) as num');
+					$this->db->from('new_exam_form');
+					$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id ');
+					$this->db->where('student.new_exam_form','Y');
+					if($courseType!="ALL")
+						$this->db->where('student.university_mode',$courseType);
+					$this->db->where('new_exam_form.course_group_id',$course_group_id);
+					$this->db->where('new_exam_form.class_id',$class['id']);
+					$this->db->where('new_exam_form.paper_type!=',"theory");
+					$practicalTotal = $this->db->get()->result();
+
+					$this->db->select('count(*) as num');
+					$this->db->from('new_exam_form');
+					$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id ');
+					$this->db->where('student.new_exam_form','Y');
+					if($courseType!="ALL")
+						$this->db->where('student.university_mode',$courseType);
+					$this->db->where('new_exam_form.course_group_id',$course_group_id);
+					$this->db->where('new_exam_form.class_id',$class['id']);
+					$this->db->where('new_exam_form.paper_type!=',"theory");
+					$this->db->where('new_exam_form.p_marks !=', "");
+					$this->db->where('new_exam_form.p_marks !=', "N");
+					$practical = $this->db->get()->result();
+					$practicalTotalVar=$practicalTotal[0]->num;
+					$practicalVar=$practical[0]->num;
 				}
 
-				$this->db->select('count(*) as num');
-				$this->db->from('new_exam_form');
-				$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id ');
-				$this->db->where('student.new_exam_form','Y');
-				if($courseType!="ALL")
-					$this->db->where('student.university_mode',$courseType);
-				$this->db->where('new_exam_form.course_group_id',$course_group_id);
-				$this->db->where('new_exam_form.class_id',$class['id']);
-				$this->db->where('new_exam_form.paper_type!=',"theory");
-				$practicalTotal = $this->db->get()->result();
-
-				$this->db->select('count(*) as num');
-				$this->db->from('new_exam_form');
-				$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id ');
-				$this->db->where('student.new_exam_form','Y');
-				if($courseType!="ALL")
-					$this->db->where('student.university_mode',$courseType);
-				$this->db->where('new_exam_form.course_group_id',$course_group_id);
-				$this->db->where('new_exam_form.class_id',$class['id']);
-				$this->db->where('new_exam_form.paper_type!=',"theory");
-				$this->db->where('new_exam_form.p_marks !=', "");
-				$this->db->where('new_exam_form.p_marks !=', "N");
-				$practical = $this->db->get()->result();
+				
 
 				$classArr['class_id'] = $class['id'];
 				$classArr['total_paper_count'] = $count[0]->num;
@@ -1971,8 +1977,8 @@ class ExamController extends CI_Controller {
 				$classArr['uploaded'] = $uploaded[0]->num;
 				$classArr['internal'] = $internalVar;
 				$classArr['internalcount'] = $internalcountVar;
-				$classArr['practicalTotal'] = $practicalTotal[0]->num;
-				$classArr['practical'] = $practical[0]->num;
+				$classArr['practicalTotal'] = $practicalTotalVar;
+				$classArr['practical'] = $practicalVar;
 				$data['class'][]=$classArr;
 				$data['course_group_id']=$course_group_id;
 
