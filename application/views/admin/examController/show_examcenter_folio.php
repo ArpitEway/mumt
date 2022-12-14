@@ -13,7 +13,6 @@
         }
         .break{
             page-break-before: always;
-            break-after: always;
         }
         table {
             background-color: transparent;
@@ -48,7 +47,7 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
     '80' => 'Eighty', '90' => 'Ninety');
     foreach($exam_center_id as $examcenter){  $examcenterCounter++;?> 
         <div class="d-flex" style="justify-content: space-between;" >
-            <p class="break"></p>
+            <!-- <p class="break"></p> -->
             <?php for($two=0;$two<2;$two++){  $rowCounter=0;?>
                 <div style="width:48%">
                     <table class="form-group col-md-12 mt-2 mb-2" >
