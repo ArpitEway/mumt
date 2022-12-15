@@ -48,7 +48,7 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 				<td>
 					<?php 
 					if ($university_mode=='PVT'){
-					echo $max_marks =$papers->max_theory_marks;
+					echo $max_marks =$papers->private_max_theory_marks;
 					echo ' ( Theory marks ) ';
 					$max_int_marks = 0;
 					 }elseif($university_mode=='REG'){ 
