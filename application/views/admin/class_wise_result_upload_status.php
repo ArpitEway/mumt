@@ -43,7 +43,7 @@ color:red;
                     <td>
                     <?php if($class['regular_class']=='Y' && $class['private_class']=='Y') { ?>    <a href="<?php echo base_url($account_type."class_wise_result_upload_status_report")."/ALL/".$course_detail['course_group_id']."/".$class['id']; ?>" target="_blank" > All Status</a>
                     <?php 
-                    $flag=="/";
+                    $flag="/";
                     } if($class['regular_class']=='Y') { echo $flag; ?>    
                     <a href="<?php echo base_url($account_type."class_wise_result_upload_status_report")."/REG/".$course_detail['course_group_id']."/".$class['id']; ?>" target="_blank" > Regular Status</a>
                     <?php } if($class['private_class']=='Y') { echo $flag; ?>
