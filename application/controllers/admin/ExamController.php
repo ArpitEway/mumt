@@ -2118,8 +2118,7 @@ public function getStudentData()
 				$this->db->from('new_exam_form');
 				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
 				$this->db->where('student.new_exam_form','Y');
-				if($courseType!="ALL")
-					$this->db->where('student.university_mode',$courseType);
+				$this->db->where('student.university_mode','REG');
 				$this->db->where('new_exam_form.course_group_id',$course_group_id);
 				$this->db->where('new_exam_form.class_id',$class_id);
 				$this->db->where('new_exam_form.int_marks', "N");
@@ -2133,8 +2132,7 @@ public function getStudentData()
 				$this->db->from('new_exam_form');
 				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
 				$this->db->where('student.new_exam_form','Y');
-				if($courseType!="ALL")
-					$this->db->where('student.university_mode',$courseType);
+				$this->db->where('student.university_mode','REG');
 				$this->db->where('new_exam_form.course_group_id',$course_group_id);
 				$this->db->where('new_exam_form.class_id',$class_id);
 				$this->db->where('new_exam_form.paper_type!=',"theory");
