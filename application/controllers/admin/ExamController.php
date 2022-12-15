@@ -2124,6 +2124,8 @@ public function getStudentData()
 				$this->db->where('new_exam_form.class_id',$class_id);
 				$this->db->where('new_exam_form.int_marks', "N");
 				$this->db->where('new_exam_form.paper_type',"theory");
+				$this->db->join('paper_master', 'new_exam_form.class_id = paper_master.class_id  and new_exam_form.paper_code = paper_master.paper_code ');
+				$this->db->where('paper_master.max_internal_marks!=',"0");
 				$data['students'] = $this->db->get()->result();
 			}	
 			if($remaining=="practical"){
