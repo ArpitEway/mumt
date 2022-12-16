@@ -1772,7 +1772,7 @@ class ExamController extends CI_Controller {
 				$dataArray['teachername'][$exam_center_id] = $this->Common_model->getSinglefield('exam_center','superintendent',array('id'=>$exam_center_id));
 				$dataArray['detail'][$exam_center_id] = $this->Common_model->getRecordByWhere('exam_center',array('id'=>$exam_center_id));	
 			}
-
+			$dataArray['university_mode']=$_POST['university_mode'];
 			$dataArray['class_id'] = $_POST['class_id'];
 			$dataArray['paper_code'] = $_POST['paper_code'];
 			$dataArray['course_group_id'] = $_POST['course_group_id'];
