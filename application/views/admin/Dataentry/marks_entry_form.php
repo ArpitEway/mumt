@@ -84,7 +84,7 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 							</td>
 							<td><?php echo $dt->roll_no; ?>  
 								<input type="hidden" name="student_id[]" value="<?=$dt->student_id?>">
-								<input type="hidden" name="paper_code" value="<?=$paper_code?>">
+								
 							</td>
 							<td class="fit">	
 								<select name="marks[]" class="form-control" id="marks<?php echo $count ?>">
@@ -108,6 +108,8 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 				    	}
 					?>
 					<input type="hidden" id="total_count" value="<?= $count ?>">
+					<input type="hidden" name="paper_code" value="<?=$paper_code?>">
+					<input type="hidden" name="class_id" value="<?=$class_id?>">
 				</tbody>
 			  </table>
 			<div class="row">

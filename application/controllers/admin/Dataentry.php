@@ -101,7 +101,7 @@ class Dataentry extends CI_Controller {
 		
 		$papersArr = $this->Common_model->getRecordByWhere('paper_master',$where);
 		$data['papers'] =$papersArr[0];
-		
+		$data['class_id']=$class_id;
 		$data['university_mode'] = $mode;
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
@@ -115,6 +115,7 @@ class Dataentry extends CI_Controller {
 		$data=array();
 		$post = $this->input->post();
 		$data['student_id'] = $this->input->post('student_id');	
+		$data['class_id']=$class_id = $this->input->post('class_id');	
 		$data['marks'] = $this->input->post('marks');
 		foreach ($data['student_id'] as $key => $value){
 			if($data['marks'][$key]==''){
@@ -125,7 +126,9 @@ class Dataentry extends CI_Controller {
 			);
 			$where =  array(
 				'student_id' =>$value,
-				'paper_code'  =>$_POST['paper_code']);
+				'paper_code'  =>$_POST['paper_code'],
+				'class_id'=>$class_id,
+			);
 			$Marksentry = $this->Common_model->updateRecordByConditions('new_exam_form',$where,$studentData);	
 		}
 		if($Marksentry){
