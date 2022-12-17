@@ -37,22 +37,6 @@
 			</select>
 	</div>
 
-    <!--<div class="form-group col-md-3">
-
-        <label for="Teacher">Teacher</label>
-        <select name="teacher_id"   id="teacher" class="form-control teacher" required>
-            <option value="">Select Techer</option>
-            <?php  
-          /*  $teachers= $this->Common_model->getRecordByWhere('teacher',array('status'=>'Y'));
-            foreach($teachers as $teacher){
-               ?>
-               <option value="<?php echo $teacher->id; ?>"   ><?php echo $teacher->name; ?>(<?php echo $teacher->subject; ?>)</option>
-               <?php
-           } */
-           ?>
-       </select>
-   </div>-->
-
 </div>
 <div class="form-group text-center">
 	<input type="hidden" class="" name="action1" value="submit">
@@ -115,10 +99,7 @@
         placeholder : 'Search Course',
         allowClear: true
     })
-  /*  $('#teacher').select2({
-        placeholder : 'Search Teacher',
-        allowClear: true
-    }) */
+ 
     $('#course_group_id').change(function(){
         var value = $(this).val();
         $('#course_group_id').trigger('change');
@@ -181,21 +162,5 @@
         return false ;
         }
 var frm = $('.answersheet').serialize();
-console.log("hello test ");
-  /*  $.ajax({
-    	url: '<?php echo site_url('admin/ExamController/show_counter_folio'); ?>',
-    	type: 'POST',
-    	dataType : 'json',
-    	data: frm,
-    	success: function (data) {
-            if(data){
-                $('#dt').empty();
-                Reset();
-                toastr.success("Assign Answershet Successfully");	
-            }else{
-                toastr.error("Something wrong");
-            }
-        },
-    });*/
 });		
 </script>
