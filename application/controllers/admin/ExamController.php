@@ -2220,5 +2220,79 @@ public function getStudentData()
 		
 		echo $this->load->view('admin/examController/get_center_wise_marksheet_dispatch_rolllist',$data, TRUE);
 	}
+	public function counter_folio_check(){
+		$titleData = array('title' => 'Counter Folio Check'); 
+		$this->load->view('header',$titleData);
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();	
+		$data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id), course_name ','new_exam_form="Y"');
+		$this->load->view('admin/examController/counter_folio_check',$data);
+		$this->load->view('footer');
+	}
+	public function search_assign_exam_center_counter_folio_check(){
+		if($_POST['action1']=='submit'){
+			$this->db->select('Distinct(examcentercode) ,exam_center_id');
+			$this->db->from("student");
+			$this->db->join('new_exam_form', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id=student.class_id');
+			$this->db->where('new_exam_form.paper_code',$_POST['paper_code']);
+			$this->db->where('new_exam_form.course_group_id',$_POST['course_group_id']);
+			$this->db->where('new_exam_form.class_id',$_POST['class_id']);
+			$this->db->where('student.exam_center_id!=',0);
+			$this->db->where('student.new_exam_form','Y');
+			$this->db->where('student.university_mode',$_POST['university_mode']);
+			$this->db->where('student.roll_no!=',0);
+			$this->db->order_by('student.examcentercode');
+			$data['examcenters'] = $this->db->get()->result();
+			$data['university_mode'] = $_POST['university_mode'];
+			$data['class_id'] = $_POST['class_id'];
+			$data['paper_code'] = $_POST['paper_code'];
+			$data['course_group_id'] = $_POST['course_group_id'];
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();	
+			//echo $this->db->last_query();die; 
+			$dt = $this->load->view('admin/examController/get_assign_examcenter_counter_folio_check',$data,true);
+			echo json_encode(array(
+				"status" => true,
+				"data" => $dt
+			));
+		}
+		
+		
+	}
+
+	public function show_counter_folio_check(){
+		if($_POST['action']=='assign_examcenter'){
+			
+			
+			$dataArray= array();	
+			
+				$this->db->select('*');
+				$this->db->from("student");
+				$this->db->join('new_exam_form', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id=student.class_id');
+				$this->db->where('new_exam_form.paper_code',$_POST['paper_code']);
+				$this->db->where('new_exam_form.course_group_id',$_POST['course_group_id']);
+				$this->db->where('new_exam_form.class_id',$_POST['class_id']);
+			
+				$this->db->where('student.roll_no!=',0);
+				$this->db->where('student.new_exam_form','Y');
+				$this->db->where('student.university_mode',$_POST['university_mode']);
+				$this->db->where_in('exam_center_id', $_POST['exam_center_id'] );
+				$this->db->order_by('student.examcentercode,student.roll_no');
+				$dataArray['students'][$exam_center_id] = $this->db->get()->result();
+			
+			$dataArray['university_mode']=$_POST['university_mode'];
+			$dataArray['class_id'] = $_POST['class_id'];
+			$dataArray['paper_code'] = $_POST['paper_code'];
+			$dataArray['course_group_id'] = $_POST['course_group_id'];
+			$dataArray["exam_center_id"]=$_POST['exam_center_id'];
+			$dataArray['coursename']= $this->Common_model->getCourseNameByCourseId($_POST['course_group_id']);
+			$dataArray['class_name']= $this->Common_model->getClassNameByClassId($_POST['class_id']);
+			$this->db->where('exam_date!=',"");
+			$this->db->where('exam_date!=',"0000-00-00");	
+			$dataArray['paper']= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'] , 'paper_code'=>$_POST['paper_code']));
+			$dataArray['title'] = 'COUNTER FILE CHECKING';
+			$this->load->view('admin/examController/show_examcenter_counter_folio_check',$dataArray);
+		}
+	}
 
 }// class
