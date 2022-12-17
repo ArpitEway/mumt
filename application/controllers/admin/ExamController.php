@@ -2262,27 +2262,24 @@ public function getStudentData()
 
 	public function show_counter_folio_check(){
 		if($_POST['action']=='assign_examcenter'){
-			$data_insert['exam_center_id'] =  implode(',',$_POST['exam_center_id']);
-			//print_r($data_insert);die;
+			
+			
 			$dataArray= array();	
-			//foreach($_POST['exam_center_id'] as $exam_center_id){
+			
 				$this->db->select('*');
 				$this->db->from("student");
 				$this->db->join('new_exam_form', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id=student.class_id');
 				$this->db->where('new_exam_form.paper_code',$_POST['paper_code']);
 				$this->db->where('new_exam_form.course_group_id',$_POST['course_group_id']);
 				$this->db->where('new_exam_form.class_id',$_POST['class_id']);
-				//$this->db->where('student.exam_center_id',$exam_center_id);
+			
 				$this->db->where('student.roll_no!=',0);
 				$this->db->where('student.new_exam_form','Y');
 				$this->db->where('student.university_mode',$_POST['university_mode']);
-				$this->db->where_in('exam_center_id', $data_insert['exam_center_id'] );
+				$this->db->where_in('exam_center_id', $_POST['exam_center_id'] );
 				$this->db->order_by('student.examcentercode,student.roll_no');
 				$dataArray['students'][$exam_center_id] = $this->db->get()->result();
-				//$dataArray['teachername'][$exam_center_id] = $this->Common_model->getSinglefield('exam_center','superintendent',array('id'=>$exam_center_id));
-				//$dataArray['detail'][$exam_center_id] = $this->Common_model->getRecordByWhere('exam_center',array('id'=>$exam_center_id));
-
-			//}
+			
 			$dataArray['university_mode']=$_POST['university_mode'];
 			$dataArray['class_id'] = $_POST['class_id'];
 			$dataArray['paper_code'] = $_POST['paper_code'];

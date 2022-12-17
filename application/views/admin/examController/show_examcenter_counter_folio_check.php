@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title></title>
+    <title><?=$title?></title>
 </head>
-<body>
+<body style="width:1050px;margin:2px;margin:auto;" >
     <style>
         h4{
             font-size:16px;
@@ -21,109 +21,99 @@
             width: 100%;
         }
         .tdheight{line-height:21px; }
-        td{
-         line-height:30px;
+        td ,th{
+         line-height:32px;
      }
      .font-19{
         font-size: 15px;
     }
-    .d-flex{
-        display: flex;
-    }
+    
 </style>
 <?php 
-$pageCounter=26;
+$pageCounter=35;
 $totalExamcenterCounter=count($exam_center_id);
 $examcenterCounter=0;
-$words = array('0' => '', '1' => 'One', '2' => 'Two',
-    '3' => 'Three', '4' => 'Four', '5' => 'Five', '6' => 'Six',
-    '7' => 'Seven', '8' => 'Eight', '9' => 'Nine',
-    '10' => 'Ten', '11' => 'Eleven', '12' => 'Twelve',
-    '13' => 'Thirteen', '14' => 'Fourteen',
-    '15' => 'Fifteen', '16' => 'Sixteen', '17' => 'Seventeen',
-    '18' => 'Eighteen', '19' =>'Nineteen', '20' => 'Twenty',
-    '30' => 'Thirty', '40' => 'Forty', '50' => 'Fifty',
-    '60' => 'Sixty', '70' => 'Seventy',
-    '80' => 'Eighty', '90' => 'Ninety');
-    //foreach($exam_center_id as $examcenter){  $examcenterCounter++;?> 
-        <!-- <div class="d-flex" style="justify-content: space-between;" style="width:1000px;" > -->
-            <!-- <p class="break"></p> -->
-            <table  align="center" style="width:1000px;">
+
+   
+            $marks="";
+            if($university_mode=="REG") $marks= $paper[0]->max_theory_marks; if($university_mode=="PVT") $marks= $paper[0]->private_max_theory_marks;
+            $edate=date("d-m-Y", strtotime($paper[0]->exam_date));
+            $heading='<table  align="center" style="width:1000px;">
                 <tr><td colspan="2" class="tdheight"><h4 align="center">Maharishi Mahesh Yogi Vedic Vishwavidyalaya</h4></td></tr>
                 <tr><td colspan="2" class="tdheight"><h4 align="center">  </h4></td></tr>
                 <tr><td colspan="2"class="tdheight"><h4 align="center">Madhya Pradesh</h4></td></tr>
                 <tr><td colspan="2" class="tdheight"><h4 align="center">  </h4></td></tr>
                 <tr><td colspan="2"class="tdheight"><h4 align="center">(CHECKING LIST)</h4></td></tr><tr></tr>
-                <tr><td style="text-align:left;"  class="tdheight"><strong>Exam Session:</strong>&nbsp;<?php echo 'August 2022';?></td></tr>
-                <tr><td  class="tdheight" style="width: 75%;"><strong>Course:</strong>&nbsp;<?php echo $examname;?></td><td  class="tdheight" ><strong>Class :</strong>&nbsp;<?php echo $class_name;?></td></tr>
+                <tr><td style="text-align:left;"  class="tdheight"><strong>Exam Session:</strong>&nbsp; August 2022</td></tr>
+                <tr><td  class="tdheight" style="width: 75%;"><strong>Course:</strong>&nbsp;'. $coursename.'</td><td  class="tdheight" ><strong>Class :</strong>&nbsp;'. $class_name.'</td></tr>
                
-                <tr><td  class="tdheight" style="width: 75%;"><strong>Subject : </strong>&nbsp;&nbsp;<?php  echo $paper[0]->paper_name;?></td><td  class="tdheight" ><strong>Subject Code: </strong>&nbsp;&nbsp;<?php  echo $paper[0]->paper_code;?></td></tr>
+                <tr><td  class="tdheight" style="width: 75%;"><strong>Subject : </strong>&nbsp;&nbsp;'. $paper[0]->paper_name.'</td><td  class="tdheight" ><strong>Subject Code: </strong>&nbsp;&nbsp;'.  $paper[0]->paper_code.'</td></tr>
                 
-                <tr><td class="tdheight" style="width: 75%;"><strong>Date of Exam :</strong>&nbsp;<?php echo $edate=date("d-m-Y", strtotime($paper[0]->exam_date));  ?></td><td style="text-align:left;" class="tdheight"><strong>Max.Marks :</strong>&nbsp;<?php if($university_mode=="REG") echo $paper[0]->max_theory_marks; if($university_mode=="PVT") echo $paper[0]->private_max_theory_marks; ?></td></tr>
+                <tr><td class="tdheight" style="width: 75%;"><strong>Date of Exam :</strong>&nbsp;'. $edate  .'</td><td style="text-align:left;" class="tdheight"><strong>Max.Marks :</strong>&nbsp;'.$marks.'</td></tr>
                 
-            </table>
-            <!-- <table   border="1" >
-                            <tr style="text-align:center;">
-                                <td rowspan="2"  width="77"><strong>En.No. </strong></td>
-                                <td rowspan="2"  width="50"><strong>Roll No.</strong></td>
-                                <td colspan="2"><strong>Marks Awarded</strong></td>
-                            </tr>
-                            <tr style="text-align:center;">
-                                <td width="61"><strong>In Fig.</strong></td><td width="344"><strong>In Words</strong></td>
-                            </tr>
-    </table>                -->
-            <?php  for($two=0;$two<2;$two++){ 
-                 $rowCounter=0;?>
+            </table>';
+           
+            echo $heading;
+                 $rowCounter=0; $position="left"; ?>
 
               
                    
-                        <table   border="1" class="form-group col-md-12">
+                        <table   border="1" class="form-group col-md-6" style="width:49%;float:left;margin:2px;">
                             <tr style="text-align:center;">
-                                <td rowspan="2"  width="77"><strong>En.No. </strong></td>
-                                <td rowspan="2"  width="50"><strong>Roll No.</strong></td>
-                                <td colspan="2"><strong>Marks Awarded</strong></td>
+                                <th width="20%">Exam Center </th>
+                                <th width="20%">En.No. </th>
+                                <th width="15%">Roll No.</th>
+                                <th width="15%">Marks</th>
+                                <th width="27%">Remark</th>
                             </tr>
-                            <tr style="text-align:center;">
-                                <td width="61"><strong>In Fig.</strong></td><td width="344"><strong>In Words</strong></td>
-                            </tr>
+                           
                             <?php 
                                 foreach($students[$examcenter] as $student){ $rowCounter++;
 
                                   ?> 
                                 <tr>
+                                    <td  style="text-align:center;"><?php  echo $student->examcentercode; ?></td>
                                     <td  style="text-align:center;"><?php  echo $student->enrollment_no; ?></td>
                                     <td style="text-align:center;padding: 0px 3px 0px 3px;"><?php echo $student->roll_no;;?></td>
 
-                                    <td style='text-align:center;'><?php //echo $student->total_marks; ?></td>
+                                    <td style='text-align:center;'><?php echo $student->theory_marks; ?></td>
 
                                     <td class="font-19">&nbsp;&nbsp;<?php //echo $result; ?></td>
                                 </tr>
                                 <?php 
-                              /*  if($rowCounter%$pageCounter==0){
+                               if($rowCounter%$pageCounter==0){
+                                  
                                     ?>
                                 </table>
-                                        <p class="break"></p>
+                                <?php
+                                 if($position=="right")
+                                {  echo '<p class="break"></p>'.$heading;
+                                    $position="left"; }
+                                else if($position=="left")
+                                    $position="right"; 
+                                ?>
+                                    
 
                                         <!---Header Part--->
                                        
-                                            <table   border="1" class="form-group col-md-12">
-                                                <tr style="text-align:center;">
-                                                    <td rowspan="2"  width="77"><strong>En.No. </strong></td>
-                                                    <td rowspan="2"  width="50"><strong>Roll No.</strong></td>
-                                                    <td colspan="2"><strong>Marks Awarded</strong></td></tr>
-                                                    <tr style="text-align:center;">
-                                                        <td width="61"><strong>In Fig.</strong></td><td width="344"><strong>In Words</strong></td>
-                                                    </tr>
+                                        <table   border="1" class="form-group col-md-6" style="float:<?=$position?>;width:49%;margin:2px;">
+                                            <tr style="text-align:center;">
+                                            <th width="20%">Exam Center </th>
+                                            <th width="20%">En.No. </th>
+                                            <th width="15%">Roll No.</th>
+                                            <th width="15%">Marks</th>
+                                            <th width="27%">Remark</th>
+                                            </tr>
 
                                                     <?php
-                                                }*/
+                                                }
                                                   } ?>
                                         </table>
                                       
-                                            <p class="break"></p>
+                                        
                                         	
-                                        <?php  } ?>
+                                       
                                     </div>	
-                                <?php //} ?>	
+                               
                             </body>
                             </html>
