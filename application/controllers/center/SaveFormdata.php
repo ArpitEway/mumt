@@ -82,7 +82,7 @@ class saveFormdata extends CI_Controller {
 			$data['approved']='Y';
 			
 		}
-		// $center_ids_dep = array( 21,22,23,24,25,26,27,28);
+		// $center_ids_dep = array( 21,22,23,24,25,26,27,28,29);
 		
 		// if(in_array($this->session->center_id, $center_ids_dep)){
 		// 	$data['payment_status']='Y';
