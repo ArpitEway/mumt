@@ -100,6 +100,14 @@
 
 				
 		<div class="form-group col-md-2">
+			<label for="class">Center Type</label>
+			<select name="center_type" id="center_type" class="form-control" >
+			    <option value="all">All </option> 
+				<option value="Department">Department </option> 
+				<option value="Other" >Other</option>
+			</select>
+		</div>
+		<div class="form-group col-md-2">
 			<label for="class">Admission Mode</label>
 			<select name="university_mode" id="university_mode" class="form-control" >
 			    <option value="all">All </option> 
@@ -117,7 +125,7 @@
 				<option value="semester">Semester</option>
 			</select>
 		</div>
-		<div class="form-group col-md-3">
+		<div class="form-group col-md-2">
 			<label for="class">Exam Form Status</label>
 			<select name="new_exam_form" id="new_exam_form" class="form-control"  > 
 				<option value="all">All</option>
@@ -141,7 +149,7 @@
 			</label>          
 		</div>
 
-		<div class="form-group col-md-3">
+		<div class="form-group col-md-2">
 			<label for="class">Student Count</label>
 			<select name="count_filter" id="count_filter" class="form-control" >
 				<option value="course_group_id">Course Wise </option> 
@@ -195,7 +203,8 @@
 			[csrfName]:csrfHash,
 			count_filter:$("#count_filter").val(),
 			new_exam_form:$("#new_exam_form").val(),
-			university_mode:$('#university_mode').val()
+			university_mode:$('#university_mode').val(),
+			center_type:$('#center_type').val()
 		};
 
 

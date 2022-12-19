@@ -1454,6 +1454,7 @@ class Admins extends CI_Controller {
 				$mode 		  	  = $this->input->post("mode");
 				$center_id	  	  = $this->input->post("center_id");
 				$university_mode	  	  = $this->input->post("university_mode");
+				$center_type	  = $this->input->post("center_type");
 
 				if($mode != "all"){	 
 					
@@ -1510,17 +1511,23 @@ class Admins extends CI_Controller {
 					$dt['document_uploaded'] = $document_upload;
 			//print_r($document_upload);
 				}
+				// if($center_type != "all"){
+
+				// 	$dt['center_type'] = $center_type;
+		
+				// }
+
 
 			//print($dt);
 			//die;
 				if($filter == "list"){
 
-					$data['students'] = $this->Common_model->student_data_consolidate($dt);
+					$data['students'] = $this->Common_model->student_data_consolidate($dt,"",$center_type);
 
 
 				}
 				if($filter == "count"){				
-					$data['course_count'] = $this->Common_model->student_data_consolidate($dt,$_POST['count_filter']);
+					$data['course_count'] = $this->Common_model->student_data_consolidate($dt,$_POST['count_filter'],$center_type);
 				}
 
 			//$this->Common_model->last_query();
