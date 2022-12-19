@@ -136,8 +136,6 @@ class Center extends CI_Controller {
 			$passing_exam_year = '2022';
 			$whereSession['admission_permission_dep'] =  'Y';
 			if($center_session_permission =='N'){
-				//$whereSession['admission_permission_dep'] =  'Y';
-				
 				$this->db->order_by("id", "desc");
 				$this->db->limit(1);
 			}
@@ -165,8 +163,7 @@ class Center extends CI_Controller {
 		}
 		
 		$sessions = $this->Common_model->get_record('session','*',$whereSession);
-		//print_r($sessions);
-		//print_r($this->db->last_query());    die;
+		
 		$check = $this->Common_model->getRecordByWhere("center",$where);
 		if(($mode=='regular' && $check[0]->admission_permission!='Y') || ($mode=='private' && $check[0]->admission_permission_private!='Y')){
 			redirect(base_url('dashboard'));
