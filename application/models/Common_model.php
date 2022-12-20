@@ -905,6 +905,20 @@ class Common_Model extends CI_Model{
 		$return .= ($arr[1]=='SEM') ? ' Semester' : ' Year';
 		return $return;
 	}
+
+	public function get_all_papers($id,$class_id){
+		$where = array(
+			'student_id' => $id,
+			'new_exam_form.class_id' => $class_id,
+			);
+		$this->db->select('*');
+		$this->db->from('paper_master');
+		$this->db->order_by('paper_no','asc');
+		$this->db->join('new_exam_form','new_exam_form.paper_id = paper_master.id');
+		$this->db->where($where); 
+		$query = $this->db->get();
+		return $query->result_array();
+	}
 }
 
 ?>

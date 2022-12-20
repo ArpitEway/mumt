@@ -138,5 +138,30 @@ class Dataentry extends CI_Controller {
 			$returndata = array('error'=> 'An Error Occured');
 			echo json_encode($returndata);		
 		}
-	}	
+	}
+	
+	public function search_student(){
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();
+		$this->load->view('header',array('title' => 'Search Students'));	
+		$this->load->view('admin/Dataentry/search_student',$data);
+		$this->load->view('footer');
+	}
+
+	public function getEditStudentMarksData()
+	{
+		$roll_no = $this->input->post('roll_no');
+		$studentData = $this->Common_model->getRecordById('student','enrollment_no',$roll_no);
+		// $data['oldExamData'] = $this->Common_model->getRecordByWhere('new_exam_form',array('student_id' => $studentData->student_id));
+		$studentPaper = $this->Common_model->get_all_papers($studentData->student_id,$studentData->old_class_id);
+		$data['student'] = $studentData;
+		$data['studentPaper'] = $studentPaper;
+		if ($studentData->result_show=='Y') {
+		$result['data'] = $this->load->view('admin/Dataentry/show_student_marks',$data,true);
+		}else{
+			$result['data'] = $this->load->view('admin/Dataentry/edit_student_marks',$data,true);
+		}
+		
+		echo json_encode($result);
+	}
 }
