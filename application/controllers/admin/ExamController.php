@@ -2298,7 +2298,7 @@ public function getStudentData()
 	public function search_student_result(){
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
-		$this->load->view('header',array('title' => 'Search Students'));	
+		$this->load->view('header',array('title' => 'Edit Student Marks'));	
 		$this->load->view('admin/Dataentry/search_student',$data);
 		$this->load->view('footer');
 	}
