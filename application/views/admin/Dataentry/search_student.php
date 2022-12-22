@@ -6,10 +6,13 @@
                 <label class=" col-form-label col-3" >Enter Roll No : </label> 
                 <input class="form-control col-9" type = "text" id="roll_no" name ="roll_no" />	
             </div>     
-            <div class="form-group">
-                <button type="button" class="btn btn-primary btn-sm" onclick="search_student_data()">Submit</button>
-            </div>
+            
         </div>
+    </div>
+    <div class="row d-flex justify-content-center">
+            <div class="form-group">
+                <button type="button" class="btn btn-primary" onclick="search_student_data()">Submit</button>
+            </div>
     </div>
 </form>
 <div class="row" >
@@ -19,7 +22,7 @@
 </div>
 <script type="text/javascript">
     function search_student_data(){
-        alert("ss")
+       
         $('#student_data_tbl').html('');
         var roll_no = $('#roll_no').val();
         var csrfName = $('.csrfname').attr('name');
