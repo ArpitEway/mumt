@@ -10,6 +10,7 @@
                 <th>#</th>
                 <th>Roll No</th>
                 <th>ICCode </th>
+                <th>Exam Center </th>
                 <th>Enrollment No </th>
                 <th>Student Name </th>
                 <th>Course Name</th>
@@ -24,6 +25,7 @@
                 <th>#</th>
                 <th>Roll No</th>
                 <th>ICCode </th>
+                <th>Exam Center </th>
                 <th>Enrollment No </th>
                 <th>Student Name </th>
                 <th>Course Name</th>
@@ -42,6 +44,7 @@
                 <td><?= $i ?></td>
                 <td><?= $student->roll_no ?></td>
                 <td><?= $student->center_code ?></td>
+                <td><?= $student->examcentercode ?></td>
                 <td><?= $student->enrollment_no ?></td>
                 <td><?= $student->name ?></td>
                 <td><?= $student->course_name ?></td>

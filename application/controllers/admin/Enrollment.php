@@ -1118,7 +1118,7 @@
 		$class_permission= $this->Common_model->getRecordByWhere('class_master',array('id'=>$class_ids));	
 		$where = array('student_id'=>$student_id);
 		if($class_permission[0]->result_permission=='Y' && $new_exam_form=='Y'){     
-		$data = array('provisional_remark' =>'N','result_show' =>'Y');
+		$data = array('provisional_remark' =>'N','old_result_show' =>'Y');
 	     	}
 	     	else{
 	     	$data = array('provisional_remark' =>'N');
