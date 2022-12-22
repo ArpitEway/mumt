@@ -31,7 +31,7 @@
             alert('Roll Number is required !');
         }else{
             $.ajax({
-                url:'http://admin.mmyvv.local//admin/<?=$this->session->account_type;?>/getEditStudentMarksData',
+                url: BASE_URL+'admin/<?=$this->session->account_type;?>/getEditStudentMarksData',
                 type:'post',
                 dataType : 'JSON',
                 data:{'roll_no':roll_no,[csrfName]: csrfHash},

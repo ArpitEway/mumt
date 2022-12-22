@@ -235,14 +235,14 @@
 		    event.stopImmediatePropagation();
 		var  serialized = $('form').serialize();
 		$.ajax({
-			url: BASE_URL+"admin/Dataentry/edit_student_marks_sub",
+			url: BASE_URL+"admin/<?=$this->session->account_type;?>/edit_student_marks_sub",
 			type: 'POST',
 			dataType : 'json',
 			data: serialized ,
 			success: function (data) {
 				if(data.success){
 					toastr.success(data.success);
-					setTimeout(function(){location.href=BASE_URL+'Dataentry/search_student'} , 2000);
+					setTimeout(function(){location.href=BASE_URL+'<?=$this->session->account_type;?>/search_student_result'} , 2000);
 				}else{
 					toastr.error(data.error);
 				}
