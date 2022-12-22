@@ -15,15 +15,15 @@
 
     <div class="col-md-4">
 		<strong for="">Roll Number :</strong>
-			<?=$student->roll_no ?>
+			<?=$student[0]->roll_no ?>
 	</div>
     <div class="col-md-4">
 		<strong for="">Enrollment Number :</strong>
-			<?=$student->enrollment_no ?>
+			<?=$student[0]->enrollment_no ?>
 	</div>
 	<div class="col-md-4">
 		<strong for="">Student Name :</strong>
-			<?=$student->name ?>
+			<?=$student[0]->name ?>
 	</div>
 	
 	
@@ -32,15 +32,15 @@
 
 	<div class="col-md-4">
 		<strong for="">Course Name :</strong>
-			<?=$student->course_name ?>
+			<?=$student[0]->course_name ?>
 	</div>  
 	<div class="col-md-4">
 		<strong for="">Class Name :</strong>
-			<?= $this->Common_model->getClassNameByClassId($student->class_id) ?>
+			<?= $this->Common_model->getClassNameByClassId($student[0]->class_id) ?>
 	</div>
     <div class="col-md-4">
 		<strong for="">IC Code :</strong>
-			<?= $student->center_code ?>
+			<?= $student[0]->center_code ?>
 	</div>
     
     
@@ -55,7 +55,7 @@
 				<th>#</th>
 				<th>Paper Name</th>
 				<th>Paper Type</th>
-				<?php if ($student->university_mode=='REG'): ?>
+				<?php if ($student[0]->university_mode=='REG'): ?>
 					<th>Theory Marks</th>
 					<th>Internal Marks</th>
 				<?php else: ?>
@@ -70,7 +70,7 @@
 					<td><?= $papers['paper_code']."-".$papers['paper_name']; ?></td>
 					<td><?=$papers['type'] ?></td>
 					<?php if ($papers['type']=='theory') { ?>
-					<?php if ($student->university_mode=='REG'): ?>
+					<?php if ($student[0]->university_mode=='REG'): ?>
 					<td class="fit">
 							<?=$papers['theory_marks']?>
 					</td>

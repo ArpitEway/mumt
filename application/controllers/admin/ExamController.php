@@ -2306,17 +2306,22 @@ public function getStudentData()
 	public function getEditStudentMarksData()
 	{
 		$roll_no = $this->input->post('roll_no');
-		$studentData = $this->Common_model->getRecordById('student','roll_no',$roll_no);
-		$studentPaper = $this->Common_model->get_student_papers($studentData->student_id,$studentData->class_id);
+		$studentData = $this->Common_model->getRecordByWhere('student',array('roll_no'=>$roll_no,'new_exam_form'=>'Y'));
+		$studentPaper = $this->Common_model->get_student_papers($studentData[0]->student_id,$studentData[0]->class_id);
 		$data['student'] = $studentData;
+		if($studentData){
 		$data['studentPaper'] = $studentPaper;
-		if ($studentData->result_show=='Y') {
+		if ($studentData[0]->result_show=='Y') {
 			$result['data'] = $this->load->view('admin/Dataentry/show_student_marks',$data,true);
 		}else{
 			$result['data'] = $this->load->view('admin/Dataentry/edit_student_marks',$data,true);
 		}
 		
 		echo json_encode($result);
+	   }else{
+		$result['data'] = "Student Not Found";
+		echo json_encode($result); 
+	   }
 	}
 
 	
