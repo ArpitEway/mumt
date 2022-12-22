@@ -1732,7 +1732,7 @@ class Center extends CI_Controller {
 	public function marksheet($student_id="")
 	{
 		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
-		$student = $this->Common_model->getRecordByWhere("student",array('exam_form'=>'Y','result_show'=>'Y','student_id'=>$student_id));
+		$student = $this->Common_model->getRecordByWhere("student",array('exam_form'=>'Y','old_result_show'=>'Y','student_id'=>$student_id));
 		if (count($student)==0) {
 			redirect(base_url());
 		}
