@@ -13,7 +13,6 @@
         }
         .break{
             page-break-before: always;
-            break-after: always;
         }
         table {
             background-color: transparent;
@@ -48,7 +47,7 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
     '80' => 'Eighty', '90' => 'Ninety');
     foreach($exam_center_id as $examcenter){  $examcenterCounter++;?> 
         <div class="d-flex" style="justify-content: space-between;" >
-            <p class="break"></p>
+            <!-- <p class="break"></p> -->
             <?php for($two=0;$two<2;$two++){  $rowCounter=0;?>
                 <div style="width:48%">
                     <table class="form-group col-md-12 mt-2 mb-2" >
@@ -62,7 +61,7 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
                         <tr><td style="text-align:left;" colspan="2" class="tdheight"><strong>Exam Session:</strong>&nbsp;<?php echo 'August 2022';?></td></tr>
                         <tr><td colspan="2" class="tdheight"><strong>Subject : </strong>&nbsp;&nbsp;<?php  echo $paper[0]->paper_name;?></td></tr>
                         <!-- <tr><td style="text-align:left;" class="tdheight"><strong>Center Code :</strong>&nbsp;<?php echo $exam_center_code;?></td><td class="tdheight"><strong>Q.Paper</strong>&nbsp;<?php echo $paper_code ?></td></tr>-->
-                        <tr><td class="tdheight"><strong>Date of Exam :</strong>&nbsp;<?php echo $edate=date("d-m-Y", strtotime($paper[0]->exam_date));  ?></td><td style="text-align:left;" class="tdheight"><strong>Max.Marks :</strong>&nbsp;<?php echo $paper[0]->max_theory_marks;?></td></tr>
+                        <tr><td class="tdheight"><strong>Date of Exam :</strong>&nbsp;<?php echo $edate=date("d-m-Y", strtotime($paper[0]->exam_date));  ?></td><td style="text-align:left;" class="tdheight"><strong>Max.Marks :</strong>&nbsp;<?php if($university_mode=="REG") echo $paper[0]->max_theory_marks; if($university_mode=="PVT") echo $paper[0]->private_max_theory_marks; ?></td></tr>
                         <tr><td class="tdheight"><strong>Examcenter Code:</strong>&nbsp;<?php echo $detail[$examcenter][0]->examcentercode;  ?></td><td style="text-align:left;" class="tdheight"><strong>Q.Paper :</strong>&nbsp;<?php echo $paper[0]->paper_no;?></td></tr>
                         </table>
                         <table   border="1" class="form-group col-md-12">
@@ -112,7 +111,7 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
                                             <tr><td style="text-align:left;" colspan="2" class="tdheight"><strong>Exam Session:</strong>&nbsp;<?php echo 'August 2022';?></td></tr>
                                             <tr><td colspan="2" class="tdheight"><strong>Subject : </strong>&nbsp;&nbsp;<?php  echo $paper[0]->paper_name;?></td></tr>
                                             <!-- <tr><td style="text-align:left;" class="tdheight"><strong>Center Code :</strong>&nbsp;<?php echo $exam_center_code;?></td><td class="tdheight"><strong>Q.Paper</strong>&nbsp;<?php echo $paper_code ?></td></tr>-->
-                                            <tr><td class="tdheight"><strong>Date of Exam :</strong>&nbsp;<?php echo $edate=date("d-m-Y", strtotime($paper[0]->exam_date));  ?></td><td style="text-align:left;" class="tdheight"><strong>Max.Marks :</strong>&nbsp;<?php echo $paper[0]->max_theory_marks;?></td></tr>
+                                            <tr><td class="tdheight"><strong>Date of Exam :</strong>&nbsp;<?php echo $edate=date("d-m-Y", strtotime($paper[0]->exam_date));  ?></td><td style="text-align:left;" class="tdheight"><strong>Max.Marks :</strong>&nbsp;<?php if($university_mode=="REG") echo $paper[0]->max_theory_marks; if($university_mode=="PVT") echo $paper[0]->private_max_theory_marks; ?></td></tr>
                                             <tr><td class="tdheight"><strong>Examcenter Code:</strong>&nbsp;<?php echo $detail[$examcenter][0]->examcentercode;  ?></td><td style="text-align:left;" class="tdheight"><strong>Q.Paper :</strong>&nbsp;<?php echo $paper[0]->paper_no;?></td></tr>
                                             </table>
                                             <table   border="1" class="form-group col-md-12">

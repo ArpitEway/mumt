@@ -24,6 +24,7 @@ color:red;
                 </td>
                 <td class="course_css">
 			<!--<a href="<?php echo base_url("class_wise_result_upload_status_report")."/".$course_detail['id']; ?>" target="_blank" >Check Status</a>-->
+			<!--<a href="<?php echo base_url("class_wise_result_upload_status_report")."/ALL/".$course_detail['course_group_id']; ?>" target="_blank" >Check Status</a> -->
 		</td>
                       
             </tr>
@@ -34,12 +35,21 @@ color:red;
                 $i = 1;
                $account_type = ($this->session->account_type=='Admins') ? '' : $this->session->account_type.'/';
                 foreach($class_master as $class){
-                
+                    $flag="";                
                 ?>
                 <tr>
                     <td><?php echo $i; ?></td>
                     <td><?php echo $class['class_name']; ?></td>
-                    <td><a href="<?php echo base_url($account_type."class_wise_result_upload_status_report")."/".$course_detail['course_group_id']."/".$class['id']; ?>" target="_blank" >Check Status</a></td>
+                    <td>
+                    <?php if($class['regular_class']=='Y' && $class['private_class']=='Y') { ?>    <a href="<?php echo base_url($account_type."class_wise_result_upload_status_report")."/ALL/".$course_detail['course_group_id']."/".$class['id']; ?>" target="_blank" > All Status</a>
+                    <?php 
+                    $flag="/";
+                    } if($class['regular_class']=='Y') { echo $flag; ?>    
+                    <a href="<?php echo base_url($account_type."class_wise_result_upload_status_report")."/REG/".$course_detail['course_group_id']."/".$class['id']; ?>" target="_blank" > Regular Status</a>
+                    <?php } if($class['private_class']=='Y') { echo $flag; ?>
+                    <a href="<?php echo base_url($account_type."class_wise_result_upload_status_report")."/PVT/".$course_detail['course_group_id']."/".$class['id']; ?>" target="_blank" > Private Status</a>
+                     <?php } ?>   
+                </td>
                 </tr>
                 <?php
                     $i++;

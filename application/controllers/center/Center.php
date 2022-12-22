@@ -112,7 +112,7 @@ class Center extends CI_Controller {
 
 	public function logout()
 	{
-		$center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28 );
+		$center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29 );
 		if(in_array($this->session->center_id, $center_ids)){
 			$this->session->sess_destroy();
 			redirect(base_url());
@@ -130,11 +130,16 @@ class Center extends CI_Controller {
 		$center_id =  $this->session->center_id;
 		$center_data = $this->Common_model->getRecordByWhere('center',array('id'=>$center_id));
 		$center_session_permission = $center_data[0]->old_session_permission;
-		$center_ids_dep = array(21,22,23,24,25,26,27,28);
+		$center_ids_dep = array(21,22,23,24,25,26,27,28,29);
 		$whereSession = array();
 		if (in_array($center_id, $center_ids_dep)){
 			$passing_exam_year = '2022';
 			$whereSession['admission_permission_dep'] =  'Y';
+			if($center_session_permission =='N'){
+				$this->db->order_by("id", "desc");
+				$this->db->limit(1);
+			}
+			
 		}else{
 			// $passing_exam_year = '2021';
 			$passing_exam_year = '2022';
@@ -142,6 +147,7 @@ class Center extends CI_Controller {
 			{
 				$whereSession['admission_permission_ic'] =  'Y';
 			}
+			
 			
 		}
 		if($mode=='regular'){
@@ -157,6 +163,7 @@ class Center extends CI_Controller {
 		}
 		
 		$sessions = $this->Common_model->get_record('session','*',$whereSession);
+		
 		$check = $this->Common_model->getRecordByWhere("center",$where);
 		if(($mode=='regular' && $check[0]->admission_permission!='Y') || ($mode=='private' && $check[0]->admission_permission_private!='Y')){
 			redirect(base_url('dashboard'));
@@ -320,7 +327,7 @@ class Center extends CI_Controller {
 
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
-		$center_ids_dep = array( 21,22,23,24,25,26,27,28);
+		$center_ids_dep = array( 21,22,23,24,25,26,27,28,29);
 		foreach($tableData as $result){
 			$btn = ($result->document_uploaded=='Y' || in_array($this->session->center_id, $center_ids_dep)) ?
 			'<a href="'.base_url('show_form/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>' : '';
@@ -422,7 +429,7 @@ class Center extends CI_Controller {
 		 $counttableData = $this->Datatable_join_model->joincountAll($_POST,$DataTableArray);
 				  
 		foreach($tableData as $result){
-			$center_ids_dep = array( 21,22,23,24,25,26,27,28);
+			$center_ids_dep = array( 21,22,23,24,25,26,27,28,29);
 			if(in_array($this->session->center_id, $center_ids_dep)){
 				$modal ='<a href="#"  data-student_name = "'.$result->name.'"  data-student_id="'.$this->Common_model->encrypt_decrypt($result->student_id).'" class="btn btn-primary btn-sm font-weight-bold pay1" data-toggle="modal" data-target="#kt_datepicker_modal" "  data-amount= "'.$result->amount.'">Receive</a>';
 			}else{

@@ -77,7 +77,11 @@
             <option value="ABS" selected>Absent</option>
             <?php
             $percentage = 85;
-          
+            $center_ids_dep = array(21,22,23,24,25,26,27,28,29);
+            $center_id =  $this->session->center_id;
+            if (in_array($center_id, $center_ids_dep)){
+              $percentage = 100;
+            }
             
             $max_practical=  $student->max_theory_marks;
             $min_practical=  $student->min_theory_marks;

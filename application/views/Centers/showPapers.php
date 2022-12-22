@@ -218,7 +218,7 @@
 	<?php $student_id = $this->Common_model->encrypt_decrypt($student['student_id']); ?>
 			<div class="row justify-content-center mt-10">
 			<?php 
-		$center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28 );
+		$center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29 );
 		if(in_array($this->session->center_id, $center_ids)){
 			?>
 <a class="btn btn-success" href="<?= base_url('paid_by_university/'.$student_id) ?>">Paid By University</a>

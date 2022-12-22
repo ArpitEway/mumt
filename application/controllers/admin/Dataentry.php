@@ -47,15 +47,18 @@ class Dataentry extends CI_Controller {
 		echo json_encode(array('data'=>$data));
 	}
 
-	public function marks_entry_form($mode='' ,$paper_code='',$exam_centers='',$page = 0)
+	public function marks_entry_form($mode='' ,$class_id="",$paper_code='',$exam_centers='',$page = 0)
 
 	{
 		if (isset($_POST['paper_code'])) {
 			$paper_code =  $this->input->post('paper_code');
 			$mode =  $this->input->post('university_mode');
 			$exam_center =  $this->input->post('exam_center');
+			$class_id=$this->input->post('class_id');
+		
 		}else{
 			$mode  = $this->Common_model->encrypt_decrypt($mode,'decrypt');
+			$class_id  = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
 			$paper_code  = $this->Common_model->encrypt_decrypt($paper_code,'decrypt'); 
 			$page  = $page;
 			$exam_center  = $exam_centers;
@@ -77,7 +80,7 @@ class Dataentry extends CI_Controller {
 		$data['resultData'] = $resultData->result();
 
 		$config = array();
-		$config["base_url"] = base_url() ."Dataentry/marks_entry_form/".$this->Common_model->encrypt_decrypt($mode,'encrypt')."/".$this->Common_model->encrypt_decrypt($paper_code,'encrypt')."/".$exam_center;
+		$config["base_url"] = base_url() ."Dataentry/marks_entry_form/".$this->Common_model->encrypt_decrypt($mode,'encrypt')."/".$this->Common_model->encrypt_decrypt($class_id,'encrypt')."/".$this->Common_model->encrypt_decrypt($paper_code,'encrypt')."/".$exam_center;
 
 				$this->db->select('student.student_id, student.name,enrollment_no,roll_no');
 		$this->db->from('new_exam_form');
@@ -90,11 +93,16 @@ class Dataentry extends CI_Controller {
 		$config["uri_segment"] = 6;
 		$this->pagination->initialize($config);
 		$data["links"] = $this->pagination->create_links();
-
 		$data['paper_code'] = $paper_code ;
+		$where = array(
+			'paper_code' => $paper_code,
+			'class_id' => $class_id,
+			
+		);
 		
-		$data['papers'] =  $this->Common_model->getRecordById('paper_master','paper_code',$paper_code);
-
+		$papersArr = $this->Common_model->getRecordByWhere('paper_master',$where);
+		$data['papers'] =$papersArr[0];
+		$data['class_id']=$class_id;
 		$data['university_mode'] = $mode;
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
@@ -108,6 +116,7 @@ class Dataentry extends CI_Controller {
 		$data=array();
 		$post = $this->input->post();
 		$data['student_id'] = $this->input->post('student_id');	
+		$data['class_id']=$class_id = $this->input->post('class_id');	
 		$data['marks'] = $this->input->post('marks');
 		foreach ($data['student_id'] as $key => $value){
 			if($data['marks'][$key]==''){
@@ -118,7 +127,9 @@ class Dataentry extends CI_Controller {
 			);
 			$where =  array(
 				'student_id' =>$value,
-				'paper_code'  =>$_POST['paper_code']);
+				'paper_code'  =>$_POST['paper_code'],
+				'class_id'=>$class_id,
+			);
 			$Marksentry = $this->Common_model->updateRecordByConditions('new_exam_form',$where,$studentData);	
 		}
 		if($Marksentry){
