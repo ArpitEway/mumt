@@ -1521,9 +1521,9 @@ class Center extends CI_Controller {
 		$this->db->where('student.student_id',$student_id);
 		if($classData->practical_internal_marks=="N")
 			// $this->db->where('paper_type','theory');
-			$this->db->where_in('paper_type',array('Sessional','theory'));
+		$this->db->where_in('paper_type',array('Sessional','theory'));
 	 	$this->db->join('student', 'student.student_id = new_exam_form.student_id');
-		 $this->db->order_by('new_exam_form.sub_group_id,paper_order');
+		$this->db->order_by('new_exam_form.sub_group_id,paper_order');
 	 	$details = $this->db->get()->result();
 		//  echo $classData->practical_internal_marks.$this->db->last_query(); die;
 	 	$data = array(

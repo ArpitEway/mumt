@@ -139,5 +139,5 @@ class Dataentry extends CI_Controller {
 			$returndata = array('error'=> 'An Error Occured');
 			echo json_encode($returndata);		
 		}
-	}	
+	}
 }
