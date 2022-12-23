@@ -1,3 +1,6 @@
+<div class="container mb-5">
+	<h3 class="text-primary text-center h2"><?= ' ( '.$centerData->center_code.' ) ( '.$centerData->center_name.' ) ( '.$centerData->contactpersonname.' ) ( '.$centerData->mobile_no_1.' , '.$centerData->mobile_no_1.' ) '; ?></h3>
+</div>
 <div class="text-center dt-responsive" >
 	<table id="table" class="table table-striped " >
 		<thead>
