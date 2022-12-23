@@ -2263,9 +2263,10 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 		$std_id = $this->input->post("student_id");
 		$enroll = $this->input->post("enrollment");
 		$student_id = $this->Common_model->encrypt_decrypt($std_id,'encrypt');
-		if($apply != "DUPLICATE-MARKSHEET"){
+		// if($apply != "DUPLICATE-MARKSHEET"){
 			$where = 'enrollment="'.$enroll.'" and apply_for="'.$apply.'"';
 			$txnData = $this->Common_model->get_record('application_form','*',$where);
+			$amount = $this->Common_model->getRecordById('application_field','field',$apply);
 			if($txnData[0]['payment'] == "Y"){
 				$this->session->set_flashdata('warning','Application already submitted');
 				redirect('center/center/application_form');
@@ -2292,6 +2293,7 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 						"enrollment"=>$this->input->post("enrollment"),
 						"session"=>$this->input->post("session"),
 						"course"=>$this->input->post("course"),
+						"amount"=>$amount->amount,
 						"phone"=>$this->input->post("phone"),
 						"address"=>$this->input->post("address"),
 
@@ -2304,7 +2306,7 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 			}
 
 
-		}
+		// }
 		
 	}
 
@@ -2348,6 +2350,7 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
+		$x=1;
 		foreach($tableData as $result){
 			$where1 = 'center_id='.$this->session->center_id.' and student_id='.$result->student_id.' and fees_head="'.$result->apply_for.'"';
 			$txn = $this->Common_model->get_record('online_payment_transaction','*',$where1);
@@ -2359,7 +2362,7 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 			
 			$i++;
 			$university_mode = ($result->university_mode=='REG') ? 'Regular' : 'Private';
-			$data[] = array($university_mode, $result->student_uid, $result->name, $result->f_h_name, $result->course_name,$result->apply_for,$txn[0]['amount'],$btn);
+			$data[] = array($x++,$university_mode, $result->student_uid, $result->name, $result->f_h_name, $result->course_name,$result->apply_for,$result->amount,$btn);
 		}
 
 		$output = array(

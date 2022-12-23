@@ -4,14 +4,15 @@
 	<table id="memListTable" class="table table-striped dt-responsive" style="width:100%">
 		<thead>
 			<tr>
+				<th>SNO</th>
 				<th>Admission Mode</th>
 				<th>Form No.</th>
 				<th>Student Name</th>
 				<th>Father Name</th>
 				<th>Course</th>
-				<!-- <th>Class</th> -->
+				
 				<th>Fees Head</th>
-				 <th>Fees Amount</th>
+				<th>Amount</th>
 				<!-- <th>Txn Id</th> -->
 				<th>Receipt</th>
 			</tr>
