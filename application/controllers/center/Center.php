@@ -1614,8 +1614,8 @@ class Center extends CI_Controller {
 		
 		$this->db->where('class_master.result_permission', 'Y');
 		$this->db->where('center_id', $center_id);
-		$this->db->where('old_result_show','Y');
-		$this->db->where('exam_form','Y');
+		$this->db->where('result_show','Y');
+		$this->db->where('new_exam_form','Y');
 		//$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,197,203,211,213)');
 		$data['courses'] = $this->db->get()->result();
 		// echo $this->db->last_query(); die;
@@ -1661,7 +1661,7 @@ class Center extends CI_Controller {
 	public function getStudentListForMarksheet(){
 		$data = $row = array();
 	
-		$where = array('center_id' => $this->session->center_id,'exam_form'=>'Y');
+		$where = array('center_id' => $this->session->center_id,'new_exam_form'=>'Y');
 		// 'result_show','Y'
 
 		if($_POST['course_group_id']!='All' and $_POST['course_group_id']!=''){
@@ -1669,7 +1669,7 @@ class Center extends CI_Controller {
 			
 		}
 		if($_POST['class_id']!='All' and $_POST['class_id']!=''){
-			$where['old_class_id'] = $this->input->post('class_id');
+			$where['class_id'] = $this->input->post('class_id');
 		
 		}
 		$where['result_permission'] = 'Y';
@@ -1685,7 +1685,7 @@ class Center extends CI_Controller {
 			'where' => $where,
 			'table' => 'student',
 			'table2' => 'class_master',
-			'joinOn' => 'student.old_class_id=class_master.id'
+			'joinOn' => 'student.class_id=class_master.id'
 		);
 
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
@@ -1712,7 +1712,7 @@ class Center extends CI_Controller {
 			}else{
 				$enrollment = $result->enrollment_no;
 				}
-			$class_name =  $this->Common_model->getClassNameByClassId($result->old_class_id); 
+			$class_name =  $this->Common_model->getClassNameByClassId($result->class_id); 
 			$data[] = array($result->student_id,$enrollment,$result->name, $result->f_h_name, $result->course_name,$class_name,$btn);
 		}
 
@@ -1732,17 +1732,17 @@ class Center extends CI_Controller {
 	public function marksheet($student_id="")
 	{
 		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
-		$student = $this->Common_model->getRecordByWhere("student",array('exam_form'=>'Y','old_result_show'=>'Y','student_id'=>$student_id));
+		$student = $this->Common_model->getRecordByWhere("student",array('new_exam_form'=>'Y','result_show'=>'Y','student_id'=>$student_id));
 		if (count($student)==0) {
 			redirect(base_url());
 		}
 		$data['student']=$student[0];
-		$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
+		$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
 		$data['practical_internal_marks']=$classData->practical_internal_marks;
 		$this->db->select('*');
-		$this->db->from('exam_form');
-		$this->db->where('exam_form.student_id',$data['student']->student_id);
-		$this->db->where('exam_form.class_id',$data['student']->old_class_id); 
+		$this->db->from('new_exam_form');
+		$this->db->where('new_exam_form.student_id',$data['student']->student_id);
+		$this->db->where('new_exam_form.class_id',$data['student']->class_id);
 		$new_exam_form = $this->db->get()->result();
 		$data['new_exam_form']  = $new_exam_form;
 		$title = array('title' => 'Result - '.$data['student']->enrollment_no);

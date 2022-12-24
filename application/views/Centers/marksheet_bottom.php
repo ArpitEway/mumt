@@ -65,11 +65,20 @@ foreach($new_exam_form as $marks){
   }
 }
 
+
 $require_grace_marks = $require_tot_marks-$fali_tot_marks;
 if($fail_count<3 && $require_grace_marks<4 && $abs_count==0 && $fail_count!=0){
       $check_grace_marks = true;
 }
 
+if ($fail_count>0 || $check_grace_marks!=true) {
+    ?>
+  <div class="text-center text-primary border-right border-left border-bottom border-dark py-3">
+    <h1 class=" text-center mb-0">Statement Of Marks</h1>
+    <h3 class="text-center">WH</h3>
+  </div>
+  <?php
+}else{
 ?>
 <?php 
 if ($withheld) { 
@@ -272,4 +281,6 @@ if ($withheld) {
 		document.body.innerHTML = originalContents;
 	}
 </script>
-<?php } ?>
+<?php } 
+  }
+?>
