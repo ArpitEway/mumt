@@ -137,6 +137,56 @@ class Otherscript extends CI_Controller {
 			$this->db->query($update_student);
 		}
 	}
+
+	public function update_practical_marks($cls_id =0)
+	{
+		$marks = array('43','42','41','40'); 
+
+		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and roll_no!=0 limit 100";
+		$rs = $this->db->query($sql)->result_array();
+		$s_no=1;
+		foreach ($rs as $student) {
+			$new_exam_sql = "select * from new_exam_form where student_id='".$student['student_id']."' and paper_type='Practical' and p_marks in ('N') and class_id='".$cls_id."' ORDER by rand()";
+			$new_exam_rs =	$this->db->query($new_exam_sql)->result_array();
+			$i=0;
+			foreach ($new_exam_rs as $new_exam_data) {
+				echo $s_no++.' student_id =>'.$student['student_id'].' paper_code =>'.$new_exam_data['paper_code'].' Marks=>'.$marks[$i].'<br>';
+
+				$update_marks = "update new_exam_form set p_marks='".$marks[$i]."' where id=".$new_exam_data['id'];
+				$i++;
+				$this->db->query($update_marks);
+				shuffle($marks);
+			}
+			// $update_student = "update student set p_marks_sub='Y' where student_id='".$student['student_id']."' and class_id='".$cls_id."'";
+
+			$this->db->query($update_student);
+		}
+	}
+
+	public function update_project_marks($cls_id =0)
+	{
+		$marks = array('85','84','83','82'); 
+
+		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and roll_no!=0 limit 100";
+		$rs = $this->db->query($sql)->result_array();
+		$s_no=1;
+		foreach ($rs as $student) {
+			$new_exam_sql = "select * from new_exam_form where student_id='".$student['student_id']."' and paper_type='Project' and p_marks in ('N') and class_id='".$cls_id."' ORDER by rand()";
+			$new_exam_rs =	$this->db->query($new_exam_sql)->result_array();
+			$i=0;
+			foreach ($new_exam_rs as $new_exam_data) {
+				echo $s_no++.' student_id =>'.$student['student_id'].' paper_code =>'.$new_exam_data['paper_code'].' Marks=>'.$marks[$i].'<br>';
+
+				$update_marks = "update new_exam_form set p_marks='".$marks[$i]."' where id=".$new_exam_data['id'];
+				$i++;
+				$this->db->query($update_marks);
+				shuffle($marks);
+			}
+			$update_student = "update student set p_marks_sub='Y' where student_id='".$student['student_id']."' and class_id='".$cls_id."'";
+
+			$this->db->query($update_student);
+		}
+	}
 }
 
 ?>
