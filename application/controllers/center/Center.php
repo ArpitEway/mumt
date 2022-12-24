@@ -1120,8 +1120,21 @@ class Center extends CI_Controller {
 		$this->load->view('Centers/header',$titleData);
 		$student = $this->Common_model->student_info($student_id);
 		$this->db->order_by('id');
+		if($student['university_mode'] != "PVT"){
+		
 		$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory"');
 		$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id where class_id='.$student['class_id'].' Order by g.id,sub_group_id,p.id')->result();
+		}else{
+			$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory" and type="theory"');
+			 $this->db->select('p.*,g.group_name') ;
+			 $this->db->from('group_paper as p');
+			 $this->db->join('group as g','g.id = p.group_id');
+			 $this->db->join('paper_master','paper_master.id = p.paper_id') ;
+			$this->db->where(array('g.class_id'=>$student['class_id'],'paper_master.type'=>"theory"));
+			$groupPaper =$this->db->get()->result();	
+			// $this->Common_model->last_query();
+		}
+		
 		$data['compulsoryPapers'] = $compulsoryPapers;
 		$data['student'] = $student;
 		$data['student_id'] = $student['student_id'];
@@ -1150,12 +1163,16 @@ class Center extends CI_Controller {
 
 	public function submit_papers(){
 		$student_id=$this->Common_model->encrypt_decrypt($_POST['student_id'],'decrypt');
+		$mode = $this->Common_model->getRecordById('student','student_id',$student_id);
 		$paper_id1 = $_POST['paper_id'];
 		$paper_id2 = $_POST['compulsary_paper_id'];
 		$paper_id= array_merge($paper_id1,$paper_id2);
 		$paper_id = implode(",",$paper_id);
-		$paper_data = 	$this->Common_model->get_record('paper_master','*','id in ('.$paper_id.')');
-
+		if($mode->university_mode == "PVT"){
+		$paper_data = 	$this->Common_model->get_record('paper_master','*','id in ('.$paper_id.') and type="thoery"');
+		}else{
+			$paper_data = 	$this->Common_model->get_record('paper_master','*','id in ('.$paper_id.')');	
+		}
 		foreach($paper_data as $paper){
 			$data['course_group_id']=$paper['course_group_id'];
 			$data['class_id']=$paper['class_id'];
@@ -1181,13 +1198,16 @@ class Center extends CI_Controller {
 
 
 	public function submit_group(){
+		
 		$paper_code = $_POST['compulsary_paper_code'];
 		$class_id = $_POST['class_id'];
 		$student_id=$this->Common_model->encrypt_decrypt($_POST['student_id'],'decrypt');
+		$mode = $this->Common_model->getRecordById('student','student_id',$student_id);
 		$i = 1;
 		$this->db->where_in('paper_code',$paper_code);
 		$this->db->where('class_id',$class_id);
-		$paper_data = $this->Common_model->get_record('paper_master','*');
+		$paper_data = $this->Common_model->get_record('paper_master','*','type = "theory"');
+		
 		foreach($paper_data as $paper){
 			$data['course_group_id']=$paper['course_group_id'];
 			$data['class_id']=$paper['class_id'];
@@ -1204,9 +1224,14 @@ class Center extends CI_Controller {
 
 		if(isset($_POST['group_id'])){
 			$group_id = $_POST['group_id'];
-			$this->db->select('paper_code,sub_group_id');
+			$this->db->select('group_paper.paper_code,group_paper.sub_group_id');
 			$this->db->from('group_paper');
+			if($mode->university_mode == "PVT"){
+			$this->db->join('paper_master','paper_master.id = group_paper.paper_id');
+			$this->db->where(array('paper_master.type'=>"theory"));
+			}
 			$this->db->where_in('group_id',$group_id);
+			
 			$groupPaperData = $this->db->get()->result_array();
 
 			$groupPaperCodes = array_column($groupPaperData, 'paper_code');

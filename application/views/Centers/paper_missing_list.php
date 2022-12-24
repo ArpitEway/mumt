@@ -9,6 +9,7 @@
 				<th>F/H Name</th>
 				<th>Course</th>
 				<th>Class</th>
+				<th>Mode</th>
 				<th>Select Paper</th>
 			</tr>
 		</thead>
@@ -27,6 +28,7 @@
 					<td><?php echo $student->course_name; ?> </td>
 
 					<td><?php echo $student->class_name; ?> </td>
+					<td><?php echo $student->university_mode; ?> </td>
 
 					<td>
 						<?php $student_id = $this->Common_model->encrypt_decrypt($student->student_id); ?>
