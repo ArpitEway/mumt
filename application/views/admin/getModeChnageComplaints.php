@@ -11,6 +11,7 @@
 				<th>Student Name</th>
 				<th>Course </th>
 				<th>Class</th>
+				<th>Mode</th>
 				<th>Detail</th>
 				<th>Date</th>
 				<th>Status</th>
@@ -37,6 +38,7 @@
 					<td><?php echo $student->name; ?></td>
 					<td><?php echo $student->course_name; ?></td>
 					<td><?php echo $student->class_name; ?></td>
+					<td><?php echo $complaint["from_mode"].' - '.$complaint["to_mode"]; ?></td>
 					<td><?php echo $complaint["detail"]; ?></td>
 					<td><?php echo $this->Common_model->viewDate($complaint["date"]); ?></td>
 
