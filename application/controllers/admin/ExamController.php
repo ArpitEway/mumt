@@ -2379,7 +2379,7 @@ public function getStudentData()
 		
 		$segment = $this->uri->segment(2);
 		
-		$this->load->view('header',array('title' => 'Search Students'));
+		$this->load->view('header',array('title' => 'Search Students Result'));
 
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
@@ -2417,7 +2417,7 @@ public function getStudentData()
 			
 				$student = $this->Common_model->getRecordByWhere("student",$where);
 				if (count($student)==0) {
-					//redirect(base_url());
+					
 					echo json_encode(array(
 						"status" => false,
 						"data" => "<p style='text-align: center;'>No data found!</p>"
