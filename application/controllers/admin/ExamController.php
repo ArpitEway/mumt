@@ -2036,9 +2036,7 @@ public function getStudentData()
 
 		}else if($text_val !='' && $radio_val == 'roll_no')
 		{
-			$where = array('name'=>$text_val
-
-		);
+			$where = array('roll_no'=>$text_val);
 
 		}else if($text_val !='' && $radio_val == 'student_name')
 		{
@@ -2447,4 +2445,36 @@ public function getStudentData()
 				));
 		}
 	}//fun
+
+	public function search_student_result_for_wh(){
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();
+		$this->load->view('header',array('title' => 'Edit Student Marks'));	
+		$this->load->view('admin/examController/search_student_result_for_wh',$data);
+		$this->load->view('footer');
+	}
+
+	public function getEditStudentMarksDataWH()
+	{
+		$roll_no = $this->input->post('roll_no');
+		$studentData = $this->Common_model->getRecordByWhere('student',array('roll_no'=>$roll_no,'new_exam_form'=>'Y'));
+		$studentPaper = $this->Common_model->get_student_papers($studentData[0]->student_id,$studentData[0]->class_id);
+		$data['student'] = $studentData;
+		$data['wh'] = true;
+		if($studentData){
+			$data['studentPaper'] = $studentPaper;
+			$whereWh = array('student_id' =>$studentData[0]->student_id ,'class_id' =>$studentData[0]->class_id,'paper_type' =>'theory' , 'theory_marks' =>'' );
+			$countWh = $this->Common_model->getCountByWhere('new_exam_form',$whereWh);
+			if ($studentData[0]->result_show=='Y' && $countWh==0) {
+				$result['data'] = $this->load->view('admin/Dataentry/show_student_marks',$data,true);
+			}else{
+				$result['data'] = $this->load->view('admin/Dataentry/edit_student_marks',$data,true);
+			}
+
+			echo json_encode($result);
+		}else{
+			$result['data'] = "Student Not Found";
+			echo json_encode($result); 
+		}
+	}
 }// class

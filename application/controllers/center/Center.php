@@ -1497,8 +1497,7 @@ class Center extends CI_Controller {
 	 	$titleData = array('title' => 'Regular Internal Marks Submission' );
 	 	$this->load->view('Centers/header',$titleData);
 	 	$center_id =  $this->session->center_id;
-	 	$where = array('university_mode' => 'REG','center_id' => $center_id,'new_exam_form' => 'Y','internal'=>"Y");
-		//  ,'result_show ' => 'N'
+	 	$where = array('university_mode' => 'REG','center_id' => $center_id,'new_exam_form' => 'Y','internal'=>"Y",'result_show ' => 'N');
 	 	$this->db->order_by("int_marks_sub,student.course_group_id,student.class_id", "asc");
 	 	$this->db->select('*');
 	 	$this->db->from('student');
@@ -1853,8 +1852,7 @@ class Center extends CI_Controller {
 		$titleData = array('title' => 'Regular Practical Marks Submission' );
 		$this->load->view('Centers/header',$titleData);
 		$center_id =  $this->session->center_id;
-		$where = array('university_mode' => 'REG','center_id' => $center_id,'new_exam_form' => 'Y');
-		// ,'result_show' => 'N'
+		$where = array('university_mode' => 'REG','center_id' => $center_id,'result_show' => 'N','new_exam_form' => 'Y');
 		$this->db->order_by("p_marks_sub,student.course_group_id,student.class_id", "asc");
 		$this->db->select('*');
 		$this->db->from('student');
