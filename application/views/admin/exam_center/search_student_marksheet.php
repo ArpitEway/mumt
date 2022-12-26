@@ -21,6 +21,7 @@
                             name = "radio_stduent_search"
                             id = "radio_roll_no"
                             value = "roll_no" 
+                            checked
                             />
                             <span></span>
                             Roll No : 
