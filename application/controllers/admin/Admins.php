@@ -4435,7 +4435,7 @@ public function update_exam_datewise_permission(){
 				'centers' =>$centers
 			);
 			
-			$this->load->view('header');
+			$this->load->view('header',array('title'=>"Center Mode Change Request"));
 			$this->load->view('admin/view_mode_change_complaint',$data);
 			$this->load->view('footer');
 		}

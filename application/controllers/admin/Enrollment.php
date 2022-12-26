@@ -368,7 +368,7 @@
 				'hash_csrf' => $this->security->get_csrf_hash(),
 				'centers' =>$centers
 			);
-			$this->load->view('header');
+			$this->load->view('header',array('title'=>"Edit Request"));
 			$this->load->view('admin/enrollment/view_form_edit_request',$data);
 			$this->load->view('footer');
 		}else{
