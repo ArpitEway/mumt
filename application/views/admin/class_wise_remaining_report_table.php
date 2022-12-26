@@ -15,7 +15,7 @@
                 <th>Student Name </th>
                 <th>Course Name</th>
                 <th>Class</th>
-                <th>Session</th>
+                <!-- <th>Session</th> -->
                 <th>Paper Code</th>
                
             </tr>
@@ -30,7 +30,7 @@
                 <th>Student Name </th>
                 <th>Course Name</th>
                 <th>Class</th>
-                <th>Session</th>
+                <!-- <th>Session</th> -->
                 <th>Paper Code</th>
                
             </tr>
@@ -49,7 +49,7 @@
                 <td><?= $student->name ?></td>
                 <td><?= $student->course_name ?></td>
                 <td><?= $student->class_name ?></td>
-                <td><?= $student->session ?></td>
+                <!-- <td><?= $student->session ?></td> -->
                 <td><?= $student->paper_code ?></td>
               
             </tr>
