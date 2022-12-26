@@ -2416,13 +2416,20 @@ public function getStudentData()
 
 			
 				$student = $this->Common_model->getRecordByWhere("student",$where);
+			
 				if (count($student)==0) {
 					
 					echo json_encode(array(
 						"status" => false,
-						"data" => "<p style='text-align: center;'>No data found!</p>"
+						"data" => "<p style='text-align: center;'><b>No data found!</b></p>"
 					));
 					
+				}
+				else if($student[0]->result_show=="N"){
+					echo json_encode(array(
+						"status" => false,
+						"data" => "<p style='text-align: center;'><b>Student result not declared!</b></p>"
+					));
 				}
 				else{
 						$data['student']=$student[0];
