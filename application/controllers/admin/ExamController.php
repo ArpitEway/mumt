@@ -2374,6 +2374,77 @@ public function getStudentData()
 		}
 		echo json_encode(array('success' => 'Marks Updated Successfully'));
 	}
+	
+	public function search_student_marksheet(){
+		
+		$segment = $this->uri->segment(2);
+		
+		$this->load->view('header',array('title' => 'Search Students'));
+
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+			'segment' => $segment
+		);
+
+		$this->load->view('admin/exam_center/search_student_marksheet',$data);
+		$this->load->view('footer');
+	}
+	public function getStudentMarksheetData()
+	{
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}
+
+		$text_val =$this->input->post('text_val');
+		$radio_val = $this->input->post('radio_val');
+
+
+		if($text_val !='')
+		{
+			if($text_val !='' && $radio_val == 'enrollment_no')
+			{
+				$where = array('new_exam_form'=>'Y','result_show'=>'Y','enrollment_no'=>$text_val);
+
+			}else if($text_val !='' && $radio_val == 'roll_no')
+			{
+				$where = array('new_exam_form'=>'Y','result_show'=>'Y','roll_no'=>$text_val);
+
+			}
+
+			
+				$student = $this->Common_model->getRecordByWhere("student",$where);
+				if (count($student)==0) {
+					redirect(base_url());
+				}
+				$data['student']=$student[0];
+				$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
+				$data['practical_internal_marks']=$classData->practical_internal_marks;
+				$this->db->select('*');
+				$this->db->from('new_exam_form');
+				$this->db->where('new_exam_form.student_id',$data['student']->student_id);
+				$this->db->where('new_exam_form.class_id',$data['student']->class_id);
+				$new_exam_form = $this->db->get()->result();
+				$data['new_exam_form']  = $new_exam_form;
+				$title = array('title' => 'Result - '.$data['student']->enrollment_no);
+				
+				$marksheet_top =  $this->load->view('Centers/marksheet_top',$data,true);
+				if ($student[0]->course_group_id==36 || $student[0]->course_group_id==37) {
+					
+					$marksheet_bottom=  $this->load->view('Centers/marksheet_without_int',$data,true);
+				}else{
+					
+					$marksheet_bottom=  $this->load->view('Centers/marksheet_bottom',$data,true);
+				}
+				
+				$dt =  $marksheet_top.$marksheet_bottom;
+				echo json_encode(array(
+					"status" => true,
+					"data" => $dt
+				));
+		}
+	}//fun
 
 	public function search_student_result_for_wh(){
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
