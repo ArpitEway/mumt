@@ -1117,8 +1117,8 @@ class Admin_model extends CI_Model {
 		$data['student_id'] = html_escape($this->input->post('student'));
 		$data['detail'] 	= html_escape($this->input->post('detail'));
 		$data['from_mode'] =$fmode	= $this->input->post('mode');
-		if($fmode=="REG") $tmode	="PVT";
-		else if($fmode=="PVT") $tmode	="REG";
+		if($fmode=="REG") $tmode	="Private";
+		else if($fmode=="PVT") $tmode	="Regular";
 		$data['to_mode'] =$tmode;
 		$data['date'] 		= date("Y-m-d");
 

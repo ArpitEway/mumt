@@ -7,8 +7,8 @@
 			<tr>
 				
 				<th>S.No.</th>
-				<th>Student Name</th>
 				<th>Form no</th>
+				<th>Student Name</th>
 				<th>Course </th>
 				<th>Class</th>
 				<th>Detail</th>
@@ -33,11 +33,11 @@
 				<tr>
 
 					<td><?php echo $i; ?></td>
-					<td><?php echo $student->name; ?></td>
 					<td><?php echo $complaint["student_id"]; ?></td>
+					<td><?php echo $student->name; ?></td>
 					<td><?php echo $student->course_name; ?></td>
 					<td><?php echo $student->class_name; ?></td>
-					<td><?php echo $complaint["details"]; ?></td>
+					<td><?php echo $complaint["detail"]; ?></td>
 					<td><?php echo $this->Common_model->viewDate($complaint["date"]); ?></td>
 
 					<td >
