@@ -100,7 +100,8 @@
                 $("#myLoader").show();
                },
                 success:function(resp)
-                {if( $("#myLoader").show()){
+                {
+                    if( $("#myLoader").show()){
 						$('#student_data_tbl').hide();
 						// $table = $('#dt').html(status.data);
 

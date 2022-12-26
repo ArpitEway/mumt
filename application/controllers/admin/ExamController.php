@@ -2405,44 +2405,52 @@ public function getStudentData()
 		{
 			if($text_val !='' && $radio_val == 'enrollment_no')
 			{
-				$where = array('new_exam_form'=>'Y','result_show'=>'Y','enrollment_no'=>$text_val);
+				$where = array('new_exam_form'=>'Y','enrollment_no'=>$text_val);
+				//,'result_show'=>'Y'
 
 			}else if($text_val !='' && $radio_val == 'roll_no')
 			{
-				$where = array('new_exam_form'=>'Y','result_show'=>'Y','roll_no'=>$text_val);
-
+				$where = array('new_exam_form'=>'Y','roll_no'=>$text_val);
+			//,'result_show'=>'Y'
 			}
 
 			
 				$student = $this->Common_model->getRecordByWhere("student",$where);
 				if (count($student)==0) {
-					redirect(base_url());
-				}
-				$data['student']=$student[0];
-				$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
-				$data['practical_internal_marks']=$classData->practical_internal_marks;
-				$this->db->select('*');
-				$this->db->from('new_exam_form');
-				$this->db->where('new_exam_form.student_id',$data['student']->student_id);
-				$this->db->where('new_exam_form.class_id',$data['student']->class_id);
-				$new_exam_form = $this->db->get()->result();
-				$data['new_exam_form']  = $new_exam_form;
-				$title = array('title' => 'Result - '.$data['student']->enrollment_no);
-				
-				$marksheet_top =  $this->load->view('Centers/marksheet_top',$data,true);
-				if ($student[0]->course_group_id==36 || $student[0]->course_group_id==37) {
+					//redirect(base_url());
+					echo json_encode(array(
+						"status" => false,
+						"data" => "<p style='text-align: center;'>No data found!</p>"
+					));
 					
-					$marksheet_bottom=  $this->load->view('Centers/marksheet_without_int',$data,true);
-				}else{
-					
-					$marksheet_bottom=  $this->load->view('Centers/marksheet_bottom',$data,true);
 				}
-				
-				$dt =  $marksheet_top.$marksheet_bottom;
-				echo json_encode(array(
-					"status" => true,
-					"data" => $dt
-				));
+				else{
+						$data['student']=$student[0];
+						$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
+						$data['practical_internal_marks']=$classData->practical_internal_marks;
+						$this->db->select('*');
+						$this->db->from('new_exam_form');
+						$this->db->where('new_exam_form.student_id',$data['student']->student_id);
+						$this->db->where('new_exam_form.class_id',$data['student']->class_id);
+						$new_exam_form = $this->db->get()->result();
+						$data['new_exam_form']  = $new_exam_form;
+						$title = array('title' => 'Result - '.$data['student']->enrollment_no);
+						
+						$marksheet_top =  $this->load->view('Centers/marksheet_top',$data,true);
+						if ($student[0]->course_group_id==36 || $student[0]->course_group_id==37) {
+							
+							$marksheet_bottom=  $this->load->view('Centers/marksheet_without_int',$data,true);
+						}else{
+							
+							$marksheet_bottom=  $this->load->view('Centers/marksheet_bottom',$data,true);
+						}
+						
+						$dt =  $marksheet_top.$marksheet_bottom;
+						echo json_encode(array(
+							"status" => true,
+							"data" => $dt
+						));
+					}
 		}
 	}//fun
 
