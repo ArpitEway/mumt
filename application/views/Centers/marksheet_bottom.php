@@ -65,7 +65,14 @@ foreach($new_exam_form as $marks){
   }
 }
 
-if ($fail_count>0) {
+
+$require_grace_marks = $require_tot_marks-$fali_tot_marks;
+if($fail_count<3 && $require_grace_marks<4 && $abs_count==0 && $fail_count!=0){
+      $check_grace_marks = true;
+}
+
+
+if ($fail_count>0 && !$check_grace_marks) {
     ?>
   <div class="text-center text-primary border-right border-left border-bottom border-dark py-3">
     <h1 class=" text-center mb-0">Statement Of Marks</h1>
@@ -73,11 +80,6 @@ if ($fail_count>0) {
   </div>
   <?php
 }else{
-
-$require_grace_marks = $require_tot_marks-$fali_tot_marks;
-if($fail_count<3 && $require_grace_marks<4 && $abs_count==0 && $fail_count!=0){
-      $check_grace_marks = true;
-}
 
 ?>
 <?php 
