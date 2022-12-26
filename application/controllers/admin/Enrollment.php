@@ -1204,9 +1204,7 @@ public function getStudentData()
 
 		}else if($text_val !='' && $radio_val == 'roll_no')
 		{
-			$where = array('name'=>$text_val
-
-		);
+			$where = array('roll_no'=>$text_val);
 
 		}else if($text_val !='' && $radio_val == 'student_name')
 		{
