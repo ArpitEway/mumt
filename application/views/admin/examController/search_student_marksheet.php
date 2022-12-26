@@ -91,7 +91,7 @@
                     [csrfName]:csrfHash
                 }
             $.ajax({
-                url:site_url+'admin/<?=$this->session->account_type; ?>/getStudentMarksheetData',
+                url:site_url+'admin/ExamController/getStudentMarksheetData',
                 type:'post',
                 dataType : 'JSON',
                 data: data,

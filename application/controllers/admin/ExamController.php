@@ -2387,15 +2387,15 @@ public function getStudentData()
 			'segment' => $segment
 		);
 
-		$this->load->view('admin/exam_center/search_student_marksheet',$data);
+		$this->load->view('admin/examController/search_student_marksheet',$data);
 		$this->load->view('footer');
 	}
 	public function getStudentMarksheetData()
 	{
-		if(!$this->session->has_userdata('adminData')){
-			redirect(base_url());
-			exit;
-		}
+		// if(!$this->session->has_userdata('adminData')){
+		// 	redirect(base_url());
+		// 	exit;
+		// }
 
 		$text_val =$this->input->post('text_val');
 		$radio_val = $this->input->post('radio_val');
