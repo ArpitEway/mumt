@@ -387,10 +387,10 @@
 			$wherecenter = array('status' => 'Pending',
 				'center_id'=>$center_id,
 			);
-
+			$centerData = $this->Common_model->getRecordById('center','id',$center_id);
 			$center_detail = $this->Common_model->get_record('request','*',$wherecenter);
 			$data = array('center_details' => $center_detail ,'name_csrf' => $this->security->get_csrf_token_name(),
-				'hash_csrf' => $this->security->get_csrf_hash());
+				'hash_csrf' => $this->security->get_csrf_hash(),'centerData' => $centerData,);
 			if($data['center_details']){
 				$dt =  $this->load->view('admin/enrollment/FormEditRequestDetails',$data,true);
 			}else{

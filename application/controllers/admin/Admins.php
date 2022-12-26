@@ -4424,5 +4424,126 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
+	public function view_mode_change_complaint(){
+			
+		if($this->session->has_userdata('adminData')){
+			$where = array("status" => "Pending");
+			$centers = $this->Common_model->get_record_group_by_where('request_mode_change','center_id',$where);
+
+			$data = array('name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+				'centers' =>$centers
+			);
+			
+			$this->load->view('header');
+			$this->load->view('admin/view_mode_change_complaint',$data);
+			$this->load->view('footer');
+		}
+		else
+		{
+			redirect(base_url('admin/login'));
+		}
+	}
+	public function get_mode_change_complaints()
+	{
+		if ($this->input->method() == "post") 
+		{
+			$course_group_id = 0;
+			$data = array();
+			$dt   = array();
+				
+			$center_id  = $this->input->post("center_id");
+			$centerData = $this->Common_model->getRecordById('center','id',$center_id);
+			$wherecenter = 'center_id='.$center_id.' and status="Pending"';
+			$complaints = $this->Common_model->get_record('request_mode_change','*',$wherecenter);
+			
+			$data = array('complaints' => $complaints ,'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+				'centerData' => $centerData,
+			);
+
+			if($data['complaints']){
+				$dt =  $this->load->view('admin/getModeChnageComplaints',$data,true);
+				$status = true;
+			}else{
+				$dt = "This Center Does Not Have Any Pending payment Complaint";
+				$status = false;
+			}
+			echo json_encode(array(
+			"status" => $status,
+			"data" => $dt
+			));
+		}
+	}
+	public function update_mode_change_complaint_status()
+	{
+		if ($this->input->method() == "post") 
+		{
+            $id    	= 0;
+            $id    	= $this->input->post("id");
+			$status = $this->input->post("status");
+
+			
+            if ($this->input->post("id")) 
+			{
+				$data = $this->Common_model->updateRecordByConditions("request_mode_change",array("id" => $id ),array("status" => $status ));
+			
+				$dt = $this->db->get_where("request_mode_change",array("id" => $id ))->result_array();
+
+				if($dt[0]['status'] == 'Done'){
+				$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-success req_check" value="Done">';
+				}else{
+				$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-danger req_check" value="Pending">';
+			}
+				$status = true;
+				$msg    = "";
+				
+				echo json_encode(array(
+					"status" => $status,
+					"msg" => $msg,
+					"data" => $sts_btn
+				));
+			}
+		}
+	}
+
+	public function update_mode_change_complaint_remark()
+	{
+		if ($this->input->method() == "post") 
+		{
+	        $id    	= $this->input->post("id");
+	        $remark = $this->input->post("remark");
+			$status = ($remark=='Invalid') ? 'Done' : "Pending";
+
+			if ($this->input->post("id")) 
+			{
+				$data = $this->Common_model->updateRecordByConditions("request_mode_change",array("id" => $id ),array("remark" => $remark,"status" => $status));
+				
+				$dt = $this->db->get_where("request_mode_change",array("id" => $id ))->result_array();
+				
+				if($dt[0]['remark'] != 'Invalid'){
+				
+				$sts_btn = '<input type="button" name="update_req_remark" data-id='.$id.' class="btn btn-success remark_check" value="Set">';
+				
+				$sts_btn2 = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-danger req_check" value="Pending">';
+				}else{
+				
+				$sts_btn = '<input type="button" name="req_remark" data-id='.$id.' class="btn btn-danger remark_check" value="Invalid">';
+				
+				$sts_btn2 = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-success req_check" value="Done">';
+				}
+
+				$status = true;
+				$msg    = "";
+				
+				echo json_encode(array(
+					"status" => $status,
+					"msg" => $msg,
+					"remarkBtn" => $sts_btn,
+					"statusBtn" => $sts_btn2
+				));
+			}	
+		}
+	}
 	
 }// class

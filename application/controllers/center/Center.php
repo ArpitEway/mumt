@@ -817,8 +817,13 @@ class Center extends CI_Controller {
 	}
 
 	public function getStudent_By_Course(){
+		$where='';
 		$course_group_id = $this->input->post('course_group_id');
-		$where = "course_group_id = ".$course_group_id." and enrolled = 'N' and center_id=".$this->session->center_id;
+		$session_course_type=$this->input->post('session_course_type');
+		if(@$session_course_type){
+			$where.="session = '".$session_course_type ."' and ";
+		}
+		$where .= "course_group_id = ".$course_group_id." and enrolled = 'N' and center_id=".$this->session->center_id;
 		$student_list = $this->Common_model->get_record('student','student_id as id,name',$where);
 		$data = array('student_list' => $student_list,);
 		echo $this->load->view('template/getStudent',$data,true);
@@ -2211,4 +2216,87 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 		}
 	}
 
-}
+	public function admission_mode_edit_request($course_type="REG")
+	{
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url());
+		}else{
+			if($course_type=="PVT")	 
+				$titleData = array('title' => 'Private Admission Mode Edit Request');
+			else
+				$titleData = array('title' => 'Regular Admission Mode Edit Request');	
+			$this->load->view('Centers/header',$titleData);
+			$id =  $this->session->center_id;
+			$request_detail = $this->Common_model->get_record('request','*',array());
+			$data = array('request_detail' => $request_detail,
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+				'course_type' =>  $course_type,
+			);
+			$this->load->view('Centers/admission_mode_edit_request',$data);
+			$this->load->view('Centers/footer');
+		}
+	}
+	public function create_admission_mode_edit_request(){
+		$session_id = $this->input->post('session_id');
+		$course_group_id  = $this->input->post('course_group_id');
+		$student_id = $this->input->post('student');
+		$mode = $this->input->post('mode');
+		$id =  $this->session->center_id;
+		$check_record = $this->Common_model->get_record('request_mode_change','*',array("center_id" => $id,'student_id' => $student_id));
+		//print_r($this->db->last_query());    
+		
+		if($check_record){
+			echo json_encode(array("status" => 'true','data' => "error"));
+		}else{
+			$response = $this->admin_model->create_admission_mode_request();
+			$request_detail = $this->Common_model->get_record('request_mode_change','*',array());
+			$data = array('request_detail' => $request_detail,
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash());
+			$dt =  $this->load->view('admin/center/getRequestList',$data,true);
+			echo json_encode(array("status" => 'true','data' => $dt));
+		}
+	}
+
+	public function getModeEditRequest()
+	{
+		$course_type=$this->input->post('course_type');
+		$course_type_where="";
+		if(!empty($course_type))
+			$course_type_where .=" AND student.university_mode='".$course_type."'  ";	
+		$data = $row = array();
+		$where = 'request_mode_change.center_id='.$this->session->center_id;
+		$column_order = array(null,'name','student.student_id','detail','date','status','remark');
+		$column_search = array('name','student.student_id','detail','date','status','remark');
+		$DataTableArray = array(
+			'column_order' => $column_order,
+			'column_search' => $column_search,
+			'select' => 'request_mode_change.remark,request_mode_change.from_mode,request_mode_change.to_mode,request_mode_change.student_id, request_mode_change.date, request_mode_change.detail, name, request_mode_change.status',
+			'where' => $where.$course_type_where,
+			'table' =>  'request_mode_change',
+			'table2' => 'student',
+			'joinOn' => 'request_mode_change.student_id=student.student_id'
+		);
+
+		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
+		$i = $_POST['start'];
+		foreach($tableData as $result){
+			$i++;
+			$status = ($result->status=='Pending') ? 'Pending' : 'Done';
+			$date = $this->Common_model->viewDate($result->date);
+			$data[] = array($i, $result->name, $result->student_id,$result->from_mode,$result->to_mode, $result->detail,$date,$status,$result->request_remark);
+		}
+
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->Datatable_join_model->countAll('request_mode_change',$where),
+			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
+			"data" => $data,
+		);
+
+		// Output to JSON format
+		echo json_encode($output);
+	}
+
+}//class

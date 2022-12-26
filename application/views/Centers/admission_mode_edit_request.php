@@ -17,6 +17,7 @@ li{
 
 <div class="card-body row text-center">
 	<div class="form-group col-md-3 m-auto">
+		<input type="hidden"  name="mode" id="mode" value="<?=$course_type ?>">
 		<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 		<input type="hidden"  class="course_type" value="<?= $course_type; ?>" >
 		<label for="center_id">Session</label>
@@ -64,7 +65,8 @@ li{
 
 	<div class="form-group col-md-12">
 		<label for="class"></label>
-		<button type="button" class="btn btn-primary mt-4" id="submit_btn">Submit</button>
+		<button type="button" class="btn btn-primary mt-4" data-toggle="modal" data-target="#mode_alert-modal">Submit</button>
+		<!-- <button type="button" class="btn btn-primary mt-4" id="submit_btn">Submit</button> -->
 	</div>
 </div>
 </div>
@@ -75,6 +77,8 @@ li{
 				<th>S.No.</th>
 				<th>Student Name </th>
 				<th>Form no</th>
+				<th>Mode From</th>
+				<th>Mode To</th>
 				<th>Detail</th>
 				<th>Date</th>
 				<th>Status</th>
@@ -86,6 +90,31 @@ li{
 	</table>
 </div>
 
+
+
+<div id="mode_alert-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body p-4">
+        <div class="text-center">
+          <i class="dripicons-information h1 text-info"></i>
+          <h4 class="mt-2"><?php echo 'Heads Up' ?>!</h4>
+		  <?php $msg=""; if($course_type=="REG"){
+			  $msg="Regular to Private";
+		  } else if($course_type=="PVT"){
+			$msg="Private to Regular";
+		} 
+		  ?>
+          <p class="mt-3"><?php echo 'Are You Sure to change '.$msg.' admision mode'; ?>?</p>
+          
+            <button type="button" class="btn btn-info my-2" data-dismiss="modal" id="close_modal"><?php echo 'No'; ?></button>
+            <button type="submit" class="btn btn-danger my-2" onclick="" id="submit_btn"><?php echo 'Yes'; ?></button>
+         
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <script>
 $(document).ready(function(){
 		
@@ -101,7 +130,7 @@ $(document).ready(function(){
 	"order": [0],
 	// Load data from an Ajax source
 	"ajax": {
-		"url": BASE_URL+'center/center/getFormEditRequest',
+		"url": BASE_URL+'center/center/getModeEditRequest',
 		"type": "POST",
 		"data": {[csrfName]:csrfHash,course_type:course_ty}
 	},
@@ -156,18 +185,25 @@ $(document).on("click","#submit_btn",function(){
 				var data = {
 					student : $("#student").val(),
 					detail : $(".detail").val(),
+					mode : $("#mode").val(),
 					[csrfName]:csrfHash
 				};
 
-				var url = BASE_URL + "center/center/create_form_edit_request"; 
+				var url = BASE_URL + "center/center/create_admission_mode_edit_request"; 
 				var response = call_ajax(data,url);
 				console.log(response);
-				
+				if(response.data=="error"){
+					toastr.error("Mode change request already registered !");
+				}
+				else{
+					toastr.success("Mode change request is registered !");
+				}
 				$("#session").val("");
 				$("#student").val("");
 				$(".detail").val("");
 				$("#allClassBycourse").val("");
-				
+				$("#close_modal").click();
+				$('#mode_alert-modal').modal('toggle');
 
 				myTable.draw();
 
