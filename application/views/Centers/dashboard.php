@@ -85,6 +85,11 @@
 							<span class="nav-text">Form Edit Request</span>
 						</div>
 					</a>
+					<a class="border-0 custom-menu-item" href="<?=base_url('admission_mode_edit_request/PVT');?>">
+						<div>
+							<span class="nav-text">Mode Change Request</span>
+						</div>
+					</a>
 				</div>
 			</div>
 			<div class="tab-pane fade active show" id="Enrollment_Regular" role="tabpanel" aria-labelledby="Enrollment-tab-Regular">
@@ -147,6 +152,11 @@
 					<a class="border-0 custom-menu-item" href="<?=base_url('form_edit_request/REG');?>">
 						<div>
 							<span class="nav-text">Form Edit Request</span>
+						</div>
+					</a>
+					<a class="border-0 custom-menu-item" href="<?=base_url('admission_mode_edit_request/REG');?>">
+						<div>
+							<span class="nav-text">Mode Change Request</span>
 						</div>
 					</a>
 				</div>

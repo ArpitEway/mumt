@@ -2222,9 +2222,9 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 			redirect(base_url());
 		}else{
 			if($course_type=="PVT")	 
-				$titleData = array('title' => 'Private Admission Mode Edit Request');
+				$titleData = array('title' => 'Private to Regular Admission Mode Change Request');
 			else
-				$titleData = array('title' => 'Regular Admission Mode Edit Request');	
+				$titleData = array('title' => 'Regular to Private Admission Mode Change Request');	
 			$this->load->view('Centers/header',$titleData);
 			$id =  $this->session->center_id;
 			$request_detail = $this->Common_model->get_record('request','*',array());
