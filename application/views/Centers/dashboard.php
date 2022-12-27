@@ -87,7 +87,7 @@
 					</a>
 					<a class="border-0 custom-menu-item" href="<?=base_url('admission_mode_edit_request/PVT');?>">
 						<div>
-							<span class="nav-text">Mode Change Request</span>
+							<span class="nav-text">Mode Change Request (Private to Regular)</span>
 						</div>
 					</a>
 				</div>
@@ -156,7 +156,7 @@
 					</a>
 					<a class="border-0 custom-menu-item" href="<?=base_url('admission_mode_edit_request/REG');?>">
 						<div>
-							<span class="nav-text">Mode Change Request</span>
+							<span class="nav-text">Mode Change Request (Regular to Private)</span>
 						</div>
 					</a>
 				</div>
