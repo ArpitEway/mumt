@@ -2285,7 +2285,7 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 			$i++;
 			$status = ($result->status=='Pending') ? 'Pending' : 'Done';
 			$date = $this->Common_model->viewDate($result->date);
-			$data[] = array($i, $result->name, $result->student_id,$result->from_mode,$result->to_mode, $result->detail,$date,$status,$result->request_remark);
+			$data[] = array($i, $result->name, $result->student_id,$result->from_mode,$result->to_mode, $result->detail,$date,$status,$result->remark);
 		}
 
 		$output = array(
