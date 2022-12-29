@@ -2478,7 +2478,7 @@ public function getStudentData()
 		$data['wh'] = true;
 		if($studentData){
 			$data['studentPaper'] = $studentPaper;
-			if($studentData[0]->student_id == "REG"){
+			if($studentData[0]->university_mode == "REG"){
 			$qry = $this->db->query("SELECT * FROM `new_exam_form` as e join paper_master as p on p.id=e.paper_id and p.paper_code=e.paper_code WHERE `student_id`=".$studentData[0]->student_id." AND p.class_id=".$studentData[0]->class_id." and e.class_id=".$studentData[0]->class_id." and paper_type='Theory' and e.theory_marks<p.min_theory_marks
 			 ");
 			}else{
