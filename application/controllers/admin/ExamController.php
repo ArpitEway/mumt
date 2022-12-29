@@ -2478,8 +2478,12 @@ public function getStudentData()
 		$data['wh'] = true;
 		if($studentData){
 			$data['studentPaper'] = $studentPaper;
-			$whereWh = array('student_id' =>$studentData[0]->student_id ,'class_id' =>$studentData[0]->class_id,'paper_type' =>'theory' , 'theory_marks' =>'' );
-			$countWh = $this->Common_model->getCountByWhere('new_exam_form',$whereWh);
+			
+			$qry = $this->db->query("SELECT * FROM `new_exam_form` as e join paper_master as p on p.id=e.paper_id and p.paper_code=e.paper_code WHERE `student_id`=".$studentData[0]->student_id." AND p.class_id=".$studentData[0]->class_id." and e.class_id=".$studentData[0]->class_id." and paper_type='Theory' and e.theory_marks<p.min_theory_marks
+			 ");
+			//  $whereWh = array('student_id' =>$studentData[0]->student_id ,'class_id' =>$studentData[0]->class_id,'paper_type' =>'theory' , 'theory_marks' =>'' );
+			//$countWh = $this->Common_model->getCountByWhere('new_exam_form',$whereWh);
+			$countWh = $qry->num_rows();
 			if ($studentData[0]->result_show=='Y' && $countWh==0) {
 				$result['data'] = $this->load->view('admin/Dataentry/show_student_marks',$data,true);
 			}else{
