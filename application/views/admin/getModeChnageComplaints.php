@@ -43,7 +43,7 @@
 					<td><?php echo $this->Common_model->viewDate($complaint["date"]); ?></td>
 
 					<td >
-
+							
 						<?php
 						if($complaint['status'] == 'Done')
 						{
@@ -52,7 +52,7 @@
 							<input type="button" name="update_req_stats" data-id = "<?=$complaint["id"];?>" class="btn btn-success req_check" value="Done">
 
 						<?php }else{ ?>
-
+							
 							<input type="button" name="update_req_stats" data-id = "<?=$complaint["id"];?> " class="btn btn-danger req_check" value="Pending">
 
 							<?php 
@@ -61,12 +61,16 @@
 
 					</td>
 					<td>
-
+						<select class="form-control select_remark_check"  data-id="<?=$complaint["id"];?>">
+								<option value="">Select</option>
+								<option value="Invalid" <?php if($session['remark']=="Invalid") echo "selected"; ?>>Invalid</option>
+								<option value="This course is not available in Private Mode" <?php if($session['remark']=="This course is not available in Private Mode") echo "selected"; ?>>Not available</option >
+						</select>
 						<?php
 						if($session['remark'] == '' || $session['remark'] != 'Invalid')
-						{
+					/*	{
 							?>
-
+							
 							<input type="button" name="update_req_remark" data-id = "<?=$complaint["id"];?>" class="btn btn-success remark_check" value="Set">
 
 						<?php }else{ ?>
@@ -74,7 +78,7 @@
 							<input type="button" name="req_remark" data-id = "<?=$complaint["id"];?>" class="btn btn-danger remark_check" value="Invalid">
 
 							<?php 
-						}
+						}*/
 						?>
 					</td>
 					
@@ -149,6 +153,34 @@
 				success: function (data) {
 					$(self).parent().prev().html(data.statusBtn);
 					$(self).parent().html(data.remarkBtn);
+				}
+			});
+		});
+		$(document).on('change', '.select_remark_check', function() 
+		{
+
+			var val = $(this).val();
+			var csrfName = $('.csrfname').attr('name');
+			var csrfHash = $('.csrfname').val();
+			var self = this;
+
+			//var remark = (val=='Set') ? 'Invalid' : 'Set';
+			var remark =val;
+			var data = {
+				id: $(this).attr('data-id'),
+				remark: remark,
+				[csrfName]: csrfHash,
+			};
+			var url = BASE_URL + "admin/admins/update_mode_change_complaint_remark";
+
+			$.ajax({
+				url: url,
+				type: 'POST',
+				dataType: 'json',
+				data: data,
+				success: function (data) {
+					$(self).parent().prev().html(data.statusBtn);
+					//$(self).parent().html(data.remarkBtn);
 				}
 			});
 		});

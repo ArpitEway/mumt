@@ -4513,22 +4513,22 @@ public function update_exam_datewise_permission(){
 		{
 	        $id    	= $this->input->post("id");
 	        $remark = $this->input->post("remark");
-			$status = ($remark=='Invalid') ? 'Done' : "Pending";
-
+			//$status = ($remark=='Invalid') ? 'Done' : "Pending";
+			$status = ($remark=='') ? 'Pending' : "Done";
 			if ($this->input->post("id")) 
 			{
 				$data = $this->Common_model->updateRecordByConditions("request_mode_change",array("id" => $id ),array("remark" => $remark,"status" => $status));
 				
 				$dt = $this->db->get_where("request_mode_change",array("id" => $id ))->result_array();
 				
-				if($dt[0]['remark'] != 'Invalid'){
+				if($dt[0]['remark'] == ''){
 				
-				$sts_btn = '<input type="button" name="update_req_remark" data-id='.$id.' class="btn btn-success remark_check" value="Set">';
+				//$sts_btn = '<input type="button" name="update_req_remark" data-id='.$id.' class="btn btn-success remark_check" value="Set">';
 				
 				$sts_btn2 = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-danger req_check" value="Pending">';
 				}else{
 				
-				$sts_btn = '<input type="button" name="req_remark" data-id='.$id.' class="btn btn-danger remark_check" value="Invalid">';
+			//	$sts_btn = '<input type="button" name="req_remark" data-id='.$id.' class="btn btn-danger remark_check" value="Invalid">';
 				
 				$sts_btn2 = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-success req_check" value="Done">';
 				}
@@ -4539,7 +4539,7 @@ public function update_exam_datewise_permission(){
 				echo json_encode(array(
 					"status" => $status,
 					"msg" => $msg,
-					"remarkBtn" => $sts_btn,
+					//"remarkBtn" => $sts_btn,
 					"statusBtn" => $sts_btn2
 				));
 			}	
