@@ -1753,7 +1753,8 @@ class Center extends CI_Controller {
 		$this->load->view('admin/generate_tr/header2',$title);	
 		//$this->load->view('Centers/marksheet',$data);
 		$this->load->view('Centers/marksheet_top',$data);
-		if ($student[0]->course_group_id==36 || $student[0]->course_group_id==37 || $student[0]->course_group_id==33) {
+		//if ($student[0]->course_group_id==36 || $student[0]->course_group_id==37 || $student[0]->course_group_id==33) {
+		if($classData->internal=='N'){
 			$this->load->view('Centers/marksheet_without_int',$data);
 		}else{
 			$this->load->view('Centers/marksheet_bottom',$data);
