@@ -8,14 +8,14 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Roll No</th>
                 <th>ICCode </th>
                 <th>Exam Center </th>
+                <th>Roll No</th>
                 <th>Enrollment No </th>
                 <th>Student Name </th>
                 <th>Course Name</th>
                 <th>Class</th>
-                <th>Session</th>
+                <!-- <th>Session</th> -->
                 <th>Paper Code</th>
                
             </tr>
@@ -23,14 +23,14 @@
         <tfoot>
             <tr>
                 <th>#</th>
-                <th>Roll No</th>
                 <th>ICCode </th>
                 <th>Exam Center </th>
+                <th>Roll No</th>
                 <th>Enrollment No </th>
                 <th>Student Name </th>
                 <th>Course Name</th>
                 <th>Class</th>
-                <th>Session</th>
+                <!-- <th>Session</th> -->
                 <th>Paper Code</th>
                
             </tr>
@@ -42,14 +42,14 @@
                 ?>
             <tr>
                 <td><?= $i ?></td>
-                <td><?= $student->roll_no ?></td>
                 <td><?= $student->center_code ?></td>
                 <td><?= $student->examcentercode ?></td>
+                <td><?= $student->roll_no ?></td>
                 <td><?= $student->enrollment_no ?></td>
                 <td><?= $student->name ?></td>
                 <td><?= $student->course_name ?></td>
                 <td><?= $student->class_name ?></td>
-                <td><?= $student->session ?></td>
+                <!-- <td><?= $student->session ?></td> -->
                 <td><?= $student->paper_code ?></td>
               
             </tr>

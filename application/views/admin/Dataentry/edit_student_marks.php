@@ -8,25 +8,21 @@
 	}
 </style>
 <div class="border radius-rounded p-3 mb-10">
-<div class="row   mb-4">
-
-    <div class="col-md-4">
-		<strong for="">Roll Number :</strong>
+	<div class="row   mb-4">
+		<div class="col-md-4">
+			<strong for="">Roll Number :</strong>
 			<?=$student[0]->roll_no ?>
-	</div>
-    <div class="col-md-4">
-		<strong for="">Enrollment Number :</strong>
+		</div>
+		<div class="col-md-4">
+			<strong for="">Enrollment Number :</strong>
 			<?=$student[0]->enrollment_no ?>
-	</div>
-	<div class="col-md-4">
-		<strong for="">Student Name :</strong>
+		</div>
+		<div class="col-md-4">
+			<strong for="">Student Name :</strong>
 			<?=$student[0]->name ?>
+		</div>	
 	</div>
-	
-	
-</div> 
-<div class="row mb-4"> 
-
+<div class="row mb-4">
 	<div class="col-md-4">
 		<strong for="">Course Name :</strong>
 			<?=$student[0]->course_name ?>
@@ -39,8 +35,6 @@
 		<strong for="">IC Code :</strong>
 			<?= $student[0]->center_code ?>
 	</div>
-    
-   
 </div>
 
 </div>
@@ -229,6 +223,9 @@
 	</table>
 </form>
 </div>
+<?php 
+$url = (isset($wh) && $wh==true) ? 'search_student_result_for_wh' : 'search_student_result';
+ ?>
 <script type="text/javascript">
 	$('.select2').select2();
 	$(document).on('click','#submit',function(event){
@@ -242,7 +239,7 @@
 			success: function (data) {
 				if(data.success){
 					toastr.success(data.success);
-					setTimeout(function(){location.href=BASE_URL+'<?=$this->session->account_type;?>/search_student_result'} , 2000);
+					setTimeout(function(){location.href=BASE_URL+'<?=$this->session->account_type.'/'.$url;?>'} , 2000);
 				}else{
 					toastr.error(data.error);
 				}

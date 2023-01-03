@@ -39,7 +39,7 @@
 				<td>
 					<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 					<input type="hidden" class="class_id" name="class_id" value="<?= $student->old_class_id ; ?>">
-					<input type="hidden" class="new_exam_form" name="new_exam_form" value="<?= $student->exam_form; ?>">
+					<input type="hidden" class="new_exam_form" name="new_exam_form" value="<?= $student->new_exam_form; ?>">
 					<button  class="btn btn-primary remark"  onclick="student_data(<?php echo $student->student_id; ?>)">Reset</button>        
 				</td>
 			</tr>

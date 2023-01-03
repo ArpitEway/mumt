@@ -89,6 +89,10 @@
 						<div>
 							<span class="nav-text">Paper Missing List</span>
 						</div>
+					<a class="border-0 custom-menu-item" href="<?=base_url('admission_mode_edit_request/PVT');?>">
+						<div>
+							<span class="nav-text">Mode Change Request (Private to Regular)</span>
+						</div>
 					</a>
 				</div>
 			</div>
@@ -158,6 +162,10 @@
 						<div>
 							<span class="nav-text">Paper Missing List</span>
 						</div>
+					<a class="border-0 custom-menu-item" href="<?=base_url('admission_mode_edit_request/REG');?>">
+						<div>
+							<span class="nav-text">Mode Change Request (Regular to Private)</span>
+						</div>
 					</a>
 				</div>
 			</div>
@@ -197,7 +205,7 @@
 							<span class="nav-text">Internal Marks Submission (Regular)</span>
 						</div>
 					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
+					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
 						<div>
 							<span class="nav-text">Time Table June 2022</span>
 						</div>
@@ -206,7 +214,7 @@
 						<div>
 							<span class="nav-text">Exam Form June 2022</span>
 						</div>
-					</a> 
+					</a>  -->
 
 				<!--	<a class="border-0 custom-menu-item" href="<?=base_url('student_roll_no_list');?>">
 						<div>
@@ -219,11 +227,11 @@
 						</div>
 					</a>
 					<?php if ($center->admit_card_permission=='Y'): ?>
-						<a class="border-0 custom-menu-item" href="<?=base_url('admit_card_list');?>">
+						<!-- <a class="border-0 custom-menu-item" href="<?=base_url('admit_card_list');?>">
 						<div>
 							<span class="nav-text">Admit Card</span>
 						</div>
-					</a>
+					</a> -->
 					<?php endif ?>
 
 				</div>

@@ -67,7 +67,6 @@ class Dataentry extends CI_Controller {
 		$titleData = array('title' => 'Marks Entry'); 
 		$this->load->view('header',$titleData);
 
-		// $where = array('new_exam_form.paper_code' => $paper_code, 'theory_marks' => '','university_mode' => $mode,'paper_type' => 'theory','exam_center_id'=>$exam_center,'student.new_exam_form' => 'Y');
 		$where = array('new_exam_form.paper_code' => $paper_code, 'theory_marks' => '','university_mode' => $mode,'paper_type' => 'theory','exam_center_id'=>$exam_center,'student.new_exam_form' => 'Y','student.result_show'=>'N');
 		$this->db->select('student.student_id, student.name,enrollment_no,roll_no');
 		$this->db->from('new_exam_form');
@@ -75,7 +74,7 @@ class Dataentry extends CI_Controller {
 		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
 		$this->db->where('student.class_id = new_exam_form.class_id');
 		$this->db->where($where); 
-		$this->db->limit(10,$page);
+		$this->db->limit(20,$page);
 		$resultData = $this->db->get();
 		$data['resultData'] = $resultData->result();
 
@@ -89,8 +88,8 @@ class Dataentry extends CI_Controller {
 		$this->db->where('student.class_id = new_exam_form.class_id');
 		$this->db->where($where);
 		$config["total_rows"] = $this->db->get()->num_rows();		
-		$config["per_page"] = 10;
-		$config["uri_segment"] = 6;
+		$config["per_page"] = 20;
+		$config["uri_segment"] = 7;
 		$this->pagination->initialize($config);
 		$data["links"] = $this->pagination->create_links();
 		$data['paper_code'] = $paper_code ;

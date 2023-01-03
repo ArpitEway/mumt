@@ -368,7 +368,7 @@
 				'hash_csrf' => $this->security->get_csrf_hash(),
 				'centers' =>$centers
 			);
-			$this->load->view('header');
+			$this->load->view('header',array('title'=>"Edit Request"));
 			$this->load->view('admin/enrollment/view_form_edit_request',$data);
 			$this->load->view('footer');
 		}else{
@@ -387,10 +387,10 @@
 			$wherecenter = array('status' => 'Pending',
 				'center_id'=>$center_id,
 			);
-
+			$centerData = $this->Common_model->getRecordById('center','id',$center_id);
 			$center_detail = $this->Common_model->get_record('request','*',$wherecenter);
 			$data = array('center_details' => $center_detail ,'name_csrf' => $this->security->get_csrf_token_name(),
-				'hash_csrf' => $this->security->get_csrf_hash());
+				'hash_csrf' => $this->security->get_csrf_hash(),'centerData' => $centerData,);
 			if($data['center_details']){
 				$dt =  $this->load->view('admin/enrollment/FormEditRequestDetails',$data,true);
 			}else{
@@ -1118,7 +1118,7 @@
 		$class_permission= $this->Common_model->getRecordByWhere('class_master',array('id'=>$class_ids));	
 		$where = array('student_id'=>$student_id);
 		if($class_permission[0]->result_permission=='Y' && $new_exam_form=='Y'){     
-		$data = array('provisional_remark' =>'N','old_result_show' =>'Y');
+		$data = array('provisional_remark' =>'N','result_show' =>'Y');//old_result_show
 	     	}
 	     	else{
 	     	$data = array('provisional_remark' =>'N');
@@ -1204,9 +1204,7 @@ public function getStudentData()
 
 		}else if($text_val !='' && $radio_val == 'roll_no')
 		{
-			$where = array('name'=>$text_val
-
-		);
+			$where = array('roll_no'=>$text_val);
 
 		}else if($text_val !='' && $radio_val == 'student_name')
 		{

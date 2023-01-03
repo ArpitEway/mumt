@@ -2036,9 +2036,7 @@ public function getStudentData()
 
 		}else if($text_val !='' && $radio_val == 'roll_no')
 		{
-			$where = array('name'=>$text_val
-
-		);
+			$where = array('roll_no'=>$text_val);
 
 		}else if($text_val !='' && $radio_val == 'student_name')
 		{
@@ -2375,5 +2373,132 @@ public function getStudentData()
 			$this->Common_model->updateRecordByConditions('new_exam_form',$where,$data);
 		}
 		echo json_encode(array('success' => 'Marks Updated Successfully'));
+	}
+	
+	public function search_student_marksheet(){
+		
+		$segment = $this->uri->segment(2);
+		
+		$this->load->view('header',array('title' => 'Search Students Result'));
+
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+			'segment' => $segment
+		);
+
+		$this->load->view('admin/examController/search_student_marksheet',$data);
+		$this->load->view('footer');
+	}
+	public function getStudentMarksheetData()
+	{
+		// if(!$this->session->has_userdata('adminData')){
+		// 	redirect(base_url());
+		// 	exit;
+		// }
+
+		$text_val =$this->input->post('text_val');
+		$radio_val = $this->input->post('radio_val');
+
+
+		if($text_val !='')
+		{
+			if($text_val !='' && $radio_val == 'enrollment_no')
+			{
+				$where = array('new_exam_form'=>'Y','enrollment_no'=>$text_val);
+				//,'result_show'=>'Y'
+
+			}else if($text_val !='' && $radio_val == 'roll_no')
+			{
+				$where = array('new_exam_form'=>'Y','roll_no'=>$text_val);
+			//,'result_show'=>'Y'
+			}
+
+			
+				$student = $this->Common_model->getRecordByWhere("student",$where);
+			
+				if (count($student)==0) {
+					
+					echo json_encode(array(
+						"status" => false,
+						"data" => "<p style='text-align: center;'><b>No data found!</b></p>"
+					));
+					
+				}
+				else if($student[0]->result_show=="N"){
+					echo json_encode(array(
+						"status" => false,
+						"data" => "<p style='text-align: center;'><b>Student result not declared!</b></p>"
+					));
+				}
+				else{
+						$data['student']=$student[0];
+						$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
+						$data['practical_internal_marks']=$classData->practical_internal_marks;
+						$this->db->select('*');
+						$this->db->from('new_exam_form');
+						$this->db->where('new_exam_form.student_id',$data['student']->student_id);
+						$this->db->where('new_exam_form.class_id',$data['student']->class_id);
+						$new_exam_form = $this->db->get()->result();
+						$data['new_exam_form']  = $new_exam_form;
+						$title = array('title' => 'Result - '.$data['student']->enrollment_no);
+						
+						$marksheet_top =  $this->load->view('Centers/marksheet_top',$data,true);
+						if ($student[0]->course_group_id==36 || $student[0]->course_group_id==37) {
+							
+							$marksheet_bottom=  $this->load->view('Centers/marksheet_without_int',$data,true);
+						}else{
+							
+							$marksheet_bottom=  $this->load->view('Centers/marksheet_bottom',$data,true);
+						}
+						
+						$dt =  $marksheet_top.$marksheet_bottom;
+						echo json_encode(array(
+							"status" => true,
+							"data" => $dt
+						));
+					}
+		}
+	}//fun
+
+	public function search_student_result_for_wh(){
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();
+		$this->load->view('header',array('title' => 'Edit Student Marks'));	
+		$this->load->view('admin/examController/search_student_result_for_wh',$data);
+		$this->load->view('footer');
+	}
+
+	public function getEditStudentMarksDataWH()
+	{
+		$roll_no = $this->input->post('roll_no');
+		$studentData = $this->Common_model->getRecordByWhere('student',array('roll_no'=>$roll_no,'new_exam_form'=>'Y'));
+		$studentPaper = $this->Common_model->get_student_papers($studentData[0]->student_id,$studentData[0]->class_id);
+		$data['student'] = $studentData;
+		$data['wh'] = true;
+		if($studentData){
+			$data['studentPaper'] = $studentPaper;
+			if($studentData[0]->university_mode == "REG"){
+			$qry = $this->db->query("SELECT * FROM `new_exam_form` as e join paper_master as p on p.id=e.paper_id and p.paper_code=e.paper_code WHERE `student_id`=".$studentData[0]->student_id." AND p.class_id=".$studentData[0]->class_id." and e.class_id=".$studentData[0]->class_id." and paper_type='Theory' and e.theory_marks<p.min_theory_marks
+			 ");
+			}else{
+				$qry = $this->db->query("SELECT * FROM `new_exam_form` as e join paper_master as p on p.id=e.paper_id and p.paper_code=e.paper_code WHERE `student_id`=".$studentData[0]->student_id." AND p.class_id=".$studentData[0]->class_id." and e.class_id=".$studentData[0]->class_id." and paper_type='Theory' and e.theory_marks<p.private_min_theory_marks
+			 ");
+			 }
+			
+			//  $whereWh = array('student_id' =>$studentData[0]->student_id ,'class_id' =>$studentData[0]->class_id,'paper_type' =>'theory' , 'theory_marks' =>'' );
+			//$countWh = $this->Common_model->getCountByWhere('new_exam_form',$whereWh);
+			$countWh = $qry->num_rows();
+			if ($studentData[0]->result_show=='Y' && $countWh==0) {
+				$result['data'] = $this->load->view('admin/Dataentry/show_student_marks',$data,true);
+			}else{
+				$result['data'] = $this->load->view('admin/Dataentry/edit_student_marks',$data,true);
+			}
+
+			echo json_encode($result);
+		}else{
+			$result['data'] = "Student Not Found";
+			echo json_encode($result); 
+		}
 	}
 }// class

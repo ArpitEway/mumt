@@ -39,7 +39,7 @@
       <!-- <img src="<?=base_url()?>assets/images/maskgroup/MaskGroup1.png"  width="100px;" /> -->
       <h1 class="text-center p-5" style="font-size:34px; color: #781e19;">Maharishi Mahesh Yogi Vedic Vishwavidyalaya</h1>
     <!-- <img src="<?=base_url()?>assets/images/maskgroup/Group1.png" class="img2" alt=""> -->
-    <h4 class="text-primary text-center mb-0">Examination Held In Feb 2022</h4>
+    <h4 class="text-primary text-center mb-0">Examination Held In Aug 2022</h4>
   </div>
 </div>
 <table class="table mb-0">
@@ -48,7 +48,7 @@
       <th class="border-top-0 text-primary pl-3">Enrollment No.</th>
       <th class="border-top-0"><?php  echo $student->enrollment_no ?></th>
       <th class="border-top-0 text-primary pl-3">Roll No.</th>
-      <th class="border-top-0"><?php echo  $student->roll_number; ?></th>
+      <th class="border-top-0"><?php echo  $student->roll_no; ?></th>
       <th rowspan="3" class="border-top-0 text-center" width="120px"><img class="img img-thumbnail" src="<?=base_url('assets/student_image/').$student->session.'/'.$student->photo?>" ></th>
     </tr>
     <tr>
@@ -62,7 +62,7 @@
       <th class="border-top-0"><?php  echo $student->course_name ?></th>
       <th class="border-top-0 text-primary pl-3">Year / Sem </th>
       <th class="border-top-0"><?php  echo 
-      $this->Common_model->getClassNameByClassId($student->old_class_id);
+      $this->Common_model->getClassNameByClassId($student->class_id);
        ?></th>
     </tr>
   </tbody>

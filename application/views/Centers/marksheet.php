@@ -66,7 +66,7 @@ foreach($new_exam_form as $marks){
 }
 
 $require_grace_marks = $require_tot_marks-$fali_tot_marks;
-if ($fail_count<3 && $require_grace_marks<4 && $abs_count==0 && $fail_count!=0){
+if ($fail_count<2 && $require_grace_marks<4 && $abs_count==0 && $fail_count!=0){
   $check_grace_marks = true;
 }
 ?>

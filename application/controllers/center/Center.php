@@ -817,8 +817,13 @@ class Center extends CI_Controller {
 	}
 
 	public function getStudent_By_Course(){
+		$where='';
 		$course_group_id = $this->input->post('course_group_id');
-		$where = "course_group_id = ".$course_group_id." and enrolled = 'N' and center_id=".$this->session->center_id;
+		$session_course_type=$this->input->post('session_course_type');
+		if(@$session_course_type){
+			$where.="session = '".$session_course_type ."' and ";
+		}
+		$where .= "course_group_id = ".$course_group_id." and enrolled = 'N' and center_id=".$this->session->center_id;
 		$student_list = $this->Common_model->get_record('student','student_id as id,name',$where);
 		$data = array('student_list' => $student_list,);
 		echo $this->load->view('template/getStudent',$data,true);
@@ -1544,8 +1549,7 @@ class Center extends CI_Controller {
 	 	$titleData = array('title' => 'Regular Internal Marks Submission' );
 	 	$this->load->view('Centers/header',$titleData);
 	 	$center_id =  $this->session->center_id;
-	 	$where = array('university_mode' => 'REG','center_id' => $center_id,'new_exam_form' => 'Y','internal'=>"Y");
-		//  ,'result_show ' => 'N'
+	 	$where = array('university_mode' => 'REG','center_id' => $center_id,'new_exam_form' => 'Y','internal'=>"Y",'result_show ' => 'N');
 	 	$this->db->order_by("int_marks_sub,student.course_group_id,student.class_id", "asc");
 	 	$this->db->select('*');
 	 	$this->db->from('student');
@@ -1661,8 +1665,8 @@ class Center extends CI_Controller {
 		
 		$this->db->where('class_master.result_permission', 'Y');
 		$this->db->where('center_id', $center_id);
-		$this->db->where('old_result_show','Y');
-		$this->db->where('exam_form','Y');
+		$this->db->where('result_show','Y');
+		$this->db->where('new_exam_form','Y');
 		//$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,197,203,211,213)');
 		$data['courses'] = $this->db->get()->result();
 		// echo $this->db->last_query(); die;
@@ -1708,7 +1712,7 @@ class Center extends CI_Controller {
 	public function getStudentListForMarksheet(){
 		$data = $row = array();
 	
-		$where = array('center_id' => $this->session->center_id,'exam_form'=>'Y');
+		$where = array('center_id' => $this->session->center_id,'new_exam_form'=>'Y');
 		// 'result_show','Y'
 
 		if($_POST['course_group_id']!='All' and $_POST['course_group_id']!=''){
@@ -1716,7 +1720,7 @@ class Center extends CI_Controller {
 			
 		}
 		if($_POST['class_id']!='All' and $_POST['class_id']!=''){
-			$where['old_class_id'] = $this->input->post('class_id');
+			$where['class_id'] = $this->input->post('class_id');
 		
 		}
 		$where['result_permission'] = 'Y';
@@ -1732,7 +1736,7 @@ class Center extends CI_Controller {
 			'where' => $where,
 			'table' => 'student',
 			'table2' => 'class_master',
-			'joinOn' => 'student.old_class_id=class_master.id'
+			'joinOn' => 'student.class_id=class_master.id'
 		);
 
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
@@ -1759,7 +1763,7 @@ class Center extends CI_Controller {
 			}else{
 				$enrollment = $result->enrollment_no;
 				}
-			$class_name =  $this->Common_model->getClassNameByClassId($result->old_class_id); 
+			$class_name =  $this->Common_model->getClassNameByClassId($result->class_id); 
 			$data[] = array($result->student_id,$enrollment,$result->name, $result->f_h_name, $result->course_name,$class_name,$btn);
 		}
 
@@ -1779,24 +1783,25 @@ class Center extends CI_Controller {
 	public function marksheet($student_id="")
 	{
 		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
-		$student = $this->Common_model->getRecordByWhere("student",array('exam_form'=>'Y','old_result_show'=>'Y','student_id'=>$student_id));
+		$student = $this->Common_model->getRecordByWhere("student",array('new_exam_form'=>'Y','result_show'=>'Y','student_id'=>$student_id));
 		if (count($student)==0) {
 			redirect(base_url());
 		}
 		$data['student']=$student[0];
-		$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
+		$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
 		$data['practical_internal_marks']=$classData->practical_internal_marks;
 		$this->db->select('*');
-		$this->db->from('exam_form');
-		$this->db->where('exam_form.student_id',$data['student']->student_id);
-		$this->db->where('exam_form.class_id',$data['student']->old_class_id); 
+		$this->db->from('new_exam_form');
+		$this->db->where('new_exam_form.student_id',$data['student']->student_id);
+		$this->db->where('new_exam_form.class_id',$data['student']->class_id);
 		$new_exam_form = $this->db->get()->result();
 		$data['new_exam_form']  = $new_exam_form;
 		$title = array('title' => 'Result - '.$data['student']->enrollment_no);
 		$this->load->view('admin/generate_tr/header2',$title);	
 		//$this->load->view('Centers/marksheet',$data);
 		$this->load->view('Centers/marksheet_top',$data);
-		if ($student[0]->course_group_id==36 || $student[0]->course_group_id==37) {
+		//if ($student[0]->course_group_id==36 || $student[0]->course_group_id==37 || $student[0]->course_group_id==33) {
+		if($classData->internal=='N'){
 			$this->load->view('Centers/marksheet_without_int',$data);
 		}else{
 			$this->load->view('Centers/marksheet_bottom',$data);
@@ -1900,8 +1905,7 @@ class Center extends CI_Controller {
 		$titleData = array('title' => 'Regular Practical Marks Submission' );
 		$this->load->view('Centers/header',$titleData);
 		$center_id =  $this->session->center_id;
-		$where = array('university_mode' => 'REG','center_id' => $center_id,'new_exam_form' => 'Y');
-		// ,'result_show' => 'N'
+		$where = array('university_mode' => 'REG','center_id' => $center_id,'result_show' => 'N','new_exam_form' => 'Y');
 		$this->db->order_by("p_marks_sub,student.course_group_id,student.class_id", "asc");
 		$this->db->select('*');
 		$this->db->from('student');
@@ -2260,5 +2264,87 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 		}
 	}
 
-	
-}
+	public function admission_mode_edit_request($course_type="REG")
+	{
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url());
+		}else{
+			if($course_type=="PVT")	 
+				$titleData = array('title' => 'Private to Regular Admission Mode Change Request');
+			else
+				$titleData = array('title' => 'Regular to Private Admission Mode Change Request');	
+			$this->load->view('Centers/header',$titleData);
+			$id =  $this->session->center_id;
+			$request_detail = $this->Common_model->get_record('request','*',array());
+			$data = array('request_detail' => $request_detail,
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+				'course_type' =>  $course_type,
+			);
+			$this->load->view('Centers/admission_mode_edit_request',$data);
+			$this->load->view('Centers/footer');
+		}
+	}
+	public function create_admission_mode_edit_request(){
+		$session_id = $this->input->post('session_id');
+		$course_group_id  = $this->input->post('course_group_id');
+		$student_id = $this->input->post('student');
+		$mode = $this->input->post('mode');
+		$id =  $this->session->center_id;
+		$check_record = $this->Common_model->get_record('request_mode_change','*',array("center_id" => $id,'student_id' => $student_id));
+		//print_r($this->db->last_query());    
+		
+		if($check_record){
+			echo json_encode(array("status" => 'true','data' => "error"));
+		}else{
+			$response = $this->admin_model->create_admission_mode_request();
+			$request_detail = $this->Common_model->get_record('request_mode_change','*',array());
+			$data = array('request_detail' => $request_detail,
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash());
+			$dt =  $this->load->view('admin/center/getRequestList',$data,true);
+			echo json_encode(array("status" => 'true','data' => $dt));
+		}
+	}
+
+	public function getModeEditRequest()
+	{
+		$course_type=$this->input->post('course_type');
+		$course_type_where="";
+		if(!empty($course_type))
+			$course_type_where .=" AND student.university_mode='".$course_type."'  ";	
+		$data = $row = array();
+		$where = 'request_mode_change.center_id='.$this->session->center_id;
+		$column_order = array(null,'name','student.student_id','detail','date','status','remark');
+		$column_search = array('name','student.student_id','detail','date','status','remark');
+		$DataTableArray = array(
+			'column_order' => $column_order,
+			'column_search' => $column_search,
+			'select' => 'request_mode_change.remark,request_mode_change.from_mode,request_mode_change.to_mode,request_mode_change.student_id, request_mode_change.date, request_mode_change.detail, name, request_mode_change.status',
+			'where' => $where.$course_type_where,
+			'table' =>  'request_mode_change',
+			'table2' => 'student',
+			'joinOn' => 'request_mode_change.student_id=student.student_id'
+		);
+
+		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
+		$i = $_POST['start'];
+		foreach($tableData as $result){
+			$i++;
+			$status = ($result->status=='Pending') ? 'Pending' : 'Done';
+			$date = $this->Common_model->viewDate($result->date);
+			$data[] = array($i, $result->name, $result->student_id,$result->from_mode,$result->to_mode, $result->detail,$date,$status,$result->remark);
+		}
+
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->Datatable_join_model->countAll('request_mode_change',$where),
+			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
+			"data" => $data,
+		);
+
+		// Output to JSON format
+		echo json_encode($output);
+	}
+
+}//class
