@@ -182,7 +182,7 @@ $(document).on('click','#submit', function () {
 					toastr.success('Form Submitted Successfully');
 					setTimeout(function(){
 						// window.location.href = BASE_URL+"center/payment/admission/"+data.student_id;
-						window.location.href = BASE_URL+"center/center/select_admission_papers/"+data.student_id
+						window.location.href = BASE_URL+"center/center/select_papers/"+data.student_id
 					}, 1000);
 					}
 					},

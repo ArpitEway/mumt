@@ -1091,17 +1091,29 @@ class Center extends CI_Controller {
 		
     }
 
-	public function paper_missing_list(){
+	public function paper_missing_list($mode=''){
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
-		$titleData = array('title' => 'Paper Missing List' );
-		$this->load->view('Centers/header',$titleData);
+		
+		
 		$center_id =  $this->session->center_id;
+		if($mode == "regular"){
+		$titleData = array('title' => 'Paper Missing List (Regular)' );
 		$where = array(
 			'temp_exam_form' =>'N',
 			'center_id' => $center_id,
+			'university_mode'=>'REG',
 		);
+	}else{
+		$titleData = array('title' => 'Paper Missing List (Private)' );
+		$where = array(
+			'temp_exam_form' =>'N',
+			'center_id' => $center_id,
+			'university_mode'=>'PVT',
+		);
+	}
+		$this->load->view('Centers/header',$titleData);
 		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
 		$this->load->view('Centers/paper_missing_list',$data);
 		$this->load->view('Centers/footer');
@@ -1111,6 +1123,7 @@ class Center extends CI_Controller {
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
+
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
@@ -1119,6 +1132,10 @@ class Center extends CI_Controller {
 		$titleData['title'] = 'Select Papers';
 		$this->load->view('Centers/header',$titleData);
 		$student = $this->Common_model->student_info($student_id);
+		if($student['temp_exam_form'] == "Y"){
+			$std_id = $this->Common_model->encrypt_decrypt($student_id);
+			redirect(base_url('center/center/showPapers/'.$std_id.''));	
+		}
 		$this->db->order_by('id');
 		if($student['university_mode'] != "PVT"){
 		
@@ -1154,7 +1171,8 @@ class Center extends CI_Controller {
 
 		if($class_group[0]->group_type=='Paper'){
 			$this->load->view('Centers/select_papers',$data);
-		}else{
+		}
+		else{
 			$this->load->view('Centers/select_group',$data);
 		}
 		$this->load->view('Centers/footer');
@@ -1168,8 +1186,11 @@ class Center extends CI_Controller {
 		$paper_id2 = $_POST['compulsary_paper_id'];
 		$paper_id= array_merge($paper_id1,$paper_id2);
 		$paper_id = implode(",",$paper_id);
+		
 		if($mode->university_mode == "PVT"){
-		$paper_data = 	$this->Common_model->get_record('paper_master','*','id in ('.$paper_id.') and type="thoery"');
+			
+		$paper_data = 	$this->Common_model->get_record('paper_master','*','id in ('.$paper_id.') and type="theory"');
+		
 		}else{
 			$paper_data = 	$this->Common_model->get_record('paper_master','*','id in ('.$paper_id.')');	
 		}
@@ -1187,6 +1208,7 @@ class Center extends CI_Controller {
 
 
 		if($insert){
+		
 			$data = array('temp_exam_form'=>'Y');
 			$where = array('student_id'=>$student_id);
 			$this->Common_model->updateRecordByConditions('student',$where,$data);
@@ -1597,7 +1619,7 @@ class Center extends CI_Controller {
 	 		$returndata = array('error'=> 'An Error Occured');
 	 		echo json_encode($returndata);
 	 	}
-	 }
+	}
 
 	public function show_activity_file(){
 		$activity_file= $this->Common_model->getRecordByWhere("activity_file",array("activity_id"=>$_POST['activity_id']));
@@ -2238,87 +2260,5 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 		}
 	}
 
-	public function select_admission_papers($student_id){
-		if(!$this->session->has_userdata('centerdata')){
-			redirect(base_url());
-		}
-		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
-		$student_data = $this->Common_model->getRecordById("student",'student_id',$student_id);
-		if($student_data->temp_exam_form == "Y"){
-			$std_id = $this->Common_model->encrypt_decrypt($student_id);
-			redirect(base_url('center/center/showPaper/'.$std_id.''));
-		}else{
-		$data = array(
-			'name_csrf' => $this->security->get_csrf_token_name(),
-			'hash_csrf' => $this->security->get_csrf_hash(),
-		);
-		$titleData['title'] = 'Select Papers';
-		$this->load->view('Centers/header',$titleData);
-		$student = $this->Common_model->student_info($student_id);
-		$this->db->order_by('id');
-		if($student['university_mode'] != "PVT"){
-		
-		$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory"');
-		$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id where class_id='.$student['class_id'].' Order by g.id,sub_group_id,p.id')->result();
-		}else{
-			$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory" and type="theory"');
-			 $this->db->select('p.*,g.group_name') ;
-			 $this->db->from('group_paper as p');
-			 $this->db->join('group as g','g.id = p.group_id');
-			 $this->db->join('paper_master','paper_master.id = p.paper_id') ;
-			$this->db->where(array('g.class_id'=>$student['class_id'],'paper_master.type'=>"theory"));
-			$groupPaper =$this->db->get()->result();	
-			// $this->Common_model->last_query();
-		}
-		
-		$data['compulsoryPapers'] = $compulsoryPapers;
-		$data['student'] = $student;
-		$data['student_id'] = $student['student_id'];
-			// // CONDITION FOR GROUP PAPER
-		$this->db->select('class_group,select_group,group_type');
-		$this->db->from('class_master');
-		$this->db->join('student', 'class_master.id = student.class_id');
-		$this->db->where(array('class_master.id' => $data['student']['class_id'],
-			'student_id' => $student['student_id']
-		));
-		$class_group = $this->db->get()->result();
-
-		$data['class_group'] = $class_group;
-
-		$data['groupPaper'] = $groupPaper;
-
-
-		
-		$this->load->view('Centers/select_admission_group',$data);
-		
-		$this->load->view('Centers/footer');
-	}
-
-	}
-	public function showPaper($student_id){
-		
-		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
-		$titleData = array('title' => 'Student Papers');
-		$this->load->view('Centers/header',$titleData);
-
-		$where = array(
-			'student_id' => $student_id,
-		);
-		$student = $this->Common_model->student_info($student_id);
-		$data['student'] = $student;
-		$this->db->select('paper_master.*,new_exam_form.sub_group_id');
-		$this->db->from('paper_master');
-		$this->db->order_by('new_exam_form.sub_group_id,paper_order');
-		$this->db->join('new_exam_form', 'paper_master.paper_code = new_exam_form.paper_code and  paper_master.class_id = new_exam_form.class_id');
-		$where = array('paper_master.class_id' => $student['class_id'],
-			'student_id' => $student_id
-		);
-		$this->db->where($where);
-		$data['papers'] = $this->db->get()->result();
-		// $this->Common_model->last_query();
-		$this->load->view('Centers/show_admission_pappers',$data);
-		$this->load->view('Centers/footer');
 	
-}
-
 }

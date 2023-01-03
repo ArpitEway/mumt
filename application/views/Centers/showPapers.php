@@ -214,6 +214,12 @@
 			</table>
 		</div>
 	</div>
+	   <?php if($student['payment_status'] == 'N'){ ?>
+		<div class="row d-flex justify-content-center p-3">
+		<a class="btn btn-success" href="<?= base_url('center/Payment/admission/'.$this->Common_model->encrypt_decrypt($student['student_id'])) ?>">Process To Payment</a>
+	   </div>
+		<?php
+		}?>
 		<?php if ($student['new_exam_form']=='N'): ?>
 	<?php $student_id = $this->Common_model->encrypt_decrypt($student['student_id']); ?>
 			<div class="row justify-content-center mt-10">
