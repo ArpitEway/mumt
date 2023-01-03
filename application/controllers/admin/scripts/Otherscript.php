@@ -117,7 +117,7 @@ class Otherscript extends CI_Controller {
 	public function update_int_marks($cls_id =0)
 	{
 		$marks = array('18','17','16','18','17','16','15'); 
-		$cls_id=273;
+		$cls_id=155;
 		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and int_marks_sub='N' and roll_no!=0 limit 100";
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
@@ -141,9 +141,9 @@ class Otherscript extends CI_Controller {
 	public function update_practical_marks($cls_id =0)
 	{
 		$marks = array('43','42','41','40'); 
-		$marks = array('85','84','83','82'); 
-		$cls_id=273;
-		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and roll_no!=0 limit 100";
+		//$marks = array('85','84','83','82'); 
+		$cls_id=155;
+		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and roll_no!=0 order by roll_no limit 100";
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
 		foreach ($rs as $student) {
@@ -158,17 +158,17 @@ class Otherscript extends CI_Controller {
 				$this->db->query($update_marks);
 				shuffle($marks);
 			}
-			 $update_student = "update student set p_marks_sub='Y' where student_id='".$student['student_id']."' and class_id='".$cls_id."'";
+			 // $update_student = "update student set p_marks_sub='Y' where student_id='".$student['student_id']."' and class_id='".$cls_id."'";
 
-			 $this->db->query($update_student);
+			 // $this->db->query($update_student);
 		}
 	}
 
 	public function update_project_marks($cls_id =0)
 	{
 		$marks = array('85','84','83','82'); 
-
-		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and roll_no!=0 limit 100";
+		$cls_id=155;
+		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and roll_no!=0 order by roll_no limit 100";
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
 		foreach ($rs as $student) {
@@ -180,12 +180,12 @@ class Otherscript extends CI_Controller {
 
 				$update_marks = "update new_exam_form set p_marks='".$marks[$i]."' where id=".$new_exam_data['id'];
 				$i++;
-				//$this->db->query($update_marks);
+				$this->db->query($update_marks);
 				shuffle($marks);
 			}
 			$update_student = "update student set p_marks_sub='Y' where student_id='".$student['student_id']."' and class_id='".$cls_id."'";
 
-		//	$this->db->query($update_student);
+			$this->db->query($update_student);
 		}
 	}
 }
