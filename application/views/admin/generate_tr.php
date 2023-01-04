@@ -131,6 +131,10 @@ table.last_table, .last_table td, .last_table th{
   $marksheetData = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id'=>$class_id));
   $classData= $this->Common_model->getRecordById('class_master','id', $class_id);
   $isFinalClass = $this->Common_model->hasOneClass($course_group_id);
+  // $final_class = $this->Common_model->hasFinalClass($course_group_id);
+  if($classData->last_class == 'L'){
+    $final_class = true;
+  }
   $course_duration = ($isFinalClass) ? "(One Year Course)" : $classData->class_name;
   $rowspanhead = ($classData->project!='N' || $classData->practical!='N') ? "4" : "3";
   $rowspandata = ($classData->project!='N' || $classData->practical!='N') ? "5" : "4";
@@ -166,9 +170,13 @@ table.last_table, .last_table td, .last_table th{
     $p_fail_count = 0;
     $fail_count = 0;
     $fail_tot_marks = 0;
+    $count_theory =0;
+    $count_practical =0;
+    $count_int =0;
     $final_result = '';
     foreach($marks as $new_exam_form)
     {
+      
       if($new_exam_form->type=='theory'){
 
         $total_theory_marks_obt +=(int) $new_exam_form->theory_marks;
@@ -178,6 +186,7 @@ table.last_table, .last_table td, .last_table th{
         $total_paper_marks += (int) $new_exam_form->max_theory_marks + (int) $new_exam_form->max_internal_marks;
         $tot_std_marks += (int) $new_exam_form->theory_marks;
         $tot_marks += (int) $new_exam_form->max_theory_marks;
+        $count_theory++;
 
         if($new_exam_form->theory_marks=='ABS'){
           array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
@@ -202,17 +211,25 @@ table.last_table, .last_table td, .last_table th{
         if($new_exam_form->int_marks<$new_exam_form->min_internal_marks){
           $int_fail_count++;
           array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
+        }else{
+          $count_int++;
         }
 
         if($new_exam_form->int_marks=="ABS"){
+          array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
           $int_abs_count++;
           $int_fail_count++;
+        }
+        else{
+          $count_int++;
         }
       }
 
       if($new_exam_form->type!='theory'){
         $total_paper_marks += (int) $new_exam_form->max_theory_marks;
         $total_marks_obt += (int) $new_exam_form->p_marks;
+        $count_practical++;
+
         if($new_exam_form->p_marks=='' || $new_exam_form->p_marks=='N'){
           $rw_count++;
         }
@@ -347,15 +364,18 @@ table.last_table, .last_table td, .last_table th{
           if($check_grace_marks){
             echo "-";
           }else{
-            if($int_abs_count>0 &&  $theory_abs_count>0 && $p_abs_count>0){
+            if($final_result == "RW"){
+              echo "";
+            }
+            elseif($int_abs_count>0 &&  $theory_abs_count>0 && $p_abs_count>0){
               echo 'ABS In ALL';
-            }elseif($int_abs_count>0 ||  $theory_abs_count>0 || $p_abs_count>0){
+            }elseif($int_abs_count == $count_int ||  $theory_abs_count == $count_theory || $p_abs_count == $count_practical){
               echo 'ABS In';
-              if($theory_abs_count>0){
+              if($theory_abs_count == $count_theory){
                 echo ' Theory';
-              }elseif($int_abs_count>0){
+              }elseif($int_abs_count == $count_int){
                 echo ' Internal'; 
-              }elseif($p_abs_count>0){
+              }elseif($p_abs_count == $count_practical){
                 echo ' prectical';
               }
             }else{
@@ -387,7 +407,8 @@ table.last_table, .last_table td, .last_table th{
             }
           ?>
           </td>
-        <?php }  ?>
+        <?php
+       }  ?>
         <td class="align-middle text-center result"><?php echo  $total_theory_marks_obt;  ?></td>
       </tr>
       <?php if($classData->internal=="Y"){ ?>
@@ -425,6 +446,9 @@ table.last_table, .last_table td, .last_table th{
       <td  class="align-middle text-center"><?php 
       if($new_exam_form->p_marks=="N")
         {echo " ";}
+      else if($new_exam_form->p_marks=="ABS"){
+        echo "ABS F";
+      }
       else{
         if($new_exam_form->p_marks < $new_exam_form->min_theory_marks && $new_exam_form->p_marks!=''){
           echo  $new_exam_form->p_marks .' F';
@@ -470,6 +494,72 @@ table.last_table, .last_table td, .last_table th{
     <?php } ?>
     <td class="align-middle text-center"><?php echo $total_marks_obt; ?></td>
   </tr>
+ 
+  <?php  
+  if($final_class && $isFinalClass == false){
+    $final_rw = 0;
+    $final_fail =0;
+    
+      $final_remark = "-"; 
+    
+  
+  $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id<'=>$student->class_id));
+  ?> <tr>
+  <td class="align-middle text-center "  colspan="2"><strong>
+  <?= 'Session'.'<br>'.'Sem/year'.'<br>'.'Roll no'.'<br>'.'Marks'?></strong>
+ 
+</td> <?php
+ foreach($old_result as $old){
+  if($old->exam_result == "FAIL"){
+ $final_fail++;
+ $old->obtain_marks ='-';
+ $old->total_marks = '-';
+ 
+  }
+
+  $total_ob = $total_marks_obt + $old->obtain_marks;
+  $total_mar =  $total_paper_marks + $old->total_marks;
+  $percent = round(($total_ob/$total_mar)*100,2);    
+    if($percent>=60){
+      $div = "First";
+    }elseif($percent<60 && $percent>=40){
+      $div  = "Second";
+    }else{
+      $div = "Third";
+    }
+  ?> 
+  
+  
+ 
+<td class="align-middle text-center "  colspan="2">
+  <?= $old->exam_year.'<br>'.$this->Common_model->getClassNameByClassId($old->class_id).'<br>'.$old->roll_no.'<br>'.$old->obtain_marks.'/'.$old->total_marks?>
+ 
+</td>  
+ <?php }
+ if($final_result == "FAIL" || $final_result == "RW" || $final_fail !=0 ){
+  $total_ob = '-';
+  $total_mar = '-';
+  $percent = '-';
+  $div = '-';
+  if($final_fail !=0){
+    $final_result ='RWPM';
+    $final_remark ="RWPM";
+  }
+ }
+ 
+ ?>
+  
+<td class="align-middle text-center " ><strong>Result</strong><br><?= $final_result?></td>
+<td class="align-middle text-center "  colspan="2"><strong>Grand Total</strong><br><?= $total_ob.'/'.$total_mar?></td>
+<td class="align-middle text-center "  colspan="2"><strong>%</strong><br><?= $percent?></td>
+<td class="align-middle text-center "  colspan="2"><strong>Division</strong><br><?= $div?></td>
+<td class="align-middle text-center "  colspan="3"><strong>Degree No. And Date</strong><br>-</td>
+<td class="align-middle text-center "  colspan="2"><strong>Remark</strong><br><?= $final_remark?></td>
+  </tr>
+  <?php
+ 
+  }
+  ?>
 <?php if($isFinalClass){ ?>
   <?php if($final_result !="PASS" && !$check_grace_marks){ ?>
     <tr>
