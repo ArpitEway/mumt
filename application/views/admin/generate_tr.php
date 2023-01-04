@@ -506,7 +506,7 @@ table.last_table, .last_table td, .last_table th{
   $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id<'=>$student->class_id));
   ?> <tr>
   <td class="align-middle text-center "  colspan="2"><strong>
-  <?= 'Session'.'<br>'.'Sem/year'.'<br>'.'Roll no'.'<br>'.'Marks'?></strong>
+  <?= 'Session'.'<br>'.'Sem/Year'.'<br>'.'Roll no'.'<br>'.'Marks'?></strong>
  
 </td> <?php
  foreach($old_result as $old){
