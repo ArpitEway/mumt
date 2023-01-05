@@ -190,27 +190,22 @@ class Otherscript extends CI_Controller {
 	}
 	public function update_oldexam_marks($cls_id =0)
 	{
-	
-		//$marks = array('85','84','83','82'); 
+
 		$cls_id=154;
 		$sql = "SELECT * FROM `old_exam_data` WHERE `class_id`=154  AND total_marks=400 limit 250";
 		$rs = $this->db->query($sql)->result_array();
-	$i=0;
-	//	print_r($rs);
+		$i=0;
 		foreach ($rs as $student) {
-			 $new_exam_sql = "SELECT SUM(p_marks) as tot FROM `old_result_data` WHERE `exam_data_id`='".$student['id']."' and `type`!='Theory'";
+			$new_exam_sql = "SELECT SUM(p_marks) as tot FROM `old_result_data` WHERE `exam_data_id`='".$student['id']."' and `type`!='Theory'";
 			$new_exam_rs =	$this->db->query($new_exam_sql)->result_array();
-			
-		
-				$total_marks=500;
-				$obtain_marks=$student['obtain_marks']+$new_exam_rs[0]['tot'];
+			$total_marks=500;
+			$obtain_marks=$student['obtain_marks']+$new_exam_rs[0]['tot'];
 			echo "<br> $i= <br>";
-			 	$percentage=round(($obtain_marks/$total_marks)*100,2);
+			$percentage=round(($obtain_marks/$total_marks)*100,2);
 				// $percentage=($obtain_marks/$total_marks)*100;
-				echo $update_marks = "update old_exam_data set total_marks='".$total_marks."',obtain_marks='".$obtain_marks."',percentage='".$percentage."' where id=".$student['id'];
-				$i++;
-				$this->db->query($update_marks);
-			
+			echo $update_marks = "update old_exam_data set total_marks='".$total_marks."',obtain_marks='".$obtain_marks."',percentage='".$percentage."' where id=".$student['id'];
+			$i++;
+			$this->db->query($update_marks);
 		}
 	}
 }
