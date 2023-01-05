@@ -193,7 +193,7 @@ class Otherscript extends CI_Controller {
 	
 		//$marks = array('85','84','83','82'); 
 		$cls_id=154;
-		$sql = "SELECT * FROM `old_exam_data` WHERE `class_id`=154 ";
+		$sql = "SELECT * FROM `old_exam_data` WHERE `class_id`=154  AND total_marks=400 limit 250";
 		$rs = $this->db->query($sql)->result_array();
 	$i=0;
 	//	print_r($rs);
