@@ -181,7 +181,8 @@ $(document).on('click','#submit', function () {
 					if(data.student_id){
 					toastr.success('Form Submitted Successfully');
 					setTimeout(function(){
-						window.location.href = BASE_URL+"center/payment/admission/"+data.student_id;
+						// window.location.href = BASE_URL+"center/payment/admission/"+data.student_id;
+						window.location.href = BASE_URL+"center/center/select_papers/"+data.student_id
 					}, 1000);
 					}
 					},

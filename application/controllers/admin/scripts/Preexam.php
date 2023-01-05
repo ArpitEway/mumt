@@ -18,8 +18,8 @@ class Preexam extends CI_Controller {
 		$this->load->view('admin/script/header',array('title' => 'Upload Exam Paper'));
 		/* class which dose not have elective papers */
 		
-		$classes = $this->Common_model->get_record('class_master','GROUP_CONCAT(id) as class_id',array('class_group' => 'N','exam_form_permission' => 'Y'));
-
+		$classes = $this->Common_model->get_record('class_master','GROUP_CONCAT(id) as class_id',array('class_group' => 'N','admission_permission' => 'Y'));
+		//,'exam_form_permission' => 'Y'
 		$class_ids = $classes[0]['class_id'];
 		
 		$this->db->select('count(class_id) as num,course_name,class_name,class_id');
@@ -27,6 +27,27 @@ class Preexam extends CI_Controller {
 		$this->db->group_by('class_id');
 		$this->db->order_by('course_group_id');
 		$studentClasses = $this->db->get('student')->result();
+		$i=0;
+		foreach($studentClasses as $row){
+			$where = array('class_id' => $row->class_id,
+							'temp_exam_form' => "N",
+							'university_mode'=>'REG',
+						);
+			$studentsReg = $this->Common_model->getCountByWhere('student',$where);
+			$where = array('class_id' => $row->class_id,
+				'temp_exam_form' => "N",
+				'university_mode'=>'PVT',
+				);
+			$studentsPvt = $this->Common_model->getCountByWhere('student',$where);
+			
+			$row->privateCount=$studentsPvt;
+			$row->regularCount=$studentsReg;
+			$studentClasses[$i]=$row;
+			
+			$i++;
+		}
+		
+		
 		// $this->Common_model->last_query();
 		$data = array(
 			'studentClasses' => $studentClasses,
@@ -35,15 +56,21 @@ class Preexam extends CI_Controller {
 		$this->load->view('admin/script/footer');
 	}
 
-	public function upload_exam_paper_sub($class_id)
+	public function upload_exam_paper_sub($class_id,$university_mode)
 	{
 		$where = array('class_id' => $class_id,
 					//'payment_status' => 'Y',
 					'temp_exam_form' => "N",
+					'university_mode'=>$university_mode,
 		);
-		$this->db->order_by('id');
-		$papers = $this->Common_model->get_record('paper_master','*','class_id='.$class_id);
+	
+		
 		$students = $this->Common_model->get_record('student','*',$where);
+		if($university_mode=='PVT') 
+					$paperWhere=array('class_id'=>$class_id,'type'=>'theory');
+			else			
+					$paperWhere=array('class_id'=>$class_id);
+			$papers = $this->Common_model->get_record('paper_master','*',$paperWhere);
 		foreach ($students as $student) {
 			$where = array('student_id'=>$student['student_id']);
 			$data = array(
