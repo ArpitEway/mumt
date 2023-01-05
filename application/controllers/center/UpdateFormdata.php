@@ -14,30 +14,38 @@ class updateFormdata extends CI_Controller {
 	}
 
 	public function index(){
+	   
+	   $mode = $this->Common_model->getRecordByWhere('student',array("student_id"=>$_POST['student_id'] ));	
 	   // code for delete papers 
 		if($_POST['old_course_group_id']!=$_POST['course_group_id']){
 			$delete  =  $this->Common_model->deleteByWhere('new_exam_form' ,array('student_id'=>$_POST['student_id']));
 			$class_master =   $this->Common_model->getRecordByWhere('class_master' ,array("id"=>$_POST['class_id']));
 			if($class_master[0]->class_group=='N'){
-				$papers =   $this->Common_model->getRecordByWhere('paper_master' ,array("class_id"=>$_POST['class_id']));
-				if(count($papers)>0){
-					foreach($papers as $paper){
-						$insert_paper = array(
-							'student_id'=>$_POST['student_id'],
-							'course_group_id' =>$_POST['course_group_id'],
-							'class_id' =>$_POST['class_id'],
-							'paper_id' =>$paper->id,
-							'paper_code' =>$paper->paper_code,
-							'paper_type'=>$paper->type,
-							'book_code'=>$paper->book_code,
-							'paper_order'=>$paper->paper_no,
-							'sub_group_id'=>$paper->sub_group_id
-						);
-						$insert = $this->Common_model->insertAll('new_exam_form',$insert_paper);
+				if($mode[0]->university_mode=='PVT') 
+					$paperWhere=array('class_id'=>$_POST['class_id'],'type'=>'theory');
+				else			
+					$paperWhere=array('class_id'=>$_POST['class_id']);
+				$papers = $this->Common_model->getRecordByWhere('paper_master',$paperWhere);
+				
+					if(count($papers)>0){
+						foreach($papers as $paper){
+							$insert_paper = array(
+								'student_id'=>$_POST['student_id'],
+								'course_group_id' =>$_POST['course_group_id'],
+								'class_id' =>$_POST['class_id'],
+								'paper_id' =>$paper->id,
+								'paper_code' =>$paper->paper_code,
+								'paper_type'=>$paper->type,
+								'book_code'=>$paper->book_code,
+								'paper_order'=>$paper->paper_no,
+								'sub_group_id'=>$paper->sub_group_id
+							);
+							$insert = $this->Common_model->insertAll('new_exam_form',$insert_paper);
+						}
+						$data['temp_exam_form'] = 'Y';
+					}else{
+						$data['temp_exam_form'] = 'N';
 					}
-				}else{
-					$data['temp_exam_form'] = 'N';
-				}
 			}else{
 				$data['temp_exam_form'] = 'N';
 			}
@@ -92,7 +100,7 @@ class updateFormdata extends CI_Controller {
         $student_id = html_escape($this->input->post('student_id'));
 		$course_permission= $this->Common_model->getRecordByWhere('course',array("session"=>$session,'course_group_id'=>$course_group_id ));
 		$session_permission= $this->Common_model->getRecordByWhere('session',array("session"=>$session));	
-		$mode = $this->Common_model->getRecordByWhere('student',array("student_id"=>$student_id ));	
+		
 		if ($session!=$mode[0]->session) {
 			if(($mode[0]->university_mode=='REG' && $course_permission[0]->admission_permission_regular=='Y') ||  ($mode[0]->university_mode=='PVT' &&  $course_permission[0]->admission_permission_private=='Y'))
 			{
