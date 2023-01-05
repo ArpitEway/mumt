@@ -117,7 +117,7 @@ class Otherscript extends CI_Controller {
 	public function update_int_marks($cls_id =0)
 	{
 		$marks = array('18','17','16','18','17','16','15'); 
-		$cls_id=273;
+		$cls_id=155;
 		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and int_marks_sub='N' and roll_no!=0 limit 100";
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
@@ -141,9 +141,9 @@ class Otherscript extends CI_Controller {
 	public function update_practical_marks($cls_id =0)
 	{
 		$marks = array('43','42','41','40'); 
-		$marks = array('85','84','83','82'); 
-		$cls_id=273;
-		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and roll_no!=0 limit 100";
+		//$marks = array('85','84','83','82'); 
+		$cls_id=155;
+		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and roll_no!=0 order by roll_no limit 100";
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
 		foreach ($rs as $student) {
@@ -158,17 +158,17 @@ class Otherscript extends CI_Controller {
 				$this->db->query($update_marks);
 				shuffle($marks);
 			}
-			 $update_student = "update student set p_marks_sub='Y' where student_id='".$student['student_id']."' and class_id='".$cls_id."'";
+			 // $update_student = "update student set p_marks_sub='Y' where student_id='".$student['student_id']."' and class_id='".$cls_id."'";
 
-			 $this->db->query($update_student);
+			 // $this->db->query($update_student);
 		}
 	}
 
 	public function update_project_marks($cls_id =0)
 	{
 		$marks = array('85','84','83','82'); 
-
-		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and roll_no!=0 limit 100";
+		$cls_id=155;
+		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and roll_no!=0 order by roll_no limit 100";
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
 		foreach ($rs as $student) {
@@ -180,12 +180,32 @@ class Otherscript extends CI_Controller {
 
 				$update_marks = "update new_exam_form set p_marks='".$marks[$i]."' where id=".$new_exam_data['id'];
 				$i++;
-				//$this->db->query($update_marks);
+				$this->db->query($update_marks);
 				shuffle($marks);
 			}
 			$update_student = "update student set p_marks_sub='Y' where student_id='".$student['student_id']."' and class_id='".$cls_id."'";
 
-		//	$this->db->query($update_student);
+			$this->db->query($update_student);
+		}
+	}
+	public function update_oldexam_marks($cls_id =0)
+	{
+
+		$cls_id=154;
+		$sql = "SELECT * FROM `old_exam_data` WHERE `class_id`=154  AND total_marks=400 limit 250";
+		$rs = $this->db->query($sql)->result_array();
+		$i=0;
+		foreach ($rs as $student) {
+			$new_exam_sql = "SELECT SUM(p_marks) as tot FROM `old_result_data` WHERE `exam_data_id`='".$student['id']."' and `type`!='Theory'";
+			$new_exam_rs =	$this->db->query($new_exam_sql)->result_array();
+			$total_marks=500;
+			$obtain_marks=$student['obtain_marks']+$new_exam_rs[0]['tot'];
+			echo "<br> $i= <br>";
+			$percentage=round(($obtain_marks/$total_marks)*100,2);
+				// $percentage=($obtain_marks/$total_marks)*100;
+			echo $update_marks = "update old_exam_data set total_marks='".$total_marks."',obtain_marks='".$obtain_marks."',percentage='".$percentage."' where id=".$student['id'];
+			$i++;
+			$this->db->query($update_marks);
 		}
 	}
 }
