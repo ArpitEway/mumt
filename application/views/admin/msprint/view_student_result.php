@@ -157,7 +157,7 @@
                      <label class="text-heading mt-3"><?= $i++; ?></label>
                  </div> 
                  <div class="col-md-1">
-                     <label class="text-heading mt-3"><?php echo  $this->Common_model->getClassNameByClassId($student->old_class_id); ?></label>
+                     <label class="text-heading mt-3"><?php echo  $this->Common_model->getClassNameByClassId($res->class_id); ?></label>
                  </div>
                  <div class="col-md-2">
                  <label class="text-heading mt-3"><?= $res->roll_no; ?></label>

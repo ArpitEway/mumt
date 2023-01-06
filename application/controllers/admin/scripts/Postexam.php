@@ -66,18 +66,7 @@ class Postexam extends CI_Controller {
         }
     }
 
-      public function upload_old_marks()
-      {
-           $this->db->select('course_name,class_name,class_id, COUNT(student_id) as cnt');
-           $this->db->where('exam_form', 'Y');
-           // $this->db->where('result_show', 'Y');
-           $this->db->where('upload_result', 'N');
-           $this->db->group_by('class_id');          
-           $data['courses'] = $this->db->get('student')->result();
-           $this->load->view('header',array('title' => ''));
-           $this->load->view('admin/script/upload_old_marks',$data);
-           $this->load->view('footer');
-      }
+     
 
 
        public function generate_marksheet_no(){
@@ -106,10 +95,27 @@ class Postexam extends CI_Controller {
             $this->load->view('admin/script/footer');
        }
 
+
+       public function upload_old_marks()
+       {
+            $this->db->select('course_name,student.class_name,class_id, COUNT(student_id) as cnt');
+            $this->db->join('class_master', 'student.class_id = class_master.id');
+            $this->db->where('last_class', 'L');
+            $this->db->where('new_exam_form', 'Y');
+            $this->db->where('result_permission', 'Y');
+            // $this->db->where('result_show', 'Y');
+            $this->db->where('upload_result', 'N');
+            $this->db->group_by('class_id');          
+            $data['courses'] = $this->db->get('student')->result();
+            $this->load->view('header',array('title' => ''));
+            $this->load->view('admin/script/upload_old_marks',$data);
+            $this->load->view('footer');
+       }
+
     public function upload_old_data_script($class_id=""){
         $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
-        $this->db->limit(600);
-        $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'N'));
+        $this->db->limit(500);
+        $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "new_exam_form"=>'Y', "upload_result"=>'N'));
       $this->db->where_in('course_group.course_type',array('Diploma','PGDiploma'));
       $course_type = $this->Common_model->getRecordByWhere("course_group",array('id'=> $students[0]->course_group_id));
 
@@ -141,12 +147,12 @@ class Postexam extends CI_Controller {
                 'enrollment_no' => $student->enrollment_no,
                 'roll_no' => $student->roll_number,
                 'name' => $student->name,
-                'exam_year' => 'Feb 2022',
+                'exam_year' => 'Aug 2022',
                 'f_h_name' => $student->f_h_name,
                 'mother_name' => $student->mother_name,
                 'marksheet_no' =>$student->marksheet_no,
             );
-            $new_exam_form = $this->Common_model->getRecordByWhere('new_exam_form',array('student_id' => $student->student_id));
+            $new_exam_form = $this->Common_model->getRecordByWhere('new_exam_form',array('student_id' => $student->student_id,'class_id'=>$class_id));
             foreach($new_exam_form  as $marks)
             {
                 $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$marks->class_id,'paper_code'=>$marks->paper_code));
@@ -171,7 +177,7 @@ class Postexam extends CI_Controller {
                         $fali_tot_marks += $marks->theory_marks;
                         $require_tot_marks += $paper_master[0]->min_theory_marks;
                     }
-                }else if($marks->paper_type=='practical'){
+                }else{ //if($marks->paper_type=='Practical'){
                     if ($classData->practical_internal_marks=='Y') {
                         $tot_std_marks += $marks->p_marks+$marks->int_marks;
                         $tot_marks += $paper_master[0]->max_theory_marks + $paper_master[0]->max_internal_marks;
@@ -193,8 +199,8 @@ class Postexam extends CI_Controller {
                     }
                 }
             }
-
-            $aggregate_per =   ($tot_std_marks/$tot_marks) * 100;
+           
+            $aggregate_per = round(  ($tot_std_marks/$tot_marks) * 100,2);
             $require_grace_marks = $require_tot_marks-$fali_tot_marks;
             if ($fail_count<3 && $fail_count!=0 && $abs_count==0 && $require_grace_marks<4 && $aggregate_per>36 && $p_fail_count==0){
                 $check_grace_marks = true;
@@ -204,7 +210,8 @@ class Postexam extends CI_Controller {
             }else{
                 $final_result = 'PASS';   
             }
-             if ($final_result=='FAIL'  && count($course_type)==0 && $student->course_group_id!=76 && $student->course_group_id!=77) {
+             if ($final_result=='FAIL') {
+                 //  && count($course_type)==0 && $student->course_group_id!=76 && $student->course_group_id!=77
                 continue;
             }
             $examData['university_mode'] = $student->university_mode;
@@ -235,7 +242,7 @@ class Postexam extends CI_Controller {
                             }
                         }
                        $paper_count++;    
-                    }else if($marks->paper_type=="practical"){
+                    }else{ //  if($marks->paper_type=="Practical"){
                         $result = "PASS";
                         if($marks->p_marks=='' || $marks->p_marks=='N' || $marks->p_marks=='ABS'){
                             $result = "FAIL";
@@ -562,4 +569,47 @@ class Postexam extends CI_Controller {
                 echo $this->db->last_query().'<br>';
          } 
      }
+     public function course_complete_status()
+     {
+          $this->db->select('course_name,student.class_name,student.course_group_id,class_id, COUNT(student_id) as cnt');
+          $this->db->join('class_master', 'student.class_id = class_master.id');
+          $this->db->where('last_class', 'L');
+          $this->db->where('new_exam_form', 'Y');
+          $this->db->where('result_permission', 'Y');
+          $this->db->where('course_complete', 'N');
+          $this->db->where('upload_result', 'Y');
+          $this->db->group_by('class_id');          
+          $data['courses'] = $this->db->get('student')->result();
+          $this->load->view('header',array('title' => ''));
+          $this->load->view('admin/script/course_complete_status',$data);
+          $this->load->view('footer');
+     }
+     public function update_course_complete_status($course_group_id="",$class_id=""){
+            $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+            $this->db->limit(500);
+            $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "new_exam_form"=>'Y', "upload_result"=>'Y','course_complete'=>'N'));
+            $courseClassData = $this->Common_model->getRecordByWhere("class_master",array("course_group_id"=>$course_group_id,"mode"=>$classData->mode));
+    
+            $i=1;
+            echo "<br>&nbsp;&nbsp; # &nbsp;&nbsp; Form Number  &nbsp;&nbsp; Enrollment Number";
+            foreach($students as $student)
+            {
+                $passCounter=0;
+                foreach($courseClassData as $courseClass)
+                 {
+                    $courseCompleteStudentData = $this->Common_model->getRecordByWhere("old_exam_data",array("student_id"=>$student->student_id,"exam_result!="=>"FAIL","class_id"=>$courseClass->id));
+                    if($courseCompleteStudentData) $passCounter++;
+                }
+                 if(count($courseClassData)==$passCounter){
+                    $data = array(
+                        'course_complete' => 'Y',
+                        'new_admission_permission'=>'Y',
+                    );
+                    $where = array('student_id'=>$student->student_id);
+                    $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+                        echo "<br>&nbsp;&nbsp;".$i++."  &nbsp;&nbsp;&nbsp;  ".$student->student_id. "   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   ".$student->enrollment_no;
+                }
+               
+            }
+        }     
 }
