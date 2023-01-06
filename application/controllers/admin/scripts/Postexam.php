@@ -202,15 +202,16 @@ class Postexam extends CI_Controller {
            
             $aggregate_per = round(  ($tot_std_marks/$tot_marks) * 100,2);
             $require_grace_marks = $require_tot_marks-$fali_tot_marks;
-            if ($fail_count<3 && $fail_count!=0 && $abs_count==0 && $require_grace_marks<4 && $aggregate_per>36 && $p_fail_count==0){
+            //$aggregate_per>36 &&
+            if($fail_count<2 && $fail_count!=0 && $abs_count==0 && $require_grace_marks<4 &&  $p_fail_count==0){
                 $check_grace_marks = true;
             }
-            if ($fail_count>0) {
+            if($fail_count>0) {
                 $final_result = ($check_grace_marks) ? 'PASS BY GRACE' : 'FAIL';
             }else{
                 $final_result = 'PASS';   
             }
-             if ($final_result=='FAIL') {
+            if($final_result=='FAIL') {
                  //  && count($course_type)==0 && $student->course_group_id!=76 && $student->course_group_id!=77
                 continue;
             }
