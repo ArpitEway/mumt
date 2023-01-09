@@ -1665,7 +1665,7 @@ class Center extends CI_Controller {
 		
 		$this->db->where('class_master.result_permission', 'Y');
 		$this->db->where('center_id', $center_id);
-		$this->db->where('result_show','Y');
+		//$this->db->where('result_show','Y');
 		$this->db->where('new_exam_form','Y');
 		//$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,197,203,211,213)');
 		$data['courses'] = $this->db->get()->result();
