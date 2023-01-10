@@ -1843,7 +1843,7 @@ class ExamController extends CI_Controller {
             $course_groupids = array_column($course_group, 'id');
  			$this->db->where_in('course_group_id',$course_groupids);
 			$this->db->order_by('course_name', "asc");
-			$course_group = $this->Common_model->get_record('student','DISTINCT(course_group_id) as  course_group_id, course_name' ,array('new_exam_form'=>'Y'));
+			$course_group = $this->Common_model->get_record('student','DISTINCT(course_group_id) as  course_group_id,course_name' ,array('new_exam_form'=>'Y'));
 
 			$data = array('course_group' => $course_group,
 				'name_csrf' => $this->security->get_csrf_token_name(),
