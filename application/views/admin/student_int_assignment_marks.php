@@ -88,7 +88,9 @@
             <select name="marks[]" class="form-control col-12 increase"  id="<?="id_{$s}"; ?>"  > 
         <option value="ABS" selected>Absent</option>
         <?php
-        $percentage = 90;  
+        // $percentage = 90;  
+        $percentage = 100;
+
       $max_internal=  $view[0]->max_internal_marks;
       $min_internal=  $view[0]->min_internal_marks; 
 
