@@ -341,7 +341,7 @@
                     <tr>
                       <td height="20" ><strong><?=$classData->mode ?></strong></td>
                       <?php
-                        $whereClass = array( 'course_group_id'=> $classData->course_group_id,'id !=' => $classData->id,'student_id' =>$student->student_id);
+                        $whereClass = array( 'course_group_id'=> $classData->course_group_id,'class_id !=' => $classData->id,'student_id' =>$student->student_id);
                        $oldClassResult = $this->Common_model->getRecordByWhere('old_exam_data',$whereClass);
                         foreach ($oldClassResult as $row) {
                         $i++;
