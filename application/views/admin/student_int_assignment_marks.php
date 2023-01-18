@@ -61,7 +61,8 @@
  $ajax_count=count($details); 
       foreach($details as $student){
        
-       $view=  $this->Common_model->getRecordByWhere("paper_master",'class_id='.$details[0]->class_id);
+       $view=  $this->Common_model->getRecordByWhere("paper_master",array('class_id'=>$student->class_id,'paper_code'=>$student->paper_code));
+      //  print_r($view);die;
         ?>
         <tr>
          
