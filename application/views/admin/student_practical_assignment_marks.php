@@ -76,7 +76,8 @@
           <select name="marks[]" class="form-control col-12 increase"  id="<?="id_{$s}"; ?>"  >
             <option value="ABS" selected>Absent</option>
             <?php
-            $percentage = 85;
+            // $percentage = 85;
+            $percentage = 100;
           
             
             $max_practical=  $student->max_theory_marks;
