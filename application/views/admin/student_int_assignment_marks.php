@@ -172,16 +172,16 @@ if (document.getElementById(`id_${i}`).value=='ABS')
       }
     }
   }
-  if(check_marks==false){ 
-    alert('आपने दो से अधिक बार समान अंक दर्ज किए हैं');
-    return false; 
-  }
+//   if(check_marks==false){ 
+//     alert('आपने दो से अधिक बार समान अंक दर्ज किए हैं');
+//     return false; 
+//   }
 
-  if(check==false){
-    if(confirm('Are You want to set Absent ?')==false){
-      return false;
-    }
-}
+//   if(check==false){
+//     if(confirm('Are You want to set Absent ?')==false){
+//       return false;
+//     }
+// }
 
 
 // var x=confirm(' Are you sure to submit marks ? \n प्रविष्ट किये जा रहे निम्न अंक Provisional Marks हैं।');
