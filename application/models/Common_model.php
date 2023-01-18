@@ -914,7 +914,7 @@ class Common_Model extends CI_Model{
 		$this->db->select('*');
 		$this->db->from('paper_master');
 		$this->db->order_by('paper_no','asc');
-		$this->db->join('new_exam_form','new_exam_form.paper_code = paper_master.paper_code');
+		$this->db->join('new_exam_form','new_exam_form.paper_code = paper_master.paper_code and `new_exam_form`.`class_id` = `paper_master`.`class_id`');
 		$this->db->join('class_master','class_master.id=new_exam_form.class_id');
 		// $this->db->order_by('new_exam_form.sub_group_id,paper_order');
 		$this->db->where($where); 
