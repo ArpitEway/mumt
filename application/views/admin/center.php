@@ -23,8 +23,8 @@
 						<th>Status</th>
 						<?php if($this->session->account_type=='Admins'){ ?>
 						<th>Options</th>
+						<th>Action</th>
 					<?php } ?>
-						<!-- <th>Action</th> -->
 					</tr>
 				</thead>
 			<tbody>
@@ -62,15 +62,13 @@
 					
 
 <?php if($this->session->account_type=='Admins'){ ?>
-<td>				
+<td>
 	<div>
 	<a href="javascript:void(0);" class="btn btn-primary btn-md" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/center/edit/'.$center['id']); ?>', '<?php echo 'Update center' ?>')"> <i class="fas fa-pencil-alt"></i> </a>   <!--  <a href="javascript:void(0);" class="btn btn-danger btn-md" onclick="confirmModal('<?php echo site_url('admin/Admins/centers/delete/'.$center['id']); ?>', showAllcenters )"><i class="fas fa-trash-alt"></i> </a> -->
 	</div>
 </td>
+<td><a href="<?php echo site_url('admin/Admins/allot_course/'.$center['id']); ?>" class="btn btn-primary btn-sm" >Add courses </a></td>
 <?php } ?>
-<!--<td>
-		<a href="<?php echo site_url('admin/Admins/allot_course/'.$center['id']); ?>" class="btn btn-primary btn-sm" >Add courses </a>
-</td> -->
 </tr>
 				
 <?php $i++; } ?>

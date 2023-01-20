@@ -286,7 +286,7 @@ class Center extends CI_Controller {
 		$data = $row = array();
 
 		$where = array(
-			'center_id' => $this->session->center_id,
+			// 'center_id' => $center_id,
 			'new_admission_permission'=>'N'
 		);
 		if($_POST['session']!='All'){
@@ -324,7 +324,12 @@ class Center extends CI_Controller {
 			'table2' => 'student_data',
 			'joinOn' => 'student.student_id=student_data.student_id'
 		);
-
+		
+		if ($this->session->center_id!=13) {
+			$this->db->where('center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+		}
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
 		$center_ids_dep = array( 21,22,23,24,25,26,27,28,29);
@@ -341,11 +346,22 @@ class Center extends CI_Controller {
 	
 			$data[] = array($result->student_id,$enrollment,$result->name, $result->f_h_name, $result->course_name,$result->class_name,$btn);
 		}
-
+		if ($this->session->center_id!=13) {
+			$this->db->where('center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+		}
+		$recordsTotal = $this->Datatable_join_model->countAll('student',$where);
+		if ($this->session->center_id!=13) {
+			$this->db->where('center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+		}
+		$recordsFiltered = $this->Datatable_join_model->countFiltered($_POST,$DataTableArray);
 		$output = array(
 			"draw" => $_POST['draw'],
-			"recordsTotal" => $this->Datatable_join_model->countAll('student',$where),
-			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
+			"recordsTotal" => $recordsTotal,
+			"recordsFiltered" => $recordsFiltered,
 			"data" => $data,
 		);
 
@@ -383,7 +399,7 @@ class Center extends CI_Controller {
 		$data = $row = array();
 		
 		
-		$where = 'online_payment_transaction.center_id='.$this->session->center_id.' and online_payment_transaction.payment!="Y"';
+		$where = 'online_payment_transaction.payment!="Y"';
 		
 		if($param1=='Admission'){
 			$permission_session= $this->Common_model->getRecordByWhere('session',array('unpaid_permission'=>'Y' ));
@@ -420,13 +436,21 @@ class Center extends CI_Controller {
 			'joinOn' => 'student.student_id=online_payment_transaction.student_id'
 		);
 		
-		 
+		 if ($this->session->center_id!=13) {
+			$this->db->where('online_payment_transaction.center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28));
+		}
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		
 		$i = $_POST['start'];
 		
-	
-		 $counttableData = $this->Datatable_join_model->joincountAll($_POST,$DataTableArray);
+		if ($this->session->center_id!=13) {
+			$this->db->where('online_payment_transaction.center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28));
+		}
+		$counttableData = $this->Datatable_join_model->joincountAll($_POST,$DataTableArray);
 				  
 		foreach($tableData as $result){
 			$center_ids_dep = array( 21,22,23,24,25,26,27,28,29);
@@ -440,10 +464,16 @@ class Center extends CI_Controller {
 			$data[] = array($result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->amount,$modal);
 		}
 
+		if ($this->session->center_id!=13) {
+			$this->db->where('online_payment_transaction.center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28));
+		}
+		$recordsFiltered = $this->Datatable_join_model->countFiltered($_POST,$DataTableArray);
 		$output = array(
 			"draw" => $_POST['draw'],
 			"recordsTotal" => $counttableData,//$this->Datatable_join_model->countAll('online_payment_transaction',$where),
-			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
+			"recordsFiltered" => $recordsFiltered,
 			"data" => $data,
 		);
 
@@ -454,7 +484,7 @@ class Center extends CI_Controller {
 
 	public function getPaidFeesList(){
 		$data = $row = array();
-		$where = 'online_payment_transaction.center_id='.$this->session->center_id.' and online_payment_transaction.payment="Y"';
+		$where = 'online_payment_transaction.payment="Y"';
 
 		$column_order = array('student.university_mode,student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','fees_head','amount','txnId',null);
 		$column_search = array('student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','fees_head','amount','txnId');
@@ -468,7 +498,11 @@ class Center extends CI_Controller {
 			'table2' => 'online_payment_transaction',
 			'joinOn' => 'student.student_id=online_payment_transaction.student_id'
 		);
-
+		if ($this->session->center_id!=13) {
+			$this->db->where('online_payment_transaction.center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28));
+		}
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
 		foreach($tableData as $result){
@@ -477,11 +511,22 @@ class Center extends CI_Controller {
 			$university_mode = ($result->university_mode=='REG') ? 'Regular' : 'Private';
 			$data[] = array($university_mode, $result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->fees_head,$result->amount,$result->txnId,$btn);
 		}
-
+		if ($this->session->center_id!=13) {
+			$this->db->where('online_payment_transaction.center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28));
+		}
+		$recordsTotal = $this->Datatable_join_model->countAll('online_payment_transaction',$where)
+		if ($this->session->center_id!=13) {
+			$this->db->where('online_payment_transaction.center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28));
+		}
+		$recordsFiltered = $this->Datatable_join_model->countFiltered($_POST,$DataTableArray)
 		$output = array(
 			"draw" => $_POST['draw'],
-			"recordsTotal" => $this->Datatable_join_model->countAll('online_payment_transaction',$where),
-			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
+			"recordsTotal" => $recordsTotal,
+			"recordsFiltered" => $recordsFiltered,
 			"data" => $data,
 		);
 

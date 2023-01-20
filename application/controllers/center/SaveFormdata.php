@@ -22,9 +22,19 @@ class saveFormdata extends CI_Controller {
 		$data['course_group_id'] = $course_group_id;
 		$data['course_name'] = $this->Common_model->getCourseNameByCourseId($course_group_id);
 		$data['class_name'] = $this->Common_model->getClassNameByClassId($class_id);
-		$data['center_id'] = $this->session->center_id;
-		$data['center_code'] = $this->session->centerdata;
-		$data['center_name'] = $this->Common_model->getSinglefield('center','center_name','id='.$this->session->center_id);
+		if ($this->session->center_id!=13) {
+			$data['center_id'] = $this->session->center_id;
+			$data['center_code'] = $this->session->centerdata;
+			$data['center_name'] = $this->Common_model->getSinglefield('center','center_name','id='.$this->session->center_id);
+		}else{
+			$this->db->like('allot_course_group_id',$course_group_id);
+			$this->db->where_in('id',array(21, 22, 23, 24, 25, 26, 27, 28));
+			$this->db->from('center');
+			$centerData = $this->db->get()->row();
+			$data['center_id'] = $centerData->id;
+			$data['center_code'] = $centerData->center_code;
+			$data['center_name'] = $centerData->center_name;
+		}
 		if($this->input->post('mode')=="regular"){
            $mode = "REG";
 		}else{
