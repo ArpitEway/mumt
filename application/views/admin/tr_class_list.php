@@ -2,6 +2,7 @@
 	<tbody>
 		<?php $i=1; ?>
 		<?php foreach ($courses as $course){
+			$this->db->order_by('id');
         $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id']));
         // , 'exam_form_permission' => 'Y'
         ?>
