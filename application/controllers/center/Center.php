@@ -815,12 +815,15 @@ class Center extends CI_Controller {
 		$session = $this->input->post('session');
 		$course_type= $this->input->post('course_type');
 		$course_type_where="";
-		if(!empty($course_type)){
-			
-				$course_type_where="student.university_mode='".$course_type."' AND ";	
-			
+		if(!empty($course_type)){	
+				$course_type_where="student.university_mode='".$course_type."' AND ";
 		}
-		$where = $course_type_where." session='".$session."' and center_id=".$this->session->center_id;
+		$where = $course_type_where." session='".$session."'";
+		if ($this->session->center_id!=13) {
+			$this->db->where('center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+		}
 		$course_group_list = $this->Common_model->get_record('student','distinct(course_group_id) as id,course_name',$where);
 		$data = array(
 			'course_group_list' => $course_group_list,
