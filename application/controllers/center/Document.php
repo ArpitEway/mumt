@@ -38,8 +38,8 @@
 		
 		
 		
-		$where.= "document_uploaded!='Y' and payment_status='Y' and center_id=".$this->session->center_id ." and ( ";
 		$permission_session= $this->Common_model->getRecordByWhere('session',array('document_permission'=>'Y' )); 
+		$where.= "document_uploaded!='Y' and payment_status='Y'  and ( ";
 		foreach($permission_session as $key=>$row){
 			
 			if($row->semester_permission=='N' && $row->annual_permission=='Y' )
@@ -63,7 +63,11 @@
 			'where' => $where,
 			'table' => 'student',
 		);
-           
+		if ($this->session->center_id!=13) {
+			$this->db->where('center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+		}
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		//print_r($this->db->last_query());    
 		$i = $_POST['start'];
@@ -72,11 +76,22 @@
 			$i++;
 			$data[] = array($result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$btn);
 		}
+		if ($this->session->center_id!=13) {
+			$this->db->where('center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+		}
 		$counttableData = $this->Datatable_join_model->joincountAll($_POST,$DataTableArray);
+		if ($this->session->center_id!=13) {
+			$this->db->where('center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+		}
+		$recordsFiltered = $this->Datatable_join_model->countFiltered($_POST,$DataTableArray);
 		$output = array(
 			"draw" => $_POST['draw'],
 			"recordsTotal" => $counttableData,//$this->Datatable_join_model->countAll('student',$where),
-			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
+			"recordsFiltered" => $recordsFiltered,
 			"data" => $data,
 		);
 
