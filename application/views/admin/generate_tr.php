@@ -369,14 +369,14 @@ table.last_table, .last_table td, .last_table th{
             }
             elseif($int_abs_count>0 &&  $theory_abs_count>0 && $p_abs_count>0){
               echo 'ABS In ALL';
-            }elseif($int_abs_count == $count_int ||  $theory_abs_count == $count_theory || $p_abs_count == $count_practical){
+            }elseif($int_abs_count == $count_int ||  $theory_abs_count == $count_theory || ($p_abs_count == $count_practical && $count_practical!=0)){
               echo 'ABS In';
               if($theory_abs_count == $count_theory){
                 echo ' Theory';
               }elseif($int_abs_count == $count_int){
                 echo ' Internal'; 
-              }elseif($p_abs_count == $count_practical){
-                echo ' prectical';
+              }elseif($p_abs_count == $count_practical && $count_practical!=0){
+                echo ' Practical';
               }
             }else{
               if(sizeof($atkt_paper_codes_array)>0){
@@ -472,11 +472,12 @@ table.last_table, .last_table td, .last_table th{
       if($paper_master->paper_type=="theory"){
        if($check_grace_marks==true){
         echo $paper_master->theory_marks+ $paper_master->int_marks;
-      } elseif(($paper_master->theory_marks<$paper_master->min_theory_marks) || ($paper_master->int_marks<$paper_master->min_internal_marks) || $theory_abs_count!=0 || $int_abs_count!=0){
+      } elseif(($paper_master->theory_marks<$paper_master->min_theory_marks) || ($paper_master->int_marks<$paper_master->min_internal_marks) || $paper_master->theory_marks=='ABS' || $paper_master->int_marks=='ABS'){
+
         if($paper_master->theory_marks==''){
           echo "-";
         }else{
-          echo (int) $paper_master->theory_marks+ (int) $paper_master->int_marks." F";
+          echo (int) $paper_master->theory_marks + (int) $paper_master->int_marks." F";
         }
       }else{
         echo (int) $paper_master->theory_marks+ (int) $paper_master->int_marks;
