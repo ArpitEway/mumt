@@ -66,6 +66,15 @@ if($fail_count<2 && $require_grace_marks<4 && $abs_count==0 && $fail_count!=0){
       $check_grace_marks = true;
 }
 
+// if ($fail_count>0 && !$check_grace_marks) {
+if ($fail_count>0 && !$check_grace_marks && $marks->student_id!=684208 && $marks->class_id !=182 && $marks->class_id !=155 ) {  
+    ?>
+  <div class="text-center text-primary border-right border-left border-bottom border-dark py-3">
+    <h1 class=" text-center mb-0">Statement Of Marks</h1>
+    <h3 class="text-center">WH</h3>
+  </div>
+  <?php
+}else{
 ?>
 <?php 
 if ($withheld) { 
@@ -101,7 +110,7 @@ if ($withheld) {
     $total_obtained_marks = 0;    
     foreach($new_exam_form as  $marks){
       $result_1_paper = '';
-      $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code));
+      $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code,"class_id"=>$marks->class_id));
     ?>
     <tr>
       <th><?php echo $this->Common_model->getPaperNameById($marks->paper_id); ?></th>
@@ -183,22 +192,22 @@ if ($withheld) {
 </div>
 </div>
 <div class="form-group col-md-12 text-center mt-3"  id="print_btn">
-	<button  type="button" onclick="printhiv('printarea')"  class="btn btn-primary font-weight-bold mr-2" >Print</button>
+  <button  type="button" onclick="printhiv('printarea')"  class="btn btn-primary font-weight-bold mr-2" >Print</button>
 </div>
 <script type="text/javascript">
-	function printhiv(divName) {
-		var printContents = document.getElementById(divName).innerHTML;
-		var originalContents = document.body.innerHTML;
+  function printhiv(divName) {
+    var printContents = document.getElementById(divName).innerHTML;
+    var originalContents = document.body.innerHTML;
 
-		$('#'+divName).css("margin-top"," 20px");
-		$("#first_div").css("display","none");
-		$("#print_btn").css("display", "none");
-		$("#submit_btn").css("display", "none");
-		$("#title_nm").css("display", "none");
-		$("#institute").css("display", "none");
-		$("#head_img").css("display", "none");
-		window.print();
-		document.body.innerHTML = originalContents;
-	}
+    $('#'+divName).css("margin-top"," 20px");
+    $("#first_div").css("display","none");
+    $("#print_btn").css("display", "none");
+    $("#submit_btn").css("display", "none");
+    $("#title_nm").css("display", "none");
+    $("#institute").css("display", "none");
+    $("#head_img").css("display", "none");
+    window.print();
+    document.body.innerHTML = originalContents;
+  }
 </script>
-<?php } ?>
+<?php } } ?>
