@@ -326,4 +326,25 @@ class Permission extends CI_Controller {
 					"data" => $data
 				));	 
 	}
+
+	public function update_final_result_permission(){
+		$status =  $this->input->post('final_result_permission');
+     
+		if(isset($_POST['class_id'])){
+			$class_id =  $this->input->post('class_id');
+			$where = array('id'=>$class_id);
+		}
+
+        if($status!=''){
+        	$st = ($status == 'Y') ? 'N' : 'Y';
+        	$data=array('final_result_permission'=>$st);
+        }
+        
+		$res=$this->Common_model->updateRecordByConditions('class_master',$where,$data);
+		if($status == 'Y'){
+			echo json_encode(array('success'=>true));
+		}else if($status == 'N'){
+			echo json_encode(array('error'=>false));
+		}
+	}
 }// class

@@ -13,6 +13,7 @@
           <th>Paper Count</th>
           <th>Exam Form Permission</th>
           <th>Result Permission</th>
+          <th>Final Result Permission</th>
           <th>Admit Card Permission</th>
 			</tr>
 		</thead>
@@ -39,17 +40,18 @@
                   echo " No";
                 } ?></button>
             </td>
-            
-
-
- <td>
+            <td>
              <button id="btn1_<?php echo  $class->id?>" <?php if($class->result_permission=='Y' ){echo "class='btn btn-success'" ;}else{echo "class='btn btn-danger' ";} ?> onclick="statusChangeresult(<?php echo $class->id;  ?>,'<?php echo $class->result_permission;?>')">
-                <?php if($class->result_permission=='Y' ){echo "Yes" ;}else{
-                  echo " No";
-                } ?></button>
+              <?php if($class->result_permission=='Y' ){echo "Yes" ;}else{
+                echo " No";
+              } ?></button>
             </td>
-            
-           
+            <td>
+             <button id="btnFR_<?php echo  $class->id?>" <?php if($class->final_result_permission=='Y' ){echo "class='btn btn-success'" ;}else{echo "class='btn btn-danger' ";} ?> onclick="statusChangeFinalresult(<?php echo $class->id;  ?>,'<?php echo $class->final_result_permission;?>')">
+              <?php if($class->final_result_permission=='Y' ){echo "Yes" ;}else{
+                echo " No";
+              } ?></button>
+            </td>
             <td>
                 <button id="btn_a_<?php echo  $class->id?>" <?php if($class->admit_card_permission	=='Y' ){echo "class='btn btn-success'" ;}else{echo "class='btn btn-danger' ";} ?> onclick="statusChangeAdmitCard(<?php echo $class->id;   ?>,'<?php echo $class->admit_card_permission;?>')">
                 <?php if($class->admit_card_permission=='Y'){echo "Yes" ;}else{
@@ -147,7 +149,31 @@
     });
   }
 
-
+  function statusChangeFinalresult(id,final_result_permission) {
+    var csrfName = $('.csrfname').attr('name');
+    var csrfHash = $('.csrfname').val(); 
+    $.ajax({
+      url: BASE_URL+"admin/Permission/update_final_result_permission",
+      type:"post",
+      dataType: 'json',
+      data:{"class_id":id,"final_result_permission":final_result_permission,[csrfName]:csrfHash},
+      success: function(response){
+        if(response.success==true){
+          $("#btnFR_"+id).removeClass("btn btn-success");
+          $("#btnFR_"+id).addClass("btn btn-danger");
+          $("#btnFR_"+id).html("No");
+          var s="statusChangeFinalresult("+ id +",'N')";
+          $("#btnFR_"+id).attr("onclick",s);
+        }else  if(response.error==false){
+          $("#btnFR_"+id).removeClass("btn btn-danger");
+          $("#btnFR_"+id).addClass("btn btn-success");
+          $("#btnFR_"+id).html("Yes");
+          var s="statusChangeFinalresult("+ id +",'Y')";
+          $("#btnFR_"+id).attr("onclick",s);
+        }
+      }
+    });
+  }
 
 
  </script>

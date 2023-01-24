@@ -1887,6 +1887,7 @@ class Center extends CI_Controller {
 		$this->db->where('new_exam_form.class_id',$data['student']->class_id);
 		$new_exam_form = $this->db->get()->result();
 		$data['new_exam_form']  = $new_exam_form;
+		$data['classData']  = $classData;
 		$title = array('title' => 'Result - '.$data['student']->enrollment_no);
 		$this->load->view('admin/generate_tr/header2',$title);	
 		//$this->load->view('Centers/marksheet',$data);
