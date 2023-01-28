@@ -336,7 +336,9 @@ class Center extends CI_Controller {
 		foreach($tableData as $result){
 			// $btn = ($result->document_uploaded=='Y' || in_array($this->session->center_id, $center_ids_dep)) ?
 			// '<a href="'.base_url('show_form/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>' : '';
-			$btn = '<a href="'.base_url('show_form/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>';
+			$btn = '<a href="'.base_url('show_form/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm" target="_blank" title="Form"><i class="fa fa-eye text-white"></i></a>';
+			 $btn1 = ($result->temp_exam_form=='Y')?
+				'<a target="_blank"  class="btn btn-info btn-sm" href="'.base_url('center/Center/showPapers/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" title="Papers"><i class="fa fa-eye text-white" aria-hidden="true"></i></a>':'';
 			$i++;
 
 			if($result->enrolled=='N'){
@@ -345,7 +347,7 @@ class Center extends CI_Controller {
 				$enrollment = $result->enrollment_no;
 			}
 	
-			$data[] = array($result->student_id,$enrollment,$result->name, $result->f_h_name, $result->course_name,$result->class_name,$btn);
+			$data[] = array($result->student_id,$enrollment,$result->name, $result->f_h_name, $result->course_name,$result->class_name,$btn,$btn1);
 		}
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
@@ -369,6 +371,8 @@ class Center extends CI_Controller {
 // Output to JSON format
 		echo json_encode($output);
 	}
+
+	
 
 	public function student_list($param1 = '')
 	{

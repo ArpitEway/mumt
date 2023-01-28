@@ -57,8 +57,19 @@
 				<option value="">All</option>
 			</select>       
 		</div>
+		<div class="form-group col-md-2">
+			<label for="class">Course Type</label>
+			<select name="course_type" id="course_type" class="form-control"  > 
+				<option value="All">All</option>
+				<option value="UG">UG</option>
+				<option value="PG">PG</option>
+				<option value="Diploma">Diploma</option>
+				<option value="PGDiploma">PGDiploma</option>
+				<option value="Certificate">Certificate</option>
+			</select>
+		</div>
 
-		<div class="form-group col-md-3">
+		<div class="form-group col-md-2">
 			<label for="class">Payment</label>
 			<select name="payment" id="payment" class="form-control"  > 
 				<option value="all">All</option>
@@ -68,7 +79,7 @@
 			</select>
 		</div>
 
-		<div class="form-group col-md-3">
+		<div class="form-group col-md-2">
 			<label for="class">Admission document</label>
 			<select name="document_upload" id="document_upload" class="form-control"  > 
 				<option value="all">All</option>
@@ -196,6 +207,7 @@
 			center_id : $("#center_id").val(),
 			approved : $("#approved").val(),
 			mode : $("#mode").val(),
+			course_type : $("#course_type").val(),
 			payment : $("#payment").val(),
 			filter : $('input[name="filter"]:checked').val(),
 			enrolled : $("#enrolled").val(),
