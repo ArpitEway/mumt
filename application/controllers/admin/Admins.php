@@ -1529,12 +1529,10 @@ class Admins extends CI_Controller {
 
 					$data['students'] = $this->Common_model->student_data_consolidate($dt,"",$center_type);
 					
-					// $this->Common_model->last_query();
-
 				}
 				if($filter == "count"){				
 					$data['course_count'] = $this->Common_model->student_data_consolidate($dt,$_POST['count_filter'],$center_type);
-					// $this->Common_model->last_query();
+				
 				}
 
 			//$this->Common_model->last_query();
