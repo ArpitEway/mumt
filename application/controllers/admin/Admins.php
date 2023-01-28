@@ -1445,6 +1445,7 @@ class Admins extends CI_Controller {
 				$class_id  		  = $this->input->post("class_id");
 				$approved 		  = $this->input->post("approved");
 				$new_exam_form    = $this->input->post("new_exam_form");
+				$course_type 		  = $this->input->post("course_type");
 
 				$payment 		  = $this->input->post("payment");
 				$enrolled 		  = $this->input->post("enrolled");
@@ -1462,6 +1463,10 @@ class Admins extends CI_Controller {
 				}
 				if($university_mode!="all"){
 					$dt['student.university_mode'] = $university_mode ;
+				}
+				if($course_type != "All"){
+
+					$dt['course_type'] = $course_type;
 				}
 				if($session != "All") {	 
 
@@ -1523,11 +1528,13 @@ class Admins extends CI_Controller {
 				if($filter == "list"){
 
 					$data['students'] = $this->Common_model->student_data_consolidate($dt,"",$center_type);
-
+					
+					// $this->Common_model->last_query();
 
 				}
 				if($filter == "count"){				
 					$data['course_count'] = $this->Common_model->student_data_consolidate($dt,$_POST['count_filter'],$center_type);
+					// $this->Common_model->last_query();
 				}
 
 			//$this->Common_model->last_query();

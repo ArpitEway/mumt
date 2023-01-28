@@ -336,7 +336,9 @@ class Center extends CI_Controller {
 		foreach($tableData as $result){
 			// $btn = ($result->document_uploaded=='Y' || in_array($this->session->center_id, $center_ids_dep)) ?
 			// '<a href="'.base_url('show_form/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>' : '';
-			$btn = '<a href="'.base_url('show_form/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>';
+			$btn = '<a href="'.base_url('show_form/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm" target="_blank" title="Form"><i class="fa fa-eye text-white"></i></a>';
+			 $btn1 = ($result->temp_exam_form=='Y')?
+				'<a target="_blank"  class="btn btn-info btn-sm" href="'.base_url('center/Center/show_paper/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" title="Papers"><i class="fa fa-eye text-white" aria-hidden="true"></i></a>':'';
 			$i++;
 
 			if($result->enrolled=='N'){
@@ -345,7 +347,7 @@ class Center extends CI_Controller {
 				$enrollment = $result->enrollment_no;
 			}
 	
-			$data[] = array($result->student_id,$enrollment,$result->name, $result->f_h_name, $result->course_name,$result->class_name,$btn);
+			$data[] = array($result->student_id,$enrollment,$result->name, $result->f_h_name, $result->course_name,$result->class_name,$btn,$btn1);
 		}
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
@@ -369,6 +371,32 @@ class Center extends CI_Controller {
 // Output to JSON format
 		echo json_encode($output);
 	}
+
+	public function show_paper($student_id){
+    	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+    	$titleData = array('title' => 'Student Papers');
+    	$this->load->view('Centers/header',$titleData);
+    	$where = array(
+    		'student_id' => $student_id,
+    	);
+    	$student = $this->Common_model->student_info($student_id);
+    	$data['student'] = $student;
+    	// print_r($data);
+	 	// die;
+    	$this->db->select('paper_master.*,new_exam_form.sub_group_id');
+    	$this->db->from('paper_master');
+    	$this->db->order_by('new_exam_form.sub_group_id,paper_order,paper_no');
+    	$this->db->join('new_exam_form', 'paper_master.paper_code = new_exam_form.paper_code and  paper_master.class_id = new_exam_form.class_id');
+    	$where = array('paper_master.class_id' => $student['class_id'],
+    		'student_id' => $student_id
+    	);
+    	$this->db->where($where);
+    	$data['papers'] = $this->db->get()->result();
+    	// $this->Common_model->last_query();
+
+    	$this->load->view('admin/student/show_paper',$data);
+    	$this->load->view('Centers/footer');
+    }
 
 	public function student_list($param1 = '')
 	{
