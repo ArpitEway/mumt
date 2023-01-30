@@ -3218,6 +3218,7 @@ public function update_exam_datewise_permission(){
 		$this->db->from('new_exam_form');
 		
 		$this->db->where('student.student_id',$student_id);
+		$this->db->where('new_exam_form.class_id',$class_id);
 		if($classData->practical_internal_marks=="N")
 			// $this->db->where('paper_type','theory');
 			$this->db->where_in('paper_type',array('Sessional','theory'));
