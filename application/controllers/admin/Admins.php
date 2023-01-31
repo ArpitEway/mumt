@@ -3284,6 +3284,7 @@ public function update_exam_datewise_permission(){
 		$this->db->select('*');
 		$this->db->from('new_exam_form');
 		$this->db->Where($where );
+		$this->db->where("new_exam_form.class_id = ".$class_id."");
 		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
 		$this->db->order_by('new_exam_form.sub_group_id,paper_order');
 		$details = $this->db->get()->result();
@@ -3335,11 +3336,13 @@ public function update_exam_datewise_permission(){
 
 	public function student_practical_assignment_marks (){
 		$student_id = $this->input->post('student_id');
-		$where=array('student.student_id'=>$student_id,
+		$class_id = $this->input->post('class_id');
+ 		$where=array('student.student_id'=>$student_id,
 			'paper_type!='=>'theory', );
 		$this->db->select('*');
 		$this->db->from('new_exam_form');
 		$this->db->Where($where );
+		$this->db->where("new_exam_form.class_id = ".$class_id."");
 		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
 		$this->db->join('paper_master', 'paper_master.id = new_exam_form.paper_id');
 		$this->db->where_not_in('paper_type',array('Sessional','theory'));
