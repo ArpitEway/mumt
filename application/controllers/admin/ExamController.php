@@ -1951,8 +1951,9 @@ class ExamController extends CI_Controller {
 					$this->db->where('new_exam_form.course_group_id',$course_group_id);
 					$this->db->where('new_exam_form.class_id',$class['id']);
 					$this->db->where('new_exam_form.paper_type!=',"theory");
+					$this->db->where('new_exam_form.paper_type!=',"Sessional");
 					$practicalTotal = $this->db->get()->result();
-
+					
 					$this->db->select('count(*) as num');
 					$this->db->from('new_exam_form');
 					$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id ');
@@ -1962,6 +1963,7 @@ class ExamController extends CI_Controller {
 					$this->db->where('new_exam_form.course_group_id',$course_group_id);
 					$this->db->where('new_exam_form.class_id',$class['id']);
 					$this->db->where('new_exam_form.paper_type!=',"theory");
+					$this->db->where('new_exam_form.paper_type!=',"Sessional");
 					$this->db->where('new_exam_form.p_marks !=', "");
 					$this->db->where('new_exam_form.p_marks !=', "N");
 					$practical = $this->db->get()->result();
@@ -2134,6 +2136,7 @@ public function getStudentData()
 				$this->db->where('new_exam_form.course_group_id',$course_group_id);
 				$this->db->where('new_exam_form.class_id',$class_id);
 				$this->db->where('new_exam_form.paper_type!=',"theory");
+				$this->db->where('new_exam_form.paper_type!=',"Sessional");
 				$this->db->where('new_exam_form.p_marks', "N");
 				$data['students'] = $this->db->get()->result();
 			}
