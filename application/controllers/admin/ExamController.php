@@ -1938,6 +1938,7 @@ class ExamController extends CI_Controller {
 					$this->db->where('new_exam_form.class_id',$class['id']);
 					$this->db->where('new_exam_form.paper_type',"theory");
 					$this->db->where('new_exam_form.int_marks !=', "N");
+					$this->db->where('new_exam_form.int_marks !=', "");
 					$internal = $this->db->get()->result();
 					$internalVar = $internal[0]->num;
 					$internalcountVar =$internalcount[0]->num;;
