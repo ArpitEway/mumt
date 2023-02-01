@@ -2939,7 +2939,12 @@ public function update_exam_datewise_permission(){
 		$title = "TR ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
 		$data['title'] .= $title;//echo $this->db->last_query(); die;
-		$this->load->view('admin/generate_tr',$data);
+		if ($class_id!=168) {
+			$this->load->view('admin/generate_tr',$data);
+		}else{
+			$this->load->view('admin/generate_tr_mom',$data);
+		}
+
 	}
 
 	public function UpdateStudentDataMarks()
