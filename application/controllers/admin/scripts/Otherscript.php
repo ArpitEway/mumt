@@ -14,8 +14,6 @@ class Otherscript extends CI_Controller {
 		}
 	}
 	
-	
-	
 	// Update Exam fields in Paper Master from paper_paper_master_sub table
 	public function move_student_document(){
 		echo "Move Student Document  ";
@@ -209,6 +207,35 @@ class Otherscript extends CI_Controller {
 			$i++;
 			$this->db->query($update_marks);
 		}
+	}
+
+	public function remaining_failed_student_marks($class_id){
+		$this->db->select('count(*) as num,student.*');
+		$this->db->from('new_exam_form');
+		$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id');
+		$this->db->join('paper_master', 'new_exam_form.paper_id = paper_master.id');
+		$this->db->order_by('new_exam_form.course_group_id,new_exam_form.class_id','asc');
+		$this->db->where('new_exam_form.paper_type','theory');
+		// $this->db->where('new_exam_form.theory_marks',);
+		$this->db->where('new_exam_form','Y');
+		$this->db->where('new_exam_form.theory_marks < paper_master.min_theory_marks');
+		$this->db->where('new_exam_form.class_id',$class_id);
+		$this->db->where('roll_no!=','0');
+		$this->db->where('paper_type','Theory');
+		$this->db->group_by('new_exam_form.student_id');
+		$this->db->having('num',1);
+		$data['students'] = $this->db->get()->result();
+		$data['class_id'] = $class_id;
+		
+		$this->load->view('header',array('title' => 'Student Failed Remaining Marks List'));
+		$this->load->view('admin/remaining_student_average_marks_offline',$data);
+		$this->load->view('footer');
+	}
+
+	public function update_student_remaining_marks($student_id,$nefId,$marks)
+	{
+		$this->Common_model->updateRecordByConditions('new_exam_form',array('id'=>$nefId,'student_id'=>$student_id),array('theory_marks'=>$marks));
+		echo $this->db->last_query();
 	}
 }
 
