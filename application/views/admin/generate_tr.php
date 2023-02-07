@@ -174,6 +174,14 @@ table.last_table, .last_table td, .last_table th{
     $count_practical =0;
     $count_int =0;
     $final_result = '';
+    if($student->university_mode == 'REG'){
+      $rowspanhead = ($classData->project!='N' || $classData->practical!='N') ? "4" : "3";
+      $rowspandata = (($classData->project!='N' || $classData->practical!='N') && $classData->internal!='N')? "5" : "4";
+      
+    }else{
+      $rowspanhead = "2";
+      $rowspandata = "3";
+    }
     foreach($marks as $new_exam_form)
     {
       
@@ -319,7 +327,7 @@ table.last_table, .last_table td, .last_table th{
         </tr>
         <?php 
         }
-        if($classData->project!='N' || $classData->practical!='N'){
+        if($classData->project!='N' || $classData->practical!='N' && $student->university_mode != 'PVT'){
         ?>
         <tr>
           <td class="align-middle text-right paper"> <?=($classData->project=='Y') ? 'Project' : 'Practical' ?> Marks Max/Min-></td>
@@ -435,7 +443,7 @@ table.last_table, .last_table td, .last_table th{
         <?php } ?>
         <td class="align-middle text-center result"><?php echo $total_int_marks_obt;  ?></td>
     </tr> <?php } ?>
-  <?php if( $classData->project!='N' || $classData->practical!='N'){ ?>
+  <?php if( $classData->project!='N' || $classData->practical!='N' && $student->university_mode != 'PVT'){ ?>
   <tr>
     <td class="align-middle text-right paper">Practical Marks.</td>
     <?php
