@@ -176,7 +176,7 @@ table.last_table, .last_table td, .last_table th{
     $final_result = '';
     if($student->university_mode == 'REG'){
       $rowspanhead = ($classData->project!='N' || $classData->practical!='N') ? "4" : "3";
-      $rowspandata = ($classData->project!='N' || $classData->practical!='N') ? "5" : "4";
+      $rowspandata = (($classData->project!='N' || $classData->practical!='N') && $classData->internal!='N')? "5" : "4";
       
     }else{
       $rowspanhead = "2";
