@@ -26,6 +26,7 @@
 					<th>Enrolled</th>
 					<th>Exam Form</th>
 					<th>Roll No.</th>
+					<th>Category</th>
 					<th>Paper</th>
 					<?php
 					}
@@ -100,6 +101,7 @@
 						<?php $student_id = $this->Common_model->encrypt_decrypt($student['student_id']); ?>
 					</td>
 					<td><?php echo $student["roll_no"]; ?></td>
+					<td><?php echo $student["category"]; ?></td>
 					<td>
 						<?php if($student["temp_exam_form"]=='Y'){ ?>
 						<a target="_blank"  class="" href="<?=base_url('show_paper/'.$student_id);?>"><i class="fa fa-eye" aria-hidden="true"></i></a>
