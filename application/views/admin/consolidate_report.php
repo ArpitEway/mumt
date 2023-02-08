@@ -116,7 +116,7 @@
 			    <option value="all">All </option> 
 				<option value="MY 5001">MY 5001</option>
 				<option value="Jabalpur">Jabalpur (ICs) </option>
-				<option value="Katni">Katni (ICs) </option>
+				<!-- <option value="Katni">Katni (ICs) </option> -->
 				<option value="Department">Department </option> 
 				<option value="combine_naac">Naac Data</option>
 				<option value="Other" >Other</option>
