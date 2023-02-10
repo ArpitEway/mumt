@@ -61,6 +61,7 @@
 			<label for="class">Course Type</label>
 			<select name="course_type" id="course_type" class="form-control"  > 
 				<option value="All">All</option>
+				<option value="UGPG">UG & PG</option>
 				<option value="UG">UG</option>
 				<option value="PG">PG</option>
 				<option value="Diploma">Diploma</option>

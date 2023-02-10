@@ -1465,8 +1465,11 @@ class Admins extends CI_Controller {
 					$dt['student.university_mode'] = $university_mode ;
 				}
 				if($course_type != "All"){
-
-					$dt['course_type'] = $course_type;
+					if ($course_type=='UGPG') {
+						$this->db->where_in('course_type',array('UG','PG'));
+					}else{
+						$dt['course_type'] = $course_type;
+					}
 				}
 				if($session != "All") {	 
 
