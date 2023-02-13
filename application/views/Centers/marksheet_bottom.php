@@ -6,10 +6,12 @@ $fali_tot_marks = 0;
 $require_tot_marks = 0;
 $tot_marks = 0;
 $abs_count = 0;
+$int_fail_count = 0;
 foreach($new_exam_form as $marks){
   $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code,"class_id"=>$marks->class_id));
 
   if($marks->paper_type=='theory'){
+     if($student->university_mode != 'PVT'){
     $tot_marks +=  $paper_master[0]->max_theory_marks;
     if($marks->theory_marks>=$paper_master[0]->min_theory_marks){
       $result = "PASS";
@@ -33,15 +35,40 @@ foreach($new_exam_form as $marks){
       $result = "Fail";
       $fail_count++;
     }
-    if($marks->int_marks<$marks->min_internal_marks){
+    if($paper_master[0]->max_internal_marks != 0){
+    if($marks->int_marks<$paper_master[0]->min_internal_marks){
+      
+      $result = "Fail";
+      $fail_count++;
+      $int_fail_count++;
+    }
+  }
+    if(($marks->int_marks=='N' || $marks->int_marks=='') && $marks->max_internal_marks !=0) {
+     $withheld = true;
+   }
+  }else{
+    $tot_marks +=  $paper_master[0]->private_max_theory_marks;
+    if($marks->theory_marks>=$paper_master[0]->private_min_theory_marks){
+      $result = "PASS";
+    }
+    if($marks->theory_marks==''){
+      $withheld = true;
+    }
+    if($marks->theory_marks<$paper_master[0]->private_min_theory_marks){
+      $result = "Fail";
+      $fail_count++;
+      $fali_tot_marks += $marks->theory_marks;
+      $require_tot_marks +=$paper_master[0]->private_min_theory_marks;
+    }
+    if($marks->theory_marks=='ABS'){
+      $abs_count++;
       $result = "Fail";
       $fail_count++;
     }
-    if($marks->int_marks=='N' || $marks->int_marks=='') {
-     $withheld = true;
-   }
 
+  }
   }else{
+    if($student->university_mode != 'PVT'){
     $tot_std_marks += $marks->p_marks;
     $tot_marks += $paper_master[0]->max_theory_marks;
 
@@ -57,6 +84,13 @@ foreach($new_exam_form as $marks){
       $fali_tot_marks += $marks->p_marks;
       $require_tot_marks += $paper_master[0]->min_theory_marks;
     }
+    if($paper_master[0]->max_internal_marks != 0){
+      if($marks->int_marks<$paper_master[0]->min_internal_marks){
+        $result = "Fail";
+        $fail_count++;
+        $int_fail_count++;
+      }
+    }
     if ($marks->p_marks=='ABS') {
       $abs_count++;
       $result = "FAIL";
@@ -64,13 +98,14 @@ foreach($new_exam_form as $marks){
     }
   }
 }
+}
 
 
 $require_grace_marks = $require_tot_marks-$fali_tot_marks;
-if($fail_count<3 && $require_grace_marks<4 && $abs_count==0 && $fail_count!=0){
+
+if($fail_count<3 && $require_grace_marks<4 && $abs_count==0 && $fail_count!=0 &&  $int_fail_count == 0){
       $check_grace_marks = true;
 }
-
 
 // if ($fail_count>0 && !$check_grace_marks) {
 if ($fail_count>0 && !$check_grace_marks && $marks->student_id!=684208 && $classData->final_result_permission!='Y') {  
@@ -101,8 +136,12 @@ if ($withheld) {
     <tr class=" text-center" >
       <th class="border-dark text-center" rowspan="2">Subject</th>
       <th class="border-dark text-center" colspan="2">Theory <?php if($marks->course_group_id!=36 && $marks->course_group_id!=37 ){ ?> / Practical<?php } ?> Marks </th>
-      <?php if($marks->course_group_id!=36 && $marks->course_group_id!=37 ){ ?>
+      <?php if($marks->course_group_id!=36 && $marks->course_group_id!=37 ){ 
+        if($student->university_mode != "PVT"){?>
+            
             <th class="border-dark text-center" colspan="2">Internal Marks</th>
+       <?php }
+       ?>
             <th class="border-dark text-center" colspan="2">Total</th>
       <?php } ?>
       <th class="border-dark text-center" rowspan="2">Result</th>
@@ -110,9 +149,12 @@ if ($withheld) {
     <tr>
       <th class="border-dark text-center" scope="row">Max Marks</th>
       <th class="border-dark text-center" scope="row">Obtained</th>
-      <?php if($marks->course_group_id!=36 && $marks->course_group_id!=37 ){ ?>
+      <?php if($marks->course_group_id!=36 && $marks->course_group_id!=37 ){ 
+         if($student->university_mode != "PVT"){?>
+        
             <th class="border-dark text-center" scope="row">Max Marks</th>
             <th class="border-dark text-center" scope="row">Obtained</th>
+<?php }?>
             <th class="border-dark text-center" scope="row">Max Marks</th>
             <th class="border-dark text-center" scope="row">Obtained</th>
       <?php } ?>
@@ -131,12 +173,18 @@ if ($withheld) {
     ?>
     <tr>
       <th><?php echo $this->Common_model->getPaperNameById($marks->paper_id); ?></th>
-      <th class="text-center"><?php  echo $paper_master[0]->max_theory_marks; ?></th>
+      <th class="text-center"><?php echo ($student->university_mode != 'PVT')?  $paper_master[0]->max_theory_marks : $paper_master[0]->private_max_theory_marks; ?></th>
       <th class="text-center">
         <?php
           if($marks->paper_type=='theory'){
+            if($student->university_mode != 'PVT'){
+            if($paper_master[0]->max_internal_marks !=0){
             $total_max_marks += $paper_master[0]->max_theory_marks+ $paper_master[0]->max_internal_marks;
             $total_obtained_marks += $marks->theory_marks+$marks->int_marks;
+            }else{
+              $total_max_marks += $paper_master[0]->max_theory_marks;
+            $total_obtained_marks += $marks->theory_marks;
+            }
             if($marks->theory_marks<$paper_master[0]->min_theory_marks || $marks->theory_marks=="ABS"){
               echo $marks->theory_marks;
               if($check_grace_marks){
@@ -151,6 +199,28 @@ if ($withheld) {
               $result_1_paper = 'PASS';
             }
           }else{
+
+           
+                $total_max_marks += $paper_master[0]->private_max_theory_marks;
+              $total_obtained_marks += $marks->theory_marks;
+              
+              if($marks->theory_marks<$paper_master[0]->private_min_theory_marks || $marks->theory_marks=="ABS"){
+                echo $marks->theory_marks;
+                if($check_grace_marks){
+                  echo ' G';
+                  $result_1_paper = 'PASS BY GRACE';
+                }else{
+                  echo '<span style="color:red">*</span>';
+                  $result_1_paper = 'FAIL';
+                }  
+              }else{
+                echo $marks->theory_marks;
+                $result_1_paper = 'PASS';
+              }
+
+          }
+          }else{
+            if($student->university_mode != 'PVT'){
             $total_obtained_marks += $marks->p_marks;
             if($marks->paper_type!="theory" && $practical_internal_marks=='Y' )
               {
@@ -169,16 +239,24 @@ if ($withheld) {
               $result_1_paper = 'PASS';
             }
           }
+          }
         ?>
       </th>
-      <?php if($marks->course_group_id!=36 && $marks->course_group_id!=37 ){ ?>
+      <?php if($marks->course_group_id!=36 && $marks->course_group_id!=37 ){ 
+         if($student->university_mode != "PVT"){ ?>
       <th class="text-center">
-        <?php  
+        
+        <?php 
+        
+       
           if( $marks->paper_type !='theory' && $practical_internal_marks=='N'){
             echo '-';
-          }else if($marks->paper_type !='theory' && $practical_internal_marks=='Y'){
+          }else if($marks->paper_type !='theory' && $practical_internal_marks=='Y' && $paper_master[0]->max_internal_marks !=0){
             echo $paper_master[0]->max_internal_marks;
-          }else{
+          }else if($paper_master[0]->max_internal_marks == 0){
+            echo '-';
+          }
+          else{
             echo $paper_master[0]->max_internal_marks;
           } ?>
         </th>
@@ -186,40 +264,105 @@ if ($withheld) {
         if( $marks->paper_type !='theory' && $practical_internal_marks=='N'){
           echo '-';
         }elseif($marks->paper_type !='theory' && $practical_internal_marks=='Y') {
-          if($marks->int_marks<$paper_master[0]->min_internal_marks || $marks->int_marks=='ABS'){
+          if(($marks->int_marks<$paper_master[0]->min_internal_marks || $marks->int_marks=='ABS') && $paper_master[0]->max_internal_marks != 0){
             echo $marks->int_marks;
             $result_1_paper = 'FAIL';
             ?><span style="color:red">*</span> <?php
-          }else{
+          } else if ($paper_master[0]->max_internal_marks == 0){
+            echo '-';
+          }
+          else{
             echo $marks->int_marks;
           }
         }else{
+          if(($marks->int_marks<$paper_master[0]->min_internal_marks || $marks->int_marks=='ABS') && $paper_master[0]->max_internal_marks != 0){
           echo $marks->int_marks;
+          $result_1_paper = 'FAIL';
+          ?><span style="color:red">*</span> <?php
+          }else if ($paper_master[0]->max_internal_marks == 0){
+            echo '-';}
+          else{
+            echo $marks->int_marks;
+          }
         }
+        
         ?>
       </th>
+      <?php } ?>
       <th class="text-center">
-        <?php  
+        <?php 
+        if($student->university_mode != 'PVT'){ 
         if($marks->paper_type!="theory" && $practical_internal_marks=='N' ){
                        echo (int)$paper_master[0]->max_theory_marks;
               }
-              elseif($marks->paper_type!="theory" && $practical_internal_marks=='Y' ){  
+              elseif($marks->paper_type!="theory" && $practical_internal_marks=='Y' ){ 
+                if($paper_master[0]->max_internal_marks !=0){ 
                 echo (int) $paper_master[0]->max_theory_marks + (int) $paper_master[0]->max_internal_marks;
+                }else{
+                  echo (int) $paper_master[0]->max_theory_marks;
+                }
                 
-              }else{ 
+              }
+              else{ 
+                if($paper_master[0]->max_internal_marks !=0){
                 echo (int) $paper_master[0]->max_theory_marks + (int) $paper_master[0]->max_internal_marks;
-              } ?>
+                }else{
+                  echo (int) $paper_master[0]->max_theory_marks;
+                }
+              }
+             }else{
+              if($marks->paper_type!="theory" && $practical_internal_marks=='N' ){
+                echo (int)$paper_master[0]->private_max_theory_marks;
+              }
+              elseif($marks->paper_type!="theory" && $practical_internal_marks=='Y' ){ 
+               
+                  echo (int) $paper_master[0]->private_max_theory_marks;
+                
+                
+              }
+              else{ 
+              
+                  echo (int) $paper_master[0]->private_max_theory_marks;
+                
+              }    
+
+             } ?>
       </th>
       <th class="text-center">
-        <?php if($marks->paper_type!="theory" && $practical_internal_marks=='N' ){
+        <?php
+         if($student->university_mode != "PVT"){
+        if($marks->paper_type!="theory" && $practical_internal_marks=='N' ){
                        echo (int)$marks->p_marks ;
               }
-              elseif($marks->paper_type!="theory" && $practical_internal_marks=='Y' ){  
+              elseif($marks->paper_type!="theory" && $practical_internal_marks=='Y' ){ 
+                if($paper_master[0]->max_internal_marks !=0) {
                 echo (int) $marks->p_marks + (int) $marks->int_marks;
-                
+                }else{
+                  echo (int) $marks->p_marks; 
+                }
               }else{ 
+                if($paper_master[0]->max_internal_marks !=0) {
                 echo (int) $marks->theory_marks + (int) $marks->int_marks;
-              }  ?>
+                }else{
+                  echo (int) $marks->theory_marks;
+                }
+              } 
+             }else{
+              if($marks->paper_type!="theory" && $practical_internal_marks=='N' ){
+                echo (int)$marks->p_marks ;
+       }
+       elseif($marks->paper_type!="theory" && $practical_internal_marks=='Y' ){ 
+         if($paper_master[0]->max_internal_marks !=0) {
+         echo (int) $marks->p_marks + (int) $marks->int_marks;
+         }else{
+           echo (int) $marks->p_marks; 
+         }
+       }else{ 
+        
+         echo (int) $marks->theory_marks;
+       
+             } 
+            }?>
       </th>
       <?php } ?>
       <th><?php echo $result_1_paper;?></th>
@@ -227,9 +370,11 @@ if ($withheld) {
   <?php } ?>
   <tr>
     <th>Total</th>
-    <?php if($marks->course_group_id!=36 && $marks->course_group_id!=37 ){ ?>
+    <?php if($marks->course_group_id!=36 && $marks->course_group_id!=37 ){ 
+      if($student->university_mode !='PVT'){?>
     <th></th>
     <th></th>
+    <?php }?>
     <th></th>
     <th></th>
     <?php } ?>
