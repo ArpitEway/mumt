@@ -2867,8 +2867,8 @@ public function update_exam_datewise_permission(){
 		$course_id = $this->Common_model->encrypt_decrypt($course_id,'decrypt');
 		$class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
 		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
-		$this->db->order_by('roll_no','ASC');
-		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'new_exam_form'=>'Y' ,'roll_no!='=>'0', ));//'result_show'=>'Y'
+		$this->db->order_by('roll_number','ASC');
+		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'exam_form'=>'Y' ,'roll_number!='=>'0', ));//'result_show'=>'Y'
 		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$this->load->view('admin/student_notification_list',$data);
 	}
@@ -2933,12 +2933,12 @@ public function update_exam_datewise_permission(){
 			$pagetitle=$startlimit;
 		}
 		if($mode !=''){
-			$where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y', 'roll_no!='=>'0' ,'university_mode'=> $mode);
+			$where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'exam_form'=>'Y', 'roll_number!='=>'0' ,'university_mode'=> $mode);
 		}else{
-			$where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y', 'roll_no!='=>'0' ,'university_mode !='=> "");
+			$where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'exam_form'=>'Y', 'roll_number!='=>'0' ,'university_mode !='=> "");
 		}
 		$this->db->order_by('center_id','ASC');
-		$this->db->order_by('roll_no','ASC');
+		$this->db->order_by('roll_number','ASC');
 		// $data['students'] = $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y', 'roll_no!='=>'0'));
 		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
 		$data['class_id'] = $class_id;
@@ -2972,7 +2972,7 @@ public function update_exam_datewise_permission(){
 	}
 
 	public function tr_class_list(){
-		$where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y' )";
+		$where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' )";
 		// new_exam_form = 'Y' or
 		$data['courses'] = $this->Common_model->get_record('course_group','*',$where);
 		$this->load->view('header',array('title' => 'Class List'));
@@ -2985,9 +2985,9 @@ public function update_exam_datewise_permission(){
 			redirect(base_url());
 			exit;
 		}
-		$data['not_permited_students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id , 'result_show'=>'N' , 'new_exam_form'=>'Y' ));
+		$data['not_permited_students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id , 'old_result_show'=>'N' , 'exam_form'=>'Y' ));
 
-		$data['permited_students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id , 'result_show'=>'Y' , 'new_exam_form'=>'Y' ));
+		$data['permited_students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id , 'old_result_show'=>'Y' , 'exam_form'=>'Y' ));
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
 		$this->load->view('header',array('title' => ''));
@@ -3002,12 +3002,12 @@ public function update_exam_datewise_permission(){
 		}
 		if($_POST['not_permitted']){
 			$student_ids = (implode(',',$_POST['not_permitted']));
-			$data = array('result_show' => 'Y');
+			$data = array('old_result_show' => 'Y');
 			$where = "provisional_remark in ('','N') && student_id in (".$student_ids.")";
 			$update =$this->Common_model->updateRecordByConditions('student',$where,$data);
 		}else{
 			$student_ids = (implode(',',$_POST['permitted']));
-			$data = array('result_show' => 'N');
+			$data = array('old_result_show' => 'N');
 			$where ='student_id in ('.$student_ids.')';
 			$update = 	$this->Common_model->updateRecordByConditions('student',$where,$data);
 		}  
@@ -3025,12 +3025,12 @@ public function update_exam_datewise_permission(){
 		}
 		if($_POST['not_permitted']){
 			$student_ids = (implode(',',$_POST['not_permitted']));
-			$data = array('result_show' => 'Y');
+			$data = array('old_result_show' => 'Y');
 			$where = 'student_id in ('.$student_ids.')';
 			$update =$this->Common_model->updateRecordByConditions('student',$where,$data);
 		}else{
 			$student_ids = (implode(',',$_POST['permitted']));
-			$data = array('result_show' => 'N');
+			$data = array('old_result_show' => 'N');
 			$where ='student_id in ('.$student_ids.')';
 			$update = 	$this->Common_model->updateRecordByConditions('student',$where,$data);
 		}  
@@ -3044,15 +3044,15 @@ public function update_exam_datewise_permission(){
 			redirect(base_url());
 			exit;
 		}
-		$this->db->select('count(*) as cnt ,student.name,student.roll_no,student.course_name, student.class_name , student.center_code,student.course_group_id,student.class_id,student.student_id');
+		$this->db->select('count(*) as cnt ,student.name,student.roll_number,student.course_name, student.class_name , student.center_code,student.course_group_id,student.old_class_id,student.student_id');
 		$this->db->from('new_exam_form');
 		$this->db->join('student', 'new_exam_form.student_id = student.student_id');
-		$this->db->where('student.new_exam_form','Y'); 
-		$this->db->where('student.result_show','Y'); 
+		$this->db->where('student.exam_form','Y'); 
+		$this->db->where('student.old_result_show','Y'); 
 		$this->db->where('new_exam_form.paper_type','theory'); 
 		$this->db->where('new_exam_form.theory_marks',''); 
 		$this->db->where('student.course_group_id',$course_id); 
-		$this->db->where('student.class_id',$class_id); 
+		$this->db->where('student.old_class_id',$class_id); 
 		$this->db->group_by('new_exam_form.student_id');
 		
 		$data['students'] = $this->db->get()->result();
@@ -3076,8 +3076,8 @@ public function update_exam_datewise_permission(){
 			$pagetitle=$startlimit;
 		}		
 		
-		$this->db->order_by('center_id,roll_no','ASC');
-		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'new_exam_form'=>'Y','roll_no!='=>'0' ));
+		$this->db->order_by('center_id,roll_number','ASC');
+		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0' ));
 		// ,'enrollment_no'=>'AG/21200364'
 		$title = "Marksheet ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
@@ -3204,12 +3204,12 @@ public function update_exam_datewise_permission(){
 		);
 		$titleData = array('title' => 'Internal  Marks Submission' );
 		$this->load->view('header',$titleData);
-		$this->db->order_by("int_marks_sub,student.course_group_id,student.class_id", "asc");
+		$this->db->order_by("int_marks_sub,student.course_group_id,student.old_class_id", "asc");
 		$this->db->select('*');
 		$this->db->from('student');
 		$this->db->join('new_exam_form', 'student.student_id = new_exam_form.student_id');
 		$this->db->group_by('new_exam_form.student_id');
-		$this->db->Where('new_exam_form','Y');
+		$this->db->Where('exam_form','Y');
 		$this->db->Where('paper_type','theory');
 		$this->db->where('university_mode','REG');
 		// $this->db->where('student.class_id','168');
@@ -3223,7 +3223,7 @@ public function update_exam_datewise_permission(){
 
 	public function student_int_assignment_marks(){ 
 		$student_id = $this->input->post('student_id');
-		$class_id = $this->input->post('class_id');
+		$class_id = $this->input->post('old_class_id');
 		
 		$classData	= $this->Common_model->getRecordById('class_master','id',$class_id);
 		
@@ -3291,7 +3291,7 @@ public function update_exam_datewise_permission(){
 
 	public function view_student_marks(){
 		$student_id = $this->input->post('student_id');
-		$class_id = $this->input->post('class_id');
+		$class_id = $this->input->post('old_class_id');
 		$classData	= $this->Common_model->getRecordById('class_master','id',$class_id);
 		$where=array('student.student_id'=>$student_id,);
 		$this->db->select('*');
@@ -3327,13 +3327,13 @@ public function update_exam_datewise_permission(){
 		);
 		$titleData = array('title' => 'Practical  Marks Submission' );
 		$this->load->view('header',$titleData);
-		$this->db->order_by("p_marks_sub,student.course_group_id,student.class_id", "asc");
+		$this->db->order_by("p_marks_sub,student.course_group_id,student.old_class_id", "asc");
 		$this->db->select('*');
 		$this->db->from('student');
 		$this->db->join('new_exam_form', 'student.student_id = new_exam_form.student_id');
-		$this->db->join('class_master', 'student.class_id = class_master.id');
+		$this->db->join('class_master', 'student.old_class_id = class_master.id');
 		$this->db->group_by('new_exam_form.student_id');
-		$where = array('paper_type!='=>'theory','new_exam_form'=>'Y');
+		$where = array('paper_type!='=>'theory','exam_form'=>'Y');
 		$this->db->Where($where);
 		$this->db->where_in('new_exam_form.p_marks',array('ABS','N'));
 		$this->db->where('university_mode','REG');
@@ -3349,7 +3349,7 @@ public function update_exam_datewise_permission(){
 
 	public function student_practical_assignment_marks (){
 		$student_id = $this->input->post('student_id');
-		$class_id = $this->input->post('class_id');
+		$class_id = $this->input->post('old_class_id');
  		$where=array('student.student_id'=>$student_id,
 			'paper_type!='=>'theory', );
 		$this->db->select('*');
@@ -3404,7 +3404,7 @@ public function update_exam_datewise_permission(){
 
 	public function generate_tr_bed($course_group_id="",$class_id=""){
 		$this->db->order_by('center_id,roll_no','ASC');
-		$data['students'] = $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y','roll_no!='=>'0' ));
+		$data['students'] = $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'exam_form'=>'Y','roll_number!='=>'0' ));
 		//'result_show' => 'N'
 		$data['class_id'] = $class_id;
 		$data['course_group_id'] = $course_group_id;
@@ -3417,9 +3417,9 @@ public function update_exam_datewise_permission(){
 	public function student_notification_list_bed($course_id="",$class_id=""){
 		$course_id=$this->Common_model->encrypt_decrypt($course_id,'decrypt');
 		$class_id=$this->Common_model->encrypt_decrypt($class_id,'decrypt');
-		$this->db->order_by('roll_no','ASC');
+		$this->db->order_by('roll_number','ASC');
 		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
-		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id, 'class_id' => $class_id, 'new_exam_form'=>'Y','roll_no!='=>'0' ));
+		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id, 'class_id' => $class_id, 'exam_form'=>'Y','roll_number!='=>'0' ));
 		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$this->load->view('admin/student_notification_list_bed',$data);
 	}
