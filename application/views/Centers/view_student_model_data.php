@@ -25,7 +25,7 @@
               
     <tr>          
       <td><strong>Enrollment No: </strong> <?=$details[0]->enrollment_no;?></td>
-      <td><strong> Roll No: </strong><?=$details[0]->roll_no;?></td>
+      <td><strong> Roll No: </strong><?=$details[0]->roll_number;?></td>
         <td  rowspan="5"> <img  class="student_img" src="<?php echo base_url('/assets/student_image/').$details[0]->session.'/'.$details[0]->photo;?>" ></td> 
     </tr>
     <tr> 
@@ -64,7 +64,7 @@
 
                 foreach($details as $student){
                 
-                $paper_data=  $this->Common_model->getRecordByWhere("paper_master",array('class_id'=>$student->class_id,'paper_code'=>$student->paper_code));
+                $paper_data=  $this->Common_model->getRecordByWhere("paper_master",array('class_id'=>$student->old_class_id,'paper_code'=>$student->paper_code));
                   
                 $percentage = 90;  
                 $center_ids_dep = array(21,22,23,24,25,26,27,28,29);
