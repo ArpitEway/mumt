@@ -2173,7 +2173,7 @@ public function getStudentData()
 
 	public function exam_form_status(){
 
-		$this->load->view('header',array('title' => 'Exam Form Status(June 2022)'));
+		$this->load->view('header',array('title' => 'Exam Form Status(Feb 2023)'));
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
@@ -2199,7 +2199,7 @@ public function getStudentData()
 
 	public function class_wise_exam_from_status(){
 
-		$this->load->view('header',array('title' => 'Class Wise Exam Form Status(June 2022)'));
+		$this->load->view('header',array('title' => 'Class Wise Exam Form Status(Feb 2023)'));
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
