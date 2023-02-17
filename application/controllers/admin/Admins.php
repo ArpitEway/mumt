@@ -2185,7 +2185,7 @@ public function getStudentData()
 		$where = array('new_exam_form' =>'Y');
 		$data['filled_student'] = $this->Common_model->getCountByWhere('student',$where);
 
-		$where = array('new_exam_form ' =>'');
+		$where = array('new_exam_form ' =>'S');
 		$data['skipped_student'] = $this->Common_model->getCountByWhere('student',$where);
 
 		$where = array('new_exam_form' =>'N');
