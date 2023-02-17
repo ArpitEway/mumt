@@ -61,7 +61,8 @@
  $ajax_count=count($details); 
       foreach($details as $student){
        
-       $view=  $this->Common_model->getRecordByWhere("paper_master",'class_id='.$details[0]->class_id);
+       $view=  $this->Common_model->getRecordByWhere("paper_master",array('class_id'=>$student->class_id,'paper_code'=>$student->paper_code));
+      //  print_r($view);die;
         ?>
         <tr>
          
@@ -89,6 +90,8 @@
         <option value="ABS" selected>Absent</option>
         <?php
         $percentage = 90;  
+        // $percentage = 100;
+
       $max_internal=  $view[0]->max_internal_marks;
       $min_internal=  $view[0]->min_internal_marks; 
 
@@ -170,16 +173,16 @@ if (document.getElementById(`id_${i}`).value=='ABS')
       }
     }
   }
-  if(check_marks==false){ 
-    alert('आपने दो से अधिक बार समान अंक दर्ज किए हैं');
-    return false; 
-  }
+//   if(check_marks==false){ 
+//     alert('आपने दो से अधिक बार समान अंक दर्ज किए हैं');
+//     return false; 
+//   }
 
-  if(check==false){
-    if(confirm('Are You want to set Absent ?')==false){
-      return false;
-    }
-}
+//   if(check==false){
+//     if(confirm('Are You want to set Absent ?')==false){
+//       return false;
+//     }
+// }
 
 
 // var x=confirm(' Are you sure to submit marks ? \n प्रविष्ट किये जा रहे निम्न अंक Provisional Marks हैं।');

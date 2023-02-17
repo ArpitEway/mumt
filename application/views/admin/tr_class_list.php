@@ -2,7 +2,9 @@
 	<tbody>
 		<?php $i=1; ?>
 		<?php foreach ($courses as $course){
-        $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id'], 'exam_form_permission' => 'Y'));
+			$this->db->order_by('id');
+        $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id']));
+        // , 'exam_form_permission' => 'Y'
         ?>
 		<tr>
 			<th><?=$i++?></th>
@@ -20,7 +22,7 @@
         <tr>
         <td></td>
 			<td><?= $class->class_name ?></td>
-<!-- 			<td><a target="_blank" href="<?php echo  base_url('admin/admins/student_result_permission/'.$course['id'].'/'.$class->id)  ?>">Result permission</a></td> -->
+			<td><a target="_blank" href="<?php echo  base_url('admin/admins/student_result_permission/'.$course['id'].'/'.$class->id)  ?>">Result permission</a></td>
 			<td>
 				<?php if ($class->practical_internal_marks=='Y'): ?>
 				<a target="_blank" href="<?php echo  base_url('admin/admins/generate_tr_bed/'.$course['id'].'/'.$class->id)  ?>">Generate Tr</a>

@@ -222,6 +222,11 @@ class Common_Model extends CI_Model{
 	function student_data_consolidate($where = "",$group_by = "",$center_type=""){
 		
 		$center_ids_dep =['10','21','22','23','24','25','26','27','28','29']; 
+		$center_my ='11';
+		$center_jabalpur = ['237','279','338','381','1039','1089','1091','1118','1204','1267','1392','1482','1855','1864','1885','1891','1951','2097','2125'];
+		// $center_katni = ['117','118','232','262','271','384','387','388','1086','1156','1327','1328','1375','1376','1455','1538','1540','1595','1944'];
+		// $center_naac = ['10','21','22','23','24','25','26','27','28','29','11','237','279','338','381','1039','1089','1091','1118','1204','1267','1392','1482','1855','1864','1885','1891','1951','2097','2125','117','118','232','262','271','384','387','388','1086','1156','1327','1328','1375','1376','1455','1538','1540','1595','1944'];
+		$center_naac = ['10','21','22','23','24','25','26','27','28','29','11','237','279','338','381','1039','1089','1091','1118','1204','1267','1392','1482','1855','1864','1885','1891','1951','2097','2125'];
 		if($group_by != ""){
 				$this->db->select('count(*) as cnt,'.$group_by);
 				$this->db->group_by($group_by);
@@ -230,10 +235,18 @@ class Common_Model extends CI_Model{
 		}
 		$this->db->from("student");
 		$this->db->where($where);
-		if($center_type=="Department")
-			$this->db->where_in('center_id', $center_ids_dep );
+		if($center_type=="MY 5001")
+		$this->db->where('center_id', $center_my );
+		else if($center_type=="Jabalpur")
+		$this->db->where_in('center_id', $center_jabalpur );
+		else if($center_type=="Katni")
+		$this->db->where_in('center_id', $center_katni );
+		else if($center_type=="Department")
+		$this->db->where_in('center_id', $center_ids_dep );
+		else if($center_type=="combine_naac")
+		$this->db->where_in('center_id', $center_naac );
 		else if($center_type=="Other")
-			$this->db->where_not_in('center_id',  $center_ids_dep );
+			$this->db->where_not_in('center_id',  $center_naac );
 
 		$this->db->join("course_group", "student.course_group_id = course_group.id", 'left'); 
 		$query = $this->db->get();
@@ -914,7 +927,7 @@ class Common_Model extends CI_Model{
 		$this->db->select('*');
 		$this->db->from('paper_master');
 		$this->db->order_by('paper_no','asc');
-		$this->db->join('new_exam_form','new_exam_form.paper_code = paper_master.paper_code');
+		$this->db->join('new_exam_form','new_exam_form.paper_code = paper_master.paper_code and `new_exam_form`.`class_id` = `paper_master`.`class_id`');
 		$this->db->join('class_master','class_master.id=new_exam_form.class_id');
 		// $this->db->order_by('new_exam_form.sub_group_id,paper_order');
 		$this->db->where($where); 

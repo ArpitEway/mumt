@@ -2,6 +2,7 @@
 $withheld = false;
 $check_grace_marks = false;
 $fail_count = 0;
+$sessional_fail_count = 0;
 $fali_tot_marks = 0;
 $require_tot_marks = 0;
 $tot_marks = 0;
@@ -41,6 +42,23 @@ foreach($new_exam_form as $marks){
      $withheld = true;
    }
 
+  }else if($marks->paper_type=='Sessional'){
+
+    $tot_marks +=  $paper_master[0]->max_internal_marks;
+   
+    if($marks->int_marks=='ABS'){
+      $abs_count++;
+      $result = "Fail";
+      $sessional_fail_count++;
+    }
+    if($marks->int_marks<$paper_master[0]->min_internal_marks){
+      $result = "Fail";
+      $sessional_fail_count++;
+    }
+    if($marks->int_marks=='N' || $marks->int_marks=='') {
+     $withheld = true;
+   }
+
   }else{
     $tot_std_marks += $marks->p_marks;
     $tot_marks += $paper_master[0]->max_theory_marks;
@@ -67,7 +85,7 @@ foreach($new_exam_form as $marks){
 
 
 $require_grace_marks = $require_tot_marks-$fali_tot_marks;
-if($fail_count<3 && $require_grace_marks<4 && $abs_count==0 && $fail_count!=0){
+if($fail_count<3 && $require_grace_marks<4 && $abs_count==0 && $fail_count!=0 && $sessional_fail_count==0){
       $check_grace_marks = true;
 }
 
@@ -131,7 +149,9 @@ if ($withheld) {
     ?>
     <tr>
       <th><?php echo $this->Common_model->getPaperNameById($marks->paper_id); ?></th>
-      <th class="text-center"><?php  echo $paper_master[0]->max_theory_marks; ?></th>
+      <th class="text-center"><?php  if($marks->paper_type=='Sessional'){ echo $paper_master[0]->max_internal_marks;}else{
+        echo $paper_master[0]->max_theory_marks;
+      } ?></th>
       <th class="text-center">
         <?php
           if($marks->paper_type=='theory'){
@@ -150,7 +170,21 @@ if ($withheld) {
               echo $marks->theory_marks;
               $result_1_paper = 'PASS';
             }
-          }else{
+          }else if($marks->paper_type=='Sessional'){
+            $total_max_marks +=  $paper_master[0]->max_internal_marks;
+            $total_obtained_marks += $marks->int_marks;
+            if($marks->int_marks<$paper_master[0]->min_internal_marks || $marks->int_marks=="ABS"){
+                echo $marks->int_marks;
+                echo '<span style="color:red">*</span>';
+                $result_1_paper = 'FAIL';
+           
+            }else{
+              echo $marks->int_marks;
+              $result_1_paper = 'PASS';
+            }
+
+          }
+          else{
             $total_obtained_marks += $marks->p_marks;
             if($marks->paper_type!="theory" && $practical_internal_marks=='Y' )
               {
@@ -201,7 +235,12 @@ if ($withheld) {
       <th class="text-center">
         <?php  
         if($marks->paper_type!="theory" && $practical_internal_marks=='N' ){
-                       echo (int)$paper_master[0]->max_theory_marks;
+
+                if($marks->paper_type =="Sessional"){
+                echo (int)$paper_master[0]->max_internal_marks;
+                }else{
+                echo (int)$paper_master[0]->max_theory_marks;
+                }
               }
               elseif($marks->paper_type!="theory" && $practical_internal_marks=='Y' ){  
                 echo (int) $paper_master[0]->max_theory_marks + (int) $paper_master[0]->max_internal_marks;
@@ -212,7 +251,12 @@ if ($withheld) {
       </th>
       <th class="text-center">
         <?php if($marks->paper_type!="theory" && $practical_internal_marks=='N' ){
-                       echo (int)$marks->p_marks ;
+                
+                if($marks->paper_type =="Sessional"){
+                echo (int)$marks->int_marks;
+                }else{
+                echo (int)$marks->p_marks ;
+                }
               }
               elseif($marks->paper_type!="theory" && $practical_internal_marks=='Y' ){  
                 echo (int) $marks->p_marks + (int) $marks->int_marks;
@@ -245,9 +289,10 @@ if ($withheld) {
     <button type="button" style="background-color:#fdf8d2; opacity: 1;" width="100%" class="btn   btn-block" disabled><h6 style="color:#000000; font-weight: bold;">Result</h6></button>
     <button type="button" style="opacity: 1"  width="100%" class="btn btn-light  btn-block text-dark" disabled><h6 style=" opacity: 1;color:   000000;font-weight: bold;">
       <?php 
+     
             if($check_grace_marks){
               echo "PASS BY GRACE";
-            }elseif($fail_count>0){
+            }elseif($fail_count>0 || $sessional_fail_count >0){
               echo "ATKT";
             }else{
               echo "PASS";

@@ -136,8 +136,8 @@ table.last_table, .last_table td, .last_table th{
     $final_class = true;
   }
   $course_duration = ($isFinalClass) ? "(One Year Course)" : $classData->class_name;
-  $rowspanhead = ($classData->project!='N' || $classData->practical!='N') ? "4" : "3";
-  $rowspandata = ($classData->project!='N' || $classData->practical!='N') ? "5" : "4";
+  $rowspanhead = ($classData->project!='N' || $classData->practical!='N') ? "5" : "3";
+  $rowspandata = ($classData->project!='N' || $classData->practical!='N') ? "6" : "4";
   if($classData->internal=='N'){
     $rowspandata--;  
   }
@@ -174,22 +174,6 @@ table.last_table, .last_table td, .last_table th{
     $count_practical =0;
     $count_int =0;
     $final_result = '';
-    if($student->university_mode == 'REG'){
-      $rowspanhead = ($classData->project!='N' || $classData->practical!='N') ? "4" : "3";
-      // $rowspandata = (($classData->project!='N' || $classData->practical!='N') && $classData->internal!='N')? "5" : "4";
-      if($classData->project!='N' || $classData->practical!='N' && $classData->internal!='N'){
-        $rowspandata = "5";
-      }else if($classData->project!='N' || $classData->practical!='N' && $classData->internal =='Y'){
-        $rowspandata = "4";
-      }else if($classData->project =='N' &&  $classData->practical=='N' && $classData->internal=='N'){
-        $rowspandata = "3";
-      }
-
-      
-    }else{
-      $rowspanhead = "2";
-      $rowspandata = "3";
-    }
     foreach($marks as $new_exam_form)
     {
       
@@ -199,15 +183,9 @@ table.last_table, .last_table td, .last_table th{
         $total_int_marks_obt += (int) $new_exam_form->int_marks;
         $total_theory_asm_marks = (int) $new_exam_form->theory_marks+ (int) $new_exam_form->int_marks;
         $total_marks_obt  += (int) $new_exam_form->theory_marks+ (int) $new_exam_form->int_marks;
-        if($student->university_mode != 'PVT'){
         $total_paper_marks += (int) $new_exam_form->max_theory_marks + (int) $new_exam_form->max_internal_marks;
-        $tot_marks += (int) $new_exam_form->max_theory_marks;
-        }else{
-          $total_paper_marks += (int) $new_exam_form->private_max_theory_marks ;
-          $tot_marks += (int) $new_exam_form->private_max_theory_marks;
-        }
         $tot_std_marks += (int) $new_exam_form->theory_marks;
-        
+        $tot_marks += (int) $new_exam_form->max_theory_marks;
         $count_theory++;
 
         if($new_exam_form->theory_marks=='ABS'){
@@ -219,10 +197,10 @@ table.last_table, .last_table td, .last_table th{
           $rw_count++;
         }
 
-        if($new_exam_form->int_marks=='N' && $classData->internal=="Y" && $student->university_mode != 'PVT' && $new_exam_form->max_internal_marks !=0){
+        if($new_exam_form->int_marks=='N' && $classData->internal=="Y"){
           $rw_count++;
         }
-        if($student->university_mode != 'PVT'){
+
         if($new_exam_form->theory_marks<$new_exam_form->min_theory_marks  && $new_exam_form->theory_marks!=''){
           array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
           $fail_count++;
@@ -230,22 +208,14 @@ table.last_table, .last_table td, .last_table th{
           $require_tot_marks += $new_exam_form->min_theory_marks;
         }
 
-        if($new_exam_form->int_marks<$new_exam_form->min_internal_marks && $student->university_mode != 'PVT'){
+        if($new_exam_form->int_marks<$new_exam_form->min_internal_marks){
           $int_fail_count++;
           array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
         }else{
           $count_int++;
         }
-      }else{
-        if($new_exam_form->theory_marks<$new_exam_form->private_min_theory_marks  && $new_exam_form->theory_marks!=''){
-          array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
-          $fail_count++;
-          $fail_tot_marks += $new_exam_form->theory_marks;
-          $require_tot_marks += $new_exam_form->private_min_theory_marks;
-        }
 
-      }
-        if($new_exam_form->int_marks=="ABS" && $student->university_mode != 'PVT'){
+        if($new_exam_form->int_marks=="ABS"){
           array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
           $int_abs_count++;
           $int_fail_count++;
@@ -254,8 +224,12 @@ table.last_table, .last_table td, .last_table th{
           $count_int++;
         }
       }
+      if ($new_exam_form->type=='Sessional') {
+        $total_paper_marks += (int) $new_exam_form->max_internal_marks;
+        $total_marks_obt += (int) $new_exam_form->int_marks;
+      }
 
-      if($new_exam_form->type!='theory' && $student->university_mode != 'PVT'){
+      if($new_exam_form->type!='theory' && $new_exam_form->type!='Sessional'){
         $total_paper_marks += (int) $new_exam_form->max_theory_marks;
         $total_marks_obt += (int) $new_exam_form->p_marks;
         $count_practical++;
@@ -330,42 +304,49 @@ table.last_table, .last_table td, .last_table th{
             <td class="align-middle text-right paper">Theory Marks Max/Min -></td>
             <?php foreach($marks as $paper_master){ ?>
               <td  class="align-middle text-center paper_code"><?php
-              if($paper_master->paper_type=='theory' ){ 
-                if($student->university_mode != 'PVT'){
+              if($paper_master->paper_type=='theory'){ 
                 echo  $paper_master->max_theory_marks .'/'.$paper_master->min_theory_marks;
-              }else{
-                echo  $paper_master->private_max_theory_marks .'/'.$paper_master->private_min_theory_marks;
               }
-            }
             ?>
             </td>
             <?php } ?>
           <td class=""></td>
         </tr>
-        <?php if($classData->internal=="Y" && $student->university_mode != 'PVT'){ ?>
+        <?php if($classData->internal=="Y"){ ?>
         <tr>
           <td class="align-middle text-right paper">Internal Marks Max/Min -></td>
           <?php  foreach($marks as $paper_master){     ?>
             <td  class="align-middle text-center internal_mark">
-              <?php if($paper_master->paper_type=="theory"){ if($paper_master->max_internal_marks !=0){echo  $paper_master->max_internal_marks .'/'. $paper_master->min_internal_marks;}else{ echo '';}};  ?></td>
+              <?php if($paper_master->paper_type=="theory"){ echo  $paper_master->max_internal_marks .'/'. $paper_master->min_internal_marks;};  ?></td>
           <?php }  ?>
           <td class="align-middle text-center"></td>
         </tr>
         <?php 
         }
-        if(($classData->project!='N' || $classData->practical!='N') && $student->university_mode != 'PVT'){
-          // echo $student->university_mode;die;
+        if($classData->project!='N' || $classData->practical!='N'){
         ?>
         <tr>
           <td class="align-middle text-right paper"> <?=($classData->project=='Y') ? 'Project' : 'Practical' ?> Marks Max/Min-></td>
           <?php foreach($marks as $paper_master){   ?>
           <td  class="align-middle text-center practical_marks">
-            <?php if($paper_master->paper_type!="theory"){echo  $paper_master->max_theory_marks .'/'.$paper_master->min_theory_marks;};  ?>
+            <?php if($paper_master->paper_type!="theory" && $paper_master->paper_type!="Sessional"){echo  $paper_master->max_theory_marks .'/'.$paper_master->min_theory_marks;};  ?>
           </td>
           <?php } ?>
           <td class="align-middle text-center"></td>
         </tr>
         <?php }  ?>
+        <tr>
+            <td class="align-middle text-right paper">Sessional Marks Max/Min -></td>
+            <?php foreach($marks as $paper_master){ ?>
+              <td  class="align-middle text-center paper_code"><?php
+              if($paper_master->paper_type=='Sessional'){ 
+                echo  $paper_master->max_internal_marks .'/'.$paper_master->min_internal_marks;
+              }
+            ?>
+            </td>
+            <?php } ?>
+          <td class=""></td>
+        </tr>
       </tbody>
     </table>
     <?php  $ccode=substr($student->center_code,0,2);
@@ -430,7 +411,7 @@ table.last_table, .last_table td, .last_table th{
         <td class="align-middle text-right paper" >Theory Marks-></td>
         <?php foreach($marks as $new_exam_form){ ?>
           <td  class="align-middle text-center">
-          <?php if($new_exam_form->paper_type=="theory" && $student->university_mode != 'PVT'){
+          <?php if($new_exam_form->paper_type=="theory"){
               if($new_exam_form->theory_marks==''){
                 echo '-';
               }elseif($new_exam_form->theory_marks>=$new_exam_form->min_theory_marks && $new_exam_form->theory_marks!="ABS"){
@@ -439,16 +420,6 @@ table.last_table, .last_table td, .last_table th{
                 echo $new_exam_form->theory_marks;
                 echo ($check_grace_marks) ? ' G' : ' F';
               }
-            }else{
-              if($new_exam_form->theory_marks==''){
-                echo '-';
-              }elseif($new_exam_form->theory_marks>=$new_exam_form->private_min_theory_marks && $new_exam_form->theory_marks!="ABS"){
-                echo $new_exam_form->theory_marks;
-              }else{
-                echo $new_exam_form->theory_marks;
-                echo ($check_grace_marks) ? ' G' : ' F';
-              }
-
             }
           ?>
           </td>
@@ -456,7 +427,7 @@ table.last_table, .last_table td, .last_table th{
        }  ?>
         <td class="align-middle text-center result"><?php echo  $total_theory_marks_obt;  ?></td>
       </tr>
-      <?php if($classData->internal=="Y" && $student->university_mode != 'PVT'){ ?>
+      <?php if($classData->internal=="Y"){ ?>
       <tr>
         <td class="align-middle text-right paper">Internal Marks-></td>
           <?php foreach($marks as $paper_master){ ?>
@@ -480,7 +451,7 @@ table.last_table, .last_table td, .last_table th{
         <?php } ?>
         <td class="align-middle text-center result"><?php echo $total_int_marks_obt;  ?></td>
     </tr> <?php } ?>
-  <?php if( ($classData->project!='N' || $classData->practical!='N') && $student->university_mode != 'PVT'){ ?>
+  <?php if( $classData->project!='N' || $classData->practical!='N'){ ?>
   <tr>
     <td class="align-middle text-right paper">Practical Marks.</td>
     <?php
@@ -510,12 +481,35 @@ table.last_table, .last_table td, .last_table th{
   <td class="align-middle text-center result"><?=$total_p_marks; ?></td>
 </tr>
 <?php } ?>
+<tr>
+    <td class="align-middle text-right paper">Sessional Marks.</td>
+    <?php
+    $total_s_marks = 0;
+    foreach($marks as $new_exam_form)
+    {
+      ?>
+      <td  class="align-middle text-center"><?php 
+        if ($new_exam_form->type=='Sessional') {
+          
+        if($new_exam_form->int_marks < $new_exam_form->min_internal_marks && $new_exam_form->int_marks!=''){
+          echo  $new_exam_form->int_marks .' F';
+        }elseif($new_exam_form->int_marks ==''){
+          echo "RWPR";
+        }
+        else{
+          echo  $new_exam_form->int_marks;
+          $total_s_marks += $new_exam_form->int_marks;
+        }
+        }
+    ?></td>
+    <?php } ?>
+  <td class="align-middle text-center result"><?=$total_s_marks; ?></td>
+</tr>
   <tr>
     <td class="align-middle text-right">Total Marks Obt.</td>
     <?php foreach($marks as $paper_master){ ?>
       <td  class="align-middle text-center"><?php
-      if($paper_master->paper_type=="theory" ){
-        if($student->university_mode != 'PVT'){
+      if($paper_master->paper_type=="theory"){
        if($check_grace_marks==true){
         echo $paper_master->theory_marks+ $paper_master->int_marks;
       } elseif(($paper_master->theory_marks<$paper_master->min_theory_marks) || ($paper_master->int_marks<$paper_master->min_internal_marks) || $paper_master->theory_marks=='ABS' || $paper_master->int_marks=='ABS'){
@@ -528,22 +522,15 @@ table.last_table, .last_table td, .last_table th{
       }else{
         echo (int) $paper_master->theory_marks+ (int) $paper_master->int_marks;
       }
-    }else{
-      if($check_grace_marks==true){
-        echo $paper_master->theory_marks;
-      } elseif(($paper_master->theory_marks<$paper_master->private_min_theory_marks) ||  $paper_master->theory_marks=='ABS'){
-
-        if($paper_master->theory_marks==''){
-          echo "-";
-        }else{
-          echo (int) $paper_master->theory_marks ." F";
-        }
+    }elseif ($paper_master->paper_type=="Sessional") {
+      if($paper_master->int_marks=='ABS'){
+        echo '0 F';
+      }elseif($paper_master->int_marks<$paper_master->min_internal_marks){
+        echo $paper_master->int_marks.' F';
       }else{
-        echo (int) $paper_master->theory_marks;
+        echo $paper_master->int_marks;
       }
-
-    }
-    }else{ 
+    }else{
       if($paper_master->p_marks=='ABS'){
         echo '0 F';
       }elseif($paper_master->p_marks<$paper_master->min_theory_marks){
@@ -629,9 +616,9 @@ table.last_table, .last_table td, .last_table th{
     </tr>
     <?php }else{  ?>
       <tr class="">
-        <td  class="align-middle text-center " colspan="4" style="padding: 10px;"><?php  echo 'Tot : '. $total_marks_obt .'/'. $total_paper_marks; ?></td>
-        <td class="align-middle text-center "  colspan="3"><?php  echo  'Per : '.$percentage .'%'; ?></td>
-        <td class="align-middle text-center "  colspan="3"><?php  echo $final_result;?></td>
+        <td  class="align-middle text-center " colspan="5" style="padding: 10px;"><?php  echo 'Tot : '. $total_marks_obt .'/'. $total_paper_marks; ?></td>
+        <td class="align-middle text-center "  colspan="5"><?php  echo  'Per : '.$percentage .'%'; ?></td>
+        <td class="align-middle text-center "  colspan="5"><?php  echo $final_result;?></td>
         <td class="align-middle text-center " colspan="5"> <?php  echo 'Division : '.$division;  ?></td>
       </tr>
       <?php

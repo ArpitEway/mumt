@@ -885,17 +885,11 @@ class Admin_model extends CI_Model {
 	
 	public function allot_course($param1)
 	{
-		$data['alloted_course_group_id'] = html_escape($this->input->post('course_group_id'));
-		
-		$data['alloted_course_group_id'] = implode(",", $data['alloted_course_group_id']);
-		
+		$allot_course_group_id = html_escape($this->input->post('course_group_id'));
+		$data['allot_course_group_id'] = implode(",", $allot_course_group_id);		
 		$this->db->where('id', $param1);
 		$this->db->update('center', $data);
-		
-		$response = array(
-				'status' => 'true',
-				);
-				
+		$response = array('status' => 'true',);
 		return json_encode($response);
 	}
 		

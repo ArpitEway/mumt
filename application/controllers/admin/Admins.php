@@ -1445,6 +1445,7 @@ class Admins extends CI_Controller {
 				$class_id  		  = $this->input->post("class_id");
 				$approved 		  = $this->input->post("approved");
 				$new_exam_form    = $this->input->post("new_exam_form");
+				$course_type 		  = $this->input->post("course_type");
 
 				$payment 		  = $this->input->post("payment");
 				$enrolled 		  = $this->input->post("enrolled");
@@ -1462,6 +1463,13 @@ class Admins extends CI_Controller {
 				}
 				if($university_mode!="all"){
 					$dt['student.university_mode'] = $university_mode ;
+				}
+				if($course_type != "All"){
+					if ($course_type=='UGPG') {
+						$this->db->where_in('course_type',array('UG','PG'));
+					}else{
+						$dt['course_type'] = $course_type;
+					}
 				}
 				if($session != "All") {	 
 
@@ -1523,11 +1531,11 @@ class Admins extends CI_Controller {
 				if($filter == "list"){
 
 					$data['students'] = $this->Common_model->student_data_consolidate($dt,"",$center_type);
-
-
+					
 				}
 				if($filter == "count"){				
 					$data['course_count'] = $this->Common_model->student_data_consolidate($dt,$_POST['count_filter'],$center_type);
+				
 				}
 
 			//$this->Common_model->last_query();
@@ -2917,24 +2925,34 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
-	public function generate_tr($course_group_id="",$class_id="",$startlimit=0,$pagenumber=0){
+	public function generate_tr($course_group_id="",$class_id="",$startlimit=0,$pagenumber=0,$mode=""){
 		$start=0;
 		if($startlimit==!0){
 			$start=($startlimit-1)*1000;
 			$this->db->limit(1000,$start);
 			$pagetitle=$startlimit;
 		}
-
+		if($mode !=''){
+			$where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y', 'roll_no!='=>'0' ,'university_mode'=> $mode);
+		}else{
+			$where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y', 'roll_no!='=>'0' ,'university_mode !='=> "");
+		}
 		$this->db->order_by('center_id','ASC');
 		$this->db->order_by('roll_no','ASC');
-		$data['students'] = $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y', 'roll_no!='=>'0' ));
+		// $data['students'] = $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y', 'roll_no!='=>'0'));
+		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
 		$data['class_id'] = $class_id;
 		$data['pagenumber']=$pagenumber;
 		$data['course_group_id'] = $course_group_id;
 		$title = "TR ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
 		$data['title'] .= $title;//echo $this->db->last_query(); die;
-		$this->load->view('admin/generate_tr',$data);
+		if ($class_id!=168) {
+			$this->load->view('admin/generate_tr',$data);
+		}else{
+			$this->load->view('admin/generate_tr_mom',$data);
+		}
+
 	}
 
 	public function UpdateStudentDataMarks()
@@ -3060,6 +3078,7 @@ public function update_exam_datewise_permission(){
 		
 		$this->db->order_by('center_id,roll_no','ASC');
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'new_exam_form'=>'Y','roll_no!='=>'0' ));
+		// ,'enrollment_no'=>'AG/21200364'
 		$title = "Marksheet ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
 		$data['title'] = $title;
@@ -3192,6 +3211,8 @@ public function update_exam_datewise_permission(){
 		$this->db->group_by('new_exam_form.student_id');
 		$this->db->Where('new_exam_form','Y');
 		$this->db->Where('paper_type','theory');
+		$this->db->where('university_mode','REG');
+		// $this->db->where('student.class_id','168');
 		//$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,195,197,203,211,213,227,158,166,167,172,205)');
         	//$this->db->Where('result_show','Y');
 		$this->db->where_in('new_exam_form.int_marks',array('ABS','N'));
@@ -3210,10 +3231,13 @@ public function update_exam_datewise_permission(){
 		$this->db->from('new_exam_form');
 		
 		$this->db->where('student.student_id',$student_id);
+		$this->db->where('new_exam_form.class_id',$class_id);
 		if($classData->practical_internal_marks=="N")
-			$this->db->where('paper_type','theory');
+			// $this->db->where('paper_type','theory');
+			$this->db->where_in('paper_type',array('Sessional','theory'));
 		
 		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
+		$this->db->order_by('new_exam_form.sub_group_id,paper_order');
 		
 		$details = $this->db->get()->result();
 	
@@ -3273,7 +3297,9 @@ public function update_exam_datewise_permission(){
 		$this->db->select('*');
 		$this->db->from('new_exam_form');
 		$this->db->Where($where );
+		$this->db->where("new_exam_form.class_id = ".$class_id."");
 		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
+		$this->db->order_by('new_exam_form.sub_group_id,paper_order');
 		$details = $this->db->get()->result();
 		$data = array(
 			'classData' =>$classData,
@@ -3310,6 +3336,8 @@ public function update_exam_datewise_permission(){
 		$where = array('paper_type!='=>'theory','new_exam_form'=>'Y');
 		$this->db->Where($where);
 		$this->db->where_in('new_exam_form.p_marks',array('ABS','N'));
+		$this->db->where('university_mode','REG');
+		// $this->db->where('student.class_id','168');
 	    	//$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,195,197,203,211,213,227,158,166,167,172,205)');
 		$this->db->Where('(project="Y" or practical = "Y")');
 		$data['students'] = $this->db->get()->result();
@@ -3321,13 +3349,16 @@ public function update_exam_datewise_permission(){
 
 	public function student_practical_assignment_marks (){
 		$student_id = $this->input->post('student_id');
-		$where=array('student.student_id'=>$student_id,
+		$class_id = $this->input->post('class_id');
+ 		$where=array('student.student_id'=>$student_id,
 			'paper_type!='=>'theory', );
 		$this->db->select('*');
 		$this->db->from('new_exam_form');
 		$this->db->Where($where );
+		$this->db->where("new_exam_form.class_id = ".$class_id."");
 		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
 		$this->db->join('paper_master', 'paper_master.id = new_exam_form.paper_id');
+		$this->db->where_not_in('paper_type',array('Sessional','theory'));
 		$details = $this->db->get()->result();
 		$data = array(
 			'details' => $details,

@@ -88,6 +88,7 @@
 <!-- 				<th>Aadhar No</th>
 				<th>Mobile</th> -->
 				<th>View Form</th>
+				<th>Show Paper</th>
 			</tr>
 		</thead>
 		<tbody>
