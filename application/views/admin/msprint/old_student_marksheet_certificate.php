@@ -52,7 +52,7 @@
             <tr>
               <td height="100" colspan="2" valign="bottom">
                 <center>
-                  <strong><?php echo $exam_data->course_name .' '; ?> Six Months Course <?=$marksheet_variables->exam_session ?></strong>
+                  <strong><?php echo $exam_data->course_name .' Six Months Course Examination '.$exam_data->exam_year ?></strong>
                 </center>
               </td>
             </tr>
@@ -316,7 +316,13 @@
                   </tr>
                   <tr class="">
                     <td colspan="">
-                      <?php  echo $generator->getBarcode($marksheet_variables->bar_code_no.$exam_data->roll_no, $generator::TYPE_CODE_128,2,25); ?>
+                      <?php 
+                       $arr=explode(" ",$exam_data->exam_year);
+                       $first=substr($arr[1], -2);
+                       $second=date('m',strtotime($arr[0]));
+                       $barcode_no=$first.$second.$exam_data->roll_no;
+
+                      echo $generator->getBarcode($barcode_no, $generator::TYPE_CODE_128,2,25); ?>
                     </td>
                   </tr>
                   <tr>
