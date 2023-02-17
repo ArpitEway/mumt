@@ -2925,18 +2925,15 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
-	public function generate_tr($course_group_id="",$class_id="",$startlimit=0,$pagenumber=0,$mode=""){
+	public function generate_tr($mode="",$course_group_id="",$class_id="",$startlimit=0,$pagenumber=0){
 		$start=0;
 		if($startlimit==!0){
 			$start=($startlimit-1)*1000;
 			$this->db->limit(1000,$start);
 			$pagetitle=$startlimit;
 		}
-		if($mode !=''){
-			$where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'exam_form'=>'Y', 'roll_number!='=>'0' ,'university_mode'=> $mode);
-		}else{
-			$where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'exam_form'=>'Y', 'roll_number!='=>'0' ,'university_mode !='=> "");
-		}
+		
+		$where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'exam_form'=>'Y', 'roll_number!='=>'0' ,'university_mode'=> $mode);
 		$this->db->order_by('center_id','ASC');
 		$this->db->order_by('roll_number','ASC');
 		// $data['students'] = $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y', 'roll_no!='=>'0'));
@@ -3406,9 +3403,9 @@ public function update_exam_datewise_permission(){
 		));
 	}
 
-	public function generate_tr_bed($course_group_id="",$class_id=""){
-		$this->db->order_by('center_id,roll_no','ASC');
-		$data['students'] = $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'exam_form'=>'Y','roll_number!='=>'0' ));
+	public function generate_tr_bed($mode="",$course_group_id="",$class_id=""){
+		$this->db->order_by('center_id,roll_number','ASC');
+		$data['students'] = $this->Common_model->getRecordByWhere('student',array("university_mode"=>$mode,"course_group_id"=>$course_group_id ,'class_id' => $class_id ,'exam_form'=>'Y','roll_number!='=>'0' ));
 		//'result_show' => 'N'
 		$data['class_id'] = $class_id;
 		$data['course_group_id'] = $course_group_id;
