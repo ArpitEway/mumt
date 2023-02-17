@@ -3204,12 +3204,12 @@ public function update_exam_datewise_permission(){
 		);
 		$titleData = array('title' => 'Internal  Marks Submission' );
 		$this->load->view('header',$titleData);
-		$this->db->order_by("int_marks_sub,student.course_group_id,student.class_id", "asc");
+		$this->db->order_by("int_marks_sub,student.course_group_id,student.old_class_id", "asc");
 		$this->db->select('*');
 		$this->db->from('student');
 		$this->db->join('new_exam_form', 'student.student_id = new_exam_form.student_id');
 		$this->db->group_by('new_exam_form.student_id');
-		$this->db->Where('new_exam_form','Y');
+		$this->db->Where('exam_form','Y');
 		$this->db->Where('paper_type','theory');
 		$this->db->where('university_mode','REG');
 		// $this->db->where('student.class_id','168');
@@ -3223,7 +3223,7 @@ public function update_exam_datewise_permission(){
 
 	public function student_int_assignment_marks(){ 
 		$student_id = $this->input->post('student_id');
-		$class_id = $this->input->post('class_id');
+		$class_id = $this->input->post('old_class_id');
 		
 		$classData	= $this->Common_model->getRecordById('class_master','id',$class_id);
 		
@@ -3291,7 +3291,7 @@ public function update_exam_datewise_permission(){
 
 	public function view_student_marks(){
 		$student_id = $this->input->post('student_id');
-		$class_id = $this->input->post('class_id');
+		$class_id = $this->input->post('old_class_id');
 		$classData	= $this->Common_model->getRecordById('class_master','id',$class_id);
 		$where=array('student.student_id'=>$student_id,'paper_master.sub_group_id !='=>1);
 		$this->db->select('*');
@@ -3302,7 +3302,7 @@ public function update_exam_datewise_permission(){
 		
 		// $this->db->where("new_exam_form.class_id = ".$class_id."");
 		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
-		$this->db->join('paper_master','student.class_id= paper_master.class_id and paper_master.paper_code = new_exam_form.paper_code');
+		$this->db->join('paper_master','student.old_class_id= paper_master.class_id and paper_master.paper_code = new_exam_form.paper_code');
 		$this->db->order_by('new_exam_form.sub_group_id,paper_order,paper_no');
 		$details = $this->db->get()->result();
 		$data = array(
