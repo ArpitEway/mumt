@@ -100,7 +100,7 @@ class Postexam extends CI_Controller {
        {
             $this->db->select('course_name,student.class_name,class_id, COUNT(student_id) as cnt');
             $this->db->join('class_master', 'student.class_id = class_master.id');
-            $this->db->where('last_class', 'L');
+           // $this->db->where('last_class', 'L');
             $this->db->where('new_exam_form', 'Y');
             $this->db->where('result_permission', 'Y');
             // $this->db->where('result_show', 'Y');
@@ -157,8 +157,29 @@ class Postexam extends CI_Controller {
             {
                 $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$marks->class_id,'paper_code'=>$marks->paper_code));
                 if($marks->paper_type=='theory'){
-                    $tot_std_marks += $marks->theory_marks + $marks->int_marks;
-                    $tot_marks += $paper_master[0]->max_theory_marks + $paper_master[0]->max_internal_marks;
+                    if($student->university_mode=="REG")
+                        {
+                            $tot_std_marks += $marks->theory_marks + $marks->int_marks;
+                            $tot_marks += $paper_master[0]->max_theory_marks + $paper_master[0]->max_internal_marks;
+                            if($marks->theory_marks<$paper_master[0]->min_theory_marks){
+                                $fail_count++;
+                                $fali_tot_marks += $marks->theory_marks;
+                                $require_tot_marks += $paper_master[0]->min_theory_marks;
+                            }
+                            
+                        } 
+                    else{
+                            
+                            $tot_std_marks += $marks->theory_marks ;
+                            $tot_marks += $paper_master[0]->private_max_theory_marks ;
+                            if($marks->theory_marks<$paper_master[0]->private_min_theory_marks){
+                                $fail_count++;
+                                $fali_tot_marks += $marks->theory_marks;
+                                $require_tot_marks += $paper_master[0]->private_min_theory_marks;
+                            }
+                        }
+                         
+                    
 
                     if($marks->theory_marks==''){
                         $whCount++;
@@ -172,11 +193,7 @@ class Postexam extends CI_Controller {
                         $abs_count++;
                         $fail_count++;
                     }
-                    if($marks->theory_marks<$paper_master[0]->min_theory_marks){
-                        $fail_count++;
-                        $fali_tot_marks += $marks->theory_marks;
-                        $require_tot_marks += $paper_master[0]->min_theory_marks;
-                    }
+                   
                 }else{ //if($marks->paper_type=='Practical'){
                     if ($classData->practical_internal_marks=='Y') {
                         $tot_std_marks += $marks->p_marks+$marks->int_marks;
@@ -235,7 +252,7 @@ class Postexam extends CI_Controller {
                         if($marks->theory_marks=='' || $marks->theory_marks=='ABS' ){
                             $result = "FAIL";
                         }
-                        if($marks->theory_marks<$paper_master[0]->min_theory_marks ){
+                        if(($marks->theory_marks<$paper_master[0]->min_theory_marks && $student->university_mode=="REG") || ($marks->theory_marks<$paper_master[0]->private_min_theory_marks && $student->university_mode=="PVT") ){
                             if($check_grace_marks){
                                 $result = "PASS BY GRACE";          
                             }else{
@@ -252,6 +269,18 @@ class Postexam extends CI_Controller {
                                 $result = 'FAIL';
                         }
                     }
+                    if($student->university_mode=="REG"){
+                        $max_theory_marks= $paper_master[0]->max_theory_marks;
+                        $max_int_marks= $paper_master[0]->max_internal_marks;
+                        $min_theory_marks= $paper_master[0]->min_theory_marks;
+                        $min_int_marks= $paper_master[0]->min_internal_marks;
+                    }
+                    else{
+                        $max_theory_marks= $paper_master[0]->private_max_theory_marks;
+                        $max_int_marks= 0;
+                        $min_theory_marks= $paper_master[0]->private_min_theory_marks;
+                        $min_int_marks= 0;
+                    }
                     $ResultData = array(
                         'exam_data_id' =>  $old_exam_data_id ,
                         'student_id' =>  $student->student_id ,
@@ -259,10 +288,10 @@ class Postexam extends CI_Controller {
                         'class_id' =>  $student->class_id ,
                         'paper_code'=> $paper_master[0]->paper_code ,
                         'type'=> $marks->paper_type ,
-                        'max_theory_marks'=> $paper_master[0]->max_theory_marks,
-                        'max_int_marks'=> $paper_master[0]->max_internal_marks,
-                        'min_theory_marks'=> $paper_master[0]->min_theory_marks,
-                        'min_int_marks'=> $paper_master[0]->min_internal_marks,
+                        'max_theory_marks'=> $max_theory_marks,
+                        'max_int_marks'=> $max_int_marks,
+                        'min_theory_marks'=> $min_theory_marks,
+                        'min_int_marks'=> $min_int_marks,
                         'theory_marks'=> $marks->theory_marks,
                         'p_marks'=> $marks->p_marks,
                         'int_marks'=> $marks->int_marks,
@@ -276,10 +305,11 @@ class Postexam extends CI_Controller {
 
             }
             $studentData = array('upload_result'=>'Y');
-            if($paper_count==$abs_count && count($course_type)!=0){  
-                $studentData['demo'] = 'Y';
-                $studentData['new_exam_form'] = 'N';
-            }elseif($fail_count>1 && $student->course_group_id==76){
+            // if($paper_count==$abs_count && count($course_type)!=0){  
+            //     $studentData['demo'] = 'Y';
+            //     $studentData['new_exam_form'] = 'N';
+            // }else
+            if($fail_count>1 && $student->course_group_id==76){
                 $studentData['promote'] = 'D';    
             }else{
                 $studentData['promote'] = 'N';
