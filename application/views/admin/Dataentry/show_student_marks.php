@@ -15,7 +15,7 @@
 
 		<div class="col-md-4">
 			<strong for="">Roll Number :</strong>
-			<?=$student[0]->roll_no ?>
+			<?=$student[0]->roll_number ?>
 		</div>
 		<div class="col-md-4">
 			<strong for="">Enrollment Number :</strong>
@@ -33,7 +33,7 @@
 		</div>  
 		<div class="col-md-4">
 			<strong for="">Class Name :</strong>
-			<?= $this->Common_model->getClassNameByClassId($student[0]->class_id) ?>
+			<?= $this->Common_model->getClassNameByClassId($student[0]->old_class_id) ?>
 		</div>
 		<div class="col-md-4">
 			<strong for="">IC Code :</strong>

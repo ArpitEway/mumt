@@ -36,7 +36,7 @@ class Dataentry extends CI_Controller {
 		$this->load->view('header',$titleData);
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();	
-		$data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id), course_name ','new_exam_form="Y"');
+		$data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id), course_name ','exam_form="Y"');
 		$this->load->view('admin/Dataentry/mark_entry_course',$data);
 		$this->load->view('footer');
 	} 
@@ -67,13 +67,13 @@ class Dataentry extends CI_Controller {
 		$titleData = array('title' => 'Marks Entry'); 
 		$this->load->view('header',$titleData);
 
-		$where = array('new_exam_form.paper_code' => $paper_code, 'theory_marks' => '','university_mode' => $mode,'paper_type' => 'theory','exam_center_id'=>$exam_center,'student.new_exam_form' => 'Y');
+		$where = array('new_exam_form.paper_code' => $paper_code, 'theory_marks' => '','university_mode' => $mode,'paper_type' => 'theory','exam_center_id'=>$exam_center,'student.exam_form' => 'Y');
 		//,'student.result_show'=>'N'
-		$this->db->select('student.student_id, student.name,enrollment_no,roll_no');
+		$this->db->select('student.student_id, student.name,enrollment_no,roll_number');
 		$this->db->from('new_exam_form');
-		$this->db->order_by("student.roll_no","student.enrollment_no","asc");
+		$this->db->order_by("student.roll_number","student.enrollment_no","asc");
 		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
-		$this->db->where('student.class_id = new_exam_form.class_id');
+		$this->db->where('student.old_class_id = new_exam_form.class_id');
 		$this->db->where($where); 
 		$this->db->limit(20,$page);
 		$resultData = $this->db->get();
@@ -82,11 +82,11 @@ class Dataentry extends CI_Controller {
 		$config = array();
 		$config["base_url"] = base_url() ."Dataentry/marks_entry_form/".$this->Common_model->encrypt_decrypt($mode,'encrypt')."/".$this->Common_model->encrypt_decrypt($class_id,'encrypt')."/".$this->Common_model->encrypt_decrypt($paper_code,'encrypt')."/".$exam_center;
 
-				$this->db->select('student.student_id, student.name,enrollment_no,roll_no');
+				$this->db->select('student.student_id, student.name,enrollment_no,roll_number');
 		$this->db->from('new_exam_form');
-		$this->db->order_by("student.roll_no","student.enrollment_no","asc");
+		$this->db->order_by("student.roll_number","student.enrollment_no","asc");
 		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
-		$this->db->where('student.class_id = new_exam_form.class_id');
+		$this->db->where('student.old_class_id = new_exam_form.class_id');
 		$this->db->where($where);
 		$config["total_rows"] = $this->db->get()->num_rows();		
 		$config["per_page"] = 20;
