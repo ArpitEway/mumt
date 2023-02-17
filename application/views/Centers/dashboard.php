@@ -187,16 +187,12 @@
 			</div> 
 			<div class="tab-pane fade" id="exam" role="tabpanel" aria-labelledby="exam-tab">
 				<div class="row">
-						<!--<a class="border-0 custom-menu-item" href="<?=base_url('center/paper_missing_list');?>">
-						<div>
-							<span class="nav-text">Paper Missing List</span>
-						</div>
-					</a> -->
-					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('remaining_exam_answersheet');?>">
-						<div>
-							<span class="nav-text">Remaining Exam Answersheet</span>
-						</div>
-					</a> -->
+					<a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
+							<div>
+								<span class="nav-text">Exam Form Feb 2023</span>
+							</div>
+						</a> 
+						
 					<a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
 						<div>
 							<span class="nav-text">Practical Marks Submission (Regular)</span>
@@ -212,11 +208,7 @@
 							<span class="nav-text">Time Table June 2022</span>
 						</div>
 					</a> 
-					<a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
-						<div>
-							<span class="nav-text">Exam Form June 2022</span>
-						</div>
-					</a>  -->
+					 -->
 
 				<!--	<a class="border-0 custom-menu-item" href="<?=base_url('student_roll_no_list');?>">
 						<div>
