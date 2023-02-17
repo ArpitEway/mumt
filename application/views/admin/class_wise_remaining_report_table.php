@@ -44,7 +44,7 @@
                 <td><?= $i ?></td>
                 <td><?= $student->center_code ?></td>
                 <td><?= $student->examcentercode ?></td>
-                <td><?= $student->roll_no ?></td>
+                <td><?= $student->roll_number ?></td>
                 <td><?= $student->enrollment_no ?></td>
                 <td><?= $student->name ?></td>
                 <td><?= $student->course_name ?></td>

@@ -127,7 +127,7 @@
     div#footer_content {
       font-weight: bold;
     }
-  
+  }
 </style>
 <div id="footer_wrapper">
   <div id="footer_content">
@@ -148,7 +148,7 @@
   foreach($students as $student)
   {
     $page_break_count++;
-    $marks = $this->Common_model->student_info_for_result($student->student_id,$student->class_id);
+    $marks = $this->Common_model->student_info_for_result($student->student_id,$student->old_class_id);
     $BarCodecolspan = 9 + count($marks); 
     $total_theory_marks_obt = 0;
     $total_int_marks_obt = 0;
@@ -188,7 +188,7 @@
           $theory_abs_count++;
         }
 
-        if($new_exam_form->theory_marks==''){
+        if($new_exam_form->theory_marks=='' ){
           $rw_count++;
         }
 
@@ -199,7 +199,7 @@
           $require_tot_marks += $new_exam_form->min_theory_marks;
         }
 
-        if($new_exam_form->int_marks=='N'){
+        if($new_exam_form->int_marks=='N' && $new_exam_form->max_internal_marks!=0){
           $rw_count++;
         }
 
@@ -228,7 +228,7 @@
           $p_fail_count++;
           array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
         }
-        if($new_exam_form->int_marks=='N'){
+        if($new_exam_form->int_marks=='N' && $new_exam_form->max_internal_marks!=0){
             $rwpr_count++;
         }
         
@@ -315,7 +315,7 @@
           <td class="align-middle text-right">Internal Marks Max/Min -></td>
           <?php  foreach($marks as $paper_master){     ?>
             <td  class="align-middle text-center ">
-              <?php if($paper_master->paper_type=="theory"){ echo  $paper_master->max_internal_marks .'/'. $paper_master->min_internal_marks;};  ?></td>
+              <?php if($paper_master->paper_type=="theory"){ if($paper_master->max_internal_marks !=0){echo  $paper_master->max_internal_marks .'/'. $paper_master->min_internal_marks;}else{ echo ''; }};  ?></td>
           <?php }  ?>
           <td class="align-middle text-center"></td>
         </tr>
@@ -335,7 +335,7 @@
           <td class="align-middle text-right"><?=($classData[0]->project=='Y') ? 'Project' : 'Practical' ?> Internal Marks Max/Min-></td>
           <?php foreach($marks as $paper_master){   ?>
           <td  class="align-middle text-center">
-            <?php if($paper_master->paper_type!="theory"){echo  $paper_master->max_internal_marks .'/'.$paper_master->min_internal_marks;};  ?>
+            <?php if($paper_master->paper_type!="theory"){ if($paper_master->max_internal_marks !=0){echo  $paper_master->max_internal_marks .'/'.$paper_master->min_internal_marks;}else{ echo '';};}  ?>
           </td>
           <?php } ?>
           <td class="align-middle text-center"></td>
@@ -350,10 +350,10 @@
     <table class="table table1">
       <tbody>
         <tr>
-          <th  class="align-middle text-center roll_no" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_no ?> <br> <?php echo $student->enrollment_no  ?></th>
+          <th  class="align-middle text-center roll_no" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_number ?> <br> <?php echo $student->enrollment_no  ?></th>
           <th class="align-middle text-center ms_no" rowspan="<?php echo $rowspandata ?>"><?=$student->marksheet_no ?></th>
           <th  class="align-middle text-center photo" rowspan="<?php echo $rowspandata ?>">
-            <img alt="N/A" src="<?= base_url('assets/student_image/'.$student->session.'/'.$student->photo) ?>" height="90px"></th>
+            <img alt="N/A" src="<?= base_url('assets/student_image/'.$student->session.'/'.$student->photo) ?>" width='65px' height="90px"></th>
           <td  class="align-middle text-center name"  rowspan="<?php  echo $rowspandata ?>"><?php  echo $student->name ?>/ <br><?php  echo $student->f_h_name ?></td>
           <td  class="align-middle text-right paper">Paper-></td>
           <?php  foreach($marks as $paper_master){  ?>
@@ -364,9 +364,14 @@
             ?></td>
           <td  class="align-middle text-center result" rowspan="<?php echo $rowspandata ?>"><?php echo $final_result; ?></td>
           <td  class="align-middle text-center remarks"  rowspan="<?php echo $rowspandata ?>"><?php 
-          if($check_grace_marks){
-            echo "-";
-              }elseif(sizeof($atkt_paper_codes_array)==1){
+         
+              if($student->course_group_id == 76){
+                if($check_grace_marks){
+                  echo "-";
+                    }elseif($final_result == "RW"){
+                      echo '';
+                    }
+              elseif(sizeof($atkt_paper_codes_array)==1){
                 echo "ATKT in";
                 $atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
                 foreach($atkt_paper_codes_array as $paper_code){
@@ -375,6 +380,24 @@
               }else{
                 echo '';
               }
+              }else{
+                if($check_grace_marks){
+                  echo "-";
+                    }elseif($final_result == "RW"){
+                      echo '';
+                    }
+              elseif(sizeof($atkt_paper_codes_array) > 0){
+                echo "ATKT in";
+                $atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
+                foreach($atkt_paper_codes_array as $paper_code){
+                  echo  "<br>". $paper_code;
+                }
+              }else{
+                echo '';
+              }
+
+              }
+             
               
             //   elseif($int_abs_count==$theory_paper_count &&  $theory_abs_count==$theory_paper_count && $p_abs_count==$p_paper_count){
             //       echo 'ABS In ALL';
@@ -537,7 +560,7 @@
   ?>
   <tr class="">
     <td  class="align-middle text-left " colspan="<?=$BarCodecolspan ?>">
-          <?php  echo $generator->getBarcode($student->roll_no.$marksheetData[0]->bar_code_no, $generator::TYPE_CODE_128,2,25); ?>
+          <?php  echo $generator->getBarcode($student->roll_number.$marksheetData[0]->bar_code_no, $generator::TYPE_CODE_128,2,25); ?>
     </td>
   </tr>
 </tbody>

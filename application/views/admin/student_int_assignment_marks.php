@@ -25,7 +25,7 @@
               
               <tr>          
                <td><strong>Enrollment No: </strong> <?=$details[0]->enrollment_no;?></td>
-                <td><strong> Roll No: </strong><?=$details[0]->roll_no;?></td>
+                <td><strong> Roll No: </strong><?=$details[0]->roll_number;?></td>
                  <td  rowspan="5"> <img  class="student_img" src="<?php echo base_url('/assets/student_image/').$details[0]->session.'/'.$details[0]->photo;?>" ></td> 
               </tr>
               <tr> 
@@ -61,7 +61,7 @@
  $ajax_count=count($details); 
       foreach($details as $student){
        
-       $view=  $this->Common_model->getRecordByWhere("paper_master",array('class_id'=>$student->class_id,'paper_code'=>$student->paper_code));
+       $view=  $this->Common_model->getRecordByWhere("paper_master",array('class_id'=>$student->old_class_id,'paper_code'=>$student->paper_code));
       //  print_r($view);die;
         ?>
         <tr>

@@ -112,7 +112,8 @@ class updateFormdata extends CI_Controller {
 				return false;
 			}
 		}
-		if (isset($_FILES['photo'])) {
+		if ($_FILES['photo']['name'] != '') {
+			unlink('assets/student_image/'.$session.'/'.$mode[0]->photo);
 			$path = 'assets/student_image/'.$session;
 			$upload = $this->do_upload('photo',$path,$student_id);
 			if (isset($upload['file_name'])) {
