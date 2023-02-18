@@ -18,7 +18,7 @@ $total = 0;
     foreach($exam_centers as $row)
     {
         /*****************/
-		$sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE     `s`.`exam_center_id` = '".$row->id."' AND ((new_exam_form='Y' AND class_name!='I Year')  OR ( `s`.`session` = 'July 2022' AND `s`.`class_name` = 'I SEM' ) )";
+		$sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE     `s`.`exam_center_id` = '".$row->id."' AND   course_complete='N'  AND ((exam_form='Y' AND class_name!='I Year')  OR ( `s`.`session` = 'July 2022' AND `s`.`class_name` = 'I SEM' ) )";
          
 		//AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2021' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2022' AND `s`.`class_name` = 'I SEM' ))
 
