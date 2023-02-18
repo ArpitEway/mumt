@@ -114,6 +114,8 @@ class Preexam extends CI_Controller {
 		$where = array('class_id' => $class_id,
 					'enrolled' => "Y",
 					'new_exam_form' => "D",
+					'enrollment_no !=' =>'-'
+					'new_admission_permission' => "N",
 					'session'=>"July 2022"
 					
 				);
