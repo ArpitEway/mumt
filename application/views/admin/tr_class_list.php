@@ -24,11 +24,26 @@
 			<td><?= $class->class_name ?></td>
 			<td><a target="_blank" href="<?php echo  base_url('admin/admins/student_result_permission/'.$course['id'].'/'.$class->id)  ?>">Result permission</a></td>
 			<td>
-				<?php if ($class->practical_internal_marks=='Y'): ?>
-				<a target="_blank" href="<?php echo  base_url('admin/admins/generate_tr_bed/'.$course['id'].'/'.$class->id)  ?>">Generate Tr</a>
-					<?php else: ?>
-				<a target="_blank" href="<?php echo  base_url('admin/admins/generate_tr/'.$course['id'].'/'.$class->id)  ?>">Generate Tr</a>
-				<?php endif ?>
+				<?php
+				$flag=($class->regular_class == 'Y' && $class->private_class == 'Y')? '/': '';
+				if ($class->practical_internal_marks=='Y'){ 
+					 
+					 
+					 if($class->regular_class=='Y') { ?>    
+					 <a href="<?php echo base_url("admin/admins/generate_tr_bed")."/REG/".$course['id']."/".$class->id; ?>">Generate Regular Tr</a>
+					 <?php } if($class->private_class=='Y') { echo $flag; ?>
+					 <a href="<?php echo base_url("admin/admins/generate_tr_bed")."/PVT/".$course['id']."/".$class->id; ?>"> Generate Private tr</a>
+					  <?php }  
+				
+
+					 }else{ 
+				
+				if($class->regular_class=='Y') { ?>    
+					 <a href="<?php echo base_url("admin/admins/generate_tr")."/REG/".$course['id']."/".$class->id; ?>">Generate Regular Tr</a>
+					 <?php } if($class->private_class=='Y') { echo $flag; ?>
+					 <a href="<?php echo base_url("admin/admins/generate_tr")."/PVT/".$course['id']."/".$class->id; ?>"> Generate Private tr</a>
+					  <?php }  
+				 } ?>
 			</td>
 			<td>
 				<?php if ($class->practical_internal_marks=='Y'): ?>

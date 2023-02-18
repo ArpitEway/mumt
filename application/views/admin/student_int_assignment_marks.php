@@ -34,7 +34,7 @@
               </tr>
               <tr>
                 <td><b>Course: </b> <?=$details[0]->course_name;?></td>
-                <td><b>Class: </b> <?=$details[0]->class_name;?></td>
+                <td><b>Class: </b> <?= $this->Common_model->getClassNameByClassId($details[0]->old_class_id);?></td>
               </tr>
               
                
@@ -59,10 +59,19 @@
    
    $s=1;
  $ajax_count=count($details); 
+ $removeCounter = 0;
       foreach($details as $student){
        
-       $view=  $this->Common_model->getRecordByWhere("paper_master",array('class_id'=>$student->old_class_id,'paper_code'=>$student->paper_code));
+       $paper_data=  $this->Common_model->getRecordByWhere("paper_master",array('class_id'=>$student->old_class_id,'paper_code'=>$student->paper_code));
       //  print_r($view);die;
+      $percentage = 90;  
+      $max_internal=  $paper_data[0]->max_internal_marks;
+      $min_internal=  $paper_data[0]->min_internal_marks; 
+      if($max_internal == 0){
+        $removeCounter++;
+        continue;
+
+      }
         ?>
         <tr>
          
@@ -78,22 +87,22 @@
         </td>
           <td>
               <?php
-           echo $view[0]->max_internal_marks;               
+           echo $max_internal;               
             ?>  
           </td>
           <td>    <?php 
-               echo $view[0]->min_internal_marks;                      
+               echo $min_internal;                      
             ?>  </td>
           <td> 
           
             <select name="marks[]" class="form-control col-12 increase"  id="<?="id_{$s}"; ?>"  > 
         <option value="ABS" selected>Absent</option>
         <?php
-        $percentage = 90;  
+        // $percentage = 90;  
         // $percentage = 100;
 
-      $max_internal=  $view[0]->max_internal_marks;
-      $min_internal=  $view[0]->min_internal_marks; 
+      // $max_internal=  $view[0]->max_internal_marks;
+      // $min_internal=  $view[0]->min_internal_marks; 
 
 
        $max_internal_percentage = round(($percentage / 100) * $max_internal);
@@ -122,7 +131,7 @@ $s++;
         
       }
       ?>
-<input type="hidden" value="<?php echo $ajax_count; ?>" name="count_item" id="count_item"/>
+<input type="hidden" value="<?php echo $ajax_count-$removeCounter; ?>" name="count_item" id="count_item"/>
     </tbody>
   </table>
 
