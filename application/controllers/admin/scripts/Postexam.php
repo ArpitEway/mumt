@@ -15,56 +15,7 @@ class Postexam extends CI_Controller {
         }
     }
     
-    public function promote_student_list(){
-        $this->db->select('count(*) as cnt ,student.course_name ,student.class_id, student.course_group_id, student.class_name');
-        $this->db->from('student');
-        $this->db->join('class_master', 'class_master.id = student.class_id');
-        $this->db->group_by('student.class_id');
-        $this->db->where('student.exam_form','Y');
-        // $this->db->where('student.result_show','Y');
-        $this->db->where('student.promote','N');
-        $this->db->where('student.course_complete','N');
-        // $this->db->where('class_master.last_class!=','L');
-        $data['courses'] = $this->db->get()->result();
-        $this->load->view('header',array('title' => 'Promote Students'));
-        $this->load->view('admin/script/class_wise_student_count_for_promote_student',$data);
-        $this->load->view('footer');
-    }
-    
-      public function promote_student($class_id="" ,$course_group_id=""){
-        $data = array(
-            'name_csrf' => $this->security->get_csrf_token_name(),
-            'hash_csrf' => $this->security->get_csrf_hash(),
-        );//'result_show'=>'Y'
-        $this->db->limit(1000);
-          $data['students']= $this->Common_model->getRecordByWhere('student',array('class_id' => $class_id, 'exam_form'=>'Y' , 'promote'=>'N' ,'course_complete'=>'N' ));
-          $data['course_name']= $this->Common_model->getCourseNameByCourseId($course_group_id);
-          $data['class_name']= $this->Common_model->getClassNameByClassId($class_id);
-          $data['class_id'] =$class_id ;
-          $data['course_group_id'] =$course_group_id ;
-          $this->load->view('header',array('title' => 'Promote Students'));
-          $this->load->view('admin/script/promote_student_view',$data);
-          $this->load->view('footer');
-      }
-    
-      public function promote_student_submit(){
-        foreach($_POST['student_id'] as $student_id){
-            $student= $this->Common_model->getRecordByWhere('student',array('student_id'=>$student_id));
-            $data = array(
-                'class_id' => $_POST['new_class_id'],
-                'class_name' =>$_POST['class_name'],
-                'old_class_id' =>$_POST['old_class_id'],
-                'temp_exam_form' => 'N',
-                'new_exam_form' => 'N',
-                'promote' => 'Y'
-            );
-            $where = array('student_id'=>$student_id);
-            $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
-        }
-        if($update){
-            redirect(base_url('admin/scripts/Postexam/promote_student_list'));
-        }
-    }
+   
 
      
 
@@ -101,8 +52,9 @@ class Postexam extends CI_Controller {
             $this->db->select('course_name,student.class_name,class_id, COUNT(student_id) as cnt');
             $this->db->join('class_master', 'student.class_id = class_master.id');
            // $this->db->where('last_class', 'L');
-            $this->db->where('new_exam_form', 'Y');
+            $this->db->where('exam_form', 'Y');
             $this->db->where('result_permission', 'Y');
+            $this->db->where('final_result_permission', 'Y');
             // $this->db->where('result_show', 'Y');
             $this->db->where('upload_result', 'N');
             $this->db->group_by('class_id');          
@@ -115,9 +67,9 @@ class Postexam extends CI_Controller {
     public function upload_old_data_script($class_id=""){
         $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
         $this->db->limit(500);
-        $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "new_exam_form"=>'Y', "upload_result"=>'N'));
-      $this->db->where_in('course_group.course_type',array('Diploma','PGDiploma'));
-      $course_type = $this->Common_model->getRecordByWhere("course_group",array('id'=> $students[0]->course_group_id));
+        $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'N'));
+     // $this->db->where_in('course_group.course_type',array('Diploma','PGDiploma'));
+     // $course_type = $this->Common_model->getRecordByWhere("course_group",array('id'=> $students[0]->course_group_id));
 
         foreach($students as $student)
         {
@@ -228,7 +180,7 @@ class Postexam extends CI_Controller {
             }else{
                 $final_result = 'PASS';   
             }
-            if($final_result=='FAIL') {
+            if($final_result=='FAIL' && $whCount!=0) {
                  //  && count($course_type)==0 && $student->course_group_id!=76 && $student->course_group_id!=77
                 continue;
             }
@@ -325,6 +277,200 @@ class Postexam extends CI_Controller {
     
     }
 
+    public function promote_student_list(){
+        $this->db->select('count(*) as cnt ,student.course_name ,student.class_id, student.course_group_id, student.class_name');
+        $this->db->from('student');
+        $this->db->join('class_master', 'class_master.id = student.class_id');
+        $this->db->group_by('student.class_id');
+        $this->db->where('student.exam_form','Y');
+        // $this->db->where('student.result_show','Y');
+        $this->db->where('student.promote','N');
+        $this->db->where('student.course_complete','N');
+        $this->db->where('class_master.last_class is NULL');
+        $data['courses'] = $this->db->get()->result();
+      //  echo $this->db->last_query();
+        $this->load->view('header',array('title' => 'Promote Students'));
+        $this->load->view('admin/script/class_wise_student_count_for_promote_student',$data);
+        $this->load->view('footer');
+    }
+    
+      public function promote_student($class_id="" ,$course_group_id=""){
+        $data = array(
+            'name_csrf' => $this->security->get_csrf_token_name(),
+            'hash_csrf' => $this->security->get_csrf_hash(),
+        );//'result_show'=>'Y'
+        $this->db->limit(1000);
+          $data['students']= $this->Common_model->getRecordByWhere('student',array('class_id' => $class_id, 'exam_form'=>'Y' , 'promote'=>'N' ,'course_complete'=>'N' ));
+          $data['course_name']= $this->Common_model->getCourseNameByCourseId($course_group_id);
+          $data['class_name']= $this->Common_model->getClassNameByClassId($class_id);
+          $data['class_id'] =$class_id ;
+          $data['course_group_id'] =$course_group_id ;
+          $this->load->view('header',array('title' => 'Promote Students'));
+          $this->load->view('admin/script/promote_student_view',$data);
+          $this->load->view('footer');
+      }
+    
+      public function promote_student_submit(){
+        foreach($_POST['student_id'] as $student_id){
+            $student= $this->Common_model->getRecordByWhere('student',array('student_id'=>$student_id));
+            $data = array(
+                'class_id' => $_POST['new_class_id'],
+                'class_name' =>$_POST['class_name'],
+                'old_class_id' =>$_POST['old_class_id'],
+                'temp_exam_form' => 'N',
+                'new_exam_form' => 'N',
+                'promote' => 'Y'
+                
+            );
+            $where = array('student_id'=>$student_id,'new_exam_form'=>'D');
+            $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+        }
+        if($update){
+            redirect(base_url('admin/scripts/Postexam/promote_student_list'));
+        }
+    }
+
+
+
+    
+    public function check_demo_backlog_student()
+      {
+           $this->db->select('course_name,class_id, COUNT(student_id) as cnt');
+           $this->db->where('exam_year', 'Feb 2022');
+           $this->db->where('exam_result', 'FAIL');
+           $this->db->where('exam_status', 'R');
+           $this->db->group_by('class_id');         
+           $data['courses'] = $this->db->get('old_exam_data')->result();
+           $this->load->view('header',array('title' => 'Old Marks Entry'));
+           $this->load->view('admin/script/check_demo_backlog_student',$data);
+           $this->load->view('footer');
+      }
+
+    public function check_demo_backlog_student_script($class_id)
+    {
+        $this->load->view('header',array('title' => 'Old Marks Entry'));
+        $this->db->select('*');
+        $this->db->from('old_exam_data');
+        $this->db->where('exam_year', 'Feb 2022');
+        $this->db->where('exam_result', 'FAIL');
+        $this->db->where('exam_status', 'R');
+        $this->db->where('old_exam_data.class_id',$class_id);
+        $data['students'] = $this->db->get()->result();
+        $this->load->view('admin/script/check_demo_backlog_student_script',$data);
+        $this->load->view('footer');
+      }
+
+
+    public function set_demo($student_id,$class_id)
+    {
+        $where = array('student_id'=>$student_id,'new_exam_form'=>'D');
+        $data = array('demo'=>'Y','new_exam_form'=>'N');
+        $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+        if($update){
+        redirect(base_url('admin/scripts/Postexam/check_demo_backlog_student_script/'.$class_id));
+        $this->session->set_flashdata('ajax_flash_message','Your Query Submited Successfully'); 
+        }    
+    }   
+
+    public function backlog_marks_update_scripts($student_id,$class_id='')
+    {
+        $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$class_id,'student_id'=>$student_id));
+        $whereResult = array("class_id"=>$students[0]->class_id ,"student_id"=>$students[0]->student_id, 'exam_data_id' => $students[0]->id);
+        $old_result_datas = $this->Common_model->getRecordByWhere("old_result_data",$whereResult );
+            $data = array(
+                'student_id' => $students[0]->student_id,
+                'course_group_id' =>$students[0]->course_group_id,
+                'class_id' => $students[0]->class_id,
+                'roll_no' => 0,
+                'session' => $students[0]->session,
+                'exam_form' => 'D',
+                'enrollment_no' => $students[0]->enrollment_no,
+                'center_id' => $students[0]->center_id,
+                'center_code' => $students[0]->center_code,
+                'attempt_no' => 1,
+                'exam_center_id' => $students[0]->id,
+                'back_marksheet_no' => '',
+                'upload_result' =>  'N',
+                'int_marks_sub' => 'N',
+                'p_marks_sub' => 'N',
+                'result_permission' => 'N',
+               );
+            $backlog_student_id = $this->Common_model->insertAll('backlog_student',$data);
+            echo $this->db->last_query().'<br>';
+            foreach($old_result_datas as $old_result_data)
+            {
+                $examData = array(
+                    'student_id' => $old_result_data->student_id ,
+                    'backlog_student_id' => $backlog_student_id,
+                    'course_group_id' =>$old_result_data->course_group_id,
+                    'class_id' => $old_result_data->class_id,
+                    'paper_code' => $old_result_data->paper_code,
+                    'paper_type' => $old_result_data->type,
+                    'group_id' => '',
+                    'paper_order' => $old_result_data->p_order,
+                    'theory_marks' =>$old_result_data->theory_marks,
+                    'int_marks' =>$old_result_data->int_marks,
+                    'p_marks' => $old_result_data->p_marks,
+                    'status' => 'C',
+                 );
+                if ($old_result_data->result=='FAIL'){
+                    $examData['status'] = 'B';
+                    $examData['theory_marks'] = '';
+                }
+                $backlog_exam_form_june = $this->Common_model->insertAll('backlog_exam_form',$examData);
+                echo $this->db->last_query().'<br>';
+         } 
+     }
+     public function course_complete_status()
+     {
+          $this->db->select('course_name,student.class_name,student.course_group_id,class_id, COUNT(student_id) as cnt');
+          $this->db->join('class_master', 'student.class_id = class_master.id');
+          $this->db->where('last_class', 'L');
+          $this->db->where('new_exam_form', 'Y');
+          $this->db->where('result_permission', 'Y');
+          $this->db->where('course_complete', 'N');
+          $this->db->where('upload_result', 'Y');
+          $this->db->group_by('class_id');          
+          $data['courses'] = $this->db->get('student')->result();
+          $this->load->view('header',array('title' => ''));
+          $this->load->view('admin/script/course_complete_status',$data);
+          $this->load->view('footer');
+     }
+     public function update_course_complete_status($course_group_id="",$class_id=""){
+            $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+            $this->db->limit(500);
+            $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "new_exam_form"=>'Y', "upload_result"=>'Y','course_complete'=>'N'));
+            $courseClassData = $this->Common_model->getRecordByWhere("class_master",array("course_group_id"=>$course_group_id,"mode"=>$classData->mode));
+    
+            $i=1;
+            echo "<br>&nbsp;&nbsp; # &nbsp;&nbsp; Form Number  &nbsp;&nbsp; Enrollment Number";
+            foreach($students as $student)
+            {
+                $passCounter=0;
+                foreach($courseClassData as $courseClass)
+                 {
+                    $courseCompleteStudentData = $this->Common_model->getRecordByWhere("old_exam_data",array("student_id"=>$student->student_id,"exam_result!="=>"FAIL","class_id"=>$courseClass->id));
+                    if($courseCompleteStudentData) $passCounter++;
+                }
+                 if(count($courseClassData)==$passCounter){
+                    $data = array(
+                        'course_complete' => 'Y',
+                        'new_admission_permission'=>'Y',
+                    );
+                    $where = array('student_id'=>$student->student_id);
+                    $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+                        echo "<br>&nbsp;&nbsp;".$i++."  &nbsp;&nbsp;&nbsp;  ".$student->student_id. "   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   ".$student->enrollment_no;
+                }
+               
+            }
+        }     
+
+
+
+
+
+
+        //for open book only Start ****************/
     public function general_promotion_class_list_paper_count(){
         $this->load->view('header',array('title' => 'General Promotion Students'));
         $this->db->select('count(paper_id) as cnt ,student.course_name ,student.class_id, student.class_name');
@@ -479,168 +625,6 @@ class Postexam extends CI_Controller {
         }  
     }
  
-    // Fetching Student record & Update  exam center by Center ID 
-    public function update_stdent_allottment_exam_center($startlimit=1){
-        echo "update_stdent_allottment_exam_center<br>";
-        $this->db->select('*');
-        $this->db->from('student');
-        $this->db->where('exam_center_id','0');
-        //$this->db->where('examcentercode','NU');
-        $start=0;
-		//$start=($startlimit-1)*1000;
-		$this->db->limit(2000,$start);
-        $rows=$this->db->get()->result();
-        //echo $this->db->last_query();
-        $i=1;
-         foreach($rows as $row){
-            $this->db->select('*');
-            $this->db->from('allot_exam_center');
-            $this->db->where('center_id',$row->center_id);
-            $allottment=$this->db->get()->result();
-            
-            
-            if(!empty($allottment)){
-             
-                $data  = array('exam_center_id'=>$allottment[0]->exam_center_id ,'examcentercode'=>$allottment[0]->examcentercode );
-                $where = array('student_id'=>$row->student_id);
-                $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
-                echo $i." ".$row->	center_code." ".$row->student_id." ".$row->name." Exam Code =>".$allottment[0]->examcentercode." <br>";
-               $i++;
-            }
-           
-           
-         }
-    }
-
-    public function check_demo_backlog_student()
-      {
-           $this->db->select('course_name,class_id, COUNT(student_id) as cnt');
-           $this->db->where('exam_year', 'Feb 2022');
-           $this->db->where('exam_result', 'FAIL');
-           $this->db->where('exam_status', 'R');
-           $this->db->group_by('class_id');         
-           $data['courses'] = $this->db->get('old_exam_data')->result();
-           $this->load->view('header',array('title' => 'Old Marks Entry'));
-           $this->load->view('admin/script/check_demo_backlog_student',$data);
-           $this->load->view('footer');
-      }
-
-    public function check_demo_backlog_student_script($class_id)
-    {
-        $this->load->view('header',array('title' => 'Old Marks Entry'));
-        $this->db->select('*');
-        $this->db->from('old_exam_data');
-        $this->db->where('exam_year', 'Feb 2022');
-        $this->db->where('exam_result', 'FAIL');
-        $this->db->where('exam_status', 'R');
-        $this->db->where('old_exam_data.class_id',$class_id);
-        $data['students'] = $this->db->get()->result();
-        $this->load->view('admin/script/check_demo_backlog_student_script',$data);
-        $this->load->view('footer');
-      }
-
-
-    public function set_demo($student_id,$class_id)
-    {
-        $where = array('student_id'=>$student_id,'new_exam_form'=>'D');
-        $data = array('demo'=>'Y','new_exam_form'=>'N');
-        $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
-        if($update){
-        redirect(base_url('admin/scripts/Postexam/check_demo_backlog_student_script/'.$class_id));
-        $this->session->set_flashdata('ajax_flash_message','Your Query Submited Successfully'); 
-        }    
-    }   
-
-    public function backlog_marks_update_scripts($student_id,$class_id='')
-    {
-        $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$class_id,'student_id'=>$student_id));
-        $whereResult = array("class_id"=>$students[0]->class_id ,"student_id"=>$students[0]->student_id, 'exam_data_id' => $students[0]->id);
-        $old_result_datas = $this->Common_model->getRecordByWhere("old_result_data",$whereResult );
-            $data = array(
-                'student_id' => $students[0]->student_id,
-                'course_group_id' =>$students[0]->course_group_id,
-                'class_id' => $students[0]->class_id,
-                'roll_no' => 0,
-                'session' => $students[0]->session,
-                'exam_form' => 'D',
-                'enrollment_no' => $students[0]->enrollment_no,
-                'center_id' => $students[0]->center_id,
-                'center_code' => $students[0]->center_code,
-                'attempt_no' => 1,
-                'exam_center_id' => $students[0]->id,
-                'back_marksheet_no' => '',
-                'upload_result' =>  'N',
-                'int_marks_sub' => 'N',
-                'p_marks_sub' => 'N',
-                'result_permission' => 'N',
-               );
-            $backlog_student_id = $this->Common_model->insertAll('backlog_student',$data);
-            echo $this->db->last_query().'<br>';
-            foreach($old_result_datas as $old_result_data)
-            {
-                $examData = array(
-                    'student_id' => $old_result_data->student_id ,
-                    'backlog_student_id' => $backlog_student_id,
-                    'course_group_id' =>$old_result_data->course_group_id,
-                    'class_id' => $old_result_data->class_id,
-                    'paper_code' => $old_result_data->paper_code,
-                    'paper_type' => $old_result_data->type,
-                    'group_id' => '',
-                    'paper_order' => $old_result_data->p_order,
-                    'theory_marks' =>$old_result_data->theory_marks,
-                    'int_marks' =>$old_result_data->int_marks,
-                    'p_marks' => $old_result_data->p_marks,
-                    'status' => 'C',
-                 );
-                if ($old_result_data->result=='FAIL'){
-                    $examData['status'] = 'B';
-                    $examData['theory_marks'] = '';
-                }
-                $backlog_exam_form_june = $this->Common_model->insertAll('backlog_exam_form',$examData);
-                echo $this->db->last_query().'<br>';
-         } 
-     }
-     public function course_complete_status()
-     {
-          $this->db->select('course_name,student.class_name,student.course_group_id,class_id, COUNT(student_id) as cnt');
-          $this->db->join('class_master', 'student.class_id = class_master.id');
-          $this->db->where('last_class', 'L');
-          $this->db->where('new_exam_form', 'Y');
-          $this->db->where('result_permission', 'Y');
-          $this->db->where('course_complete', 'N');
-          $this->db->where('upload_result', 'Y');
-          $this->db->group_by('class_id');          
-          $data['courses'] = $this->db->get('student')->result();
-          $this->load->view('header',array('title' => ''));
-          $this->load->view('admin/script/course_complete_status',$data);
-          $this->load->view('footer');
-     }
-     public function update_course_complete_status($course_group_id="",$class_id=""){
-            $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
-            $this->db->limit(500);
-            $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "new_exam_form"=>'Y', "upload_result"=>'Y','course_complete'=>'N'));
-            $courseClassData = $this->Common_model->getRecordByWhere("class_master",array("course_group_id"=>$course_group_id,"mode"=>$classData->mode));
     
-            $i=1;
-            echo "<br>&nbsp;&nbsp; # &nbsp;&nbsp; Form Number  &nbsp;&nbsp; Enrollment Number";
-            foreach($students as $student)
-            {
-                $passCounter=0;
-                foreach($courseClassData as $courseClass)
-                 {
-                    $courseCompleteStudentData = $this->Common_model->getRecordByWhere("old_exam_data",array("student_id"=>$student->student_id,"exam_result!="=>"FAIL","class_id"=>$courseClass->id));
-                    if($courseCompleteStudentData) $passCounter++;
-                }
-                 if(count($courseClassData)==$passCounter){
-                    $data = array(
-                        'course_complete' => 'Y',
-                        'new_admission_permission'=>'Y',
-                    );
-                    $where = array('student_id'=>$student->student_id);
-                    $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
-                        echo "<br>&nbsp;&nbsp;".$i++."  &nbsp;&nbsp;&nbsp;  ".$student->student_id. "   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   ".$student->enrollment_no;
-                }
-               
-            }
-        }     
+//for open book only End****************/
 }
