@@ -4577,5 +4577,45 @@ public function update_exam_datewise_permission(){
 			}	
 		}
 	}
+
+	public function class_wise_remaining_theory_marks(){
+
+		$this->load->view('header',array('title' => 'Class Wise Remaining Theory Marks'));
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
+
+			$this->load->view('admin/class_wise_remaining_theory_marks',$data);
+			$this->load->view('footer');
+
+	}
+
+	public function class_wise_remaining_student_report(){
+		
+			$data=array();	
+			$mode =$this->input->post('mode');
+			$classes = $this->Common_model->getRecordByWhere('class_master',array('mode'=>$mode));
+			$set = array_column($classes,'id');
+				$this->db->select('*');
+				$this->db->from('new_exam_form');
+				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+				$this->db->where('student.exam_form','Y');
+				if($mode != 'All'){
+					$this->db->where_in('new_exam_form.class_id',$set);
+				}
+				$this->db->where('new_exam_form.theory_marks','');
+				$this->db->where('new_exam_form.paper_type',"theory");
+				$this->db->order_by('student.course_group_id','student.class_id','student.university_mode','student.roll_no');
+				
+			$data['students'] = $this->db->get()->result();
+			$dt = $this->load->view('admin/class_wise_remaining_report_table',$data,true);
+		
+			echo json_encode(array(
+                "status" => true,
+                "data" => $dt
+            ));
+		
+	}
 	
 }// class
