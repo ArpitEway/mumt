@@ -209,7 +209,8 @@ class Otherscript extends CI_Controller {
 		}
 	}
 
-	public function remaining_failed_student_marks($class_id){
+	public function remaining_failed_student_marks($class_id=0){
+		$class_id=107;
 		$this->db->select('count(*) as num,student.*');
 		$this->db->from('new_exam_form');
 		$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id');
@@ -217,7 +218,7 @@ class Otherscript extends CI_Controller {
 		$this->db->order_by('new_exam_form.course_group_id,new_exam_form.class_id','asc');
 		$this->db->where('new_exam_form.paper_type','theory');
 		// $this->db->where('new_exam_form.theory_marks',);
-		$this->db->where('new_exam_form','Y');
+		$this->db->where('exam_form','Y');
 		$this->db->where('new_exam_form.theory_marks < paper_master.min_theory_marks');
 		$this->db->where('new_exam_form.class_id',$class_id);
 		$this->db->where('roll_no!=','0');
