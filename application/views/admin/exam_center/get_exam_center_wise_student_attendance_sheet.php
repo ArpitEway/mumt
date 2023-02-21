@@ -62,13 +62,12 @@
 					<div class="col-12 text-center">
 						<h5>Attendance Sheet Examination 
 							<?php
-							if($student->class_id==256 || $student->class_id==262){
-								echo 'SEPTEMBER 2022';
-							}elseif($student->class_id==268){
-								echo 'NOVEMBER 2022';	
+							if($student->course_group_id==75 || $student->course_group_id==76){
+								echo 'Feb 2023';
 							}else{
-								echo 'AUGUST 2022';
+								echo 'March 2023';
 							}
+							
 							?>
 						</h5>
 						
