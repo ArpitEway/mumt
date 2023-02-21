@@ -41,8 +41,11 @@
 					$tot_marks = 0;
 					$fail_id = 0;
 					foreach($marksdatas as $marksdata){
-						
-						$min_theory_marks = $this->Common_model->getSinglefield('paper_master','min_theory_marks',array('paper_code' => $marksdata->paper_code, 'class_id' => $marksdata->class_id));
+						if ($student->university_mode=='REG') {
+							$min_theory_marks = $this->Common_model->getSinglefield('paper_master','min_theory_marks',array('paper_code' => $marksdata->paper_code, 'class_id' => $marksdata->class_id));
+						} else {
+							$min_theory_marks = $this->Common_model->getSinglefield('paper_master','private_min_theory_marks',array('paper_code' => $marksdata->paper_code, 'class_id' => $marksdata->class_id));
+						}						
 						
 						if ($marksdata->theory_marks<$min_theory_marks) {
 							$fail_id = $marksdata->id;
