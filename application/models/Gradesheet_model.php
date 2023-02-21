@@ -92,8 +92,8 @@ class Gradesheet_model extends CI_Model
 				$this->foundation_paper[$this->paper['group_paper_name']]['max_theory_marks'] = $this->paper['max_theory_marks'];
 				$this->foundation_paper[$this->paper['group_paper_name']]['paper_code'] = $this->paper['paper_code'];
 				$this->foundation_paper[$this->paper['group_paper_name']]['credit_point'] = $this->paper['credit_point'];
-				$paper_name_post_fix = ($this->paper['group_paper_name']=='FC1') ? 'I' : 'II';
-				$this->foundation_paper[$this->paper['group_paper_name']]['paper_name'] = $paper_name_post_fix.' 1)'.$this->paper['paper_name'];
+				// $paper_name_post_fix = ($this->paper['group_paper_name']=='FC1') ? 'I' : 'II';
+				$this->foundation_paper[$this->paper['group_paper_name']]['paper_name'] = ' 1)'.$this->paper['paper_name'].' ';
 			}
 		}else{
 			$this->_echo_row();
@@ -130,7 +130,7 @@ class Gradesheet_model extends CI_Model
 
 	private function paper_name()
 	{
-		$this->result_array[$this->paper['paper_code']]["paper_name"] = $this->paper["group_paper_name"].' - '.$this->paper["paper_name"];
+		$this->result_array[$this->paper['paper_code']]["paper_name"] ='['. $this->paper["group_paper_name"].'] '.$this->paper["paper_name"];
 	}
 
 	private function credit()
@@ -202,11 +202,13 @@ class Gradesheet_model extends CI_Model
 
 	private function paper_code_foudation($sub_group_id){
 		$this->result_array[$this->paper['paper_code']] = array();
+		
 		array_push($this->result_array[$this->paper['paper_code']], $this->foundation_paper[$sub_group_id]['paper_code']);
+		
 	}
 
 	private function paper_name_foudation($sub_group_id){
-		$data = $this->paper["group_paper_name"].' - '.$this->foundation_paper[$sub_group_id]["paper_name"].' 2)'.$this->paper["paper_name"];
+		$data = '['.$this->paper["group_paper_name"].'] '.$this->foundation_paper[$sub_group_id]["paper_name"].' 2)'.$this->paper["paper_name"];
 		// print_r($this->paper["paper_name"]);
 		$this->result_array[$this->paper['paper_code']]['paper_name'] = $data;
 	}
