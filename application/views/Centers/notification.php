@@ -7,8 +7,8 @@
 			<div>
 				<ul>
 					<li> <img src="<?=base_url('assets/images/center/new.gif')?>" alt=""> जुलाई 2022 सेशन के ऑनलाइन रजिस्ट्रेशन फॉर्म भरने के पश्चात् विद्यार्थियों के Documents अनिवार्य रूप से Online Upload करके Admission Form का Print एवं Documents की कॉपी (10th,12th, Graduation की Mark Sheet, Marriage Certificate, आधार कार्ड) एवं ओरिजिनल TC, Migration, महर्षि महेश योगी वैदिक विश्विद्यालय, लमती, विजय नगर, जबलपुर (म.प्र.) पर पहुंच जाना आवश्यक है अन्यथा विद्यार्थियों के Form स्वतः ही Cancel कर दिए जायेंगे। </li> 
-					<li> <img src="<?=base_url('assets/images/center/new.gif')?>" alt="" style="
-					padding: 15px 0px;	"> Regular/Private परीक्षा कार्यक्रम के लिए क्लिक करे <a href="<?=base_url('search_exam_by_course');?>" target='_blank'>Click Here</a></li>
+					<!-- <li> <img src="<?=base_url('assets/images/center/new.gif')?>" alt="" style="
+					padding: 15px 0px;	"> Regular/Private परीक्षा कार्यक्रम के लिए क्लिक करे <a href="<?=base_url('search_exam_by_course');?>" target='_blank'>Click Here</a></li> -->
 					<!--<li><img src="<?=base_url('assets/images/center/new.gif')?>" alt="" style="
 					padding: 15px 0px;	"> दिनांक 26 अगस्त 2022 से 12 सितम्बर 2022 के बीच सम्पन्न होने वाली परीक्षाओं के लिये परीक्षा फॉर्म भरने की अंतिम तिथि 19 अगस्त 2022 निर्धारित की गयी है। अनुरोध है कि उक्त दिनांक के पूर्व परीक्षा फॉर्म भरने की प्रक्रिया पूर्ण करे| इसके पश्चात् किसी भी आवेदन पर विचार नहीं किया जावेगा| </li> -->
 				</ul>
