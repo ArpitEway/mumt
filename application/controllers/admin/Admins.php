@@ -4577,5 +4577,29 @@ public function update_exam_datewise_permission(){
 			}	
 		}
 	}
+	//Time Table
+	public function time_table(){
+		$dt = array();
+		$titleData = array('title' => 'Course Wise Exam Date ');
 	
+		$this->load->view('header',$titleData );
+		$dt['name_csrf'] = $this->security->get_csrf_token_name();
+		$dt['hash_csrf'] = $this->security->get_csrf_hash();
+	
+		$this->db->select('course_group.*');
+		$this->db->from('course_group');
+		$this->db->join('paper_master', 'paper_master.course_group_id = course_group.id');
+		$this->db->where('paper_master.exam_date!=','');
+		$this->db->where('paper_master.exam_date!=','0000-00-00');  
+		$this->db->where('paper_master.type','theory'); 
+	   
+		$this->db->group_by('paper_master.course_group_id');
+		$this->db->order_by('course_group.course_name', 'Asc');
+		$dt['courses']= $this->db->get()->result_array();
+		$this->load->view('Centers/search_exam_by_course',$dt);
+		$this->load->view('footer');
+
+		
+	}
+
 }// class

@@ -44,12 +44,10 @@
 					<div class="col-12 text-center">
 						<h5>Schedule of Exam for Annual/Semester Examination of
 								<?php
-							if($student[0]->class_id==256 || $student[0]->class_id==262){
-								echo 'September 2022';
-							}elseif($student[0]->class_id==268){
-								echo 'November 2022';	
+							if($student[0]->course_group_id==75 || $student[0]->course_group_id==76){
+								echo 'Feb 2023';
 							}else{
-								echo 'August 2022';
+								echo 'March 2023';
 							}
 							?> 
 						</h5>
