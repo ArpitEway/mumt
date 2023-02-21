@@ -220,7 +220,7 @@ class Otherscript extends CI_Controller {
 		$this->db->where('new_exam_form.paper_type','theory');
 		// $this->db->where('new_exam_form.theory_marks',);
 		$this->db->where('exam_form','Y');
-		if ($university_mode='REG') {
+		if ($university_mode=='REG') {
 			$this->db->where('new_exam_form.theory_marks < paper_master.min_theory_marks');
 		}else{
 			$this->db->where('new_exam_form.theory_marks < paper_master.private_min_theory_marks');
