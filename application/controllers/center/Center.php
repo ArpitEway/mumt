@@ -1841,7 +1841,7 @@ class Center extends CI_Controller {
 		foreach($tableData as $result){
 			   
 			if($result->provisional_remark=="N" || $result->provisional_remark==""){
-				if($result->old_class_id == '107'){
+				if($result->old_class_id == '107' || $result->old_class_id == '110'){
 					$btn =	'<a href="'.base_url('center/Center/grade_marksheet/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm dt-center" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
 				}else{
 					$btn =	'<a href="'.base_url('center/Center/marksheet/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm dt-center" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;

@@ -143,7 +143,7 @@ class Gradesheet_model extends CI_Model
 	private function grade()
 	{
 		if ($this->paper["type"]=='theory') {
-			if($this->mode=='regular'){
+			if($this->mode=='REG'){
 				if ($this->paper['theory_marks']=='' || ($this->paper["int_marks"]=='' || $this->paper["int_marks"]=='N')) {
 					$this->withheld = true;
 				}
@@ -151,7 +151,7 @@ class Gradesheet_model extends CI_Model
 				$check_fail_min_marks = $this->paper["min_theory_marks"];
 				$check_fail_tot_marks = $this->paper["max_theory_marks"];
 				$tot_obt_marks = $this->paper["theory_marks"] + $this->paper["int_marks"];
-				$tot_marks = $this->paper["max_theory_marks"] + $this->paper["max_internal_marks"];
+				 $tot_marks = $this->paper["max_theory_marks"] + $this->paper["max_internal_marks"];
 				$min_marks = $this->paper["min_theory_marks"] + $this->paper["min_internal_marks"];
 			}else{
 				if ($this->paper['theory_marks']==''){
@@ -173,6 +173,7 @@ class Gradesheet_model extends CI_Model
 			$min_marks = $this->paper["min_theory_marks"];
 		}
 		$persent = $tot_obt_marks*100/$tot_marks;
+		//  $tot_marks ;die;
 		$where = 'min_marks <= '.$persent.' and  max_marks >= '.$persent.'';
 		$gradeData = $this->Common_model->getRecordByWhere('letter_grade',$where);
 		if ('F'==$gradeData[0]->letter_grade || 'ABS' ==$gradeData[0]->letter_grade) {

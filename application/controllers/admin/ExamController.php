@@ -2446,18 +2446,23 @@ public function getStudentData()
 						$this->db->where('new_exam_form.class_id',$data['student']->old_class_id);
 						$new_exam_form = $this->db->get()->result();
 						$data['new_exam_form']  = $new_exam_form;
-						$title = array('title' => 'Result - '.$data['student']->enrollment_no);
-						
-						$marksheet_top =  $this->load->view('Centers/marksheet_top',$data,true);
-						if ($student[0]->course_group_id==36 || $student[0]->course_group_id==37) {
-							
-							$marksheet_bottom=  $this->load->view('Centers/marksheet_without_int',$data,true);
+						if($data['student']->old_class_id == '107' || $data['student']->old_class_id == '110'){
+							$this->load->model('Gradesheet_model');
+							$dt = $this->load->view('Centers/grade_marksheet',$data,true);
 						}else{
+							$title = array('title' => 'Result - '.$data['student']->enrollment_no);
 							
-							$marksheet_bottom=  $this->load->view('Centers/marksheet_bottom',$data,true);
+							$marksheet_top =  $this->load->view('Centers/marksheet_top',$data,true);
+							if ($student[0]->course_group_id==36 || $student[0]->course_group_id==37) {
+								
+								$marksheet_bottom=  $this->load->view('Centers/marksheet_without_int',$data,true);
+							}else{
+								
+								$marksheet_bottom=  $this->load->view('Centers/marksheet_bottom',$data,true);
+							}
+							
+							$dt =  $marksheet_top.$marksheet_bottom;
 						}
-						
-						$dt =  $marksheet_top.$marksheet_bottom;
 						echo json_encode(array(
 							"status" => true,
 							"data" => $dt

@@ -95,7 +95,7 @@ th.border.border-dark {
         </tr>
         <?php 
         // echo $student->old_class_id;die;
-        $gradesheetData = $this->Gradesheet_model->view_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->mode);
+        $gradesheetData = $this->Gradesheet_model->view_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
         // print_r($gradesheetData);die;
          ?>
       </tbody>
