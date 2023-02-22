@@ -192,13 +192,13 @@ class Otherscript extends CI_Controller {
 	{
 
 		$cls_id=154;
-		$sql = "SELECT * FROM `old_exam_data` WHERE `class_id`=154  AND total_marks=400 limit 250";
+		$sql = "SELECT * FROM `old_exam_data` WHERE `class_id`=181  AND total_marks=500  limit 250";
 		$rs = $this->db->query($sql)->result_array();
 		$i=0;
 		foreach ($rs as $student) {
 			$new_exam_sql = "SELECT SUM(p_marks) as tot FROM `old_result_data` WHERE `exam_data_id`='".$student['id']."' and `type`!='Theory'";
 			$new_exam_rs =	$this->db->query($new_exam_sql)->result_array();
-			$total_marks=500;
+			$total_marks=600;
 			$obtain_marks=$student['obtain_marks']+$new_exam_rs[0]['tot'];
 			echo "<br> $i= <br>";
 			$percentage=round(($obtain_marks/$total_marks)*100,2);
