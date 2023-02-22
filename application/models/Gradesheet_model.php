@@ -58,7 +58,7 @@ class Gradesheet_model extends CI_Model
 		$this->echo_result(); 
 		$this->total();
 		$this->agpa = $this->tot_credit_point/$this->tot_credit;
-		if($this->mode=='regular'){
+		if($this->mode=='REG'){
 			// $this->result_head();
 			$this->set_result();
 			// $this->AGPA();
@@ -271,7 +271,7 @@ class Gradesheet_model extends CI_Model
 
 	public function min_max_no()
 	{
-		if ($this->mode=='private') {
+		if ($this->mode=='PVT') {
 			$this->result_array[$this->paper['paper_code']]['max_marks'] = $this->paper['private_max_theory_marks'];
 			if ($this->paper['type']=='theory') {
 				$this->result_array[$this->paper['paper_code']]['min_marks'] = $this->paper['private_min_theory_marks'];
@@ -300,7 +300,7 @@ class Gradesheet_model extends CI_Model
 
 	public function foudation_min_max_no($sub_group_id)
 	{
-		if($this->mode=='private'){
+		if($this->mode=='PVT'){
 			$this->result_array[$this->paper['paper_code']]['max_marks'] = $this->foundation_paper[$sub_group_id]['max_theory_marks'];
 			$this->result_array[$this->paper['paper_code']]['min_marks'] = 35;
 			$this->result_array[$this->paper['paper_code']]['obt_marks'] = $this->foundation_paper[$sub_group_id]['tot_marks'];
@@ -462,7 +462,7 @@ class Gradesheet_model extends CI_Model
 		$result_data = $this->student_result_data(); 
 		// $this->total();
 		$this->agpa = $this->tot_credit_point/$this->tot_credit;
-		if($this->mode=='regular'){
+		if($this->mode=='REG'){
 			$this->set_result();
 		}else{
 			$this->set_result();
@@ -570,7 +570,7 @@ class Gradesheet_model extends CI_Model
 		$this->echo_result_marksheet(); 
 		$this->total_marksheet();
 		$this->agpa = $this->tot_credit_point/$this->tot_credit;
-		if($this->mode=='regular'){
+		if($this->mode=='REG'){
 			// $this->result_head();
 			$this->set_result();
 			// $this->AGPA();
