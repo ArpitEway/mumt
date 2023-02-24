@@ -153,12 +153,13 @@ class saveFormdata extends CI_Controller {
 		$class = $this->Common_model->getRecordByWhere('class_master',array('id' =>$class_id));
        
 		// if($class[0]->exam_form_permission =='Y' && $class[0]->class_group=="N"){
+			$cbcs = ($class[0]->cbcs == 'Y')?'Y':'N';
 			if($class[0]->class_group=="N"){
 			$this->db->order_by('id');
 			if($data['university_mode']=='PVT') 
-					$paperWhere=array('class_id'=>$class_id,'type'=>'theory');
+					$paperWhere=array('class_id'=>$class_id,'type'=>'theory','cbcs_paper'=>$cbcs);
 			else			
-					$paperWhere=array('class_id'=>$class_id);
+					$paperWhere=array('class_id'=>$class_id,'cbcs_paper'=>$cbcs);
 			$papers = $this->Common_model->getRecordByWhere('paper_master',$paperWhere);
 	
 	
