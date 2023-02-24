@@ -655,7 +655,8 @@ class Common_Model extends CI_Model{
 		$class_order = $class['class_order'];
 
 		$response = array();
-		if($pattern == 'cbcs' && $class['cbcs'] == 'Y'){
+		// && $class['cbcs'] == 'Y'
+		if($pattern == 'cbcs'){
 			$response['paper_code']  = $class_order."RC".$course_code."".$paper_count;
 		$response['paper_code1']  = $class_order."RC".$course_code;
 		}else{
