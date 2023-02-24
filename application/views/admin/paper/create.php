@@ -1,7 +1,7 @@
 <form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/Admins/paper/create'); ?>">
     <div class="form-row" id="addedRows">
 	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4">
             <label for="course">Course</label>
             <select name="course_group_id" id="course_group_id1" class="form-control course_group_id" data-target="#class_id1" required >
                 <option value="">Select course</option>
@@ -19,12 +19,21 @@
             </select>
             
         </div>
+		<div class="form-group col-md-4">
+				<label for="pattern">Pattern</label>
+				<select name="pattern" id="pattern" class="form-control" required >
+				   <option value="cbcs">CBCS</option>
+					<option value="marks">Marks</option>
+					
+					
+				</select>
+			</div>
 
 		<input type="hidden" name="rowcount" id="rowcount" value="1">
 		<input type="hidden" name="paper_count" id="paper_count">
 		<input type="hidden" name="p_code" id="p_code">
 
-		<div class="form-group col-md-6">
+		<div class="form-group col-md-4">
 			<label for="class">Class</label>
             <select name="class_id" id="class_id1" class="form-control" required >  
 			</select>
@@ -34,11 +43,14 @@
 				<label for="name">Paper name</label>
 				<input type="text" class="form-control" id="paper_name" name="paper_name[]" placeholder="Enter paper name">        
 			</div>
+			
 				
 			<div class="form-group col-md-6">
 				<label for="code">Paper code</label>
 				<input type="text" class="form-control paper_code" id="paper_code" name="paper_code[]" placeholder="Enter paper code">        
 			</div>
+
+			
 
 			<div class="form-group col-md-4">
 				<label for="type">Type</label>
@@ -92,6 +104,7 @@ $(document).on("change", "#class_id1", function() {
 		var data = {
 			id: $(this).val(),
 			course_group_id: $("#course_group_id1").val(),
+			pattern:$("#pattern").val(),
 			[csrfName]:csrfHash
 		};
 		console.log(data);
@@ -99,6 +112,9 @@ $(document).on("change", "#class_id1", function() {
 		var url = BASE_URL + "admin/Admins/get_paper_code";
 		var response = call_ajax(data, url);
 		if(response) {
+			if(response.data.class_cbcs  == 'Y'){
+					$('#pattern option[value=cbcs]').attr('selected','selected');
+				}
 
 			console.log(response);
 			console.log(response.data.paper_code);
@@ -124,6 +140,7 @@ $(document).on("change", "#course_group_id1", function() {
 			$(target).html('<option value="">Select class</option>');
 			for(var i = 0; i < response.data.length; i++) {
 				$(target).append('<option value="' + response.data[i].id + '">' + response.data[i].class_name + '</option>');
+				
 			}
 		} 
 });

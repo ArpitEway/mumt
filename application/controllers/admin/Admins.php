@@ -452,7 +452,7 @@ class Admins extends CI_Controller {
 			if($class_id!='All'){
 				$where = array('class_id' => $class_id);
 			}
-			$this->db->order_by("course_group_id,class_id,paper_no ","asc");
+			$this->db->order_by("course_group_id,class_id,cbcs_paper,paper_no ","asc");
 			$papers = $this->db->get_where("paper_master",$where)->result_array();
 
 			$htmlData = array(
@@ -1161,9 +1161,10 @@ class Admins extends CI_Controller {
 				$count = 0;
 				$class_id = $this->input->post("id");
 				$course_group_id = $this->input->post("course_group_id");
+				$pattern = $this->input->post("pattern");
 				if($class_id) 
 				{
-					$data = $this->Common_model->getPaperCode($course_group_id,$class_id);
+					$data = $this->Common_model->getPaperCode($course_group_id,$class_id,$pattern);
 				}
 				echo json_encode(array(
 					"status" => "true",
@@ -3954,7 +3955,7 @@ public function update_exam_datewise_permission(){
 	public function paper_test_id_list()
 	{	
 		$where = array('type' => 'theory');
-		$this->db->order_by('course_group_id,class_id','ASC');
+		$this->db->order_by('course_group_id,class_id,cbcs_paper,paper_no','ASC');
 		$papers = $this->Common_model->getRecordByWhere('paper_master',$where);
 		$data = array('papers' => $papers);
 		$this->load->view('header');

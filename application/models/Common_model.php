@@ -614,9 +614,12 @@ class Common_Model extends CI_Model{
 		return date("Y-m-d", strtotime($date));
 	}
 	
-	public function getPaperCode($course_group_id,$class_id){
-		
-		$where = array("course_group_id" => $course_group_id,"class_id" => $class_id);
+	public function getPaperCode($course_group_id,$class_id,$pattern){
+		if($pattern == 'cbcs'){
+		$where = array("course_group_id" => $course_group_id,"class_id" => $class_id,'cbcs_paper'=>'Y');
+		}else{
+		$where = array("course_group_id" => $course_group_id,"class_id" => $class_id,'cbcs_paper'=>'N');
+		}
 		$this->db->select("count(*) as cnt");
 		$this->db->from("paper_master");
 		$this->db->where($where);
@@ -632,7 +635,7 @@ class Common_Model extends CI_Model{
 			
 			$paper_count =  '1';
 		}
-
+		// echo $paper_count;die;
 		$where3 = array("id" => $course_group_id);
 		$this->db->select('paper_code_pattern');
 		$this->db->from("course_group");
@@ -652,9 +655,16 @@ class Common_Model extends CI_Model{
 		$class_order = $class['class_order'];
 
 		$response = array();
-		$response['paper_code']  = $class_order."R".$course_code."".$paper_count;
+		if($pattern == 'cbcs' && $class['cbcs'] == 'Y'){
+			$response['paper_code']  = $class_order."RC".$course_code."".$paper_count;
+		$response['paper_code1']  = $class_order."RC".$course_code;
+		}else{
+			$response['paper_code']  = $class_order."R".$course_code."".$paper_count;
 		$response['paper_code1']  = $class_order."R".$course_code;
+		}
+		
 		$response['paper_count'] = $paper_count;
+		$response['class_cbcs'] =  $class['cbcs'];
 		
 		return $response;
 	}
