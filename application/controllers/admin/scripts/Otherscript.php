@@ -244,6 +244,24 @@ class Otherscript extends CI_Controller {
 		echo "<title>MMYVVONLINE</title>";
 		echo $this->db->last_query();
 	}
+
+	public function update_exam_fields_of_paper_master_table(){
+		echo "Update Exam Data in Paper Master";
+		$this->db->select('*');
+       		$this->db->from('paper_testid_relation');
+		$rows=$this->db->get()->result();
+		$i=1;
+		foreach($rows as $row){
+
+			echo "<br> ".$i." ". $row->paper_code ." ". $row->test_id;
+			$data  = array('test_id'=>$row->test_id);
+            $where = array('test_id'=>'0','paper_code'=> $row->paper_code);
+			$this->db->limit(1);
+            $update =$this->Common_model->updateRecordByConditions('paper_master',$where,$data);
+			// echo  $this->db->last_query(); die;
+			$i++;
+		}
+	}
 }
 
 ?>
