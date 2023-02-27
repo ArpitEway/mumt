@@ -44,12 +44,10 @@
 					<div class="col-12 text-center">
 						<h5>Schedule of Exam for Annual/Semester Examination of
 								<?php
-							if($student[0]->class_id==256 || $student[0]->class_id==262){
-								echo 'September 2022';
-							}elseif($student[0]->class_id==268){
-								echo 'November 2022';	
+							if($student[0]->course_group_id==75 || $student[0]->course_group_id==76){
+								echo 'Feb 2023';
 							}else{
-								echo 'August 2022';
+								echo 'March 2023';
 							}
 							?> 
 						</h5>
@@ -131,9 +129,15 @@
 					
 					<?php //endif ?> -->
 					<!-- <td><?= ($paper->exam_shift=='मध्याह्न') ? '१२:०० से ०३:०० बजे तक' : ''; ?></td> -->
-					<td><?= 
-					($paper->exam_shift=='Morning') ? '11:00 AM To 2:00 PM'   : ($paper->exam_shift=='Evening') ? '03:00 PM To 6:00 PM'  : '12:00 To 3:00 PM'
-					; ?></td>
+					<td><?php
+					if($paper->exam_shift=='Morning'){
+						echo '11:00 AM To 2:00 PM';
+					}elseif($paper->exam_shift=='Evening'){
+						echo '03:00 PM To 6:00 PM';
+					}else{
+						echo '12:00 To 3:00 PM';
+					}
+					?></td>
 			</tr>
 			<?php 
 			$i++;

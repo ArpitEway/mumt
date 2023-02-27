@@ -452,7 +452,7 @@ class Admins extends CI_Controller {
 			if($class_id!='All'){
 				$where = array('class_id' => $class_id);
 			}
-			$this->db->order_by("course_group_id,class_id,paper_no ","asc");
+			$this->db->order_by("course_group_id,class_id,cbcs_paper,paper_no ","asc");
 			$papers = $this->db->get_where("paper_master",$where)->result_array();
 
 			$htmlData = array(
@@ -1161,9 +1161,10 @@ class Admins extends CI_Controller {
 				$count = 0;
 				$class_id = $this->input->post("id");
 				$course_group_id = $this->input->post("course_group_id");
+				$pattern = $this->input->post("pattern");
 				if($class_id) 
 				{
-					$data = $this->Common_model->getPaperCode($course_group_id,$class_id);
+					$data = $this->Common_model->getPaperCode($course_group_id,$class_id,$pattern);
 				}
 				echo json_encode(array(
 					"status" => "true",
@@ -3074,7 +3075,7 @@ public function update_exam_datewise_permission(){
 		}		
 		
 		$this->db->order_by('center_id,roll_number','ASC');
-		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0' ));
+		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','enrollment_no'=>'AG/21200364' ));
 		// ,'enrollment_no'=>'AG/21200364'
 		$title = "Marksheet ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
@@ -3954,7 +3955,7 @@ public function update_exam_datewise_permission(){
 	public function paper_test_id_list()
 	{	
 		$where = array('type' => 'theory');
-		$this->db->order_by('course_group_id,class_id','ASC');
+		$this->db->order_by('course_group_id,class_id,cbcs_paper,paper_no','ASC');
 		$papers = $this->Common_model->getRecordByWhere('paper_master',$where);
 		$data = array('papers' => $papers);
 		$this->load->view('header');
@@ -4617,5 +4618,29 @@ public function update_exam_datewise_permission(){
             ));
 		
 	}
+	//Time Table
+	public function time_table(){
+		$dt = array();
+		$titleData = array('title' => 'Course Wise Exam Date ');
 	
+		$this->load->view('header',$titleData );
+		$dt['name_csrf'] = $this->security->get_csrf_token_name();
+		$dt['hash_csrf'] = $this->security->get_csrf_hash();
+	
+		$this->db->select('course_group.*');
+		$this->db->from('course_group');
+		$this->db->join('paper_master', 'paper_master.course_group_id = course_group.id');
+		$this->db->where('paper_master.exam_date!=','');
+		$this->db->where('paper_master.exam_date!=','0000-00-00');  
+		$this->db->where('paper_master.type','theory'); 
+	   
+		$this->db->group_by('paper_master.course_group_id');
+		$this->db->order_by('course_group.course_name', 'Asc');
+		$dt['courses']= $this->db->get()->result_array();
+		$this->load->view('Centers/search_exam_by_course',$dt);
+		$this->load->view('footer');
+
+		
+	}
+
 }// class

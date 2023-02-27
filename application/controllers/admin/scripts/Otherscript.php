@@ -192,13 +192,13 @@ class Otherscript extends CI_Controller {
 	{
 
 		$cls_id=154;
-		$sql = "SELECT * FROM `old_exam_data` WHERE `class_id`=154  AND total_marks=400 limit 250";
+		$sql = "SELECT * FROM `old_exam_data` WHERE `class_id`=181  AND total_marks=500  limit 250";
 		$rs = $this->db->query($sql)->result_array();
 		$i=0;
 		foreach ($rs as $student) {
 			$new_exam_sql = "SELECT SUM(p_marks) as tot FROM `old_result_data` WHERE `exam_data_id`='".$student['id']."' and `type`!='Theory'";
 			$new_exam_rs =	$this->db->query($new_exam_sql)->result_array();
-			$total_marks=500;
+			$total_marks=600;
 			$obtain_marks=$student['obtain_marks']+$new_exam_rs[0]['tot'];
 			echo "<br> $i= <br>";
 			$percentage=round(($obtain_marks/$total_marks)*100,2);
@@ -211,6 +211,7 @@ class Otherscript extends CI_Controller {
 
 	public function remaining_failed_student_marks($class_id=0){
 		$class_id=107;
+		$university_mode='REG';
 		$this->db->select('count(*) as num,student.*');
 		$this->db->from('new_exam_form');
 		$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id');
@@ -219,7 +220,11 @@ class Otherscript extends CI_Controller {
 		$this->db->where('new_exam_form.paper_type','theory');
 		// $this->db->where('new_exam_form.theory_marks',);
 		$this->db->where('exam_form','Y');
-		$this->db->where('new_exam_form.theory_marks < paper_master.min_theory_marks');
+		if ($university_mode=='REG') {
+			$this->db->where('new_exam_form.theory_marks < paper_master.min_theory_marks');
+		}else{
+			$this->db->where('new_exam_form.theory_marks < paper_master.private_min_theory_marks');
+		}
 		$this->db->where('new_exam_form.class_id',$class_id);
 		$this->db->where('roll_no!=','0');
 		$this->db->where('paper_type','Theory');
@@ -238,6 +243,23 @@ class Otherscript extends CI_Controller {
 		// $this->Common_model->updateRecordByConditions('new_exam_form',array('id'=>$nefId,'student_id'=>$student_id),array('theory_marks'=>$marks));
 		echo "<title>MMYVVONLINE</title>";
 		echo $this->db->last_query();
+	}
+
+	public function update_exam_fields_of_paper_master_table(){
+		echo "Update Exam Data in Paper Master";
+		$this->db->select('*');
+       		$this->db->from('paper_testid_relation');
+		$rows=$this->db->get()->result();
+		$i=1;
+		foreach($rows as $row){
+
+			echo "<br> ".$i." ". $row->paper_code ." ". $row->test_id;
+			$data  = array('test_id'=>$row->test_id);
+            $where = array('test_id'=>'0','paper_code'=> $row->paper_code);
+            // $update =$this->Common_model->updateRecordByConditions('paper_master',$where,$data);
+			// echo  $this->db->last_query(); die;
+			$i++;
+		}
 	}
 }
 

@@ -62,13 +62,12 @@
 					<div class="col-12 text-center">
 						<h5>Attendance Sheet Examination 
 							<?php
-							if($student->class_id==256 || $student->class_id==262){
-								echo 'SEPTEMBER 2022';
-							}elseif($student->class_id==268){
-								echo 'NOVEMBER 2022';	
+							if($student->course_group_id==75 || $student->course_group_id==76){
+								echo 'Feb 2023';
 							}else{
-								echo 'AUGUST 2022';
+								echo 'March 2023';
 							}
+							
 							?>
 						</h5>
 						
@@ -157,8 +156,13 @@
 				<tr>
 					<td><?php echo $i ; ?></td>
 					<td><?php echo date("d-m-Y", strtotime($paper->exam_date)); ?></td>
-					<td><?= ($paper->exam_shift=='Morning') ? '11:00 AM To 2:00 PM'   : ($paper->exam_shift=='Evening') ? '03:00 PM To 6:00 PM'  : '12:00 To 3:00 PM'
-					; ?></td>
+					<td><?php if($paper->exam_shift=='Morning'){
+						echo '11:00 AM To 2:00 PM';
+					}elseif($paper->exam_shift=='Evening'){
+						echo '03:00 PM To 6:00 PM';
+					}else{
+						echo '12:00 To 3:00 PM';
+					} ?></td>
 					<td style="text-align:left;"><?php echo $paper->paper_name; ?></td>
 					<td ></td>
 					<td ></td>
