@@ -12,7 +12,7 @@
 				<th>Course</th>
 				<th>Class</th>
 				<?php
-				
+				$this->db->limit('9');
 				$papersobj = $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$class_id,'type'=>'theory'));
 				foreach ($papersobj as $key => $row) {
 					?>
@@ -40,26 +40,51 @@
 					$paper_count = 0;
 					$tot_marks = 0;
 					$fail_id = 0;
+					$max_theory_marks=0;
+					$min_fail=0;
+					$max_fail=0;
+					$max_theory_marks_c=0;
+					
 					foreach($marksdatas as $marksdata){
+						
 						if ($student->university_mode=='REG') {
-							$min_theory_marks = $this->Common_model->getSinglefield('paper_master','min_theory_marks',array('paper_code' => $marksdata->paper_code, 'class_id' => $marksdata->class_id));
+							$min_max_marks = $this->Common_model->getRecordByWhere('paper_master',array('paper_code' => $marksdata->paper_code, 'class_id' => $marksdata->class_id));
+							$min_theory_marks = $min_max_marks[0]->min_theory_marks;
+							$max_theory_marks +=  $min_max_marks[0]->max_theory_marks;
+							$max_theory_marks_c =  $min_max_marks[0]->max_theory_marks;
+
+
 						} else {
-							$min_theory_marks = $this->Common_model->getSinglefield('paper_master','private_min_theory_marks',array('paper_code' => $marksdata->paper_code, 'class_id' => $marksdata->class_id));
+							$min_max_marks = $this->Common_model->getRecordByWhere('paper_master',array('paper_code' => $marksdata->paper_code, 'class_id' => $marksdata->class_id));
+							$min_theory_marks = $min_max_marks[0]->private_min_theory_marks;
+							$max_theory_marks +=  $min_max_marks[0]->private_max_theory_marks;
+							$max_theory_marks_c =  $min_max_marks[0]->private_max_theory_marks;
 						}						
 						
 						if ($marksdata->theory_marks<$min_theory_marks) {
 							$fail_id = $marksdata->id;
+							$min_fail = $min_theory_marks;
+							 $max_fail = $max_theory_marks_c;
 							echo "<td class='text-danger font-weight-bolder'>". $marksdata->theory_marks.' F</td>';
 						}else{
 							$tot_marks += $marksdata->theory_marks;
 							echo "<td>".$marksdata->theory_marks."</td>";
-							$paper_count++;
+							// $paper_count++;
+							
 						}
 					}
-					$avg = round($tot_marks/$paper_count);
+					$avg_percent = $tot_marks *100/$max_theory_marks;
+					// echo $tot_marks.'/'.$max_fail.'/'.$avg_percent.'<br>';
+					$avg_marks = round($max_fail*$avg_percent/100);
 					?>
 					<td>
-						<a  target="_blank" href="<?php echo base_url('admin/scripts/Otherscript/update_student_remaining_marks/').$student->student_id.'/'.$fail_id.'/'.$avg ?>"><?php echo $avg ?></a>
+						<!-- <a  target="_blank" href="<?php //echo base_url('admin/scripts/Otherscript/update_student_remaining_marks/').$student->student_id.'/'.$fail_id.'/'.$avg ?>"> -->
+						<?php echo $avg_marks ?>
+					<!-- </a> -->
+						<?php
+						 //if($avg_marks > $min_fail){$this->Common_model->updateRecordByConditions('new_exam_form',array('id'=>$fail_id,'student_id'=>$student->student_id,'theory_marks'=>''),array('theory_marks'=>$avg_marks));
+							//}
+							?>
 					</td>
 				</tr>
 			<?php  }	?>
