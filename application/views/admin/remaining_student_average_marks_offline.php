@@ -51,28 +51,30 @@
 							$min_max_marks = $this->Common_model->getRecordByWhere('paper_master',array('paper_code' => $marksdata->paper_code, 'class_id' => $marksdata->class_id));
 							$min_theory_marks = $min_max_marks[0]->min_theory_marks;
 							$max_theory_marks_c =  $min_max_marks[0]->max_theory_marks;
-							$max_theory_marks += $this->Common_model->getSinglefield('paper_master','max_theory_marks',array('paper_code' => $marksdata->paper_code, 'class_id' => $marksdata->class_id));
+							// $max_theory_marks += $this->Common_model->getSinglefield('paper_master','max_theory_marks',array('paper_code' => $marksdata->paper_code, 'class_id' => $marksdata->class_id));
 
 
 						} else {
 							$min_max_marks = $this->Common_model->getRecordByWhere('paper_master',array('paper_code' => $marksdata->paper_code, 'class_id' => $marksdata->class_id));
 							$min_theory_marks = $min_max_marks[0]->private_min_theory_marks;
 							$max_theory_marks_c =  $min_max_marks[0]->private_max_theory_marks;
-							$max_theory_marks += $this->Common_model->getSinglefield('paper_master','private_max_theory_marks',array('paper_code' => $marksdata->paper_code, 'class_id' => $marksdata->class_id));
+							// $max_theory_marks += $this->Common_model->getSinglefield('paper_master','private_max_theory_marks',array('paper_code' => $marksdata->paper_code, 'class_id' => $marksdata->class_id));
 						}						
 						
 						if ($marksdata->theory_marks<$min_theory_marks) {
 							$fail_id = $marksdata->id;
 							$min_fail = $min_theory_marks;
 							 $max_fail = $max_theory_marks_c;
-							 if ($student->university_mode=='REG') {
-							 $max_theory_marks -= $this->Common_model->getSinglefield('paper_master','max_theory_marks',array('paper_code' => $marksdata->paper_code, 'class_id' => $marksdata->class_id));
-							 }else{
-								$max_theory_marks -= $this->Common_model->getSinglefield('paper_master','private_max_theory_marks',array('paper_code' => $marksdata->paper_code, 'class_id' => $marksdata->class_id));
-							 }
+
+							 // if ($student->university_mode=='REG') {
+							 // $max_theory_marks -= $this->Common_model->getSinglefield('paper_master','max_theory_marks',array('paper_code' => $marksdata->paper_code, 'class_id' => $marksdata->class_id));
+							 // }else{
+							// 	$max_theory_marks -= $this->Common_model->getSinglefield('paper_master','private_max_theory_marks',array('paper_code' => $marksdata->paper_code, 'class_id' => $marksdata->class_id));
+							 // }
 							echo "<td class='text-danger font-weight-bolder'>". $marksdata->theory_marks.' F</td>';
 						}else{
 							$tot_marks += $marksdata->theory_marks;
+							$tot_max_theory_marks_c += $max_theory_marks_c;
 							echo "<td>".$marksdata->theory_marks."</td>";
 							// $paper_count++;
 							
