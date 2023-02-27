@@ -264,6 +264,34 @@ class Otherscript extends CI_Controller {
 			$i++;
 		}
 	}
+	public function remaining_failed_student_list(){
+		$university_mode='REG';
+		$this->db->select('count(*) as num,student.*');
+		$this->db->from('new_exam_form');
+		$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.old_class_id');
+		$this->db->join('paper_master', 'new_exam_form.paper_id = paper_master.id');
+		$this->db->where('new_exam_form.paper_type','theory');
+		$this->db->where('university_mode',$university_mode);
+		$this->db->where('exam_form','Y');
+		if ($university_mode=='REG') {
+			$this->db->where('new_exam_form.theory_marks < paper_master.min_theory_marks');
+		}else{
+			$this->db->where('new_exam_form.theory_marks < paper_master.private_min_theory_marks');
+		}
+		// $this->db->where('new_exam_form.class_id',$class_id);
+		$this->db->where_in('old_class_id',array(222,154,181,299,198,212,228,172,159,160,200,206,210,256,208));
+		$this->db->where('roll_number !=','');
+		$this->db->where('paper_type','theory');
+		$this->db->group_by('new_exam_form.student_id');
+		$this->db->order_by('student.course_group_id,student.old_class_id,student.roll_number','asc');
+		$data['students'] = $this->db->get()->result();
+		// $this->Common_model->last_query();
+		$data['class_id'] = $class_id;
+		
+		$this->load->view('header',array('title' => 'Student Failed Remaining Marks List'));
+		$this->load->view('admin/remaining_student_average_marks_offline',$data);
+		$this->load->view('footer');
+	}
 }
 
 ?>
