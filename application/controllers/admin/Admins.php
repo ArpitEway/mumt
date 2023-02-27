@@ -4600,14 +4600,14 @@ public function update_exam_datewise_permission(){
 			$set = array_column($classes,'id');
 				$this->db->select('*');
 				$this->db->from('new_exam_form');
-				$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id');
+				$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.old_class_id');
 				$this->db->where('student.exam_form','Y');
 				if($mode != 'All'){
 					$this->db->where_in('new_exam_form.class_id',$set);
 				}
 				$this->db->where('new_exam_form.theory_marks','');
 				$this->db->where('new_exam_form.paper_type',"theory");
-				$this->db->order_by('student.course_group_id','student.class_id','student.university_mode','student.roll_no');
+				$this->db->order_by('student.course_group_id','student.old_class_id','student.university_mode','student.roll_number');
 				
 			$data['students'] = $this->db->get()->result();
 			$dt = $this->load->view('admin/class_wise_remaining_report_table',$data,true);
