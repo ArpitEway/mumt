@@ -210,7 +210,7 @@ class Otherscript extends CI_Controller {
 	}
 
 	public function remaining_failed_student_marks($class_id=0){
-		$class_id=107;
+		$class_id=104;
 		$university_mode='REG';
 		$this->db->select('count(*) as num,student.*');
 		$this->db->from('new_exam_form');
@@ -218,7 +218,7 @@ class Otherscript extends CI_Controller {
 		$this->db->join('paper_master', 'new_exam_form.paper_id = paper_master.id');
 		$this->db->order_by('new_exam_form.course_group_id,new_exam_form.class_id','asc');
 		$this->db->where('new_exam_form.paper_type','theory');
-		// $this->db->where('new_exam_form.theory_marks',);
+		$this->db->where('new_exam_form.theory_marks','');
 		$this->db->where('exam_form','Y');
 		if ($university_mode=='REG') {
 			$this->db->where('new_exam_form.theory_marks < paper_master.min_theory_marks');
@@ -226,11 +226,13 @@ class Otherscript extends CI_Controller {
 			$this->db->where('new_exam_form.theory_marks < paper_master.private_min_theory_marks');
 		}
 		$this->db->where('new_exam_form.class_id',$class_id);
-		$this->db->where('roll_no!=','0');
-		$this->db->where('paper_type','Theory');
+		$this->db->where('roll_number!=','');
+		//$this->db->where_in('roll_number',array(110414995,110412102,110414401,110414400,110411868,110411867,110411869,110413494,110411145,110412413,110412413,110413639));
+		$this->db->where('paper_type','theory');
 		$this->db->group_by('new_exam_form.student_id');
 		$this->db->having('num',1);
 		$data['students'] = $this->db->get()->result();
+		// $this->Common_model->last_query();
 		$data['class_id'] = $class_id;
 		
 		$this->load->view('header',array('title' => 'Student Failed Remaining Marks List'));
