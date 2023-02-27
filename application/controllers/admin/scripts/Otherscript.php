@@ -218,6 +218,7 @@ class Otherscript extends CI_Controller {
 		$this->db->join('paper_master', 'new_exam_form.paper_id = paper_master.id');
 		$this->db->order_by('new_exam_form.course_group_id,new_exam_form.class_id','asc');
 		$this->db->where('new_exam_form.paper_type','theory');
+		$this->db->where('university_mode',$university_mode);
 		$this->db->where('new_exam_form.theory_marks','');
 		$this->db->where('exam_form','Y');
 		if ($university_mode=='REG') {
@@ -227,7 +228,7 @@ class Otherscript extends CI_Controller {
 		}
 		$this->db->where('new_exam_form.class_id',$class_id);
 		$this->db->where('roll_number!=','');
-		//$this->db->where_in('roll_number',array(110414995,110412102,110414401,110414400,110411868,110411867,110411869,110413494,110411145,110412413,110412413,110413639));
+		//$this->db->where_in('roll_number',array());
 		$this->db->where('paper_type','theory');
 		$this->db->group_by('new_exam_form.student_id');
 		$this->db->having('num',1);
