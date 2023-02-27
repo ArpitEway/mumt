@@ -87,8 +87,8 @@
 						<?php echo $avg_marks ?>
 						</a>
 						<?php
-						 //if($avg_marks > $min_fail){$this->Common_model->updateRecordByConditions('new_exam_form',array('id'=>$fail_id,'student_id'=>$student->student_id,'theory_marks'=>''),array('theory_marks'=>$avg_marks));
-							//}
+						 if($avg_marks > $min_fail){$this->Common_model->updateRecordByConditions('new_exam_form',array('id'=>$fail_id,'student_id'=>$student->student_id,'theory_marks'=>''),array('theory_marks'=>$avg_marks));
+							}
 							?>
 					</td>
 				</tr>
