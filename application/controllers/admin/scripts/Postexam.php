@@ -53,8 +53,9 @@ class Postexam extends CI_Controller {
             $this->db->join('class_master', 'student.class_id = class_master.id');
            // $this->db->where('last_class', 'L');
             $this->db->where('exam_form', 'Y');
+            $this->db->where('mode', 'Semester');
             $this->db->where('result_permission', 'Y');
-            $this->db->where('final_result_permission', 'Y');
+            // $this->db->where('final_result_permission', 'Y');
             // $this->db->where('result_show', 'Y');
             $this->db->where('upload_result', 'N');
             $this->db->group_by('class_id');          
@@ -180,7 +181,7 @@ class Postexam extends CI_Controller {
             }else{
                 $final_result = 'PASS';   
             }
-            if($final_result=='FAIL' && $whCount!=0) {
+            if($final_result=='FAIL' || $whCount!=0) {
                  //  && count($course_type)==0 && $student->course_group_id!=76 && $student->course_group_id!=77
                 continue;
             }
@@ -261,7 +262,7 @@ class Postexam extends CI_Controller {
             //     $studentData['demo'] = 'Y';
             //     $studentData['new_exam_form'] = 'N';
             // }else
-            if($fail_count>1 && $student->course_group_id==76){
+            if(($fail_count>1 && $student->course_group_id==76) || ($paper_count==$abs_count)){
                 $studentData['promote'] = 'D';    
             }else{
                 $studentData['promote'] = 'N';
