@@ -93,7 +93,7 @@
 							
 						//  if($avg_marks > $min_fail)
 						//{
-							$this->db->where_not_in('theory_marks',array('','ABS'));
+							// $this->db->where_not_in('theory_marks',array('','ABS'));
 							//$this->Common_model->updateRecordByConditions('new_exam_form',array('id'=>$fail_id,'student_id'=>$student->student_id),array('theory_marks'=>$avg_marks));
 						// 	}
 						
