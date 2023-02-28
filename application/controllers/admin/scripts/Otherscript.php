@@ -295,7 +295,7 @@ class Otherscript extends CI_Controller {
 
 	public function remaining_withheld_student_list(){
 		$class_id=104;
-		$university_mode='REG';
+		$university_mode='PVT';
 		if ($university_mode=='REG') {
 		$this->db->select('count(*) as num,student.*,new_exam_form.paper_code,paper_master.min_theory_marks as min_marks, paper_master.max_theory_marks as max_marks');
 		}else{
