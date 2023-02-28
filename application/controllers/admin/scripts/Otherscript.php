@@ -219,7 +219,7 @@ class Otherscript extends CI_Controller {
 		$this->db->order_by('new_exam_form.course_group_id,new_exam_form.class_id','asc');
 		$this->db->where('new_exam_form.paper_type','theory');
 		$this->db->where('university_mode',$university_mode);
-		$this->db->where('new_exam_form.theory_marks','');
+		// $this->db->where('new_exam_form.theory_marks','');
 		$this->db->where('exam_form','Y');
 		if ($university_mode=='REG') {
 			$this->db->where('new_exam_form.theory_marks < paper_master.min_theory_marks');
@@ -227,11 +227,10 @@ class Otherscript extends CI_Controller {
 			$this->db->where('new_exam_form.theory_marks < paper_master.private_min_theory_marks');
 		}
 		$this->db->where('new_exam_form.class_id',$class_id);
-		$this->db->where('roll_number =','110413299');
-		//$this->db->where_in('roll_number',array(110414995,110412102,110414401,110414400,110411868,110411867,110411869,110413494,110411145,110412413,110412413,110413639));
+		// //$this->db->where_in('roll_number',array());
 		$this->db->where('paper_type','theory');
 		$this->db->group_by('new_exam_form.student_id');
-		$this->db->having('num<',3);
+		$this->db->having('num',1);
 		$data['students'] = $this->db->get()->result();
 		// $this->Common_model->last_query();
 		$data['class_id'] = $class_id;
@@ -243,7 +242,7 @@ class Otherscript extends CI_Controller {
 
 	public function update_student_remaining_marks($student_id,$nefId,$marks)
 	{
-		// $this->Common_model->updateRecordByConditions('new_exam_form',array('id'=>$nefId,'student_id'=>$student_id),array('theory_marks'=>$marks));
+		$this->Common_model->updateRecordByConditions('new_exam_form',array('id'=>$nefId,'student_id'=>$student_id),array('theory_marks'=>$marks));
 		echo "<title>MMYVVONLINE</title>";
 		echo $this->db->last_query();
 	}
@@ -281,6 +280,7 @@ class Otherscript extends CI_Controller {
 		// $this->db->where('new_exam_form.class_id',$class_id);
 		$this->db->where_in('old_class_id',array(222,154,181,299,198,212,228,172,159,160,200,206,210,256,208));
 		$this->db->where('roll_number !=','');
+		$this->db->where('theory_marks','');
 		$this->db->where('paper_type','theory');
 		$this->db->group_by('new_exam_form.student_id');
 		$this->db->order_by('student.course_group_id,student.old_class_id,student.roll_number','asc');
@@ -292,6 +292,49 @@ class Otherscript extends CI_Controller {
 		$this->load->view('admin/remaining_student_average_marks_offline',$data);
 		$this->load->view('footer');
 	}
+
+	public function remaining_withheld_student_list(){
+		$class_id=104;
+		$university_mode='REG';
+		if ($university_mode=='REG') {
+		$this->db->select('count(*) as num,student.*,new_exam_form.paper_code,paper_master.min_theory_marks as min_marks, paper_master.max_theory_marks as max_marks');
+		}else{
+			$this->db->select('count(*) as num,student.*,new_exam_form.paper_code,paper_master.private_min_theory_marks as min_marks,private_max_theory_marks as max_marks');
+		}
+		$this->db->from('new_exam_form');
+		$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id');
+		$this->db->join('paper_master', 'new_exam_form.paper_id = paper_master.id');
+		$this->db->join('student_av_check', 'student_av_check.enrollment_no_check = student.enrollment_no and student_av_check.paper_code_check=new_exam_form.paper_code');
+		$this->db->order_by('new_exam_form.course_group_id,new_exam_form.class_id','asc');
+		$this->db->where('new_exam_form.paper_type','theory');
+		$this->db->where('university_mode',$university_mode);
+		$this->db->where('new_exam_form.theory_marks','');
+		$this->db->where('exam_form','Y');
+		if ($university_mode=='REG') {
+			$this->db->where('new_exam_form.theory_marks < paper_master.min_theory_marks');
+		}else{
+			$this->db->where('new_exam_form.theory_marks < paper_master.private_min_theory_marks');
+		}
+		$this->db->where('new_exam_form.class_id',$class_id);
+		$this->db->where('roll_number !=','');
+		$this->db->where('paper_type','theory');
+		$this->db->group_by('new_exam_form.student_id');
+		$this->db->having('num<',3);
+		$data['students'] = $this->db->get()->result();
+		// $this->Common_model->last_query();
+		$data['class_id'] = $class_id;
+		$this->load->view('header',array('title' => 'Student Failed Remaining Marks List'));
+		$this->load->view('admin/remaining_withheld_student_list',$data);
+		$this->load->view('footer');
+	}
+	public function update_withheld_student_remaining_marks($student_id,$paper,$marks)
+	{
+		$this->Common_model->updateRecordByConditions('new_exam_form',array('paper_code'=>$paper,'student_id'=>$student_id,'theory_marks'=>''),array('theory_marks'=>$marks));
+		echo "<title>MMYVVONLINE</title>";
+		echo $this->db->last_query();
+	}
+
+	
 }
 
 ?>
