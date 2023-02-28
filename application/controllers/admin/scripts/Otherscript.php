@@ -242,7 +242,7 @@ class Otherscript extends CI_Controller {
 
 	public function update_student_remaining_marks($student_id,$nefId,$marks)
 	{
-		$this->Common_model->updateRecordByConditions('new_exam_form',array('id'=>$nefId,'student_id'=>$student_id),array('theory_marks'=>$marks));
+		// $this->Common_model->updateRecordByConditions('new_exam_form',array('id'=>$nefId,'student_id'=>$student_id),array('theory_marks'=>$marks));
 		echo "<title>MMYVVONLINE</title>";
 		echo $this->db->last_query();
 	}
@@ -329,7 +329,7 @@ class Otherscript extends CI_Controller {
 	}
 	public function update_withheld_student_remaining_marks($student_id,$paper,$marks)
 	{
-		$this->Common_model->updateRecordByConditions('new_exam_form',array('paper_code'=>$paper,'student_id'=>$student_id,'theory_marks'=>''),array('theory_marks'=>$marks));
+		// $this->Common_model->updateRecordByConditions('new_exam_form',array('paper_code'=>$paper,'student_id'=>$student_id,'theory_marks'=>''),array('theory_marks'=>$marks));
 		echo "<title>MMYVVONLINE</title>";
 		echo $this->db->last_query();
 	}
