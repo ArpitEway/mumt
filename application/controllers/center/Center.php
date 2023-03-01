@@ -2292,7 +2292,7 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 			'hash_csrf' => $this->security->get_csrf_hash()
 		);
 
-      $classpermission = $this->Common_model->get_record('class_master','id',array('exam_form_permission'=>'Y'));
+      $classpermission = $this->Common_model->get_record('class_master','id',array('backlog_exam_form_permission'=>'Y'));
   		$class_ids = array_column($classpermission, 'id');
 		$center_id =  $this->session->center_id;
 		if($exam_form1=='submitted'){
@@ -2312,6 +2312,7 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 		$data['exam_form_button'] = $exam_form1;
 		$this->db->where_in('class_id',$class_ids);
 		$data['documents'] = $this->Common_model->getRecordByWhere('backlog_student',$where);
+		// $this->Common_model->last_query();
 		$this->load->view('Centers/header');
 		$this->load->view('Centers/backlog_exam_form_students',$data);
 		$this->load->view('Centers/footer');
@@ -2322,7 +2323,7 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 
     	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
     	$class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
-    	$titleData = array('title' => 'Student Papers');
+    	$titleData = array('title' => 'Backlog Student Papers');
     	$this->load->view('Centers/header',$titleData);
     	$student = $this->Common_model->student_info($student_id);
     	$data['student'] = $student;

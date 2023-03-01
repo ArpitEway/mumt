@@ -54,6 +54,28 @@ class Permission extends CI_Controller {
 		}
 	}
    
+	public function update_backlog_exam_form_permission(){
+		$status =  $this->input->post('backlog_exam_form_permission');
+      
+		if(isset($_POST['class_id'])){
+			$class_id =  $this->input->post('class_id');
+          
+			$where = array('id'=>$class_id);
+		}
+        
+        if($status!=''){
+		$st = ($status == 'Y') ? 'N' : 'Y';
+		$data=array(
+			'backlog_exam_form_permission'=>$st,);
+	        }
+        
+		$res=$this->Common_model->updateRecordByConditions('class_master',$where,$data);
+		if($status == 'Y'){
+			echo json_encode(array('success'=>true));
+		}else if($status == 'N'){
+			echo json_encode(array('error'=>false));
+		}
+	}
    
 	public function update_admit_card_permission(){
 		$status =  $this->input->post('admit_card_permission');
