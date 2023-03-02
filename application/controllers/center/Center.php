@@ -1799,7 +1799,7 @@ class Center extends CI_Controller {
     $course = $this->input->post('course_group_id');
 	$this->db->select('*');
 	$this->db->from('class_master');
-	$this->db->where('exam_form_permission','Y');
+	// $this->db->where('exam_form_permission','Y');
 	$this->db->where('class_master.result_permission', 'Y');
 	$this->db->where('course_group_id',$course);
 	$class_list = $this->db->get()->result_array();	
@@ -1813,6 +1813,7 @@ class Center extends CI_Controller {
 
 	public function getStudentListForMarksheet(){
 		$data = $row = array();
+		// $where1 ='';
 	
 		$where = array('center_id' => $this->session->center_id,'exam_form'=>'Y');
 		// 'result_show','Y'
@@ -1820,10 +1821,17 @@ class Center extends CI_Controller {
 		if($_POST['course_group_id']!='All' and $_POST['course_group_id']!=''){
 			$where['student.course_group_id'] = $this->input->post('course_group_id');
 			
+		}else{
+			$where1 = " `center_id` = ".$this->session->center_id."
+			AND `exam_form` = 'Y'
+			AND `result_permission` = 'Y'and ((student.course_group_id!=12 ) or (student.course_group_id=12 and university_mode='PVT' ) ) and ((student.course_group_id!=13 ) or (student.course_group_id=13 and university_mode='PVT' ) ) ";
 		}
 		if($_POST['class_id']!='All' and $_POST['class_id']!=''){
 			$where['class_id'] = $this->input->post('class_id');
 		
+		}
+		if($this->input->post('course_group_id') == 12 || $this->input->post('course_group_id') == 13){
+			$where['university_mode'] = 'PVT';
 		}
 		$where['result_permission'] = 'Y';
 		// Fetch member's records
@@ -1840,8 +1848,11 @@ class Center extends CI_Controller {
 			'table2' => 'class_master',
 			'joinOn' => 'student.old_class_id=class_master.id'
 		);
-
+		if($where1 != ''){
+		$this->db->where($where1);
+		}
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
+		// $this->Common_model->last_query();
 		
 		$i = $_POST['start'];
 		foreach($tableData as $result){
@@ -1886,7 +1897,7 @@ class Center extends CI_Controller {
 	{
 		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		$student = $this->Common_model->getRecordByWhere("student",array('exam_form'=>'Y','old_result_show'=>'Y','student_id'=>$student_id));
-		if (count($student)==0) {
+		if ((count($student)==0) || ($student->course_group_id == 12 && $student->university_mode == 'REG') || ($student->course_group_id == 13 && $student->university_mode == 'REG') ) {
 			redirect(base_url());
 		}
 		$data['student']=$student[0];
