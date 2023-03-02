@@ -344,7 +344,7 @@ class Postexam extends CI_Controller {
        if($classes){
 
            $this->db->select('course_name,class_id, COUNT(student_id) as cnt');
-           $this->db->where('exam_year', 'Feb 2022');
+           $this->db->where('exam_year', 'Aug 2022');
            $this->db->where('exam_result', 'FAIL');
            $this->db->where('exam_status', 'R');
            $this->db->where_in('class_id',$class_id );

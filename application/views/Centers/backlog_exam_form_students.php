@@ -37,10 +37,10 @@
          $i = 1;
          foreach($documents as $student){
          $failCount = $this->Common_model->getCountByWhere('backlog_exam_form',array('student_id' => $student->student_id,'class_id'=>$student->class_id,'paper_type'=>'Theory' ,'status'=>'B'));
-         if( $failCoun < 8){
+         if( $failCount < 8){
             $exam_fees =$failCount * 100;
          }else{
-            $exam_fees = 800; 
+            $exam_fees = 750; 
          }
             ?>
             <tr class="remove">

@@ -14,9 +14,9 @@
         <?php
         $i=1;
         foreach($students as $row){ 
-         $paper_details = $this->Common_model->getRecordByWhere('old_result_data',array('student_id' => $row->student_id,'class_id'=>$row->class_id,'exam_data_id'=>$row_id,'type'=>'theory'));
-         $paperCount = $this->Common_model->getCountByWhere('old_result_data',array('student_id' => $row->student_id,'class_id'=>$row->class_id,'exam_data_id'=>$row_id,'type'=>'theory'));
-         $absCount = $this->Common_model->getCountByWhere('old_result_data',array('student_id' => $row->student_id,'class_id'=>$row->class_id,'exam_data_id'=>$row_id,'type'=>'theory','theory_marks'=>'ABS'));
+         $paper_details = $this->Common_model->getRecordByWhere('old_result_data',array('student_id' => $row->student_id,'class_id'=>$row->class_id,'exam_data_id'=>$row->id,'type'=>'theory'));
+         $paperCount = $this->Common_model->getCountByWhere('old_result_data',array('student_id' => $row->student_id,'class_id'=>$row->class_id,'exam_data_id'=>$row->id,'type'=>'theory'));
+         $absCount = $this->Common_model->getCountByWhere('old_result_data',array('student_id' => $row->student_id,'class_id'=>$row->class_id,'exam_data_id'=>$row->id,'type'=>'theory','theory_marks'=>'ABS'));
          ?>
          <tr>
           <td><?php echo $i++; ?></td>
@@ -92,11 +92,14 @@
          <?php 
          $c =1;
          foreach ($paper_details as $paper) {  ?>
+         
           <tr>
             <td><?php echo $c++; ?></td>
             <td><?php echo $paper->paper_code; ?></td>
             <td><?php echo $paper->type; ?></td>
-            <td><?php if($paper->theory_marks=='ABS'){ ?><span style="color:red">ABS</span> <?php }else{
+            <td><?php if($paper->theory_marks=='ABS'){ ?><span style="color:red">ABS</span> <?php }  else if($paper->theory_marks<$paper->min_theory_marks){
+             ?><span style="color:red"><?= $paper->theory_marks;?></span> <?php }
+            else{
              echo $paper->theory_marks;  }
            ?></td>
            <td> <?php if($paper->int_marks=='ABS'){ ?><span style="color:red">ABS</span> <?php

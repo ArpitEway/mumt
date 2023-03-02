@@ -374,10 +374,10 @@ class Payment extends CI_Controller {
    	$class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
    	$student = $this->Common_model->student_info($student_id);
     $failCount = $this->Common_model->getCountByWhere('backlog_exam_form',array('student_id'=>$student_id,'class_id'=>$class_id,'paper_type'=>'Theory' ,'status'=>'B'));
-	if( $failCoun < 8){
+	if( $failCount < 8){
 		$exam_fees =$failCount * 100;
 	 }else{
-		$exam_fees = 800; 
+		$exam_fees = 750; 
 	 }
    	$data['txnAmt'] = $exam_fees;
    	$data['student'] = $student;
@@ -401,10 +401,10 @@ class Payment extends CI_Controller {
 		   $student = $this->Common_model->student_info($student_id);		
   	    //    $exam_fess = 100; 	
            $failCount = $this->Common_model->getCountByWhere('backlog_exam_form',array('student_id' => $student_id,'class_id'=>$class_id,'paper_type'=>'Theory','status'=>'B'));
-		   if( $failCoun < 8){
+		   if( $failCount < 8){
 			$exam_fees =$failCount * 100;
 		 }else{
-			$exam_fees = 800; 
+			$exam_fees = 750; 
 		 }
    		   $txnAmt  =  $exam_fees;   
 			$hash_string = '';
