@@ -36,8 +36,12 @@
          <?php
          $i = 1;
          foreach($documents as $student){
-         $failCount = $this->Common_model->getCountByWhere('backlog_exam_form',array('student_id' => $student->student_id,'status'=>'B'));
+         $failCount = $this->Common_model->getCountByWhere('backlog_exam_form',array('student_id' => $student->student_id,'class_id'=>$student->class_id,'paper_type'=>'Theory' ,'status'=>'B'));
+         if( $failCoun < 8){
             $exam_fees =$failCount * 100;
+         }else{
+            $exam_fees = 800; 
+         }
             ?>
             <tr class="remove">
                <td><?php echo $i; ?></td>
@@ -55,7 +59,7 @@
                 ?>
                <?php if($exam_form_button=="skipped"){ ?>
                    <td>
-                  <input type="button" data-id = "<?=$student->student_id;?>" class="btn btn-success check_skipped" value="unskippped">
+                  <input type="button" data-id = "<?=$student->student_id;?>" data-class= "<?=$student->class_id;?>" class="btn btn-success check_skipped" value="unskippped">
                     </td>
                 <?php } ?>    
              <?php if($exam_form_button=="notSubmitted"){ ?>
@@ -63,7 +67,7 @@
             <a class="btn btn-primary" href="<?=base_url('backlog_showPapers/'.$student_id .'/'. $class_id)?>">View Paper</a>     
             </td>
              <td>
-                <input type="button" data-id = "<?=$student->student_id;?> " class="btn btn-danger check_skipped" value="skipped">
+                <input type="button" data-id = "<?=$student->student_id;?> " class="btn btn-danger check_skipped" data-class= "<?=$student->class_id;?>" value="skipped">
                </td>
             <?php
           }        
@@ -94,6 +98,7 @@
 
            var data = {
             id: $(this).attr('data-id'),
+            class_id: $(this).attr('data-class'),
             [csrfName]:csrfHash,
             check_skipped:check_skipped
         };

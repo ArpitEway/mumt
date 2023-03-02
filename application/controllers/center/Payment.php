@@ -373,13 +373,17 @@ class Payment extends CI_Controller {
    	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
    	$class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
    	$student = $this->Common_model->student_info($student_id);
-    $failCount = $this->Common_model->getCountByWhere('backlog_exam_form',array('student_id'=>$student_id,'status'=>'B'));
-        $exam_fees =$failCount * 100;  
+    $failCount = $this->Common_model->getCountByWhere('backlog_exam_form',array('student_id'=>$student_id,'class_id'=>$class_id,'paper_type'=>'Theory' ,'status'=>'B'));
+	if( $failCoun < 8){
+		$exam_fees =$failCount * 100;
+	 }else{
+		$exam_fees = 800; 
+	 }
    	$data['txnAmt'] = $exam_fees;
    	$data['student'] = $student;
    	$data['class_id'] = $class_id;
    	$data['url'] = 'paynow';
-   	$data['paymentType'] = 'Exam Fees';
+   	$data['paymentType'] = 'Backlog Exam Fees';
    	$this->load->view('Centers/header',$titleData);
    	$this->load->view('Centers/backlog_exam_form_payment',$data);
    	$this->load->view('Centers/footer');
@@ -395,9 +399,13 @@ class Payment extends CI_Controller {
 		 $class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
 		if($student_id!=''){
 		   $student = $this->Common_model->student_info($student_id);		
-  	       $exam_fess = 100; 	
-           $failCount = $this->Common_model->getCountByWhere('backlog_exam_form',array('student_id' => $student_id,'status'=>'B'));
-            $exam_fees =$failCount * 100;
+  	    //    $exam_fess = 100; 	
+           $failCount = $this->Common_model->getCountByWhere('backlog_exam_form',array('student_id' => $student_id,'class_id'=>$class_id,'paper_type'=>'Theory','status'=>'B'));
+		   if( $failCoun < 8){
+			$exam_fees =$failCount * 100;
+		 }else{
+			$exam_fees = 800; 
+		 }
    		   $txnAmt  =  $exam_fees;   
 			$hash_string = '';
 		/*  testing credential  
@@ -430,6 +438,7 @@ class Payment extends CI_Controller {
 			$posted['udf3'] = "Dec 2022";
 			$posted['udf4'] = $student["center_id"].' / '.$class_id;
 			$posted['udf5'] = $student["name"]."/".$student["f_h_name"];
+			
 			$hash = '';
 			$hashSequence = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10";
 			$hashVarsSeq = explode('|', $hashSequence);
@@ -464,6 +473,8 @@ class Payment extends CI_Controller {
 		$productinfo=$_POST["productinfo"];
 		$email=$_POST["email"];
 		$salt="rzu8VRFb"; 
+		$class_exp = explode('/',$udf4);
+		$class_id = $class_exp[1];
 
 		If (isset($_POST["additionalCharges"])) {
 			$additionalCharges=$_POST["additionalCharges"];
@@ -493,9 +504,9 @@ class Payment extends CI_Controller {
 				"txnId" => $txnid,
 				"admission_type" =>$udf2,
 			);
-		$student = $this->Common_model->getRecordById('backlog_student','student_id',$student_id);
+		$student = $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$student_id,'class_id'=>$class_id));
        $student_name =  $this->Common_model->getSinglefield('student','name',array('student_id'=>$student_id));
-			$where = 'student_id='.$student_id.' and fees_head="'.$productinfo.'" and class_id='.$student->class_id.' and exam_session= "'.$udf3.'"';
+			$where = 'student_id='.$student_id.' and fees_head="'.$productinfo.'" and class_id='.$class_id.' and exam_session= "'.$udf3.'"';
 			$txnData = $this->Common_model->get_record('online_payment_transaction','*',$where);
 			if($productinfo == 'Backlog Exam Fees'){
 				if(count($txnData)>0){
@@ -505,9 +516,9 @@ class Payment extends CI_Controller {
 				}else{
 				$response['student_id'] = $student_id;
 				$response['fees_head'] = $productinfo;
-				$response['course_group_id'] = $student->course_group_id;
-				$response['class_id'] = $student->class_id;
-				$response['center_id'] = $student->center_id;
+				$response['course_group_id'] = $student[0]->course_group_id;
+				$response['class_id'] = $class_id;
+				$response['center_id'] = $student[0]->center_id;
 				$response['student_name'] = $student_name;
 				$response['admission_type'] = $udf2;
 				$response["exam_session"] = $udf3;
@@ -517,7 +528,7 @@ class Payment extends CI_Controller {
 				$status = 'exam_form';
 			}
 			if($payment=='Y'){
-				$where = 'student_id='.$student_id;
+				$where = array('student_id'=>$student_id,'class_id'=>$class_id);
 				$student = array($status=>'Y');
 				$this->Common_model->updateRecordByConditions('backlog_student',$where,$student);
 			}
