@@ -2192,6 +2192,20 @@ public function getStudentData()
 		$where = array('new_exam_form' =>'N');
 		$data['not_filled_student'] = $this->Common_model->getCountByWhere('student',$where);
 
+		//backlog
+		$where = array('exam_form !=' =>'D');
+		$data['permitted_backlog_student'] = $this->Common_model->getCountByWhere('backlog_student',$where);
+
+		$where = array('exam_form' =>'Y');
+		$data['filled_backlog_student'] = $this->Common_model->getCountByWhere('backlog_student',$where);
+
+		$where = array('exam_form ' =>'S');
+		$data['skipped_backlog_student'] = $this->Common_model->getCountByWhere('backlog_student',$where);
+
+		$where = array('exam_form' =>'N');
+		$data['not_filled_backlog_student'] = $this->Common_model->getCountByWhere('backlog_student',$where);
+
+
 
 		$this->load->view('admin/exam_wise_student_status',$data);
 		$this->load->view('footer');
@@ -2208,6 +2222,19 @@ public function getStudentData()
 		$where = array('new_exam_form !=' =>'D' );
 		$data['counts']=$this->Common_model->new_exam_form_permission_status($where);
 		$this->load->view('admin/class_wise_exam_from_status',$data);
+		$this->load->view('footer');
+	}
+
+	public function class_wise_backlog_exam_from_status(){
+
+		$this->load->view('header',array('title' => 'Class Wise Backlog Exam Form Status(Feb 2023)'));
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		$where = array('exam_form !=' =>'D' );
+		$data['counts']=$this->Common_model->backlog_exam_form_permission_status($where);
+		$this->load->view('admin/class_wise_backlog_exam_from_status',$data);
 		$this->load->view('footer');
 	}
 
@@ -2435,6 +2462,23 @@ public function getStudentData()
 		$this->db->group_by('center_id');
 		$data['listing'] = $this->Common_model->getRecordByWhere('student',$where);
 		$this->load->view('admin/center_wise_student_form_count_list',$data); 
+		$this->load->view('footer');
+	}
+
+	public function center_wise_remains_backlog_count(){
+
+		$title = array('title' => 'Center Wise Backlog Student Remaining Form List');
+		$this->load->view('header',$title);	
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		$where = array('exam_form' =>'N');
+		$this->db->select('COUNT(*) as student_count,center_code,
+			center_id');
+		$this->db->group_by('center_id');
+		$data['listing'] = $this->Common_model->getRecordByWhere('backlog_student',$where);
+		$this->load->view('admin/center_wise_backlog_student_form_count_list',$data); 
 		$this->load->view('footer');
 	}
 

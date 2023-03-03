@@ -1827,7 +1827,7 @@ class Center extends CI_Controller {
 			AND `result_permission` = 'Y'and ((student.course_group_id!=12 ) or (student.course_group_id=12 and university_mode='PVT' ) ) and ((student.course_group_id!=13 ) or (student.course_group_id=13 and university_mode='PVT' ) ) ";
 		}
 		if($_POST['class_id']!='All' and $_POST['class_id']!=''){
-			$where['class_id'] = $this->input->post('class_id');
+			$where['old_class_id'] = $this->input->post('class_id');
 		
 		}
 		if($this->input->post('course_group_id') == 12 || $this->input->post('course_group_id') == 13){
@@ -2309,7 +2309,7 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 			'hash_csrf' => $this->security->get_csrf_hash()
 		);
 
-      $classpermission = $this->Common_model->get_record('class_master','id',array('exam_form_permission'=>'Y'));
+      $classpermission = $this->Common_model->get_record('class_master','id',array('backlog_exam_form_permission'=>'Y'));
   		$class_ids = array_column($classpermission, 'id');
 		$center_id =  $this->session->center_id;
 		if($exam_form1=='submitted'){
@@ -2329,6 +2329,7 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 		$data['exam_form_button'] = $exam_form1;
 		$this->db->where_in('class_id',$class_ids);
 		$data['documents'] = $this->Common_model->getRecordByWhere('backlog_student',$where);
+		// $this->Common_model->last_query();
 		$this->load->view('Centers/header');
 		$this->load->view('Centers/backlog_exam_form_students',$data);
 		$this->load->view('Centers/footer');
@@ -2339,7 +2340,7 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 
     	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
     	$class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
-    	$titleData = array('title' => 'Student Papers');
+    	$titleData = array('title' => 'Backlog Student Papers');
     	$this->load->view('Centers/header',$titleData);
     	$student = $this->Common_model->student_info($student_id);
     	$data['student'] = $student;
@@ -2348,6 +2349,7 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
     	$this->db->join('backlog_exam_form', 'backlog_exam_form.student_id = backlog_student.student_id');
     	$this->db->where('backlog_student.student_id',$student_id); 
     	$this->db->where('backlog_student.class_id',$class_id);
+		$this->db->where('backlog_exam_form.class_id',$class_id);
     	$this->db->where('status','B');
     	$data['papers'] = $this->db->get()->result();
     	$this->load->view('Centers/backlog_showPapers',$data);
@@ -2358,20 +2360,21 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
   public function change_backlog_new_exam_form_status(){
 		$id    	= 0;
 		$id    	= $this->input->post("id");
+		$class_id = $this->input->post('class_id');
 		$status = $this->input->post("check_skipped");
 
 		if ($this->input->post("id"))
 		{
 			$status = ($status=='skipped') ? 'S' : 'N';
-			$data = $this->Common_model->updateRecordByConditions("backlog_student",array("student_id" => $id ),array("exam_form" => $status ));
+			$data = $this->Common_model->updateRecordByConditions("backlog_student",array("student_id" => $id ,"class_id"=>$class_id),array("exam_form" => $status ));
 
-			$dt = $this->db->get_where("backlog_student",array("student_id" => $id ))->result_array();
+			$dt = $this->db->get_where("backlog_student",array("student_id" => $id,"class_id"=>$class_id ))->result_array();
 
 			if($dt[0]['exam_form'] == 'N')
 			{
-				$sts_btn = '<input type ="button" name="" data-id='.$id.' class="btn btn-danger check_skipped" value="skipped">';
+				$sts_btn = '<input type ="button" name="" data-id='.$id.' data-class = '.$class_id.' class="btn btn-danger check_skipped" value="skipped">';
 			}else{
-				$sts_btn = '<input type ="button" name="update_enroll_stats" data-id='.$id.' class="btn btn-success check_skipped" value="Unskipped">';
+				$sts_btn = '<input type ="button" name="update_enroll_stats" data-id='.$id.' data-class = '.$class_id.'  class="btn btn-success check_skipped" value="Unskipped">';
 			}
 			$status = true;
 			$msg    = "";
