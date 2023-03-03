@@ -31,7 +31,7 @@
             //  $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
             } else{?>
              <a class="text-info" href="<?=base_url('admin/scripts/Postexam/backlog_marks_update_scripts/'.$row->student_id.'/'.$row->class_id)?>" target="_blank">Set Backlog</a> <?php 
-        //      $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$row->class_id,'student_id'=>$row->student_id));
+        //      $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$row->class_id,'student_id'=>$row->student_id,'exam_year'=>'Aug 2022'));
             
         // $whereResult = array("class_id"=>$students[0]->class_id ,"student_id"=>$students[0]->student_id, 'exam_data_id' => $students[0]->id);
         // $old_result_datas = $this->Common_model->getRecordByWhere("old_result_data",$whereResult );
@@ -55,7 +55,7 @@
         //         'upload_result' =>  'N',
         //         'result_permission' => 'N',
         //        );
-        //       $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students[0]->student_id,'class_id'=>$students[0]->class_id,'exam_year'=>'Feb 2022'));
+        //       $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students[0]->student_id,'class_id'=>$students[0]->class_id,'exam_year'=>'Dec 2022'));
         //      if( $duplicate == Array ( )){
         //         $backlog_student_id = $this->Common_model->insertAll('backlog_student',$data);
            

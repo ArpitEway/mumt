@@ -344,7 +344,7 @@ class Postexam extends CI_Controller {
        if($classes){
 
            $this->db->select('course_name,class_id, COUNT(student_id) as cnt');
-           $this->db->where('exam_year', 'Feb 2022');
+           $this->db->where('exam_year', 'Aug 2022');
            $this->db->where('exam_result', 'FAIL');
            $this->db->where('exam_status', 'R');
            $this->db->where_in('class_id',$class_id );
@@ -364,7 +364,7 @@ class Postexam extends CI_Controller {
         $this->load->view('header',array('title' => 'Backlog Students'));
         $this->db->select('*');
         $this->db->from('old_exam_data');
-        $this->db->where('exam_year', 'Feb 2022');
+        $this->db->where('exam_year', 'Aug 2022');
         $this->db->where('exam_result', 'FAIL');
         $this->db->where('exam_status', 'R');
         $this->db->where('old_exam_data.class_id',$class_id);
@@ -388,7 +388,7 @@ class Postexam extends CI_Controller {
 
     public function backlog_marks_update_scripts($student_id,$class_id='')
     {
-        $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$class_id,'student_id'=>$student_id));
+        $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$class_id,'student_id'=>$student_id,'exam_year'=>'Aug 2022'));
         $whereResult = array("class_id"=>$students[0]->class_id ,"student_id"=>$students[0]->student_id, 'exam_data_id' => $students[0]->id);
         $old_result_datas = $this->Common_model->getRecordByWhere("old_result_data",$whereResult );
             $data = array(
