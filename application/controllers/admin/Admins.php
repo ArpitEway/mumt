@@ -4083,6 +4083,8 @@ public function update_exam_datewise_permission(){
     	);
     	$student = $this->Common_model->student_info($student_id);
     	$data['student'] = $student;
+		$classData = $this->Common_model->getRecordById('class_master','id', $student['class_id']);
+		$cbcs = ($classData->cbcs == 'Y')?'Y':'N';
     	// print_r($data);
 	 	// die;
     	$this->db->select('paper_master.*,new_exam_form.sub_group_id');
@@ -4090,7 +4092,7 @@ public function update_exam_datewise_permission(){
     	$this->db->order_by('new_exam_form.sub_group_id,paper_order,paper_no');
     	$this->db->join('new_exam_form', 'paper_master.paper_code = new_exam_form.paper_code and  paper_master.class_id = new_exam_form.class_id');
     	$where = array('paper_master.class_id' => $student['class_id'],
-    		'student_id' => $student_id
+    		'student_id' => $student_id,'cbcs_paper'=>$cbcs
     	);
     	$this->db->where($where);
     	$data['papers'] = $this->db->get()->result();
@@ -4140,8 +4142,10 @@ public function update_exam_datewise_permission(){
 		$titleData['title'] = 'Select Papers';
 		$this->load->view('header',$titleData);
 		$student = $this->Common_model->student_info($student_id);
+		$classData = $this->Common_model->getRecordById('class_master','id', $student['class_id']);
+		$cbcs = ($classData->cbcs == 'Y')?'Y':'N';
 		$this->db->order_by('id');
-		$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory"');
+		$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory" and cbcs_paper="'.$cbcs.'"');
 		$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id where class_id='.$student['class_id'].' Order by g.id,sub_group_id')->result();
 		$data['compulsoryPapers'] = $compulsoryPapers;
 		$data['student'] = $student;

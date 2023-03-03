@@ -67,10 +67,13 @@ class Preexam extends CI_Controller {
 	
 		
 		$students = $this->Common_model->get_record('student','*',$where);
+		$classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+		
+		$cbcs = ($classData->cbcs == 'Y')?'Y':'N';
 		if($university_mode=='PVT') 
-					$paperWhere=array('class_id'=>$class_id,'type'=>'theory');
+					$paperWhere=array('class_id'=>$class_id,'type'=>'theory', 'cbcs_paper'=> $cbcs);
 			else			
-					$paperWhere=array('class_id'=>$class_id);
+					$paperWhere=array('class_id'=>$class_id,'cbcs_paper'=> $cbcs);
 			$papers = $this->Common_model->get_record('paper_master','*',$paperWhere);
 		foreach ($students as $student) {
 			$where = array('student_id'=>$student['student_id']);

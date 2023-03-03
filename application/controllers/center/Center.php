@@ -1176,7 +1176,7 @@ class Center extends CI_Controller {
 			$data['student'] = $student;
 			$this->db->select('paper_master.*,new_exam_form.sub_group_id');
 			$this->db->from('paper_master');
-			$this->db->order_by('new_exam_form.sub_group_id,paper_order');
+			$this->db->order_by('new_exam_form.sub_group_id,paper_master.cbcs_paper,paper_order');
 			$this->db->join('new_exam_form', 'paper_master.paper_code = new_exam_form.paper_code and  paper_master.class_id = new_exam_form.class_id');
 			$where = array('paper_master.class_id' => $student['class_id'],
 				'student_id' => $student_id
@@ -1233,6 +1233,8 @@ class Center extends CI_Controller {
 		$titleData['title'] = 'Select Papers';
 		$this->load->view('Centers/header',$titleData);
 		$student = $this->Common_model->student_info($student_id);
+		$classData = $this->Common_model->getRecordById('class_master','id', $student['class_id']);
+		$cbcs = ($classData->cbcs == 'Y')?'Y':'N';
 		if($student['temp_exam_form'] == "Y"){
 			$std_id = $this->Common_model->encrypt_decrypt($student_id);
 			redirect(base_url('center/center/showPapers/'.$std_id.''));	
@@ -1240,10 +1242,10 @@ class Center extends CI_Controller {
 		$this->db->order_by('id');
 		if($student['university_mode'] != "PVT"){
 		
-		$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory"');
+		$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory" and cbcs_paper="'.$cbcs.'"');
 		$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id where class_id='.$student['class_id'].' Order by g.id,sub_group_id,p.id')->result();
 		}else{
-			$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory" and type="theory"');
+			$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory" and type="theory" and cbcs_paper="'.$cbcs.'"');
 			 $this->db->select('p.*,g.group_name') ;
 			 $this->db->from('group_paper as p');
 			 $this->db->join('group as g','g.id = p.group_id');
@@ -1287,13 +1289,15 @@ class Center extends CI_Controller {
 		$paper_id2 = $_POST['compulsary_paper_id'];
 		$paper_id= array_merge($paper_id1,$paper_id2);
 		$paper_id = implode(",",$paper_id);
+		$classData = $this->Common_model->getRecordById('class_master','id', $mode->class_id);
+		$cbcs = ($classData->cbcs == 'Y')?'Y':'N';
 		
 		if($mode->university_mode == "PVT"){
 			
-		$paper_data = 	$this->Common_model->get_record('paper_master','*','id in ('.$paper_id.') and type="theory"');
+		$paper_data = 	$this->Common_model->get_record('paper_master','*','id in ('.$paper_id.') and type="theory" and cbcs_paper='.$cbcs.'');
 		
 		}else{
-			$paper_data = 	$this->Common_model->get_record('paper_master','*','id in ('.$paper_id.')');	
+			$paper_data = 	$this->Common_model->get_record('paper_master','*','id in ('.$paper_id.') and cbcs_paper='.$cbcs.'');	
 		}
 		foreach($paper_data as $paper){
 			$data['course_group_id']=$paper['course_group_id'];
@@ -1326,10 +1330,12 @@ class Center extends CI_Controller {
 		$class_id = $_POST['class_id'];
 		$student_id=$this->Common_model->encrypt_decrypt($_POST['student_id'],'decrypt');
 		$mode = $this->Common_model->getRecordById('student','student_id',$student_id);
+		$classData = $this->Common_model->getRecordById('class_master','id', $mode->class_id);
+		$cbcs = ($classData->cbcs == 'Y')?'Y':'N';
 		$i = 1;
 		$this->db->where_in('paper_code',$paper_code);
 		$this->db->where('class_id',$class_id);
-		$paper_data = $this->Common_model->get_record('paper_master','*','type = "theory"');
+		$paper_data = $this->Common_model->get_record('paper_master','*',array('type' => "theory",'cbcs_paper'=>$cbcs));
 		
 		foreach($paper_data as $paper){
 			$data['course_group_id']=$paper['course_group_id'];
@@ -1793,7 +1799,7 @@ class Center extends CI_Controller {
     $course = $this->input->post('course_group_id');
 	$this->db->select('*');
 	$this->db->from('class_master');
-	$this->db->where('exam_form_permission','Y');
+	// $this->db->where('exam_form_permission','Y');
 	$this->db->where('class_master.result_permission', 'Y');
 	$this->db->where('course_group_id',$course);
 	$class_list = $this->db->get()->result_array();	
@@ -1807,6 +1813,7 @@ class Center extends CI_Controller {
 
 	public function getStudentListForMarksheet(){
 		$data = $row = array();
+		// $where1 ='';
 	
 		$where = array('center_id' => $this->session->center_id,'exam_form'=>'Y');
 		// 'result_show','Y'
@@ -1814,10 +1821,17 @@ class Center extends CI_Controller {
 		if($_POST['course_group_id']!='All' and $_POST['course_group_id']!=''){
 			$where['student.course_group_id'] = $this->input->post('course_group_id');
 			
+		}else{
+			$where1 = " `center_id` = ".$this->session->center_id."
+			AND `exam_form` = 'Y'
+			AND `result_permission` = 'Y'and ((student.course_group_id!=12 ) or (student.course_group_id=12 and university_mode='PVT' ) ) and ((student.course_group_id!=13 ) or (student.course_group_id=13 and university_mode='PVT' ) ) ";
 		}
 		if($_POST['class_id']!='All' and $_POST['class_id']!=''){
 			$where['class_id'] = $this->input->post('class_id');
 		
+		}
+		if($this->input->post('course_group_id') == 12 || $this->input->post('course_group_id') == 13){
+			$where['university_mode'] = 'PVT';
 		}
 		$where['result_permission'] = 'Y';
 		// Fetch member's records
@@ -1834,8 +1848,11 @@ class Center extends CI_Controller {
 			'table2' => 'class_master',
 			'joinOn' => 'student.old_class_id=class_master.id'
 		);
-
+		if($where1 != ''){
+		$this->db->where($where1);
+		}
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
+		// $this->Common_model->last_query();
 		
 		$i = $_POST['start'];
 		foreach($tableData as $result){
@@ -1880,7 +1897,7 @@ class Center extends CI_Controller {
 	{
 		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		$student = $this->Common_model->getRecordByWhere("student",array('exam_form'=>'Y','old_result_show'=>'Y','student_id'=>$student_id));
-		if (count($student)==0) {
+		if ((count($student)==0) || ($student->course_group_id == 12 && $student->university_mode == 'REG') || ($student->course_group_id == 13 && $student->university_mode == 'REG') ) {
 			redirect(base_url());
 		}
 		$data['student']=$student[0];

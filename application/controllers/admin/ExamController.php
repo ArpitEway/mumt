@@ -2445,6 +2445,7 @@ public function getStudentData()
 						$this->db->where('new_exam_form.student_id',$data['student']->student_id);
 						$this->db->where('new_exam_form.class_id',$data['student']->old_class_id);
 						$new_exam_form = $this->db->get()->result();
+						$data['classData']  = $classData;
 						$data['new_exam_form']  = $new_exam_form;
 						$title = array('title' => 'Result - '.$data['student']->enrollment_no);
 						
