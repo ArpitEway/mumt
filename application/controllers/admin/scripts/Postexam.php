@@ -354,7 +354,7 @@ class Postexam extends CI_Controller {
         $data['courses'] = "No Data Found";
        }
         //    $this->Common_model->last_query();
-           $this->load->view('header',array('title' => 'Check Backlog Student'));
+           $this->load->view('header',array('title' => 'Check Demo & Backlog Student'));
            $this->load->view('admin/script/check_demo_backlog_student',$data);
            $this->load->view('footer');
       }

@@ -6,7 +6,7 @@
             <th>Course</th>
             <th>Class</th>
             <th>Student Count</th>			
-            <th>upload</th>			
+            <th>Action</th>			
         </tr> 
     </thead>
     <tbody>
