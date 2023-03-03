@@ -804,6 +804,16 @@ class Common_Model extends CI_Model{
 		return $query->result_array();
 	}
 
+	public function backlog_exam_form_permission_status($where){
+
+		$this->db->where($where);
+		$this->db->select('count(*) as cnt,course_group_id,class_id');
+		$this->db->group_by('class_id');			
+		$this->db->from("backlog_student");
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+
 	public function debug_data($data)
 	{
 		echo '<pre>';

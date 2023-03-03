@@ -1827,7 +1827,7 @@ class Center extends CI_Controller {
 			AND `result_permission` = 'Y'and ((student.course_group_id!=12 ) or (student.course_group_id=12 and university_mode='PVT' ) ) and ((student.course_group_id!=13 ) or (student.course_group_id=13 and university_mode='PVT' ) ) ";
 		}
 		if($_POST['class_id']!='All' and $_POST['class_id']!=''){
-			$where['class_id'] = $this->input->post('class_id');
+			$where['old_class_id'] = $this->input->post('class_id');
 		
 		}
 		if($this->input->post('course_group_id') == 12 || $this->input->post('course_group_id') == 13){

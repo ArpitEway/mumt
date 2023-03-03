@@ -379,10 +379,11 @@ class Postexam extends CI_Controller {
         $where = array('student_id'=>$student_id,'new_exam_form'=>'D');
         $data = array('demo'=>'Y','new_exam_form'=>'N');
         $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
-        if($update){
-        redirect(base_url('admin/scripts/Postexam/check_demo_backlog_student_script/'.$class_id));
-        $this->session->set_flashdata('ajax_flash_message','Your Query Submited Successfully'); 
-        }    
+        $this->Common_model->last_query();
+        // if($update){
+        // redirect(base_url('admin/scripts/Postexam/check_demo_backlog_student_script/'.$class_id));
+        // $this->session->set_flashdata('ajax_flash_message','Your Query Submited Successfully'); 
+        // }    
     }   
 
     public function backlog_marks_update_scripts($student_id,$class_id='')
@@ -398,7 +399,7 @@ class Postexam extends CI_Controller {
                 'session' => $students[0]->session,
                 'mode'=>$students[0]->university_mode,
                 'exam_year'=>'Aug 2022',
-                'exam_form' => 'D',
+                'exam_form' => 'N',
                 'enrollment_no' => $students[0]->enrollment_no,
                 'center_id' => $students[0]->center_id,
                 'center_code' => $students[0]->center_code,
@@ -410,36 +411,34 @@ class Postexam extends CI_Controller {
                 'result_permission' => 'N',
                );
               $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students[0]->student_id,'class_id'=>$students[0]->class_id,'exam_year'=>'Aug 2022'));
-              if( $duplicate){
-                redirect(base_url('admin/scripts/Postexam/check_demo_backlog_student_script/'.$class_id));
-                $this->session->set_flashdata('ajax_flash_message','Already Submited'); 
+            if( $duplicate !== Array ( )){
+                echo "Already Exist";
               }else{
 
-              
-            $backlog_student_id = $this->Common_model->insertAll('backlog_student',$data);
-            echo $this->db->last_query().'<br>';
-            foreach($old_result_datas as $old_result_data)
-            {
-                $examData = array(
-                    'student_id' => $old_result_data->student_id ,
-                    'backlog_student_id' => $backlog_student_id,
-                    'course_group_id' =>$old_result_data->course_group_id,
-                    'class_id' => $old_result_data->class_id,
-                    'paper_code' => $old_result_data->paper_code,
-                    'paper_type' => $old_result_data->type,
-                    'group_id' => '',
-                    'paper_order' => $old_result_data->p_order,
-                    'theory_marks' =>$old_result_data->theory_marks,
-                    'int_marks' =>$old_result_data->int_marks,
-                    'p_marks' => $old_result_data->p_marks,
-                    'status' => 'C',
-                 );
-                if ($old_result_data->result=='FAIL'){
-                    $examData['status'] = 'B';
-                    $examData['theory_marks'] = '';
-                }
-                $backlog_exam_form_june = $this->Common_model->insertAll('backlog_exam_form',$examData);
+                $backlog_student_id = $this->Common_model->insertAll('backlog_student',$data);
                 echo $this->db->last_query().'<br>';
+                foreach($old_result_datas as $old_result_data)
+                {
+                    $examData = array(
+                        'student_id' => $old_result_data->student_id ,
+                        'backlog_student_id' => $backlog_student_id,
+                        'course_group_id' =>$old_result_data->course_group_id,
+                        'class_id' => $old_result_data->class_id,
+                        'paper_code' => $old_result_data->paper_code,
+                        'paper_type' => $old_result_data->type,
+                        'group_id' => '',
+                        'paper_order' => $old_result_data->p_order,
+                        'theory_marks' =>$old_result_data->theory_marks,
+                        'int_marks' =>$old_result_data->int_marks,
+                        'p_marks' => $old_result_data->p_marks,
+                        'status' => 'C',
+                    );
+                    if ($old_result_data->result=='FAIL'){
+                        $examData['status'] = 'B';
+                        $examData['theory_marks'] = '';
+                    }
+                    $backlog_exam_form_june = $this->Common_model->insertAll('backlog_exam_form',$examData);
+                    echo $this->db->last_query().'<br>';
             }
          } 
      }
