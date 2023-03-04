@@ -92,7 +92,7 @@ foreach($elist as $row)
             <td><?php  
                    // if($paperData[0]["exam_shift"]=='Early Morning'){echo "07:00 AM To 10:00 AM";} 
                     if($paperData[0]["exam_shift"]=='Morning'){echo "11:00 AM To 02:00 PM";}
-                    if($paperData[0]["exam_shift"]=='Evening'){echo "03:00 PM To 06:00 PM"; }  ?> 
+                    if($paperData[0]["exam_shift"]=='Afternoon'){echo "03:00 PM To 06:00 PM"; }  ?> 
             </td> </tr> <tr>
             <td><strong>Paper Used</strong></td>
             <td colspan="3">&nbsp;</td>

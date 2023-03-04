@@ -133,7 +133,7 @@ foreach($elist as $row)
                 <td colspan="3"><?php  
                    // if($examShift=='Early Morning'){echo "07:00 AM To 10:00 AM";} 
                     if($examShift=='Morning'){echo "11:00 AM To 02:00 PM";}
-                    if($examShift=='Evening'){echo "03:00 PM To 06:00 PM"; }  ?></td> </tr>
+                    if($examShift=='Afternoon'){echo "03:00 PM To 06:00 PM"; }  ?></td> </tr>
         </tbody>
 </table>
             <?php  }
