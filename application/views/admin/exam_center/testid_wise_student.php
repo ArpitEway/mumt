@@ -62,7 +62,6 @@
 					$count = $query->result_array();
 					$sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."'  AND exam_form!='D' AND `e`.`status`='B'";    
 					$query_back = $this->db->query($sql_back);
-					$this->Common_model->last_query();
 					$count_back = $query_back->result_array();
 					 $qu="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE s.class_id ='".$data->class_id."' AND `p`.`paper_code` = '".$data->paper_code."'  AND temp_exam_form='N' and `session` = 'Jan 2022'";
 					$query = $this->db->query($qu);
