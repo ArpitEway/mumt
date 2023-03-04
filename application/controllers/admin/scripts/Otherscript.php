@@ -122,6 +122,7 @@ class Otherscript extends CI_Controller {
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
 		foreach ($rs as $student) {
+			if($student['university_mode'] == 'REG'){
 			$new_exam_sql = "select * from new_exam_form where student_id='".$student['student_id']."' and paper_type='Theory' and int_marks in ('N') and class_id='".$cls_id."' and paper_code not in ('1RBA1','1RBA2','1RBA3','1RBA4') ORDER by rand()";
 			$new_exam_rs =	$this->db->query($new_exam_sql)->result_array();
 			$i=0;
@@ -135,6 +136,7 @@ class Otherscript extends CI_Controller {
 			$update_student = "update student set int_marks_sub='Y' where student_id='".$student['student_id']."' and class_id='".$cls_id."'";
 
 			$this->db->query($update_student);
+		}
 		}
 	}
 
@@ -172,6 +174,7 @@ class Otherscript extends CI_Controller {
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
 		foreach ($rs as $student) {
+			if($student['university_mode'] == 'REG'){
 			$new_exam_sql = "select * from new_exam_form where student_id='".$student['student_id']."' and paper_type='Project' and p_marks in ('N') and class_id='".$cls_id."' ORDER by rand()";
 			$new_exam_rs =	$this->db->query($new_exam_sql)->result_array();
 			$i=0;
@@ -186,6 +189,7 @@ class Otherscript extends CI_Controller {
 			$update_student = "update student set p_marks_sub='Y' where student_id='".$student['student_id']."' and class_id='".$cls_id."'";
 
 			$this->db->query($update_student);
+		}
 		}
 	}
 	public function update_oldexam_marks($cls_id =0)
