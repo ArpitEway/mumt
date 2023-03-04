@@ -22,11 +22,17 @@ $page_break = 'break';
 foreach($elist as $row)
 {
      
-      $sql="SELECT count(*) as cnt FROM `new_exam_form_report` as `e` JOIN `student_report` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`examcentercode`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paperData[0]['paper_code']."' AND `s`.`class_id` = '".$paperData[0]['class_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2021' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2022' AND `s`.`class_name` = 'I SEM' ));";    
+      $sql="SELECT count(*) as cnt FROM `new_exam_form_report` as `e` JOIN `student_report` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`examcentercode`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paperData[0]['paper_code']."' AND `s`.`class_id` = '".$paperData[0]['class_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND (new_exam_form!='D' OR ( `s`.`session` = 'Jan 2022' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'July 2022' AND `s`.`class_name` = 'I SEM' ));";    
     $query = $this->db->query($sql);
     $count = $query->result_array();
+
+    //back 
+    $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form_report` as `e` JOIN `backlog_student_report` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paperData[0]['paper_code']."' AND `s`.`class_id` = '".$paperData[0]['class_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form!='D' AND `e`.`status`='B'";    
+    $query_back = $this->db->query($sql_back);
+    $count_backlog = $query_back->result_array();
+    
    
-        $qu="SELECT count(*) as num FROM `student_report` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paperData[0]['paper_code']."' AND `p`.`class_id` = '".$paperData[0]['class_id']."' AND `s`.`examcentercode`='".$row->examcentercode."' AND   `s`.`exam_center_id` = '".$row->id."'  AND temp_exam_form='N' and `session` = 'July 2021' AND `s`.`class_name` = 'I Year'";
+        $qu="SELECT count(*) as num FROM `student_report` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paperData[0]['paper_code']."' AND `p`.`class_id` = '".$paperData[0]['class_id']."' AND `s`.`examcentercode`='".$row->examcentercode."' AND   `s`.`exam_center_id` = '".$row->id."'  AND temp_exam_form='N' and `session` = 'Jan 2022' AND `s`.`class_name` = 'I Year'";
     $query = $this->db->query($qu);
     $all = $query->result_array();
    
@@ -40,7 +46,7 @@ foreach($elist as $row)
     }
    
      //$total+=$count[0]->cnt;
-     if(($count[0]['cnt'] >0) || ($allElective >0) )
+     if(($count[0]['cnt'] >0) || ($allElective >0) || ($count_backlog[0]['cnt']>0))
      {  
 ?>
 <table style="width:90%;text-align:left;font-size:15px" align="center" class="table table-hover table-striped <?php echo $page_break; ?> my-10" border="1">
@@ -69,7 +75,7 @@ foreach($elist as $row)
             <td style="vertical-align:middle"><strong>Quantity</strong></td>
             <td colspan="" bgcolor="#FFFFFF" style="text-align:center; vertical-align:middle"><span style="font-size:20px;font-weight:bold;text-decoration:underline;font-style:italic;">
             <?php //echo "(All=> ".$allElective.") Fill=> ".$count[0]['cnt']; 
-            echo $allElective +$count[0]['cnt'];
+            echo $allElective +$count[0]['cnt']+$count_backlog[0]['cnt'];
             ?>
            
             </span></td>

@@ -39,25 +39,37 @@ foreach($elist as $row)
         //  echo "<br>1 ".$count[0]->cnt;
          // echo $this->db->last_query();
 
-          $sql="SELECT count(*) as cnt FROM `new_exam_form_report` as `e` JOIN `student_report` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`examcentercode`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paper['paper_code']."' AND `s`.`class_id` = '".$paper['class_id']."' AND s.course_group_id= '".$paper['course_group_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2021' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2022' AND `s`.`class_name` = 'I SEM' ));";    
+          $sql="SELECT count(*) as cnt FROM `new_exam_form_report` as `e` JOIN `student_report` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`examcentercode`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paper['paper_code']."' AND `s`.`class_id` = '".$paper['class_id']."' AND s.course_group_id= '".$paper['course_group_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND (new_exam_form!='D' OR ( `s`.`session` = 'Jan 2022' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'July 2022' AND `s`.`class_name` = 'I SEM' ));";    
          $query = $this->db->query($sql);
          $count = $query->result_array();
         
-               $qu="SELECT count(*) as num FROM `student_report` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paper['paper_code']."' AND `p`.`class_id` = '".$paper['class_id']."'  AND s.course_group_id= '".$paper['course_group_id']."'  AND `s`.`examcentercode`='".$row->examcentercode."' AND   `s`.`exam_center_id` = '".$row->id."'  AND temp_exam_form='N' and `session` = 'July 2021' AND `s`.`class_name` = 'I Year'";
+               $qu="SELECT count(*) as num FROM `student_report` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paper['paper_code']."' AND `p`.`class_id` = '".$paper['class_id']."'  AND s.course_group_id= '".$paper['course_group_id']."'  AND `s`.`examcentercode`='".$row->examcentercode."' AND   `s`.`exam_center_id` = '".$row->id."'  AND temp_exam_form='N' and `session` = 'Jan 2022' AND `s`.`class_name` = 'I Year'";
          $query = $this->db->query($qu);
          $all = $query->result_array();
         
          $allElective= $all[0]['num'];
+         $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form_report` as `e` JOIN `backlog_student_report` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paper['paper_code']."' AND `s`.`class_id` = '".$paper['class_id']."' AND s.course_group_id= '".$paper['course_group_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form!='D' AND `e`.`status`='B' ";    
+         $query_backlog = $this->db->query($sql_back);
+        //  $this->Common_model->last_query();
+         $count_backlog = $query_backlog->result_array();
+
+        
           
           if($paper['class_id']==104 && $paper['ce']=='elective' && ( $allElective>0)){
             $allElective=round(($all[0]['num']*60)/100); 
             
          }
+        
         $count[0]['cnt'];
-        $tcheck+= $allElective + $count[0]['cnt'];
-         $countData=array("fill"=>$count[0]['cnt'],"all"=>$allElective,"class_id"=>$paper['class_id'],"paper_code"=>$paper['paper_code'],"course_name"=>$paper['course_name'] ,"exam_date"=>  date("d-m-Y", strtotime($paper['exam_date'])),"exam_day"=> $paper['exam_day'],"test_id"=>$paper['test_id'],  "exam_shift"=>$paper['exam_shift'],"paper_name"=>$paper['paper_name']);
+        $count_backlog[0]['cnt'];
+        $tcheck+= $allElective + $count[0]['cnt'] + $count_backlog[0]['cnt'];
+        
+         $countData=array("fill"=>$count[0]['cnt'],"all"=>$allElective,'back_fill'=>$count_backlog[0]['cnt'],"class_id"=>$paper['class_id'],"paper_code"=>$paper['paper_code'],"course_name"=>$paper['course_name'] ,"exam_date"=>  date("d-m-Y", strtotime($paper['exam_date'])),"exam_day"=> $paper['exam_day'],"test_id"=>$paper['test_id'],  "exam_shift"=>$paper['exam_shift'],"paper_name"=>$paper['paper_name']);
          //$arr[]=$count[0]['cnt']+ $allElective;
          $arr[]= $countData;
+        //  $countBackData=array("fill"=>$count1[0]['cnt'],"all"=>$allElective1,"class_id"=>$paper['class_id'],"paper_code"=>$paper['paper_code'],"course_name"=>$paper['course_name'] ,"exam_date"=>  date("d-m-Y", strtotime($paper['exam_date'])),"exam_day"=> $paper['exam_day'],"test_id"=>$paper['test_id'],  "exam_shift"=>$paper['exam_shift'],"paper_name"=>$paper['paper_name']);
+        //  //$arr[]=$count[0]['cnt']+ $allElective;
+        //  $arr_back[]= $countBackData;
     }
   
     if($tcheck >0)
@@ -86,17 +98,17 @@ foreach($elist as $row)
                     $this->db->where('class_master.id',$paper['class_id']);
                     $classMaster = $this->db->get()->result();
                     
-                    if(($paper['fill'] >0) || ($paper['all'] >0) )
+                    if(($paper['fill'] >0) || ($paper['all'] >0 ) || $paper['back_fill']>0 )
                     { 
                     ?>
-                <tr><td ><?=$paper['course_name'] ?></td><td><?= $classMaster[0]->class_name ?></td><td><?=$paper['paper_name'] ?>&nbsp; (<?=$paper['paper_code'] ?>)</td><td style="text-align:center"><?php echo $paper['all']+ $paper['fill']; ?></td><td>&nbsp;</td><td></td></tr>
+                <tr><td ><?=$paper['course_name'] ?></td><td><?= $classMaster[0]->class_name ?></td><td><?=$paper['paper_name'] ?>&nbsp; (<?=$paper['paper_code'] ?>)</td><td style="text-align:center"><?php echo $paper['all']+ $paper['fill']+$paper['back_fill']; ?></td><td>&nbsp;</td><td></td></tr>
                
                 <?php 
               $examDate=  $paper['exam_date'];
               $examDay= $paper['exam_day']; 
               $test_id=$paper['test_id'];
               $examShift=$paper['exam_shift'];
-              $total+= $paper['all'] + $paper['fill'];
+              $total+= $paper['all'] + $paper['fill']+$paper['back_fill'];
             }
              }?>
                 <tr><td>&nbsp;</td>
