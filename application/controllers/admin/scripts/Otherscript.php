@@ -118,11 +118,11 @@ class Otherscript extends CI_Controller {
 		// $marks = array('09','08','07','09','08','07','06','06');
 		$marks = array('27','26','25','27','26','25','24','24'); 
 		$cls_id=104;
-		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and int_marks_sub='N' and roll_no!=0 limit 100";
+		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and int_marks_sub='N' and roll_no!=0 and university_mode='REG' limit 100";
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
 		foreach ($rs as $student) {
-			if($student['university_mode'] == 'REG'){
+			
 			$new_exam_sql = "select * from new_exam_form where student_id='".$student['student_id']."' and paper_type='Theory' and int_marks in ('N') and class_id='".$cls_id."' and paper_code not in ('1RBA1','1RBA2','1RBA3','1RBA4') ORDER by rand()";
 			$new_exam_rs =	$this->db->query($new_exam_sql)->result_array();
 			$i=0;
@@ -137,7 +137,7 @@ class Otherscript extends CI_Controller {
 
 			$this->db->query($update_student);
 		}
-		}
+		
 	}
 
 	public function update_practical_marks($cls_id =0)
@@ -145,7 +145,7 @@ class Otherscript extends CI_Controller {
 		$marks = array('43','42','41','40'); 
 		//$marks = array('85','84','83','82'); 
 		$cls_id=182;
-		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and roll_no!=0 order by roll_no limit 100";
+		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and roll_no!=0 and university_mode='REG' order by roll_no limit 100";
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
 		foreach ($rs as $student) {
@@ -170,11 +170,11 @@ class Otherscript extends CI_Controller {
 	{
 		$marks = array('85','84','83','82'); 
 		$cls_id=104;
-		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and roll_no!=0 order by roll_no limit 100";
+		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and  university_mode='REG' and  roll_no!=0 order by roll_no  limit 100";
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
 		foreach ($rs as $student) {
-			if($student['university_mode'] == 'REG'){
+			
 			$new_exam_sql = "select * from new_exam_form where student_id='".$student['student_id']."' and paper_type='Project' and p_marks in ('N') and class_id='".$cls_id."' ORDER by rand()";
 			$new_exam_rs =	$this->db->query($new_exam_sql)->result_array();
 			$i=0;
@@ -189,7 +189,7 @@ class Otherscript extends CI_Controller {
 			$update_student = "update student set p_marks_sub='Y' where student_id='".$student['student_id']."' and class_id='".$cls_id."'";
 
 			$this->db->query($update_student);
-		}
+		
 		}
 	}
 	public function update_oldexam_marks($cls_id =0)
