@@ -2446,7 +2446,7 @@ public function getStudentData()
 						$this->db->where('new_exam_form.class_id',$data['student']->old_class_id);
 						$new_exam_form = $this->db->get()->result();
 						$data['new_exam_form']  = $new_exam_form;
-						if($data['student']->old_class_id == '107' || $data['student']->old_class_id == '110'){
+						if($data['student']->old_class_id == '104' || $data['student']->old_class_id == '107' || $data['student']->old_class_id == '110'){
 							$this->load->model('Gradesheet_model');
 							$dt = $this->load->view('Centers/grade_marksheet',$data,true);
 						}else{

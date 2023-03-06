@@ -32,9 +32,19 @@ class Gradesheet_model extends CI_Model
 
 	public function view_result($student_id,$course_group_id,$class_id,$mode)
 	{
-		$papers = $this->Common_model->get_all_papers($student_id,$class_id);
+		$std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $class_id,'student_id'=>$student_id));
+		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+		
+		
+		if($std[0]->sub_group_id == 1){
+			$papers = $this->Common_model->get_all_papers($student_id,$class_id);
+		}
+		if($this->classData->class_group == 'Y'){
+		$papers_list = $this->Common_model->get_all_group_papers($student_id,$class_id);
+		}
+		// get_all_group_papers
 		// print_r($papers);die;
-		$this->allclass = $this->Common_model->getRecordByWhere('class_master',array('course_group_id'=> $course_group_id));
+		
 		// print_r($this->allclass);die;
 		$this->classCount = count($this->allclass);
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
@@ -51,6 +61,10 @@ class Gradesheet_model extends CI_Model
 		$this->check_grace_marks = false;
 		$this->withheld = false;
 		foreach ($papers as $paper) {
+			$this->paper = $paper;
+			$this->_row();
+		}
+		foreach ($papers_list as $paper) {
 			$this->paper = $paper;
 			$this->_row();
 		}
@@ -196,7 +210,9 @@ class Gradesheet_model extends CI_Model
 	}
 
 	private function credit_point()
+
 	{
+		
 		$this->tot_credit_point += $this->grade_point*$this->credit_point;
 		$this->result_array[$this->paper['paper_code']]['credit_point'] = $this->grade_point*$this->credit_point;
 	}
@@ -330,6 +346,8 @@ class Gradesheet_model extends CI_Model
 				$req_marks = $result['min_marks']-$result['obt_marks'];
 				$obt_marks = $result['obt_marks']+$req_marks;
 				$credit_point = $result['credit']*4;
+				$this->result_array[$key]['credit_point']=$credit_point;
+				$this->tot_credit_point += $credit_point;
 				echo "<th class='text-center'>".$result['credit']."</th>";
 				echo "<th class='text-center'>P-G</th>";
 				echo "<th class='text-center'>4</th>";
