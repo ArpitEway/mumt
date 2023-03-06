@@ -3022,7 +3022,7 @@ public function update_exam_datewise_permission(){
 		$this->load->view('footer');
 	}
 
-	public function student_result_permission($course_id="",$class_id=""){
+	public function student_result_permission($mode="",$course_id="",$class_id=""){
 		if(!$this->session->has_userdata('adminData')){
 			redirect(base_url());
 			exit;
