@@ -3255,7 +3255,7 @@ public function update_exam_datewise_permission(){
 		$this->db->Where('paper_type','theory');
 		$this->db->where('university_mode','REG');
 		// $this->db->where('student.class_id','168');
-		//$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,195,197,203,211,213,227,158,166,167,172,205)');
+		$this->db->where('`student.old_class_id` in (101,104,107,110,116,119,125,128,131,134,154,155,159,160,162,164,168,172,181,182,194,196,198,200,202,204,206,208,210,212,214,222,224,226,228,256,262,273,274,299)');
         	//$this->db->Where('result_show','Y');
 		$this->db->where_in('new_exam_form.int_marks',array('ABS','N'));
 		$data['students'] = $this->db->get()->result();//echo $this->db->last_query(); die;
@@ -3384,7 +3384,7 @@ public function update_exam_datewise_permission(){
 		$this->db->where_in('new_exam_form.p_marks',array('ABS','N'));
 		$this->db->where('university_mode','REG');
 		// $this->db->where('student.class_id','168');
-	    	//$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,195,197,203,211,213,227,158,166,167,172,205)');
+	    $this->db->where('`student.old_class_id` in (101,104,107,110,116,119,125,128,131,134,154,155,159,162,164,165,168,169,170,171,172,173,174,175,178,180,181,182,196,200,206,208,224,226,228,256,262,273,299)');
 		$this->db->Where('(project="Y" or practical = "Y")');
 		$data['students'] = $this->db->get()->result();
 		 // $this->Common_model->last_query();
