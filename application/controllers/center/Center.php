@@ -1859,7 +1859,12 @@ class Center extends CI_Controller {
 		foreach($tableData as $result){
 			   
 			if($result->provisional_remark=="N" || $result->provisional_remark==""){
-			$btn =	'<a href="'.base_url('center/Center/marksheet/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm dt-center" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
+				if(($result->old_class_id == '104' || $result->old_class_id == '107' || $result->old_class_id == '101' || $result->old_class_id == '134' || $result->old_class_id == '116') && $result->university_mode == 'REG'){
+					$btn =	'<a href="'.base_url('center/Center/grade_marksheet/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm dt-center" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
+				}else{
+					$btn =	'<a href="'.base_url('center/Center/marksheet/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm dt-center" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
+				}
+			
 			}else{
 				$this->db->select('provisional_remarks');
 				$this->db->from('provisional_remark_details');
@@ -1933,6 +1938,33 @@ class Center extends CI_Controller {
 		$this->load->view('admin/generate_tr/footer2');
 	}
 }
+
+ public function grade_marksheet($student_id=""){
+	 $student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		$student = $this->Common_model->getRecordByWhere("student",array('exam_form'=>'Y','old_result_show'=>'Y','student_id'=>$student_id));
+		// print_r($student);die;
+		if (count($student)==0) {
+			redirect(base_url());
+		}
+		$data['student']=$student[0];
+		$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
+		$data['practical_internal_marks']=$classData->practical_internal_marks;
+		$this->db->select('*');
+		$this->db->from('new_exam_form');
+		$this->db->where('new_exam_form.student_id',$data['student']->student_id);
+		$this->db->where('new_exam_form.class_id',$data['student']->old_class_id);
+		$this->db->order_by('new_exam_form.paper_order','new_exam_form.paper_id');
+		$new_exam_form = $this->db->get()->result();
+		$data['new_exam_form']  = $new_exam_form;
+		$data['classData']  = $classData;
+		$this->load->model('Gradesheet_model');
+		// $title = array('title' => 'Result - '.$data['student']->enrollment_no);
+		$title ="";
+		$this->load->view('Centers/header',$title);
+		$this->load->view('Centers/grade_marksheet',$data);
+		$this->load->view('Centers/footer');
+
+ }
 
 	public function exam_paper($student_id=''){
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
