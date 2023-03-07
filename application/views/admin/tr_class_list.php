@@ -22,10 +22,17 @@
         <tr>
         <td></td>
 			<td><?= $class->class_name ?></td>
-			<td><a target="_blank" href="<?php echo  base_url('admin/admins/student_result_permission/'.$course['id'].'/'.$class->id)  ?>">Result permission</a></td>
+			<td><?php 
+			$flag=($class->regular_class == 'Y' && $class->private_class == 'Y')? '/': '';
+			 if($class->regular_class=='Y') { ?> 
+				<a target="_blank" href="<?php echo  base_url('admin/admins/student_result_permission/REG/'.$course['id'].'/'.$class->id)  ?>">Result Regular permission</a>
+				<?php } if($class->private_class=='Y') {  echo $flag; ?>
+					<a target="_blank" href="<?php echo  base_url('admin/admins/student_result_permission/PVT/'.$course['id'].'/'.$class->id)  ?>">Result Private permission</a>
+					<?php }  ?>
+					</td>
 			<td>
 				<?php
-				$flag=($class->regular_class == 'Y' && $class->private_class == 'Y')? '/': '';
+				
 				if ($class->practical_internal_marks=='Y'){ 
 					 
 					 
