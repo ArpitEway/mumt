@@ -340,6 +340,23 @@ class Otherscript extends CI_Controller {
 		echo $this->db->last_query();
 	}
 
+	public function update_group_id_in_new_exam_form(){
+		// $this->db->limit(10);
+		$students = $this->Common_model->getRecordByWhere('student',array('group_id !='=>''));
+		foreach($students as $student){
+		$where = array(
+			'student_id'=>$student->student_id,
+			'class_id'=>$student->old_class_id,
+		);
+		$data = array(
+			'group_id'=>$student->group_id
+		);
+
+		$this->Common_model->updateRecordByConditions('new_exam_form',$where,$data);
+		echo $this->db->last_query().'<br>';
+	}
+}
+
 	
 }
 
