@@ -182,6 +182,9 @@ class Gradesheet_model extends CI_Model
 			if ($this->paper['p_marks']==''){
 				$this->withheld = true;
 			}
+			$check_fail_marks = $this->paper["p_marks"];
+				$check_fail_min_marks = $this->paper["min_theory_marks"];
+				$check_fail_tot_marks = $this->paper["max_theory_marks"];
 			$tot_obt_marks = $this->paper["p_marks"];
 			$tot_marks = $this->paper["max_theory_marks"];
 			$min_marks = $this->paper["min_theory_marks"];
@@ -334,7 +337,7 @@ class Gradesheet_model extends CI_Model
 	{
 		$this->fail_count;
 		if ($this->fail_count>0) {
-			$require_grace_marks = $this->fail_min_marks-$this->fail_obt_marks;
+			 $require_grace_marks = $this->fail_min_marks-$this->fail_obt_marks;
 		}
 		foreach ($this->result_array as $key => $result) {
 			echo "<tr>";
@@ -434,6 +437,7 @@ class Gradesheet_model extends CI_Model
 
 	private function AGPA()
 	{
+		// echo  $this->tot_credit_point.' ppp'.$this->tot_credit;
 		$this->agpa = $this->tot_credit_point/$this->tot_credit;
 		echo '<tr>';
 		echo '<td></td>';
