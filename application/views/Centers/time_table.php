@@ -1,10 +1,10 @@
 <div id="ss">
     <h3 align="center">&nbsp;</h3>
     <h3 align="center" class="style1" style="text-align:center;font-size:24px;">Maharishi Mahesh Yogi Vedic Vishwavidyalaya  </h3>
-    <p style="text-align:center;font-size:12px;"><strong>Programme for (Regular/Private) Annual/Semester - Main Examination August 2022 </strong></p>
+    <p style="text-align:center;font-size:12px;"><strong>Programme for (Regular/Private) Annual/Semester - Main Examination March 2023 </strong></p>
     <!-- <p style="text-align:center;font-size:12px;"><strong>Early Morning Shift Time 07:00 AM To 10:00 AM </strong></p> -->
     <p style="text-align:center;font-size:12px;"><strong> Morning Shift Time 11:00 AM To 02:00 PM </strong></p>
-    <p style="text-align:center;font-size:12px;"><strong> Evening Shift Time 03:00 PM To 06:00 PM </strong></p>
+    <p style="text-align:center;font-size:12px;"><strong> Afternoon Shift Time 03:00 PM To 06:00 PM </strong></p>
     <table align="center" cellpadding="5">
         <tbody>
             <tr bgcolor="#FFCC99">

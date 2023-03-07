@@ -283,7 +283,7 @@
 							<span></span>Yes
 						</label>
 						<label class="radio radio-success">
-							<input type="radio" name="handicapped" value="N" checked="checked" <?php if($student_data->handicapped == 'N'){ echo "checked"; } ?>>
+							<input type="radio" name="handicapped" value="N"  <?php if($student_data->handicapped == 'N'){ echo "checked"; } ?>>
 							<span></span>No
 						</label>
 					</div>

@@ -12,6 +12,7 @@
           <th>Mode</th>
           <th>Paper Count</th>
           <th>Exam Form Permission</th>
+          <th>Backlog Exam Form Permission</th>
           <th>Result Permission</th>
           <th>Final Result Permission</th>
           <th>Admit Card Permission</th>
@@ -37,6 +38,12 @@
             <td>
                 <button id="btn_<?php echo  $class->id?>" <?php if($class->exam_form_permission=='Y' ){echo "class='btn btn-success'" ;}else{echo "class='btn btn-danger' ";} ?> onclick="statusChange(<?php echo $class->id;  ?>,'<?php echo $class->exam_form_permission;?>')">
                 <?php if($class->exam_form_permission=='Y' ){echo "Yes" ;}else{
+                  echo " No";
+                } ?></button>
+            </td>
+            <td>
+                <button id="btnb_<?php echo  $class->id?>" <?php if($class->backlog_exam_form_permission=='Y' ){echo "class='btn btn-success'" ;}else{echo "class='btn btn-danger' ";} ?> onclick="backlogStatusChange(<?php echo $class->id;  ?>,'<?php echo $class->backlog_exam_form_permission;?>')">
+                <?php if($class->backlog_exam_form_permission=='Y' ){echo "Yes" ;}else{
                   echo " No";
                 } ?></button>
             </td>
@@ -90,6 +97,31 @@
           $("#btn_"+id).html("Yes");
            var s="statusChange("+ id +",'Y')";
           $("#btn_"+id).attr("onclick",s);
+        }
+      }
+    });
+  }
+  function backlogStatusChange(id,backlog_exam_form_permission){
+        var csrfName = $('.csrfname').attr('name');
+		var csrfHash = $('.csrfname').val(); 
+      $.ajax({
+       url: BASE_URL+"admin/Permission/update_backlog_exam_form_permission",
+        type:"post",
+        dataType: 'json',
+        data:{"class_id":id,"backlog_exam_form_permission":backlog_exam_form_permission,[csrfName]:csrfHash},
+        success: function(response){
+          if(response.success==true){
+          $("#btnb_"+id).removeClass("btn btn-success");
+          $("#btnb_"+id).addClass("btn btn-danger");
+          $("#btnb_"+id).html("No");
+           var s="backlogStatusChange("+ id +",'N')";
+          $("#btnb_"+id).attr("onclick",s);
+        }else  if(response.error==false){
+          $("#btnb_"+id).removeClass("btn btn-danger");
+          $("#btnb_"+id).addClass("btn btn-success");
+          $("#btnb_"+id).html("Yes");
+           var s="backlogStatusChange("+ id +",'Y')";
+          $("#btnb_"+id).attr("onclick",s);
         }
       }
     });

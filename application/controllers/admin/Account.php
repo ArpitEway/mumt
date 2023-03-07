@@ -427,7 +427,7 @@
 		if($Fess_head == 'Admission Fees'){
 	     $session = $student_details[0]->session;
 		}else{
-			$session = 'June 2022';
+			$session = 'Dec 2022';
 		}
 		$class_id = $student_details[0]->class_id;
 		$name = $student_details[0]->name;

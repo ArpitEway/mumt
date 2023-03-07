@@ -12,7 +12,7 @@
 				<th>Course</th>
 				<th>Class</th>
 				<?php
-				$this->db->limit('9');
+				$this->db->limit('8');
 				$papersobj = $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$class_id,'type'=>'theory'));
 				foreach ($papersobj as $key => $row) {
 					?>
@@ -25,7 +25,7 @@
 			<?php 
 			$i = 1;
 			foreach($students as $student){
-				?>
+?>
 				<tr>
 					<td><?php echo $i++; ?></td>
 					<td><?php echo $student->center_code; ?></td>
@@ -36,7 +36,7 @@
 					<td><?php echo $student->course_name; ?></td>
 					<td><?php echo $student->class_name; ?></td>
 					<?php 
-					$marksdatas =  $this->Common_model->getRecordByWhere('new_exam_form',array('student_id'=>$student->student_id,'class_id'=>$student->class_id,'paper_type'=> 'theory'));
+					$marksdatas =  $this->Common_model->getRecordByWhere('new_exam_form',array('student_id'=>$student->student_id,'class_id'=>$student->class_id,'paper_code!='=>$student->paper_code,'paper_type'=> 'theory'));
 					$paper_count = 0;
 					$tot_marks = 0;
 					$fail_id = 0;
@@ -51,21 +51,18 @@
 						if ($student->university_mode=='REG') {
 							$min_max_marks = $this->Common_model->getRecordByWhere('paper_master',array('paper_code' => $marksdata->paper_code, 'class_id' => $marksdata->class_id));
 							$min_theory_marks = $min_max_marks[0]->min_theory_marks;
-							$max_theory_marks_c =  $min_max_marks[0]->max_theory_marks;
-							$max_theory_marks += $min_max_marks[0]->max_theory_marks;
-
+							$max_theory_marks +=  $min_max_marks[0]->max_theory_marks;
+						
 
 						} else {
 							$min_max_marks = $this->Common_model->getRecordByWhere('paper_master',array('paper_code' => $marksdata->paper_code, 'class_id' => $marksdata->class_id));
 							$min_theory_marks = $min_max_marks[0]->private_min_theory_marks;
-							$max_theory_marks_c =  $min_max_marks[0]->private_max_theory_marks;
-							$max_theory_marks += $min_max_marks[0]->private_max_theory_marks;
+							$max_theory_marks +=  $min_max_marks[0]->private_max_theory_marks;
+							
 						}						
 						
 						if ($marksdata->theory_marks<$min_theory_marks) {
 							$fail_id = $marksdata->id;
-							$min_fail = $min_theory_marks;
-							 $max_fail = $max_theory_marks_c;
 							 $fail_paper_code = $marksdata->paper_code;
 							 if ($student->university_mode=='REG') {
 							 $max_theory_marks -= $this->Common_model->getSinglefield('paper_master','max_theory_marks',array('paper_code' => $marksdata->paper_code, 'class_id' => $marksdata->class_id));
@@ -81,21 +78,23 @@
 						}
 					}
 					$avg_percent = $tot_marks *100/$max_theory_marks;
-					// echo $tot_marks.'/'.$max_fail.'/'.$min_fail.'/'.$max_theory_marks.'<br>';
-					$avg_marks = round($max_fail*$avg_percent/100);
+					// echo $tot_marks.'/'.$student->max_marks.'/'.$student->min_marks.'/'.$max_theory_marks.'<br>';
+					$avg_marks = round($student->max_marks*$avg_percent/100);
 					?>
 					<td>
-						<a  target="_blank" href="<?php echo base_url('admin/scripts/Otherscript/update_student_remaining_marks/').$student->student_id.'/'.$fail_id.'/'.$avg_marks ?>"> 
+						
+						<?php
+                      
+						
+						   if($avg_marks > $student->min_marks)
+                        {
+                            // $this->Common_model->updateRecordByConditions('new_exam_form',array('id'=>$fail_id,'student_id'=>$student->student_id,'theory_marks'=>'','paper_code'=>$student->paper_code),array('theory_marks'=>$avg_marks));
+                            ?>
+                            <a  target="_blank" href="<?php echo base_url('admin/scripts/Otherscript/update_withheld_student_remaining_marks/').$student->student_id.'/'.$student->paper_code.'/'.$avg_marks ?>"> 
 						<?php echo $avg_marks ?>
 						</a>
-						<?php
-					
-							
-						//  if($avg_marks > $min_fail)
-						//{
-							// $this->db->where_not_in('theory_marks',array('','ABS'));
-							//$this->Common_model->updateRecordByConditions('new_exam_form',array('id'=>$fail_id,'student_id'=>$student->student_id),array('theory_marks'=>$avg_marks));
-						// 	}
+                        <?php
+						}
 						
 							?>
 					</td>

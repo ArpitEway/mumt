@@ -192,12 +192,17 @@
 								<span class="nav-text">Exam Form March 2023</span>
 							</div>
 					</a> 
+					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('backlog_exam_form_students');?>">
+							<div>
+								<span class="nav-text">Backlog Exam Form March 2023</span>
+							</div>
+					</a>   -->
 					<a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
 						<div>
 							<span class="nav-text">Result</span>
 						</div>
 					</a>	
-					<a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
+						<!--<a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
 						<div>
 							<span class="nav-text">Practical Marks Submission (Regular)</span>
 						</div>
@@ -207,7 +212,7 @@
 							<span class="nav-text">Internal Marks Submission (Regular)</span>
 						</div>
 					</a>
-					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
+				 <a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
 						<div>
 							<span class="nav-text">Time Table June 2022</span>
 						</div>
@@ -221,11 +226,11 @@
 					</a> -->
 					
 					<?php if ($center->admit_card_permission=='Y'): ?>
-						<!-- <a class="border-0 custom-menu-item" href="<?=base_url('admit_card_list');?>">
+						<a class="border-0 custom-menu-item" href="<?=base_url('admit_card_list');?>">
 						<div>
 							<span class="nav-text">Admit Card</span>
 						</div>
-					</a> -->
+					</a>
 					<?php endif ?>
 
 				</div>

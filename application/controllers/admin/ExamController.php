@@ -1342,7 +1342,7 @@ class ExamController extends CI_Controller {
 	public function getEnvelope(){
 		$test_id = $this->input->post('test_id');
 		$multiple = $this->input->post('multiple');
-		$data['examSession'] = 'June 2022';
+		$data['examSession'] = 'March 2023';
 		$this->db->select('*');
 		$this->db->from('exam_center');
 		//$this->db->where('examcentercode','MDE034');
@@ -1445,7 +1445,8 @@ class ExamController extends CI_Controller {
 			$this->db->select('*');
 			$this->db->from('paper_master');
 			$this->db->where('exam_date!=',"");
-			$this->db->where('exam_date!=',"0000-00-00");	
+			$this->db->where('exam_date!=',"0000-00-00");
+			$this->db->where('exam_date>=',"2023-03-18");		
 			$this->db->group_by('exam_date');
 			$this->db->order_by('exam_date', "asc");
 			$data['examDate'] = $this->db->get()->result();
@@ -1612,7 +1613,7 @@ class ExamController extends CI_Controller {
 		$this->db->from('student');
 		$this->db->order_by("roll_no", "asc");
 		// if($exam_center!="All")
-		$where = array('exam_center_id'=>$exam_center, 'roll_no!=' => 0 ,'notification_no'=>6);
+		$where = array('exam_center_id'=>$exam_center,'new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>0);
 		$this->db->where($where);	
 		$data['exam_center_students'] = $this->db->get()->result();
 		echo $this->load->view('admin/exam_center/get_exam_center_wise_student_attendance_sheet',$data, TRUE);
@@ -2421,7 +2422,7 @@ public function getStudentData()
 
 			
 				$student = $this->Common_model->getRecordByWhere("student",$where);
-			
+				$msg="";
 				if (count($student)==0) {
 					
 					echo json_encode(array(
@@ -2431,12 +2432,13 @@ public function getStudentData()
 					
 				}
 				else if($student[0]->old_result_show=="N"){
-					echo json_encode(array(
-						"status" => false,
-						"data" => "<p style='text-align: center;'><b>Student result not declared!</b></p>"
-					));
-				}
-				else{
+					// echo json_encode(array(
+					// 	"status" => false,
+					// 	"data" => "<p style='text-align: center;'><b>Student result not declared!</b></p>"
+					// ));
+						$msg="<p style='text-align: center;'><b>Student result not declared!</b></p>";
+				//}
+				//else{
 						$data['student']=$student[0];
 						$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
 						$data['practical_internal_marks']=$classData->practical_internal_marks;
@@ -2445,6 +2447,7 @@ public function getStudentData()
 						$this->db->where('new_exam_form.student_id',$data['student']->student_id);
 						$this->db->where('new_exam_form.class_id',$data['student']->old_class_id);
 						$new_exam_form = $this->db->get()->result();
+						$data['classData']  = $classData;
 						$data['new_exam_form']  = $new_exam_form;
 						if($data['student']->old_class_id == '104' || $data['student']->old_class_id == '107' || $data['student']->old_class_id == '110'){
 							$this->load->model('Gradesheet_model');
@@ -2463,6 +2466,8 @@ public function getStudentData()
 							
 							$dt =  $marksheet_top.$marksheet_bottom;
 						}
+						
+						$dt = $msg. $marksheet_top.$marksheet_bottom;
 						echo json_encode(array(
 							"status" => true,
 							"data" => $dt

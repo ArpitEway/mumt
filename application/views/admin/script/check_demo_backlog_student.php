@@ -6,7 +6,7 @@
             <th>Course</th>
             <th>Class</th>
             <th>Student Count</th>			
-            <th>upload</th>			
+            <th>Action</th>			
         </tr> 
     </thead>
     <tbody>
@@ -20,7 +20,7 @@
                  <td><?php echo  $this->Common_model->getClassNameByClassId($course->class_id);
                  ?></td>
                  <td><?php echo $course->cnt; ?></td>
-                 <td><a target="_blank" href="<?=base_url('admin/scripts/Postexam/check_demo_backlog_student_script/'.$course->class_id)?>">upload</a></td>
+                 <td><a target="_blank" href="<?=base_url('admin/scripts/Postexam/check_demo_backlog_student_script/'.$course->class_id)?>">View</a></td>
          </tr>  
      <?php 
      $i++;

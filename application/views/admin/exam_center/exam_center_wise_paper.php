@@ -37,7 +37,7 @@
         <select  name="shift" readonly="readonly" id="shift" class="form-control course" required>
 
             <option value="Morning" >Morning</option>
-            <option value="Evening">Evening</option>
+            <option value="Afternoon">Afternoon</option>
 
 
         </select>

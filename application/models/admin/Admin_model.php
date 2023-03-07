@@ -609,6 +609,7 @@ class Admin_model extends CI_Model {
 		
         $data['course_group_id'] = html_escape($this->input->post('course_group_id'));
 		$data['class_id'] 		 = html_escape($this->input->post('class_id'));
+		$data['pattern']		 = html_escape($this->input->post('pattern'));
 		
 		$ces 					 = html_escape($this->input->post('ce'));
 		$data['ce'] 			 = html_escape($this->input->post('ce'));
@@ -616,6 +617,12 @@ class Admin_model extends CI_Model {
 		$data['paper_code']      = html_escape($this->input->post('paper_code'));
 		$data['type'] 		     = html_escape($this->input->post('type'));
 		$data['group_name']		 = html_escape($this->input->post('group_name'));
+		// echo $data['pattern'];die;
+		if($data['pattern'] == 'cbcs'){
+			$cbcs = 'Y';
+		}else{
+			$cbcs ='N';
+		}
 		
 		$courses = $this->db->get_where('course', array('course_group_id' => $data['course_group_id']))->row_array();
 		$course_name  = $courses['course_name'];
@@ -635,6 +642,7 @@ class Admin_model extends CI_Model {
 			$paper_data['paper_no']  		= $paper_no;
 			$paper_data['paper_code']  		= $data['paper_code'][$i]; 
 			$paper_data['type'] 	   		= $data['type'][$i];
+			$paper_data['cbcs_paper']       = $cbcs;
 			
 			$this->db->insert('paper_master', $paper_data);
 			$ins_id = $this->db->insert_id();
