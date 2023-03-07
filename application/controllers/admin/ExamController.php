@@ -2422,7 +2422,7 @@ public function getStudentData()
 
 			
 				$student = $this->Common_model->getRecordByWhere("student",$where);
-			
+				$msg="";
 				if (count($student)==0) {
 					
 					echo json_encode(array(
@@ -2432,12 +2432,13 @@ public function getStudentData()
 					
 				}
 				else if($student[0]->old_result_show=="N"){
-					echo json_encode(array(
-						"status" => false,
-						"data" => "<p style='text-align: center;'><b>Student result not declared!</b></p>"
-					));
-				}
-				else{
+					// echo json_encode(array(
+					// 	"status" => false,
+					// 	"data" => "<p style='text-align: center;'><b>Student result not declared!</b></p>"
+					// ));
+						$msg="<p style='text-align: center;'><b>Student result not declared!</b></p>";
+				//}
+				//else{
 						$data['student']=$student[0];
 						$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
 						$data['practical_internal_marks']=$classData->practical_internal_marks;
@@ -2459,7 +2460,7 @@ public function getStudentData()
 							$marksheet_bottom=  $this->load->view('Centers/marksheet_bottom',$data,true);
 						}
 						
-						$dt =  $marksheet_top.$marksheet_bottom;
+						$dt = $msg. $marksheet_top.$marksheet_bottom;
 						echo json_encode(array(
 							"status" => true,
 							"data" => $dt

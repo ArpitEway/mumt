@@ -1767,7 +1767,7 @@ class Center extends CI_Controller {
 		
 		$this->db->where('class_master.result_permission', 'Y');
 		$this->db->where('center_id', $center_id);
-		//$this->db->where('result_show','Y');
+		$this->db->where('old_result_show','Y');
 		$this->db->where('exam_form','Y');
 		//$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,197,203,211,213)');
 		$data['courses'] = $this->db->get()->result();
@@ -1815,24 +1815,25 @@ class Center extends CI_Controller {
 		$data = $row = array();
 		// $where1 ='';
 	
-		$where = array('center_id' => $this->session->center_id,'exam_form'=>'Y');
-		// 'result_show','Y'
+		$where = array('center_id' => $this->session->center_id,'exam_form'=>'Y','old_result_show'=>'Y');
+	
 
 		if($_POST['course_group_id']!='All' and $_POST['course_group_id']!=''){
 			$where['student.course_group_id'] = $this->input->post('course_group_id');
 			
-		}else{
-			$where1 = " `center_id` = ".$this->session->center_id."
-			AND `exam_form` = 'Y'
-			AND `result_permission` = 'Y'and ((student.course_group_id!=12 ) or (student.course_group_id=12 and university_mode='PVT' ) ) and ((student.course_group_id!=13 ) or (student.course_group_id=13 and university_mode='PVT' ) ) ";
 		}
+		// else{
+		// 	$where1 = " `center_id` = ".$this->session->center_id."
+		// 	AND `exam_form` = 'Y'
+		// 	AND `result_permission` = 'Y'and ((student.course_group_id!=12 ) or (student.course_group_id=12 and university_mode='PVT' ) ) and ((student.course_group_id!=13 ) or (student.course_group_id=13 and university_mode='PVT' ) ) ";
+		// }
 		if($_POST['class_id']!='All' and $_POST['class_id']!=''){
 			$where['old_class_id'] = $this->input->post('class_id');
 		
 		}
-		if($this->input->post('course_group_id') == 12 || $this->input->post('course_group_id') == 13){
-			$where['university_mode'] = 'PVT';
-		}
+		// if($this->input->post('course_group_id') == 12 || $this->input->post('course_group_id') == 13){
+		// 	$where['university_mode'] = 'PVT';
+		// }
 		$where['result_permission'] = 'Y';
 		// Fetch member's records
 		
@@ -1848,12 +1849,12 @@ class Center extends CI_Controller {
 			'table2' => 'class_master',
 			'joinOn' => 'student.old_class_id=class_master.id'
 		);
-		if($where1 != ''){
-		$this->db->where($where1);
-		}
+		// if($where1 != ''){
+		// $this->db->where($where1);
+		// }
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		// $this->Common_model->last_query();
-		
+		//die;
 		$i = $_POST['start'];
 		foreach($tableData as $result){
 			   
@@ -1895,9 +1896,13 @@ class Center extends CI_Controller {
 
 	public function marksheet($student_id="")
 	{
+		$provisional=array("","N");
+		$this->db->where_in('provisional_remark', $provisional);
+		
 		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		$student = $this->Common_model->getRecordByWhere("student",array('exam_form'=>'Y','old_result_show'=>'Y','student_id'=>$student_id));
-		if ((count($student)==0) || ($student->course_group_id == 12 && $student->university_mode == 'REG') || ($student->course_group_id == 13 && $student->university_mode == 'REG') ) {
+		// ($student->course_group_id == 12 && $student->university_mode == 'REG') || ($student->course_group_id == 13 && $student->university_mode == 'REG')
+		if ((count($student)==0)  ) {
 			redirect(base_url());
 		}
 		$data['student']=$student[0];
