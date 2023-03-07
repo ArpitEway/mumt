@@ -265,6 +265,8 @@ class Otherscript extends CI_Controller {
             // $update =$this->Common_model->updateRecordByConditions('paper_master',$where,$data);
 			// echo  $this->db->last_query(); die;
 			$i++;
+		$this->Common_model->updateRecordByConditions('new_exam_form',$where,$data);
+		echo $this->db->last_query().'<br>';
 		}
 	}
 	public function remaining_failed_student_list(){
