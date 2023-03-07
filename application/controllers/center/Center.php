@@ -1639,7 +1639,7 @@ class Center extends CI_Controller {
 		}
 	 }
 	public function internal_marks_list(){
-	 		 // redirect(base_url());
+	 		  redirect(base_url());
 	 	if(!$this->session->has_userdata('centerdata')){
 	 		redirect(base_url());
 	 	}
@@ -2019,7 +2019,7 @@ class Center extends CI_Controller {
 	}
 
 	public function practical_marks_list(){
-		// redirect(base_url());
+		 redirect(base_url());
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
