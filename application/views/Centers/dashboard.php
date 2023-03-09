@@ -111,9 +111,11 @@
 						</div>
 					</a> -->
 				  <?php
-				  if($center->admission_permission=='Y'){
+				  $center_id =  $this->session->center_id;	
+				  $center_ids_dep = array(10,11,12,21,22,23,24,25,26,27,28,29);
+				  if($center->admission_permission=='Y' || in_array($center_id, $center_ids_dep)){
 					  ?>
-	                <a class="border-0 custom-menu-item kt_popup" >
+	        <a class="border-0 custom-menu-item kt_popup" >
 						<div>
 							<span class="nav-text">Admission Form Regular</span>
 						</div>
