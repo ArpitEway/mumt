@@ -161,9 +161,9 @@ class Gradesheet_model extends CI_Model
 				if ($this->paper['theory_marks']=='' || ($this->paper["int_marks"]=='' || $this->paper["int_marks"]=='N')) {
 					$this->withheld = true;
 				}
-				$check_fail_marks = $this->paper["theory_marks"];
-				$check_fail_min_marks = $this->paper["min_theory_marks"];
-				$check_fail_tot_marks = $this->paper["max_theory_marks"];
+				$check_fail_marks = $this->paper["theory_marks"] + $this->paper["int_marks"];
+				$check_fail_min_marks = $this->paper["min_theory_marks"]+$this->paper["min_internal_marks"];
+				$check_fail_tot_marks = $this->paper["max_theory_marks"]+ $this->paper["max_internal_marks"];
 				$tot_obt_marks = $this->paper["theory_marks"] + $this->paper["int_marks"];
 				 $tot_marks = $this->paper["max_theory_marks"] + $this->paper["max_internal_marks"];
 				$min_marks = $this->paper["min_theory_marks"] + $this->paper["min_internal_marks"];
@@ -337,7 +337,7 @@ class Gradesheet_model extends CI_Model
 	{
 		$this->fail_count;
 		if ($this->fail_count>0) {
-			 $require_grace_marks = $this->fail_min_marks-$this->fail_obt_marks;
+			 $require_grace_marks = $this->fail_min_marks+1-$this->fail_obt_marks;
 		}
 		foreach ($this->result_array as $key => $result) {
 			echo "<tr>";

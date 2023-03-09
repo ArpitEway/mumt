@@ -590,7 +590,7 @@ class Common_Model extends CI_Model{
 			);
 		$this->db->select('new_exam_form.*,group_paper.credit_point,paper_master.paper_name,paper_master.paper_code,group_paper.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks');
 		$this->db->from('paper_master');
-		$this->db->order_by('paper_no','asc');
+		$this->db->order_by('group_paper.sub_group_id,paper_no','asc');
 		$this->db->join('new_exam_form','new_exam_form.paper_id = paper_master.id','left');
 		$this->db->join('group_paper','paper_master.id=group_paper.paper_id and group_paper.group_id=new_exam_form.group_id','left');
 		$this->db->where($where); 
