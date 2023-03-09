@@ -406,6 +406,8 @@ class Payment extends CI_Controller {
 		 }else{
 			$exam_fees = 750; 
 		 }
+		 $mode = ($student['university_mode']=='REG')? "regular": "private";
+		
    		   $txnAmt  =  $exam_fees;   
 			$hash_string = '';
 		/*  testing credential  
@@ -434,7 +436,7 @@ class Payment extends CI_Controller {
 			$posted['country'] = $student['nationality'];
 			$posted['zipcode'] = $student['p_pin_code'];
 			$posted['udf1'] = $student_id;
-			$posted['udf2'] = $student['university_mode']; 
+			$posted['udf2'] = $mode; 
 			$posted['udf3'] = "Dec 2022";
 			$posted['udf4'] = $student["center_id"].' / '.$class_id;
 			$posted['udf5'] = $student["name"]."/".$student["f_h_name"];
