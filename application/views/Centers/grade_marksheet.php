@@ -63,7 +63,7 @@ th.border.border-dark {
             <th class="border-top-0"><?php  echo $student->enrollment_no ?></th>
             <th class="border-top-0 text-primary pl-3">Roll No.</th>
             <th class="border-top-0"><?php echo  $student->roll_number; ?></th>
-            <th rowspan="4" class="border-top-0 text-center" width="170px" height="180px"><img class="img img-thumbnail" src="<?=base_url('assets/student_image/').$student->photo?>" ></th>
+            <th rowspan="4" class="border-top-0 text-center" width="170px" height="180px"><img class="img img-thumbnail" src="<?=base_url('assets/student_image/').$student->session.'/'.$student->photo?>" ></th>
         </tr>
         <tr>
             <th class="border-top-0 text-primary pl-3">Name</th>
