@@ -203,7 +203,14 @@
 						<div>
 							<span class="nav-text">Result</span>
 						</div>
-					</a>	
+					</a>
+					<?php if ($this->session->center_id!=1080 && $this->session->center_id!=1986): ?>						
+						<a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
+							<div>
+								<span class="nav-text">Time Table</span>
+							</div>
+						</a>
+					<?php endif ?>
 						<!--<a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
 						<div>
 							<span class="nav-text">Practical Marks Submission (Regular)</span>
