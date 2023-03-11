@@ -165,7 +165,11 @@ class Center extends CI_Controller {
 		$sessions = $this->Common_model->get_record('session','*',$whereSession);
 		
 		$check = $this->Common_model->getRecordByWhere("center",$where);
-		if(($mode=='regular' && $check[0]->admission_permission!='Y') || ($mode=='private' && $check[0]->admission_permission_private!='Y')){
+		
+		$center_id =  $this->session->center_id;
+		$center_ids_dep = array(10,11,12,21,22,23,24,25,26,27,28,29);
+
+		if(($mode=='regular' && $check[0]->admission_permission!='Y' && !in_array($center_id, $center_ids_dep)) || ($mode=='private' && $check[0]->admission_permission_private!='Y')){
 			redirect(base_url('dashboard'));
 		}
 
