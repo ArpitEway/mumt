@@ -1298,10 +1298,10 @@ class Center extends CI_Controller {
 		
 		if($mode->university_mode == "PVT"){
 			
-		$paper_data = 	$this->Common_model->get_record('paper_master','*','id in ('.$paper_id.') and type="theory" and cbcs_paper='.$cbcs.'');
+		$paper_data = 	$this->Common_model->get_record('paper_master','*','id in ('.$paper_id.') and type="theory" and cbcs_paper="'.$cbcs.'"');
 		
 		}else{
-			$paper_data = 	$this->Common_model->get_record('paper_master','*','id in ('.$paper_id.') and cbcs_paper='.$cbcs.'');	
+			$paper_data = 	$this->Common_model->get_record('paper_master','*','id in ('.$paper_id.') and cbcs_paper="'.$cbcs.'"');	
 		}
 		foreach($paper_data as $paper){
 			$data['course_group_id']=$paper['course_group_id'];
