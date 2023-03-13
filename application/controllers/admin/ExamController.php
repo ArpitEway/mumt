@@ -2458,16 +2458,17 @@ public function getStudentData()
 							$title = array('title' => 'Result - '.$data['student']->enrollment_no);
 							
 							$marksheet_top =  $this->load->view('Centers/marksheet_top',$data,true);
-							if ($student[0]->course_group_id==36 || $student[0]->course_group_id==37) {
-								
-								$marksheet_bottom=  $this->load->view('Centers/marksheet_without_int',$data,true);
+							if($classData->internal=='N'){
+							$this->load->view('Centers/marksheet_without_int',$data);
 							}else{
-								
-								$marksheet_bottom=  $this->load->view('Centers/marksheet_bottom',$data,true);
+							if($student[0]->old_class_id=='168'){
+								$this->load->view('Centers/marksheet_mom',$data);
+							}else{
+								$this->load->view('Centers/marksheet_bottom',$data);
 							}
 							
 							$dt =  $marksheet_top.$marksheet_bottom;
-						}
+							}
 						
 						// $dt = $msg. $marksheet_top.$marksheet_bottom;
 						echo json_encode(array(
