@@ -42,7 +42,8 @@
 	 $paper_count = count($papers);
 	 if($paper_count){
 
-		  $newstring = date('y')."1".substr($student->center_code, -4); 
+		  // $newstring = date('y')."1".substr($student->center_code, -4); 
+		  $newstring = "222".substr($student->center_code, -4); 
      ?>   
 <section class="break" style="font-size: 16px;">
 		<div class="admit-card" style="width:1030px !important; ">
