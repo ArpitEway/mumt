@@ -229,6 +229,31 @@ class Preexam extends CI_Controller {
 		$this->load->view('footer');
 	}
 
+	public function generate_backlog_roll_no(){		
+		if(isset($_POST['action']) && $_POST['action']=='generate'){
+			$data = array(			
+				 'action' => 'generate',
+			);
+		}else if( isset($_POST['action']) && $_POST['action']=='view'){
+			$data = array(
+				 'action' => 'view',
+			);
+		}
+		else{
+			$data = array(
+				'student' => '',
+				'action' => '',
+			);
+		}
+
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();
+			
+		$this->load->view('header',array('title' => 'Generate Backlog Roll Number'));
+		$this->load->view('admin/script/generate_backlog_roll_no',$data);
+		$this->load->view('footer');
+	}
+
 
 	public function add_practical(){
 		$this->db->select('paper_master.id ,paper_master.class_id , student_id ,paper_master.course_group_id,paper_master.paper_code,type,paper_master.paper_no');
