@@ -1420,6 +1420,7 @@ class Center extends CI_Controller {
 		$this->load->view('Centers/footer');
 	}
 
+	
 
 
 	public function admit_card_student_list($class_id){
@@ -1438,6 +1439,23 @@ class Center extends CI_Controller {
 		);
 		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
 		$this->load->view('Centers/class_wise_admit_card_list',$data);
+		$this->load->view('Centers/footer');
+	}
+
+	public function admit_card_backlog_student_list(){
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url());
+		}
+		$titleData = array('title' => 'Admit Card Backlog Student List 2023' );
+		$this->load->view('Centers/header',$titleData);
+		$center_id =  $this->session->center_id;
+		$where = array(	
+			'center_id' => $center_id,
+			'roll_no!=' => 0,
+			'exam_form' => 'Y'
+		);
+		$data['students'] = $this->Common_model->getRecordByWhere('backlog_student',$where);
+		$this->load->view('Centers/class_wise_backlog_admit_card_list',$data);
 		$this->load->view('Centers/footer');
 	}
 
@@ -1476,6 +1494,43 @@ class Center extends CI_Controller {
 		$data['papers'] = $this->db->get()->result();
 		//echo $this->db->last_query(); die;
 		$this->load->view('template/admit_card',$data);
+		$this->load->view('Centers/footer');
+	}
+
+	public function backlog_admit_card($student_id){
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url());
+		}
+		$en_student_id = $student_id;
+		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		$titleData = array('title' => 'Backlog Admit Card 2023' );
+		$this->load->view('Centers/header',$titleData);
+		$center_id =  $this->session->center_id;
+		$where = array(
+			'backlog_student.student_id' => $student_id,
+			'backlog_student.roll_no !=' => 0,
+			'backlog_student.center_id' => $center_id,
+			'backlog_student.exam_form' => 'Y',
+		);
+
+		$this->db->select('backlog_student.*,student.name,student.f_h_name,student.session,student.photo');
+		$this->db->from('backlog_student');
+		$this->db->join('student','student.student_id = backlog_student.student_id');
+		
+		$this->db->where($where);
+		$data['student'] = $this->db->get()->result();
+		
+		$wherePaper = array('student_id' => $student_id,'paper_master.type'=>'theory','paper_master.class_id'=>$data['student'][0]->class_id,'paper_master.course_group_id'=>$data['student'][0]->course_group_id,'status'=>'B');
+		$this->db->select('*');
+		$this->db->from('paper_master');
+		$this->db->join('backlog_exam_form', 'backlog_exam_form.paper_code = paper_master.paper_code and backlog_exam_form.class_id = paper_master.class_id');
+		
+		$this->db->where($wherePaper);
+		$this->db->order_by("exam_date", "asc");
+		$this->db->order_by("exam_shift", "desc");
+		$data['papers'] = $this->db->get()->result();
+		//echo $this->db->last_query(); die;
+		$this->load->view('template/backlog_admit_card',$data);
 		$this->load->view('Centers/footer');
 	}
 
