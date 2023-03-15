@@ -3388,7 +3388,7 @@ public function update_exam_datewise_permission(){
 		$this->db->where_in('new_exam_form.p_marks',array('ABS','N'));
 		$this->db->where('university_mode','REG');
 		// $this->db->where('student.class_id','168');
-	    $this->db->where('`student.old_class_id` in (101,104,107,110,116,119,125,128,131,134,154,155,159,162,164,165,168,169,170,171,172,173,174,175,178,180,181,182,196,200,206,208,224,226,228,256,262,273,299)');
+	    $this->db->where('`student.old_class_id` in (101,104,107,110,116,119,125,128,131,134,154,155,159,162,164,165,168,169,170,171,172,173,174,175,178,180,181,182,196,200,206,208,224,226,228,256,262,273,274,299)');
 		$this->db->Where('(project="Y" or practical = "Y")');
 		$data['students'] = $this->db->get()->result();
 		 // $this->Common_model->last_query();
