@@ -83,9 +83,9 @@ th.border.border-dark {
         </tr> -->
     </tbody>
 </table>
- <table class="table mb-0">
+ <table class="table mb-0" >
       <tbody>
-        <tr>
+        <tr  id="tr_code"> 
           <td style="border-bottom: 1px solid; border-left: 1px solid; border-top: 1px solid; text-align: center">संकेतांक <br> Paper Code</td>
           <td style="border-bottom: 1px solid;border-left: 1px solid;border-top: 1px solid; vertical-align: middle;"><span class="ml-3">विषय:</span> <br> <span class="ml-3">SUBJECT</span></td>
           <td style="border-bottom: 1px solid;border-left: 1px solid;border-top: 1px solid; text-align: center ;vertical-align: middle">Credit</td>
@@ -94,12 +94,18 @@ th.border.border-dark {
           <td style="border-bottom: 1px solid;border-right: 1px solid;border-top: 1px solid;border-left: 1px solid; text-align: center ;vertical-align: middle">Credit Point <br> (Credit x Grade Point)</td>
         </tr>
         <?php 
-        // echo $student->old_class_id;die;
+       
         $gradesheetData = $this->Gradesheet_model->view_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
-        // print_r($gradesheetData);die;
+       
          ?>
       </tbody>
     </table>
+    <?php if($gradesheetData['result'] != ''){ 
+      
+      ?>
+    
+      
+      
     * Grade In Repat Examination.<br><br>
     <table class="border border-dark m-auto w-100" >
         <tr>
@@ -143,6 +149,17 @@ th.border.border-dark {
           <td class="text-center" style="vertical-align: middle;"><?=$gradesheetData['result'] ?></td>
         </tr> -->
     </table><br>
+    <?php
+    }
+    else{
+      ?>
+      <script type="text/javascript">
+      $('#tr_code').css("display", "none");
+     
+  </script>
+  <?php
+    }
+    ?>
     <div class="row" style=" margin-top: 1px;font-size: 18px;">
         <div class="col-12">
         <span style="font-weight : 900"> Disclaimer :</span>

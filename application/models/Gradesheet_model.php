@@ -62,10 +62,52 @@ class Gradesheet_model extends CI_Model
 		$this->withheld = false;
 		foreach ($papers as $paper) {
 			$this->paper = $paper;
+			
+			
+			if($this->withheld){
+				
+				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
+				 '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
+				  '<h3 class="text-center">'.'WH'.'</h3>'.
+				'</div>';
+				return $this->result();
+			
+				die;
+			}
+			if ($this->fail_count>0 && !$this->check_grace_marks && $this->classData->final_result_permission!='Y' ) {  
+				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
+				'<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
+				 '<h3 class="text-center">'.'WH'.'</h3>'.
+			   '</div>';
+			   return $this->result();
+		   
+			   die;
+			}
+		
 			$this->_row();
+			
 		}
 		foreach ($papers_list as $paper) {
 			$this->paper = $paper;
+			if($this->withheld){
+				
+				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
+				 '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
+				  '<h3 class="text-center">'.'WH'.'</h3>'.
+				'</div>';
+				return $this->result();
+			
+				die;
+			}
+			if ($this->fail_count>0 && !$this->check_grace_marks && $this->classData->final_result_permission!='Y' ) {  
+				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
+				'<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
+				 '<h3 class="text-center">'.'WH'.'</h3>'.
+			   '</div>';
+			   return $this->result();
+		   
+			   die;
+			}
 			$this->_row();
 		}
 		// var_dump($this->result_array);
@@ -110,12 +152,14 @@ class Gradesheet_model extends CI_Model
 				$this->foundation_paper[$this->paper['group_paper_name']]['paper_name'] = ' 1)'.$this->paper['paper_name'].' ';
 			}
 		}else{
+			
 			$this->_echo_row();
 		}
 	}
 
 	private function _echo_row()
 	{
+		
 		$this->paper_code();
 		$this->paper_name();
 		$this->min_max_no();
@@ -203,6 +247,11 @@ class Gradesheet_model extends CI_Model
 			$this->obt_tot_credit += $this->paper['credit_point'];
 			$this->result_array[$this->paper['paper_code']]['obt_credit'] = $this->paper['credit_point'];
 		}
+		// var_dump($this->check_grace_marks);
+		// echo $student_id;
+		// echo $this->classData->final_result_permission;
+		// echo $this->fail_count;die;
+		
 		$this->grade_point = $gradeData[0]->grade_point;
 		$this->result_array[$this->paper['paper_code']]['letter_grade'] = $gradeData[0]->letter_grade;
 	}
@@ -262,10 +311,11 @@ class Gradesheet_model extends CI_Model
 
 	public function set_result()
 	{
+		// var_dump($this->withheld);die;
 		if ($this->withheld==true) {
 			$this->result = 'WITHHELD';
 		}
-		if ($this->fail_count!=0 && $this->obt_tot_credit>=20) {
+		else if ($this->fail_count!=0 && $this->obt_tot_credit>=20) {
 			if ($this->check_grace_marks) {
 				$this->result = 'PASS BY GRACE';
 			}else{
@@ -606,3 +656,14 @@ class Gradesheet_model extends CI_Model
 		// print_r($this->foundation_paper);
 	}
 }
+// echo $this->fail_count;die;
+// 			if ($this->fail_count>0 && !$this->check_grace_marks && $student_id!=684208 && $this->classData->final_result_permission!='Y' ) {  
+// 				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
+// 				'<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
+// 				 '<h3 class="text-center">'.'WH'.'</h3>'.
+// 			   '</div>';
+// 			   return $this->result();
+		   
+// 			   die;
+// 			}else{
+// 			}

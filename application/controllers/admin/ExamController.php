@@ -2478,7 +2478,6 @@ public function getStudentData()
 				//else{
 						$data['student']=$student[0];
 						$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
-						// print_r($classData);die;
 						$data['practical_internal_marks']=$classData->practical_internal_marks;
 						$this->db->select('*');
 						$this->db->from('new_exam_form');
@@ -2487,34 +2486,50 @@ public function getStudentData()
 						$new_exam_form = $this->db->get()->result();
 						$data['classData']  = $classData;
 						$data['new_exam_form']  = $new_exam_form;
+					
+						
 						if(($data['student']->old_class_id == '104' || $data['student']->old_class_id == '107' || $data['student']->old_class_id == '101' || $data['student']->old_class_id == '134' || $data['student']->old_class_id == '116') && $data['student']->university_mode == 'REG'){
-							
+						
 							$this->load->model('Gradesheet_model');
 							$dt = $this->load->view('Centers/grade_marksheet',$data,true);
 						}else{
+							
 							$title = array('title' => 'Result - '.$data['student']->enrollment_no);
 							
 							$marksheet_top =  $this->load->view('Centers/marksheet_top',$data,true);
-							if ($student[0]->course_group_id==36 || $student[0]->course_group_id==37) {
+							// if ($student[0]->course_group_id==36 || $student[0]->course_group_id==37) {
 								
-								$marksheet_bottom=  $this->load->view('Centers/marksheet_without_int',$data,true);
+							// 	$marksheet_bottom=  $this->load->view('Centers/marksheet_without_int',$data,true);
+							// }else{
+								
+							// 	$marksheet_bottom=  $this->load->view('Centers/marksheet_bottom',$data,true);
+							// }
+							if($classData->internal=='N'){
+								$marksheet_bottom = $this->load->view('Centers/marksheet_without_int',$data,true);
 							}else{
-								
-								$marksheet_bottom=  $this->load->view('Centers/marksheet_bottom',$data,true);
-							}
-							
-							$dt =  $marksheet_top.$marksheet_bottom;
+								if($student[0]->old_class_id=='168'){
+									$marksheet_bottom  = $this->load->view('Centers/marksheet_mom',$data,true);
+								}else{
+									$marksheet_bottom = $this->load->view('Centers/marksheet_bottom',$data,true);
+								}
+							// $dt =  $marksheet_top.$marksheet_bottom;
 						}
 						
-						// $dt = $msg. $marksheet_top.$marksheet_bottom;
-						echo json_encode(array(
+						$dt =  $marksheet_top.$marksheet_bottom;
+						
+					}
+					echo json_encode(array(
 							"status" => true,
 							"data" => $dt
 						));
-					}
+		}else{
+			echo json_encode(array(
+				"status" => false,
+				"data" => "<p style='text-align: center;'><b>Student result not declared!</b></p>"
+			));
 		}
 	}//fun
-
+	}
 	public function search_student_result_for_wh(){
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
