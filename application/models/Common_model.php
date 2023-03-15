@@ -254,6 +254,35 @@ class Common_Model extends CI_Model{
 		return $query->result_array();
 
 	}
+	public function getStudentNameById($id){
+
+		$qry = $this->db->select("name");
+		
+		$qry = $this->db->where("student_id",$id);
+	
+		$qry = $this->db->get("student");
+		
+		$name = $qry->row()->name;
+		
+		return $name;
+		
+	
+	}
+
+	public function getStudentFatherNameById($id){
+
+		$qry = $this->db->select("f_h_name");
+		
+		$qry = $this->db->where("student_id",$id);
+	
+		$qry = $this->db->get("student");
+		
+		$name = $qry->row()->f_h_name;
+		
+		return $name;
+		
+	
+	}
 	
 	function student_info($id){
 		

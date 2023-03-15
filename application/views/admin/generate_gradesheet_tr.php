@@ -214,10 +214,18 @@ table.last_table, .last_table td, .last_table th{
       if($new_exam_form->type=='theory'){
         if($new_exam_form->sub_group_id == 1){
           if($new_exam_form->group_paper_name == 'FC1' ){
+            if($new_exam_form->theory_marks==''){
+              $rw_count++;
+           
+            }
           $fc1 += (int) $new_exam_form->theory_marks;
           $fc1_max += (int) $new_exam_form->max_theory_marks;
           $fc1_min += (int) $new_exam_form->min_theory_marks;
           }else{
+            if($new_exam_form->theory_marks==''){
+              $rw_count++;
+             
+            }
             $fc2 += (int) $new_exam_form->theory_marks;
             $fc2_max += (int) $new_exam_form->max_theory_marks;
             $fc2_min += (int) $new_exam_form->min_theory_marks;
@@ -312,9 +320,7 @@ table.last_table, .last_table td, .last_table th{
     $tot_marks += $fc1_max +$fc2_max;
     $tot_std_marks += $fc1+$fc2;
     $count_theory +=  $fc1+$fc2;
-    if($fc1=='' || $fc2== ''){
-      $rw_count++;
-    }
+   
     if($fc1 < $fc1_min ){
       array_push( $atkt_paper_codes_array ,'FC1' );
           $fail_count++;
