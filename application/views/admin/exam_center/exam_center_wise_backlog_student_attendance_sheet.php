@@ -48,9 +48,10 @@
 	var csrfName = $('.csrfname').attr('name');
 	var csrfHash = $('.csrfname').val(); 
 	var exam_center = $(this).val();
-  var str = $("#exam_center option:selected").text();
-    stripped = str.substring(0, str.indexOf('(') + '('.length-1);
-  $("#headerTitle").html(stripped);
+  //var str = $("#exam_center option:selected").text();
+  //  stripped = str.substring(0, str.indexOf('(') + '('.length-1);
+  //$("#headerTitle").html(stripped);
+  $("#headerTitle").html($("#exam_center option:selected").text());
   $('.dt-responsive').html("");
   $("#myLoader").show();
   //console.log($("#multiple").val());
