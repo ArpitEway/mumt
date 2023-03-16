@@ -1645,7 +1645,7 @@ class ExamController extends CI_Controller {
 	//Get Exam Center Wise Backlog Student Attendance Sheet 
 	public function get_exam_center_wise_backlog_student_attendance_sheet(){
 		$exam_center = $this->input->post('exam_center');
-		$this->db->select('backlog_student.*,student.name,student.f_h_name,student.course_name,student.class_name,student.photo');
+		$this->db->select('backlog_student.*,student.name,student.f_h_name,student.course_name,student.photo');
 		$this->db->from('backlog_student');
 		$this->db->join('student', 'backlog_student.student_id = student.student_id');
 		$this->db->order_by("roll_no", "asc");
