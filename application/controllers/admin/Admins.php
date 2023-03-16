@@ -3036,6 +3036,7 @@ public function update_exam_datewise_permission(){
 		$data['permited_students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id , 'old_result_show'=>'Y' , 'exam_form'=>'Y' ,'university_mode'=>$mode));
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
+		$data['mode']=$mode;
 		$this->load->view('header',array('title' => ''));
 		$this->load->view('admin/student_result_permission',$data);
 		$this->load->view('footer');
@@ -3049,7 +3050,7 @@ public function update_exam_datewise_permission(){
 		if($_POST['not_permitted']){
 			$student_ids = (implode(',',$_POST['not_permitted']));
 			$data = array('old_result_show' => 'Y');
-			$where = "provisional_remark in ('','N') && student_id in (".$student_ids.")";
+			$where = " student_id in (".$student_ids.")";//provisional_remark in ('','N') &&
 			$update =$this->Common_model->updateRecordByConditions('student',$where,$data);
 		}else{
 			$student_ids = (implode(',',$_POST['permitted']));
@@ -3058,7 +3059,7 @@ public function update_exam_datewise_permission(){
 			$update = 	$this->Common_model->updateRecordByConditions('student',$where,$data);
 		}  
 		if($update){
-			redirect(base_url().'admin/Admins/student_result_permission/'.$_POST['course_group_id'].'/'.$_POST['class_id']);
+			redirect(base_url().'admin/Admins/student_result_permission/'.$_POST['mode'].'/'.$_POST['course_group_id'].'/'.$_POST['class_id']);
 		}
 	}
 

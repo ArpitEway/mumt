@@ -1,6 +1,7 @@
 <form method="post" action="<?=base_url('admin/Admins/update_student_result_permission')?>" class="mt-3" >
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-     <div class="text-center p-3">
+<input type="hidden" name="mode" value="<?=$mode?>">
+<div class="text-center p-3">
 		<button type="submit" class="btn btn-primary btn-lg" id="submit" name="submit" >Update</button>
 	</div>
 <hr>
