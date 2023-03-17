@@ -66,8 +66,16 @@
 			<div class="BoxC border- padding">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Attendance Sheet Examination <?=($student['class_id']==256 || $student['class_id']==262) ? 'SEPTEMBER' : 'AUGUST' ?> 2022</h5>
-						
+						<h5>Attendance Sheet Examination 
+							<?php
+							if($student['course_group_id']==75 || $student['course_group_id==76']){
+								echo 'Feb 2023';
+							}else{
+								echo 'March 2023';
+							}
+							
+							?>
+						</h5>
 					</div>
 				</div>
 			</div>
