@@ -150,9 +150,15 @@
 				<tr>
 					<td><?php echo $i ; ?></td>
 					<td><?php echo date("d-m-Y", strtotime($paper->exam_date)); ?></td>
-					<td><?= 
-					($paper->exam_shift=='Morning') ? '11:00 AM To 2:00 PM'   : ($paper->exam_shift=='Afternoon') ? '03:00 PM To 6:00 PM'  : '12:00 To 3:00 PM'
-					; ?></td>
+					<td>
+					<?php if($paper->exam_shift=='Morning'){
+						echo '11:00 AM To 2:00 PM';
+					}elseif($paper->exam_shift=='Afternoon'){
+						echo '03:00 PM To 6:00 PM';
+					}else{
+						echo '12:00 To 3:00 PM';
+					} ?>
+					</td>
 					<td style="text-align:left;"><?php echo $paper->paper_name; ?></td>
 					<td ></td>
 					<td ></td>
