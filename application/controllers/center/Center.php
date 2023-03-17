@@ -2486,6 +2486,7 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 
 	public function admission_mode_edit_request($course_type="REG")
 	{
+		redirect(base_url());
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}else{
