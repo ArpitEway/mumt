@@ -85,11 +85,13 @@
 							<span class="nav-text">Form Edit Request</span>
 						</div>
 					</a>
+					<!--
 					<a class="border-0 custom-menu-item" href="<?=base_url('admission_mode_edit_request/PVT');?>">
 						<div>
 							<span class="nav-text">Mode Change Request (Private to Regular)</span>
 						</div>
 					</a>
+					-->
 					<a class="border-0 custom-menu-item" href="<?=base_url('paper_missing_list/private');?>">
 						<div>
 							<span class="nav-text">Paper Missing List</span>
@@ -161,11 +163,13 @@
 							<span class="nav-text">Form Edit Request</span>
 						</div>
 					</a>
+					<!--
 					<a class="border-0 custom-menu-item" href="<?=base_url('admission_mode_edit_request/REG');?>">
 						<div>
 							<span class="nav-text">Mode Change Request (Regular to Private)</span>
 						</div>
 					</a>
+					-->
 					<a class="border-0 custom-menu-item" href="<?=base_url('paper_missing_list/regular');?>">
 						<div>
 							<span class="nav-text">Paper Missing List</span>
