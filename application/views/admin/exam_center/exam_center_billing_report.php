@@ -40,7 +40,7 @@
                 $this->db->where('s.examcentercode',$examCenter['examcentercode']);	
                 $this->db->where('s.exam_center_id',$examCenter['id']);	
                 $this->db->where('exam_date!=',"0000-00-00");	
-                $this->db->where_in('s.new_exam_form ',array('Y','N'));
+                $this->db->where_in('s.new_exam_form ',array('Y'));
                 $this->db->group_by(array('exam_date','exam_shift'));
                 $this->db->order_by('cnt', "desc");
                 $this->db->limit(1);
