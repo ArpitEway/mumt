@@ -1635,6 +1635,7 @@ class ExamController extends CI_Controller {
 			$this->db->from('backlog_student');	
 		
 			$this->db->where('exam_form','Y');
+			$this->db->where('notification_no','2');
 			$this->db->order_by('exam_center_code', "asc");
 			$data['exam_centers'] = $this->db->get()->result();
 
