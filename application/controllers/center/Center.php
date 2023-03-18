@@ -432,7 +432,7 @@ class Center extends CI_Controller {
 			
 			$where .= "  ) "; 
 
-			$where.=" or (student.student_id in (715231, 715241, 716487, 717657, 717662, 722810) and online_payment_transaction.payment='N' AND $this->session->center_id=1352)";
+			$where.=" or (student.student_id in (715231, 715241, 716487, 717657, 717662, 722810) and online_payment_transaction.payment='N' )";
 			
 			// $where .= " and online_payment_transaction.fees_head='Admission Fees'  and  `student.payment_status`='N' and ( (student.class_name not like '%SEM%' and student.session='July 2021') or session!='July 2021')";
 		}elseif($param1=='Exam'){
