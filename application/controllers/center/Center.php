@@ -150,16 +150,18 @@ class Center extends CI_Controller {
 			
 			
 		}
-		if($mode=='regular'){
+		if($mode=='regular' ){
 			$where = array('admission_permission'=>'Y' ,'id'=>$center_id);
 			$head = '(Regular)';
-		}else{
+		}elseif($mode=='private' ){
 			$where = array('admission_permission_private'=>'Y','id'=>$center_id);
 			$head = '(Private)';
 			if($center_session_permission!='Y')
 			{
 				$whereSession['pvt_admission_permission_ic'] =  'Y';
 			}		
+		}else{
+			redirect(base_url('dashboard'));
 		}
 		
 		$sessions = $this->Common_model->get_record('session','*',$whereSession);
@@ -169,7 +171,10 @@ class Center extends CI_Controller {
 		$center_id =  $this->session->center_id;
 		$center_ids_dep = array(10,11,12,21,22,23,24,25,26,27,28,29,13);
 
-		if(($mode=='regular' && $check[0]->admission_permission!='Y' && !in_array($center_id, $center_ids_dep)) || ($mode=='private' && $check[0]->admission_permission_private!='Y')){
+		// if(($mode=='regular' && $check[0]->admission_permission!='Y' && !in_array($center_id, $center_ids_dep)) || ($mode=='private' && $check[0]->admission_permission_private!='Y')){
+		// 	redirect(base_url('dashboard'));
+		// }
+		if(($mode=='regular' && $check[0]->admission_permission!='Y' ) || ($mode=='private' && $check[0]->admission_permission_private!='Y')){
 			redirect(base_url('dashboard'));
 		}
 
@@ -412,7 +417,7 @@ class Center extends CI_Controller {
 		
 		if($param1=='Admission'){
 			$permission_session= $this->Common_model->getRecordByWhere('session',array('unpaid_permission'=>'Y' ));
-			$where .= " and online_payment_transaction.fees_head='Admission Fees'  and  student.payment_status='N' and ( "; 
+			$where .= " and online_payment_transaction.fees_head='Admission Fees'  and  student.payment_status='N' and student.class_name not like '%SEM%' and ( "; 
 			foreach($permission_session as $key=>$row){
 			
 				if($row->semester_permission=='N' && $row->annual_permission=='Y' )
