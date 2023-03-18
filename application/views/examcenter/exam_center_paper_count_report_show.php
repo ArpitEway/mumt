@@ -139,7 +139,7 @@ foreach($papers as $pap)
 
 
         
-         if(($count[0]->cnt >0) )
+         if(($student_count >0) )
          { 
             ?>
             <tr <?php if($i%2==0) echo 'bgcolor="#F0F0F0"'; ?>>

@@ -38,7 +38,7 @@
 	 
      $this->db->select('*');
      $this->db->from('paper_master');
-     $this->db->join('new_exam_form', 'new_exam_form.paper_id = paper_master.id');
+     $this->db->join('backlog_exam_form', 'backlog_exam_form.paper_code = paper_master.paper_code and backlog_exam_form.class_id = paper_master.class_id');
      //$this->db->join('time_table', 'paper_master.class_id = time_table.class_id');
      $this->db->where($wherePaper);
      $this->db->order_by("exam_date", "asc");
