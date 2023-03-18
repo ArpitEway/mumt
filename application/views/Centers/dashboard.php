@@ -194,6 +194,7 @@
 			</div> 
 			<div class="tab-pane fade" id="exam" role="tabpanel" aria-labelledby="exam-tab">
 				<div class="row">
+				<?php if ($center->exam_form_permission=='Y'): ?>
 					<a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
 							<div>
 								<span class="nav-text">Exam Form March 2023</span>
@@ -204,6 +205,7 @@
 								<span class="nav-text">Backlog Exam Form March 2023</span>
 							</div>
 					</a>  
+					<?php endif ?>
 					<a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
 						<div>
 							<span class="nav-text">Result</span>

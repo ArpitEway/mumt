@@ -2417,11 +2417,11 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 		if($exam_form1=='submitted'){
 			$where = array('exam_form' =>'Y','center_id' => $center_id);
 		}else if($exam_form1 =="notSubmitted"){
+				$where = array(
+					'exam_form' =>'N',
+					'center_id' => $center_id,
+				);
 			
-			$where = array(
-				'exam_form' =>'N',
-				'center_id' => $center_id,
-			);
 		}else if($exam_form1=="skipped"){
 			$where = array(
 				'exam_form' =>'S',
@@ -2431,6 +2431,9 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 		$data['exam_form_button'] = $exam_form1;
 		$this->db->where_in('class_id',$class_ids);
 		$data['documents'] = $this->Common_model->getRecordByWhere('backlog_student',$where);
+		if($center_permission[0]['exam_form_permission']!='Y' && $exam_form1 =="notSubmitted"){
+			$data['documents'] ="";
+		}
 		// $this->Common_model->last_query();
 		$this->load->view('Centers/header');
 		$this->load->view('Centers/backlog_exam_form_students',$data);
