@@ -1839,8 +1839,8 @@ public function getStudentData()
 	{
 		$data = $row = array();
 		$where = "status=   'Y' ";
-		$column_order = array(null,'center_code','center_name','contactpersonname','mobile_no_1');
-		$column_search = array('center_code','center_name','contactpersonname','mobile_no_1');
+		$column_order = array(null,'id','center_code','center_name','contactpersonname','mobile_no_1',null,'exam_form_permission','old_session_permission');
+		$column_search = array('id','center_code','center_name','contactpersonname','mobile_no_1','exam_form_permission','old_session_permission');
 		$DataTableArray = array(
 			'column_order' => $column_order,
 			'column_search' => $column_search,
@@ -1869,7 +1869,7 @@ public function getStudentData()
 			$exam_form_permission_btn = '<input type="button" name="update_exam_form_permission" data-id='.$result->id.' class="btn btn-danger exam_form_permission_checks" value="No">';
 			}	
 			$i++;
-			$data[] = array($i,$result->id, $result->center_code, $result->center_name, $result->contactpersonname,$result->mobile_no_1,$btn,$permission_btn,$exam_form_permission_btn);
+			$data[] = array($i,$result->id, $result->center_code, $result->center_name, $result->contactpersonname,$result->mobile_no_1,$btn,$exam_form_permission_btn,$permission_btn);
 	     	}
 		  $output = array(
 			"draw" => $_POST['draw'],
