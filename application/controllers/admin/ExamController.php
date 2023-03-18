@@ -1598,6 +1598,7 @@ class ExamController extends CI_Controller {
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('*');
 			$this->db->from('exam_center');
+			$this->db->where_in('id',array('7','11','14','15','16','17','18','21','23','28','29','36','43','44','50','51','54','56','63','66','69','71','72','73','79','82','87','93','96','100','101','116','119','127','131','132','133','136','138','140','144','157','158','160','164','165','167','169','173'));
 			$this->db->order_by('examcentercode', "asc");
 			$data['exam_centers'] = $this->db->get()->result();
 
