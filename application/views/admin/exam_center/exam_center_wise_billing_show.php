@@ -30,7 +30,7 @@ $total = 0;
 
   <br>
 
-<table width="80%" border="1" align="center" class="<?php echo $page_break; ?>">
+<table width="85%" border="1" align="center" class="<?php echo $page_break; ?>">
 
    <tbody>
        <tr>
@@ -101,13 +101,15 @@ $total = 0;
     </tbody>
 </table>
 
-<table style="font-family:Arial, Helvetica, sans-serif;text-align:center;" width="80%" cellspacing="0" cellpadding="8" border="1" align="center">
+<table style="font-family:Arial, Helvetica, sans-serif;text-align:center;" width="85%" cellspacing="0" cellpadding="8" border="1" align="center">
         <tbody>
             <tr bgcolor="#FFCC99">
                 <td><strong>#</strong></td>
                 <td><strong>Shift</strong></td>
                 <td><strong>Date</strong></td> 
-                <td><strong> Student</strong></td>
+                <td><strong> Main </strong></td>
+                <td><strong> Backlog </strong></td>
+                <td><strong> Total</strong></td>
                 <td><strong> केन्द्राध्यक्ष </strong></td>
                 <td><strong> सहायक केन्द्राध्यक्ष  </strong></td>
                 <td><strong>वीक्षक </strong></td>
@@ -123,9 +125,8 @@ $total = 0;
                 { 
                     $where = array('type' => 'theory','exam_date'=>$edate->exam_date,'exam_shift'=>$edate->exam_shift );
                     $this->db->where_not_in('paper_no_for_time_table', array('1B','2B'));
-                    $papers = $this->Common_model->get_record('paper_master','id',$where);
-                    $papers = array_column($papers, 'id');
-                  // echo $this->db->last_query(); die;
+                    $papers_all = $this->Common_model->get_record('paper_master','*',$where);
+                    $papersid = array_column($papers_all, 'id');
                    
                     $this->db->select('count(*) as cnt');
                     $this->db->from('student as s');
@@ -134,22 +135,31 @@ $total = 0;
                     // $this->db->where('s.notification_no',1);	
                     $this->db->where('s.examcentercode',$row->examcentercode);	
                     $this->db->where('s.exam_center_id',$row->id);	
-                    $this->db->where_in('paper_id', $papers );
+                    $this->db->where_in('paper_id', $papersid );
 
                    
                     $count = $this->db->get()->result();
-                    array_push($max_count,$count[0]->cnt);
+                    
                     $exam_date=$edate->exam_date;
                    
-                    
-                    if($count[0]->cnt>0)
+
+                    /************/
+                    $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form='Y' AND `e`.`status`='B' AND `e`.`class_id`='".$papers_all[0]['class_id']."' AND `e`.`paper_code`='".$papers_all[0]['paper_code']."'";    
+                    $query_back = $this->db->query($sql_back);
+                    $count_backlog = $query_back->result_array();
+                   $allStudentCount= $count[0]->cnt+$count_backlog[0]['cnt'];
+                    /***********/
+                    array_push($max_count,$allStudentCount);
+                    if($allStudentCount>0)
                     {
                     ?>
             <tr>
                 <td> <?=$i?> </td>
                 <td><?=$edate->exam_shift?></td>
                 <td><?=$edate->exam_date?></td>
-                <td><?php   echo $t=$count[0]->cnt ;  ?> </td>
+                <td><?php   echo $count[0]->cnt ;  ?> </td>
+                <td><?php   echo $count_backlog[0]['cnt'] ;  ?> </td>
+                <td><?php   echo  $t= $allStudentCount; ?> </td>
                 <td>200</td>
                 <td>
                 <?php
