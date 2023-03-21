@@ -18,12 +18,17 @@ $total = 0;
     foreach($exam_centers as $row)
     {
         /*****************/
-		$sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE     `s`.`exam_center_id` = '".$row->id."' AND   course_complete='N'  AND ((exam_form='Y' AND class_name!='I Year')  OR ( `s`.`session` = 'July 2022' AND `s`.`class_name` = 'I SEM' ) )";
+		$sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE     `s`.`exam_center_id` = '".$row->id."' AND   course_complete='N'  AND new_exam_form='Y'";
+        //((exam_form='Y' AND class_name!='I Year')  OR ( `s`.`session` = 'July 2022' AND `s`.`class_name` = 'I SEM' ) )
          
 		//AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2021' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2022' AND `s`.`class_name` = 'I SEM' ))
 
 		$query = $this->db->query($sql);
 		$count = $query->result_array();
+
+        $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form='Y' AND `e`.`status`='B'";    
+        $query_back = $this->db->query($sql_back);
+        $count_backlog = $query_back->result_array();
       
 		/****************/
         
@@ -37,7 +42,7 @@ $total = 0;
          $join_table='student as s';
          $join_on='e.student_id = s.student_id AND s.class_id = e.class_id';
          $count= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);*/
-         $resultCount=$count[0]['cnt'];
+         $resultCount=$count[0]['cnt']+$count_backlog[0]['cnt'];
          $total+=$resultCount;//$count[0]->cnt;
          
    //  if($count[0]->cnt >0)
