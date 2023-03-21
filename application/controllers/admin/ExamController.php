@@ -2488,7 +2488,7 @@ public function getStudentData()
 						$data['new_exam_form']  = $new_exam_form;
 					
 						
-						if(($data['student']->old_class_id == '104' || $data['student']->old_class_id == '107' || $data['student']->old_class_id == '101' || $data['student']->old_class_id == '134' || $data['student']->old_class_id == '116') && $data['student']->university_mode == 'REG'){
+						if(($data['student']->old_class_id == '104' || $data['student']->old_class_id == '107' || $data['student']->old_class_id == '101' || $data['student']->old_class_id == '134' || $data['student']->old_class_id == '116' || $data['student']->old_class_id == '110'|| $data['student']->old_class_id == '119' || $data['student']->old_class_id == '131') && $data['student']->university_mode == 'REG'){
 						
 							$this->load->model('Gradesheet_model');
 							$dt = $this->load->view('Centers/grade_marksheet',$data,true);

@@ -393,7 +393,8 @@ class Gradesheet_tr_model extends CI_Model
 				// echo "<td class='text-center'>".$result['obt_credit']."</td>";
 				
 				
-				if($key=='1RBCOM2' || $key=='1RBCOM4' || $key == '1RBCOMCA2' || $key == '1RBCOMCA4' || $key == '1RBA2' || $key == '1RBA4' || $key == '1RBBA2' || $key == '1RBBA4' || $key == '1RBCOMT2' || $key == '1RBCOMT4' || $key == '1RBSW2' || $key == '1RBSW4'){
+				if($key=='1RBCOM2' || $key=='1RBCOM4' || $key == '1RBCOMCA2' || $key == '1RBCOMCA4' || $key == '1RBA2' || $key == '1RBA4' || $key == '1RBBA2' || $key == '1RBBA4' || $key == '1RBCOMT2' || $key == '1RBCOMT4' || $key == '1RBSW2' || $key == '1RBSW4' || $key =='1RBCOMCA2'
+				|| $key == '1RBCOMCA4' || $key == '1RBCA2' || $key == '1RBCA4' || $key == '1RBSCPCM2' || $key == '1RBSCPCM4'){
 				echo "<td colspan= '2' class='text-center'>".$result['grade_point']."</td>";
 				}else{
 					
@@ -427,7 +428,9 @@ class Gradesheet_tr_model extends CI_Model
 			}else{
 				$result['letter_grade'] = $result['letter_grade'];
 			}
-			if($key=='1RBCOM2' || $key=='1RBCOM4' || $key == '1RBCOMCA2' || $key == '1RBCOMCA4' || $key == '1RBA2' || $key == '1RBA4' || $key == '1RBBA2' || $key == '1RBBA4' || $key == '1RBCOMT2' || $key == '1RBCOMT4' || $key == '1RBSW2' || $key == '1RBSW4'){
+			if($key=='1RBCOM2' || $key=='1RBCOM4' || $key == '1RBCOMCA2' || $key == '1RBCOMCA4' || $key == '1RBA2' || $key == '1RBA4' || $key == '1RBBA2' || $key == '1RBBA4' || $key == '1RBCOMT2' || $key == '1RBCOMT4' || $key == '1RBSW2' || $key == '1RBSW4' || $key =='1RBCOMCA2'
+			|| $key == '1RBCOMCA4' || $key == '1RBCA2' || $key == '1RBCA4' || $key == '1RBSCPCM2' || $key == '1RBSCPCM4'
+			){
 				echo "<td colspan= '2' class='text-center'>".$result['letter_grade']."</td>";
 				}else{
 					
