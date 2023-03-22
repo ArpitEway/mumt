@@ -360,11 +360,12 @@ class Otherscript extends CI_Controller {
 
 public function update_sub_group_id_in_new_exam_form(){
 	// $this->db->limit(10);
-	$this->db->where_in('class_id',array(134,107,116,119,110,125,128,131));
+	// $this->db->where_in('class_id',array(134,107,116,119,110,125,128,131));
+	$this->db->where_in('class_id',array(110,119,125,128,131));
 	// if($class_id == 101 || $class_id == 104){
 	// 	$this->db->where(array('sub_group_id'=>1));
 	// }
-	$this->db->limit(100);
+	$this->db->limit(1);
 	$papers = $this->Common_model->getRecordByWhere('paper_master');
 	// echo '<pre>';
 	// print_r($papers);die;
@@ -403,33 +404,33 @@ public function update_sub_group_id_in_new_exam_form_sub(){
 	);
 	
 
-	$this->Common_model->updateRecordByConditions('new_exam_form',$where,$data);
+	// $this->Common_model->updateRecordByConditions('new_exam_form',$where,$data);
 	echo $this->db->last_query().'<br>';
 }
 }
 
-public function update_sub_group_id_in_new_exam_form_group_paper(){
-	// $this->db->limit(10);
-	// $this->db->where_in('class_id',array(101,104));
-	$this->db->where_not_in('sub_group_id',array(0,1));
-	$papers = $this->Common_model->getRecordByWhere('group_paper');
-	echo '<pre>';
-	print_r($papers);die;
-	foreach($papers as $paper){
-	$where = array(
-		'paper_code'=>$paper->paper_code,
-		'group_id'=>$paper->group_id,
-		'sub_group_id'=>0,
-	);
-	$data = array(
-		'sub_group_id'=>$paper->sub_group_id
-	);
+// public function update_sub_group_id_in_new_exam_form_group_paper(){
+// 	// $this->db->limit(10);
+// 	// $this->db->where_in('class_id',array(101,104));
+// 	$this->db->where_not_in('sub_group_id',array(0,1));
+// 	$papers = $this->Common_model->getRecordByWhere('group_paper');
+// 	echo '<pre>';
+// 	print_r($papers);die;
+// 	foreach($papers as $paper){
+// 	$where = array(
+// 		'paper_code'=>$paper->paper_code,
+// 		'group_id'=>$paper->group_id,
+// 		'sub_group_id'=>0,
+// 	);
+// 	$data = array(
+// 		'sub_group_id'=>$paper->sub_group_id
+// 	);
 	
 
-	$this->Common_model->updateRecordByConditions('new_exam_form',$where,$data);
-	echo $this->db->last_query().'<br>';
-}
-}
+// 	// $this->Common_model->updateRecordByConditions('new_exam_form',$where,$data);
+// 	echo $this->db->last_query().'<br>';
+// }
+// }
 
 
 	

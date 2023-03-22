@@ -2989,7 +2989,9 @@ public function update_exam_datewise_permission(){
 		$title = "TR ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
 		$data['title'] .= $title;//echo $this->db->last_query(); die;
-		if(($class_id == 107 || $class_id == 104 || $class_id == 134 || $class_id == 116 || $class_id == 101 || $class_id == 110) && $mode=='REG'){
+		$class_ids=array(101,104,107,110,116,119,125,128,131,134);
+		if((in_array($class_id, $class_ids)) && $mode=='REG')	
+		{
 			$this->load->model('Gradesheet_tr_model');
 			$this->load->view('admin/generate_gradesheet_tr',$data);
 		}
