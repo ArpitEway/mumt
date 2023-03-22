@@ -106,7 +106,7 @@ th.border.border-dark {
     
       
       
-    * Grade In Repat Examination.<br><br>
+    * Grade In Repeat Examination.<br><br>
     <table class="border border-dark m-auto w-100" >
         <tr>
           <td style="vertical-align: middle; text-align: center">YEAR/SEMESTER</td>
