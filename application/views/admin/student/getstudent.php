@@ -86,8 +86,10 @@
 					<?php if($student["approved"] != 'Y' || $student["approved"] == "" ){ ?>
 					<a href="javascript:void(0);" style="margin:5px;" class="btn btn-success" id="<?php echo  $std  ?>"   onclick="rightModal('<?php echo site_url('admin/modal/student_popup/admin/student/update/provisional_remark/'.$student_id); ?>', '<?php echo 'Provisional Remark' ?>')"> Make  approved
 
-					<a href="javascript:void(0);" style="margin:5px;" class="btn btn-danger" onclick="rightModal('<?php echo site_url('admin/modal/student_popup/admin/student/update/remark_update/'.$student_id); ?>', '<?php echo 'Select Remark' ?>')"> Make Non approve
+					<a href="javascript:void(0);" style="margin:5px;" id="makeNonApprove_<?=$std?>" class="btn btn-danger" onclick="rightModal('<?php echo site_url('admin/modal/student_popup/admin/student/update/remark_update/'.$student_id); ?>', '<?php echo 'Select Remark' ?>')"> Make Non approve
 					</a>
+					<a href="javascript:void(0);" style="margin:5px;display:none;" id="nonVerified_<?=$std?>" class="btn btn-warning" onclick="makeNonVerified('<?=$student_id?>','<?= $std?>')" > Make Non verified	</a>
+
 					<span  class="remark_span_<?=$student["student_id"];?>" style="color:red;">
 					<?php if($student["remark"] != "N" )
 					{
@@ -108,7 +110,9 @@
 				}else{ ?>
 
 				<a style="margin:5px;" class="btn btn-success" > Approved </a>
-				</a>   
+				<?php if($student["enrolled"]=='N'){ ?>
+				<a href="javascript:void(0);" style="margin:5px;" id="nonVerified_<?=$std?>"  class="btn btn-warning" onclick="makeNonVerified('<?=$student_id?>','<?= $std?>')" > Make Non verified	</a>
+				<?php } ?>
 				<?php } ?>		
 				</div>
 				</td>
@@ -168,7 +172,12 @@ $(document).on('click', '#remark_submit', function(e) {
 			$('#'+rem).html("Approved");
 			
 			$('#' +rem).prop("onclick",null).off("click");
-			$("#" +rem).siblings('a').hide();
+			//$("#" +rem).siblings('a').hide();
+			var appid="#makeNonApprove_"+rem;
+			$(appid).css("display", "none");
+			var id="#nonVerified_"+rem;
+			$(id).css("display", "block");
+			console.log("id "+id);
 			}else{
 				toastr.error("Something wrong");
 			}
@@ -176,6 +185,37 @@ $(document).on('click', '#remark_submit', function(e) {
 	});	
 
 });	
+var clickURL='<?php echo site_url('admin/modal/student_popup/admin/student/update/provisional_remark/'); ?>';
+function makeNonVerified(student_id,std){
+	var csrfName = $('.csrfname').attr('name');
+		var csrfHash = $('.csrfname').val();
+	console.log("student_id "+student_id);
+	$.ajax({
+	url: '<?php echo site_url('admin/enrollment/make_Non_Verified'); ?>',
+	type: 'POST',
+	dataType : 'json',
+	data: {'student_id':student_id,[csrfName]:csrfHash},
+	success: function (data) {
+	if(data){
+		console.log(data);
+			// $('#right-modal').modal('toggle');
+			var id="#nonVerified_"+std;
+			$(id).css("display", "none");
+			var appid="#makeNonApprove_"+std;
+			var appurl=clickURL+student_id;
+			console.log(appurl);
+			$('#' +std).attr("onclick",'rightModal("'+appurl+'","Provisional Remark")');
+			$(appid).css("display", "block");
+			 $('#'+std).html("Make approved");
+			
+			// $('#' +rem).prop("onclick",null).off("click");
+			// $("#" +rem).siblings('a').hide();
+			}else{
+				toastr.error("Something wrong");
+			}
+		},
+	});	
 
+}
 </script>
 

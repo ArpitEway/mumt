@@ -1,9 +1,37 @@
+<form action="" method="POST">
+	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+	<div   class="row text-center p-3">	
+		<div class="form-group col-md-3 mx-auto mb-10">
+		</div>
+		
+		<div class="form-group col-md-3 mx-auto mb-10">
+		<label for="class">Session</label>
+		<select name="session" id="session" class="form-control" onchange="getSessionRecord()" >
+			<option <?php if($sessionsSelect=="All") echo "selected"; ?>>All</option>
+			<?php 
+			foreach($sessions as $session)
+			{
+			?>
+			<option value="<?php  echo $session['session']; ?>" <?php if($sessionsSelect==$session['session']) echo "selected"; ?>><?php echo $session['session']; ?></option>
+			<?php
+		} 
+		?>		
+		</select>
+		
+		</div>
+		
+		<div class="form-group col-md-3 mx-auto mb-10">
+		</div>
+	</div>
+<input type="submit" style="display:none" name="submit" value="submit" id="getList">
+</form>	
 <div class="dt-responsive">
 	<table id="kt_datatable"  class="table table-striped">
 		<thead>
 			<tr>
 				<th>Sno</th>
-				<th>Admission Mode</th>
+				<th>Session</th>
+				
 				<th>Center Code</th>
 				<th>Form No</th>
 				<th>Enrollment No</th>
@@ -13,6 +41,7 @@
 				<th>Class</th>
 				<th>Remark</th>
 				<th>Provisional</th>
+				<th>Admission Mode</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -21,10 +50,8 @@
 			foreach($student_list as $student){ ?>
 				<tr  id="student_tr_<?php echo $student->student_id; ?>">
 					<td><?php echo $i; ?></td>
-					<td>
-					    <?php $university_mode = ($student->university_mode=='REG') ? 'Regular' : 'Private';
-					    echo $university_mode; ?>
-					</td>
+					<td><?php echo $student->session; ?></td>
+					
 					<td><?php echo $student->center_code; ?></td>
 					<td><?php echo $student->student_id; ?></td>
 					<td><?php echo $student->enrollment_no; ?></td>
@@ -42,6 +69,10 @@
 					<input type="hidden" class="new_exam_form" name="new_exam_form" value="<?= $student->exam_form; ?>">
 					<button  class="btn btn-primary remark"  onclick="student_data(<?php echo $student->student_id; ?>)">Reset</button>        
 				</td>
+				<td>
+					    <?php $university_mode = ($student->university_mode=='REG') ? 'Regular' : 'Private';
+					    echo $university_mode; ?>
+					</td>
 			</tr>
 			<?php
 			$i++; 
@@ -94,6 +125,13 @@
 		}
 		});
 	}	
+
+	
+  function getSessionRecord(){
+		$("#getList").click();
+    }
+
+
 </script>
 
 

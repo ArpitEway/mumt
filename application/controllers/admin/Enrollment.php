@@ -1084,7 +1084,19 @@
 		}
 	}
 
-	
+	public function make_Non_Verified(){
+		$student_id = html_escape($this->input->post('student_id'));
+		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		$data['provisional_remark'] = "N";
+		$data['approved'] = "";
+		$this->db->where('student_id', $student_id);
+		$this->db->update('student', $data);	
+		$this->session->set_flashdata('ajax_flash_message','Non Verfied');
+		echo json_encode(array(
+		"status" => 'true',
+		));
+	}
+
 	public function provisional_remark_update($param){
 		$remark = html_escape($this->input->post('remark'));
 		$data['provisional_remark'] = implode(",",$remark);
@@ -1098,13 +1110,28 @@
 	}
 
 	public function provisional_remark_list(){
+
+		if($this->input->method() == "post") 
+			{
+				$session    = $this->input->post("session");
+			}
+			else{
+				$session='All';
+			}
 		$this->load->view('header',array('title' => 'Provisional Students'));
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();	 
 		$where = array('','N');
 		$this->db->where_not_in('provisional_remark', $where);	
-		$this->db->order_by('center_id', 'ASC');
+		if($session!="All"){
+			$this->db->where('session',$session);
+		}
+		
+		$this->db->order_by('session,center_id', 'ASC');
 		$data['student_list'] = $this->db->get('student')->result();
+		$this->db->where_not_in('provisional_remark', $where);
+		$data['sessions'] = $this->Common_model->get_record('student','DISTINCT (session)');
+		$data['sessionsSelect'] =$session;
 		$this->load->view('admin/enrollment/provisional_remark_list',$data);
 		$this->load->view('footer');
 	}
