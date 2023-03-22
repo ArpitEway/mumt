@@ -150,16 +150,18 @@ class Center extends CI_Controller {
 			
 			
 		}
-		if($mode=='regular'){
+		if($mode=='regular' ){
 			$where = array('admission_permission'=>'Y' ,'id'=>$center_id);
 			$head = '(Regular)';
-		}else{
+		}elseif($mode=='private' ){
 			$where = array('admission_permission_private'=>'Y','id'=>$center_id);
 			$head = '(Private)';
 			if($center_session_permission!='Y')
 			{
 				$whereSession['pvt_admission_permission_ic'] =  'Y';
 			}		
+		}else{
+			redirect(base_url('dashboard'));
 		}
 		
 		$sessions = $this->Common_model->get_record('session','*',$whereSession);
@@ -169,7 +171,10 @@ class Center extends CI_Controller {
 		$center_id =  $this->session->center_id;
 		$center_ids_dep = array(10,11,12,21,22,23,24,25,26,27,28,29,13);
 
-		if(($mode=='regular' && $check[0]->admission_permission!='Y' && !in_array($center_id, $center_ids_dep)) || ($mode=='private' && $check[0]->admission_permission_private!='Y')){
+		// if(($mode=='regular' && $check[0]->admission_permission!='Y' && !in_array($center_id, $center_ids_dep)) || ($mode=='private' && $check[0]->admission_permission_private!='Y')){
+		// 	redirect(base_url('dashboard'));
+		// }
+		if(($mode=='regular' && $check[0]->admission_permission!='Y' ) || ($mode=='private' && $check[0]->admission_permission_private!='Y')){
 			redirect(base_url('dashboard'));
 		}
 
@@ -412,7 +417,7 @@ class Center extends CI_Controller {
 		
 		if($param1=='Admission'){
 			$permission_session= $this->Common_model->getRecordByWhere('session',array('unpaid_permission'=>'Y' ));
-			$where .= " and online_payment_transaction.fees_head='Admission Fees'  and  student.payment_status='N' and ( "; 
+			$where .= " and online_payment_transaction.fees_head='Admission Fees'  and  student.payment_status='N' and student.class_name not like '%SEM%' and ( "; 
 			foreach($permission_session as $key=>$row){
 			
 				if($row->semester_permission=='N' && $row->annual_permission=='Y' )
@@ -425,7 +430,9 @@ class Center extends CI_Controller {
 			}
 			
 			
-			$where .= " ) "; 
+			$where .= "  ) "; 
+
+			// $where.=" or (student.student_id in (715231, 715241, 716487, 717657, 717662, 722810) and online_payment_transaction.payment='N' )";
 			
 			// $where .= " and online_payment_transaction.fees_head='Admission Fees'  and  `student.payment_status`='N' and ( (student.class_name not like '%SEM%' and student.session='July 2021') or session!='July 2021')";
 		}elseif($param1=='Exam'){
@@ -2412,14 +2419,15 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
       $classpermission = $this->Common_model->get_record('class_master','id',array('backlog_exam_form_permission'=>'Y'));
   		$class_ids = array_column($classpermission, 'id');
 		$center_id =  $this->session->center_id;
+		$center_permission = $this->Common_model->get_record('center','exam_form_permission',array('id'=>$center_id));
 		if($exam_form1=='submitted'){
 			$where = array('exam_form' =>'Y','center_id' => $center_id);
 		}else if($exam_form1 =="notSubmitted"){
+				$where = array(
+					'exam_form' =>'N',
+					'center_id' => $center_id,
+				);
 			
-			$where = array(
-				'exam_form' =>'N',
-				'center_id' => $center_id,
-			);
 		}else if($exam_form1=="skipped"){
 			$where = array(
 				'exam_form' =>'S',
@@ -2429,6 +2437,9 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 		$data['exam_form_button'] = $exam_form1;
 		$this->db->where_in('class_id',$class_ids);
 		$data['documents'] = $this->Common_model->getRecordByWhere('backlog_student',$where);
+		if($center_permission[0]['exam_form_permission']!='Y' && $exam_form1 =="notSubmitted"){
+			$data['documents'] ="";
+		} 
 		// $this->Common_model->last_query();
 		$this->load->view('Centers/header');
 		$this->load->view('Centers/backlog_exam_form_students',$data);
@@ -2489,6 +2500,7 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 
 	public function admission_mode_edit_request($course_type="REG")
 	{
+		redirect(base_url());
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}else{

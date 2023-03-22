@@ -1839,8 +1839,8 @@ public function getStudentData()
 	{
 		$data = $row = array();
 		$where = "status=   'Y' ";
-		$column_order = array(null,'center_code','center_name','contactpersonname','mobile_no_1');
-		$column_search = array('center_code','center_name','contactpersonname','mobile_no_1');
+		$column_order = array(null,'id','center_code','center_name','contactpersonname','mobile_no_1',null,'exam_form_permission','old_session_permission');
+		$column_search = array('id','center_code','center_name','contactpersonname','mobile_no_1','exam_form_permission','old_session_permission');
 		$DataTableArray = array(
 			'column_order' => $column_order,
 			'column_search' => $column_search,
@@ -1869,7 +1869,7 @@ public function getStudentData()
 			$exam_form_permission_btn = '<input type="button" name="update_exam_form_permission" data-id='.$result->id.' class="btn btn-danger exam_form_permission_checks" value="No">';
 			}	
 			$i++;
-			$data[] = array($i,$result->id, $result->center_code, $result->center_name, $result->contactpersonname,$result->mobile_no_1,$btn,$permission_btn,$exam_form_permission_btn);
+			$data[] = array($i,$result->id, $result->center_code, $result->center_name, $result->contactpersonname,$result->mobile_no_1,$btn,$exam_form_permission_btn,$permission_btn);
 	     	}
 		  $output = array(
 			"draw" => $_POST['draw'],
@@ -3038,6 +3038,7 @@ public function update_exam_datewise_permission(){
 		$data['permited_students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id , 'old_result_show'=>'Y' , 'exam_form'=>'Y' ,'university_mode'=>$mode));
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
+		$data['mode']=$mode;
 		$this->load->view('header',array('title' => ''));
 		$this->load->view('admin/student_result_permission',$data);
 		$this->load->view('footer');
@@ -3051,7 +3052,7 @@ public function update_exam_datewise_permission(){
 		if($_POST['not_permitted']){
 			$student_ids = (implode(',',$_POST['not_permitted']));
 			$data = array('old_result_show' => 'Y');
-			$where = "provisional_remark in ('','N') && student_id in (".$student_ids.")";
+			$where = " student_id in (".$student_ids.")";//provisional_remark in ('','N') &&
 			$update =$this->Common_model->updateRecordByConditions('student',$where,$data);
 		}else{
 			$student_ids = (implode(',',$_POST['permitted']));
@@ -3060,7 +3061,7 @@ public function update_exam_datewise_permission(){
 			$update = 	$this->Common_model->updateRecordByConditions('student',$where,$data);
 		}  
 		if($update){
-			redirect(base_url().'admin/Admins/student_result_permission/'.$_POST['course_group_id'].'/'.$_POST['class_id']);
+			redirect(base_url().'admin/Admins/student_result_permission/'.$_POST['mode'].'/'.$_POST['course_group_id'].'/'.$_POST['class_id']);
 		}
 	}
 
@@ -4117,7 +4118,7 @@ public function update_exam_datewise_permission(){
 		}else
 		{
 		$data = array();
-		$data['title'] = "Exam Center Billing June 2022";
+		$data['title'] = "Exam Center Billing Dec 2022";
 		$csrf = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()

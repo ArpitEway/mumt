@@ -89,7 +89,14 @@ $page_break_count = 1;
          
         
          $query = $this->db->query($sql);
-         $count = $query->result_array();
+         $main_count = $query->result_array();
+
+         $sql_backlog="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND   `s`.`course_group_id` = `e`.`course_group_id`  join paper_master as p on s.class_id=p.class_id and s.course_group_id=p.course_group_id  and `e`.`paper_code` = p.paper_code WHERE   ".$where."  and exam_form in ('Y') and `e`.status= 'B'";
+         
+        
+         $backlog_query = $this->db->query($sql_backlog);
+         $backlog_count = $backlog_query->result_array();
+         $student_count = $main_count[0]['cnt'] + $backlog_count[0]['cnt'];
 
          
          
@@ -97,7 +104,7 @@ $page_break_count = 1;
 
         
          //New Query end 
-       //  if(($count[0]['cnt'] >0)  )
+       //  if(($student_count >0)  )
         // { 
             ?>
             <tr <?php if($i%2==0) echo 'bgcolor="#F0F0F0"'; ?>>
@@ -144,10 +151,10 @@ if($responseCode == 200){
                
                 ?></td>
                
-               <td style="text-align:center;"><?php echo $count[0]['cnt']; ?> </td>
+               <td style="text-align:center;"><?php echo $student_count; ?> </td>
             </tr>
             <?php 
-               $i++;  $total+= $count[0]['cnt'];
+               $i++;  $total+= $student_count;
              //  }  
          } ?>
       </tbody>

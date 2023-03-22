@@ -31,14 +31,14 @@
 		}
 		}
 	</style>
- <?php 
+ <?php
  foreach($exam_center_students as $student)  {
- 	
-     $wherePaper = array('student_id' => $student['student_id'],'paper_master.type'=>'theory','exam_date!='=>'0000-00-00','exam_date!='=>'' ,'paper_master.course_group_id'=> $student['course_group_id'],'paper_master.class_id'=> $student['class_id']);
+	
+     $wherePaper = array('student_id' => $student->student_id,'paper_master.type'=>'theory','exam_date!='=>'0000-00-00','exam_date!='=>'' ,'paper_master.course_group_id'=> $student->course_group_id,'paper_master.class_id'=> $student->class_id,'status'=>'B');
 	 
      $this->db->select('*');
      $this->db->from('paper_master');
-     $this->db->join('new_exam_form', 'new_exam_form.paper_id = paper_master.id');
+     $this->db->join('backlog_exam_form', 'backlog_exam_form.paper_code = paper_master.paper_code and backlog_exam_form.class_id = paper_master.class_id');
      //$this->db->join('time_table', 'paper_master.class_id = time_table.class_id');
      $this->db->where($wherePaper);
      $this->db->order_by("exam_date", "asc");
@@ -47,7 +47,7 @@
 	 $paper_count = count($papers);
 	 if($paper_count){
 
-		  $newstring = "222".substr($student['center_code'], -4); 
+		  $newstring = "222".substr($student->center_code, -4); 
      ?>  
 <!-- <div id="ss">       -->
 <section class="break" style="font-size: 16px;" >
@@ -68,7 +68,7 @@
 					<div class="col-12 text-center">
 						<h5>Attendance Sheet Examination 
 							<?php
-							if($student['course_group_id']==75 || $student['course_group_id==76']){
+							if($student->course_group_id==75 || $student->course_group_id==76){
 								echo 'Feb 2023';
 							}else{
 								echo 'March 2023';
@@ -83,36 +83,36 @@
 				<span style="font-size:8px;margin:2px;"><?=$newstring?></span>
 			</div>
 			<?php 
-			$where = array('id' => $student['exam_center_id']);
+			$where = array('id' => $student->exam_center_id);
 				$exam = $this->Common_model->getRecordByWhere('exam_center',$where); ?>
 			<div class="BoxD border- padding mar-bot">
 				<div class="row">
 					<div class="col-12">
 						<table class="table table-bordered">
-							<input type="hidden" value="<?php echo $student['student_id'] ; ?>" id="student_id">
+							<input type="hidden" value="<?php echo $student->student_id ; ?>" id="student_id">
 						  <tbody>
 							<!-- <tr>
-							  <td colspan="4"><b>Exam Center: </b><?= $this->Common_model->getCenterNameById($student['id']); ?></td>
+							  <td colspan="4"><b>Exam Center: </b><?= $this->Common_model->getCenterNameById($student->id); ?></td>
 							</tr>
 								<tr>
-							  <td colspan="4"><b>College: </b><?=$student['center_name']; ?></td>
+							  <td colspan="4"><b>College: </b><?=$student->center_name; ?></td>
 							    </tr> -->
 								<tr>	<th class="td" colspan="4">Student Details</th></tr>
 							<tr>
-								<td><b>Roll No: </b> <?=$student['roll_no'];?></td>
-								<td colspan="2"><b>Enrollment No: </b><?=$student['enrollment_no'];?></td>
-								<?php $img_url = (file_exists(FCPATH.'assets/student_image/'.$student['session'].'/'.$student['photo'])) ? base_url('assets/student_image/'.$student['session'].'/'.$student['photo']) : base_url('assets/images/center/student.bmp'); ?>
+								<td><b>Roll No: </b> <?=$student->roll_no;?></td>
+								<td colspan="2"><b>Enrollment No: </b><?=$student->enrollment_no;?></td>
+								<?php $img_url = (file_exists(FCPATH.'assets/student_image/'.$student->session.'/'.$student->photo)) ? base_url('assets/student_image/'.$student->session.'/'.$student->photo) : base_url('assets/images/center/student.bmp'); ?>
 								 <td rowspan="4" class="text-center"><img src="<?=$img_url;?>"  width="115px" height="166px" /></td> 
 							</tr>
 							<tr>
-							  <td><b>Course: </b> <?=$student['course_name'];?> (<?=$student['class_name'];?>) </td>
-							  <td colspan="2"><b>EC Code: </b> <?=$student['examcentercode'];?></td>
+							  <td><b>Course: </b> <?=$student->course_name;?> (<?= $this->Common_model->getClassNameByClassId($student->class_id);?>) </td>
+							  <td colspan="2"><b>EC Code: </b> <?=$student->exam_center_code;?></td>
 							</tr>
 							<tr>
-							  <td colspan="3"><b>Student Name: </b> <?=$student['name'];?></td>
+							  <td colspan="3"><b>Student Name: </b> <?=$student->name;?></td>
 							</tr>
 							<tr>  
-							  <td colspan="3"><b>Father/Husband Name: </b> <?=$student['f_h_name'];?></td>
+							  <td colspan="3"><b>Father/Husband Name: </b> <?=$student->f_h_name?></td>
 							</tr>
 							
 						  </tbody>

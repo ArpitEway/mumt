@@ -115,6 +115,7 @@ class Examcenter extends CI_Controller {
 			$this->db->from('paper_master');
 			$this->db->where('exam_date!=',"");
 			$this->db->where('exam_date!=',"0000-00-00");	
+			$this->db->where_not_in('course_group_id',array('75','76','77'));
 			$this->db->group_by('exam_date');
 			$this->db->order_by('exam_date', "asc");
 			$data['examDate'] = $this->db->get()->result();
@@ -226,6 +227,47 @@ class Examcenter extends CI_Controller {
 		}		
 	}
 
+	 //Search Attendance sheet by student detail
+	 public function search_backlog_attendance_sheet(){
+		if(!$this->session->has_userdata('Examcenterdata')){
+			redirect(base_url('Examcenter/dashboard'));
+			exit;
+		}else
+		{
+			$titleData = array('title' => 'Search Backlog Attendance Sheet of student'); 
+			$this->load->view('examcenter/header',$titleData);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			
+
+			$this->load->view('examcenter/search_backlog_attendance_sheet',$data);
+			$this->load->view('examcenter/footer');
+		}
+	}
+	//Get search Backlog Student Attendance Sheet 
+	public function get_search_backlog_student_attendance_sheet(){
+		$text_val =$this->input->post('text_val');
+		$radio_val = $this->input->post('radio_val');
+	   if($text_val !='')
+	   {
+		   if($text_val !='' && $radio_val == 'enrollment_no')
+		   {
+			   $where = array('backlog_student.enrollment_no'=>$text_val,'backlog_student.exam_form'=>'Y');
+
+		   }else if($text_val !='' && $radio_val == 'roll_no'){
+			   $where = array('backlog_student.roll_no'=>$text_val);
+		   }
+		  		 
+				$this->db->select('backlog_student.*,student.name,student.f_h_name,student.course_name,student.photo');
+				$this->db->from('backlog_student');
+				$this->db->join('student', 'backlog_student.student_id = student.student_id ' );
+				$this->db->order_by("roll_no", "asc");
+				$this->db->where($where);	
+				$data['exam_center_students'] = $this->db->get()->result();
+		   echo $this->load->view('examcenter/get_search_backlog_student_attendance_sheet',$data, TRUE);
+		   
+	   }		
+   }
 	public function regular_exam_center($method,$exam_center_id)
 	{
 		$exam_center_id = $this->Common_model->encrypt_decrypt($exam_center_id,'decrypt');

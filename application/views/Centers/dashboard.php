@@ -85,11 +85,13 @@
 							<span class="nav-text">Form Edit Request</span>
 						</div>
 					</a>
+					<!--
 					<a class="border-0 custom-menu-item" href="<?=base_url('admission_mode_edit_request/PVT');?>">
 						<div>
 							<span class="nav-text">Mode Change Request (Private to Regular)</span>
 						</div>
 					</a>
+					-->
 					<a class="border-0 custom-menu-item" href="<?=base_url('paper_missing_list/private');?>">
 						<div>
 							<span class="nav-text">Paper Missing List</span>
@@ -112,8 +114,9 @@
 					</a> -->
 				  <?php
 				  $center_id =  $this->session->center_id;	
-				  $center_ids_dep = array(10,11,12,21,22,23,24,25,26,27,28,29,13);
-				  if($center->admission_permission=='Y' || in_array($center_id, $center_ids_dep)){
+				//  $center_ids_dep = array(10,11,12,21,22,23,24,25,26,27,28,29,13);
+				//  if($center->admission_permission=='Y' || in_array($center_id, $center_ids_dep)){
+					if($center->admission_permission=='Y' ){
 					  ?>
 	        <a class="border-0 custom-menu-item kt_popup" >
 						<div>
@@ -161,11 +164,13 @@
 							<span class="nav-text">Form Edit Request</span>
 						</div>
 					</a>
+					<!--
 					<a class="border-0 custom-menu-item" href="<?=base_url('admission_mode_edit_request/REG');?>">
 						<div>
 							<span class="nav-text">Mode Change Request (Regular to Private)</span>
 						</div>
 					</a>
+					-->
 					<a class="border-0 custom-menu-item" href="<?=base_url('paper_missing_list/regular');?>">
 						<div>
 							<span class="nav-text">Paper Missing List</span>
@@ -189,6 +194,7 @@
 			</div> 
 			<div class="tab-pane fade" id="exam" role="tabpanel" aria-labelledby="exam-tab">
 				<div class="row">
+				<?php if ($center->exam_form_permission=='Y'): ?>
 					<a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
 							<div>
 								<span class="nav-text">Exam Form March 2023</span>
@@ -199,6 +205,7 @@
 								<span class="nav-text">Backlog Exam Form March 2023</span>
 							</div>
 					</a>  
+					<?php endif ?>
 					<a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
 						<div>
 							<span class="nav-text">Result</span>
