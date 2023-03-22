@@ -2462,6 +2462,7 @@ public function getStudentData()
 
 			
 				$student = $this->Common_model->getRecordByWhere("student",$where);
+				//print_r($student); die;
 				$msg="";
 				if (count($student)==0) {
 					
@@ -2476,9 +2477,9 @@ public function getStudentData()
 					// 	"status" => false,
 					// 	"data" => "<p style='text-align: center;'><b>Student result not declared!</b></p>"
 					// ));
-						$msg="<p style='text-align: center;'><b>Student result not declared!</b></p>";
-				//}
-				//else{
+						$msg="<p style='text-align: center;'><b>Student result not declared!</b></p>"; 
+				}
+			
 						$data['student']=$student[0];
 						$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
 						$data['practical_internal_marks']=$classData->practical_internal_marks;
@@ -2494,7 +2495,7 @@ public function getStudentData()
 						if((in_array($data['student']->old_class_id, $class_ids)) && $data['student']->university_mode=='REG')	
 						{
 							$this->load->model('Gradesheet_model');
-							$dt = $this->load->view('Centers/grade_marksheet',$data,true);
+							$dt = $msg.$this->load->view('Centers/grade_marksheet',$data,true);
 						}else{
 							
 							$title = array('title' => 'Result - '.$data['student']->enrollment_no);
@@ -2516,23 +2517,18 @@ public function getStudentData()
 									$marksheet_bottom = $this->load->view('Centers/marksheet_bottom',$data,true);
 								}
 							// $dt =  $marksheet_top.$marksheet_bottom;
+							}
+						
+							$dt = $msg. $marksheet_top.$marksheet_bottom;
+						
 						}
-						
-						$dt =  $marksheet_top.$marksheet_bottom;
-						
-					}
-					echo json_encode(array(
+						echo json_encode(array(
 							"status" => true,
 							"data" => $dt
 						));
-		}else{
-			echo json_encode(array(
-				"status" => false,
-				"data" => "<p style='text-align: center;'><b>Student result not declared!</b></p>"
-			));
-		}
+		
+	  }
 	}//fun
-	}
 	public function search_student_result_for_wh(){
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();

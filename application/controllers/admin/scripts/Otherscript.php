@@ -365,7 +365,7 @@ public function update_sub_group_id_in_new_exam_form(){
 	// if($class_id == 101 || $class_id == 104){
 	// 	$this->db->where(array('sub_group_id'=>1));
 	// }
-	$this->db->limit(1);
+	$this->db->limit(100);
 	$papers = $this->Common_model->getRecordByWhere('paper_master');
 	// echo '<pre>';
 	// print_r($papers);die;
