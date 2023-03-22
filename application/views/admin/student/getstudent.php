@@ -109,7 +109,7 @@
 
 				}else{ ?>
 
-				<a style="margin:5px;" class="btn btn-success" > Approved </a>
+				<a style="margin:5px;" class="btn btn-success"  id="<?php echo  $std  ?>"> Approved </a>
 				<?php if($student["enrolled"]=='N'){ ?>
 				<a href="javascript:void(0);" style="margin:5px;" id="nonVerified_<?=$std?>"  class="btn btn-warning" onclick="makeNonVerified('<?=$student_id?>','<?= $std?>')" > Make Non verified	</a>
 				<?php } ?>
