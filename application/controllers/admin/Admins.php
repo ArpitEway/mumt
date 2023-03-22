@@ -2989,7 +2989,9 @@ public function update_exam_datewise_permission(){
 		$title = "TR ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
 		$data['title'] .= $title;//echo $this->db->last_query(); die;
-		if(($class_id == 107 || $class_id == 104 || $class_id == 134 || $class_id == 116 || $class_id == 101) && $mode=='REG'){
+		$class_ids=array(101,104,107,110,116,119,125,128,131,134);
+		if((in_array($class_id, $class_ids)) && $mode=='REG')	
+		{
 			$this->load->model('Gradesheet_tr_model');
 			$this->load->view('admin/generate_gradesheet_tr',$data);
 		}
@@ -3461,7 +3463,13 @@ public function update_exam_datewise_permission(){
 		$data['course_group_id'] = $course_group_id;
 		$data['title'] = "TR ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		// $this->load->view('admin/generate_tr/header2',array('title' =>$title));
-		$this->load->view('admin/generate_tr/bed_tr',$data);
+		if($class_id == '110' || $class_id == '119' || $class_id == '131'){
+			$this->load->model('Gradesheet_tr_model');
+			$this->load->view('admin/generate_tr/practical_internal_tr',$data);
+		}else{
+			$this->load->view('admin/generate_tr/bed_tr',$data);
+		}
+		
 		// $this->load->view('admin/generate_tr/footer2');
 	}
 
