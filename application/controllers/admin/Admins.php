@@ -3463,7 +3463,11 @@ public function update_exam_datewise_permission(){
 		$data['course_group_id'] = $course_group_id;
 		$data['title'] = "TR ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		// $this->load->view('admin/generate_tr/header2',array('title' =>$title));
-		if($class_id == '110' || $class_id == '119' || $class_id == '131'){
+
+		// if($class_id == '110' || $class_id == '119' || $class_id == '131')
+		$class_ids=array(110,119,125,128,131,);
+		if(in_array($class_id, $class_ids))		
+		{
 			$this->load->model('Gradesheet_tr_model');
 			$this->load->view('admin/generate_tr/practical_internal_tr',$data);
 		}else{
