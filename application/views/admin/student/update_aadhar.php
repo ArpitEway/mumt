@@ -3,14 +3,14 @@
     <div class="row">
       <div class="col-md-6 text-center">
         <?php
-        $docs = $this->Common_model->getAllRow("admission_document",'document_image',array("student_id" => $student_id,"document_name" => 'Aadhaar card'),'');
-        $ext = explode(".",$docs[0]["document_image"]);
+        // $docs = $this->Common_model->getAllRow("admission_document",'document_image',array("student_id" => $student_id,"document_name" => 'Aadhaar card'),'');
+        $ext = explode(".",$doc_details->document_image);
         $pathURL="";
         if($student_detail[0]["enrolled"]=='Y'){
-          $pathURL= BASE_URL('assets/enrolled_documents/'.$student_detail[0]['session'].'/'.$docs[0]["document_image"]);
+          $pathURL= BASE_URL('assets/enrolled_documents/'.$student_detail[0]['session'].'/'.$doc_details->document_image);
         }
         else
-         $pathURL=BASE_URL('assets/documents/'.$docs[0]["document_image"]);
+         $pathURL=BASE_URL('assets/documents/'.$doc_details->document_image);
         if($ext[1] == "pdf"){
           ?>
           <a target="_blank" href="<?php echo $pathURL; ?>">
@@ -18,7 +18,7 @@
          </a>
 
        <?php }else{ ?>
-        <a data-magnify="gallery" data-src="" data-caption="<?php echo $docs[0]["document_name"] ?>" data-group="a" href="<?php echo $pathURL; ?>">
+        <a data-magnify="gallery" data-src="" data-caption="<?php echo $doc_details->document_name ?>" data-group="a" href="<?php echo $pathURL; ?>">
           <img src="<?php echo $pathURL; ?>" class="img img-fluid w-75"> 
         </a>
       <?php } ?>
