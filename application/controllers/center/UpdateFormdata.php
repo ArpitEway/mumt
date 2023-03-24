@@ -20,11 +20,12 @@ class updateFormdata extends CI_Controller {
 		if($_POST['old_course_group_id']!=$_POST['course_group_id']){
 			$delete  =  $this->Common_model->deleteByWhere('new_exam_form' ,array('student_id'=>$_POST['student_id']));
 			$class_master =   $this->Common_model->getRecordByWhere('class_master' ,array("id"=>$_POST['class_id']));
+			$cbcs = ($class_master[0]->cbcs == 'Y')?'Y':'N';
 			if($class_master[0]->class_group=='N'){
 				if($mode[0]->university_mode=='PVT') 
-					$paperWhere=array('class_id'=>$_POST['class_id'],'type'=>'theory');
+					$paperWhere=array('class_id'=>$_POST['class_id'],'type'=>'theory','cbcs_paper'=>$cbcs);
 				else			
-					$paperWhere=array('class_id'=>$_POST['class_id']);
+					$paperWhere=array('class_id'=>$_POST['class_id'],'cbcs_paper'=>$cbcs);
 				$papers = $this->Common_model->getRecordByWhere('paper_master',$paperWhere);
 				
 					if(count($papers)>0){
