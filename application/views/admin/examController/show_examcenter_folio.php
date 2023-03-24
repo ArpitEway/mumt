@@ -58,7 +58,7 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
                         <tr><td colspan="2" class="tdheight"><h4 align="center"><?php if($two==0) echo '(FOIL)'; else echo "(COUNTERFOIL)"; ?></h4></td></tr><tr></tr>
                         <tr><td colspan="2" class="tdheight"><strong>Name of Exam:</strong>&nbsp;<?php echo $examname;?></td></tr>
                         <tr><td colspan="2" class="tdheight"><strong>Year / Sem:</strong>&nbsp;<?php echo $class_name;?></td></tr>
-                        <tr><td style="text-align:left;" colspan="2" class="tdheight"><strong>Exam Session:</strong>&nbsp;<?php echo 'August 2022';?></td></tr>
+                        <tr><td style="text-align:left;" colspan="2" class="tdheight"><strong>Exam Session:</strong>&nbsp;<?php echo $examSession; ?></td></tr>
                         <tr><td colspan="2" class="tdheight"><strong>Subject : </strong>&nbsp;&nbsp;<?php  echo $paper[0]->paper_name;?></td></tr>
                         <!-- <tr><td style="text-align:left;" class="tdheight"><strong>Center Code :</strong>&nbsp;<?php echo $exam_center_code;?></td><td class="tdheight"><strong>Q.Paper</strong>&nbsp;<?php echo $paper_code ?></td></tr>-->
                         <tr><td class="tdheight"><strong>Date of Exam :</strong>&nbsp;<?php echo $edate=date("d-m-Y", strtotime($paper[0]->exam_date));  ?></td><td style="text-align:left;" class="tdheight"><strong>Max.Marks :</strong>&nbsp;<?php if($university_mode=="REG") echo $paper[0]->max_theory_marks; if($university_mode=="PVT") echo $paper[0]->private_max_theory_marks; ?></td></tr>
@@ -79,7 +79,7 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
                                   ?> 
                                 <tr>
                                     <td  style="text-align:center;"><?php  echo $student->enrollment_no; ?></td>
-                                    <td style="text-align:center;padding: 0px 3px 0px 3px;"><?php echo $student->roll_number;?></td>
+                                    <td style="text-align:center;padding: 0px 3px 0px 3px;"><?php echo $student->roll_no;?></td>
 
                                     <td style='text-align:center;'><?php //echo $student->total_marks; ?></td>
 
@@ -108,7 +108,7 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
                                             <tr><td colspan="2" class="tdheight"><h4 align="center"><?php if($two==0) echo '(FOIL)'; else echo "(COUNTERFOIL)"; ?></h4></td></tr><tr></tr>
                                             <tr><td colspan="2" class="tdheight"><strong>Name of Exam:</strong>&nbsp;<?php echo $examname;?></td></tr>
                                             <tr><td colspan="2" class="tdheight"><strong>Year / Sem:</strong>&nbsp;<?php echo $class_name;?></td></tr>
-                                            <tr><td style="text-align:left;" colspan="2" class="tdheight"><strong>Exam Session:</strong>&nbsp;<?php echo 'August 2022';?></td></tr>
+                                            <tr><td style="text-align:left;" colspan="2" class="tdheight"><strong>Exam Session:</strong>&nbsp;<?php echo $examSession;?></td></tr>
                                             <tr><td colspan="2" class="tdheight"><strong>Subject : </strong>&nbsp;&nbsp;<?php  echo $paper[0]->paper_name;?></td></tr>
                                             <!-- <tr><td style="text-align:left;" class="tdheight"><strong>Center Code :</strong>&nbsp;<?php echo $exam_center_code;?></td><td class="tdheight"><strong>Q.Paper</strong>&nbsp;<?php echo $paper_code ?></td></tr>-->
                                             <tr><td class="tdheight"><strong>Date of Exam :</strong>&nbsp;<?php echo $edate=date("d-m-Y", strtotime($paper[0]->exam_date));  ?></td><td style="text-align:left;" class="tdheight"><strong>Max.Marks :</strong>&nbsp;<?php if($university_mode=="REG") echo $paper[0]->max_theory_marks; if($university_mode=="PVT") echo $paper[0]->private_max_theory_marks; ?></td></tr>

@@ -47,7 +47,7 @@
         <tr><td colspan="2"class="tdheight"><h4 align="center">Madhya Pradesh</h4></td></tr>
         <tr><td colspan="2" class="tdheight"><h4 align="center">  </h4></td></tr>
         <tr><td colspan="2"class="tdheight"><h4 align="center">( '.$university_mode_heading.'CHECKING LIST )</h4></td></tr><tr></tr>
-        <tr><td style="text-align:left;"  class="tdheight"><strong>Exam Session:</strong>&nbsp; August 2022</td></tr>
+        <tr><td style="text-align:left;"  class="tdheight"><strong>Exam Session:</strong>&nbsp; '.$examSession.'</td></tr>
         <tr><td  class="tdheight" style="width: 75%;"><strong>Course:</strong>&nbsp;'. $coursename.'</td><td  class="tdheight" ><strong>Class :</strong>&nbsp;'. $class_name.'</td></tr>    
         <tr><td  class="tdheight" style="width: 75%;"><strong>Subject : </strong>&nbsp;&nbsp;'. $paper[0]->paper_name.'</td><td  class="tdheight" ><strong>Subject Code: </strong>&nbsp;&nbsp;'.  $paper[0]->paper_code.'</td></tr>
         <tr><td class="tdheight" style="width: 75%;"><strong>Date of Exam :</strong>&nbsp;'. $edate  .'</td><td style="text-align:left;" class="tdheight"><strong>Max.Marks :</strong>&nbsp;'.$marks.'</td></tr>
@@ -70,7 +70,7 @@
             <tr>
                 <td  style="text-align:center;"><?php  echo $student->examcentercode; ?></td>
                 <td  style="text-align:center;"><?php  echo $student->enrollment_no; ?></td>
-                <td style="text-align:center;padding: 0px 3px 0px 3px;"><?php echo $student->roll_number;?></td>
+                <td style="text-align:center;padding: 0px 3px 0px 3px;"><?php echo $student->roll_no;?></td>
                 
                 <td style='text-align:center;'><?php echo $student->theory_marks; ?></td>
                 
