@@ -2342,9 +2342,10 @@ public function getStudentData()
 		}
 	}
 
-	public function search_student_result(){
+	public function search_student_result($rollno=""){
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
+		$data['rollno']=$rollno;
 		$this->load->view('header',array('title' => 'Edit Student Marks'));	
 		$this->load->view('admin/Dataentry/search_student',$data);
 		$this->load->view('footer');
@@ -2354,12 +2355,16 @@ public function getStudentData()
 	{
 		$roll_no = $this->input->post('roll_no');
 		$studentData = $this->Common_model->getRecordByWhere('student',array('roll_number'=>$roll_no,'exam_form'=>'Y'));
+		
 		$studentPaper = $this->Common_model->get_student_papers($studentData[0]->student_id,$studentData[0]->old_class_id);
+		$this->db->where('new_exam_form.theory_marks','');
+		$studentPaperWithHeld = $this->Common_model->get_student_papers($studentData[0]->student_id,$studentData[0]->old_class_id);
+		//print_r($studentPaperWithHeld);
 		// $this->Common_model->last_query();
 		$data['student'] = $studentData;
 		if($studentData){
 		$data['studentPaper'] = $studentPaper;
-		if ($studentData[0]->old_result_show=='Y') {
+		if ($studentData[0]->old_result_show=='Y' && (count($studentPaperWithHeld)==0) ) {
 			$result['data'] = $this->load->view('admin/Dataentry/show_student_marks',$data,true);
 		}else{
 			$result['data'] = $this->load->view('admin/Dataentry/edit_student_marks',$data,true);
@@ -2573,4 +2578,19 @@ public function getStudentData()
 			echo json_encode($result); 
 		}
 	}
+
+	public function class_wise_remaining_theory_marks(){
+
+		$this->load->view('header',array('title' => 'Class Wise Remaining Theory Marks'));
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
+
+			$this->load->view('admin/class_wise_remaining_theory_marks',$data);
+			$this->load->view('footer');
+			
+		
+	}
+
 }// class

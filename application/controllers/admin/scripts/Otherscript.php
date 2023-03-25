@@ -285,7 +285,7 @@ class Otherscript extends CI_Controller {
 			$this->db->where('new_exam_form.theory_marks < paper_master.private_min_theory_marks');
 		}
 		// $this->db->where('new_exam_form.class_id',$class_id);
-		$this->db->where_in('old_class_id',array(222,154,181,299,198,212,228,172,159,160,200,206,210,256,208));
+		$this->db->where_in('old_class_id',array(162,165,180,183,170,173,134,116,101,169,110,125,128,131));
 		$this->db->where('roll_number !=','');
 		$this->db->where('theory_marks','');
 		$this->db->where('paper_type','theory');
