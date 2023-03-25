@@ -33,7 +33,13 @@
 </div>
 
 <script type="text/javascript">
-    search_student_data();
+    
+    $(document).ready(function() {
+        var roll_no = $('#roll_no').val();
+        if(roll_no!=''){
+            search_student_data();
+        }
+    });
     function search_student_data(){
        
         $('#student_data_tbl').html('');
