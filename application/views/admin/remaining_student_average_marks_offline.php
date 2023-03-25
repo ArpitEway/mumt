@@ -13,11 +13,12 @@
 				<th>Class</th>
 				<?php
 				$this->db->limit('9');
-				$papersobj = $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$class_id,'type'=>'theory'));
+				$papersobj = $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$students[0]->class_id,'type'=>'theory'));
+			$i=1;
 				foreach ($papersobj as $key => $row) {
 					?>
-					<th><?php echo $row->paper_code;?></th>
-				<?php } ?>
+					<th><?php echo "Paper". $i ?></th>
+				<?php $i++;} ?>
 				<th>Average</th>
 			</tr>
 		</thead>

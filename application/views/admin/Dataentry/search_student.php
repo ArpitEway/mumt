@@ -4,7 +4,7 @@
             <div class="form-group row">
             <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
                 <label class=" col-form-label col-3" >Enter Roll No : </label> 
-                <input class="form-control col-9" type = "text" id="roll_no" name ="roll_no" />	
+                <input class="form-control col-9" type = "text" id="roll_no" name ="roll_no" value="<?=$rollno?>"/>	
             </div>     
             
         </div>
@@ -33,6 +33,7 @@
 </div>
 
 <script type="text/javascript">
+    search_student_data();
     function search_student_data(){
        
         $('#student_data_tbl').html('');
