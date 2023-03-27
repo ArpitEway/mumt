@@ -472,4 +472,92 @@
 		
 	}
 
+	public function unpaid_student(){
+			
+		if($this->session->has_userdata('adminData')){
+			$where = array("status" => "Pending");
+			//$centers = $this->Common_model->get_record_group_by_where('payment_complaint','center_id',$where);
+			$centers = $this->Common_model->getRecordByWhere('center',array('payment_gateway_permission'=>'N'));
+			$data = array('name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+				'centers' =>$centers
+			);
+		//	print_r($centers);
+			$this->load->view('header');
+			$this->load->view('admin/account_section/unpaid_student',$data);
+			$this->load->view('footer');
+		}
+		else
+		{
+			redirect(base_url('admin/login'));
+		}
+	}
+
+	public function get_unpaid_student()
+	{
+		if ($this->input->method() == "post") 
+		{
+			$course_group_id = 0;
+			$data = array();
+			$dt   = array();
+				
+			$center_id  = $this->input->post("center_id");
+			$centerData = $this->Common_model->getRecordById('center','id',$center_id);
+			$wherecenter = 'center_id='.$center_id.' and status="Pending"';
+			
+
+			$this->db->select('s.student_id as student_id,s.name as name,s.f_h_name as fathername,s.course_name as course_name,s.class_name as class_name,p.amount as amount');
+			$this->db->from('`student` as s');
+			$this->db->join('online_payment_transaction as p', 'p.student_id=s.student_id');
+			$this->db->where('p.payment','N');
+			$this->db->where('s.payment_status','N');
+			$this->db->where('p.center_id',$center_id); 
+			
+			$complaints = $this->db->get()->result();
+			//print_r($this->db->last_query());  
+			//print_r($complaints); // die;
+			$data = array('complaints' => $complaints ,'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+				'centerData' => $centerData,
+			);
+
+			//if($data['complaints']){
+				$dt =  $this->load->view('admin/account_section/getUnpaidStudent',$data,true);
+				$status = true;
+			// }else{
+			// 	$dt = "This Center Does Not Have Any Pending payment Complaint";
+			// 	$status = false;
+			// }
+			echo json_encode(array(
+			"status" => $status,
+			"data" => $dt
+			));
+		}
+	}
+
+	/*public function student_list($param1 = '')
+	{
+		$course_type = $this->uri->segment(3); 
+		$csrf = array( 
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+			'course_type' => $course_type 
+		);
+		 
+		if($param1=='paid'){
+		$titleData = array('title' => 'Paid Student List');
+		$this->load->view('header',$titleData);
+		$this->load->view('Centers/all_paid_student',$csrf);
+		}elseif($param1=='unpaid'){
+			if($course_type=="PVT")	
+				$titleData = array('title' => 'Private Unpaid Student List');
+			else
+				$titleData = array('title' => 'Regular Unpaid Student List');
+		//$titleData = array('title' => 'Unpaid Student List');
+		$this->load->view('header',$titleData);
+		$this->load->view('Centers/all_unpaid_student',$csrf);
+		}
+		$this->load->view('footer');
+	}*/
+
 }
