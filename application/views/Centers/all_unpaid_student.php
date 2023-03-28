@@ -67,6 +67,8 @@
     <div class="col-7">
      <select class="form-control" name="payment_mode" id="payment_mode" required>
 	 <option value="">Select</option>
+	    <option>Cash</option>
+		<option>Bank Deposit</option>
 		<option>Credit Card</option>
 		<option>Debit Card</option>
 		<option>Net Banking</option>
