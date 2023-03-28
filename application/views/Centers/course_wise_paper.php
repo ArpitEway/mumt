@@ -27,13 +27,13 @@ if(count($papers) !=0){
     <table class="table table-bordered">
         <tr class="text-center text-danger"><th colspan='4'><?= $this->Common_model->getCourseNameByCourseId($class->course_group_id).'('.$this->Common_model->getClassNameByClassId($class->id).')' ?></th></tr>
         <tr>
-            <th class="w-10">S No</th>
-            <th class="w-25">Paper Code</th>
+            <th style="width:50px;">S No</th>
+            <th style="width:150px;">Paper Code</th>
             <?php if ($papers[0]->sub_group_id!=0): ?>
-                <th class="w-25">Paper Type</th>
+                <th style="width:250px;">Paper Type</th>
             <?php endif ?>
         
-            <th class="w-40">Paper Name</th>
+            <th style="width:550px;">Paper Name</th>
             
         </tr>
         <?php
@@ -48,18 +48,20 @@ if(count($papers) !=0){
             ?>
 
             <tr>
-                <td class="w-10"><?= $sn?></td>
-                <td class="w-25"><?= $paper->paper_code?></td>
+                <td style="width:50px;"><?= $sn?></td>
+                <td style="width:150px;"><?= $paper->paper_code?></td>
                 <?php if ($paper->sub_group_id!=0): ?>
-                        <td class="w-25"><?php echo $this->Common_model->getSubGroupNameById($paper->sub_group_id); ?></td>
+                        <td style="width:250px;"><?php echo $this->Common_model->getSubGroupNameById($paper->sub_group_id); ?></td>
                         <?php endif ?>
-                <td class="w-40"><?= $paper->paper_name?></td>
+                <td style="width:550px;"><?= $paper->paper_name?></td>
             </tr>
             <?php
             $sn++;
         }
         if($class->group_type == 'Group'){
-        
+            ?>
+            <tr class="text-center text-success"><th colspan='4'><?= 'Select '.$class->select_group.' Subject Groups Compulsory'?></th></tr>
+            <?php
             $group_name = '';
             foreach($groupPaper as $paper){
                 if($group_name!=$paper->group_name){
@@ -70,18 +72,20 @@ if(count($papers) !=0){
                 }
                 ?>
                 <tr>
-                    <td class="w-10"><?= $sn?></td>
-                    <td class="w-25"><?= $paper->paper_code?></td>
+                    <td style="width:50px;"><?= $sn?></td>
+                    <td style="width:150px;"><?= $paper->paper_code?></td>
                     <?php if ($paper->sub_group_id!=0): ?>
-                            <td class="w-25"><?php echo $this->Common_model->getSubGroupNameById($paper->sub_group_id); ?></td>
+                            <td style="width:250px;"><?php echo $this->Common_model->getSubGroupNameById($paper->sub_group_id); ?></td>
                             <?php endif ?>
-                    <td class="w-40"><?= $paper->paper_name?></td>
+                    <td style="width:550px;"><?= $paper->paper_name?></td>
                 </tr>
                 <?php
                 $sn++;
             }
         }
+        
         ?>
+        
     </table>
     <?php
 }
