@@ -29,7 +29,7 @@
 			<td><?php echo $complaint->course_name; ?></td>
 			<td><?php echo $complaint->class_name; ?></td>
 			<td><?php echo $complaint->amount; ?></td>
-			<td><?php echo '<a href="#"  data-student_name = "'.$complaint->name.'"  data-student_id="'.$this->Common_model->encrypt_decrypt($complaint->student_id).'" class="btn btn-primary btn-sm font-weight-bold pay1" data-toggle="modal" data-target="#kt_datepicker_modal" "  data-amount= "'.$complaint->amount.'">Receive</a>';?></td>
+			<td><?php echo '<a href="#"  data-student_name = "'.$complaint->name.'"  data-idstudent="'.$complaint->student_id.'" data-student_id="'.$this->Common_model->encrypt_decrypt($complaint->student_id).'" class="btn btn-primary btn-sm font-weight-bold pay1" data-toggle="modal" data-target="#kt_datepicker_modal" "  data-amount= "'.$complaint->amount.'">Receive</a>';?></td>
 		</tr>
 		<?php	
 		}?>
@@ -65,6 +65,7 @@
      <input class="form-control" type="date" name="payment_date"   id="payment_date"  placeholder="dd-mm-yyyy"/>
 	 <div class="text-danger" id="error"></div>
 	 <input type="hidden" value="" name="student_id" id="student_id">
+	 <input type="hidden" value="" name="idstudent" id="idstudent">
     </div>
    </div>
    <div class="form-group row">
@@ -129,9 +130,11 @@
 	    var hash_csrf = $(this).attr('data-hash_csrf');
 	    var student_id = $(this).attr('data-student_id');
 	    var student_id = $(this).attr('data-student_id');
+		var idstudent = $(this).attr('data-idstudent');
 		var student_name = $(this).attr('data-student_name');
 		var amount = $(this).attr('data-amount');
 		$('#student_id').val(student_id);
+		$('#idstudent').val(idstudent);
 		$('#student_name').html(student_name);
 		$('#amount').val(amount);
 		
@@ -142,6 +145,7 @@
 	var frm = new FormData(formimage[0]);
 		
         var student_id = $('#student_id').val();
+		var idstudent = $('#idstudent').val();
 		var payment_date = $('#payment_date').val();
 		var payment_mode = $('#payment_mode').val();
 		var amount = $('#amount').val();
@@ -176,7 +180,9 @@
 			console.log(data);
 			$('#kt_datepicker_modal').modal('toggle');
 			//$('#student_tr_'+student_id).remove();
-			$("#row_"+student_id).remove();
+			var rowid="#row_"+idstudent;
+			console.log("rowid "+rowid);
+			$(rowid).remove();
 			//location.reload();
 			
 		
