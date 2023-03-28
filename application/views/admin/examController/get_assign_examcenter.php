@@ -1,4 +1,4 @@
-<form method="post"  action="<?=base_url('ExamController/show_examcenter_folio');?>" class="mt-3 answersheet" target="_blank">
+<form method="post"  action="<?=base_url();?><?=$this->session->account_type; ?>/show_examcenter_folio" class="mt-3 answersheet" target="_blank">
 	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	<div class="dt-responsive">
 		<table id=""  class="table table-striped" >
