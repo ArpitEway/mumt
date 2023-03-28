@@ -147,7 +147,7 @@ class Dataentry extends CI_Controller {
 		$data['hash_csrf'] = $this->security->get_csrf_hash();	
 		$this->db->order_by('course_name');
 		$data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id), course_name ','new_exam_form="Y"');
-		$this->load->view('admin/ExamController/exam_center_folio',$data);
+		$this->load->view('admin/examController/exam_center_folio',$data);
 		$this->load->view('footer');
 	} 
 	public function getDataPaperByClassId(){
