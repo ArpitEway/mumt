@@ -56,9 +56,20 @@
                 <?php } ?>
                 </td>
 -->
+<?php $paper =  $this->Common_model->getCountByWhere('paper_master',array('course_group_id'=>$course_detail['id']));
+                if($paper !=0){
+                ?>
+
                 <td>
-                 <a target="_blank"  class="" href="<?=base_url('center/center/course_wise_paper/'.$course_detail['id'].'/'.'PVT'.'/'.$course_detail['private_mode']);?>"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                 <a target="_blank"  class="" href="<?=base_url('course_wise_paper/'.$course_detail['id'].'/'.'PVT'.'/'.$course_detail['private_mode']);?>"><i class="fa fa-eye" aria-hidden="true"></i></a>
                 </td>
+                <?php
+                }else{
+                    ?>
+                    <td></td>
+                    <?php
+                }
+                ?>
             </tr>
             <?php
         $i++;

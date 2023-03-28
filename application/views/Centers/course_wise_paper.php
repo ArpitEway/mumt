@@ -25,7 +25,7 @@ if($class->group_type == 'Group'){
 if(count($papers) !=0){
     ?>
     <table class="table table-bordered">
-        <tr class="text-center text-danger"><th colspan='4'><?= $this->Common_model->getClassNameByClassId($class->id) ?></th></tr>
+        <tr class="text-center text-danger"><th colspan='4'><?= $this->Common_model->getCourseNameByCourseId($class->course_group_id).'('.$this->Common_model->getClassNameByClassId($class->id).')' ?></th></tr>
         <tr>
             <th class="w-10">S No</th>
             <th class="w-25">Paper Code</th>

@@ -14,6 +14,7 @@
 				<th>Date</th>
 				<th>Status</th>
 				<th>Remark</th>
+				<th>Action</th>
 			</tr>
 		</thead>
 		<tbody>

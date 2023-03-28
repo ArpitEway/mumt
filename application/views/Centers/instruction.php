@@ -54,9 +54,20 @@
                     <a href="<?php echo site_url($url);?>" download ><img src="<?=base_url('assets/images/')?>pdf.png" width="55"></a>
                 <?php } ?>
                 </td>
+                <?php $paper =  $this->Common_model->getCountByWhere('paper_master',array('course_group_id'=>$course_detail['id']));
+                if($paper !=0){
+                ?>
+
                 <td>
-                 <a target="_blank"  class="" href="<?=base_url('center/center/course_wise_paper/'.$course_detail['id'].'/'.'REG'.'/'.$course_detail['mode']);?>"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                 <a target="_blank"  class="" href="<?=base_url('course_wise_paper/'.$course_detail['id'].'/'.'REG'.'/'.$course_detail['mode']);?>"><i class="fa fa-eye" aria-hidden="true"></i></a>
                 </td>
+                <?php
+                }else{
+                    ?>
+                    <td></td>
+                    <?php
+                }
+                ?>
             </tr>
             <?php
         $i++;
