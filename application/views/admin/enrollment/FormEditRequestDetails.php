@@ -44,7 +44,10 @@
 							<input type="button" name="req_remark" data-id = "<?=$center["id"];?>" class="btn btn-success remark_check" value="Set">
 						<?php } ?>
 					</td>
-					<td><a target="_blank" class="btn btn-primary" href='<?php echo base_url('/admin/enrollment/editForm/').$this->Common_model->encrypt_decrypt($center["student_id"],'encrypt'); ?>' >Edit Form</a></td>		
+					<td>
+						<a target="_blank"  href='<?php echo base_url('/admin/enrollment/editForm/').$this->Common_model->encrypt_decrypt($center["student_id"],'encrypt'); ?>' title="Edit Form"><i class="fa fa-edit" aria-hidden="true"></i></a>
+						<button  class="btn btn-sm  " onclick="delete__student_paper(this)" data-id = "<?=$center['student_id']; ?>" title="Delete Paper"><i class="fa fa-trash" aria-hidden="true"></i></button>  		
+					</td>		
 				</tr>
 				<?php	$i++; } ?>
 			</tbody>
@@ -104,4 +107,29 @@
 					}
 				});
 			});
+	function delete__student_paper(student_id)
+	{
+		if (confirm('Are you sure to remove  ?')) {
+			var csrfName = $('.csrfname').attr('name');
+			var csrfHash = $('.csrfname').val(); 
+			var student_id = $(student_id).attr('data-id');
+			// alert(student_id);
+			$.ajax({
+				type: "POST",
+				url: BASE_URL+"admin/Admins/student_paper_delete",
+				dataType:"json",
+				data: {student_id: student_id,[csrfName]:csrfHash},
+				success: function(response){
+				console.log(response);
+					if(response.status=='true'){
+					toastr.success("successfully Deleted all paper");
+					}
+
+					else{
+					toastr.error("Something wrong");
+					}
+				}
+			});	
+		}
+	}
 		</script>
