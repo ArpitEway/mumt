@@ -10,6 +10,7 @@
             <th>Program Fees</th>
             <th>Exam Fees</th>
             <th>Syllabus</th>
+            <th>Papers</th>
         </thead>
         <tbody>
         <?php
@@ -52,6 +53,9 @@
                     ?>
                     <a href="<?php echo site_url($url);?>" download ><img src="<?=base_url('assets/images/')?>pdf.png" width="55"></a>
                 <?php } ?>
+                </td>
+                <td>
+                 <a target="_blank"  class="" href="<?=base_url('center/center/course_wise_paper/'.$course_detail['id'].'/'.'REG'.'/'.$course_detail['mode']);?>"><i class="fa fa-eye" aria-hidden="true"></i></a>
                 </td>
             </tr>
             <?php
