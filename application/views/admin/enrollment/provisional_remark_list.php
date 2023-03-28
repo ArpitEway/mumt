@@ -115,7 +115,9 @@
 				success: function(response){
 					if(response.status=='true'){
 						 toastr.success('Reset Remark Successfully');
-						$('#student_tr_'+student_id).hide();
+						 var row='#student_tr_'+student_id;
+						 console.log("row"+row);
+						$(row).hide();
 					}
 					else{
 						toastr.error(response.error);
