@@ -10,6 +10,7 @@
             <th>Program Fees</th>
             <th>Exam Fees</th>
             <!--<th>Syllabus</th>-->
+            <th>Papers</th>
         </thead>
         <tbody>
         <?php
@@ -55,6 +56,9 @@
                 <?php } ?>
                 </td>
 -->
+                <td>
+                 <a target="_blank"  class="" href="<?=base_url('center/center/course_wise_paper/'.$course_detail['id'].'/'.'PVT'.'/'.$course_detail['private_mode']);?>"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                </td>
             </tr>
             <?php
         $i++;

@@ -59,6 +59,17 @@ class Center extends CI_Controller {
 		}
 	}
 
+	public function course_wise_paper($course_id,$mode,$sem_mode){
+    	
+    	$titleData = array('title' => 'Course Wise Papers');
+    	$this->load->view('Centers/header',$titleData);
+    	$Data['classData'] = $this->Common_model->getRecordByWhere('class_master',array('course_group_id'=> $course_id,'mode'=>$sem_mode));
+		// $this->Common_model->last_query();
+		$Data['mode'] = $mode;
+    	$this->load->view('Centers/course_wise_paper',$Data);
+    	$this->load->view('Centers/footer');
+    }
+
 	public function login(){
 		if($this->session->has_userdata('center_code')){
 			redirect(base_url('center'));
