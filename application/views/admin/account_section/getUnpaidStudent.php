@@ -62,7 +62,8 @@
    <div class="form-group row">
     <label for="example-date-input" class="col-5 col-form-label">Receive Payment Date</label>
     <div class="col-7">
-     <input class="form-control" type="date" name="payment_date"   id="payment_date"  placeholder="dd-mm-yyyy"/>
+		
+     <input class="form-control" type="date" name="payment_date"   id="payment_date" min="<?= date('Y-m-d', strtotime('-3 month')); ?>" max="<?= date('Y-m-d'); ?>"   />
 	 <div class="text-danger" id="error"></div>
 	 <input type="hidden" value="" name="student_id" id="student_id">
 	 <input type="hidden" value="" name="idstudent" id="idstudent">
@@ -123,7 +124,8 @@
 </div>
 <script>
 	$(document).ready(function(){
-	$('#memListTable').DataTable({});
+		
+		$('#memListTable').DataTable({});
 	
 	});
 
