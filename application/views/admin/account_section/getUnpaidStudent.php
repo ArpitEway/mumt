@@ -1,7 +1,9 @@
 <div class="container-fluid mt-5" >
 	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	<input type="hidden"  class="course_type" value="<?= $course_type; ?>" >
+	<?php if(@$centerData->center_code){ ?>
 	<h3 class="text-primary text-center h2"><?= ' ( '.$centerData->center_code.' ) ( '.$centerData->center_name.' )  '; ?></h3>
+	<?php } ?>
 	<table id="memListTable" class="table table-striped dt-responsive" style="width:100%">
 		<thead>
 			<tr>

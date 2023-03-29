@@ -483,7 +483,7 @@
 				'centers' =>$centers
 			);
 		//	print_r($centers);
-			$this->load->view('header');
+			$this->load->view('header',array('title' => 'Centerwise Unpaid Student'));
 			$this->load->view('admin/account_section/unpaid_student',$data);
 			$this->load->view('footer');
 		}
@@ -542,7 +542,7 @@
 				
 			);
 	
-			$this->load->view('header');
+			$this->load->view('header',array('title' => 'Search Unpaid Student'));
 			$this->load->view('admin/account_section/search_unpaid_student',$data);
 			$this->load->view('footer');
 		}
