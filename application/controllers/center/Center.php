@@ -2624,8 +2624,8 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 		$titleData = array('title' => 'Photo Missing List' );
     	$this->load->view('Centers/header',$titleData);
     
-			$this->db->where('center_id',$this->session->center_id);
-			$this->db->limit(10);
+		$this->db->where('center_id',$this->session->center_id);
+		
     	$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
     	$this->load->view('Centers/photo_missing_list',$data);
     	$this->load->view('Centers/footer');
