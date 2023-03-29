@@ -23,44 +23,79 @@ $course_group_id = $student['course_group_id'];
 
 
 ?>
-<div class="row">
-Form Number <b><?=$student['student_id']?></b>  Name <b><?=$student['name']?></b><br>
-</div>
-<div class="row">
-<div class="col-5 ">
-		<div class="col-xl-3 text-center">
-			<div class="image-input image-input-outline" id="kt_image_1">
-				<?php if($student_detail->photo){ ?>
-
-					<div class="image-input-wrapper" style="background-image: url('<?=base_url('assets/student_image/'.$student_detail->session.'/'.$student_detail->photo); ?>')"></div>
+<input type="hidden" name="session" id="session" value="<?=$student['session']?>">
+<!-- <div class="row">
+Form Number <b><?=$student['student_id']?></b>  Name <b><?=$student['name']?></b>
+</div> -->
+<div class="container-fluid profile mt-5">
+		
+		<div class="row">
+			<div class="col-sm-12 row">
 				
-					<?php }else{ ?>
+			<div class="col-sm-8 row">
+				<div class="col-md-12">
+					<div class="row py-2">
+						<label class="col-sm-4 text-heading">Enrollment No</label>
+						<div class="col-sm-8 text-value">
+							<?php echo $student['enrollment_no']; ?>
+						</div>
+					</div>
+				</div>
 
-					<div class="image-input-wrapper" style="background-image: url(<?=base_url('assets/images/center/student.bmp')?>)"></div>
-				
-					<?php } ?>	
-				<label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change Image">
-					<i class="fa fa-pen icon-sm text-muted"></i>
-					<input type="file" name="photo" id="photo" accept=".png, .jpg, .jpeg"/>
-				</label>
-				<span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Remove Image">
-					<i class="ki ki-bold-close icon-xs text-muted"></i>
-				</span>
-				<div id="errPhoto" class="fv-plugins-message-container"></div>
+				<div class="col-md-12">
+					<div class="row py-2">
+						<label class="col-sm-4 text-heading">Form No</label>
+						<div class="col-sm-8 text-value">
+							<?php echo $student['student_id']; ?>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="row py-2">
+						<label class="col-sm-4 text-heading">Student</label>
+						<div class="col-sm-8 text-value">
+							<?php echo $student['name']; ?>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="row py-2">
+						<label class="col-sm-4 text-heading">Father</label>
+						<div class="col-sm-8 text-value">
+							<?php echo $student['f_h_name']; ?>
+						</div>
+					</div>
+				</div>
+			</div>	
+			<div class="col-sm-4 row">
+					
+					<div class="image-input image-input-outline" id="kt_image_1">
+						<?php if($student_detail->photo){ ?>
+
+							<div class="image-input-wrapper" style="background-image: url('<?=base_url('assets/student_image/'.$student_detail->session.'/'.$student_detail->photo); ?>')"></div>
+						
+								<?php }else{ ?>
+
+							<div class="image-input-wrapper" style="background-image: url(<?=base_url('assets/images/center/student.bmp')?>)"></div>
+						
+								<?php } ?>	
+								<label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change Image">
+									<i class="fa fa-pen icon-sm text-muted"></i>
+									<input type="file" name="photo" id="photo" accept=".png, .jpg, .jpeg"/>
+								</label>
+								<span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Remove Image">
+									<i class="ki ki-bold-close icon-xs text-muted"></i>
+								</span>
+								<div id="errPhoto" class="fv-plugins-message-container"></div>
+						</div>
+						
 			</div>
-		</div>
-	
+	</div>		
 
 
 
 
-
-</div>
-</div>
-
-
-
-<div class="form-group text-center">
+<div class=" text-center" style="margin:auto;">
 	<button class="btn btn-lg btn-primary" id="remark_submit" type="button">Submit</button>
 </div>
 
@@ -70,56 +105,4 @@ Form Number <b><?=$student['student_id']?></b>  Name <b><?=$student['name']?></b
 
 <script type="text/javascript">
 	var avatar1 = new KTImageInput('kt_image_1');
-
-	$(document).on('click', '#remark_submit', function(e) {
-	// alert();
-	$('#remark_submit').prop('disabled', true);
-	var ck_box = $('input[type="checkbox"]:checked').length;
-	    e.preventDefault();
-		var frm = $('.ajaxForm').serialize();
-		var image_form = $("#photo").prop("files")[0];
-		var fdata = new FormData(); // Creating object of FormData class
-		fdata.append("form", frm);
-		fdata.append("image_form", image_form);
-		var rem = $('.student_id_model').val();
-           console.log(rem);
-		var imgname  =  $('input[type=file]').val();
-		console.log("image_form"+image_form);
-		console.log("imgname"+imgname);
-        var ext =  imgname.substr( (imgname.lastIndexOf('.') +1) );
-    //if(ext=='jpg' || ext=='jpeg' || ext=='png' || ext=='gif' || ext=='PNG' || ext=='JPG' || ext=='JPEG')
-  //  {	   console.log("ext"+ext);
-		$.ajax({
-		url: '<?php echo site_url('update_student_photo/'); ?>'+ rem,
-		type: 'POST',
-		//enctype: 'multipart/form-data',
-		dataType : 'json',
-		data: frm,
-		processData: false,
-		contentType: false,
-		cache: false,
-		success: function (data) {
-		if(data){
-			console.log(data);
-				$('#right-modal').modal('toggle');
-			
-				// $('#'+rem).html("Approved");
-				
-				// $('#' +rem).prop("onclick",null).off("click");
-				
-				// var appid="#makeNonApprove_"+rem;
-				// $(appid).css("display", "none");
-				// var id="#nonVerified_"+rem;
-				// $(id).css("display", "block");
-				// console.log("id "+id);
-				// }else{
-				// 	toastr.error("Something wrong");
-				}
-			},
-		});	
-	// }else{
-	// 	toastr.error("Please select Image !");
-	// }
-
-});	
 </script>

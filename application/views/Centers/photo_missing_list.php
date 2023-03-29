@@ -18,12 +18,10 @@
 
 			$i = 1;
 			foreach($students as $student){
-				// $imgurl=base_url('assets/student_image/'.$student->session.'/'.$student->photo); 
-				//if($student->photo==""){
-					//$img_url = (file_exists(FCPATH.'assets/student_image/'.$student->session.'/'.$student->photo)) ? base_url('assets/student_image/'.$student->session.'/'.$student->photo) : ''; 
+				
 				if (!file_exists(FCPATH.'assets/student_image/'.$student->session.'/'.$student->photo) || $student->photo=="") {  
 				?>
-				<tr>
+				<tr id="row_<?php echo $student->student_id; ?>">
 					<td><?php echo $i; ?></td>
 					<td><?php echo $student->student_id; ?> </td>
 					<td><?php echo $student->session; ?> </td>
@@ -35,7 +33,7 @@
 					
 					<td>
 						<?php $student_id = $this->Common_model->encrypt_decrypt($student->student_id); ?>
-						<!-- <button class="btn btn-primary" >Select Photo</button> -->
+					
 						<a href="javascript:void(0);" style="margin:5px;" class="btn btn-success" id="<?php echo  $std  ?>"   onclick="rightModal('<?php echo site_url('admin/modal/student_popup/admin/student/update/update_photo/'.$student_id); ?>', '<?php echo 'Select Photo' ?>')">Upload</a>
 					</td>
 				</tr>
@@ -47,3 +45,57 @@
 		</tbody>
 	</table>
 </div>
+<script type="text/javascript">
+	
+
+	$(document).on('click', '#remark_submit', function(e) {
+
+	$('#remark_submit').prop('disabled', true);
+	
+	    e.preventDefault();
+		var csrfName = $('.csrfname').attr('name');
+		var csrfHash = $('.csrfname').val();
+		var frm = $('.ajaxForm').serialize();
+		var image_form = $("#photo").prop("files")[0];
+		var fdata = new FormData(); // Creating object of FormData class
+		fdata.append("form", frm);
+		fdata.append('session', $("#session").val());
+		fdata.append('photo', $("#photo").prop("files")[0]);
+		fdata.append('csrf_token_akshay',csrfHash);
+		var rem = $('.student_id_model').val();
+        
+		var imgname  =  $('input[type=file]').val();
+	   
+        var ext =  imgname.substr( (imgname.lastIndexOf('.') +1) );
+		fdata.append('ext', ext);
+    if(ext=='jpg' || ext=='jpeg' || ext=='png' || ext=='gif' || ext=='PNG' || ext=='JPG' || ext=='JPEG')
+    {	   
+	  
+	$('#loader').addClass('loading');
+		$.ajax({
+		url: '<?php echo site_url('update_student_photo/'); ?>'+ rem,
+		type: 'POST',
+		data: fdata,
+		processData: false,
+		contentType: false,
+		cache: false,
+		async:true,
+		success: function (data) {
+		if(data){
+			$('#loader').removeClass('loading');
+			
+				$('#right-modal').modal('toggle');
+				$('#row_'+rem).remove();
+				$('.student_id_model').val("");
+				$("#session").val("");
+				$("#photo").val("");
+				toastr.success("Image uploaded !");
+				}
+			},
+		});	
+	 }else{
+	 	toastr.error("Please select Image !");
+	 }
+
+});	
+</script>

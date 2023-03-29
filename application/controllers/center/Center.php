@@ -2625,19 +2625,39 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
     	$this->load->view('Centers/header',$titleData);
     
 			$this->db->where('center_id',$this->session->center_id);
-	
+			$this->db->limit(10);
     	$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
     	$this->load->view('Centers/photo_missing_list',$data);
     	$this->load->view('Centers/footer');
     }	
-	public function update_student_photo($param){
+	public function update_student_photo($student_id){
 		
+		$session=$this->input->post("session");
+		$path = './assets/student_image/'.$session;
+		$ext=$this->input->post("ext");
 		
-		print_r($_FILES);
+		$file='photo';
+	
+		$config['upload_path'] = $path;
+		$config['allowed_types'] = 'gif|jpg|png|jpeg';
+		$config['file_name'] =  $student_id;
 
-		$this->db->where('student_id', $param);
-		//$this->db->update('student', $data);	
-		//$this->session->set_flashdata('ajax_flash_message','approved');
-		//echo json_encode(array(		"status" => 'true',		));
+		$this->load->library('upload', $config);
+		$this->upload->initialize($config);
+		if ( ! $this->upload->do_upload($file))
+		{
+			return $error = array('error' => $this->upload->display_errors());
+		}else{
+			
+		
+		$PhotoData = array('photo' => $student_id.'.'.$ext);
+		$where = array('student_id'=>$student_id);
+		$this->Common_model->updateRecordByConditions('student',$where,$PhotoData);
+		$this->session->set_flashdata('ajax_flash_message','Photo uploaded !');
+		echo json_encode(array(		"status" => 'true',		));
+		
+		}
+		 
+		
 	}
 }//class
