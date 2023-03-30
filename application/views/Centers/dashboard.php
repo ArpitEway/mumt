@@ -176,6 +176,11 @@
 							<span class="nav-text">Paper Missing List</span>
 						</div>
 					</a>
+					<a class="border-0 custom-menu-item" href="<?=base_url('photo_missing_list');?>">
+						<div>
+							<span class="nav-text">Photo Missing List</span>
+						</div>
+					</a>
 				</div>
 			</div>
 			<div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">

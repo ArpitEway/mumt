@@ -10,7 +10,7 @@
 				<th>Course</th>
 				<th>Class</th>
 				
-				<th>Select Paper</th>
+				<th>Action</th>
 			</tr>
 		</thead>
 		<tbody>
