@@ -63,6 +63,7 @@ class Center extends CI_Controller {
     	
     	$titleData = array('title' => 'Class Wise Papers');
     	$this->load->view('Centers/header',$titleData);
+		if($sem_mode=="Month")$sem_mode="Semester";
     	$Data['classData'] = $this->Common_model->getRecordByWhere('class_master',array('course_group_id'=> $course_id,'mode'=>$sem_mode));
 		// $this->Common_model->last_query();
 		$Data['mode'] = $mode;

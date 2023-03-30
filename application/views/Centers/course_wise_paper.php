@@ -1,9 +1,10 @@
 <?php
 foreach($classData as $class){
 $cbcs = ($class->cbcs == 'Y')?'Y':'N';
+
 if($class->group_type == 'Group'){
     if($mode == 'REG'){
-        $groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id where class_id='.$class->id.' Order by g.id,sub_group_id,p.id')->result();
+        $groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id where class_id='.$class->id.' Order by g.id,sub_group_id,p.paper_no')->result();
         $papers =  $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$class->id,'cbcs_paper'=>$cbcs,'ce'=>"compulsory"));  
     }else{
         $papers = $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$class->id,'ce'=>"compulsory",'type'=>"theory",'cbcs_paper'=>$cbcs));
@@ -15,6 +16,7 @@ if($class->group_type == 'Group'){
         $groupPaper =$this->db->get()->result();	
     }
 }else{
+    $this->db->order_by("`ce`,sub_group_id,paper_no", "asc");
     if($mode == 'REG'){
          $papers =  $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$class->id,'cbcs_paper'=>$cbcs)); 
     }else{
