@@ -58,9 +58,10 @@
 <body>
 	<br>
 	<?php
+	$isFinalClass = false;
 	$notification_no = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id' => $class_id));
 	$classData = $this->Common_model->getRecordById('class_master','id',$class_id);
-	$isFinalClass = $this->Common_model->hasOneClass($course_group_id);
+	$isOneClass = $this->Common_model->hasOneClass($course_group_id);
 	if($classData->last_class == 'L'){
 		$isFinalClass = true;
 	  }
@@ -310,17 +311,21 @@
 				<th  class="text-center" style="text-align:left" scope="row"  width="35%" ><span class="style5" style="padding-left: 10px;" >Name and F/H Name</span></th>
 				<th class="text-center" scope="row"  width="10%" >Result</span></th>
 				
-					<th class="text-center" style="padding:0px" align="center" class="text-center" scope="row"  width="20%" colspan='<?php echo ($isFinalClass)?"2":"1";?>'><?php if($isFinalClass){
+					<th class="text-center" style="padding:0px" align="center" class="text-center" scope="row"  width="20%" colspan='<?php echo ($isFinalClass && !$isOneClass)?"2":"1";?>'><?php if($isFinalClass){
 						?>
 						<table width="100%" border="1" class="m-0">
 							<tr>
 							<td class="text-center">Marks Obtd</td>
+							<?php if(!$isOneClass){?>
 							<td class="text-center">Marks Obtd</td>
+							<?php }?>
 							
 					</tr>
 					<tr>
 							<td class="text-center"><?= $student->class_name?> </td>
-							<td class="text-center">Grand Total</td>	
+							<?php if(!$isOneClass){?>
+							<td class="text-center">Grand Total</td>
+							<?php }?>	
 					</tr>
 								
 								
@@ -358,34 +363,37 @@
 					// echo 'RW';
 					echo $final_result = "RW";
 				}else{
-					if($isFinalClass){
+					if($isFinalClass && $isOneClass == false){
 						$classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$course_group_id,'mode'=>$classData->mode,'id!='=>$class_id
 					));
 					// echo '<pre>';
 					// print_r($classes);die;
-					foreach($classes as $cls){
-						$this->db->where_in('exam_result',array('PASS','PASS BY GRACE'));
-						$results = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id='=>$cls->id));
-						// $this->Common_model->last_query();
-						// echo count($results);die;
-						if(count($results)>0){
-							foreach($results as $row){
-								
-								$grand_obt += $row->obtain_marks;
-								$grand_tot += $row->total_marks;
-							}
-							if($fail_count>0 || $abs_count>0){
-								$final_result = ($check_grace_marks) ? 'PASS BY GRACE' : 'FAIL';
+					
+						foreach($classes as $cls){
+							$this->db->where_in('exam_result',array('PASS','PASS BY GRACE'));
+							$results = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id='=>$cls->id));
+							// $this->Common_model->last_query();
+							// echo count($results);die;
+							if(count($results)>0){
+								foreach($results as $row){
+									
+									$grand_obt += $row->obtain_marks;
+									$grand_tot += $row->total_marks;
+								}
+								if($fail_count>0 || $abs_count>0){
+									$final_result = ($check_grace_marks) ? 'PASS BY GRACE' : 'FAIL';
 
+								}else{
+									$final_result = 'PASS';
+								}
 							}else{
-								$final_result = 'PASS';
+								$final_result = 'RWPM';
 							}
-						}else{
-							$final_result = 'RWPM';
+							
+							
 						}
-						echo $final_result;
-						
-					}
+				  
+				   echo $final_result;
 					$grand_obtain = $grand_obt + $total_obtained_marks;
 						$grand_total = $grand_tot+$total_max_marks;
 					}else{
@@ -402,21 +410,7 @@
 			</td>
 			<?php
 			if($isFinalClass){
-				// $this->db->where_in('exam_result',array('PASS','PASS BY GRACE'));
-				// $results = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id<'=>$student->class_id));
-				// // $this->Common_model->last_query();
-				// foreach($results as $row){
-				// 	$fail_check = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id!='=>$row->class_id));
-				// 	if($fail_check){
-				// 		$fail_past =true;
-				// 		$final_result ='RWPM';
-				// 	}
-				// 	$grand_obt += $row->obtain_marks;
-				// 	$grand_tot += $row->total_marks;
-				// }
-
-				// $grand_obtain = $grand_obt + $total_obtained_marks;
-				// $grand_total = $grand_tot+$total_max_marks;
+				
 				if($final_result == "RWPM"){
 ?>
 <td class="text-center" style="padding:0px" width='10%' align="center"></td>
@@ -424,9 +418,11 @@
 <?php
 				}else{
 ?>
-<td class="text-center" style="padding:0px" width='10%' align="center"><?php  if($final_result != 'FAIL' ){ echo $total_obtained_marks .' / '. $total_max_marks ;}?></td><td class="text-center" style="padding:0px" align="center"><?php if($final_result != 'FAIL'){ echo  $grand_obtain .' / '. $grand_total;} ?></td>
+<td class="text-center" style="padding:0px" width='10%' align="center"><?php  if($final_result != 'FAIL' ){ echo $total_obtained_marks .' / '. $total_max_marks ;}?></td>
+<?php if(!$isOneClass) { ?>
+<td class="text-center" style="padding:0px" align="center"><?php if($final_result != 'FAIL'){ echo  $grand_obtain .' / '. $grand_total;} ?></td>
 <?php
-				}
+			}			}
 			}else{
 				?>
 			<td  class="text-center" style="padding:0px" align="center"><?php
@@ -451,7 +447,12 @@
 		
 		if ($isFinalClass) {	?>
 		<td  class="text-center" style="padding:0px" align="center"><?php
-			$percentage = round(($grand_obtain/$grand_total)*100,2);    
+			if(!$isOneClass){
+				$percentage = round(($grand_obtain/$grand_total)*100,2);  
+			}else{
+				$percentage = round(($total_obtained_marks/$total_max_marks)*100,2);	
+			}
+			  
 			if($percentage>=60){
 			  $division = "First";
 			}elseif($percentage<60 && $percentage>=40){
