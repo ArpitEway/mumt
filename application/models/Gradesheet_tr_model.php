@@ -88,6 +88,66 @@ class Gradesheet_tr_model extends CI_Model
 		// print_r($this->foundation_paper);
 	}
 
+	// notification 
+	public function view_notification($student_id,$course_group_id,$class_id,$mode)
+	{
+		
+		$std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $class_id,'student_id'=>$student_id));
+		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+		
+		
+		if($std[0]->sub_group_id == 1){
+			$papers = $this->Common_model->get_all_papers($student_id,$class_id);
+		}
+
+		if($this->classData->class_group == 'Y'){
+			$papers_list = $this->Common_model->get_all_group_papers($student_id,$class_id);
+		}
+	
+		
+		$this->allclass = $this->Common_model->getRecordByWhere('class_master',array('course_group_id'=> $course_group_id));
+		$this->classCount = count($this->allclass);
+		// $this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+		$this->foundation_paper = array();
+		$this->result_array = array();
+		$this->tot_credit_point = 0;
+		$this->tot_credit = 0;
+		$this->mode = $mode;
+		$this->fail_count=0;
+		$this->obt_tot_credit = 0;
+		$this->grade_tot_point=0;
+		$this->fail_tot_marks = 0;
+		$this->fail_min_marks = 0;
+		$this->fail_obt_marks = 0;
+		$this->check_grace_marks = false;
+		$this->withheld = false;
+		foreach ($papers as $paper) {
+			$this->paper = $paper;
+			$this->_row();
+		}
+		foreach($papers_list as $paper){
+			$this->paper = $paper;
+			$this->_row();
+		}
+		$this->notification_agpa();
+		// var_dump($this->result_array);
+		// $this->echo_result(); 
+		// $this->total();
+		// if($this->mode=='REG'){
+			// $this->result_head();
+			// $this->set_result();
+		// 	$this->AGPA();
+		// }else{
+			// $this->result_head_pvt();
+			// $this->set_result();
+		// 	$this->AGPA_pvt();
+		// }
+		// return $this->result();
+		// echo "<pre>";
+		// print_r($this->foundation_paper);
+	}
+
+
 	public function _row()
 	{
 		if($this->paper['sub_group_id']=='1'){
@@ -517,6 +577,10 @@ class Gradesheet_tr_model extends CI_Model
 		// echo '<td class="text-center">श्रेणी</td>';
 		// echo '<td></td>';
 		// echo '</tr>';
+	}
+
+	private function notification_agpa(){
+		echo '<td class="text-center" style="padding:0px" align="center">'.$this->agpa = $this->tot_credit_point/$this->tot_credit.'</td>';
 	}
 
 	private function AGPA()

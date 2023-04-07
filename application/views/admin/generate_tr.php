@@ -563,9 +563,13 @@ table.last_table, .last_table td, .last_table th{
     $final_fail =0;
     
       $final_remark = "-"; 
-    
-  
-  $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id<'=>$student->old_class_id));
+      $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$course_group_id,'mode'=>$classData->mode,'id!='=>$class_id
+					));
+          // $this->Common_model->last_query();
+   foreach($classes as $cls){
+  $this->db->order_by('id','desc');
+  $this->db->limit(1);
+  $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id'=>$cls->id));
   ?> <tr>
   <td class="align-middle text-center "  colspan="2"><strong>
   <?= 'Session'.'<br>'.'Sem/Year'.'<br>'.'Roll no'.'<br>'.'Marks'?></strong>
@@ -598,6 +602,7 @@ table.last_table, .last_table td, .last_table th{
  
 </td>  
  <?php }
+  }
  if($final_result == "FAIL" || $final_result == "RW" || $final_fail !=0 ){
   $total_ob = '-';
   $total_mar = '-';

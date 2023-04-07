@@ -645,6 +645,101 @@ class Postexam extends CI_Controller {
             echo "<br>";      
         }  
     }
+
+    // Course Complete script
+    public function course_complete()
+    {
+        // if(!$this->session->has_userdata('username')){
+        //     redirect(base_url('admin'));
+        //     exit;
+        // }
+        $data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+        $data['courses'] = $this->db->get_where('course_group', array())->result_array();
+       
+        $this->load->view('header',array('title' => 'Check Students Course Complete'));
+        $this->load->view('admin/script/course_complete',$data);
+        $this->load->view('footer');
+    }
+
+    public function course_complete_list()
+    { //
+        $course_group_id =$_POST['course_group_id'];
+        $class_id= $this->Common_model->getSinglefield('class_master','id',array("course_group_id"=>$course_group_id,'last_class'=>'L'));
+        // print_r($class_id);die;
+        $data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+        // 'result_show' => 'Y',
+        $data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id,'old_class_id'=>$class_id,"course_complete"=>'N','upload_result' => 'Y','exam_form'=>'Y'));  
+        $html_comment = $this->load->view('admin/script/course_complete_list' ,$data);
+        echo json_encode(array("data" => $html_comment));
+    }
+
+    public function update_course_complete_sub()
+    {
+        foreach($_POST['student_id'] as $student_id){
+            $data = array('course_complete' => 'Y');
+            $where = array('student_id'=>$student_id);
+            $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+        }
+        $this->session->set_flashdata('ajax_flash_message','Course complete Successfully ');
+        redirect(base_url('admin/scripts/Postexam/course_complete'));
+    }
+
+
+    function student_course_complete(){
+      $class_id = 'student.old_class_id';
+        $this->db->select('DISTINCT(student.course_group_id),'.$class_id.'');
+        $this->db->from('student');
+        $this->db->join('class_master','class_master.id = '.$class_id.'');
+        $this->db->where('class_master.last_class','L');
+        $this->db->where(array("course_complete"=>'N','upload_result' => 'Y','exam_form'=>'Y')); 
+        // $this->db->group_by('course_group_id'); 
+        $data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+        $data['courses'] =  $this->db->get()->result_array();
+        $this->load->view('header',array('title' => 'Course Complete Script'));
+        $this->load->view('admin/script/student_course_complete',$data);
+        $this->load->view('footer');
+    
+    }
+    public function course_complete_script()
+    { //
+            $course_group_id =$_POST['course_group_id'];
+            $class_id= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course_group_id,'last_class'=>'L'));
+            // $this->db->limit(200);
+            $students = $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id,'old_class_id'=>$class_id[0]->id,"course_complete"=>'N','upload_result' => 'Y','exam_form'=>'Y')); 
+            
+        $classes= $this->Common_model->getRecordByWhere('class_master',array('course_group_id'=>$course_group_id,'mode'=>$class_id[0]->mode));
+        $class_count = count($classes);  
+        $sno =1; 
+        foreach($students as $student){
+            $this->pass_count = 0;
+            foreach($classes as $class){
+                $results = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id'=>$class->id,'exam_result !='=>'FAIL'));
+                            
+                if($results !=  Array ( )){
+                    $this->pass_count++;
+                }
+            }			
+                    
+            if($class_count == $this->pass_count){
+                $data = array('course_complete' => 'Y','new_admission_permission'=>"Y");
+                $where = array('student_id'=>$student->student_id);
+                $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+               
+                echo '<div class="row justify-content-center">'.'<h6>'.$sno++.'--'.$student->enrollment_no.'<h6>'.'</div>';
+               
+            }
+         
+        }
+    }
  
     
 //for open book only End****************/
