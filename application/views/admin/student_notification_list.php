@@ -65,7 +65,7 @@
 	if($classData->last_class == 'L'){
 		$isFinalClass = true;
 	  }
-	$course_duration = ($isFinalClass) ? "(One Year Course)" : $classData->class_name;
+	$course_duration = ($isOneClass) ? "(One Year Course)" : $classData->class_name;
 	// $notification=$notification_no[0]->notification_no;
 	$notification=($mode == "REG")?$notification_no[0]->notification_no:$notification_no[0]->pvt_notification_no;
 	$date=$notification_no[0]->result_date;
