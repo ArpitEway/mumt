@@ -481,7 +481,7 @@
 			}else{
 				if($require_grace_marks>=4 || $abs_count!=0 ){
 
-					$remark= ($check_grace_marks) ? 'FAIL' : 'ATKT IN';
+					$remark= ($check_grace_marks) ? 'FAIL' : 'ATKT IN ';
 					echo $remark;
 
 					foreach($ATKT_paper_codes as $paper_code){

@@ -406,7 +406,7 @@ $abs_count = 0 ;
 								if($check_grace_marks){
 									echo " ";
 								}elseif(sizeof($atkt_paper_codes_array)>0){
-									echo "ATKT in";
+									echo "ATKT in ";
 									$atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
 									foreach($atkt_paper_codes_array as $paper_code){
 										echo  "<br>". $paper_code;
@@ -418,7 +418,7 @@ $abs_count = 0 ;
 								if($check_grace_marks){
 									echo " ";
 								}elseif(sizeof($atkt_paper_codes_array)==1){
-									echo "ATKT in";
+									echo "ATKT in ";
 									$atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
 									foreach($atkt_paper_codes_array as $paper_code){
 										echo  "<br>". $paper_code;
