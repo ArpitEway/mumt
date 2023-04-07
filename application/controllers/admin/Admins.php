@@ -3122,19 +3122,20 @@ public function update_exam_datewise_permission(){
 	{
 		$data = array('class_id' => $class_id,'course_group_id' =>$course_id );
 				$start=0;
-		if($startlimit!=0){
-			$start=($startlimit-1)*1000;
-			$this->db->limit(1000,$start);
-			$pagetitle=$startlimit;
-		}		
-		
-		
+				
 		// 'enrollment_no'=>'AG/21220737'
 		// ,'enrollment_no'=>'AG/21200364'
 		$title = "Marksheet ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
 		$data['title'] = $title;
 		$class = $this->Common_model->getRecordByID('class_master','id',$class_id);
+
+		if($startlimit!=0){
+			$start=($startlimit-1)*1000;
+			$this->db->limit(1000,$start);
+			$pagetitle=$startlimit;
+		}	
+		
 		if($class->last_class == 'L'){
 			$this->db->order_by('center_id,roll_number','ASC');
 			$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','course_complete'=>'Y','university_mode'=>$mode ));
