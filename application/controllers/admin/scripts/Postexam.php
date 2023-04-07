@@ -50,7 +50,7 @@ class Postexam extends CI_Controller {
        public function upload_old_marks()
        {
             $this->db->select('course_name,student.class_name,class_id, COUNT(student_id) as cnt');
-            $this->db->join('class_master', 'student.class_id = class_master.id');
+            $this->db->join('class_master', 'student.old_class_id = class_master.id');
            // $this->db->where('last_class', 'L');
             $this->db->where('exam_form', 'Y');
             $this->db->where('mode', 'Semester');
@@ -68,7 +68,7 @@ class Postexam extends CI_Controller {
     public function upload_old_data_script($class_id=""){
         $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
         $this->db->limit(500);
-        $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'N'));
+        $students = $this->Common_model->getRecordByWhere("student",array("old_class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'N'));
      // $this->db->where_in('course_group.course_type',array('Diploma','PGDiploma'));
      // $course_type = $this->Common_model->getRecordByWhere("course_group",array('id'=> $students[0]->course_group_id));
 
