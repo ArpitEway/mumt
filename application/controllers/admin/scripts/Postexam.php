@@ -53,7 +53,7 @@ class Postexam extends CI_Controller {
             $this->db->join('class_master', 'student.old_class_id = class_master.id');
            // $this->db->where('last_class', 'L');
             $this->db->where('exam_form', 'Y');
-            $this->db->where('mode', 'Semester');
+            // $this->db->where('mode', 'Semester');
             $this->db->where('result_permission', 'Y');
             // $this->db->where('final_result_permission', 'Y');
             // $this->db->where('result_show', 'Y');
