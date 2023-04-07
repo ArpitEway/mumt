@@ -421,7 +421,7 @@
                           <td><?php $i++; ?></td>
                         <?php endwhile; ?>
                         <?php if ($classData->last_class=="L"){ ?>
-                        <th>Percentage</th>
+                        <th style="text-align:left;">Percentage</th>
                         <th style="text-align:left;"><?=round(($gtot_obtain_marks/$gtot_total_marks)*100,2); ?>%</th>
                       <?php }else{ ?>
                         <td></td>
