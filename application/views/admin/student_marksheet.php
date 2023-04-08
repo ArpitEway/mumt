@@ -183,6 +183,19 @@
                             {
                               $result='FAIL';
                             }
+                          }else if($marks->type=="Sessional"){
+                            $tot_std_marks += $marks->int_marks;
+                            $tot_marks +=$marks->max_internal_marks;
+                            if($marks->int_marks<$marks->min_internal_marks)
+                            {
+                              $result ="FAIL";
+                              $int_fail_count++ ;
+                            }
+                            if($marks->int_marks=="N")
+                            {
+                              $result='FAIL';
+                            }
+
                           }else{
                             if ($classData->practical_internal_marks=='Y') {
                               $tot_std_marks += $marks->p_marks+$marks->int_marks;
@@ -223,15 +236,25 @@
                             <td style="margin-top:2px;" align="left"><strong><?php echo  $paper->paper_code; ?></strong></td>
                             <td align="left"><strong><?php  echo $paper->paper_name ;  ?></strong></td>
                             <td align="center" ><span class="style4">
-                              <?php echo  $paper->max_theory_marks;?></span>
+                              <?php echo  ($paper->type !='Sessional')?$paper->max_theory_marks:'-';?></span>
                             </td>
                             <td align="center" ><span class="style4">
-                              <?php echo  $paper->min_theory_marks; ?></span>
+                              <?php echo  ($paper->type !='Sessional')? $paper->min_theory_marks:'-'; ?></span>
                             </td>
-                            <td align="center" ><span class="style4"><?=($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->max_internal_marks : '-'; ?></span>
+                            <td align="center" ><span class="style4"><?php
+                            if($paper->type=="Sessional"){
+                              echo $paper->max_internal_marks;
+                            }else{
+                              echo ($paper->type=='theory' || $classData->practical_internal_marks=='Y') ?  $paper->max_internal_marks : '-'; 
+                            }?></span>
                             </td>
                             <td align="center" ><span class="style4">
-                              <?=($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->min_internal_marks : '-'; ?></span>
+                              <?php 
+                               if($paper->type=="Sessional"){
+                                echo $paper->min_internal_marks;
+                              }else{
+                              echo ($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->min_internal_marks : '-'; 
+                              }?></span>
                             </td>
                             <td align="left" ><span class="style4" style="padding-left:10px;">
                               <?php
@@ -246,6 +269,8 @@
                                 }else{
                                   echo $paper->theory_marks;
                                 }
+                              }else if($paper->type=="Sessional"){
+                                echo '-';
                               }else{
                                 if ($classData->practical_internal_marks=='Y') {
                                   if($paper->p_marks<$paper->min_theory_marks || $paper->int_marks<$paper->min_internal_marks){
@@ -269,7 +294,12 @@
                               ?>
                             </span></td>
                             <td align="left" class="style4"><span class="style2" style="padding-left:10px;">
-                              <?=($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->int_marks : '-'; ?></span>
+                              <?php
+                              if($paper->type=='Sessional'){
+                               echo  $paper->int_marks;
+                              }else{
+                             echo  ($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->int_marks : '-'; 
+                              }?></span>
                             </td>
                             <td align="left" class="style2"><span class="style4" style="padding-left:10px;">
                               <?php 
@@ -281,6 +311,15 @@
                                   echo 'ABS'. ' F' ;
                                 }else{
                                   echo $paper->theory_marks + $paper->int_marks;
+                                }
+                              }else if($paper->type=="Sessional"){
+                                if($paper->int_marks<$paper->min_internal_marks){
+                                  echo   $paper->int_marks . '' ;
+                                  echo ($check_grace_marks) ? ' G' : ' F';
+                                }elseif($paper->int_marks=="ABS"){
+                                  echo 'ABS'. ' F' ;
+                                }else{
+                                  echo $paper->int_marks;
                                 }
                               }else{
                                 if($classData->practical_internal_marks=='Y') {
