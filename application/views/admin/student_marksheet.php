@@ -44,6 +44,8 @@
     $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
     $marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+    $isOneClass = $this->Common_model->hasOneClass($course_group_id);
+    // var_dump($isOneClass);
     foreach($students as $student)
     {
       $papers = $this->Common_model->student_info_for_result($student->student_id,$student->old_class_id);
@@ -337,7 +339,7 @@
                       </td>
                     </tr>
                     <?php $i=1; ?>
-                    <?php if ($classData->last_class=="L"): ?>
+                    <?php if ($classData->last_class=="L" && !$isOneClass): ?>
                     <tr>
                       <td height="20" ><strong><?=$classData->mode ?></strong></td>
                       <?php
@@ -360,7 +362,7 @@
                     <?php $j=$i; ?>
                     <tr>
                       <td height="20" ><strong>Obtained Marks</strong></td>
-                      <?php if ($classData->last_class=="L"): ?>
+                      <?php if ($classData->last_class=="L" && !$isOneClass): ?>
                       <?php
                         $gtot_obtain_marks = 0;
                         foreach ($oldClassResult as $row) { 
@@ -404,7 +406,7 @@
                     <?php $j=$i; ?>
                     <tr>
                       <td height="20"><strong>Maximum Marks</strong></td>
-                      <?php if ($classData->last_class=="L"): ?>
+                      <?php if ($classData->last_class=="L" && !$isOneClass): ?>
                       <?php 
                       $gtot_total_marks = 0;
                       foreach ($oldClassResult as $row) { 
@@ -422,7 +424,9 @@
                         <?php endwhile; ?>
                         <?php if ($classData->last_class=="L"){ ?>
                         <th style="text-align:left;">Percentage</th>
-                        <th style="text-align:left;"><?=round(($gtot_obtain_marks/$gtot_total_marks)*100,2); ?>%</th>
+                        <th style="text-align:left;"><?php echo (!$isOneClass)? round(($gtot_obtain_marks/$gtot_total_marks)*100,2) :
+                           round(($tot_std_marks/$tot_marks)*100,2)
+                        ; ?>%</th>
                       <?php }else{ ?>
                         <td></td>
                         <td></td>
@@ -430,7 +434,7 @@
                     </tr>
                     <tr>
                       <td colspan="8">
-                        <strong>Total Marks Obtained (in words)</strong> &nbsp;&nbsp;<strong><?php echo ($classData->last_class=="L") ? $this->numbertowordconvertsconver->convert_number("$gtot_obtain_marks") : $this->numbertowordconvertsconver->convert_number("$tot_std_marks") ?></strong>
+                        <strong>Total Marks Obtained (in words)</strong> &nbsp;&nbsp;<strong><?php echo ($classData->last_class=="L" && !$isOneClass) ? $this->numbertowordconvertsconver->convert_number("$gtot_obtain_marks") : $this->numbertowordconvertsconver->convert_number("$tot_std_marks") ?></strong>
                       </td>
                     </tr>
                   </tbody>
