@@ -57,7 +57,7 @@
             <tr>
               <td height="100" colspan="2" valign="bottom">
                 <center>
-                  <strong><?php echo $student->course_name .' '. $this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->old_class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
+                  <strong><?php echo  ($isOneClass) ? $student->course_name .' '."(One Year Course)" :$student->course_name .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->old_class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
                 </center>
               </td>
             </tr>

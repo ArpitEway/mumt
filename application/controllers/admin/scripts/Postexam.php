@@ -740,6 +740,25 @@ class Postexam extends CI_Controller {
          
         }
     }
+
+    public function view_student_examination_details()
+    {
+        $this->db->select('old_exam_data.*,student.gender, student.dob');
+        $this->db->where('old_exam_data.class_id',201);
+        $this->db->from('old_exam_data');
+        $this->db->join('student', 'old_exam_data.student_id = student.student_id');
+        $this->db->where('student.center_id<',100);
+        $this->db->where('student.university_mode ="REG"');
+        $this->db->where('old_exam_data.exam_year="Feb 2022"');
+        $this->db->order_by('old_exam_data.course_group_id,old_exam_data.class_id,old_exam_data.roll_no');
+      
+        $studentDatas = $this->db->get()->result();
+        $data['studentData']  = $studentDatas;
+       
+        $this->load->view('header',array('title' => 'Student Examination Details'));
+        $this->load->view('admin/script/view_student_examination_details',$data);
+        $this->load->view('footer');
+    }
  
     
 //for open book only End****************/
