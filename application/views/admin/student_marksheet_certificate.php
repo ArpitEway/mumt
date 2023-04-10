@@ -193,7 +193,7 @@
                             <td colspan="9">&nbsp;</td>
                           </tr>
                           <?php 
-                          
+                          if($class_id == 169){
                           if($tflag == 1) { echo '<tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.
                         '<td style="margin-top:2px;" align="left">'.'</td>'.
                             '<td colspan="8" align="left">'.'<strong>'.
@@ -206,6 +206,7 @@
                         '<u>'.'Viva-Voce'.'</u>'.':'.'</strong>'.'</td>'.'</tr>'.'<tr>'
                         .'<td colspan="9">'.'&nbsp;'.'</td>'.
                       '</tr>';}else{ echo'';};
+                          }
                           ?>
                           <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="middle">
                          
