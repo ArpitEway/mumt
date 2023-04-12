@@ -211,19 +211,7 @@
 							</div>
 					</a>  
 					<?php endif ?>
-					<a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
-						<div>
-							<span class="nav-text">Result</span>
-						</div>
-					</a>
-					<?php if ($this->session->center_id!=1080 && $this->session->center_id!=1986): ?>						
-						<a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
-							<div>
-								<span class="nav-text">Time Table</span>
-							</div>
-						</a>
-					<?php endif ?>
-						<!--<a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
 						<div>
 							<span class="nav-text">Practical Marks Submission (Regular)</span>
 						</div>
@@ -233,6 +221,19 @@
 							<span class="nav-text">Internal Marks Submission (Regular)</span>
 						</div>
 					</a>
+					<a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
+						<div>
+							<span class="nav-text">Result</span>
+						</div>
+					</a>
+					<?php /*if ($this->session->center_id!=1080 && $this->session->center_id!=1986): ?>						
+						<a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
+							<div>
+								<span class="nav-text">Time Table</span>
+							</div>
+						</a>
+					<?php endif */?>
+						<!--
 				 <a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
 						<div>
 							<span class="nav-text">Time Table June 2022</span>
