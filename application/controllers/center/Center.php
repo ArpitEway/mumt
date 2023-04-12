@@ -1757,7 +1757,8 @@ class Center extends CI_Controller {
 	 	$this->db->join('student', 'student.student_id = new_exam_form.student_id');
 		$this->db->order_by('new_exam_form.sub_group_id,paper_order');
 	 	$details = $this->db->get()->result();
-		//  echo $classData->practical_internal_marks.$this->db->last_query(); die;
+		//  echo $classData->practical_internal_marks.
+		//echo $this->db->last_query(); die;
 	 	$data = array(
 	 		'details' => $details,
 	 		'name_csrf' => $this->security->get_csrf_token_name(),
