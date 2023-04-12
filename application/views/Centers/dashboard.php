@@ -211,7 +211,7 @@
 							</div>
 					</a>  
 					<?php endif ?>
-					<a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
+					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
 						<div>
 							<span class="nav-text">Practical Marks Submission (Regular)</span>
 						</div>
@@ -220,7 +220,7 @@
 						<div>
 							<span class="nav-text">Internal Marks Submission (Regular)</span>
 						</div>
-					</a>
+					</a> -->
 					<a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
 						<div>
 							<span class="nav-text">Result</span>
