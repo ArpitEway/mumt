@@ -43,7 +43,7 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 		</tr>
 		<tr>
 			<th>Exam Session:</th>
-			<td>Feb 2022</td>
+			<td><?=$examSession?></td>
 				<th>Max.Marks:</th>
 				<td>
 					<?php 
@@ -82,7 +82,7 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 							<td>
 								<?php echo $dt->enrollment_no; ?>
 							</td>
-							<td><?php echo $dt->roll_number; ?>  
+							<td><?php echo $dt->roll_no; ?>  
 								<input type="hidden" name="student_id[]" value="<?=$dt->student_id?>">
 								
 							</td>
