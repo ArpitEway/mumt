@@ -435,6 +435,20 @@ public function update_sub_group_id_in_new_exam_form_sub(){
 // }
 // }
 
+public function update_roll_no_old_data(){
+	
+	$sql = "SELECT o.*,s.roll_number FROM `old_exam_data` as o join student as s on s.student_id=o.student_id WHERE `exam_year`='Aug 2022' and s.old_class_id=o.class_id and s.roll_number!=o.roll_no  limit 500";
+	$students = $this->db->query($sql)->result_array();
+	
+	foreach($students as $student){
+		$where = array('student_id'=>$student['student_id'],'exam_year'=>'Aug 2022','id'=>$student['id']);
+		$data = array ('roll_no'=>$student['roll_number']);
+		$this->Common_model->updateRecordByConditions('old_exam_data',$where,$data);
+		echo $this->db->last_query().'<br>';
+	}
+
+}
+
 
 	
 }
