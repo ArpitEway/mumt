@@ -2243,16 +2243,17 @@ class Center extends CI_Controller {
 	}
 	public function edit_student_marks(){
 		$student_id = $this->input->post('student_id');
-	   $class_id = $this->input->post('old_class_id');
+	    $class_id = $this->input->post('old_class_id');
 	   $classData	= $this->Common_model->getRecordById('class_master','id',$class_id); 
-		$where=array('student.student_id'=>$student_id);
+		$where=array('student.student_id'=>$student_id,'new_exam_form.class_id'=>$class_id);
 		$this->db->select('*');
 		$this->db->from('new_exam_form');
 		$this->db->Where($where );
-		$this->db->join('student', 'student.student_id = new_exam_form.student_id and student.old_class_id = new_exam_form.class_id');
+		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
 	//    $this->db->join('paper_master','student.class_id= paper_master.class_id and paper_master.paper_code = new_exam_form.paper_code');
 	   $this->db->order_by('new_exam_form.sub_group_id,paper_order');
 		$details = $this->db->get()->result();
+		// $this->Common_model->last_query();
 		$data = array(
 		   'classData' =>$classData,
 			'detail' => $details,
@@ -2277,8 +2278,8 @@ public function practical_assignment_marks_edit(){
 	$this->db->from('new_exam_form');
 	$this->db->Where($where );
 	$this->db->where_not_in('paper_type',array('Sessional','theory'));
-	$this->db->join('student', 'student.student_id = new_exam_form.student_id and student.old_class_id = new_exam_form.class_id');
-    $this->db->join('paper_master','student.old_class_id= paper_master.class_id and paper_master.paper_code = new_exam_form.paper_code');
+	$this->db->join('student', 'student.student_id = new_exam_form.student_id and student.class_id = new_exam_form.class_id');
+    $this->db->join('paper_master','student.class_id= paper_master.class_id and paper_master.paper_code = new_exam_form.paper_code');
    $this->db->order_by('new_exam_form.sub_group_id,paper_order,paper_no');
 	$details = $this->db->get()->result();
 	$data = array(
