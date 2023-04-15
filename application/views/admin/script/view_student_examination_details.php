@@ -31,8 +31,7 @@
 					<th> <?php echo 'SUB'.$count.'_TH_MRKS';?></th>
 					<th><?php echo 'SUB'.$count.'_PR_MRKS';?></th>
                     <th><?php echo 'SUB'.$count.'_CE_MRKS';?></th>
-					<!-- <th><?php //echo 'SUB'.$count.'_TOTal'.$count;?></th> -->
-                    <th><?php echo 'SUB'.$count.'_STATUS';?></th>
+					<th><?php echo 'SUB'.$count.'_STATUS';?></th>
                     <th><?php echo 'SUB'.$count.'_REMARKS';?></th>
 				
 					<?php
@@ -46,24 +45,21 @@
 				$j = 1;
 				foreach($studentData as $student){
                     if($student->exam_result == "FAIL"){
-                        $division = "FAIL";
+                        $division = "";
                     }
                     else if($student->percentage>=60){
                         $division = "First";
-                      }elseif($student->percentage<60 && $student->percentage>=40){
+                    }elseif($student->percentage<60 && $student->percentage>=40){
                         $division  = "Second";
-                      }else{
+                    }else{
                         $division = "Third";
-                      }
+                    }
                   
-                   
-                    $course = explode('(',$student->course_name);
-                     $stream = rtrim($course[1],')');
 					?>
 					<tr>
 						<td><?=$j++; ?></td>
-						<td><?php echo $course[0]; ?></td>
-                        <td><?php echo $stream; ?></td>
+						<td><?php echo $student->course_name; ?></td>
+                        <td></td>
                         <td><?php echo $student->exam_year; ?></td>
                         <td><?php echo $student->enrollment_no; ?> </td>
                         <td><?php echo $student->roll_no; ?> </td>
@@ -75,17 +71,15 @@
                         <td><?php echo $student->exam_result; ?> </td>
                         <td><?php echo '2022'; ?> </td>
                         <td><?php echo $division; ?> </td>
-                        <!-- <td><?php //echo $this->Common_model->getClassNameByClassId($student->class_id) ?></td> -->
-						<td><?php echo ($student->university_mode == 'REG')?'Regular':'Private';?></td>
+                       <td><?php echo ($student->university_mode == 'REG')?'Regular':'Private';?></td>
 						
                         <?php
                         $i=0;
                         $this->db->order_by('p_order');
                         $marksdatas= $this->Common_model->getRecordByWhere('old_result_data',array('student_id'=>$student->student_id,'exam_data_id' => $student->id));
-                        // echo count($marksdatas).'<br>';
+                        
                         foreach($marksdatas as $marksdata){
-                            // echo '<pre>';
-                            // print_r($marksdata);
+                         
                             $i++;
                             if($marksdata->type=='theory'){
                                     
@@ -98,7 +92,6 @@
                                     <td><?php echo ($marksdata->theory_marks == 'N')?'':$marksdata->theory_marks; ?> </td>
                                     <td><?php echo ($marksdata->p_marks == 'N')?'':$marksdata->p_marks; ?></td>
                                     <td><?php echo ($marksdata->int_marks == 'N')?'':$marksdata->int_marks; ?> </td>
-                                    <!-- <td><?php //echo $marksdata->theory_marks+$marksdata->int_marks; ?> </td>	 -->
                                     <td><?php echo $marksdata->result; ?> </td>
                                     <td></td>
                                     <?php 
@@ -112,7 +105,6 @@
                                     <td><?php echo ($marksdata->theory_marks == 'N')?'':$marksdata->theory_marks; ?> </td>
                                     <td><?php echo ($marksdata->p_marks == 'N')?'':$marksdata->p_marks; ?></td>
                                     <td><?php echo($marksdata->int_marks == 'N')?'':$marksdata->int_marks; ?> </td>
-                                    <!-- <td><?php //echo $marksdata->p_marks+$marksdata->int_marks; ?></td> -->
                                     <td><?php echo $marksdata->result; ?> </td>
                                     <td> </td>
                                     <?php
@@ -140,9 +132,7 @@
                                  
                                   
                                   ?>
-                                
-                                    
-                         
+                     
                     </tr>
 					<?php } ?>
 				</tbody>
