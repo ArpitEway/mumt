@@ -21,7 +21,7 @@
 				
 				<?php
 				$count = 1;
-				while ($count <= 12) {
+				while ($count <= 13) {
 					?>
 					<th><?php echo 'SUB'.$count.'NM';?></th>
                     <th><?php echo 'SUB'.$count.' Code';?></th>
@@ -119,8 +119,8 @@
                                 }
                         
                                   }	
-                                  if(count($marksdatas)<12){
-                                    $count_cell = 12 -count($marksdatas);
+                                  if(count($marksdatas)<13){
+                                    $count_cell = 13 -count($marksdatas);
                                     $x=1;
                                     while ($x <=$count_cell){
                                        echo "<td>".''."</td>";
