@@ -3131,11 +3131,12 @@ public function update_exam_datewise_permission(){
 
 		if($startlimit!=0){
 			$start=($startlimit-1)*1000;
-			$this->db->limit(1000,$start);
+			$this->db->limit(2,$start);
 			$pagetitle=$startlimit;
 		}	
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
 		$data['title'] = $title;
+		$data['university_mode'] = $mode;
 
 		if($class->last_class == 'L'){
 			$this->db->order_by('center_id,roll_number','ASC');

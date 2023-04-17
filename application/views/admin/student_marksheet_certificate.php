@@ -77,7 +77,7 @@
                         <div align="center"><font size="4">  &nbsp; </font></div>
                       </td>
                       <td class="Normaltext">
-                        <div align="center"><font size="4">  Regular </font></div>
+                        <div align="center"><font size="2">  <?php if(university_mode=='PVT') echo "Private"; else echo "Regular"; ?> </font></div>
                       </td>
                     </tr>
                     <tr>
