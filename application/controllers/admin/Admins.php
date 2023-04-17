@@ -3120,7 +3120,7 @@ public function update_exam_datewise_permission(){
 
 	public function student_marksheet($mode="",$course_id="",$class_id="",$startlimit=0)
 	{
-		$data = array('class_id' => $class_id,'course_group_id' =>$course_id );
+		$data = array('class_id' => $class_id,'course_group_id' =>$course_id ,'enrollment_no'=>'PA/21220242');
 				$start=0;
 				
 		// 'enrollment_no'=>'AG/21220737'
@@ -3131,7 +3131,7 @@ public function update_exam_datewise_permission(){
 
 		if($startlimit!=0){
 			$start=($startlimit-1)*1000;
-			$this->db->limit(2,$start);
+			$this->db->limit(1000,$start);
 			$pagetitle=$startlimit;
 		}	
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
