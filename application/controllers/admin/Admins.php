@@ -3267,16 +3267,17 @@ public function update_exam_datewise_permission(){
 		);
 		$titleData = array('title' => 'Internal  Marks Submission' );
 		$this->load->view('header',$titleData);
-		$this->db->order_by("int_marks_sub,student.course_group_id,student.old_class_id", "asc");
+		$this->db->order_by("int_marks_sub,student.course_group_id,student.class_id", "asc");
 		$this->db->select('*');
 		$this->db->from('student');
 		$this->db->join('new_exam_form', 'student.student_id = new_exam_form.student_id');
+		$this->db->join('class_master', 'student.class_id = class_master.id');
 		$this->db->group_by('new_exam_form.student_id');
-		$this->db->Where('exam_form','Y');
+		$this->db->Where('new_exam_form','Y');
 		$this->db->Where('paper_type','theory');
 		$this->db->where('university_mode','REG');
-		// $this->db->where('student.class_id','168');
-		$this->db->where('`student.old_class_id` in (101,104,107,110,116,119,125,128,131,134,154,155,159,160,162,164,168,172,181,182,194,196,198,200,202,204,206,208,210,212,214,222,224,226,228,256,262,273,274,299)');
+		$this->db->where('class_master.internal','Y');
+		
         	//$this->db->Where('result_show','Y');
 		$this->db->where_in('new_exam_form.int_marks',array('ABS','N'));
 		$data['students'] = $this->db->get()->result();//echo $this->db->last_query(); die;
@@ -3294,7 +3295,7 @@ public function update_exam_datewise_permission(){
 		$this->db->from('new_exam_form');
 		
 		$this->db->where('student.student_id',$student_id);
-		// $this->db->where('new_exam_form.class_id',$class_id);
+		$this->db->where('new_exam_form.class_id',$class_id);
 		if($classData->practical_internal_marks=="N")
 			// $this->db->where('paper_type','theory');
 			$this->db->where_in('paper_type',array('Sessional','theory'));
@@ -3365,7 +3366,7 @@ public function update_exam_datewise_permission(){
 		
 		// $this->db->where("new_exam_form.class_id = ".$class_id."");
 		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
-		$this->db->join('paper_master','student.old_class_id= paper_master.class_id and paper_master.paper_code = new_exam_form.paper_code');
+		$this->db->join('paper_master','student.class_id= paper_master.class_id and paper_master.paper_code = new_exam_form.paper_code');
 		$this->db->order_by('new_exam_form.sub_group_id,paper_order,paper_no');
 		$details = $this->db->get()->result();
 		$data = array(
@@ -3394,18 +3395,18 @@ public function update_exam_datewise_permission(){
 		);
 		$titleData = array('title' => 'Practical  Marks Submission' );
 		$this->load->view('header',$titleData);
-		$this->db->order_by("p_marks_sub,student.course_group_id,student.old_class_id", "asc");
+		$this->db->order_by("p_marks_sub,student.course_group_id,student.class_id", "asc");
 		$this->db->select('*');
 		$this->db->from('student');
 		$this->db->join('new_exam_form', 'student.student_id = new_exam_form.student_id');
-		$this->db->join('class_master', 'student.old_class_id = class_master.id');
+		$this->db->join('class_master', 'student.class_id = class_master.id');
 		$this->db->group_by('new_exam_form.student_id');
-		$where = array('paper_type!='=>'theory','exam_form'=>'Y');
+		$where = array('paper_type!='=>'theory','new_exam_form'=>'Y');
 		$this->db->Where($where);
 		$this->db->where_in('new_exam_form.p_marks',array('ABS','N'));
 		$this->db->where('university_mode','REG');
 		// $this->db->where('student.class_id','168');
-	    $this->db->where('`student.old_class_id` in (101,104,107,110,116,119,125,128,131,134,154,155,159,162,164,165,168,169,170,171,172,173,174,175,178,180,181,182,196,200,206,208,224,226,228,256,262,273,274,299)');
+	    //$this->db->where('`student.class_id` in (101,104,107,110,116,119,125,128,131,134,154,155,159,162,164,165,168,169,170,171,172,173,174,175,178,180,181,182,196,200,206,208,224,226,228,256,262,273,274,299)');
 		$this->db->Where('(project="Y" or practical = "Y")');
 		$data['students'] = $this->db->get()->result();
 		 // $this->Common_model->last_query();

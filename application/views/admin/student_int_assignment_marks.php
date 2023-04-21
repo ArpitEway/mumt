@@ -25,7 +25,7 @@
               
               <tr>          
                <td><strong>Enrollment No: </strong> <?=$details[0]->enrollment_no;?></td>
-                <td><strong> Roll No: </strong><?=$details[0]->roll_number;?></td>
+                <td><strong> Roll No: </strong><?=$details[0]->roll_no;?></td>
                  <td  rowspan="5"> <img  class="student_img" src="<?php echo base_url('/assets/student_image/').$details[0]->session.'/'.$details[0]->photo;?>" ></td> 
               </tr>
               <tr> 
@@ -34,7 +34,7 @@
               </tr>
               <tr>
                 <td><b>Course: </b> <?=$details[0]->course_name;?></td>
-                <td><b>Class: </b> <?= $this->Common_model->getClassNameByClassId($details[0]->old_class_id);?></td>
+                <td><b>Class: </b> <?= $this->Common_model->getClassNameByClassId($details[0]->class_id);?></td>
               </tr>
               
                
