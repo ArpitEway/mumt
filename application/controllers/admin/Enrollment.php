@@ -1255,5 +1255,26 @@ public function getStudentData()
 	}
 	}//fun
 
-
+	public function genrate_tc($student_id){
+		
+		$tc_date=$this->input->post("tc_date");
+		$tc_remark=$this->input->post("tc_remark");
+		if((!empty($tc_date)) && (!empty($tc_remark))){
+			$tcData = array('tc_date' => $tc_date,'delete_remark' => $tc_remark,'new_admission_permission'=>'Y');
+			$where = array('student_id'=>$student_id);
+			$this->Common_model->updateRecordByConditions('student',$where,$tcData);
+			$this->session->set_flashdata('ajax_flash_message','TC Generated !');
+			
+			echo json_encode(array("status" => 'true',		));
+		}
+		 else{
+			echo json_encode(array("status" => 'false',		));
+		 }
+		
+		
+		
+		
+		 
+		
+	}
 }
