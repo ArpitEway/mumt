@@ -871,7 +871,7 @@ class Common_Model extends CI_Model{
 		$this->db->select('count(*) as cnt,course_name,class_name,class_id');
 		$this->db->group_by('class_id');			
 		$this->db->from("student");
-		$this->db->order_by("class_id ","asc");
+		$this->db->order_by("course_group_id,class_id","asc");
 		$query = $this->db->get();
 		return $query->result_array();
 	}
@@ -882,7 +882,7 @@ class Common_Model extends CI_Model{
 		$this->db->select('count(*) as cnt,course_group_id,class_id');
 		$this->db->group_by('class_id');			
 		$this->db->from("backlog_student");
-		$this->db->order_by("class_id ","asc");
+		$this->db->order_by("course_group_id,class_id ","asc");
 		$query = $this->db->get();
 		return $query->result_array();
 	}
