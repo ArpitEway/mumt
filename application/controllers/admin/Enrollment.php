@@ -1269,12 +1269,53 @@ public function getStudentData()
 		}
 		 else{
 			echo json_encode(array("status" => 'false',		));
-		 }
-		
-		
-		
-		
-		 
-		
+		 }		
 	}
+
+
+	public function tc_student_list(){
+		$segment = $this->uri->segment(2);
+		$this->load->view('header',array('title' => 'TC Student List'));	
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+			'segment' => $segment
+		);
+		$this->load->view('admin/tc_student_list',$data);
+		$this->load->view('footer');
+	}
+
+
+	
+	public function getTCStudentData()
+	{
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}
+
+	 	 $text_val =$this->input->post('text_val'); 
+		if($text_val !='')
+		{
+			$where=array();
+			
+			if($text_val=='All'){
+				
+				$this->db->where('tc_date IS NOT NULL', NULL, FALSE);	
+			}
+			else{
+				$this->db->like('tc_date',$text_val);
+			}
+			
+				
+			$data['students'] = $this->Common_model->student_data($where);
+
+
+			$dt =  $this->load->view('admin/student/getTCStudents.php',$data,true);
+			echo json_encode(array(
+				"status" => true,
+				"data" => $dt
+			));
+		}
+	}//fun	
 }
