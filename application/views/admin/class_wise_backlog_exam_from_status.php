@@ -41,8 +41,10 @@
 					$this->db->select('count(*) num');
 					$this->db->from('backlog_student s');
 					$this->db->where(array('s.class_id' => $count['class_id'], 'exam_form' => 'Y','mode'  =>'REG','paper_type'=> 'theory'));
-					$this->db->join('exam_form ef','s.student_id=ef.student_id and s.class_id=ef.class_id');
+					$this->db->join('backlog_exam_form ef','s.student_id=ef.student_id and s.class_id=ef.class_id');
+					
 					$reg_paper_count = $this->db->get()->result()[0]->num;
+				
 					?>
 					<td><?php echo $Permitted; ?></td>
 					<td><?php echo $Permitted_reg; ?></td>
