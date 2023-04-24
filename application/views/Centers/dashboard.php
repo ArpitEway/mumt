@@ -49,7 +49,7 @@
 				 
 				 <?php
 				$center_id =  $this->session->center_id;	
-				$center_ids_dep = array(21,22,23,24,25,26,27,28);
+				$center_ids_dep = array(21,22,23,24,25,26,27,28,29);
 				  if($center->admission_permission_private=='Y' && !in_array($center_id, $center_ids_dep)){
 					?>
 					<a class="border-0 custom-menu-item kt_popup_private">
@@ -85,6 +85,18 @@
 							<span class="nav-text">Form Edit Request</span>
 						</div>
 					</a>
+					<!--
+					<a class="border-0 custom-menu-item" href="<?=base_url('admission_mode_edit_request/PVT');?>">
+						<div>
+							<span class="nav-text">Mode Change Request (Private to Regular)</span>
+						</div>
+					</a>
+					-->
+					<a class="border-0 custom-menu-item" href="<?=base_url('paper_missing_list/private');?>">
+						<div>
+							<span class="nav-text">Paper Missing List</span>
+						</div>
+					</a>	
 				</div>
 			</div>
 			<div class="tab-pane fade active show" id="Enrollment_Regular" role="tabpanel" aria-labelledby="Enrollment-tab-Regular">
@@ -101,9 +113,12 @@
 						</div>
 					</a> -->
 				  <?php
-				  if($center->admission_permission=='Y'){
+				  $center_id =  $this->session->center_id;	
+				//  $center_ids_dep = array(10,11,12,21,22,23,24,25,26,27,28,29,13);
+				//  if($center->admission_permission=='Y' || in_array($center_id, $center_ids_dep)){
+					if($center->admission_permission=='Y' ){
 					  ?>
-	                <a class="border-0 custom-menu-item kt_popup" >
+	        <a class="border-0 custom-menu-item kt_popup" >
 						<div>
 							<span class="nav-text">Admission Form Regular</span>
 						</div>
@@ -113,7 +128,7 @@
 				  ?>
 				 <?php
 				/* $center_id =  $this->session->center_id;	
-				$center_ids_dep = array(21,22,23,24,25,26,27,28);
+				$center_ids_dep = array(21,22,23,24,25,26,27,28,29);
 				  if($center->admission_permission_private=='Y' && !in_array($center_id, $center_ids_dep)){
 					?>
 					<a class="border-0 custom-menu-item" href="<?=base_url('admission_form/private');?>">
@@ -149,6 +164,23 @@
 							<span class="nav-text">Form Edit Request</span>
 						</div>
 					</a>
+					<!--
+					<a class="border-0 custom-menu-item" href="<?=base_url('admission_mode_edit_request/REG');?>">
+						<div>
+							<span class="nav-text">Mode Change Request (Regular to Private)</span>
+						</div>
+					</a>
+					-->
+					<a class="border-0 custom-menu-item" href="<?=base_url('paper_missing_list/regular');?>">
+						<div>
+							<span class="nav-text">Paper Missing List</span>
+						</div>
+					</a>
+					<a class="border-0 custom-menu-item" href="<?=base_url('photo_missing_list');?>">
+						<div>
+							<span class="nav-text">Photo Missing List</span>
+						</div>
+					</a>
 				</div>
 			</div>
 			<div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
@@ -167,16 +199,18 @@
 			</div> 
 			<div class="tab-pane fade" id="exam" role="tabpanel" aria-labelledby="exam-tab">
 				<div class="row">
-						<!--<a class="border-0 custom-menu-item" href="<?=base_url('center/paper_missing_list');?>">
-						<div>
-							<span class="nav-text">Paper Missing List</span>
-						</div>
-					</a> -->
-					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('remaining_exam_answersheet');?>">
-						<div>
-							<span class="nav-text">Remaining Exam Answersheet</span>
-						</div>
-					</a> -->
+				<?php if ($center->exam_form_permission=='Y'): ?>
+					<a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
+							<div>
+								<span class="nav-text">Exam Form March 2023</span>
+							</div>
+					</a> 
+					<a class="border-0 custom-menu-item" href="<?=base_url('backlog_exam_form_students');?>">
+							<div>
+								<span class="nav-text">Backlog Exam Form March 2023</span>
+							</div>
+					</a>  
+					<?php endif ?>
 					<a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
 						<div>
 							<span class="nav-text">Practical Marks Submission (Regular)</span>
@@ -187,31 +221,41 @@
 							<span class="nav-text">Internal Marks Submission (Regular)</span>
 						</div>
 					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
+						<div>
+							<span class="nav-text">Result</span>
+						</div>
+					</a>
+					<?php /*if ($this->session->center_id!=1080 && $this->session->center_id!=1986): ?>						
+						<a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
+							<div>
+								<span class="nav-text">Time Table</span>
+							</div>
+						</a>
+					<?php endif */?>
+						<!--
+				 <a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
 						<div>
 							<span class="nav-text">Time Table June 2022</span>
 						</div>
 					</a> 
-					<a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
-						<div>
-							<span class="nav-text">Exam Form June 2022</span>
-						</div>
-					</a> 
+					 -->
 
 				<!--	<a class="border-0 custom-menu-item" href="<?=base_url('student_roll_no_list');?>">
 						<div>
 							<span class="nav-text">Roll No List</span>
 						</div>
 					</a> -->
-					<a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
-						<div>
-							<span class="nav-text">Result</span>
-						</div>
-					</a>
+					
 					<?php if ($center->admit_card_permission=='Y'): ?>
 						<a class="border-0 custom-menu-item" href="<?=base_url('admit_card_list');?>">
 						<div>
 							<span class="nav-text">Admit Card</span>
+						</div>
+					</a>
+					<a class="border-0 custom-menu-item" href="<?=base_url('admit_card_backlog_student_list');?>">
+						<div>
+							<span class="nav-text">Backlog Admit Card</span>
 						</div>
 					</a>
 					<?php endif ?>

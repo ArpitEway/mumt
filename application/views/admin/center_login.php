@@ -18,8 +18,9 @@
 						<th>Contact Person</th>
 						<th>Mobile No</th>
 						<th>Options</th>
-						<th>Permission</th>
-						<th>Exam Form Show</th>
+						<th>Exam Form</th>
+						<th>Permission Old</th>
+						
 					</tr>
 				</thead>
 			<tbody>

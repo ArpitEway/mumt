@@ -316,8 +316,8 @@
 			if($this->session->has_userdata('adminData')){
 
 			$document_id = $this->Common_model->encrypt_decrypt($param,'decrypt');
-			$doc_details = $this->Common_model->getRecordById('admission_document','id',$document_id);
-			$data['student_id'] = $doc_details->student_id;
+			$data['doc_details'] = $this->Common_model->getRecordById('admission_document','id',$document_id);
+			$data['student_id'] = $data['doc_details']->student_id;
 			$where['student.student_id'] = $data['student_id'];
 			$data['student_detail'] = $this->Common_model->student_data($where);
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
@@ -368,7 +368,7 @@
 				'hash_csrf' => $this->security->get_csrf_hash(),
 				'centers' =>$centers
 			);
-			$this->load->view('header');
+			$this->load->view('header',array('title'=>"Edit Request"));
 			$this->load->view('admin/enrollment/view_form_edit_request',$data);
 			$this->load->view('footer');
 		}else{
@@ -387,10 +387,10 @@
 			$wherecenter = array('status' => 'Pending',
 				'center_id'=>$center_id,
 			);
-
+			$centerData = $this->Common_model->getRecordById('center','id',$center_id);
 			$center_detail = $this->Common_model->get_record('request','*',$wherecenter);
 			$data = array('center_details' => $center_detail ,'name_csrf' => $this->security->get_csrf_token_name(),
-				'hash_csrf' => $this->security->get_csrf_hash());
+				'hash_csrf' => $this->security->get_csrf_hash(),'centerData' => $centerData,);
 			if($data['center_details']){
 				$dt =  $this->load->view('admin/enrollment/FormEditRequestDetails',$data,true);
 			}else{
@@ -606,7 +606,7 @@
 
 				$data = array('enrolled' => 'Y');
 				/*****  exam form permission *****/
-				 if($exam_form_permission[0]->exam_form_permission=='Y' && $session[0]->exam_form_permission && ( ( $student[0]->session=='July 2021' && $student[0]->class_name=="I Year") || ( $student[0]->session=='Jan 2022' &&  $student[0]->class_name=="I SEM") ) ){
+				 if($exam_form_permission[0]->exam_form_permission=='Y' && $session[0]->exam_form_permission && ( ( $student[0]->session=='Jan 2022' && $student[0]->class_name=="I Year") || ( $student[0]->session=='July 2022' &&  $student[0]->class_name=="I SEM") ) ){
 				 	$data['new_exam_form'] ='N';
 				 } 
 				$where = 'student_id="'.$student[0]->student_id.'" ';
@@ -1084,7 +1084,19 @@
 		}
 	}
 
-	
+	public function make_Non_Verified(){
+		$student_id = html_escape($this->input->post('student_id'));
+		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		$data['provisional_remark'] = "N";
+		$data['approved'] = "";
+		$this->db->where('student_id', $student_id);
+		$this->db->update('student', $data);	
+		$this->session->set_flashdata('ajax_flash_message','Non Verfied');
+		echo json_encode(array(
+		"status" => 'true',
+		));
+	}
+
 	public function provisional_remark_update($param){
 		$remark = html_escape($this->input->post('remark'));
 		$data['provisional_remark'] = implode(",",$remark);
@@ -1098,13 +1110,28 @@
 	}
 
 	public function provisional_remark_list(){
+
+		if($this->input->method() == "post") 
+			{
+				$session    = $this->input->post("session");
+			}
+			else{
+				$session='All';
+			}
 		$this->load->view('header',array('title' => 'Provisional Students'));
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();	 
 		$where = array('','N');
 		$this->db->where_not_in('provisional_remark', $where);	
-		$this->db->order_by('center_id', 'ASC');
+		if($session!="All"){
+			$this->db->where('session',$session);
+		}
+		
+		$this->db->order_by('session,center_id', 'ASC');
 		$data['student_list'] = $this->db->get('student')->result();
+		$this->db->where_not_in('provisional_remark', $where);
+		$data['sessions'] = $this->Common_model->get_record('student','DISTINCT (session)');
+		$data['sessionsSelect'] =$session;
 		$this->load->view('admin/enrollment/provisional_remark_list',$data);
 		$this->load->view('footer');
 	}
@@ -1114,15 +1141,16 @@
 	{ 
 		$class_ids = $this->input->post('class_ids');	
 		$student_id = $this->input->post('student_ids');
-		$new_exam_form = $this->input->post('new_exam_form');
+		$exam_form = $this->input->post('new_exam_form');
 		$class_permission= $this->Common_model->getRecordByWhere('class_master',array('id'=>$class_ids));	
 		$where = array('student_id'=>$student_id);
-		if($class_permission[0]->result_permission=='Y' && $new_exam_form=='Y'){     
-		$data = array('provisional_remark' =>'N','result_show' =>'Y');
+		/*if($class_permission[0]->result_permission=='Y' && $exam_form=='Y'){     
+		$data = array('provisional_remark' =>'N','old_result_show' =>'Y');//old_result_show
 	     	}
 	     	else{
 	     	$data = array('provisional_remark' =>'N');
-	     	}
+	     	}*/
+		$data = array('provisional_remark' =>'N');	 
 		$update =  $this->Common_model->updateRecordByConditions('student',$where,$data);
 		if($update){
 			$result = array("status" => "true");
@@ -1204,9 +1232,7 @@ public function getStudentData()
 
 		}else if($text_val !='' && $radio_val == 'roll_no')
 		{
-			$where = array('name'=>$text_val
-
-		);
+			$where = array('roll_no'=>$text_val);
 
 		}else if($text_val !='' && $radio_val == 'student_name')
 		{

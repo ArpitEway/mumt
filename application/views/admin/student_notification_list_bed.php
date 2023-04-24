@@ -7,8 +7,9 @@
 </head>
 <body>
 	<br><?php
-$notification_no = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id' => $students[0]->class_id));
-$notification=$notification_no[0]->notification_no;
+$notification_no = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id' => $students[0]->old_class_id));
+
+$notification=($mode == "REG")?$notification_no[0]->notification_no:$notification_no[0]->pvt_notification_no;
 $date=$notification_no[0]->result_date;
 $exam_session=$notification_no[0]->exam_session;
 $page_no = 0 ;
@@ -89,9 +90,108 @@ $abs_count = 0 ;
 					$final_result = '';
 					$theory_paper_count = 0;
 					$p_paper_count = 0;
-					$paper_marks = $this->Common_model->notification_marks_details_($student->student_id,$student->class_id);
+					$fc1 =0;
+					$fc2=0;
+					$fc1_max =0;
+					$fc2_max =0;
+					$fc1_min =0;
+					$fc2_min =0;
+					$class_ids=array(101,104,107,110,116,119,125,128,131,134);
+					$paper_marks = $this->Common_model->notification_marks_details_($student->student_id,$student->old_class_id);
 					foreach($paper_marks as  $new_exam_form){
+					if((in_array($student->old_class_id, $class_ids)) && $mode=='REG')	
+					{
+						
+						if($new_exam_form->type=='theory'){
+							$theory_paper_count++;
 
+							
+							if($new_exam_form->sub_group_id == 1){
+								
+								if($new_exam_form->group_paper_name == 'FC1' ){
+									if($new_exam_form->theory_marks==''){
+										$rw_count++;
+							
+									}
+						 			$fc1 += (int) $new_exam_form->theory_marks;
+						  			$fc1_max += (int) $new_exam_form->max_theory_marks;
+						  			$fc1_min += (int) $new_exam_form->min_theory_marks;
+						 		}else{
+									if($new_exam_form->theory_marks==''){
+									$rw_count++;
+									
+									}
+									$fc2 += (int) $new_exam_form->theory_marks;
+									$fc2_max += (int) $new_exam_form->max_theory_marks;
+									$fc2_min += (int) $new_exam_form->min_theory_marks;
+						  		}
+
+
+							}else{
+								$total_theory_marks_obt += $new_exam_form->theory_marks;
+							$total_int_marks_obt += $new_exam_form->int_marks;
+							$total_marks_obt  += $new_exam_form->theory_marks+ $new_exam_form->int_marks;
+							$total_paper_marks += $new_exam_form->max_theory_marks + $new_exam_form->max_internal_marks;
+							$tot_std_marks += $new_exam_form->theory_marks;
+							$tot_marks += $new_exam_form->max_theory_marks;
+								if($new_exam_form->theory_marks=='ABS'){
+									array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
+									$theory_abs_count++;
+								}
+								if($new_exam_form->theory_marks==''){
+									$rw_count++;
+								}
+								if($new_exam_form->theory_marks+$new_exam_form->int_marks<$new_exam_form->min_theory_marks+$new_exam_form->min_internal_marks  && $new_exam_form->theory_marks!=''){
+									array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
+									$fail_count++;
+									$fail_tot_marks += $new_exam_form->theory_marks+$new_exam_form->int_marks;
+									$require_tot_marks += $new_exam_form->min_theory_marks+$new_exam_form->min_internal_marks;
+								}
+								if($new_exam_form->int_marks=='N'){
+									$rw_count++;
+								}
+								if($new_exam_form->int_marks<$new_exam_form->min_internal_marks){
+									$int_fail_count++;
+									array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
+								}
+								if($new_exam_form->int_marks=="ABS"){
+									$int_abs_count++;
+									$int_fail_count++;
+								}
+							}
+						}
+						if($new_exam_form->type!='theory'){
+							$p_paper_count++;
+							$total_paper_marks +=$new_exam_form->max_theory_marks+$new_exam_form->max_internal_marks; 
+							$total_marks_obt += $new_exam_form->p_marks+$new_exam_form->int_marks;
+							if($new_exam_form->p_marks=='' || $new_exam_form->p_marks=='N'){
+								$rwpr_count++;
+							}
+							if($new_exam_form->p_marks=='ABS'){
+								$p_abs_count++;
+							}
+							if($new_exam_form->p_marks<$new_exam_form->min_theory_marks){
+								$p_fail_count++;
+								array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
+							}
+							if($new_exam_form->type!='Project'){
+							if($new_exam_form->int_marks=='N'){
+								$rwpr_count++;
+							}
+						}
+
+							if($new_exam_form->int_marks<$new_exam_form->min_internal_marks){
+									$int_fail_count++;
+									array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
+							}
+							if($new_exam_form->int_marks=="ABS"){
+								$int_abs_count++;
+								$int_fail_count++;
+							}
+						}
+					
+
+					}else{
 						if($new_exam_form->type=='theory'){
 							$theory_paper_count++;
 							$total_theory_marks_obt += $new_exam_form->theory_marks;
@@ -153,11 +253,41 @@ $abs_count = 0 ;
 								$int_fail_count++;
 							}
 						}
+					}		
 					}
+					$total_theory_marks_obt +=$fc1+$fc2;
+					$total_marks_obt  +=$fc1+$fc2;
+					$total_paper_marks +=$fc1_max +$fc2_max;
+					$tot_marks += $fc1_max +$fc2_max;
+					$tot_std_marks += $fc1+$fc2;
+					$count_theory +=  $fc1+$fc2;
+	   
+		if($fc1 < $fc1_min ){
+		  array_push( $atkt_paper_codes_array ,'FC1' );
+			  $fail_count++;
+			  $fail_tot_marks += $fc1;
+			  $require_tot_marks += $fc1_min;
+	
+		}
+		if($fc2 < $fc2_min){
+		  array_push( $atkt_paper_codes_array ,'FC2' );
+		  $fail_count++;
+		  $fail_tot_marks += $fc2;
+		  $require_tot_marks += $fc2_min;
+	
+		}
 					if ($fail_count==0 && $rw_count==0 && $p_fail_count==0 && $int_fail_count==0 && $theory_abs_count==0 && $p_abs_count==0 && $rwpr_count==0) {
 						$final_result = "PASS";
 					}else{
-						$require_grace_marks = $require_tot_marks-$fail_tot_marks;
+						if((in_array($student->old_class_id, $class_ids)) && $mode=='REG')	
+			{
+		
+		$require_grace_marks =($require_tot_marks+1)-$fail_tot_marks;
+				              }else{
+								
+								$require_grace_marks =$require_tot_marks-$fail_tot_marks;
+							  }	  
+						
       // tot 3 grace marks in 1 subjects
 						if ($fail_count<2 && $require_grace_marks<4 && $int_fail_count==0 && $p_fail_count==0 && $rw_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0 && $rwpr_count==0) {
 							$check_grace_marks = true;
@@ -220,6 +350,17 @@ $abs_count = 0 ;
 							<th style="text-align:left" scope="row"  width="45%"><span class="style5" >Name and F/H Name</span></th>
 							<th scope="row" class="text-center"  width="15%">Result</span></th>
 							<th scope="row" class="text-center" width="10%"><span class="style5">Total</span></th>
+							<?php	
+						
+							if((in_array($student->old_class_id, $class_ids)) && $mode=='REG')	
+							{
+						
+								?>
+								<th scope="row" class="text-center" width="10%"><span class="style5">SGPA/AGPA</span></th>
+								<?php
+
+							}
+					?>
 							<th scope="row" class="text-center" width="20%"><span class="style5">Remark</span></th>
 						</tr>
 					</thead>
@@ -230,7 +371,7 @@ $abs_count = 0 ;
 					?>
 					<tr class="alternate">
 						<td class="text-center" scope="row">
-							<?php echo $student->roll_no; ?>
+							<?php echo $student->roll_number ?>
 							</td>
 							<td scope="row"  style="padding-left: 10px;" >
 								<?php echo $student->name .' / '.  $student->f_h_name; ?>
@@ -247,18 +388,45 @@ $abs_count = 0 ;
 								} 
 								?>
 							</td>
+							<?php
+							if((in_array($student->old_class_id, $class_ids)) && $mode=='REG'){
+								if($final_result != 'FAIL'){
+							$gradesheetData = $this->Gradesheet_tr_model->view_notification($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+								}else{
+									?>
+									<td  class="text-center" style="padding:0px" align="center"></td>
+									<?php
+								}
+							}
+							?>
 							<td class="text-center">
-								<?php if($check_grace_marks){
+								<?php 
+								if((in_array($student->old_class_id, $class_ids)) && $mode=='REG')	
+								{
+								if($check_grace_marks){
 									echo " ";
-								}elseif(sizeof($atkt_paper_codes_array)==1){
-									echo "ATKT in";
+								}elseif(sizeof($atkt_paper_codes_array)>0){
+									echo "ATKT in ";
 									$atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
 									foreach($atkt_paper_codes_array as $paper_code){
 										echo  "<br>". $paper_code;
 									}
 								}else{
 									echo '';
-								} ?>
+								}
+							 }else{
+								if($check_grace_marks){
+									echo " ";
+								}elseif(sizeof($atkt_paper_codes_array)==1){
+									echo "ATKT in ";
+									$atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
+									foreach($atkt_paper_codes_array as $paper_code){
+										echo  "<br>". $paper_code;
+									}
+								}else{
+									echo '';
+								}	
+							 } ?>
 							</td>
 						</tr>
 						<?php

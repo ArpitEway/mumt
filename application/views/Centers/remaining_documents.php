@@ -105,7 +105,7 @@ foreach($documentData as $document){
 		<?php } ?>
 	</div>
 	<div class="row justify-content-center my-3">
-		<a href="<?=base_url('center/not_approve_student_list')?>" class="btn btn-primary">Submit</a>
+		<a href="<?=base_url('not_approve_student_list/'.$student->university_mode.'')?>" class="btn btn-primary">Submit</a>
 	</div>
 </form>
 <?php }

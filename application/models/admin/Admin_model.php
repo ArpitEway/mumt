@@ -609,6 +609,7 @@ class Admin_model extends CI_Model {
 		
         $data['course_group_id'] = html_escape($this->input->post('course_group_id'));
 		$data['class_id'] 		 = html_escape($this->input->post('class_id'));
+		$data['pattern']		 = html_escape($this->input->post('pattern'));
 		
 		$ces 					 = html_escape($this->input->post('ce'));
 		$data['ce'] 			 = html_escape($this->input->post('ce'));
@@ -616,6 +617,12 @@ class Admin_model extends CI_Model {
 		$data['paper_code']      = html_escape($this->input->post('paper_code'));
 		$data['type'] 		     = html_escape($this->input->post('type'));
 		$data['group_name']		 = html_escape($this->input->post('group_name'));
+		// echo $data['pattern'];die;
+		if($data['pattern'] == 'cbcs'){
+			$cbcs = 'Y';
+		}else{
+			$cbcs ='N';
+		}
 		
 		$courses = $this->db->get_where('course', array('course_group_id' => $data['course_group_id']))->row_array();
 		$course_name  = $courses['course_name'];
@@ -635,6 +642,7 @@ class Admin_model extends CI_Model {
 			$paper_data['paper_no']  		= $paper_no;
 			$paper_data['paper_code']  		= $data['paper_code'][$i]; 
 			$paper_data['type'] 	   		= $data['type'][$i];
+			$paper_data['cbcs_paper']       = $cbcs;
 			
 			$this->db->insert('paper_master', $paper_data);
 			$ins_id = $this->db->insert_id();
@@ -885,17 +893,11 @@ class Admin_model extends CI_Model {
 	
 	public function allot_course($param1)
 	{
-		$data['alloted_course_group_id'] = html_escape($this->input->post('course_group_id'));
-		
-		$data['alloted_course_group_id'] = implode(",", $data['alloted_course_group_id']);
-		
+		$allot_course_group_id = html_escape($this->input->post('course_group_id'));
+		$data['allot_course_group_id'] = implode(",", $allot_course_group_id);		
 		$this->db->where('id', $param1);
 		$this->db->update('center', $data);
-		
-		$response = array(
-				'status' => 'true',
-				);
-				
+		$response = array('status' => 'true',);
 		return json_encode($response);
 	}
 		
@@ -1110,6 +1112,28 @@ class Admin_model extends CI_Model {
 			return json_encode($response);
 		}
 	}
+
+	public function create_admission_mode_request(){
+
+		$data['center_id'] 	= $this->session->center_id;
+		$data['student_id'] = html_escape($this->input->post('student'));
+		$data['detail'] 	= html_escape($this->input->post('detail'));
+		$fmode	= $this->input->post('mode');
+		if($fmode=="REG") {$tmode	="Private"; $fromMode="Regular"; }
+		else if($fmode=="PVT") { $tmode	="Regular"; $fromMode="Private"; }
+		$data['from_mode'] =$fromMode;
+		$data['to_mode'] =$tmode;
+		$data['date'] 		= date("Y-m-d");
+
+		$this->db->insert('request_mode_change', $data);
+		$session_id = $this->db->insert_id();
+		$response = array(
+			'status' => true,
+			'notification' => 'form_request_added_successfully'
+		);
+		return json_encode($response);
+	}
+
 
 
 }

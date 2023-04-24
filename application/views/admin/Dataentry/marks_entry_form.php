@@ -43,12 +43,12 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 		</tr>
 		<tr>
 			<th>Exam Session:</th>
-			<td>Feb 2022</td>
+			<td><?=$examSession?></td>
 				<th>Max.Marks:</th>
 				<td>
 					<?php 
 					if ($university_mode=='PVT'){
-					echo $max_marks =$papers->max_theory_marks;
+					echo $max_marks =$papers->private_max_theory_marks;
 					echo ' ( Theory marks ) ';
 					$max_int_marks = 0;
 					 }elseif($university_mode=='REG'){ 
@@ -84,7 +84,7 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 							</td>
 							<td><?php echo $dt->roll_no; ?>  
 								<input type="hidden" name="student_id[]" value="<?=$dt->student_id?>">
-								<input type="hidden" name="paper_code" value="<?=$paper_code?>">
+								
 							</td>
 							<td class="fit">	
 								<select name="marks[]" class="form-control" id="marks<?php echo $count ?>">
@@ -108,6 +108,8 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 				    	}
 					?>
 					<input type="hidden" id="total_count" value="<?= $count ?>">
+					<input type="hidden" name="paper_code" value="<?=$paper_code?>">
+					<input type="hidden" name="class_id" value="<?=$class_id?>">
 				</tbody>
 			  </table>
 			<div class="row">
@@ -177,5 +179,5 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 		// 	    e.stopPropagation();
 		// 	  });
 		// 	});
-		// });
+		 });
 	</script>

@@ -24,7 +24,8 @@ li{
 			<option value="">Select</option>
 			<?php
 			
-			$sessions = $this->Common_model->get_record('student','distinct(session)',array('center_id ' => $this->session->center_id));
+			//$sessions = $this->Common_model->get_record('student','distinct(session)',array('center_id ' => $this->session->center_id));
+			$sessions = $this->Common_model->get_record('session','distinct(session)',array('enrollment_permission ' => 'Y'));
 			
 			foreach($sessions as $session){
 				?>
@@ -187,11 +188,13 @@ $("#allClassBycourse").on('change', function(){
 	var csrfName = $('.csrfname').attr('name');
 	var csrfHash = $('.csrfname').val(); 
 	var course_group_id = $(this).val();
+	var session_course_type=$("#session_course_type").val();
 	$.ajax({
 		method: "POST",
 		url: BASE_URL + "center/center/getStudent_By_Course",
 		data: { 
 			course_group_id : course_group_id,
+			session_course_type:session_course_type,
 			[csrfName]:csrfHash
 		},
 	})

@@ -18,8 +18,8 @@ class Preexam extends CI_Controller {
 		$this->load->view('admin/script/header',array('title' => 'Upload Exam Paper'));
 		/* class which dose not have elective papers */
 		
-		$classes = $this->Common_model->get_record('class_master','GROUP_CONCAT(id) as class_id',array('class_group' => 'N','exam_form_permission' => 'Y'));
-
+		$classes = $this->Common_model->get_record('class_master','GROUP_CONCAT(id) as class_id',array('class_group' => 'N'));
+		//,'exam_form_permission' => 'Y','admission_permission' => 'Y'
 		$class_ids = $classes[0]['class_id'];
 		
 		$this->db->select('count(class_id) as num,course_name,class_name,class_id');
@@ -27,6 +27,28 @@ class Preexam extends CI_Controller {
 		$this->db->group_by('class_id');
 		$this->db->order_by('course_group_id');
 		$studentClasses = $this->db->get('student')->result();
+		$i=0;
+		//echo $this->db->last_query();
+		foreach($studentClasses as $row){
+			$where = array('class_id' => $row->class_id,
+							'temp_exam_form' => "N",
+							'university_mode'=>'REG',
+						);
+			$studentsReg = $this->Common_model->getCountByWhere('student',$where);
+			$where = array('class_id' => $row->class_id,
+				'temp_exam_form' => "N",
+				'university_mode'=>'PVT',
+				);
+			$studentsPvt = $this->Common_model->getCountByWhere('student',$where);
+			
+			$row->privateCount=$studentsPvt;
+			$row->regularCount=$studentsReg;
+			$studentClasses[$i]=$row;
+			
+			$i++;
+		}
+		
+		
 		// $this->Common_model->last_query();
 		$data = array(
 			'studentClasses' => $studentClasses,
@@ -35,15 +57,24 @@ class Preexam extends CI_Controller {
 		$this->load->view('admin/script/footer');
 	}
 
-	public function upload_exam_paper_sub($class_id)
+	public function upload_exam_paper_sub($class_id,$university_mode)
 	{
 		$where = array('class_id' => $class_id,
 					//'payment_status' => 'Y',
 					'temp_exam_form' => "N",
+					'university_mode'=>$university_mode,
 		);
-		$this->db->order_by('id');
-		$papers = $this->Common_model->get_record('paper_master','*','class_id='.$class_id);
+	
+		
 		$students = $this->Common_model->get_record('student','*',$where);
+		$classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+		
+		$cbcs = ($classData->cbcs == 'Y')?'Y':'N';
+		if($university_mode=='PVT') 
+					$paperWhere=array('class_id'=>$class_id,'type'=>'theory', 'cbcs_paper'=> $cbcs);
+			else			
+					$paperWhere=array('class_id'=>$class_id,'cbcs_paper'=> $cbcs);
+			$papers = $this->Common_model->get_record('paper_master','*',$paperWhere);
 		foreach ($students as $student) {
 			$where = array('student_id'=>$student['student_id']);
 			$data = array(
@@ -72,7 +103,7 @@ class Preexam extends CI_Controller {
 		$class_ids = $classes[0]['class_id'];
 		
 		$this->db->select('count(class_id) as num,course_name,class_name,class_id');
-		$this->db->where('class_id in ('.$class_ids.') and new_exam_form="D" and enrolled = "Y"');
+		$this->db->where('class_id in ('.$class_ids.') and new_exam_form="D" and enrolled = "Y" and session="July 2022" ');
 		$this->db->group_by('class_id');
 		$this->db->order_by('course_group_id');
 		$studentClasses = $this->db->get('student')->result();
@@ -87,8 +118,12 @@ class Preexam extends CI_Controller {
 		$where = array('class_id' => $class_id,
 					'enrolled' => "Y",
 					'new_exam_form' => "D",
-					'temp_exam_form' => "Y",
+					'enrollment_no !=' =>'-',
+					'new_admission_permission' => "N",
+					'session'=>"July 2022"
+					
 				);
+		//'temp_exam_form' => "Y",
 		
 		$students = $this->Common_model->get_record('student','*',$where);
 
@@ -99,17 +134,73 @@ class Preexam extends CI_Controller {
 	}
 
 	
+	// Fetching Student record & Update  exam center by Center ID 
+    public function update_stdent_allottment_exam_center($startlimit=1){
+        echo "update_stdent_allottment_exam_center<br>";
+        $this->db->select('*');
+        $this->db->from('student');
+        $this->db->where('exam_center_id','0');
+        //$this->db->where('examcentercode','NU');
+        $start=0;
+		//$start=($startlimit-1)*1000;
+		$this->db->limit(2000,$start);
+        $rows=$this->db->get()->result();
+        //echo $this->db->last_query();
+        $i=1;
+         foreach($rows as $row){
+            $this->db->select('*');
+            $this->db->from('allot_exam_center');
+            $this->db->where('center_id',$row->center_id);
+            $allottment=$this->db->get()->result();
+            
+            
+            if(!empty($allottment)){
+             
+                $data  = array('exam_center_id'=>$allottment[0]->exam_center_id ,'examcentercode'=>$allottment[0]->examcentercode );
+                $where = array('student_id'=>$row->student_id);
+                $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+                echo $i." ".$row->	center_code." ".$row->student_id." ".$row->name." Exam Code =>".$allottment[0]->examcentercode." <br>";
+               $i++;
+            }
+           
+           
+         }
+    }
+
+	// backlog
+	public function update_backlog_stdent_allottment_exam_center($startlimit=1){
+        echo "update_stdent_allottment_exam_center<br>";
+        $this->db->select('*');
+        $this->db->from('backlog_student');
+        $this->db->where('exam_center_id','0');
+        //$this->db->where('examcentercode','NU');
+        $start=0;
+		//$start=($startlimit-1)*1000;
+		$this->db->limit(2000,$start);
+        $rows=$this->db->get()->result();
+        //echo $this->db->last_query();
+        $i=1;
+         foreach($rows as $row){
+            $this->db->select('*');
+            $this->db->from('allot_exam_center');
+            $this->db->where('center_id',$row->center_id);
+            $allottment=$this->db->get()->result();
+            
+            
+            if(!empty($allottment)){
+             
+                $data  = array('exam_center_id'=>$allottment[0]->exam_center_id ,'exam_center_code'=>$allottment[0]->examcentercode );
+                $where = array('student_id'=>$row->student_id);
+                $update =$this->Common_model->updateRecordByConditions('backlog_student',$where,$data);
+                echo $i." ".$row->	center_code." ".$row->student_id." ".$row->name." Exam Code =>".$allottment[0]->examcentercode." <br>";
+               $i++;
+            }
+           
+           
+         }
+    }
 	
-	// public function	update_exam_center_id_in_student() {
-		
-	// 	$exam_centers = $this->Common_model->get_record('exam_center','*');
-	// 	foreach($exam_centers as $exam_center){
-	// 		$where = 'institute_id in ('.$exam_center['allot_institute_id'].' ) and new_exam_form!="D" and exam_center_id = ""';
-	// 		$data = array('exam_center_id'=> $exam_center['id']);
-	// 		$students = $this->Common_model->updateRecordByConditions('student',$where,$data);
-	//          echo $this->db->last_query().'<br>';
-	// 	}
-	// }
+	
 
 
 	
@@ -135,6 +226,31 @@ class Preexam extends CI_Controller {
 			
 		$this->load->view('header',array('title' => 'Generate Roll Number'));
 		$this->load->view('admin/script/generate_roll_no',$data);
+		$this->load->view('footer');
+	}
+
+	public function generate_backlog_roll_no(){		
+		if(isset($_POST['action']) && $_POST['action']=='generate'){
+			$data = array(			
+				 'action' => 'generate',
+			);
+		}else if( isset($_POST['action']) && $_POST['action']=='view'){
+			$data = array(
+				 'action' => 'view',
+			);
+		}
+		else{
+			$data = array(
+				'student' => '',
+				'action' => '',
+			);
+		}
+
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();
+			
+		$this->load->view('header',array('title' => 'Generate Backlog Roll Number'));
+		$this->load->view('admin/script/generate_backlog_roll_no',$data);
 		$this->load->view('footer');
 	}
 

@@ -77,6 +77,7 @@
             <option value="ABS" selected>Absent</option>
             <?php
             $percentage = 85;
+            // $percentage = 100;
           
             
             $max_practical=  $student->max_theory_marks;

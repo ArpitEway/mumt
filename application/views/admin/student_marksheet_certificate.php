@@ -45,10 +45,16 @@
     $marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
     $isFinalClass = $this->Common_model->hasOneClass($course_group_id);
-    $course_duration  = ($isFinalClass!='')? '(One Year Course)' : 'Six Months Course';
+    if($isFinalClass){
+      $course_duration = '(One Year Course)';
+    }else if($course_group_id == 36 || $course_group_id == 37){
+      $course_duration = 'Six Months Course';
+    }else{
+      $course_duration = $this->Common_model->romanClassName($classData->class_name);
+    }
     foreach($students as $student)
     {
-      $papers = $this->Common_model->student_info_for_result($student->student_id,$student->class_id);
+      $papers = $this->Common_model->student_info_for_result($student->student_id,$student->old_class_id);
       ?>
       <fieldset id="printarea" class="breakhere" style="width:90%;border: 0px solid #22316C;"> 
         <div align="left"> MS No. <?php echo $student->marksheet_no; ?> </div>
@@ -71,14 +77,14 @@
                         <div align="center"><font size="4">  &nbsp; </font></div>
                       </td>
                       <td class="Normaltext">
-                        <div align="center"><font size="4">  Regular </font></div>
+                        <div align="center"><font size="2">  <?php if($university_mode=='PVT') echo "Private"; else echo "Regular"; ?> </font></div>
                       </td>
                     </tr>
                     <tr>
                       <td width="35%" class="Normaltext" align="left"><div align="left">Roll No</div></td>
                       <td width="53%" class="resultText">
                         <div align="left">
-                          <span id="lblSemesterGrading" style="color:Black;"><?php echo $student->roll_no; ?></span>
+                          <span id="lblSemesterGrading" style="color:Black;"><?php echo $student->roll_number; ?></span>
                           <!-- <div style="float:right"> &nbsp;&nbsp;&nbsp; Mode - Distance Education </div> -->
                         </div>
                       </td>
@@ -177,15 +183,36 @@
                           $check_grace_marks = true;
                           $result = "PASS BY GRACE";
                         }
+                        $flag = 1;
+                        $tflag = 1;
                         foreach($papers as $paper)
                         {
+                          $paper_name = explode(' - ',$paper->paper_name);
                           ?>
                           <tr>
                             <td colspan="9">&nbsp;</td>
                           </tr>
+                          <?php 
+                          if($class_id == 169){
+                          if($tflag == 1) { echo '<tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.
+                        '<td style="margin-top:2px;" align="left">'.'</td>'.
+                            '<td colspan="8" align="left">'.'<strong>'.
+                          '<u>'.'Theory'.'</u>' .':'.'</strong>'.'</td>'.
+                          '</tr>'.'<tr>'
+                          .'<td colspan="9">'.'&nbsp;'.'</td>'.
+                        '</tr>';}elseif
+                          ($paper_name[0] == 'Moukhiki' && $flag == 1){ echo ' <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.'<td style="margin-top:2px;" align="left">'.'</td>'.
+                          '<td colspan="8" align="left">'.'<strong>'.
+                        '<u>'.'Viva-Voce'.'</u>'.':'.'</strong>'.'</td>'.'</tr>'.'<tr>'
+                        .'<td colspan="9">'.'&nbsp;'.'</td>'.
+                      '</tr>';}else{ echo'';};
+                          }
+                          ?>
                           <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="middle">
+                         
                             <td style="margin-top:2px;" align="left"><strong><?php echo  $paper->paper_code; ?></strong></td>
-                            <td align="left"><strong><?php  echo $paper->paper_name ;  ?></strong></td>
+                           
+                            <td align="left"><strong><?php  echo ($paper_name[0] == 'Moukhiki')? $paper_name[1] : $paper->paper_name ;  ?></strong></td>
                             <td align="center" ><span class="style4">
                               <?php echo  $paper->max_theory_marks;?></span>
                             </td>
@@ -241,7 +268,12 @@
                             ?></span>
                           </td>
                         </tr>
-                      <?php } ?>
+                      <?php
+                      if($paper_name[0] == 'Moukhiki') {
+                    $flag =0;}
+                    $tflag =0;} 
+                   
+                    ?>
                     </tbody></table>
                   </div>
                   <table border="0" cellpadding="0" height="112" width="100%">
@@ -339,7 +371,7 @@
                   </tr>
                   <tr class="">
                     <td colspan="">
-                      <?php  echo $generator->getBarcode($marksheet_variables->bar_code_no.$student->roll_no, $generator::TYPE_CODE_128,2,25); ?>
+                      <?php  echo $generator->getBarcode($marksheet_variables->bar_code_no.$student->roll_number, $generator::TYPE_CODE_128,2,25); ?>
                     </td>
                   </tr>
                   <tr>

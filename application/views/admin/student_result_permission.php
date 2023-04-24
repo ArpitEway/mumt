@@ -1,6 +1,7 @@
 <form method="post" action="<?=base_url('admin/Admins/update_student_result_permission')?>" class="mt-3" >
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-     <div class="text-center p-3">
+<input type="hidden" name="mode" value="<?=$mode?>">
+<div class="text-center p-3">
 		<button type="submit" class="btn btn-primary btn-lg" id="submit" name="submit" >Update</button>
 	</div>
 <hr>
@@ -26,11 +27,11 @@
           
         ?>
         <tr>
-        <input type="hidden" name ="class_id" value = "<?php echo  $students->class_id  ?>">
+        <input type="hidden" name ="class_id" value = "<?php echo  $students->old_class_id  ?>">
         <input type="hidden" name ="course_group_id" value = "<?php echo  $students->course_group_id  ?>">
         <td><?php  echo $i++ ; ?></td>
         <td><?php  echo $students->student_id ?></td>
-        <td><?php  echo $students->roll_no ?></td>
+        <td><?php  echo $students->roll_number ?></td>
         <td><?php  echo $students->enrollment_no ?></td>
         <td><?php  echo $students->center_code ?></td>
         <td><?php  echo $students->name ?></td>
@@ -65,11 +66,11 @@
 
         ?>
         <tr>
-        <input type="hidden" name ="class_id" value = "<?php echo  $students->class_id  ?>">
+        <input type="hidden" name ="class_id" value = "<?php echo  $students->old_class_id  ?>">
         <input type="hidden" name ="course_group_id" value = "<?php echo  $students->course_group_id  ?>">
         <td><?php  echo $i++ ; ?></td>
         <td><?php  echo $students->student_id ?></td>
-        <td><?php  echo $students->roll_no ?></td>
+        <td><?php  echo $students->roll_number ?></td>
         <td><?php  echo $students->enrollment_no ?></td>
         <td><?php  echo $students->center_code ?></td>
         <td><?php  echo $students->name ?></td>

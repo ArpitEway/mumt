@@ -87,7 +87,7 @@
         }; 
 
         $.ajax({
-            url:BASE_URL+'admin/ExamController/getPaperByClassId',
+            url:BASE_URL+'admin/<?=$this->session->account_type; ?>/getPaperByClassId',
             type:'post',
             dataType : 'JSON',
             data: data,
@@ -139,7 +139,7 @@
        }
 
        var frm = $('.ajaxForm').serialize();
-       var url = BASE_URL + "admin/ExamController/search_assign_exam_center";
+       var url = BASE_URL + "admin/<?=$this->session->account_type; ?>/search_assign_exam_center";
 
        $.ajax({
         url: url,
@@ -183,7 +183,7 @@
 var frm = $('.answersheet').serialize();
 console.log("hello test ");
   /*  $.ajax({
-    	url: '<?php echo site_url('admin/ExamController/show_counter_folio'); ?>',
+    	url: '<?php echo site_url('admin/<?=$this->session->account_type; ?>/show_counter_folio'); ?>',
     	type: 'POST',
     	dataType : 'json',
     	data: frm,

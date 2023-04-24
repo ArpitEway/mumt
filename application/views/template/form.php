@@ -234,7 +234,7 @@ hr.new2 {
 					<label class="label_form">Handicaped : </label>
 				</div>
 				<div class="form-group col-md-3 text-left m-auto form-text-color">
-					<?php echo ($student['p_handicapped']=='') ? 'N0' : 'YES' ?>
+					<?php echo ($student['handicapped']=='N') ? 'N0' : 'YES' ?>
 				</div>
 				<div class="form-group col-md-3 text-left m-auto">
 					<label class="label_form">Medium : </label>

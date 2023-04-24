@@ -214,33 +214,42 @@
 			</table>
 		</div>
 	</div>
-		<?php if ($student['new_exam_form']=='N'): ?>
-	<?php $student_id = $this->Common_model->encrypt_decrypt($student['student_id']); ?>
-			<div class="row justify-content-center mt-10">
-			<?php 
-		$center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28 );
-		if(in_array($this->session->center_id, $center_ids)){
-			?>
-<a class="btn btn-success" href="<?= base_url('paid_by_university/'.$student_id) ?>">Paid By University</a>
-			<?php
-		}else{
-			?>
-			<?php if($student['temp_exam_form']=='Y' && $student['new_exam_form']=='N')
-
-			{ 
-				$center_id =  $this->session->center_id;
-				$center_permission = $this->Common_model->get_record('center','exam_form_permission',array('id'=>$center_id));
-				if($center_permission[0]['exam_form_permission']=='Y'){
-				?>
-				<a class="btn btn-success" href="<?= base_url('Payment/exam_form/'.$student_id) ?>">Process To Payment</a>
-			<?php } } ?>
+	
+	   	<?php if($student['payment_status'] == 'N'){ ?>
+			<div class="row d-flex justify-content-center p-3">
+				<a class="btn btn-success" href="<?= base_url('center/Payment/admission/'.$this->Common_model->encrypt_decrypt($student['student_id'])) ?>">Process To Payment</a>
+			</div>
 			<?php
 		}
-  ?>
-		
-				
- 
-		
-			</div>
-		<?php endif ?>
+		?>
+
+		<?php
+			$student_id = $this->Common_model->encrypt_decrypt($student['student_id']);
+			$center_id =  $this->session->center_id;
+			$center_permission = $this->Common_model->get_record('center','exam_form_permission',array('id'=>$center_id));
+			$class_permission = $this->Common_model->get_record('class_master','exam_form_permission',array('id'=>$student['class_id']));
+			if($center_permission[0]['exam_form_permission']=='Y' && $class_permission[0]['exam_form_permission']=='Y' &&$student['new_exam_form']=='N' && $student['temp_exam_form']=='Y'){ 
+				$center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29 );
+				if(in_array($this->session->center_id, $center_ids) ){
+						?> 
+							<div class="row d-flex justify-content-center p-3">
+								<a class="btn btn-success" href="<?= base_url('paid_by_university/'.$student_id) ?>">Paid By University</a>
+							</div> 
+						
+						<?php
+
+				}else{
+						?> 
+							<div class="row d-flex justify-content-center p-3">
+								<a class="btn btn-success" href="<?= base_url('Payment/exam_form/'.$student_id) ?>">Process To Payment</a>
+							</div> 
+							
+						<?php
+
+				}
+			}
+
+		?>
 </div>
+
+

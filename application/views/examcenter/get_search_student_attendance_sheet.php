@@ -47,7 +47,7 @@
 	 $paper_count = count($papers);
 	 if($paper_count){
 
-		  $newstring = date('y')."1".substr($student['center_code'], -4); 
+		  $newstring = "222".substr($student['center_code'], -4); 
      ?>  
 <!-- <div id="ss">       -->
 <section class="break" style="font-size: 16px;" >
@@ -66,8 +66,16 @@
 			<div class="BoxC border- padding">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Attendance Sheet Examination <?=($student['class_id']==256 || $student['class_id']==262) ? 'SEPTEMBER' : 'AUGUST' ?> 2022</h5>
-						
+						<h5>Attendance Sheet Examination 
+							<?php
+							if($student['course_group_id']==75 || $student['course_group_id==76']){
+								echo 'Feb 2023';
+							}else{
+								echo 'March 2023';
+							}
+							
+							?>
+						</h5>
 					</div>
 				</div>
 			</div>
@@ -142,9 +150,15 @@
 				<tr>
 					<td><?php echo $i ; ?></td>
 					<td><?php echo date("d-m-Y", strtotime($paper->exam_date)); ?></td>
-					<td><?= 
-					($paper->exam_shift=='Morning') ? '11:00 AM To 2:00 PM'   : ($paper->exam_shift=='Evening') ? '03:00 PM To 6:00 PM'  : '12:00 To 3:00 PM'
-					; ?></td>
+					<td>
+					<?php if($paper->exam_shift=='Morning'){
+						echo '11:00 AM To 2:00 PM';
+					}elseif($paper->exam_shift=='Afternoon'){
+						echo '03:00 PM To 6:00 PM';
+					}else{
+						echo '12:00 To 3:00 PM';
+					} ?>
+					</td>
 					<td style="text-align:left;"><?php echo $paper->paper_name; ?></td>
 					<td ></td>
 					<td ></td>

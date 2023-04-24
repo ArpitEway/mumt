@@ -74,19 +74,18 @@
         ?>  </td>
         <td>
           <select name="marks[]" class="form-control col-12 increase"  id="<?="id_{$s}"; ?>"  >
-            <option value="<?= $student->p_marks?>" selected><?= $student->p_marks?></option>
+           
             <?php
             $percentage = 85;
-          
-            
-            $max_practical=  $student->max_theory_marks;
+             $max_practical=  $student->max_theory_marks;
             $min_practical=  $student->min_theory_marks;
 
             $max_practical_percentage = round(($percentage / 100) * $max_practical);
           
             for ($i=$min_practical; $i<=$max_practical_percentage; $i++){
+            
               ?>
-              <option class="same_num" value="<?php echo str_pad($i,2,'0',STR_PAD_LEFT); ?>"  ><?php echo str_pad($i,2,'0',STR_PAD_LEFT); ?></option>
+              <option class="same_num" value="<?php echo str_pad($i,2,'0',STR_PAD_LEFT); ?>"  <?php echo ($student->p_marks == str_pad($i,2,'0',STR_PAD_LEFT))?'selected':'';?>><?php echo str_pad($i,2,'0',STR_PAD_LEFT); ?></option>
               <?php
             }
             ?>

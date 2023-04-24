@@ -27,7 +27,7 @@
   </tr>
   <tr>
     <td><b>Course: </b> <?=$detail[0]->course_name;?></td>
-    <td><b>Class: </b> <?=$detail[0]->class_name;?></td>
+    <td><b>Class: </b> <?= $this->Common_model->getClassNameByClassId($detail[0]->class_id);?></td>
   </tr>
 </tbody>
 </table>
@@ -49,14 +49,14 @@
         <tr>
          <td><?php echo $s; ?></td>
          <td><?php echo $student->paper_code; ?></td>
-         <td><?=$this->Common_model->getPaperNameById($student->paper_id); ?>
+         <td><?= $student->paper_name ?>
           </td>
         <td class="text-center">
        <?php
-          if($student->paper_type=='theory'){
+          if($student->paper_type=='theory' || $student->paper_type=='Sessional' ){
             echo $student->int_marks;
           }else{
-            if($classData->practical_internal_marks=="Y")
+            if($classData->practical_internal_marks=="Y" && $student->max_internal_marks !=0)
                echo $student->int_marks.'/'.$student->p_marks;
             else
                 echo $student->p_marks;

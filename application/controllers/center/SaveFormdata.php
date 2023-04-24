@@ -22,9 +22,19 @@ class saveFormdata extends CI_Controller {
 		$data['course_group_id'] = $course_group_id;
 		$data['course_name'] = $this->Common_model->getCourseNameByCourseId($course_group_id);
 		$data['class_name'] = $this->Common_model->getClassNameByClassId($class_id);
-		$data['center_id'] = $this->session->center_id;
-		$data['center_code'] = $this->session->centerdata;
-		$data['center_name'] = $this->Common_model->getSinglefield('center','center_name','id='.$this->session->center_id);
+		if ($this->session->center_id!=13) {
+			$data['center_id'] = $this->session->center_id;
+			$data['center_code'] = $this->session->centerdata;
+			$data['center_name'] = $this->Common_model->getSinglefield('center','center_name','id='.$this->session->center_id);
+		}else{
+			$this->db->like('allot_course_group_id',$course_group_id);
+			$this->db->where_in('id',array(21, 22, 23, 24, 25, 26, 27, 28));
+			$this->db->from('center');
+			$centerData = $this->db->get()->row();
+			$data['center_id'] = $centerData->id;
+			$data['center_code'] = $centerData->center_code;
+			$data['center_name'] = $centerData->center_name;
+		}
 		if($this->input->post('mode')=="regular"){
            $mode = "REG";
 		}else{
@@ -82,7 +92,7 @@ class saveFormdata extends CI_Controller {
 			$data['approved']='Y';
 			
 		}
-		// $center_ids_dep = array( 21,22,23,24,25,26,27,28);
+		// $center_ids_dep = array( 21,22,23,24,25,26,27,28,29);
 		
 		// if(in_array($this->session->center_id, $center_ids_dep)){
 		// 	$data['payment_status']='Y';
@@ -138,13 +148,19 @@ class saveFormdata extends CI_Controller {
 		{ 
 			$this->db->trans_complete();
 		}
-           
+		
 			//	paper add code 
 		$class = $this->Common_model->getRecordByWhere('class_master',array('id' =>$class_id));
        
-		if($class[0]->exam_form_permission =='Y' && $class[0]->class_group=="N"){
+		// if($class[0]->exam_form_permission =='Y' && $class[0]->class_group=="N"){
+			$cbcs = ($class[0]->cbcs == 'Y')?'Y':'N';
+			if($class[0]->class_group=="N"){
 			$this->db->order_by('id');
-		$papers = $this->Common_model->getRecordByWhere('paper_master',array('class_id' =>$class_id));
+			if($data['university_mode']=='PVT') 
+					$paperWhere=array('class_id'=>$class_id,'type'=>'theory','cbcs_paper'=>$cbcs);
+			else			
+					$paperWhere=array('class_id'=>$class_id,'cbcs_paper'=>$cbcs);
+			$papers = $this->Common_model->getRecordByWhere('paper_master',$paperWhere);
 	
 	
 		foreach($papers as $paper){
