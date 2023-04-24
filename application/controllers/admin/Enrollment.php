@@ -1255,5 +1255,67 @@ public function getStudentData()
 	}
 	}//fun
 
+	public function genrate_tc($student_id){
+		
+		$tc_date=$this->input->post("tc_date");
+		$tc_remark=$this->input->post("tc_remark");
+		if((!empty($tc_date)) && (!empty($tc_remark))){
+			$tcData = array('tc_date' => $tc_date,'delete_remark' => $tc_remark,'new_admission_permission'=>'Y');
+			$where = array('student_id'=>$student_id);
+			$this->Common_model->updateRecordByConditions('student',$where,$tcData);
+			$this->session->set_flashdata('ajax_flash_message','TC Generated !');
+			
+			echo json_encode(array("status" => 'true',		));
+		}
+		 else{
+			echo json_encode(array("status" => 'false',		));
+		 }		
+	}
 
+
+	public function tc_student_list(){
+		$segment = $this->uri->segment(2);
+		$this->load->view('header',array('title' => 'TC Student List'));	
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+			'segment' => $segment
+		);
+		$this->load->view('admin/tc_student_list',$data);
+		$this->load->view('footer');
+	}
+
+
+	
+	public function getTCStudentData()
+	{
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}
+
+	 	 $text_val =$this->input->post('text_val'); 
+		if($text_val !='')
+		{
+			$where=array();
+			
+			if($text_val=='All'){
+				
+				$this->db->where('tc_date IS NOT NULL', NULL, FALSE);	
+			}
+			else{
+				$this->db->like('tc_date',$text_val);
+			}
+			
+				
+			$data['students'] = $this->Common_model->student_data($where);
+
+
+			$dt =  $this->load->view('admin/student/getTCStudents.php',$data,true);
+			echo json_encode(array(
+				"status" => true,
+				"data" => $dt
+			));
+		}
+	}//fun	
 }
