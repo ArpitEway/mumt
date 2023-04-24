@@ -76,7 +76,7 @@ Form Number <b><?=$student['student_id']?></b>  Name <b><?=$student['name']?></b
 	</div>	
 	<div class="col-sm-12 row">	
 			<div class="form-group col-sm-12">
-				<label for="example-date-input" class="col-6 col-form-label">Receive Payment Date</label>
+				<label for="example-date-input" class="col-6 col-form-label">Issue Date</label>
 				<div class="col-7">
 				<input class="form-control" type="date" name="payment_date"   id="tc_date"  placeholder="dd-mm-yyyy"/>
 				<div class="text-danger" id="error"></div>

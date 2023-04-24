@@ -20,30 +20,11 @@
 					<th>Gender</th>
 					<th>Category</th>
 					
-					<?php if($this->session->account_type =="Enrollment"){?>
-					<th>TC Generate</th><?php	}?>
+				
+					<th>TC Generate</th>
 					<?php
 					}
-					if(isset($course_count)){
-						if($_POST['count_filter']=='course_group_id'){
-							?>
-						<th>Sno</th>
-						<th>Course</th>
-						<th>Count</th>
-					<?php }else if($_POST['count_filter']=='center_id'){  ?>
-						<th>Sno</th>
-						<th>Center</th>
-						<th>Center Code</th>
-	
-						<th>Count</th> 
-						  <?php	}else{   ?>
-						 <th>Sno</th>
-						 <th>Course</th>
-						 <th>Class</th>
-						 <th>Count</th>
-						<?php 
-						  }
-						}
+					
 					?>
 				</tr>
 			</thead>
@@ -85,51 +66,21 @@
 					<td><?php echo $student["gender"]; ?></td>
 					<td><?php echo $student["category"]; ?></td>
 					
-				   <?php if($this->session->account_type =="Enrollment"){?>
+				 
 				   <td>
-					   <?php if($student["tc_date"]){ echo $this->Common_model->viewDate($student["tc_date"]) ; } else{ ?>
-				   <a href="javascript:void(0);" style="margin:5px;" class="btn btn-success" id="<?php echo  $std  ?>"   onclick="rightModal('<?php echo site_url('admin/modal/student_popup/admin/student/update/tc_generate/'.$student_id); ?>', '<?php echo 'Select Photo' ?>')">TC</a>
-				   <?php } ?>
-				   </td>    <?php } ?>
+					   <?php if($student["tc_date"]){ echo $this->Common_model->viewDate($student["tc_date"]) ; } ?>
+				  
+				  
+				   </td>   
 						</tr>
 					<?php
 					$i++; 
 				}
 			}
 		
-			if(isset($course_count)){
-				$total = 0;
-				foreach($course_count as $student){	
-				
-		   $class = $this->db->get_where("class_master",array('id'=>$student['class_id']))->result_array();
-		   $course_group_id = $class[0]['course_group_id'];
-		   $course = $this->db->get_where("course_group",array('id'=>$course_group_id))->result_array();
-	       
 			?>
-			<tr>
-				
-			<td><?php echo $i; ?></td>
-			<td><?php 	if($_POST['count_filter']=='course_group_id'){ echo $this->Common_model->getCourseNameByCourseId($student["course_group_id"]);}else if($_POST['count_filter']=='center_id'){echo $this->Common_model->getCenterNameById($student["center_id"]);}else{echo $course[0]['course_name'] ;} ; ?></td>
-	     	<?php if($_POST['count_filter']=='center_id'){ ?>	<td><?php 	 echo $this->Common_model->getCenterCodeById($student["center_id"]); ; ?></td><?php } ?>
-	     	<?php if($_POST['count_filter']=='class_id'){ ?>	<td><?php echo $class[0]['class_name'] ; ?></td><?php } ?>
-
-			<td><?php echo $student["cnt"]; ?></td>
-			<?php $total = $total + $student["cnt"];?>
-			</tr>
 			
 			
-			
-			<?php $i++; } ?>
-			<tfoot>
-			<tr>
-			<td></td>
-			<td><?php echo "Total"; ?></td>
-			<?php  if($_POST['count_filter']=='class_id' ||$_POST['count_filter']=='center_id'  ) { ?>  <td></td><?php } ; ?>
-
-			<td><?php echo $total ?></td>
-			</tr>
-			<tfoot>
-			<?php } ?>
 
 
 		</tbody>
@@ -137,82 +88,3 @@
 </div>
 
 
- <script type="text/javascript">
-function delete__student_paper(student_id)
-    {
-    if (confirm('Are you sure to remove  ?')) {
-   var csrfName = $('.csrfname').attr('name');
-   var csrfHash = $('.csrfname').val(); 
-     var student_id = $(student_id).attr('data-id');
-    // alert(student_id);
-$.ajax({
-	type: "POST",
-	url: BASE_URL+"admin/Admins/student_paper_delete",
-	dataType:"json",
-	  data: {student_id: student_id,[csrfName]:csrfHash},
-	success: function(response){
-	console.log(response);
-if(response.status=='true'){
-toastr.success("successfully Deleted all paper");
-}
-
-else{
-	toastr.error("Something wrong");
-	}
-}
-});	
-}
-}
-</script> 
-<script type="text/javascript">
-	
-
-	$(document).on('click', '#remark_submit', function(e) {
-
-//	$('#remark_submit').prop('disabled', true);
-	
-	    e.preventDefault();
-		var csrfName = $('.csrfname').attr('name');
-		var csrfHash = $('.csrfname').val();
-		var frm = $('.ajaxForm').serialize();
-	
-		var fdata = new FormData(); // Creating object of FormData class
-		fdata.append("form", frm);
-		fdata.append('session', $("#session").val());
-		fdata.append('tc_date', $("#tc_date").val());
-		fdata.append('tc_remark', $("#kt_autosize_2").val());
-		fdata.append('csrf_token_akshay',csrfHash);
-		var rem = $('.student_id_model').val();
-		
-    if($("#tc_date").val()!="" ||  $("#kt_autosize_2").val()!="")
-    {	   
-	  
-		$('#loader').addClass('loading');
-			$.ajax({
-			url: '<?php echo site_url('Enrollment/genrate_tc/'); ?>'+ rem,
-			type: 'POST',
-			data: fdata,
-			processData: false,
-			contentType: false,
-			cache: false,
-			async:true,
-			success: function (data) {
-			if(data){
-				$('#loader').removeClass('loading');
-				
-					$('#right-modal').modal('toggle');
-					$('#row_'+rem).remove();
-					$('.student_id_model').val("");
-					$("#session").val("");
-					$("#tc_date").val("");
-					$("#kt_autosize_2").val("");
-					toastr.success("TC Generated !");
-					}
-				},
-			});	
-		}else{
-			toastr.error("Please Date & Remark !");
-		}
-
-});	
-</script>
