@@ -2425,7 +2425,7 @@ public function practical_assignment_marks_edit(){
 	}
 
 
-public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
+	public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
@@ -2483,7 +2483,7 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
     }
 
 
-  public function change_backlog_new_exam_form_status(){
+  	public function change_backlog_new_exam_form_status(){
 		$id    	= 0;
 		$id    	= $this->input->post("id");
 		$class_id = $this->input->post('class_id');
@@ -2576,7 +2576,7 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 			$amount = $this->Common_model->getRecordById('application_field','field',$apply);
 			if($txnData[0]['payment'] == "Y"){
 				$this->session->set_flashdata('warning','Application already submitted');
-				redirect('center/center/application_form');
+				redirect(base_url().'application_form');
 			}
 			if(count($txnData)>0){
 

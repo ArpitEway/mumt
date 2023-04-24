@@ -4551,7 +4551,7 @@ public function update_exam_datewise_permission(){
 			$this->Common_model->insertAll('application_field',$Data);
 
 			$this->session->set_flashdata('ajax_flash_message','Account Successfully Added');
-			redirect(base_url().'admin/admins/application_field');
+			redirect(base_url().'application_field');
 
 		}
 		if($param1 == 'update'){
@@ -4564,7 +4564,7 @@ public function update_exam_datewise_permission(){
 			);
 			$this->Common_model->updateRecordByConditions('application_field',$where,$Data); 
 			$this->session->set_flashdata('ajax_flash_message','Account Successfully Updated');
-			redirect(base_url().'admin/admins/application_field');
+			redirect(base_url().'application_field');
 		}
 
 		if($param1 == 'delete'){
@@ -4572,7 +4572,7 @@ public function update_exam_datewise_permission(){
 			// $response = $this->admin_model->account_delete($param2);
 			$this->Common_model->deleteById('application_field','id',$param2);
 			$this->session->set_flashdata('ajax_flash_message','Account Successfully Deleted');
-			redirect(base_url().'admin/admins/application_field');
+			redirect(base_url().'application_field');
 		}
 
 		if(empty($param1) ){
