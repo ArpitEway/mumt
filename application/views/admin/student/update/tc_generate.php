@@ -78,7 +78,7 @@ Form Number <b><?=$student['student_id']?></b>  Name <b><?=$student['name']?></b
 			<div class="form-group col-sm-12">
 				<label for="example-date-input" class="col-6 col-form-label">Issue Date</label>
 				<div class="col-7">
-				<input class="form-control" type="date" name="payment_date"   id="tc_date"  placeholder="dd-mm-yyyy"/>
+				<input class="form-control" type="date" name="payment_date" min="<?= date('Y-m-d', strtotime('-6 month')); ?>" max="<?= date('Y-m-d'); ?>"  id="tc_date"  placeholder="dd-mm-yyyy"/>
 				<div class="text-danger" id="error"></div>
 				<input type="hidden" value="" name="student_id" id="student_id">
 				</div>
