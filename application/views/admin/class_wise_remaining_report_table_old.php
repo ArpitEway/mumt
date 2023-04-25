@@ -17,9 +17,9 @@
                 <th>Class</th>
                 <!-- <th>Session</th> -->
                 <th>Paper Code</th>
-                <!-- <?php if($this->session->account_type == "ExamController"){ ?>
+                <?php if($this->session->account_type == "ExamController"){ ?>
                 <th>Action</th>
-                <?php } ?> -->
+                <?php } ?>
                
             </tr>
         </thead>
@@ -35,9 +35,9 @@
                 <th>Class</th>
                 <!-- <th>Session</th> -->
                 <th>Paper Code</th>
-                <!-- <?php if($this->session->account_type == "ExamController"){ ?>
+                <?php if($this->session->account_type == "ExamController"){ ?>
                 <th>Action</th>
-                <?php } ?> -->
+                <?php } ?>
                
                
             </tr>
@@ -51,16 +51,16 @@
                 <td><?= $i ?></td>
                 <td><?= $student->center_code ?></td>
                 <td><?= $student->examcentercode ?></td>
-                <td><?= $student->roll_no ?></td>
+                <td><?= $student->roll_number ?></td>
                 <td><?= $student->enrollment_no ?></td>
                 <td><?= $student->name ?></td>
                 <td><?= $student->course_name ?></td>
-                <td><?= $this->Common_model->getClassNameByClassId($student->class_id) ?></td>
+                <td><?= $this->Common_model->getClassNameByClassId($student->old_class_id) ?></td>
                 <!-- <td><?= $student->session ?></td> -->
                 <td><?= $student->paper_code ?></td>
-                <!-- <?php if($this->session->account_type == "ExamController"){ ?>
+                <?php if($this->session->account_type == "ExamController"){ ?>
                 <td><a target="_blank" href="<?php echo  base_url()."ExamController/search_student_result/$student->roll_number" ?>">Edit </a></td>
-                <?php } ?> -->
+                <?php } ?>
               
             </tr>
             <?php  }  ?>

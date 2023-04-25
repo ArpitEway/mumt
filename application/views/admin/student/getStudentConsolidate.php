@@ -29,6 +29,8 @@
 					<th>Gender</th>
 					<th>Category</th>
 					<th>Paper</th>
+					<?php if($this->session->account_type =="Enrollment"){?>
+					<th>TC Generate</th><?php	}?>
 					<?php
 					}
 					if(isset($course_count)){
@@ -113,7 +115,14 @@
 					 }else{ ?>
 							<a target="_blank"  class="" href="<?=base_url('select_paper/'.$student_id);?>"><i class="fa fa-plus" aria-hidden="true"></i></a>
 							<?php } ?>
+							
 				   </td>
+				   <?php if($this->session->account_type =="Enrollment"){?>
+				   <td>
+					   <?php if($student["tc_date"]){ echo $this->Common_model->viewDate($student["tc_date"]) ; } else{ ?>
+				   <a href="javascript:void(0);" style="margin:5px;" class="btn btn-success" id="<?php echo  $std  ?>"   onclick="rightModal('<?php echo site_url('admin/modal/student_popup/admin/student/update/tc_generate/'.$student_id); ?>', '<?php echo 'Fill TC Detail' ?>')">TC</a>
+				   <?php } ?>
+				   </td>    <?php } ?>
 						</tr>
 					<?php
 					$i++; 
@@ -187,3 +196,55 @@ else{
 }
 }
 </script> 
+<script type="text/javascript">
+	
+
+	$(document).on('click', '#remark_submit', function(e) {
+
+//	$('#remark_submit').prop('disabled', true);
+	
+	    e.preventDefault();
+		var csrfName = $('.csrfname').attr('name');
+		var csrfHash = $('.csrfname').val();
+		var frm = $('.ajaxForm').serialize();
+	
+		var fdata = new FormData(); // Creating object of FormData class
+		fdata.append("form", frm);
+		fdata.append('session', $("#session").val());
+		fdata.append('tc_date', $("#tc_date").val());
+		fdata.append('tc_remark', $("#kt_autosize_2").val());
+		fdata.append('csrf_token_akshay',csrfHash);
+		var rem = $('.student_id_model').val();
+		
+    if($("#tc_date").val()!="" ||  $("#kt_autosize_2").val()!="")
+    {	   
+	  
+		$('#loader').addClass('loading');
+			$.ajax({
+			url: '<?php echo site_url('Enrollment/genrate_tc/'); ?>'+ rem,
+			type: 'POST',
+			data: fdata,
+			processData: false,
+			contentType: false,
+			cache: false,
+			async:true,
+			success: function (data) {
+			if(data){
+				$('#loader').removeClass('loading');
+				
+					$('#right-modal').modal('toggle');
+					$('#row_'+rem).remove();
+					$('.student_id_model').val("");
+					$("#session").val("");
+					$("#tc_date").val("");
+					$("#kt_autosize_2").val("");
+					toastr.success("TC Generated !");
+					}
+				},
+			});	
+		}else{
+			toastr.error("Please Date & Remark !");
+		}
+
+});	
+</script>

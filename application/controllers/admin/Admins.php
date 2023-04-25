@@ -4769,7 +4769,7 @@ public function update_exam_datewise_permission(){
 				$this->db->order_by('student.course_group_id','student.old_class_id','student.university_mode','student.roll_number');
 				
 			$data['students'] = $this->db->get()->result();
-			$dt = $this->load->view('admin/class_wise_remaining_report_table',$data,true);
+			$dt = $this->load->view('admin/class_wise_remaining_report_table_old',$data,true);
 		
 			echo json_encode(array(
                 "status" => true,

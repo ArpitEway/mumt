@@ -1842,16 +1842,16 @@ class ExamController extends CI_Controller {
 			#total
 			$this->db->select('count(*) as num');
 			$this->db->from('new_exam_form');
-			$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.old_class_id');
-			$this->db->where('student.exam_form','Y');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id');
+			$this->db->where('student.new_exam_form','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
 			$count = $this->db->get()->result();
 			
 			#Absent
 			$this->db->select('count(*) as num');
 			$this->db->from('new_exam_form');
-			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.old_class_id');
-			$this->db->where('student.exam_form','Y');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.class_id');
+			$this->db->where('student.new_exam_form','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
 			$this->db->where('new_exam_form.theory_marks','ABS');
 			$abs = $this->db->get()->result();
@@ -1859,8 +1859,8 @@ class ExamController extends CI_Controller {
 			#uploaded
 			$this->db->select('count(*) as num');
 			$this->db->from('new_exam_form');
-			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.old_class_id');
-			$this->db->where('student.exam_form','Y');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.class_id');
+			$this->db->where('student.new_exam_form','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
 			$this->db->where(array('new_exam_form.theory_marks !='=> ''));
 			$uploaded = $this->db->get()->result();
@@ -1886,7 +1886,7 @@ class ExamController extends CI_Controller {
             $course_groupids = array_column($course_group, 'id');
  			$this->db->where_in('course_group_id',$course_groupids);
 			$this->db->order_by('course_name', "asc");
-			$course_group = $this->Common_model->get_record('student','DISTINCT(course_group_id) as  course_group_id,course_name' ,array('exam_form'=>'Y'));
+			$course_group = $this->Common_model->get_record('student','DISTINCT(course_group_id) as  course_group_id,course_name' ,array('new_exam_form'=>'Y'));
 
 			$data = array('course_group' => $course_group,
 				'name_csrf' => $this->security->get_csrf_token_name(),
@@ -1918,8 +1918,8 @@ class ExamController extends CI_Controller {
 				$classArr['class_name']=$class["class_name"];
 				$this->db->select('count(*) as num');
 				$this->db->from('new_exam_form');
-				$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.old_class_id ');
-				$this->db->where('student.exam_form','Y');
+				$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.class_id ');
+				$this->db->where('student.new_exam_form','Y');
 				if($courseType!="ALL")
 					$this->db->where('student.university_mode',$courseType);
 				$this->db->where('new_exam_form.course_group_id',$course_group_id);
@@ -1929,8 +1929,8 @@ class ExamController extends CI_Controller {
 
 				$this->db->select('count(*) as num');
 				$this->db->from('new_exam_form');
-				$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.old_class_id ');
-				$this->db->where('student.exam_form','Y');
+				$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id ');
+				$this->db->where('student.new_exam_form','Y');
 				if($courseType!="ALL")
 					$this->db->where('student.university_mode',$courseType);
 				$this->db->where('new_exam_form.course_group_id',$course_group_id);
@@ -1941,8 +1941,8 @@ class ExamController extends CI_Controller {
 
 				$this->db->select('count(*) as num');
 				$this->db->from('new_exam_form');
-				$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.old_class_id ');
-				$this->db->where('student.exam_form','Y');
+				$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id ');
+				$this->db->where('student.new_exam_form','Y');
 				if($courseType!="ALL")
 					$this->db->where('student.university_mode',$courseType);
 				$this->db->where('new_exam_form.course_group_id',$course_group_id);
@@ -1960,8 +1960,8 @@ class ExamController extends CI_Controller {
 				}else{
 					$this->db->select('count(*) as num');
 					$this->db->from('new_exam_form');
-					$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.old_class_id ');
-					$this->db->where('student.exam_form','Y');
+					$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.class_id ');
+					$this->db->where('student.new_exam_form','Y');
 					if($courseType!="PVT")
 						$this->db->where('student.university_mode',"REG");
 					$this->db->where('new_exam_form.course_group_id',$course_group_id);
@@ -1973,8 +1973,8 @@ class ExamController extends CI_Controller {
 
 					$this->db->select('count(*) as num');
 					$this->db->from('new_exam_form');
-					$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.old_class_id ');
-					$this->db->where('student.exam_form','Y');
+					$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id ');
+					$this->db->where('student.new_exam_form','Y');
 					if($courseType!="ALL")
 						$this->db->where('student.university_mode',$courseType);
 					$this->db->where('new_exam_form.course_group_id',$course_group_id);
@@ -1988,8 +1988,8 @@ class ExamController extends CI_Controller {
 
 					$this->db->select('count(*) as num');
 					$this->db->from('new_exam_form');
-					$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.old_class_id ');
-					$this->db->where('student.exam_form','Y');
+					$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id ');
+					$this->db->where('student.new_exam_form','Y');
 					if($courseType!="ALL")
 						$this->db->where('student.university_mode',$courseType);
 					$this->db->where('new_exam_form.course_group_id',$course_group_id);
@@ -2000,8 +2000,8 @@ class ExamController extends CI_Controller {
 					
 					$this->db->select('count(*) as num');
 					$this->db->from('new_exam_form');
-					$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.old_class_id ');
-					$this->db->where('student.exam_form','Y');
+					$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id ');
+					$this->db->where('student.new_exam_form','Y');
 					if($courseType!="ALL")
 						$this->db->where('student.university_mode',$courseType);
 					$this->db->where('new_exam_form.course_group_id',$course_group_id);
@@ -2147,7 +2147,7 @@ public function getStudentData()
 				$this->db->select('*');
 				$this->db->from('new_exam_form');
 				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
-				$this->db->where('student.exam_form','Y');
+				$this->db->where('student.new_exam_form','Y');
 				if($courseType!="ALL")
 					$this->db->where('student.university_mode',$courseType);
 				$this->db->where('new_exam_form.theory_marks','');
@@ -2161,7 +2161,7 @@ public function getStudentData()
 				$this->db->select('*');
 				$this->db->from('new_exam_form');
 				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
-				$this->db->where('student.exam_form','Y');
+				$this->db->where('student.new_exam_form','Y');
 				$this->db->where('student.university_mode','REG');
 				$this->db->where('new_exam_form.course_group_id',$course_group_id);
 				$this->db->where('new_exam_form.class_id',$class_id);
@@ -2175,7 +2175,7 @@ public function getStudentData()
 				$this->db->select('*');
 				$this->db->from('new_exam_form');
 				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
-				$this->db->where('student.exam_form','Y');
+				$this->db->where('student.new_exam_form','Y');
 				$this->db->where('student.university_mode','REG');
 				$this->db->where('new_exam_form.course_group_id',$course_group_id);
 				$this->db->where('new_exam_form.class_id',$class_id);
