@@ -120,7 +120,7 @@
 				   <?php if($this->session->account_type =="Enrollment"){?>
 				   <td>
 					   <?php if($student["tc_date"]){ echo $this->Common_model->viewDate($student["tc_date"]) ; } else{ ?>
-				   <a href="javascript:void(0);" style="margin:5px;" class="btn btn-success" id="<?php echo  $std  ?>"   onclick="rightModal('<?php echo site_url('admin/modal/student_popup/admin/student/update/tc_generate/'.$student_id); ?>', '<?php echo 'Select Photo' ?>')">TC</a>
+				   <a href="javascript:void(0);" style="margin:5px;" class="btn btn-success" id="<?php echo  $std  ?>"   onclick="rightModal('<?php echo site_url('admin/modal/student_popup/admin/student/update/tc_generate/'.$student_id); ?>', '<?php echo 'Fill TC Detail' ?>')">TC</a>
 				   <?php } ?>
 				   </td>    <?php } ?>
 						</tr>
