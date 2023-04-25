@@ -1281,6 +1281,12 @@ public function getStudentData()
 			'hash_csrf' => $this->security->get_csrf_hash(),
 			'segment' => $segment
 		);
+		$this->db->select('DISTINCT YEAR(`tc_date`) as year');
+		$this->db->from('student');
+		$this->db->where('tc_date IS NOT NULL', NULL, FALSE);	
+		$this->db->order_by("year", "desc");
+		$query = $this->db->get();
+		$data['years']= $query->result_array();
 		$this->load->view('admin/tc_student_list',$data);
 		$this->load->view('footer');
 	}
