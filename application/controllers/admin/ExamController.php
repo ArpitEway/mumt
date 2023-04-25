@@ -1866,7 +1866,7 @@ class ExamController extends CI_Controller {
 			$uploaded = $this->db->get()->result();
 			$data['total_paper_count'] = $count[0]->num;
 			$data['uploaded'] = $uploaded[0]->num;
-			$data['absent'] = $abs[0]->num;
+			$data['absent'] = 0; //$abs[0]->num;
 			$this->load->view('admin/result_uplaoding_status',$data);
 			$this->load->view('footer');
 		}
