@@ -83,21 +83,21 @@
 		<div class="col-xl-4">
 			<div class="form-group ">
 				<label>Student Name:</label><span class="text-danger"> *</span>
-				<input type="text" class="form-control " name="name" value="" placeholder="Student Name">
+				<input type="text" class="form-control " name="name" id="name" value="" placeholder="Student Name">
 				<div class="fv-plugins-message-container"></div>
 			</div>
 		</div>
 		<div class="col-xl-4">
 			<div class="form-group ">
 				<label>Father / Husband Name:</label><span class="text-danger"> *</span>
-				<input type="text" class="form-control " name="f_h_name" placeholder="Father / Husband Name">
+				<input type="text" class="form-control " name="f_h_name" id="f_h_name" placeholder="Father / Husband Name">
 				<div class="fv-plugins-message-container"></div>
 			</div>
 		</div>
 		<div class="col-xl-4">
 			<div class="form-group ">
 				<label>Mother's Name</label><span class="text-danger"> *</span>
-				<input type="text" class="form-control " name="mother_name" placeholder="Mother's Name">
+				<input type="text" class="form-control " name="mother_name" id="mother_name" placeholder="Mother's Name">
 				<div class="fv-plugins-message-container"></div>
 			</div>
 		</div>
@@ -158,14 +158,14 @@
 		<div class="col-xl-4">
 			<div class="form-group ">
 				<label>Mobile No :</label><span class="text-danger"> *</span>
-				<input type="text"  class="form-control " name="p_mobile_no" placeholder="Mobile">
+				<input type="text"  class="form-control " name="p_mobile_no" id="p_mobile_no" placeholder="Mobile">
 				<div class="fv-plugins-message-container"></div>
 			</div>
 		</div>
 		<div class="col-xl-4">
 			<div class="form-group ">
 				<label>Email :</label><span class="text-danger"> *</span>
-				<input type="text" class="form-control " name="p_email" placeholder="E-mail">
+				<input type="text" class="form-control " name="p_email" id="p_email" placeholder="E-mail">
 				<div class="fv-plugins-message-container"></div>
 			</div>
 		</div>
@@ -173,14 +173,14 @@
 		<div class="col-xl-4">
 			<div class="form-group ">
 				<label>Date Of Birth</label><span class="text-danger"> *</span>
-				<input type="text"  class="form-control " data-inputmask="'alias': 'dd-mm-yyyy'" name="dob" id="dob"placeholder="dd-mm-yyyy">
+				<input type="text"  class="form-control " data-inputmask="'alias': 'dd-mm-yyyy'" name="dob" id="dob" placeholder="dd-mm-yyyy">
 				<div class="fv-plugins-message-container"></div>
 			</div>
 		</div>
 		<div class="col-md-4">
 			<div class="form-group ">
 				<label>Nationality:</label><span class="text-danger"> *</span>
-				<select name="nationality" class="form-control ">
+				<select name="nationality" class="form-control " id="nationality">
 					<option value="">Select Nationality</option>
 					<option value="INDIAN">Indian</option>
 					<option value="OTHER">Other </option>
@@ -191,7 +191,7 @@
 		<div class="col-md-4">
 			<div class="form-group ">
 				<label>Religion:</label><span class="text-danger"> *</span>
-				<select name="religion" class="form-control ">
+				<select name="religion" class="form-control " id="religion">
 					<option value="">Select Religion</option>
 					<option value="Hindu">Hindu</option>
 					<option value="Muslim">Muslim </option>
@@ -204,7 +204,7 @@
 		<div class="col-md-4">
 			<div class="form-group ">
 				<label>Category:</label><span class="text-danger"> *</span>
-				<select name="category" class="form-control ">
+				<select name="category" class="form-control " id="category">
 					<option value="">Select Category</option>
 					<option>General</option>
 					<option>OBC</option>
@@ -253,7 +253,7 @@
 		<div class="col-xl-4">
 			<div class="form-group ">
 				<label>Aadhar Number:</label>
-				<input type="text" class="form-control " name="adhar_no"  placeholder="Aadhar Number">
+				<input type="text" class="form-control " name="adhar_no"  placeholder="Aadhar Number" id="adhar_no">
 				<div class="fv-plugins-message-container"></div>
 			</div>
 		</div>
