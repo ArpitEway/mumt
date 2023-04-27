@@ -42,6 +42,8 @@
         $courses_groups = $this->db->get_where('course_group', array())->result_array();
         	foreach($courses_groups as $course_group)
 			{
+				$this->db->order_by('id','desc');
+				$this->db->limit(1);	
 			$courses = $this->db->get_where('course', array('course_group_id' => $course_group['id']))->result_array();
 			foreach($courses as $course){
             ?>
