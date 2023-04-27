@@ -2225,6 +2225,19 @@ public function getStudentData()
 		$this->load->view('footer');
 	}
 
+	public function class_wise_old_exam_from_status(){
+
+		$this->load->view('header',array('title' => 'Class Wise Exam Form Status(Aug-2022)'));
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		$where = array('exam_form !=' =>'D' );
+		$data['counts']=$this->Common_model->old_exam_form_permission_status($where);
+		$this->load->view('admin/class_wise_old_exam_from_status',$data);
+		$this->load->view('footer');
+	}
+
 	public function class_wise_backlog_exam_from_status(){
 
 		$this->load->view('header',array('title' => 'Class Wise Backlog Exam Form Status(Feb 2023)'));
@@ -4120,18 +4133,7 @@ public function update_exam_datewise_permission(){
 		echo $this->load->view('admin/exam_center/exam_center_wise_billing_show',$data, TRUE);
 	}
 	
-	public function class_wise_old_exam_from_status(){
-
-		$this->load->view('header',array('title' => 'Class Wise Exam Form Status(DEC-2021)'));
-		$data = array(
-			'name_csrf' => $this->security->get_csrf_token_name(),
-			'hash_csrf' => $this->security->get_csrf_hash(),
-		);
-		$where = array('new_exam_form !=' =>'D' );
-		$data['counts']=$this->Common_model->old_exam_form_permission_status($where);
-		$this->load->view('admin/class_wise_old_exam_from_status',$data);
-		$this->load->view('footer');
-	}
+	
 	//Exam Center Wise Billing fetch
 	public function exam_center_billing_report(){
 		if(!$this->session->has_userdata('adminData')){

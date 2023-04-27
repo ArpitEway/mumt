@@ -1862,11 +1862,13 @@ class ExamController extends CI_Controller {
 			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.class_id');
 			$this->db->where('student.new_exam_form','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
-			$this->db->where(array('new_exam_form.theory_marks !='=> ''));
+			$this->db->where_not_in('theory_marks',array('ABS',''));
+			
 			$uploaded = $this->db->get()->result();
+			//print_r($this->db->last_query());die;
 			$data['total_paper_count'] = $count[0]->num;
 			$data['uploaded'] = $uploaded[0]->num;
-			$data['absent'] = $abs[0]->num;
+			$data['absent'] = 0;//$abs[0]->num;
 			$this->load->view('admin/result_uplaoding_status',$data);
 			$this->load->view('footer');
 		}
