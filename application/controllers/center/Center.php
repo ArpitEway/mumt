@@ -2513,6 +2513,176 @@ public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 		}
 	}
 
+	public function application_form(){
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url());
+			die();
+		}
+		$center_id =  $this->session->center_id;
+		$titleData = array('title' => 'Search Student For Application');
+		$this->load->view('Centers/header',$titleData);
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+			'center_id'=>$center_id,
+		);
+		$this->load->view('Centers/application_form',$data);
+		$this->load->view('Centers/footer');
+	}
+	public function getStudentData()
+	{
+	
+		$text_val =$this->input->post('text_val');
+		$center_id =$this->input->post('center_id');
+		
+		if($text_val !='')
+		{
+			$where = array('enrollment_no'=>$text_val,'center_id'=>$center_id);
+			$data = array(
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+				'center_id'=>$center_id
+			);
+			$data['students'] = $this->Common_model->student_data($where);
+			// print_r($data['students']);die;
+			if($data['students']){
+				$dt =  $this->load->view('Centers/getStudentForm',$data,true);
+			echo json_encode(array(
+				"status" => true,
+				"data" => $dt
+			));
+
+			}else{
+				echo json_encode(array(
+					"status" => true,
+					"data" => "Student Not Found"
+				));
+
+			}
+
+
+			
+		}
+	}
+
+	public function application_submit(){
+		
+		$apply = $this->input->post("apply_for");
+		$std_id = $this->input->post("student_id");
+		$enroll = $this->input->post("enrollment");
+		$student_id = $this->Common_model->encrypt_decrypt($std_id,'encrypt');
+		// if($apply != "DUPLICATE-MARKSHEET"){
+			$where = 'enrollment="'.$enroll.'" and apply_for="'.$apply.'"';
+			$txnData = $this->Common_model->get_record('application_form','*',$where);
+			$amount = $this->Common_model->getRecordById('application_field','field',$apply);
+			if($txnData[0]['payment'] == "Y"){
+				$this->session->set_flashdata('warning','Application already submitted');
+				redirect(base_url().'application_form');
+			}
+			if(count($txnData)>0){
+
+				if($txnData[0]['payment'] == "N"){
+					redirect('center/payment/application/'.$student_id.'/'.$apply.'');
+
+				}
+
+				}else{
+					
+					$data = array(
+						"student_uid"=>$std_id,
+						"center_id"=>$this->input->post("center_id"),
+						"apply_for"=>$apply,
+						"class"=>$this->input->post("class"),
+						"name_eng"=>$this->input->post("name_eng"),
+						"name_hindi"=>$this->input->post("name_hindi"),
+						"fname_eng"=>$this->input->post("fname_eng"),
+						"fname_hindi"=>$this->input->post("fname_hindi"),
+						"roll_no"=>$this->input->post("roll_no"),
+						"enrollment"=>$this->input->post("enrollment"),
+						"session"=>$this->input->post("session"),
+						"course"=>$this->input->post("course"),
+						"amount"=>$amount->amount,
+						"phone"=>$this->input->post("phone"),
+						"address"=>$this->input->post("address"),
+
+					);
+
+					$this->Common_model->insertAll('application_form',$data);
+					$this->session->set_flashdata('success','Application Successfully Submit');
+					redirect('center/payment/application/'.$student_id.'/'.$apply.'');
+
+			}
+
+
+		// }
+		
+	}
+
+	public function application_list(){
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url());
+			die();
+		}
+
+		
+		$csrf = array( 
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+			'course_type' => $course_type 
+		);
+		 
+		
+		$titleData = array('title' => 'Application List');
+		$this->load->view('Centers/header',$titleData);
+		$this->load->view('Centers/application_list',$csrf);
+		$this->load->view('Centers/footer');
+	}
+
+	public function getApplicationList(){
+		
+		$data = $row = array();
+		$where = 'application_form.center_id='.$this->session->center_id.'';
+
+		$column_order = array('student.university_mode','application_form.student_uid','application_form_enrollment', 'application_form.name_eng', 'application_form.fname_eng', 'course_name','class_name','application_form.apply_for',null);
+		$column_search = array('student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','application_form.apply_for',);
+		$course_type=$this->input->post('course_type');
+		//AND student.university_mode="'.$course_type.'"
+		$DataTableArray = array(
+			'column_order' => $column_order,
+			'column_search' => $column_search,
+			'where' => $where.' and application_form.center_id=student.center_id',
+			'table' => 'student',
+			'table2' => 'application_form',
+			'joinOn' => 'student.enrollment_no=application_form.enrollment'
+		);
+
+		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
+		$i = $_POST['start'];
+		$x=1;
+		foreach($tableData as $result){
+			$where1 = 'center_id='.$this->session->center_id.' and student_id='.$result->student_id.' and fees_head="'.$result->apply_for.'"';
+			$txn = $this->Common_model->get_record('online_payment_transaction','*',$where1);
+			if($result->payment == "N"){
+				$btn = '<a href="'.base_url('center/payment/application/'.$this->Common_model->encrypt_decrypt($result->student_id).'/'.$result->apply_for).'" class="btn btn-info btn-sm" target="_blank" >pay</a>';
+			}else{
+				$btn = '<a href="'.base_url('show_fees/'.$this->Common_model->encrypt_decrypt($txn[0]['id'])).'" class="btn btn-primary btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>';
+			}
+			
+			$i++;
+			$university_mode = ($result->university_mode=='REG') ? 'Regular' : 'Private';
+			$data[] = array($x++, $result->student_uid,$result->enrollment_no, $result->name, $result->f_h_name, $result->course_name,$university_mode,$result->apply_for,$result->amount,$btn);
+		}
+
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->Datatable_join_model->countAll('application_form',$where),
+			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
+			"data" => $data,
+		);
+
+		// Output to JSON format
+		echo json_encode($output);
+	}
 	public function admission_mode_edit_request($course_type="REG")
 	{
 		redirect(base_url());
