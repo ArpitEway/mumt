@@ -4540,6 +4540,82 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
+	  public function application_field($param1 = '', $param2 = '', $param3 = ''){
+
+		if($param1 == 'create'){
+
+			$Data=array(
+				'field'=>$this->input->post('field'),
+				'amount'=>$this->input->post('amount')
+			);
+			$this->Common_model->insertAll('application_field',$Data);
+
+			$this->session->set_flashdata('ajax_flash_message','Account Successfully Added');
+			redirect(base_url().'application_field');
+
+		}
+		if($param1 == 'update'){
+
+			// $response = $this->admin_model->account_update($param2);
+			$where = "id= ".$param2."";
+			$Data=array(
+				'field'=>$this->input->post('field'),
+				'amount'=>$this->input->post('amount')
+			);
+			$this->Common_model->updateRecordByConditions('application_field',$where,$Data); 
+			$this->session->set_flashdata('ajax_flash_message','Account Successfully Updated');
+			redirect(base_url().'application_field');
+		}
+
+		if($param1 == 'delete'){
+
+			// $response = $this->admin_model->account_delete($param2);
+			$this->Common_model->deleteById('application_field','id',$param2);
+			$this->session->set_flashdata('ajax_flash_message','Account Successfully Deleted');
+			redirect(base_url().'application_field');
+		}
+
+		if(empty($param1) ){
+			$data = array(
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash()
+			);
+			$titleData = array('title' => 'Application Field');
+			$this->load->view('header',$titleData);
+			$data['field']= $this->Common_model->getRecordByWhere('application_field');
+			$this->load->view('admin/application_field',$data);
+			$this->load->view('footer');
+			
+		}    
+		
+	  }
+
+	  public function update_field_status()
+		{
+
+			if ($this->input->method() == "post") 
+			{
+				$id    = 0;
+
+				$id    = $this->input->post("id");
+				$status = $this->input->post("status");
+
+				if ($this->input->post("id")) 
+				{
+					$data = $this->Common_model->updateRecordByConditions("application_field",array("id" => $id ),array("status" => $status ));
+
+					$status = true;
+					$msg    = "";
+
+					echo json_encode(array(
+						"status" => $status,
+						"msg" => $msg,
+						"data" => $data
+					));
+				}
+			}
+		}
+
 	public function view_mode_change_complaint(){
 			
 		if($this->session->has_userdata('adminData')){

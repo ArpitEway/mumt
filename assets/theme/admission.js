@@ -596,6 +596,25 @@ function validation(step=""){
 	}else{
 		$('input[name="total_marks"]').next('div').text('');
 	}
+	var file = $("#photo");
+	var fileExtensions = file[0].files[0].name.split(".")[1];
+	var validFileExtensions = ["jpg", "JPG", "JPEG", "jpeg", "png", "PNG"];
+	if(!validFileExtensions.includes(fileExtensions)){
+		$('#errPhoto').text('Please Select Valid Image');
+		ph.focus();
+		return false;
+	}else{
+		$('#errPhoto').text('');
+	}
+	var filesize = parseFloat(file[0].files[0].size / 1024).toFixed(2);
+	if(filesize>500){
+		$('#errPhoto').text('Document size must be less than 500kb');
+		ph.focus();
+		return false;
+	}else{
+		$('#errPhoto').text('');
+	}
+
 	if(submit == false){
 		return false;
 	}

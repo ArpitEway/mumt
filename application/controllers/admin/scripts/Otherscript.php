@@ -99,6 +99,44 @@ class Otherscript extends CI_Controller {
 		
 	}
 
+	public function student_photo(){
+	
+		$this->db->select('student_id,name,photo,session');
+		$this->db->from('student');
+		
+		$start=0;
+		$this->db->limit(30,$start);
+		$result = $this->db->get()->result();
+		
+		foreach ($result as $row){
+			$dir = './assets/student_image/'.$row->session;
+		
+			$files = glob( './assets/student_image/'.$row->session.'/'.$row->photo.'');
+
+			foreach($files as $key => $value){
+				if($value){
+					$std .=  $row->student_id.'/';
+				}
+
+			
+			} 
+		}
+
+		$de = explode('/',$std);
+			
+		$this->db->select('student_id');
+		$this->db->from('student');
+		$this->db->where_not_in('student_id',$de);
+	
+		$this->db->limit(10);
+		$rs = $this->db->get()->result();
+		// echo $this->db->last_query().'<br>';
+		foreach ($rs as  $val) {
+			echo $val->student_id.",";
+		}
+				
+			
+	}
 	public function update_old_result_show(){
 		
 		$result = $this->Common_model->getRecordByWhere("student",array("exam_form"=>'Y'));
@@ -452,5 +490,6 @@ public function update_roll_no_old_data(){
 
 	
 }
+
 
 ?>
