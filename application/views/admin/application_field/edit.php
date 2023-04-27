@@ -24,7 +24,7 @@ $field = $this->Common_model->getRecordById('application_field','id',$param1);
 		
     </div>
 	<div class="form-group text-center p-3">
-	<button class="btn btn-md btn-primary" type="submit">Update Account</button>
+	<button class="btn btn-md btn-primary" type="submit">Update Field</button>
 	</div>
 </form>
 
