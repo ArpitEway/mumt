@@ -919,7 +919,7 @@ class Center extends CI_Controller {
 		}else{
 			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
 		}
-		$check_record = $this->Common_model->get_record('request','*',array('student_id' => $student_id));
+		$check_record = $this->Common_model->get_record('request','*',array('student_id' => $student_id,'status'=>'Pending'));
 		$id =  $this->session->center_id;
 		if($check_record){
 			echo json_encode(array("status" => 'true','data' => "error"));
