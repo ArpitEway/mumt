@@ -269,7 +269,7 @@ $(document).on('click','#edit_submit', function () {
 function validation(step=""){
 	var submit = true;
 	// console.log(step);
-
+	
 	var session = $('select[name="session"]').val();
 	var course_group_id = $('select[name="course_group_id"]').val();
 	var class_id = $('select[name="class_id"]').val(); 
@@ -426,56 +426,6 @@ function validation(step=""){
 	}
 
 	
-	
-	// if(name_hindi==''){
-	// 	$('input[name="name_hindi"]').next('div').text('Name is Required');
-	// 	document.getElementById('name_hindi').focus();
-	// 	submit = false
-	// }else{
-	// 	$('input[name="name_hindi"]').next('div').text('');
-	// }
-	
-	// if(f_h_name_hindi==''){
-	// 	$('input[name="f_h_name_hindi"]').next('div').text('Father Name is Required');
-	// 	document.getElementById('f_h_name_hindi').focus();
-	// 	submit = false
-	// }else{
-	// 	$('input[name="f_h_name_hindi"]').next('div').text('');
-	// }
-	
-	// if(f_h_occupation==''){
-	// 	$('select[name="f_h_occupation"]').next('div').text('Father occupation is Required');
-	// 	document.getElementById('f_h_occupation').focus();
-	// 	submit = false
-	// }else{
-	// 	$('select[name="f_h_occupation"]').next('div').text('');
-	// }
-	// if(mother_occupation==''){
-	// 	$('select[name="mother_occupation"]').next('div').text('Mother occupation is Required');
-	// 	document.getElementById('mother_occupation').focus();
-	// 	submit = false
-	// }else{
-	// 	$('select[name="mother_occupation"]').next('div').text('');
-	// }
-	// if(mother_name_hindi==''){
-	// 	$('input[name="mother_name_hindi"]').next('div').text('Mother Name is Required');
-	// 	document.getElementById('mother_name_hindi').focus();
-	// 	submit = false
-	// }else{
-	// 	$('input[name="mother_name_hindi"]').next('div').text('');
-	// }
-	
-	
-	// if(f_h_mobile_no==''){
-	// 	$('input[name="f_h_mobile_no"]').next('div').text('Mobile is Required');
-	// 	document.getElementById('f_h_mobile_no').focus();
-	// 	submit = false
-	// }else{
-	// 	$('input[name="f_h_mobile_no"]').next('div').text('');
-	// }
-	
-	
-	
 	if(adhar_no==''){
 		$('input[name="adhar_no"]').next('div').text('Adhar No is Required');
 		document.getElementById('adhar_no').focus();
@@ -596,6 +546,7 @@ function validation(step=""){
 	}else{
 		$('input[name="total_marks"]').next('div').text('');
 	}
+	if(!$('input[name="student_id"]').length>0){
 	var file = $("#photo");
 	var fileExtensions = file[0].files[0].name.split(".")[1];
 	var validFileExtensions = ["jpg", "JPG", "JPEG", "jpeg", "png", "PNG"];
@@ -614,7 +565,7 @@ function validation(step=""){
 	}else{
 		$('#errPhoto').text('');
 	}
-
+}
 	if(submit == false){
 		return false;
 	}
