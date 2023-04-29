@@ -161,7 +161,7 @@ $(document).on("click","#submit_btn",function(){
 
 				var url = BASE_URL + "center/center/create_form_edit_request"; 
 				var response = call_ajax(data,url);
-				console.log(response);
+				console.log(response.data);
 				
 				$("#session").val("");
 				$("#student").val("");
@@ -170,7 +170,10 @@ $(document).on("click","#submit_btn",function(){
 				
 
 				myTable.draw();
-
+				if(response.data=="error"){
+					toastr.error("Edit Request already exist");			
+				}else
+				toastr.success("Edit Request Submited Successfully ");
 			}else{
 
 			toastr.error("Please Enter Required Fields");

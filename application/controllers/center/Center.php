@@ -881,6 +881,7 @@ class Center extends CI_Controller {
 				$titleData = array('title' => 'Regular Form Edit Request');	
 			$this->load->view('Centers/header',$titleData);
 			$id =  $this->session->center_id;
+			
 			$request_detail = $this->Common_model->get_record('request','*',array());
 			$data = array('request_detail' => $request_detail,
 				'name_csrf' => $this->security->get_csrf_token_name(),
@@ -992,6 +993,7 @@ class Center extends CI_Controller {
 		$course_type_where="";
 		if(!empty($course_type))
 			$course_type_where .=" student.university_mode='".$course_type."'  ";	
+		$this->db->order_by("id", "DESC");
 		$data = $row = array();
 		$column_order = array(null,'name','student.student_id','detail','date','status','request_remark');
 		$column_search = array('name','student.student_id','detail','date','status','request_remark');
