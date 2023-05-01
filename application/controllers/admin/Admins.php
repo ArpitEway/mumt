@@ -4430,6 +4430,33 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
+	public function exam_center_wise_backlog_student_list($center_id,$param='')
+	{
+	 $center_id = $this->Common_model->encrypt_decrypt($center_id,'decrypt');
+	 $param = $this->Common_model->encrypt_decrypt($param,'decrypt');
+	
+		if($param=='fill')
+		{
+			$where = array('exam_form'=>'Y','exam_center_id'=>$center_id);		
+		}
+		else{
+	     $this->db->group_start();
+		 $this->db->where('exam_form','N');
+		 $this->db->or_where('exam_form', 'S');
+		 // $this->db->or_where('exam_form', 'D');
+		 $this->db->group_end();
+		 $where = array('exam_center_id'=>$center_id);
+		}
+		if($center_id!='')
+		{
+			$this->db->order_by('roll_no ','asc');
+			$data['listing'] = $this->Common_model->getRecordByWhere('backlog_student',$where);
+			$this->load->view('header',array('title' => 'Exam Center Wise Backlog Student List'));
+			$this->load->view('admin/exam_center_wise_backlog_student_list',$data); 
+			$this->load->view('footer');
+		}
+	}
+
 
 	public function change_password(){
 		if(!$this->session->has_userdata('adminData')){
