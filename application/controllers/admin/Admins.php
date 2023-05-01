@@ -4422,6 +4422,7 @@ public function update_exam_datewise_permission(){
 		}
 		if($center_id!='')
 		{
+			$this->db->order_by('roll_no ','asc');
 			$data['listing'] = $this->Common_model->getRecordByWhere('student',$where);
 			$this->load->view('header',array('title' => 'Exam Center Wise Student List'));
 			$this->load->view('admin/exam_center_wise_student_list',$data); 
