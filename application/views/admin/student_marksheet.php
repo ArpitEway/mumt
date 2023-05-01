@@ -240,8 +240,8 @@
                                 
                                 if($paper->paper_code=='1RMOM5')
                               {
-                                if($medium=='Hindi'){$paper_name='Practical- I Typing Job-Speed Test (Hindi-30 w.p.m.)'; }
-                                if($medium=='English'){$paper_name='Practical- I Typing Job-Speed Test (English 40 w.p.m.)'; }		
+                                if($medium=='Hindi'){$paper_name='Practical - I Typing Job I - Speed Test (Hindi-30 w.p.m.)'; }
+                                if($medium=='English'){$paper_name='Practical - I Typing Job I - Speed Test (English 40 w.p.m.)'; }		
                               }
                               
                               if($paper->paper_code=='1RMOM6')
