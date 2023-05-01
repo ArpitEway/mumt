@@ -228,13 +228,45 @@
                         }
                         foreach($papers as $paper)
                         {
+                          
+                          $paper_name=$paper->paper_name;
+                          if($paper->class_id=="168"){
+                              if($paper->papercode=="1RMOM3(A)")
+                              {
+                                $medium="Hindi";
+                              }elseif($paper->papercode=="1RMOM3(B)"){
+                                $medium="English";
+                              }
+                                
+                                if($paper->papercode=='1RMOM5')
+                              {
+                                if($medium=='Hindi'){$paper_name='Practical- I Typing Job-Speed Test (Hindi-30 w.p.m.)'; }
+                                if($medium=='English'){$paper_name='Practical- I Typing Job-Speed Test (English 40 w.p.m.)'; }		
+                              }
+                              
+                              if($paper->papercode=='1RMOM6')
+                              {
+                                if($medium=='Hindi'){$paper_name='Practical - I Typing Job II - Speed Test (Hindi-30 w.p.m.)'; }
+                                if($medium=='English'){$paper_name='Practical - I Typing Job II - Speed Test (English 40 w.p.m.)'; }		
+                              }
+                              if($paper->papercode=='1RMOM7')
+                              {
+                                if($medium=='Hindi'){$paper_name='Practical - I Typing Job III - Speed Test (Hindi-30 w.p.m.)'; }
+                                if($medium=='English'){$paper_name='Practical - I Typing Job III - Speed Test (English 40 w.p.m.)'; }		
+                              }
+                              if($paper->papercode=='1RMOM8')
+                              {
+                                if($medium=='Hindi'){$paper_name='Practical- II Short Hand Speed (Hindi-100 w.p.m.)'; }
+                                if($medium=='English'){$paper_name='Practical- II Short Hand Speed (English 120 w.p.m.)'; }		
+                              }
+                            }
                           ?>
                           <tr>
                             <td colspan="9">&nbsp;</td>
                           </tr>
                           <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="middle">
                             <td style="margin-top:2px;" align="left"><strong><?php echo  $paper->paper_code; ?></strong></td>
-                            <td align="left"><strong><?php  echo $paper->paper_name ;  ?></strong></td>
+                            <td align="left"><strong><?php  echo $paper_name ;  ?></strong></td>
                             <td align="center" ><span class="style4">
                               <?php echo  ($paper->type !='Sessional')?$paper->max_theory_marks:'-';?></span>
                             </td>
