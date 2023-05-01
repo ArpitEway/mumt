@@ -39,3 +39,6 @@
 		?>
 	</tbody>
 </table>
+<script>
+	$("#headerTitle").html("MDE001 Student List");
+		</script>	
