@@ -231,30 +231,30 @@
                           
                           $paper_name=$paper->paper_name;
                           if($paper->class_id=="168"){
-                              if($paper->papercode=="1RMOM3(A)")
+                              if($paper->paper_code=="1RMOM3(A)")
                               {
                                 $medium="Hindi";
-                              }elseif($paper->papercode=="1RMOM3(B)"){
+                              }elseif($paper->paper_code=="1RMOM3(B)"){
                                 $medium="English";
                               }
                                 
-                                if($paper->papercode=='1RMOM5')
+                                if($paper->paper_code=='1RMOM5')
                               {
                                 if($medium=='Hindi'){$paper_name='Practical- I Typing Job-Speed Test (Hindi-30 w.p.m.)'; }
                                 if($medium=='English'){$paper_name='Practical- I Typing Job-Speed Test (English 40 w.p.m.)'; }		
                               }
                               
-                              if($paper->papercode=='1RMOM6')
+                              if($paper->paper_code=='1RMOM6')
                               {
                                 if($medium=='Hindi'){$paper_name='Practical - I Typing Job II - Speed Test (Hindi-30 w.p.m.)'; }
                                 if($medium=='English'){$paper_name='Practical - I Typing Job II - Speed Test (English 40 w.p.m.)'; }		
                               }
-                              if($paper->papercode=='1RMOM7')
+                              if($paper->paper_code=='1RMOM7')
                               {
                                 if($medium=='Hindi'){$paper_name='Practical - I Typing Job III - Speed Test (Hindi-30 w.p.m.)'; }
                                 if($medium=='English'){$paper_name='Practical - I Typing Job III - Speed Test (English 40 w.p.m.)'; }		
                               }
-                              if($paper->papercode=='1RMOM8')
+                              if($paper->paper_code=='1RMOM8')
                               {
                                 if($medium=='Hindi'){$paper_name='Practical- II Short Hand Speed (Hindi-100 w.p.m.)'; }
                                 if($medium=='English'){$paper_name='Practical- II Short Hand Speed (English 120 w.p.m.)'; }		
