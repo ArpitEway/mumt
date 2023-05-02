@@ -63,7 +63,10 @@
 					<div class="col-12 text-center">
 						<h5>Attendance Sheet Examination 
 							<?php
-							if($student->course_group_id==75 || $student->course_group_id==76){
+							if($student->course_group_id==77){
+								echo '2023';
+							}
+							else if($student->course_group_id==75 || $student->course_group_id==76){
 								echo 'Feb 2023';
 							}else{
 								echo 'March 2023';
