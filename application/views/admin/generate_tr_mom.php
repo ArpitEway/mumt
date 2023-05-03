@@ -173,13 +173,13 @@ table.last_table, .last_table td, .last_table th{
     $count_theory =0;
     $count_practical =0;
     $count_int =0;
-    $final_result = '';
+    $final_result = ''; $medium="";
     foreach($marks as $new_exam_form)
     {
       
       if($new_exam_form->type=='theory'){
 
-        $medium="";
+       
         if($new_exam_form->paper_code=="1RMOM3(A)")
         {
           $medium="Hindi";
