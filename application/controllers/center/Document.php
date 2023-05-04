@@ -39,7 +39,7 @@
 		
 		
 		$permission_session= $this->Common_model->getRecordByWhere('session',array('document_permission'=>'Y' )); 
-		$where.= "document_uploaded!='Y' and payment_status='Y' and student.class_name not like '%SEM%' and ( ";
+		$where.= "document_uploaded!='Y' and payment_status='Y'  and ( "; //and student.class_name not like '%SEM%'
 		foreach($permission_session as $key=>$row){
 			
 			if($row->semester_permission=='N' && $row->annual_permission=='Y' )
