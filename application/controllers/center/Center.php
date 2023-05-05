@@ -429,7 +429,7 @@ class Center extends CI_Controller {
 		
 		if($param1=='Admission'){
 			$permission_session= $this->Common_model->getRecordByWhere('session',array('unpaid_permission'=>'Y' ));
-			$where .= " and online_payment_transaction.fees_head='Admission Fees'  and  student.payment_status='N' and student.class_name not like '%SEM%' and ( "; 
+			$where .= " and online_payment_transaction.fees_head='Admission Fees'  and  student.payment_status='N'  and ( "; //and student.class_name not like '%SEM%'
 			foreach($permission_session as $key=>$row){
 			
 				if($row->semester_permission=='N' && $row->annual_permission=='Y' )
