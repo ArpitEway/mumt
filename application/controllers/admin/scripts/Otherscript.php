@@ -58,7 +58,8 @@ class Otherscript extends CI_Controller {
 	{
 		//$where = " paper_code in ('2RMAEDU5', '2RMAGEO6', '2RMAGEO7', '2RMAGEO8', '2RMAPSY5', '2RMSCC7', '2RMSCC8', '2RMSCM7', '2RMSW7')";
 		// $where = " paper_code in ('2RBED6')";
-		$where = " paper_code in ('1RMLIS10','1RMLIS11')";
+		//$where = " paper_code in ('1RMLIS10','1RMLIS11')";
+		$where="`paper_code` in ('1RCMSCCH7','1RCMSCCH8','1RCMSCCH9','1RCMSCBT7','1RCMSCBT8','1RCMSCC7','1RCMSCM7','3RMSCC6','3RMSCC7')";
 		$papers = $this->Common_model->get_record('paper_master','*',$where);
 
 		foreach ($papers as $paper) {
