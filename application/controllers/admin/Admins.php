@@ -3158,7 +3158,7 @@ public function update_exam_datewise_permission(){
 			$this->db->order_by('center_id,roll_number','ASC');
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode));
 		}
-	 	if($class->internal=="Y"){
+	 	if($class->internal=="Y" && $mode!="PVT"){
 			
 			$this->load->view('admin/student_marksheet',$data);
 		}else{
