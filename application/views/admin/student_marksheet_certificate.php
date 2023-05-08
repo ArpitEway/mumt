@@ -77,7 +77,7 @@
                         <div align="center"><font size="4">  &nbsp; </font></div>
                       </td>
                       <td class="Normaltext">
-                        <div align="center"><font size="2">  <?php if($university_mode=='PVT') echo "Private"; else echo "Regular"; ?> </font></div>
+                        <div align="center"><font size="4">  <?php if($university_mode=='REG')  echo "Regular"; ?> </font></div>
                       </td>
                     </tr>
                     <tr>
@@ -100,6 +100,16 @@
                         <div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo  $student->enrollment_no;; ?></span></div>
                       </td>
                     </tr>
+                    <?php if($university_mode=='PVT'){ ?>
+                    <tr>
+                      <td class="Normaltext" align="left" width="29%">
+                        <div align="left">Category</div>
+                      </td>
+                      <td class="resultText"><div align="left">
+                        <span id="lblSemesterGrading" style="color:Black;">N/C</span></div>
+                      </td>
+                    </tr>
+                    <?php } ?>
                     <tr>
                       <td class="Normaltext" align="left" width="29%">
                         <div align="left">Name of the Candidate</div>
