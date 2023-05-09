@@ -4,6 +4,9 @@
   <link href="css/print_Marksheet.css" rel="stylesheet" type="text/css">
   <title><?php echo (isset($title)) ? $title : ''; ?></title>
   <style type="text/css">
+    tr.rowHeight td {
+        padding: 0px;
+    }
     @media print {
       body {
         -webkit-print-color-adjust: exact;
@@ -72,15 +75,15 @@
               <td align="center" height="120" colspan="2">
                 <table class="mytable" border="0" cellpadding="2" cellspacing="2" width="100%">
                   <tbody>
-                    <tr>
+                    <!-- <tr>
                       <td class="Normaltext" colspan="2">
                         <div align="center"><font size="4">  &nbsp; </font></div>
                       </td>
                       <td class="Normaltext">
                         <div align="center"><font size="4">  <?php if($university_mode=='REG')  echo "Regular"; ?> </font></div>
                       </td>
-                    </tr>
-                    <tr>
+                    </tr> -->
+                    <tr class="rowHeight">
                       <td width="35%" class="Normaltext" align="left"><div align="left">Roll No</div></td>
                       <td width="53%" class="resultText">
                         <div align="left">
@@ -92,7 +95,7 @@
                         <img border="1"  class="student_image" src="<?= base_url('assets/student_image/'.$student->session.'/'.$student->photo) ?>" width="90px" height="105px">
                       </td>
                     </tr>
-                    <tr>
+                    <tr class="rowHeight">
                       <td class="Normaltext" align="left">
                         <div align="left">Enrolment / Registration No.</div>
                       </td>
@@ -101,7 +104,7 @@
                       </td>
                     </tr>
                     <?php if($university_mode=='PVT'){ ?>
-                    <tr>
+                    <tr class="rowHeight">
                       <td class="Normaltext" align="left" width="29%">
                         <div align="left">Category</div>
                       </td>
@@ -110,7 +113,7 @@
                       </td>
                     </tr>
                     <?php } ?>
-                    <tr>
+                    <tr class="rowHeight">
                       <td class="Normaltext" align="left" width="29%">
                         <div align="left">Name of the Candidate</div>
                       </td>
@@ -118,7 +121,7 @@
                         <span id="lblSemesterGrading" style="color:Black;"><?php echo  $student->name; ?></span></div>
                       </td>
                     </tr>
-                    <tr>
+                    <tr class="rowHeight">
                       <td class="Normaltext" align="left" width="29%"><div align="left">Father's / Husband's Name</div></td>
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo strtoupper( $student->f_h_name); ?></span></div></td>
                     </tr>
