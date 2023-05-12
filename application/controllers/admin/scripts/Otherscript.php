@@ -487,6 +487,30 @@ public function update_roll_no_old_data(){
 	}
 
 }
+public function center_wise_student_count_list(){
+	
+	$data['courses'] = $this->Common_model->getRecordByWhere('course_group');
+	$data['name_csrf'] = $this->security->get_csrf_token_name();
+	$data['hash_csrf'] = $this->security->get_csrf_hash();
+	$this->load->view('header',array('title' => 'Center Wise Student Count List'));
+	$this->load->view('admin/center_wise_student_count_list',$data);
+	$this->load->view('footer');
+}
+public function get_student_count_data(){
+	$data['course_group_id'] = $this->input->post('course_group_id');
+
+	$this->db->select('count(*) as num,center_id,center_code,examcentercode,exam_center_id');
+	$this->db->from('student');
+	 $this->db->where('course_group_id',$this->input->post('course_group_id'));
+	  $this->db->group_by('center_id');
+	  $data['students'] = $this->db->get()->result();
+	  $dt = $this->load->view('admin/getStudentCountData',$data,true);
+
+				echo json_encode(array(
+					"status" => true,
+					"data" => $dt
+				));
+}
 
 
 	
