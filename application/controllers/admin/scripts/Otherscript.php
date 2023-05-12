@@ -501,6 +501,7 @@ public function update_roll_no_old_data(){
 		$this->db->select('count(*) as num,center_id,center_code,examcentercode,exam_center_id');
 		$this->db->from('student');
 		$this->db->where('course_group_id',$this->input->post('course_group_id'));
+		$this->db->where('session','July 2022');
 		$this->db->group_by('center_id');
 		$data['students'] = $this->db->get()->result();
 		$dt = $this->load->view('admin/getStudentCountData',$data,true);
