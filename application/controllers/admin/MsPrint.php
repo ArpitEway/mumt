@@ -98,4 +98,51 @@ class MsPrint extends CI_Controller {
 		// $this->load->view('admin/marksheet_student',$data);
 		// $this->load->view('admin/generate_tr/footer2');
 	}
+	public function center_wise_marksheet_dispatch(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+			$titleData = array('title' => 'Center Wise MarkSheet Dispatch '); 
+			$this->load->view('header',$titleData);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$this->db->select('DISTINCT(center_id)');
+			$this->db->from('student');
+			$this->db->where(array('exam_form'=>'Y'));
+			$centers = $this->db->get()->result_array();
+			$ids = array_column($centers, 'center_id');
+			//print_r($ids);die;
+			$this->db->select('*');
+			$this->db->from('center');
+			$this->db->where_in('id',$ids);
+			$this->db->order_by('center_code', "asc");
+			$data['centers'] = $this->db->get()->result();
+			
+			$this->load->view('admin/examController/center_wise_marksheet_dispatch',$data);
+			$this->load->view('footer');
+		}
+	}
+
+	public function get_center_wise_marksheet_dispatchlist(){
+		$center = $this->input->post('center');
+		$this->db->select('DISTINCT(center_id)');
+		$this->db->from('student');
+		$this->db->where(array('exam_form'=>'Y'));
+		$centers = $this->db->get()->result_array();
+		$ids = array_column($centers, 'center_id');
+	
+		$this->db->select('*');
+		$this->db->from('center');
+		if($center!="All")
+			$this->db->where( array('id'=>$center));
+		else
+			$this->db->where_in('id',$ids);
+		$this->db->order_by('center_code', "asc");
+		$data['centers'] = $this->db->get()->result();
+		$data['examTitle'] = "Aug 2022";
+		
+		echo $this->load->view('admin/examController/get_center_wise_marksheet_dispatchlist',$data, TRUE);
+	}
 }
