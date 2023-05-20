@@ -13,7 +13,7 @@ foreach($centers as $center)  {
 	$this->db->from('student');
 	$this->db->order_by("roll_number", "asc");
 	$this->db->join('course_group', 'student.course_group_id = course_group.id');
-	$where = array('center_id'=>$center->id, 'roll_number!=' => 0 ,'exam_form'=>'Y');
+	$where = array('center_id'=>$center->id, 'roll_number!=' => 0 ,'exam_form'=>'Y', 'marksheet_dispatch' =>'Y');
 	$this->db->where($where);	
 	$center_students = $this->db->get()->result();
 	if($center_students){
