@@ -1751,6 +1751,18 @@ class ExamController extends CI_Controller {
 		redirect(base_url('ExamController/'.$method));
 	}
 
+	public function getBacklogPaperByClassId(){
+		$this->db->select('DISTINCT(paper_master.paper_code),paper_master.paper_name');
+		$this->db->from('paper_master');
+		$this->db->join('backlog_exam_form', 'paper_master.paper_code = backlog_exam_form.paper_code');
+		 $this->db->where(array('paper_master.class_id'=>$_POST['class_id'], 'paper_master.type' => 'theory','backlog_exam_form.status'=>'B'));
+		 $this->db->order_by('paper_master.id');
+		 $data=  $this->db->get()->result();
+		
+		echo json_encode(array('data'=>$data));
+	}
+
+
 	public function exam_center_folio(){
 		$titleData = array('title' => 'Exam Center Folio'); 
 		$this->load->view('header',$titleData);
@@ -1759,6 +1771,16 @@ class ExamController extends CI_Controller {
 		$this->db->order_by('course_name');
 		$data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id), course_name ','new_exam_form="Y"');
 		$this->load->view('admin/examController/exam_center_folio',$data);
+		$this->load->view('footer');
+	} 
+	public function backlog_exam_center_folio(){
+		$titleData = array('title' => 'Exam Center Folio Backlog'); 
+		$this->load->view('header',$titleData);
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();	
+		$this->db->order_by('course_group_id');
+		$data['courses'] = $this->Common_model->get_record('backlog_student','DISTINCT (course_group_id)','exam_form="Y"');
+		$this->load->view('admin/examController/backlog_exam_center_folio',$data);
 		$this->load->view('footer');
 	} 
 
@@ -1792,6 +1814,38 @@ class ExamController extends CI_Controller {
 		
 		
 	}
+
+	public function backlog_search_assign_exam_center(){
+		if($_POST['action1']=='submit'){
+			$this->db->select('Distinct(exam_center_code) ,exam_center_id');
+			$this->db->from("backlog_student");
+			$this->db->join('backlog_exam_form', 'backlog_exam_form.student_id = backlog_student.student_id and backlog_exam_form.class_id=backlog_student.class_id');
+			$this->db->where('backlog_exam_form.paper_code',$_POST['paper_code']);
+			$this->db->where('backlog_exam_form.course_group_id',$_POST['course_group_id']);
+			$this->db->where('backlog_exam_form.class_id',$_POST['class_id']);
+			$this->db->where('backlog_exam_form.status','B');
+			$this->db->where('backlog_student.exam_center_id!=',0);
+			$this->db->where('backlog_student.exam_form','Y');
+			$this->db->where('backlog_student.mode',$_POST['university_mode']);
+			$this->db->where('backlog_student.roll_no!=',0);
+			$this->db->order_by('backlog_student.exam_center_code');
+			$data['examcenters'] = $this->db->get()->result();
+			$data['university_mode'] = $_POST['university_mode'];
+			$data['class_id'] = $_POST['class_id'];
+			$data['paper_code'] = $_POST['paper_code'];
+			$data['course_group_id'] = $_POST['course_group_id'];
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();	
+			//echo $this->db->last_query();die; 
+			$dt = $this->load->view('admin/examController/backlog_get_assign_examcenter',$data,true);
+			echo json_encode(array(
+				"status" => true,
+				"data" => $dt
+			));
+		}
+		
+		
+	}  
 
 	public function show_examcenter_folio(){
 		if($_POST['action']=='assign_examcenter'){
@@ -1830,6 +1884,45 @@ class ExamController extends CI_Controller {
 		}
 	}
 
+	public function show_backlog_examcenter_folio(){
+		if($_POST['action']=='assign_examcenter'){
+			$data_insert['exam_center_id'] =  implode(',',$_POST['exam_center_id']);
+			
+			$dataArray= array();	
+			foreach($_POST['exam_center_id'] as $exam_center_id){
+				$this->db->select('*');
+				$this->db->from("backlog_student");
+				$this->db->join('backlog_exam_form', 'backlog_exam_form.student_id = backlog_student.student_id and backlog_exam_form.class_id=backlog_student.class_id');
+				$this->db->where('backlog_exam_form.paper_code',$_POST['paper_code']);
+				$this->db->where('backlog_exam_form.course_group_id',$_POST['course_group_id']);
+				$this->db->where('backlog_exam_form.class_id',$_POST['class_id']);
+				$this->db->where('backlog_exam_form.status','B');
+				$this->db->where('backlog_student.exam_center_id',$exam_center_id);
+				$this->db->where('backlog_student.roll_no!=',0);
+				$this->db->where('backlog_student.exam_form','Y');
+				$this->db->where('backlog_student.mode',$_POST['university_mode']);
+				$this->db->order_by('backlog_student.roll_no');
+				$dataArray['students'][$exam_center_id] = $this->db->get()->result();
+				$dataArray['teachername'][$exam_center_id] = $this->Common_model->getSinglefield('exam_center','superintendent',array('id'=>$exam_center_id));
+				$dataArray['detail'][$exam_center_id] = $this->Common_model->getRecordByWhere('exam_center',array('id'=>$exam_center_id));	
+			}
+			$dataArray['university_mode']=$_POST['university_mode'];
+			$dataArray['class_id'] = $_POST['class_id'];
+			$dataArray['paper_code'] = $_POST['paper_code'];
+			$dataArray['course_group_id'] = $_POST['course_group_id'];
+			$dataArray["exam_center_id"]=$_POST['exam_center_id'];
+			$dataArray['examname']= $this->Common_model->getCourseNameByCourseId($_POST['course_group_id']);
+			$dataArray['class_name']= $this->Common_model->getClassNameByClassId($_POST['class_id']);
+			$this->db->where('exam_date!=',"");
+			$this->db->where('exam_date!=',"0000-00-00");	
+			$dataArray['paper']= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'] , 'paper_code'=>$_POST['paper_code']));
+			$dataArray['title'] = 'COUNTERFOIL';
+			$dataArray['examSession']="Feb 2023";
+			$this->load->view('admin/examController/backlog_show_examcenter_folio',$dataArray);
+		}
+	}
+
+
     public function result_uplaoding_status(){
 
  		if(!$this->session->has_userdata('adminData')){
@@ -1837,7 +1930,7 @@ class ExamController extends CI_Controller {
 			exit;
 		}else{	
 			
-			$this->load->view('header',array('title' => 'Main Exam Result Upload Status'));
+			$this->load->view('header',array('title' => 'Result Upload Status'));
 			
 			#total
 			$this->db->select('count(*) as num');
@@ -1863,12 +1956,45 @@ class ExamController extends CI_Controller {
 			$this->db->where('student.new_exam_form','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
 			$this->db->where_not_in('theory_marks',array('ABS',''));
+
 			
 			$uploaded = $this->db->get()->result();
+
+			#total backlog
+			$this->db->select('count(*) as num');
+			$this->db->from('backlog_exam_form');
+			$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id and backlog_exam_form.class_id = backlog_student.class_id');
+			$this->db->where('backlog_student.exam_form','Y');
+			$this->db->where('backlog_exam_form.status','B');
+			$this->db->where('backlog_exam_form.paper_type','theory');
+			$backlog_count = $this->db->get()->result();
+
+			#Absent Backlog
+			$this->db->select('count(*) as num');
+			$this->db->from('backlog_exam_form');
+			$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id  and backlog_exam_form.class_id = backlog_student.class_id');
+			$this->db->where('backlog_student.exam_form','Y');
+			$this->db->where('backlog_exam_form.status','B');
+			$this->db->where('backlog_exam_form.paper_type','theory');
+			$this->db->where('backlog_exam_form.theory_marks','ABS');
+			$backlog_abs = $this->db->get()->result();
+
+			#uploaded Backlog
+			$this->db->select('count(*) as num');
+			$this->db->from('backlog_exam_form');
+			$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id  and backlog_exam_form.class_id = backlog_student.class_id');
+			$this->db->where('backlog_student.exam_form','Y');
+			$this->db->where('backlog_exam_form.status','B');
+			$this->db->where('backlog_exam_form.paper_type','theory');
+			$this->db->where_not_in('theory_marks',array('ABS',''));
+			$backlog_uploaded = $this->db->get()->result();
 			//print_r($this->db->last_query());die;
 			$data['total_paper_count'] = $count[0]->num;
 			$data['uploaded'] = $uploaded[0]->num;
 			$data['absent'] = 0;//$abs[0]->num;
+			$data['total_paper_count_backlog'] = $backlog_count[0]->num;
+			$data['uploaded_backlog'] = $backlog_uploaded[0]->num;
+			$data['absent_backlog'] = $backlog_abs[0]->num;
 			$this->load->view('admin/result_uplaoding_status',$data);
 			$this->load->view('footer');
 		}
