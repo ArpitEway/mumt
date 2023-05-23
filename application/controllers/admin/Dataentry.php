@@ -275,7 +275,7 @@ class Dataentry extends CI_Controller {
 	} 
 
 	public function backlog_exam_center_folio(){
-		$titleData = array('title' => 'Exam Center Folio Backlog'); 
+		$titleData = array('title' => 'Backlog Exam Center Folio'); 
 		$this->load->view('header',$titleData);
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();	
