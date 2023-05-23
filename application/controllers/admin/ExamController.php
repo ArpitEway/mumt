@@ -1774,7 +1774,7 @@ class ExamController extends CI_Controller {
 		$this->load->view('footer');
 	} 
 	public function backlog_exam_center_folio(){
-		$titleData = array('title' => 'Exam Center Folio Backlog'); 
+		$titleData = array('title' => 'Backlog Exam Center Folio '); 
 		$this->load->view('header',$titleData);
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();	
@@ -2022,6 +2022,30 @@ class ExamController extends CI_Controller {
 			);
 			$this->load->view('header');
 			$this->load->view('admin/class_wise_result_upload_status',$data);
+			$this->load->view('footer');
+		}
+	}
+
+	public function class_wise_backlog_result_upload_status(){
+
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else{
+			$admin_id = $this->session->admin_id;
+			$course_group = $this->db->get_where('course_group')->result_array();
+
+            $course_groupids = array_column($course_group, 'id');
+ 			$this->db->where_in('course_group_id',$course_groupids);
+			$this->db->order_by('course_group_id', "asc");
+			$course_group = $this->Common_model->get_record('backlog_student','DISTINCT(class_id) as  class_id, course_group_id' ,array('exam_form'=>'Y'));
+			
+			$data = array('course_group' => $course_group,
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash()
+			);
+			$this->load->view('header',array('title' => 'Backlog Result Upload Status'));
+			$this->load->view('admin/class_wise_backlog_result_upload_status',$data);
 			$this->load->view('footer');
 		}
 	}
@@ -2323,6 +2347,38 @@ public function getStudentData()
 		}
 	}
 
+	public function class_wise_backlog_remaining_report($course_group_id,$class_id){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url('admin'));
+			exit;
+		}else{
+			$data=array();	
+			$course_group = $this->Common_model->get_record('course_group','*',array('id'=>$course_group_id));
+			$data['course_group']=$course_group[0]['course_name'];
+			$class = $this->Common_model->get_record('class_master','*',array('id'=>$class_id));
+				
+			
+				$this->db->select('*');
+				$this->db->from('backlog_exam_form');
+				$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id and backlog_exam_form.class_id = backlog_student.class_id');
+				$this->db->where('backlog_student.exam_form','Y');
+				
+					
+				$this->db->where('backlog_exam_form.theory_marks','');
+				$this->db->where('backlog_exam_form.course_group_id',$course_group_id);
+				$this->db->where('backlog_exam_form.class_id',$class_id);
+				$this->db->where('backlog_exam_form.paper_type',"theory");
+				$this->db->where('backlog_exam_form.status',"B");
+				$data['students'] = $this->db->get()->result();
+
+			}
+			
+			$this->load->view('header',array('title' => 'Marks not submitted of the following Backlog Student'));
+			$this->load->view('admin/backlog_class_wise_remaining_report_table',$data);
+			$this->load->view('footer');
+		
+	}
+
 	//Get Center Wise Student Marksheet dispatch 
 	public function get_center_wise_marksheet_dispatchlist(){
 		$center = $this->input->post('center');
@@ -2403,6 +2459,17 @@ public function getStudentData()
 		$this->load->view('admin/examController/counter_folio_check',$data);
 		$this->load->view('footer');
 	}
+
+	public function backlog_counter_folio_check(){
+		$titleData = array('title' => 'Backlog Counter Folio Check'); 
+		$this->load->view('header',$titleData);
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();
+		$this->db->order_by('course_group_id');	
+		$data['courses'] = $this->Common_model->get_record('backlog_student','DISTINCT (course_group_id)','exam_form="Y"');
+		$this->load->view('admin/examController/backlog_counter_folio_check',$data);
+		$this->load->view('footer');
+	}
 	public function search_assign_exam_center_counter_folio_check(){
 		if($_POST['action1']=='submit'){
 			$this->db->select('Distinct(examcentercode) ,exam_center_id');
@@ -2425,6 +2492,38 @@ public function getStudentData()
 			$data['hash_csrf'] = $this->security->get_csrf_hash();	
 			//echo $this->db->last_query();die; 
 			$dt = $this->load->view('admin/examController/get_assign_examcenter_counter_folio_check',$data,true);
+			echo json_encode(array(
+				"status" => true,
+				"data" => $dt
+			));
+		}
+		
+		
+	}
+
+	public function search_backlog_assign_exam_center_counter_folio_check(){
+		if($_POST['action1']=='submit'){
+			$this->db->select('Distinct(exam_center_code) ,exam_center_id');
+			$this->db->from("backlog_student");
+			$this->db->join('backlog_exam_form', 'backlog_exam_form.student_id = backlog_student.student_id and backlog_exam_form.class_id=backlog_student.class_id');
+			$this->db->where('backlog_exam_form.paper_code',$_POST['paper_code']);
+			$this->db->where('backlog_exam_form.course_group_id',$_POST['course_group_id']);
+			$this->db->where('backlog_exam_form.class_id',$_POST['class_id']);
+			$this->db->where('backlog_exam_form.status','B');
+			$this->db->where('backlog_student.exam_center_id!=',0);
+			$this->db->where('backlog_student.exam_form','Y');
+			$this->db->where('backlog_student.mode',$_POST['university_mode']);
+			$this->db->where('backlog_student.roll_no!=',0);
+			$this->db->order_by('backlog_student.exam_center_code');
+			$data['examcenters'] = $this->db->get()->result();
+			$data['university_mode'] = $_POST['university_mode'];
+			$data['class_id'] = $_POST['class_id'];
+			$data['paper_code'] = $_POST['paper_code'];
+			$data['course_group_id'] = $_POST['course_group_id'];
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();	
+			//echo $this->db->last_query();die; 
+			$dt = $this->load->view('admin/examController/get_backlog_assign_examcenter_counter_folio_check',$data,true);
 			echo json_encode(array(
 				"status" => true,
 				"data" => $dt
@@ -2469,6 +2568,43 @@ public function getStudentData()
 			$this->load->view('admin/examController/show_examcenter_counter_folio_check',$dataArray);
 		}
 	}
+
+	public function show_backlog_counter_folio_check(){
+		if($_POST['action']=='assign_examcenter'){
+			
+			
+			$dataArray= array();	
+			
+				$this->db->select('*');
+				$this->db->from("backlog_student");
+				$this->db->join('backlog_exam_form', 'backlog_exam_form.student_id = backlog_student.student_id and backlog_exam_form.class_id=backlog_student.class_id');
+				$this->db->where('backlog_exam_form.paper_code',$_POST['paper_code']);
+				$this->db->where('backlog_exam_form.course_group_id',$_POST['course_group_id']);
+				$this->db->where('backlog_exam_form.class_id',$_POST['class_id']);
+				$this->db->where('backlog_exam_form.status','B');
+				$this->db->where('backlog_student.roll_no!=',0);
+				$this->db->where('backlog_student.exam_form','Y');
+				$this->db->where('backlog_student.mode',$_POST['university_mode']);
+				$this->db->where_in('exam_center_id', $_POST['exam_center_id'] );
+				$this->db->order_by('backlog_student.exam_center_code,backlog_student.roll_no');
+				$dataArray['students'][$exam_center_id] = $this->db->get()->result();
+			
+			$dataArray['university_mode']=$_POST['university_mode'];
+			$dataArray['class_id'] = $_POST['class_id'];
+			$dataArray['paper_code'] = $_POST['paper_code'];
+			$dataArray['course_group_id'] = $_POST['course_group_id'];
+			$dataArray["exam_center_id"]=$_POST['exam_center_id'];
+			$dataArray['coursename']= $this->Common_model->getCourseNameByCourseId($_POST['course_group_id']);
+			$dataArray['class_name']= $this->Common_model->getClassNameByClassId($_POST['class_id']);
+			$this->db->where('exam_date!=',"");
+			$this->db->where('exam_date!=',"0000-00-00");	
+			$dataArray['paper']= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'] , 'paper_code'=>$_POST['paper_code']));
+			$dataArray['title'] = 'Backlog COUNTER FILE CHECKING';
+			$dataArray['examSession']="Feb 2023";
+			$this->load->view('admin/examController/show_backlog_examcenter_counter_folio_check',$dataArray);
+		}
+	}
+
 
 	public function search_student_result($rollno=""){
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
