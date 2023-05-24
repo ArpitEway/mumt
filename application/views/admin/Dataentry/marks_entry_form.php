@@ -76,13 +76,14 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 				<tbody>
 					<?php
 					$count = 1 ;
+					$roll = $this->Common_model->getMaster('roll_number_col');
 					foreach($resultData as $dt){
 						?>
 						<tr>
 							<td>
 								<?php echo $dt->enrollment_no; ?>
 							</td>
-							<td><?php echo $dt->roll_no; ?>  
+							<td><?php echo $dt->$roll; ?>  
 								<input type="hidden" name="student_id[]" value="<?=$dt->student_id?>">
 								
 							</td>

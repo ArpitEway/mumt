@@ -32,7 +32,8 @@ class Gradesheet_model extends CI_Model
 
 	public function view_result($student_id,$course_group_id,$class_id,$mode)
 	{
-		$std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $class_id,'student_id'=>$student_id));
+		$table = $this->Common_model->getMaster('exam_form_table');
+		$std  = $this->Common_model->getRecordByWhere($table,array('class_id'=> $class_id,'student_id'=>$student_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
 		

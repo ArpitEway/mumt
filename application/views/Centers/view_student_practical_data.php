@@ -18,12 +18,12 @@
 
 </style>
 
-
+<?php $roll = $this->Common_model->getMaster('roll_number_col');?>
 <table class= "table table-bordered">
   <tbody>
     <tr>
      <td><strong>Enrollment No: </strong> <?=$details[0]->enrollment_no;?></td>
-     <td><strong> Roll No: </strong><?=$details[0]->roll_no;?></td>
+     <td><strong> Roll No: </strong><?=$details[0]->$roll;?></td>
      <td  rowspan="5"> <img  class="student_img" src="<?php echo base_url('/assets/student_image/').$details[0]->session.'/'.$details[0]->photo;?>" ></td>
    </tr>
    <tr>
