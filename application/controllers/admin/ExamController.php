@@ -2764,7 +2764,7 @@ public function getStudentData()
 					// 	"data" => "<p style='text-align: center;'><b>Student result not declared!</b></p>"
 					// ));
 						$msg="<p style='text-align: center;'><b>Student result not declared!</b></p>"; 
-				}
+				}else{
 			
 						$data['student']=$student[0];
 						$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
@@ -2812,6 +2812,7 @@ public function getStudentData()
 							"status" => true,
 							"data" => $dt
 						));
+					}
 		
 	  }
 	}//fun
