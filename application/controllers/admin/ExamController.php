@@ -2757,15 +2757,13 @@ public function getStudentData()
 						"data" => "<p style='text-align: center;'><b>No data found!</b></p>"
 					));
 					
-				}
-				else if($student[0]->old_result_show =="N"){
-					// echo json_encode(array(
-					// 	"status" => false,
-					// 	"data" => "<p style='text-align: center;'><b>Student result not declared!</b></p>"
-					// ));
-						$msg="<p style='text-align: center;'><b>Student result not declared!</b></p>"; 
 				}else{
 			
+					if($student[0]->old_result_show =="N"){
+						
+							$msg="<p style='text-align: center;'><b>Student result not declared!</b></p>"; 
+					}
+
 						$data['student']=$student[0];
 						$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
 						$data['practical_internal_marks']=$classData->practical_internal_marks;
@@ -2805,6 +2803,7 @@ public function getStudentData()
 							// $dt =  $marksheet_top.$marksheet_bottom;
 							}
 						
+						
 							$dt = $msg. $marksheet_top.$marksheet_bottom;
 						
 						}
@@ -2812,7 +2811,7 @@ public function getStudentData()
 							"status" => true,
 							"data" => $dt
 						));
-					}
+					 }
 		
 	  }
 	}//fun
