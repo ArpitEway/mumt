@@ -231,11 +231,11 @@
 							<span class="nav-text">Internal Marks Submission (Regular)</span>
 						</div>
 					</a>
-					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
 						<div>
 							<span class="nav-text">Result</span>
 						</div>
-					</a> -->
+					</a>
 					<?php /*if ($this->session->center_id!=1080 && $this->session->center_id!=1986): ?>						
 						<a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
 							<div>
