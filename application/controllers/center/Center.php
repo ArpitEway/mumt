@@ -3,15 +3,26 @@ ob_start();
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Center extends CI_Controller {
-
+ public $master = array();
+ public $exam_table;
+ public $exam_form;
+ public $roll_no ;
+ public $exam_form_table;
 	function __construct(){
 		parent::__construct();
 		$this->load->model('admin/admin_model');
 		$this->load->model('Common_model');
 		$this->load->model('Center/center_model');
 		$this->load->model('Datatable_join_model');
+		$this->master = $this->Common_model->getSingleRow('master');
+		 $this->exam_table = $this->master->student_exam_table;
+		 $this->exam_form = $this->master->exam_form_col;
+		 $this->roll_no = $this->master->roll_number_col;
+		 $this->result_table = $this->master->student_result_table;
+		 $this->exam_form_table = $this->master->exam_form_table;
 	}
-
+	
+	
 	public function index(){
 		if($this->session->has_userdata('centerdata')){
 			redirect(base_url('dashboard'));
@@ -1734,11 +1745,11 @@ class Center extends CI_Controller {
 	 	$titleData = array('title' => 'Regular Internal Marks Submission' );
 	 	$this->load->view('Centers/header',$titleData);
 	 	$center_id =  $this->session->center_id;
-	 	$where = array('university_mode' => 'REG','center_id' => $center_id,'new_exam_form' => 'Y','internal'=>"Y",'result_show ' => 'N' ,"demo"=>'N');
-	 	$this->db->order_by("int_marks_sub,student.course_group_id,student.class_id", "asc");
+	 	$where = array('university_mode' => 'REG','center_id' => $center_id, $this->exam_form => 'Y','internal'=>"Y",'result_show ' => 'N' ,"demo"=>'N');
+	 	$this->db->order_by("int_marks_sub,".$this->exam_table.".course_group_id,".$this->exam_table.".class_id", "asc");
 	 	$this->db->select('*');
-	 	$this->db->from('student');
-		 $this->db->join('class_master', 'student.class_id = class_master.id');
+	 	$this->db->from($this->exam_table);
+		 $this->db->join('class_master', ''.$this->exam_table.'.class_id = class_master.id');
 	 	$this->db->Where($where);
 		
 	 	$data['students'] = $this->db->get()->result();//echo $this->db->last_query(); die;
@@ -1754,12 +1765,12 @@ class Center extends CI_Controller {
 	 	$this->db->select('*');
 	 	$this->db->from('new_exam_form');
 	 	//$this->db->Where($where );
-		$this->db->where('student.student_id',$student_id);
+		$this->db->where(''.$this->exam_table.'.student_id',$student_id);
 		$this->db->where('new_exam_form.class_id',$class_id);
 		if($classData->practical_internal_marks=="N")
 			// $this->db->where('paper_type','theory');
 		$this->db->where_in('paper_type',array('Sessional','theory'));
-	 	$this->db->join('student', 'student.student_id = new_exam_form.student_id');
+	 	$this->db->join($this->exam_table, ''.$this->exam_table.'.student_id = new_exam_form.student_id');
 		$this->db->order_by('new_exam_form.sub_group_id,paper_order');
 	 	$details = $this->db->get()->result();
 		//  echo $classData->practical_internal_marks.
@@ -1801,7 +1812,7 @@ class Center extends CI_Controller {
 	 	$Data = array(
 	 		'int_marks_sub' => 'Y',
 	 	);
-	 	$Marksentry1 = $this->Common_model->updateRecordByConditions('student',$where1,$Data);
+	 	$Marksentry1 = $this->Common_model->updateRecordByConditions($this->exam_table,$where1,$Data);
 	 	if($Marksentry1)
 	 	{
 	 		$returndata = array('success'=> 'Form Has Been Submited');
@@ -1838,15 +1849,16 @@ class Center extends CI_Controller {
 
 	public function result()
 	{
+		
 		$center_id =  $this->session->center_id;
         $where = array('center_id'=>$center_id);
 		$data = array('name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 		);
-		$this->db->select('distinct(student.course_group_id) as course_group_id , course_group.course_name');
-		$this->db->from('student');
+		$this->db->select('distinct('.$this->result_table.'.course_group_id) as course_group_id , course_group.course_name');
+		$this->db->from($this->result_table);
 		
-		$this->db->join('course_group', 'student.course_group_id = course_group.id');
+		$this->db->join('course_group', ''.$this->result_table.'.course_group_id = course_group.id');
 		$this->db->join('class_master', 'class_master.course_group_id = course_group.id');
 		//$this->db->where('class_master.id', 'student.class_id');
 		
@@ -1897,6 +1909,7 @@ class Center extends CI_Controller {
 	}
 
 	public function getStudentListForMarksheet(){
+		
 		$data = $row = array();
 		// $where1 ='';
 	
@@ -1904,7 +1917,7 @@ class Center extends CI_Controller {
 	
 
 		if($_POST['course_group_id']!='All' and $_POST['course_group_id']!=''){
-			$where['student.course_group_id'] = $this->input->post('course_group_id');
+			$where[''.$this->result_table.'.course_group_id'] = $this->input->post('course_group_id');
 			
 		}
 		// else{
@@ -1922,17 +1935,17 @@ class Center extends CI_Controller {
 		$where['result_permission'] = 'Y';
 		// Fetch member's records
 		
-		$column_order = array('student.student_id','enrollment_no','name','f_h_name','course_name','student.class_name','provisional_remark',null);
-		$column_search = array('student.student_id','enrollment_no','course_name','student.class_name','name','f_h_name');
+		$column_order = array(''.$this->result_table.'.student_id','enrollment_no','name','f_h_name','course_name',''.$this->result_table.'.class_name','provisional_remark',null);
+		$column_search = array(''.$this->result_table.'.student_id','enrollment_no','course_name',''.$this->result_table.'.class_name','name','f_h_name');
 	
 		$DataTableArray = array(
-			'select' => 'student.*',
+			'select' => ''.$this->result_table.'.*',
 			'column_order' => $column_order,
 			'column_search' => $column_search,
 			'where' => $where,
-			'table' => 'student',
+			'table' => $this->result_table,
 			'table2' => 'class_master',
-			'joinOn' => 'student.old_class_id=class_master.id'
+			'joinOn' => ''.$this->result_table.'.old_class_id=class_master.id'
 		);
 		// if($where1 != ''){
 		// $this->db->where($where1);
@@ -1993,7 +2006,7 @@ class Center extends CI_Controller {
 		$this->db->where_in('provisional_remark', $provisional);
 		
 		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
-		$student = $this->Common_model->getRecordByWhere("student",array('exam_form'=>'Y','old_result_show'=>'Y','student_id'=>$student_id));
+		$student = $this->Common_model->getRecordByWhere($this->result_table,array($this->exam_form=>'Y','old_result_show'=>'Y','student_id'=>$student_id));
 		// ($student->course_group_id == 12 && $student->university_mode == 'REG') || ($student->course_group_id == 13 && $student->university_mode == 'REG')
 		if ((count($student)==0)  ) {
 			redirect(base_url());
@@ -2002,10 +2015,10 @@ class Center extends CI_Controller {
 		$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
 		$data['practical_internal_marks']=$classData->practical_internal_marks;
 		$this->db->select('*');
-		$this->db->from('new_exam_form');
-		$this->db->where('new_exam_form.student_id',$data['student']->student_id);
-		$this->db->where('new_exam_form.class_id',$data['student']->old_class_id);
-		$this->db->order_by('new_exam_form.paper_order','new_exam_form.paper_id');
+		$this->db->from($this->exam_form_table);
+		$this->db->where(''.$this->exam_form_table.'.student_id',$data['student']->student_id);
+		$this->db->where(''.$this->exam_form_table.'.class_id',$data['student']->old_class_id);
+		$this->db->order_by(''.$this->exam_form_table.'.paper_order',''.$this->exam_form_table.'.paper_id');
 		$new_exam_form = $this->db->get()->result();
 		$data['new_exam_form']  = $new_exam_form;
 		$data['classData']  = $classData;
@@ -2028,8 +2041,9 @@ class Center extends CI_Controller {
 }
 
  public function grade_marksheet($student_id=""){
+	
 	 $student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
-		$student = $this->Common_model->getRecordByWhere("student",array('exam_form'=>'Y','old_result_show'=>'Y','student_id'=>$student_id));
+		$student = $this->Common_model->getRecordByWhere($this->result_table,array('exam_form'=>'Y','old_result_show'=>'Y','student_id'=>$student_id));
 		// print_r($student);die;
 		if (count($student)==0) {
 			redirect(base_url());
@@ -2140,6 +2154,7 @@ class Center extends CI_Controller {
 
 	public function practical_marks_list(){
 		 //redirect(base_url());
+		//  $master = $this->Common_model->getSingleRow('master');
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
@@ -2150,26 +2165,28 @@ class Center extends CI_Controller {
 		$titleData = array('title' => 'Regular Practical Marks Submission' );
 		$this->load->view('Centers/header',$titleData);
 		$center_id =  $this->session->center_id;
-		$where = array('university_mode' => 'REG','center_id' => $center_id,'result_show' => 'N','new_exam_form' => 'Y' ,'demo'=>'N');
-		$this->db->order_by("p_marks_sub,student.course_group_id,student.class_id", "asc");
+		$where = array('university_mode' => 'REG','center_id' => $center_id,'result_show' => 'N',$this->exam_form => 'Y' ,'demo'=>'N');
+		$this->db->order_by("p_marks_sub,".$this->exam_table.".course_group_id,".$this->exam_table.".class_id", "asc");
 		$this->db->select('*');
-		$this->db->from('student');
-		$this->db->join('class_master', 'student.class_id = class_master.id');
+		$this->db->from($this->exam_table);
+		$this->db->join('class_master', ''.$this->exam_table.'.class_id = class_master.id');
 		$this->db->Where($where);
 		$this->db->Where('(project="Y" or practical = "Y")');
+		
 		$data['students'] = $this->db->get()->result();
+		// $this->Common_model->last_query();
 		$this->load->view('Centers/practical_marks_no_list',$data);
 		$this->load->view('Centers/footer');
 	}
 
 	public function load_student_practical_assignment (){
 		$student_id = $this->input->post('student_id');
-		$where=array('student.student_id'=>$student_id);
+		$where=array(''.$this->exam_table.'.student_id'=>$student_id);
 		$this->db->select('*');
 		$this->db->from('new_exam_form');
 		$this->db->Where($where );
 		$this->db->where_not_in('paper_type',array('Sessional','theory'));
-		$this->db->join('student', 'student.student_id = new_exam_form.student_id and student.class_id =new_exam_form.class_id');
+		$this->db->join($this->exam_table, ''.$this->exam_table.'.student_id = new_exam_form.student_id and '.$this->exam_table.'.class_id =new_exam_form.class_id');
 		$this->db->join('paper_master', 'paper_master.id = new_exam_form.paper_id');
 		$details = $this->db->get()->result();
 		$data = array(
@@ -2203,7 +2220,7 @@ class Center extends CI_Controller {
 		}
 		$where1 =  array('student_id'  => $_POST['student_id'] );
 		$Data = array('p_marks_sub' => 'Y');
-		$Marksentry1 = $this->Common_model->updateRecordByConditions('student',$where1,$Data);
+		$Marksentry1 = $this->Common_model->updateRecordByConditions($this->exam_table,$where1,$Data);
 		$sts_btn = '<button  class="btn btn-info btn-sm font-weight-bold view"  data-toggle="modal" data-target="#kt_datepicker_modal"  data-id = '.$_POST['student_id'].'"
 		onclick="view_mark('.$_POST['student_id'].'")">view</button>';
 		if($Marksentry1){
@@ -2221,14 +2238,14 @@ class Center extends CI_Controller {
 		 	$student_id = $this->input->post('student_id');
 			$class_id = $this->input->post('old_class_id');
 			$classData	= $this->Common_model->getRecordById('class_master','id',$class_id); 
-		 	$where=array('student.student_id'=>$student_id,'paper_master.sub_group_id !='=>1);
+		 	$where=array(''.$this->exam_table.'.student_id'=>$student_id,'paper_master.sub_group_id !='=>1);
 		 	$this->db->select('*');
 		 	$this->db->from('new_exam_form');
 		 	$this->db->Where($where );
 			 if($classData->internal == "N"){
 				$this->db->where('paper_master.type !=','theory'); }
-		 	$this->db->join('student', 'student.student_id = new_exam_form.student_id and student.class_id = new_exam_form.class_id');
-			$this->db->join('paper_master','student.class_id= paper_master.class_id and paper_master.paper_code = new_exam_form.paper_code');
+		 	$this->db->join($this->exam_table, ''.$this->exam_table.'.student_id = new_exam_form.student_id and '.$this->exam_table.'.class_id = new_exam_form.class_id');
+			$this->db->join('paper_master',''.$this->exam_table.'.class_id= paper_master.class_id and paper_master.paper_code = new_exam_form.paper_code');
 			$this->db->order_by('new_exam_form.sub_group_id,paper_order,paper_no');
 		 	$details = $this->db->get()->result();
 		 	$data = array(
@@ -2250,11 +2267,11 @@ class Center extends CI_Controller {
 		$student_id = $this->input->post('student_id');
 	    $class_id = $this->input->post('old_class_id');
 	   $classData	= $this->Common_model->getRecordById('class_master','id',$class_id); 
-		$where=array('student.student_id'=>$student_id,'new_exam_form.class_id'=>$class_id);
+		$where=array(''.$this->exam_table.'.student_id'=>$student_id,'new_exam_form.class_id'=>$class_id);
 		$this->db->select('*');
 		$this->db->from('new_exam_form');
 		$this->db->Where($where );
-		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
+		$this->db->join($this->exam_table, ''.$this->exam_table.'.student_id = new_exam_form.student_id');
 	//    $this->db->join('paper_master','student.class_id= paper_master.class_id and paper_master.paper_code = new_exam_form.paper_code');
 	   $this->db->order_by('new_exam_form.sub_group_id,paper_order');
 		$details = $this->db->get()->result();
@@ -2278,12 +2295,12 @@ public function practical_assignment_marks_edit(){
 	$student_id = $this->input->post('student_id');
    $class_id = $this->input->post('old_class_id');
    $classData	= $this->Common_model->getRecordById('class_master','id',$class_id); 
-	$where=array('student.student_id'=>$student_id,'paper_master.sub_group_id !='=>1);
+	$where=array(''.$this->exam_table.'.student_id'=>$student_id,'paper_master.sub_group_id !='=>1);
 	$this->db->select('*');
 	$this->db->from('new_exam_form');
 	$this->db->Where($where );
 	$this->db->where_not_in('paper_type',array('Sessional','theory'));
-	$this->db->join('student', 'student.student_id = new_exam_form.student_id and student.class_id = new_exam_form.class_id');
+	$this->db->join($this->exam_table, ''.$this->exam_table.'.student_id = new_exam_form.student_id and '.$this->exam_table.'.class_id = new_exam_form.class_id');
     $this->db->join('paper_master','student.class_id= paper_master.class_id and paper_master.paper_code = new_exam_form.paper_code');
    $this->db->order_by('new_exam_form.sub_group_id,paper_order,paper_no');
 	$details = $this->db->get()->result();

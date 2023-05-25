@@ -532,6 +532,13 @@ class Common_Model extends CI_Model{
 		return $result->$field;
 	}
 
+	public function getMaster($field){
+		$this->db->select($field);
+		$qry= $this->db->get('master');
+		$result = $qry->row();
+		return $result->$field;
+	}
+
 	public function getCountByWhere($table,$where=''){
 		if($where!=''){
 			$this->db->where($where);

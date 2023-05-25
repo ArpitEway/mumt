@@ -4,12 +4,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MsPrint extends CI_Controller {
 
+	public $master = array();
+	public $exam_table;
+	public $exam_form;
+	public $roll_no ;
+	public $exam_form_table;
+
+
 	function __construct(){
 		parent::__construct();
 		$this->load->model('admin/admin_model');
 		$this->load->model('Common_model');
 		$this->load->model('Datatable_model');
 		$this->load->model('Datatable_join_model');
+		$this->master = $this->Common_model->getSingleRow('master');
+		 $this->exam_table = $this->master->student_exam_table;
+		 $this->exam_form = $this->master->exam_form_col;
+		 $this->roll_no = $this->master->roll_number_col;
+		 $this->result_table = $this->master->student_result_table;
+		 $this->exam_form_table = $this->master->exam_form_table;
 		if($this->session->account_type!='MsPrint'){
 			redirect(base_url('admin/logout')); 
 		}
@@ -53,9 +66,9 @@ class MsPrint extends CI_Controller {
 			$radio_val = $this->input->post('radio_val');
 			if($text_val !=''){
 				if($text_val !='' && $radio_val == 'enrollment_no'){
-					$student = $this->Common_model->getRecordById('student','enrollment_no',$text_val);
+					$student = $this->Common_model->getRecordById($this->result_table,'enrollment_no',$text_val);
 				}else if($text_val !='' && $radio_val == 'student_id'){
-					$student = $this->Common_model->getRecordById('student','student_id',$text_val);
+					$student = $this->Common_model->getRecordById($this->result_table,'student_id',$text_val);
 				}  
 				$result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id' =>$student->student_id,"exam_year"=>"Feb 2022"));
 				$data = array(
@@ -109,7 +122,7 @@ class MsPrint extends CI_Controller {
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('DISTINCT(center_id)');
-			$this->db->from('student');
+			$this->db->from($this->result_table);
 			$this->db->where(array('exam_form'=>'Y'));
 			$centers = $this->db->get()->result_array();
 			$ids = array_column($centers, 'center_id');
@@ -128,7 +141,7 @@ class MsPrint extends CI_Controller {
 	public function get_center_wise_marksheet_dispatchlist(){
 		$center = $this->input->post('center');
 		$this->db->select('DISTINCT(center_id)');
-		$this->db->from('student');
+		$this->db->from($this->result_table);
 		$this->db->where(array('exam_form'=>'Y'));
 		$centers = $this->db->get()->result_array();
 		$ids = array_column($centers, 'center_id');

@@ -64,13 +64,14 @@
         </tr>
         
         <?php 
+         $roll = $this->Common_model->getMaster('roll_number_col');
             foreach($students[$examcenter] as $student){ $rowCounter++;
                 
             ?> 
             <tr>
                 <td  style="text-align:center;"><?php  echo $student->examcentercode; ?></td>
                 <td  style="text-align:center;"><?php  echo $student->enrollment_no; ?></td>
-                <td style="text-align:center;padding: 0px 3px 0px 3px;"><?php echo $student->roll_no;?></td>
+                <td style="text-align:center;padding: 0px 3px 0px 3px;"><?php echo $student->$roll;?></td>
                 
                 <td style='text-align:center;'><?php echo $student->theory_marks; ?></td>
                 

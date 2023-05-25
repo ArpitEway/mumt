@@ -4,6 +4,12 @@ include_once(APPPATH.'core/ADMIN_controller.php');
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class ExamController extends CI_Controller {
+	public $master = array();
+ public $exam_table;
+ public $exam_form;
+ public $roll_no ;
+ public $exam_form_table;
+
 
 	function __construct(){
 		parent::__construct();
@@ -11,6 +17,12 @@ class ExamController extends CI_Controller {
 		$this->load->model('Common_model');
 		$this->load->model('Datatable_model');
 		$this->load->model('Datatable_join_model');
+		$this->master = $this->Common_model->getSingleRow('master');
+		 $this->exam_table = $this->master->student_exam_table;
+		 $this->exam_form = $this->master->exam_form_col;
+		 $this->roll_no = $this->master->roll_number_col;
+		 $this->result_table = $this->master->student_result_table;
+		 $this->exam_form_table = $this->master->exam_form_table;
 		if($this->session->account_type!='ExamController'){
 				redirect(base_url('admin/logout')); 
 		}
@@ -1769,7 +1781,7 @@ class ExamController extends CI_Controller {
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();	
 		$this->db->order_by('course_name');
-		$data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id), course_name ','new_exam_form="Y"');
+		$data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id), course_name ',''.$this->exam_form.'="Y"');
 		$this->load->view('admin/examController/exam_center_folio',$data);
 		$this->load->view('footer');
 	} 
@@ -1793,9 +1805,9 @@ class ExamController extends CI_Controller {
 			$this->db->where('new_exam_form.course_group_id',$_POST['course_group_id']);
 			$this->db->where('new_exam_form.class_id',$_POST['class_id']);
 			$this->db->where('student.exam_center_id!=',0);
-			$this->db->where('student.new_exam_form','Y');
+			$this->db->where('student.'.$this->exam_form.'','Y');
 			$this->db->where('student.university_mode',$_POST['university_mode']);
-			$this->db->where('student.roll_no!=',0);
+			$this->db->where('student.'.$this->roll_no.'!=',0);
 			$this->db->order_by('student.examcentercode');
 			$data['examcenters'] = $this->db->get()->result();
 			$data['university_mode'] = $_POST['university_mode'];
@@ -1860,10 +1872,10 @@ class ExamController extends CI_Controller {
 				$this->db->where('new_exam_form.course_group_id',$_POST['course_group_id']);
 				$this->db->where('new_exam_form.class_id',$_POST['class_id']);
 				$this->db->where('student.exam_center_id',$exam_center_id);
-				$this->db->where('student.roll_no!=',0);
-				$this->db->where('student.new_exam_form','Y');
+				$this->db->where('student.'.$this->roll_no.'!=',0);
+				$this->db->where('student.'.$this->exam_form.'','Y');
 				$this->db->where('student.university_mode',$_POST['university_mode']);
-				$this->db->order_by('student.roll_no');
+				$this->db->order_by('student.'.$this->roll_no.'');
 				$dataArray['students'][$exam_center_id] = $this->db->get()->result();
 				$dataArray['teachername'][$exam_center_id] = $this->Common_model->getSinglefield('exam_center','superintendent',array('id'=>$exam_center_id));
 				$dataArray['detail'][$exam_center_id] = $this->Common_model->getRecordByWhere('exam_center',array('id'=>$exam_center_id));	
@@ -1936,7 +1948,7 @@ class ExamController extends CI_Controller {
 			$this->db->select('count(*) as num');
 			$this->db->from('new_exam_form');
 			$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id');
-			$this->db->where('student.new_exam_form','Y');
+			$this->db->where('student.'.$this->exam_form.'','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
 			$count = $this->db->get()->result();
 			
@@ -1944,7 +1956,7 @@ class ExamController extends CI_Controller {
 			$this->db->select('count(*) as num');
 			$this->db->from('new_exam_form');
 			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.class_id');
-			$this->db->where('student.new_exam_form','Y');
+			$this->db->where('student.'.$this->exam_form.'','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
 			$this->db->where('new_exam_form.theory_marks','ABS');
 			$abs = $this->db->get()->result();
@@ -1953,7 +1965,7 @@ class ExamController extends CI_Controller {
 			$this->db->select('count(*) as num');
 			$this->db->from('new_exam_form');
 			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.class_id');
-			$this->db->where('student.new_exam_form','Y');
+			$this->db->where('student.'.$this->exam_form.'','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
 			$this->db->where_not_in('theory_marks',array('ABS',''));
 
@@ -2014,7 +2026,7 @@ class ExamController extends CI_Controller {
             $course_groupids = array_column($course_group, 'id');
  			$this->db->where_in('course_group_id',$course_groupids);
 			$this->db->order_by('course_name', "asc");
-			$course_group = $this->Common_model->get_record('student','DISTINCT(course_group_id) as  course_group_id,course_name' ,array('new_exam_form'=>'Y'));
+			$course_group = $this->Common_model->get_record('student','DISTINCT(course_group_id) as  course_group_id,course_name' ,array($this->exam_form=>'Y'));
 
 			$data = array('course_group' => $course_group,
 				'name_csrf' => $this->security->get_csrf_token_name(),
@@ -2071,7 +2083,7 @@ class ExamController extends CI_Controller {
 				$this->db->select('count(*) as num');
 				$this->db->from('new_exam_form');
 				$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.class_id ');
-				$this->db->where('student.new_exam_form','Y');
+				$this->db->where('student.'.$this->exam_form.'','Y');
 				if($courseType!="ALL")
 					$this->db->where('student.university_mode',$courseType);
 				$this->db->where('new_exam_form.course_group_id',$course_group_id);
@@ -2082,7 +2094,7 @@ class ExamController extends CI_Controller {
 				$this->db->select('count(*) as num');
 				$this->db->from('new_exam_form');
 				$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id ');
-				$this->db->where('student.new_exam_form','Y');
+				$this->db->where('student.'.$this->exam_form.'','Y');
 				if($courseType!="ALL")
 					$this->db->where('student.university_mode',$courseType);
 				$this->db->where('new_exam_form.course_group_id',$course_group_id);
@@ -2094,7 +2106,7 @@ class ExamController extends CI_Controller {
 				$this->db->select('count(*) as num');
 				$this->db->from('new_exam_form');
 				$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id ');
-				$this->db->where('student.new_exam_form','Y');
+				$this->db->where('student.'.$this->exam_form.'','Y');
 				if($courseType!="ALL")
 					$this->db->where('student.university_mode',$courseType);
 				$this->db->where('new_exam_form.course_group_id',$course_group_id);
@@ -2113,7 +2125,7 @@ class ExamController extends CI_Controller {
 					$this->db->select('count(*) as num');
 					$this->db->from('new_exam_form');
 					$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.class_id ');
-					$this->db->where('student.new_exam_form','Y');
+					$this->db->where('student.'.$this->exam_form.'','Y');
 					if($courseType!="PVT")
 						$this->db->where('student.university_mode',"REG");
 					$this->db->where('new_exam_form.course_group_id',$course_group_id);
@@ -2126,7 +2138,7 @@ class ExamController extends CI_Controller {
 					$this->db->select('count(*) as num');
 					$this->db->from('new_exam_form');
 					$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id ');
-					$this->db->where('student.new_exam_form','Y');
+					$this->db->where('student.'.$this->exam_form.'','Y');
 					if($courseType!="ALL")
 						$this->db->where('student.university_mode',$courseType);
 					$this->db->where('new_exam_form.course_group_id',$course_group_id);
@@ -2141,7 +2153,7 @@ class ExamController extends CI_Controller {
 					$this->db->select('count(*) as num');
 					$this->db->from('new_exam_form');
 					$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id ');
-					$this->db->where('student.new_exam_form','Y');
+					$this->db->where('student.'.$this->exam_form.'','Y');
 					if($courseType!="ALL")
 						$this->db->where('student.university_mode',$courseType);
 					$this->db->where('new_exam_form.course_group_id',$course_group_id);
@@ -2153,7 +2165,7 @@ class ExamController extends CI_Controller {
 					$this->db->select('count(*) as num');
 					$this->db->from('new_exam_form');
 					$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id ');
-					$this->db->where('student.new_exam_form','Y');
+					$this->db->where('student.'.$this->exam_form.'','Y');
 					if($courseType!="ALL")
 						$this->db->where('student.university_mode',$courseType);
 					$this->db->where('new_exam_form.course_group_id',$course_group_id);
@@ -2269,7 +2281,7 @@ public function getStudentData()
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('DISTINCT(center_id)');
-			$this->db->from('student');
+			$this->db->from($this->result_table);
 			$this->db->where(array('exam_form'=>'Y'));
 			$centers = $this->db->get()->result_array();
 			$ids = array_column($centers, 'center_id');
@@ -2299,7 +2311,7 @@ public function getStudentData()
 				$this->db->select('*');
 				$this->db->from('new_exam_form');
 				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
-				$this->db->where('student.new_exam_form','Y');
+				$this->db->where('student.'.$this->exam_form.'','Y');
 				if($courseType!="ALL")
 					$this->db->where('student.university_mode',$courseType);
 				$this->db->where('new_exam_form.theory_marks','');
@@ -2313,7 +2325,7 @@ public function getStudentData()
 				$this->db->select('*');
 				$this->db->from('new_exam_form');
 				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
-				$this->db->where('student.new_exam_form','Y');
+				$this->db->where('student.'.$this->exam_form.'','Y');
 				$this->db->where('student.university_mode','REG');
 				$this->db->where('new_exam_form.course_group_id',$course_group_id);
 				$this->db->where('new_exam_form.class_id',$class_id);
@@ -2327,7 +2339,7 @@ public function getStudentData()
 				$this->db->select('*');
 				$this->db->from('new_exam_form');
 				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
-				$this->db->where('student.new_exam_form','Y');
+				$this->db->where('student.'.$this->exam_form.'','Y');
 				$this->db->where('student.university_mode','REG');
 				$this->db->where('new_exam_form.course_group_id',$course_group_id);
 				$this->db->where('new_exam_form.class_id',$class_id);
@@ -2383,7 +2395,7 @@ public function getStudentData()
 	public function get_center_wise_marksheet_dispatchlist(){
 		$center = $this->input->post('center');
 		$this->db->select('DISTINCT(center_id)');
-		$this->db->from('student');
+		$this->db->from($this->result_table);
 		$this->db->where(array('exam_form'=>'Y'));
 		$centers = $this->db->get()->result_array();
 		$ids = array_column($centers, 'center_id');
@@ -2413,7 +2425,7 @@ public function getStudentData()
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('DISTINCT(center_id)');
-			$this->db->from('student');
+			$this->db->from($this->result_table);
 			$this->db->where(array('exam_form'=>'Y'));
 			$centers = $this->db->get()->result_array();
 			$ids = array_column($centers, 'center_id');
@@ -2432,7 +2444,7 @@ public function getStudentData()
 	public function get_center_wise_marksheet_dispatch_rolllist(){
 		$center = $this->input->post('center');
 		$this->db->select('DISTINCT(center_id)');
-		$this->db->from('student');
+		$this->db->from($this->result_table);
 		$this->db->where(array('exam_form'=>'Y'));
 		$centers = $this->db->get()->result_array();
 		$ids = array_column($centers, 'center_id');
@@ -2455,7 +2467,7 @@ public function getStudentData()
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
 		$this->db->order_by('course_name');	
-		$data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id), course_name ','new_exam_form="Y"');
+		$data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id), course_name ',''.$this->exam_form.'="Y"');
 		$this->load->view('admin/examController/counter_folio_check',$data);
 		$this->load->view('footer');
 	}
@@ -2479,9 +2491,9 @@ public function getStudentData()
 			$this->db->where('new_exam_form.course_group_id',$_POST['course_group_id']);
 			$this->db->where('new_exam_form.class_id',$_POST['class_id']);
 			$this->db->where('student.exam_center_id!=',0);
-			$this->db->where('student.new_exam_form','Y');
+			$this->db->where('student.'.$this->exam_form.'','Y');
 			$this->db->where('student.university_mode',$_POST['university_mode']);
-			$this->db->where('student.roll_no!=',0);
+			$this->db->where('student.'.$this->roll_no.'!=',0);
 			$this->db->order_by('student.examcentercode');
 			$data['examcenters'] = $this->db->get()->result();
 			$data['university_mode'] = $_POST['university_mode'];
@@ -2546,11 +2558,11 @@ public function getStudentData()
 				$this->db->where('new_exam_form.course_group_id',$_POST['course_group_id']);
 				$this->db->where('new_exam_form.class_id',$_POST['class_id']);
 			
-				$this->db->where('student.roll_no!=',0);
-				$this->db->where('student.new_exam_form','Y');
+				$this->db->where('student.'.$this->roll_no.'!=',0);
+				$this->db->where('student.'.$this->exam_form.'','Y');
 				$this->db->where('student.university_mode',$_POST['university_mode']);
 				$this->db->where_in('exam_center_id', $_POST['exam_center_id'] );
-				$this->db->order_by('student.examcentercode,student.roll_no');
+				$this->db->order_by('student.examcentercode,student.'.$this->roll_no.'');
 				$dataArray['students'][$exam_center_id] = $this->db->get()->result();
 			
 			$dataArray['university_mode']=$_POST['university_mode'];
@@ -2735,7 +2747,7 @@ public function getStudentData()
 			}
 
 			
-				$student = $this->Common_model->getRecordByWhere("student",$where);
+				$student = $this->Common_model->getRecordByWhere($this->result_table,$where);
 				//print_r($student); die;
 				$msg="";
 				if (count($student)==0) {
@@ -2758,9 +2770,9 @@ public function getStudentData()
 						$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
 						$data['practical_internal_marks']=$classData->practical_internal_marks;
 						$this->db->select('*');
-						$this->db->from('new_exam_form');
-						$this->db->where('new_exam_form.student_id',$data['student']->student_id);
-						$this->db->where('new_exam_form.class_id',$data['student']->old_class_id);
+						$this->db->from($this->exam_form_table);
+						$this->db->where(''.$this->exam_form_table.'.student_id',$data['student']->student_id);
+						$this->db->where(''.$this->exam_form_table.'.class_id',$data['student']->old_class_id);
 						$new_exam_form = $this->db->get()->result();
 						$data['classData']  = $classData;
 						$data['new_exam_form']  = $new_exam_form;

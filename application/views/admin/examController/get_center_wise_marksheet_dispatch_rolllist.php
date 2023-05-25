@@ -8,11 +8,12 @@ size: auto;
 </style>
 <?php 
 $pageno=1;
+$table = $this->Common_model->getMaster('student_result_table');
 foreach($centers as $center)  {
 	$this->db->select('*');
-	$this->db->from('student');
+	$this->db->from($table);
 	$this->db->order_by("roll_number", "asc");
-	$this->db->join('course_group', 'student.course_group_id = course_group.id');
+	$this->db->join('course_group', ''.$table.'.course_group_id = course_group.id');
 	$where = array('center_id'=>$center->id, 'roll_number!=' => 0 ,'exam_form'=>'Y', 'marksheet_dispatch' =>'Y');
 	$this->db->where($where);	
 	$center_students = $this->db->get()->result();
