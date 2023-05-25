@@ -2003,7 +2003,7 @@ class ExamController extends CI_Controller {
 			//print_r($this->db->last_query());die;
 			$data['total_paper_count'] = $count[0]->num;
 			$data['uploaded'] = $uploaded[0]->num;
-			$data['absent'] = 0;//$abs[0]->num;
+			$data['absent'] = $abs[0]->num; // 0;
 			$data['total_paper_count_backlog'] = $backlog_count[0]->num;
 			$data['uploaded_backlog'] = $backlog_uploaded[0]->num;
 			$data['absent_backlog'] = $backlog_abs[0]->num;
