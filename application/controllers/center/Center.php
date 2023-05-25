@@ -1594,6 +1594,7 @@ class Center extends CI_Controller {
 		$fees = $this->Common_model->getRecordByWhere('course',$where);
 		$data['student_id']=$student_data[0]->student_id;
 		$data['center_id']=$student_data[0]->center_id;
+		$data['exam_session'] = "June 2023";
 		$data['course_group_id']=$student_data[0]->course_group_id;
 		$data['class_id']=$student_data[0]->class_id;
 		$data['amount']=$fees[0]->program_fees+$fees[0]->exam_fees;
