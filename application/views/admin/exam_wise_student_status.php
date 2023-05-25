@@ -30,7 +30,7 @@
 		?>
 	</tbody>
 </table>
-<div class="row justify-content-center pt-5">
+<!-- <div class="row justify-content-center pt-5">
 <h6 class="font-weight-bolder">Backlog Exam Form Status</h6>	
 </div>
 <table id="" class="table table-striped dt-responsive" width="100%" >
@@ -50,10 +50,10 @@
 			?>
 		
 			<tr>
-				<td><?php echo $i; ?></td>
-				<td><?php echo $permitted_backlog_student;?></td>
-				<td><?php echo $filled_backlog_student; ?></td>
-				<td><?php echo $skipped_backlog_student; ?></td>
+				<td><?php //echo $i; ?></td>
+				<td><?php //echo $permitted_backlog_student;?></td>
+				<td><?php //echo $filled_backlog_student; ?></td>
+				<td><?php //echo $skipped_backlog_student; ?></td>
 				<td> <a target="_blank" href="<?= base_url('center_wise_remains_backlog_count');?>" ><?php echo $not_filled_backlog_student; ?></a>
 				</td>
 			</tr>
@@ -63,4 +63,4 @@
 		?>
 	</tbody>
 </table>
-
+ -->
