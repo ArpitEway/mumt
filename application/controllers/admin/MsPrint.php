@@ -66,9 +66,9 @@ class MsPrint extends CI_Controller {
 			$radio_val = $this->input->post('radio_val');
 			if($text_val !=''){
 				if($text_val !='' && $radio_val == 'enrollment_no'){
-					$student = $this->Common_model->getRecordById($this->result_table,'enrollment_no',$text_val);
+					$student = $this->Common_model->getRecordById('student','enrollment_no',$text_val);
 				}else if($text_val !='' && $radio_val == 'student_id'){
-					$student = $this->Common_model->getRecordById($this->result_table,'student_id',$text_val);
+					$student = $this->Common_model->getRecordById('student','student_id',$text_val);
 				}  
 				$result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id' =>$student->student_id,"exam_year"=>"Feb 2022"));
 				$data = array(
