@@ -1152,6 +1152,7 @@
 	     	}*/
 		$data = array('provisional_remark' =>'N');	 
 		$update =  $this->Common_model->updateRecordByConditions('student',$where,$data);
+		$update_aug_22 =$this->Common_model->updateRecordByConditions('student_result_aug_22',$where,$data);
 		if($update){
 			$result = array("status" => "true");
 		}
