@@ -4,6 +4,7 @@
   <link href="css/print_Marksheet.css" rel="stylesheet" type="text/css">
   <title><?php echo (isset($title)) ? $title : ''; ?></title>
   <style type="text/css">
+    
     @media print {
       body {
         -webkit-print-color-adjust: exact;
@@ -35,6 +36,9 @@
     th.border.border-dark {
       vertical-align: middle;
     }
+    tr.rowHeight td {
+        padding: 0px;
+    }
   </style>
 </head>
 <body>
@@ -44,6 +48,14 @@
     $marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
        $papers = $old_result_data;
+       $isFinalClass = $this->Common_model->hasOneClass($classData->course_group_id);
+       if($isFinalClass){
+         $course_duration = '(One Year Course)';
+       }else if($classData->course_group_id == 36 || $classData->course_group_id == 37){
+         $course_duration = 'Six Months Course';
+       }else{
+         $course_duration = $this->Common_model->romanClassName($classData->class_name);
+       }
       ?>
       <fieldset id="printarea" class="breakhere" style="width:90%;border: 0px solid #22316C;"> 
         <div align="left"> MS No. <?php echo $exam_data->marksheet_no; ?> </div>
@@ -52,7 +64,7 @@
             <tr>
               <td height="100" colspan="2" valign="bottom">
                 <center>
-                  <strong><?php echo $exam_data->course_name .' Six Months Course Examination '.$exam_data->exam_year ?></strong>
+                  <strong><?php echo $exam_data->course_name .$course_duration.$exam_data->exam_year ?></strong>
                 </center>
               </td>
             </tr>
@@ -60,15 +72,15 @@
               <td align="center" height="120" colspan="2">
                 <table class="mytable" border="0" cellpadding="2" cellspacing="2" width="100%">
                   <tbody>
-                    <tr>
+                    <!-- <tr>
                       <td class="Normaltext" colspan="2">
                         <div align="center"><font size="4">&nbsp; </font></div>
                       </td>
                       <td class="Normaltext">
                         <div align="center"><font size="4">Regular </font></div>
                       </td>
-                    </tr>
-                    <tr>
+                    </tr> -->
+                    <tr class="rowHeight">
                       <td width="35%" class="Normaltext" align="left"><div align="left">Roll No</div></td>
                       <td width="53%" class="resultText">
                         <div align="left">
@@ -80,7 +92,7 @@
                         <img border="1"  class="student_image" src="<?= base_url('assets/student_image/'.$exam_data->session.'/'.$exam_data->photo) ?>" width="90px" height="105px">
                       </td>
                     </tr>
-                    <tr>
+                    <tr class="rowHeight">
                       <td class="Normaltext" align="left">
                         <div align="left">Enrolment / Registration No.</div>
                       </td>
@@ -88,7 +100,17 @@
                         <div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo  $exam_data->enrollment_no;; ?></span></div>
                       </td>
                     </tr>
-                    <tr>
+                    <?php if($exam_data->university_mode=='PVT'){ ?>
+                    <tr class="rowHeight">
+                      <td class="Normaltext" align="left" width="29%">
+                        <div align="left">Category</div>
+                      </td>
+                      <td class="resultText"><div align="left">
+                        <span id="lblSemesterGrading" style="color:Black;">N/C</span></div>
+                      </td>
+                    </tr>
+                    <?php } ?>
+                    <tr class="rowHeight">
                       <td class="Normaltext" align="left" width="29%">
                         <div align="left">Name of the Candidate</div>
                       </td>
@@ -96,7 +118,7 @@
                         <span id="lblSemesterGrading" style="color:Black;"><?php echo  $exam_data->name; ?></span></div>
                       </td>
                     </tr>
-                    <tr>
+                    <tr class="rowHeight">
                       <td class="Normaltext" align="left" width="29%"><div align="left">Father's / Husband's Name</div></td>
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo strtoupper( $exam_data->f_h_name); ?></span></div></td>
                     </tr>

@@ -70,7 +70,8 @@ class MsPrint extends CI_Controller {
 				}else if($text_val !='' && $radio_val == 'student_id'){
 					$student = $this->Common_model->getRecordById('student','student_id',$text_val);
 				}  
-				$result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id' =>$student->student_id,"exam_year"=>"Feb 2022"));
+				$result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id' =>$student->student_id));
+				//,"exam_year"=>"Feb 2022"
 				$data = array(
 					'result' => $result,
 					'student' => $student,
@@ -100,7 +101,9 @@ class MsPrint extends CI_Controller {
 		$data['class_id']  = $new_exam_form[0]->class_id;
 		$title = array('title' => 'Result');
 		$data['exam_data'] = $this->Common_model->getRecordById('old_exam_data','id',$exam_data_id);
-		if($course_id !=36 && $course_id !=37 ){ 
+		// $course_id !=36 && $course_id !=37
+		$class = $this->Common_model->getRecordByID('class_master','id', $data['exam_data']->class_id);
+		if($class->internal=="Y" && $data['exam_data']->university_mode!="PVT" ){ 
 			$this->load->view('admin/msprint/old_student_marksheet',$data);
 		}else{
 			$this->load->view('admin/msprint/old_student_marksheet_certificate',$data);
