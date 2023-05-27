@@ -64,7 +64,7 @@
             <tr>
               <td height="100" colspan="2" valign="bottom">
                 <center>
-                  <strong><?php echo $exam_data->course_name .$course_duration.$exam_data->exam_year ?></strong>
+                  <strong><?php echo $exam_data->course_name.' ' .$course_duration.' '.$exam_data->exam_year ?></strong>
                 </center>
               </td>
             </tr>
