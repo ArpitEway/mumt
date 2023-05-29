@@ -65,6 +65,7 @@
               <td align="center" height="120" colspan="2">
                 <table class="mytable" border="0" cellpadding="2" cellspacing="2" width="100%">
                   <tbody>
+                    <?php if($student->university_mode == 'REG'){?>
                     <tr>
                       <td class="Normaltext" colspan="2">
                         <div align="center"><font size="4">  &nbsp; </font></div>
@@ -73,6 +74,7 @@
                         <div align="center"><font size="4">  Regular </font></div>
                       </td>
                     </tr>
+                    <?php }?>
                     <tr>
                       <td width="35%" class="Normaltext" align="left"><div align="left">Roll No</div></td>
                       <td width="53%" class="resultText">
@@ -333,7 +335,7 @@
                              echo  ($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->int_marks : '-'; 
                               }?></span>
                             </td>
-                            <td align="left" class="style2"><span class="style4" style="padding-left:10px;">
+                            <td align="left" class="style2">&nbsp;&nbsp;&nbsp;&nbsp;<span class="style4" style="padding-left:10px;">
                               <?php 
                               if ($paper->type=='theory') {
                                 if($paper->int_marks<$paper->min_internal_marks || $paper->theory_marks<$paper->min_theory_marks){
@@ -463,7 +465,7 @@
                           ?><strong>Division</strong><?php
                         ?>
                       </td>
-                      <td><strong><?=$division?></strong>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;<strong><?=$division?></strong>
                       </td>
                       <?php
                         }else{
@@ -495,7 +497,7 @@
                         <?php endwhile; ?>
                         <?php if ($classData->last_class=="L"){ ?>
                         <th style="text-align:left;">Percentage</th>
-                        <th style="text-align:left;"><?php echo (!$isOneClass)? round(($gtot_obtain_marks/$gtot_total_marks)*100,2) :
+                        <th style="text-align:left;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo (!$isOneClass)? round(($gtot_obtain_marks/$gtot_total_marks)*100,2) :
                            round(($tot_std_marks/$tot_marks)*100,2)
                         ; ?>%</th>
                       <?php }else{ ?>

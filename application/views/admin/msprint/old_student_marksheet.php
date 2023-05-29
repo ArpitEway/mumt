@@ -40,6 +40,7 @@
     $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
     $marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+    $isOneClass = $this->Common_model->hasOneClass($classData->course_group_id);
     $papers = $old_result_data;
     ?>
       <fieldset id="printarea" class="breakhere" style="width:90%;border: 0px solid #22316C;"> 
@@ -57,6 +58,10 @@
               <td align="center" height="120" colspan="2">
                 <table class="mytable" border="0" cellpadding="2" cellspacing="2" width="100%">
                   <tbody>
+                    <?php
+                    $check_mode = $this->Common_model->getRecordById('student','student_id', $papers[0]->student_id);
+                    if($check_mode->university_mode == "REG"){
+                    ?>
                     <tr>
                       <td class="Normaltext" colspan="2">
                         <div align="center"><font size="4">  &nbsp; </font></div>
@@ -65,6 +70,9 @@
                         <div align="center"><font size="4">  Regular </font></div>
                       </td>
                     </tr>
+                    <?php
+                    }
+                    ?>
                     <tr>
                       <td width="35%" class="Normaltext" align="left"><div align="left">Roll No</div></td>
                       <td width="53%" class="resultText">
@@ -175,6 +183,20 @@
                             {
                               $result='FAIL';
                             }
+                          }else if($marks->type=="Sessional"){
+                            $tot_std_marks += $marks->int_marks;
+                            $tot_marks +=$marks->max_int_marks;
+                            if($marks->int_marks<$marks->min_int_marks)
+                            {
+                              $result ="FAIL";
+                              $int_fail_count++ ;
+                            }
+                            if($marks->int_marks=="N")
+                            {
+                              $result='FAIL';
+                            }
+
+                          
                           }else{
                             if ($classData->practical_internal_marks=='Y') {
                               $tot_std_marks += $marks->p_marks+$marks->int_marks;
@@ -207,26 +229,66 @@
                         }
                         foreach($papers as $paper)
                         {
+                          $paper_name=$paper->paper_name;
+                          if($paper->class_id=="168"){
+                              if($paper->paper_code=="1RMOM3(A)")
+                              {
+                                $medium="Hindi";
+                              }elseif($paper->paper_code=="1RMOM3(B)"){
+                                $medium="English";
+                              }
+                                
+                                if($paper->paper_code=='1RMOM5')
+                              {
+                                if($medium=='Hindi'){$paper_name='Practical - I Typing Job I - Speed Test (Hindi-30 w.p.m.)'; }
+                                if($medium=='English'){$paper_name='Practical - I Typing Job I - Speed Test (English 40 w.p.m.)'; }		
+                              }
+                              
+                              if($paper->paper_code=='1RMOM6')
+                              {
+                                if($medium=='Hindi'){$paper_name='Practical - I Typing Job II - Speed Test (Hindi-30 w.p.m.)'; }
+                                if($medium=='English'){$paper_name='Practical - I Typing Job II - Speed Test (English 40 w.p.m.)'; }		
+                              }
+                              if($paper->paper_code=='1RMOM7')
+                              {
+                                if($medium=='Hindi'){$paper_name='Practical - I Typing Job III - Speed Test (Hindi-30 w.p.m.)'; }
+                                if($medium=='English'){$paper_name='Practical - I Typing Job III - Speed Test (English 40 w.p.m.)'; }		
+                              }
+                              if($paper->paper_code=='1RMOM8')
+                              {
+                                if($medium=='Hindi'){$paper_name='Practical- II Short Hand Speed (Hindi-100 w.p.m.)'; }
+                                if($medium=='English'){$paper_name='Practical- II Short Hand Speed (English 120 w.p.m.)'; }		
+                              }
+                            }
                           ?>
                           <tr>
                             <td colspan="9">&nbsp;</td>
                           </tr>
                           <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="middle">
                             <td style="margin-top:2px;" align="left"><strong><?php echo  $paper->paper_code; ?></strong></td>
-                            <td align="left"><strong><?php  echo $paper->paper_name ;  ?></strong></td>
+                            <td align="left"><strong><?php  echo $paper_name ;  ?></strong></td>
                             <td align="center" ><span class="style4">
-                              <?php echo  $paper->max_theory_marks;?></span>
-                            </td>
-                            <td align="center" ><span class="style4">
-                              <?php echo  $paper->min_theory_marks; ?></span>
-                            </td>
-                            <td align="center" ><span class="style4"><?=($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->max_int_marks : '-'; ?></span>
+                            <?php echo  ($paper->type !='Sessional')?$paper->max_theory_marks:'-';?></span>
                             </td>
                             <td align="center" ><span class="style4">
-                              <?=($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->min_int_marks : '-'; ?></span>
+                            <?php echo  ($paper->type !='Sessional')? $paper->min_theory_marks:'-'; ?></span>
                             </td>
-                            <td align="left" ><span class="style4" style="padding-left:10px;">
-                              <?php
+                            <td align="center" ><span class="style4"><?php if($paper->type=="Sessional"){
+                              echo $paper->max_int_marks;
+                            }else{
+                              echo ($paper->type=='theory' || $classData->practical_internal_marks=='Y') ?  $paper->max_int_marks : '-'; 
+                            }?></span>
+                            </td>
+                            <td align="center" ><span class="style4">
+                              <?php 
+                               if($paper->type=="Sessional"){
+                                echo $paper->min_int_marks;
+                              }else{
+                              echo ($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->min_int_marks : '-'; 
+                              }?></span>
+                            </td>
+                            <td align="center" ><span class="style4">
+                            <?php
                               if ($paper->type=='theory') {
                                 if(($paper->theory_marks <  $paper->min_theory_marks || $paper->int_marks <  $paper->min_int_marks) && $check_grace_marks==false){
                                   echo $paper->theory_marks . ' F' ;
@@ -238,6 +300,8 @@
                                 }else{
                                   echo $paper->theory_marks;
                                 }
+                              }else if($paper->type=="Sessional"){
+                                echo '-';
                               }else{
                                 if ($classData->practical_internal_marks=='Y') {
                                   if($paper->p_marks<$paper->min_theory_marks || $paper->int_marks<$paper->min_int_marks){
@@ -261,10 +325,15 @@
                               ?>
                             </span></td>
                             <td align="left" class="style4"><span class="style2" style="padding-left:10px;">
-                              <?=($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->int_marks : '-'; ?></span>
+                            <?php
+                              if($paper->type=='Sessional'){
+                               echo  $paper->int_marks;
+                              }else{
+                             echo  ($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->int_marks : '-'; 
+                              }?></span>
                             </td>
-                            <td align="left" class="style2"><span class="style4" style="padding-left:10px;">
-                              <?php 
+                            <td align="left" class="style2">&nbsp;&nbsp;&nbsp;&nbsp;<span class="style4" style="padding-left:10px;">
+                            <?php 
                               if ($paper->type=='theory') {
                                 if($paper->int_marks<$paper->min_int_marks || $paper->theory_marks<$paper->min_theory_marks){
                                   echo  $paper->theory_marks +  $paper->int_marks . '' ;
@@ -273,6 +342,15 @@
                                   echo 'ABS'. ' F' ;
                                 }else{
                                   echo $paper->theory_marks + $paper->int_marks;
+                                }
+                              }else if($paper->type=="Sessional"){
+                                if($paper->int_marks<$paper->min_int_marks){
+                                  echo   $paper->int_marks . '' ;
+                                  echo ($check_grace_marks) ? ' G' : ' F';
+                                }elseif($paper->int_marks=="ABS"){
+                                  echo 'ABS'. ' F' ;
+                                }else{
+                                  echo $paper->int_marks;
                                 }
                               }else{
                                 if($classData->practical_internal_marks=='Y') {
@@ -330,32 +408,104 @@
                         </b></div></strong></div>
                       </td>
                     </tr>
+                    <?php $i=1; ?>
+                    <?php if ($classData->last_class=="L" && !$isOneClass): ?>
+                    <tr>
+                      <td height="20" ><strong><?=$classData->mode ?></strong></td>
+                      <?php
+                        $whereClass = array( 'course_group_id'=> $classData->course_group_id,'class_id !=' => $classData->id,'student_id' =>$papers[0]->student_id);
+                       $oldClassResult = $this->Common_model->getRecordByWhere('old_exam_data',$whereClass);
+                      
+                        foreach ($oldClassResult as $row) {
+                        $i++;
+                        ?>
+                         <th style="text-align: center"><?=$this->Common_model->getClassNameByClassId($row->class_id); ?></th>
+                        <?php } ?>
+                        <th style="text-align: center"><?=$classData->class_name ?></th>
+                        <th style="text-align: center">Grand Total</th>
+                        
+                        <?php $j=$i; ?>
+                        <?php while ($j<=5): ?>
+                          <td><?php $j++; ?></td>
+                        <?php endwhile; ?>
+                    </tr>
+                    <?php endif ?>
+                    <?php $j=$i; ?>
                     <tr>
                       <td height="20" ><strong>Obtained Marks</strong></td>
-                      <td style="text-align: center"><b><?php echo  $tot_std_marks ; ?></b></td>
-                      <td>&nbsp;</td>
-                      <td> <div align="center"><b></b></div></td>
-                      <td>&nbsp;</td>
-                      <td>&nbsp;  </td>
-                      <td>
-                        <strong>&nbsp; </strong>
+                      <?php if ($classData->last_class=="L" && !$isOneClass): ?>
+                      <?php
+                        $gtot_obtain_marks = 0;
+                        foreach ($oldClassResult as $row) { 
+                        $gtot_obtain_marks += $row->obtain_marks;
+                        ?>
+                         <th style="text-align: center"><?=$row->obtain_marks; ?></th>
+                      <?php } 
+                      $gtot_obtain_marks += $tot_std_marks;
+                      ?>
+                      <?php endif ?>
+                      <th style="text-align: center"><?=$tot_std_marks ; ?></th>
+                      <th style="text-align: center"><?=$gtot_obtain_marks ?></th>
+                      <?php while ($j<=3): ?>
+                        <td><?php $j++; ?></td>
+                      <?php endwhile; ?>
+                      <?php if ($classData->last_class=="L") { ?>
+                        <td>
+                        <?php
+                          $percentage = round(($tot_std_marks/$tot_marks)*100,2);
+                          if($percentage>=60){
+                            $division = "First";
+                          }elseif($percentage<60 && $percentage>=40){
+                            $division  = "Second";
+                          }else{
+                            $division = "Third";
+                          }
+                          ?><strong>Division</strong><?php
+                        ?>
                       </td>
-                      <td> <div align="center"><b> 
-                      </b></div></td>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;<strong><?=$division?></strong>
+                      </td>
+                      <?php
+                        }else{
+                          ?>
+                          <td></td>
+                          <td></td>
+                          <?php
+                        }
+                        ?>
                     </tr>
+                    <?php $j=$i; ?>
                     <tr>
                       <td height="20"><strong>Maximum Marks</strong></td>
+                      <?php if ($classData->last_class=="L" && !$isOneClass): ?>
+                      <?php 
+                      $gtot_total_marks = 0;
+                      foreach ($oldClassResult as $row) { 
+                        $gtot_total_marks +=$row->total_marks;
+                      ?>
+                         <th style="text-align: center"><?=$row->total_marks; ?></th>
+                      <?php } 
+                      $gtot_total_marks +=$tot_marks;
+                      ?>
+                      <?php endif ?>
                       <td style="text-align: center"><b><?php echo $tot_marks ; ?></b></td>
-                      <td>&nbsp;</td>
-                      <td><div align="center"><b></b></div></td>
-                      <td></td>
-                      <td><div align="center"></div></td>
-                      <td><strong>&nbsp;</strong></td>
-                      <td> <div align="center"><strong></strong></div></td>
+                      <td style="text-align: center"><b><?=$gtot_total_marks; ?></b></td>
+                      <?php while ($i<=3): ?>
+                          <td><?php $i++; ?></td>
+                        <?php endwhile; ?>
+                        <?php if ($classData->last_class=="L"){ ?>
+                        <th style="text-align:left;">Percentage</th>
+                        <th style="text-align:left;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo (!$isOneClass)? round(($gtot_obtain_marks/$gtot_total_marks)*100,2) :
+                           round(($tot_std_marks/$tot_marks)*100,2)
+                        ; ?>%</th>
+                      <?php }else{ ?>
+                        <td></td>
+                        <td></td>
+                      <?php } ?>
                     </tr>
                     <tr>
                       <td colspan="8">
-                        <strong>Total Marks Obtained (in words)</strong> &nbsp;&nbsp;<strong><?php echo  $this->numbertowordconvertsconver->convert_number("$tot_std_marks")?></strong>
+                        <strong>Total Marks Obtained (in words)</strong> &nbsp;&nbsp;<strong><?php echo ($classData->last_class=="L" && !$isOneClass) ? $this->numbertowordconvertsconver->convert_number("$gtot_obtain_marks") : $this->numbertowordconvertsconver->convert_number("$tot_std_marks") ?></strong>
                       </td>
                     </tr>
                   </tbody>

@@ -75,14 +75,21 @@
               <td align="center" height="120" colspan="2">
                 <table class="mytable" border="0" cellpadding="2" cellspacing="2" width="100%">
                   <tbody>
-                    <!-- <tr>
+                    <?php
+                  if($university_mode=='REG'){
+                    ?>
+                 
+                    <tr>
                       <td class="Normaltext" colspan="2">
                         <div align="center"><font size="4">  &nbsp; </font></div>
                       </td>
                       <td class="Normaltext">
-                        <div align="center"><font size="4">  <?php if($university_mode=='REG')  echo "Regular"; ?> </font></div>
+                        <div align="center"><font size="4">Regular </font></div>
                       </td>
-                    </tr> -->
+                    </tr>
+                    <?php
+                     }
+                    ?>
                     <tr class="rowHeight">
                       <td width="35%" class="Normaltext" align="left"><div align="left">Roll No</div></td>
                       <td width="53%" class="resultText">
@@ -315,7 +322,7 @@
                         <td width="1%"><div align="center"></div></td>
                         <td width="8%"><div align="center"><strong></strong></div></td>
                         <td width="7%"><div align=""><strong>Result</strong></div></td>
-                        <td width="10%"><strong><?php echo $result ; ?></strong>
+                        <td width="10%">&nbsp;&nbsp;&nbsp;&nbsp;<strong><?php echo $result ; ?></strong>
                       </td>
                     </tr>
                     <tr>
@@ -343,7 +350,7 @@
                       </td>
                       <td><?php
                         if ($classData->last_class=="L") {
-                          ?><strong><?=$division?></strong><?php
+                          ?>&nbsp;&nbsp;&nbsp;&nbsp;<strong><?=$division?></strong><?php
                         }
                         ?>
                       </td>
@@ -358,7 +365,7 @@
                       <td> <?php if ($classData->last_class=="L") {
                           ?><strong>Percentage</strong>
                           <?php } ?></td>
-                      <td><strong><?= ($classData->last_class=="L") ? $percentage.' %' : '';?></strong></td>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;<strong><?= ($classData->last_class=="L") ? $percentage.' %' : '';?></strong></td>
                     </tr>
                     <tr>
                       <td colspan="8">
