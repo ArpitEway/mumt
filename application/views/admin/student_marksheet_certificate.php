@@ -213,7 +213,7 @@
                             <td colspan="9">&nbsp;</td>
                           </tr>
                           <?php 
-                          if($class_id == 169){
+                          if($class_id == 169 && $university_mode=='REG' ){
                           if($tflag == 1) { echo '<tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.
                         '<td style="margin-top:2px;" align="left">'.'</td>'.
                             '<td colspan="8" align="left">'.'<strong>'.

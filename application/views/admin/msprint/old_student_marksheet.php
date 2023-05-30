@@ -50,7 +50,8 @@
             <tr>
               <td height="100" colspan="2" valign="bottom">
                 <center>
-                  <strong><?php echo $exam_data->course_name .' '. $this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id))." Examination ".$exam_data->exam_year?></strong>
+                  
+                  <strong><?php echo  ($isOneClass) ? $exam_data->course_name .' '."(One Year Course)" :$exam_data->course_name .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
                 </center>
               </td>
             </tr>
@@ -287,7 +288,7 @@
                               echo ($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->min_int_marks : '-'; 
                               }?></span>
                             </td>
-                            <td align="center" ><span class="style4">
+                            <td align="left" >&nbsp;&nbsp;<span class="style4">
                             <?php
                               if ($paper->type=='theory') {
                                 if(($paper->theory_marks <  $paper->min_theory_marks || $paper->int_marks <  $paper->min_int_marks) && $check_grace_marks==false){
