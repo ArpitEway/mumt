@@ -2619,7 +2619,7 @@ public function getStudentData()
 
 
 	public function search_student_result($rollno=""){
-		redirect(base_url().'ExamController/');
+		// redirect(base_url().'ExamController/');
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
 		$data['rollno']=$rollno;
