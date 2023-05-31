@@ -722,12 +722,13 @@ class Center extends CI_Controller {
 		$session = $this->input->post('session');
 		$mode = $this->input->post('mode');
 		$myString =$eligibility;
-		 
+		
+		$this->db->group_start(); 
 		if($this->session->has_userdata('center_id')){
 		$center_id =  $this->session->center_id;
 		
 		$centerdata = $this->Common_model->getRecordById('center','id',$center_id);
-		$this->db->group_start();
+		
 		$this->db->where('course_group_id in ('.$centerdata->allot_course_group_id.')');
 		
 		}
