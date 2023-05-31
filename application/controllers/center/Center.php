@@ -723,14 +723,14 @@ class Center extends CI_Controller {
 		$mode = $this->input->post('mode');
 		$myString =$eligibility;
 		
-		$this->db->group_start(); 
+		 
 		if($this->session->has_userdata('center_id')){
 		$center_id =  $this->session->center_id;
 		
 		$centerdata = $this->Common_model->getRecordById('center','id',$center_id);
-		
+		$this->db->group_start();
 		$this->db->where('course_group_id in ('.$centerdata->allot_course_group_id.')');
-		
+		$this->db->group_end();
 		}
 		 $where['eligibility'] = $eligibility;
 		/* if($mode=='regular'){
@@ -744,6 +744,7 @@ class Center extends CI_Controller {
 		$this->db->select('course_group.id,course.course_name');
 		$this->db->from('course');
 		$this->db->join('course_group', 'course_group.id = course.course_group_id'); 
+		$this->db->group_start();
 		$this->db->where('eligibility',$eligibility);
 		$this->db->where('course.session',$session);
 		if($mode=='REG' || $mode=='regular'){
