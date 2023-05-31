@@ -2034,6 +2034,7 @@ class Center extends CI_Controller {
 		$new_exam_form = $this->db->get()->result();
 		$data['new_exam_form']  = $new_exam_form;
 		$data['classData']  = $classData;
+		$data['exam_session']  = 'Aug 2022';
 		$title = array('title' => 'Result - '.$data['student']->enrollment_no);
 		$this->load->view('admin/generate_tr/header2',$title);	
 		//$this->load->view('Centers/marksheet',$data);
@@ -2051,6 +2052,48 @@ class Center extends CI_Controller {
 		$this->load->view('admin/generate_tr/footer2');
 	}
 }
+
+public function marksheet_admin($student_id="")
+	{
+		$provisional=array("","N");
+		$this->db->where_in('provisional_remark', $provisional);
+		
+		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		$student = $this->Common_model->getRecordByWhere($this->exam_table,array($this->exam_form=>'Y','student_id'=>$student_id));
+		// ($student->course_group_id == 12 && $student->university_mode == 'REG') || ($student->course_group_id == 13 && $student->university_mode == 'REG')
+		if ((count($student)==0)  ) {
+			redirect(base_url());
+		}
+		$data['student']=$student[0];
+		$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
+		$data['practical_internal_marks']=$classData->practical_internal_marks;
+		$this->db->select('*');
+		$this->db->from('new_exam_form');
+		$this->db->where('new_exam_form.student_id',$data['student']->student_id);
+		$this->db->where('new_exam_form.class_id',$data['student']->old_class_id);
+		$this->db->order_by('new_exam_form.paper_order','new_exam_form.paper_id');
+		$new_exam_form = $this->db->get()->result();
+		$data['new_exam_form']  = $new_exam_form;
+		$data['classData']  = $classData;
+		$data['exam_session']  = 'Mar 2023';
+		$title = array('title' => 'Result - '.$data['student']->enrollment_no);
+		$this->load->view('admin/generate_tr/header2',$title);	
+		//$this->load->view('Centers/marksheet',$data);
+		$this->load->view('Centers/marksheet_top',$data);
+		//if ($student[0]->course_group_id==36 || $student[0]->course_group_id==37 || $student[0]->course_group_id==33) {
+		if($classData->internal=='N'){
+			$this->load->view('Centers/marksheet_without_int',$data);
+		}else{
+			if($student[0]->old_class_id=='168'){
+				$this->load->view('Centers/marksheet_mom',$data);
+			}else{
+				$this->load->view('Centers/marksheet_bottom',$data);
+			}
+			
+		$this->load->view('admin/generate_tr/footer2');
+	}
+}
+
 
  public function grade_marksheet($student_id=""){
 	

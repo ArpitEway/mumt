@@ -1020,10 +1020,11 @@ class Common_Model extends CI_Model{
 		return $return;
 	}
 
-	public function get_student_papers($id,$class_id){
+	public function get_student_papers($id,$class_id,$withheld = ""){
 		$where = array(
 			'student_id' => $id,
 			'new_exam_form.class_id' => $class_id,
+			
 			);
 		$this->db->select('*');
 		$this->db->from('paper_master');
@@ -1032,6 +1033,9 @@ class Common_Model extends CI_Model{
 		$this->db->join('class_master','class_master.id=new_exam_form.class_id');
 		// $this->db->order_by('new_exam_form.sub_group_id,paper_order');
 		$this->db->where($where); 
+		if($withheld == 'withheld'){
+			$this->db->where(array('theory_marks'=>'','new_exam_form.paper_type' => 'theory'));
+		}
 		$query = $this->db->get();
 		return $query->result_array();
 	}
