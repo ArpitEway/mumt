@@ -64,6 +64,11 @@
                 $paper_data=  $this->Common_model->getRecordByWhere("paper_master",array('class_id'=>$student->class_id,'paper_code'=>$student->paper_code));
                   
                 $percentage = 90;  
+                $center_ids_dep = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29);
+                $center_id =  $this->session->center_id;
+                if (in_array($center_id, $center_ids_dep)){
+                  $percentage = 100;  
+                }
                 $max_internal=  $paper_data[0]->max_internal_marks;
                 $min_internal=  $paper_data[0]->min_internal_marks; 
                 if($max_internal == 0){
