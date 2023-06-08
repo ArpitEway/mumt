@@ -2763,8 +2763,19 @@ public function getStudentData()
 						
 							$msg="<p style='text-align: center;'><b>Student result not declared!</b></p>"; 
 					}
-
 						$data['student']=$student[0];
+						$data['exam_session']  = 'Aug 2022';
+						/**********************/
+						if($data['student']->provisional_remark!="N" && $data['student']->provisional_remark!="")
+						{
+							$this->db->select('provisional_remarks');
+							$this->db->from('provisional_remark_details');
+							$this->db->where('document_category_id',$data['student']->provisional_remark);
+							$remark = $this->db->get()->row();
+							$provisional_remark_details ="<p style='text-align: center;'><b>".$remark->provisional_remarks." are not recieved at university</b></p>";
+						}
+						/************************/
+						
 						$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
 						$data['practical_internal_marks']=$classData->practical_internal_marks;
 						$this->db->select('*');
@@ -2779,7 +2790,7 @@ public function getStudentData()
 						if((in_array($data['student']->old_class_id, $class_ids)) && $data['student']->university_mode=='REG')	
 						{
 							$this->load->model('Gradesheet_model');
-							$dt = $msg.$this->load->view('Centers/grade_marksheet',$data,true);
+							$dt = $provisional_remark_details.$msg.$this->load->view('Centers/grade_marksheet',$data,true);
 						}else{
 							
 							$title = array('title' => 'Result - '.$data['student']->enrollment_no);
@@ -2804,7 +2815,7 @@ public function getStudentData()
 							}
 						
 						
-							$dt = $msg. $marksheet_top.$marksheet_bottom;
+							$dt =$provisional_remark_details. $msg. $marksheet_top.$marksheet_bottom;
 						
 						}
 						echo json_encode(array(
