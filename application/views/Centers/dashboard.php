@@ -219,7 +219,11 @@
 								<span class="nav-text">Exam Form June 2023</span>
 							</div>
 					</a> 
-					
+					<a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
+						<div>
+							<span class="nav-text">Time Table June 2023</span>
+						</div>
+					</a> 
 					<?php endif ?>
 					<a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
 						<div>
@@ -243,13 +247,7 @@
 							</div>
 						</a>
 					<?php endif */?>
-						<!--
-				 <a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
-						<div>
-							<span class="nav-text">Time Table June 2022</span>
-						</div>
-					</a> 
-					 -->
+					
 
 				<!--	<a class="border-0 custom-menu-item" href="<?=base_url('student_roll_no_list');?>">
 						<div>
