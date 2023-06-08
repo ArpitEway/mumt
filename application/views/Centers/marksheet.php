@@ -75,6 +75,7 @@ if ($fail_count<2 && $require_grace_marks<4 && $abs_count==0 && $fail_count!=0){
     border: 1px solid black;
     padding: 5px;
     font-size: 18px;
+    vertical-align: middle !important;
   }
   .table-bordered td{
     border:0;
