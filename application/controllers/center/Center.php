@@ -755,7 +755,7 @@ class Center extends CI_Controller {
 			 $this->db->where('admission_permission_private','Y');
 		  }
 		  $this->db->group_end();
-		  if($center_id == 11 || $center_id == 13 || $center_id == 2115 ){
+		  if($center_id == 11 || $center_id == 13 || $center_id == 2115 || $center_id == 1707 ){
 			$this->db->or_group_start();
 		  $this->db->or_where_in('course_group.id',array(33,45));
 		  $this->db->where(array('eligibility' => $eligibility ,'course.session'=>$session));
