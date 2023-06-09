@@ -810,27 +810,43 @@ class Postexam extends CI_Controller {
 
        public function maeks_checking_script($class_id="",$startlimit=1){
             $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
-            echo $classData->id;
+          
             //SELECT SUM(theory_marks)+sum(int_marks)+sum(p_marks) FROM `old_result_data` WHERE `exam_data_id`=1 
             $this->db->select('*');
             $this->db->from('old_exam_data');
             $this->db->where('course_group_id', $classData->course_group_id);
             $this->db->where('class_id', $classData->id);
+          
             $start=0;
-            $start=($startlimit-1)*10;
-            $this->db->limit(10,$start);
+            $start=($startlimit-1)*1000;
+            $this->db->limit(1000,$start);
             $rows=$this->db->get()->result();
+           
             foreach($rows as $row){
-              echo "<pre>";  print_r($row);
+           
               
-              $this->db->select('SUM(theory_marks)+sum(int_marks)+sum(p_marks),*');
+              $this->db->select('SUM(theory_marks)+sum(int_marks)+sum(p_marks) as obt');
               $this->db->from('old_result_data');
               $this->db->where('exam_data_id', $row->id);
             
               $obtain=$this->db->get()->result();
-              print_r($obtain);die;
+          
+              $per=(float)round(($obtain[0]->obt/$row->total_marks)*100,2);
+              $calPer=(float)round(($row->obtain_marks/$row->total_marks)*100,2);
+              $savedPer=(float)round($row->percentage,2);
+            
+              if(($obtain[0]->obt!=$row->obtain_marks) || ($savedPer!=$per) ){
+                echo "<p> Row ID ".$row->id." Stdent ID ".$row->student_id." Marks on Record ".$row->obtain_marks." And in Subject Total ".$obtain[0]->obt." %% ".$row->percentage." % ".$per."</p>";
+
+              }
+            //   if($savedPer!=$calPer){
+            //     echo "<p> Row ID ".$row->id." Stdent ID ".$row->student_id." Marks Total ".$row->obtain_marks." And %  ".$row->percentage." Not Match </p>";
+            //   }
+                
             }
+            
 
        }
+       
 //for open book only End****************/
 }
