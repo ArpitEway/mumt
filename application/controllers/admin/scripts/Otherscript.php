@@ -154,10 +154,10 @@ class Otherscript extends CI_Controller {
 
 	public function update_int_marks($cls_id =0)
 	{
-		// $marks = array('18','17','16','18','17','16','15','15');
+		 $marks = array('18','17','16','18','17','16','15','15');
 		// $marks = array('09','08','07','09','08','07','06','06');
-		$marks = array('27','26','25','27','26','25','24','24'); 
-		$cls_id=104;
+		//$marks = array('27','26','25','27','26','25','24','24'); 
+		$cls_id=182;
 		$sql = "select * from student where class_id='".$cls_id."' and exam_form='Y' and int_marks_sub='N' and roll_number!=0 and university_mode='REG' limit 100";
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
@@ -209,7 +209,7 @@ class Otherscript extends CI_Controller {
 	public function update_project_marks($cls_id =0)
 	{
 		$marks = array('85','84','83','82'); 
-		$cls_id=104;
+		$cls_id=182;
 		$sql = "select * from student where class_id='".$cls_id."' and exam_form='Y' and p_marks_sub='N' and  university_mode='REG' and  roll_number!=0 order by roll_number  limit 100";
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
