@@ -105,7 +105,7 @@
 								 <td rowspan="4" class="text-center"><img src="<?=$img_url;?>"  width="115px" height="166px" /></td> 
 							</tr>
 							<tr>
-							  <td><b>Course: </b> <?=$student->course_name;?> (<?=$student->class_name;?>) </td>
+							  <td><b>Course: </b> <?=$student->course_name;?> <?php if($student->class_id!=163 && $student->class_id!=175 ) echo  '('.$student->class_name.')';?> </td>
 							  <td colspan="2"><b>EC Code: </b> <?=$student->examcentercode;?></td>
 							</tr>
 							<tr>
