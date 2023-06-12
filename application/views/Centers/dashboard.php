@@ -235,11 +235,13 @@
 							<span class="nav-text">Internal Marks Submission (Regular)</span>
 						</div>
 					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
-						<div>
-							<span class="nav-text">Result</span>
-						</div>
-					</a>
+					<?php if ($center->result_permission=='Y'): ?>
+						<a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
+							<div>
+								<span class="nav-text">Result(March 2023)</span>
+							</div>
+						</a>
+					<?php endif ?>
 					<?php /*if ($this->session->center_id!=1080 && $this->session->center_id!=1986): ?>						
 						<a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
 							<div>
