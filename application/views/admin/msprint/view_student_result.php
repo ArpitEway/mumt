@@ -173,7 +173,7 @@
                     if($res->exam_status == "B"){
                         echo "Backlog";
                       }else{
-                        echo "Regular";
+                        echo "Main";
                       }
                    
                     ?>
