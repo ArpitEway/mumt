@@ -1627,7 +1627,10 @@ class ExamController extends CI_Controller {
 			$this->db->from('exam_center');
 			
 		//	$this->db->where_in('id',array('21','169','78','32','82','16','167','87','15','132','117','118','123','62','133','149','75','30'));
+		if(count($examCenter))
 			$this->db->where_in('id',$examCenter);
+		else
+			$this->db->where_in('id',0);	
 			$this->db->order_by('exam_center.examcentercode', "asc");
 			$data['exam_centers'] = $this->db->get()->result();
 
