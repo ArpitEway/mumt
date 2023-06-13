@@ -1610,10 +1610,25 @@ class ExamController extends CI_Controller {
 			$this->load->view('header',$titleData);
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$this->db->select('DISTINCT(exam_center_id) ');
+			$this->db->from('student');
+			$where = array('new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>0);
+			$this->db->where($where);	
+			$ecenters=$this->db->get()->result_array();
+			//print_r($this->db->last_query()); 
+			
+			$examCenter=array();
+			foreach($ecenters as $k=>$val){
+				$examCenter[]=$val['exam_center_id'];
+			}
+			
+			
 			$this->db->select('*');
 			$this->db->from('exam_center');
-			$this->db->where_in('id',array('21','169','78','32','82','16','167','87','15','132','117','118','123','62','133','149','75','30'));
-			$this->db->order_by('examcentercode', "asc");
+			
+		//	$this->db->where_in('id',array('21','169','78','32','82','16','167','87','15','132','117','118','123','62','133','149','75','30'));
+			$this->db->where_in('id',$examCenter);
+			$this->db->order_by('exam_center.examcentercode', "asc");
 			$data['exam_centers'] = $this->db->get()->result();
 
 			$this->load->view('admin/exam_center/exam_center_wise_student_attendance_sheet',$data);
@@ -2781,9 +2796,9 @@ public function getStudentData()
 						$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
 						$data['practical_internal_marks']=$classData->practical_internal_marks;
 						$this->db->select('*');
-						$this->db->from($this->exam_form_table);
-						$this->db->where(''.$this->exam_form_table.'.student_id',$data['student']->student_id);
-						$this->db->where(''.$this->exam_form_table.'.class_id',$data['student']->old_class_id);
+						$this->db->from($this->old_exam_form_table);
+						$this->db->where(''.$this->old_exam_form_table.'.student_id',$data['student']->student_id);
+						$this->db->where(''.$this->old_exam_form_table.'.class_id',$data['student']->old_class_id);
 						$new_exam_form = $this->db->get()->result();
 						$data['classData']  = $classData;
 						$data['new_exam_form']  = $new_exam_form;
