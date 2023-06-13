@@ -22,7 +22,9 @@ class ExamController extends CI_Controller {
 		 $this->exam_form = $this->master->exam_form_col;
 		 $this->roll_no = $this->master->roll_number_col;
 		 $this->result_table = $this->master->student_result_table;
+		 $this->old_result_table = $this->master->old_student_result_table;
 		 $this->exam_form_table = $this->master->exam_form_table;
+		 $this->old_exam_form_table = $this->master->old_exam_form_table;
 		if($this->session->account_type!='ExamController'){
 				redirect(base_url('admin/logout')); 
 		}
@@ -2747,7 +2749,7 @@ public function getStudentData()
 			}
 
 			
-				$student = $this->Common_model->getRecordByWhere($this->result_table,$where);
+				$student = $this->Common_model->getRecordByWhere($this->old_result_table,$where);
 				//print_r($student); die;
 				$msg="";
 				if (count($student)==0) {
