@@ -34,7 +34,7 @@
 				<th>Center Supervisor Name</th>
 				<th>Center Supervisor Number-1</th>
 				<th>Center Supervisor Number-2</th>
-				<!--<th>Options</th>-->
+				<th>Options</th>
 			</tr>
 			</tfoot>
 		<tbody>
