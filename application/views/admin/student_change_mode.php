@@ -52,7 +52,7 @@
 <div style="text-align: center;">
 <?php if($this->session->account_type=='Admins'){ ?>
 <button  href="#" class="btn btn-primary btn-sm font-weight-bold mode m-auto" >Change Mode</button>
-<?php }else if($this->session->account_type=='Enrollment' &&  empty($student[0]->enrollment_no)){ ?>1
+<?php }else if($this->session->account_type=='Enrollment' &&  (trim($student[0]->enrollment_no)=='-')){ ?>
 <button  href="#" class="btn btn-primary btn-sm font-weight-bold mode m-auto" >Change Mode</button>
 <?php } else{ echo "<b>Mode may not change ,Entrollement Number already alloated</b>"; }?>
 </div>
