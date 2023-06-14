@@ -213,18 +213,20 @@
 					<?php endif ?>
 					<?php 
 					 $count = $this->Common_model->getCountByWhere('student',array('center_id'=>$center->id,'new_exam_form !='=>'D'));
-					if ( $center->exam_form_permission=='Y' && $count>0): ?>
+					if ( $center->exam_form_permission=='Y' && $count>0){ ?>
 					<a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
 							<div>
 								<span class="nav-text">Exam Form June 2023</span>
 							</div>
 					</a> 
+					<?php }
+					 if($count>0){ ?>
 					<a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
 						<div>
 							<span class="nav-text">Time Table June 2023</span>
 						</div>
 					</a> 
-					<?php endif ?>
+					<?php } ?>
 					<a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
 						<div>
 							<span class="nav-text">Practical Marks Submission (Regular)</span>
