@@ -2768,7 +2768,7 @@ public function practical_assignment_marks_edit(){
 	}
 	public function admission_mode_edit_request($course_type="REG")
 	{
-		redirect(base_url());
+		//redirect(base_url());
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}else{
