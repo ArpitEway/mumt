@@ -1325,4 +1325,15 @@ public function getStudentData()
 			));
 		}
 	}//fun	
+
+	public function search_student_for_mode(){
+		$this->load->view('header',array('title' => 'Search Students'));
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);	
+		$this->load->view('admin/search_student_for_mode',$data );
+		$this->load->view('footer');
+	}//fun
+
 }
