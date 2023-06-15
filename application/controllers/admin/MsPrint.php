@@ -162,4 +162,28 @@ class MsPrint extends CI_Controller {
 		
 		echo $this->load->view('admin/examController/get_center_wise_marksheet_dispatchlist',$data, TRUE);
 	}
+
+	public function update_marksheet_date(){
+		
+		if ($this->input->method() == "post") 
+		{ 
+			$marksheet_date  = $this->input->post("marksheet_date");
+			$record_id  = $this->input->post("record_id");
+	      	$record_id = $this->Common_model->encrypt_decrypt($record_id,'decrypt');
+			
+			$updateData = array(
+				'marksheet_date' => date('d/m/Y', strtotime($marksheet_date)) ,
+			);
+		
+			$where = array(
+				'id'=> $record_id
+			);
+			
+			$response = $this->Common_model->updateRecordByConditions('old_exam_data',$where,$updateData);
+
+			if($response){
+			echo json_encode(array("status" => 'true'));
+			}
+		}
+	}
 }
