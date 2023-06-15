@@ -111,7 +111,10 @@
                     <tr>
                       <td class="Normaltext" align="left" width="29%"><div align="left">Department</div></td>
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;">
-                        <?php if ($student->center_id==10) {
+                        <?php 
+                        // if ($student->center_id==10) {
+                        $center_ids = array(10,13,21,22,23,24,25,26,27,28,29);
+                        if(in_array($student->center_id, $center_ids)){
                           echo "University Teaching Department Karaundi";
                         }else if ($student->center_id==12) {
                           echo "Shiksha Vibhag, Lamti Jabalpur";
