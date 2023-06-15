@@ -44,7 +44,7 @@ class Gradesheet_model extends CI_Model
 		$papers_list = $this->Common_model->get_all_group_papers($student_id,$class_id);
 		}
 		// get_all_group_papers
-		// print_r($papers);die;
+		//  print_r($papers);die;
 		
 		// print_r($this->allclass);die;
 		$this->classCount = count($this->allclass);
@@ -64,7 +64,6 @@ class Gradesheet_model extends CI_Model
 		foreach ($papers as $paper) {
 			$this->paper = $paper;
 			
-			
 			if($this->withheld){
 				
 				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
@@ -75,42 +74,20 @@ class Gradesheet_model extends CI_Model
 			
 				die;
 			}
-			if ($this->fail_count>0 && !$this->check_grace_marks && $this->classData->final_result_permission!='Y' ) {  
-				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
-				'<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
-				 '<h3 class="text-center">'.'WH'.'</h3>'.
-			   '</div>';
-			   return $this->result();
+			// if ($this->fail_count>0 && !$this->check_grace_marks && $this->classData->final_result_permission!='Y' ) {  
+			// 	echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
+			// 	'<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
+			// 	 '<h3 class="text-center">'.'WH'.'</h3>'.
+			//    '</div>';
+			//    return $this->result();
 		   
-			   die;
-			}
+			//    die;
+			// }
 		
 			$this->_row();
 			
 		}
-		foreach ($papers_list as $paper) {
-			$this->paper = $paper;
-			if($this->withheld){
-				
-				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
-				 '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
-				  '<h3 class="text-center">'.'WH'.'</h3>'.
-				'</div>';
-				return $this->result();
-			
-				die;
-			}
-			if ($this->fail_count>0 && !$this->check_grace_marks && $this->classData->final_result_permission!='Y' ) {  
-				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
-				'<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
-				 '<h3 class="text-center">'.'WH'.'</h3>'.
-			   '</div>';
-			   return $this->result();
-		   
-			   die;
-			}
-			$this->_row();
-		}
+		
 		// var_dump($this->result_array);
 		$this->echo_result(); 
 		$this->total();
