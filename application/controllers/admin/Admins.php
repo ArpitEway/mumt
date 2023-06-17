@@ -2994,6 +2994,7 @@ public function update_exam_datewise_permission(){
 		}
 		
 		$where =array("course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y', 'roll_number!='=>'0' ,'university_mode'=> $mode);
+		//,'student_id'=>702823
 		$this->db->order_by('center_id','ASC');
 		$this->db->order_by('roll_number','ASC');
 		// $data['students'] = $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y', 'roll_no!='=>'0'));
@@ -3165,6 +3166,45 @@ public function update_exam_datewise_permission(){
 		}else{
 			$this->load->view('admin/student_marksheet_certificate',$data);
 		}
+	}
+
+	public function student_marksheet_grade($mode="",$course_id="",$class_id="",$startlimit=0)
+	{
+		$data = array('class_id' => $class_id,'course_group_id' =>$course_id );
+				$start=0;
+				
+		// 'enrollment_no'=>'AG/21220737'
+		// ,'enrollment_no'=>'AG/21200364'
+		$title = "Marksheet ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
+		
+		$class = $this->Common_model->getRecordByID('class_master','id',$class_id);
+
+		if($startlimit!=0){
+			$start=($startlimit-1)*1000;
+			$this->db->limit(1000,$start);
+			$pagetitle=$startlimit;
+		}	
+		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
+		$data['title'] = $title;
+		$data['university_mode'] = $mode;
+		// $this->load->model('Gradesheet_model');
+		$this->load->model('Gradesheet_model');
+
+		if($class->last_class == 'L'){
+			$this->db->order_by('center_id,roll_number','ASC');
+			$data['students']= $this->Common_model->getRecordByWhere('student_result_aug_22',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','course_complete'=>'Y','university_mode'=>$mode ));
+		}else{
+			$this->db->order_by('center_id,roll_number','ASC');
+			$this->db->limit(1);
+			//  $this->db->where('student_id = "373373"');
+		$data['students']= $this->Common_model->getRecordByWhere('student_result_aug_22',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode));
+		}
+	 	// if($class->internal=="Y" && $mode!="PVT"){
+			
+			$this->load->view('admin/student_marksheet_grade1',$data);
+		// }else{
+			// $this->load->view('admin/student_marksheet_certificate',$data);
+		// }
 	}
 
 	public function update_fees_in_program()
@@ -3486,7 +3526,7 @@ public function update_exam_datewise_permission(){
 
 	public function generate_tr_bed($mode="",$course_group_id="",$class_id=""){
 		$this->db->order_by('center_id,roll_number','ASC');
-		$data['students'] = $this->Common_model->getRecordByWhere('student',array("university_mode"=>$mode,"course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y','roll_number!='=>'0' ));
+		$data['students'] = $this->Common_model->getRecordByWhere('student_result_aug_22',array("university_mode"=>$mode,"course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y','roll_number!='=>'0' ));
 		//'result_show' => 'N'
 		$data['class_id'] = $class_id;
 		$data['course_group_id'] = $course_group_id;
@@ -3513,7 +3553,7 @@ public function update_exam_datewise_permission(){
 		$class_id=$this->Common_model->encrypt_decrypt($class_id,'decrypt');
 		$this->db->order_by('roll_number','ASC');
 		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
-		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id, 'old_class_id' => $class_id, 'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode ));
+		$data['students']= $this->Common_model->getRecordByWhere('student_result_aug_22',array("course_group_id"=>$course_id, 'old_class_id' => $class_id, 'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode ));
 		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$data['mode'] = $mode;
 		$this->load->view('admin/student_notification_list_bed',$data);

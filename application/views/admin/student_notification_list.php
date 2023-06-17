@@ -161,6 +161,7 @@
 					}
 				}
 			}else{
+				
 				$total_obtained_marks +=$marks->p_marks;
 				$total_max_marks +=$marks->max_theory_marks;
 				if($marks->p_marks=='' || $marks->p_marks=='N'){
@@ -241,9 +242,9 @@
 			}
 		}
 	}
-		$total_obtained_marks +=$fc1+$fc2;
-		$total_marks_obt  +=$fc1+$fc2;
-		// $total_max_marks +=$fc1_max +$fc2_max;
+		 $total_obtained_marks +=$fc1+$fc2;
+		 $total_marks_obt  +=$fc1+$fc2;
+		$total_max_marks +=$fc1_max +$fc2_max;
 		// $tot_marks += $fc1_max +$fc2_max;
 		// $tot_std_marks += $fc1+$fc2;
 		// $count_theory +=  $fc1+$fc2;
@@ -265,7 +266,7 @@
 		if((in_array($student->old_class_id, $class_ids)) && $mode=='REG')	
 			{
 				
-			 $require_grace_marks = ($require_tot_marks+1)-$get_tot_marks.'<br>';
+			 $require_grace_marks = $require_tot_marks-$get_tot_marks.'<br>';
 				              }else{
 								$require_grace_marks = $require_tot_marks-$get_tot_marks;
 							  }	              // echo $fail_count;
@@ -309,6 +310,7 @@
 		<p align="center" style="line-height:0px">Head Office: Karaundi, Post-Mahner ,Distt- Katni(MP) </p>
 		<h2 align="center"><strong>Result Notification of</strong><br><p style="margin-top:8px"><strong><?php echo $this->Common_model->getCourseNameByCourseId($course_group_id).' '. $course_duration .'  '. $exam_session?></strong></p></h2>
 	</div>
+	
 	<title>Notification <?php echo $this->Common_model->getCourseNameByCourseId($course_group_id)?></title> 
 
 	<table class="style-p-0" width="100%">
@@ -352,7 +354,7 @@
 				
 				<?php if((in_array($student->old_class_id, $class_ids)) && $mode=='REG')	
 			{ ?>
-				<th class="text-center" scope="row" width="10%"><span class="style5">SGPA</span></th>
+				<th class="text-center" scope="row" width="10%"><span class="style5">SGPA/AGPA</span></th>
 				<?php } ?>
 				<?php	if ($isFinalClass) {	?>
 					<th class="text-center" scope="row"  width="10%"><span class="style5">Division</span></th>
@@ -412,7 +414,10 @@
 					$grand_obtain = $grand_obt + $total_obtained_marks;
 						$grand_total = $grand_tot+$total_max_marks;
 					}else{
-						if($fail_count>0 || $abs_count>0){
+						if($p_fail_count>0){
+							echo 'FAIL';
+						}
+						else if($fail_count>0 || $abs_count>0){
 							echo $final_result = ($check_grace_marks) ? 'PASS BY GRACE' : 'FAIL';
 
 						}else{
