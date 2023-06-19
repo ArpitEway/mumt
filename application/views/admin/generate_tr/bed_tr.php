@@ -530,7 +530,8 @@
        if($check_grace_marks==true){
         echo $paper_master->theory_marks+ $paper_master->int_marks;
       }elseif(($paper_master->theory_marks<$paper_master->min_theory_marks) || ($paper_master->int_marks<$paper_master->min_internal_marks) || $paper_master->theory_marks=='ABS'|| $paper_master->int_marks=='ABS'){
-        echo $paper_master->theory_marks+ $paper_master->int_marks." F";
+        echo ($paper_master->theory_marks=='ABS' && $paper_master->int_marks=='ABS') ? 'ABS F' : $paper_master->theory_marks+ $paper_master->int_marks." F";
+
       }else{
         echo $paper_master->theory_marks+ $paper_master->int_marks;
       }
