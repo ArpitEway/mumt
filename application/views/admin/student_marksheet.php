@@ -210,6 +210,9 @@
                                 $fail_count++;
                                 $fali_tot_marks += $marks->p_marks;
                                 $require_tot_marks += $marks->min_theory_marks;
+                              }else if($marks->p_marks == 'ABS'){
+                                $result = 'FAIL';
+                                $abs_count++ ;
                               }
                             }else{
                               $tot_std_marks += $marks->p_marks;
@@ -219,6 +222,10 @@
                                 $fail_count++;
                                 $fali_tot_marks += $marks->p_marks;
                                 $require_tot_marks += $marks->min_theory_marks;
+                              }
+                              else if($marks->p_marks == 'ABS'){
+                                $result = 'FAIL';
+                                $abs_count++ ;
                               }
                             }
                           }
