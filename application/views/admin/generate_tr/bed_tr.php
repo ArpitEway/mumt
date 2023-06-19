@@ -536,7 +536,7 @@
       }
     }else{
       if($paper_master->p_marks=='ABS'){
-        echo '0 F';
+        echo ($paper_master->int_marks=='ABS') ? 'ABS F' : $paper_master->int_marks.' F';
       }elseif($paper_master->p_marks<$paper_master->min_theory_marks || $paper_master->int_marks<$paper_master->min_internal_marks){
         echo $paper_master->p_marks+$paper_master->int_marks.' F';
       }else{

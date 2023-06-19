@@ -3160,7 +3160,6 @@ public function update_exam_datewise_permission(){
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode));
 		}
 	 	if($class->internal=="Y" && $mode!="PVT"){
-			
 			$this->load->view('admin/student_marksheet',$data);
 		}else{
 			$this->load->view('admin/student_marksheet_certificate',$data);

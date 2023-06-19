@@ -115,7 +115,7 @@
                         // if ($student->center_id==10) {
                         $center_ids = array(10,13,21,22,23,24,25,26,27,28,29);
                         if(in_array($student->center_id, $center_ids)){
-                          echo "University Teaching Department Karaundi";
+                          echo "University Teaching Department Karoundi";
                         }else if ($student->center_id==12) {
                           echo "Shiksha Vibhag, Lamti Jabalpur";
                         } ?>
@@ -335,7 +335,11 @@
                               if($paper->type=='Sessional'){
                                echo  $paper->int_marks;
                               }else{
-                             echo  ($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->int_marks : '-'; 
+                             if($paper->type=='theory' || $classData->practical_internal_marks=='Y'){
+                              echo ($paper->int_marks=='ABS') ? 'ABS F' : $paper->int_marks; 
+                             }else{
+                              echo '-';
+                             }
                               }?></span>
                             </td>
                             <td align="left" class="style2">&nbsp;&nbsp;&nbsp;&nbsp;<span class="style4" style="padding-left:10px;">
@@ -345,7 +349,7 @@
                                   echo  $paper->theory_marks +  $paper->int_marks . '' ;
                                   echo ($check_grace_marks) ? ' G' : ' F';
                                 }elseif($paper->theory_marks=="ABS"){
-                                  echo 'ABS'. ' F' ;
+                                  echo ($paper->int_marks=='ABS') ? 'ABS F' : $paper->int_marks.' F';
                                 }else{
                                   echo $paper->theory_marks + $paper->int_marks;
                                 }
@@ -363,7 +367,7 @@
                                   if($paper->int_marks<$paper->min_internal_marks || $paper->p_marks<$paper->min_theory_marks && $check_grace_marks==false){
                                     echo  $paper->p_marks +  $paper->int_marks . ' F' ; 
                                   }elseif($paper->p_marks=="ABS" || $paper->int_marks=="ABS"){
-                                    echo 'ABS'. ' F' ;
+                                    echo ($paper->int_marks=='ABS') ? 'ABS F' : $paper->int_marks.' F';
                                   }else{
                                     echo $paper->p_marks + $paper->int_marks ;
                                   } 
@@ -371,7 +375,7 @@
                                   if($paper->p_marks<$paper->min_theory_marks && $check_grace_marks==false){
                                     echo  $paper->p_marks . ' F' ; 
                                   }elseif($paper->p_marks=="ABS"){
-                                    echo 'ABS'. ' F';
+                                    echo ($paper->int_marks=='ABS') ? 'ABS F' : $paper->int_marks.' F';
                                   }else{
                                     echo $paper->p_marks;
                                   }
