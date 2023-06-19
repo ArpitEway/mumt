@@ -63,8 +63,8 @@
               </td>
             </tr>
             <tr>
-              <td align="center" height="120" colspan="2">
-                <table class="mytable" border="0" cellpadding="2" cellspacing="2" width="100%">
+              <td align="center" height="120" colspan="2" >
+                <table class="mytable" border="0" cellpadding="2" cellspacing="2" width="100%" style="margin-left:9px;">
                   <tbody>
                     <?php if($student->university_mode == 'REG'){?>
                     <tr>
@@ -136,12 +136,12 @@
             <tr>
               <td height="72" colspan="2">
                 <fieldset style="border: 0px solid #22316C;">       
-                  <div style="margin-top: 20px;">
-                    <table id="" style="width:100%;" border="1" cellspacing="0" cellpadding="5" align="center">
+                  <div style="margin-top: 5px;">
+                    <table id="" style="width:103%;" border="1" cellspacing="0" cellpadding="5" align="center">
                       <tbody>
                         <tr style="font-family:Arial, Helvetica, sans-serif; font-size:11px;" align="center" >
                           <td width="11%"  align="center" valign="center" style="font-size:11px;padding:2%;" scope="col"><span class="style7">Paper Code</span></td>
-                          <td width="42%" style="font-size:11px" scope="col" valign="center" align="left"><span class="style7">Paper Name</div></td>    
+                          <td width="42%" style="font-size:11px" scope="col" valign="center" align="center"><span class="style7">Paper Name</div></td>    
                           <td  colspan="3" style="font-size:11px"><span class="style7"><u> Course Credit</u></span></td>        
                           <td  colspan="3" style="font-size:11px"><span class="style7"><u> Credit Earned</u></span></td>          
                           <td  colspan="2" scope="col" style="font-size:11px"><span class="style7"><u>Grade Points</u></span></td>
@@ -157,14 +157,13 @@
                             ?>
                     </tbody></table>
                   </div>
-                  
-                  <table border='1' cellpadding="2"  width="100%"  style="margin-top:50px;">
-                   
+                  <h4 style="text-align:center;margin:10px;">Result Year Wise</h4>
+                  <table border='1' cellpadding="2"  width="103%">
                     <tbody>
-                     <tr align="center"><th width='12.5%'>YEAR</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credits Points</th><th width='12.5%'>AGPA</th><th width='12.5%'>CGPA</th><th width='12.5%'>Equivalent %</th></tr>
-                     <tr align="center"><th>I</th><td><?= $gradesheetData['tot_credit']?></td><td><?= $gradesheetData['obt_credit']?></td><td><?= $gradesheetData['credit_point']?></td><td><?= ($gradesheetData['result']== 'FAIL')?'0.00':number_format((float)$gradesheetData['agpa'], 2, '.', '')?></td><td><?= ($gradesheetData['result']== 'FAIL')?'0.00':number_format((float)$gradesheetData['agpa'], 2, '.', '')?></td><td><?= number_format((float)$gradesheetData['equivalent'], 2, '.', '')?></td></tr>
-                     <tr align="center"><th>II </th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                     <tr align="center"><th>III</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                     <tr align="center"><th width='12.5%'>Year</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credits Points</th><th width='12.5%'>AGPA</th></tr>
+                     <tr align="center"><th>First</th><td><?= $gradesheetData['tot_credit']?></td><td><?= $gradesheetData['obt_credit']?></td><td><?= $gradesheetData['credit_point']?></td><td><?= ($gradesheetData['result']== 'FAIL')?'0.00':number_format((float)$gradesheetData['agpa'], 2, '.', '')?></td></tr>
+                     <tr align="center"><th>Second</th><td></td><td></td><td></td><td></td></tr>
+                     <tr align="center"><th>Third</th><td></td><td></td><td></td><td></td></tr>
                    
                     </tbody>
                  </table>

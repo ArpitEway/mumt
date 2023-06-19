@@ -257,7 +257,7 @@ class Gradesheet_model extends CI_Model
 				$this->foundation_paper[$this->paper['group_paper_name']]['paper_code'] = $this->paper['paper_code'];
 				$this->foundation_paper[$this->paper['group_paper_name']]['credit_point'] = $this->paper['credit_point'];
 				// $paper_name_post_fix = ($this->paper['group_paper_name']=='FC1') ? 'I' : 'II';
-				$this->foundation_paper[$this->paper['group_paper_name']]['paper_name'] = ' 1) '.$this->paper['paper_name'].' ';
+				$this->foundation_paper[$this->paper['group_paper_name']]['paper_name'] = 'A) '.$this->paper['paper_name'].' ';
 			}
 		}else{
 			
@@ -297,7 +297,7 @@ class Gradesheet_model extends CI_Model
 	private function paper_name()
 	{
 		$this->result_array[$this->paper['paper_code']]["type"] = $this->paper["type"];
-		$this->result_array[$this->paper['paper_code']]["paper_name"] ='['. $this->paper["group_paper_name"].'] &nbsp;&nbsp;'.$this->paper["paper_name"];
+		$this->result_array[$this->paper['paper_code']]["paper_name"] ='['. $this->paper["group_paper_name"].']#'.$this->paper["paper_name"];
 	}
 
 	private function credit()
@@ -393,7 +393,7 @@ class Gradesheet_model extends CI_Model
 	}
 
 	private function paper_name_foudation($sub_group_id){
-		$data = '['.$this->paper["group_paper_name"].'] &nbsp;&nbsp;'.$this->foundation_paper[$sub_group_id]["paper_name"].'<br><br>'.' 2) '.$this->paper["paper_name"];
+		$data = '['.$this->paper["group_paper_name"].']#'.$this->foundation_paper[$sub_group_id]["paper_name"].'<br><br>'.'B) '.$this->paper["paper_name"];
 		// print_r($this->paper["paper_name"]);
 		$this->result_array[$this->paper['paper_code']]['paper_name'] = $data;
 		$this->result_array[$this->paper['paper_code']]['type'] = $this->foundation_paper[$sub_group_id]["type"];
@@ -545,10 +545,11 @@ class Gradesheet_model extends CI_Model
 			 $require_grace_marks = $this->fail_min_marks-$this->fail_obt_marks;
 		}
 		foreach ($this->result_array as $key => $result) {
+			$paper = explode('#',$result['paper_name']);
 			
 			echo '<tr style="padding:4px;font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="center">';
 			echo '<td style="margin-top:2px;" align="center"><strong>'.$key.'</strong></td>';
-			echo "<td align='left'><strong>".$result['paper_name']."</strong></td>";
+			echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='40px'><strong>".$paper[0]."</strong></td><td></td><td><strong>".$paper[1]."</strong></td></tr></table></td>";
 			if ($this->fail_count>0 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				$this->check_grace_marks = true;
 				$this->obt_tot_credit += $result['credit'];
@@ -593,14 +594,19 @@ class Gradesheet_model extends CI_Model
 		$this->agpa = $this->tot_credit_point/$this->tot_credit;
 		$agpa = ($this->result == 'FAIL')?'0.00':number_format((float)$this->agpa, 2, '.', '');
 		echo '<tr  style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="middle">';
-			echo '<th colspan="" style="font-size:12px;" >Result - '.$this->result.'</th>';
-			echo '<th colspan="2" style="font-size:12px;">AGPA - '.$agpa.'</th>';
-			echo '<th colspan="2" style="font-size:14px;">Total</th>';
+		
+		
+		echo '<th colspan="2" style="font-size:14px;">Total</th>';
+			echo '<th colspan="3" style="font-size:14px;"> '.$this->tot_credit.'</th>';
+			echo '<th colspan="3" style="font-size:14px;">'.$this->obt_tot_credit.'</th>';
+			echo '<th colspan="2"></th>';
+			echo '<th style="font-size:14px;" colspan="3">'.$this->tot_credit_point.'</th>';
+			echo '<th colspan=""></th>';
 			
-			echo '<th colspan="2" style="font-size:14px;">'.$this->obt_tot_credit.'</th>';
-			echo'<th colspan="3"></th>';
-			echo '<th style="font-size:14px;" colspan="2">'.$this->tot_credit_point.'</th>';
-			echo '<th></th>';
+			
+		echo '</tr>';
+		echo '<tr  style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="middle">';
+		echo '<th colspan="14" style="font-size:13px;" >Result - '.$this->result.'</th>';
 		echo '</tr>';
 	}
 
