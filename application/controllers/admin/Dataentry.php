@@ -391,8 +391,8 @@ class Dataentry extends CI_Controller {
 			$dataArray["exam_center_id"]=$_POST['exam_center_id'];
 			$dataArray['examname']= $this->Common_model->getCourseNameByCourseId($_POST['course_group_id']);
 			$dataArray['class_name']= $this->Common_model->getClassNameByClassId($_POST['class_id']);
-			$this->db->where('exam_date!=',"");
-			$this->db->where('exam_date!=',"0000-00-00");	
+			$this->db->where('old_exam_date!=',"");
+			$this->db->where('old_exam_date!=',"0000-00-00");	
 			$dataArray['paper']= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'] , 'paper_code'=>$_POST['paper_code']));
 			$dataArray['title'] = 'COUNTERFOIL';
 			$dataArray['examSession']="Feb 2023";
@@ -429,8 +429,8 @@ class Dataentry extends CI_Controller {
 			$dataArray["exam_center_id"]=$_POST['exam_center_id'];
 			$dataArray['examname']= $this->Common_model->getCourseNameByCourseId($_POST['course_group_id']);
 			$dataArray['class_name']= $this->Common_model->getClassNameByClassId($_POST['class_id']);
-			$this->db->where('exam_date!=',"");
-			$this->db->where('exam_date!=',"0000-00-00");	
+			$this->db->where('old_exam_date!=',"");
+			$this->db->where('old_exam_date!=',"0000-00-00");	
 			$dataArray['paper']= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'] , 'paper_code'=>$_POST['paper_code']));
 			$dataArray['title'] = 'COUNTERFOIL';
 			$dataArray['examSession']="Feb 2023";

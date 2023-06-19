@@ -85,13 +85,13 @@
 							<span class="nav-text">Form Edit Request</span>
 						</div>
 					</a>
-					<!--
+					
 					<a class="border-0 custom-menu-item" href="<?=base_url('admission_mode_edit_request/PVT');?>">
 						<div>
 							<span class="nav-text">Mode Change Request (Private to Regular)</span>
 						</div>
 					</a>
-					-->
+					
 					<a class="border-0 custom-menu-item" href="<?=base_url('paper_missing_list/private');?>">
 						<div>
 							<span class="nav-text">Paper Missing List</span>
@@ -164,13 +164,13 @@
 							<span class="nav-text">Form Edit Request</span>
 						</div>
 					</a>
-					<!--
+					
 					<a class="border-0 custom-menu-item" href="<?=base_url('admission_mode_edit_request/REG');?>">
 						<div>
 							<span class="nav-text">Mode Change Request (Regular to Private)</span>
 						</div>
 					</a>
-					-->
+					
 					<a class="border-0 custom-menu-item" href="<?=base_url('paper_missing_list/regular');?>">
 						<div>
 							<span class="nav-text">Paper Missing List</span>
@@ -213,14 +213,20 @@
 					<?php endif ?>
 					<?php 
 					 $count = $this->Common_model->getCountByWhere('student',array('center_id'=>$center->id,'new_exam_form !='=>'D'));
-					if ( $center->exam_form_permission=='Y' && $count>0): ?>
+					if ( $center->exam_form_permission=='Y' && $count>0){ ?>
 					<a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
 							<div>
 								<span class="nav-text">Exam Form June 2023</span>
 							</div>
 					</a> 
-					
-					<?php endif ?>
+					<?php }
+					 if($count>0){ ?>
+					<a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
+						<div>
+							<span class="nav-text">Time Table June 2023</span>
+						</div>
+					</a> 
+					<?php } ?>
 					<a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
 						<div>
 							<span class="nav-text">Practical Marks Submission (Regular)</span>
@@ -231,11 +237,13 @@
 							<span class="nav-text">Internal Marks Submission (Regular)</span>
 						</div>
 					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
-						<div>
-							<span class="nav-text">Result</span>
-						</div>
-					</a>
+					<?php if ($center->result_permission=='Y'): ?>
+						<a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
+							<div>
+								<span class="nav-text">Result(March 2023)</span>
+							</div>
+						</a>
+					<?php endif ?>
 					<?php /*if ($this->session->center_id!=1080 && $this->session->center_id!=1986): ?>						
 						<a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
 							<div>
@@ -243,13 +251,7 @@
 							</div>
 						</a>
 					<?php endif */?>
-						<!--
-				 <a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
-						<div>
-							<span class="nav-text">Time Table June 2022</span>
-						</div>
-					</a> 
-					 -->
+					
 
 				<!--	<a class="border-0 custom-menu-item" href="<?=base_url('student_roll_no_list');?>">
 						<div>
@@ -263,11 +265,11 @@
 							<span class="nav-text">Admit Card</span>
 						</div>
 					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('admit_card_backlog_student_list');?>">
+					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('admit_card_backlog_student_list');?>">
 						<div>
 							<span class="nav-text">Backlog Admit Card</span>
 						</div>
-					</a>
+					</a> -->
 					<?php endif ?>
 
 				</div>

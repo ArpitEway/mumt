@@ -91,7 +91,7 @@
 							<option <?=($papers['int_marks']==="ABS") ? 'selected="selected"' : ''; ?> value="ABS">ABS</option>
 							<?php
 							
-							for ($i=0; $i<=$papers['max_internal_marks']; $i++){
+							for ($i=$papers['min_internal_marks']; $i<=$papers['max_internal_marks']; $i++){
 								$selected =  ($papers['int_marks']==$i && $papers['int_marks']!="ABS") ? 'selected="selected"' : '';
 								$selected = ($papers['int_marks']=='' || $papers['int_marks']=='N') ? '' : $selected;
 								?>
@@ -133,7 +133,7 @@
 							<option value="">Select Marks</option>
 							<option <?=($papers['p_marks']==="ABS") ? 'selected="selected"' : ''; ?> value="ABS">ABS</option>
 								<?php
-								for ($i=0; $i<=$papers['max_theory_marks']; $i++){
+								for ($i=$papers['min_theory_marks']; $i<=$papers['max_theory_marks']; $i++){
 									$selected =  ($papers['p_marks']==$i && $papers['p_marks']!="ABS") ? 'selected' : '';
 									?>
 									<option <?=$selected ?>><?php echo str_pad($i,2,'0',STR_PAD_LEFT);?></option>
@@ -147,7 +147,7 @@
 						<option value="">Select Marks</option>
 						<option <?=($papers['p_marks']==="ABS") ? 'selected="selected"' : ''; ?> value="ABS">ABS</option>
 							<?php
-							for ($i=0; $i<=$papers['max_internal_marks']; $i++){
+							for ($i=$papers['min_internal_marks']; $i<=$papers['max_internal_marks']; $i++){
 								$selected =  ($papers['int_marks']==$i && $papers['int_marks']!="ABS") ? 'selected' : '';
 								?>
 								<option <?=$selected ?>><?php echo str_pad($i,2,'0',STR_PAD_LEFT);?></option>
@@ -173,7 +173,7 @@
 						<option value="">Select Marks</option>
 						<option <?=($papers['p_marks']==="ABS") ? 'selected="selected"' : ''; ?> value="ABS">ABS</option>
 							<?php
-							for ($i=0; $i<=$papers['max_theory_marks']; $i++){
+							for ($i=$papers['min_theory_marks']; $i<=$papers['max_theory_marks']; $i++){
 								$selected =  ($papers['p_marks']==$i && $papers['p_marks']!="ABS") ? 'selected' : '';
 								?>
 								<option <?=$selected ?>><?php echo str_pad($i,2,'0',STR_PAD_LEFT);?></option>
@@ -187,7 +187,7 @@
 							<option value="">Select Marks</option>
 							<option <?=($papers['int_marks']==="ABS") ? 'selected="selected"' : ''; ?> value="ABS">ABS</option>
 							<?php
-							for ($i=0; $i<=$papers['max_internal_marks']; $i++){
+							for ($i=$papers['min_internal_marks']; $i<=$papers['max_internal_marks']; $i++){
 								$selected =  ($papers['int_marks']==$i && $papers['int_marks']!="ABS") ? 'selected="selected"' : '';
 								$selected = ($papers['int_marks']=='' || $papers['int_marks']=='N') ? '' : $selected;
 								?>
@@ -214,7 +214,8 @@
 						<option value="">Select Marks</option>
 						<option <?=($papers['p_marks']==="ABS") ? 'selected="selected"' : ''; ?> value="ABS">ABS</option>
 							<?php
-							for ($i=0; $i<=$papers['max_internal_marks']; $i++){
+
+							for ($i= 0; $i<=$papers['max_internal_marks']; $i++){
 								$selected =  ($papers['int_marks']==$i && $papers['p_marks']!="ABS") ? 'selected' : '';
 								?>
 								<option <?=$selected ?>><?php echo str_pad($i,2,'0',STR_PAD_LEFT);?></option>

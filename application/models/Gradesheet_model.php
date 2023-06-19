@@ -47,7 +47,7 @@ class Gradesheet_model extends CI_Model
 		$papers_list = $this->Common_model->get_all_group_papers($student_id,$class_id);
 		}
 		// get_all_group_papers
-		// print_r($papers);die;
+		//  print_r($papers);die;
 		
 		// print_r($this->allclass);die;
 		$this->classCount = count($this->allclass);
@@ -66,7 +66,6 @@ class Gradesheet_model extends CI_Model
 		$this->withheld = false;
 		foreach ($papers as $paper) {
 			$this->paper = $paper;
-			
 			
 			if($this->withheld){
 				
@@ -580,7 +579,7 @@ class Gradesheet_model extends CI_Model
 	{
 		echo '<tr>';
 			echo '<td></td>';
-			echo '<td class="text-right font-weight-bold" style="padding-right: 3rem!important;">कुल योग</td>';
+			echo '<td class="text-right font-weight-bold" style="padding-right: 3rem!important;">Total</td>';
 			echo '<td class="text-center font-weight-bold">'.$this->tot_credit.'</td>';
 			echo '<td></td>';
 			echo '<td></td>';

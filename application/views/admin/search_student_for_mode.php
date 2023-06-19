@@ -5,7 +5,7 @@
 		
 <div class="col-lg-6 m-auto">
 <div class="form-group row">
-				  <label class=" col-form-label col-3" >Enter Student ID : </label> 
+				  <label class=" col-form-label col-3" >Enter Form No : </label> 
 				  <input class="form-control col-9" type = "text" id="search_text" name ="search_text" />	
 				</div>
          

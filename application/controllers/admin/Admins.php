@@ -2928,7 +2928,7 @@ public function update_exam_datewise_permission(){
 		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
 		$this->db->order_by('roll_number','ASC');
 		$data['mode']= $mode;
-		$data['students']= $this->Common_model->getRecordByWhere('student_result_aug_22',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y' ,'roll_number!='=>'0', 'university_mode'=>$mode));//'result_show'=>'Y'
+		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y' ,'roll_number!='=>'0', 'university_mode'=>$mode));//'result_show'=>'Y'
 		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$this->load->view('admin/student_notification_list',$data);
 	}
@@ -2998,7 +2998,7 @@ public function update_exam_datewise_permission(){
 		$this->db->order_by('center_id','ASC');
 		$this->db->order_by('roll_number','ASC');
 		// $data['students'] = $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y', 'roll_no!='=>'0'));
-		$data['students'] = $this->Common_model->getRecordByWhere('student_result_aug_22',$where);
+		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
 		$data['class_id'] = $class_id;
 		$data['pagenumber']=$pagenumber;
 		$data['course_group_id'] = $course_group_id;
@@ -3036,8 +3036,8 @@ public function update_exam_datewise_permission(){
 	}
 
 	public function tr_class_list(){
-		$where = "id in (select distinct(course_group_id) from student_result_aug_22 where exam_form = 'Y' )";
-		// new_exam_form = 'Y' or
+		$where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' )";
+		// new_exam_form = 'Y' or student_result_aug_22
 		// and class_id in (104,107,134,283,285,287,289,293,295,297,291)
 		$data['courses'] = $this->Common_model->get_record('course_group','*',$where);
 		$this->load->view('header',array('title' => 'Class List'));
@@ -3155,13 +3155,12 @@ public function update_exam_datewise_permission(){
 
 		if($class->last_class == 'L'){
 			$this->db->order_by('center_id,roll_number','ASC');
-			$data['students']= $this->Common_model->getRecordByWhere('student_result_aug_22',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','course_complete'=>'Y','university_mode'=>$mode ));
+			$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','course_complete'=>'Y','university_mode'=>$mode ));
 		}else{
 			$this->db->order_by('center_id,roll_number','ASC');
-		$data['students']= $this->Common_model->getRecordByWhere('student_result_aug_22',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode));
+		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode));
 		}
 	 	if($class->internal=="Y" && $mode!="PVT"){
-			
 			$this->load->view('admin/student_marksheet',$data);
 		}else{
 			$this->load->view('admin/student_marksheet_certificate',$data);
@@ -3645,10 +3644,17 @@ public function update_exam_datewise_permission(){
 		$student_id = $_POST['student_id'];
 		$student= $this->Common_model->getRecordByWhere('student',array("student_id"=>$student_id));
 
-		$course = $this->Common_model->getRecordByWhere('course_group',array("id"=>$student[0]->course_group_id));
-
+		//$course = $this->Common_model->getRecordByWhere('course_group',array("id"=>$student[0]->course_group_id));
+		
+		$this->db->select('course.*,course_group.private_mode,course_group.mode');
+		$this->db->from('course');
+		$this->db->join('course_group', 'course.course_group_id = course_group.id');
+		$where = array('session'=>$student[0]->session,'course.course_group_id'=>$student[0]->course_group_id);
+		$this->db->where($where);	
+		$course = $this->db->get()->result();
+		
 		if ($student[0]->university_mode=='REG') {
-			if ($course[0]->admission_permission_pvt!='Y') {
+			if ($course[0]->admission_permission_private!='Y') {
 				$result = array("status" => false, "message"=> "COURSE NOT HAVE PERMISSION");
 				echo json_encode($result);
 				die();
@@ -3670,7 +3676,7 @@ public function update_exam_datewise_permission(){
 			}
 
 		}elseif($student[0]->university_mode=='PVT'){
-			if ($course[0]->admission_permission!='Y') {
+			if ($course[0]->admission_permission_regular!='Y') {
 				$result = array("status" => false, "message"=> "COURSE NOT HAVE PERMISSION");
 				echo json_encode($result);
 				die();

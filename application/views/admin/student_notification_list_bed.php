@@ -404,30 +404,35 @@ $abs_count = 0 ;
 								<?php 
 								if((in_array($student->old_class_id, $class_ids)) && $mode=='REG')	
 								{
-								if($check_grace_marks){
-									echo " ";
-								}elseif(sizeof($atkt_paper_codes_array)>0){
-									echo "ATKT in ";
-									$atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
-									foreach($atkt_paper_codes_array as $paper_code){
-										echo  "<br>". $paper_code;
+									if($check_grace_marks){
+										echo " ";
+									}elseif(sizeof($atkt_paper_codes_array)>0){
+										echo "ATKT in ";
+										$atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
+										foreach($atkt_paper_codes_array as $paper_code){
+											echo  "<br>". $paper_code;
+										}
+									}else{
+										echo '';
 									}
 								}else{
-									echo '';
-								}
-							 }else{
-								if($check_grace_marks){
-									echo " ";
-								}elseif(sizeof($atkt_paper_codes_array)==1){
-									echo "ATKT in ";
-									$atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
-									foreach($atkt_paper_codes_array as $paper_code){
-										echo  "<br>". $paper_code;
+									if($check_grace_marks){
+										echo " ";
 									}
-								}else{
-									echo '';
-								}	
-							 } ?>
+									elseif( $theory_abs_count==$theory_paper_count && $p_abs_count==$p_paper_count && $student->course_group_id == 76){
+										echo 'ABS In ALL';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
+									  }
+									
+									elseif(sizeof($atkt_paper_codes_array)==1){
+										echo "ATKT in ";
+										$atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
+										foreach($atkt_paper_codes_array as $paper_code){
+											echo  "<br>". $paper_code;
+										}
+									}else{
+										echo '';
+									}	
+								} ?>
 							</td>
 						</tr>
 						<?php

@@ -22,7 +22,9 @@ class ExamController extends CI_Controller {
 		 $this->exam_form = $this->master->exam_form_col;
 		 $this->roll_no = $this->master->roll_number_col;
 		 $this->result_table = $this->master->student_result_table;
+		 $this->old_result_table = $this->master->old_student_result_table;
 		 $this->exam_form_table = $this->master->exam_form_table;
+		 $this->old_exam_form_table = $this->master->old_exam_form_table;
 		if($this->session->account_type!='ExamController'){
 				redirect(base_url('admin/logout')); 
 		}
@@ -1608,10 +1610,28 @@ class ExamController extends CI_Controller {
 			$this->load->view('header',$titleData);
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$this->db->select('DISTINCT(exam_center_id) ');
+			$this->db->from('student');
+			$where = array('new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>0);
+			$this->db->where($where);	
+			$ecenters=$this->db->get()->result_array();
+			//print_r($this->db->last_query()); 
+			
+			$examCenter=array();
+			foreach($ecenters as $k=>$val){
+				$examCenter[]=$val['exam_center_id'];
+			}
+			
+			
 			$this->db->select('*');
 			$this->db->from('exam_center');
-			$this->db->where_in('id',array('7','11','14','15','16','17','18','21','23','28','29','36','43','44','50','51','54','56','63','66','69','71','72','73','79','82','87','93','96','100','101','116','119','127','131','132','133','136','138','140','144','157','158','160','164','165','167','169','173'));
-			$this->db->order_by('examcentercode', "asc");
+			
+		//	$this->db->where_in('id',array('21','169','78','32','82','16','167','87','15','132','117','118','123','62','133','149','75','30'));
+		if(count($examCenter))
+			$this->db->where_in('id',$examCenter);
+		else
+			$this->db->where_in('id',0);	
+			$this->db->order_by('exam_center.examcentercode', "asc");
 			$data['exam_centers'] = $this->db->get()->result();
 
 			$this->load->view('admin/exam_center/exam_center_wise_student_attendance_sheet',$data);
@@ -1626,7 +1646,7 @@ class ExamController extends CI_Controller {
 		$this->db->from('student');
 		$this->db->order_by("roll_no", "asc");
 		// if($exam_center!="All")
-		$where = array('exam_center_id'=>$exam_center,'new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>7);
+		$where = array('exam_center_id'=>$exam_center,'new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>0);
 		$this->db->where($where);	
 		$data['exam_center_students'] = $this->db->get()->result();
 		echo $this->load->view('admin/exam_center/get_exam_center_wise_student_attendance_sheet',$data, TRUE);
@@ -1648,7 +1668,7 @@ class ExamController extends CI_Controller {
 			$this->db->from('backlog_student');	
 		
 			$this->db->where('exam_form','Y');
-			$this->db->where('notification_no','3');
+			$this->db->where('notification_no','0');
 			$this->db->order_by('exam_center_code', "asc");
 			$data['exam_centers'] = $this->db->get()->result();
 
@@ -1664,7 +1684,7 @@ class ExamController extends CI_Controller {
 		$this->db->join('student', 'backlog_student.student_id = student.student_id');
 		$this->db->order_by("roll_no", "asc");
 		
-		$where = array('backlog_student.exam_center_id'=>$exam_center,'backlog_student.exam_form'=>'Y', 'backlog_student.roll_no!=' => 0 ,'backlog_student.notification_no'=>3);
+		$where = array('backlog_student.exam_center_id'=>$exam_center,'backlog_student.exam_form'=>'Y', 'backlog_student.roll_no!=' => 0 ,'backlog_student.notification_no'=>0);
 		$this->db->where($where);	
 		$data['exam_center_students'] = $this->db->get()->result();
 		echo $this->load->view('admin/exam_center/get_exam_center_wise_backlog_student_attendance_sheet',$data, TRUE);
@@ -1887,8 +1907,8 @@ class ExamController extends CI_Controller {
 			$dataArray["exam_center_id"]=$_POST['exam_center_id'];
 			$dataArray['examname']= $this->Common_model->getCourseNameByCourseId($_POST['course_group_id']);
 			$dataArray['class_name']= $this->Common_model->getClassNameByClassId($_POST['class_id']);
-			$this->db->where('exam_date!=',"");
-			$this->db->where('exam_date!=',"0000-00-00");	
+			$this->db->where('old_exam_date!=',"");
+			$this->db->where('old_exam_date!=',"0000-00-00");	
 			$dataArray['paper']= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'] , 'paper_code'=>$_POST['paper_code']));
 			$dataArray['title'] = 'COUNTERFOIL';
 			$dataArray['examSession']="Feb 2023";
@@ -1925,8 +1945,8 @@ class ExamController extends CI_Controller {
 			$dataArray["exam_center_id"]=$_POST['exam_center_id'];
 			$dataArray['examname']= $this->Common_model->getCourseNameByCourseId($_POST['course_group_id']);
 			$dataArray['class_name']= $this->Common_model->getClassNameByClassId($_POST['class_id']);
-			$this->db->where('exam_date!=',"");
-			$this->db->where('exam_date!=',"0000-00-00");	
+			$this->db->where('old_exam_date!=',"");
+			$this->db->where('old_exam_date!=',"0000-00-00");	
 			$dataArray['paper']= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'] , 'paper_code'=>$_POST['paper_code']));
 			$dataArray['title'] = 'COUNTERFOIL';
 			$dataArray['examSession']="Feb 2023";
@@ -2572,8 +2592,8 @@ public function getStudentData()
 			$dataArray["exam_center_id"]=$_POST['exam_center_id'];
 			$dataArray['coursename']= $this->Common_model->getCourseNameByCourseId($_POST['course_group_id']);
 			$dataArray['class_name']= $this->Common_model->getClassNameByClassId($_POST['class_id']);
-			$this->db->where('exam_date!=',"");
-			$this->db->where('exam_date!=',"0000-00-00");	
+			$this->db->where('old_exam_date!=',"");
+			$this->db->where('old_exam_date!=',"0000-00-00");	
 			$dataArray['paper']= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'] , 'paper_code'=>$_POST['paper_code']));
 			$dataArray['title'] = 'COUNTER FILE CHECKING';
 			$dataArray['examSession']="Feb 2023";
@@ -2608,8 +2628,8 @@ public function getStudentData()
 			$dataArray["exam_center_id"]=$_POST['exam_center_id'];
 			$dataArray['coursename']= $this->Common_model->getCourseNameByCourseId($_POST['course_group_id']);
 			$dataArray['class_name']= $this->Common_model->getClassNameByClassId($_POST['class_id']);
-			$this->db->where('exam_date!=',"");
-			$this->db->where('exam_date!=',"0000-00-00");	
+			$this->db->where('old_exam_date!=',"");
+			$this->db->where('old_exam_date!=',"0000-00-00");	
 			$dataArray['paper']= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'] , 'paper_code'=>$_POST['paper_code']));
 			$dataArray['title'] = 'Backlog COUNTER FILE CHECKING';
 			$dataArray['examSession']="Feb 2023";
@@ -2747,7 +2767,7 @@ public function getStudentData()
 			}
 
 			
-				$student = $this->Common_model->getRecordByWhere($this->result_table,$where);
+				$student = $this->Common_model->getRecordByWhere($this->old_result_table,$where);
 				//print_r($student); die;
 				$msg="";
 				if (count($student)==0) {
@@ -2763,14 +2783,25 @@ public function getStudentData()
 						
 							$msg="<p style='text-align: center;'><b>Student result not declared!</b></p>"; 
 					}
-
 						$data['student']=$student[0];
+						$data['exam_session']  = 'Aug 2022';
+						/**********************/
+						if($data['student']->provisional_remark!="N" && $data['student']->provisional_remark!="")
+						{
+							$this->db->select('provisional_remarks');
+							$this->db->from('provisional_remark_details');
+							$this->db->where('document_category_id',$data['student']->provisional_remark);
+							$remark = $this->db->get()->row();
+							$provisional_remark_details ="<p style='text-align: center;'><b>".$remark->provisional_remarks." are not recieved at university</b></p>";
+						}
+						/************************/
+						
 						$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
 						$data['practical_internal_marks']=$classData->practical_internal_marks;
 						$this->db->select('*');
-						$this->db->from($this->exam_form_table);
-						$this->db->where(''.$this->exam_form_table.'.student_id',$data['student']->student_id);
-						$this->db->where(''.$this->exam_form_table.'.class_id',$data['student']->old_class_id);
+						$this->db->from($this->old_exam_form_table);
+						$this->db->where(''.$this->old_exam_form_table.'.student_id',$data['student']->student_id);
+						$this->db->where(''.$this->old_exam_form_table.'.class_id',$data['student']->old_class_id);
 						$new_exam_form = $this->db->get()->result();
 						$data['classData']  = $classData;
 						$data['new_exam_form']  = $new_exam_form;
@@ -2779,7 +2810,7 @@ public function getStudentData()
 						if((in_array($data['student']->old_class_id, $class_ids)) && $data['student']->university_mode=='REG')	
 						{
 							$this->load->model('Gradesheet_model');
-							$dt = $msg.$this->load->view('Centers/grade_marksheet',$data,true);
+							$dt = $provisional_remark_details.$msg.$this->load->view('Centers/grade_marksheet',$data,true);
 						}else{
 							
 							$title = array('title' => 'Result - '.$data['student']->enrollment_no);
@@ -2804,7 +2835,7 @@ public function getStudentData()
 							}
 						
 						
-							$dt = $msg. $marksheet_top.$marksheet_bottom;
+							$dt =$provisional_remark_details. $msg. $marksheet_top.$marksheet_bottom;
 						
 						}
 						echo json_encode(array(

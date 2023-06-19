@@ -67,7 +67,7 @@
                 $paper_data=  $this->Common_model->getRecordByWhere("paper_master",array('class_id'=>$student->class_id,'paper_code'=>$student->paper_code));
                   
                 $percentage = 90;  
-                $center_ids_dep = array(21,22,23,24,25,26,27,28,29);
+                $center_ids_dep = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29);
                 $center_id =  $this->session->center_id;
                 if (in_array($center_id, $center_ids_dep)){
                   $percentage = 100;  
@@ -135,6 +135,7 @@
               }
               ?>
         <input type="hidden" value="<?php echo $ajax_count-$removeCounter; ?>" name="count_item" id="count_item"/>
+        <input type="hidden" value="<?php echo $this->session->center_id;?>" name="center_id" id="center_id"/>
       </tbody>
   </table>
 
@@ -185,10 +186,16 @@ if (document.getElementById(`id_${i}`).value=='ABS')
       }
     }
   }
-  if(check_marks==false){ 
-    alert('आपने दो से अधिक बार समान अंक दर्ज किए हैं');
-    return false; 
+  var center_id= $("#center_id").val();
+  const centers = [10,11,12,13,20,21,22,23,24,25,26,27,28,29];
+  if(centers.includes(center_id)){
+    
+    if(check_marks==false){ 
+      alert('आपने दो से अधिक बार समान अंक दर्ज किए हैं');
+      return false; 
+    }
   }
+  
 
   if(check==false){
     if(confirm('Are You want to set Absent ?')==false){

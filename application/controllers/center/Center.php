@@ -755,7 +755,7 @@ class Center extends CI_Controller {
 			 $this->db->where('admission_permission_private','Y');
 		  }
 		  $this->db->group_end();
-		  if($center_id == 13 || $center_id == 2115 ){
+		  if($center_id == 11 || $center_id == 13 || $center_id == 2115 || $center_id == 1707 ){
 			$this->db->or_group_start();
 		  $this->db->or_where_in('course_group.id',array(33,45));
 		  $this->db->where(array('eligibility' => $eligibility ,'course.session'=>$session));
@@ -1758,7 +1758,7 @@ class Center extends CI_Controller {
 	 	$titleData = array('title' => 'Regular Internal Marks Submission' );
 	 	$this->load->view('Centers/header',$titleData);
 	 	$center_id =  $this->session->center_id;
-	 	$where = array('university_mode' => 'REG','center_id' => $center_id, $this->exam_form => 'Y','internal'=>"Y",'result_show ' => 'N');
+	 	$where = array('university_mode' => 'REG','center_id' => $center_id, $this->exam_form => 'Y','internal'=>"Y",'old_result_show ' => 'N');
 	 	// ,"demo"=>'N'
 	 	$this->db->order_by("int_marks_sub,".$this->exam_table.".course_group_id,".$this->exam_table.".class_id", "asc");
 	 	$this->db->select('*');
@@ -2036,7 +2036,7 @@ class Center extends CI_Controller {
 		$new_exam_form = $this->db->get()->result();
 		$data['new_exam_form']  = $new_exam_form;
 		$data['classData']  = $classData;
-		$data['exam_session']  = 'Aug 2022';
+		$data['exam_session']  = 'March 2023';
 		$title = array('title' => 'Result - '.$data['student']->enrollment_no);
 		$this->load->view('admin/generate_tr/header2',$title);	
 		//$this->load->view('Centers/marksheet',$data);
@@ -2116,12 +2116,15 @@ public function marksheet_admin($student_id="")
 		$new_exam_form = $this->db->get()->result();
 		$data['new_exam_form']  = $new_exam_form;
 		$data['classData']  = $classData;
+		$data['exam_session']  = 'March 2023';
 		$this->load->model('Gradesheet_model');
 		// $title = array('title' => 'Result - '.$data['student']->enrollment_no);
 		$title ="";
-		$this->load->view('Centers/header',$title);
+		$this->load->view('admin/generate_tr/header2');
+		//$this->load->view('Centers/header',$title);
 		$this->load->view('Centers/grade_marksheet',$data);
-		$this->load->view('Centers/footer');
+		//$this->load->view('Centers/footer');
+		$this->load->view('admin/generate_tr/footer2');
 
  }
 
@@ -2222,7 +2225,7 @@ public function marksheet_admin($student_id="")
 		$titleData = array('title' => 'Regular Practical Marks Submission' );
 		$this->load->view('Centers/header',$titleData);
 		$center_id =  $this->session->center_id;
-		$where = array('university_mode' => 'REG','center_id' => $center_id,'result_show' => 'N',$this->exam_form => 'Y');
+		$where = array('university_mode' => 'REG','center_id' => $center_id,'old_result_show' => 'N',$this->exam_form => 'Y');
 		// ,'demo'=>'N'
 		$this->db->order_by("p_marks_sub,".$this->exam_table.".course_group_id,".$this->exam_table.".class_id", "asc");
 		$this->db->select('*');
@@ -2765,7 +2768,7 @@ public function practical_assignment_marks_edit(){
 	}
 	public function admission_mode_edit_request($course_type="REG")
 	{
-		redirect(base_url());
+		//redirect(base_url());
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}else{

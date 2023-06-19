@@ -111,8 +111,11 @@
                     <tr>
                       <td class="Normaltext" align="left" width="29%"><div align="left">Department</div></td>
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;">
-                        <?php if ($student->center_id==10) {
-                          echo "University Teaching Department Karaundi";
+                        <?php 
+                        // if ($student->center_id==10) {
+                        $center_ids = array(10,13,21,22,23,24,25,26,27,28,29);
+                        if(in_array($student->center_id, $center_ids)){
+                          echo "University Teaching Department Karoundi";
                         }else if ($student->center_id==12) {
                           echo "Shiksha Vibhag, Lamti Jabalpur";
                         } ?>
@@ -207,6 +210,9 @@
                                 $fail_count++;
                                 $fali_tot_marks += $marks->p_marks;
                                 $require_tot_marks += $marks->min_theory_marks;
+                              }else if($marks->p_marks == 'ABS'){
+                                $result = 'FAIL';
+                                $abs_count++ ;
                               }
                             }else{
                               $tot_std_marks += $marks->p_marks;
@@ -216,6 +222,10 @@
                                 $fail_count++;
                                 $fali_tot_marks += $marks->p_marks;
                                 $require_tot_marks += $marks->min_theory_marks;
+                              }
+                              else if($marks->p_marks == 'ABS'){
+                                $result = 'FAIL';
+                                $abs_count++ ;
                               }
                             }
                           }
@@ -332,7 +342,11 @@
                               if($paper->type=='Sessional'){
                                echo  $paper->int_marks;
                               }else{
-                             echo  ($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->int_marks : '-'; 
+                             if($paper->type=='theory' || $classData->practical_internal_marks=='Y'){
+                              echo ($paper->int_marks=='ABS') ? 'ABS F' : $paper->int_marks; 
+                             }else{
+                              echo '-';
+                             }
                               }?></span>
                             </td>
                             <td align="left" class="style2">&nbsp;&nbsp;&nbsp;&nbsp;<span class="style4" style="padding-left:10px;">
@@ -342,7 +356,7 @@
                                   echo  $paper->theory_marks +  $paper->int_marks . '' ;
                                   echo ($check_grace_marks) ? ' G' : ' F';
                                 }elseif($paper->theory_marks=="ABS"){
-                                  echo 'ABS'. ' F' ;
+                                  echo ($paper->int_marks=='ABS') ? 'ABS F' : $paper->int_marks.' F';
                                 }else{
                                   echo $paper->theory_marks + $paper->int_marks;
                                 }
@@ -360,7 +374,7 @@
                                   if($paper->int_marks<$paper->min_internal_marks || $paper->p_marks<$paper->min_theory_marks && $check_grace_marks==false){
                                     echo  $paper->p_marks +  $paper->int_marks . ' F' ; 
                                   }elseif($paper->p_marks=="ABS" || $paper->int_marks=="ABS"){
-                                    echo 'ABS'. ' F' ;
+                                    echo ($paper->int_marks=='ABS') ? 'ABS F' : $paper->int_marks.' F';
                                   }else{
                                     echo $paper->p_marks + $paper->int_marks ;
                                   } 
@@ -368,7 +382,7 @@
                                   if($paper->p_marks<$paper->min_theory_marks && $check_grace_marks==false){
                                     echo  $paper->p_marks . ' F' ; 
                                   }elseif($paper->p_marks=="ABS"){
-                                    echo 'ABS'. ' F';
+                                    echo ($paper->int_marks=='ABS') ? 'ABS F' : $paper->int_marks.' F';
                                   }else{
                                     echo $paper->p_marks;
                                   }

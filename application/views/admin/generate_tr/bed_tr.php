@@ -351,7 +351,9 @@
       <tbody>
         <tr>
           <th  class="align-middle text-center roll_no" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_number ?> <br> <?php echo $student->enrollment_no  ?></th>
-          <th class="align-middle text-center ms_no" rowspan="<?php echo $rowspandata ?>"><?=$student->marksheet_no ?></th>
+          <th class="align-middle text-center ms_no" rowspan="<?php echo $rowspandata ?>">
+            <?= $student->marksheet_no ?> 
+          </th>
           <th  class="align-middle text-center photo" rowspan="<?php echo $rowspandata ?>">
             <img alt="N/A" src="<?= base_url('assets/student_image/'.$student->session.'/'.$student->photo) ?>" width='65px' height="90px"></th>
           <td  class="align-middle text-center name"  rowspan="<?php  echo $rowspandata ?>"><?php  echo $student->name ?>/ <br><?php  echo $student->f_h_name ?></td>
@@ -371,6 +373,9 @@
                     }elseif($final_result == "RW"){
                       echo '';
                     }
+                    elseif( $theory_abs_count==$theory_paper_count && $p_abs_count==$p_paper_count){
+                             echo 'ABS In ALL';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
+                   }
               elseif(sizeof($atkt_paper_codes_array)==1){
                 echo "ATKT in";
                 $atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
@@ -525,13 +530,14 @@
        if($check_grace_marks==true){
         echo $paper_master->theory_marks+ $paper_master->int_marks;
       }elseif(($paper_master->theory_marks<$paper_master->min_theory_marks) || ($paper_master->int_marks<$paper_master->min_internal_marks) || $paper_master->theory_marks=='ABS'|| $paper_master->int_marks=='ABS'){
-        echo $paper_master->theory_marks+ $paper_master->int_marks." F";
+        echo ($paper_master->theory_marks=='ABS' && $paper_master->int_marks=='ABS') ? 'ABS F' : $paper_master->theory_marks+ $paper_master->int_marks." F";
+
       }else{
         echo $paper_master->theory_marks+ $paper_master->int_marks;
       }
     }else{
       if($paper_master->p_marks=='ABS'){
-        echo '0 F';
+        echo ($paper_master->int_marks=='ABS') ? 'ABS F' : $paper_master->int_marks.' F';
       }elseif($paper_master->p_marks<$paper_master->min_theory_marks || $paper_master->int_marks<$paper_master->min_internal_marks){
         echo $paper_master->p_marks+$paper_master->int_marks.' F';
       }else{
