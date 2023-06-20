@@ -141,7 +141,7 @@ $abs_count = 0 ;
 								if($new_exam_form->theory_marks==''){
 									$rw_count++;
 								}
-								if($new_exam_form->theory_marks+$new_exam_form->int_marks<$new_exam_form->min_theory_marks+$new_exam_form->min_internal_marks  && $new_exam_form->theory_marks!=''){
+								if($new_exam_form->theory_marks+$new_exam_form->int_marks<$new_exam_form->min_theory_marks+$new_exam_form->min_internal_marks && $new_exam_form->theory_marks!=''){
 									array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
 									$fail_count++;
 									$fail_tot_marks += $new_exam_form->theory_marks+$new_exam_form->int_marks;
@@ -282,7 +282,7 @@ $abs_count = 0 ;
 						if((in_array($student->old_class_id, $class_ids)) && $mode=='REG')	
 			{
 		
-		$require_grace_marks =($require_tot_marks+1)-$fail_tot_marks;
+		$require_grace_marks =$require_tot_marks-$fail_tot_marks;
 				              }else{
 								
 								$require_grace_marks =$require_tot_marks-$fail_tot_marks;
@@ -332,6 +332,7 @@ $abs_count = 0 ;
 		<div>
 			<h1 class="text-center" ><strong> Maharishi Mahesh Yogi Vedic Vishwavidyalaya </strong> </h1>
 		<p align="center" style="line-height:0px">Head Office: Karaundi, Post-Mahner ,Distt- Katni(MP) </p>
+		
 		<h2 align="center"><strong>Result Notification of</strong><br><p style="margin-top:8px"><strong><?php echo $this->Common_model->getCourseNameByCourseId($course_group_id).' - '. $this->Common_model->getClassNameByClassId($class_id) .'  '. $exam_session?></strong></p></h2>
 		</div>
 				<title>Notification <?php echo $this->Common_model->getCourseNameByCourseId($course_group_id)?></title>
