@@ -138,8 +138,8 @@ table.last_table, .last_table td, .last_table th{
     $final_class = true;
   }
   $course_duration = ($isFinalClass) ? "(One Year Course)" : $classData->class_name;
-  $rowspanhead = ($classData->project!='N' || $classData->practical!='N') ? "6" : "4";
-  $rowspandata = 7;
+  $rowspanhead = ($classData->project!='N' || $classData->practical!='N') ? "7" : "4";
+  $rowspandata = 9;
   //($classData->project!='N' || $classData->practical!='N') ? "6" : "6";
   if($classData->internal=='N'){
     $rowspandata--;  
@@ -194,10 +194,10 @@ table.last_table, .last_table td, .last_table th{
     $fc2_min =0;
     $final_result = '';
     if($student->university_mode == 'REG'){
-      $rowspanhead = ($classData->project!='N' || $classData->practical!='N') ? "6" : "3";
+      $rowspanhead = ($classData->project!='N' || $classData->practical!='N') ? "7" : "3";
       // $rowspandata = (($classData->project!='N' || $classData->practical!='N') && $classData->internal!='N')? "5" : "4";
       if($classData->project!='N' || $classData->practical!='N' && $classData->internal!='N'){
-        $rowspandata = "8";
+        $rowspandata = "10";
       }else if($classData->project!='N' || $classData->practical!='N' && $classData->internal =='Y'){
         $rowspandata = "4";
       }else if($classData->project =='N' &&  $classData->practical=='N' && $classData->internal=='N'){
@@ -465,6 +465,53 @@ table.last_table, .last_table td, .last_table th{
           <?php } ?>
           <td class="align-middle text-center"></td>
         </tr>
+        <tr>
+		<td class="align-middle text-right">Course Credit</td>
+    <?php
+    $credit = 0;
+    $std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $student->old_class_id,'student_id'=>$student->student_id));
+		$this->classData = $this->Common_model->getRecordById('class_master','id',$student->old_class_id);
+   
+    if($std[0]->sub_group_id == 1){
+			$papers = $this->Common_model->get_all_papers($student->student_id,$student->old_class_id);
+     
+		}
+
+		if($this->classData->class_group == 'Y'){
+			$papers_list = $this->Common_model->get_all_group_papers($student->student_id,$student->old_class_id);
+		}
+		
+		foreach ($papers as $paper_master) {
+      
+      $credit += $paper_master['credit_point'];
+      $paper_codes=array('1RBBA1','1RBBA2','1RBA1','1RBA2','1RBCOM1','1RBCOM2','1RBCOMCA1','1RBCOMCA2','1RBCOMT1','1RBCOMT2','1RBCA1','1RBCA2','1RBSCCBC1','1RBSCCBC2','1RBSCCS1','1RBSCCS2','1RBSCPCM1','1RBSCPCM2','1RBSW1','1RBSW2');
+			// $paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4');
+				if(in_array($paper_master['paper_code'],$paper_codes) && $paper_master['sub_group_id'] == 1)	
+				{
+				?><td colspan= '2' class='text-center'>4</td><?php
+				}else if ($paper_master['sub_group_id'] != 1){
+					?>
+					<td class='text-center'><?= $paper_master['credit_point'] ?></td>
+          <?php
+				}
+		}
+    foreach ($papers_list as $paper_master) {
+    
+      $credit += $paper_master['credit_point'];
+      $paper_codes=array('1RBBA1','1RBBA2','1RBA1','1RBA2','1RBCOM1','1RBCOM2','1RBCOMCA1','1RBCOMCA2','1RBCOMT1','1RBCOMT2','1RBCA1','1RBCA2','1RBSCCBC1','1RBSCCBC2','1RBSCCS1','1RBSCCS2','1RBSCPCM1','1RBSCPCM2','1RBSW1','1RBSW2');
+			// $paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4');
+				if(in_array($paper_master['paper_code'],$paper_codes))	
+				{
+				?><td colspan= '2' class='text-center'>4</td><?php
+				}else if ($paper_master['sub_group_id'] != 1){
+					?>
+					<td class='text-center'><?= $paper_master['credit_point'] ?></td>
+          <?php
+				}
+		}
+    ?>
+		<td class="text-center"><?= $credit?></td>
+		</tr>
       </tbody>
     </table>
     <?php  $ccode=substr($student->center_code,0,2);
@@ -660,7 +707,13 @@ table.last_table, .last_table td, .last_table th{
         if($paper_master->theory_marks==''){
           echo "-";
         }else{
-          echo (int) $paper_master->theory_marks + (int) $paper_master->int_marks." F";
+          // echo (int) $paper_master->theory_marks + (int) $paper_master->int_marks." F";
+          if($paper_master->sub_group_id == 1 && $paper_master->theory_marks=='ABS'){
+            echo 'ABS F';
+          }else{
+            echo ($paper_master->theory_marks=='ABS' && $paper_master->int_marks=='ABS') ? 'ABS F' : $paper_master->theory_marks+ $paper_master->int_marks." F";
+          }
+        
         }
       }else{
         echo (int) $paper_master->theory_marks+ (int) $paper_master->int_marks;
@@ -682,7 +735,7 @@ table.last_table, .last_table td, .last_table th{
     }
     }else{ 
       if($paper_master->p_marks=='ABS'){
-        echo '0 F';
+        echo ($paper_master->int_marks=='ABS' || $paper_master->int_marks=='N') ? 'ABS F' : $paper_master->int_marks.' F';
       }elseif($paper_master->p_marks<$paper_master->min_theory_marks){
         echo $paper_master->p_marks+$paper_master->int_marks.' F';
       }else{
