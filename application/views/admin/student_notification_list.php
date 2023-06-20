@@ -418,13 +418,19 @@
 						$grand_total = $grand_tot+$total_max_marks;
 					}else{
 						if($p_fail_count>0){
-							echo 'FAIL';
+							$final_result = 'FAIL';
 						}
 						else if($fail_count>0 || $abs_count>0){
-							echo $final_result = ($check_grace_marks) ? 'PASS BY GRACE' : 'FAIL';
+							 $final_result = ($check_grace_marks) ? 'PASS BY GRACE' : 'FAIL';
 
 						}else{
-							echo $final_result = 'PASS';
+							 $final_result = 'PASS';
+							
+						}
+						if((in_array($student->old_class_id, $class_ids)) && $mode=='REG'){
+						echo $this->Gradesheet_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+						}else{
+							echo $final_result;
 						}
 					}
 				}

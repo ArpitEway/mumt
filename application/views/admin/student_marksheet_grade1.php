@@ -161,7 +161,7 @@
                   <table border='1' cellpadding="2"  width="103%">
                     <tbody>
                      <tr align="center"><th width='12.5%'>Year</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credits Points</th><th width='12.5%'>AGPA</th></tr>
-                     <tr align="center"><th>First</th><td><?= $gradesheetData['tot_credit']?></td><td><?= $gradesheetData['obt_credit']?></td><td><?= $gradesheetData['credit_point']?></td><td><?= ($gradesheetData['result']== 'FAIL')?'0.00':number_format((float)$gradesheetData['agpa'], 2, '.', '')?></td></tr>
+                     <tr align="center"><th>First</th><td><?= $gradesheetData['tot_credit']?></td><td><?= $gradesheetData['obt_credit']?></td><td><?= $gradesheetData['credit_point']?></td><td><?= ($gradesheetData['result']== 'FAIL' || $gradesheetData['result']== 'SUPP')?'0.00':number_format((float)$gradesheetData['agpa'], 2, '.', '')?></td></tr>
                      <tr align="center"><th>Second</th><td></td><td></td><td></td><td></td></tr>
                      <tr align="center"><th>Third</th><td></td><td></td><td></td><td></td></tr>
                    

@@ -344,6 +344,7 @@ $abs_count = 0 ;
 					<tr> <th class="text-center" colspan="2">The Result of the following examinees of the above exam is hereby declared as under :</th> </tr>
 				</table>
 				<hr>
+				
 				<table width="100%"  class="fully_size"  border="1">
 					<thead>
 						<tr bgcolor="#FFFF00">
@@ -370,7 +371,9 @@ $abs_count = 0 ;
 					}
 					$page_break_count++;	
 					?>
+					
 					<tr class="alternate">
+					
 						<td class="text-center" scope="row">
 							<?php echo $student->roll_number ?>
 							</td>
@@ -378,7 +381,13 @@ $abs_count = 0 ;
 								<?php echo $student->name .' / '.  $student->f_h_name; ?>
 							</td>
 							<td align="center" >
-								<?=$final_result; ?>  	
+								<?php
+							if((in_array($student->old_class_id, $class_ids)) && $mode=='REG'){
+						echo $this->Gradesheet_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+						}else{
+							echo $final_result;
+						}
+						?>
 							</td>
 							<td align="center" style="padding:0px">					
 								<?php 

@@ -566,7 +566,9 @@ class Gradesheet_model extends CI_Model
 				echo "<td align='center' colspan='2'><span class='style4'>".'P-G'."</span></td>";
 				
 			}else{
-				
+				if($result['obt_marks'] == 'ABS'){
+					$result['letter_grade'] = 'Abs';
+				}
 				echo "<td align='center' colspan='3'><span class='style4'>".$result['credit']."</span></td>";
 				echo "<td align='center' colspan='3'><span class='style4'>".$result['obt_credit']."</span></td>";
 				echo "<td align='center' colspan='2'><span class='style4'>".$result['grade_point']."</span></td>";
