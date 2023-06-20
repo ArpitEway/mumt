@@ -287,6 +287,8 @@
 			<hr>
 			<tr>
 				<td colspan="3">
+					<p class="size" style="line-height:2px">AGPA-Annual Grade Point Average</p>
+		 			<p class="size" style="line-height:2px">SGPA-Semester Grade Point Average</p>
 					<p class="size" style="line-height:2px">RW-Result Withheld</p>
 					<p class="size" style="line-height:2px">RWE-Want of Enrolment</p>
 					<p class="size"style="line-height:2px">RWPM-Want of Prev. Sem/Year Marks</p>
@@ -325,10 +327,10 @@
 		<thead>
 			<tr bgcolor="#FFFF00">
 				<th class="text-center" scope="row" width="10%" ><span class="style5">Roll No.</span></th>
-				<th  class="text-center" style="text-align:left" scope="row"  width="35%" ><span class="style5" style="padding-left: 10px;" >Name and F/H Name</span></th>
+				<th  class="text-center" style="text-align:left" scope="row"  width="35%" ><span class="style5" style="padding-left: 10px;" >Name of the Candidate and F/H Name</span></th>
 				<th class="text-center" scope="row"  width="10%" >Result</span></th>
 				
-					<th class="text-center" style="padding:0px" align="center" class="text-center" scope="row"  width="20%" colspan='<?php echo ($isFinalClass && !$isOneClass)?"2":"1";?>'><?php if($isFinalClass){
+				<?php if((!in_array($student->old_class_id, $class_ids)) || $mode=='PVT'){ ?>	<th class="text-center" style="padding:0px" align="center" class="text-center" scope="row"  width="20%" colspan='<?php echo ($isFinalClass && !$isOneClass)?"2":"1";?>'><?php if($isFinalClass){
 						?>
 						<table width="100%" border="1" class="m-0">
 							<tr>
@@ -348,13 +350,14 @@
 								
 					</table>
 						<?php
-}else{?><span class="style5">Total</span> <?php }
-?></th>
+				}else{ ?><span class="style5">Total</span> <?php }
+				?></th><?php } ?>
 				
 				
 				<?php if((in_array($student->old_class_id, $class_ids)) && $mode=='REG')	
 			{ ?>
-				<th class="text-center" scope="row" width="10%"><span class="style5">SGPA/AGPA</span></th>
+				<th class="text-center" scope="row" width="10%"><span class="style5">
+					<?php if($classData->mode=="Annual") echo 'AGPA'; else echo 'SGPA'; ?></span></th>
 				<?php } ?>
 				<?php	if ($isFinalClass) {	?>
 					<th class="text-center" scope="row"  width="10%"><span class="style5">Division</span></th>
@@ -443,7 +446,7 @@
 <td class="text-center" style="padding:0px" align="center"><?php if($final_result != 'FAIL'){ echo  $grand_obtain .' / '. $grand_total;} ?></td>
 <?php
 			}			}
-			}else{
+			}else if((!in_array($student->old_class_id, $class_ids)) || $mode=='PVT'){ 
 				?>
 			<td  class="text-center" style="padding:0px" align="center"><?php
 			if($final_result != 'FAIL'){
@@ -530,6 +533,11 @@
 	</tr>
 	<tr>
 		<td colspan="3">
+		
+			<p class="size" style="line-height:2px">AGPA-Annual Grade Point Average</p>
+		
+			<p class="size" style="line-height:2px">SGPA-Semester Grade Point Average</p>
+		
 			<p class="size" style="line-height:2px">RW-Result Withheld</p>
 			<p class="size" style="line-height:2px">RWE-Want of Enrolment</p>
 			<p class="size"style="line-height:2px">RWPM-Want of Prev. Sem/Year Marks</p>
