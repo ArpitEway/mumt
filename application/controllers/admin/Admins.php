@@ -2998,7 +2998,8 @@ public function update_exam_datewise_permission(){
 		$this->db->order_by('center_id','ASC');
 		$this->db->order_by('roll_number','ASC');
 		// $data['students'] = $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y', 'roll_no!='=>'0'));
-		$data['students'] = $this->Common_model->getRecordByWhere('student_result_aug_22',$where);
+		// $data['students'] = $this->Common_model->getRecordByWhere('student_result_aug_22',$where);
+		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
 		// $this->Common_model->last_query();
 		$data['class_id'] = $class_id;
 		$data['pagenumber']=$pagenumber;
