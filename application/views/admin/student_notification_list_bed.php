@@ -8,7 +8,7 @@
 <body>
 	<br><?php
 $notification_no = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id' => $students[0]->old_class_id));
-
+$classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 $notification=($mode == "REG")?$notification_no[0]->notification_no:$notification_no[0]->pvt_notification_no;
 $date=$notification_no[0]->result_date;
 $exam_session=$notification_no[0]->exam_session;
@@ -310,6 +310,8 @@ $abs_count = 0 ;
       <table width="100%" >
 	  <tr>
 		<td colspan="3">
+			<p class="size" style="line-height:2px">AGPA-Annual Grade Point Average</p>
+		 	<p class="size" style="line-height:2px">SGPA-Semester Grade Point Average</p>
 			<p class="size" style="line-height:2px">RW-Result Withheld</p>
 			<p class="size" style="line-height:2px">RWE-Want of Enrolment</p>
 			<p class="size"style="line-height:2px">RWPM-Want of Prev. Sem/Year Marks</p>
@@ -349,16 +351,17 @@ $abs_count = 0 ;
 					<thead>
 						<tr bgcolor="#FFFF00">
 							<th scope="row" class="text-center" width="10%"><span class="style5">Roll No.</span></th>
-							<th style="text-align:left" scope="row"  width="45%"><span class="style5" >Name and F/H Name</span></th>
+							<th style="text-align:left" scope="row"  width="45%"><span class="style5" >Name of the Candidate and F/H Name</span></th>
 							<th scope="row" class="text-center"  width="15%">Result</span></th>
+							<?php if((!in_array($student->old_class_id, $class_ids)) || $mode=='PVT'){ ?>
 							<th scope="row" class="text-center" width="10%"><span class="style5">Total</span></th>
 							<?php	
-						
+							}
 							if((in_array($student->old_class_id, $class_ids)) && $mode=='REG')	
 							{
 						
 								?>
-								<th scope="row" class="text-center" width="10%"><span class="style5">SGPA/AGPA</span></th>
+								<th scope="row" class="text-center" width="10%"><span class="style5"><?php if($classData->mode=="Annual") echo 'AGPA'; else echo 'SGPA'; ?></span></th>
 								<?php
 
 							}
@@ -389,6 +392,7 @@ $abs_count = 0 ;
 						}
 						?>
 							</td>
+							<?php if((!in_array($student->old_class_id, $class_ids)) || $mode=='PVT'){ ?>
 							<td align="center" style="padding:0px">					
 								<?php 
 								if($final_result=='PASS' || $final_result=='PASS BY GRACE'){
@@ -398,7 +402,7 @@ $abs_count = 0 ;
 								} 
 								?>
 							</td>
-							<?php
+							<?php }
 							if((in_array($student->old_class_id, $class_ids)) && $mode=='REG'){
 								if($final_result != 'FAIL'){
 							$gradesheetData = $this->Gradesheet_tr_model->view_notification($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
@@ -460,6 +464,8 @@ $abs_count = 0 ;
 			</tr>
 			<tr>
 				<td colspan="3">
+					<p class="size" style="line-height:2px">AGPA-Annual Grade Point Average</p>
+		 			<p class="size" style="line-height:2px">SGPA-Semester Grade Point Average</p>
 					<p class="size" style="line-height:2px">RW-Result Withheld</p>
 					<p class="size" style="line-height:2px">RWE-Want of Enrolment</p>
 					<p class="size"style="line-height:2px">RWPM-Want of Prev. Sem/Year Marks</p>
