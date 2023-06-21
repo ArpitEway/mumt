@@ -306,6 +306,7 @@ table.last_table, .last_table td, .last_table th{
       }
       if($new_exam_form->p_marks=='ABS'){
         $p_abs_count++;
+        array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
       }
       if($new_exam_form->p_marks<$new_exam_form->min_theory_marks){
         $p_fail_count++;
@@ -548,23 +549,25 @@ table.last_table, .last_table td, .last_table th{
                   echo $total_marks_obt .'/'. $total_paper_marks;
           ?></td>
           <td  class="align-middle text-center result" rowspan="<?php echo $rowspandata ?>"><?php echo $gradesheetData['result']; //$final_result; ?></td>
-          <td  class="align-middle text-center result" rowspan="<?php echo $rowspandata ?>"><?php  echo ($final_result == 'FAIL')?'0.00':number_format((float)$gradesheetData['agpa'], 2, '.', ''); ?></td>
+          <td  class="align-middle text-center result" rowspan="<?php echo $rowspandata ?>"><?php  echo ($gradesheetData['result'] == 'FAIL' || $gradesheetData['result'] == 'SUPP')?'0.00':number_format((float)$gradesheetData['agpa'], 2, '.', ''); ?></td>
           <td  class="align-middle text-cente remarks"  rowspan="<?php echo $rowspandata ?>"><?php 
           if($check_grace_marks){
             echo "-";
           }else{
+           
             if($final_result == "RW"){
               echo "";
             }
             elseif($int_abs_count>0 &&  $theory_abs_count>0 && $p_abs_count>0){
-              echo 'ABS In ALL';
-            }elseif($int_abs_count == $count_int ||  $theory_abs_count == $count_theory || ($p_abs_count == $count_practical && $count_practical!=0)){
-              echo 'ABS In';
+              echo 'Absent In All';
+            } 
+            elseif($int_abs_count == $count_int ||  $theory_abs_count == $count_theory || ($p_abs_count == $count_practical)){
+              echo 'Absent In';
               if($theory_abs_count == $count_theory){
                 echo ' Theory';
               }elseif($int_abs_count == $count_int){
                 echo ' Internal'; 
-              }elseif($p_abs_count == $count_practical && $count_practical!=0){
+              }elseif($p_abs_count == $count_practical){
                 echo ' Practical';
               }
             }else{

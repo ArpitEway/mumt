@@ -79,6 +79,8 @@
 		$total_theory_abs_count=0;
 		$total_int_abs_count=0;
 		$theory_paper_count=0;
+		$practical_paper_count =0;
+		$practical_abs_count = 0;
 		$theory_abs_count=0;
 		$fail_count = 0;
 		$check_grace_marks = false;	
@@ -125,6 +127,11 @@
 					  $fc2_max += (int) $marks->max_theory_marks;
 					  $fc2_min += (int) $marks->min_theory_marks;
 					}
+					if($marks->theory_marks=="ABS"){
+						$theory_abs_count++;
+						$abs_count++;
+						array_push( $ATKT_paper_codes,$marks->paper_code );
+					}
 				  }else{
 					if($classData->internal!="N"){
 						$total_obtained_marks +=$marks->theory_marks+$marks->int_marks;
@@ -161,7 +168,7 @@
 					}
 				}
 			}else{
-				
+				$practical_paper_count++;
 				$total_obtained_marks +=$marks->p_marks;
 				$total_max_marks +=$marks->max_theory_marks;
 				if($marks->p_marks=='' || $marks->p_marks=='N'){
@@ -173,7 +180,10 @@
 				}
 				if($marks->p_marks=='ABS'){
 					$abs_count++;
+					$practical_abs_count++;
+					array_push( $ATKT_paper_codes,$marks->paper_code );
 				}
+				
 			}
 		}else{
 			if($marks->type=="theory" ){
@@ -464,8 +474,10 @@
 
 		<?php	
 		if((in_array($student->old_class_id, $class_ids)) && $mode=='REG'){
-			if($final_result != 'FAIL' || $final_result != 'RWPM'){
-		$gradesheetData = $this->Gradesheet_tr_model->view_notification($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+			
+			if($final_result != 'FAIL'){
+				
+				$gradesheetData = $this->Gradesheet_tr_model->view_notification($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
 			}else{
 				?>
 				<td  class="text-center" style="padding:0px" align="center"></td>
@@ -501,13 +513,19 @@
 		} ?>
 		<td class="text-center" >
 			<?php
+			
 			if($final_result == 'RWPM'){
 				echo 'RWPM';
 			}else{
 			if(count($ATKT_paper_codes)==0 || $Withheld) {
 				$remark='';
+			}elseif($theory_paper_count==$theory_abs_count && $practical_paper_count == $practical_abs_count){
+				echo 'Absent In All';
+			}
+			elseif($practical_paper_count == $practical_abs_count){
+				echo 'Absent In Practical';
 			}elseif($theory_paper_count==$theory_abs_count){
-				echo 'ABS In Theory';
+				echo 'Absent In Theory';
 			}else{
 				if($require_grace_marks>=4 || $abs_count!=0 ){
 

@@ -169,6 +169,7 @@ $abs_count = 0 ;
 							}
 							if($new_exam_form->p_marks=='ABS'){
 								$p_abs_count++;
+								array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
 							}
 							if($new_exam_form->p_marks<$new_exam_form->min_theory_marks){
 								$p_fail_count++;
@@ -235,6 +236,7 @@ $abs_count = 0 ;
 							}
 							if($new_exam_form->p_marks=='ABS'){
 								$p_abs_count++;
+								array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
 							}
 							if($new_exam_form->p_marks<$new_exam_form->min_theory_marks){
 								$p_fail_count++;
@@ -419,7 +421,14 @@ $abs_count = 0 ;
 								{
 									if($check_grace_marks){
 										echo " ";
-									}elseif(sizeof($atkt_paper_codes_array)>0){
+									}elseif( $theory_abs_count==$theory_paper_count && $p_abs_count==$p_paper_count){
+										echo 'Absent In All';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
+									  }elseif( $theory_abs_count==$theory_paper_count){
+										echo 'Absent In Theory';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
+									  }elseif( $p_abs_count==$p_paper_count){
+										echo 'Absent In Practical';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
+									  }
+									elseif(sizeof($atkt_paper_codes_array)>0){
 										echo "ATKT in ";
 										$atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
 										foreach($atkt_paper_codes_array as $paper_code){
@@ -433,7 +442,7 @@ $abs_count = 0 ;
 										echo " ";
 									}
 									elseif( $theory_abs_count==$theory_paper_count && $p_abs_count==$p_paper_count && $student->course_group_id == 76){
-										echo 'ABS In ALL';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
+										echo 'Absent In ALL';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
 									  }
 									
 									elseif(sizeof($atkt_paper_codes_array)==1){

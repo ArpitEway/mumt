@@ -529,7 +529,9 @@ class Gradesheet_model extends CI_Model
 				echo "<th class='text-center'>4</th>";
 				echo "<th class='text-center'>".$credit_point."</th>";
 			}else{
-				
+				if($result['obt_marks'] === 'ABS'){
+					$result['letter_grade'] = 'Abs';
+				}
 				echo "<th class='text-center'>".$result['credit']."</th>";
 				echo "<th class='text-center'>".$result['letter_grade']."</th>";				
 				echo "<th class='text-center'>".$result['grade_point']."</th>";
@@ -547,6 +549,7 @@ class Gradesheet_model extends CI_Model
 		}
 		foreach ($this->result_array as $key => $result) {
 			$paper = explode('#',$result['paper_name']);
+			
 			
 			echo '<tr style="padding:4px;font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="center">';
 			echo '<td style="margin-top:2px;" align="center"><strong>'.$key.'</strong></td>';
@@ -566,7 +569,7 @@ class Gradesheet_model extends CI_Model
 				echo "<td align='center' colspan='2'><span class='style4'>".'P-G'."</span></td>";
 				
 			}else{
-				if($result['obt_marks'] == 'ABS'){
+				if($result['obt_marks'] === 'ABS'){
 					$result['letter_grade'] = 'Abs';
 				}
 				echo "<td align='center' colspan='3'><span class='style4'>".$result['credit']."</span></td>";
