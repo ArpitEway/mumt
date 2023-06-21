@@ -374,7 +374,7 @@
                       echo '';
                     }
                     elseif( $theory_abs_count==$theory_paper_count && $p_abs_count==$p_paper_count){
-                             echo 'ABS In ALL';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
+                             echo 'Absent In All';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
                    }
               elseif(sizeof($atkt_paper_codes_array)==1){
                 echo "ATKT in";
@@ -391,6 +391,14 @@
                     }elseif($final_result == "RW"){
                       echo '';
                     }
+                    elseif( $theory_abs_count==$theory_paper_count && $p_abs_count==$p_paper_count){
+                      echo 'Absent In All';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
+            }elseif( $theory_abs_count==$theory_paper_count){
+              echo 'Absent In Theory';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
+            }
+            elseif( $p_abs_count==$p_paper_count){
+              echo 'Absent In Practical';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
+    }
               elseif(sizeof($atkt_paper_codes_array) > 0){
                 echo "ATKT in";
                 $atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);

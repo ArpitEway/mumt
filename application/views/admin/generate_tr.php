@@ -403,9 +403,9 @@ table.last_table, .last_table td, .last_table th{
               echo "";
             }
             elseif($int_abs_count>0 &&  $theory_abs_count>0 && $p_abs_count>0){
-              echo 'ABS In ALL';
+              echo 'Absent In All';
             }elseif($int_abs_count == $count_int ||  $theory_abs_count == $count_theory || ($p_abs_count == $count_practical && $count_practical!=0)){
-              echo 'ABS In';
+              echo 'Absent In';
               if($theory_abs_count == $count_theory){
                 echo ' Theory';
               }elseif($int_abs_count == $count_int){
