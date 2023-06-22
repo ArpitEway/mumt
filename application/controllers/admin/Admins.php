@@ -3198,7 +3198,7 @@ public function update_exam_datewise_permission(){
 			$data['students']= $this->Common_model->getRecordByWhere('student_result_aug_22',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','course_complete'=>'Y','university_mode'=>$mode ));
 		}else{
 			$this->db->order_by('center_id,roll_number','ASC');
-			// $this->db->limit(1);
+			$this->db->limit(1);
 			//  $this->db->where('student_id = "373373"');
 		$data['students']= $this->Common_model->getRecordByWhere('student_result_aug_22',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode));
 		}

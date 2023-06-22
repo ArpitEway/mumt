@@ -500,7 +500,7 @@ class Gradesheet_tr_model extends CI_Model
 		echo '<td class="text-center">'.$this->obt_tot_credit.'</td>';
 		echo '</tr>';
 		echo "<tr>";
-		echo '<td class="align-middle text-right">'.'Grade Points'.'</td>';
+		echo '<td class="align-middle text-right">'.'Grade Point'.'</td>';
 		foreach ($this->result_array as $key => $result) {
 			// echo $this->fail_obt_marks.'<br>';
 			//  print_r( $result['type']);
