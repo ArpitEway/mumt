@@ -87,8 +87,9 @@
 					if($papers['max_internal_marks'] !=0){?>
 					<td class="fit">
 						<select name="int_marks[]" class="form-control select2">
-							<option value="">Select Marks</option>
+							<option value="N">Select Marks</option>
 							<option <?=($papers['int_marks']==="ABS") ? 'selected="selected"' : ''; ?> value="ABS">ABS</option>
+							
 							<?php
 							
 							for ($i=$papers['min_internal_marks']; $i<=$papers['max_internal_marks']; $i++){
