@@ -242,6 +242,9 @@ class Gradesheet_model extends CI_Model
 				if ($this->paper['theory_marks']=='') {
 					$this->withheld = true;
 				}
+				if($this->paper['theory_marks'] === 'ABS'){
+					$this->foundation_paper[$this->paper['group_paper_name']]['obt'] = 'ABS';
+				}
 				$this->foundation_paper[$this->paper['group_paper_name']]['type'] = $this->paper['type'];
 				$this->foundation_paper[$this->paper['group_paper_name']]['tot_marks'] += $this->paper['theory_marks'];
 				$this->foundation_paper[$this->paper['group_paper_name']]['credit_point'] += $this->paper['credit_point'];
@@ -250,6 +253,9 @@ class Gradesheet_model extends CI_Model
 			}else{
 				if ($this->paper['theory_marks']=='') {
 					$this->withheld = true;
+				}
+				if($this->paper['theory_marks'] === 'ABS'){
+					$this->foundation_paper[$this->paper['group_paper_name']]['obt'] = 'ABS';
 				}
 				$this->foundation_paper[$this->paper['group_paper_name']]['type'] = $this->paper['type'];
 				$this->foundation_paper[$this->paper['group_paper_name']]['tot_marks'] = $this->paper['theory_marks'];
@@ -502,6 +508,7 @@ class Gradesheet_model extends CI_Model
 			$this->result_array[$this->paper['paper_code']]['int_min_marks'] = '-';
 			$this->result_array[$this->paper['paper_code']]['obt_marks'] = $this->foundation_paper[$sub_group_id]['tot_marks'];
 			$this->result_array[$this->paper['paper_code']]['int_obt_marks'] = '-';
+			$this->result_array[$this->paper['paper_code']]['f_abs'] = $this->foundation_paper[$sub_group_id]['obt'];
 		}
 	}
 
@@ -515,7 +522,7 @@ class Gradesheet_model extends CI_Model
 			$paper = explode('#',$result['paper_name']);
 			echo "<tr>";
 			echo "<th>".$key."</th>";
-			echo "<td><table style='border:0px solid black'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='80px' style='border:0px solid black'><strong>".$paper[0]."</strong></td><td style='border:0px solid black'></td><td style='border:0px solid black'><strong>".$paper[1]."</strong></td></tr></table></td>";
+			echo "<td><table style='border:0px solid black'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='100px' style='border:0px solid black'><strong>".$paper[0]."</strong></td><td style='border:0px solid black'></td><td style='border:0px solid black'><strong>".$paper[1]."</strong></td></tr></table></td>";
 			if ($this->fail_count>0 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				$this->check_grace_marks = true;
 				$this->obt_tot_credit += $result['credit'];
@@ -529,9 +536,10 @@ class Gradesheet_model extends CI_Model
 				echo "<th class='text-center'>4</th>";
 				echo "<th class='text-center'>".$credit_point."</th>";
 			}else{
-				if($result['obt_marks'] === 'ABS'){
+				if($result['obt_marks'] === 'ABS' || ($result['f_abs'] === 'ABS' && $result['obt_marks'] == '0')
+			){
 					$result['letter_grade'] = 'Abs';
-				}
+			}
 				echo "<th class='text-center'>".$result['credit']."</th>";
 				echo "<th class='text-center'>".$result['letter_grade']."</th>";				
 				echo "<th class='text-center'>".$result['grade_point']."</th>";
@@ -553,7 +561,7 @@ class Gradesheet_model extends CI_Model
 			
 			echo '<tr style="padding:4px;font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="center">';
 			echo '<td style="margin-top:2px;" align="center"><strong>'.$key.'</strong></td>';
-			echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='40px'><strong>".$paper[0]."</strong></td><td></td><td><strong>".$paper[1]."</strong></td></tr></table></td>";
+			echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='50px'><strong>".$paper[0]."</strong></td><td></td><td><strong>".$paper[1]."</strong></td></tr></table></td>";
 			if ($this->fail_count>0 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				$this->check_grace_marks = true;
 				$this->obt_tot_credit += $result['credit'];
@@ -569,9 +577,10 @@ class Gradesheet_model extends CI_Model
 				echo "<td align='center' colspan='2'><span class='style4'>".'P-G'."</span></td>";
 				
 			}else{
-				if($result['obt_marks'] === 'ABS'){
+				if($result['obt_marks'] === 'ABS' || ($result['f_abs'] === 'ABS' && $result['obt_marks'] == '0')
+			){
 					$result['letter_grade'] = 'Abs';
-				}
+			}
 				echo "<td align='center' colspan='3'><span class='style4'>".$result['credit']."</span></td>";
 				echo "<td align='center' colspan='3'><span class='style4'>".$result['obt_credit']."</span></td>";
 				echo "<td align='center' colspan='2'><span class='style4'>".$result['grade_point']."</span></td>";

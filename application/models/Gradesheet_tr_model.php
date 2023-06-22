@@ -188,6 +188,9 @@ class Gradesheet_tr_model extends CI_Model
 				if ($this->paper['theory_marks']=='') {
 					$this->withheld = true;
 				}
+				if($this->paper['theory_marks'] === 'ABS'){
+					$this->foundation_paper[$this->paper['group_paper_name']]['obt'] = 'ABS';
+				}
 				$this->foundation_paper[$this->paper['group_paper_name']]['tot_marks'] += $this->paper['theory_marks'];
 				$this->foundation_paper[$this->paper['group_paper_name']]['credit_point'] += $this->paper['credit_point'];
 				$this->foundation_paper[$this->paper['group_paper_name']]['max_theory_marks'] += $this->paper['max_theory_marks'];
@@ -196,6 +199,9 @@ class Gradesheet_tr_model extends CI_Model
 			}else{
 				if ($this->paper['theory_marks']=='') {
 					$this->withheld = true;
+				}
+				if($this->paper['theory_marks'] === 'ABS'){
+					$this->foundation_paper[$this->paper['group_paper_name']]['obt'] = 'ABS';
 				}
 				$this->foundation_paper[$this->paper['group_paper_name']]['type'] = $this->paper['type'];
 				$this->foundation_paper[$this->paper['group_paper_name']]['tot_marks'] = $this->paper['theory_marks'];
@@ -434,6 +440,7 @@ class Gradesheet_tr_model extends CI_Model
 			$this->result_array[$this->paper['paper_code']]['int_min_marks'] = '-';
 			$this->result_array[$this->paper['paper_code']]['obt_marks'] = $this->foundation_paper[$sub_group_id]['tot_marks'];
 			$this->result_array[$this->paper['paper_code']]['int_obt_marks'] = '-';
+			$this->result_array[$this->paper['paper_code']]['f_abs'] = $this->foundation_paper[$sub_group_id]['obt'];
 		}
 	}
 
@@ -444,7 +451,7 @@ class Gradesheet_tr_model extends CI_Model
 		// echo "fail_min_marks =>".$this->fail_min_marks;
 		// echo "<br>";
 		// echo "fail_obt_marks =>".$this->fail_obt_marks;
-		// var_dump($this->result_array);
+		// echo '<pre>';
 		if ($this->fail_count>0) {
 			 $require_grace_marks = $this->fail_min_marks-$this->fail_obt_marks;
 		}
@@ -474,7 +481,7 @@ class Gradesheet_tr_model extends CI_Model
 				
 				
 			}else{
-				if($result['obt_marks'] === 'ABS'){
+				if($result['obt_marks'] === 'ABS' || $result['f_abs'] === 'ABS'){
 					$result['letter_grade'] = 'Abs';
 				}
 				$paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4');
@@ -614,8 +621,9 @@ class Gradesheet_tr_model extends CI_Model
 		foreach ($this->result_array as $key => $result) {
 			// print_r($this->result_array);
 			// echo $this->fail_count.'grace'.$require_grace_marks.'kkkg'.$result['letter_grade'].'<br>';
-			if($result['obt_marks'] === 'ABS'){
-				$result['letter_grade'] = 'Abs';
+			if($result['obt_marks'] === 'ABS' || ($result['f_abs'] === 'ABS' && $result['obt_marks'] == '0')
+			){
+					$result['letter_grade'] = 'Abs';
 			}
 			elseif ($this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 			// echo $require_grace_marks;

@@ -32,7 +32,10 @@
         	?>
         <tr>
         <td></td>
-			<td><?= $class->class_name ?></td>
+		<?php 
+		$class_ids=array(101,104,107,110,116,119,125,128,131,134);
+		$cbcs = ($class->cbcs == 'Y' || in_array($class->id, $class_ids))?' (CBCS)':'';?>
+			<td><?= $class->class_name.$cbcs ?></td>
 			<td><?php 
 			$flag=($class->regular_class == 'Y' && $class->private_class == 'Y')? '/': '';
 			$notification =($class->regular_class == 'N' && $class->private_class == 'Y')? 'Notification ': '';
