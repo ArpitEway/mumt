@@ -527,15 +527,20 @@
 			}elseif($theory_paper_count==$theory_abs_count){
 				echo 'Absent In Theory';
 			}else{
-				if($require_grace_marks>=4 || $abs_count!=0 ){
+				if($fail_count == ($theory_paper_count -2 )){
+					echo 'Year Break';
+				}else{
+					if($require_grace_marks>=4 || $abs_count!=0 ){
 
-					$remark= ($check_grace_marks) ? 'FAIL' : 'ATKT IN ';
-					echo $remark;
-
-					foreach($ATKT_paper_codes as $paper_code){
-						echo  "". $paper_code.' ' ;
-					} 
+						$remark= ($check_grace_marks) ? 'FAIL' : 'SUPP IN ';
+						echo $remark;
+	
+						foreach($ATKT_paper_codes as $paper_code){
+							echo  "". $paper_code.' ' ;
+						} 
+					}
 				}
+				
 			}
 		}			
 			?>	

@@ -377,7 +377,7 @@ class Gradesheet_tr_model extends CI_Model
 			if ($this->check_grace_marks) {
 				return	$this->result = 'PASS BY GRACE';
 			}else{
-				return 	$this->result = 'SUPP';
+				return 	$this->result = 'FAIL';
 			}
 		}else if($this->agpa<4){
 			
@@ -481,8 +481,13 @@ class Gradesheet_tr_model extends CI_Model
 				
 				
 			}else{
-				if($result['obt_marks'] === 'ABS' || $result['f_abs'] === 'ABS'){
-					$result['letter_grade'] = 'Abs';
+				if(($result['f_abs'] === 'ABS' && $result['obt_marks'] != '0')){
+					$result['obt_credit'] = 2;
+					$this->obt_tot_credit -=2; 
+					$credit_point = $result['obt_credit']*$result['grade_point'];
+				$this->result_array[$key]['credit_point']=$credit_point;
+				$this->tot_credit_point -= $credit_point;
+					
 				}
 				$paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4');
 				if(in_array($key,$paper_codes))	
@@ -588,7 +593,7 @@ class Gradesheet_tr_model extends CI_Model
 				
 			}else{
 				if($result['obt_marks'] === 'ABS'){
-					$result['letter_grade'] = 'Abs';
+					$result['letter_grade'] = 'ABS';
 				}
 				$paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4');
 				if(in_array($key,$paper_codes))	
@@ -623,7 +628,7 @@ class Gradesheet_tr_model extends CI_Model
 			// echo $this->fail_count.'grace'.$require_grace_marks.'kkkg'.$result['letter_grade'].'<br>';
 			if($result['obt_marks'] === 'ABS' || ($result['f_abs'] === 'ABS' && $result['obt_marks'] == '0')
 			){
-					$result['letter_grade'] = 'Abs';
+					$result['letter_grade'] = 'ABS';
 			}
 			elseif ($this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 			// echo $require_grace_marks;

@@ -443,7 +443,7 @@ class Gradesheet_model extends CI_Model
 			if ($this->check_grace_marks) {
 				$this->result = 'PASS BY GRACE';
 			}else{
-				$this->result = 'SUPP';
+				$this->result = 'FAIL';
 			}
 		}else if($this->agpa<4){
 			$this->result = 'FAIL';
@@ -538,7 +538,15 @@ class Gradesheet_model extends CI_Model
 			}else{
 				if($result['obt_marks'] === 'ABS' || ($result['f_abs'] === 'ABS' && $result['obt_marks'] == '0')
 			){
-					$result['letter_grade'] = 'Abs';
+					$result['letter_grade'] = 'ABS';
+			}
+			if(($result['f_abs'] === 'ABS' && $result['obt_marks'] != '0')){
+				$result['obt_credit'] = 2;
+				$this->obt_tot_credit -=2; 
+				$credit_point = $result['obt_credit']*$result['grade_point'];
+			$result['credit_point']=$credit_point;
+			$this->tot_credit_point -= $credit_point;
+				
 			}
 				echo "<th class='text-center'>".$result['credit']."</th>";
 				echo "<th class='text-center'>".$result['letter_grade']."</th>";				
@@ -579,7 +587,15 @@ class Gradesheet_model extends CI_Model
 			}else{
 				if($result['obt_marks'] === 'ABS' || ($result['f_abs'] === 'ABS' && $result['obt_marks'] == '0')
 			){
-					$result['letter_grade'] = 'Abs';
+					$result['letter_grade'] = 'ABS';
+			}
+			if(($result['f_abs'] === 'ABS' && $result['obt_marks'] != '0')){
+				$result['obt_credit'] = 2;
+				$this->obt_tot_credit -=2; 
+				$credit_point = $result['obt_credit']*$result['grade_point'];
+				$result['credit_point']=$credit_point;
+				$this->tot_credit_point -= $credit_point;
+				
 			}
 				echo "<td align='center' colspan='3'><span class='style4'>".$result['credit']."</span></td>";
 				echo "<td align='center' colspan='3'><span class='style4'>".$result['obt_credit']."</span></td>";

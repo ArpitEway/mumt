@@ -429,11 +429,16 @@ $abs_count = 0 ;
 										echo 'Absent In Practical';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
 									  }
 									elseif(sizeof($atkt_paper_codes_array)>0){
-										echo "ATKT in ";
+										if($fail_count == ($theory_paper_count -2 )){
+											echo 'Year Break';
+										}else{
+											echo "SUPP in ";
 										$atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
 										foreach($atkt_paper_codes_array as $paper_code){
 											echo  "<br>". $paper_code;
 										}
+										}
+										
 									}else{
 										echo '';
 									}
