@@ -171,7 +171,7 @@
 					<td>
 					<input type="hidden" name="p_marks_paper_id[]" value="<?= $papers['paper_id'];?>">
 					<select name="p_marks[]" class="form-control select2">
-						<option value="">Select Marks</option>
+						<option value="N">Select Marks</option>
 						<option <?=($papers['p_marks']==="ABS") ? 'selected="selected"' : ''; ?> value="ABS">ABS</option>
 							<?php
 							for ($i=$papers['min_theory_marks']; $i<=$papers['max_theory_marks']; $i++){
@@ -185,7 +185,7 @@
 						<?php if($papers['practical_internal_marks'] == 'Y'){?>
 						<td class="fit">
 						<select name="paper_int_marks[]" class="form-control select2">
-							<option value="">Select Marks</option>
+							<option value="N">Select Marks</option>
 							<option <?=($papers['int_marks']==="ABS") ? 'selected="selected"' : ''; ?> value="ABS">ABS</option>
 							<?php
 							for ($i=$papers['min_internal_marks']; $i<=$papers['max_internal_marks']; $i++){
