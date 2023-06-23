@@ -96,6 +96,8 @@
 		$total_max_marks=0;
 		$fc1 =0;
     	$fc2=0;
+		$fc1_abs ='';
+		$fc2_abs='';
    		$fc1_max =0;
    		$fc2_max =0;
   		 $fc1_min =0;
@@ -115,6 +117,10 @@
 						$rw_count++;
 					 
 					  }
+					  if($marks->theory_marks=='ABS'){
+						$fc1_abs .= $marks->theory_marks;
+					 
+					  }
 					$fc1 += (int) $marks->theory_marks;
 					$fc1_max += (int) $marks->max_theory_marks;
 					$fc1_min += (int) $marks->min_theory_marks;
@@ -123,15 +129,15 @@
 						$rw_count++;
 					   
 					  }
+					  if($marks->theory_marks=='ABS'){
+						$fc2_abs .= $marks->theory_marks;
+					 
+					  }
 					  $fc2 += (int) $marks->theory_marks;
 					  $fc2_max += (int) $marks->max_theory_marks;
 					  $fc2_min += (int) $marks->min_theory_marks;
 					}
-					if($marks->theory_marks=="ABS"){
-						$theory_abs_count++;
-						$abs_count++;
-						array_push( $ATKT_paper_codes,$marks->paper_code );
-					}
+					
 				  }else{
 					if($classData->internal!="N"){
 						$total_obtained_marks +=$marks->theory_marks+$marks->int_marks;
@@ -147,8 +153,7 @@
 						$theory_abs_count++;
 						$abs_count++;
 						array_push( $ATKT_paper_codes,$marks->paper_code );
-					}
-					if($marks->theory_marks+$marks->int_marks<$marks->min_theory_marks+$marks->min_internal_marks){
+					}elseif($marks->theory_marks+$marks->int_marks<$marks->min_theory_marks+$marks->min_internal_marks){
 						$fail_count++;
 						$get_tot_marks += $marks->theory_marks+$marks->int_marks ;
 						$require_tot_marks += $marks->min_theory_marks+$marks->min_internal_marks;
@@ -258,6 +263,12 @@
 		// $tot_marks += $fc1_max +$fc2_max;
 		// $tot_std_marks += $fc1+$fc2;
 		// $count_theory +=  $fc1+$fc2;
+		if($fc1_abs === 'ABSABS'){
+			$theory_abs_count++;
+		   }
+		   if($fc2_abs === 'ABSABS'){
+			$theory_abs_count++;
+		   }
 	   
 		if($fc1 < $fc1_min ){
 		  array_push( $ATKT_paper_codes ,'FC1' );
@@ -519,13 +530,13 @@
 			}else{
 			if(count($ATKT_paper_codes)==0 || $Withheld) {
 				$remark='';
-			}elseif($theory_paper_count==$theory_abs_count && $practical_paper_count == $practical_abs_count){
-				echo 'Absent In All';
+			}elseif(($theory_paper_count -2)==$theory_abs_count && $practical_paper_count == $practical_abs_count){
+				echo 'Year Break';
 			}
 			elseif($practical_paper_count == $practical_abs_count){
 				echo 'Absent In Practical';
-			}elseif($theory_paper_count==$theory_abs_count){
-				echo 'Absent In Theory';
+			}elseif(($theory_paper_count-2)==$theory_abs_count){
+				echo 'Year Break';
 			}else{
 				if($fail_count == ($theory_paper_count -2 )){
 					echo 'Year Break';

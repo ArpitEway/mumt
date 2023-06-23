@@ -183,6 +183,8 @@ table.last_table, .last_table td, .last_table th{
     $count_int =0;
     $fc1 =0;
     $fc2=0;
+    $fc1_abs ='';
+    $fc2_abs='';
     $fc1_max =0;
     $fc2_max =0;
     $fc1_min =0;
@@ -210,9 +212,14 @@ table.last_table, .last_table td, .last_table th{
       
       if($new_exam_form->type=='theory'){
         if($new_exam_form->sub_group_id == 1){
+          $count_theory++;
           if($new_exam_form->group_paper_name == 'FC1' ){
             if($new_exam_form->theory_marks==''){
               $rw_count++;
+           
+            }
+            if($new_exam_form->theory_marks=='ABS'){
+              $fc1_abs .= $new_exam_form->theory_marks;
            
             }
           $fc1 += (int) $new_exam_form->theory_marks;
@@ -222,6 +229,10 @@ table.last_table, .last_table td, .last_table th{
             if($new_exam_form->theory_marks==''){
               $rw_count++;
              
+            }
+            if($new_exam_form->theory_marks=='ABS'){
+              $fc2_abs .= $new_exam_form->theory_marks;
+           
             }
             $fc2 += (int) $new_exam_form->theory_marks;
             $fc2_max += (int) $new_exam_form->max_theory_marks;
@@ -317,8 +328,14 @@ table.last_table, .last_table td, .last_table th{
     $total_paper_marks +=$fc1_max +$fc2_max;
     $tot_marks += $fc1_max +$fc2_max;
     $tot_std_marks += $fc1+$fc2;
-    $count_theory +=  $fc1+$fc2;
-   
+    // $count_theory +=  $fc1+$fc2;
+  
+   if($fc1_abs === 'ABSABS'){
+    $theory_abs_count++;
+   }
+   if($fc2_abs === 'ABSABS'){
+    $theory_abs_count++;
+   }
     if($fc1 < $fc1_min ){
       array_push( $atkt_paper_codes_array ,'FC1' );
           $fail_count++;
@@ -564,6 +581,7 @@ table.last_table, .last_table td, .last_table th{
           <td  class="align-middle text-center result" rowspan="<?php echo $rowspandata ?>"><?php echo $gradesheetData['result']; //$final_result?></td>
           <td  class="align-middle text-center result" rowspan="<?php echo $rowspandata ?>"><?php  echo ($gradesheetData['result'] == 'FAIL' || $gradesheetData['result'] == 'SUPP')?'0.00':number_format((float)$gradesheetData['agpa'], 2, '.', ''); ?></td>
           <td  class="align-middle text-cente remarks"  rowspan="<?php echo $rowspandata ?>"><?php 
+         
           if($check_grace_marks){
             echo "-";
           }else{
@@ -574,14 +592,14 @@ table.last_table, .last_table td, .last_table th{
             elseif($int_abs_count>0 &&  $theory_abs_count>0 && $p_abs_count>0){
               echo 'Absent In All';
             }
-            elseif($int_abs_count == $count_int ||  $theory_abs_count == $count_theory || ($p_abs_count == $count_practical)){
-              echo 'Absent In';
-              if($theory_abs_count == $count_theory){
-                echo ' Theory';
+            elseif($int_abs_count == $count_int ||  $theory_abs_count == ($count_theory - 2) || ($p_abs_count == $count_practical)){
+             
+              if($theory_abs_count == ($count_theory-2)){
+                echo 'Year Break';
               }elseif($int_abs_count == $count_int){
-                echo ' Internal'; 
+                echo ' Absent In Internal'; 
               }elseif($p_abs_count == $count_practical){
-                echo ' Practical';
+                echo ' Absent In Practical';
               }
             }else{
               if($fail_count == ($count_theory - 2)){

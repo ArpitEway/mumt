@@ -92,6 +92,8 @@ $abs_count = 0 ;
 					$p_paper_count = 0;
 					$fc1 =0;
 					$fc2=0;
+					$fc1_abs ='';
+					$fc2_abs='';
 					$fc1_max =0;
 					$fc2_max =0;
 					$fc1_min =0;
@@ -113,6 +115,10 @@ $abs_count = 0 ;
 										$rw_count++;
 							
 									}
+									if($new_exam_form->theory_marks=='ABS'){
+										$fc1_abs .= $new_exam_form->theory_marks;
+									 
+									  }
 						 			$fc1 += (int) $new_exam_form->theory_marks;
 						  			$fc1_max += (int) $new_exam_form->max_theory_marks;
 						  			$fc1_min += (int) $new_exam_form->min_theory_marks;
@@ -121,6 +127,10 @@ $abs_count = 0 ;
 									$rw_count++;
 									
 									}
+									if($new_exam_form->theory_marks=='ABS'){
+										$fc2_abs .= $new_exam_form->theory_marks;
+									 
+									  }
 									$fc2 += (int) $new_exam_form->theory_marks;
 									$fc2_max += (int) $new_exam_form->max_theory_marks;
 									$fc2_min += (int) $new_exam_form->min_theory_marks;
@@ -262,7 +272,13 @@ $abs_count = 0 ;
 					$total_paper_marks +=$fc1_max +$fc2_max;
 					$tot_marks += $fc1_max +$fc2_max;
 					$tot_std_marks += $fc1+$fc2;
-					$count_theory +=  $fc1+$fc2;
+					// $count_theory +=  $fc1+$fc2;
+					if($fc1_abs === 'ABSABS'){
+						$theory_abs_count++;
+					   }
+					   if($fc2_abs === 'ABSABS'){
+						$theory_abs_count++;
+					   }
 	   
 		if($fc1 < $fc1_min ){
 		  array_push( $atkt_paper_codes_array ,'FC1' );
@@ -421,10 +437,10 @@ $abs_count = 0 ;
 								{
 									if($check_grace_marks){
 										echo " ";
-									}elseif( $theory_abs_count==$theory_paper_count && $p_abs_count==$p_paper_count){
-										echo 'Absent In All';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
-									  }elseif( $theory_abs_count==$theory_paper_count){
-										echo 'Absent In Theory';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
+									}elseif( $theory_abs_count== ($theory_paper_count-2) && $p_abs_count==$p_paper_count){
+										echo 'Year Break';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
+									  }elseif( $theory_abs_count== ($theory_paper_count -2)){
+										echo 'Year Break';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
 									  }elseif( $p_abs_count==$p_paper_count){
 										echo 'Absent In Practical';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
 									  }
