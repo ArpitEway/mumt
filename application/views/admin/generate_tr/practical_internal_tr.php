@@ -592,7 +592,7 @@ table.last_table, .last_table td, .last_table th{
               echo "";
             }
             elseif($int_abs_count>0 &&  $theory_abs_count>0 && $p_abs_count>0){
-              echo 'Absent In All';
+              echo 'Year Break';
             } 
             elseif($int_abs_count == $count_int ||  $theory_abs_count == ($count_theory-2) || ($p_abs_count == $count_practical)){
              
