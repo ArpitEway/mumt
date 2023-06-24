@@ -2767,7 +2767,7 @@ public function getStudentData()
 			}
 
 			
-				$student = $this->Common_model->getRecordByWhere($this->old_result_table,$where);
+				$student = $this->Common_model->getRecordByWhere($this->result_table,$where);
 				//print_r($student); die;
 				$msg="";
 				if (count($student)==0) {
@@ -2784,7 +2784,7 @@ public function getStudentData()
 							$msg="<p style='text-align: center;'><b>Student result not declared!</b></p>"; 
 					}
 						$data['student']=$student[0];
-						$data['exam_session']  = 'Aug 2022';
+						$data['exam_session']  = 'March 2023';
 						/**********************/
 						if($data['student']->provisional_remark!="N" && $data['student']->provisional_remark!="")
 						{
@@ -2799,9 +2799,9 @@ public function getStudentData()
 						$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
 						$data['practical_internal_marks']=$classData->practical_internal_marks;
 						$this->db->select('*');
-						$this->db->from($this->old_exam_form_table);
-						$this->db->where(''.$this->old_exam_form_table.'.student_id',$data['student']->student_id);
-						$this->db->where(''.$this->old_exam_form_table.'.class_id',$data['student']->old_class_id);
+						$this->db->from($this->exam_form_table);
+						$this->db->where(''.$this->exam_form_table.'.student_id',$data['student']->student_id);
+						$this->db->where(''.$this->exam_form_table.'.class_id',$data['student']->old_class_id);
 						$new_exam_form = $this->db->get()->result();
 						$data['classData']  = $classData;
 						$data['new_exam_form']  = $new_exam_form;
