@@ -81,7 +81,7 @@
         {
           
             let data = {
-                    'text_val':text_val,
+                    'text_val':text_val.trim(),
                     'radio_val':radio_val,
                     [csrfName]:csrfHash
                 }

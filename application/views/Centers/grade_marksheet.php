@@ -174,6 +174,8 @@ th.border.border-dark {
 		$("#radio_btn_select").css("display", "none");
     $("#center").css("display", "none");
     $(".content-head").css("display", "none");
+    $("#pro_remark").css("display", "none");
+    $("#result_msg").css("display", "none");
     
 		window.print();
 		document.body.innerHTML = originalContents;

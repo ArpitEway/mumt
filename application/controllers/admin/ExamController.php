@@ -2781,7 +2781,7 @@ public function getStudentData()
 			
 					if($student[0]->old_result_show =="N"){
 						
-							$msg="<p style='text-align: center;'><b>Student result not declared!</b></p>"; 
+							$msg="<p style='text-align: center;' id='result_msg'><b>Student result not declared!</b></p>"; 
 					}
 						$data['student']=$student[0];
 						$data['exam_session']  = 'March 2023';
@@ -2792,7 +2792,7 @@ public function getStudentData()
 							$this->db->from('provisional_remark_details');
 							$this->db->where('document_category_id',$data['student']->provisional_remark);
 							$remark = $this->db->get()->row();
-							$provisional_remark_details ="<p style='text-align: center;'><b>".$remark->provisional_remarks." are not recieved at university</b></p>";
+							$provisional_remark_details ="<p style='text-align: center;' id='pro_remark'><b>".$remark->provisional_remarks." are not recieved at university</b></p>";
 						}
 						/************************/
 						
