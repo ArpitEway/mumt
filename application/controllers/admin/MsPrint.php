@@ -23,6 +23,8 @@ class MsPrint extends CI_Controller {
 		 $this->roll_no = $this->master->roll_number_col;
 		 $this->result_table = $this->master->student_result_table;
 		 $this->exam_form_table = $this->master->exam_form_table;
+		 $this->old_result_table = $this->master->old_student_result_table;
+		 $this->old_exam_form_table = $this->master->old_exam_form_table;
 		if($this->session->account_type!='MsPrint'){
 			redirect(base_url('admin/logout')); 
 		}
@@ -126,7 +128,7 @@ class MsPrint extends CI_Controller {
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('DISTINCT(center_id)');
-			$this->db->from($this->result_table);
+			$this->db->from($this->old_result_table);
 			$this->db->where(array('exam_form'=>'Y'));
 			$centers = $this->db->get()->result_array();
 			$ids = array_column($centers, 'center_id');
@@ -145,7 +147,7 @@ class MsPrint extends CI_Controller {
 	public function get_center_wise_marksheet_dispatchlist(){
 		$center = $this->input->post('center');
 		$this->db->select('DISTINCT(center_id)');
-		$this->db->from($this->result_table);
+		$this->db->from($this->old_result_table);
 		$this->db->where(array('exam_form'=>'Y'));
 		$centers = $this->db->get()->result_array();
 		$ids = array_column($centers, 'center_id');
