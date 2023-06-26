@@ -103,7 +103,8 @@ class Preexam extends CI_Controller {
 		$class_ids = $classes[0]['class_id'];
 		
 		$this->db->select('count(class_id) as num,course_name,class_name,class_id');
-		$this->db->where('class_id in ('.$class_ids.') and new_exam_form="D" and enrolled = "Y" and (( session="July 2022" and class_name = "I Year") || ( session="Jan 2023" and class_name = "I SEM"))');
+		// class_id in ('.$class_ids.') and 
+		$this->db->where('new_exam_form="D" and enrolled = "Y" and (( session="July 2022" and class_name = "I Year") || ( session="Jan 2023" and class_name = "I SEM"))');
 		$this->db->group_by('class_id');
 		$this->db->order_by('course_group_id');
 		$studentClasses = $this->db->get('student')->result();
