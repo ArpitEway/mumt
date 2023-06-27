@@ -1133,6 +1133,48 @@ class Admin_model extends CI_Model {
 		);
 		return json_encode($response);
 	}
+	public function create_support_system()
+    {
+        $data['name'] = html_escape($this->input->post('name'));
+		$this->db->order_by('id','desc');
+		$this->db->limit(1);
+        $support = $this->db->get_where('support_system',array())->row_array();
+        if($support)
+        {
+             $data['support_order'] = $support['support_order'] + 1;
+        }else
+        {
+             $data['support_order'] = 1;
+        }
+        $this->db->insert('support_system', $data);
+        $support_system = $this->db->insert_id();
+        $response = array(
+        			'status' => true
+        			);
+        return json_encode($response);
+    }
+
+     public function delete_support_system($param1 = '')
+	{
+		$this->db->where('id', $param1);
+		$this->db->delete('support_system');
+		$response = array(
+			'status' => true
+		);
+		return json_encode($response);
+	}
+
+
+	public function update_support_system($param1 = '')
+	{
+		$data['name'] = html_escape($this->input->post('name'));
+		$this->db->where('id', $param1);
+		$this->db->update('support_system', $data);
+		$response = array(
+			'status' => true
+		);
+		return json_encode($response);
+	}
 
 
 
