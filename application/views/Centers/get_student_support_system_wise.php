@@ -32,8 +32,8 @@
 	<form method="POST" class="d-block ajaxForm mt-15">
     <div class="form-group m-auto w-50">	
 			<label for="Complaint" class=" font-weight-bold h5">Complaint Type</label>
-			<select name="complaint_type" id="Complaint" class="form-control">
-				<option value="">Select</option>
+			<select name="complaint_type" id="Complaint" class="form-control" >
+				<option value="N">Select</option>
 				<?php
 				// $supports = $this->Common_model->getRecordByWhere('support_system',array());
                 $supports = $this->Common_model->getRecordByWhere('support_system',array('status !='=>'N'));

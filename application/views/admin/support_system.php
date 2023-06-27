@@ -2,10 +2,10 @@
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
-<div class="mt-5 text-right">
-<a type="button" class="btn btn-outline-primary btn-rounded" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/support/create_support'); ?>', 'Create account')"  >Create account</a>
-</div>
-<div class="container mt-3" >
+<div class="text-right" style="margin-top:-45px;">
+<a type="button" class="btn btn-outline-primary btn-rounded" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/support/create_support'); ?>', 'Create Complaint Type')"  >Create Complaint Type</a>
+</div><br><br><br>
+<div class="container mt-5" >
 	<table id="kt_datatable" class="table table-striped dt-responsive nowrap " width="100%" >
 		<thead>
 			<tr>

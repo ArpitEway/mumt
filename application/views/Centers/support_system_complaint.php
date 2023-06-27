@@ -107,6 +107,10 @@
 			var student_id = $('#student_id').val(); 
 			detail = $('#detail').val(); 
 			complaint_type = $('#Complaint').val();
+			if(complaint_type == 'N'){
+				toastr.error("Please Select Complaint Type");
+				return false;
+			}
 			if(detail)
 			{
 				var frm = $('.ajaxForm').serialize();		

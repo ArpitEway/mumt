@@ -10,7 +10,7 @@
 	
     </div>
 	<div class="form-group text-center">
-	<button class="btn btn-md btn-primary" type="submit">Create Account</button>
+	<button class="btn btn-md btn-primary" type="submit">Create Complaint Type</button>
 	</div>
 </form>
 
