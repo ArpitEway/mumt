@@ -1336,4 +1336,31 @@ public function getStudentData()
 		$this->load->view('footer');
 	}//fun
 
+	public function view_center_wise_complaint(){
+			
+		if($this->session->has_userdata('adminData')){
+			$admin_id = $this->session->admin_id;
+			$admin = $this->Common_model->getRecordById('admin_master','id',$admin_id);
+			$where = "support_complaint.status = 'Pending' AND support_system.id IN (".$admin->support_ids.")";
+				$this->db->select('count(*) as count,'.'center_id');
+				$this->db->from('support_complaint');
+				$this->db->join('support_system','support_system.name = support_complaint.type');
+				$this->db->where($where);
+				$this->db->group_by('center_id');
+				$centers = $this->db->get()->result_array();
+			$data = array('name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+				'centers' =>$centers
+			);
+			
+			$titleData = array('title' => 'Complaints');
+			$this->load->view('header',$titleData);
+			$this->load->view('admin/view_center_wise_complaint',$data);
+			$this->load->view('footer');
+		}
+		else
+		{
+			redirect(base_url());
+		}
+	}
 }

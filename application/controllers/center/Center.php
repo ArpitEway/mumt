@@ -3034,11 +3034,12 @@ public function practical_assignment_marks_edit(){
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
 		foreach($tableData as $result){
+			$remark = ($result->remark == 'N')?'':$result->remark;
 			$i++;
 			$date = $this->Common_model->viewDate($result->date);
 			$status = ($result->status=="Pending") ? 'Pending' : 'Done';
 			// $data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->details,$date,$status,$result->remark);
-			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->type,$result->details,$date,$status,$result->remark);
+			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->type,$result->details,$date,$status,$remark);
 
 		}
 		$output = array(

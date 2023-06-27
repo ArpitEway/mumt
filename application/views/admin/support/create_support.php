@@ -1,4 +1,4 @@
-<form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/Admins/support_system/create'); ?>">
+<form method="POST" class="d-block ajaxForm" action="<?php echo base_url('support_system/create'); ?>">
     
 	<div class="form-row">
 	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">

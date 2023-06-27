@@ -1,5 +1,6 @@
 <div class="container mb-5">
-	<h3 class="text-primary text-center h2"><?= ' ( '.$centerData->center_code.' ) ( '.$centerData->center_name.' ) ( '.$centerData->contactpersonname.' ) ( '.$centerData->mobile_no_1.' , '.$centerData->mobile_no_1.' ) '; ?></h3>
+	<?php $flag = ($centerData->mobile_no_2 == '')?'':',';?>
+	<h3 class="text-primary text-center h2"><?= ' ( '.$centerData->center_code.' ) ( '.$centerData->center_name.' ) ( '.$centerData->contactpersonname.' ) ( '.$centerData->mobile_no_1.' '.$flag.' '.$centerData->mobile_no_2.' ) '; ?></h3>
 </div>
 <div class="text-center">
 	<table id="table" class="table table-striped dt-responsive nowrap" width="70%" >

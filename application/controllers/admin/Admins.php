@@ -4957,9 +4957,6 @@ public function update_exam_datewise_permission(){
 		if($this->session->has_userdata('adminData')){
 			$admin_id = $this->session->admin_id;
 			$admin = $this->Common_model->getRecordById('admin_master','id',$admin_id);
-			// print_r($admin->support_ids);die;
-			// $where = "status = 'Pending' AND id IN (".$admin->support_ids.")";
-			// $centers = $this->Common_model->get_record_group_by_where('support_complaint','center_id',$where);
 			$where = "support_complaint.status = 'Pending' AND support_system.id IN (".$admin->support_ids.")";
 				$this->db->select('count(*) as count,'.'center_id');
 				$this->db->from('support_complaint');
@@ -4967,18 +4964,13 @@ public function update_exam_datewise_permission(){
 				$this->db->where($where);
 				$this->db->group_by('center_id');
 				$centers = $this->db->get()->result_array();
-
-			
-
-
 			$data = array('name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash(),
 				'centers' =>$centers
 			);
 			
 			$titleData = array('title' => 'Complaints');
-				$this->load->view('header',$titleData);
-
+			$this->load->view('header',$titleData);
 			$this->load->view('admin/view_center_wise_complaint',$data);
 			$this->load->view('footer');
 		}
