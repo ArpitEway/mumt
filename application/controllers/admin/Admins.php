@@ -4841,15 +4841,16 @@ public function update_exam_datewise_permission(){
 		
 			$data=array();	
 			$mode =$this->input->post('mode');
-			$classes = $this->Common_model->getRecordByWhere('class_master',array('mode'=>$mode));
+			$classes = $this->Common_model->getRecordByWhere('class_master',array('mode'=>$mode,'result_permission'=>'Y'));
 			$set = array_column($classes,'id');
 				$this->db->select('*');
 				$this->db->from('new_exam_form');
 				$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.old_class_id');
 				$this->db->where('student.exam_form','Y');
-				if($mode != 'All'){
-					$this->db->where_in('new_exam_form.class_id',$set);
-				}
+				// if($mode != 'All'){
+				// 	$this->db->where_in('new_exam_form.class_id',$set);
+				// }
+				$this->db->where_in('new_exam_form.class_id',$set);
 				$this->db->where('new_exam_form.theory_marks','');
 				$this->db->where('new_exam_form.paper_type',"theory");
 				$this->db->order_by('student.course_group_id','student.old_class_id','student.university_mode','student.roll_number');

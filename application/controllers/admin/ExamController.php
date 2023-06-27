@@ -2302,7 +2302,7 @@ public function getStudentData()
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('DISTINCT(center_id)');
 			$this->db->from($this->old_result_table);
-			$this->db->where(array('exam_form'=>'Y'));
+			$this->db->where(array('exam_form'=>'Y','marksheet_dispatch'=>'N'));
 			$centers = $this->db->get()->result_array();
 			$ids = array_column($centers, 'center_id');
 			//print_r($ids);die;
@@ -2322,7 +2322,7 @@ public function getStudentData()
 		$center = $this->input->post('center');
 		$this->db->select('DISTINCT(center_id)');
 		$this->db->from($this->old_result_table);
-		$this->db->where(array('exam_form'=>'Y'));
+		$this->db->where(array('exam_form'=>'Y','marksheet_dispatch'=>'N'));
 		$centers = $this->db->get()->result_array();
 		$ids = array_column($centers, 'center_id');
 	
@@ -2352,7 +2352,7 @@ public function getStudentData()
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('DISTINCT(center_id)');
 			$this->db->from($this->old_result_table);
-			$this->db->where(array('exam_form'=>'Y'));
+			$this->db->where(array('exam_form'=>'Y','marksheet_dispatch'=>'N'));
 			$centers = $this->db->get()->result_array();
 			$ids = array_column($centers, 'center_id');
 			//print_r($ids);die;
@@ -2371,7 +2371,7 @@ public function getStudentData()
 		$center = $this->input->post('center');
 		$this->db->select('DISTINCT(center_id)');
 		$this->db->from($this->old_result_table);
-		$this->db->where(array('exam_form'=>'Y'));
+		$this->db->where(array('exam_form'=>'Y','marksheet_dispatch'=>'N'));
 		$centers = $this->db->get()->result_array();
 		$ids = array_column($centers, 'center_id');
 	

@@ -6,7 +6,7 @@
             <label for="">Mode</label>
             <select  class="form-control" name="mode"  id="mode">
             	<option value="">Select</option>
-                <option value="All">All</option>
+                <!-- <option value="All">All</option> -->
                 <option value="Annual">Annual</option>
                 <option value="Semester">Semester</option>
             </select>
@@ -32,40 +32,42 @@ $(document).on("change","#mode",function(){
 		$('#dt').hide();
         var csrfName = $('.csrfname').attr('name');
 		var csrfHash = $('.csrfname').val(); 
-
-		var data = {
-			mode : $("#mode").val(),
-            [csrfName]:csrfHash
-			
-		};
-
-		$.ajax({
-			url: '<?php echo base_url('admin/admins/class_wise_remaining_student_report'); ?>',
-
-			type:'post',
-			dataType : 'JSON',
-			data:data,
-			beforeSend: function()
-			{
-				$("#myLoader").show();
-			},
-			success:function(status)
-			{
-				if( $("#myLoader").show()){
-					$('#dt').hide();
+		var mode=$("#mode").val();
+		if(mode){
+				var data = {
+					mode : mode,
+					[csrfName]:csrfHash
 					
-					}if( $('#myLoader').hide()){
-						$table = $('#dt').html(status.data);
-						$('#dt').show();
-						
-					}
+				};
 
-					KTDatatablesBasicBasic.init();
-				},
-				complete: function()
-				{
-					$('#myLoader').hide();
-				},
-			})
+				$.ajax({
+					url: '<?php echo base_url('admin/admins/class_wise_remaining_student_report'); ?>',
+
+					type:'post',
+					dataType : 'JSON',
+					data:data,
+					beforeSend: function()
+					{
+						$("#myLoader").show();
+					},
+					success:function(status)
+					{
+						if( $("#myLoader").show()){
+							$('#dt').hide();
+							
+							}if( $('#myLoader').hide()){
+								$table = $('#dt').html(status.data);
+								$('#dt').show();
+								
+							}
+
+							KTDatatablesBasicBasic.init();
+						},
+						complete: function()
+						{
+							$('#myLoader').hide();
+						},
+				})
+			}		
 	});
 </script>
