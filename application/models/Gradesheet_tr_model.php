@@ -129,23 +129,56 @@ class Gradesheet_tr_model extends CI_Model
 			$this->paper = $paper;
 			$this->_row();
 		}
+		
 		$this->notification_agpa();
-		// var_dump($this->result_array);
-		// $this->echo_result(); 
-		// $this->total();
-		// if($this->mode=='REG'){
-			// $this->result_head();
-			// $this->set_result();
-		// 	$this->AGPA();
-		// }else{
-			// $this->result_head_pvt();
-			// $this->set_result();
-		// 	$this->AGPA_pvt();
-		// }
-		// return $this->result();
-		// echo "<pre>";
-		// print_r($this->foundation_paper);
+		
 	}
+
+	public function view_notification_result($student_id,$course_group_id,$class_id,$mode)
+	{
+		
+		$std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $class_id,'student_id'=>$student_id));
+		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+		
+		
+		if($std[0]->sub_group_id == 1){
+			$papers = $this->Common_model->get_all_papers($student_id,$class_id);
+		}
+
+		if($this->classData->class_group == 'Y'){
+			$papers_list = $this->Common_model->get_all_group_papers($student_id,$class_id);
+		}
+	
+		
+		$this->allclass = $this->Common_model->getRecordByWhere('class_master',array('course_group_id'=> $course_group_id));
+		$this->classCount = count($this->allclass);
+		// $this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+		$this->foundation_paper = array();
+		$this->result_array = array();
+		$this->tot_credit_point = 0;
+		$this->tot_credit = 0;
+		$this->mode = $mode;
+		$this->fail_count=0;
+		$this->obt_tot_credit = 0;
+		$this->grade_tot_point=0;
+		$this->fail_tot_marks = 0;
+		$this->fail_min_marks = 0;
+		$this->fail_obt_marks = 0;
+		$this->check_grace_marks = false;
+		$this->withheld = false;
+		foreach ($papers as $paper) {
+			$this->paper = $paper;
+			$this->_row();
+		}
+		foreach($papers_list as $paper){
+			$this->paper = $paper;
+			$this->_row();
+		}
+		
+		$this->notification_result();
+		
+	}
+
 
 
 	public function _row()
@@ -155,14 +188,22 @@ class Gradesheet_tr_model extends CI_Model
 				if ($this->paper['theory_marks']=='') {
 					$this->withheld = true;
 				}
+				if($this->paper['theory_marks'] === 'ABS'){
+					$this->foundation_paper[$this->paper['group_paper_name']]['obt'] = 'ABS';
+				}
 				$this->foundation_paper[$this->paper['group_paper_name']]['tot_marks'] += $this->paper['theory_marks'];
 				$this->foundation_paper[$this->paper['group_paper_name']]['credit_point'] += $this->paper['credit_point'];
 				$this->foundation_paper[$this->paper['group_paper_name']]['max_theory_marks'] += $this->paper['max_theory_marks'];
+				$this->foundation_paper[$this->paper['group_paper_name']]['type'] = $this->paper['type'];
 				$this->_echo_row_foudation($this->paper['group_paper_name']);
 			}else{
 				if ($this->paper['theory_marks']=='') {
 					$this->withheld = true;
 				}
+				if($this->paper['theory_marks'] === 'ABS'){
+					$this->foundation_paper[$this->paper['group_paper_name']]['obt'] = 'ABS';
+				}
+				$this->foundation_paper[$this->paper['group_paper_name']]['type'] = $this->paper['type'];
 				$this->foundation_paper[$this->paper['group_paper_name']]['tot_marks'] = $this->paper['theory_marks'];
 				$this->foundation_paper[$this->paper['group_paper_name']]['max_theory_marks'] = $this->paper['max_theory_marks'];
 				$this->foundation_paper[$this->paper['group_paper_name']]['paper_code'] = $this->paper['paper_code'];
@@ -199,12 +240,14 @@ class Gradesheet_tr_model extends CI_Model
 
 	private function paper_code()
 	{
+		 
 		$this->result_array[$this->paper['paper_code']] = array();
 		array_push($this->result_array[$this->paper['paper_code']], $this->paper["paper_code"]);
 	}
 
 	private function paper_name()
 	{
+		$this->result_array[$this->paper['paper_code']]["type"] = $this->paper["type"];
 		$this->result_array[$this->paper['paper_code']]["paper_name"] = $this->paper["group_paper_code"].' - '.$this->paper["paper_name"];
 	}
 
@@ -243,16 +286,16 @@ class Gradesheet_tr_model extends CI_Model
 			if ($this->paper['p_marks']==''){
 				$this->withheld = true;
 			}
-			$check_fail_marks = $this->paper["p_marks"];
-				$check_fail_min_marks = $this->paper["min_theory_marks"];
-				$check_fail_tot_marks = $this->paper["max_theory_marks"];
-			$tot_obt_marks = $this->paper["p_marks"];
-			$tot_marks = $this->paper["max_theory_marks"];
-			$min_marks = $this->paper["min_theory_marks"];
+			$check_fail_marks = $this->paper["p_marks"]+  $this->paper["int_marks"];
+				$check_fail_min_marks = $this->paper["min_theory_marks"] + $this->paper["min_internal_marks"];
+				$check_fail_tot_marks = $this->paper["max_theory_marks"] + $this->paper["max_internal_marks"];
+			$tot_obt_marks = $this->paper["p_marks"]+  $this->paper["int_marks"];
+			$tot_marks = $this->paper["max_theory_marks"]+ $this->paper["max_internal_marks"];
+			$min_marks = $this->paper["min_theory_marks"]+ $this->paper["min_internal_marks"];
 		}
 		// echo $tot_obt_marks.'ss';
 		// echo $tot_marks.'<br>';
-		$persent = $tot_obt_marks*100/$tot_marks;
+			$persent = $tot_obt_marks*100/$tot_marks;
 		$where = 'min_marks <= '.$persent.' and  max_marks >= '.$persent.'';
 		$gradeData = $this->Common_model->getRecordByWhere('letter_grade',$where);
 		// echo $this->db->last_query().'<br>';
@@ -293,6 +336,7 @@ class Gradesheet_tr_model extends CI_Model
 	private function paper_name_foudation($sub_group_id){
 		$data = $this->paper["group_paper_code"].' - '.$this->foundation_paper[$sub_group_id]["paper_name"];
 		$this->result_array[$this->paper['paper_code']]['paper_name'] = $data;
+		$this->result_array[$this->paper['paper_code']]['type'] = $this->foundation_paper[$sub_group_id]["type"];
 	}
 
 	private function credit_foudation($sub_group_id){
@@ -325,6 +369,7 @@ class Gradesheet_tr_model extends CI_Model
 
 	public function set_result()
 	{
+		
 		if ($this->withheld==true) {
 			return $this->result = 'WITHHELD';
 		}
@@ -332,13 +377,15 @@ class Gradesheet_tr_model extends CI_Model
 			if ($this->check_grace_marks) {
 				return	$this->result = 'PASS BY GRACE';
 			}else{
-				return 	$this->result = 'SUPPLEMENTARY';
+				return 	$this->result = 'FAIL';
 			}
 		}else if($this->agpa<4){
+			
 			return $this->result = 'FAIL';
 		}else{
 			return $this->result = 'PASS';
 		}
+		
 	}
 
 	public function result()
@@ -372,10 +419,10 @@ class Gradesheet_tr_model extends CI_Model
 				$this->result_array[$this->paper['paper_code']]['int_obt_marks'] = $this->paper['int_marks'];
 			}else{
 				$this->result_array[$this->paper['paper_code']]['min_marks'] = $this->paper['min_theory_marks'];
-				$this->result_array[$this->paper['paper_code']]['int_max_marks'] = '-';
-				$this->result_array[$this->paper['paper_code']]['int_min_marks'] = '-';
+				$this->result_array[$this->paper['paper_code']]['int_max_marks'] = $this->paper['max_internal_marks'];
+				$this->result_array[$this->paper['paper_code']]['int_min_marks'] = $this->paper['min_internal_marks'];
 				$this->result_array[$this->paper['paper_code']]['obt_marks'] = $this->paper['p_marks'];
-				$this->result_array[$this->paper['paper_code']]['int_obt_marks'] = '-';
+				$this->result_array[$this->paper['paper_code']]['int_obt_marks'] = $this->paper['int_marks'];
 			}
 		}
 	}
@@ -393,6 +440,7 @@ class Gradesheet_tr_model extends CI_Model
 			$this->result_array[$this->paper['paper_code']]['int_min_marks'] = '-';
 			$this->result_array[$this->paper['paper_code']]['obt_marks'] = $this->foundation_paper[$sub_group_id]['tot_marks'];
 			$this->result_array[$this->paper['paper_code']]['int_obt_marks'] = '-';
+			$this->result_array[$this->paper['paper_code']]['f_abs'] = $this->foundation_paper[$sub_group_id]['obt'];
 		}
 	}
 
@@ -403,15 +451,64 @@ class Gradesheet_tr_model extends CI_Model
 		// echo "fail_min_marks =>".$this->fail_min_marks;
 		// echo "<br>";
 		// echo "fail_obt_marks =>".$this->fail_obt_marks;
-		// var_dump($this->result_array);
+		// echo '<pre>';
 		if ($this->fail_count>0) {
-			 $require_grace_marks = $this->fail_min_marks+1-$this->fail_obt_marks;
+			 $require_grace_marks = $this->fail_min_marks-$this->fail_obt_marks;
 		}
+		
 		echo "<tr>";
-		echo '<td class="align-middle text-right">'.'Grade Ponits'.'</td>';
+		echo '<td class="align-middle text-right">'.'Credit Earned'.'</td>';
+		foreach ($this->result_array as $key => $result) {
+			
+			if ($this->fail_count>0 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+				$this->check_grace_marks = true;
+				$this->obt_tot_credit += $result['credit'];
+				$req_marks = $result['min_marks']-$result['obt_marks'];
+				$obt_marks = $result['obt_marks']+$req_marks;
+				$credit_point = $result['credit']*4;
+				$this->result_array[$key]['credit_point']=$credit_point;
+				$this->tot_credit_point += $credit_point;
+				
+				
+				$paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4');
+				if(in_array($key,$paper_codes))	
+				{
+				echo "<td colspan= '2' class='text-center'>".$result['credit']."</td>";
+				}else{
+					
+					echo "<td class='text-center'>".$result['credit']."</td>";
+				}
+				
+				
+			}else{
+				if(($result['f_abs'] === 'ABS' && $result['obt_marks'] != '0')){
+					$result['obt_credit'] = 2;
+					$this->obt_tot_credit -=2; 
+					$credit_point = $result['obt_credit']*$result['grade_point'];
+				$this->result_array[$key]['credit_point']=$credit_point;
+				$this->tot_credit_point -= $credit_point;
+					
+				}
+				$paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4');
+				if(in_array($key,$paper_codes))	
+				{
+				echo "<td colspan= '2' class='text-center'>".$result['obt_credit']."</td>";
+				}else{
+					
+					echo "<td class='text-center'>".$result['obt_credit']."</td>";
+				}
+				
+				
+			}
+			
+		}
+		echo '<td class="text-center">'.$this->obt_tot_credit.'</td>';
+		echo '</tr>';
+		echo "<tr>";
+		echo '<td class="align-middle text-right">'.'Grade Point'.'</td>';
 		foreach ($this->result_array as $key => $result) {
 			// echo $this->fail_obt_marks.'<br>';
-			// print_r( $key);die;
+			//  print_r( $result['type']);
 			// echo "<td>".$result['grade_point']."</td>";
 			// echo "<td>".$result['paper_name']."</td>";
 			// echo "<td>".$result['max_marks']."</td>";
@@ -420,7 +517,7 @@ class Gradesheet_tr_model extends CI_Model
 			// 	echo "<td>".$result['int_max_marks']."</td>";
 			// 	echo "<td>".$result['int_min_marks']."</td>";
 			// }
-			if ($this->fail_count>0 && $require_grace_marks<4 && $result['letter_grade']=='F') {
+			if ($this->fail_count>0 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				
 				$this->obt_tot_credit +=$result['credit'];
 				
@@ -470,6 +567,50 @@ class Gradesheet_tr_model extends CI_Model
 		}
 		echo '<td class="text-center">'.$this->grade_tot_point.'</td>';
 		echo "</tr>";
+		echo "<tr>";
+		echo '<td class="align-middle text-right">'.'Credit Points'.'</td>';
+		foreach ($this->result_array as $key => $result) {
+			
+			if ($this->fail_count>0 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+				$this->check_grace_marks = true;
+				$this->obt_tot_credit += $result['credit'];
+				$req_marks = $result['min_marks']-$result['obt_marks'];
+				$obt_marks = $result['obt_marks']+$req_marks;
+				$credit_point = $result['credit']*4;
+				$this->result_array[$key]['credit_point']=$credit_point;
+				$this->tot_credit_point += $credit_point;
+				
+				
+				$paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4');
+				if(in_array($key,$paper_codes))	
+				{
+				echo "<td colspan= '2' class='text-center'>".$credit_point."</td>";
+				}else{
+					
+					echo "<td class='text-center'>".$credit_point."</td>";
+				}
+				
+				
+			}else{
+				if($result['obt_marks'] === 'ABS'){
+					$result['letter_grade'] = 'ABS';
+				}
+				$paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4');
+				if(in_array($key,$paper_codes))	
+				{
+				echo "<td colspan= '2' class='text-center'>".$result['credit_point']."</td>";
+				}else{
+					
+					echo "<td class='text-center'>".$result['credit_point']."</td>";
+				}
+				
+				
+			}
+			
+		}
+		echo '<td class="text-center">'.$this->tot_credit_point.'</td>';
+		echo '</tr>';
+		
 		
 	}
 
@@ -478,13 +619,18 @@ class Gradesheet_tr_model extends CI_Model
 		echo '<tr>';
 		echo '<td class="align-middle text-right">'.'Letter Grade'.'</td>';
 		if ($this->fail_count>0) {
-			// echo $this->fail_min_marks.'ss'.$this->fail_obt_marks;
+			//  echo $this->fail_min_marks.'ss'.$this->fail_obt_marks;
 			 $require_grace_marks = $this->fail_min_marks-$this->fail_obt_marks;
 		}
 		
 		foreach ($this->result_array as $key => $result) {
+			// print_r($this->result_array);
 			// echo $this->fail_count.'grace'.$require_grace_marks.'kkkg'.$result['letter_grade'].'<br>';
-		if ($this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F') {
+			if($result['obt_marks'] === 'ABS' || ($result['f_abs'] === 'ABS' && $result['obt_marks'] == '0')
+			){
+					$result['letter_grade'] = 'ABS';
+			}
+			elseif ($this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 			// echo $require_grace_marks;
 				$result['letter_grade'] = 'P-G';
 			}else{
@@ -580,8 +726,75 @@ class Gradesheet_tr_model extends CI_Model
 	}
 
 	private function notification_agpa(){
-		echo '<td class="text-center" style="padding:0px" align="center">'.$this->agpa = $this->tot_credit_point/$this->tot_credit.'</td>';
+		if ($this->fail_count>0) {
+			$require_grace_marks = $this->fail_min_marks-$this->fail_obt_marks;
+	   }
+	  
+	   foreach ($this->result_array as $key => $result) {
+		  
+		   if ($this->fail_count>0 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+			   
+			   $this->obt_tot_credit +=$result['credit'];
+			   
+			   $this->check_grace_marks = true;
+			   $req_marks = $result['min_marks']-$result['obt_marks'];
+			   $obt_marks = $result['obt_marks']+$req_marks;
+			   $credit_point = $result['credit']*4;
+			   $this->result_array[$key]['credit_point']=$credit_point;
+			   
+			   $this->tot_credit_point += $credit_point;
+			   $this->grade_tot_point += 4;
+			   $result['grade_point'] =4;
+		   }else{
+			   $result['grade_point'] =$result['grade_point'];
+		   }
+		}
+		// echo $this->tot_credit_point.'dd'.$this->tot_credit;
+		
+		
+		$this->agpa = $this->tot_credit_point/$this->tot_credit;
+		$this->set_result();
+		
+		$agpa = ($this->result == 'FAIL')?'0.00':number_format((float)$this->agpa, 2, '.', '');
+		echo '<td class="text-center" style="padding:0px" align="center">'.$agpa.'</td>';
+		
 	}
+
+	private function notification_result(){
+		if ($this->fail_count>0) {
+			$require_grace_marks = $this->fail_min_marks-$this->fail_obt_marks;
+	   }
+	  
+	   foreach ($this->result_array as $key => $result) {
+		  
+		   if ($this->fail_count>0 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+			   
+			   $this->obt_tot_credit +=$result['credit'];
+			   
+			   $this->check_grace_marks = true;
+			   $req_marks = $result['min_marks']-$result['obt_marks'];
+			   $obt_marks = $result['obt_marks']+$req_marks;
+			   $credit_point = $result['credit']*4;
+			   $this->result_array[$key]['credit_point']=$credit_point;
+			   
+			   $this->tot_credit_point += $credit_point;
+			   $this->grade_tot_point += 4;
+			   $result['grade_point'] =4;
+		   }else{
+			   $result['grade_point'] =$result['grade_point'];
+		   }
+		}
+		// echo $this->tot_credit_point.'dd'.$this->tot_credit;
+		
+		
+		$this->agpa = $this->tot_credit_point/$this->tot_credit;
+		$this->set_result();
+		echo $this->result;
+		// $agpa = ($this->result == 'FAIL')?'0.00':number_format((float)$this->agpa, 2, '.', '');
+		// echo '<td class="text-center" style="padding:0px" align="center">'.$agpa.'</td>';
+		
+	}
+
 
 	private function AGPA()
 	{

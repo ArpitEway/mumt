@@ -4,7 +4,7 @@ $menus = $this->db->get_where('menu', array('id' => $param1))->result_array();
 
 foreach($menus as $menu): ?>
 
-<form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/Admins/add_menu/update/'.$menu['id']); ?>">
+<form method="POST" class="d-block ajaxFormEdit" action="<?php echo site_url('admin/Admins/add_menu/update/'.$menu['id']); ?>">
 
 <div class="form-row">
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
@@ -83,7 +83,7 @@ foreach($menus as $menu): ?>
 
 	$("#edit_menu_submit").on('click',function (e){
 	
-		var frm = $('.ajaxForm').serialize();
+		var frm = $('.ajaxFormEdit').serialize();
 		var csrfName = $('.csrfname').attr('name');
 		var csrfHash = $('.csrfname').val(); 
 	$.ajax({

@@ -173,12 +173,19 @@ table.last_table, .last_table td, .last_table th{
     $count_theory =0;
     $count_practical =0;
     $count_int =0;
-    $final_result = '';
+    $final_result = ''; $medium="";
     foreach($marks as $new_exam_form)
     {
       
       if($new_exam_form->type=='theory'){
 
+       
+        if($new_exam_form->paper_code=="1RMOM3(A)")
+        {
+          $medium="Hindi";
+        }elseif($new_exam_form->paper_code=="1RMOM3(B)"){
+          $medium="English";
+        }
         $total_theory_marks_obt +=(int) $new_exam_form->theory_marks;
         $total_int_marks_obt += (int) $new_exam_form->int_marks;
         $total_theory_asm_marks = (int) $new_exam_form->theory_marks+ (int) $new_exam_form->int_marks;
@@ -363,7 +370,7 @@ table.last_table, .last_table td, .last_table th{
         <tr>
           <th  class="align-middle text-center roll_no" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_number  ?> <br> <?php echo $student->enrollment_no  ?></th>
           <th class="align-middle text-center ms_no" rowspan="<?php echo $rowspandata ?>">
-            <?php  echo $student->marksheet_no  ?>
+            <?php  echo $student->marksheet_no  ?><br><?=$medium?>
           </th>
           <th  class="align-middle text-center photo" rowspan="<?php echo $rowspandata ?>"><img alt="N/A" src="<?= base_url('assets/student_image/'.$student->session.'/'.$student->photo) ?>" width="65px" height="90px"></th>
           <td  class="align-middle text-center name"  rowspan="<?php  echo $rowspandata ?>"><?php  echo $student->name ?>/ <br><?php  echo $student->f_h_name ?></td>

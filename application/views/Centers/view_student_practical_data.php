@@ -18,12 +18,12 @@
 
 </style>
 
-
+<?php $roll = $this->Common_model->getMaster('roll_number_col');?>
 <table class= "table table-bordered">
   <tbody>
     <tr>
      <td><strong>Enrollment No: </strong> <?=$details[0]->enrollment_no;?></td>
-     <td><strong> Roll No: </strong><?=$details[0]->roll_no;?></td>
+     <td><strong> Roll No: </strong><?=$details[0]->$roll;?></td>
      <td  rowspan="5"> <img  class="student_img" src="<?php echo base_url('/assets/student_image/').$details[0]->session.'/'.$details[0]->photo;?>" ></td>
    </tr>
    <tr>
@@ -77,7 +77,7 @@
             <option value="ABS" selected>Absent</option>
             <?php
             $percentage = 85;
-            $center_ids_dep = array(21,22,23,24,25,26,27,28,29);
+            $center_ids_dep = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29);
             $center_id =  $this->session->center_id;
             if (in_array($center_id, $center_ids_dep)){
               $percentage = 100;
@@ -102,6 +102,7 @@
   }
   ?>
   <input type="hidden" value="<?php echo $ajax_count; ?>" name="count_item" id="count_item"/>
+  <input type="hidden" value="<?php echo $this->session->center_id;?>" name="center_id" id="center_id"/>
 </tbody>
 </table>
 </div>
@@ -144,9 +145,14 @@
       }
     }
   }
-  if(check_marks==false){
-    alert('आपने दो से अधिक बार समान अंक दर्ज किए हैं');
-    return false;
+
+  var center_id= $("#center_id").val();
+  const centers = [10,11,12,13,20,21,22,23,24,25,26,27,28,29];
+  if(centers.includes(center_id)){
+      if(check_marks==false){
+        alert('आपने दो से अधिक बार समान अंक दर्ज किए हैं');
+        return false;
+      }
   }
 
   if(check==false){

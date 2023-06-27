@@ -4,6 +4,7 @@
   <link href="css/print_Marksheet.css" rel="stylesheet" type="text/css">
   <title><?php echo (isset($title)) ? $title : ''; ?></title>
   <style type="text/css">
+    
     @media print {
       body {
         -webkit-print-color-adjust: exact;
@@ -35,15 +36,26 @@
     th.border.border-dark {
       vertical-align: middle;
     }
+    tr.rowHeight td {
+        padding: 0px;
+    }
   </style>
 </head>
 <body>
   <center>
     <?php
     $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
-    $marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
+    //$marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
        $papers = $old_result_data;
+       $isFinalClass = $this->Common_model->hasOneClass($classData->course_group_id);
+       if($isFinalClass){
+         $course_duration = '(One Year Course)';
+       }else if($classData->course_group_id == 36 || $classData->course_group_id == 37){
+         $course_duration = 'Six Months Course';
+       }else{
+         $course_duration = $this->Common_model->romanClassName($classData->class_name);
+       }
       ?>
       <fieldset id="printarea" class="breakhere" style="width:90%;border: 0px solid #22316C;"> 
         <div align="left"> MS No. <?php echo $exam_data->marksheet_no; ?> </div>
@@ -52,7 +64,7 @@
             <tr>
               <td height="100" colspan="2" valign="bottom">
                 <center>
-                  <strong><?php echo $exam_data->course_name .' Six Months Course Examination '.$exam_data->exam_year ?></strong>
+                  <strong><?php echo $exam_data->course_name.' ' .$course_duration.' '.$exam_data->exam_year ?></strong>
                 </center>
               </td>
             </tr>
@@ -60,15 +72,22 @@
               <td align="center" height="120" colspan="2">
                 <table class="mytable" border="0" cellpadding="2" cellspacing="2" width="100%">
                   <tbody>
-                    <tr>
+                  <?php
+                    $check_mode = $this->Common_model->getRecordById('student','student_id', $papers[0]->student_id);
+                    if($check_mode->university_mode == "REG"){
+                    ?>
+                     <tr>
                       <td class="Normaltext" colspan="2">
                         <div align="center"><font size="4">&nbsp; </font></div>
                       </td>
                       <td class="Normaltext">
                         <div align="center"><font size="4">Regular </font></div>
                       </td>
-                    </tr>
-                    <tr>
+                    </tr> 
+                    <?php
+                    }
+                    ?>
+                    <tr class="rowHeight">
                       <td width="35%" class="Normaltext" align="left"><div align="left">Roll No</div></td>
                       <td width="53%" class="resultText">
                         <div align="left">
@@ -80,7 +99,7 @@
                         <img border="1"  class="student_image" src="<?= base_url('assets/student_image/'.$exam_data->session.'/'.$exam_data->photo) ?>" width="90px" height="105px">
                       </td>
                     </tr>
-                    <tr>
+                    <tr class="rowHeight">
                       <td class="Normaltext" align="left">
                         <div align="left">Enrolment / Registration No.</div>
                       </td>
@@ -88,7 +107,17 @@
                         <div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo  $exam_data->enrollment_no;; ?></span></div>
                       </td>
                     </tr>
-                    <tr>
+                    <?php if($exam_data->university_mode=='PVT'){ ?>
+                    <tr class="rowHeight">
+                      <td class="Normaltext" align="left" width="29%">
+                        <div align="left">Category</div>
+                      </td>
+                      <td class="resultText"><div align="left">
+                        <span id="lblSemesterGrading" style="color:Black;">N/C</span></div>
+                      </td>
+                    </tr>
+                    <?php } ?>
+                    <tr class="rowHeight">
                       <td class="Normaltext" align="left" width="29%">
                         <div align="left">Name of the Candidate</div>
                       </td>
@@ -96,7 +125,7 @@
                         <span id="lblSemesterGrading" style="color:Black;"><?php echo  $exam_data->name; ?></span></div>
                       </td>
                     </tr>
-                    <tr>
+                    <tr class="rowHeight">
                       <td class="Normaltext" align="left" width="29%"><div align="left">Father's / Husband's Name</div></td>
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo strtoupper( $exam_data->f_h_name); ?></span></div></td>
                     </tr>
@@ -171,15 +200,34 @@
                           $check_grace_marks = true;
                           $result = "PASS BY GRACE";
                         }
+                        $flag = 1;
+                        $tflag = 1;
                         foreach($papers as $paper)
                         {
+                          $paper_name = explode(' - ',$paper->paper_name);
                           ?>
                           <tr>
                             <td colspan="9">&nbsp;</td>
                           </tr>
+                          <?php 
+                          if($class_id == 169 && $check_mode->university_mode == "REG"){
+                          if($tflag == 1) { echo '<tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.
+                        '<td style="margin-top:2px;" align="left">'.'</td>'.
+                            '<td colspan="8" align="left">'.'<strong>'.
+                          '<u>'.'Theory'.'</u>' .':'.'</strong>'.'</td>'.
+                          '</tr>'.'<tr>'
+                          .'<td colspan="9">'.'&nbsp;'.'</td>'.
+                        '</tr>';}elseif
+                          ($paper_name[0] == 'Moukhiki' && $flag == 1){ echo ' <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.'<td style="margin-top:2px;" align="left">'.'</td>'.
+                          '<td colspan="8" align="left">'.'<strong>'.
+                        '<u>'.'Viva-Voce'.'</u>'.':'.'</strong>'.'</td>'.'</tr>'.'<tr>'
+                        .'<td colspan="9">'.'&nbsp;'.'</td>'.
+                      '</tr>';}else{ echo'';};
+                          }
+                          ?>
                           <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="middle">
                             <td style="margin-top:2px;" align="left"><strong><?php echo  $paper->paper_code; ?></strong></td>
-                            <td align="left"><strong><?php  echo $paper->paper_name ;  ?></strong></td>
+                            <td align="left"><strong><?php  echo ($paper_name[0] == 'Moukhiki')? $paper_name[1] : $paper->paper_name ;  ?></strong></td>
                             <td align="center" ><span class="style4">
                               <?php echo  $paper->max_theory_marks;?></span>
                             </td>
@@ -235,7 +283,13 @@
                             ?></span>
                           </td>
                         </tr>
-                      <?php } ?>
+                      <?php 
+                        if($paper_name[0] == 'Moukhiki') {
+                          $flag =0;}
+                          $tflag =0;} 
+                         
+                          ?>
+                      
                     </tbody></table>
                   </div>
                   <table border="0" cellpadding="0" height="112" width="100%">
@@ -277,11 +331,29 @@
                       <td>&nbsp;</td>
                       <td>&nbsp;  </td>
                       <td>
-                        <strong>&nbsp; </strong>
+                      <?php
+                          $percentage = round(($tot_std_marks/$tot_marks)*100,2);    
+                          if($percentage>=60){
+                            $division = "First";
+                          }elseif($percentage<60 && $percentage>=40){
+                            $division  = "Second";
+                          }else{
+                            $division = "Third";
+                          }
+
+                        if ($classData->last_class=="L") {
+                          ?><strong>Division</strong><?php
+                        }
+                        ?>
                       </td>
-                      <td> <div align="center"><b> 
-                      </b></div></td>
+                      <td><?php
+                        if ($classData->last_class=="L") {
+                          ?>&nbsp;&nbsp;&nbsp;&nbsp;<strong><?=$division?></strong><?php
+                        }
+                        ?>
+                      </td>
                     </tr>
+                    
                     <tr>
                       <td height="20"><strong>Maximum Marks</strong></td>
                       <td style="text-align: center"><b><?php echo $tot_marks ; ?></b></td>
@@ -289,8 +361,10 @@
                       <td><div align="center"><b></b></div></td>
                       <td></td>
                       <td><div align="center"></div></td>
-                      <td><strong>&nbsp;</strong></td>
-                      <td> <div align="center"><strong></strong></div></td>
+                      <td> <?php if ($classData->last_class=="L") {
+                          ?><strong>Percentage</strong>
+                          <?php } ?></td>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;<strong><?= ($classData->last_class=="L") ? $percentage.' %' : '';?></strong></td>
                     </tr>
                     <tr>
                       <td colspan="8">
@@ -312,7 +386,7 @@
               <tr>
                 <td width="17" align="center">
                   <div align="left">
-                    <?php echo "Date :".$marksheet_variables->result_date; ?></div></td>
+                    <?php echo "Date :".$exam_data->marksheet_date; ?></div></td>
                   </tr>
                   <tr class="">
                     <td colspan="">

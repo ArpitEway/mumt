@@ -269,7 +269,7 @@ $(document).on('click','#edit_submit', function () {
 function validation(step=""){
 	var submit = true;
 	// console.log(step);
-
+	
 	var session = $('select[name="session"]').val();
 	var course_group_id = $('select[name="course_group_id"]').val();
 	var class_id = $('select[name="class_id"]').val(); 
@@ -308,225 +308,270 @@ function validation(step=""){
 	var total_marks = $('input[name="total_marks"]').val();
 	var nationality = $('select[name="nationality"]').val();
 	var religion = $('select[name="religion"]').val();
-
-	if(nationality==''){
-		$('select[name="nationality"]').next('div').text('Session is Required');
-		submit = false
-	}else{
-		$('select[name="nationality"]').next('div').text('');
-	}if(religion==''){
-		$('select[name="religion"]').next('div').text('Session is Required');
-		submit = false
-	}else{
-		$('select[name="religion"]').next('div').text('');
-	}
+	var ph = document.getElementById("photo");
 	if(session==''){
 		$('select[name="session"]').next('div').text('Session is Required');
-		submit = false
+		document.getElementById('session').focus();
+		// submit = false
+		
+		return false;
 	}else{
 		$('select[name="session"]').next('div').text('');
 	}
+	if(eligibility==''){
+		$('select[name="eligibility"]').next('div').text('eligibility is Required');
+		document.getElementById('eligibility').focus();
+		return false;
+	}else{
+		$('select[name="eligibility"]').next('div').text('');
+	}
 	if(course_group_id==''){
 		$('select[name="course_group_id"]').next('div').text('Course is Required');
-		submit = false
+		document.getElementById('course_group_id').focus();
+		// course_group_id = false
+		return false;
 	}else{
 		$('select[name="course_group_id"]').next('div').text('');
 	}
 	if(class_id==''){
 		$('select[name="class_id"]').next('div').text('Class is Required');
-		submit = false
+		document.getElementById('class_id').focus();
+		// submit = false
+		return false;
 	}else{
 		$('select[name="class_id"]').next('div').text('');
 	}
-	if(eligibility==''){
-		$('select[name="eligibility"]').next('div').text('eligibility is Required');
-		submit = false
-	}else{
-		$('select[name="eligibility"]').next('div').text('');
-	}
-	
-	if(category==''){
-		$('select[name="category"]').next('div').text('category is Required');
-		submit = false
-	}else{
-		$('select[name="category"]').next('div').text('');
-	}
-
 	if(!$('input[name="student_id"]').length>0){
 		if(photo==''){
 			$('#errPhoto').text('photo is Required');
-			submit = false
+			ph.focus();
+			// submit = false
+			return false;
 		}else{
 			$('#errPhoto').text('');
 		}
 	}
-	
-	if(name_hindi==''){
-		$('input[name="name_hindi"]').next('div').text('Name is Required');
-		submit = false
-	}else{
-		$('input[name="name_hindi"]').next('div').text('');
-	}
 	if(name==''){
 		$('input[name="name"]').next('div').text('Name is Required');
-		submit = false
+		document.getElementById('name').focus();
+		// submit = false
+		return false;
 	}else{
 		$('input[name="name"]').next('div').text('');
 	}
-	if(f_h_name_hindi==''){
-		$('input[name="f_h_name_hindi"]').next('div').text('Father Name is Required');
-		submit = false
-	}else{
-		$('input[name="f_h_name_hindi"]').next('div').text('');
-	}
 	if(f_h_name==''){
 		$('input[name="f_h_name"]').next('div').text('Father Name is Required');
-		submit = false
+		document.getElementById('f_h_name').focus();
+		// submit = false
+		return false;
 	}else{
 		$('input[name="f_h_name"]').next('div').text('');
 	}
-	if(f_h_occupation==''){
-		$('select[name="f_h_occupation"]').next('div').text('Father occupation is Required');
-		submit = false
-	}else{
-		$('select[name="f_h_occupation"]').next('div').text('');
-	}
-	if(mother_occupation==''){
-		$('select[name="mother_occupation"]').next('div').text('Mother occupation is Required');
-		submit = false
-	}else{
-		$('select[name="mother_occupation"]').next('div').text('');
-	}
-	if(mother_name_hindi==''){
-		$('input[name="mother_name_hindi"]').next('div').text('Mother Name is Required');
-		submit = false
-	}else{
-		$('input[name="mother_name_hindi"]').next('div').text('');
-	}
 	if(mother_name==''){
 		$('input[name="mother_name"]').next('div').text('Mother Name is Required');
-		submit = false
+		document.getElementById('mother_name').focus();
+		// submit = false
+		return false;
 	}else{
 		$('input[name="mother_name"]').next('div').text('');
 	}
 	if(p_mobile_no==''){
 		$('input[name="p_mobile_no"]').next('div').text('Mobile is Required');
-		submit = false
+		document.getElementById('p_mobile_no').focus();
+		// submit = false
+		return false;
 	}else{
 		$('input[name="p_mobile_no"]').next('div').text('');
-	}
-	if(f_h_mobile_no==''){
-		$('input[name="f_h_mobile_no"]').next('div').text('Mobile is Required');
-		submit = false
-	}else{
-		$('input[name="f_h_mobile_no"]').next('div').text('');
 	}
 	if(!(step=="email_validation")){
 		if(p_email==''){
 			$('input[name="p_email"]').next('div').text('E-mail is Required');
-			submit = false
+			document.getElementById('p_email').focus();
+			// submit = false
+			return false;
 		}else{
 			$('input[name="p_email"]').next('div').text('');
 		}
 	}
-	
 	if(dob==''){
 		$('input[name="dob"]').next('div').text('Date of Birth is Required');
-		submit = false
+		document.getElementById('dob').focus();
+		// submit = false
+		return false;
 	}else{
 		$('input[name="dob"]').next('div').text('');
 	}
+	if(nationality==''){
+		$('select[name="nationality"]').next('div').text('Nationality is Required');
+		document.getElementById('nationality').focus();
+		// submit = false
+		return false;
+	}else{
+		$('select[name="nationality"]').next('div').text('');
+	}if(religion==''){
+		$('select[name="religion"]').next('div').text('Religion is Required');
+		document.getElementById('religion').focus();
+		// submit = false
+		return false;
+	}else{
+		$('select[name="religion"]').next('div').text('');
+	}
+	if(category==''){
+		$('select[name="category"]').next('div').text('category is Required');
+		document.getElementById('category').focus();
+		// submit = false
+		return false;
+	}else{
+		$('select[name="category"]').next('div').text('');
+	}
+
+	
 	if(adhar_no==''){
 		$('input[name="adhar_no"]').next('div').text('Adhar No is Required');
-		submit = false
+		document.getElementById('adhar_no').focus();
+		// submit = false
+		return false;
 	}else{
 		$('input[name="adhar_no"]').next('div').text('');
 	}
 	if(c_address==''){
 		$('input[name="c_address"]').next('div').text('Address is Required');
-		submit = false
+		document.getElementById('c_address').focus();
+		// submit = false
+		return false;
 	}else{
 		$('input[name="c_address"]').next('div').text('');
 	}
 	if(c_state==''){
 		$('select[name="c_state"]').next('div').text('State is Required');
-		submit = false
+		document.getElementById('c_state').focus();
+		// submit = false
+		return false;
 	}else{
 		$('select[name="c_state"]').next('div').text('');
 	}
 	if(c_district==''){
 		$('select[name="c_district"]').next('div').text('District is Required');
-		submit = false
+		document.getElementById('c_district').focus();
+		// submit = false
+		return false;
 	}else{
 		$('select[name="c_district"]').next('div').text('');
 	}
 	if(c_city==''){
 		$('input[name="c_city"]').next('div').text('city is Required');
-		submit = false
+		document.getElementById('c_city').focus();
+		// submit = false
+		return false;
 	}else{
 		$('input[name="c_city"]').next('div').text('');
 	}
 	if(c_pin_code==''){
 		$('input[name="c_pin_code"]').next('div').text('Pin Code is Required');
-		submit = false
+		document.getElementById('c_pin_code').focus();
+		// submit = false
+		return false;
 	}else{
 		$('input[name="c_pin_code"]').next('div').text('');
 	}
 	if(p_address==''){
 		$('input[name="p_address"]').next('div').text('Address is Required');
-		submit = false
+		document.getElementById('p_address').focus();
+		// submit = false
+		return false;
 	}else{
 		$('input[name="p_address"]').next('div').text('');
 	}
 	if(p_state==''){
 		$('select[name="p_state"]').next('div').text('State is Required');
-		submit = false
+		document.getElementById('p_state').focus();
+		// submit = false
+		return false;
 	}else{
 		$('select[name="p_state"]').next('div').text('');
 	}
 	if(p_district==''){
 		$('select[name="p_district"]').next('div').text('District is Required');
-		submit = false
+		document.getElementById('p_district').focus();
+		// submit = false
+		return false;
 	}else{
 		$('select[name="p_district"]').next('div').text('');
 	}
 	if(p_city==''){
 		$('input[name="p_city"]').next('div').text('city is Required');
-		submit = false
+		document.getElementById('p_city').focus();
+		// submit = false
+		return false;
 	}else{
 		$('input[name="p_city"]').next('div').text('');
 	}
 	if(p_pin_code==''){
 		$('input[name="p_pin_code"]').next('div').text('Pin Code is Required');
-		submit = false
+		document.getElementById('p_pin_code').focus();
+		// submit = false
+		return false;
 	}else{
 		$('input[name="p_pin_code"]').next('div').text('');
 	}
 	if(marks==''){
 		$('input[name="marks"]').next('div').text('Marks is Required');
-		submit = false
+		document.getElementById('marks').focus();
+		// submit = false
+		return false;
 	}else{
 		$('input[name="marks"]').next('div').text('');
 	}
 	if(passing_year==''){
 		$('select[name="passing_year"]').next('div').text('Year is Required');
-		submit = false
+		document.getElementById('passing_year').focus();
+		// submit = false
+		return false;
 	}else{
 		$('select[name="passing_year"]').next('div').text('');
 	}
 	if(board==''){
 		$('input[name="board"]').next('div').text('Board is Required');
-		submit = false
+		document.getElementById('board').focus();
+		// submit = false
+		return false;
 	}else{
 		$('input[name="board"]').next('div').text('');
 	}
 	if(total_marks==''){
 		$('input[name="total_marks"]').next('div').text('Total Marks is Required');
-		submit = false
+		document.getElementById('total_marks').focus();
+		// submit = false
+		return false;
 	}else{
 		$('input[name="total_marks"]').next('div').text('');
 	}
+	if(!$('input[name="student_id"]').length>0){
+	var file = $("#photo");
+	var fileExtensions = file[0].files[0].name.split(".")[1];
+	var validFileExtensions = ["jpg", "JPG", "JPEG", "jpeg", "png", "PNG"];
+	if(!validFileExtensions.includes(fileExtensions)){
+		$('#errPhoto').text('Please Select Valid Image');
+		ph.focus();
+		return false;
+	}else{
+		$('#errPhoto').text('');
+	}
+	var filesize = parseFloat(file[0].files[0].size / 1024).toFixed(2);
+	if(filesize>500){
+		$('#errPhoto').text('Document size must be less than 500kb');
+		ph.focus();
+		return false;
+	}else{
+		$('#errPhoto').text('');
+	}
+}
 	if(submit == false){
 		return false;
 	}
+	return true;
+
+	
+	
+		
 }

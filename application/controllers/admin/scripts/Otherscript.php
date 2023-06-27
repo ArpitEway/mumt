@@ -58,7 +58,8 @@ class Otherscript extends CI_Controller {
 	{
 		//$where = " paper_code in ('2RMAEDU5', '2RMAGEO6', '2RMAGEO7', '2RMAGEO8', '2RMAPSY5', '2RMSCC7', '2RMSCC8', '2RMSCM7', '2RMSW7')";
 		// $where = " paper_code in ('2RBED6')";
-		$where = " paper_code in ('1RMLIS10','1RMLIS11')";
+		//$where = " paper_code in ('1RMLIS10','1RMLIS11')";
+		$where="`paper_code` in ('1RCMSCCH7','1RCMSCCH8','1RCMSCCH9','1RCMSCBT7','1RCMSCBT8','1RCMSCC7','1RCMSCM7','3RMSCC6','3RMSCC7')";
 		$papers = $this->Common_model->get_record('paper_master','*',$where);
 
 		foreach ($papers as $paper) {
@@ -99,6 +100,44 @@ class Otherscript extends CI_Controller {
 		
 	}
 
+	public function student_photo(){
+	
+		$this->db->select('student_id,name,photo,session');
+		$this->db->from('student');
+		
+		$start=0;
+		$this->db->limit(30,$start);
+		$result = $this->db->get()->result();
+		
+		foreach ($result as $row){
+			$dir = './assets/student_image/'.$row->session;
+		
+			$files = glob( './assets/student_image/'.$row->session.'/'.$row->photo.'');
+
+			foreach($files as $key => $value){
+				if($value){
+					$std .=  $row->student_id.'/';
+				}
+
+			
+			} 
+		}
+
+		$de = explode('/',$std);
+			
+		$this->db->select('student_id');
+		$this->db->from('student');
+		$this->db->where_not_in('student_id',$de);
+	
+		$this->db->limit(10);
+		$rs = $this->db->get()->result();
+		// echo $this->db->last_query().'<br>';
+		foreach ($rs as  $val) {
+			echo $val->student_id.",";
+		}
+				
+			
+	}
 	public function update_old_result_show(){
 		
 		$result = $this->Common_model->getRecordByWhere("student",array("exam_form"=>'Y'));
@@ -115,10 +154,10 @@ class Otherscript extends CI_Controller {
 
 	public function update_int_marks($cls_id =0)
 	{
-		// $marks = array('18','17','16','18','17','16','15','15');
+		 $marks = array('18','17','16','18','17','16','15','15');
 		// $marks = array('09','08','07','09','08','07','06','06');
-		$marks = array('27','26','25','27','26','25','24','24'); 
-		$cls_id=104;
+		//$marks = array('27','26','25','27','26','25','24','24'); 
+		$cls_id=182;
 		$sql = "select * from student where class_id='".$cls_id."' and exam_form='Y' and int_marks_sub='N' and roll_number!=0 and university_mode='REG' limit 100";
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
@@ -170,7 +209,7 @@ class Otherscript extends CI_Controller {
 	public function update_project_marks($cls_id =0)
 	{
 		$marks = array('85','84','83','82'); 
-		$cls_id=104;
+		$cls_id=182;
 		$sql = "select * from student where class_id='".$cls_id."' and exam_form='Y' and p_marks_sub='N' and  university_mode='REG' and  roll_number!=0 order by roll_number  limit 100";
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
@@ -448,9 +487,29 @@ public function update_roll_no_old_data(){
 	}
 
 }
+	public function center_wise_student_count_list(){
+		$data['courses'] = $this->Common_model->getRecordByWhere('course_group');
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();
+		$this->load->view('header',array('title' => 'Center Wise Student Count List'));
+		$this->load->view('admin/center_wise_student_count_list',$data);
+		$this->load->view('footer');
+	}
 
-
-	
+	public function get_student_count_data(){
+		$data['course_group_id'] = $this->input->post('course_group_id');
+		$this->db->select('count(*) as num,center_id,center_code,examcentercode,exam_center_id');
+		$this->db->from('student');
+		$this->db->where('course_group_id',$this->input->post('course_group_id'));
+		$this->db->where('session','July 2022');
+		$this->db->group_by('center_id');
+		$data['students'] = $this->db->get()->result();
+		$dt = $this->load->view('admin/getStudentCountData',$data,true);
+		echo json_encode(array(
+			"status" => true,
+			"data" => $dt
+		));
+	}
 }
 
 ?>

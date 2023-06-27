@@ -8,11 +8,12 @@ page-break-before: always;
 </style><?php 
 $pageno=1;
 $perpagecount=30;
+$table = $this->Common_model->getMaster('old_student_result_table');
 foreach($centers as $center)  {
 	$this->db->select('*');
-	$this->db->from('student');
+	$this->db->from($table);
 	$this->db->order_by("roll_number", "asc");
-	$where = array('center_id'=>$center->id, 'roll_number!=' => 0 ,'exam_form'=>'Y');
+	$where = array('center_id'=>$center->id, 'roll_number!=' => 0 ,'exam_form'=>'Y','marksheet_dispatch' =>'N');
 	$this->db->where($where);	
 	$center_students = $this->db->get()->result();
 	if($center_students){

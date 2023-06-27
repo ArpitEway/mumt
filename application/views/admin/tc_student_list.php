@@ -7,10 +7,11 @@
                 <Select class="form-control col-9"  id="search_year" name ="search_year" onchange="search_student_data()" >
                     <option value="All">All</option>
                     <?php 
-                    $y=date('Y');
-                    for($i=0;$i<=2;$i++){
+               
+                      foreach($years[0] as $key=>$y){
                     ?>
-                    <option value="<?php echo $y-$i;?>"><?php echo $y-$i;?></option>
+                   
+                    <option value="<?php echo $y;?>"><?php echo $y;?></option>
                     <?php
                     }
                     ?>

@@ -139,6 +139,9 @@
   $marksheetData = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id'=>$class_id));
   $classData= $this->Common_model->getRecordByWhere('class_master',array('id' => $class_id));
   $isFinalClass = $this->Common_model->hasOneClass($course_group_id);
+  if($classData[0]->last_class == 'L'){
+    $final_class = true;
+  }
   $rowspanhead = ($classData[0]->project!='N' || $classData[0]->practical!='N') ? "5" : "3";
   $rowspandata = ($classData[0]->project!='N' || $classData[0]->practical!='N') ? "6" : "4";
   $page_break_count = -1;
@@ -351,7 +354,9 @@
       <tbody>
         <tr>
           <th  class="align-middle text-center roll_no" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_number ?> <br> <?php echo $student->enrollment_no  ?></th>
-          <th class="align-middle text-center ms_no" rowspan="<?php echo $rowspandata ?>"><?=$student->marksheet_no ?></th>
+          <th class="align-middle text-center ms_no" rowspan="<?php echo $rowspandata ?>">
+            <?= $student->marksheet_no ?> 
+          </th>
           <th  class="align-middle text-center photo" rowspan="<?php echo $rowspandata ?>">
             <img alt="N/A" src="<?= base_url('assets/student_image/'.$student->session.'/'.$student->photo) ?>" width='65px' height="90px"></th>
           <td  class="align-middle text-center name"  rowspan="<?php  echo $rowspandata ?>"><?php  echo $student->name ?>/ <br><?php  echo $student->f_h_name ?></td>
@@ -371,6 +376,9 @@
                     }elseif($final_result == "RW"){
                       echo '';
                     }
+                    elseif( $theory_abs_count==$theory_paper_count && $p_abs_count==$p_paper_count){
+                             echo 'Absent In All';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
+                   }
               elseif(sizeof($atkt_paper_codes_array)==1){
                 echo "ATKT in";
                 $atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
@@ -386,6 +394,14 @@
                     }elseif($final_result == "RW"){
                       echo '';
                     }
+                    elseif( $theory_abs_count==$theory_paper_count && $p_abs_count==$p_paper_count){
+                      echo 'Absent In All';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
+            }elseif( $theory_abs_count==$theory_paper_count){
+              echo 'Absent In Theory';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
+            }
+            elseif( $p_abs_count==$p_paper_count){
+              echo 'Absent In Practical';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
+    }
               elseif(sizeof($atkt_paper_codes_array) > 0){
                 echo "ATKT in";
                 $atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
@@ -525,13 +541,14 @@
        if($check_grace_marks==true){
         echo $paper_master->theory_marks+ $paper_master->int_marks;
       }elseif(($paper_master->theory_marks<$paper_master->min_theory_marks) || ($paper_master->int_marks<$paper_master->min_internal_marks) || $paper_master->theory_marks=='ABS'|| $paper_master->int_marks=='ABS'){
-        echo $paper_master->theory_marks+ $paper_master->int_marks." F";
+        echo ($paper_master->theory_marks=='ABS' && $paper_master->int_marks=='ABS') ? 'ABS F' : $paper_master->theory_marks+ $paper_master->int_marks." F";
+
       }else{
         echo $paper_master->theory_marks+ $paper_master->int_marks;
       }
     }else{
       if($paper_master->p_marks=='ABS'){
-        echo '0 F';
+        echo ($paper_master->int_marks=='ABS') ? 'ABS F' : $paper_master->int_marks.' F';
       }elseif($paper_master->p_marks<$paper_master->min_theory_marks || $paper_master->int_marks<$paper_master->min_internal_marks){
         echo $paper_master->p_marks+$paper_master->int_marks.' F';
       }else{
@@ -542,6 +559,76 @@
     <?php } ?>
     <td class="align-middle text-center total"><?php  echo $total_marks_obt; ?></td>
   </tr>
+  <?php  
+  if($final_class && $isFinalClass == false){
+    $final_rw = 0;
+    $final_fail =0;
+    
+      $final_remark = "-"; 
+      $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$course_group_id,'mode'=>$classData[0]->mode,'id!='=>$class_id
+					));
+          // $this->Common_model->last_query();
+   foreach($classes as $cls){
+  $this->db->order_by('id','desc');
+  $this->db->limit(1);
+  $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id'=>$cls->id));
+  ?> <tr>
+  <td class="align-middle text-center "  colspan="2"><strong>
+  <?= 'Session'.'<br>'.'Sem/Year'.'<br>'.'Roll no'.'<br>'.'Marks'?></strong>
+ 
+</td> <?php
+ foreach($old_result as $old){
+  if($old->exam_result == "FAIL"){
+ $final_fail++;
+ $old->obtain_marks ='-';
+ $old->total_marks = '-';
+ 
+  }
+
+  $total_ob = $total_marks_obt + $old->obtain_marks;
+  $total_mar =  $total_paper_marks + $old->total_marks;
+  $percent = round(($total_ob/$total_mar)*100,2);    
+    if($percent>=60){
+      $div = "First";
+    }elseif($percent<60 && $percent>=40){
+      $div  = "Second";
+    }else{
+      $div = "Third";
+    }
+  ?> 
+  
+  
+ 
+<td class="align-middle text-center "  colspan="2">
+  <?= $old->exam_year.'<br>'.$this->Common_model->getClassNameByClassId($old->class_id).'<br>'.$old->roll_no.'<br>'.$old->obtain_marks.'/'.$old->total_marks?>
+ 
+</td>  
+ <?php }
+  }
+ if($final_result == "FAIL" || $final_result == "RW" || $final_fail !=0 ){
+  $total_ob = '-';
+  $total_mar = '-';
+  $percent = '-';
+  $div = '-';
+  if($final_fail !=0){
+    $final_result ='RWPM';
+    $final_remark ="RWPM";
+  }
+ }
+ 
+ ?>
+  
+<td class="align-middle text-center " ><strong>Result</strong><br><?= $final_result?></td>
+<td class="align-middle text-center "  colspan="2"><strong>Grand Total</strong><br><?= $total_ob.'/'.$total_mar?></td>
+<td class="align-middle text-center "  colspan="2"><strong>%</strong><br><?= $percent?></td>
+<td class="align-middle text-center "  colspan="2"><strong>Division</strong><br><?= $div?></td>
+<td class="align-middle text-center "  colspan="3"><strong>Degree No. And Date</strong><br>-</td>
+<td class="align-middle text-center "  colspan="2"><strong>Remark</strong><br><?= $final_remark?></td>
+  </tr>
+  <?php
+ 
+  }
+  ?>
 <?php if($isFinalClass){ ?>
   <?php if($final_result !="PASS" && !$check_grace_marks){  ?>
     <tr>

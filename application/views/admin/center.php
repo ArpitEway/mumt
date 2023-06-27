@@ -14,6 +14,7 @@
 				<thead>
 					<tr>
 						<th>#</th>
+						<th>Center ID</th>
 						<th>Center Code</th>
 						<th>Center Name</th>
 						<th>Contact Person</th>
@@ -34,6 +35,7 @@
     		?>
 					<tr>
 					<td><?php echo $i; ?></td>
+					<td><?php echo $center['id']; ?> </td>	
 					<td><?php echo $center['center_code']; ?> </td>	
 					<td><?php echo $center['center_name']; ?> </td>
 					<td><?php echo $center['contactpersonname']; ?> </td>
@@ -67,7 +69,7 @@
 	<a href="javascript:void(0);" class="btn btn-primary btn-md" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/center/edit/'.$center['id']); ?>', '<?php echo 'Update center' ?>')"> <i class="fas fa-pencil-alt"></i> </a>   <!--  <a href="javascript:void(0);" class="btn btn-danger btn-md" onclick="confirmModal('<?php echo site_url('admin/Admins/centers/delete/'.$center['id']); ?>', showAllcenters )"><i class="fas fa-trash-alt"></i> </a> -->
 	</div>
 </td>
-<td><a href="<?php echo site_url('admin/Admins/allot_course/'.$center['id']); ?>" class="btn btn-primary btn-sm" >Add courses </a></td>
+<td><a href="<?php echo site_url('admin/Admins/allot_course/'.$center['id']); ?>" class="btn btn-primary btn-sm" target="_blank" >Add courses </a></td>
 <?php } ?>
 </tr>
 				

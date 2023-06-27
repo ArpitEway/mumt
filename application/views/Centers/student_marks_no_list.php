@@ -6,6 +6,7 @@
 </div>
  <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 <div class="container-fluid mt-5 table-responsive" >
+
 	 <table id="kt_datatable" class="table table-striped nowrap"  >
 		<thead>
 			<tr>
@@ -21,12 +22,13 @@
 		<tbody>
 			<?php
 			$i = 1;
+			$roll = $this->Common_model->getMaster('roll_number_col');
 			foreach($students as $student){
 				
 				?>
 				   <tr>
 					<td><?php echo $i ; ?></td>
-					<td><?php echo $student->roll_no; ?></td>
+					<td><?php echo $student->$roll; ?></td>
 					<td><?php echo $student->enrollment_no; ?></td>
 					<td><?php echo $student->name; ?></td>
 					<td><?php echo $student->course_name; ?></td>

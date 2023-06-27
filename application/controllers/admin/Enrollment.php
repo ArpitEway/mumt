@@ -1152,6 +1152,7 @@
 	     	}*/
 		$data = array('provisional_remark' =>'N');	 
 		$update =  $this->Common_model->updateRecordByConditions('student',$where,$data);
+		$update_aug_22 =$this->Common_model->updateRecordByConditions('student_result_aug_22',$where,$data);
 		if($update){
 			$result = array("status" => "true");
 		}
@@ -1281,6 +1282,12 @@ public function getStudentData()
 			'hash_csrf' => $this->security->get_csrf_hash(),
 			'segment' => $segment
 		);
+		$this->db->select('DISTINCT YEAR(`tc_date`) as year');
+		$this->db->from('student');
+		$this->db->where('tc_date IS NOT NULL', NULL, FALSE);	
+		$this->db->order_by("year", "desc");
+		$query = $this->db->get();
+		$data['years']= $query->result_array();
 		$this->load->view('admin/tc_student_list',$data);
 		$this->load->view('footer');
 	}
@@ -1318,4 +1325,15 @@ public function getStudentData()
 			));
 		}
 	}//fun	
+
+	public function search_student_for_mode(){
+		$this->load->view('header',array('title' => 'Search Students'));
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);	
+		$this->load->view('admin/search_student_for_mode',$data );
+		$this->load->view('footer');
+	}//fun
+
 }

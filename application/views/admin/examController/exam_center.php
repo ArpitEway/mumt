@@ -18,7 +18,7 @@
 				<th>Center Supervisor Name</th>
 				<th>Center Supervisor Number-1</th>
 				<th>Center Supervisor Number-2</th>
-				<!--<th>Options</th>-->
+				<th>Options</th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -34,7 +34,7 @@
 				<th>Center Supervisor Name</th>
 				<th>Center Supervisor Number-1</th>
 				<th>Center Supervisor Number-2</th>
-				<!--<th>Options</th>-->
+				<th>Options</th>
 			</tr>
 			</tfoot>
 		<tbody>
@@ -57,16 +57,18 @@
 						<td><?php echo $examCenter['exam_fees']; ?></td>
 						<td><?php echo $examCenter['csnumber_1']; ?></td>
 						<td><?php echo $examCenter['csnumber_2']; ?></td>
-						<!--
+						
                 	<td>
                 	<div style="display: inline-flex;">
 					
-                		<a href="javascript:void(0);" class="dropdown-item" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/exam_center/edit/'.$examCenter['id']); ?>', '<?php echo 'Update course' ?>')"> <i class="mdi mdi-pencil edit-icon"></i></a>   
+                		<a href="javascript:void(0);" class="dropdown-item" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/exam_center/edit/'.$examCenter['id']); ?>', '<?php echo 'Update course' ?>')"> <i class="mdi mdi-pencil edit-icon"></i></a> 
+                		<!--  
                 		<a href="javascript:void(0);" class="dropdown-item" onclick="confirmModal('<?php echo site_url('admin/ExamController/exam_center/delete/'.$examCenter['id']); ?>', showAllcourse )"><i class="mdi mdi-delete delete-icon"></i></a>
+                		-->
                 	</div>	
 
                     </td>
-			-->
+			
 					</tr>
 				
 			

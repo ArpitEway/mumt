@@ -10,31 +10,21 @@
   border:0;
 }
 
-</style>
 
-<style>
   table, th, td {
     border: 1px solid black;
     padding: -10px;
     font-size: 18px;
+    vertical-align: middle !important;
+    padding: 0.75rem !important;
+    
   }
-/* table {
-  border-spacing: 15px;
-} */
+
 .table-bordered td{
   border:0;
 }
-.table td  {
-  padding :2px ;
-}
-.table th  {
-  padding :2px ;
-}
-{
-  height: 180px;
-  width: auto;
-  object-fit: cover;
-}
+
+
 @media print {
 	.breakhere { page-break-before:always;  };
 }
@@ -53,7 +43,7 @@ th.border.border-dark {
       <h1 class="text-center p-5" style="font-size:34px; color: #781e19;">Maharishi Mahesh Yogi Vedic Vishwavidyalaya</h1>
       <!-- <img src="<?=base_url()?>assets/images/maskgroup/Group1.png" class="img2" alt="">
       <h4 class="text-primary text-center mb-0">परीक्षा सत्र - जून 2022</h4> -->
-      <h4 class="text-primary text-center mb-0">Examination Held In Aug 2022</h4>
+      <h4 class="text-primary text-center mb-0">Examination Held In <?=$exam_session?></h4>
   </div>
 </div>
 <table class="table mb-0">
@@ -86,8 +76,8 @@ th.border.border-dark {
  <table class="table mb-0" >
       <tbody>
         <tr  id="tr_code"> 
-          <td style="border-bottom: 1px solid; border-left: 1px solid; border-top: 1px solid; text-align: center">संकेतांक <br> Paper Code</td>
-          <td style="border-bottom: 1px solid;border-left: 1px solid;border-top: 1px solid; vertical-align: middle;"><span class="ml-3">विषय:</span> <br> <span class="ml-3">SUBJECT</span></td>
+          <td style="border-bottom: 1px solid; border-left: 1px solid; border-top: 1px solid; text-align: center"> Paper Code</td>
+          <td style="border-bottom: 1px solid;border-left: 1px solid;border-top: 1px solid; vertical-align: middle;"> <span class="ml-3">SUBJECT</span></td>
           <td style="border-bottom: 1px solid;border-left: 1px solid;border-top: 1px solid; text-align: center ;vertical-align: middle">Credit</td>
           <td style="border-bottom: 1px solid;border-left: 1px solid;border-top: 1px solid; text-align: center ;vertical-align: middle">Grade</td>
           <td style="border-bottom: 1px solid;border-right: 1px solid;border-top: 1px solid;border-left: 1px solid; text-align: center ;vertical-align: middle">Grade Point</td>
@@ -178,12 +168,15 @@ th.border.border-dark {
 		var originalContents = document.body.innerHTML;
 
 		$('#'+divName).css("margin-top"," 20px");
-		$("#first_div").css("display","none");
+		
 		$("#print_btn").css("display", "none");
-		$("#submit_btn").css("display", "none");
-		$("#title_nm").css("display", "none");
-		$("#institute").css("display", "none");
-		$("#head_img").css("display", "none");
+		$(".offcanvas-footer").css("display", "none");
+		$("#radio_btn_select").css("display", "none");
+    $("#center").css("display", "none");
+    $(".content-head").css("display", "none");
+    $("#pro_remark").css("display", "none");
+    $("#result_msg").css("display", "none");
+    
 		window.print();
 		document.body.innerHTML = originalContents;
 	}

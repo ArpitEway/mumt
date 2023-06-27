@@ -2174,7 +2174,7 @@ public function getStudentData()
 
 	public function exam_form_status(){
 
-		$this->load->view('header',array('title' => 'Exam Form Status(Feb 2023)'));
+		$this->load->view('header',array('title' => 'Exam Form Status(June 2023)'));
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
@@ -2193,17 +2193,17 @@ public function getStudentData()
 		$data['not_filled_student'] = $this->Common_model->getCountByWhere('student',$where);
 
 		//backlog
-		$where = array('exam_form !=' =>'D');
-		$data['permitted_backlog_student'] = $this->Common_model->getCountByWhere('backlog_student',$where);
+		// $where = array('exam_form !=' =>'D');
+		// $data['permitted_backlog_student'] = $this->Common_model->getCountByWhere('backlog_student',$where);
 
-		$where = array('exam_form' =>'Y');
-		$data['filled_backlog_student'] = $this->Common_model->getCountByWhere('backlog_student',$where);
+		// $where = array('exam_form' =>'Y');
+		// $data['filled_backlog_student'] = $this->Common_model->getCountByWhere('backlog_student',$where);
 
-		$where = array('exam_form ' =>'S');
-		$data['skipped_backlog_student'] = $this->Common_model->getCountByWhere('backlog_student',$where);
+		// $where = array('exam_form ' =>'S');
+		// $data['skipped_backlog_student'] = $this->Common_model->getCountByWhere('backlog_student',$where);
 
-		$where = array('exam_form' =>'N');
-		$data['not_filled_backlog_student'] = $this->Common_model->getCountByWhere('backlog_student',$where);
+		// $where = array('exam_form' =>'N');
+		// $data['not_filled_backlog_student'] = $this->Common_model->getCountByWhere('backlog_student',$where);
 
 
 
@@ -2214,7 +2214,7 @@ public function getStudentData()
 
 	public function class_wise_exam_from_status(){
 
-		$this->load->view('header',array('title' => 'Class Wise Exam Form Status(Feb 2023)'));
+		$this->load->view('header',array('title' => 'Class Wise Exam Form Status(June 2023)'));
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
@@ -2222,6 +2222,19 @@ public function getStudentData()
 		$where = array('new_exam_form !=' =>'D' );
 		$data['counts']=$this->Common_model->new_exam_form_permission_status($where);
 		$this->load->view('admin/class_wise_exam_from_status',$data);
+		$this->load->view('footer');
+	}
+
+	public function class_wise_old_exam_from_status(){
+
+		$this->load->view('header',array('title' => 'Class Wise Exam Form Status(Feb 2023)'));
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		$where = array('exam_form !=' =>'D' );
+		$data['counts']=$this->Common_model->old_exam_form_permission_status($where);
+		$this->load->view('admin/class_wise_old_exam_from_status',$data);
 		$this->load->view('footer');
 	}
 
@@ -2981,10 +2994,15 @@ public function update_exam_datewise_permission(){
 		}
 		
 		$where =array("course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y', 'roll_number!='=>'0' ,'university_mode'=> $mode);
+		//,'student_id'=>702823
 		$this->db->order_by('center_id','ASC');
 		$this->db->order_by('roll_number','ASC');
-		// $data['students'] = $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y', 'roll_no!='=>'0'));
+		
+		// $data['students'] = $this->Common_model->getRecordByWhere('student_result_aug_22',$where);
+		
 		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
+		
+		// $this->Common_model->last_query();
 		$data['class_id'] = $class_id;
 		$data['pagenumber']=$pagenumber;
 		$data['course_group_id'] = $course_group_id;
@@ -3023,7 +3041,9 @@ public function update_exam_datewise_permission(){
 
 	public function tr_class_list(){
 		$where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' )";
-		// new_exam_form = 'Y' or
+		// new_exam_form = 'Y' or student_result_aug_22
+		// and class_id in (104,107,134,283,285,287,289,293,295,297,291)
+		
 		$data['courses'] = $this->Common_model->get_record('course_group','*',$where);
 		$this->load->view('header',array('title' => 'Class List'));
 		$this->load->view('admin/tr_class_list',$data);
@@ -3140,17 +3160,55 @@ public function update_exam_datewise_permission(){
 
 		if($class->last_class == 'L'){
 			$this->db->order_by('center_id,roll_number','ASC');
-			$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','course_complete'=>'Y','university_mode'=>$mode ));
+			$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','course_complete'=>'Y','university_mode'=>$mode,'old_result_show'=>'Y' ));
 		}else{
 			$this->db->order_by('center_id,roll_number','ASC');
-		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode));
+		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode,'old_result_show'=>'Y'));
 		}
-	 	if($class->internal=="Y"){
-			
+	 	if($class->internal=="Y" && $mode!="PVT"){
 			$this->load->view('admin/student_marksheet',$data);
 		}else{
 			$this->load->view('admin/student_marksheet_certificate',$data);
 		}
+	}
+
+	public function student_marksheet_grade($mode="",$course_id="",$class_id="",$startlimit=0)
+	{
+		$data = array('class_id' => $class_id,'course_group_id' =>$course_id );
+				$start=0;
+				
+		// 'enrollment_no'=>'AG/21220737'
+		// ,'enrollment_no'=>'AG/21200364'
+		$title = "Marksheet ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
+		
+		$class = $this->Common_model->getRecordByID('class_master','id',$class_id);
+
+		if($startlimit!=0){
+			$start=($startlimit-1)*1000;
+			$this->db->limit(1000,$start);
+			$pagetitle=$startlimit;
+		}	
+		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
+		$data['title'] = $title;
+		$data['university_mode'] = $mode;
+		// $this->load->model('Gradesheet_model');
+		$this->load->model('Gradesheet_model');
+
+		if($class->last_class == 'L'){
+			$this->db->order_by('center_id,roll_number','ASC');
+			$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','course_complete'=>'Y','university_mode'=>$mode ));
+		}else{
+			$this->db->order_by('center_id,roll_number','ASC');
+			// $this->db->limit(1);
+			//  $this->db->where('student_id = "373373"');
+		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode));
+		}
+	 	// if($class->internal=="Y" && $mode!="PVT"){
+			
+			$this->load->view('admin/student_marksheet_grade1',$data);
+		// }else{
+			// $this->load->view('admin/student_marksheet_certificate',$data);
+		// }
 	}
 
 	public function update_fees_in_program()
@@ -3267,13 +3325,14 @@ public function update_exam_datewise_permission(){
 		);
 		$titleData = array('title' => 'Internal  Marks Submission' );
 		$this->load->view('header',$titleData);
-		$this->db->order_by("int_marks_sub,student.course_group_id,student.class_id", "asc");
+		$this->db->order_by("int_marks_sub,student.course_group_id,student.old_class_id", "asc");
 		$this->db->select('*');
 		$this->db->from('student');
 		$this->db->join('new_exam_form', 'student.student_id = new_exam_form.student_id');
-		$this->db->join('class_master', 'student.class_id = class_master.id');
+		$this->db->join('class_master', 'student.old_class_id = class_master.id');
 		$this->db->group_by('new_exam_form.student_id');
-		$this->db->Where('new_exam_form','Y');
+		$this->db->Where('exam_form','Y');
+		$this->db->where('int_marks_sub','N');
 		$this->db->Where('paper_type','theory');
 		$this->db->where('university_mode','REG');
 		$this->db->where('class_master.internal','Y');
@@ -3395,13 +3454,13 @@ public function update_exam_datewise_permission(){
 		);
 		$titleData = array('title' => 'Practical  Marks Submission' );
 		$this->load->view('header',$titleData);
-		$this->db->order_by("p_marks_sub,student.course_group_id,student.class_id", "asc");
+		$this->db->order_by("p_marks_sub,student.course_group_id,student.old_class_id", "asc");
 		$this->db->select('*');
 		$this->db->from('student');
 		$this->db->join('new_exam_form', 'student.student_id = new_exam_form.student_id');
-		$this->db->join('class_master', 'student.class_id = class_master.id');
+		$this->db->join('class_master', 'student.old_class_id = class_master.id');
 		$this->db->group_by('new_exam_form.student_id');
-		$where = array('paper_type!='=>'theory','new_exam_form'=>'Y');
+		$where = array('paper_type!='=>'theory','exam_form'=>'Y','p_marks_sub'=>'N');
 		$this->db->Where($where);
 		$this->db->where_in('new_exam_form.p_marks',array('ABS','N'));
 		$this->db->where('university_mode','REG');
@@ -3472,8 +3531,11 @@ public function update_exam_datewise_permission(){
 
 	public function generate_tr_bed($mode="",$course_group_id="",$class_id=""){
 		$this->db->order_by('center_id,roll_number','ASC');
+		
 		$data['students'] = $this->Common_model->getRecordByWhere('student',array("university_mode"=>$mode,"course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y','roll_number!='=>'0' ));
-		//'result_show' => 'N'
+
+		// $data['students'] = $this->Common_model->getRecordByWhere('student_result_aug_22',array("university_mode"=>$mode,"course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y','roll_number!='=>'0' ));
+		//'result_show' => 'N' ,'student_id'=>'685381'
 		$data['class_id'] = $class_id;
 		$data['course_group_id'] = $course_group_id;
 		$data['title'] = "TR ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
@@ -3591,10 +3653,17 @@ public function update_exam_datewise_permission(){
 		$student_id = $_POST['student_id'];
 		$student= $this->Common_model->getRecordByWhere('student',array("student_id"=>$student_id));
 
-		$course = $this->Common_model->getRecordByWhere('course_group',array("id"=>$student[0]->course_group_id));
-
+		//$course = $this->Common_model->getRecordByWhere('course_group',array("id"=>$student[0]->course_group_id));
+		
+		$this->db->select('course.*,course_group.private_mode,course_group.mode');
+		$this->db->from('course');
+		$this->db->join('course_group', 'course.course_group_id = course_group.id');
+		$where = array('session'=>$student[0]->session,'course.course_group_id'=>$student[0]->course_group_id);
+		$this->db->where($where);	
+		$course = $this->db->get()->result();
+		
 		if ($student[0]->university_mode=='REG') {
-			if ($course[0]->admission_permission_pvt!='Y') {
+			if ($course[0]->admission_permission_private!='Y') {
 				$result = array("status" => false, "message"=> "COURSE NOT HAVE PERMISSION");
 				echo json_encode($result);
 				die();
@@ -3616,7 +3685,7 @@ public function update_exam_datewise_permission(){
 			}
 
 		}elseif($student[0]->university_mode=='PVT'){
-			if ($course[0]->admission_permission!='Y') {
+			if ($course[0]->admission_permission_regular!='Y') {
 				$result = array("status" => false, "message"=> "COURSE NOT HAVE PERMISSION");
 				echo json_encode($result);
 				die();
@@ -4120,18 +4189,7 @@ public function update_exam_datewise_permission(){
 		echo $this->load->view('admin/exam_center/exam_center_wise_billing_show',$data, TRUE);
 	}
 	
-	public function class_wise_old_exam_from_status(){
-
-		$this->load->view('header',array('title' => 'Class Wise Exam Form Status(DEC-2021)'));
-		$data = array(
-			'name_csrf' => $this->security->get_csrf_token_name(),
-			'hash_csrf' => $this->security->get_csrf_hash(),
-		);
-		$where = array('new_exam_form !=' =>'D' );
-		$data['counts']=$this->Common_model->old_exam_form_permission_status($where);
-		$this->load->view('admin/class_wise_old_exam_from_status',$data);
-		$this->load->view('footer');
-	}
+	
 	//Exam Center Wise Billing fetch
 	public function exam_center_billing_report(){
 		if(!$this->session->has_userdata('adminData')){
@@ -4420,9 +4478,37 @@ public function update_exam_datewise_permission(){
 		}
 		if($center_id!='')
 		{
+			$this->db->order_by('roll_no ','asc');
 			$data['listing'] = $this->Common_model->getRecordByWhere('student',$where);
 			$this->load->view('header',array('title' => 'Exam Center Wise Student List'));
 			$this->load->view('admin/exam_center_wise_student_list',$data); 
+			$this->load->view('footer');
+		}
+	}
+
+	public function exam_center_wise_backlog_student_list($center_id,$param='')
+	{
+	 $center_id = $this->Common_model->encrypt_decrypt($center_id,'decrypt');
+	 $param = $this->Common_model->encrypt_decrypt($param,'decrypt');
+	
+		if($param=='fill')
+		{
+			$where = array('exam_form'=>'Y','exam_center_id'=>$center_id);		
+		}
+		else{
+	     $this->db->group_start();
+		 $this->db->where('exam_form','N');
+		 $this->db->or_where('exam_form', 'S');
+		 // $this->db->or_where('exam_form', 'D');
+		 $this->db->group_end();
+		 $where = array('exam_center_id'=>$center_id);
+		}
+		if($center_id!='')
+		{
+			$this->db->order_by('roll_no ','asc');
+			$data['listing'] = $this->Common_model->getRecordByWhere('backlog_student',$where);
+			$this->load->view('header',array('title' => 'Exam Center Wise Backlog Student List'));
+			$this->load->view('admin/exam_center_wise_backlog_student_list',$data); 
 			$this->load->view('footer');
 		}
 	}
@@ -4539,6 +4625,82 @@ public function update_exam_datewise_permission(){
 			}
 		}
 	}
+
+	  public function application_field($param1 = '', $param2 = '', $param3 = ''){
+
+		if($param1 == 'create'){
+
+			$Data=array(
+				'field'=>$this->input->post('field'),
+				'amount'=>$this->input->post('amount')
+			);
+			$this->Common_model->insertAll('application_field',$Data);
+
+			$this->session->set_flashdata('ajax_flash_message','Account Successfully Added');
+			redirect(base_url().'application_field');
+
+		}
+		if($param1 == 'update'){
+
+			// $response = $this->admin_model->account_update($param2);
+			$where = "id= ".$param2."";
+			$Data=array(
+				'field'=>$this->input->post('field'),
+				'amount'=>$this->input->post('amount')
+			);
+			$this->Common_model->updateRecordByConditions('application_field',$where,$Data); 
+			$this->session->set_flashdata('ajax_flash_message','Account Successfully Updated');
+			redirect(base_url().'application_field');
+		}
+
+		if($param1 == 'delete'){
+
+			// $response = $this->admin_model->account_delete($param2);
+			$this->Common_model->deleteById('application_field','id',$param2);
+			$this->session->set_flashdata('ajax_flash_message','Account Successfully Deleted');
+			redirect(base_url().'application_field');
+		}
+
+		if(empty($param1) ){
+			$data = array(
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash()
+			);
+			$titleData = array('title' => 'Application Field');
+			$this->load->view('header',$titleData);
+			$data['field']= $this->Common_model->getRecordByWhere('application_field');
+			$this->load->view('admin/application_field',$data);
+			$this->load->view('footer');
+			
+		}    
+		
+	  }
+
+	  public function update_field_status()
+		{
+
+			if ($this->input->method() == "post") 
+			{
+				$id    = 0;
+
+				$id    = $this->input->post("id");
+				$status = $this->input->post("status");
+
+				if ($this->input->post("id")) 
+				{
+					$data = $this->Common_model->updateRecordByConditions("application_field",array("id" => $id ),array("status" => $status ));
+
+					$status = true;
+					$msg    = "";
+
+					echo json_encode(array(
+						"status" => $status,
+						"msg" => $msg,
+						"data" => $data
+					));
+				}
+			}
+		}
 
 	public function view_mode_change_complaint(){
 			

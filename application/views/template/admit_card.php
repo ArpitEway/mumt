@@ -44,12 +44,17 @@
 					<div class="col-12 text-center">
 						<h5>Schedule of Exam for Annual/Semester Examination of
 								<?php
-							if($student[0]->course_group_id==75 || $student[0]->course_group_id==76){
-								echo 'Feb 2023';
-							}else{
-								echo 'March 2023';
-							}
+								// if($student[0]->course_group_id==77)
+								// {
+								// 	echo '2023';
+								// }
+								// else if($student[0]->course_group_id==75 || $student[0]->course_group_id==76){
+								// 	echo 'Feb 2023';
+								// }else{
+								// 	echo 'March 2023';
+								// }
 							?> 
+							June 2023
 						</h5>
 					</div>
 				</div>
@@ -75,7 +80,7 @@
 								 <td rowspan="4"><img src="<?=base_url('assets/student_image/'.$student[0]->session.'/'.$student[0]->photo);?>"  width="115px" height="166px" /></td> 
 							</tr>
 							<tr>
-							  <td><b>Course: </b> <?=$student[0]->course_name;?> ( <?=$student[0]->class_name;?> )</td>
+							  <td><b>Course: </b> <?=$student[0]->course_name;?>  <?php if($student[0]->class_id!=163 && $student[0]->class_id!=175 ) echo '('.$student[0]->class_name.')';?> </td>
 							  <td colspan="2"><b>EC Code: </b><?=$student[0]->examcentercode;?></td>
 							</tr>
 							<tr>
@@ -132,7 +137,7 @@
 					<td><?php
 					if($paper->exam_shift=='Morning'){
 						echo '11:00 AM To 2:00 PM';
-					}elseif($paper->exam_shift=='Afternoon'){
+					}elseif($paper->exam_shift=='Afternoon' && $paper->class_id!=175 && $paper->class_id!=163){
 						echo '03:00 PM To 6:00 PM';
 					}else{
 						echo '12:00 To 3:00 PM';

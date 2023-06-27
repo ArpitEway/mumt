@@ -65,6 +65,7 @@
               <td align="center" height="120" colspan="2">
                 <table class="mytable" border="0" cellpadding="2" cellspacing="2" width="100%">
                   <tbody>
+                    <?php if($student->university_mode == 'REG'){?>
                     <tr>
                       <td class="Normaltext" colspan="2">
                         <div align="center"><font size="4">  &nbsp; </font></div>
@@ -73,6 +74,7 @@
                         <div align="center"><font size="4">  Regular </font></div>
                       </td>
                     </tr>
+                    <?php }?>
                     <tr>
                       <td width="35%" class="Normaltext" align="left"><div align="left">Roll No</div></td>
                       <td width="53%" class="resultText">
@@ -109,8 +111,11 @@
                     <tr>
                       <td class="Normaltext" align="left" width="29%"><div align="left">Department</div></td>
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;">
-                        <?php if ($student->center_id==10) {
-                          echo "University Teaching Department Karaundi";
+                        <?php 
+                        // if ($student->center_id==10) {
+                        $center_ids = array(10,13,21,22,23,24,25,26,27,28,29);
+                        if(in_array($student->center_id, $center_ids)){
+                          echo "University Teaching Department Karoundi";
                         }else if ($student->center_id==12) {
                           echo "Shiksha Vibhag, Lamti Jabalpur";
                         } ?>
@@ -205,6 +210,9 @@
                                 $fail_count++;
                                 $fali_tot_marks += $marks->p_marks;
                                 $require_tot_marks += $marks->min_theory_marks;
+                              }else if($marks->p_marks == 'ABS'){
+                                $result = 'FAIL';
+                                $abs_count++ ;
                               }
                             }else{
                               $tot_std_marks += $marks->p_marks;
@@ -214,6 +222,10 @@
                                 $fail_count++;
                                 $fali_tot_marks += $marks->p_marks;
                                 $require_tot_marks += $marks->min_theory_marks;
+                              }
+                              else if($marks->p_marks == 'ABS'){
+                                $result = 'FAIL';
+                                $abs_count++ ;
                               }
                             }
                           }
@@ -228,13 +240,45 @@
                         }
                         foreach($papers as $paper)
                         {
+                          
+                          $paper_name=$paper->paper_name;
+                          if($paper->class_id=="168"){
+                              if($paper->paper_code=="1RMOM3(A)")
+                              {
+                                $medium="Hindi";
+                              }elseif($paper->paper_code=="1RMOM3(B)"){
+                                $medium="English";
+                              }
+                                
+                                if($paper->paper_code=='1RMOM5')
+                              {
+                                if($medium=='Hindi'){$paper_name='Practical - I Typing Job I - Speed Test (Hindi-30 w.p.m.)'; }
+                                if($medium=='English'){$paper_name='Practical - I Typing Job I - Speed Test (English 40 w.p.m.)'; }		
+                              }
+                              
+                              if($paper->paper_code=='1RMOM6')
+                              {
+                                if($medium=='Hindi'){$paper_name='Practical - I Typing Job II - Speed Test (Hindi-30 w.p.m.)'; }
+                                if($medium=='English'){$paper_name='Practical - I Typing Job II - Speed Test (English 40 w.p.m.)'; }		
+                              }
+                              if($paper->paper_code=='1RMOM7')
+                              {
+                                if($medium=='Hindi'){$paper_name='Practical - I Typing Job III - Speed Test (Hindi-30 w.p.m.)'; }
+                                if($medium=='English'){$paper_name='Practical - I Typing Job III - Speed Test (English 40 w.p.m.)'; }		
+                              }
+                              if($paper->paper_code=='1RMOM8')
+                              {
+                                if($medium=='Hindi'){$paper_name='Practical- II Short Hand Speed (Hindi-100 w.p.m.)'; }
+                                if($medium=='English'){$paper_name='Practical- II Short Hand Speed (English 120 w.p.m.)'; }		
+                              }
+                            }
                           ?>
                           <tr>
                             <td colspan="9">&nbsp;</td>
                           </tr>
                           <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="middle">
                             <td style="margin-top:2px;" align="left"><strong><?php echo  $paper->paper_code; ?></strong></td>
-                            <td align="left"><strong><?php  echo $paper->paper_name ;  ?></strong></td>
+                            <td align="left"><strong><?php  echo $paper_name ;  ?></strong></td>
                             <td align="center" ><span class="style4">
                               <?php echo  ($paper->type !='Sessional')?$paper->max_theory_marks:'-';?></span>
                             </td>
@@ -298,17 +342,21 @@
                               if($paper->type=='Sessional'){
                                echo  $paper->int_marks;
                               }else{
-                             echo  ($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->int_marks : '-'; 
+                             if($paper->type=='theory' || $classData->practical_internal_marks=='Y'){
+                              echo ($paper->int_marks=='ABS') ? 'ABS F' : $paper->int_marks; 
+                             }else{
+                              echo '-';
+                             }
                               }?></span>
                             </td>
-                            <td align="left" class="style2"><span class="style4" style="padding-left:10px;">
+                            <td align="left" class="style2">&nbsp;&nbsp;&nbsp;&nbsp;<span class="style4" style="padding-left:10px;">
                               <?php 
                               if ($paper->type=='theory') {
                                 if($paper->int_marks<$paper->min_internal_marks || $paper->theory_marks<$paper->min_theory_marks){
                                   echo  $paper->theory_marks +  $paper->int_marks . '' ;
                                   echo ($check_grace_marks) ? ' G' : ' F';
                                 }elseif($paper->theory_marks=="ABS"){
-                                  echo 'ABS'. ' F' ;
+                                  echo ($paper->int_marks=='ABS') ? 'ABS F' : $paper->int_marks.' F';
                                 }else{
                                   echo $paper->theory_marks + $paper->int_marks;
                                 }
@@ -326,7 +374,7 @@
                                   if($paper->int_marks<$paper->min_internal_marks || $paper->p_marks<$paper->min_theory_marks && $check_grace_marks==false){
                                     echo  $paper->p_marks +  $paper->int_marks . ' F' ; 
                                   }elseif($paper->p_marks=="ABS" || $paper->int_marks=="ABS"){
-                                    echo 'ABS'. ' F' ;
+                                    echo ($paper->int_marks=='ABS') ? 'ABS F' : $paper->int_marks.' F';
                                   }else{
                                     echo $paper->p_marks + $paper->int_marks ;
                                   } 
@@ -334,7 +382,7 @@
                                   if($paper->p_marks<$paper->min_theory_marks && $check_grace_marks==false){
                                     echo  $paper->p_marks . ' F' ; 
                                   }elseif($paper->p_marks=="ABS"){
-                                    echo 'ABS'. ' F';
+                                    echo ($paper->int_marks=='ABS') ? 'ABS F' : $paper->int_marks.' F';
                                   }else{
                                     echo $paper->p_marks;
                                   }
@@ -431,7 +479,7 @@
                           ?><strong>Division</strong><?php
                         ?>
                       </td>
-                      <td><strong><?=$division?></strong>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;<strong><?=$division?></strong>
                       </td>
                       <?php
                         }else{
@@ -463,7 +511,7 @@
                         <?php endwhile; ?>
                         <?php if ($classData->last_class=="L"){ ?>
                         <th style="text-align:left;">Percentage</th>
-                        <th style="text-align:left;"><?php echo (!$isOneClass)? round(($gtot_obtain_marks/$gtot_total_marks)*100,2) :
+                        <th style="text-align:left;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo (!$isOneClass)? round(($gtot_obtain_marks/$gtot_total_marks)*100,2) :
                            round(($tot_std_marks/$tot_marks)*100,2)
                         ; ?>%</th>
                       <?php }else{ ?>

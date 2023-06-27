@@ -18,12 +18,12 @@
 
 </style>
 
-
+<?php $roll = $this->Common_model->getMaster('roll_number_col');?>
 <table class= "table table-bordered">
   <tbody>
     <tr>
      <td><strong>Enrollment No: </strong> <?=$detail[0]->enrollment_no;?></td>
-     <td><strong> Roll No: </strong><?=$detail[0]->roll_no;?></td>
+     <td><strong> Roll No: </strong><?=$detail[0]->$roll;?></td>
      <td  rowspan="5"> <img  class="student_img" src="<?php echo base_url('/assets/student_image/').$detail[0]->session.'/'.$detail[0]->photo;?>" ></td>
    </tr>
    <tr>
@@ -80,7 +80,13 @@
              $max_practical=  $student->max_theory_marks;
             $min_practical=  $student->min_theory_marks;
 
+            $center_ids_dep = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29);
+            $center_id =  $this->session->center_id;
+            if (in_array($center_id, $center_ids_dep)){
+              $percentage = 100;  
+            }
             $max_practical_percentage = round(($percentage / 100) * $max_practical);
+            
           
             for ($i=$min_practical; $i<=$max_practical_percentage; $i++){
             

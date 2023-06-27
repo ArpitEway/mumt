@@ -18,13 +18,13 @@
 
 </style>
 
-
+<?php $roll = $this->Common_model->getMaster('roll_number_col');?>
 <table class= "table table-bordered">
               
   <tbody>
   <tr>
       <td><strong>Enrollment No: </strong> <?=$detail[0]->enrollment_no;?></td>
-      <td><strong> Roll No: </strong><?=$detail[0]->roll_no;?></td>
+      <td><strong> Roll No: </strong><?=$detail[0]->$roll;?></td>
       <td  rowspan="5"> <img  class="student_img" src="<?php echo base_url('/assets/student_image/').$detail[0]->session.'/'.$detail[0]->photo;?>" ></td>
     </tr>
     <tr>
@@ -64,6 +64,11 @@
                 $paper_data=  $this->Common_model->getRecordByWhere("paper_master",array('class_id'=>$student->class_id,'paper_code'=>$student->paper_code));
                   
                 $percentage = 90;  
+                $center_ids_dep = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29);
+                $center_id =  $this->session->center_id;
+                if (in_array($center_id, $center_ids_dep)){
+                  $percentage = 100;  
+                }
                 $max_internal=  $paper_data[0]->max_internal_marks;
                 $min_internal=  $paper_data[0]->min_internal_marks; 
                 if($max_internal == 0){

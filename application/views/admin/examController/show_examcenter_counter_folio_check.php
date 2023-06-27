@@ -40,7 +40,7 @@
         }
         $marks="";
         if($university_mode=="REG") $marks= $paper[0]->max_theory_marks; if($university_mode=="PVT") $marks= $paper[0]->private_max_theory_marks;
-        $edate=date("d-m-Y", strtotime($paper[0]->exam_date));
+        $edate=date("d-m-Y", strtotime($paper[0]->old_exam_date));
         $heading='<table  align="center" style="width:1000px;">
         <tr><td colspan="2" class="tdheight"><h4 align="center">Maharishi Mahesh Yogi Vedic Vishwavidyalaya</h4></td></tr>
         <tr><td colspan="2" class="tdheight"><h4 align="center">  </h4></td></tr>
@@ -64,13 +64,14 @@
         </tr>
         
         <?php 
+         $roll = $this->Common_model->getMaster('roll_number_col');
             foreach($students[$examcenter] as $student){ $rowCounter++;
                 
             ?> 
             <tr>
                 <td  style="text-align:center;"><?php  echo $student->examcentercode; ?></td>
                 <td  style="text-align:center;"><?php  echo $student->enrollment_no; ?></td>
-                <td style="text-align:center;padding: 0px 3px 0px 3px;"><?php echo $student->roll_no;?></td>
+                <td style="text-align:center;padding: 0px 3px 0px 3px;"><?php echo $student->$roll;?></td>
                 
                 <td style='text-align:center;'><?php echo $student->theory_marks; ?></td>
                 

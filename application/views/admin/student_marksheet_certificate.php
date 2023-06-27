@@ -4,6 +4,9 @@
   <link href="css/print_Marksheet.css" rel="stylesheet" type="text/css">
   <title><?php echo (isset($title)) ? $title : ''; ?></title>
   <style type="text/css">
+    tr.rowHeight td {
+        padding: 0px;
+    }
     @media print {
       body {
         -webkit-print-color-adjust: exact;
@@ -72,15 +75,22 @@
               <td align="center" height="120" colspan="2">
                 <table class="mytable" border="0" cellpadding="2" cellspacing="2" width="100%">
                   <tbody>
+                    <?php
+                  if($university_mode=='REG'){
+                    ?>
+                 
                     <tr>
                       <td class="Normaltext" colspan="2">
                         <div align="center"><font size="4">  &nbsp; </font></div>
                       </td>
                       <td class="Normaltext">
-                        <div align="center"><font size="2">  <?php if($university_mode=='PVT') echo "Private"; else echo "Regular"; ?> </font></div>
+                        <div align="center"><font size="4">Regular </font></div>
                       </td>
                     </tr>
-                    <tr>
+                    <?php
+                     }
+                    ?>
+                    <tr class="rowHeight">
                       <td width="35%" class="Normaltext" align="left"><div align="left">Roll No</div></td>
                       <td width="53%" class="resultText">
                         <div align="left">
@@ -92,7 +102,7 @@
                         <img border="1"  class="student_image" src="<?= base_url('assets/student_image/'.$student->session.'/'.$student->photo) ?>" width="90px" height="105px">
                       </td>
                     </tr>
-                    <tr>
+                    <tr class="rowHeight">
                       <td class="Normaltext" align="left">
                         <div align="left">Enrolment / Registration No.</div>
                       </td>
@@ -100,7 +110,17 @@
                         <div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo  $student->enrollment_no;; ?></span></div>
                       </td>
                     </tr>
-                    <tr>
+                    <?php if($university_mode=='PVT'){ ?>
+                    <tr class="rowHeight">
+                      <td class="Normaltext" align="left" width="29%">
+                        <div align="left">Category</div>
+                      </td>
+                      <td class="resultText"><div align="left">
+                        <span id="lblSemesterGrading" style="color:Black;">N/C</span></div>
+                      </td>
+                    </tr>
+                    <?php } ?>
+                    <tr class="rowHeight">
                       <td class="Normaltext" align="left" width="29%">
                         <div align="left">Name of the Candidate</div>
                       </td>
@@ -108,7 +128,7 @@
                         <span id="lblSemesterGrading" style="color:Black;"><?php echo  $student->name; ?></span></div>
                       </td>
                     </tr>
-                    <tr>
+                    <tr class="rowHeight">
                       <td class="Normaltext" align="left" width="29%"><div align="left">Father's / Husband's Name</div></td>
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo strtoupper( $student->f_h_name); ?></span></div></td>
                     </tr>
@@ -151,6 +171,7 @@
                         $abs_count = 0 ;
                         $tot_std_marks = 0;
                         foreach($papers as $marks){
+                          if($university_mode=='REG'){
                           if($marks->type=='theory'){
                             $tot_std_marks += $marks->theory_marks;
                             $tot_marks += $marks->max_theory_marks;
@@ -174,6 +195,33 @@
                               $require_tot_marks += $marks->min_theory_marks;
                             }
                           }
+                        }else{
+
+                          if($marks->type=='theory'){
+                            $tot_std_marks += $marks->theory_marks;
+                            $tot_marks += $marks->private_max_theory_marks;
+                            if($marks->theory_marks<$marks->private_min_theory_marks){
+                              $result = "FAIL";
+                              $fail_count++;
+                              $fail_tot_marks += $marks->theory_marks;
+                              $require_tot_marks += $marks->private_min_theory_marks;
+                            }
+                            if($marks->theory_marks == 'ABS'){
+                              $result = 'FAIL';
+                              $abs_count++ ;
+                            }
+                          }else{
+                            $tot_std_marks += $marks->p_marks;
+                            $tot_marks += $marks->private_max_theory_marks;
+                            if($marks->p_marks<$marks->private_min_theory_marks){
+                              $result = "FAIL";
+                              $fail_count++;
+                              $fali_tot_marks += $marks->p_marks;
+                              $require_tot_marks += $marks->private_min_theory_marks;
+                            }
+                          }
+
+                        }
                         }
 
 // $aggregate_per =   ($tot_std_marks/$tot_marks) * 100;     
@@ -188,12 +236,13 @@
                         foreach($papers as $paper)
                         {
                           $paper_name = explode(' - ',$paper->paper_name);
+                         
                           ?>
                           <tr>
                             <td colspan="9">&nbsp;</td>
                           </tr>
                           <?php 
-                          if($class_id == 169){
+                          if($class_id == 169 && $university_mode=='REG' ){
                           if($tflag == 1) { echo '<tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.
                         '<td style="margin-top:2px;" align="left">'.'</td>'.
                             '<td colspan="8" align="left">'.'<strong>'.
@@ -212,16 +261,21 @@
                          
                             <td style="margin-top:2px;" align="left"><strong><?php echo  $paper->paper_code; ?></strong></td>
                            
-                            <td align="left"><strong><?php  echo ($paper_name[0] == 'Moukhiki')? $paper_name[1] : $paper->paper_name ;  ?></strong></td>
+                            <td align="left"><strong><?php if($paper_name[0] == 'Moukhiki'){ 
+                                echo (is_null($paper_name[1]))?$paper_name[0]:$paper_name[1];
+                              }else {
+                                 echo $paper->paper_name;
+                               } ?></strong></td>
                             <td align="center" ><span class="style4">
-                              <?php echo  $paper->max_theory_marks;?></span>
+                              <?php echo  ($university_mode=='REG')?$paper->max_theory_marks:$paper->private_max_theory_marks;?></span>
                             </td>
                             <td align="center" ><span class="style4">
-                              <?php echo  $paper->min_theory_marks; ?></span>
+                              <?php echo  ($university_mode=='REG')?$paper->min_theory_marks:$paper->private_min_theory_marks; ?></span>
                             </td>
                             
                             <td align="center" ><span class="style4" >
                               <?php
+                              if($university_mode=='REG'){
                               if ($paper->type=='theory') {
                                 if(($paper->theory_marks <  $paper->min_theory_marks) && $check_grace_marks==false){
                                   echo $paper->theory_marks . ' F' ;
@@ -242,29 +296,71 @@
                                     echo $paper->p_marks;
                                   }
                               }
-
-                              ?>
-                            </span></td>
-                            <td align="center" class="style2"><span class="style4">
-                              <?php 
+                            }else{
                               if ($paper->type=='theory') {
-                                if($paper->theory_marks<$paper->min_theory_marks){
-                                  echo  $paper->theory_marks . '' ;
-                                  echo ($check_grace_marks) ? ' G' : ' F';
-                                }elseif($paper->theory_marks=="ABS"){
-                                  echo 'ABS'. ' F' ;
+                                if(($paper->theory_marks <  $paper->private_min_theory_marks) && $check_grace_marks==false){
+                                  echo $paper->theory_marks . ' F' ;
+                                }elseif($paper->theory_marks<$paper->private_min_theory_marks){
+                                  echo $paper->theory_marks; 
+                                  echo ($check_grace_marks) ? ' G' : '';
+                                }elseif($paper->theory_marks=='ABS'){
+                                  echo 'ABS F';
                                 }else{
                                   echo $paper->theory_marks;
                                 }
                               }else{
-                                if($paper->p_marks<$paper->min_theory_marks && $check_grace_marks==false){
-                                  echo  $paper->p_marks . ' F' ; 
-                                }elseif($paper->p_marks=="ABS"){
-                                  echo 'ABS'. ' F';
-                                }else{
-                                  echo $paper->p_marks;
-                                }
+                                  if($paper->p_marks<$paper->private_min_theory_marks){
+                                    echo $paper->p_marks.' F';
+                                  }elseif($paper->p_marks=='ABS'){
+                                    echo 'ABS F';
+                                  }else{
+                                    echo $paper->p_marks;
+                                  }
                               }
+                            }
+                              ?>
+                            </span></td>
+                            <td align="center" class="style2"><span class="style4">
+                              <?php 
+                               if($university_mode=='REG'){
+                                  if ($paper->type=='theory') {
+                                    if($paper->theory_marks<$paper->min_theory_marks){
+                                      echo  $paper->theory_marks . '' ;
+                                      echo ($check_grace_marks) ? ' G' : ' F';
+                                    }elseif($paper->theory_marks=="ABS"){
+                                      echo 'ABS'. ' F' ;
+                                    }else{
+                                      echo $paper->theory_marks;
+                                    }
+                                  }else{
+                                    if($paper->p_marks<$paper->min_theory_marks && $check_grace_marks==false){
+                                      echo  $paper->p_marks . ' F' ; 
+                                    }elseif($paper->p_marks=="ABS"){
+                                      echo 'ABS'. ' F';
+                                    }else{
+                                      echo $paper->p_marks;
+                                    }
+                                  }
+                               }else{
+                                if ($paper->type=='theory') {
+                                  if($paper->theory_marks<$paper->private_min_theory_marks){
+                                    echo  $paper->theory_marks . '' ;
+                                    echo ($check_grace_marks) ? ' G' : ' F';
+                                  }elseif($paper->theory_marks=="ABS"){
+                                    echo 'ABS'. ' F' ;
+                                  }else{
+                                    echo $paper->theory_marks;
+                                  }
+                                }else{
+                                  if($paper->p_marks<$paper->private_min_theory_marks && $check_grace_marks==false){
+                                    echo  $paper->p_marks . ' F' ; 
+                                  }elseif($paper->p_marks=="ABS"){
+                                    echo 'ABS'. ' F';
+                                  }else{
+                                    echo $paper->p_marks;
+                                  }
+                                }
+                               }
                             ?></span>
                           </td>
                         </tr>
@@ -302,7 +398,7 @@
                         <td width="1%"><div align="center"></div></td>
                         <td width="8%"><div align="center"><strong></strong></div></td>
                         <td width="7%"><div align=""><strong>Result</strong></div></td>
-                        <td width="10%"><strong><?php echo $result ; ?></strong>
+                        <td width="10%">&nbsp;&nbsp;&nbsp;&nbsp;<strong><?php echo $result ; ?></strong>
                       </td>
                     </tr>
                     <tr>
@@ -330,7 +426,7 @@
                       </td>
                       <td><?php
                         if ($classData->last_class=="L") {
-                          ?><strong><?=$division?></strong><?php
+                          ?>&nbsp;&nbsp;&nbsp;&nbsp;<strong><?=$division?></strong><?php
                         }
                         ?>
                       </td>
@@ -345,7 +441,7 @@
                       <td> <?php if ($classData->last_class=="L") {
                           ?><strong>Percentage</strong>
                           <?php } ?></td>
-                      <td><strong><?= ($classData->last_class=="L") ? $percentage.' %' : '';?></strong></td>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;<strong><?= ($classData->last_class=="L") ? $percentage.' %' : '';?></strong></td>
                     </tr>
                     <tr>
                       <td colspan="8">

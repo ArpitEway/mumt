@@ -414,3 +414,7 @@ li.menu-item span.menu-text{
             bottom: 25px;
         }
     }
+    .form-control:disabled, .form-control[readonly] {
+        background-color: #F3F6F9;
+        opacity: 1;
+    }

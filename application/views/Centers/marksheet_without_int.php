@@ -200,12 +200,15 @@ if ($withheld) {
     var originalContents = document.body.innerHTML;
 
     $('#'+divName).css("margin-top"," 20px");
-    $("#first_div").css("display","none");
-    $("#print_btn").css("display", "none");
-    $("#submit_btn").css("display", "none");
-    $("#title_nm").css("display", "none");
-    $("#institute").css("display", "none");
-    $("#head_img").css("display", "none");
+		
+		$("#print_btn").css("display", "none");
+		$(".offcanvas-footer").css("display", "none");
+		$("#radio_btn_select").css("display", "none");
+    $("#center").css("display", "none");
+    $(".content-head").css("display", "none");
+    $("#pro_remark").css("display", "none");
+    $("#result_msg").css("display", "none");
+    
     window.print();
     document.body.innerHTML = originalContents;
   }
