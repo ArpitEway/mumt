@@ -69,7 +69,7 @@ li{
 </div>
 </div>
 <div class="dt-responsive mt-10">
-	<table id="memListTable" class="table table-striped">
+	<table id="memListTable" class="table table-striped dt-responsive">
 		<thead>
 			<tr>
 				<th>S.No.</th>
