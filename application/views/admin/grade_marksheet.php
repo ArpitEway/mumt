@@ -49,7 +49,7 @@ th.border.border-dark {
         </tr>
         <?php 
       
-        $gradesheetData = $this->Gradesheet_model->view_result($exam_data->student_id,$exam_data->course_group_id,$exam_data->class_id,$exam_data->university_mode);
+        $gradesheetData = $this->Gradesheet_old_model->view_result($exam_data->student_id,$exam_data->course_group_id,$exam_data->class_id,$exam_data->university_mode);
        
          ?>
       </tbody>
