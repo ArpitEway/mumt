@@ -66,15 +66,15 @@
             </tr>
             <tr>
               <td align="center" height="120" colspan="2">
-                <table class="mytable" border="0" cellpadding="2" cellspacing="2" width="100%">
+                <table class="mytable" border="0" cellpadding="1" cellspacing="1" width="100%">
                   <tbody>
                     <?php if($student->university_mode == 'REG'){?>
                     <tr>
                       <td class="Normaltext" colspan="2">
-                        <div align="center"><font size="4">  &nbsp; </font></div>
+                        <div align="center"><font size="3">  &nbsp; </font></div>
                       </td>
                       <td class="Normaltext">
-                        <div align="center"><font size="4">  Regular </font></div>
+                        <div align="center"><font size="3">  Regular </font></div>
                       </td>
                     </tr>
                     <?php }?>
@@ -533,7 +533,7 @@
               <!-- if starts -->
               <tr>
                 <td align="left" colspan="2">
-                  <table width="100%" style="margin-top:50px">
+                  <table width="100%" style="margin-top:80px">
                     <tr>
                     </tr>
                   </table>    
