@@ -3023,6 +3023,44 @@ public function update_exam_datewise_permission(){
 
 	}
 
+	public function backlog_generate_tr($mode="",$course_group_id="",$class_id="",$startlimit=0,$pagenumber=0){
+		$start=0;
+		if($startlimit==!0){
+			$start=($startlimit-1)*1000;
+			$this->db->limit(1000,$start);
+			$pagetitle=$startlimit;
+		}
+		
+		$where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'exam_form'=>'Y', 'roll_no!='=>'0' ,'mode'=> $mode);
+		//,'student_id'=>702823
+		$this->db->order_by('center_id','ASC');
+		$this->db->order_by('roll_no','ASC');
+		
+		// $data['students'] = $this->Common_model->getRecordByWhere('student_result_aug_22',$where);
+		
+		$data['students'] = $this->Common_model->getRecordByWhere('backlog_student',$where);
+		
+		// $this->Common_model->last_query();
+		$data['class_id'] = $class_id;
+		$data['pagenumber']=$pagenumber;
+		$data['course_group_id'] = $course_group_id;
+		$title = "TR ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
+		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
+		$data['title'] .= $title;//echo $this->db->last_query(); die;
+		$class_ids=array(101,104,107,110,116,119,125,128,131,134);
+		if((in_array($class_id, $class_ids)) && $mode=='REG')	
+		{
+			$this->load->model('Gradesheet_tr_model');
+			$this->load->view('admin/generate_gradesheet_tr',$data);
+		}
+		else if ($class_id!=168) {
+			$this->load->view('admin/backlog_generate_tr',$data);
+		}else{
+			$this->load->view('admin/generate_tr_mom',$data);
+		}
+
+	}
+
 	public function UpdateStudentDataMarks()
 	{
 		$students = $this->Common_model->get_record('student_data','*');
@@ -3047,6 +3085,17 @@ public function update_exam_datewise_permission(){
 		$data['courses'] = $this->Common_model->get_record('course_group','*',$where);
 		$this->load->view('header',array('title' => 'Class List'));
 		$this->load->view('admin/tr_class_list',$data);
+		$this->load->view('footer');
+	}
+
+	public function backlog_tr_class_list(){
+		$where = "id in (select distinct(course_group_id) from backlog_student where exam_form = 'Y' and exam_year='Dec 2022' )";
+		// new_exam_form = 'Y' or student_result_aug_22
+		// and class_id in (104,107,134,283,285,287,289,293,295,297,291)
+		
+		$data['courses'] = $this->Common_model->get_record('course_group','*',$where);
+		$this->load->view('header',array('title' => 'Backlog Class List'));
+		$this->load->view('admin/backlog_tr_class_list',$data);
 		$this->load->view('footer');
 	}
 
