@@ -30,6 +30,9 @@
       image-orientation: none;
     }
     @media print {
+       @page{
+        margin: 0;
+      }
       .breakhere { page-break-after:always;  };
     }
     th.border.border-dark {
@@ -55,7 +58,7 @@
         <table align="center" border="0" width="100%">
           <tbody>
             <tr>
-              <td height="100" colspan="2" valign="bottom">
+              <td height="130" colspan="2" valign="bottom">
                 <center>
                   <strong><?php echo  ($isOneClass) ? $student->course_name .' '."(One Year Course)" :$student->course_name .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->old_class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
                 </center>
