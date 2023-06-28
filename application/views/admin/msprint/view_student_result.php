@@ -191,6 +191,7 @@
                               <a href="#"  class="  btn-sm font-weight-bold marksheet_update" data-toggle="modal" data-student_name = "<?=$student->name ?>" data-record_id="<?php echo $id ?>"
                               data-roll_number = "<?= $res->roll_no; ?>" data-marksheet_date = "<?php echo date('d/m/Y', strtotime($res->marksheet_date)); ?>"  data-target="#kt_datepicker_modal" "  ><i class="fa fa-edit"></i></a>
                         </label>
+                         <label class="text-heading mt-3"><a href="<?= base_url( $this->session->account_type.'/marksheet/'.$id.'')?>" target="_blank"><i class="fa fa-eye"></i></a></label>
                      </div>
                  </div>
              <?php } ?>
