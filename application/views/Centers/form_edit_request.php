@@ -191,6 +191,8 @@ $("#allClassBycourse").on('change', function(){
 	var csrfName = $('.csrfname').attr('name');
 	var csrfHash = $('.csrfname').val(); 
 	var course_group_id = $(this).val();
+	var mode = $(".course_type").val();
+	
 	var session_course_type=$("#session_course_type").val();
 	$.ajax({
 		method: "POST",
@@ -198,6 +200,7 @@ $("#allClassBycourse").on('change', function(){
 		data: { 
 			course_group_id : course_group_id,
 			session_course_type:session_course_type,
+			mode:mode,
 			[csrfName]:csrfHash
 		},
 	})
