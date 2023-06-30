@@ -17,6 +17,7 @@
          $paper_details = $this->Common_model->getRecordByWhere('old_result_data',array('student_id' => $row->student_id,'class_id'=>$row->class_id,'exam_data_id'=>$row->id,'type'=>'theory'));
          $paperCount = $this->Common_model->getCountByWhere('old_result_data',array('student_id' => $row->student_id,'class_id'=>$row->class_id,'exam_data_id'=>$row->id,'type'=>'theory'));
          $absCount = $this->Common_model->getCountByWhere('old_result_data',array('student_id' => $row->student_id,'class_id'=>$row->class_id,'exam_data_id'=>$row->id,'type'=>'theory','theory_marks'=>'ABS'));
+         if($paperCount==$absCount){
          ?>
          <tr>
           <td><?php echo $i++; ?></td>
@@ -26,9 +27,9 @@
           <td><?php echo $row->course_name ; ?></td>
           <td> <?php  if($paperCount==$absCount){?> 
             <a class="text-danger" href="<?=base_url('admin/scripts/Postexam/set_demo/'.$row->student_id.'/'.$row->class_id)?>" target="_blank">Set Demo</a> <?php 
-            //  $where = array('student_id'=>$row->student_id,'new_exam_form'=>'D');
-            //  $data = array('demo'=>'Y','new_exam_form'=>'N');
-            //  $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+              $where = array('student_id'=>$row->student_id,'new_exam_form'=>'D');
+              $data = array('demo'=>'Y','new_exam_form'=>'N');
+              $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
             } else{?>
              <a class="text-info" href="<?=base_url('admin/scripts/Postexam/backlog_marks_update_scripts/'.$row->student_id.'/'.$row->class_id)?>" target="_blank">Set Backlog</a> <?php 
         //      $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$row->class_id,'student_id'=>$row->student_id,'exam_year'=>'Aug 2022'));
@@ -104,7 +105,7 @@
        </td>
        <td></td>
      </tr>
-     <?php
+     <?php }
    }    
  }    
  ?>
