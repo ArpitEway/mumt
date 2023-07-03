@@ -78,7 +78,7 @@ th.border.border-dark {
           <td class="text-center" style="vertical-align: middle;"><?=$gradesheetData['tot_credit'] ?></td>
           <td class="text-center" style="vertical-align: middle;"><?=$gradesheetData['obt_credit'] ?></td>
           <td class="text-center" style="vertical-align: middle;">-</td>
-          <td class="text-center" style="vertical-align: middle;"><?= round($gradesheetData['agpa'],2) ?></td>
+          <td class="text-center" style="vertical-align: middle;"><?= number_format((float)$gradesheetData['agpa'], 2, '.', '') ?></td>
           <td class="text-center" style="vertical-align: middle;">1</td>
           <td class="text-center" style="vertical-align: middle;"><?=$gradesheetData['result'] ?></td>
         </tr>

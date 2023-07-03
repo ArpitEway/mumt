@@ -5184,9 +5184,7 @@ public function forward_complaint(){
 		if((in_array($new_exam_form[0]->class_id , $class_ids)) && $data['exam_data']->university_mode=='REG'){
 			$this->load->model('Gradesheet_old_model');
 			$this->load->view('admin/grade_marksheet',$data);
-		}
-		else 
-		if($data['exam_data']->university_mode !="PVT" || $class->internal !='N'){
+		}else if($data['exam_data']->university_mode !="PVT" || $class->internal !='N'){
 			
 			$this->load->view('admin/marksheet_student',$data);
 		}else{
