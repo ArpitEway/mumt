@@ -923,10 +923,11 @@ class Center extends CI_Controller {
 		$where='';
 		$course_group_id = $this->input->post('course_group_id');
 		$session_course_type=$this->input->post('session_course_type');
+		$mode=$this->input->post('mode');
 		if(@$session_course_type){
 			$where.="session = '".$session_course_type ."' and ";
 		}
-		$where .= "course_group_id = ".$course_group_id." and enrolled = 'N'";
+		$where .= "course_group_id = ".$course_group_id." and enrolled = 'N' and university_mode='".$mode."'";
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{

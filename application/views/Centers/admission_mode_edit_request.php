@@ -223,12 +223,14 @@ $("#allClassBycourse").on('change', function(){
 	var csrfHash = $('.csrfname').val(); 
 	var course_group_id = $(this).val();
 	var session_course_type=$("#session_course_type").val();
+	var mode=$("#mode").val();
 	$.ajax({
 		method: "POST",
 		url: BASE_URL + "center/center/getStudent_By_Course",
 		data: { 
 			course_group_id : course_group_id,
 			session_course_type:session_course_type,
+			mode:mode,
 			[csrfName]:csrfHash
 		},
 	})
