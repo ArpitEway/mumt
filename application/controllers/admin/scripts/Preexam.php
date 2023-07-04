@@ -362,51 +362,54 @@ class Preexam extends CI_Controller {
 					'temp_exam_form' => "N",
 					'new_exam_form'=>"N" ,
 					'demo'=>"N",
+					'group_id!='=>"",
 		);
 			
 		$students = $this->Common_model->get_record('student','*',$where);
 		
-		$paperWhere=array('class_id'=>105,'ce'=>'compulsory');
+		$paperWhere=array('class_id'=>$class_id,'ce'=>'compulsory');
 		$papers = $this->Common_model->get_record('paper_master','*',$paperWhere);
 		$stCount=0;
 		foreach ($students as $student) {
 			$stCount++;
 			$where = array('student_id'=>$student['student_id']);
-			$data = array(
-				'student_id' => $student['student_id'],
-				'course_group_id' => $student['course_group_id'],
-				'class_id' => 105,//$student['class_id'],
-				);
 			
-			foreach ($papers as $paper) {
-				
-				$data['paper_id'] = $paper['id'];
-				$data['paper_code'] = $paper['paper_code'];
-				$data['paper_type'] = $paper['type'];
-				$data['paper_order'] = $paper['paper_no'];
-				$data['sub_group_id'] = $paper['sub_group_id'];
-				$this->Common_model->insertAll('new_exam_form',$data);
-    			echo $this->db->last_query().'<br>';
-				
-				//break;	
-			}
-		     echo "<br> Check Group ID ".$student['group_id']."<br>";
+			$group_id=$student['group_id'];
+		     echo "<br> Sr No.  ".$stCount."<br> Check Group ID ".$student['group_id']."<br>";
 				//for elective
-				if(!empty($student['group_id'])){
+				
 					$electiveWhere=array('id'=>$student['group_id'],'class_id'=>$class_id,'course_group_id'=>$student['course_group_id']);
 					$elective = $this->Common_model->get_record('group','*',$electiveWhere);
 					
 				
-					$electiveGroupWhere=array('class_id'=>105,'course_group_id'=>$student['course_group_id'],'group_name'=>$elective[0]['group_name']);
+					$electiveGroupWhere=array('class_id'=>$student['class_id'],'course_group_id'=>$student['course_group_id'],'group_name'=>$elective[0]['group_name']);
 					$electiveGroup = $this->Common_model->get_record('group','*',$electiveGroupWhere);
 				
+					$data = array(
+						'student_id' => $student['student_id'],
+						'course_group_id' => $student['course_group_id'],
+						'class_id' => $student['class_id'],
+						);
 					
+					foreach ($papers as $paper) {
+						
+						$data['paper_id'] = $paper['id'];
+						$data['paper_code'] = $paper['paper_code'];
+						$data['paper_type'] = $paper['type'];
+						$data['paper_order'] = $paper['paper_no'];
+						$data['sub_group_id'] = $paper['sub_group_id'];
+						$data['group_id'] = $electiveGroup[0]['id'];
+						$this->Common_model->insertAll('new_exam_form',$data);
+						echo $this->db->last_query().'<br>';
+											
+					}
+
 					$electivePaperWhere=array('group_id'=>$electiveGroup[0]['id']);
 					$electivePapers = $this->Common_model->get_record('group_paper','*',$electivePaperWhere);
 					$electiveData = array(
 						'student_id' => $student['student_id'],
 						'course_group_id' => $student['course_group_id'],
-						'class_id' => 105,//$student['class_id'],
+						'class_id' => $student['class_id'],
 						);
 					echo "Elective paper";
 					echo $this->db->last_query().'<br>';
@@ -420,17 +423,18 @@ class Preexam extends CI_Controller {
 						$electiveData['paper_type'] = $paperMaster[0]['type'];
 						$electiveData['paper_order'] = $paperMaster[0]['paper_no'];
 						$electiveData['sub_group_id'] = $electivePaper['sub_group_id'];
+						$electiveData['group_id'] = $electivePaper['group_id'];
 						$this->Common_model->insertAll('new_exam_form',$electiveData);
 						echo $this->db->last_query().'<br>';
-						
+						$group_id=$electivePaper['group_id'];
 					}	
 					
 					
-				}
-				$this->Common_model->updateRecordByConditions('student',$where,array('temp_exam_form' => "Y"));
-				if($stCount==2)
+				
+				$this->Common_model->updateRecordByConditions('student',$where,array('group_id'=>$group_id,'temp_exam_form' => "Y"));
+				if($stCount==1)
 				break;	
-			//SELECT * FROM `group` WHERE `class_id`=105 and `group_name`='Group A (History, Political Science, Sociology)';
+			
 			
 		}
 	}
