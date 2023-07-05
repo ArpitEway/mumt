@@ -626,10 +626,10 @@ class Upload_old_data extends CI_Model
             // echo $paper['group_paper_name'];
             if($paper['group_paper_name'] == 'FC1'){
                
-              echo     $ResultData1['result'] =  $this->result_this_fc1;
+                 $ResultData1['result'] =  $this->result_this_fc1;
             }else{
                
-               echo  $ResultData1['result'] =  $this->result_this_fc2;
+                $ResultData1['result'] =  $this->result_this_fc2;
             }
             $this->Common_model->insertAll('old_result_data',$ResultData1);
             echo $this->db->last_query().'<br>';
