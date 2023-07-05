@@ -392,13 +392,24 @@ class Preexam extends CI_Controller {
 						);
 					
 					foreach ($papers as $paper) {
-						
+						if($student['university_mode']=="PVT" && $paper['type']=='theory' )
+						{ 
 						$data['paper_id'] = $paper['id'];
 						$data['paper_code'] = $paper['paper_code'];
 						$data['paper_type'] = $paper['type'];
 						$data['paper_order'] = $paper['paper_no'];
 						$data['sub_group_id'] = $paper['sub_group_id'];
 						$data['group_id'] = $electiveGroup[0]['id'];
+						}
+						if($student['university_mode']=="REG"  )
+						{ 
+						$data['paper_id'] = $paper['id'];
+						$data['paper_code'] = $paper['paper_code'];
+						$data['paper_type'] = $paper['type'];
+						$data['paper_order'] = $paper['paper_no'];
+						$data['sub_group_id'] = $paper['sub_group_id'];
+						$data['group_id'] = $electiveGroup[0]['id'];
+						}
 						$this->Common_model->insertAll('new_exam_form',$data);
 						echo $this->db->last_query().'<br>';
 											
@@ -418,12 +429,23 @@ class Preexam extends CI_Controller {
 
 						$paperMasterWhere=array('id'=>$electivePaper['paper_id']);
 						$paperMaster = $this->Common_model->get_record('paper_master','*',$paperMasterWhere);
-						$electiveData['paper_id'] = $electivePaper['paper_id'];
-						$electiveData['paper_code'] = $electivePaper['paper_code'];
-						$electiveData['paper_type'] = $paperMaster[0]['type'];
-						$electiveData['paper_order'] = $paperMaster[0]['paper_no'];
-						$electiveData['sub_group_id'] = $electivePaper['sub_group_id'];
-						$electiveData['group_id'] = $electivePaper['group_id'];
+						if($student['university_mode']=="PVT" && $paperMaster[0]['type']=='theory' )
+						{ 
+							$electiveData['paper_id'] = $electivePaper['paper_id'];
+							$electiveData['paper_code'] = $electivePaper['paper_code'];
+							$electiveData['paper_type'] = $paperMaster[0]['type'];
+							$electiveData['paper_order'] = $paperMaster[0]['paper_no'];
+							$electiveData['sub_group_id'] = $electivePaper['sub_group_id'];
+							$electiveData['group_id'] = $electivePaper['group_id'];
+						}
+						if($student['university_mode']=="REG"){
+							$electiveData['paper_id'] = $electivePaper['paper_id'];
+							$electiveData['paper_code'] = $electivePaper['paper_code'];
+							$electiveData['paper_type'] = $paperMaster[0]['type'];
+							$electiveData['paper_order'] = $paperMaster[0]['paper_no'];
+							$electiveData['sub_group_id'] = $electivePaper['sub_group_id'];
+							$electiveData['group_id'] = $electivePaper['group_id'];
+						}
 						$this->Common_model->insertAll('new_exam_form',$electiveData);
 						echo $this->db->last_query().'<br>';
 						$group_id=$electivePaper['group_id'];
