@@ -2909,7 +2909,7 @@ public function getStudentData()
 			redirect(base_url('admin'));
 			exit;
 		}else{
-			$this->load->view('header',array('title' =>'Search Student Result'));
+			$this->load->view('header',array('title' =>'Search Student Old Result'));
 			$data = array(
 				'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash(),
