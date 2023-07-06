@@ -68,6 +68,22 @@
 						</div>
 					</div>
 				</div>
+				<div class="col-md-6">
+					<div class="row py-2">
+						<label class="col-sm-4 text-heading">Email</label>
+						<div class="col-sm-8 text-value">
+							<?php echo $studentContactData->p_email;  ?>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="row py-2">
+						<label class="col-sm-4 text-heading">Mobile Number</label>
+						<div class="col-sm-8 text-value">
+							<?php echo $studentContactData->p_mobile_no; ?>
+						</div>
+					</div>
+				</div>
 
 			</div>
 			<div class="col-sm-2">

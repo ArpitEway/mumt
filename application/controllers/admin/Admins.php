@@ -2051,11 +2051,13 @@ public function getStudentData()
 					$student = $this->Common_model->getRecordById('student','enrollment_no',$text_val);
 				}else if($text_val !='' && $radio_val == 'student_id'){
 					$student = $this->Common_model->getRecordById('student','student_id',$text_val);
-				}
-
+				} 
+				//$mobile_number = $this->Common_model->getSinglefield('student_data','p_mobile_no',array('student_id' => $student->student_id));
+				$studentContactData = $this->Common_model->getRecordById('student_data','student_id',$student->student_id);
 				$paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student->student_id ));
 				$data = array(
 					'student' => $student,
+					'studentContactData'=>$studentContactData,
 					'paymentDetails' => $paymentDetails,
 					'name_csrf' => $this->security->get_csrf_token_name(),
 					'hash_csrf' => $this->security->get_csrf_hash(),
@@ -2702,7 +2704,7 @@ public function update_exam_datewise_permission(){
 		if($Fess_head == 'Admission Fees'){
 	     $session = $student_details[0]->session;
 		}else{
-			$session = 'Dec 2022';
+			$session = 'June 2023';
 		}	
 		$class_id = $student_details[0]->class_id;
 		$name = $student_details[0]->name;
