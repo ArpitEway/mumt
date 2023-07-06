@@ -378,13 +378,13 @@ class Preexam extends CI_Controller {
 		     echo "<br> Sr No.  ".$stCount."<br> Check Group ID ".$student['group_id']."<br>";
 				//for elective
 				
-					$electiveWhere=array('id'=>$student['group_id'],'class_id'=>$class_id,'course_group_id'=>$student['course_group_id']);
+					$electiveWhere=array('id'=>$student['group_id'],'class_id'=>$student['old_class_id'],'course_group_id'=>$student['course_group_id']);
 					$elective = $this->Common_model->get_record('group','*',$electiveWhere);
 					
-				
+					
 					$electiveGroupWhere=array('class_id'=>$student['class_id'],'course_group_id'=>$student['course_group_id'],'group_name'=>$elective[0]['group_name']);
 					$electiveGroup = $this->Common_model->get_record('group','*',$electiveGroupWhere);
-				
+					
 					$data = array(
 						'student_id' => $student['student_id'],
 						'course_group_id' => $student['course_group_id'],
@@ -400,6 +400,7 @@ class Preexam extends CI_Controller {
 						$data['paper_order'] = $paper['paper_no'];
 						$data['sub_group_id'] = $paper['sub_group_id'];
 						$data['group_id'] = $electiveGroup[0]['id'];
+						$this->Common_model->insertAll('new_exam_form',$data);
 						}
 						if($student['university_mode']=="REG"  )
 						{ 
@@ -409,8 +410,9 @@ class Preexam extends CI_Controller {
 						$data['paper_order'] = $paper['paper_no'];
 						$data['sub_group_id'] = $paper['sub_group_id'];
 						$data['group_id'] = $electiveGroup[0]['id'];
-						}
 						$this->Common_model->insertAll('new_exam_form',$data);
+						}
+						
 						echo $this->db->last_query().'<br>';
 											
 					}
@@ -429,6 +431,7 @@ class Preexam extends CI_Controller {
 
 						$paperMasterWhere=array('id'=>$electivePaper['paper_id']);
 						$paperMaster = $this->Common_model->get_record('paper_master','*',$paperMasterWhere);
+						echo $paperMaster[0]['type'];
 						if($student['university_mode']=="PVT" && $paperMaster[0]['type']=='theory' )
 						{ 
 							$electiveData['paper_id'] = $electivePaper['paper_id'];
@@ -437,6 +440,7 @@ class Preexam extends CI_Controller {
 							$electiveData['paper_order'] = $paperMaster[0]['paper_no'];
 							$electiveData['sub_group_id'] = $electivePaper['sub_group_id'];
 							$electiveData['group_id'] = $electivePaper['group_id'];
+							$this->Common_model->insertAll('new_exam_form',$electiveData);
 						}
 						if($student['university_mode']=="REG"){
 							$electiveData['paper_id'] = $electivePaper['paper_id'];
@@ -445,8 +449,9 @@ class Preexam extends CI_Controller {
 							$electiveData['paper_order'] = $paperMaster[0]['paper_no'];
 							$electiveData['sub_group_id'] = $electivePaper['sub_group_id'];
 							$electiveData['group_id'] = $electivePaper['group_id'];
+							$this->Common_model->insertAll('new_exam_form',$electiveData);
 						}
-						$this->Common_model->insertAll('new_exam_form',$electiveData);
+						
 						echo $this->db->last_query().'<br>';
 						$group_id=$electivePaper['group_id'];
 					}	
