@@ -603,38 +603,39 @@ class Upload_old_data extends CI_Model
           
            
         foreach($papers as $paper){
-            $ResultData1 = array(
-                'exam_data_id' =>  $old_exam_data_id ,
-                'student_id' =>  $this->student->student_id ,
-                'course_group_id' => $this->student->course_group_id ,
-                'class_id' =>  $this->student->class_id ,
-                'paper_code'=> $paper['paper_code'] ,
-                'type'=> $paper['type'] ,
-                 'sub_group_id'=>$paper['sub_group_id'] ,
-                 'group_id'=>$paper['group_id'] ,
-                'max_theory_marks'=> $paper['max_theory_marks'],
-                'max_int_marks'=> $paper['max_int_marks'],
-                'min_theory_marks'=> $paper['min_theory_marks'],
-                'min_int_marks'=> $paper['min_int_marks'],
-                'theory_marks'=> $paper['theory_marks'],
-                'p_marks'=> $paper['p_marks'],
-                'int_marks'=> $paper['int_marks'],
-                'paper_name'=>  $paper['paper_name'],
-                // 'result' => $result ,
-                'p_order'=> $paper['paper_order'] 
-            );
-            // echo $paper['group_paper_name'];
-            if($paper['group_paper_name'] == 'FC1'){
-               
-                 $ResultData1['result'] =  $this->result_this_fc1;
-            }else{
-               
-                $ResultData1['result'] =  $this->result_this_fc2;
-            }
-            $this->Common_model->insertAll('old_result_data',$ResultData1);
-            echo $this->db->last_query().'<br>';
-        }
-        
+			if($paper['sub_group_id'] == 1){
+				$ResultData1 = array(
+					'exam_data_id' =>  $old_exam_data_id ,
+					'student_id' =>  $this->student->student_id ,
+					'course_group_id' => $this->student->course_group_id ,
+					'class_id' =>  $this->student->class_id ,
+					'paper_code'=> $paper['paper_code'] ,
+					'type'=> $paper['type'] ,
+					'sub_group_id'=>$paper['sub_group_id'] ,
+					'group_id'=>$paper['group_id'] ,
+					'max_theory_marks'=> $paper['max_theory_marks'],
+					'max_int_marks'=> $paper['max_int_marks'],
+					'min_theory_marks'=> $paper['min_theory_marks'],
+					'min_int_marks'=> $paper['min_int_marks'],
+					'theory_marks'=> $paper['theory_marks'],
+					'p_marks'=> $paper['p_marks'],
+					'int_marks'=> $paper['int_marks'],
+					'paper_name'=>  $paper['paper_name'],
+					// 'result' => $result ,
+					'p_order'=> $paper['paper_order'] 
+				);
+				// echo $paper['group_paper_name'];
+				if($paper['group_paper_name'] == 'FC1'){
+				
+					$ResultData1['result'] =  $this->result_this_fc1;
+				}else{
+				
+					$ResultData1['result'] =  $this->result_this_fc2;
+				}
+				$this->Common_model->insertAll('old_result_data',$ResultData1);
+				echo $this->db->last_query().'<br>';
+        	}
+	}
          }
         }
         $x++;
