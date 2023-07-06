@@ -453,7 +453,7 @@ class Upload_old_data extends CI_Model
 			$result = $this->result;
 		}
 		$per = $this->obt_marks*100/$this->total_marks;
-		$percentage = number_format((float)$per, 2, '.', '');
+		$percentage = round($per, 2);
         $examData = array(
             'student_id' => $this->student->student_id,
             'session' => $this->student->session,
