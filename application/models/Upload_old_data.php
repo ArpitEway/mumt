@@ -452,6 +452,8 @@ class Upload_old_data extends CI_Model
 		}else{
 			$result = $this->result;
 		}
+		$per = $this->obt_marks*100/$this->total_marks;
+		$percentage = number_format((float)$per, 2, '.', '');
         $examData = array(
             'student_id' => $this->student->student_id,
             'session' => $this->student->session,
@@ -472,7 +474,7 @@ class Upload_old_data extends CI_Model
             'photo'=>$this->student->photo,
             'total_marks'=>$this->total_marks,
             'obtain_marks'=>$this->obt_marks,
-            'percentage' => $this->obt_marks*100/$this->total_marks,
+            'percentage' => $percentage,
             'update_date'=>date('Y-m-d'),
             'exam_status'=>'R',
             'exam_result'=>$result

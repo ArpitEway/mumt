@@ -184,7 +184,7 @@
                     <tr>
                     <td width="17" align="center">
                   <div align="left">
-                    <?php echo "Date :".$marksheet_variables->result_date; ?></div></td>
+                    <?php echo "Date :".$exam_data->marksheet_date; ?></div></td>
                     </tr>
                   </table>    
                 </td>
@@ -192,7 +192,11 @@
              
                   <tr class="" >
                     <td colspan="" style="padding:2px;border:none">
-                      <?php  echo $generator->getBarcode($marksheet_variables->bar_code_no.$exam_data->roll_no, $generator::TYPE_CODE_128,2,25); ?>
+                      <?php   $arr=explode(" ",$exam_data->exam_year);
+                     $first=substr($arr[1], -2);
+                     $second=date('m',strtotime($arr[0]));
+                     $barcode_no=$first.$second.$exam_data->roll_no;
+                     echo $generator->getBarcode($barcode_no, $generator::TYPE_CODE_128,2,25); ?>
                     </td>
                   </tr>
                  
