@@ -373,7 +373,7 @@ class Gradesheet_tr_model extends CI_Model
 		if ($this->withheld==true) {
 			return $this->result = 'WITHHELD';
 		}
-		if ($this->fail_count!=0 && $this->obt_tot_credit>=20) {
+		if ($this->fail_count!=0 && $this->agpa>=4) {
 			if ($this->check_grace_marks) {
 				return	$this->result = 'PASS BY GRACE';
 			}else{
