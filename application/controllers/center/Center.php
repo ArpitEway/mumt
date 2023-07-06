@@ -1253,12 +1253,14 @@ class Center extends CI_Controller {
     		$where = array(
     			'temp_exam_form' =>'N',
     			'university_mode'=>'REG',
+				'class_name!='=>'II Year',
     		);
     	}else{
     		$titleData = array('title' => 'Paper Missing List (Private)' );
     		$where = array(
     			'temp_exam_form' =>'N',
     			'university_mode'=>'PVT',
+				'class_name!='=>'II Year',
     		);
     	}
     	$this->load->view('Centers/header',$titleData);
