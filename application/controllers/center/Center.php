@@ -2774,7 +2774,8 @@ public function practical_assignment_marks_edit(){
 			redirect(base_url());
 		}else{
 			if($course_type=="PVT")	 
-				$titleData = array('title' => 'Private to Regular Admission Mode Change Request');
+				redirect(base_url());
+				//$titleData = array('title' => 'Private to Regular Admission Mode Change Request');
 			else
 				$titleData = array('title' => 'Regular to Private Admission Mode Change Request');	
 			$this->load->view('Centers/header',$titleData);
