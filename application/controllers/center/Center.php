@@ -2773,10 +2773,12 @@ public function practical_assignment_marks_edit(){
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}else{
-			if($course_type=="PVT")	 
-				$titleData = array('title' => 'Private to Regular Admission Mode Change Request');
+			if($course_type=="REG"||$course_type=="reg")	
+			$titleData = array('title' => 'Regular to Private Admission Mode Change Request'); 
+				
 			else
-				$titleData = array('title' => 'Regular to Private Admission Mode Change Request');	
+			redirect(base_url());
+			//$titleData = array('title' => 'Private to Regular Admission Mode Change Request');	
 			$this->load->view('Centers/header',$titleData);
 			$id =  $this->session->center_id;
 			$request_detail = $this->Common_model->get_record('request','*',array());
