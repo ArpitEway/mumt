@@ -4244,7 +4244,10 @@ public function update_exam_datewise_permission(){
 	public function student_paper_delete()
 	{
   		 $student_id = $this->input->post('student_id');
-		$response = $this->Common_model->deleteById('new_exam_form','student_id',$student_id);
+		  $classid = $this->input->post('classid'); 
+		 $where=array("student_id"=>$student_id,"class_id"=> $classid);
+		 $response = $this->Common_model->deleteByWhere('new_exam_form',$where);
+		//$response = $this->Common_model->deleteById('new_exam_form','student_id',$student_id);
 		echo json_encode(array("status" => 'true'));
 		$where = array('student_id' => $student_id);
 		$data = array('temp_exam_form' => 'N');
