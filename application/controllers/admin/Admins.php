@@ -4226,7 +4226,7 @@ public function update_exam_datewise_permission(){
 		$cbcs = ($classData->cbcs == 'Y')?'Y':'N';
     	// print_r($data);
 	 	// die;
-    	$this->db->select('paper_master.*,new_exam_form.sub_group_id as sb');
+    	$this->db->select('paper_master.*,new_exam_form.sub_group_id as sub_group');
     	$this->db->from('paper_master');
     	$this->db->order_by('new_exam_form.sub_group_id,paper_order,paper_no');
     	$this->db->join('new_exam_form', 'paper_master.paper_code = new_exam_form.paper_code and  paper_master.class_id = new_exam_form.class_id');
@@ -4330,6 +4330,7 @@ public function update_exam_datewise_permission(){
 			$data['paper_type']=$paper['type'];
 			$data['book_code']=$paper['book_code'];
 			$data['paper_id']=$paper['id'];
+			$data['sub_group_id']=$paper['sub_group_id'];
 			$data['student_id']=$student_id;
 			$insert = $this->Common_model->insertAll('new_exam_form',$data);
 		}

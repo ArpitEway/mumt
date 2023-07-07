@@ -1226,7 +1226,7 @@ class Center extends CI_Controller {
 			);
 			$student = $this->Common_model->student_info($student_id);
 			$data['student'] = $student;
-			$this->db->select('paper_master.*,new_exam_form.sub_group_id');
+			$this->db->select('paper_master.*,new_exam_form.sub_group_id as sub_group');
 			$this->db->from('paper_master');
 			$this->db->order_by('new_exam_form.sub_group_id,paper_master.cbcs_paper,paper_order');
 			$this->db->join('new_exam_form', 'paper_master.paper_code = new_exam_form.paper_code and  paper_master.class_id = new_exam_form.class_id');
@@ -1361,6 +1361,7 @@ class Center extends CI_Controller {
 			$data['book_code']=$paper['book_code'];
 			$data['paper_id']=$paper['id'];
 			$data['paper_order']=$paper['paper_no'];
+			$data['sub_group_id']=$paper['sub_group_id'];
 			$data['student_id']=$student_id;
 			$insert = $this->Common_model->insertAll('new_exam_form',$data);
 		}
