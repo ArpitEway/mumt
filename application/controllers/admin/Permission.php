@@ -208,6 +208,26 @@ class Permission extends CI_Controller {
 		}
 	}
 
+	public function update_backlog_result_permission(){
+		$status =  $this->input->post('backlog_result_permission');
+     
+		if(isset($_POST['class_id'])){
+			$class_id =  $this->input->post('class_id');
+			$where = array('id'=>$class_id);
+		}
+
+        if($status!=''){
+        	$st = ($status == 'Y') ? 'N' : 'Y';
+        	$data=array('backlog_result_permission'=>$st);
+        }
+        
+		$res=$this->Common_model->updateRecordByConditions('class_master',$where,$data);
+		if($status == 'Y'){
+			echo json_encode(array('success'=>true));
+		}else if($status == 'N'){
+			echo json_encode(array('error'=>false));
+		}
+	}
 
 	public function center_wise_permission()
 

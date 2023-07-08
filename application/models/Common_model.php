@@ -912,6 +912,17 @@ class Common_Model extends CI_Model{
 		return $this->db->get()->result();
 	}
 
+	public function student_info_for_backlog_result($student_id,$class_id)
+	{
+		$this->db->select('*');
+        $this->db->from('paper_master');
+        $this->db->order_by('backlog_exam_form.paper_order,paper_no','ASC');
+        $this->db->join('backlog_exam_form', 'paper_master.paper_code = backlog_exam_form.paper_code');
+        $this->db->where('backlog_exam_form.student_id',$student_id);
+        $this->db->where('backlog_exam_form.class_id',$class_id);
+		return $this->db->get()->result();
+	}
+
 	public function hasOneClass($course_id)
 	{
 		$this->db->select('*');
@@ -932,6 +943,17 @@ class Common_Model extends CI_Model{
 		$this->db->join('paper_master', 'new_exam_form.paper_id = paper_master.id');
 		$this->db->where('new_exam_form.class_id',$class_id); 
 		$this->db->where('new_exam_form.student_id',$student); 
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	public function backlog_notification_marks_details_($student,$class_id)
+	{
+		$this->db->select('*');
+		$this->db->from('backlog_exam_form');
+		$this->db->join('paper_master', 'backlog_exam_form.paper_code = paper_master.paper_code');
+		$this->db->where('backlog_exam_form.class_id',$class_id); 
+		$this->db->where('backlog_exam_form.student_id',$student); 
 		$query = $this->db->get();
 		return $query->result();
 	}

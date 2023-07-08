@@ -1892,6 +1892,33 @@ class Center extends CI_Controller {
 		$this->load->view('Centers/footer');		
 	}
 
+	public function backlog_result()
+	{
+		
+		$center_id =  $this->session->center_id;
+        $where = array('center_id'=>$center_id);
+		$data = array('name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		$this->db->select('distinct(backlog_student.course_group_id) as course_group_id , course_group.course_name');
+		$this->db->from('backlog_student');
+		
+		$this->db->join('course_group', 'backlog_student.course_group_id = course_group.id');
+		$this->db->join('class_master', 'class_master.course_group_id = course_group.id');
+		//$this->db->where('class_master.id', 'student.class_id');
+		
+		$this->db->where('class_master.backlog_result_permission', 'Y');
+		$this->db->where('center_id', $center_id);
+		$this->db->where('result_show','Y');
+		$this->db->where('exam_form','Y');
+		//$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,197,203,211,213)');
+		$data['courses'] = $this->db->get()->result();
+		//  echo $this->db->last_query(); die;
+		$this->load->view('Centers/header', array('title' => 'Backlog Result'));
+		$this->load->view('Centers/backlog_result',$data);
+		$this->load->view('Centers/footer');		
+	}
+
 	public function AllClassByCourse()
 	{
     $course = $this->input->post('course_group_id');
@@ -1909,13 +1936,18 @@ class Center extends CI_Controller {
 		echo $this->load->view('template/getclass',$data,true);
 	}
 
-	public function AllClassByCourseForResult()
+	public function AllClassByCourseForResult($backlog ='')
 	{
     $course = $this->input->post('course_group_id');
 	$this->db->select('*');
 	$this->db->from('class_master');
 	// $this->db->where('exam_form_permission','Y');
-	$this->db->where('class_master.result_permission', 'Y');
+	if($backlog == ''){
+		$this->db->where('class_master.result_permission', 'Y');
+	}else{
+		$this->db->where('class_master.backlog_result_permission', 'Y');
+	}
+	
 	$this->db->where('course_group_id',$course);
 	$class_list = $this->db->get()->result_array();	
 	//echo $this->db->last_query(); 	
@@ -2017,6 +2049,88 @@ class Center extends CI_Controller {
 		echo json_encode($output);
 	}
 
+	public function getStudentListForBacklogMarksheet(){
+		
+		$data = $row = array();
+		// $where1 ='';
+	
+		$where = array('center_id' => $this->session->center_id,'exam_form'=>'Y','result_show'=>'Y');
+	
+
+		if($_POST['course_group_id']!='All' and $_POST['course_group_id']!=''){
+			$where['backlog_student.course_group_id'] = $this->input->post('course_group_id');
+			
+		}
+		// else{
+		// 	$where1 = " `center_id` = ".$this->session->center_id."
+		// 	AND `exam_form` = 'Y'
+		// 	AND `result_permission` = 'Y'and ((student.course_group_id!=12 ) or (student.course_group_id=12 and university_mode='PVT' ) ) and ((student.course_group_id!=13 ) or (student.course_group_id=13 and university_mode='PVT' ) ) ";
+		// }
+		if($_POST['class_id']!='All' and $_POST['class_id']!=''){
+			$where['class_id'] = $this->input->post('class_id');
+		
+		}
+		// if($this->input->post('course_group_id') == 12 || $this->input->post('course_group_id') == 13){
+		// 	$where['university_mode'] = 'PVT';
+		// }
+		// $where['class_master.result_permission'] = 'Y';
+		// Fetch member's records
+		
+		$column_order = array('backlog_student.student_id','enrollment_no','course_group_id','backlog_student.class_id',null);
+		$column_search = array('backlog_student.student_id','enrollment_no','course_group_id','backlog_student.class_id');
+	
+		$DataTableArray = array(
+			'select' => 'backlog_student.*',
+			'column_order' => $column_order,
+			'column_search' => $column_search,
+			'where' => $where,
+			'table' => 'backlog_student',
+			'table2' => 'class_master',
+			'joinOn' => 'backlog_student.class_id=class_master.id'
+		);
+		// if($where1 != ''){
+		// $this->db->where($where1);
+		// }
+		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
+		//  $this->Common_model->last_query();
+		//die;
+		$i = $_POST['start'];
+		foreach($tableData as $result){
+			$student = $this->Common_model->getRecordById('student','student_id',$result->student_id);
+			   
+			// if($result->provisional_remark=="N" || $result->provisional_remark==""){
+				// if(($result->old_class_id == '104' || $result->old_class_id == '107' || $result->old_class_id == '101' || $result->old_class_id == '134' || $result->old_class_id == '116'|| $result->old_class_id == '110' || $result->old_class_id == '119' || $result->old_class_id == '131') && $result->university_mode == 'REG')
+				$class_ids=array(101,104,107,110,116,119,125,128,131,134);
+				if((in_array($result->old_class_id , $class_ids)) && $result->university_mode=='REG')	
+				{
+					$btn =	'<a href="'.base_url('center/Center/grade_marksheet/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm dt-center" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
+				}else{
+					$btn =	'<a href="'.base_url('center/Center/backlog_marksheet/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm dt-center" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
+				}
+			
+			// }
+			$i++;
+			if($result->enrolled=='N'){
+				$enrollment = '-';
+			}else{
+				$enrollment = $result->enrollment_no;
+				}
+			$class_name =  $this->Common_model->getClassNameByClassId($result->old_class_id); 
+			$data[] = array($result->student_id,$enrollment,$student->name, $student->f_h_name, $student->course_name,$this->Common_model->getClassNameByClassId($result->class_id),$btn);
+		}
+
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->Datatable_join_model->joincountAll($_POST,$DataTableArray),
+			//"recordsTotal" => $this->Datatable_join_model->countAll('student',$where),
+			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
+			"data" => $data,
+		);
+
+// Output to JSON format
+		echo json_encode($output);
+	}
+
 
 	public function marksheet($student_id="")
 	{
@@ -2053,6 +2167,48 @@ class Center extends CI_Controller {
 				$this->load->view('Centers/marksheet_mom',$data);
 			}else{
 				$this->load->view('Centers/marksheet_bottom',$data);
+			}
+			
+		$this->load->view('admin/generate_tr/footer2');
+	}
+}
+
+public function backlog_marksheet($student_id="")
+	{
+		// $provisional=array("","N");
+		// $this->db->where_in('provisional_remark', $provisional);
+		
+		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		$student = $this->Common_model->getRecordByWhere('backlog_student',array('exam_form'=>'Y','result_show'=>'Y','student_id'=>$student_id));
+		// ($student->course_group_id == 12 && $student->university_mode == 'REG') || ($student->course_group_id == 13 && $student->university_mode == 'REG')
+		if ((count($student)==0)  ) {
+			redirect(base_url());
+		}
+		$data['students'] =$this->Common_model->getRecordById('student','student_id',$student[0]->student_id);
+		$data['student']=$student[0];
+		$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
+		$data['practical_internal_marks']=$classData->practical_internal_marks;
+		$this->db->select('*');
+		$this->db->from('backlog_exam_form');
+		$this->db->where('backlog_exam_form.student_id',$data['student']->student_id);
+		$this->db->where('backlog_exam_form.class_id',$data['student']->class_id);
+		$this->db->order_by('backlog_exam_form.paper_order','backlog_exam_form.paper_order');
+		$new_exam_form = $this->db->get()->result();
+		$data['new_exam_form']  = $new_exam_form;
+		$data['classData']  = $classData;
+		$data['exam_session']  = 'March 2023';
+		$title = array('title' => 'Result - '.$data['student']->enrollment_no);
+		$this->load->view('admin/generate_tr/header2',$title);	
+		//$this->load->view('Centers/marksheet',$data);
+		$this->load->view('Centers/marksheet_top_backlog',$data);
+		//if ($student[0]->course_group_id==36 || $student[0]->course_group_id==37 || $student[0]->course_group_id==33) {
+		if($classData->internal=='N'){
+			$this->load->view('Centers/marksheet_without_int',$data);
+		}else{
+			if($student[0]->old_class_id=='168'){
+				$this->load->view('Centers/marksheet_mom',$data);
+			}else{
+				$this->load->view('Centers/marksheet_bottom_backlog',$data);
 			}
 			
 		$this->load->view('admin/generate_tr/footer2');

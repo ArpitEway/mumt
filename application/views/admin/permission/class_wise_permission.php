@@ -14,6 +14,7 @@
           <th>Exam Form Permission</th>
           <th>Backlog Exam Form Permission</th>
           <th>Result Permission</th>
+          <th>Backlog Result Permission</th>
           <th>Final Result Permission</th>
           <th>Admit Card Permission</th>
 			</tr>
@@ -50,6 +51,12 @@
             <td>
              <button id="btn1_<?php echo  $class->id?>" <?php if($class->result_permission=='Y' ){echo "class='btn btn-success'" ;}else{echo "class='btn btn-danger' ";} ?> onclick="statusChangeresult(<?php echo $class->id;  ?>,'<?php echo $class->result_permission;?>')">
               <?php if($class->result_permission=='Y' ){echo "Yes" ;}else{
+                echo " No";
+              } ?></button>
+            </td>
+            <td>
+             <button id="btnbr_<?php echo  $class->id?>" <?php if($class->backlog_result_permission=='Y' ){echo "class='btn btn-success'" ;}else{echo "class='btn btn-danger' ";} ?> onclick="statusChangebacklogresult(<?php echo $class->id;  ?>,'<?php echo $class->backlog_result_permission;?>')">
+              <?php if($class->backlog_result_permission=='Y' ){echo "Yes" ;}else{
                 echo " No";
               } ?></button>
             </td>
@@ -176,6 +183,32 @@
           $("#btn1_"+id).html("Yes");
            var s="statusChangeresult("+ id +",'Y')";
           $("#btn1_"+id).attr("onclick",s);
+        }
+      }
+    });
+  }
+
+  function statusChangebacklogresult(id,backlog_result_permission){
+        var csrfName = $('.csrfname').attr('name');
+    var csrfHash = $('.csrfname').val(); 
+      $.ajax({
+       url: BASE_URL+"admin/Permission/update_backlog_result_permission",
+        type:"post",
+        dataType: 'json',
+        data:{"class_id":id,"backlog_result_permission":backlog_result_permission,[csrfName]:csrfHash},
+        success: function(response){
+          if(response.success==true){
+          $("#btnbr_"+id).removeClass("btn btn-success");
+          $("#btnbr_"+id).addClass("btn btn-danger");
+          $("#btnbr_"+id).html("No");
+           var s="statusChangebacklogresult("+ id +",'N')";
+          $("#btnbr_"+id).attr("onclick",s);
+        }else  if(response.error==false){
+          $("#btnbr_"+id).removeClass("btn btn-danger");
+          $("#btnbr_"+id).addClass("btn btn-success");
+          $("#btnbr_"+id).html("Yes");
+           var s="statusChangebacklogresult("+ id +",'Y')";
+          $("#btnbr_"+id).attr("onclick",s);
         }
       }
     });
