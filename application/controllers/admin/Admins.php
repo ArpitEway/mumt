@@ -12,6 +12,14 @@ class Admins extends CI_Controller {
 		$this->load->model('Datatable_model');
 		$this->load->model('Datatable_join_model');
 		$this->load->library('numbertowordconvertsconver');
+		$this->master = $this->Common_model->getSingleRow('master');
+		 $this->exam_table = $this->master->student_exam_table;
+		 $this->exam_form = $this->master->exam_form_col;
+		 $this->roll_no = $this->master->roll_number_col;
+		 $this->result_table = $this->master->student_result_table;
+		 $this->old_result_table = $this->master->old_student_result_table;
+		 $this->exam_form_table = $this->master->exam_form_table;
+		 $this->old_exam_form_table = $this->master->old_exam_form_table;
 	}
 
 	public function index(){
@@ -2261,9 +2269,13 @@ public function getStudentData()
 		}else{
 			$admin_id = $this->session->admin_id;
 			$course_group = $this->db->get_where('course_group', array('exam_form_permission' => 'Y'))->result_array();
+			$course_groupids = array_column($course_group, 'id');
+			$this->db->where_in('course_group_id',$course_groupids);
+		   $this->db->order_by('course_name', "asc");
+		   $course_group = $this->Common_model->get_record('student','DISTINCT(course_group_id) as  course_group_id,course_name' ,array($this->exam_form=>'Y'));
 			$data = array('course_group' => $course_group,
 				'name_csrf' => $this->security->get_csrf_token_name(),
-				'hash_csrf' => $this->security->get_csrf_hash()
+				'hash_csrf' => $this->security->get_csrf_hash(),
 			);
 			$this->load->view('header');
 			$this->load->view('admin/class_wise_result_upload_status',$data);
@@ -5249,7 +5261,89 @@ public function forward_complaint(){
 		
 		$this->load->view('admin/generate_tr/footer2');
 	}
+	
+	public function class_wise_remaining_theory_marks_count(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else{
+			
+			$admin_id = $this->session->admin_id;
+			$class_data = $this->db->get_where('class_master', array('result_permission' => 'Y'))->result_array();
+			$class_dataids = array_column($class_data, 'id');
+			$this->db->where_in('class_id',$class_dataids);
+		
+		  $courseData= $this->Common_model->get_record_group_by_where('student','course_group_id,class_id,class_name,course_name',array($this->exam_form=>'Y'));
+			$data = array('course_group' => $courseData,
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+			);
+			$this->load->view('header',array('title' => 'Class Wise Remaining Theory Marks'));
+			$this->load->view('admin/class_wise_remaining_theory_marks_count',$data);
+			$this->load->view('footer');
+		}
+	}
 
+	public function bulk_permission(){
+
+		if($this->session->has_userdata('adminData')){
+
+			$admin_id = $this->session->admin_id;
+
+			$data = array('name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash()
+			);
+
+			$this->load->view('header',array('title' => 'Bulk Permission For All Centers'));
+			$this->load->view('admin/director/bulk_permission',$data);
+			$this->load->view('footer');
+		}
+		else
+		{
+			redirect(base_url('admin/login'));
+		}
+	}
+
+	public function update_center_permission()
+	{
+
+		if ($this->input->method() == "post") 
+		{
+
+			$parameter1   	= $this->input->post("param_name");
+			$permisssion    = $this->input->post("permission");
+
+			$data = array($parameter1 => $permisssion);
+			
+			$res = $this->Common_model->updateRecordByConditions('center',$where,$data);
+			
+			//echo $this->db->last_query();
+
+
+			$dt = $this->db->get_where("center",array($parameter1 => $permisssion))->row();
+
+			if($dt->$parameter1 == 'Y')
+			{
+				$sts_btn = '<a class="btn btn-primary" onclick="update_permission(\''.$parameter1.'\',\'N\')">All Yes</a>';
+			}
+
+			else{
+				
+				$sts_btn = '<a class="btn btn-danger" onclick="update_permission(\''.$parameter1.'\',\'Y\')">All No</a>';
+				
+				
+			}
+
+
+			echo json_encode(array(
+				"status" => $res,
+				"msg" => "Permission has been updated successfully",
+				"sts_btn"=>$sts_btn,
+				"p1"=>$parameter1,
+			));
+
+		}
+	}
 
 	public function backlog_student_result_permission($mode="",$course_id="",$class_id=""){
 		if(!$this->session->has_userdata('adminData')){
