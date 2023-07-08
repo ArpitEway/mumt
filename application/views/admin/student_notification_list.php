@@ -242,6 +242,7 @@
 					}
 				}
 			}else{
+				$practical_paper_count++;
 				$total_obtained_marks +=$marks->p_marks;
 				$total_max_marks +=$marks->max_theory_marks;
 				if($marks->p_marks=='' || $marks->p_marks=='N'){
@@ -468,15 +469,15 @@
 <?php
 				}else{
 ?>
-<td class="text-center" style="padding:0px" width='10%' align="center"><?php  if($final_result != 'FAIL' ){ echo $total_obtained_marks .' / '. $total_max_marks ;}?></td>
+<td class="text-center" style="padding:0px" width='10%' align="center"><?php  if(!in_array($final_result, array("FAIL","RW") )){ echo $total_obtained_marks .' / '. $total_max_marks ;}?></td>
 <?php if(!$isOneClass) { ?>
-<td class="text-center" style="padding:0px" align="center"><?php if($final_result != 'FAIL'){ echo  $grand_obtain .' / '. $grand_total;} ?></td>
+<td class="text-center" style="padding:0px" align="center"><?php if(!in_array($final_result, array("FAIL","RW") )){ echo  $grand_obtain .' / '. $grand_total;} ?></td>
 <?php
 			}			}
 			}else if((!in_array($student->old_class_id, $class_ids)) || $mode=='PVT'){ 
 				?>
 			<td  class="text-center" style="padding:0px" align="center"><?php
-			if($final_result != 'FAIL'){
+			if(!in_array($final_result, array("FAIL","RW") )){
 				echo $total_obtained_marks .' / '. $total_max_marks;
 			}
 		}
@@ -524,7 +525,7 @@
 		} ?>
 		<td class="text-center" >
 			<?php
-			
+		if((in_array($student->old_class_id, $class_ids)) && $mode=='REG'){	
 			if($final_result == 'RWPM'){
 				echo 'RWPM';
 			}else{
@@ -553,7 +554,39 @@
 				}
 				
 			}
-		}			
+		}	
+	}else{
+		
+		if($final_result == 'RWPM'){
+			echo 'RWPM';
+		}else{
+		if(count($ATKT_paper_codes)==0 || $Withheld) {
+			$remark='';
+		}elseif($theory_paper_count ==$theory_abs_count && $practical_paper_count == $practical_abs_count){
+			echo 'Year Break';
+		}
+		elseif($practical_paper_count == $practical_abs_count){
+			echo 'Absent In Practical';
+		}elseif($theory_paper_count==$theory_abs_count){
+			echo 'Year Break';
+		}else{
+			if($fail_count == $theory_paper_count ){
+				echo 'Year Break';
+			}else{
+				if($require_grace_marks>=4 || $abs_count!=0 ){
+
+					$remark= ($check_grace_marks) ? 'FAIL' : 'SUPP IN ';
+					echo $remark;
+
+					foreach($ATKT_paper_codes as $paper_code){
+						echo  "". $paper_code.' ' ;
+					} 
+				}
+			}
+			
+		}
+	}	
+	}		
 			?>	
 		</td>
 	</tr>

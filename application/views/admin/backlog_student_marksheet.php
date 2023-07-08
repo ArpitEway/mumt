@@ -233,11 +233,11 @@
 
 // $aggregate_per =   ($tot_std_marks/$tot_marks) * 100;     
                         $require_grace_marks = $require_tot_marks-$fail_tot_marks;
-                        if ($fail_count<2 && $require_grace_marks<4 && $int_fail_count==0 && $fail_count!=0 && $require_grace_marks!=0 && $abs_count==0) {
-// echo $require_grace_marks ;
-                          $check_grace_marks = true;
-                          $result = "PASS BY GRACE";
-                        }
+//                         if ($fail_count<2 && $require_grace_marks<4 && $int_fail_count==0 && $fail_count!=0 && $require_grace_marks!=0 && $abs_count==0) {
+// // echo $require_grace_marks ;
+//                           $check_grace_marks = true;
+//                           $result = "PASS BY GRACE";
+//                         }
                         foreach($papers as $paper)
                         {
                           

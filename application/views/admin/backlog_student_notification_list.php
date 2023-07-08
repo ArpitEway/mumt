@@ -243,6 +243,7 @@
 					}
 				}
 			}else{
+				$practical_paper_count++;
 				$total_obtained_marks +=$marks->p_marks;
 				$total_max_marks +=$marks->max_theory_marks;
 				if($marks->p_marks=='' || $marks->p_marks=='N'){
@@ -293,9 +294,9 @@
 								$require_grace_marks = $require_tot_marks-$get_tot_marks;
 							  }	              // echo $fail_count;
 			              // echo $require_grace_marks;
-		if ($fail_count<2 && $require_grace_marks<4  && $abs_count==0 && $int_fail_count==0 && $p_fail_count==0) {
-			$check_grace_marks = true;
-		}
+		// if ($fail_count<2 && $require_grace_marks<4  && $abs_count==0 && $int_fail_count==0 && $p_fail_count==0) {
+		// 	$check_grace_marks = true;
+		// }
 
 		?>
 		<?php 

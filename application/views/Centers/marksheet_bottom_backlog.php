@@ -103,9 +103,9 @@ foreach($new_exam_form as $marks){
 
 $require_grace_marks = $require_tot_marks-$fali_tot_marks;
 
-if($fail_count<3 && $require_grace_marks<4 && $abs_count==0 && $fail_count!=0 &&  $int_fail_count == 0){
-      $check_grace_marks = true;
-}
+// if($fail_count<3 && $require_grace_marks<4 && $abs_count==0 && $fail_count!=0 &&  $int_fail_count == 0){
+//       $check_grace_marks = true;
+// }
 
 // if ($fail_count>0 && !$check_grace_marks) {
 if ($fail_count>0 && !$check_grace_marks && $marks->student_id!=684208 && $classData->final_result_permission!='Y') {  
@@ -391,9 +391,10 @@ if ($withheld) {
     <button type="button" style="background-color:#fdf8d2; opacity: 1;" width="100%" class="btn   btn-block" disabled><h6 style="color:#000000; font-weight: bold;">Result</h6></button>
     <button type="button" style="opacity: 1"  width="100%" class="btn btn-light  btn-block text-dark" disabled><h6 style=" opacity: 1;color:   000000;font-weight: bold;">
       <?php 
-            if($check_grace_marks){
-              echo "PASS BY GRACE";
-            }elseif($fail_count>0){
+            // if($check_grace_marks){
+            //   echo "PASS BY GRACE";
+            // }else
+            if($fail_count>0){
               echo "ATKT";
             }else{
               echo "PASS";
