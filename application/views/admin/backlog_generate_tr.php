@@ -120,6 +120,7 @@ table.last_table, .last_table td, .last_table th{
     div#footer_content {
       font-weight: bold;
     }
+  }
 </style>
 <div id="footer_wrapper">
   <div id="footer_content">
@@ -302,7 +303,7 @@ table.last_table, .last_table td, .last_table th{
       $page_no++;$page_break_count=0;
       ?>
       <h3 align="center" class="h4 break"><b>Maharishi Mahesh Yogi Vedic Vishvavidyalaya, Madhya Pradesh</b></h3>
-      <p align="center" class="line-height">Tabulation Register for <strong><?php echo $student_info->course_name; echo '&nbsp'. $course_duration; ?></strong> <?php echo ' Backlog '.$marksheetData[0]->backlog_exam_session;?>
+      <p align="center" class="line-height">Tabulation Register for <strong><?php echo $student_info->course_name; echo '&nbsp'. $course_duration; ?></strong> <?php echo ' Backlog '.$marksheetData[0]->exam_session;?>
       </p>
       <div>
         <div style="float: left;">DATE: <?php echo $marksheetData[0]->backlog_result_date;?></div>
@@ -631,7 +632,7 @@ table.last_table, .last_table td, .last_table th{
 <td class="align-middle text-center "  colspan="2"><strong>%</strong><br><?= $percent?></td>
 <td class="align-middle text-center "  colspan="2"><strong>Division</strong><br><?= $div?></td>
 <td class="align-middle text-center "  colspan="3"><strong>Degree No. And Date</strong><br>-</td>
-<td class="align-middle text-center "  colspan="2"><strong>Remark</strong><br><?= $final_remark?></td>
+<td class="align-middle text-center "  colspan="3"><strong>Remark</strong><br><?= $final_remark?></td>
   </tr>
   <?php
  

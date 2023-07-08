@@ -947,6 +947,17 @@ class Common_Model extends CI_Model{
 		return $query->result();
 	}
 
+	public function backlog_notification_marks_details_($student,$class_id)
+	{
+		$this->db->select('*');
+		$this->db->from('backlog_exam_form');
+		$this->db->join('paper_master', 'backlog_exam_form.paper_code = paper_master.paper_code');
+		$this->db->where('backlog_exam_form.class_id',$class_id); 
+		$this->db->where('backlog_exam_form.student_id',$student); 
+		$query = $this->db->get();
+		return $query->result();
+	}
+
 	function getCountOnJoin($table1,$join,$where){
 		
 		print_r($where);
