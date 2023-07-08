@@ -8,6 +8,7 @@
 
             <th>Course</th>
             <th>Class</th>
+            <th>Mode</th>
             <th>Student Count</th>			
             <th>upload</th>			
         </tr> 
@@ -15,15 +16,26 @@
     <tbody>
     <?php
     $i = 1;
+    $class_ids=array(101,104,107,110,116,119,125,128,131,134);
     foreach($courses as $course){
-    ?>
-        
+        ?>
                 <tr>
                     <td><?php echo $i; ?></td>
                     <td><?php echo $course->course_name; ?></td>
                     <td><?php echo $course->class_name; ?></td>
+                    <td><?php echo $course->university_mode; ?></td>
                     <td><?php echo $course->cnt; ?></td>
-                    <td><a target="_blank" href="<?=base_url('admin/scripts/Postexam/upload_old_data_script/'.$course->class_id)?>">upload</a></td>
+                    <?php if(in_array($course->class_id, $class_ids) && $course->university_mode == 'REG'){
+                            ?>
+                            <td><a target="_blank" href="<?=base_url('admin/scripts/Postexam/upload_old_grade_data_script/'.$course->class_id.'/'.$course->university_mode)?>">upload</a></td>
+                            <?php
+                    }else{
+                        ?>
+                         <td><a target="_blank" href="<?=base_url('admin/scripts/Postexam/upload_old_data_script/'.$course->class_id.'/'.$course->university_mode)?>">upload</a></td>
+                        <?php
+
+                    }
+                  ?> 
                 </tr>
             
         

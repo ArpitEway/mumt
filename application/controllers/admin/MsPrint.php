@@ -48,7 +48,7 @@ class MsPrint extends CI_Controller {
 			redirect(base_url('admin'));
 			exit;
 		}else{
-			$this->load->view('header',array('title' =>'Search Student Result'));
+			$this->load->view('header',array('title' =>'Search Student Old Result'));
 			$data = array(
 				'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash(),
@@ -80,8 +80,10 @@ class MsPrint extends CI_Controller {
 					'name_csrf' => $this->security->get_csrf_token_name(),
 					'hash_csrf' => $this->security->get_csrf_hash(),
 				);
-
-				$dt =  $this->load->view('admin/msprint/view_student_result',$data,true);
+				
+						$dt =  $this->load->view('admin/msprint/view_student_result',$data,true);
+					
+				
 				echo json_encode(array(
 					"status" => true,
 					"data" => $dt
@@ -104,9 +106,16 @@ class MsPrint extends CI_Controller {
 		$data['class_id']  = $new_exam_form[0]->class_id;
 		$title = array('title' => 'Result');
 		$data['exam_data'] = $this->Common_model->getRecordById('old_exam_data','id',$exam_data_id);
+		$data['student'] = $this->Common_model->getRecordById('student','student_id', $data['exam_data']->student_id);
 		// $course_id !=36 && $course_id !=37
 		$class = $this->Common_model->getRecordByID('class_master','id', $data['exam_data']->class_id);
-		if($class->internal=="Y" && $data['exam_data']->university_mode!="PVT" ){ 
+
+		$class_ids=array(101,104,107,110,116,119,125,128,131,134);
+					if($data['exam_data']->university_mode == "REG" && in_array($data['class_id'] , $class_ids)){
+						
+						$this->load->model('Gradesheet_old_model');
+						$dt =  $this->load->view('admin/msprint/student_marksheet_grade',$data);
+					}else if($class->internal=="Y" && $data['exam_data']->university_mode!="PVT" ){ 
 			$this->load->view('admin/msprint/old_student_marksheet',$data);
 		}else{
 			$this->load->view('admin/msprint/old_student_marksheet_certificate',$data);
@@ -188,4 +197,34 @@ class MsPrint extends CI_Controller {
 			}
 		}
 	}
+
+	public function view_center_wise_complaint(){
+			
+		if($this->session->has_userdata('adminData')){
+			$admin_id = $this->session->admin_id;
+			$admin = $this->Common_model->getRecordById('admin_master','id',$admin_id);
+			$where = "support_complaint.status = 'Pending' AND support_system.id IN (".$admin->support_ids.")";
+				$this->db->select('count(*) as count,'.'center_id');
+				$this->db->from('support_complaint');
+				$this->db->join('support_system','support_system.name = support_complaint.type');
+				$this->db->where($where);
+				$this->db->group_by('center_id');
+				$centers = $this->db->get()->result_array();
+
+			$data = array('name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+				'centers' =>$centers
+			);
+			
+			$titleData = array('title' => 'Complaints');
+			$this->load->view('header',$titleData);
+			$this->load->view('admin/view_center_wise_complaint',$data);
+			$this->load->view('footer');
+		}
+		else
+		{
+			redirect(base_url());
+		}
+	}
+
 }

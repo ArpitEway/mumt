@@ -110,7 +110,7 @@
 						<?php if($student["temp_exam_form"]=='Y'){ ?>
 						<a target="_blank"  class="" href="<?=base_url('show_paper/'.$student_id);?>"><i class="fa fa-eye" aria-hidden="true"></i></a>
 					 	<?php if($this->session->account_type =="Admins"){?>
-					  <button  class="btn btn-sm  " onclick="delete__student_paper(this)" data-id = "<?=$student['student_id']; ?>"><i class="fa fa-trash" aria-hidden="true"></i></button>   
+					  <button  class="btn btn-sm  " onclick="delete__student_paper(this)" data-id = "<?=$student['student_id']; ?>" data-classid = "<?=$student['class_id']; ?>"><i class="fa fa-trash" aria-hidden="true"></i></button>   
 					 <?php }
 					 }else{ ?>
 							<a target="_blank"  class="" href="<?=base_url('select_paper/'.$student_id);?>"><i class="fa fa-plus" aria-hidden="true"></i></a>
@@ -175,13 +175,16 @@ function delete__student_paper(student_id)
     if (confirm('Are you sure to remove  ?')) {
    var csrfName = $('.csrfname').attr('name');
    var csrfHash = $('.csrfname').val(); 
+   	var student_classid = $(student_id).attr('data-classid');
      var student_id = $(student_id).attr('data-id');
+	 
+	 console.log(student_classid);
     // alert(student_id);
 $.ajax({
 	type: "POST",
 	url: BASE_URL+"admin/Admins/student_paper_delete",
 	dataType:"json",
-	  data: {student_id: student_id,[csrfName]:csrfHash},
+	  data: {student_id: student_id,classid:student_classid,[csrfName]:csrfHash},
 	success: function(response){
 	console.log(response);
 if(response.status=='true'){

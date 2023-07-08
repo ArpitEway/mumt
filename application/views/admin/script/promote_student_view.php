@@ -3,10 +3,10 @@
 <div class="text-left col-6">
     <?php 
      
-  $class_order =  $this->Common_model->getRecordByWhere('class_master',array('id' => $class_id ,'course_group_id'=>$course_group_id));
-  $class_order = $class_order[0]->class_order + 1 ;
+  $class_data =  $this->Common_model->getRecordByWhere('class_master',array('id' => $class_id ,'course_group_id'=>$course_group_id));
+  $class_order = $class_data[0]->class_order + 1 ;
 
-  $promote_Class =  $this->Common_model->getRecordByWhere('class_master',array('class_order'=>$class_order,'course_group_id'=>$course_group_id));
+  $promote_Class =  $this->Common_model->getRecordByWhere('class_master',array('class_order'=>$class_order,'course_group_id'=>$course_group_id,'mode'=>$class_data[0]->mode));
 
     ?>
 <h4>Course-Name     <?php echo $course_name .'('.$class_name .')'?></h4>

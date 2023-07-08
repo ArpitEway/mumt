@@ -30,6 +30,9 @@
       image-orientation: none;
     }
     @media print {
+       @page{
+        margin: 0;
+      }
       .breakhere { page-break-after:always;  };
     }
     th.border.border-dark {
@@ -55,7 +58,7 @@
         <table align="center" border="0" width="100%">
           <tbody>
             <tr>
-              <td height="100" colspan="2" valign="bottom">
+              <td height="130" colspan="2" valign="bottom">
                 <center>
                   <strong><?php echo  ($isOneClass) ? $student->course_name .' '."(One Year Course)" :$student->course_name .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->old_class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
                 </center>
@@ -63,15 +66,15 @@
             </tr>
             <tr>
               <td align="center" height="120" colspan="2">
-                <table class="mytable" border="0" cellpadding="2" cellspacing="2" width="100%">
+                <table class="mytable" border="0" cellpadding="1" cellspacing="1" width="100%">
                   <tbody>
                     <?php if($student->university_mode == 'REG'){?>
                     <tr>
                       <td class="Normaltext" colspan="2">
-                        <div align="center"><font size="4">  &nbsp; </font></div>
+                        <div align="center"><font size="3">  &nbsp; </font></div>
                       </td>
                       <td class="Normaltext">
-                        <div align="center"><font size="4">  Regular </font></div>
+                        <div align="center"><font size="3">  Regular </font></div>
                       </td>
                     </tr>
                     <?php }?>
@@ -530,7 +533,7 @@
               <!-- if starts -->
               <tr>
                 <td align="left" colspan="2">
-                  <table width="100%" style="margin-top:50px">
+                  <table width="100%" style="margin-top:80px">
                     <tr>
                     </tr>
                   </table>    

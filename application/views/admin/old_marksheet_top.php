@@ -32,7 +32,7 @@
    vertical-align: middle;
  }
 </style>
-<?php $student = $this->Common_model->getRecordByWhere("student",array('student_id'=>$old_result_data[0]->student_id));
+<?php $student = $this->Common_model->getRecordByWhere("student_result_aug_22",array('student_id'=>$old_result_data[0]->student_id));
 $exam = $this->Common_model->getRecordByWhere("old_exam_data",array('id'=>$old_result_data[0]->exam_data_id));
 
 ?>
@@ -66,7 +66,7 @@ $exam = $this->Common_model->getRecordByWhere("old_exam_data",array('id'=>$old_r
       <th class="border-top-0"><?php  echo $student[0]->course_name ?></th>
       <th class="border-top-0 text-primary pl-3">Year / Sem </th>
       <th class="border-top-0"><?php  echo 
-      $this->Common_model->getClassNameByClassId($student[0]->old_class_id);
+      $this->Common_model->getClassNameByClassId($exam[0]->class_id);
        ?></th>
     </tr>
   </tbody>

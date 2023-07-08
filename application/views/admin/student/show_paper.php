@@ -192,7 +192,7 @@
 				<tr>
 					<th>#</th>
 					<th>Paper Code</th>
-					<?php if ($papers[0]->sub_group_id!=0): ?>
+					<?php if ($papers[0]->sub_group!=0): ?>
 					<th>Sub Group</th>
 					<?php endif ?>
 					<th>Paper Name</th>
@@ -208,8 +208,8 @@
             <tr>
             <td><?php echo $i; ?></td>
             <td><?php echo $paper->paper_code; ?></td>
-            <?php if ($paper->sub_group_id!=0): ?>
-            <td><?php echo $this->Common_model->getSubGroupNameById($paper->sub_group_id); ?></td>
+            <?php if ($paper->sub_group!=0): ?>
+            <td><?php echo $this->Common_model->getSubGroupNameById($paper->sub_group); ?></td>
             <?php endif ?>
             <td><?php echo $paper->paper_name; ?></td>
             </tr>

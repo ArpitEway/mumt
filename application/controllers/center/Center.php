@@ -923,10 +923,11 @@ class Center extends CI_Controller {
 		$where='';
 		$course_group_id = $this->input->post('course_group_id');
 		$session_course_type=$this->input->post('session_course_type');
+		$mode=$this->input->post('mode');
 		if(@$session_course_type){
 			$where.="session = '".$session_course_type ."' and ";
 		}
-		$where .= "course_group_id = ".$course_group_id." and enrolled = 'N'";
+		$where .= "course_group_id = ".$course_group_id." and enrolled = 'N' and university_mode='".$mode."'";
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{
@@ -1225,7 +1226,7 @@ class Center extends CI_Controller {
 			);
 			$student = $this->Common_model->student_info($student_id);
 			$data['student'] = $student;
-			$this->db->select('paper_master.*,new_exam_form.sub_group_id');
+			$this->db->select('paper_master.*,new_exam_form.sub_group_id as sub_group');
 			$this->db->from('paper_master');
 			$this->db->order_by('new_exam_form.sub_group_id,paper_master.cbcs_paper,paper_order');
 			$this->db->join('new_exam_form', 'paper_master.paper_code = new_exam_form.paper_code and  paper_master.class_id = new_exam_form.class_id');
@@ -1252,12 +1253,14 @@ class Center extends CI_Controller {
     		$where = array(
     			'temp_exam_form' =>'N',
     			'university_mode'=>'REG',
+				'class_name!='=>'II Year',
     		);
     	}else{
     		$titleData = array('title' => 'Paper Missing List (Private)' );
     		$where = array(
     			'temp_exam_form' =>'N',
     			'university_mode'=>'PVT',
+				'class_name!='=>'II Year',
     		);
     	}
     	$this->load->view('Centers/header',$titleData);
@@ -1358,6 +1361,7 @@ class Center extends CI_Controller {
 			$data['book_code']=$paper['book_code'];
 			$data['paper_id']=$paper['id'];
 			$data['paper_order']=$paper['paper_no'];
+			$data['sub_group_id']=$paper['sub_group_id'];
 			$data['student_id']=$student_id;
 			$insert = $this->Common_model->insertAll('new_exam_form',$data);
 		}
@@ -2928,10 +2932,12 @@ public function practical_assignment_marks_edit(){
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}else{
-			if($course_type=="PVT")	 
-				$titleData = array('title' => 'Private to Regular Admission Mode Change Request');
+			if($course_type=="REG"||$course_type=="reg")	
+			$titleData = array('title' => 'Regular to Private Admission Mode Change Request'); 
+				
 			else
-				$titleData = array('title' => 'Regular to Private Admission Mode Change Request');	
+			redirect(base_url());
+			//$titleData = array('title' => 'Private to Regular Admission Mode Change Request');	
 			$this->load->view('Centers/header',$titleData);
 			$id =  $this->session->center_id;
 			$request_detail = $this->Common_model->get_record('request','*',array());
@@ -3072,5 +3078,138 @@ public function practical_assignment_marks_edit(){
 		}
 		 
 		
+	}
+
+	public function support_system_complaint($param = ""){
+
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url());
+		}else{
+			if(!$param){
+				$titleData = array('title' => 'Support Complaint');
+				$this->load->view('Centers/header',$titleData);
+				$id =  $this->session->center_id;
+				$center = $this->Common_model->getRecordById('center','id',$id);
+				$center_id =  $this->session->center_id;
+				$wherestudent = 'center_id='.$center_id;
+				$center_detail = $this->Common_model->get_record('support_complaint','*',$wherestudent);
+				$data = array('center' => $center,'center_details' => $center_detail,'name_csrf' => $this->security->get_csrf_token_name(),
+					'hash_csrf' => $this->security->get_csrf_hash());
+				$this->load->view('Centers/support_system_complaint',$data);
+				$this->load->view('Centers/footer');
+			}
+			
+		}
+	}
+
+	public function get_student_support_system(){
+		
+		// if ($this->input->method() == "post"){
+		// 	//$course_group_id = 0;
+			$data = array();
+			// $dt   = array();
+			$center_id =  $this->session->center_id;
+			$form_no  = $this->input->post("form_no");
+			$wherestudent = 'student_id='.$form_no.' and center_id='.$center_id;
+			$students = $this->Common_model->get_record('student','*',$wherestudent);
+			// $wherestudent = 'center_id='.$center_id;
+			// $center_detail = $this->Common_model->get_record('support_complaint','*',$wherestudent);
+
+			$data = array('students' => $students ,
+				// 'center_details' => $center_detail,
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash());
+
+			if($data['students']){
+				$dt =  $this->load->view('Centers/get_student_support_system_wise',$data,true);
+			}else{
+				$dt = "Invalid Form no";
+			}
+			echo json_encode(array(
+				"status" => true,
+				"data" => $dt
+			));
+		// }
+	}
+
+	public function student_support_system_sub($param = ""){
+		if(!$this->session->has_userdata('centerdata')){
+			redirect(base_url());
+		}else{
+			if(!$param){
+				$titleData = array('title' => 'Support Complaint');
+				$this->load->view('Centers/header',$titleData);
+				$id =  $this->session->center_id;
+				$center = $this->Common_model->getRecordById('center','id',$id);
+				$data = array('center' => $center,'name_csrf' => $this->security->get_csrf_token_name(),
+					'hash_csrf' => $this->security->get_csrf_hash());
+				$this->load->view('Centers/get_student_support_system_wise',$data);
+				$this->load->view('Centers/footer');
+			}else{
+				$details = html_escape($this->input->post('detail'));
+				$complaint_type = html_escape($this->input->post('complaint_type'));
+				$student_detail = $this->Common_model->getSingleRow("student","*",array("student_id" => $param));
+				$data['details']   		= $details;
+				$data['type'] 		    = $complaint_type;
+				$data['center_id'] 		= $student_detail->center_id;
+				$data['enrollment_no'] 	= $student_detail->enrollment_no;
+				$data['student_id'] 	= $param;
+				$data['date']   		=  date("Y-m-d");
+				$data['status']   		= "Pending";
+	    //   $check = $this->Common_model->getSingleRow("support_complaint","*",array("student_id" => $param, 'status !=' => 'Done' ));
+		$check = $this->Common_model->getSingleRow("support_complaint","*",array("student_id" => $param, 'status !=' => 'Done','type ='=>$complaint_type ));
+
+          if($check){
+					$response = array(
+						'status' => true,
+						'err_msg' => "A Complaint Already Under Process",
+					);
+				}else{			
+					$this->db->insert('support_complaint',$data);
+					$response = array(
+						'status' => true,
+						'msg' => "Complained Succesfuly Registered",
+					);
+				}
+               echo json_encode($response);	
+			}
+		}
+	}
+
+
+	public function getsupportComplaint()
+	{
+		$data = $row = array();
+		$where = 'support_complaint.center_id='.$this->session->center_id;
+		$column_order = array(null,'name','student.student_id','course_name','class_name','details','date','status','support_complaint.remark');
+		$column_search = array('name','student.student_id','course_name','class_name','details','date','support_complaint.status','support_complaint.remark');
+		$DataTableArray = array(
+			'column_order' => $column_order,
+			'column_search' => $column_search,
+			// 'select' => 'student.name, student.student_id, student.course_name, student.class_name, support_complaint.date, support_complaint.details, support_complaint.remark,support_complaint.status',
+			'select' => 'student.name, student.student_id, student.course_name, student.class_name, support_complaint.date, support_complaint.details, support_complaint.remark,support_complaint.status,support_complaint.type',
+			'where' => $where,
+			'table' => 'support_complaint',
+			'table2' => 'student',
+			'joinOn' => 'support_complaint.student_id=student.student_id'
+		);
+		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
+		$i = $_POST['start'];
+		foreach($tableData as $result){
+			$remark = ($result->remark == 'N')?'':$result->remark;
+			$i++;
+			$date = $this->Common_model->viewDate($result->date);
+			$status = ($result->status=="Pending") ? 'Pending' : 'Done';
+			// $data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->details,$date,$status,$result->remark);
+			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->type,$result->details,$date,$status,$remark);
+
+		}
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->Datatable_join_model->countAll('support_complaint',$where),
+			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
+			"data" => $data,
+		);
+		echo json_encode($output);
 	}
 }//class

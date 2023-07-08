@@ -510,6 +510,23 @@ public function update_roll_no_old_data(){
 			"data" => $dt
 		));
 	}
+
+	public function update_sub_group_id(){
+	
+		$this->db->select('paper_code,sub_group_id,class_id,group_id,student_id');
+		$this->db->from('new_exam_form');
+		$this->db->where_in('class_id',array(101,104,107,110,116,119,125,128,131,134));
+		// $this->db->limit(100);
+		$papers = $this->db->get()->result();
+		
+		foreach($papers as $paper){
+			
+			$where = array('paper_code'=>$paper->paper_code,'class_id'=>$paper->class_id,'student_id'=>$paper->student_id,'sub_group_id'=>0);
+			$data = array ('sub_group_id'=>$paper->sub_group_id,'group_id'=>$paper->group_id);
+			$this->Common_model->updateRecordByConditions('old_result_data',$where,$data);
+			echo $this->db->last_query();
+		}
+	}
 }
 
 ?>
