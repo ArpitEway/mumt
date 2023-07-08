@@ -67,8 +67,8 @@
 	  }
 	$course_duration = ($isOneClass) ? "(One Year Course)" : $classData->class_name;
 	// $notification=$notification_no[0]->notification_no;
-	$notification=($mode == "REG")?$notification_no[0]->notification_no:$notification_no[0]->pvt_notification_no;
-	$date=$notification_no[0]->result_date;
+	$notification=($mode == "REG")?$notification_no[0]->backlog_notification_no:$notification_no[0]->pvt_notification_no;
+	$date=$notification_no[0]->backlog_result_date;
 	$exam_session=$notification_no[0]->exam_session;
 	$page_no = 0;
 	$abs_count = 0;
@@ -76,6 +76,7 @@
 	$i=1;
 
 	foreach($students as $student){
+        $student_data =  $this->Common_model->getRecordById('student','student_id',$student->student_id);
 		$total_theory_abs_count=0;
 		$total_int_abs_count=0;
 		$theory_paper_count=0;
@@ -104,10 +105,10 @@
    		$fc2_min =0;
 		   $grand_obt=0;
 		   $grand_tot =0;
-		$paper_marks = $this->Common_model->notification_marks_details_($student->student_id,$student->old_class_id);
+		$paper_marks = $this->Common_model->backlog_notification_marks_details_($student->student_id,$student->class_id);
 		$class_ids=array(101,104,107,110,116,119,125,128,131,134);
 		foreach($paper_marks as  $marks){
-			if((in_array($student->old_class_id, $class_ids)) && $mode=='REG')	
+			if((in_array($student->class_id, $class_ids)) && $mode=='REG')	
 			{
 			if($marks->type=="theory" ){
 				$theory_paper_count++;
@@ -285,7 +286,7 @@
 		  $require_tot_marks += $fc2_min;
 	
 		}
-		if((in_array($student->old_class_id, $class_ids)) && $mode=='REG')	
+		if((in_array($student->class_id, $class_ids)) && $mode=='REG')	
 			{
 				
 			 $require_grace_marks = $require_tot_marks-$get_tot_marks.'<br>';
@@ -293,9 +294,9 @@
 								$require_grace_marks = $require_tot_marks-$get_tot_marks;
 							  }	              // echo $fail_count;
 			              // echo $require_grace_marks;
-		if ($fail_count<2 && $require_grace_marks<4  && $abs_count==0 && $int_fail_count==0 && $p_fail_count==0) {
-			$check_grace_marks = true;
-		}
+		// if ($fail_count<2 && $require_grace_marks<4  && $abs_count==0 && $int_fail_count==0 && $p_fail_count==0) {
+		// 	$check_grace_marks = true;
+		// }
 
 		?>
 		<?php 
@@ -352,7 +353,7 @@
 				<th  class="text-center" style="text-align:left" scope="row"  width="35%" ><span class="style5" style="padding-left: 10px;" >Name of the Candidate and F/H Name</span></th>
 				<th class="text-center" scope="row"  width="10%" >Result</span></th>
 				
-				<?php if((!in_array($student->old_class_id, $class_ids)) || $mode=='PVT'){ ?>	<th class="text-center" style="padding:0px" align="center" class="text-center" scope="row"  width="20%" colspan='<?php echo ($isFinalClass && !$isOneClass)?"2":"1";?>'><?php if($isFinalClass){
+				<?php if((!in_array($student->class_id, $class_ids)) || $mode=='PVT'){ ?>	<th class="text-center" style="padding:0px" align="center" class="text-center" scope="row"  width="20%" colspan='<?php echo ($isFinalClass && !$isOneClass)?"2":"1";?>'><?php if($isFinalClass){
 						?>
 						<table width="100%" border="1" class="m-0">
 							<tr>
@@ -363,7 +364,7 @@
 							
 					</tr>
 					<tr>
-							<td class="text-center"><?= $student->class_name?> </td>
+							<td class="text-center"><?= $this->Common_model->getClassNameByClassId($student->class_id)?> </td>
 							<?php if(!$isOneClass){?>
 							<td class="text-center">Grand Total</td>
 							<?php }?>	
@@ -376,7 +377,7 @@
 				?></th><?php } ?>
 				
 				
-				<?php if((in_array($student->old_class_id, $class_ids)) && $mode=='REG')	
+				<?php if((in_array($student->class_id, $class_ids)) && $mode=='REG')	
 			{ ?>
 				<th class="text-center" scope="row" width="10%"><span class="style5">
 					<?php if($classData->mode=="Annual") echo 'AGPA'; else echo 'SGPA'; ?></span></th>
@@ -394,10 +395,10 @@
 		?>
 		<tr class="alternate">
 			<td class="text-center">
-				<?php echo $student->roll_number; ?>
+				<?php echo $student->roll_no; ?>
 			</td>
 			<td scope="row" style="padding-left: 10px;" >
-				<?php echo $student->name  .' / '.  $student->f_h_name; ?>
+				<?php echo $student_data->name  .' / '.  $student_data->f_h_name; ?>
 			</td>
 			<td class="text-center" align="center" >
 				<?php
@@ -449,8 +450,8 @@
 							 $final_result = 'PASS';
 							
 						}
-						if((in_array($student->old_class_id, $class_ids)) && $mode=='REG'){
-						echo $this->Gradesheet_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+						if((in_array($student->class_id, $class_ids)) && $mode=='REG'){
+						echo $this->Gradesheet_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
 						}else{
 							echo $final_result;
 						}
@@ -474,7 +475,7 @@
 <td class="text-center" style="padding:0px" align="center"><?php if(!in_array($final_result, array("FAIL","RW") )){ echo  $grand_obtain .' / '. $grand_total;} ?></td>
 <?php
 			}			}
-			}else if((!in_array($student->old_class_id, $class_ids)) || $mode=='PVT'){ 
+			}else if((!in_array($student->class_id, $class_ids)) || $mode=='PVT'){ 
 				?>
 			<td  class="text-center" style="padding:0px" align="center"><?php
 			if(!in_array($final_result, array("FAIL","RW") )){
@@ -485,11 +486,11 @@
 		</td>
 
 		<?php	
-		if((in_array($student->old_class_id, $class_ids)) && $mode=='REG'){
+		if((in_array($student->class_id, $class_ids)) && $mode=='REG'){
 			
 			if($final_result != 'FAIL'){
 				
-				$gradesheetData = $this->Gradesheet_tr_model->view_notification($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+				$gradesheetData = $this->Gradesheet_tr_model->view_notification($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
 			}else{
 				?>
 				<td  class="text-center" style="padding:0px" align="center"></td>
@@ -525,26 +526,26 @@
 		} ?>
 		<td class="text-center" >
 			<?php
-		if((in_array($student->old_class_id, $class_ids)) && $mode=='REG'){	
+			
 			if($final_result == 'RWPM'){
 				echo 'RWPM';
 			}else{
 			if(count($ATKT_paper_codes)==0 || $Withheld) {
 				$remark='';
-			}elseif(($theory_paper_count -2)==$theory_abs_count && $practical_paper_count == $practical_abs_count){
+			}elseif($theory_paper_count==$theory_abs_count && ($practical_paper_count == $practical_abs_count && $count_practical!=0)){
 				echo 'Year Break';
 			}
-			elseif($practical_paper_count == $practical_abs_count){
+			elseif(($p_abs_count == $count_practical && $count_practical!=0)){
 				echo 'Absent In Practical';
-			}elseif(($theory_paper_count-2)==$theory_abs_count){
+			}elseif($theory_paper_count==$theory_abs_count){
 				echo 'Year Break';
 			}else{
-				if($fail_count == ($theory_paper_count -2 )){
+				if($fail_count == $theory_paper_count){
 					echo 'Year Break';
 				}else{
 					if($require_grace_marks>=4 || $abs_count!=0 ){
 
-						$remark= ($check_grace_marks) ? 'FAIL' : 'SUPP IN ';
+						$remark= ($check_grace_marks) ? 'FAIL' : 'ATKT IN ';
 						echo $remark;
 	
 						foreach($ATKT_paper_codes as $paper_code){
@@ -554,39 +555,7 @@
 				}
 				
 			}
-		}	
-	}else{
-		
-		if($final_result == 'RWPM'){
-			echo 'RWPM';
-		}else{
-		if(count($ATKT_paper_codes)==0 || $Withheld) {
-			$remark='';
-		}elseif($theory_paper_count ==$theory_abs_count && $practical_paper_count == $practical_abs_count){
-			echo 'Year Break';
-		}
-		elseif($practical_paper_count == $practical_abs_count){
-			echo 'Absent In Practical';
-		}elseif($theory_paper_count==$theory_abs_count){
-			echo 'Year Break';
-		}else{
-			if($fail_count == $theory_paper_count ){
-				echo 'Year Break';
-			}else{
-				if($require_grace_marks>=4 || $abs_count!=0 ){
-
-					$remark= ($check_grace_marks) ? 'FAIL' : 'SUPP IN ';
-					echo $remark;
-
-					foreach($ATKT_paper_codes as $paper_code){
-						echo  "". $paper_code.' ' ;
-					} 
-				}
-			}
-			
-		}
-	}	
-	}		
+		}			
 			?>	
 		</td>
 	</tr>
