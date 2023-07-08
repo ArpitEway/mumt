@@ -280,10 +280,11 @@ table.last_table, .last_table td, .last_table th{
     }else{
       $require_grace_marks = $require_tot_marks-$fail_tot_marks;
       // tot 3 grace marks in 1 subjects
-      if ($fail_count<2 && $require_grace_marks<4 && $int_fail_count==0 && $p_fail_count==0 && $rw_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0) {
-        $check_grace_marks = true;
-        $final_result = "PASS BY GRACE";
-      }elseif($rw_count>0){
+      // if ($fail_count<2 && $require_grace_marks<4 && $int_fail_count==0 && $p_fail_count==0 && $rw_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0) {
+      //   $check_grace_marks = true;
+      //   $final_result = "PASS BY GRACE";
+      // }else
+      if($rw_count>0){
         $final_result = "RW";
       }else{
         $final_result = "FAIL";
