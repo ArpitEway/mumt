@@ -3006,18 +3006,20 @@ public function getStudentData()
 		$this->db->join('student','student.student_id = backlog_student.student_id');
 		$this->db->where($where);
 		$studentData = $this->db->get()->result();
-		$studentPaper = $this->Common_model->get_backlog_student_papers($studentData[0]->student_id,$studentData[0]->class_id);
+		
 		$this->db->where('backlog_exam_form.theory_marks','');
 		$studentPaperWithHeld = $this->Common_model->get_backlog_student_papers($studentData[0]->student_id,$studentData[0]->class_id,'withheld');
-		// print_r($studentPaper);
-		// print_r($studentPaperWithHeld);
-		//  $this->Common_model->last_query();
-		$data['student'] = $studentData;
+		
+		 $data['student'] = $studentData;
 		if($studentData){
-		$data['studentPaper'] = $studentPaper;
+		
 		if ($studentData[0]->result_show=='Y' && (count($studentPaperWithHeld)==0) ) {
+			$studentPaper = $this->Common_model->get_backlog_student_allpapers($studentData[0]->student_id,$studentData[0]->class_id);
+			$data['studentPaper'] = $studentPaper;
 			$result['data'] = $this->load->view('admin/Dataentry/show_backlog_student_marks',$data,true);
 		}else{
+			$studentPaper = $this->Common_model->get_backlog_student_papers($studentData[0]->student_id,$studentData[0]->class_id);
+			$data['studentPaper'] = $studentPaper;
 			$result['data'] = $this->load->view('admin/Dataentry/edit_backlog_student_marks',$data,true);
 		}
 		

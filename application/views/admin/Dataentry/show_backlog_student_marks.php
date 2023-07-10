@@ -65,7 +65,7 @@
 					<?php if ($papers['type']=='theory') { ?>
 						<?php if ($student[0]->mode=='REG'): ?>
 							<td class="fit">
-								<?=$papers['theory_marks']?>
+								<?=$papers['theory_marks']?> <?php if($papers['status']=="C") echo " ".$papers['status']; ?>
 							</td>
 							<?php if($papers['max_internal_marks'] == 0){?>
 
@@ -75,12 +75,12 @@
 							<?php }else{
 								?> 
 								<td class="fit">
-									<?= $papers['int_marks']; ?>
+									<?= $papers['int_marks']; ?> C
 									</td><?php
 								} ?>
 							<?php else: ?>
 								<td class="fit">
-									<?=$papers['theory_marks']; ?>
+									<?=$papers['theory_marks']; ?> <?php if($papers['status']=="C") echo " ".$papers['status']; ?>
 								</td>
 							<?php endif ?>
 						<?php }elseif($papers['type']='Practical' || $papers['type']='practical'){ ?>
@@ -91,7 +91,7 @@
 								</td>
 							<?php }else{ ?>
 								<td >
-									<?= $papers['p_marks'] ?>
+									<?= $papers['p_marks'] ?> <?php if($papers['status']=="C") echo " ".$papers['status']; ?>
 								</td>
 							<?php } 
 							?>
@@ -105,7 +105,7 @@
 							<?php }else{
 								?> 
 								<td class="fit">
-									<?= $papers['int_marks']; ?>
+									<?= $papers['int_marks']; ?> C
 									</td><?php
 								}
 
