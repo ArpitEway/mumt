@@ -2987,6 +2987,99 @@ public function getStudentData()
 		
 		$this->load->view('admin/generate_tr/footer2');
 	}
+	public function search_student_backlog_result($rollno=""){
+		// redirect(base_url().'ExamController/');
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();
+		$data['rollno']=$rollno;
+		$this->load->view('header',array('title' => 'Edit Backlog Student Marks'));	
+		$this->load->view('admin/Dataentry/search_backlog_student',$data);
+		$this->load->view('footer');
+	}
 
+	public function getEditBacklogStudentMarksData()
+	{
+		$roll_no = $this->input->post('roll_no');
+		$where = array('backlog_student.roll_no'=>$roll_no,'backlog_student.exam_form'=>'Y');
+		$this->db->select('student.name,student.course_name,backlog_student.*');
+		$this->db->from('backlog_student');
+		$this->db->join('student','student.student_id = backlog_student.student_id');
+		$this->db->where($where);
+		$studentData = $this->db->get()->result();
+		$studentPaper = $this->Common_model->get_backlog_student_papers($studentData[0]->student_id,$studentData[0]->class_id);
+		$this->db->where('backlog_exam_form.theory_marks','');
+		$studentPaperWithHeld = $this->Common_model->get_backlog_student_papers($studentData[0]->student_id,$studentData[0]->class_id,'withheld');
+		// print_r($studentPaper);
+		// print_r($studentPaperWithHeld);
+		//  $this->Common_model->last_query();
+		$data['student'] = $studentData;
+		if($studentData){
+		$data['studentPaper'] = $studentPaper;
+		if ($studentData[0]->result_show=='Y' && (count($studentPaperWithHeld)==0) ) {
+			$result['data'] = $this->load->view('admin/Dataentry/show_backlog_student_marks',$data,true);
+		}else{
+			$result['data'] = $this->load->view('admin/Dataentry/edit_backlog_student_marks',$data,true);
+		}
+		
+		echo json_encode($result);
+	   }else{
+		$result['data'] = "Student Not Found";
+		echo json_encode($result); 
+	   }
+	}
+
+	
+
+	
+	public function edit_backlog_student_marks_sub()
+	{
+	
+		$student_id = $this->input->post('student_id');
+		$class_id = $this->input->post('class_id');
+		
+		$paper_code = $this->input->post('paper_code');
+		$theory_marks = $this->input->post('theory_marks');
+		if (isset($_POST['int_marks'])) {
+			$int_marks = $this->input->post('int_marks');
+		}
+		
+		if (isset($_POST['p_marks'])) {
+			$p_marks = $this->input->post('p_marks');
+			$paper = $this->input->post('p_marks_paper_code');
+			$paper_int_marks = $this->input->post('paper_int_marks');
+			foreach ($paper as $key => $id) {
+				$this->Common_model->updateRecordByConditions('backlog_exam_form',array('paper_code' => $id, 'student_id' => $student_id),array('p_marks' => $p_marks[$key],'int_marks'=>$paper_int_marks[$key]));
+			}
+		}
+
+		if (isset($_POST['pro_marks'])) {
+			$pro_marks = $this->input->post('pro_marks');
+			$proj_paper = $this->input->post('pro_marks_paper_code');
+			$proj_int_marks = $this->input->post('proj_int_marks');
+			foreach ($proj_paper as $key => $id) {
+				$this->Common_model->updateRecordByConditions('backlog_exam_form',array('paper_code' => $id, 'student_id' => $student_id),array('p_marks' => $pro_marks[$key], 'int_marks' => $proj_int_marks[$key]));
+			}
+		}
+
+		if(isset($_POST['sessional_marks'])){
+			$sessional_marks = $this->input->post('sessional_marks');
+			$sessional_paper = $this->input->post('s_marks_paper_code');
+			foreach ($sessional_paper as $key => $id) {
+				$this->Common_model->updateRecordByConditions('backlog_exam_form',array('paper_code' => $id, 'student_id' => $student_id),array('int_marks' => $sessional_marks[$key]));
+			}
+
+		}
+
+		foreach ($paper_code as $key => $id) {
+			$where = array('paper_code' => $id, 'student_id' => $student_id, 'class_id' => $class_id );
+			$data = array('theory_marks' => $theory_marks[$key]);
+			if (isset($_POST['int_marks'])) {
+				$data['int_marks'] = $int_marks[$key];
+			}
+			$this->Common_model->updateRecordByConditions('backlog_exam_form',$where,$data);
+		}
+		echo json_encode(array('success' => 'Marks Updated Successfully'));
+	}
+	
 
 }// class
