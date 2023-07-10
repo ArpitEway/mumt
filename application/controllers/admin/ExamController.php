@@ -3039,37 +3039,7 @@ public function getStudentData()
 		
 		$paper_code = $this->input->post('paper_code');
 		$theory_marks = $this->input->post('theory_marks');
-		if (isset($_POST['int_marks'])) {
-			$int_marks = $this->input->post('int_marks');
-		}
 		
-		if (isset($_POST['p_marks'])) {
-			$p_marks = $this->input->post('p_marks');
-			$paper = $this->input->post('p_marks_paper_code');
-			$paper_int_marks = $this->input->post('paper_int_marks');
-			foreach ($paper as $key => $id) {
-				$this->Common_model->updateRecordByConditions('backlog_exam_form',array('paper_code' => $id, 'student_id' => $student_id),array('p_marks' => $p_marks[$key],'int_marks'=>$paper_int_marks[$key]));
-			}
-		}
-
-		if (isset($_POST['pro_marks'])) {
-			$pro_marks = $this->input->post('pro_marks');
-			$proj_paper = $this->input->post('pro_marks_paper_code');
-			$proj_int_marks = $this->input->post('proj_int_marks');
-			foreach ($proj_paper as $key => $id) {
-				$this->Common_model->updateRecordByConditions('backlog_exam_form',array('paper_code' => $id, 'student_id' => $student_id),array('p_marks' => $pro_marks[$key], 'int_marks' => $proj_int_marks[$key]));
-			}
-		}
-
-		if(isset($_POST['sessional_marks'])){
-			$sessional_marks = $this->input->post('sessional_marks');
-			$sessional_paper = $this->input->post('s_marks_paper_code');
-			foreach ($sessional_paper as $key => $id) {
-				$this->Common_model->updateRecordByConditions('backlog_exam_form',array('paper_code' => $id, 'student_id' => $student_id),array('int_marks' => $sessional_marks[$key]));
-			}
-
-		}
-
 		foreach ($paper_code as $key => $id) {
 			$where = array('paper_code' => $id, 'student_id' => $student_id, 'class_id' => $class_id );
 			$data = array('theory_marks' => $theory_marks[$key]);

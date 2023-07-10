@@ -50,12 +50,8 @@
 				<th>#</th>
 				<th>Paper Name</th>
 				<th>Paper Type</th>
-				<?php if ($student[0]->mode=='REG'): ?>
-					<th>Theory/Practical/Project Marks</th>
-					<th>Internal Marks</th>
-				<?php else: ?>
-					<th>Theory Marks</th>
-				<?php endif ?>
+				<th>Theory Marks</th>
+				
 			</tr>
 		</thead>
 		<tbody>
@@ -83,33 +79,8 @@
 							<?php } ?>
 							
 						</select>
-					</td><?php
-					if($papers['max_internal_marks'] !=0){?>
-					<td class="fit">
-						<select name="int_marks[]" class="form-control select2">
-							<option value="N">Select Marks</option>
-							<option <?=($papers['int_marks']==="ABS") ? 'selected="selected"' : ''; ?> value="ABS">ABS</option>
-							
-							<?php
-							
-							for ($i=$papers['min_internal_marks']; $i<=$papers['max_internal_marks']; $i++){
-								$selected =  ($papers['int_marks']==$i && $papers['int_marks']!="ABS") ? 'selected="selected"' : '';
-								$selected = ($papers['int_marks']=='' || $papers['int_marks']=='N') ? '' : $selected;
-								?>
-								<option <?=$selected ?>><?php echo str_pad($i,2,'0',STR_PAD_LEFT);?></option>
-							<?php } ?>
-								
-						</select>
 					</td>
-					<?php }else{ ?> 
-						<td class="fit">
-							<select name="int_marks[]" class="form-control select2" readonly>
-								<option value="N" selected>N</option>
-								
-							</select>
-						</td>
-						
-						<?php }?>
+					
 					<?php  else: ?>
 						<td class="fit">
 							<input type="hidden" name="paper_code[]" value="<?= $papers['paper_code'];?>">
@@ -127,104 +98,7 @@
 							</select>
 						</td>
 					<?php endif ?>
-				<?php }elseif($papers['type']=='Project' || $papers['type'] == 'project'){ ?>
-					<td>
-						<input type="hidden" name="pro_marks_paper_code[]" value="<?= $papers['paper_code'];?>">
-						<select name="pro_marks[]" class="form-control select2">
-							<option value="">Select Marks</option>
-							<option <?=($papers['p_marks']==="ABS") ? 'selected="selected"' : ''; ?> value="ABS">ABS</option>
-								<?php
-								for ($i=$papers['min_theory_marks']; $i<=$papers['max_theory_marks']; $i++){
-									$selected =  ($papers['p_marks']==$i && $papers['p_marks']!="ABS") ? 'selected' : '';
-									?>
-									<option <?=$selected ?>><?php echo str_pad($i,2,'0',STR_PAD_LEFT);?></option>
-								<?php } ?>
-								
-							</select>
-					</td>
-							<?php if($papers['practical_internal_marks'] == 'Y' && $papers['max_internal_marks'] !=0){?>
-					<td>
-						<select name="proj_int_marks[]" class="form-control select2">
-						<option value="">Select Marks</option>
-						<option <?=($papers['p_marks']==="ABS") ? 'selected="selected"' : ''; ?> value="ABS">ABS</option>
-							<?php
-							for ($i=$papers['min_internal_marks']; $i<=$papers['max_internal_marks']; $i++){
-								$selected =  ($papers['int_marks']==$i && $papers['int_marks']!="ABS") ? 'selected' : '';
-								?>
-								<option <?=$selected ?>><?php echo str_pad($i,2,'0',STR_PAD_LEFT);?></option>
-							<?php } ?>
-						
-						</select>
-						</td>
-						<?php }
-						else{ ?> 
-							<td class="fit">
-							<select name="proj_int_marks[]" class="form-control select2" readonly>
-								<option value="N" selected>N</option>
-								
-							</select>
-					</td>
-							
-							<?php }?>
-							<?php }elseif($papers['type']=='Practical' || $papers['type']=='practical'){
-							?>
-					<td>
-					<input type="hidden" name="p_marks_paper_code[]" value="<?= $papers['paper_code'];?>">
-					<select name="p_marks[]" class="form-control select2">
-						<option value="N">Select Marks</option>
-						<option <?=($papers['p_marks']==="ABS") ? 'selected="selected"' : ''; ?> value="ABS">ABS</option>
-							<?php
-							for ($i=$papers['min_theory_marks']; $i<=$papers['max_theory_marks']; $i++){
-								$selected =  ($papers['p_marks']==$i && $papers['p_marks']!="ABS") ? 'selected' : '';
-								?>
-								<option <?=$selected ?>><?php echo str_pad($i,2,'0',STR_PAD_LEFT);?></option>
-							<?php } ?>
-							
-						</select>
-						</td>
-						<?php if($papers['practical_internal_marks'] == 'Y'){?>
-						<td class="fit">
-						<select name="paper_int_marks[]" class="form-control select2">
-							<option value="N">Select Marks</option>
-							<option <?=($papers['int_marks']==="ABS") ? 'selected="selected"' : ''; ?> value="ABS">ABS</option>
-							<?php
-							for ($i=$papers['min_internal_marks']; $i<=$papers['max_internal_marks']; $i++){
-								$selected =  ($papers['int_marks']==$i && $papers['int_marks']!="ABS") ? 'selected="selected"' : '';
-								$selected = ($papers['int_marks']=='' || $papers['int_marks']=='N') ? '' : $selected;
-								?>
-								<option <?=$selected ?>><?php echo str_pad($i,2,'0',STR_PAD_LEFT);?></option>
-							<?php } ?>
-								
-						</select>
-					</td>
-				<?php } else{ ?> 
-						<td class="fit">
-						<select name="paper_int_marks[]" class="form-control select2" readonly>
-							<option value="N" selected>N</option>
-							
-						</select>
-					</td>
-						
-						<?php }
-			
-			} elseif ($papers['type']=='Sessional') {?>
-					
-					<td colspan="2">
-					<input type="hidden" name="s_marks_paper_code[]" value="<?= $papers['paper_code'];?>">
-					<select name="sessional_marks[]" class="form-control select2">
-						<option value="">Select Marks</option>
-						<option <?=($papers['p_marks']==="ABS") ? 'selected="selected"' : ''; ?> value="ABS">ABS</option>
-							<?php
-
-							for ($i= 0; $i<=$papers['max_internal_marks']; $i++){
-								$selected =  ($papers['int_marks']==$i && $papers['p_marks']!="ABS") ? 'selected' : '';
-								?>
-								<option <?=$selected ?>><?php echo str_pad($i,2,'0',STR_PAD_LEFT);?></option>
-							<?php } ?>
-						
-						</select>
-						</td>
-				<?php } ?>
+				<?php }?>
 			</tr>
 			<?php endforeach ?>
 			<tr>
