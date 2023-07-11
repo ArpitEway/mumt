@@ -53,7 +53,7 @@ $total = 0;
          $page_break_count++;
      
 ?> 
-<table width="80%" border="1" align="center" class="<?php echo $page_break; ?>">
+<table width="80%" border="1" align="center" cellpadding="3" style="margin-top: 15px;margin-bottom: 15px;" class="<?php echo $page_break; ?>">
    <tbody>
        <tr>
             <td width="239"><div class="style1" align="left">Exam Center Code</div></td>
