@@ -244,6 +244,11 @@
 								<span class="nav-text">Result(March 2023)</span>
 							</div>
 						</a>
+						<a class="border-0 custom-menu-item" href="<?=base_url('backlog_result');?>">
+							<div>
+								<span class="nav-text">Backlog Result (March 2023)</span>
+							</div>
+						</a>
 					<?php endif ?>
 					<?php /*if ($this->session->center_id!=1080 && $this->session->center_id!=1986): ?>						
 						<a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
