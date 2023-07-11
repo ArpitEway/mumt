@@ -310,24 +310,25 @@ class Preexam extends CI_Controller {
 			$i++;
 		}
 	}
-	// Update exam center code in allot_exam_center table
-	// public function update_exam_center_code_in_allot(){
-	// 	$this->db->select('*');
-    //     $this->db->from('allot_exam_center');
-	// 	$rows=$this->db->get()->result();
-	// 	$i=1;
-	// 	foreach($rows as $row){
+	//Update exam center code in allot_exam_center table
+	public function update_exam_center_code_in_allot(){
+		$this->db->select('*');
+        $this->db->from('allot_exam_center');
+		$this->db->where('examcentercode',0);
+		$rows=$this->db->get()->result();
+		$i=1;
+		foreach($rows as $row){
 
-	// 		echo "<br> ".$i." ".$row->exam_center_id ." ". $row->center_id ." ". $row->examcentercode;
-	// 		$examCenterData = $this->Common_model->getRecordById('exam_center','id',$row->exam_center_id);
-	// 		$data  = array('examcentercode'=>$examCenterData->examcentercode ,);
-    //         $where = array('id'=>$row->id,'exam_center_id'=> $row->exam_center_id, );
-    //         $update =$this->Common_model->updateRecordByConditions('allot_exam_center',$where,$data);
+			echo "<br> ".$i." ".$row->exam_center_id ." ". $row->center_id ." ". $row->examcentercode;
+			$examCenterData = $this->Common_model->getRecordById('exam_center','id',$row->exam_center_id);
+			$data  = array('examcentercode'=>$examCenterData->examcentercode ,);
+            $where = array('id'=>$row->id,'exam_center_id'=> $row->exam_center_id, );
+            $update =$this->Common_model->updateRecordByConditions('allot_exam_center',$where,$data);
 	
-	// 		$i++;
-	// 	}
+			$i++;
+		}
 
-	// }
+	}
 
 
 	public function upload_group_exam_paper(){
