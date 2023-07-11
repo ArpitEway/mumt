@@ -314,7 +314,7 @@ class Preexam extends CI_Controller {
 	public function update_exam_center_code_in_allot(){
 		$this->db->select('*');
         $this->db->from('allot_exam_center');
-		$this->db->where('examcentercode',0);
+		$this->db->where('examcentercode','0');
 		$rows=$this->db->get()->result();
 		$i=1;
 		foreach($rows as $row){
@@ -365,7 +365,7 @@ class Preexam extends CI_Controller {
 					'demo'=>"N",
 					'group_id!='=>"",
 		);
-			
+		$this->db->limit(2000,0);
 		$students = $this->Common_model->get_record('student','*',$where);
 		
 		$paperWhere=array('class_id'=>$class_id,'ce'=>'compulsory');
@@ -460,8 +460,8 @@ class Preexam extends CI_Controller {
 					
 				
 				$this->Common_model->updateRecordByConditions('student',$where,array('group_id'=>$group_id,'temp_exam_form' => "Y"));
-				if($stCount==1)
-				break;	
+				//if($stCount==1)
+				//break;	
 			
 			
 		}
