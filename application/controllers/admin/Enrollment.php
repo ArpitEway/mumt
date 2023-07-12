@@ -1101,6 +1101,7 @@
 		$remark = html_escape($this->input->post('remark'));
 		$data['provisional_remark'] = implode(",",$remark);
 		$data['approved'] = 'Y';
+		$data ['approved_by'] = $this->session->admin_id;
 		$this->db->where('student_id', $param);
 		$this->db->update('student', $data);	
 		$this->session->set_flashdata('ajax_flash_message','approved');
