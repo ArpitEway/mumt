@@ -1089,6 +1089,7 @@
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		$data['provisional_remark'] = "N";
 		$data['approved'] = "";
+		$data['approved_by'] = "";
 		$this->db->where('student_id', $student_id);
 		$this->db->update('student', $data);	
 		$this->session->set_flashdata('ajax_flash_message','Non Verfied');
