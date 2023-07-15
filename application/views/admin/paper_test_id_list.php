@@ -18,6 +18,7 @@
 	<tbody>
 		<?php $i=1; ?>
 		<?php foreach ($papers as $paper): 
+			$old_paper_master ="";
 			$old_paper_master = $this->Common_model->getRecordByWhere('paper_master_aug_2022',array('id'=>$paper->id));
 			
 			//echo $old_paper_master[0]->exam_date; die;
