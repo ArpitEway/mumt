@@ -138,8 +138,8 @@ table.last_table, .last_table td, .last_table th{
     $final_class = true;
   }
   $course_duration = ($isFinalClass) ? "(One Year Course)" : $classData->class_name;
-  $rowspanhead = ($classData->project!='N' || $classData->practical!='N') ? "7" : "4";
-  $rowspandata = 10;
+  $rowspanhead = ($classData->project!='N' || $classData->practical!='N') ? "7" : "5";
+  $rowspandata = 8;
   //($classData->project!='N' || $classData->practical!='N') ? "6" : "6";
   if($classData->internal=='N'){
     $rowspandata--;  
@@ -153,13 +153,11 @@ table.last_table, .last_table td, .last_table th{
   $GLOBALS['foundation_1'] =0;
   foreach($students as $student)
   {
-    
    
-    
- 
     $current_center=$student->center_id;
     $page_break_count++;
     $marks = $this->Common_model->student_info_for_result($student->student_id,$student->old_class_id);
+    // $this->Common_model->last_query();
     $BarCodecolspan = 10 + count($marks); 
     $total_theory_marks_obt = 0;
     $total_int_marks_obt = 0;
@@ -192,10 +190,10 @@ table.last_table, .last_table td, .last_table th{
     $final_result = '';
 
     if($student->university_mode == 'REG'){
-      $rowspanhead = ($classData->project!='N' || $classData->practical!='N') ? "6" : "3";
+      $rowspanhead = ($classData->project!='N' || $classData->practical!='N') ? "5" : "4";
       // $rowspandata = (($classData->project!='N' || $classData->practical!='N') && $classData->internal!='N')? "5" : "4";
       if($classData->project!='N' || $classData->practical!='N' && $classData->internal!='N'){
-        $rowspandata = "10";
+        $rowspandata = "9";
       }else if($classData->project!='N' || $classData->practical!='N' && $classData->internal =='Y'){
         $rowspandata = "4";
       }else if($classData->project =='N' &&  $classData->practical=='N' && $classData->internal=='N'){
@@ -204,8 +202,8 @@ table.last_table, .last_table td, .last_table th{
 
       
     }else{
-      $rowspanhead = "3";
-      $rowspandata = "4";
+      $rowspanhead = "4";
+      $rowspandata = "3";
     }
     foreach($marks as $new_exam_form)
     {
@@ -300,6 +298,7 @@ table.last_table, .last_table td, .last_table th{
             }
       }
 
+     
     }
     if($new_exam_form->type!='theory' && $student->university_mode != 'PVT'){
       // echo $new_exam_form->p_marks;die;
@@ -410,14 +409,14 @@ table.last_table, .last_table td, .last_table th{
             <td class="align-middle text-center remarks" rowspan="<?php  echo $rowspanhead ?>">Remarks</td>
           </tr>
           <tr>
-            <td class="align-middle text-right paper">Theory Marks Max -></td>
+            <td class="align-middle text-right paper">Theory Marks Max/Min -></td>
             <?php foreach($marks as $paper_master){ ?>
               <td  class="align-middle text-center paper_code"><?php
               if($paper_master->paper_type=='theory' ){ 
                 if($student->university_mode != 'PVT'){
-                echo  $paper_master->max_theory_marks;
+                echo  $paper_master->max_theory_marks.'/'.$paper_master->min_theory_marks;
               }else{
-                echo  $paper_master->private_max_theory_marks;
+                echo  $paper_master->private_max_theory_marks.'/'.$paper_master->private_min_theory_marks;
               }
             }
             ?>
@@ -427,10 +426,10 @@ table.last_table, .last_table td, .last_table th{
         </tr>
         <?php if($classData->internal=="Y" && $student->university_mode != 'PVT'){ ?>
         <tr>
-          <td class="align-middle text-right paper">Internal Marks Max -></td>
+          <td class="align-middle text-right paper">Internal Marks Max/Min -></td>
           <?php  foreach($marks as $paper_master){     ?>
             <td  class="align-middle text-center internal_mark">
-              <?php if($paper_master->paper_type=="theory"){ if($paper_master->max_internal_marks !=0){echo  $paper_master->max_internal_marks;}else{ echo '';}};  ?></td>
+              <?php if($paper_master->paper_type=="theory"){ if($paper_master->max_internal_marks !=0){echo  $paper_master->max_internal_marks.'/'.$paper_master->min_internal_marks;}else{ echo '';}};  ?></td>
           <?php }  ?>
           <td class="align-middle text-center"></td>
         </tr>
@@ -440,83 +439,42 @@ table.last_table, .last_table td, .last_table th{
           // echo $student->university_mode;die;
         ?>
         <tr>
-          <td class="align-middle text-right paper"> <?=($classData->project=='Y') ? 'Project' : 'Practical' ?> Marks Max-></td>
+          <td class="align-middle text-right paper"> <?=($classData->project=='Y') ? 'Project' : 'Practical' ?> Marks Max/Min-></td>
           <?php foreach($marks as $paper_master){   ?>
           <td  class="align-middle text-center practical_marks">
-            <?php if($paper_master->paper_type!="theory"){echo  $paper_master->max_theory_marks ;};  ?>
+            <?php if($paper_master->paper_type!="theory"){echo  $paper_master->max_theory_marks.'/'.$paper_master->min_theory_marks ;};  ?>
           </td>
           <?php } ?>
           <td class="align-middle text-center"></td>
         </tr>
         <?php }  ?>
-        <tr>
-          <td class="align-middle text-right paper"> Total Marks Max/Min-></td>
-          <?php 
-          $x =1;
-          foreach($marks as $paper_master){ 
-            $count = count($marks)-2;  
-            $paper_codes=array('1RBBA1','1RBBA2','1RBA1','1RBA2','1RBCOM1','1RBCOM2','1RBCOMCA1','1RBCOMCA2','1RBCOMT1','1RBCOMT2','1RBCA1','1RBCA2','1RBSCCBC1','1RBSCCBC2','1RBSCCS1','1RBSCCS2','1RBSCPCM1','1RBSCPCM2','1RBSW1','1RBSW2');
-            if(in_array($paper_master->paper_code,$paper_codes))	
-            {
-            echo "<td colspan= '2' class='align-middle text-center practical_marks'>".'100/35'."</td>";
-            }else{
-              
-              echo "<td class='align-middle text-center practical_marks'>".'100/35'."</td>";
-            }
-           if($count == $x){
-            break;
-           }
-           $x++; 
-            ?>
-        
-          <?php } ?>
-          <td class="align-middle text-center"></td>
-        </tr>
-        <tr>
+       
 		<td class="align-middle text-right">Course Credit</td>
     <?php
     $credit = 0;
     $std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $student->old_class_id,'student_id'=>$student->student_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$student->old_class_id);
    
-    if($std[0]->sub_group_id == 1){
+   
 			$papers = $this->Common_model->get_all_papers($student->student_id,$student->old_class_id);
      
-		}
-
-		if($this->classData->class_group == 'Y'){
-			$papers_list = $this->Common_model->get_all_group_papers($student->student_id,$student->old_class_id);
-		}
+		
 		
 		foreach ($papers as $paper_master) {
       
       $credit += $paper_master['credit_point'];
-      $paper_codes=array('1RBBA1','1RBBA2','1RBA1','1RBA2','1RBCOM1','1RBCOM2','1RBCOMCA1','1RBCOMCA2','1RBCOMT1','1RBCOMT2','1RBCA1','1RBCA2','1RBSCCBC1','1RBSCCBC2','1RBSCCS1','1RBSCCS2','1RBSCPCM1','1RBSCPCM2','1RBSW1','1RBSW2');
-			// $paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4');
-				if(in_array($paper_master['paper_code'],$paper_codes) && $paper_master['sub_group_id'] == 1)	
-				{
-				?><td colspan= '2' class='text-center'>4</td><?php
-				}else if ($paper_master['sub_group_id'] != 1){
-					?>
+    //   $paper_codes=array('1RBBA1','1RBBA2','1RBA1','1RBA2','1RBCOM1','1RBCOM2','1RBCOMCA1','1RBCOMCA2','1RBCOMT1','1RBCOMT2','1RBCA1','1RBCA2','1RBSCCBC1','1RBSCCBC2','1RBSCCS1','1RBSCCS2','1RBSCPCM1','1RBSCPCM2','1RBSW1','1RBSW2');
+	// 		// $paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4');
+	// 			if(in_array($paper_master['paper_code'],$paper_codes) && $paper_master['sub_group_id'] == 1)	
+	// 			{
+	// 			
+	// 			}else if ($paper_master['sub_group_id'] != 1){
+	// 				?>
 					<td class='text-center'><?= $paper_master['credit_point'] ?></td>
           <?php
-				}
+				// }
 		}
-    foreach ($papers_list as $paper_master) {
-    
-      $credit += $paper_master['credit_point'];
-      $paper_codes=array('1RBBA1','1RBBA2','1RBA1','1RBA2','1RBCOM1','1RBCOM2','1RBCOMCA1','1RBCOMCA2','1RBCOMT1','1RBCOMT2','1RBCA1','1RBCA2','1RBSCCBC1','1RBSCCBC2','1RBSCCS1','1RBSCCS2','1RBSCPCM1','1RBSCPCM2','1RBSW1','1RBSW2');
-			// $paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4');
-				if(in_array($paper_master['paper_code'],$paper_codes))	
-				{
-				?><td colspan= '2' class='text-center'>4</td><?php
-				}else if ($paper_master['sub_group_id'] != 1){
-					?>
-					<td class='text-center'><?= $paper_master['credit_point'] ?></td>
-          <?php
-				}
-		}
-    ?>
+   ?>
 		<td class="text-center"><?= $credit?></td>
 		</tr>
       </tbody>
@@ -533,7 +491,7 @@ table.last_table, .last_table td, .last_table th{
     
 <span style="display:none;">
 <?php
-   $gradesheetData = $this->Gradesheet_tr_model->view_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+   $gradesheetData = $this->Gradesheet_tr_model_pg->view_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
   
   ?>
 </span>
@@ -546,33 +504,15 @@ table.last_table, .last_table td, .last_table th{
           </th>
           <th  class="align-middle text-center photo" rowspan="<?php echo $rowspandata ?>"><img alt="N/A" src="<?= base_url('assets/student_image/'.$student->session.'/'.$student->photo) ?>" width="65px" height="90px"></th>
           <td  class="align-middle text-center name"  rowspan="<?php  echo $rowspandata ?>"><?php  echo $student->name ?>/ <br><?php  echo $student->f_h_name ?></td>
-          <td  class="align-middle text-right paper" rowspan='2'> Paper Code</td>
-         <?php foreach ($papers as $paper_master) {
-      
-     
-      // $paper_codes=array('1RBBA1','1RBBA2','1RBA1','1RBA2','1RBCOM1','1RBCOM2','1RBCOMCA1','1RBCOMCA2','1RBCOMT1','1RBCOMT2','1RBCA1','1RBCA2','1RBSCCBC1','1RBSCCBC2','1RBSCCS1','1RBSCCS2','1RBSCPCM1','1RBSCPCM2','1RBSW1','1RBSW2');
-			 $paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4');
-				if(in_array($paper_master['paper_code'],$paper_codes) && $paper_master['sub_group_id'] == 1)	
-				{
-				?><td colspan= '2' class='text-center'><?=$paper_master['group_paper_name'] ?></td><?php
-        }else if ($paper_master['sub_group_id'] != 1){
-         ?> <td  class='text-center'><?=$paper_master['group_paper_name'] ?></td> <?php
-        }
-		}
-    foreach ($papers_list as $paper_master) {
-    
-     
-      // $paper_codes=array('1RBBA1','1RBBA2','1RBA1','1RBA2','1RBCOM1','1RBCOM2','1RBCOMCA1','1RBCOMCA2','1RBCOMT1','1RBCOMT2','1RBCA1','1RBCA2','1RBSCCBC1','1RBSCCBC2','1RBSCCS1','1RBSCCS2','1RBSCPCM1','1RBSCPCM2','1RBSW1','1RBSW2');
-			 $paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4');
-				if(in_array($paper_master['paper_code'],$paper_codes))	
-				{
-				?><td colspan= '2' class='text-center'><?=$paper_master['group_paper_name'] ?></td><?php
-				}else if ($paper_master['sub_group_id'] != 1){
-          ?><td  class='text-center'><?=$paper_master['group_paper_name'] ?></td><?php 
-        }
-		}
-    ?>
-     <td  class="align-middle text-center total" rowspan='2'>Total</td>
+          <td  class="align-middle text-right paper"> Paper Code</td>
+          <?php
+            $p_count = 1;
+              foreach($marks as $paper_master){
+            ?>
+              <td class="align-middle text-center paper_code"><?php echo ($paper_master->ce!='compulsory') ? 'OPTIONAL '.$p_count++ : $paper_master->paper_code;  ?></td>
+            <?php } ?>
+       
+     <td  class="align-middle text-center total">Total</td>
           
           <td  class="align-middle text-center obtained" rowspan="<?php echo $rowspandata ?>"><?php 
                   echo $total_marks_obt .'/'. $total_paper_marks;
@@ -591,17 +531,17 @@ table.last_table, .last_table td, .last_table th{
             elseif($int_abs_count>0 &&  $theory_abs_count>0 && $p_abs_count>0){
               echo 'Year Break';
             }
-            elseif($int_abs_count == $count_int ||  $theory_abs_count == ($count_theory - 2) || ($p_abs_count == $count_practical)){
+            elseif($int_abs_count == $count_int ||  $theory_abs_count == $count_theory || ($p_abs_count == $count_practical && $count_practical!=0)){
              
-              if($theory_abs_count == ($count_theory-2)){
+              if($theory_abs_count == $count_theory){
                 echo 'Year Break';
               }elseif($int_abs_count == $count_int){
                 echo ' Absent In Internal'; 
-              }elseif($p_abs_count == $count_practical){
+              }elseif($p_abs_count == $count_practical && $count_practical!=0){
                 echo ' Absent In Practical';
               }
             }else{
-              if($fail_count == ($count_theory - 2)){
+              if($fail_count == $count_theory){
                 echo 'Year Break';
               }else{
               if(sizeof($atkt_paper_codes_array)>0){
@@ -617,13 +557,7 @@ table.last_table, .last_table td, .last_table th{
           ?>
         </td>
       </tr>
-      <tr>
-     
-          <?php  foreach($marks as $paper_master){  ?>
-            <td  class="align-middle text-center paper_code"><?php echo  $paper_master->paper_code;  ?></td>
-          <?php   }  ?>
-         
-        </tr>
+    
       <tr>
         <td class="align-middle text-right paper" >Theory Marks-></td>
         <?php foreach($marks as $new_exam_form){ ?>
@@ -774,7 +708,7 @@ table.last_table, .last_table td, .last_table th{
   </tr>
   
   <?php
-   $this->Gradesheet_tr_model->view_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+   $this->Gradesheet_tr_model_pg->view_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
   
   ?>
   

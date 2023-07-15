@@ -3024,10 +3024,14 @@ public function update_exam_datewise_permission(){
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
 		$data['title'] .= $title;//echo $this->db->last_query(); die;
 		$class_ids=array(101,104,107,110,116,119,125,128,131,134);
+		$class_cbcs = array(193,197,201,203,205,211,213,221,223,225,227,275,279);
 		if((in_array($class_id, $class_ids)) && $mode=='REG')	
 		{
 			$this->load->model('Gradesheet_tr_model');
 			$this->load->view('admin/generate_gradesheet_tr',$data);
+		}else if((in_array($class_id, $class_cbcs)) && $mode=='REG'){
+			$this->load->model('Gradesheet_tr_model_pg');
+			$this->load->view('admin/generate_gradesheet_tr_pg',$data);
 		}
 		else if ($class_id!=168) {
 			$this->load->view('admin/generate_tr',$data);
