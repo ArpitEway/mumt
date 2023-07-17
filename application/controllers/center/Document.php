@@ -74,7 +74,7 @@
 		foreach($tableData as $result){
 			$btn = '<a href="'.base_url('center/document/upload/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" target="_blank" class="btn btn-primary btn-sm" target="_blank" >Upload</a>';			
 			$i++;
-			$data[] = array($result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$btn);
+			$data[] = array($i,$result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$btn);
 		}
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
