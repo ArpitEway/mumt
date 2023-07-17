@@ -2179,12 +2179,18 @@ public function backlog_marksheet($student_id="")
 		// $this->db->where_in('provisional_remark', $provisional);
 		
 		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
-		$student = $this->Common_model->getRecordByWhere('backlog_student',array('exam_form'=>'Y','result_show'=>'Y','student_id'=>$student_id));
+		// $student = $this->Common_model->getRecordByWhere('backlog_student',array('exam_form'=>'Y','result_show'=>'Y','student_id'=>$student_id));
 		// ($student->course_group_id == 12 && $student->university_mode == 'REG') || ($student->course_group_id == 13 && $student->university_mode == 'REG')
+		$this->db->select('backlog_student.*,student.name,student.f_h_name,student.course_name,student.photo,student.session');
+				$this->db->from('backlog_student');
+				$this->db->join('student','backlog_student.student_id=student.student_id');
+				$this->db->where(array('backlog_student.exam_form'=>'Y','backlog_student.result_show'=>'Y','backlog_student.student_id'=>$student_id));
+				$student = $this->db->get()->result();
 		if ((count($student)==0)  ) {
 			redirect(base_url());
 		}
-		$data['students'] =$this->Common_model->getRecordById('student','student_id',$student[0]->student_id);
+		// $data['students'] =$this->Common_model->getRecordById('student','student_id',$student[0]->student_id);
+		
 		$data['student']=$student[0];
 		$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
 		$data['practical_internal_marks']=$classData->practical_internal_marks;
