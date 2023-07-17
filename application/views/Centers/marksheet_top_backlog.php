@@ -42,6 +42,7 @@
     <h4 class="text-primary text-center mb-0">Backlog Examination Held In <?= $exam_session?></h4>
   </div>
 </div>
+
 <table class="table mb-0">
   <tbody>
     <tr>
@@ -53,13 +54,13 @@
     </tr>
     <tr>
       <th class="border-top-0 text-primary pl-3">Name</th>
-      <th class="border-top-0"><?php  echo $students->name ?></th>
+      <th class="border-top-0"><?php  echo $student->name ?></th>
       <th class="border-top-0 text-primary pl-3">F/H Name</th>
-      <th class="border-top-0"><?php  echo $students->f_h_name ?></th>
+      <th class="border-top-0"><?php  echo $student->f_h_name ?></th>
     </tr>
     <tr>
       <th class="border-top-0 text-primary pl-3">Course</th>
-      <th class="border-top-0"><?php  echo $students->course_name ?></th>
+      <th class="border-top-0"><?php  echo $student->course_name ?></th>
       <th class="border-top-0 text-primary pl-3">Year / Sem </th>
       <th class="border-top-0"><?php  echo 
       $this->Common_model->getClassNameByClassId($student->class_id);
