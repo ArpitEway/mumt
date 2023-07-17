@@ -50,7 +50,7 @@
       <th class="border-top-0"><?php  echo $student->enrollment_no ?></th>
       <th class="border-top-0 text-primary pl-3">Roll No.</th>
       <th class="border-top-0"><?php echo  $student->roll_no; ?></th>
-      <th rowspan="3" class="border-top-0 text-center" width="120px"><img class="img img-thumbnail" src="<?=base_url('assets/student_image/').$students->session.'/'.$students->photo?>" ></th>
+      <th rowspan="3" class="border-top-0 text-center" width="120px"><img class="img img-thumbnail" src="<?=base_url('assets/student_image/').$student->session.'/'.$student->photo?>" ></th>
     </tr>
     <tr>
       <th class="border-top-0 text-primary pl-3">Name</th>
