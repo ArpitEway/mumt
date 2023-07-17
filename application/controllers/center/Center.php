@@ -2034,7 +2034,7 @@ class Center extends CI_Controller {
 				$enrollment = $result->enrollment_no;
 				}
 			$class_name =  $this->Common_model->getClassNameByClassId($result->old_class_id); 
-			$data[] = array($result->student_id,$enrollment,$result->name, $result->f_h_name, $result->course_name,$class_name,$btn);
+			$data[] = array($i,$result->student_id,$enrollment,$result->name, $result->f_h_name, $result->course_name,$class_name,$btn);
 		}
 
 		$output = array(
