@@ -24,6 +24,7 @@ class Postexam extends CI_Controller {
         /*
             222 - Dec 2022
             221 - June 2022
+            231 - June 2023
         */
             $data['students'] = $this->Common_model->getRecordByWhere('student', array('exam_form'=>'Y' ,'roll_number!='=>0 ,'marksheet_no'=>''));
             $starting_no = 10001 ;
@@ -49,20 +50,20 @@ class Postexam extends CI_Controller {
 
        public function upload_old_marks()
        {
-            $this->db->select('course_name,student_result_aug_22.class_name,class_id, COUNT(student_id) as cnt,student_result_aug_22.university_mode');
-            $this->db->join('class_master', 'student_result_aug_22.old_class_id = class_master.id');
-            //$this->db->where_in('student_id',array(188516,188517,188518,188519,188520,188522,685336,685337,685340,685342,685343,685344,685346,685347,685348,685349,685350,685351,685352,685353,685362,685364,685366,685368,685369,685370,685372,685373,685374,685381,685383,685386,685441,685443,685444,685446,685447,685449,685453,685456,685473,685474,685487,685489,685490,685491,685493,685494,685496,686004,686022,700042,700150,700155,702602,702648,702653,702654,702655,702657,702658,702660,702669,702671,702674,702676,702678,702823,702829,702830,702831,702838,702839,702847,702851,702981,702986,702989,703155,703163,703228,703278,703394,703395));
+            $this->db->select('course_name,student.class_name,class_id, COUNT(student_id) as cnt,student.university_mode');
+            $this->db->join('class_master', 'student.old_class_id = class_master.id');
+            $this->db->where('cbcs', 'Y');
            // $this->db->where('last_class', 'L');
             // $this->db->where('mode', 'Semester');
             $this->db->where('exam_form', 'Y');
             $this->db->where('upload_result', 'N');
             // $this->db->where('result_show', 'Y');
            // $this->db->where('result_permission', 'Y');
-            // $this->db->where('final_result_permission', 'Y');
+           //  $this->db->where('final_result_permission', 'Y');
             // $this->db->where('marksheet_dispatch', 'Y');
            // $this->db->where('university_mode','REG');
             $this->db->group_by('class_id,university_mode');          
-            $data['courses'] = $this->db->get('student_result_aug_22')->result();
+            $data['courses'] = $this->db->get('student')->result();
             $this->load->view('header',array('title' => ''));
             $this->load->view('admin/script/upload_old_marks',$data);
             $this->load->view('footer');
@@ -71,8 +72,8 @@ class Postexam extends CI_Controller {
     public function upload_old_data_script($class_id="",$mode){
         $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
         $this->db->limit(500);
-        // $this->db->where_in('student_id',array(188516,188517,188518,188519,188520,188522,685336,685337,685340,685342,685343,685344,685346,685347,685348,685349,685350,685351,685352,685353,685362,685364,685366,685368,685369,685370,685372,685373,685374,685381,685383,685386,685441,685443,685444,685446,685447,685449,685453,685456,685473,685474,685487,685489,685490,685491,685493,685494,685496,686004,686022,700042,700150,700155,702602,702648,702653,702654,702655,702657,702658,702660,702669,702671,702674,702676,702678,702823,702829,702830,702831,702838,702839,702847,702851,702981,702986,702989,703155,703163,703228,703278,703394,703395));
-        $students = $this->Common_model->getRecordByWhere("student_result_aug_22",array("old_class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'N', "marksheet_dispatch"=>'Y','university_mode'=>$mode));
+        
+        $students = $this->Common_model->getRecordByWhere("student",array("old_class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'N','university_mode'=>$mode)); //, "marksheet_dispatch"=>'Y'
          // $this->db->where_in('course_group.course_type',array('Diploma','PGDiploma'));
         // $course_type = $this->Common_model->getRecordByWhere("course_group",array('id'=> $students[0]->course_group_id));
 
@@ -104,7 +105,7 @@ class Postexam extends CI_Controller {
                 'enrollment_no' => $student->enrollment_no,
                 'roll_no' => $student->roll_number,
                 'name' => $student->name,
-                'exam_year' => 'Aug 2022',
+                'exam_year' => 'Feb 2023',
                 'f_h_name' => $student->f_h_name,
                 'mother_name' => $student->mother_name,
                 'marksheet_no' =>$student->marksheet_no,
@@ -293,7 +294,7 @@ class Postexam extends CI_Controller {
             }else{
                 $studentData['promote'] = 'N';
             }
-           $this->Common_model->updateRecordByConditions('student_result_aug_22',array('student_id'=>$student->student_id),$studentData);
+          // $this->Common_model->updateRecordByConditions('student_result_aug_22',array('student_id'=>$student->student_id),$studentData);
            $this->Common_model->updateRecordByConditions('student',array('student_id'=>$student->student_id),$studentData);          
             if($insert){
                 echo $old_exam_data_id;
@@ -307,14 +308,14 @@ class Postexam extends CI_Controller {
 
     public function promote_student_list(){
         $this->db->select('count(*) as cnt ,student.course_name ,student.class_id, student.course_group_id, student.class_name');
-        $this->db->from('student_result_aug_22 as student');
+        $this->db->from('student as student');
         $this->db->join('class_master', 'class_master.id = student.class_id');
         $this->db->group_by('student.class_id');
         $this->db->where('student.exam_form','Y');
         // $this->db->where('student.result_show','Y');
         $this->db->where('student.promote','N');
-        $this->db->where('class_master.mode','Annual');
-        //$this->db->where('class_master.mode','Semester');
+        //$this->db->where('class_master.mode','Annual');
+        $this->db->where('class_master.mode','Semester');
         $this->db->where('student.course_complete','N');
         $this->db->where('class_master.last_class is NULL');
         $data['courses'] = $this->db->get()->result();
@@ -330,7 +331,7 @@ class Postexam extends CI_Controller {
             'hash_csrf' => $this->security->get_csrf_hash(),
         );//'result_show'=>'Y'
         $this->db->limit(1000);
-          $data['students']= $this->Common_model->getRecordByWhere('student_result_aug_22',array('class_id' => $class_id, 'exam_form'=>'Y' , 'promote'=>'N' ,'course_complete'=>'N' ));
+          $data['students']= $this->Common_model->getRecordByWhere('student',array('class_id' => $class_id, 'exam_form'=>'Y' , 'promote'=>'N' ,'course_complete'=>'N' ));
           $data['course_name']= $this->Common_model->getCourseNameByCourseId($course_group_id);
           $data['class_name']= $this->Common_model->getClassNameByClassId($class_id);
           $data['class_id'] =$class_id ;
@@ -356,7 +357,7 @@ class Postexam extends CI_Controller {
             $where = array('student_id'=>$student_id,'new_exam_form'=>'D');
             $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
             $data_result = array( 'promote' => 'Y');
-            $update_result =$this->Common_model->updateRecordByConditions('student_result_aug_22',$where,$data_result);
+            //$update_result =$this->Common_model->updateRecordByConditions('student_result_aug_22',$where,$data_result);
         }
         if($update){
             redirect(base_url('admin/scripts/Postexam/promote_student_list'));

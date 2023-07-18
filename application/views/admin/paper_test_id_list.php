@@ -18,9 +18,9 @@
 	<tbody>
 		<?php $i=1; ?>
 		<?php foreach ($papers as $paper): 
+			$old_paper_master ="";
 			$old_paper_master = $this->Common_model->getRecordByWhere('paper_master_aug_2022',array('id'=>$paper->id));
 			
-			//echo $old_paper_master[0]->exam_date; die;
 			?>
 			<tr>
 				<td><?=$i++ ?></td>
@@ -32,9 +32,10 @@
 				<td><?=$paper->type ?></td>
 				<td><?=$paper->ce ?></td>
 				<td><?=$paper->test_id ?></td>
-				<td><?=$old_paper_master[0]->exam_date; ?></td>
-				<td><?=$old_paper_master[0]->exam_shift ?></td>
-				<td><?=$old_paper_master[0]->exam_day ?></td>
+				
+				<td><?php if(!empty($old_paper_master[0]->exam_date)) echo $old_paper_master[0]->exam_date; ?></td>
+				<td><?php if(!empty($old_paper_master[0]->exam_shift)) echo $old_paper_master[0]->exam_shift ?></td>
+				<td><?php if(!empty($old_paper_master[0]->exam_day))  echo $old_paper_master[0]->exam_day ?></td>
 			</tr>
 		<?php endforeach ?>
 	</tbody>

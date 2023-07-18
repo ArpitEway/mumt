@@ -64,9 +64,9 @@
 					// $query_back = $this->db->query($sql_back);
 					// $count_back = $query_back->result_array();
 					//I Year
-					$qu="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE s.class_id ='".$data->class_id."' AND `p`.`paper_code` = '".$data->paper_code."'  AND temp_exam_form='N' and `session` = 'July 2022'";
+					//$qu="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE s.class_id ='".$data->class_id."' AND `p`.`paper_code` = '".$data->paper_code."'  AND temp_exam_form='N' and `session` = 'July 2022'";
 					//II Year
-					// $qu="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE s.class_id ='".$data->class_id."' AND `p`.`paper_code` = '".$data->paper_code."'  AND temp_exam_form='N' and new_exam_form!='D'";
+					 $qu="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE s.class_id ='".$data->class_id."' AND `p`.`paper_code` = '".$data->paper_code."'  AND temp_exam_form='N' and new_exam_form!='D'";
 					 //`session` = 'July 2022'";
 					$query = $this->db->query($qu);
 					$all = $query->result_array();
@@ -146,9 +146,9 @@
 					// // $this->Common_model->last_query();
 					// $count_backlog = $query_back->result_array();
 					//I Year
-					$qu="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE s.class_id ='".$row->class_id."' AND `p`.`paper_code` = '".$row->paper_code."'  AND temp_exam_form='N' and `session` = 'July 2022' and s.class_name='I Year'";
+					//$qu="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE s.class_id ='".$row->class_id."' AND `p`.`paper_code` = '".$row->paper_code."'  AND temp_exam_form='N' and `session` = 'July 2022' and s.class_name='I Year'";
 					//II Year
-					//$qu="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE s.class_id ='".$row->class_id."' AND `p`.`paper_code` = '".$row->paper_code."'  AND temp_exam_form='N'  and s.class_name='II Year' and new_exam_form!='D'";
+					$qu="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE s.class_id ='".$row->class_id."' AND `p`.`paper_code` = '".$row->paper_code."'  AND temp_exam_form='N'  and s.class_name='II Year' and new_exam_form!='D'";
 					//and `session` = 'July 2022'
 					$query = $this->db->query($qu);
 					$all = $query->result_array();

@@ -1292,9 +1292,9 @@ class ExamController extends CI_Controller {
 			$this->db->where('type','Theory');
 			$this->db->where('test_id!=','');
 			//Admission Class
-			$this->db->where_in('class_id',array(101,104,107,110,116,119,125,128,131,134,137,140,149,152,154,158,160,162,164,165,166,167,168,169,170,171,172,173,174,177,178,180,181,183,185,191,273,274,283,285,287,289,291,293,295,297));
+			//$this->db->where_in('class_id',array(101,104,107,110,116,119,125,128,131,134,137,140,149,152,154,158,160,162,164,165,166,167,168,169,170,171,172,173,174,177,178,180,181,183,185,191,273,274,283,285,287,289,291,293,295,297));
 			//II Year
-			//$this->db->where_in('class_id',array(102,105,108,111,117,120,126,129,132,135,284,286,288,290,292,294,296,298));
+			$this->db->where_in('class_id',array(102,105,108,111,117,120,126,129,132,135,284,286,288,290,292,294,296,298));
 			
 			//$this->db->where('exam_date!=','0000-00-00');
 			$this->db->where('exam_date!=','');
@@ -1319,9 +1319,9 @@ class ExamController extends CI_Controller {
 			$this->db->select('*,COUNT(id) as tot');
 			$this->db->from('paper_master');
 			$this->db->where('type','Theory');
-			$this->db->where_in('class_id',array(101,104,107,110,116,119,125,128,131,134,137,140,149,152,154,158,160,162,164,165,166,167,168,169,170,171,172,173,174,177,178,180,181,183,185,191,273,274,283,285,287,289,291,293,295,297));
+			//$this->db->where_in('class_id',array(101,104,107,110,116,119,125,128,131,134,137,140,149,152,154,158,160,162,164,165,166,167,168,169,170,171,172,173,174,177,178,180,181,183,185,191,273,274,283,285,287,289,291,293,295,297));
 			//II Year
-			//$this->db->where_in('class_id',array(102,105,108,111,117,120,126,129,132,135,284,286,288,290,292,294,296,298));
+			$this->db->where_in('class_id',array(102,105,108,111,117,120,126,129,132,135,284,286,288,290,292,294,296,298));
 			$this->db->where('test_id!=','');
 			//$this->db->where('exam_date!=','0000-00-00');
 			$this->db->where('exam_date!=','');
@@ -2856,6 +2856,132 @@ public function getStudentData()
 		
 	  }
 	}//fun
+
+	public function search_backlog_student_marksheet(){
+		
+		$segment = $this->uri->segment(2);
+		
+		$this->load->view('header',array('title' => 'Search Backlog Students Result'));
+
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+			'segment' => $segment
+		);
+
+		$this->load->view('admin/examController/search_backlog_student_marksheet',$data);
+		$this->load->view('footer');
+	}
+
+	public function getBacklogStudentMarksheetData()
+	{
+		// if(!$this->session->has_userdata('adminData')){
+		// 	redirect(base_url());
+		// 	exit;
+		// }
+
+		$text_val =$this->input->post('text_val');
+		$radio_val = $this->input->post('radio_val');
+
+
+		if($text_val !='')
+		{
+			if($text_val !='' && $radio_val == 'enrollment_no')
+			{
+				$where = array('backlog_student.exam_form'=>'Y','backlog_student.enrollment_no'=>$text_val);
+				//,'result_show'=>'Y'
+
+			}else if($text_val !='' && $radio_val == 'roll_no')
+			{
+				$where = array('backlog_student.exam_form'=>'Y','backlog_student.roll_no'=>$text_val);
+			//,'result_show'=>'Y'
+			}
+
+			
+				// $student = $this->Common_model->getRecordByWhere('backlog_student',$where);
+				$this->db->select('backlog_student.*,student.name,student.f_h_name,student.course_name,student.photo,student.session');
+				$this->db->from('backlog_student');
+				$this->db->join('student','backlog_student.student_id=student.student_id');
+				$this->db->where($where);
+				$student = $this->db->get()->result();
+				// print_r($student); die;
+				$msg="";
+				if (count($student)==0) {
+					
+					echo json_encode(array(
+						"status" => false,
+						"data" => "<p style='text-align: center;'><b>No data found!</b></p>"
+					));
+					
+				}else{
+			
+					if($student[0]->result_show =="N"){
+						
+							$msg="<p style='text-align: center;' id='result_msg'><b>Student result not declared!</b></p>"; 
+					}
+						$data['student']=$student[0];
+						$data['exam_session']  = 'March 2023';
+						/**********************/
+						// if($data['student']->provisional_remark!="N" && $data['student']->provisional_remark!="")
+						// {
+						// 	$this->db->select('provisional_remarks');
+						// 	$this->db->from('provisional_remark_details');
+						// 	$this->db->where('document_category_id',$data['student']->provisional_remark);
+						// 	$remark = $this->db->get()->row();
+						// 	$provisional_remark_details ="<p style='text-align: center;' id='pro_remark'><b>".$remark->provisional_remarks." are not recieved at university</b></p>";
+						// }
+						/************************/
+						
+						$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
+						$data['practical_internal_marks']=$classData->practical_internal_marks;
+						$this->db->select('*');
+						$this->db->from('backlog_exam_form');
+						$this->db->where('backlog_exam_form.student_id',$data['student']->student_id);
+						$this->db->where('backlog_exam_form.class_id',$data['student']->class_id);
+						$new_exam_form = $this->db->get()->result();
+						$data['classData']  = $classData;
+						$data['new_exam_form']  = $new_exam_form;
+						// if(($data['student']->old_class_id == '104' || $data['student']->old_class_id == '107' || $data['student']->old_class_id == '101' || $data['student']->old_class_id == '134' || $data['student']->old_class_id == '116' || $data['student']->old_class_id == '110'|| $data['student']->old_class_id == '119' || $data['student']->old_class_id == '131') && $data['student']->university_mode == 'REG')
+						$class_ids=array(101,104,107,110,116,119,125,128,131,134);
+						if((in_array($data['student']->old_class_id, $class_ids)) && $data['student']->university_mode=='REG')	
+						{
+							$this->load->model('Gradesheet_model');
+							$dt = $provisional_remark_details.$msg.$this->load->view('Centers/grade_marksheet',$data,true);
+						}else{
+							
+							$title = array('title' => 'Backlog Result - '.$data['student']->enrollment_no);
+							
+							$marksheet_top =  $this->load->view('Centers/marksheet_top_backlog',$data,true);
+							// if ($student[0]->course_group_id==36 || $student[0]->course_group_id==37) {
+								
+							// 	$marksheet_bottom=  $this->load->view('Centers/marksheet_without_int',$data,true);
+							// }else{
+								
+							// 	$marksheet_bottom=  $this->load->view('Centers/marksheet_bottom',$data,true);
+							// }
+							if($classData->internal=='N'){
+								$marksheet_bottom = $this->load->view('Centers/marksheet_without_int',$data,true);
+							}else{
+								if($student[0]->class_id=='168'){
+									$marksheet_bottom  = $this->load->view('Centers/marksheet_mom',$data,true);
+								}else{
+									$marksheet_bottom = $this->load->view('Centers/marksheet_bottom_backlog',$data,true);
+								}
+							// $dt =  $marksheet_top.$marksheet_bottom;
+							}
+						
+						
+							$dt =$provisional_remark_details. $msg. $marksheet_top.$marksheet_bottom;
+						
+						}
+						echo json_encode(array(
+							"status" => true,
+							"data" => $dt
+						));
+					 }
+		
+	  }
+	}
 	public function search_student_result_for_wh(){
 		redirect(base_url().'ExamController/');
 		$data['name_csrf'] = $this->security->get_csrf_token_name();

@@ -41,11 +41,13 @@ color:red;
                 $i = 1; 
 
                 foreach($class_master as $class){
+                    $class_ids=array(101,104,107,110,116,119,125,128,131,134);
+	            	$cbcs = ($class['cbcs'] == 'Y' || in_array($class['id'], $class_ids))?' (CBCS)':'';
                 ?>
 
                 <tr>
                 <td><?php echo $i; ?></td>
-                <td><?php echo $class['class_name']; ?></td>
+                <td><?php echo $class['class_name'] ." ".$cbcs; ?></td>
                 <td><?php echo $class['id']; ?></td>
                 <td><?php echo $class['class_order']; ?></td>
                 <td><?php echo    $this->Common_model->getCountByWhere('paper_master',array('class_id'=>$class['id']));

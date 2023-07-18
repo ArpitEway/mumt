@@ -30,6 +30,7 @@
 	<table id="memListTable" class="table table-striped dt-responsive" style="width:100%">
 		<thead>
 			<tr>
+				<th>#</th>
 				<th>Form No</th>
 				<th>Enrollment No</th>
 				<th>Name</th>

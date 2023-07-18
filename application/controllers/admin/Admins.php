@@ -4169,10 +4169,18 @@ public function update_exam_datewise_permission(){
 			
 	public function paper_test_id_list()
 	{	
-		$where = array('type' => 'theory');
-		$this->db->order_by('course_group_id,class_id,cbcs_paper,paper_no','ASC');
-		$papers = $this->Common_model->getRecordByWhere('paper_master',$where);
+		// $where = array('type' => 'theory');
+		// $this->db->order_by('course_group_id,class_id,cbcs_paper,paper_no','ASC');
+		// $papers = $this->Common_model->getRecordByWhere('paper_master',$where);
+	
+		
+		$query = $this->db->query("SELECT p.* FROM `paper_master` as p join class_master as c on c.id=p.class_id WHERE cbcs_paper=cbcs   order by p.course_group_id,class_id,cbcs_paper,paper_no asc");
+		
+			
+		$papers =$query->result();
+		
 		$data = array('papers' => $papers);
+		//echo $this->db->last_query().'<br>';
 		$this->load->view('header');
 		$this->load->view('admin/paper_test_id_list',$data);
 		$this->load->view('footer');		

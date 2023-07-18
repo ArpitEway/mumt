@@ -382,7 +382,7 @@ class Center extends CI_Controller {
 				$enrollment = $result->enrollment_no;
 			}
 	
-			$data[] = array($result->student_id,$enrollment,$result->name, $result->f_h_name, $result->course_name,$result->class_name,$btn,$btn1);
+			$data[] = array($i,$result->student_id,$enrollment,$result->name, $result->f_h_name, $result->course_name,$result->class_name,$btn,$btn1);
 		}
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
@@ -503,7 +503,7 @@ class Center extends CI_Controller {
 			}
 			
 			$i++;
-			$data[] = array($result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->amount,$modal);
+			$data[] = array($i,$result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->amount,$modal);
 		}
 
 		if ($this->session->center_id!=13) {
@@ -551,7 +551,7 @@ class Center extends CI_Controller {
 			$btn = '<a href="'.base_url('show_fees/'.$this->Common_model->encrypt_decrypt($result->id)).'" class="btn btn-primary btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>';
 			$i++;
 			$university_mode = ($result->university_mode=='REG') ? 'Regular' : 'Private';
-			$data[] = array($university_mode, $result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->fees_head,$result->amount,$result->txnId,$btn);
+			$data[] = array($i,$university_mode, $result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->fees_head,$result->amount,$result->txnId,$btn);
 		}
 		if ($this->session->center_id!=13) {
 			$this->db->where('online_payment_transaction.center_id',$this->session->center_id);
@@ -1750,7 +1750,7 @@ class Center extends CI_Controller {
 		}
 	 }
 	public function internal_marks_list(){
-	 		//  redirect(base_url());
+	 		 redirect(base_url());
 	 	if(!$this->session->has_userdata('centerdata')){
 	 		redirect(base_url());
 	 	}
@@ -2034,7 +2034,7 @@ class Center extends CI_Controller {
 				$enrollment = $result->enrollment_no;
 				}
 			$class_name =  $this->Common_model->getClassNameByClassId($result->old_class_id); 
-			$data[] = array($result->student_id,$enrollment,$result->name, $result->f_h_name, $result->course_name,$class_name,$btn);
+			$data[] = array($i,$result->student_id,$enrollment,$result->name, $result->f_h_name, $result->course_name,$class_name,$btn);
 		}
 
 		$output = array(
@@ -2179,12 +2179,18 @@ public function backlog_marksheet($student_id="")
 		// $this->db->where_in('provisional_remark', $provisional);
 		
 		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
-		$student = $this->Common_model->getRecordByWhere('backlog_student',array('exam_form'=>'Y','result_show'=>'Y','student_id'=>$student_id));
+		// $student = $this->Common_model->getRecordByWhere('backlog_student',array('exam_form'=>'Y','result_show'=>'Y','student_id'=>$student_id));
 		// ($student->course_group_id == 12 && $student->university_mode == 'REG') || ($student->course_group_id == 13 && $student->university_mode == 'REG')
+		$this->db->select('backlog_student.*,student.name,student.f_h_name,student.course_name,student.photo,student.session');
+				$this->db->from('backlog_student');
+				$this->db->join('student','backlog_student.student_id=student.student_id');
+				$this->db->where(array('backlog_student.exam_form'=>'Y','backlog_student.result_show'=>'Y','backlog_student.student_id'=>$student_id));
+				$student = $this->db->get()->result();
 		if ((count($student)==0)  ) {
 			redirect(base_url());
 		}
-		$data['students'] =$this->Common_model->getRecordById('student','student_id',$student[0]->student_id);
+		// $data['students'] =$this->Common_model->getRecordById('student','student_id',$student[0]->student_id);
+		
 		$data['student']=$student[0];
 		$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
 		$data['practical_internal_marks']=$classData->practical_internal_marks;
@@ -2373,7 +2379,7 @@ public function marksheet_admin($student_id="")
 	}
 
 	public function practical_marks_list(){
-		 //redirect(base_url());
+		 redirect(base_url());
 		//  $master = $this->Common_model->getSingleRow('master');
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
