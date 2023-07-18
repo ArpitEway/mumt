@@ -2817,10 +2817,14 @@ public function getStudentData()
 						$data['new_exam_form']  = $new_exam_form;
 						// if(($data['student']->old_class_id == '104' || $data['student']->old_class_id == '107' || $data['student']->old_class_id == '101' || $data['student']->old_class_id == '134' || $data['student']->old_class_id == '116' || $data['student']->old_class_id == '110'|| $data['student']->old_class_id == '119' || $data['student']->old_class_id == '131') && $data['student']->university_mode == 'REG')
 						$class_ids=array(101,104,107,110,116,119,125,128,131,134);
+						$class_cbcs = array(193,197,201,203,205,211,213,221,223,225,227,275,279);
 						if((in_array($data['student']->old_class_id, $class_ids)) && $data['student']->university_mode=='REG')	
 						{
 							$this->load->model('Gradesheet_model');
 							$dt = $provisional_remark_details.$msg.$this->load->view('Centers/grade_marksheet',$data,true);
+						}else if((in_array($data['student']->old_class_id, $class_cbcs)) && $data['student']->university_mode=='REG'){
+							$this->load->model('Gradesheet_model_pg');
+							$dt = $provisional_remark_details.$msg.$this->load->view('Centers/grade_marksheet_pg',$data,true);
 						}else{
 							
 							$title = array('title' => 'Result - '.$data['student']->enrollment_no);
@@ -2943,6 +2947,7 @@ public function getStudentData()
 						$data['new_exam_form']  = $new_exam_form;
 						// if(($data['student']->old_class_id == '104' || $data['student']->old_class_id == '107' || $data['student']->old_class_id == '101' || $data['student']->old_class_id == '134' || $data['student']->old_class_id == '116' || $data['student']->old_class_id == '110'|| $data['student']->old_class_id == '119' || $data['student']->old_class_id == '131') && $data['student']->university_mode == 'REG')
 						$class_ids=array(101,104,107,110,116,119,125,128,131,134);
+						
 						if((in_array($data['student']->old_class_id, $class_ids)) && $data['student']->university_mode=='REG')	
 						{
 							$this->load->model('Gradesheet_model');

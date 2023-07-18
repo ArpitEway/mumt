@@ -179,14 +179,6 @@ table.last_table, .last_table td, .last_table th{
     $count_theory =0;
     $count_practical =0;
     $count_int =0;
-    $fc1 =0;
-    $fc2=0;
-    $fc1_abs ='';
-    $fc2_abs='';
-    $fc1_max =0;
-    $fc2_max =0;
-    $fc1_min =0;
-    $fc2_min =0;
     $final_result = '';
 
     if($student->university_mode == 'REG'){
@@ -209,34 +201,6 @@ table.last_table, .last_table td, .last_table th{
     {
       
       if($new_exam_form->type=='theory'){
-        if($new_exam_form->sub_group_id == 1){
-          $count_theory++;
-          if($new_exam_form->group_paper_name == 'FC1' ){
-            if($new_exam_form->theory_marks==''){
-              $rw_count++;
-           
-            }
-            if($new_exam_form->theory_marks=='ABS'){
-              $fc1_abs .= $new_exam_form->theory_marks;
-           
-            }
-          $fc1 += (int) $new_exam_form->theory_marks;
-          $fc1_max += (int) $new_exam_form->max_theory_marks;
-          $fc1_min += (int) $new_exam_form->min_theory_marks;
-          }else{
-            if($new_exam_form->theory_marks==''){
-              $rw_count++;
-             
-            }
-            if($new_exam_form->theory_marks=='ABS'){
-              $fc2_abs .= $new_exam_form->theory_marks;
-           
-            }
-            $fc2 += (int) $new_exam_form->theory_marks;
-            $fc2_max += (int) $new_exam_form->max_theory_marks;
-            $fc2_min += (int) $new_exam_form->min_theory_marks;
-          }
-        }else{
        
 
         $total_theory_marks_obt +=(int) $new_exam_form->theory_marks;
@@ -266,11 +230,11 @@ table.last_table, .last_table td, .last_table th{
           $rw_count++;
         }
         if($student->university_mode != 'PVT'){
-            if($new_exam_form->theory_marks+$new_exam_form->int_marks<$new_exam_form->min_theory_marks+$new_exam_form->min_internal_marks  && $new_exam_form->theory_marks!=''){
+            if($new_exam_form->theory_marks<$new_exam_form->min_theory_marks  && $new_exam_form->theory_marks!=''){
               array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
               $fail_count++;
-              $fail_tot_marks += $new_exam_form->theory_marks+$new_exam_form->int_marks;
-              $require_tot_marks += $new_exam_form->min_theory_marks + $new_exam_form->min_internal_marks;
+              $fail_tot_marks += $new_exam_form->theory_marks;
+              $require_tot_marks += $new_exam_form->min_theory_marks;
             }
 
             if($new_exam_form->int_marks<$new_exam_form->min_internal_marks && $student->university_mode != 'PVT'){
@@ -296,7 +260,7 @@ table.last_table, .last_table td, .last_table th{
             else{
               $count_int++;
             }
-      }
+      
 
      
     }
@@ -320,36 +284,12 @@ table.last_table, .last_table td, .last_table th{
     }
 
     }
-    // echo $fc1.'sss'.$fc2.'<br>';
-    $total_theory_marks_obt +=$fc1+$fc2;
-    $total_marks_obt  +=$fc1+$fc2;
-    $total_paper_marks +=$fc1_max +$fc2_max;
-    $tot_marks += $fc1_max +$fc2_max;
-    $tot_std_marks += $fc1+$fc2;
-    // $count_theory +=  $fc1+$fc2;
+   
   
-   if($fc1_abs === 'ABSABS'){
-    $theory_abs_count++;
-   }
-   if($fc2_abs === 'ABSABS'){
-    $theory_abs_count++;
-   }
-    if($fc1 < $fc1_min ){
-      array_push( $atkt_paper_codes_array ,'FC1' );
-          $fail_count++;
-          $GLOBALS['foundation_1']++;
-          $fail_tot_marks += $fc1;
-          $require_tot_marks += $fc1_min;
-
-    }
-    if($fc2 < $fc2_min){
-      array_push( $atkt_paper_codes_array ,'FC2' );
-      $fail_count++;
-      $GLOBALS['foundation_1']++;
-      $fail_tot_marks += $fc2;
-      $require_tot_marks += $fc2_min;
-
-    }
+   
+   
+    
+    
     // echo $fail_count.'rw'.$rw_count.'tabs'.$theory_abs_count.'pabs'.$p_fail_count.'intabs'.$int_fail_count;
     if ($fail_count==0 && $rw_count==0 && $p_fail_count==0 && $int_fail_count==0 && $theory_abs_count==0 && $p_abs_count==0) {
        $final_result = "PASS";
@@ -463,16 +403,11 @@ table.last_table, .last_table td, .last_table th{
 		foreach ($papers as $paper_master) {
       
       $credit += $paper_master['credit_point'];
-    //   $paper_codes=array('1RBBA1','1RBBA2','1RBA1','1RBA2','1RBCOM1','1RBCOM2','1RBCOMCA1','1RBCOMCA2','1RBCOMT1','1RBCOMT2','1RBCA1','1RBCA2','1RBSCCBC1','1RBSCCBC2','1RBSCCS1','1RBSCCS2','1RBSCPCM1','1RBSCPCM2','1RBSW1','1RBSW2');
-	// 		// $paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4');
-	// 			if(in_array($paper_master['paper_code'],$paper_codes) && $paper_master['sub_group_id'] == 1)	
-	// 			{
-	// 			
-	// 			}else if ($paper_master['sub_group_id'] != 1){
-	// 				?>
+    
+					?>
 					<td class='text-center'><?= $paper_master['credit_point'] ?></td>
           <?php
-				// }
+			
 		}
    ?>
 		<td class="text-center"><?= $credit?></td>
@@ -495,6 +430,7 @@ table.last_table, .last_table td, .last_table th{
   
   ?>
 </span>
+
     <table class="table table1">
       <tbody>
         <tr>
@@ -545,7 +481,7 @@ table.last_table, .last_table td, .last_table th{
                 echo 'Year Break';
               }else{
               if(sizeof($atkt_paper_codes_array)>0){
-                echo "SUPP in";
+                echo "ATKT in";
               }
               $atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
               foreach($atkt_paper_codes_array as $paper_code){
@@ -566,17 +502,12 @@ table.last_table, .last_table td, .last_table th{
           
               if($new_exam_form->theory_marks==''){
                 echo '-';
-              }elseif($new_exam_form->theory_marks+$new_exam_form->int_marks>=$new_exam_form->min_theory_marks+$new_exam_form->min_internal_marks && $new_exam_form->theory_marks!="ABS"){
+              }elseif($new_exam_form->theory_marks>=$new_exam_form->min_theory_marks && $new_exam_form->theory_marks!="ABS"){
                 echo $new_exam_form->theory_marks;
               }else{
                 echo $new_exam_form->theory_marks;
-                if($new_exam_form->sub_group_id == 1){
-                  if($GLOBALS['foundation_1']>0){
-                    echo ($check_grace_marks) ? ' G' : ' F';
-                  }
-                }else{
-                  echo ($check_grace_marks) ? ' G' : ' F';
-                }
+               echo ($check_grace_marks) ? ' G' : ' F';
+                
                 
               }
             }else{
@@ -658,22 +589,16 @@ table.last_table, .last_table td, .last_table th{
         if($student->university_mode != 'PVT'){
        if($check_grace_marks==true){
         echo $paper_master->theory_marks+ $paper_master->int_marks;
-      } elseif(($paper_master->theory_marks+$paper_master->int_marks<$paper_master->min_theory_marks+$paper_master->min_internal_marks) || $paper_master->theory_marks=='ABS' || $paper_master->int_marks=='ABS'){
+      } elseif(($paper_master->theory_marks<$paper_master->min_theory_marks) || $paper_master->theory_marks=='ABS' || $paper_master->int_marks=='ABS'){
 
         if($paper_master->theory_marks==''){
           echo "-";
         }else{
           
          
-          if($paper_master->sub_group_id == 1){
-            if($GLOBALS['foundation_1']>0){
-              echo ($paper_master->theory_marks=='ABS') ? 'ABS F' :(int) $paper_master->theory_marks ." F";
-            }else{
-              echo (int) $paper_master->theory_marks+ (int) $paper_master->int_marks;
-            }
-          }else{
+       
             echo ($paper_master->theory_marks=='ABS' && $paper_master->int_marks=='ABS') ? 'ABS F' : (int) $paper_master->theory_marks + (int) $paper_master->int_marks." F";
-          }
+          
         }
       }else{
         echo (int) $paper_master->theory_marks+ (int) $paper_master->int_marks;
@@ -708,7 +633,8 @@ table.last_table, .last_table td, .last_table th{
   </tr>
   
   <?php
-   $this->Gradesheet_tr_model_pg->view_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+   $ddd = $this->Gradesheet_tr_model_pg->view_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+  
   
   ?>
   
@@ -839,7 +765,7 @@ table.last_table, .last_table td, .last_table th{
  		</tr>
  	</thead>
  	<tbody>
- 		<?php $letter_grade = $this->Common_model->get_record('letter_grade','*'); ?>
+ 		<?php $letter_grade = $this->Common_model->get_record('letter_grade_pg','*'); ?>
  		<?php foreach ($letter_grade as $rs): ?>
  		<tr>
  			<td><?=$rs['letter_grade'] ?></td>
