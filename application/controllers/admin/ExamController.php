@@ -1294,9 +1294,9 @@ class ExamController extends CI_Controller {
 			//Admission Class
 			//$this->db->where_in('class_id',array(101,104,107,110,116,119,125,128,131,134,137,140,149,152,154,158,160,162,164,165,166,167,168,169,170,171,172,173,174,177,178,180,181,183,185,191,273,274,283,285,287,289,291,293,295,297));
 			//II Year
-			$this->db->where_in('class_id',array(102,105,108,111,117,120,126,129,132,135,284,286,288,290,292,294,296,298));
-			
-			//$this->db->where('exam_date!=','0000-00-00');
+			//$this->db->where_in('class_id',array(102,105,108,111,117,120,126,129,132,135,284,286,288,290,292,294,296,298));
+			$this->db->where_not_in('class_id',array(163,175));
+			$this->db->where('exam_date!=','0000-00-00');
 			$this->db->where('exam_date!=','');
 			$this->db->group_by('test_id ');
 			$this->db->having(' tot=1');
@@ -1321,9 +1321,10 @@ class ExamController extends CI_Controller {
 			$this->db->where('type','Theory');
 			//$this->db->where_in('class_id',array(101,104,107,110,116,119,125,128,131,134,137,140,149,152,154,158,160,162,164,165,166,167,168,169,170,171,172,173,174,177,178,180,181,183,185,191,273,274,283,285,287,289,291,293,295,297));
 			//II Year
-			$this->db->where_in('class_id',array(102,105,108,111,117,120,126,129,132,135,284,286,288,290,292,294,296,298));
+			//$this->db->where_in('class_id',array(102,105,108,111,117,120,126,129,132,135,284,286,288,290,292,294,296,298));
 			$this->db->where('test_id!=','');
-			//$this->db->where('exam_date!=','0000-00-00');
+			$this->db->where_not_in('class_id',array(163,175));
+			$this->db->where('exam_date!=','0000-00-00');
 			$this->db->where('exam_date!=','');
 			$this->db->group_by('test_id ');
 			$this->db->having(' tot>1');
