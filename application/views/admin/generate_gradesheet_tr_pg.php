@@ -454,7 +454,7 @@ table.last_table, .last_table td, .last_table th{
                   echo $total_marks_obt .'/'. $total_paper_marks;
           ?></td>
           <td  class="align-middle text-center result" rowspan="<?php echo $rowspandata ?>"><?php echo $gradesheetData['result']; //$final_result?></td>
-          <td  class="align-middle text-center result" rowspan="<?php echo $rowspandata ?>"><?php  echo ($gradesheetData['result'] == 'FAIL' || $gradesheetData['result'] == 'SUPP')?'0.00':number_format((float)$gradesheetData['agpa'], 2, '.', ''); ?></td>
+          <td  class="align-middle text-center result" rowspan="<?php echo $rowspandata ?>"><?php  if($gradesheetData['result'] == 'RW'){echo '';}else{ echo ($gradesheetData['result'] == 'FAIL' || $gradesheetData['result'] == 'SUPP')?'0.00':number_format((float)$gradesheetData['agpa'], 2, '.', '');} ?></td>
           <td  class="align-middle text-cente remarks"  rowspan="<?php echo $rowspandata ?>"><?php 
          
           if($check_grace_marks){

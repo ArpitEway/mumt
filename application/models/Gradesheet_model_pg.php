@@ -333,7 +333,7 @@ class Gradesheet_model_pg extends CI_Model
 	{
 		// var_dump($this->withheld);die;
 		if ($this->withheld==true) {
-			$this->result = 'WITHHELD';
+			$this->result = 'RW';
 		}
 		else if ($this->fail_count!=0 && $this->agpa>=4) {
 			if ($this->check_grace_marks) {

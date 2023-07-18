@@ -302,7 +302,7 @@ class Gradesheet_tr_model_pg extends CI_Model
 	{
 		
 		if ($this->withheld==true) {
-			return $this->result = 'WITHHELD';
+			return $this->result = 'RW';
 		}
        
 		if ($this->fail_count!=0 && $this->agpa>=4) {
