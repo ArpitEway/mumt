@@ -137,7 +137,7 @@ class Preexam extends CI_Controller {
 
 	
 	// Fetching Student record & Update  exam center by Center ID 
-    public function update_stdent_allottment_exam_center($startlimit=1){
+    public function update_stdent_exam_center($startlimit=1){
         echo "update_stdent_allottment_exam_center<br>";
         $this->db->select('*');
         $this->db->from('student');

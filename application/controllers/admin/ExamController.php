@@ -1294,9 +1294,9 @@ class ExamController extends CI_Controller {
 			//Admission Class
 			//$this->db->where_in('class_id',array(101,104,107,110,116,119,125,128,131,134,137,140,149,152,154,158,160,162,164,165,166,167,168,169,170,171,172,173,174,177,178,180,181,183,185,191,273,274,283,285,287,289,291,293,295,297));
 			//II Year
-			$this->db->where_in('class_id',array(102,105,108,111,117,120,126,129,132,135,284,286,288,290,292,294,296,298));
-			
-			//$this->db->where('exam_date!=','0000-00-00');
+			//$this->db->where_in('class_id',array(102,105,108,111,117,120,126,129,132,135,284,286,288,290,292,294,296,298));
+			$this->db->where_not_in('class_id',array(163,175));
+			$this->db->where('exam_date!=','0000-00-00');
 			$this->db->where('exam_date!=','');
 			$this->db->group_by('test_id ');
 			$this->db->having(' tot=1');
@@ -1321,9 +1321,10 @@ class ExamController extends CI_Controller {
 			$this->db->where('type','Theory');
 			//$this->db->where_in('class_id',array(101,104,107,110,116,119,125,128,131,134,137,140,149,152,154,158,160,162,164,165,166,167,168,169,170,171,172,173,174,177,178,180,181,183,185,191,273,274,283,285,287,289,291,293,295,297));
 			//II Year
-			$this->db->where_in('class_id',array(102,105,108,111,117,120,126,129,132,135,284,286,288,290,292,294,296,298));
+			//$this->db->where_in('class_id',array(102,105,108,111,117,120,126,129,132,135,284,286,288,290,292,294,296,298));
 			$this->db->where('test_id!=','');
-			//$this->db->where('exam_date!=','0000-00-00');
+			$this->db->where_not_in('class_id',array(163,175));
+			$this->db->where('exam_date!=','0000-00-00');
 			$this->db->where('exam_date!=','');
 			$this->db->group_by('test_id ');
 			$this->db->having(' tot>1');
@@ -1349,6 +1350,7 @@ class ExamController extends CI_Controller {
 			$this->db->from('paper_master');
 			$this->db->where('type','Theory');
 			$this->db->where('test_id!=','');
+			$this->db->where_not_in('class_id',array(163,175));
 			$this->db->where('exam_date!=','0000-00-00');
 			$this->db->where('exam_date!=','');
 			$this->db->group_by('test_id ');
@@ -1364,7 +1366,7 @@ class ExamController extends CI_Controller {
 	public function getEnvelope(){
 		$test_id = $this->input->post('test_id');
 		$multiple = $this->input->post('multiple');
-		$data['examSession'] = 'March 2023';
+		$data['examSession'] = 'July 2023';
 		$this->db->select('*');
 		$this->db->from('exam_center');
 		//$this->db->where('examcentercode','MDE034');
@@ -1403,6 +1405,7 @@ class ExamController extends CI_Controller {
 			$this->db->select('*,COUNT(id) as tot');
 			$this->db->from('paper_master');
 			$this->db->where('type','Theory');
+			$this->db->where_not_in('class_id',array(163,175));
 			$this->db->where('test_id!=','');
 			$this->db->where('exam_date!=','0000-00-00');
 			$this->db->where('exam_date!=','');
@@ -1466,9 +1469,10 @@ class ExamController extends CI_Controller {
 			$data['exam_centers'] = $this->db->get()->result();
 			$this->db->select('*');
 			$this->db->from('paper_master');
+			$this->db->where_not_in('class_id',array(163,175));
 			$this->db->where('exam_date!=',"");
 			$this->db->where('exam_date!=',"0000-00-00");
-			$this->db->where('exam_date>=',"2023-03-18");		
+			//$this->db->where('exam_date>=',"2023-03-18");		
 			$this->db->group_by('exam_date');
 			$this->db->order_by('exam_date', "asc");
 			$data['examDate'] = $this->db->get()->result();
@@ -1522,8 +1526,8 @@ class ExamController extends CI_Controller {
 
 		$where.="   GROUP BY `paper_master`.`exam_date`";
 
-		 $sql="SELECT DISTINCT(paper_master.id), `exam_date`, `exam_shift`, `exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student` ON `student`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = 'theory' AND `paper_master`.`exam_date` != '' AND paper_master.exam_date!='0000-00-00'  and paper_master.exam_date>='2023-03-18' ".$where; 
-		// $this->db->where_not_in('course_group_id',array('75','76','77'));
+		 $sql="SELECT DISTINCT(paper_master.id), `exam_date`, `exam_shift`, `exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student` ON `student`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = 'theory' AND `paper_master`.`exam_date` != '' AND paper_master.exam_date!='0000-00-00'  ".$where; 
+		 $this->db->where_not_in('class_id',array('163','175'));
 		$query = $this->db->query($sql);
         $data['papers'] = $query->result();
 		echo $this->load->view('admin/exam_center/exam_center_paper_count_show',$data, TRUE);

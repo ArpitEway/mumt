@@ -39,19 +39,19 @@ foreach($elist as $row)
         //  echo "<br>1 ".$count[0]->cnt;
          // echo $this->db->last_query();
 
-          $sql="SELECT count(*) as cnt FROM `new_exam_form_report` as `e` JOIN `student_report` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`examcentercode`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paper['paper_code']."' AND `s`.`class_id` = '".$paper['class_id']."' AND s.course_group_id= '".$paper['course_group_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND (new_exam_form!='D' OR ( `s`.`session` = 'Jan 2022' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'July 2022' AND `s`.`class_name` = 'I SEM' ));";    
+          $sql="SELECT count(*) as cnt FROM `new_exam_form_report` as `e` JOIN `student_report` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`examcentercode`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paper['paper_code']."' AND `s`.`class_id` = '".$paper['class_id']."' AND s.course_group_id= '".$paper['course_group_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2022' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2023' AND `s`.`class_name` = 'I SEM' ));";    
          $query = $this->db->query($sql);
          $count = $query->result_array();
         
-               $qu="SELECT count(*) as num FROM `student_report` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paper['paper_code']."' AND `p`.`class_id` = '".$paper['class_id']."'  AND s.course_group_id= '".$paper['course_group_id']."'  AND `s`.`examcentercode`='".$row->examcentercode."' AND   `s`.`exam_center_id` = '".$row->id."'  AND temp_exam_form='N' and `session` = 'Jan 2022' AND `s`.`class_name` = 'I Year'";
+               $qu="SELECT count(*) as num FROM `student_report` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paper['paper_code']."' AND `p`.`class_id` = '".$paper['class_id']."'  AND s.course_group_id= '".$paper['course_group_id']."'  AND `s`.`examcentercode`='".$row->examcentercode."' AND   `s`.`exam_center_id` = '".$row->id."'  AND temp_exam_form='N' and `session` = 'July 2022' AND `s`.`class_name` = 'I Year'";
          $query = $this->db->query($qu);
          $all = $query->result_array();
         
          $allElective= $all[0]['num'];
-         $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form_report` as `e` JOIN `backlog_student_report` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paper['paper_code']."' AND `s`.`class_id` = '".$paper['class_id']."' AND s.course_group_id= '".$paper['course_group_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form!='D' AND `e`.`status`='B' ";    
-         $query_backlog = $this->db->query($sql_back);
+        // $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form_report` as `e` JOIN `backlog_student_report` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paper['paper_code']."' AND `s`.`class_id` = '".$paper['class_id']."' AND s.course_group_id= '".$paper['course_group_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form!='D' AND `e`.`status`='B' ";    
+        // $query_backlog = $this->db->query($sql_back);
         //  $this->Common_model->last_query();
-         $count_backlog = $query_backlog->result_array();
+         $count_backlog =0;// $query_backlog->result_array();
 
         
           
@@ -131,9 +131,10 @@ foreach($elist as $row)
                 <td><?=$examShift?></td>
                 <td><strong>Time</strong></td>
                 <td colspan="3"><?php  
-                   // if($examShift=='Early Morning'){echo "07:00 AM To 10:00 AM";} 
-                    if($examShift=='Morning'){echo "11:00 AM To 02:00 PM";}
-                    if($examShift=='Afternoon'){echo "03:00 PM To 06:00 PM"; }  ?></td> </tr>
+                    if($examShift=='Early Morning'){echo "07:00 AM To 10:00 AM";} 
+                    if($examShift=='Morning'){echo "10:30 AM To 01:30 PM";}
+                    if($examShift=='Afternoon'){echo "02:30 PM To 05:30 PM"; }  ?></td> </tr>
+                     
         </tbody>
 </table>
             <?php  }
