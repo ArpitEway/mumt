@@ -59,11 +59,12 @@ class Otherscript extends CI_Controller {
 		//$where = " paper_code in ('2RMAEDU5', '2RMAGEO6', '2RMAGEO7', '2RMAGEO8', '2RMAPSY5', '2RMSCC7', '2RMSCC8', '2RMSCM7', '2RMSW7')";
 		// $where = " paper_code in ('2RBED6')";
 		//$where = " paper_code in ('1RMLIS10','1RMLIS11')";
-		$where="`paper_code` in ('1RCMSCCH7','1RCMSCCH8','1RCMSCCH9','1RCMSCBT7','1RCMSCBT8','1RCMSCC7','1RCMSCM7','3RMSCC6','3RMSCC7')";
+		//$where="`paper_code` in ('1RCMSCCH7','1RCMSCCH8','1RCMSCCH9','1RCMSCBT7','1RCMSCBT8','1RCMSCC7','1RCMSCM7','3RMSCC6','3RMSCC7')";
+		$where="`id` in (1220,1221,1222)";
 		$papers = $this->Common_model->get_record('paper_master','*',$where);
 
 		foreach ($papers as $paper) {
-			$where = ' class_id = "'.$paper['class_id'].'" and temp_exam_form="Y"';
+			$where = ' old_class_id = "'.$paper['class_id'].'" and temp_exam_form="Y"';
 			$students = $this->Common_model->get_record('student','*',$where);
 			$studentData = array(
 				'course_group_id' => $paper['course_group_id'],
@@ -75,7 +76,7 @@ class Otherscript extends CI_Controller {
 			);
 			foreach ($students as $student) {
 				$studentData['student_id'] = $student['student_id'];
-				//$this->Common_model->insertAll('new_exam_form',$studentData);
+				$this->Common_model->insertAll('new_exam_form',$studentData);
 				echo $this->db->last_query().'<br>';
 			}
 		}	
