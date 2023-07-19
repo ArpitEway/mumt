@@ -87,13 +87,9 @@ class Gradesheet_tr_model_pg extends CI_Model
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
 		
-		if($std[0]->sub_group_id == 1){
+		
 			$papers = $this->Common_model->get_all_papers($student_id,$class_id);
-		}
-
-		if($this->classData->class_group == 'Y'){
-			$papers_list = $this->Common_model->get_all_group_papers($student_id,$class_id);
-		}
+		
 	
 		
 		$this->allclass = $this->Common_model->getRecordByWhere('class_master',array('course_group_id'=> $course_group_id));
@@ -116,10 +112,7 @@ class Gradesheet_tr_model_pg extends CI_Model
 			$this->paper = $paper;
 			$this->_row();
 		}
-		foreach($papers_list as $paper){
-			$this->paper = $paper;
-			$this->_row();
-		}
+	
 		
 		$this->notification_agpa();
 		
@@ -132,13 +125,9 @@ class Gradesheet_tr_model_pg extends CI_Model
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
 		
-		if($std[0]->sub_group_id == 1){
+		
 			$papers = $this->Common_model->get_all_papers($student_id,$class_id);
-		}
-
-		if($this->classData->class_group == 'Y'){
-			$papers_list = $this->Common_model->get_all_group_papers($student_id,$class_id);
-		}
+		
 	
 		
 		$this->allclass = $this->Common_model->getRecordByWhere('class_master',array('course_group_id'=> $course_group_id));
@@ -161,10 +150,7 @@ class Gradesheet_tr_model_pg extends CI_Model
 			$this->paper = $paper;
 			$this->_row();
 		}
-		foreach($papers_list as $paper){
-			$this->paper = $paper;
-			$this->_row();
-		}
+	
 		
 		$this->notification_result();
 		
@@ -645,12 +631,18 @@ class Gradesheet_tr_model_pg extends CI_Model
 			   $this->check_grace_marks = true;
 			   $req_marks = $result['min_marks']-$result['obt_marks'];
 			   $obt_marks = $result['obt_marks']+$req_marks;
-			   $credit_point = $result['credit']*4;
+			   $tot_obt_grace = $result['obt_marks']+$result['int_obt_marks'];
+			$tot_marks_grace = $result['max_marks']+$result['int_max_marks'];
+		   $persent = $tot_obt_grace*100/$tot_marks_grace;
+	   		$where = 'min_marks <= '.$persent.' and  max_marks >= '.$persent.'';
+	   		$gradeData = $this->Common_model->getRecordByWhere('letter_grade_pg',$where);
+				$result['grade_point'] = $gradeData[0]->grade_point;
+			   $credit_point = $result['credit']*$result['grade_point'] ;
 			   $this->result_array[$key]['credit_point']=$credit_point;
 			   
 			   $this->tot_credit_point += $credit_point;
-			   $this->grade_tot_point += 4;
-			   $result['grade_point'] =4;
+			   $this->grade_tot_point += $result['grade_point'];
+			  
 		   }else{
 			   $result['grade_point'] =$result['grade_point'];
 		   }
@@ -661,7 +653,7 @@ class Gradesheet_tr_model_pg extends CI_Model
 		$this->agpa = $this->tot_credit_point/$this->tot_credit;
 		$this->set_result();
 		
-		$agpa = ($this->result == 'FAIL')?'0.00':number_format((float)$this->agpa, 2, '.', '');
+		 if($this->result == 'RW'){$agpa = ''; }else{$agpa =($this->result == 'FAIL')?'0.00':number_format((float)$this->agpa, 2, '.', '');}
 		echo '<td class="text-center" style="padding:0px" align="center">'.$agpa.'</td>';
 		
 	}
@@ -680,12 +672,18 @@ class Gradesheet_tr_model_pg extends CI_Model
 			   $this->check_grace_marks = true;
 			   $req_marks = $result['min_marks']-$result['obt_marks'];
 			   $obt_marks = $result['obt_marks']+$req_marks;
-			   $credit_point = $result['credit']*4;
+			   $tot_obt_grace = $result['obt_marks']+$result['int_obt_marks'];
+			   $tot_marks_grace = $result['max_marks']+$result['int_max_marks'];
+			  $persent = $tot_obt_grace*100/$tot_marks_grace;
+				  $where = 'min_marks <= '.$persent.' and  max_marks >= '.$persent.'';
+				  $gradeData = $this->Common_model->getRecordByWhere('letter_grade_pg',$where);
+				   $result['grade_point'] = $gradeData[0]->grade_point;
+			   $credit_point = $result['credit']*$result['grade_point'];
 			   $this->result_array[$key]['credit_point']=$credit_point;
 			   
 			   $this->tot_credit_point += $credit_point;
-			   $this->grade_tot_point += 4;
-			   $result['grade_point'] =4;
+			   $this->grade_tot_point += $result['grade_point'];
+			  
 		   }else{
 			   $result['grade_point'] =$result['grade_point'];
 		   }

@@ -2937,6 +2937,7 @@ public function update_exam_datewise_permission(){
 
 	public function student_notification_list($mode = "",$course_id="",$class_id=""){
 		$this->load->model('Gradesheet_tr_model');
+		
 		$course_id = $this->Common_model->encrypt_decrypt($course_id,'decrypt');
 		$class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
 		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
@@ -2944,7 +2945,14 @@ public function update_exam_datewise_permission(){
 		$data['mode']= $mode;
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y' ,'roll_number!='=>'0', 'university_mode'=>$mode));//'result_show'=>'Y'
 		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
-		$this->load->view('admin/student_notification_list',$data);
+		$class_cbcs = array(193,197,201,203,205,211,213,221,223,225,227,275,279);
+		if((in_array($class_id, $class_cbcs))){
+			$this->load->model('Gradesheet_tr_model_pg');
+			$this->load->view('admin/student_notification_list_pg',$data);
+		}else{
+			$this->load->view('admin/student_notification_list',$data);	
+		}
+		
 	}
 
 	public function marksheet_variable(){

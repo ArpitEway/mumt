@@ -74,7 +74,7 @@
 				 } ?>
 			</td>
 			<td>
-				<?php if ($class->practical_internal_marks=='Y'){ 
+				<?php if ($class->practical_internal_marks=='Y' && $class->id !=205){ 
 					if($class->regular_class=='Y') {?>
 				<a target="_blank" href="<?php echo  base_url('admin/admins/student_notification_list_bed/'."/REG/".$course_id.'/'.$class_id)  ?>">Notification Regular</a>
 					<?php }if($class->private_class=='Y') { echo $flag;  ?>
