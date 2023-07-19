@@ -2009,9 +2009,12 @@ class Center extends CI_Controller {
 			if($result->provisional_remark=="N" || $result->provisional_remark==""){
 				// if(($result->old_class_id == '104' || $result->old_class_id == '107' || $result->old_class_id == '101' || $result->old_class_id == '134' || $result->old_class_id == '116'|| $result->old_class_id == '110' || $result->old_class_id == '119' || $result->old_class_id == '131') && $result->university_mode == 'REG')
 				$class_ids=array(101,104,107,110,116,119,125,128,131,134);
+				$class_cbcs = array(193,197,201,203,205,211,213,221,223,225,227,275,279);
 				if((in_array($result->old_class_id , $class_ids)) && $result->university_mode=='REG')	
 				{
 					$btn =	'<a href="'.base_url('center/Center/grade_marksheet/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm dt-center" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
+				}else if((in_array($result->old_class_id, $class_cbcs)) && $result->university_mode=='REG'){
+					$btn =	'<a href="'.base_url('center/Center/grade_marksheet_pg/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm dt-center" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
 				}else{
 					$btn =	'<a href="'.base_url('center/Center/marksheet/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm dt-center" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
 				}
@@ -2293,6 +2296,37 @@ public function marksheet_admin($student_id="")
 		$this->load->view('admin/generate_tr/footer2');
 
  }
+
+ public function grade_marksheet_pg($student_id=""){
+	
+	$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
+	   $student = $this->Common_model->getRecordByWhere($this->result_table,array('exam_form'=>'Y','old_result_show'=>'Y','student_id'=>$student_id));
+	   // print_r($student);die;
+	   if (count($student)==0) {
+		   redirect(base_url());
+	   }
+	   $data['student']=$student[0];
+	   $classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
+	   $data['practical_internal_marks']=$classData->practical_internal_marks;
+	   $this->db->select('*');
+	   $this->db->from('new_exam_form');
+	   $this->db->where('new_exam_form.student_id',$data['student']->student_id);
+	   $this->db->where('new_exam_form.class_id',$data['student']->old_class_id);
+	   $this->db->order_by('new_exam_form.paper_order','new_exam_form.paper_id');
+	   $new_exam_form = $this->db->get()->result();
+	   $data['new_exam_form']  = $new_exam_form;
+	   $data['classData']  = $classData;
+	   $data['exam_session']  = 'March 2023';
+	   $this->load->model('Gradesheet_model_pg');
+	   // $title = array('title' => 'Result - '.$data['student']->enrollment_no);
+	   $title ="";
+	   $this->load->view('admin/generate_tr/header2');
+	   //$this->load->view('Centers/header',$title);
+	   $this->load->view('Centers/grade_marksheet_pg',$data);
+	   //$this->load->view('Centers/footer');
+	   $this->load->view('admin/generate_tr/footer2');
+
+}
 
 	public function exam_paper($student_id=''){
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
