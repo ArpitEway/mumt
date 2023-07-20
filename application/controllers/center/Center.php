@@ -1131,7 +1131,15 @@ class Center extends CI_Controller {
 				$where = ' id in ( '.$remark.' ) ';
 				$document = $this->Common_model->getRecordByWhere('document_category',$where);
 			}else{
-				$document=array();
+				// $document=array();
+				$doc = array();
+				$document_required = $this->Common_model->getRecordByWhere('admission_document',array('student_id'=>$student_id));
+				foreach($document_required as $doc_req){
+					array_push($doc,$doc_req->document_category_id);
+				}
+				$this->db->where_in('id',$doc);
+				$document = $this->Common_model->getRecordByWhere('document_category');
+				
 			}
 			$titleData = array('title' => 'Unapproved Document List');
 
