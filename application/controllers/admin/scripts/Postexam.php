@@ -373,6 +373,7 @@ class Postexam extends CI_Controller {
         $this->db->from('class_master');
         $this->db->where('class_name','II Sem');
         //$this->db->where('backlog_exam_form_permission','Y');
+        $this->db->where('old_exam_form_permission','N');
         $classes = $this->db->get()->result();
        $class_id = array_column($classes,'id');
        if($classes){
