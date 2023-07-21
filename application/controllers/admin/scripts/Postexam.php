@@ -424,7 +424,7 @@ class Postexam extends CI_Controller {
 
     public function backlog_marks_update_scripts($student_id,$class_id='')
     {
-        $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$class_id,'student_id'=>$student_id,'exam_year'=>'Aug 2022'));
+        $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$class_id,'student_id'=>$student_id,'exam_year'=>'Feb 2023'));
         $whereResult = array("class_id"=>$students[0]->class_id ,"student_id"=>$students[0]->student_id, 'exam_data_id' => $students[0]->id);
         $old_result_datas = $this->Common_model->getRecordByWhere("old_result_data",$whereResult );
             $data = array(
@@ -446,7 +446,7 @@ class Postexam extends CI_Controller {
                 'upload_result' =>  'N',
                 'result_permission' => 'N',
                );
-              $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students[0]->student_id,'class_id'=>$students[0]->class_id,'exam_year'=>'Dec 2022'));
+              $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students[0]->student_id,'class_id'=>$students[0]->class_id,'exam_year'=>'June 2023'));
             if( $duplicate !== Array ( )){
                 echo "Already Exist";
               }else{
