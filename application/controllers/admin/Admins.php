@@ -2248,6 +2248,19 @@ public function getStudentData()
 		$this->load->view('footer');
 	}
 
+	public function class_wise_old_backlog_exam_form_status(){
+
+		$this->load->view('header',array('title' => 'Class Wise Backlog Exam Form Status(Feb 2023)'));
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		$where = array('exam_form !=' =>'D' );
+		$data['counts']=$this->Common_model->backlog_old_exam_form_permission_status($where);
+		$this->load->view('admin/class_wise_backlog_old_exam_from_status',$data);
+		$this->load->view('footer');
+	}
+
 	public function class_wise_backlog_exam_from_status(){
 
 		$this->load->view('header',array('title' => 'Class Wise Backlog Exam Form Status(June 2023)'));

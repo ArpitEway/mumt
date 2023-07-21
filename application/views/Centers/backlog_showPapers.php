@@ -221,7 +221,7 @@
 		else{
 			?>
 			
-				<a class="btn btn-success" href="<?= base_url('center/Payment/backlog_exam_form/'.$student_id .'/'. $class_id) ?>">Process To Payment</a>
+				<a class="btn btn-success" href="<?= base_url('center/Payment/backlog_exam_form/'.$student_id .'/'. $class_id.'/'.$papers[0]->backlog_student_id) ?>">Process To Payment</a>
 			<?php } ?>
 			
 	  </div>
