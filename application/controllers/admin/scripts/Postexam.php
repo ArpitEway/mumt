@@ -371,7 +371,7 @@ class Postexam extends CI_Controller {
       {
         $this->db->select('DISTINCT(id)');
         $this->db->from('class_master');
-        $this->db->where('class_name','I Year');
+        $this->db->where('class_name','II Sem');
         //$this->db->where('backlog_exam_form_permission','Y');
         $classes = $this->db->get()->result();
        $class_id = array_column($classes,'id');
@@ -432,7 +432,7 @@ class Postexam extends CI_Controller {
                 'roll_no' => 0,
                 'session' => $students[0]->session,
                 'mode'=>$students[0]->university_mode,
-                'exam_year'=>'Dec 2022',
+                'exam_year'=>'June 2023',
                 'exam_form' => 'N',
                 'enrollment_no' => $students[0]->enrollment_no,
                 'center_id' => $students[0]->center_id,
