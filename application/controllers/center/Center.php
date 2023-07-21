@@ -2746,7 +2746,7 @@ public function practical_assignment_marks_edit(){
 		}
 		$data['exam_form_button'] = $exam_form1;
 		$this->db->where_in('class_id',$class_ids);
-		$this->db->where('exam_year = June 2023');
+		$this->db->where('exam_year' ,'June 2023');
 		$data['documents'] = $this->Common_model->getRecordByWhere('backlog_student',$where);
 		if($center_permission[0]['exam_form_permission']!='Y' && $exam_form1 =="notSubmitted"){
 			$data['documents'] ="";
