@@ -3267,7 +3267,7 @@ public function update_exam_datewise_permission(){
 		$data['title'] = $title;
 		$data['university_mode'] = $mode;
 		// $this->load->model('Gradesheet_model');
-		$this->load->model('Gradesheet_model');
+		
 
 		if($class->last_class == 'L'){
 			$this->db->order_by('center_id,roll_number','ASC');
@@ -3279,8 +3279,17 @@ public function update_exam_datewise_permission(){
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode));
 		}
 	 	// if($class->internal=="Y" && $mode!="PVT"){
+			$class_cbcs = array(193,197,201,203,205,211,213,221,223,225,227,275,279);
+			if(in_array($class_id , $class_cbcs))
+			{
+				$this->load->model('Gradesheet_model_pg');
+				$this->load->view('admin/student_marksheet_grade_pg',$data);
+			}else{
+				$this->load->model('Gradesheet_model');
+				$this->load->view('admin/student_marksheet_grade1',$data);
+			}
 			
-			$this->load->view('admin/student_marksheet_grade1',$data);
+
 		// }else{
 			// $this->load->view('admin/student_marksheet_certificate',$data);
 		// }

@@ -94,7 +94,8 @@
 				<?php
 			if($class->regular_class=='Y') { 
 				$class_ids=array(101,104,107,110,116,119,125,128,131,134);
-				if(in_array($class->id , $class_ids)){
+				$class_cbcs = array(193,197,201,203,205,211,213,221,223,225,227,275,279);
+				if(in_array($class->id , $class_ids) || in_array($class->id , $class_cbcs)){
 					$std_marksheet = 'student_marksheet_grade';
 				}else{
 					$std_marksheet = 'student_marksheet';
