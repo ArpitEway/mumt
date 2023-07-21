@@ -2768,7 +2768,7 @@ public function practical_assignment_marks_edit(){
     	$data['student'] = $student;
     	$this->db->select('*');
     	$this->db->from('backlog_student');
-    	$this->db->join('backlog_exam_form', 'backlog_exam_form.student_id = backlog_student.student_id,backlog_exam_form.backlog_student_id = backlog_student.id');
+    	$this->db->join('backlog_exam_form', 'backlog_exam_form.student_id = backlog_student.student_id AND backlog_exam_form.backlog_student_id = backlog_student.id');
     	$this->db->where('backlog_student.student_id',$student_id); 
     	$this->db->where('backlog_student.class_id',$class_id);
 		$this->db->where('backlog_exam_form.class_id',$class_id);
