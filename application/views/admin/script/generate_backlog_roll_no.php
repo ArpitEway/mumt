@@ -31,6 +31,7 @@
 					    $where = array(
 							'exam_form' => 'Y',
 							'roll_no' =>'0',
+							'exam_year'=>'June 2023'
 							
 						);
 						
@@ -42,7 +43,7 @@
 						foreach ($students as $student) {
 								$roll_no = ($student->mode=='REG') ? '91'.$last_number : '92'.$last_number;
 							if($action=='generate'){
-								$whereUpdate = array('student_id' => $student->student_id);
+								$whereUpdate = array('student_id' => $student->student_id,'exam_year'=>'June 2023');
 								$updateData = array('roll_no' =>$roll_no);
 								$this->Common_model->updateRecordByConditions('backlog_student',$whereUpdate,$updateData);
 							}
