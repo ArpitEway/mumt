@@ -202,12 +202,12 @@
 				<?php if ($center->exam_form_permission=='Y'): ?>
 					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
 							<div>
-								<span class="nav-text">Exam Form March 2023</span>
+								<span class="nav-text">Exam Form July 2023</span>
 							</div>
 					</a> 
 					<a class="border-0 custom-menu-item" href="<?=base_url('backlog_exam_form_students');?>">
 							<div>
-								<span class="nav-text">Backlog Exam Form March 2023</span>
+								<span class="nav-text">Backlog Exam Form July 2023</span>
 							</div>
 					</a>   -->
 					<?php endif ?>
@@ -217,7 +217,7 @@
 					if ( $center->exam_form_permission=='Y' ){ ?>
 					<a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
 							<div>
-								<span class="nav-text">Exam Form June 2023</span>
+								<span class="nav-text">Exam Form July 2023</span>
 							</div>
 					</a> 
 					<?php }
