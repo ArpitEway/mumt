@@ -2658,7 +2658,7 @@ public function practical_assignment_marks_edit(){
 	}
 	
 	public function search_exam_by_course(){
-		redirect(base_url('dashboard'));
+		// redirect(base_url('dashboard'));
 		$dt = array();
 		$titleData = array('title' => 'Course Wise Exam Date ');
 		$this->load->view('Centers/header',$titleData);
@@ -2673,7 +2673,7 @@ public function practical_assignment_marks_edit(){
 		$this->db->where_not_in('paper_master.course_group_id',array(75,76));
 		$this->db->where('paper_master.exam_date!=','0000-00-00');  
 		$this->db->where('paper_master.type','theory'); 
-	   
+	    $this->db->where_not_in('class_id',array(163,175));
 		$this->db->group_by('paper_master.course_group_id');
 		$this->db->order_by('course_group.course_name', 'Asc');
 		$dt['courses']= $this->db->get()->result_array();
