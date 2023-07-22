@@ -100,7 +100,7 @@ foreach($elist as $row)
                     if(($paper['fill'] >0) || ($paper['all'] >0 ) || $paper['back_fill']>0 )
                     { 
                     ?>
-                <tr><td ><?=$paper['course_name'] ?></td><td><?= $classMaster[0]->class_name ?></td><td><?=$paper['paper_name'] ?>&nbsp; (<?=$paper['paper_code'] ?>)</td><td style="text-align:center"><?php echo $paper['all']+ $paper['fill']+$paper['back_fill']; ?></td><td>&nbsp;</td><td></td></tr>
+                <tr><td ><?=$paper['course_name'] ?></td><td><?= $classMaster[0]->class_name ?></td><td><?=$paper['paper_name'] ?>&nbsp; (<?=$paper['paper_code'] ?>)</td><td style="text-align:center"><?php echo $paper['all']." ". $paper['fill']." ".$paper['back_fill'];  echo $paper['all']+ $paper['fill']+$paper['back_fill']; ?></td><td>&nbsp;</td><td></td></tr>
                
                 <?php 
               $examDate=  $paper['exam_date'];
