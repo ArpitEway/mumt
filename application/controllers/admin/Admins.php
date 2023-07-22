@@ -2203,17 +2203,18 @@ public function getStudentData()
 		$data['not_filled_student'] = $this->Common_model->getCountByWhere('student',$where);
 
 		//backlog
-		// $where = array('exam_form !=' =>'D');
-		// $data['permitted_backlog_student'] = $this->Common_model->getCountByWhere('backlog_student',$where);
 
-		// $where = array('exam_form' =>'Y');
-		// $data['filled_backlog_student'] = $this->Common_model->getCountByWhere('backlog_student',$where);
+		$where = array('exam_form !=' =>'D','exam_year' =>'June 2023');
+		$data['permitted_backlog_student'] = $this->Common_model->getCountByWhere('backlog_student',$where);
 
-		// $where = array('exam_form ' =>'S');
-		// $data['skipped_backlog_student'] = $this->Common_model->getCountByWhere('backlog_student',$where);
+		$where = array('exam_form' =>'Y','exam_year' =>'June 2023');
+		$data['filled_backlog_student'] = $this->Common_model->getCountByWhere('backlog_student',$where);
 
-		// $where = array('exam_form' =>'N');
-		// $data['not_filled_backlog_student'] = $this->Common_model->getCountByWhere('backlog_student',$where);
+		$where = array('exam_form ' =>'S','exam_year' =>'June 2023');
+		$data['skipped_backlog_student'] = $this->Common_model->getCountByWhere('backlog_student',$where);
+
+		$where = array('exam_form' =>'N','exam_year' =>'June 2023');
+		$data['not_filled_backlog_student'] = $this->Common_model->getCountByWhere('backlog_student',$where);
 
 
 
