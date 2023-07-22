@@ -1,4 +1,7 @@
 <style>
+     .offcanvas-footer{
+      display: none;
+   }
     .table th, .table td {
      /* border-top: 1px solid #3F4254;*/
      border-top:none;

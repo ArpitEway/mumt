@@ -1,4 +1,7 @@
 <style type="text/css">
+   .offcanvas-footer{
+      display: none;
+   }
   .break{
     page-break-before: always;
  }
