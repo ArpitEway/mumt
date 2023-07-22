@@ -130,8 +130,8 @@ foreach($papers as $pap)
          $query_back = $this->db->query($sql_back);
          $count_backlog = $query_back->result_array();
 
-         $qu="SELECT count(*) as num FROM `student_report` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paper->paper_code."'  AND `p`.`class_id` = '".$paper->class_id."' AND `s`.`exam_center_id`='".$exam_center."'   AND temp_exam_form='N' and new_exam_form!='D'  and `session` = 'July 2022' AND `s`.`class_name` = 'I Year' AND s.class_id not in (163,175,153,155,182,299,161,216,214,159,154,158,181,172,160,152)";
-         // new_exam_form in ('Y','N') AND `p`.`id` = '".$paper->id."'
+         $qu="SELECT count(*) as num FROM `student_report` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paper->paper_code."'  AND `p`.`class_id` = '".$paper->class_id."' AND `s`.`exam_center_id`='".$exam_center."'   AND temp_exam_form='N'   and `session` = 'July 2022' AND `s`.`class_name` = 'I Year' AND s.class_id not in (163,175,153,155,182,299,161,216,214,159,154,158,181,172,160,152)";
+         // new_exam_form in ('Y','N') AND `p`.`id` = '".$paper->id."' and new_exam_form!='D'
          $query = $this->db->query($qu);
          $all = $query->result_array();
 
@@ -170,7 +170,7 @@ foreach($papers as $pap)
                </td>
                <td><div align="left"><?= $paper->exam_shift?></div></td>
                <td style="text-align:center;"><?php 
-                echo $count[0]['cnt']." ".$allElective." ".$count_backlog[0]['cnt'];
+              //  echo $count[0]['cnt']." ".$allElective." ".$count_backlog[0]['cnt'];
                echo $count[0]['cnt']+$allElective+$count_backlog[0]['cnt']; ?> </td>
             </tr>
             <?php 
