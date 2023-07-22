@@ -195,7 +195,7 @@
             <td><?php echo $i; ?></td>
             <td><?php echo $paper->paper_code; ?></td>
             <td><?php 
-              $paper_name  = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$paper->paper_code));
+              $paper_name  = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$paper->paper_code,'class_id'=>$paper->class_id));
              echo $paper_name[0]->paper_name;
             ?></td>
             </tr>
