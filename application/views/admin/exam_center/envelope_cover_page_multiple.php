@@ -59,8 +59,8 @@ foreach($elist as $row)
             
          }
         
-        $count[0]['cnt'];
-        $count_backlog[0]['cnt'];
+       echo  "<br>Main " .$count[0]['cnt'];
+       echo  "Back ".$count_backlog[0]['cnt'];
         $tcheck+= $allElective + $count[0]['cnt'] + $count_backlog[0]['cnt'];
         
          $countData=array("fill"=>$count[0]['cnt'],"all"=>$allElective,'back_fill'=>$count_backlog[0]['cnt'],"class_id"=>$paper['class_id'],"paper_code"=>$paper['paper_code'],"course_name"=>$paper['course_name'] ,"exam_date"=>  date("d-m-Y", strtotime($paper['exam_date'])),"exam_day"=> $paper['exam_day'],"test_id"=>$paper['test_id'],  "exam_shift"=>$paper['exam_shift'],"paper_name"=>$paper['paper_name']);
