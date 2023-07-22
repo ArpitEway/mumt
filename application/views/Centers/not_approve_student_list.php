@@ -41,7 +41,7 @@
 				
 				
 
-				if(($admissionDocCount!=$remarkCount) || ($remark=='' && $doc_count !=1)){
+				if(($admissionDocCount!=$remarkCount && $student->remark!='') || ($remark=='' && $doc_count !=1)){
 
 					?>
 					<tr>
