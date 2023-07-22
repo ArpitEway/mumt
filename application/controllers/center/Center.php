@@ -1167,7 +1167,12 @@ class Center extends CI_Controller {
 		$center_permission = $this->Common_model->get_record('center','exam_form_permission',array('id'=>$center_id));
 		$this->db->where_in('class_id',$class_ids);
 		if($exam_form1=='submitted'){
-			$where = array('new_exam_form' =>'Y','center_id' => $center_id);
+			if ($this->session->center_id!=13) {
+				$this->db->where('center_id',$this->session->center_id);
+			}else{
+				$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+			}
+			$where = array('new_exam_form' =>'Y');
 			$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
 		}else if($exam_form1 =="notSubmitted"){
 			if($center_permission[0]['exam_form_permission']!='Y'){
@@ -1175,15 +1180,24 @@ class Center extends CI_Controller {
 			}else{
 				$where = array(
 					'new_exam_form' =>'N',
-					'center_id' => $center_id,
 				);
+				if ($this->session->center_id!=13) {
+					$this->db->where('center_id',$this->session->center_id);
+				}else{
+					$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+				}
 				$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
 			}
 		}else if($exam_form1=="skipped"){
 			$where = array(
 				'new_exam_form' =>'S',
-				'center_id' => $center_id,
+				
 			);
+			if ($this->session->center_id!=13) {
+				$this->db->where('center_id',$this->session->center_id);
+			}else{
+				$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+			}
 			$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
 		}
 		$data['exam_form_button'] = $exam_form1;
