@@ -469,6 +469,130 @@ class Preexam extends CI_Controller {
 		}
 	}
 
+	public function group_upload_group_exam_paper_sub($class_id)
+	{
+		$where = array('class_id' => $class_id,
+					//'payment_status' => 'Y',
+					'temp_exam_form' => "N",
+					'new_exam_form'=>"N" ,
+					'demo'=>"N",
+					'group_id!='=>"",
+		);
+		$this->db->limit(1,0);
+		$students = $this->Common_model->get_record('student','*',$where);
+		
+		$paperWhere=array('class_id'=>$class_id,'ce'=>'compulsory');
+		$papers = $this->Common_model->get_record('paper_master','*',$paperWhere);
+		$stCount=0;
+		foreach ($students as $student) {
+			$stCount++;
+			
+			
+		//	$group_id=$student['group_id'];
+			
+				
+					$data = array(
+						'student_id' => $student['student_id'],
+						'course_group_id' => $student['course_group_id'],
+						'class_id' => $student['class_id'],
+						);
+					
+					foreach ($papers as $paper) {
+						if($student['university_mode']=="PVT" && $paper['type']=='theory' )
+						{ 
+						$data['paper_id'] = $paper['id'];
+						$data['paper_code'] = $paper['paper_code'];
+						$data['paper_type'] = $paper['type'];
+						$data['paper_order'] = $paper['paper_no'];
+						$data['sub_group_id'] = $paper['sub_group_id'];
+						$data['group_id'] = 0;
+						$this->Common_model->insertAll('new_exam_form',$data);
+						}
+						if($student['university_mode']=="REG"  )
+						{ 
+						$data['paper_id'] = $paper['id'];
+						$data['paper_code'] = $paper['paper_code'];
+						$data['paper_type'] = $paper['type'];
+						$data['paper_order'] = $paper['paper_no'];
+						$data['sub_group_id'] = $paper['sub_group_id'];
+						$data['group_id'] = 0;
+						$this->Common_model->insertAll('new_exam_form',$data);
+						}
+						
+						echo $this->db->last_query().'<br>';
+											
+					}
+					$new_group_id=[];
+					$group_arr=explode(',',$student['group_id']);
+			foreach($group_arr as $key=>$group_id){
+		    // echo "<br> Sr No.  ".$stCount."<br> Check Group ID ".$student['group_id']."<br>";
+			 //for elective
+			
+			 $electiveWhere=array('id'=>$group_id,'class_id'=>$student['old_class_id'],'course_group_id'=>$student['course_group_id']);
+			 $elective = $this->Common_model->get_record('group','*',$electiveWhere);
+			 
+			// print_r($elective);
+			 $electiveGroupWhere=array('class_id'=>$student['class_id'],'course_group_id'=>$student['course_group_id'],'group_name'=>$elective[0]['group_name']);
+			 $electiveGroup = $this->Common_model->get_record('group','*',$electiveGroupWhere);
+			 print_r($electiveGroup);
+			 //
+			 $this->db->order_by("group_id,id");
+			 $electivePaperWhere=array('group_id'=>$electiveGroup[0]['id']);
+			 $electivePapers = $this->Common_model->get_record('group_paper','*',$electivePaperWhere);
+			 $electiveData = array(
+				 'student_id' => $student['student_id'],
+				 'course_group_id' => $student['course_group_id'],
+				 'class_id' => $student['class_id'],
+				 );
+			// echo "Elective paper";
+			// echo $this->db->last_query().'<br>';
+				foreach ($electivePapers as $electivePaper) {
+
+					$paperMasterWhere=array('id'=>$electivePaper['paper_id']);
+					$paperMaster = $this->Common_model->get_record('paper_master','*',$paperMasterWhere);
+					echo $paperMaster[0]['type'];
+					if($student['university_mode']=="PVT" && $paperMaster[0]['type']=='theory' )
+					{ 
+						$electiveData['paper_id'] = $electivePaper['paper_id'];
+						$electiveData['paper_code'] = $electivePaper['paper_code'];
+						$electiveData['paper_type'] = $paperMaster[0]['type'];
+						$electiveData['paper_order'] = $paperMaster[0]['paper_no'];
+						$electiveData['sub_group_id'] = $electivePaper['sub_group_id'];
+						$electiveData['group_id'] = $electivePaper['group_id'];
+						$this->Common_model->insertAll('new_exam_form',$electiveData);
+					}
+					if($student['university_mode']=="REG"){
+						$electiveData['paper_id'] = $electivePaper['paper_id'];
+						$electiveData['paper_code'] = $electivePaper['paper_code'];
+						$electiveData['paper_type'] = $paperMaster[0]['type'];
+						$electiveData['paper_order'] = $paperMaster[0]['paper_no'];
+						$electiveData['sub_group_id'] = $electivePaper['sub_group_id'];
+						$electiveData['group_id'] = $electivePaper['group_id'];
+						$this->Common_model->insertAll('new_exam_form',$electiveData);
+					}
+					
+					echo $this->db->last_query().'<br>';
+					
+				}	
+				$new_group_id[]=$electivePaper['group_id'];
+			}
+
+					
+					
+					
+			  $where = array('student_id'=>$student['student_id'],'class_id'=>$student['class_id']);
+					
+			$g=implode(',',$new_group_id);
+			$this->Common_model->updateRecordByConditions('new_exam_form',$where,array('group_id'=>$g));
+			$this->Common_model->updateRecordByConditions('student',$where,array('group_id'=>$g,'temp_exam_form' => "Y"));
+			}
+				//if($stCount==1)
+				//break;	
+			
+			
+		
+	}
+
 }
 
 ?>

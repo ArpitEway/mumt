@@ -17,7 +17,7 @@ $i = 0;
 			<td><?=$class->course_name;?></td>
 			<td><?=$class->class_name;?></td>
 		
-			<td><a href="<?=base_url('admin/scripts/Preexam/upload_group_exam_paper_sub/').$class->class_id;?>" target="_blank"> <?=$class->num?></a></td>
+			<td><a href="<?=base_url('admin/scripts/Preexam/group_upload_group_exam_paper_sub/').$class->class_id;?>" target="_blank"> <?=$class->num?></a></td>
 		</tr>
 <?php endforeach ?>
 	</tbody>
