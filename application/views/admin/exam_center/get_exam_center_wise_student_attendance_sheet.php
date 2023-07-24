@@ -66,7 +66,7 @@
 							// if($student->course_group_id==77){
 							// 	echo '2023';
 							// }
-							else if($student->course_group_id==33 || $student->course_group_id==45){
+							if($student->course_group_id==33 || $student->course_group_id==45){
 								echo 'June 2023';
 							}else{
 								echo 'July 2023';
