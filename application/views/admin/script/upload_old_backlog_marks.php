@@ -26,7 +26,7 @@
                     <td><?php echo $course->cnt; ?></td>
                     <?php if(in_array($course->class_id, $class_ids) && $course->mode == 'REG'){
                             ?>
-                            <td><a target="_blank" href="<?=base_url('admin/scripts/Postexam/upload_old_grade_data_script/'.$course->class_id.'/'.$course->university_mode)?>">upload</a></td>
+                            <!-- <td><a target="_blank" href="<?php //echo base_url('admin/scripts/Postexam/upload_old_grade_data_script/'.$course->class_id.'/'.$course->university_mode)?>">upload</a></td> -->
                             <?php
                     }else{
                         ?>

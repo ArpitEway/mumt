@@ -964,13 +964,13 @@ public function upload_old_backlog_data_script($class_id="",$mode){
         }
        
        $aggregate_per = round(  ($tot_std_marks/$tot_marks) * 100,2);
-        $require_grace_marks = $require_tot_marks-$fali_tot_marks;
-        //$aggregate_per>36 &&
-        if($fail_count<2 && $fail_count!=0 && $abs_count==0 && $require_grace_marks<4 &&  $p_fail_count==0){
-            $check_grace_marks = true;
-        }
+        // $require_grace_marks = $require_tot_marks-$fali_tot_marks;
+        // //$aggregate_per>36 &&
+        // if($fail_count<2 && $fail_count!=0 && $abs_count==0 && $require_grace_marks<4 &&  $p_fail_count==0){
+        //     $check_grace_marks = true;
+        // }
         if($fail_count>0) {
-            $final_result = ($check_grace_marks) ? 'PASS BY GRACE' : 'FAIL';
+            $final_result = 'FAIL';
         }else{
             $final_result = 'PASS';   
         }
@@ -1000,11 +1000,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
                         $result = "FAIL";
                     }
                     if(($marks->theory_marks<$paper_master[0]->min_theory_marks && $student->mode=="REG") || ($marks->theory_marks<$paper_master[0]->private_min_theory_marks && $student->mode=="PVT") ){
-                        if($check_grace_marks){
-                            $result = "PASS BY GRACE";          
-                        }else{
-                            $result = 'FAIL';
-                        }
+                       $result = 'FAIL';
                     }
                    $paper_count++;    
                 }else if($marks->paper_type=='Sessional'){
@@ -1012,12 +1008,9 @@ public function upload_old_backlog_data_script($class_id="",$mode){
                     if ($marks->int_marks=='ABS') {
                         $result = "FAIL";
                     }
-                    if(($marks->int_marks<$paper_master[0]->min_internal_marks && $student->university_mode=="REG") ){
-                        if($check_grace_marks){
-                            $result = "PASS BY GRACE";          
-                        }else{
-                            $result = 'FAIL';
-                        }
+                    if(($marks->int_marks<$paper_master[0]->min_internal_marks && $student->mode=="REG") ){
+                           $result = 'FAIL';
+                        
                     }
 
                 }
