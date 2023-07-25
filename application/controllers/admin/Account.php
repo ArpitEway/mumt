@@ -185,9 +185,11 @@
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		$student = $this->Common_model->getRecordById('student','student_id',$student_id);
 		$paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student_id));
+		$studentContactData = $this->Common_model->getRecordById('student_data','student_id',$student_id);
 		$data = array(
 			'student' => $student,
 			'paymentDetails' => $paymentDetails,
+			'studentContactData'=>$studentContactData,
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 		);
