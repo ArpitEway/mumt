@@ -204,11 +204,17 @@
 		$dateTime = $this->input->post('dateTime');
 		$student_id = $this->input->post('student_id');
 		$dateTime = explode(' ',$dateTime);
-		$updateData = array('txnId' => $txnid,'payment_date' => $dateTime[0],'payment_time' => $dateTime[1],'payment' => 'Y', 'payment_status' => 'captured');
+		$updateData = array('txnId' => $txnid,'payment_date' => $dateTime[0],'payment_time' => $dateTime[1],'payment' => 'Y', 'payment_status' => 'success');
 		$where = array('id' => $id);
 		$result = $this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$updateData);
 		$whereStudent = array('student_id'=> $student_id);
-		$result = $this->Common_model->updateRecordByConditions('student',$whereStudent,array('payment_status'=> 'Y'));
+		$txnDetails = $this->Common_model->getRecordById('online_payment_transaction','id',$id);
+		if($txnDetails->fees_head=='Exam Fees'){
+			$updateDataStd = array('new_exam_form'=> 'Y'); 
+		}elseif ($txnDetails->fees_head=='Admission Fees') {
+			$updateDataStd = array('payment_status'=> 'Y'); 
+		}
+		$result = $this->Common_model->updateRecordByConditions('student',$whereStudent,$updateDataStd);
 		if($result){
 			$paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student_id));
 			$data = array('paymentDetails' => $paymentDetails);
