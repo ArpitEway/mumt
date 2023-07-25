@@ -826,4 +826,53 @@ public function upload_old_grade_data_script($class_id="",$mode){
 
 }
 
+
+    public function generate_backlog_marksheet_no(){
+          
+            $this->db->limit(1,0);
+            $data['students'] = $this->Common_model->getRecordByWhere('backlog_student', array('exam_form'=>'Y' ,'exam_year'=>"Dec 2022",'roll_no!='=>0 ,'back_marksheet_no'=>''));
+            
+          
+            foreach($data['students']  as $key =>  $student){
+               $oldData= $this->Common_model->getRecordByWhere('old_exam_data', array('student_id'=>$student->student_id ,'class_id'=>$student->class_id,'exam_status'=>'R' ));
+               $backlogoldData= $this->Common_model->getRecordByWhere('old_exam_data', array('student_id'=>$student->student_id ,'class_id'=>$student->class_id,'exam_status'=>'B' ));
+             
+               echo $count =count($backlogoldData)+1;
+               
+                $new_marksheet_no= $oldData[0]->marksheet_no.'/'.$count;
+                $updateData  = array('back_marksheet_no'=>$new_marksheet_no);
+                $where = array('student_id'=>$student->student_id,'class_id'=>$student->class_id);
+                $this->Common_model->updateRecordByConditions('backlog_student',$where,$updateData); 
+                echo $this->db->last_query();
+            }
+            
+                    $this->load->view('admin/script/header');
+                    $this->load->view('admin/script/student_marksheet_no',$data);
+                    $this->load->view('admin/script/footer');
+         }
+
+      public function check_backlog_fail_student()
+      {
+        $this->db->select('DISTINCT(id)');
+        $this->db->from('class_master');
+        $this->db->where('backlog_exam_form_permission','Y');
+        $classes = $this->db->get()->result();
+       $class_id = array_column($classes,'id');
+       if($classes){
+
+           $this->db->select('course_name,class_id, COUNT(student_id) as cnt');
+           $this->db->where('exam_year', 'Feb 2023');
+           $this->db->where('exam_result', 'FAIL');
+           $this->db->where('exam_status', 'B');
+           $this->db->where_in('class_id',$class_id );
+           $this->db->group_by('class_id');         
+           $data['courses'] = $this->db->get('old_exam_data')->result();
+       }else{
+        $data['courses'] = "No Data Found";
+       }
+        //    $this->Common_model->last_query();
+           $this->load->view('header',array('title' => 'Check Backlog Student'));
+           $this->load->view('admin/script/check_backlog_fail_student',$data);
+           $this->load->view('footer');
+      }
 }
