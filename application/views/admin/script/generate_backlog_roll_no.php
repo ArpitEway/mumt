@@ -34,7 +34,7 @@
 							'exam_year'=>'June 2023'
 							
 						);
-						
+						$this->db->where_in('class_id',array(153,155,182,299,161,216,214,159,154,158,181,172,160,152));
 						$students = $this->Common_model->getRecordByWhereByOrder('backlog_student',$where,'center_id,center_code,class_id,course_group_id','ASC');
 						$whereRollNo = "exam_form = 'Y' and roll_no !='0'";
 						$countData = $this->db->query("Select max(substr(`roll_no`, 3, 6)) as afterRemove from backlog_student WHERE $whereRollNo")->row();

@@ -31,7 +31,7 @@
 
 					$i=1;
 					$whereclass = array('exam_form_permission' => 'Y','temp_id!=' => 0);
-					// $this->db->where_in('course_group_id',array('75','76','77'));
+					 $this->db->where_in('id',array(153,155,182,299,161,216,214,159,154,158,181,172,160,152));
 					$classData = $this->Common_model->getRecordByWhere('class_master',$whereclass);
 					foreach ($classData as $class) {
 						$where = array(
