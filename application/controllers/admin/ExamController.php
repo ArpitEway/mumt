@@ -1628,7 +1628,7 @@ class ExamController extends CI_Controller {
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('DISTINCT(exam_center_id) ');
 			$this->db->from('student');
-			$where = array('new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>0);
+			$where = array('new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>2);
 			$this->db->where($where);	
 			$ecenters=$this->db->get()->result_array();
 			//print_r($this->db->last_query()); 
@@ -1662,7 +1662,7 @@ class ExamController extends CI_Controller {
 		$this->db->from('student');
 		$this->db->order_by("roll_no", "asc");
 		// if($exam_center!="All")
-		$where = array('exam_center_id'=>$exam_center,'new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>0);
+		$where = array('exam_center_id'=>$exam_center,'new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>2);
 		$this->db->where($where);	
 		$data['exam_center_students'] = $this->db->get()->result();
 		echo $this->load->view('admin/exam_center/get_exam_center_wise_student_attendance_sheet',$data, TRUE);
@@ -1685,7 +1685,7 @@ class ExamController extends CI_Controller {
 		
 			$this->db->where('exam_form','Y');
 			$this->db->where('exam_year','June 2023');
-			$this->db->where('notification_no','0');
+			$this->db->where('notification_no','1');
 			$this->db->order_by('exam_center_code', "asc");
 			$data['exam_centers'] = $this->db->get()->result();
 
@@ -1698,10 +1698,10 @@ class ExamController extends CI_Controller {
 		$exam_center = $this->input->post('exam_center');
 		$this->db->select('backlog_student.*,student.name,student.f_h_name,student.course_name,student.photo');
 		$this->db->from('backlog_student');
-		$this->db->join('student', 'backlog_student.student_id = student.student_id');
+		$this->db->join('student', 'backlog_student.student_id = student.student_id ');
 		$this->db->order_by("roll_no", "asc");
 		
-		$where = array('backlog_student.exam_center_id'=>$exam_center,'backlog_student.exam_form'=>'Y', 'backlog_student.roll_no!=' => 0 ,'backlog_student.notification_no'=>0,'backlog_student.exam_year'=>'June 2023');
+		$where = array('backlog_student.exam_center_id'=>$exam_center,'backlog_student.exam_form'=>'Y', 'backlog_student.roll_no!=' => 0 ,'backlog_student.notification_no'=>1,'backlog_student.exam_year'=>'June 2023');
 		$this->db->where($where);	
 		$data['exam_center_students'] = $this->db->get()->result();
 		echo $this->load->view('admin/exam_center/get_exam_center_wise_backlog_student_attendance_sheet',$data, TRUE);
