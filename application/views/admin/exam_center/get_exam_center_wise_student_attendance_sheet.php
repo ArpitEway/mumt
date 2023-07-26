@@ -66,7 +66,7 @@
 							// if($student->course_group_id==77){
 							// 	echo '2023';
 							// }
-							if($student->course_group_id==33 || $student->course_group_id==45){
+							if($student->course_group_id==33 || $student->course_group_id==45 || $student->course_group_id==76){
 								echo 'June 2023';
 							}else{
 								echo 'July 2023';
@@ -160,12 +160,16 @@
 				<tr>
 					<td><?php echo $i ; ?></td>
 					<td><?php echo date("d-m-Y", strtotime($paper->exam_date)); ?></td>
-					<td><?php if($paper->exam_shift=='Morning'){
+					<td><?php 
+					if($paper->exam_shift=='Morning' && ($student->class_id==264) ){
 						echo '11:00 AM To 2:00 PM';
-					}elseif($paper->exam_shift=='Afternoon' && $paper->class_id!=175 && $paper->class_id!=163){
-						echo '03:00 PM To 6:00 PM';
+					}
+					elseif($paper->exam_shift=='Morning'){
+						echo '10:30 AM To 1:30 PM';
+					}elseif($paper->exam_shift=='Afternoon' ){ 
+						echo '02:30 PM To 5:30 PM';
 					}else{
-						echo '12:00 To 3:00 PM';
+						echo '07:00 To 10:00 AM';
 					} ?></td>
 					<td style="text-align:left;"><?php echo $paper->paper_name; ?></td>
 					<td ></td>
