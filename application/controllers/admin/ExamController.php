@@ -1986,7 +1986,7 @@ class ExamController extends CI_Controller {
 			#total
 			$this->db->select('count(*) as num');
 			$this->db->from('new_exam_form');
-			$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.old_class_id');
 			$this->db->where('student.'.$this->exam_form.'','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
 			$count = $this->db->get()->result();
@@ -1994,7 +1994,7 @@ class ExamController extends CI_Controller {
 			#Absent
 			$this->db->select('count(*) as num');
 			$this->db->from('new_exam_form');
-			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.class_id');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.old_class_id');
 			$this->db->where('student.'.$this->exam_form.'','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
 			$this->db->where('new_exam_form.theory_marks','ABS');
@@ -2003,7 +2003,7 @@ class ExamController extends CI_Controller {
 			#uploaded
 			$this->db->select('count(*) as num');
 			$this->db->from('new_exam_form');
-			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.class_id');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.old_class_id');
 			$this->db->where('student.'.$this->exam_form.'','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
 			$this->db->where_not_in('theory_marks',array('ABS',''));
@@ -2014,7 +2014,7 @@ class ExamController extends CI_Controller {
 			#total backlog
 			$this->db->select('count(*) as num');
 			$this->db->from('backlog_exam_form');
-			$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id and backlog_exam_form.class_id = backlog_student.class_id');
+			$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id and backlog_exam_form.class_id = backlog_student.class_id and backlog_exam_form.backlog_student_id=backlog_student.id');
 			$this->db->where('backlog_student.exam_form','Y');
 			$this->db->where('backlog_student.exam_year','Dec 2022');
 			$this->db->where('backlog_exam_form.status','B');
@@ -2024,7 +2024,7 @@ class ExamController extends CI_Controller {
 			#Absent Backlog
 			$this->db->select('count(*) as num');
 			$this->db->from('backlog_exam_form');
-			$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id  and backlog_exam_form.class_id = backlog_student.class_id');
+			$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id  and backlog_exam_form.class_id = backlog_student.class_id and backlog_exam_form.backlog_student_id=backlog_student.id');
 			$this->db->where('backlog_student.exam_form','Y');
 			$this->db->where('backlog_student.exam_year','Dec 2022');
 			$this->db->where('backlog_exam_form.status','B');
@@ -2035,7 +2035,7 @@ class ExamController extends CI_Controller {
 			#uploaded Backlog
 			$this->db->select('count(*) as num');
 			$this->db->from('backlog_exam_form');
-			$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id  and backlog_exam_form.class_id = backlog_student.class_id');
+			$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id  and backlog_exam_form.class_id = backlog_student.class_id and backlog_exam_form.backlog_student_id=backlog_student.id');
 			$this->db->where('backlog_student.exam_form','Y');
 			$this->db->where('backlog_student.exam_year','Dec 2022');
 			$this->db->where('backlog_exam_form.status','B');

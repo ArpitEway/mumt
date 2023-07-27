@@ -1594,8 +1594,9 @@ class Center extends CI_Controller {
 		
 		$this->db->where($where);
 		$data['student'] = $this->db->get()->result();
+		// print_r($data['student'] );
 		
-		$wherePaper = array('student_id' => $student_id,'paper_master.type'=>'theory','paper_master.class_id'=>$data['student'][0]->class_id,'paper_master.course_group_id'=>$data['student'][0]->course_group_id,'status'=>'B','backlog_student_id'=>$data['student']->id);
+		$wherePaper = array('student_id' => $student_id,'paper_master.type'=>'theory','paper_master.class_id'=>$data['student'][0]->class_id,'paper_master.course_group_id'=>$data['student'][0]->course_group_id,'status'=>'B','backlog_student_id'=>$data['student'][0]->id);
 		$this->db->select('*');
 		$this->db->from('paper_master');
 		$this->db->join('backlog_exam_form', 'backlog_exam_form.paper_code = paper_master.paper_code and backlog_exam_form.class_id = paper_master.class_id');
@@ -1604,7 +1605,7 @@ class Center extends CI_Controller {
 		$this->db->order_by("exam_date", "asc");
 		$this->db->order_by("exam_shift", "desc");
 		$data['papers'] = $this->db->get()->result();
-		//echo $this->db->last_query(); die;
+		// echo $this->db->last_query(); die;
 		$this->load->view('template/backlog_admit_card',$data);
 		$this->load->view('Centers/footer');
 	}
