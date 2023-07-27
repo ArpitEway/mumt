@@ -82,6 +82,7 @@ class Postexam extends CI_Controller {
             $check_grace_marks = false;
             $fail_count = 0;
             $abs_count = 0;
+            $theory_abs_count = 0;
             $whCount = 0;
             $fali_tot_marks = 0;
             $require_tot_marks = 0;
@@ -144,6 +145,7 @@ class Postexam extends CI_Controller {
 
                     }
                     if ($marks->theory_marks=='ABS') {
+                       $theory_abs_count++; 
                         $abs_count++;
                         $fail_count++;
                     }
@@ -289,7 +291,7 @@ class Postexam extends CI_Controller {
             //     $studentData['demo'] = 'Y';
             //     $studentData['new_exam_form'] = 'N';
             // }else
-            if(($fail_count>1 && $student->course_group_id==76) || ($paper_count==$abs_count)){
+            if(($fail_count>1 && $student->course_group_id==76) || ($paper_count==$theory_abs_count)){
                 $studentData['promote'] = 'D';    
             }else{
                 $studentData['promote'] = 'N';
