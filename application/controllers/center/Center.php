@@ -3281,4 +3281,36 @@ public function practical_assignment_marks_edit(){
 		);
 		echo json_encode($output);
 	}
+
+	public function paid_by_university_backlog($backlog_student_id){
+
+		$backlog_student_id = $this->Common_model->encrypt_decrypt($backlog_student_id,'decrypt');
+		$student_data = $this->Common_model->getRecordByWhere('backlog_student',array('id'=>$backlog_student_id));
+		$where = array(
+			'course_group_id' => $student_data[0]->course_group_id,
+			'backlog_student_id' => $backlog_student_id,
+			'status' => 'B'
+		);
+		$student = $this->Common_model->getRecordById('student','student_id',$student_data[0]->student_id);
+		$fees = $this->Common_model->getCountByWhere('backlog_exam_form',$where);
+		$data['student_id']=$student_data[0]->student_id;
+		$data['center_id']=$student_data[0]->center_id;
+		$data['exam_session'] = "June 2023";
+		$data['course_group_id']=$student_data[0]->course_group_id;
+		$data['class_id']=$student_data[0]->class_id;
+		$data['amount'] = $fees*100;
+		$data['fees_head']='Backlog Exam Fees';
+		$data['student_name']=$student->name;
+		$data['payment']='Y';
+		$data['payment_status']='Paid By University';
+		$data['payment_date']= date("Y-m-d");
+		$data['admission_type']= 'Regular';
+		$data['payment_time']=date("h:i:s");
+		$insert = $this->Common_model->insertAll('online_payment_transaction',$data);
+		$student_data = array('exam_form' => 'Y');
+		$update = $this->Common_model->updateRecordByConditions('backlog_student','id='.$backlog_student_id,$student_data);
+		if($update){
+			redirect(base_url('backlog_exam_form_students'));
+		}
+	}
 }//class
