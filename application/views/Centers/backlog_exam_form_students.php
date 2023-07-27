@@ -71,10 +71,10 @@
                </td>
             <?php
           }        
-        // if($exam_form_button=="submitted")
-        //   { 
-        //  echo ' <td><a class="btn btn-primary" href="'.base_url('backlog_showPapers/'.$student_id).'">View Paper</a></td>';   
-        // }
+        if($exam_form_button=="submitted")
+          { 
+         echo ' <td><a class="btn btn-primary" href="'.base_url('backlog_showPapers/'.$student_id.'/'.$class_id).'">View Paper</a></td>';   
+        }
     $i++;
         }
     ?>
