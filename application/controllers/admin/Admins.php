@@ -4375,7 +4375,13 @@ public function update_exam_datewise_permission(){
 		$cbcs = ($classData->cbcs == 'Y')?'Y':'N';
 		$this->db->order_by('id');
 		$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory" and cbcs_paper="'.$cbcs.'"');
-		$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id where class_id='.$student['class_id'].' Order by g.id,sub_group_id,p.id')->result();
+		if($student['university_mode'] == "REG"){
+			$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id where class_id='.$student['class_id'].' Order by g.id,sub_group_id,p.id')->result();
+
+		}else{
+			$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id join paper_master as m on p.paper_id=m.id  where g.class_id='.$student['class_id'].' and m.type="theory" Order by g.id,sub_group_id,p.id')->result();
+		}
+		
 		$data['compulsoryPapers'] = $compulsoryPapers;
 		$data['student'] = $student;
 		$data['student_id'] = $student['student_id'];
@@ -4434,7 +4440,8 @@ public function update_exam_datewise_permission(){
 	}
 
 
-	public function submit_group(){
+	public function submit_group($mode =""){
+		
 		$paper_code = $_POST['compulsary_paper_code'];
 		$class_id = $_POST['class_id'];
 		$student_id=$this->Common_model->encrypt_decrypt($_POST['student_id'],'decrypt');
@@ -4442,6 +4449,7 @@ public function update_exam_datewise_permission(){
 		$this->db->where_in('paper_code',$paper_code);
 		$this->db->where('class_id',$class_id);
 		$paper_data = $this->Common_model->get_record('paper_master','*');
+		
 		foreach($paper_data as $paper){
 			$data['course_group_id']=$paper['course_group_id'];
 			$data['class_id']=$paper['class_id'];
@@ -4466,6 +4474,9 @@ public function update_exam_datewise_permission(){
 			$groupPaperCodes = array_column($groupPaperData, 'paper_code');
 			$this->db->where_in('paper_code',$groupPaperCodes);
 			$this->db->where('class_id',$class_id);
+			if($mode == "PVT"){
+				$this->db->where('type',"theory");
+			}
 			$papers = $this->Common_model->get_record('paper_master','*');
 			foreach($papers as $paper){
 				$data['course_group_id']=$paper['course_group_id'];
