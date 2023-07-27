@@ -1355,6 +1355,7 @@ class ExamController extends CI_Controller {
 			$this->db->where('type','Theory');
 			$this->db->where('test_id!=','');
 			$this->db->where_not_in('class_id',array(163,175,153,155,182,299,161,216,214,159,154,158,181,172,160,152));
+			$this->db->where_in('class_id',array(137,138,140,143,146,149,183,184,185,187,189,191,192));
 			$this->db->where('exam_date!=','0000-00-00');
 			$this->db->where('exam_date!=','');
 			$this->db->group_by('test_id ');
@@ -1410,6 +1411,7 @@ class ExamController extends CI_Controller {
 			$this->db->from('paper_master');
 			$this->db->where('type','Theory');
 			$this->db->where_not_in('class_id',array(163,175,153,155,182,299,161,216,214,159,154,158,181,172,160,152));
+			$this->db->where_in('class_id',array(137,138,140,143,146,149,183,184,185,187,189,191,192));
 			$this->db->where('test_id!=','');
 			$this->db->where('exam_date!=','0000-00-00');
 			$this->db->where('exam_date!=','');
