@@ -1529,6 +1529,7 @@ class Center extends CI_Controller {
 			'exam_form' => 'Y',
 			'exam_year' => 'June 2023'
 		);
+		$this->db->order_by('course_group_id,class_id');
 		$data['students'] = $this->Common_model->getRecordByWhere('backlog_student',$where);
 		$this->load->view('Centers/class_wise_backlog_admit_card_list',$data);
 		$this->load->view('Centers/footer');
@@ -1572,17 +1573,17 @@ class Center extends CI_Controller {
 		$this->load->view('Centers/footer');
 	}
 
-	public function backlog_admit_card($student_id){
+	public function backlog_admit_card($backlog_student_id){
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
-		$en_student_id = $student_id;
-		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		// $en_student_id = $student_id;
+		$backlog_student_id=$this->Common_model->encrypt_decrypt($backlog_student_id,'decrypt');
 		$titleData = array('title' => 'Backlog Admit Card 2023' );
 		$this->load->view('Centers/header',$titleData);
 		$center_id =  $this->session->center_id;
 		$where = array(
-			'backlog_student.student_id' => $student_id,
+			'backlog_student.id' => $backlog_student_id,
 			'backlog_student.roll_no !=' => 0,
 			'backlog_student.center_id' => $center_id,
 			'backlog_student.exam_form' => 'Y',
@@ -1597,7 +1598,7 @@ class Center extends CI_Controller {
 		$data['student'] = $this->db->get()->result();
 		// print_r($data['student'] );
 		
-		$wherePaper = array('student_id' => $student_id,'paper_master.type'=>'theory','paper_master.class_id'=>$data['student'][0]->class_id,'paper_master.course_group_id'=>$data['student'][0]->course_group_id,'status'=>'B','backlog_student_id'=>$data['student'][0]->id);
+		$wherePaper = array('backlog_student_id' => $backlog_student_id,'paper_master.type'=>'theory','paper_master.class_id'=>$data['student'][0]->class_id,'paper_master.course_group_id'=>$data['student'][0]->course_group_id,'status'=>'B','backlog_student_id'=>$data['student'][0]->id);
 		$this->db->select('*');
 		$this->db->from('paper_master');
 		$this->db->join('backlog_exam_form', 'backlog_exam_form.paper_code = paper_master.paper_code and backlog_exam_form.class_id = paper_master.class_id');

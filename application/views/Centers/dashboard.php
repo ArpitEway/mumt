@@ -267,11 +267,11 @@
 							<span class="nav-text">Admit Card</span>
 						</div>
 					</a>
-					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('admit_card_backlog_student_list');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('admit_card_backlog_student_list');?>">
 						<div>
 							<span class="nav-text">Backlog Admit Card</span>
 						</div>
-					</a> -->
+					</a> 
 					<?php endif ?>
 
 				</div>
