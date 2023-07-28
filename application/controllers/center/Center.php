@@ -1486,6 +1486,7 @@ class Center extends CI_Controller {
 		$this->db->from('student');
 		$this->db->Where($where);
 		$this->db->join('class_master', 'class_master.id = student.class_id');
+		$this->db->order_by("student.course_name,student.class_id");
 		$data['students'] = $this->db->get()->result();
 		//echo $this->db->last_query();
 		 //  $this->Common_model->last_query();
