@@ -35,6 +35,7 @@
 					 
 					// 153,155,182,299,161,216,214,159,154,158,181,172,160,152
 					$classData = $this->Common_model->getRecordByWhere('class_master',$whereclass);
+					$j=0;
 					foreach ($classData as $class) {
 						$where = array(
 							'new_exam_form' => 'Y',
@@ -49,6 +50,7 @@
 						$count = $countData->afterRemove;
 						$last_number = ($count==0) ? $class->temp_id.'10001'  : $count+1;
 						foreach ($students as $student) {
+							$j++;
 								$roll_no = ($student->university_mode=='REG') ? '1'.$last_number : '2'.$last_number;
 							if($action=='generate'){
 								$whereUpdate = array('student_id' => $student->student_id);
@@ -67,6 +69,12 @@
 
 							</tr>
 							<?php
+							if ($j==2000) {
+								break;
+							}
+						}
+						if ($j==2000) {
+							break;
 						}
 					}
 				}
