@@ -21,7 +21,7 @@ $page_break_count = 1;
 foreach($papers as $pap)
 {
    ?>
-
+<div id="divid_<?=$pap->id ?>">
    <table width="95%" border="1" align="center" class="break">
       <tbody>
          <tr>
@@ -183,4 +183,10 @@ foreach($papers as $pap)
       </tbody>
    </table>
 <h3 class="my-10" style="text-align:center;">Total Student Count <?=$total?></h3>
+</div>
+<?php if ($total==0): ?>
+<script type="text/javascript">
+   $("#divid_<?=$pap->id ?>").empty();
+</script>
+<?php endif ?>
 <?php } ?>
