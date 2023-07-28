@@ -208,6 +208,7 @@
 	    </div>
 		<?php if ($papers[0]->exam_form =='N'): ?>
 	   <?php $backlog_student_id = $this->Common_model->encrypt_decrypt($papers[0]->backlog_student_id);
+	   		$student_id = $this->Common_model->encrypt_decrypt($papers[0]->student_id);
 	     $class_id = $this->Common_model->encrypt_decrypt($papers[0]->class_id);
 	    ?>
 			<div class="row justify-content-center mt-10">
