@@ -1108,6 +1108,7 @@ public function check_backlog_fail_student()
      $this->db->where('exam_result', 'FAIL');
      $this->db->where('exam_status', 'B');
      $this->db->where_in('class_id',$class_id );
+     $this->db->where('id>', '36689');
      $this->db->group_by('class_id');         
      $data['courses'] = $this->db->get('old_exam_data')->result();
  }else{
@@ -1121,6 +1122,7 @@ public function check_backlog_fail_student()
 
 public function backlog_marks_move_scripts($class_id='')
     {
+        $this->db->where('id>', '36689');
         $studentall = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$class_id,'exam_result'=>'Fail','exam_year'=>'March 2023','exam_status'=>'B'));
         foreach($studentall as $key=>$students){
           //  print_r($students); die;
