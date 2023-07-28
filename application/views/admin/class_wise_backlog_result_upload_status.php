@@ -21,7 +21,7 @@
                         $flag="";     
                         $this->db->select('count(*) as num');
                         $this->db->from('backlog_exam_form');
-                        $this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id  and backlog_exam_form.class_id = backlog_student.class_id ');
+                        $this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id  and backlog_exam_form.class_id = backlog_student.class_id and backlog_exam_form.backlog_student_id=backlog_student.id');
                         $this->db->where('backlog_student.exam_form','Y');
                         $this->db->where('backlog_student.exam_year','Dec 2022');
                     
@@ -34,7 +34,7 @@
 
                         $this->db->select('count(*) as num');
                     $this->db->from('backlog_exam_form');
-                    $this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id and backlog_exam_form.class_id = backlog_student.class_id ');
+                    $this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id and backlog_exam_form.class_id = backlog_student.class_id and backlog_exam_form.backlog_student_id=backlog_student.id');
                     $this->db->where('backlog_student.exam_form','Y');
                     $this->db->where('backlog_student.exam_year','Dec 2022');
                     
@@ -48,7 +48,7 @@
 
                     $this->db->select('count(*) as num');
                     $this->db->from('backlog_exam_form');
-                    $this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id and backlog_exam_form.class_id = backlog_student.class_id ');
+                    $this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id and backlog_exam_form.class_id = backlog_student.class_id  and backlog_exam_form.backlog_student_id=backlog_student.id');
                     $this->db->where('backlog_student.exam_form','Y');
                     $this->db->where('backlog_student.exam_year','Dec 2022');
                     
