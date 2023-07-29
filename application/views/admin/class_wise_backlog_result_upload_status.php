@@ -68,7 +68,7 @@
                         <td><?php echo $count[0]->num; ?></td>
                         <td>
                         <a href="<?php echo base_url($account_type."class_wise_backlog_remaining_report/").$course_detail['course_group_id']."/".$course_detail['class_id']; ?>" target="_blank" >
-                        <?php echo $count[0]->num-$uploaded[0]->num-$abs[0]->num ; ?></td>  
+                        <?php echo $count[0]->num-$uploaded[0]->num;//-$abs[0]->num ; ?></td>  
                             </a>    
                     
                     
