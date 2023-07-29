@@ -2042,7 +2042,7 @@ class ExamController extends CI_Controller {
 			$this->db->where('backlog_student.exam_year','Dec 2022');
 			$this->db->where('backlog_exam_form.status','B');
 			$this->db->where('backlog_exam_form.paper_type','theory');
-			$this->db->where_not_in('theory_marks',array(''));
+			$this->db->where_not_in('theory_marks',array('','ABS'));
 			$backlog_uploaded = $this->db->get()->result();
 			//print_r($this->db->last_query());die;
 			$data['total_paper_count'] = $count[0]->num;
