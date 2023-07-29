@@ -1725,6 +1725,7 @@ class ExamController extends CI_Controller {
 			$this->db->from('paper_master');
 			$this->db->where('exam_date!=',"");
 			$this->db->where('exam_date!=',"0000-00-00");	
+			$this->db->where('exam_date>=',"2023-07-31");	
 			$this->db->where_not_in('course_group_id',array('75','76','77'));
 			$this->db->group_by('exam_date');
 			$this->db->order_by('exam_date', "asc");
