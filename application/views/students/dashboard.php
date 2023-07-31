@@ -17,9 +17,9 @@ $studentData = $this->Common_model->getRecordById('student','student_id',$this->
 				
 <div class="notification"> 
 	<ul>
-		 <!-- <li>July 2022 परीक्षा कार्यक्रम - <strong> <a href="#" id="getTimeTable">Click Here</a>	 
+		  <li>July 2022 परीक्षा कार्यक्रम - <strong> <a href="#" id="getTimeTable">Click Here</a>	 
 			</strong>
-		</li> -->
+		</li> 
         <li class="mt-5">Model Paper  - <strong><a href="<?=base_url('student_model_paper') ?>">Click Here</a></strong>
         </li>
 	</ul>
@@ -36,24 +36,24 @@ $studentData = $this->Common_model->getRecordById('student','student_id',$this->
 </div>
 <script>
 
-// $("#getTimeTable").on('click', function(){
-//             var course = $("#course_group_id_both").val();
-//             var class_id = $("#class_id").val();
+$("#getTimeTable").on('click', function(){
+            var course = $("#course_group_id_both").val();
+            var class_id = $("#class_id").val();
        
-//             var csrfName = $('.csrfname').attr('name');
-//             var csrfHash = $('.csrfname').val(); 
-//             $("#myLoader").show();
-//             $.ajax({
-//                 method: "POST",
-//                 url: '<?php echo site_url('center/center/getExamTimeTable'); ?>',
+            var csrfName = $('.csrfname').attr('name');
+            var csrfHash = $('.csrfname').val(); 
+            $("#myLoader").show();
+            $.ajax({
+                method: "POST",
+                url: '<?php echo site_url('center/center/getExamTimeTable'); ?>',
                
-//                 data: {class_id : class_id,course : course,[csrfName]:csrfHash },
-//             })
-//             .done(function( msg ) {
-//                 $('#myLoader').hide();
-//                 $('#timeTable').html(msg);
-//             });
-//         });   
+                data: {class_id : class_id,course : course,[csrfName]:csrfHash },
+            })
+            .done(function( msg ) {
+                $('#myLoader').hide();
+                $('#timeTable').html(msg);
+            });
+        });   
 function PrintDiv() {
     var title="Time Table 2022";
     var contents = document.getElementById('ss').innerHTML;
