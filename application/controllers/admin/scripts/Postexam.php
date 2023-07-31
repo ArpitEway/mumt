@@ -386,7 +386,7 @@ class Postexam extends CI_Controller {
            $this->db->where('exam_result', 'FAIL');
            $this->db->where('exam_status', 'R');
            $this->db->where_in('class_id',$class_id );
-           $this->db->where('id>', '36803');
+           $this->db->where('id>', '36941');
            $this->db->group_by('class_id');         
            $data['courses'] = $this->db->get('old_exam_data')->result();
        }else{
@@ -406,7 +406,7 @@ class Postexam extends CI_Controller {
         $this->db->where('exam_year', 'Feb 2023');
         $this->db->where('exam_result', 'FAIL');
         $this->db->where('exam_status', 'R');
-        $this->db->where('id>', '36803');
+        $this->db->where('id>', '36941');
         $this->db->where('old_exam_data.class_id',$class_id);
         $data['students'] = $this->db->get()->result();
         $this->load->view('admin/script/check_demo_backlog_student_script',$data);
@@ -1108,7 +1108,7 @@ public function check_backlog_fail_student()
      $this->db->where('exam_result', 'FAIL');
      $this->db->where('exam_status', 'B');
      $this->db->where_in('class_id',$class_id );
-     $this->db->where('id>', '36803');
+     $this->db->where('id>', '36941');
      $this->db->group_by('class_id');         
      $data['courses'] = $this->db->get('old_exam_data')->result();
  }else{
@@ -1122,7 +1122,7 @@ public function check_backlog_fail_student()
 
 public function backlog_marks_move_scripts($class_id='')
     {
-        $this->db->where('id>', '36803');
+        $this->db->where('id>', '36941');
         $studentall = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$class_id,'exam_result'=>'Fail','exam_year'=>'March 2023','exam_status'=>'B'));
         foreach($studentall as $key=>$students){
           //  print_r($students); die;
