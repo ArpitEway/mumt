@@ -374,9 +374,9 @@ class Postexam extends CI_Controller {
         $this->db->select('DISTINCT(id)');
         $this->db->from('class_master');
         // $this->db->where('class_name','I Year');
-        //$this->db->where('backlog_exam_form_permission','Y');
+        $this->db->where('backlog_exam_form_permission','Y');
         //$this->db->where('old_exam_form_permission','N');
-         $this->db->where('exam_form_permission','Y');
+         // $this->db->where('exam_form_permission','Y');
         $classes = $this->db->get()->result();
        $class_id = array_column($classes,'id');
        if($classes){
