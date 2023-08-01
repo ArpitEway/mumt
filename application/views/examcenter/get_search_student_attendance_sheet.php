@@ -47,7 +47,7 @@
 	 $paper_count = count($papers);
 	 if($paper_count){
 
-		  $newstring = "222".substr($student['center_code'], -4); 
+		  $newstring = "231".substr($student['center_code'], -4); 
      ?>  
 <!-- <div id="ss">       -->
 <section class="break" style="font-size: 16px;" >
@@ -68,10 +68,10 @@
 					<div class="col-12 text-center">
 						<h5>Attendance Sheet Examination 
 							<?php
-							if($student['course_group_id']==75 || $student['course_group_id==76']){
+							if($student['course_group_id']==75 || $student['course_group_id']==76){
 								echo 'Feb 2023';
 							}else{
-								echo 'March 2023';
+								echo 'July 2023';
 							}
 							
 							?>
@@ -152,9 +152,9 @@
 					<td><?php echo date("d-m-Y", strtotime($paper->exam_date)); ?></td>
 					<td>
 					<?php if($paper->exam_shift=='Morning'){
-						echo '11:00 AM To 2:00 PM';
+						echo '10:30 AM To 01:30 PM';
 					}elseif($paper->exam_shift=='Afternoon'){
-						echo '03:00 PM To 6:00 PM';
+						echo '02:30 PM To 05:30 PM';
 					}else{
 						echo '12:00 To 3:00 PM';
 					} ?>

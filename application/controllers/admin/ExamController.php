@@ -1295,6 +1295,8 @@ class ExamController extends CI_Controller {
 			//$this->db->where_in('class_id',array(101,104,107,110,116,119,125,128,131,134,137,140,149,152,154,158,160,162,164,165,166,167,168,169,170,171,172,173,174,177,178,180,181,183,185,191,273,274,283,285,287,289,291,293,295,297));
 			//II Year
 			//$this->db->where_in('class_id',array(102,105,108,111,117,120,126,129,132,135,284,286,288,290,292,294,296,298));
+			//II & IV SEM
+			$this->db->where_in('class_id',array(157,194,196,198,200,202,204,206,208,210,212,222,224,226,228,230,232,234,236,238,240,242,244,246,248,250,252,254,256,258,262,264,268,270,218,276,278,280,282));
 			$this->db->where_not_in('class_id',array(163,175));
 			$this->db->where('exam_date!=','0000-00-00');
 			$this->db->where('exam_date!=','');
@@ -1322,6 +1324,8 @@ class ExamController extends CI_Controller {
 			//$this->db->where_in('class_id',array(101,104,107,110,116,119,125,128,131,134,137,140,149,152,154,158,160,162,164,165,166,167,168,169,170,171,172,173,174,177,178,180,181,183,185,191,273,274,283,285,287,289,291,293,295,297));
 			//II Year
 			//$this->db->where_in('class_id',array(102,105,108,111,117,120,126,129,132,135,284,286,288,290,292,294,296,298));
+			//II & IV SEM
+			$this->db->where_in('class_id',array(157,194,196,198,200,202,204,206,208,210,212,222,224,226,228,230,232,234,236,238,240,242,244,246,248,250,252,254,256,258,262,264,268,270,218,276,278,280,282));
 			$this->db->where('test_id!=','');
 			$this->db->where_not_in('class_id',array(163,175));
 			$this->db->where('exam_date!=','0000-00-00');
@@ -1350,7 +1354,8 @@ class ExamController extends CI_Controller {
 			$this->db->from('paper_master');
 			$this->db->where('type','Theory');
 			$this->db->where('test_id!=','');
-			$this->db->where_not_in('class_id',array(163,175));
+			// $this->db->where_not_in('class_id',array(163,175,153,155,182,299,161,216,214,159,154,158,181,172,160,152));
+			// $this->db->where_in('class_id',array(137,138,140,143,146,149,183,184,185,187,189,191,192));
 			$this->db->where('exam_date!=','0000-00-00');
 			$this->db->where('exam_date!=','');
 			$this->db->group_by('test_id ');
@@ -1405,7 +1410,8 @@ class ExamController extends CI_Controller {
 			$this->db->select('*,COUNT(id) as tot');
 			$this->db->from('paper_master');
 			$this->db->where('type','Theory');
-			$this->db->where_not_in('class_id',array(163,175));
+			// $this->db->where_not_in('class_id',array(163,175,153,155,182,299,161,216,214,159,154,158,181,172,160,152));
+			// $this->db->where_in('class_id',array(137,138,140,143,146,149,183,184,185,187,189,191,192));
 			$this->db->where('test_id!=','');
 			$this->db->where('exam_date!=','0000-00-00');
 			$this->db->where('exam_date!=','');
@@ -1469,10 +1475,10 @@ class ExamController extends CI_Controller {
 			$data['exam_centers'] = $this->db->get()->result();
 			$this->db->select('*');
 			$this->db->from('paper_master');
-			$this->db->where_not_in('class_id',array(163,175));
+			$this->db->where_not_in('class_id',array(163,175,264));
 			$this->db->where('exam_date!=',"");
 			$this->db->where('exam_date!=',"0000-00-00");
-			//$this->db->where('exam_date>=',"2023-03-18");		
+			$this->db->where('exam_date>=',"2023-07-31");		
 			$this->db->group_by('exam_date');
 			$this->db->order_by('exam_date', "asc");
 			$data['examDate'] = $this->db->get()->result();
@@ -1526,8 +1532,8 @@ class ExamController extends CI_Controller {
 
 		$where.="   GROUP BY `paper_master`.`exam_date`";
 
-		 $sql="SELECT DISTINCT(paper_master.id), `exam_date`, `exam_shift`, `exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student` ON `student`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = 'theory' AND `paper_master`.`exam_date` != '' AND paper_master.exam_date!='0000-00-00'  ".$where; 
-		 $this->db->where_not_in('class_id',array('163','175'));
+		 $sql="SELECT DISTINCT(paper_master.id), `exam_date`, `exam_shift`, `exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student` ON `student`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = 'theory' AND `paper_master`.`exam_date` != '' AND paper_master.exam_date!='0000-00-00'  AND paper_master.exam_date>='2023-07-31'  ".$where; 
+		 $this->db->where_not_in('class_id',array(163,175,264));
 		$query = $this->db->query($sql);
         $data['papers'] = $query->result();
 		echo $this->load->view('admin/exam_center/exam_center_paper_count_show',$data, TRUE);
@@ -1624,7 +1630,7 @@ class ExamController extends CI_Controller {
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('DISTINCT(exam_center_id) ');
 			$this->db->from('student');
-			$where = array('new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>0);
+			$where = array('new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>3);
 			$this->db->where($where);	
 			$ecenters=$this->db->get()->result_array();
 			//print_r($this->db->last_query()); 
@@ -1658,7 +1664,7 @@ class ExamController extends CI_Controller {
 		$this->db->from('student');
 		$this->db->order_by("roll_no", "asc");
 		// if($exam_center!="All")
-		$where = array('exam_center_id'=>$exam_center,'new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>0);
+		$where = array('exam_center_id'=>$exam_center,'new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>3);
 		$this->db->where($where);	
 		$data['exam_center_students'] = $this->db->get()->result();
 		echo $this->load->view('admin/exam_center/get_exam_center_wise_student_attendance_sheet',$data, TRUE);
@@ -1680,7 +1686,8 @@ class ExamController extends CI_Controller {
 			$this->db->from('backlog_student');	
 		
 			$this->db->where('exam_form','Y');
-			$this->db->where('notification_no','0');
+			$this->db->where('exam_year','June 2023');
+			$this->db->where('notification_no','3');
 			$this->db->order_by('exam_center_code', "asc");
 			$data['exam_centers'] = $this->db->get()->result();
 
@@ -1693,10 +1700,10 @@ class ExamController extends CI_Controller {
 		$exam_center = $this->input->post('exam_center');
 		$this->db->select('backlog_student.*,student.name,student.f_h_name,student.course_name,student.photo');
 		$this->db->from('backlog_student');
-		$this->db->join('student', 'backlog_student.student_id = student.student_id');
+		$this->db->join('student', 'backlog_student.student_id = student.student_id ');
 		$this->db->order_by("roll_no", "asc");
 		
-		$where = array('backlog_student.exam_center_id'=>$exam_center,'backlog_student.exam_form'=>'Y', 'backlog_student.roll_no!=' => 0 ,'backlog_student.notification_no'=>0);
+		$where = array('backlog_student.exam_center_id'=>$exam_center,'backlog_student.exam_form'=>'Y', 'backlog_student.roll_no!=' => 0 ,'backlog_student.notification_no'=>3,'backlog_student.exam_year'=>'June 2023');
 		$this->db->where($where);	
 		$data['exam_center_students'] = $this->db->get()->result();
 		echo $this->load->view('admin/exam_center/get_exam_center_wise_backlog_student_attendance_sheet',$data, TRUE);
@@ -1718,6 +1725,7 @@ class ExamController extends CI_Controller {
 			$this->db->from('paper_master');
 			$this->db->where('exam_date!=',"");
 			$this->db->where('exam_date!=',"0000-00-00");	
+			$this->db->where('exam_date>=',"2023-07-31");	
 			$this->db->where_not_in('course_group_id',array('75','76','77'));
 			$this->db->group_by('exam_date');
 			$this->db->order_by('exam_date', "asc");
@@ -1823,7 +1831,7 @@ class ExamController extends CI_Controller {
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();	
 		$this->db->order_by('course_group_id');
-		$data['courses'] = $this->Common_model->get_record('backlog_student','DISTINCT (course_group_id)','exam_form="Y"');
+		$data['courses'] = $this->Common_model->get_record('backlog_student','DISTINCT (course_group_id)','exam_form="Y" and exam_year="June 2023"');
 		$this->load->view('admin/examController/backlog_exam_center_folio',$data);
 		$this->load->view('footer');
 	} 
@@ -1870,6 +1878,7 @@ class ExamController extends CI_Controller {
 			$this->db->where('backlog_exam_form.status','B');
 			$this->db->where('backlog_student.exam_center_id!=',0);
 			$this->db->where('backlog_student.exam_form','Y');
+			$this->db->where('backlog_student.exam_year','June 2023');
 			$this->db->where('backlog_student.mode',$_POST['university_mode']);
 			$this->db->where('backlog_student.roll_no!=',0);
 			$this->db->order_by('backlog_student.exam_center_code');
@@ -1944,6 +1953,7 @@ class ExamController extends CI_Controller {
 				$this->db->where('backlog_student.exam_center_id',$exam_center_id);
 				$this->db->where('backlog_student.roll_no!=',0);
 				$this->db->where('backlog_student.exam_form','Y');
+				$this->db->where('backlog_student.exam_year','June 2023');
 				$this->db->where('backlog_student.mode',$_POST['university_mode']);
 				$this->db->order_by('backlog_student.roll_no');
 				$dataArray['students'][$exam_center_id] = $this->db->get()->result();
@@ -1979,7 +1989,7 @@ class ExamController extends CI_Controller {
 			#total
 			$this->db->select('count(*) as num');
 			$this->db->from('new_exam_form');
-			$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.old_class_id');
 			$this->db->where('student.'.$this->exam_form.'','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
 			$count = $this->db->get()->result();
@@ -1987,7 +1997,7 @@ class ExamController extends CI_Controller {
 			#Absent
 			$this->db->select('count(*) as num');
 			$this->db->from('new_exam_form');
-			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.class_id');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.old_class_id');
 			$this->db->where('student.'.$this->exam_form.'','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
 			$this->db->where('new_exam_form.theory_marks','ABS');
@@ -1996,7 +2006,7 @@ class ExamController extends CI_Controller {
 			#uploaded
 			$this->db->select('count(*) as num');
 			$this->db->from('new_exam_form');
-			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.class_id');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.old_class_id');
 			$this->db->where('student.'.$this->exam_form.'','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
 			$this->db->where_not_in('theory_marks',array('ABS',''));
@@ -2007,8 +2017,9 @@ class ExamController extends CI_Controller {
 			#total backlog
 			$this->db->select('count(*) as num');
 			$this->db->from('backlog_exam_form');
-			$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id and backlog_exam_form.class_id = backlog_student.class_id');
+			$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id and backlog_exam_form.class_id = backlog_student.class_id and backlog_exam_form.backlog_student_id=backlog_student.id');
 			$this->db->where('backlog_student.exam_form','Y');
+			$this->db->where('backlog_student.exam_year','Dec 2022');
 			$this->db->where('backlog_exam_form.status','B');
 			$this->db->where('backlog_exam_form.paper_type','theory');
 			$backlog_count = $this->db->get()->result();
@@ -2016,8 +2027,9 @@ class ExamController extends CI_Controller {
 			#Absent Backlog
 			$this->db->select('count(*) as num');
 			$this->db->from('backlog_exam_form');
-			$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id  and backlog_exam_form.class_id = backlog_student.class_id');
+			$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id  and backlog_exam_form.class_id = backlog_student.class_id and backlog_exam_form.backlog_student_id=backlog_student.id');
 			$this->db->where('backlog_student.exam_form','Y');
+			$this->db->where('backlog_student.exam_year','Dec 2022');
 			$this->db->where('backlog_exam_form.status','B');
 			$this->db->where('backlog_exam_form.paper_type','theory');
 			$this->db->where('backlog_exam_form.theory_marks','ABS');
@@ -2026,11 +2038,12 @@ class ExamController extends CI_Controller {
 			#uploaded Backlog
 			$this->db->select('count(*) as num');
 			$this->db->from('backlog_exam_form');
-			$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id  and backlog_exam_form.class_id = backlog_student.class_id');
+			$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id  and backlog_exam_form.class_id = backlog_student.class_id and backlog_exam_form.backlog_student_id=backlog_student.id');
 			$this->db->where('backlog_student.exam_form','Y');
+			$this->db->where('backlog_student.exam_year','Dec 2022');
 			$this->db->where('backlog_exam_form.status','B');
 			$this->db->where('backlog_exam_form.paper_type','theory');
-			$this->db->where_not_in('theory_marks',array('ABS',''));
+			$this->db->where_not_in('theory_marks',array('','ABS'));
 			$backlog_uploaded = $this->db->get()->result();
 			//print_r($this->db->last_query());die;
 			$data['total_paper_count'] = $count[0]->num;
@@ -2082,7 +2095,7 @@ class ExamController extends CI_Controller {
             $course_groupids = array_column($course_group, 'id');
  			$this->db->where_in('course_group_id',$course_groupids);
 			$this->db->order_by('course_group_id', "asc");
-			$course_group = $this->Common_model->get_record('backlog_student','DISTINCT(class_id) as  class_id, course_group_id' ,array('exam_form'=>'Y'));
+			$course_group = $this->Common_model->get_record('backlog_student','DISTINCT(class_id) as  class_id, course_group_id' ,array('exam_form'=>'Y','exam_year'=>'Dec 2022'));
 			
 			$data = array('course_group' => $course_group,
 				'name_csrf' => $this->security->get_csrf_token_name(),
@@ -2477,6 +2490,7 @@ public function getStudentData()
 				$this->db->from('backlog_exam_form');
 				$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id and backlog_exam_form.class_id = backlog_student.class_id');
 				$this->db->where('backlog_student.exam_form','Y');
+				$this->db->where('backlog_student.exam_year','Dec 2022');
 				
 					
 				$this->db->where('backlog_exam_form.theory_marks','');
@@ -2512,7 +2526,7 @@ public function getStudentData()
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
 		$this->db->order_by('course_group_id');	
-		$data['courses'] = $this->Common_model->get_record('backlog_student','DISTINCT (course_group_id)','exam_form="Y"');
+		$data['courses'] = $this->Common_model->get_record('backlog_student','DISTINCT (course_group_id)','exam_form="Y" and exam_year="June 2023"');
 		$this->load->view('admin/examController/backlog_counter_folio_check',$data);
 		$this->load->view('footer');
 	}
@@ -2558,6 +2572,7 @@ public function getStudentData()
 			$this->db->where('backlog_exam_form.status','B');
 			$this->db->where('backlog_student.exam_center_id!=',0);
 			$this->db->where('backlog_student.exam_form','Y');
+			$this->db->where('backlog_student.exam_year','June 2023');
 			$this->db->where('backlog_student.mode',$_POST['university_mode']);
 			$this->db->where('backlog_student.roll_no!=',0);
 			$this->db->order_by('backlog_student.exam_center_code');
@@ -2630,6 +2645,7 @@ public function getStudentData()
 				$this->db->where('backlog_exam_form.status','B');
 				$this->db->where('backlog_student.roll_no!=',0);
 				$this->db->where('backlog_student.exam_form','Y');
+				$this->db->where('backlog_student.exam_year','June 2023');
 				$this->db->where('backlog_student.mode',$_POST['university_mode']);
 				$this->db->where_in('exam_center_id', $_POST['exam_center_id'] );
 				$this->db->order_by('backlog_student.exam_center_code,backlog_student.roll_no');
@@ -2910,6 +2926,7 @@ public function getStudentData()
 				$this->db->select('backlog_student.*,student.name,student.f_h_name,student.course_name,student.photo,student.session');
 				$this->db->from('backlog_student');
 				$this->db->join('student','backlog_student.student_id=student.student_id');
+				$this->db->where('backlog_student.exam_year','Dec 2022');
 				$this->db->where($where);
 				$student = $this->db->get()->result();
 				// print_r($student); die;
@@ -3141,7 +3158,7 @@ public function getStudentData()
 	public function getEditBacklogStudentMarksData()
 	{
 		$roll_no = $this->input->post('roll_no');
-		$where = array('backlog_student.roll_no'=>$roll_no,'backlog_student.exam_form'=>'Y');
+		$where = array('backlog_student.roll_no'=>$roll_no,'backlog_student.exam_form'=>'Y','backlog_student.exam_year'=>'Dec 2022');
 		$this->db->select('student.name,student.course_name,backlog_student.*');
 		$this->db->from('backlog_student');
 		$this->db->join('student','student.student_id = backlog_student.student_id');

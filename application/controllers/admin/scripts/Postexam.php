@@ -52,9 +52,9 @@ class Postexam extends CI_Controller {
        {
             $this->db->select('course_name,student.class_name,class_id, COUNT(student_id) as cnt,student.university_mode');
             $this->db->join('class_master', 'student.old_class_id = class_master.id');
-            $this->db->where('cbcs', 'Y');
+            // $this->db->where('cbcs', 'Y');
            // $this->db->where('last_class', 'L');
-            // $this->db->where('mode', 'Semester');
+            $this->db->where('mode', 'Semester');
             $this->db->where('exam_form', 'Y');
             $this->db->where('upload_result', 'N');
             // $this->db->where('result_show', 'Y');
@@ -82,6 +82,7 @@ class Postexam extends CI_Controller {
             $check_grace_marks = false;
             $fail_count = 0;
             $abs_count = 0;
+            $theory_abs_count = 0;
             $whCount = 0;
             $fali_tot_marks = 0;
             $require_tot_marks = 0;
@@ -144,6 +145,7 @@ class Postexam extends CI_Controller {
 
                     }
                     if ($marks->theory_marks=='ABS') {
+                       $theory_abs_count++; 
                         $abs_count++;
                         $fail_count++;
                     }
@@ -289,7 +291,7 @@ class Postexam extends CI_Controller {
             //     $studentData['demo'] = 'Y';
             //     $studentData['new_exam_form'] = 'N';
             // }else
-            if(($fail_count>1 && $student->course_group_id==76) || ($paper_count==$abs_count)){
+            if(($fail_count>1 && $student->course_group_id==76) || ($paper_count==$theory_abs_count)){
                 $studentData['promote'] = 'D';    
             }else{
                 $studentData['promote'] = 'N';
@@ -371,17 +373,20 @@ class Postexam extends CI_Controller {
       {
         $this->db->select('DISTINCT(id)');
         $this->db->from('class_master');
-        $this->db->where('class_name','I Year');
+        // $this->db->where('class_name','I Year');
         //$this->db->where('backlog_exam_form_permission','Y');
+        //$this->db->where('old_exam_form_permission','N');
+         $this->db->where('exam_form_permission','Y');
         $classes = $this->db->get()->result();
        $class_id = array_column($classes,'id');
        if($classes){
 
            $this->db->select('course_name,class_id, COUNT(student_id) as cnt');
-           $this->db->where('exam_year', 'Aug 2022');
+           $this->db->where('exam_year', 'Feb 2023');
            $this->db->where('exam_result', 'FAIL');
            $this->db->where('exam_status', 'R');
            $this->db->where_in('class_id',$class_id );
+           $this->db->where('id>', '36941');
            $this->db->group_by('class_id');         
            $data['courses'] = $this->db->get('old_exam_data')->result();
        }else{
@@ -398,9 +403,10 @@ class Postexam extends CI_Controller {
         $this->load->view('header',array('title' => 'Backlog Students'));
         $this->db->select('*');
         $this->db->from('old_exam_data');
-        $this->db->where('exam_year', 'Aug 2022');
+        $this->db->where('exam_year', 'Feb 2023');
         $this->db->where('exam_result', 'FAIL');
         $this->db->where('exam_status', 'R');
+        $this->db->where('id>', '36941');
         $this->db->where('old_exam_data.class_id',$class_id);
         $data['students'] = $this->db->get()->result();
         $this->load->view('admin/script/check_demo_backlog_student_script',$data);
@@ -422,7 +428,7 @@ class Postexam extends CI_Controller {
 
     public function backlog_marks_update_scripts($student_id,$class_id='')
     {
-        $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$class_id,'student_id'=>$student_id,'exam_year'=>'Aug 2022'));
+        $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$class_id,'student_id'=>$student_id,'exam_year'=>'Feb 2023'));
         $whereResult = array("class_id"=>$students[0]->class_id ,"student_id"=>$students[0]->student_id, 'exam_data_id' => $students[0]->id);
         $old_result_datas = $this->Common_model->getRecordByWhere("old_result_data",$whereResult );
             $data = array(
@@ -432,7 +438,7 @@ class Postexam extends CI_Controller {
                 'roll_no' => 0,
                 'session' => $students[0]->session,
                 'mode'=>$students[0]->university_mode,
-                'exam_year'=>'Dec 2022',
+                'exam_year'=>'June 2023',
                 'exam_form' => 'N',
                 'enrollment_no' => $students[0]->enrollment_no,
                 'center_id' => $students[0]->center_id,
@@ -444,7 +450,7 @@ class Postexam extends CI_Controller {
                 'upload_result' =>  'N',
                 'result_permission' => 'N',
                );
-              $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students[0]->student_id,'class_id'=>$students[0]->class_id,'exam_year'=>'Dec 2022'));
+              $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students[0]->student_id,'class_id'=>$students[0]->class_id,'exam_year'=>'June 2023'));
             if( $duplicate !== Array ( )){
                 echo "Already Exist";
               }else{
@@ -823,5 +829,356 @@ public function upload_old_grade_data_script($class_id="",$mode){
  
 
 }
+
+
+    public function generate_backlog_marksheet_no(){
+          
+            $this->db->limit(100,0);
+            $data['students'] = $this->Common_model->getRecordByWhere('backlog_student', array('exam_form'=>'Y' ,'exam_year'=>"Dec 2022",'roll_no!='=>0 ,'back_marksheet_no'=>''));
+            
+          
+            foreach($data['students']  as $key =>  $student){
+               $oldData= $this->Common_model->getRecordByWhere('old_exam_data', array('student_id'=>$student->student_id ,'class_id'=>$student->class_id,'exam_status'=>'R' ));
+               $backlogoldData= $this->Common_model->getRecordByWhere('old_exam_data', array('student_id'=>$student->student_id ,'class_id'=>$student->class_id,'exam_status'=>'B' ));
+             
+                $count =count($backlogoldData)+1;
+               
+                $new_marksheet_no= $oldData[0]->marksheet_no.'/'.$count;
+                $updateData  = array('back_marksheet_no'=>$new_marksheet_no);
+                $where = array('student_id'=>$student->student_id,'class_id'=>$student->class_id);
+                $this->Common_model->updateRecordByConditions('backlog_student',$where,$updateData); 
+                echo $this->db->last_query()."<br>";
+            }
+            
+                    // $this->load->view('admin/script/header');
+                    // $this->load->view('admin/script/student_marksheet_no',$data);
+                    // $this->load->view('admin/script/footer');
+    }
+
+     
+public function upload_old_backlog_marks()
+{
+     $this->db->select('backlog_student.course_group_id,backlog_student.class_id, COUNT(backlog_student.student_id) as cnt,backlog_student.mode');
+     $this->db->join('class_master', 'backlog_student.class_id = class_master.id');
+     // $this->db->where('cbcs', 'Y');
+    // $this->db->where('last_class', 'L');
+    //  $this->db->where('mode', 'Semester');
+     $this->db->where('exam_form', 'Y');
+     $this->db->where('upload_result', 'N');
+     $this->db->where('exam_year','Dec 2022');
+     // $this->db->where('result_show', 'Y');
+    // $this->db->where('result_permission', 'Y');
+    //  $this->db->where('final_result_permission', 'Y');
+     // $this->db->where('marksheet_dispatch', 'Y');
+    // $this->db->where('university_mode','REG');
+     $this->db->group_by('class_id,mode');          
+     $data['courses'] = $this->db->get('backlog_student')->result();
+     $this->load->view('header',array('title' => ''));
+     $this->load->view('admin/script/upload_old_backlog_marks',$data);
+     $this->load->view('footer');
+}
+
+public function upload_old_backlog_data_script($class_id="",$mode){
+    $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+    $this->db->select('backlog_student.*,student.name,student.f_h_name,student.course_name,student.mother_name,student.photo');
+    $this->db->from('backlog_student');
+    $this->db->join('student','student.student_id=backlog_student.student_id');
+    $this->db->where(array("backlog_student.class_id"=>$class_id, "backlog_student.exam_form"=>'Y', "backlog_student.upload_result"=>'N','backlog_student.mode'=>$mode,'backlog_student.exam_year'=>'Dec 2022'));
+    $this->db->limit(500);
+    $students = $this->db->get()->result();
+    
+    foreach($students as $student)
+    {
+        $check_grace_marks = false;
+        $fail_count = 0;
+        $abs_count = 0;
+        $whCount = 0;
+        $fali_tot_marks = 0;
+        $require_tot_marks = 0;
+        $tot_std_marks = 0;
+        $tot_marks = 0;
+        $grace_result_count=0;
+        $fail_result_count=0;
+        $final_result = '';
+        $p_fail_count = 0;
+        $paper_count = 0;
+
+        $examData = array(
+            'student_id' => $student->student_id,
+            'session' => $student->session,
+            'class_order' => $classData->class_order,
+            'center_id' => $student->center_id,
+            'center_code' => $student->center_code,
+            'course_group_id' =>$student->course_group_id,
+            'course_name' => $student->course_name,
+            'class_id' => $student->class_id,
+            'enrollment_no' => $student->enrollment_no,
+            'roll_no' => $student->roll_no,
+            'name' => $student->name,
+            'exam_year' => 'March 2023',
+            'f_h_name' => $student->f_h_name,
+            'mother_name' => $student->mother_name,
+            'marksheet_no' =>$student->back_marksheet_no,
+        );
+        $this->db->order_by("id", "asc");
+        $new_exam_form = $this->Common_model->getRecordByWhere('backlog_exam_form',array('student_id' => $student->student_id,'class_id'=>$class_id,'backlog_student_id'=>$student->id));
+        foreach($new_exam_form  as $marks)
+        {
+            $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$marks->class_id,'paper_code'=>$marks->paper_code));
+            if($marks->paper_type=='theory'){
+                if($student->mode=="REG")
+                    {
+                        $tot_std_marks += $marks->theory_marks + $marks->int_marks;
+                        $tot_marks += $paper_master[0]->max_theory_marks + $paper_master[0]->max_internal_marks;
+                        if($marks->theory_marks<$paper_master[0]->min_theory_marks){
+                            $fail_count++;
+                            $fali_tot_marks += $marks->theory_marks;
+                            $require_tot_marks += $paper_master[0]->min_theory_marks;
+                        }
+                        
+                    } 
+                else{
+                        
+                        $tot_std_marks += $marks->theory_marks ;
+                        $tot_marks += $paper_master[0]->private_max_theory_marks ;
+                        if($marks->theory_marks<$paper_master[0]->private_min_theory_marks){
+                            $fail_count++;
+                            $fali_tot_marks += $marks->theory_marks;
+                            $require_tot_marks += $paper_master[0]->private_min_theory_marks;
+                        }
+                    }
+                 
+                if($marks->theory_marks==''){
+                    $whCount++;
+                }
+                if ($marks->theory_marks=='ABS') {
+                    $abs_count++;
+                    $fail_count++;
+                }
+                if ($marks->int_marks=='ABS') {
+                    $abs_count++;
+                    $fail_count++;
+                }
+               
+            }elseif($marks->paper_type=='Sessional'){
+                $tot_std_marks += $marks->int_marks;
+                $tot_marks += $paper_master[0]->max_internal_marks;
+                if ($marks->int_marks=='ABS') {
+                    $abs_count++;
+                    $fail_count++;
+                }
+            }else{ //if($marks->paper_type=='Practical'){
+                if ($classData->practical_internal_marks=='Y') {
+                    $tot_std_marks += $marks->p_marks+$marks->int_marks;
+                    $tot_marks += $paper_master[0]->max_theory_marks + $paper_master[0]->max_internal_marks;
+                }else{
+                    $tot_std_marks += $marks->p_marks;
+                    $tot_marks += $paper_master[0]->max_theory_marks;
+                }
+                if($marks->p_marks=='' && $marks->p_marks=='N'){
+                    $whCount++;
+                }
+                if($marks->p_marks=='ABS'){
+                    $abs_count++;
+                    $fail_count++;
+                }
+                if($marks->p_marks<$paper_master[0]->min_theory_marks){
+                    $p_fail_count++;
+                    $fali_tot_marks += $marks->p_marks;
+                    $require_tot_marks +=$paper_master[0]->min_theory_marks;
+                }
+            }
+        }
+       
+       $aggregate_per = round(  ($tot_std_marks/$tot_marks) * 100,2);
+     
+        if($fail_count>0) {
+            $final_result = 'FAIL';
+        }else{
+            $final_result = 'PASS';   
+        }
+        if($whCount!=0) {
+            // $final_result=='FAIL' || 
+             //  && count($course_type)==0 && $student->course_group_id!=76 && $student->course_group_id!=77
+            continue;
+        }
+        $examData['university_mode'] = $student->mode;
+        $examData['photo'] = $student->photo;
+        $examData['total_marks'] = $tot_marks;
+        $examData['obtain_marks'] = $tot_std_marks;
+        $examData['percentage'] = $aggregate_per;
+        $examData['update_date'] = date('Y-m-d');
+        $examData['exam_status'] = 'B';
+        $examData['exam_result'] = $final_result;
+
+       $old_exam_data_id = $this->Common_model->insertAll('old_exam_data',$examData);
+        echo $this->db->last_query().'<br>';
+        if($old_exam_data_id){
+            foreach($new_exam_form as $marks)
+            {
+                $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$marks->class_id,'paper_code'=>$marks->paper_code));
+                if($marks->paper_type=="theory"){
+                    $result = "PASS";  
+                    if($marks->theory_marks=='' || $marks->theory_marks=='ABS' ){
+                        $result = "FAIL";
+                    }
+                    if(($marks->theory_marks<$paper_master[0]->min_theory_marks && $student->mode=="REG") || ($marks->theory_marks<$paper_master[0]->private_min_theory_marks && $student->mode=="PVT") ){
+                       $result = 'FAIL';
+                    }
+                   $paper_count++;    
+                }else if($marks->paper_type=='Sessional'){
+                    $result = "PASS"; 
+                    if ($marks->int_marks=='ABS') {
+                        $result = "FAIL";
+                    }
+                    if(($marks->int_marks<$paper_master[0]->min_internal_marks && $student->mode=="REG") ){
+                           $result = 'FAIL';
+                        
+                    }
+
+                }
+                else{ //  if($marks->paper_type=="Practical"){
+                    $result = "PASS";
+                    if($marks->p_marks=='' || $marks->p_marks=='N' || $marks->p_marks=='ABS'){
+                        $result = "FAIL";
+                    }
+                    if($marks->p_marks<$paper_master[0]->min_theory_marks){
+                            $result = 'FAIL';
+                    }
+                }
+                if($student->mode=="REG"){
+                    $max_theory_marks= $paper_master[0]->max_theory_marks;
+                    $max_int_marks= $paper_master[0]->max_internal_marks;
+                    $min_theory_marks= $paper_master[0]->min_theory_marks;
+                    $min_int_marks= $paper_master[0]->min_internal_marks;
+                } else{
+                    $max_theory_marks= $paper_master[0]->private_max_theory_marks;
+                    $max_int_marks= 0;
+                    $min_theory_marks= $paper_master[0]->private_min_theory_marks;
+                    $min_int_marks= 0;
+                }
+                $status = ($marks->status == 'C')?'C':'';
+                $ResultData = array(
+                    'exam_data_id' =>  $old_exam_data_id ,
+                    'student_id' =>  $student->student_id ,
+                    'course_group_id' => $student->course_group_id ,
+                    'class_id' =>  $student->class_id ,
+                    'paper_code'=> $paper_master[0]->paper_code ,
+                    'type'=> $marks->paper_type ,
+                    'max_theory_marks'=> $max_theory_marks,
+                    'max_int_marks'=> $max_int_marks,
+                    'min_theory_marks'=> $min_theory_marks,
+                    'min_int_marks'=> $min_int_marks,
+                    'theory_marks'=> $marks->theory_marks,
+                    'p_marks'=> $marks->p_marks,
+                    'int_marks'=> $marks->int_marks,
+                    'carry_theory'=>$status,
+                    'carry_int'=>'C',
+                    'status'=>'B',
+                    'paper_name'=>  $paper_master[0]->paper_name,
+                    'result' => $result ,
+                    'p_order'=> $marks->paper_order 
+                );
+                $insert = $this->Common_model->insertAll('old_result_data',$ResultData);
+                echo $this->db->last_query().'<br>';
+            } 
+
+        }
+        $studentData = array('upload_result'=>'Y');
+         $this->Common_model->updateRecordByConditions('backlog_student',array('student_id'=>$student->student_id),$studentData);          
+        if($insert){
+            echo $old_exam_data_id;
+             echo '<hr style="margin:20px; 0px;">';
+           // die;
+        } 
+    }
+}
+
+public function check_backlog_fail_student()
+{
+  $this->db->select('DISTINCT(id)');
+  $this->db->from('class_master');
+  $this->db->where('backlog_exam_form_permission','Y');
+  $classes = $this->db->get()->result();
+ $class_id = array_column($classes,'id');
+ if($classes){
+
+     $this->db->select('course_name,class_id, COUNT(student_id) as cnt');
+     $this->db->where('exam_year', 'March 2023');
+     $this->db->where('exam_result', 'FAIL');
+     $this->db->where('exam_status', 'B');
+     $this->db->where_in('class_id',$class_id );
+     $this->db->where('id>', '36941');
+     $this->db->group_by('class_id');         
+     $data['courses'] = $this->db->get('old_exam_data')->result();
+ }else{
+  $data['courses'] = "No Data Found";
+ }
+    //  $this->Common_model->last_query();
+     $this->load->view('header',array('title' => 'Check Backlog Student'));
+     $this->load->view('admin/script/check_backlog_fail_student',$data);
+     $this->load->view('footer');
+}
+
+public function backlog_marks_move_scripts($class_id='')
+    {
+        $this->db->where('id>', '36941');
+        $studentall = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$class_id,'exam_result'=>'Fail','exam_year'=>'March 2023','exam_status'=>'B'));
+        foreach($studentall as $key=>$students){
+          //  print_r($students); die;
+        $whereResult = array("class_id"=>$students->class_id ,"student_id"=>$students->student_id, 'exam_data_id' => $students->id);
+        $old_result_datas = $this->Common_model->getRecordByWhere("old_result_data",$whereResult );
+            $data = array(
+                'student_id' => $students->student_id,
+                'course_group_id' =>$students->course_group_id,
+                'class_id' => $students->class_id,
+                'roll_no' => 0,
+                'session' => $students->session,
+                'mode'=>$students->university_mode,
+                'exam_year'=>'June 2023',
+                'exam_form' => 'N',
+                'enrollment_no' => $students->enrollment_no,
+                'center_id' => $students->center_id,
+                'center_code' => $students->center_code,
+                'attempt_no' => 1,
+                'exam_center_id' => 0,
+                'exam_center_code'=>'',
+                'back_marksheet_no' => '',
+                'upload_result' =>  'N',
+                'result_permission' => 'N',
+               );
+              $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students->student_id,'class_id'=>$students->class_id,'exam_year'=>'June 2023'));
+            if( $duplicate !== Array ( )){
+                echo "Already Exist";
+              }else{
+
+                $backlog_student_id = $this->Common_model->insertAll('backlog_student',$data);
+                echo $this->db->last_query().'<br>';
+                foreach($old_result_datas as $old_result_data)
+                {
+                    $examData = array(
+                        'student_id' => $old_result_data->student_id ,
+                        'backlog_student_id' => $backlog_student_id,
+                        'course_group_id' =>$old_result_data->course_group_id,
+                        'class_id' => $old_result_data->class_id,
+                        'paper_code' => $old_result_data->paper_code,
+                        'paper_type' => $old_result_data->type,
+                        'group_id' => '',
+                        'paper_order' => $old_result_data->p_order,
+                        'theory_marks' =>$old_result_data->theory_marks,
+                        'int_marks' =>$old_result_data->int_marks,
+                        'p_marks' => $old_result_data->p_marks,
+                        'status' => 'C',
+                    );
+                    if ($old_result_data->result=='FAIL'){
+                        $examData['status'] = 'B';
+                        $examData['theory_marks'] = '';
+                    }
+                    $backlog_exam_form_june = $this->Common_model->insertAll('backlog_exam_form',$examData);
+                    echo $this->db->last_query().'<br>';
+            }
+         } 
+        }
+     }
 
 }

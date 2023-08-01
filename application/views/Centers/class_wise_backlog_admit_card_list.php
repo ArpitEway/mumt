@@ -23,12 +23,8 @@
 					<td><?php echo $student->enrollment_no; ?></td>
 					<td><?php echo $this->Common_model->getStudentNameById($student->student_id); ?></td>
                     <td><?php echo $this->Common_model->getCourseNameByCourseId($student->course_group_id); ?> </td>
-					<td><?php echo $this->Common_model->getClassNameByClassId($student->class_id); ?> </td>		
-					
-					
-
-					<td><a target="_blank" href="<?=base_url('backlog_admit_card/'.$this->Common_model->encrypt_decrypt($student->student_id,'encrypt'));?>"><i class="far fa-eye text-info mr-5"></i></a></td>	
-
+					<td><?php echo $this->Common_model->getClassNameByClassId($student->class_id); ?> </td>
+					<td><a target="_blank" href="<?=base_url('backlog_admit_card/'.$this->Common_model->encrypt_decrypt($student->id,'encrypt'));?>"><i class="far fa-eye text-info mr-5"></i></a></td>	
 				</tr>
 				<?php 
 				$i++;

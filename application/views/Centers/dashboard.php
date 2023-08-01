@@ -199,34 +199,31 @@
 			</div> 
 			<div class="tab-pane fade" id="exam" role="tabpanel" aria-labelledby="exam-tab">
 				<div class="row">
+				
 				<?php if ($center->exam_form_permission=='Y'): ?>
-					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
+				 <a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
 							<div>
-								<span class="nav-text">Exam Form March 2023</span>
+								<span class="nav-text">Exam Form July 2023</span>
 							</div>
 					</a> 
 					<a class="border-0 custom-menu-item" href="<?=base_url('backlog_exam_form_students');?>">
 							<div>
-								<span class="nav-text">Backlog Exam Form March 2023</span>
+								<span class="nav-text">Backlog Exam Form July 2023</span>
 							</div>
-					</a>   -->
+					</a>  
 					<?php endif ?>
 					<?php 
-					 $count = $this->Common_model->getCountByWhere('student',array('center_id'=>$center->id,'new_exam_form !='=>'D'));
+					/* $count = $this->Common_model->getCountByWhere('student',array('center_id'=>$center->id,'new_exam_form !='=>'D'));
 					//  && $count>0
 					if ( $center->exam_form_permission=='Y' ){ ?>
 					<a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
 							<div>
-								<span class="nav-text">Exam Form June 2023</span>
+								<span class="nav-text">Exam Form July 2023</span>
 							</div>
 					</a> 
-					<?php }
+					<?php }*/
 					//  if($count>0){ ?>
-					<!-- // <a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
-					// 	<div>
-					// 		<span class="nav-text">Time Table June 2023</span>
-					// 	</div>
-					// </a>  -->
+				 
 					<?php //} ?>
 					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
 						<div>
@@ -250,13 +247,12 @@
 							</div>
 						</a>
 					<?php endif ?>
-					<?php /*if ($this->session->center_id!=1080 && $this->session->center_id!=1986): ?>						
-						<a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
-							<div>
-								<span class="nav-text">Time Table</span>
-							</div>
-						</a>
-					<?php endif */?>
+					<a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
+					 	<div>
+							<span class="nav-text">Time Table July 2023</span>
+					 	</div>
+					</a>  
+					
 					
 
 				<!--	<a class="border-0 custom-menu-item" href="<?=base_url('student_roll_no_list');?>">
@@ -271,11 +267,11 @@
 							<span class="nav-text">Admit Card</span>
 						</div>
 					</a>
-					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('admit_card_backlog_student_list');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('admit_card_backlog_student_list');?>">
 						<div>
 							<span class="nav-text">Backlog Admit Card</span>
 						</div>
-					</a> -->
+					</a> 
 					<?php endif ?>
 
 				</div>

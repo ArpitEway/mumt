@@ -195,7 +195,7 @@
             <td><?php echo $i; ?></td>
             <td><?php echo $paper->paper_code; ?></td>
             <td><?php 
-              $paper_name  = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$paper->paper_code));
+              $paper_name  = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$paper->paper_code,'class_id'=>$paper->class_id));
              echo $paper_name[0]->paper_name;
             ?></td>
             </tr>
@@ -207,7 +207,8 @@
 		</div>
 	    </div>
 		<?php if ($papers[0]->exam_form =='N'): ?>
-	   <?php $student_id = $this->Common_model->encrypt_decrypt($papers[0]->student_id);
+	   <?php $backlog_student_id = $this->Common_model->encrypt_decrypt($papers[0]->backlog_student_id);
+	   		$student_id = $this->Common_model->encrypt_decrypt($papers[0]->student_id);
 	     $class_id = $this->Common_model->encrypt_decrypt($papers[0]->class_id);
 	    ?>
 			<div class="row justify-content-center mt-10">
@@ -215,15 +216,11 @@
 		$center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29 );
 		if(in_array($this->session->center_id, $center_ids)){
 			?>
-       <a class="btn btn-success" href="<?= base_url('paid_by_university/'.$student_id) ?>">Paid By University</a>
+       <a class="btn btn-success" href="<?= base_url('paid_by_university_backlog/'.$backlog_student_id) ?>">Paid By University</a>
 			<?php
-		}
-		else{
-			?>
-			
-				<a class="btn btn-success" href="<?= base_url('center/Payment/backlog_exam_form/'.$student_id .'/'. $class_id) ?>">Process To Payment</a>
+			}else{	?>	
+				<a class="btn btn-success" href="<?= base_url('center/Payment/backlog_exam_form/'.$student_id .'/'. $class_id.'/'.$papers[0]->backlog_student_id.'/BACKLOG') ?>">Process To Payment</a>
 			<?php } ?>
-			
 	  </div>
     <?php endif ?>
 </div>

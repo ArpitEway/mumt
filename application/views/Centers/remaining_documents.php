@@ -74,7 +74,7 @@ foreach($documentData as $document){
 <?php endif ?>
 
 <div class="input-div">
-	<?php if($student->remark!=''){ ?>
+	<?php //if($student->remark!=''){ ?>
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 <form method="post" action="" enctype='multipart/form-data' id="target" >
 	<div id="loader">
@@ -108,7 +108,7 @@ foreach($documentData as $document){
 		<a href="<?=base_url('not_approve_student_list/'.$student->university_mode.'')?>" class="btn btn-primary">Submit</a>
 	</div>
 </form>
-<?php }
+<?php //}
 ?>
 	</div>
  <script>

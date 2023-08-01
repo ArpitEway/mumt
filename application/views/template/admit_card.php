@@ -48,13 +48,14 @@
 								// {
 								// 	echo '2023';
 								// }
-								// else if($student[0]->course_group_id==75 || $student[0]->course_group_id==76){
-								// 	echo 'Feb 2023';
-								// }else{
-								// 	echo 'March 2023';
-								// }
+								// else 
+								if($student[0]->course_group_id==33 || $student[0]->course_group_id==45 || $student[0]->course_group_id==76){
+								 	echo 'June 2023';
+								}else{
+									echo 'July 2023';
+								}
 							?> 
-							June 2023
+							
 						</h5>
 					</div>
 				</div>
@@ -135,12 +136,15 @@
 					<?php //endif ?> -->
 					<!-- <td><?= ($paper->exam_shift=='मध्याह्न') ? '१२:०० से ०३:०० बजे तक' : ''; ?></td> -->
 					<td><?php
-					if($paper->exam_shift=='Morning'){
+					if($paper->exam_shift=='Morning' && ($student[0]->class_id==264) ){
 						echo '11:00 AM To 2:00 PM';
-					}elseif($paper->exam_shift=='Afternoon' && $paper->class_id!=175 && $paper->class_id!=163){
-						echo '03:00 PM To 6:00 PM';
+					}
+					else if($paper->exam_shift=='Morning'){
+						echo '10:30 AM To 1:30 PM';
+					}elseif($paper->exam_shift=='Afternoon'){
+						echo '02:30 PM To 5:30 PM';
 					}else{
-						echo '12:00 To 3:00 PM';
+						echo '07:00 To 10:00 AM';
 					}
 					?></td>
 			</tr>
