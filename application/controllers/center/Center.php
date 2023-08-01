@@ -1164,9 +1164,11 @@ class Center extends CI_Controller {
       $classpermission = $this->Common_model->get_record('class_master','id',array('exam_form_permission'=>'Y'));
   		$class_ids = array_column($classpermission, 'id');
 		$center_id =  $this->session->center_id;
-		$center_permission = $this->Common_model->get_record('center','exam_form_permission',array('id'=>$center_id));
-		$this->db->where_in('class_id',$class_ids);
-		if($exam_form1=='submitted'){
+		$center_permission = $this->Common_model->get_record('center','exam_form_permission,temp_exam_form',array('id'=>$center_id));
+		if($center_permission[0]['temp_exam_form']=='N'){
+			$this->db->where_in('class_id',$class_ids);
+		}
+		if($exam_form1=='submitted' ){
 			if ($this->session->center_id!=13) {
 				$this->db->where('center_id',$this->session->center_id);
 			}else{
@@ -2746,7 +2748,7 @@ public function practical_assignment_marks_edit(){
       $classpermission = $this->Common_model->get_record('class_master','id',array('backlog_exam_form_permission'=>'Y'));
   		$class_ids = array_column($classpermission, 'id');
 		$center_id =  $this->session->center_id;
-		$center_permission = $this->Common_model->get_record('center','exam_form_permission',array('id'=>$center_id));
+		$center_permission = $this->Common_model->get_record('center','exam_form_permission,temp_exam_form',array('id'=>$center_id));
 		if($exam_form1=='submitted'){
 			$where = array('exam_form' =>'Y','center_id' => $center_id);
 		}else if($exam_form1 =="notSubmitted"){
@@ -2762,7 +2764,9 @@ public function practical_assignment_marks_edit(){
 			);
 		}
 		$data['exam_form_button'] = $exam_form1;
-		$this->db->where_in('class_id',$class_ids);
+		if($center_permission[0]['temp_exam_form']=='N'){
+			$this->db->where_in('class_id',$class_ids);
+		}
 		$this->db->where('exam_year' ,'June 2023');
 		$data['documents'] = $this->Common_model->getRecordByWhere('backlog_student',$where);
 		if($center_permission[0]['exam_form_permission']!='Y' && $exam_form1 =="notSubmitted"){
