@@ -2795,6 +2795,7 @@ public function practical_assignment_marks_edit(){
 		$this->db->where('backlog_exam_form.class_id',$class_id);
 		$this->db->where('backlog_student.exam_year','June 2023');
     	$this->db->where('status','B');
+		$this->db->order_by('paper_order', 'asc');
     	$data['papers'] = $this->db->get()->result();
     	$this->load->view('Centers/backlog_showPapers',$data);
     	$this->load->view('Centers/footer');
