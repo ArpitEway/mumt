@@ -5392,6 +5392,46 @@ public function forward_complaint(){
 		}
 	}
 
+	public function update_late_fees()
+	{
+
+		if ($this->input->method() == "post") 
+		{
+
+			$parameter1   	= $this->input->post("param_name");
+			$permisssion    = $this->input->post("permission");
+
+			$data = array($parameter1 => $permisssion);
+			
+			$res = $this->Common_model->updateRecordByConditions('master',$where,$data);
+			
+			//echo $this->db->last_query();
+
+
+			$late_exam_fees_privte = $this->Common_model->getRecordByWhere('master');
+
+			if($late_exam_fees_privte[0]->p_late_fee_status == 'Y')
+			{
+				$sts_btn = '<a class="btn btn-primary" onclick="update_late_fees(`p_late_fee_status`,`N`)">All Yes</a>';
+			}
+
+			else{
+				
+				$sts_btn = '<a class="btn btn-danger" onclick="update_late_fees(`p_late_fee_status`,`Y`)">All No</a>';
+				
+				
+			}
+
+
+			echo json_encode(array(
+				"status" => $res,
+				"msg" => "Permission has been updated successfully",
+				"sts_btn"=>$sts_btn,
+				"p1"=>$parameter1,
+			));
+
+		}
+	}
 	public function backlog_student_result_permission($mode="",$course_id="",$class_id=""){
 		if(!$this->session->has_userdata('adminData')){
 			redirect(base_url());

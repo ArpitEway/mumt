@@ -412,10 +412,12 @@ class Center extends CI_Controller {
 	public function student_list($param1 = '')
 	{
 		$course_type = $this->uri->segment(3); 
+		$late_admission_fees_pvt = $this->Common_model->getRecordByWhere('master');
 		$csrf = array( 
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
-			'course_type' => $course_type 
+			'course_type' => $course_type,
+			'late_privte_admission_fees' => $late_admission_fees_pvt[0]->p_late_fee_status
 		);
 		 
 		if($param1=='paid'){
