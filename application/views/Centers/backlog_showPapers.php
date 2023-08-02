@@ -209,10 +209,15 @@
 		<?php if ($papers[0]->exam_form =='N'): ?>
 	   <?php $backlog_student_id = $this->Common_model->encrypt_decrypt($papers[0]->backlog_student_id);
 	   		$student_id = $this->Common_model->encrypt_decrypt($papers[0]->student_id);
-	     $class_id = $this->Common_model->encrypt_decrypt($papers[0]->class_id);
+	      $class_id = $this->Common_model->encrypt_decrypt($papers[0]->class_id);
+		 $center_id =  $this->session->center_id;
+		 $center_permission = $this->Common_model->get_record('center','exam_form_permission,temp_exam_form',array('id'=>$center_id));
+		$class_permission = $this->Common_model->get_record('class_master','backlog_exam_form_permission',array('id'=>$papers[0]->class_id));
 	    ?>
 			<div class="row justify-content-center mt-10">
 			<?php 
+			if(($center_permission[0]['exam_form_permission']=='Y' && $papers[0]->exam_form=='N' ) &&  ($class_permission[0]['backlog_exam_form_permission']=='Y' || $center_permission[0]['temp_exam_form']=='Y') ){ 
+
 		$center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29 );
 		if(in_array($this->session->center_id, $center_ids)){
 			?>
@@ -220,7 +225,8 @@
 			<?php
 			}else{	?>	
 				<a class="btn btn-success" href="<?= base_url('center/Payment/backlog_exam_form/'.$student_id .'/'. $class_id.'/'.$papers[0]->backlog_student_id.'/BACKLOG') ?>">Process To Payment</a>
-			<?php } ?>
+			<?php } 
+			} ?>
 	  </div>
     <?php endif ?>
 </div>
