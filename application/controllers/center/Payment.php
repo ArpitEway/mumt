@@ -30,7 +30,12 @@ class Payment extends CI_Controller {
 		if($student['university_mode']=='REG'){
 			$data['txnAmt'] = $txnAmt[0]->form_fees+$txnAmt[0]->admission_fees;
 		}else{
-			$data['txnAmt']= $txnAmt[0]->p_form_fees+ $txnAmt[0]->p_admission_fees;
+			$late_fees=0;
+			$late = $this->Common_model->getRecordByWhere('master',array('p_late_fee_status'=> 'Y'));
+			if($late){
+				$late_fees=$late[0]->p_late_fees;
+			}
+			$data['txnAmt']= $txnAmt[0]->p_form_fees+ $txnAmt[0]->p_admission_fees+$late_fees;
 		}
 	
 		
@@ -53,8 +58,13 @@ class Payment extends CI_Controller {
 				$mode = "Regular";
 				$txnAmt = $txnAmt[0]->form_fees+$txnAmt[0]->admission_fees;
 			}else{
+				$late_fees=0;
+				$late = $this->Common_model->getRecordByWhere('master',array('p_late_fee_status'=> 'Y'));
+				if($late){
+					$late_fees=$late[0]->p_late_fees;
+				}
 				$mode = "Private";
-				$txnAmt= $txnAmt[0]->p_form_fees+ $txnAmt[0]->p_admission_fees;
+				$txnAmt= $txnAmt[0]->p_form_fees+ $txnAmt[0]->p_admission_fees+$late_fees;
 			}
 			if($student['payment_status']=='Y'){
 				$this->session->set_flashdata('warning','Payment Already Submitted');
