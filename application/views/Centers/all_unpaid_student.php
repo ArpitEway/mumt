@@ -10,7 +10,7 @@
 				<th>Father Name</th>
 				<th>Course</th>
 				<th>Class</th>
-				<th>Fees Amount<?php if($course_type=='PVT'&& $late_privte_admission_fees=='Y'){ echo '(Late Fees)';}?></th>
+				<th>Fees Amount<?php if($course_type=='PVT'&& $late_privte_admission_fees=='Y'){ echo ' + Late Fees';}?></th>
 				<th>Pay</th>
 			</tr>
 		</thead>
