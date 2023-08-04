@@ -17,14 +17,14 @@ $page_break_count = 0;
 $total = 0;
 foreach($exam_centers as $row)
 {
-    
- 
+
+
    //  if($count[0]->cnt >0)
     //  {
    $page_break = ($page_break_count%6==0) ? 'break' : '';
    $page_break_count++;
         // $sq="select count(e.student_id) as num from $student_table as s join $exam_form_table as e on s.student_id=e.student_id where s.new_exam_center_id='".$row['id']."' and s.forwarded='Y' and s.cls_id IN($cls'0') and e.paper_code IN($papercode'0') and s.new_exam_form in ('Y','N') and  s.new_exam_center_id!='' and admit_card='Y' and s.pattern='NEW'";		
-   
+
    ?> 
    <br>
 
@@ -127,7 +127,7 @@ foreach($exam_centers as $row)
             $this->db->where_not_in('paper_no_for_time_table', array('1B','2B'));
             $papers_all = $this->Common_model->get_record('paper_master','*',$where);
             $papersid = array_column($papers_all, 'id');
-            
+
             $this->db->select('count(*) as cnt');
             $this->db->from('student as s');
             $this->db->join('new_exam_form  as e', 'e.student_id = s.student_id AND s.class_id = e.class_id');
@@ -137,14 +137,14 @@ foreach($exam_centers as $row)
             $this->db->where('s.exam_center_id',$row->id);	
             $this->db->where_in('paper_id', $papersid );
 
-            
+
             $count = $this->db->get()->result();
-            
+
             $exam_date=$edate->exam_date;
-            
+
 
             /************/
-            $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` and s.id=e.backlog_student_id WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form='Y' AND `e`.`status`='B' AND `e`.`class_id`='".$papers_all[0]['class_id']."' AND `e`.`paper_code`='".$papers_all[0]['paper_code']."' and e.exam_year='June 2023'";    
+            $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` and s.id=e.backlog_student_id WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form='Y' AND `e`.`status`='B' AND `e`.`class_id`='".$papers_all[0]['class_id']."' AND `e`.`paper_code`='".$papers_all[0]['paper_code']."' and s.exam_year='June 2023'";    
             $query_back = $this->db->query($sql_back);
             $count_backlog = $query_back->result_array();
             $allStudentCount= $count[0]->cnt+$count_backlog[0]['cnt'];
@@ -178,11 +178,11 @@ foreach($exam_centers as $row)
 
                 <td>
                   <?php  $portal=0;
-                  
+
                   $prevdate;
                   $exam_date;
                   if( $prevdate != $exam_date){
-                    
+
                     if($t<81)
                     {
                         echo $portal=200;
