@@ -4296,7 +4296,7 @@ public function update_exam_datewise_permission(){
 		}else
 		{
 		$data = array();
-		$data['title'] = "Exam Center Billing Dec 2022";
+		$data['title'] = "Exam Center Billing July 2023";
 		$csrf = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
