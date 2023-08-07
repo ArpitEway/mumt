@@ -1484,7 +1484,13 @@ class Center extends CI_Controller {
 		}
 		$titleData = array('title' => 'Admit Card List 2023' );
 		$this->load->view('Centers/header',$titleData);
-		$where = array('center_id'=>$this->session->center_id , 'admit_card_permission' =>'Y',"student.roll_no!="=>0);
+		if ($this->session->center_id!=13) {
+			$this->db->where('center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+		}
+		//'center_id'=>$this->session->center_id , 
+		$where = array('admit_card_permission' =>'Y',"student.roll_no!="=>0);
 		$this->db->select('DISTINCT(student.class_id) as
 			class_id,course_name,student.class_name,class_id');
 		$this->db->from('student');
@@ -1508,10 +1514,15 @@ class Center extends CI_Controller {
 		$class_id=$this->Common_model->encrypt_decrypt($class_id,'decrypt');
 		$titleData = array('title' => 'Admit Card Student List 2023' );
 		$this->load->view('Centers/header',$titleData);
-		$center_id =  $this->session->center_id;
+		if ($this->session->center_id!=13) {
+			$this->db->where('center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+		}
+		//$center_id =  $this->session->center_id;
 		$where = array(
 			'class_id' =>$class_id,
-			'center_id' => $center_id,
+			//'center_id' => $center_id,
 			'roll_no!=' => 0,
 			'new_exam_form' => 'Y'
 		);
@@ -1526,9 +1537,14 @@ class Center extends CI_Controller {
 		}
 		$titleData = array('title' => 'Admit Card Backlog Student List 2023' );
 		$this->load->view('Centers/header',$titleData);
-		$center_id =  $this->session->center_id;
+		//$center_id =  $this->session->center_id;
+		if ($this->session->center_id!=13) {
+			$this->db->where('center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+		}
 		$where = array(	
-			'center_id' => $center_id,
+			//'center_id' => $center_id,
 			'roll_no!=' => 0,
 			'exam_form' => 'Y',
 			'exam_year' => 'June 2023'
@@ -1547,11 +1563,16 @@ class Center extends CI_Controller {
 		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		$titleData = array('title' => 'Admit Card 2023' );
 		$this->load->view('Centers/header',$titleData);
-		$center_id =  $this->session->center_id;
+		//$center_id =  $this->session->center_id;
+		if ($this->session->center_id!=13) {
+			$this->db->where('center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+		}
 		$where = array(
 			'student_id' => $student_id,
 			'roll_no !=' => 0,
-			'center_id' => $center_id,
+			//'center_id' => $center_id,
 			'new_exam_form' => 'Y',
 		);
 
@@ -1585,11 +1606,17 @@ class Center extends CI_Controller {
 		$backlog_student_id=$this->Common_model->encrypt_decrypt($backlog_student_id,'decrypt');
 		$titleData = array('title' => 'Backlog Admit Card 2023' );
 		$this->load->view('Centers/header',$titleData);
-		$center_id =  $this->session->center_id;
+		//$center_id =  $this->session->center_id;
+		if ($this->session->center_id!=13) {
+			$this->db->where('backlog_student.center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('backlog_student.center_id',array( 21,22,23,24,25,26,27,28));
+		}
+
 		$where = array(
 			'backlog_student.id' => $backlog_student_id,
 			'backlog_student.roll_no !=' => 0,
-			'backlog_student.center_id' => $center_id,
+			//'backlog_student.center_id' => $center_id,
 			'backlog_student.exam_form' => 'Y',
 			'backlog_student.exam_year'=>'June 2023'
 		);
