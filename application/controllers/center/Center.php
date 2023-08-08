@@ -501,9 +501,9 @@ class Center extends CI_Controller {
 		}
 		if($param1=='Admission'){
 			//stop admission of class
-			$master = $this->Common_model->getSingleRow('master');
-			$remove_class_from_center =explode(',', $master->remove_class_from_center);
-			$this->db->where_not_in('student.class_id', $remove_class_from_center);
+			// $master = $this->Common_model->getSingleRow('master');
+			// $remove_class_from_center =explode(',', $master->remove_class_from_center);
+			// $this->db->where_not_in('student.class_id', $remove_class_from_center);
 		}
 		$counttableData = $this->Datatable_join_model->joincountAll($_POST,$DataTableArray);
 				  
