@@ -19,6 +19,7 @@
 						<th>Mobile No</th>
 						<th>Options</th>
 						<th>Temp Exam Form</th>
+						<th>Temp Admission Payment</th>
 						<th>Exam Form</th>
 						<th>Permission Old</th>
 						
@@ -133,6 +134,27 @@ buttons: [
 				[csrfName]:csrfHash,
 			}; 	
 			var url = BASE_URL + "admin/Permission/update_temp_exam_form_permission";
+			$.ajax({
+				url: url,
+				type: 'POST',
+				data: data,
+				success: function (data) {
+				 $('#memListTable').DataTable().draw();
+				},
+			});		
+		});
+		$(document).on('click', '.temp_admission_payment_checks', function() {
+			var csrfName = $('.csrfname').attr('name');
+			var csrfHash = $('.csrfname').val(); 
+			var val = $(this).val();
+			
+			var temp_admission_payment = (val=='Yes') ? 'N' : 'Y';
+			var data = {
+				id: $(this).attr('data-id'),
+				temp_admission_payment: temp_admission_payment,
+				[csrfName]:csrfHash,
+			}; 	
+			var url = BASE_URL + "admin/Permission/update_temp_admission_payment";
 			$.ajax({
 				url: url,
 				type: 'POST',

@@ -1883,8 +1883,15 @@ public function getStudentData()
 			}else{
 			$temp_exam_form_permission_btn = '<input type="button" name="update_temp_exam_form_permission" data-id='.$result->id.' class="btn btn-danger temp_exam_form_permission_checks" value="No">';
 			}	
+			$temp_admission_payment = $result->temp_admission_payment;	
+			if($temp_admission_payment == 'Y')
+			{
+			$temp_admission_payment_btn = '<input type="button" name="update_temp_admission_payment" data-id='.$result->id.' class="btn btn-success temp_admission_payment_checks" value="Yes">';
+			}else{
+			$temp_admission_payment_btn = '<input type="button" name="update_temp_admission_payment" data-id='.$result->id.' class="btn btn-danger temp_admission_payment_checks" value="No">';
+			}	
 			$i++;
-			$data[] = array($i,$result->id, $result->center_code, $result->center_name, $result->contactpersonname,$result->mobile_no_1,$btn,$temp_exam_form_permission_btn,$exam_form_permission_btn,$permission_btn);
+			$data[] = array($i,$result->id, $result->center_code, $result->center_name, $result->contactpersonname,$result->mobile_no_1,$btn,$temp_exam_form_permission_btn,$temp_admission_payment_btn,$exam_form_permission_btn,$permission_btn);
 	     	}
 		  $output = array(
 			"draw" => $_POST['draw'],

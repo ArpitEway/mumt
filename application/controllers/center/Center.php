@@ -440,6 +440,7 @@ class Center extends CI_Controller {
 		$course_type=$this->input->post('course_type');
 		$data = $row = array();
 		
+		$centerData = $this->Common_model->getRecordById('center','id',$this->session->center_id);
 		
 		$where = 'online_payment_transaction.payment!="Y"';
 		
@@ -463,7 +464,8 @@ class Center extends CI_Controller {
 			$where .= "  ) "; 
 				//stop admission of class
 				 $master = $this->Common_model->getSingleRow('master');
-				 if(!empty($master->remove_class_from_center))
+				//  echo $centerData->temp_admission_payment ;die;
+				 if(!empty($master->remove_class_from_center) && $centerData->temp_admission_payment =='N')
 				 $where.=" and `student`.`class_id` NOT IN ($master->remove_class_from_center)";
 			// $where.=" or (student.student_id in (715231, 715241, 716487, 717657, 717662, 722810) and online_payment_transaction.payment='N' )";
 			

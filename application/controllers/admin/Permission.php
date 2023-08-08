@@ -381,6 +381,17 @@ class Permission extends CI_Controller {
 					"data" => $data
 				));	 
 	}
+	public function update_temp_admission_payment()
+	{	
+            $id    = $this->input->post("id");
+			$temp_admission_payment = $this->input->post("temp_admission_payment");	
+			$data = $this->Common_model->updateRecordByConditions("center",array("id" => $id ),array("temp_admission_payment" => $temp_admission_payment ));
+				 $status = true;
+				echo json_encode(array(
+					 "status" => $status,
+					"data" => $data
+				));	 
+	}
 	public function update_final_result_permission(){
 		$status =  $this->input->post('final_result_permission');
      
