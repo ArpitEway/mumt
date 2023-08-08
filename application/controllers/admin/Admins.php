@@ -5290,6 +5290,7 @@ public function forward_complaint(){
 		$class_ids=array(101,104,107,110,116,119,125,128,131,134);
 		// $title = array('title' => 'Result');
 		$data['exam_data'] = $this->Common_model->getRecordById('old_exam_data','id',$exam_data_id);
+		
 		// $course_id !=36 && $course_id !=37
 		$class = $this->Common_model->getRecordByID('class_master','id', $data['exam_data']->class_id);
 		
@@ -5299,7 +5300,7 @@ public function forward_complaint(){
 		if((in_array($new_exam_form[0]->class_id , $class_ids)) && $data['exam_data']->university_mode=='REG'){
 			$this->load->model('Gradesheet_old_model');
 			$this->load->view('admin/grade_marksheet',$data);
-		}else if($data['exam_data']->university_mode !="PVT" || $class->internal !='N'){
+		}else if($data['exam_data']->university_mode !="PVT"  && $class->internal !='N'){
 			
 			$this->load->view('admin/marksheet_student',$data);
 		}else{
