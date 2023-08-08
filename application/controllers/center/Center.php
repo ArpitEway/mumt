@@ -499,6 +499,12 @@ class Center extends CI_Controller {
 		}else{
 			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28));
 		}
+		if($param1=='Admission'){
+			//stop admission of class
+			$master = $this->Common_model->getSingleRow('master');
+			$remove_class_from_center =explode(',', $master->remove_class_from_center);
+			$this->db->where_not_in('student.class_id', $remove_class_from_center);
+		}
 		$counttableData = $this->Datatable_join_model->joincountAll($_POST,$DataTableArray);
 				  
 		foreach($tableData as $result){
