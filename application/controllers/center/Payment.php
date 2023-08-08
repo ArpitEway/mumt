@@ -15,8 +15,14 @@ class Payment extends CI_Controller {
 		}
 		$titleData = array('title'=>'Admission Payment');
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		//stop admission of class
+		$master = $this->Common_model->getSingleRow('master');
+	 	$remove_class_from_center =explode(',', $master->remove_class_from_center);
+		$this->db->where_not_in('student.class_id', $remove_class_from_center);
 		$student = $this->Common_model->student_info($student_id);
-	
+		//echo $this->db->last_query().'<br>';
+		if(empty($student)){ redirect(base_url('dashboard'));}
+		
 		//$txnAmt = $this->Common_model->getRecordByWhere("course",array('course_group_id'=>$student['course_group_id']));
 		$txnAmt = $this->Common_model->getRecordByWhere("online_payment_transaction",array('student_id'=>$student_id,'fees_head'=>'Admission Fees'));
 		$data['txnAmt'] = $txnAmt[0]->amount;

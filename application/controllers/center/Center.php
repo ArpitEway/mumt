@@ -444,6 +444,8 @@ class Center extends CI_Controller {
 		$where = 'online_payment_transaction.payment!="Y"';
 		
 		if($param1=='Admission'){
+			
+
 			$permission_session= $this->Common_model->getRecordByWhere('session',array('unpaid_permission'=>'Y' ));
 			$where .= " and online_payment_transaction.fees_head='Admission Fees'  and  student.payment_status='N'  and ( "; //and student.class_name not like '%SEM%'
 			foreach($permission_session as $key=>$row){
@@ -459,7 +461,10 @@ class Center extends CI_Controller {
 			
 			
 			$where .= "  ) "; 
-
+				//stop admission of class
+				$master = $this->Common_model->getSingleRow('master');
+				$remove_class_from_center =explode(',', $master->remove_class_from_center);
+				$this->db->where_not_in('student.class_id', $remove_class_from_center);
 			// $where.=" or (student.student_id in (715231, 715241, 716487, 717657, 717662, 722810) and online_payment_transaction.payment='N' )";
 			
 			// $where .= " and online_payment_transaction.fees_head='Admission Fees'  and  `student.payment_status`='N' and ( (student.class_name not like '%SEM%' and student.session='July 2021') or session!='July 2021')";
@@ -469,7 +474,7 @@ class Center extends CI_Controller {
 
 		$column_order = array('student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','amount',null);
 		$column_search = array('student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','amount');
-
+		
 		$DataTableArray = array(
 			'column_order' => $column_order,
 			'column_search' => $column_search,
