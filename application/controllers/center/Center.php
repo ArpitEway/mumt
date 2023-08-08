@@ -462,9 +462,9 @@ class Center extends CI_Controller {
 			
 			$where .= "  ) "; 
 				//stop admission of class
-				$master = $this->Common_model->getSingleRow('master');
-				$remove_class_from_center =explode(',', $master->remove_class_from_center);
-				$this->db->where_not_in('student.class_id', $remove_class_from_center);
+				 $master = $this->Common_model->getSingleRow('master');
+				 if(!empty($master->remove_class_from_center))
+				 $where.=" and `student`.`class_id` NOT IN ($master->remove_class_from_center)";
 			// $where.=" or (student.student_id in (715231, 715241, 716487, 717657, 717662, 722810) and online_payment_transaction.payment='N' )";
 			
 			// $where .= " and online_payment_transaction.fees_head='Admission Fees'  and  `student.payment_status`='N' and ( (student.class_name not like '%SEM%' and student.session='July 2021') or session!='July 2021')";
@@ -499,12 +499,7 @@ class Center extends CI_Controller {
 		}else{
 			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28));
 		}
-		if($param1=='Admission'){
-			//stop admission of class
-			// $master = $this->Common_model->getSingleRow('master');
-			// $remove_class_from_center =explode(',', $master->remove_class_from_center);
-			// $this->db->where_not_in('student.class_id', $remove_class_from_center);
-		}
+		
 		$counttableData = $this->Datatable_join_model->joincountAll($_POST,$DataTableArray);
 				  
 		foreach($tableData as $result){
