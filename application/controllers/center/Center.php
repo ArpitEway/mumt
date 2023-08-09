@@ -1174,10 +1174,17 @@ class Center extends CI_Controller {
       $classpermission = $this->Common_model->get_record('class_master','id',array('exam_form_permission'=>'Y'));
   		$class_ids = array_column($classpermission, 'id');
 		$center_id =  $this->session->center_id;
-		$center_permission = $this->Common_model->get_record('center','exam_form_permission,temp_exam_form',array('id'=>$center_id));
-		if($center_permission[0]['temp_exam_form']=='N'){
+		$centerData = $this->Common_model->getRecordById('center','id',$this->session->center_id);
+		$master = $this->Common_model->getSingleRow('master');
+		//$center_permission = $this->Common_model->get_record('center','exam_form_permission,temp_exam_form',array('id'=>$center_id));
+		//if($center_permission[0]['temp_exam_form']=='N'){
+		if($centerData->temp_exam_form=='N'){	
 			$this->db->where_in('class_id',$class_ids);
 		}
+		//stop admission of class
+		
+		
+		
 		if($exam_form1=='submitted' ){
 			if ($this->session->center_id!=13) {
 				$this->db->where('center_id',$this->session->center_id);
@@ -1187,7 +1194,7 @@ class Center extends CI_Controller {
 			$where = array('new_exam_form' =>'Y');
 			$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
 		}else if($exam_form1 =="notSubmitted"){
-			if($center_permission[0]['exam_form_permission']!='Y'){
+			if($centerData->exam_form_permission!='Y'){
 				$data['documents'] ="";
 			}else{
 				$where = array(
@@ -1198,7 +1205,15 @@ class Center extends CI_Controller {
 				}else{
 					$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
 				}
+				
+		
+				if(!empty($master->remove_class_from_center) && $centerData->temp_admission_payment =='N'){
+					$remove_classes=explode(',',$master->remove_class_from_center);
+					$this->db->where_not_in('student.class_id', $remove_classes );
+				
+				}
 				$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
+				
 			}
 		}else if($exam_form1=="skipped"){
 			$where = array(
@@ -2782,11 +2797,11 @@ public function practical_assignment_marks_edit(){
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
 		);
-
+		$master = $this->Common_model->getSingleRow('master');
       $classpermission = $this->Common_model->get_record('class_master','id',array('backlog_exam_form_permission'=>'Y'));
   		$class_ids = array_column($classpermission, 'id');
 		$center_id =  $this->session->center_id;
-		$center_permission = $this->Common_model->get_record('center','exam_form_permission,temp_exam_form',array('id'=>$center_id));
+		$center_permission = $this->Common_model->get_record('center','exam_form_permission,temp_exam_form,temp_admission_payment',array('id'=>$center_id));
 		if($exam_form1=='submitted'){
 			$where = array('exam_form' =>'Y','center_id' => $center_id);
 		}else if($exam_form1 =="notSubmitted"){
@@ -2806,6 +2821,14 @@ public function practical_assignment_marks_edit(){
 			$this->db->where_in('class_id',$class_ids);
 		}
 		$this->db->where('exam_year' ,'June 2023');
+		//Start
+		
+		if(!empty($master->remove_class_from_center) && $center_permission[0]['temp_exam_form'] =='N'){
+			$remove_classes=explode(',',$master->remove_class_from_center);
+			$this->db->where_not_in('backlog_student.class_id', $remove_classes );
+		
+		}
+		//END
 		$data['documents'] = $this->Common_model->getRecordByWhere('backlog_student',$where);
 		if($center_permission[0]['exam_form_permission']!='Y' && $exam_form1 =="notSubmitted"){
 			$data['documents'] ="";
