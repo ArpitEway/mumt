@@ -60,7 +60,8 @@
             <tr>
               <td height="130" colspan="2" valign="bottom">
                 <center>
-                  <strong><?php echo  ($isOneClass) ? $student->course_name .' '."(One Year Course)" :$student->course_name .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->old_class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
+                  <?php $course = ($student->course_group_id == 75)?'Bachelor of Arts and Bachelor of Education (B.A.B.Ed.)':$student->course_name;?>
+                  <strong><?php echo  ($isOneClass) ? $course .' '."(One Year Course)" :$course .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->old_class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
                 </center>
               </td>
             </tr>
@@ -110,7 +111,7 @@
                       <td class="Normaltext" align="left" width="29%"><div align="left">Father's / Husband's Name</div></td>
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo strtoupper( $student->f_h_name); ?></span></div></td>
                     </tr>
-                    <?php if ($student->course_group_id==76): ?>
+                    <?php if ($student->course_group_id==76 || $student->course_group_id==75): ?>
                     <tr>
                       <td class="Normaltext" align="left" width="29%"><div align="left">Department</div></td>
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;">
