@@ -1207,7 +1207,7 @@ class Center extends CI_Controller {
 				}
 				
 		
-				if(!empty($master->remove_class_from_center) && $centerData->temp_admission_payment =='N'){
+				if(!empty($master->remove_class_from_center) && $centerData->temp_exam_form =='N'){
 					$remove_classes=explode(',',$master->remove_class_from_center);
 					$this->db->where_not_in('student.class_id', $remove_classes );
 				
