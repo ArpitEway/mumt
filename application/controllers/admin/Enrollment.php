@@ -50,6 +50,20 @@
 				$data['sessions'] = $this->db->get_where('session', array('enrollment_permission'=>'Y'))->result_array();
 				$data['name_csrf'] = $this->security->get_csrf_token_name();
 				$data['hash_csrf'] = $this->security->get_csrf_hash();
+				//START
+				$master = $this->Common_model->getSingleRow('master');
+				if(!empty($master->remove_class_from_center) ){
+					
+					$sql="SELECT GROUP_CONCAT(DISTINCT(`course_group_id`)) as id FROM `class_master` where `id`  IN ($master->remove_class_from_center)";
+					$query = $this->db->query($sql);
+        			$group_ids = $query->result_array();
+					$grouparr=explode(',',$group_ids[0]['id']);
+					$this->db->where_not_in('id',$grouparr );
+					
+				 }
+				 //END
+				$data['courses'] = $this->Common_model->get_record('course_group','id,course_name');
+				
 				$this->load->view('admin/enrollment/view_student_report',$data);
 				$this->load->view('footer');
 			}
@@ -234,7 +248,7 @@
 				$approved = $this->input->post("approved");
 				$session = $this->input->post("session");
 				$university_mode = $this->input->post("university_mode");
-
+				$master = $this->Common_model->getSingleRow('master');
                 if($center != "all"){	 
 					
 					$dt['center_id'] = $center;
@@ -257,6 +271,13 @@
 				$dt['document_uploaded'] = "Y";
 				// $dt['university_mode'] = "REG";	
 				$this->db->where('new_admission_permission', 'N');
+				//START
+				
+				 if(!empty($master->remove_class_from_center) ){
+					$remove_classes=explode(',',$master->remove_class_from_center);
+					$this->db->where_not_in('student.class_id', $remove_classes );
+				 }
+				
 				$data['students'] = $this->Common_model->student_data($dt);
 				
 				$dt =  $this->load->view('admin/student/getstudent',$data,true);
