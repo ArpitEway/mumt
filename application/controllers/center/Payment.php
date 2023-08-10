@@ -15,10 +15,20 @@ class Payment extends CI_Controller {
 		}
 		$titleData = array('title'=>'Admission Payment');
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		
+		$centerData = $this->Common_model->getRecordById('center','id',$this->session->center_id);
+		$master = $this->Common_model->getSingleRow('master');
 		$student = $this->Common_model->student_info($student_id);
-	
-		$txnAmt = $this->Common_model->getRecordByWhere("course",array('course_group_id'=>$student['course_group_id']));
-
+		//stop admission of class start
+		$remove_class_from_center =explode(',', $master->remove_class_from_center);
+		if(in_array($student['class_id'],$remove_class_from_center) && ($centerData->temp_admission_payment =='N')) 
+		{ 
+			redirect(base_url('dashboard'));
+		}
+		//stop admission of class End	
+		//$txnAmt = $this->Common_model->getRecordByWhere("course",array('course_group_id'=>$student['course_group_id']));
+		$txnAmt = $this->Common_model->getRecordByWhere("online_payment_transaction",array('student_id'=>$student_id,'fees_head'=>'Admission Fees'));
+		$data['txnAmt'] = $txnAmt[0]->amount;
 		if($student['payment_status']=='Y'){
 			$this->session->set_flashdata('warning','Payment Already Submitted');
 			redirect(base_url('dashboard'));
@@ -27,11 +37,11 @@ class Payment extends CI_Controller {
 		$data['url'] = 'paynow';
 		$data['paymentType'] = 'admission';
 		$mode = $this->input->post('mode');
-		if($student['university_mode']=='REG'){
-			$data['txnAmt'] = $txnAmt[0]->form_fees+$txnAmt[0]->admission_fees;
-		}else{
-			$data['txnAmt']= $txnAmt[0]->p_form_fees+ $txnAmt[0]->p_admission_fees;
-		}
+		// if($student['university_mode']=='REG'){
+		// 	$data['txnAmt'] = $txnAmt[0]->form_fees+$txnAmt[0]->admission_fees;
+		// }else{
+		// 	$data['txnAmt']= $txnAmt[0]->p_form_fees+ $txnAmt[0]->p_admission_fees+$late_fees;
+		// }
 	
 		
 		$this->load->view('Centers/header',$titleData);
@@ -47,14 +57,15 @@ class Payment extends CI_Controller {
 		if($student_id!=''){
 
 			$student = $this->Common_model->student_info($student_id);
-	      	$txnAmt = $this->Common_model->getRecordByWhere("course",array('course_group_id'=>$student['course_group_id'],'session'=>$student['session']));
-
+	      	//$txnAmt = $this->Common_model->getRecordByWhere("course",array('course_group_id'=>$student['course_group_id'],'session'=>$student['session']));
+			$txnAmtData = $this->Common_model->getRecordByWhere("online_payment_transaction",array('student_id'=>$student_id,'fees_head'=>'Admission Fees'));
+			  $txnAmt = $txnAmtData[0]->amount;
 			if($student['university_mode']=='REG'){
 				$mode = "Regular";
-				$txnAmt = $txnAmt[0]->form_fees+$txnAmt[0]->admission_fees;
+				//$txnAmt = $txnAmt[0]->form_fees+$txnAmt[0]->admission_fees;
 			}else{
 				$mode = "Private";
-				$txnAmt= $txnAmt[0]->p_form_fees+ $txnAmt[0]->p_admission_fees;
+				//$txnAmt= $txnAmt[0]->p_form_fees+ $txnAmt[0]->p_admission_fees+$late_fees;
 			}
 			if($student['payment_status']=='Y'){
 				$this->session->set_flashdata('warning','Payment Already Submitted');
@@ -238,14 +249,21 @@ class Payment extends CI_Controller {
 			redirect(base_url('login'));
 		}else{
 				$center_id =  $this->session->center_id;
-				$center_permission = $this->Common_model->get_record('center','exam_form_permission',array('id'=>$center_id));
-				if($center_permission[0]['exam_form_permission']!='Y'){
+				$center_permission = $this->Common_model->get_record('center','exam_form_permission,temp_exam_form',array('id'=>$center_id));
+				
+				if(($center_permission[0]['exam_form_permission']!='Y') ){
 					$this->session->set_flashdata('error','Exam form fill & Payment Permission is denied !');
-					redirect(base_url());
+					redirect(base_url('dashboard'));
 				}else{
 						$titleData = array('title'=>'Exam Form Payment');
 						$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 						$student = $this->Common_model->student_info($student_id);
+						$master = $this->Common_model->getSingleRow('master');
+						$remove_class_from_center =explode(',', $master->remove_class_from_center);
+						if(in_array($student['class_id'],$remove_class_from_center) && ($center_permission[0]['temp_exam_form'] =='N')) 
+						{ 
+							redirect(base_url('dashboard'));
+						}
 						if($student['new_exam_form']=='Y'){
 							$this->session->set_flashdata('warning','Payment Already Submitted');
 							redirect(base_url('dashboard'));
@@ -373,6 +391,13 @@ class Payment extends CI_Controller {
    	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
    	$class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
    	$student = $this->Common_model->student_info($student_id);
+	$center_permission = $this->Common_model->get_record('center','exam_form_permission,temp_exam_form,temp_admission_payment',array('id'=>$this->session->center_id));   
+	$master = $this->Common_model->getSingleRow('master');
+	$remove_class_from_center =explode(',', $master->remove_class_from_center);
+	if(in_array($class_id,$remove_class_from_center) && ($center_permission[0]['temp_exam_form'] =='N')) 
+	{ 
+		redirect(base_url('dashboard'));
+	}
     $failCount = $this->Common_model->getCountByWhere('backlog_exam_form',array('student_id'=>$student_id,'class_id'=>$class_id,'paper_type'=>'Theory' ,'status'=>'B','backlog_student_id'=>$back_id));
 	if( $failCount < 8){
 		$exam_fees =$failCount * 100;

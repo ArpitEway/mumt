@@ -1876,8 +1876,22 @@ public function getStudentData()
 			}else{
 			$exam_form_permission_btn = '<input type="button" name="update_exam_form_permission" data-id='.$result->id.' class="btn btn-danger exam_form_permission_checks" value="No">';
 			}	
+			$temp_exam_form_permission = $result->temp_exam_form;	
+			if($temp_exam_form_permission == 'Y')
+			{
+			$temp_exam_form_permission_btn = '<input type="button" name="update_temp_exam_form_permission" data-id='.$result->id.' class="btn btn-success temp_exam_form_permission_checks" value="Yes">';
+			}else{
+			$temp_exam_form_permission_btn = '<input type="button" name="update_temp_exam_form_permission" data-id='.$result->id.' class="btn btn-danger temp_exam_form_permission_checks" value="No">';
+			}	
+			$temp_admission_payment = $result->temp_admission_payment;	
+			if($temp_admission_payment == 'Y')
+			{
+			$temp_admission_payment_btn = '<input type="button" name="update_temp_admission_payment" data-id='.$result->id.' class="btn btn-success temp_admission_payment_checks" value="Yes">';
+			}else{
+			$temp_admission_payment_btn = '<input type="button" name="update_temp_admission_payment" data-id='.$result->id.' class="btn btn-danger temp_admission_payment_checks" value="No">';
+			}	
 			$i++;
-			$data[] = array($i,$result->id, $result->center_code, $result->center_name, $result->contactpersonname,$result->mobile_no_1,$btn,$exam_form_permission_btn,$permission_btn);
+			$data[] = array($i,$result->id, $result->center_code, $result->center_name, $result->contactpersonname,$result->mobile_no_1,$btn,$temp_exam_form_permission_btn,$temp_admission_payment_btn,$exam_form_permission_btn,$permission_btn);
 	     	}
 		  $output = array(
 			"draw" => $_POST['draw'],
@@ -3035,7 +3049,8 @@ public function update_exam_datewise_permission(){
 		$this->db->order_by('roll_number','ASC');
 		
 		// $data['students'] = $this->Common_model->getRecordByWhere('student_result_aug_22',$where);
-		$this->db->where_in('student_id',array(701860,720053,702910,702308,718424,705865,706121,718812,722503,683825,722577,713969,723571));
+		//$this->db->where_in('student_id',array(706121,718812,722503));
+			//701860,720053,702910,702308,718424,705865,706121,718812,722503,683825,722577,713969,723571
 		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
 		
 		// $this->Common_model->last_query();
@@ -3118,7 +3133,8 @@ public function update_exam_datewise_permission(){
 	}
 
 	public function tr_class_list(){
-		$where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and old_class_id in (193,197,201,203,205,211,213,221,223,225,227,275,279))";
+		$where = "id in (select distinct(course_group_id) from student where exam_form = 'Y')";
+		//and old_class_id in (193,197,201,203,205,211,213,221,223,225,227,275,279,255,261)
 		//(253,193,197,201,203,205,211,275,279,221,223,225,227,213) )";
 		// new_exam_form = 'Y' or student_result_aug_22
 		// and class_id in (104,107,134,283,285,287,289,293,295,297,291)
@@ -4288,6 +4304,7 @@ public function update_exam_datewise_permission(){
 			$this->db->from('paper_master');
 			$this->db->where('exam_date!=',"");
 			$this->db->where('exam_date!=',"0000-00-00");	
+			$this->db->where('exam_date>=',"2023-07-31");	
 			$this->db->group_by(array('exam_date','exam_shift'));
 			$this->db->order_by('exam_date', "asc");
 			$this->db->order_by('exam_shift', "desc");
@@ -4305,7 +4322,7 @@ public function update_exam_datewise_permission(){
 		}else
 		{
 		$data = array();
-		$data['title'] = "Exam Center Billing Dec 2022";
+		$data['title'] = "Exam Center Billing July 2023";
 		$csrf = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
@@ -5298,6 +5315,7 @@ public function forward_complaint(){
 		$class_ids=array(101,104,107,110,116,119,125,128,131,134);
 		// $title = array('title' => 'Result');
 		$data['exam_data'] = $this->Common_model->getRecordById('old_exam_data','id',$exam_data_id);
+		
 		// $course_id !=36 && $course_id !=37
 		$class = $this->Common_model->getRecordByID('class_master','id', $data['exam_data']->class_id);
 		
@@ -5307,7 +5325,7 @@ public function forward_complaint(){
 		if((in_array($new_exam_form[0]->class_id , $class_ids)) && $data['exam_data']->university_mode=='REG'){
 			$this->load->model('Gradesheet_old_model');
 			$this->load->view('admin/grade_marksheet',$data);
-		}else if($data['exam_data']->university_mode !="PVT" || $class->internal !='N'){
+		}else if($data['exam_data']->university_mode !="PVT"  && $class->internal !='N'){
 			
 			$this->load->view('admin/marksheet_student',$data);
 		}else{
@@ -5401,6 +5419,46 @@ public function forward_complaint(){
 		}
 	}
 
+	public function update_late_fees()
+	{
+
+		if ($this->input->method() == "post") 
+		{
+
+			$parameter1   	= $this->input->post("param_name");
+			$permisssion    = $this->input->post("permission");
+
+			$data = array($parameter1 => $permisssion);
+			
+			$res = $this->Common_model->updateRecordByConditions('master',$where,$data);
+			
+			//echo $this->db->last_query();
+
+
+			$late_exam_fees_privte = $this->Common_model->getRecordByWhere('master');
+
+			if($late_exam_fees_privte[0]->p_late_fee_status == 'Y')
+			{
+				$sts_btn = '<a class="btn btn-primary" onclick="update_late_fees(`p_late_fee_status`,`N`)">All Yes</a>';
+			}
+
+			else{
+				
+				$sts_btn = '<a class="btn btn-danger" onclick="update_late_fees(`p_late_fee_status`,`Y`)">All No</a>';
+				
+				
+			}
+
+
+			echo json_encode(array(
+				"status" => $res,
+				"msg" => "Permission has been updated successfully",
+				"sts_btn"=>$sts_btn,
+				"p1"=>$parameter1,
+			));
+
+		}
+	}
 	public function backlog_student_result_permission($mode="",$course_id="",$class_id=""){
 		if(!$this->session->has_userdata('adminData')){
 			redirect(base_url());

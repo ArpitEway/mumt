@@ -412,10 +412,12 @@ class Center extends CI_Controller {
 	public function student_list($param1 = '')
 	{
 		$course_type = $this->uri->segment(3); 
+		$late_admission_fees_pvt = $this->Common_model->getRecordByWhere('master');
 		$csrf = array( 
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
-			'course_type' => $course_type 
+			'course_type' => $course_type,
+			'late_privte_admission_fees' => $late_admission_fees_pvt[0]->p_late_fee_status
 		);
 		 
 		if($param1=='paid'){
@@ -438,10 +440,13 @@ class Center extends CI_Controller {
 		$course_type=$this->input->post('course_type');
 		$data = $row = array();
 		
+		$centerData = $this->Common_model->getRecordById('center','id',$this->session->center_id);
 		
 		$where = 'online_payment_transaction.payment!="Y"';
 		
 		if($param1=='Admission'){
+			
+
 			$permission_session= $this->Common_model->getRecordByWhere('session',array('unpaid_permission'=>'Y' ));
 			$where .= " and online_payment_transaction.fees_head='Admission Fees'  and  student.payment_status='N'  and ( "; //and student.class_name not like '%SEM%'
 			foreach($permission_session as $key=>$row){
@@ -457,7 +462,11 @@ class Center extends CI_Controller {
 			
 			
 			$where .= "  ) "; 
-
+				//stop admission of class
+				 $master = $this->Common_model->getSingleRow('master');
+				//  echo $centerData->temp_admission_payment ;die;
+				 if(!empty($master->remove_class_from_center) && $centerData->temp_admission_payment =='N')
+				 $where.=" and `student`.`class_id` NOT IN ($master->remove_class_from_center)";
 			// $where.=" or (student.student_id in (715231, 715241, 716487, 717657, 717662, 722810) and online_payment_transaction.payment='N' )";
 			
 			// $where .= " and online_payment_transaction.fees_head='Admission Fees'  and  `student.payment_status`='N' and ( (student.class_name not like '%SEM%' and student.session='July 2021') or session!='July 2021')";
@@ -467,7 +476,7 @@ class Center extends CI_Controller {
 
 		$column_order = array('student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','amount',null);
 		$column_search = array('student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','amount');
-
+		
 		$DataTableArray = array(
 			'column_order' => $column_order,
 			'column_search' => $column_search,
@@ -492,6 +501,7 @@ class Center extends CI_Controller {
 		}else{
 			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28));
 		}
+		
 		$counttableData = $this->Datatable_join_model->joincountAll($_POST,$DataTableArray);
 				  
 		foreach($tableData as $result){
@@ -1164,9 +1174,18 @@ class Center extends CI_Controller {
       $classpermission = $this->Common_model->get_record('class_master','id',array('exam_form_permission'=>'Y'));
   		$class_ids = array_column($classpermission, 'id');
 		$center_id =  $this->session->center_id;
-		$center_permission = $this->Common_model->get_record('center','exam_form_permission',array('id'=>$center_id));
-		$this->db->where_in('class_id',$class_ids);
-		if($exam_form1=='submitted'){
+		$centerData = $this->Common_model->getRecordById('center','id',$this->session->center_id);
+		$master = $this->Common_model->getSingleRow('master');
+		//$center_permission = $this->Common_model->get_record('center','exam_form_permission,temp_exam_form',array('id'=>$center_id));
+		//if($center_permission[0]['temp_exam_form']=='N'){
+		if($centerData->temp_exam_form=='N'){	
+			$this->db->where_in('class_id',$class_ids);
+		}
+		//stop admission of class
+		
+		
+		
+		if($exam_form1=='submitted' ){
 			if ($this->session->center_id!=13) {
 				$this->db->where('center_id',$this->session->center_id);
 			}else{
@@ -1175,7 +1194,7 @@ class Center extends CI_Controller {
 			$where = array('new_exam_form' =>'Y');
 			$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
 		}else if($exam_form1 =="notSubmitted"){
-			if($center_permission[0]['exam_form_permission']!='Y'){
+			if($centerData->exam_form_permission!='Y'){
 				$data['documents'] ="";
 			}else{
 				$where = array(
@@ -1186,7 +1205,15 @@ class Center extends CI_Controller {
 				}else{
 					$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
 				}
+				
+		
+				if(!empty($master->remove_class_from_center) && $centerData->temp_exam_form =='N'){
+					$remove_classes=explode(',',$master->remove_class_from_center);
+					$this->db->where_not_in('student.class_id', $remove_classes );
+				
+				}
 				$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
+				
 			}
 		}else if($exam_form1=="skipped"){
 			$where = array(
@@ -1480,7 +1507,13 @@ class Center extends CI_Controller {
 		}
 		$titleData = array('title' => 'Admit Card List 2023' );
 		$this->load->view('Centers/header',$titleData);
-		$where = array('center_id'=>$this->session->center_id , 'admit_card_permission' =>'Y',"student.roll_no!="=>0);
+		if ($this->session->center_id!=13) {
+			$this->db->where('center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+		}
+		//'center_id'=>$this->session->center_id , 
+		$where = array('admit_card_permission' =>'Y',"student.roll_no!="=>0);
 		$this->db->select('DISTINCT(student.class_id) as
 			class_id,course_name,student.class_name,class_id');
 		$this->db->from('student');
@@ -1504,10 +1537,15 @@ class Center extends CI_Controller {
 		$class_id=$this->Common_model->encrypt_decrypt($class_id,'decrypt');
 		$titleData = array('title' => 'Admit Card Student List 2023' );
 		$this->load->view('Centers/header',$titleData);
-		$center_id =  $this->session->center_id;
+		if ($this->session->center_id!=13) {
+			$this->db->where('center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+		}
+		//$center_id =  $this->session->center_id;
 		$where = array(
 			'class_id' =>$class_id,
-			'center_id' => $center_id,
+			//'center_id' => $center_id,
 			'roll_no!=' => 0,
 			'new_exam_form' => 'Y'
 		);
@@ -1522,9 +1560,14 @@ class Center extends CI_Controller {
 		}
 		$titleData = array('title' => 'Admit Card Backlog Student List 2023' );
 		$this->load->view('Centers/header',$titleData);
-		$center_id =  $this->session->center_id;
+		//$center_id =  $this->session->center_id;
+		if ($this->session->center_id!=13) {
+			$this->db->where('center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+		}
 		$where = array(	
-			'center_id' => $center_id,
+			//'center_id' => $center_id,
 			'roll_no!=' => 0,
 			'exam_form' => 'Y',
 			'exam_year' => 'June 2023'
@@ -1543,11 +1586,16 @@ class Center extends CI_Controller {
 		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		$titleData = array('title' => 'Admit Card 2023' );
 		$this->load->view('Centers/header',$titleData);
-		$center_id =  $this->session->center_id;
+		//$center_id =  $this->session->center_id;
+		if ($this->session->center_id!=13) {
+			$this->db->where('center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+		}
 		$where = array(
 			'student_id' => $student_id,
 			'roll_no !=' => 0,
-			'center_id' => $center_id,
+			//'center_id' => $center_id,
 			'new_exam_form' => 'Y',
 		);
 
@@ -1581,11 +1629,17 @@ class Center extends CI_Controller {
 		$backlog_student_id=$this->Common_model->encrypt_decrypt($backlog_student_id,'decrypt');
 		$titleData = array('title' => 'Backlog Admit Card 2023' );
 		$this->load->view('Centers/header',$titleData);
-		$center_id =  $this->session->center_id;
+		//$center_id =  $this->session->center_id;
+		if ($this->session->center_id!=13) {
+			$this->db->where('backlog_student.center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('backlog_student.center_id',array( 21,22,23,24,25,26,27,28));
+		}
+
 		$where = array(
 			'backlog_student.id' => $backlog_student_id,
 			'backlog_student.roll_no !=' => 0,
-			'backlog_student.center_id' => $center_id,
+			//'backlog_student.center_id' => $center_id,
 			'backlog_student.exam_form' => 'Y',
 			'backlog_student.exam_year'=>'June 2023'
 		);
@@ -2730,7 +2784,8 @@ public function practical_assignment_marks_edit(){
 		$this->db->order_by('exam_date', 'Asc');
 		$this->db->order_by('exam_shift', 'Desc');
 		$this->db->order_by('paper_no', 'Asc');
-		$data['paper_list'] = $this->Common_model->get_record('paper_master','*',array("course_group_id"=>$course,"class_id"=>$class_id,"type"=>'theory','paper_master.exam_date!='=>'','paper_master.exam_date!='=>'0000-00-00'));
+		$cbcs = $data['class'][0]['cbcs'];
+		$data['paper_list'] = $this->Common_model->get_record('paper_master','*',array("course_group_id"=>$course,"class_id"=>$class_id,"type"=>'theory','paper_master.exam_date!='=>'','paper_master.exam_date!='=>'0000-00-00','cbcs_paper'=>$cbcs));
 	
 	//	echo $this->db->last_query();																				  
 		echo $this->load->view('Centers/time_table',$data,true);
@@ -2742,11 +2797,11 @@ public function practical_assignment_marks_edit(){
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
 		);
-
+		$master = $this->Common_model->getSingleRow('master');
       $classpermission = $this->Common_model->get_record('class_master','id',array('backlog_exam_form_permission'=>'Y'));
   		$class_ids = array_column($classpermission, 'id');
 		$center_id =  $this->session->center_id;
-		$center_permission = $this->Common_model->get_record('center','exam_form_permission',array('id'=>$center_id));
+		$center_permission = $this->Common_model->get_record('center','exam_form_permission,temp_exam_form,temp_admission_payment',array('id'=>$center_id));
 		if($exam_form1=='submitted'){
 			$where = array('exam_form' =>'Y','center_id' => $center_id);
 		}else if($exam_form1 =="notSubmitted"){
@@ -2762,8 +2817,18 @@ public function practical_assignment_marks_edit(){
 			);
 		}
 		$data['exam_form_button'] = $exam_form1;
-		$this->db->where_in('class_id',$class_ids);
+		if($center_permission[0]['temp_exam_form']=='N'){
+			$this->db->where_in('class_id',$class_ids);
+		}
 		$this->db->where('exam_year' ,'June 2023');
+		//Start
+		
+		if(!empty($master->remove_class_from_center) && $center_permission[0]['temp_exam_form'] =='N'){
+			$remove_classes=explode(',',$master->remove_class_from_center);
+			$this->db->where_not_in('backlog_student.class_id', $remove_classes );
+		
+		}
+		//END
 		$data['documents'] = $this->Common_model->getRecordByWhere('backlog_student',$where);
 		if($center_permission[0]['exam_form_permission']!='Y' && $exam_form1 =="notSubmitted"){
 			$data['documents'] ="";
@@ -2791,6 +2856,7 @@ public function practical_assignment_marks_edit(){
 		$this->db->where('backlog_exam_form.class_id',$class_id);
 		$this->db->where('backlog_student.exam_year','June 2023');
     	$this->db->where('status','B');
+		$this->db->order_by('paper_order', 'asc');
     	$data['papers'] = $this->db->get()->result();
     	$this->load->view('Centers/backlog_showPapers',$data);
     	$this->load->view('Centers/footer');

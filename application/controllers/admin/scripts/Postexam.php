@@ -374,9 +374,9 @@ class Postexam extends CI_Controller {
         $this->db->select('DISTINCT(id)');
         $this->db->from('class_master');
         // $this->db->where('class_name','I Year');
-        //$this->db->where('backlog_exam_form_permission','Y');
+        $this->db->where('backlog_exam_form_permission','Y');
         //$this->db->where('old_exam_form_permission','N');
-         $this->db->where('exam_form_permission','Y');
+         // $this->db->where('exam_form_permission','Y');
         $classes = $this->db->get()->result();
        $class_id = array_column($classes,'id');
        if($classes){
@@ -386,7 +386,7 @@ class Postexam extends CI_Controller {
            $this->db->where('exam_result', 'FAIL');
            $this->db->where('exam_status', 'R');
            $this->db->where_in('class_id',$class_id );
-           $this->db->where('id>', '36941');
+        //    $this->db->where('id>', '36941');
            $this->db->group_by('class_id');         
            $data['courses'] = $this->db->get('old_exam_data')->result();
        }else{
@@ -406,7 +406,7 @@ class Postexam extends CI_Controller {
         $this->db->where('exam_year', 'Feb 2023');
         $this->db->where('exam_result', 'FAIL');
         $this->db->where('exam_status', 'R');
-        $this->db->where('id>', '36941');
+        // $this->db->where('id>', '36941');
         $this->db->where('old_exam_data.class_id',$class_id);
         $data['students'] = $this->db->get()->result();
         $this->load->view('admin/script/check_demo_backlog_student_script',$data);

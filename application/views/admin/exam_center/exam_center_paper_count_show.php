@@ -110,6 +110,8 @@ foreach($papers as $pap)
       $this->db->where('exam_shift',$pap->exam_shift);	
       $this->db->where('exam_date>=',"2023-07-31");	
       $this->db->where_not_in('class_id',array(163,175,264));
+      $this->db->where_in('class_id',array(141,150,186) );
+      // $this->db->where_in('class_id',array(101,102,104,105,107,108,110,111,113,116,117,119,120,125,126,128,129,131,132,134,137,140,143,146,149,184,192,284,286,288,290,292,294,296,298,135) );
       $this->db->order_by('exam_date','Asc');
       $this->db->order_by('exam_shift','Desc');
 
