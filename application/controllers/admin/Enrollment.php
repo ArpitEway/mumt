@@ -54,7 +54,7 @@
 				$master = $this->Common_model->getSingleRow('master');
 				if(!empty($master->remove_class_from_center) ){
 					
-					$sql="SELECT GROUP_CONCAT(DISTINCT(`course_group_id`)) as id FROM `class_master` where `id`  IN ($master->remove_class_from_center)";
+					$sql="SELECT GROUP_CONCAT(DISTINCT(`course_group_id`)) as id FROM `class_master` where `id`  IN ($master->remove_class_from_center) and admission_permission = 'Y'";
 					$query = $this->db->query($sql);
         			$group_ids = $query->result_array();
 					$grouparr=explode(',',$group_ids[0]['id']);
