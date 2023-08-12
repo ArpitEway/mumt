@@ -528,6 +528,60 @@ public function update_roll_no_old_data(){
 			echo $this->db->last_query();
 		}
 	}
+
+	public function add_extra_papers_in_old_result_data()
+	{
+		
+		$class_id=253;
+		// $class_id=205;
+		$num_of_papers=4;
+		
+		$sql="SELECT count(*)as num,e.* FROM `old_result_data` as e join `old_exam_data` as s on s.id=e.`exam_data_id` WHERE s.`class_id`=".$class_id." AND exam_year='Feb 2023' and exam_status='R' group by s.student_id HAVING num='".$num_of_papers."'";
+		$sql_result = $this->db->query($sql);
+        $students = $sql_result->result_array();
+		foreach ($students as $student) {
+			echo 	$query="SELECT * FROM `new_exam_form` WHERE `student_id`='".$student['student_id']."' and class_id='".$class_id."' and paper_type!='Theory'";
+			$query_result = $this->db->query($query);
+			$student_practical_records = $query_result->result_array();
+			foreach ($student_practical_records as $row) {
+				$where="`id` = '".$row['paper_id']."'"  ;
+				$papers = $this->Common_model->get_record('paper_master','*',$where);
+				//print_r($papers);
+				$ResultData = array(
+					'exam_data_id' =>  $student['exam_data_id'] ,
+					'student_id' =>  $row['student_id'] ,
+					'course_group_id' => $row['course_group_id'] ,
+					'class_id' => $row['class_id'] ,
+					'paper_code'=> $row['paper_code'] ,
+					'type'=> $row['paper_type'] ,
+					'max_theory_marks'=> $papers[0]['max_theory_marks'],
+					'max_int_marks'=> $papers[0]['max_internal_marks'],
+					'min_theory_marks'=> $papers[0]['min_theory_marks'],
+					'min_int_marks'=> $papers[0]['min_internal_marks'],
+					'theory_marks'=> $row['theory_marks'],
+					'p_marks'=> $row['p_marks'],
+					'int_marks'=> $row['int_marks'],
+					'paper_name'=>  $papers[0]['paper_name'],
+					'result' => 'PASS',
+					'group_id' => $row['group_id'],
+					'sub_group_id' => $row['sub_group_id'],
+					'p_order'=> $row['paper_order'] 
+				);
+				
+				echo "<pre>";
+				
+				print_r($ResultData);
+			   $insert = $this->Common_model->insertAll('old_result_data',$ResultData);
+				echo $this->db->last_query().'<br>';
+				
+			}
+			
+			
+		}	
+		
+	}
+
+	
 }
 
 ?>
