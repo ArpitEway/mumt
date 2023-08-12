@@ -50,8 +50,8 @@
             <tr>
               <td height="100" colspan="2" valign="bottom">
                 <center>
-                  
-                  <strong><?php echo  ($isOneClass) ? $exam_data->course_name .' '."(One Year Course)" :$exam_data->course_name .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)); ?> <?=$exam_data->exam_year ?></strong>
+                <?php $course = ($exam_data->course_group_id == 75)?'Bachelor of Arts and Bachelor of Education (B.A.B.Ed.)':$exam_data->course_name;?>
+                  <strong><?php echo  ($isOneClass) ? $course .' '."(One Year Course)" :$course.' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)).' Examination '; ?> <?=$exam_data->exam_year ?></strong>
                 </center>
               </td>
             </tr>
@@ -106,7 +106,8 @@
                       <td class="Normaltext" align="left" width="29%"><div align="left">Father's / Husband's Name</div></td>
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo strtoupper( $exam_data->f_h_name); ?></span></div></td>
                     </tr>
-                    <?php if ($exam_data->center_id==10 || $exam_data->center_id==12): ?>
+                    <?php if ($exam_data->course_group_id==76 || $exam_data->course_group_id==75){ ?>
+                    <?php if ($exam_data->center_id==10 || $exam_data->center_id==12){ ?>
                     <tr>
                       <td class="Normaltext" align="left" width="29%"><div align="left">Department</div></td>
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;">
@@ -117,7 +118,8 @@
                         } ?>
                       </span></div></td>
                     </tr>
-                  <?php endif ?>
+                  <?php }
+                  }?>
                   </tbody>
                 </table>
               </td>
