@@ -2965,6 +2965,7 @@ public function getStudentData()
 						$data['practical_internal_marks']=$classData->practical_internal_marks;
 						$this->db->select('*');
 						$this->db->from('backlog_exam_form');
+						$this->db->where('backlog_exam_form.backlog_student_id',$data['student']->id);
 						$this->db->where('backlog_exam_form.student_id',$data['student']->student_id);
 						$this->db->where('backlog_exam_form.class_id',$data['student']->class_id);
 						$new_exam_form = $this->db->get()->result();
