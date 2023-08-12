@@ -6,9 +6,10 @@
 		<div class="content-head row mb-3 mt-5">
 			<div>
 				<ul>
-				<li> <a target="_blank" href="<?=base_url('assets/images/Notification.png')?>" ><img src="<?=base_url('assets/images/center/new.gif')?>" alt=""> शिक्षक प्रशिक्षण हेतु आमंत्रण - Click Here </a></li><br>
+				
 				<li><img src="<?=base_url('assets/images/center/new.gif')?>" alt=""> सूचित किया जाता है कि B.Sc (PCM) द्वितीय वर्ष के विद्यार्थियों के एडमिट कार्ड में कुछ परिवर्तन किया गया है| आपसे निवेदन है कि उक्त विद्यार्थियों का नवीन एडमिट कार्ड पुनः डाउनलोड कर विद्यार्थियों को उपलब्ध कराये|
 				</li><br>
+				<li> <a target="_blank" href="<?=base_url('assets/images/Notification.png')?>" ><img src="<?=base_url('assets/images/center/new.gif')?>" alt=""> शिक्षक प्रशिक्षण हेतु आमंत्रण - Click Here </a></li><br>
 				<li> प्रवेश सम्बंधित समस्त भुगतान की प्रक्रिया दिनांक 7 अगस्त 2023 तक पूर्ण कर ले, इसके पश्चात् किसी अनुरोध पर विचार नहीं किया जायेगा| </li><br>
 
 				<li> सूचित किया जाता है कि प्रायवेट प्रवेश से सम्बंधित समस्त ऑनलाइन प्रक्रिया सम्पन्न करने के लिए अंतिम तिथि 5 अगस्त 2023 तय की गई है| अनुरोध है कि उक्त दिनांक के पूर्व प्रक्रिया पूर्ण करे| इसके पश्चात् किसी भी आवेदन पर विचार नहीं किया जावेगा|</li><br>
