@@ -540,7 +540,7 @@ public function update_roll_no_old_data(){
 		$sql_result = $this->db->query($sql);
         $students = $sql_result->result_array();
 		foreach ($students as $student) {
-			echo 	$query="SELECT * FROM `new_exam_form` WHERE `student_id`='".$student['student_id']."' and class_id='".$class_id."' and paper_type!='Theory'";
+			 	$query="SELECT * FROM `new_exam_form` WHERE `student_id`='".$student['student_id']."' and class_id='".$class_id."' and paper_type!='Theory'";
 			$query_result = $this->db->query($query);
 			$student_practical_records = $query_result->result_array();
 			foreach ($student_practical_records as $row) {
@@ -572,7 +572,7 @@ public function update_roll_no_old_data(){
 				
 				//print_r($ResultData);
 
-			   $insert = $this->Common_model->insertAll('old_result_data',$ResultData);
+			   //$insert = $this->Common_model->insertAll('old_result_data',$ResultData);
 				echo $this->db->last_query().'<br>';
 				
 			}
