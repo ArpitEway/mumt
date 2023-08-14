@@ -695,7 +695,7 @@
 			$data['tot_unpaid'] = $this->Common_model->getCountByWhere('student',$where);
 
 	       //---paid and uploaded--------
-			$where = array('document_uploaded'=>'Y','payment_status'=>'Y','session'=>$session_july);
+			$where = array('document_uploaded'=>'Y','payment_status'=>'Y','session'=>$session_july,'new_admission_permission'=>'N');
 			if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 			$data['uploaded'] = $this->Common_model->getCountByWhere('student',$where);
 
@@ -705,37 +705,37 @@
 			$data['not_uploaded'] = $this->Common_model->getCountByWhere('student',$where);
 
 	        //---paid/uploaded/ non approved---
-			$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'N','session'=>$session_july);
+			$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'N','session'=>$session_july,'new_admission_permission'=>'N');
 			if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'N','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 			$data['non_approved'] = $this->Common_model->getCountByWhere('student',$where);
 
 	        // paid + uploaded but approved = '' not verified----
-			$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'','session'=>$session_july);
+			$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'','session'=>$session_july,'new_admission_permission'=>'N');
 			if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 			$data['not_verified'] = $this->Common_model->getCountByWhere('student',$where);
 
 	         // paid + uploaded + approved = Y  verified----
-			$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'Y','session'=>$session_july);
+			$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'Y','session'=>$session_july,'new_admission_permission'=>'N');
 			if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'Y','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 			$data['approved'] = $this->Common_model->getCountByWhere('student',$where);
 
 			// enrollement genrated
-			$where = array('enrollment_no !='=>'-','approved='=>'Y','session'=>$session_july);
+			$where = array('enrollment_no !='=>'-','approved='=>'Y','session'=>$session_july,'new_admission_permission'=>'N');
 			if($mode!=""){ 	$where = array('enrollment_no !='=>'-','approved='=>'Y','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 			$data['en_generated'] = $this->Common_model->getCountByWhere('student',$where);
 
 			// not enrollement genrated
-			$where = array('enrollment_no'=>'-','approved='=>'Y','session'=>$session_july);
+			$where = array('enrollment_no'=>'-','approved='=>'Y','session'=>$session_july,'new_admission_permission'=>'N');
 			if($mode!=""){ 	$where = array('enrollment_no '=>'-','approved='=>'Y','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 			$data['not_en_generated'] = $this->Common_model->getCountByWhere('student',$where);
 
 			// enrolled
-			$where = array('enrolled'=>'Y','approved='=>'Y','enrollment_no !='=>'-','session'=>$session_july);
+			$where = array('enrolled'=>'Y','approved='=>'Y','enrollment_no !='=>'-','session'=>$session_july,'new_admission_permission'=>'N');
 			if($mode!=""){ 	$where = array('enrolled'=>'Y','approved='=>'Y','enrollment_no !='=>'-','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 			$data['tot_enrolled'] = $this->Common_model->getCountByWhere('student',$where);
 
 			// not enrolled
-			$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july);
+			$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july,'new_admission_permission'=>'N');
 			if($mode!=""){ 	$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 			$data['tot_not_enrolled'] = $this->Common_model->getCountByWhere('student',$where);
 
