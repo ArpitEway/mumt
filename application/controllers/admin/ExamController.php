@@ -2673,7 +2673,7 @@ public function getStudentData()
 
 
 	public function search_student_result($rollno=""){
-		// redirect(base_url().'ExamController/');
+		 redirect(base_url().'ExamController/');
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
 		$data['rollno']=$rollno;
@@ -3151,7 +3151,7 @@ public function getStudentData()
 		$this->load->view('admin/generate_tr/footer2');
 	}
 	public function search_student_backlog_result($rollno=""){
-		// redirect(base_url().'ExamController/');
+		 redirect(base_url().'ExamController/');
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
 		$data['rollno']=$rollno;
