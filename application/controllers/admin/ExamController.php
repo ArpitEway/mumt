@@ -1634,7 +1634,7 @@ class ExamController extends CI_Controller {
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('DISTINCT(exam_center_id) ');
 			$this->db->from('student');
-			$where = array('new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>12);
+			$where = array('new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>13);
 			$this->db->where($where);
 			$ecenters=$this->db->get()->result_array();
 			//print_r($this->db->last_query()); 
