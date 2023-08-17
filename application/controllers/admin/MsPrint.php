@@ -106,6 +106,7 @@ class MsPrint extends CI_Controller {
 		$data['class_id']  = $new_exam_form[0]->class_id;
 		$title = array('title' => 'Result');
 		$data['exam_data'] = $this->Common_model->getRecordById('old_exam_data','id',$exam_data_id);
+		
 		$data['student'] = $this->Common_model->getRecordById('student','student_id', $data['exam_data']->student_id);
 		// $course_id !=36 && $course_id !=37
 		$class = $this->Common_model->getRecordByID('class_master','id', $data['exam_data']->class_id);
@@ -115,6 +116,8 @@ class MsPrint extends CI_Controller {
 						
 						$this->load->model('Gradesheet_old_model');
 						$dt =  $this->load->view('admin/msprint/student_marksheet_grade',$data);
+					}else if ($data['exam_data']->exam_status == "B") {
+						$this->load->view('admin/msprint/old_backlog_student_marksheet',$data);
 					}else if($class->internal=="Y" && $data['exam_data']->university_mode!="PVT" ){ 
 			$this->load->view('admin/msprint/old_student_marksheet',$data);
 		}else{

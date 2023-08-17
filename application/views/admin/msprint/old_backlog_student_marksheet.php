@@ -26,9 +26,6 @@
     .barcode img{
       height: 25px;
     }
-    .student_image{
-      image-orientation: none;
-    }
     @media print {
       .breakhere { page-break-after:always;  };
     }
@@ -39,25 +36,22 @@
 </head>
 <body>
   <center>
-    <?php 
-
+    <?php
     $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
-    $marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
+   // $marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
-    $isOneClass = $this->Common_model->hasOneClass($course_group_id);
-    // var_dump($isOneClass);
-    foreach($students as $student)
-    {
-      $papers = $this->Common_model->student_info_for_backlog_result($student->student_id,$student->class_id);
-      ?>
+    $isOneClass = $this->Common_model->hasOneClass($classData->course_group_id);
+    $papers = $old_result_data;
+    ?>
       <fieldset id="printarea" class="breakhere" style="width:90%;border: 0px solid #22316C;"> 
-        <div align="left"> MS No. <?php echo $student->back_marksheet_no; ?> </div>
+        <div align="left"> MS No. <?php echo $exam_data->marksheet_no; ?> </div>
         <table align="center" border="0" width="100%">
           <tbody>
             <tr>
               <td height="100" colspan="2" valign="bottom">
                 <center>
-                  <strong><?php echo  ($isOneClass) ? $student->course_name .' '."(One Year Course)" :$student->course_name .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->class_id)); ?> <?= 'Backlog '.$marksheet_variables->exam_session ?></strong>
+                <?php $course = ($exam_data->course_group_id == 75)?'Bachelor of Arts and Bachelor of Education (B.A.B.Ed.)':$exam_data->course_name;?>
+                  <strong><?php echo  ($isOneClass) ? $course .' '."(One Year Course)" :$course.' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)).' Examination '; ?> <?=$exam_data->exam_year ?></strong>
                 </center>
               </td>
             </tr>
@@ -65,7 +59,10 @@
               <td align="center" height="120" colspan="2">
                 <table class="mytable" border="0" cellpadding="2" cellspacing="2" width="100%">
                   <tbody>
-                    <?php if($student->mode == 'REG'){?>
+                    <?php
+                    $check_mode = $this->Common_model->getRecordById('backlog_student','student_id', $papers[0]->student_id);
+                    if($check_mode->mode == "REG"){
+                    ?>
                     <tr>
                       <td class="Normaltext" colspan="2">
                         <div align="center"><font size="4">  &nbsp; </font></div>
@@ -74,12 +71,14 @@
                         <div align="center"><font size="4">  Regular </font></div>
                       </td>
                     </tr>
-                    <?php }?>
+                    <?php
+                    }
+                    ?>
                     <tr>
                       <td width="35%" class="Normaltext" align="left"><div align="left">Roll No</div></td>
                       <td width="53%" class="resultText">
                         <div align="left">
-                          <span id="lblSemesterGrading" style="color:Black;"><?php echo $student->roll_no; ?></span>
+                          <span id="lblSemesterGrading" style="color:Black;"><?php echo $exam_data->roll_no; ?></span>
                           <!-- <div style="float:right"> &nbsp;&nbsp;&nbsp; Mode - Distance Education </div> -->
                         </div>
                       </td>
@@ -92,7 +91,7 @@
                         <div align="left">Enrolment / Registration No.</div>
                       </td>
                       <td class="resultText">
-                        <div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo  $student->enrollment_no;; ?></span></div>
+                        <div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo  $exam_data->enrollment_no;; ?></span></div>
                       </td>
                     </tr>
                     <tr>
@@ -107,21 +106,20 @@
                       <td class="Normaltext" align="left" width="29%"><div align="left">Father's / Husband's Name</div></td>
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo strtoupper( $student->f_h_name); ?></span></div></td>
                     </tr>
-                    <?php if ($student->course_group_id==76): ?>
+                    <?php if ($exam_data->course_group_id==76 || $exam_data->course_group_id==75){ ?>
+                    <?php if ($exam_data->center_id==10 || $exam_data->center_id==12){ ?>
                     <tr>
                       <td class="Normaltext" align="left" width="29%"><div align="left">Department</div></td>
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;">
-                        <?php 
-                        // if ($student->center_id==10) {
-                        $center_ids = array(10,13,21,22,23,24,25,26,27,28,29);
-                        if(in_array($student->center_id, $center_ids)){
-                          echo "University Teaching Department Karoundi";
-                        }else if ($student->center_id==12) {
+                        <?php if ($exam_data->center_id==10) {
+                          echo "University Teaching Department Karaundi";
+                        }else if ($exam_data->center_id==12) {
                           echo "Shiksha Vibhag, Lamti Jabalpur";
                         } ?>
                       </span></div></td>
                     </tr>
-                    <?php endif ?>
+                  <?php }
+                  }?>
                   </tbody>
                 </table>
               </td>
@@ -168,7 +166,7 @@
                         foreach($papers as $marks){
                           if($marks->type=='theory'){
                             $tot_std_marks += $marks->theory_marks+$marks->int_marks;
-                            $tot_marks += $marks->max_theory_marks+$marks->max_internal_marks;
+                            $tot_marks += $marks->max_theory_marks+$marks->max_int_marks;
                             if($marks->theory_marks<$marks->min_theory_marks){
                               $result = "FAIL";
                               $fail_count++;
@@ -179,7 +177,7 @@
                               $result = 'FAIL';
                               $abs_count++ ;
                             }
-                            if($marks->int_marks<$marks->min_internal_marks)
+                            if($marks->int_marks<$marks->min_int_marks)
                             {
                               $result ="FAIL";
                               $int_fail_count++ ;
@@ -190,8 +188,8 @@
                             }
                           }else if($marks->type=="Sessional"){
                             $tot_std_marks += $marks->int_marks;
-                            $tot_marks +=$marks->max_internal_marks;
-                            if($marks->int_marks<$marks->min_internal_marks)
+                            $tot_marks +=$marks->max_int_marks;
+                            if($marks->int_marks<$marks->min_int_marks)
                             {
                               $result ="FAIL";
                               $int_fail_count++ ;
@@ -201,18 +199,16 @@
                               $result='FAIL';
                             }
 
+                          
                           }else{
                             if ($classData->practical_internal_marks=='Y') {
                               $tot_std_marks += $marks->p_marks+$marks->int_marks;
-                              $tot_marks += $marks->max_theory_marks+$marks->max_internal_marks;
+                              $tot_marks += $marks->max_theory_marks+$marks->max_int_marks;
                               if($marks->p_marks<$marks->min_theory_marks){
                                 $result = "FAIL";
                                 $fail_count++;
                                 $fali_tot_marks += $marks->p_marks;
                                 $require_tot_marks += $marks->min_theory_marks;
-                              }else if($marks->p_marks == 'ABS'){
-                                $result = 'FAIL';
-                                $abs_count++ ;
                               }
                             }else{
                               $tot_std_marks += $marks->p_marks;
@@ -222,10 +218,6 @@
                                 $fail_count++;
                                 $fali_tot_marks += $marks->p_marks;
                                 $require_tot_marks += $marks->min_theory_marks;
-                              }
-                              else if($marks->p_marks == 'ABS'){
-                                $result = 'FAIL';
-                                $abs_count++ ;
                               }
                             }
                           }
@@ -240,7 +232,6 @@
 //                         }
                         foreach($papers as $paper)
                         {
-                          
                           $paper_name=$paper->paper_name;
                           if($paper->class_id=="168"){
                               if($paper->paper_code=="1RMOM3(A)")
@@ -280,31 +271,32 @@
                             <td style="margin-top:2px;" align="left"><strong><?php echo  $paper->paper_code; ?></strong></td>
                             <td align="left"><strong><?php  echo $paper_name ;  ?></strong></td>
                             <td align="center" ><span class="style4">
-                              <?php echo  ($paper->type !='Sessional')?$paper->max_theory_marks:'-';?></span>
+                            <?php echo  ($paper->type !='Sessional')?$paper->max_theory_marks:'-';?></span>
                             </td>
                             <td align="center" ><span class="style4">
-                              <?php echo  ($paper->type !='Sessional')? $paper->min_theory_marks:'-'; ?></span>
+                            <?php echo  ($paper->type !='Sessional')? $paper->min_theory_marks:'-'; ?></span>
                             </td>
-                            <td align="center" ><span class="style4"><?php
-                            if($paper->type=="Sessional"){
-                              echo $paper->max_internal_marks;
+                            <td align="center" ><span class="style4"><?php if($paper->type=="Sessional"){
+                              echo $paper->max_int_marks;
                             }else{
-                              echo ($paper->type=='theory' || $classData->practical_internal_marks=='Y') ?  $paper->max_internal_marks : '-'; 
+                              echo ($paper->type=='theory' || $classData->practical_internal_marks=='Y') ?  $paper->max_int_marks : '-'; 
                             }?></span>
                             </td>
                             <td align="center" ><span class="style4">
                               <?php 
                                if($paper->type=="Sessional"){
-                                echo $paper->min_internal_marks;
+                                echo $paper->min_int_marks;
                               }else{
-                              echo ($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->min_internal_marks : '-'; 
+                              echo ($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->min_int_marks : '-'; 
                               }?></span>
                             </td>
-                            <td align="left" ><span class="style4" style="padding-left:10px;">
-                              <?php
-                              $status = ($paper->status == "C")?' C':'';
+                            <td align="left" >&nbsp;&nbsp;<span class="style4">
+                            <?php
+                            // print_r($paper);
+                              $status = ($paper->carry_theory == "C")?' C':'';
+                             
                               if ($paper->type=='theory') {
-                                if(($paper->theory_marks <  $paper->min_theory_marks || $paper->int_marks <  $paper->min_internal_marks) && $check_grace_marks==false){
+                                if(($paper->theory_marks <  $paper->min_theory_marks || $paper->int_marks <  $paper->min_int_marks) && $check_grace_marks==false){
                                   echo $paper->theory_marks . ' F' ;
                                 }elseif($paper->theory_marks<$paper->min_theory_marks){
                                   echo $paper->theory_marks; 
@@ -318,7 +310,7 @@
                                 echo '-';
                               }else{
                                 if ($classData->practical_internal_marks=='Y') {
-                                  if($paper->p_marks<$paper->min_theory_marks || $paper->int_marks<$paper->min_internal_marks){
+                                  if($paper->p_marks<$paper->min_theory_marks || $paper->int_marks<$paper->min_int_marks){
                                     echo $paper->p_marks.' F';
                                   }elseif($paper->p_marks=='ABS'){
                                     echo 'ABS F';
@@ -339,30 +331,30 @@
                               ?>
                             </span></td>
                             <td align="left" class="style4"><span class="style2" style="padding-left:10px;">
-                              <?php
+                            <?php
                               if($paper->type=='Sessional'){
                                echo  $paper->int_marks.$status;
                               }else{
-                             if($paper->type=='theory' || $classData->practical_internal_marks=='Y'){
-                              echo ($paper->int_marks=='ABS') ? 'ABS F' : $paper->int_marks.' C'; 
-                             }else{
-                              echo '-';
-                             }
+                                if($paper->type=='theory' || $classData->practical_internal_marks=='Y'){
+                                    echo ($paper->int_marks=='ABS') ? 'ABS F' : $paper->int_marks.' C'; 
+                                   }else{
+                                    echo '-';
+                                   }
                               }?></span>
                             </td>
                             <td align="left" class="style2">&nbsp;&nbsp;&nbsp;&nbsp;<span class="style4" style="padding-left:10px;">
-                              <?php 
+                            <?php 
                               if ($paper->type=='theory') {
-                                if($paper->int_marks<$paper->min_internal_marks || $paper->theory_marks<$paper->min_theory_marks){
+                                if($paper->int_marks<$paper->min_int_marks || $paper->theory_marks<$paper->min_theory_marks){
                                   echo  $paper->theory_marks +  $paper->int_marks . '' ;
                                   echo ($check_grace_marks) ? ' G' : ' F';
                                 }elseif($paper->theory_marks=="ABS"){
-                                  echo ($paper->int_marks=='ABS') ? 'ABS F' : $paper->int_marks.' F';
+                                  echo 'ABS'. ' F' ;
                                 }else{
                                   echo $paper->theory_marks + $paper->int_marks.$status;
                                 }
                               }else if($paper->type=="Sessional"){
-                                if($paper->int_marks<$paper->min_internal_marks){
+                                if($paper->int_marks<$paper->min_int_marks){
                                   echo   $paper->int_marks . '' ;
                                   echo ($check_grace_marks) ? ' G' : ' F';
                                 }elseif($paper->int_marks=="ABS"){
@@ -372,20 +364,20 @@
                                 }
                               }else{
                                 if($classData->practical_internal_marks=='Y') {
-                                  if($paper->int_marks<$paper->min_internal_marks || $paper->p_marks<$paper->min_theory_marks && $check_grace_marks==false){
+                                  if($paper->int_marks<$paper->min_int_marks || $paper->p_marks<$paper->min_theory_marks && $check_grace_marks==false){
                                     echo  $paper->p_marks +  $paper->int_marks . ' F' ; 
                                   }elseif($paper->p_marks=="ABS" || $paper->int_marks=="ABS"){
-                                    echo ($paper->int_marks=='ABS') ? 'ABS F' : $paper->int_marks.' F';
+                                    echo 'ABS'. ' F' ;
                                   }else{
-                                    echo $paper->p_marks + $paper->int_marks.$satus ;
+                                    echo $paper->p_marks + $paper->int_marks.$satus  ;
                                   } 
                                 }else{
                                   if($paper->p_marks<$paper->min_theory_marks && $check_grace_marks==false){
                                     echo  $paper->p_marks . ' F' ; 
                                   }elseif($paper->p_marks=="ABS"){
-                                    echo ($paper->int_marks=='ABS') ? 'ABS F' : $paper->int_marks.' F';
+                                    echo 'ABS'. ' F';
                                   }else{
-                                    echo $paper->p_marks.$status;
+                                    echo $paper->p_marks.$satus ;
                                   }
                                 }
                               }
@@ -431,8 +423,9 @@
                     <tr>
                       <td height="20" ><strong><?=$classData->mode ?></strong></td>
                       <?php
-                        $whereClass = array( 'course_group_id'=> $classData->course_group_id,'class_id !=' => $classData->id,'student_id' =>$student->student_id);
+                        $whereClass = array( 'course_group_id'=> $classData->course_group_id,'class_id !=' => $classData->id,'student_id' =>$papers[0]->student_id);
                        $oldClassResult = $this->Common_model->getRecordByWhere('old_exam_data',$whereClass);
+                      
                         foreach ($oldClassResult as $row) {
                         $i++;
                         ?>
@@ -540,11 +533,16 @@
               <tr>
                 <td width="17" align="center">
                   <div align="left">
-                    <?php echo "Date :".$marksheet_variables->backlog_result_date; ?></div></td>
+                    <?php echo "Date :".$exam_data->marksheet_date; ?></div></td>
                   </tr>
                   <tr class="">
                     <td colspan="">
-                      <?php  echo $generator->getBarcode($marksheet_variables->bar_code_no.$student->roll_no, $generator::TYPE_CODE_128,2,25); ?>
+                    <?php 
+                     $arr=explode(" ",$exam_data->exam_year);
+                     $first=substr($arr[1], -2);
+                     $second=date('m',strtotime($arr[0]));
+                     $barcode_no=$first.$second.$exam_data->roll_no;
+                     echo $generator->getBarcode($barcode_no, $generator::TYPE_CODE_128,2,25); ?>
                     </td>
                   </tr>
                   <tr>
@@ -556,7 +554,6 @@
           </tbody>
         </table>
       </fieldset>
-    <?php } ?>
   </center>
 </body>
 </html>

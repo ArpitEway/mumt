@@ -50,7 +50,7 @@
 						<div class="login-form login-signin">
 							<div class="text-center mb-10 ">
 								<h2 class="font-weight-bold text-warning">Sign In</h2>
-								<p class="text-muted font-weight-bold">Enter your center Code and Passwod</p>
+								<p class="text-muted font-weight-bold">Enter your Center Code and Password</p>
 							</div>
 							<?php if ($this->session->flashdata('success')) { ?>
 								<span id="alert-msg" class="aler alert-success p-2 alert-msg"><?php echo $this->session->flashdata('success') ?></span>
@@ -62,7 +62,7 @@
 							<!--begin::Form-->
 							<form class="form" method="post" action="<?=base_url('center/center/loginSub')?>" >
 								<div class="form-group py-3 m-0">
-									<input class="form-control  placeholder-dark-75" type="text" placeholder="center Code" name="centercode" maxlength="10" minlength="4" id="centercode" autocomplete="off" required />
+									<input class="form-control  placeholder-dark-75" type="text" placeholder="Center Code" name="centercode" maxlength="10" minlength="4" id="centercode" autocomplete="off" required />
 								</div>
 								<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 								<div class="form-group py-3 border-top m-0">
