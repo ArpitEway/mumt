@@ -72,9 +72,8 @@ class MsPrint extends CI_Controller {
 				}else if($text_val !='' && $radio_val == 'student_id'){
 					$student = $this->Common_model->getRecordById('student','student_id',$text_val);
 				}  
-				$this->db->where('exam_year!=',"Feb 2023");	
+				$this->db->where_not_in('exam_year',array('Feb 2023','March 2023'));
 				$result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id' =>$student->student_id));
-				//,"exam_year"=>"Feb 2022"
 				$data = array(
 					'result' => $result,
 					'student' => $student,
