@@ -5563,16 +5563,16 @@ public function forward_complaint(){
 		$data['title'] = $title;
 		$data['university_mode'] = $mode;
 
-		// if($class->last_class == 'L'){
+		if($class->last_class == 'L'){
 			
-		// 	 $this->db->select('backlog_student.*,student.name,student.f_h_name,student.session,student.photo,student.course_name');
-		// 	 $this->db->from('backlog_student');
-		// 	$this->db->join('student','student.student_id = backlog_student.student_id');
-		// 	$this->db->where(array("backlog_student.course_group_id"=>$course_id ,'backlog_student.class_id' => $class_id,'backlog_student.exam_form'=>'Y','backlog_student.roll_no!='=>'0','student.course_complete=>'Y','backlog_student.mode'=>$mode,'backlog_student.result_show'=>'N' ));
-		// 	$this->db->order_by('backlog_student.center_id,backlog_student.roll_no','ASC');
-		// 	$data['students']=$this->db->get()->result();
-		// 	// $this->Common_model->last_query();
-		//  }else{
+			 $this->db->select('backlog_student.*,student.name,student.f_h_name,student.session,student.photo,student.course_name');
+			 $this->db->from('backlog_student');
+			$this->db->join('student','student.student_id = backlog_student.student_id');
+			$this->db->where(array("backlog_student.course_group_id"=>$course_id ,'backlog_student.class_id' => $class_id,'backlog_student.exam_form'=>'Y','backlog_student.roll_no!='=>'0','student.course_complete'=>'Y','backlog_student.mode'=>$mode,'backlog_student.result_show'=>'Y','backlog_student.exam_year'=>'Dec 2022'));
+			$this->db->order_by('backlog_student.center_id,backlog_student.roll_no','ASC');
+			$data['students']=$this->db->get()->result();
+			// $this->Common_model->last_query();
+		 }else{
 			$this->db->select('backlog_student.*,student.name,student.f_h_name,student.session,student.photo,student.course_name');
 			$this->db->from('backlog_student');
 			$this->db->join('student','student.student_id = backlog_student.student_id');
@@ -5580,7 +5580,7 @@ public function forward_complaint(){
 			$this->db->order_by('backlog_student.center_id,backlog_student.roll_no','ASC');
 			$data['students']=$this->db->get()->result();
 			// $this->Common_model->last_query();
-		//  }
+		 }
 	 	if($class->internal=="Y" && $mode!="PVT"){
 			$this->load->view('admin/backlog_student_marksheet',$data);
 		}else{

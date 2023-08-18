@@ -48,7 +48,7 @@
     // var_dump($isOneClass);
     foreach($students as $student)
     {
-      $papers = $this->Common_model->student_info_for_backlog_result($student->student_id,$student->class_id);
+      $papers = $this->Common_model->student_info_for_backlog_result($student->student_id,$student->class_id,$student->id);
       ?>
       <fieldset id="printarea" class="breakhere" style="width:90%;border: 0px solid #22316C;"> 
         <div align="left"> MS No. <?php echo $student->back_marksheet_no; ?> </div>
