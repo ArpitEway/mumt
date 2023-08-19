@@ -714,7 +714,7 @@ class Postexam extends CI_Controller {
 			'hash_csrf' => $this->security->get_csrf_hash(),
 		);
         // 'result_show' => 'Y',
-        $data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id,'old_class_id'=>$class_id,"course_complete"=>'N','old_upload_result' => 'Y','exam_form'=>'Y'));  
+        $data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id,'old_class_id'=>$class_id,"course_complete"=>'N','upload_result' => 'Y','exam_form'=>'Y'));  
         $html_comment = $this->load->view('admin/script/course_complete_list' ,$data);
         echo json_encode(array("data" => $html_comment));
     }
@@ -737,7 +737,7 @@ class Postexam extends CI_Controller {
         $this->db->from('student');
         $this->db->join('class_master','class_master.id = '.$class_id.'');
         $this->db->where('class_master.last_class','L');
-        $this->db->where(array("course_complete"=>'N','old_upload_result' => 'Y','exam_form'=>'Y')); 
+        $this->db->where(array("course_complete"=>'N','upload_result' => 'Y','exam_form'=>'Y')); 
         // $this->db->group_by('course_group_id'); 
         $data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
@@ -754,7 +754,7 @@ class Postexam extends CI_Controller {
             $course_group_id =$_POST['course_group_id'];
             $class_id= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course_group_id,'last_class'=>'L'));
             // $this->db->limit(200);
-            $students = $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id,'old_class_id'=>$class_id[0]->id,"course_complete"=>'N','old_upload_result' => 'Y','exam_form'=>'Y')); 
+            $students = $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_group_id,'old_class_id'=>$class_id[0]->id,"course_complete"=>'N','upload_result' => 'Y','exam_form'=>'Y')); 
             
         $classes= $this->Common_model->getRecordByWhere('class_master',array('course_group_id'=>$course_group_id,'mode'=>$class_id[0]->mode));
         $class_count = count($classes);  
