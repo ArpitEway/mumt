@@ -812,9 +812,9 @@ class Postexam extends CI_Controller {
             $this->db->where('exam_form', 'Y');
             $this->db->where('upload_result', 'Y');
             // $this->db->where('result_show', 'Y');
-            $this->db->where('result_permission', 'Y');
+          //  $this->db->where('result_permission', 'Y');
             // $this->db->where('final_result_permission', 'Y');
-            $this->db->where('marksheet_dispatch', 'Y');
+           // $this->db->where('marksheet_dispatch', 'Y');
             $this->db->group_by('class_id');          
             $data['courses'] = $this->db->get('student_result_aug_22')->result();
             $this->load->view('header',array('title' => ''));
