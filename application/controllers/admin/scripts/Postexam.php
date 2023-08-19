@@ -849,7 +849,7 @@ class Postexam extends CI_Controller {
               $calPer=round(($row->obtain_marks/$row->total_marks)*100,2);
               $savedPer=round($row->percentage,2);
             
-              if(($obtain[0]->obt!=$row->obtain_marks) || ($savedPer!=$per) ){
+              if(($obtain[0]->obt!=$row->obtain_marks) ){ // || ($savedPer!=$per)
                 echo "<p> Row ID ".$row->id." Stdent ID ".$row->student_id." Marks on Record ".$row->obtain_marks." And in Subject Total ".$obtain[0]->obt." %% ".$row->percentage." % ".$per."</p>";
 
               }
