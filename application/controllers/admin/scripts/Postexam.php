@@ -804,8 +804,10 @@ class Postexam extends CI_Controller {
  
     public function marks_checking()
        {
-            $this->db->select('course_name,student_result_aug_22.class_name,class_id, COUNT(student_id) as cnt');
-            $this->db->join('class_master', 'student_result_aug_22.old_class_id = class_master.id');
+        //$tbname="student_result_aug_22"; 
+        $tbname="student";    
+        $this->db->select('course_name,'.$tbname.'.class_name,class_id, COUNT(student_id) as cnt');
+            $this->db->join('class_master', $tbname.'.old_class_id = class_master.id');
            
            // $this->db->where('last_class', 'L');
             // $this->db->where('mode', 'Semester');
@@ -816,7 +818,7 @@ class Postexam extends CI_Controller {
             // $this->db->where('final_result_permission', 'Y');
            // $this->db->where('marksheet_dispatch', 'Y');
             $this->db->group_by('class_id');          
-            $data['courses'] = $this->db->get('student_result_aug_22')->result();
+            $data['courses'] = $this->db->get($tbname)->result();
             $this->load->view('header',array('title' => ''));
             $this->load->view('admin/script/marks_checking',$data);
             $this->load->view('footer');
