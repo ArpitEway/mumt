@@ -802,7 +802,66 @@ class Postexam extends CI_Controller {
         $this->load->view('footer');
     }
  
-    
+    public function marks_checking()
+       {
+            $this->db->select('course_name,student_result_aug_22.class_name,class_id, COUNT(student_id) as cnt');
+            $this->db->join('class_master', 'student_result_aug_22.old_class_id = class_master.id');
+           
+           // $this->db->where('last_class', 'L');
+            // $this->db->where('mode', 'Semester');
+            $this->db->where('exam_form', 'Y');
+            $this->db->where('upload_result', 'Y');
+            // $this->db->where('result_show', 'Y');
+            $this->db->where('result_permission', 'Y');
+            // $this->db->where('final_result_permission', 'Y');
+            $this->db->where('marksheet_dispatch', 'Y');
+            $this->db->group_by('class_id');          
+            $data['courses'] = $this->db->get('student_result_aug_22')->result();
+            $this->load->view('header',array('title' => ''));
+            $this->load->view('admin/script/marks_checking',$data);
+            $this->load->view('footer');
+       }
+
+       public function marks_checking_script($class_id="",$startlimit=1){
+            $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+          
+            //SELECT SUM(theory_marks)+sum(int_marks)+sum(p_marks) FROM `old_result_data` WHERE `exam_data_id`=1 
+            $this->db->select('*');
+            $this->db->from('old_exam_data');
+            $this->db->where('course_group_id', $classData->course_group_id);
+            $this->db->where('class_id', $classData->id);
+          
+            $start=0;
+            $start=($startlimit-1)*1000;
+            $this->db->limit(1000,$start);
+            $rows=$this->db->get()->result();
+           
+            foreach($rows as $row){
+           
+              
+              $this->db->select('SUM(theory_marks)+sum(int_marks)+sum(p_marks) as obt');
+              $this->db->from('old_result_data');
+              $this->db->where('exam_data_id', $row->id);
+            
+              $obtain=$this->db->get()->result();
+          
+              $per=(float)round(($obtain[0]->obt/$row->total_marks)*100,2);
+              $calPer=(float)round(($row->obtain_marks/$row->total_marks)*100,2);
+              $savedPer=(float)round($row->percentage,2);
+            
+              if(($obtain[0]->obt!=$row->obtain_marks) || ($savedPer!=$per) ){
+                echo "<p> Row ID ".$row->id." Stdent ID ".$row->student_id." Marks on Record ".$row->obtain_marks." And in Subject Total ".$obtain[0]->obt." %% ".$row->percentage." % ".$per."</p>";
+
+              }
+            //   if($savedPer!=$calPer){
+            //     echo "<p> Row ID ".$row->id." Stdent ID ".$row->student_id." Marks Total ".$row->obtain_marks." And %  ".$row->percentage." Not Match </p>";
+            //   }
+                
+            }
+            
+
+       }
+       
 //for open book only End****************/
 
 public function upload_old_grade_data_script($class_id="",$mode){
