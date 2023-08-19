@@ -401,6 +401,8 @@ table.last_table, .last_table td, .last_table th{
           }else{
             if($final_result == "RW"){
               echo "";
+            }elseif($theory_abs_count == $count_theory){
+              echo 'Year Break';
             }
             elseif($int_abs_count>0 &&  $theory_abs_count>0 && $p_abs_count>0){
               echo 'Absent In All';
