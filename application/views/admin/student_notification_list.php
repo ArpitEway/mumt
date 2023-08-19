@@ -79,6 +79,8 @@
 		$total_theory_abs_count=0;
 		$total_int_abs_count=0;
 		$theory_paper_count=0;
+		$practical_paper_count =0;
+		$practical_abs_count = 0;
 		$theory_abs_count=0;
 		$fail_count = 0;
 		$check_grace_marks = false;	
@@ -94,6 +96,8 @@
 		$total_max_marks=0;
 		$fc1 =0;
     	$fc2=0;
+		$fc1_abs ='';
+		$fc2_abs='';
    		$fc1_max =0;
    		$fc2_max =0;
   		 $fc1_min =0;
@@ -113,6 +117,10 @@
 						$rw_count++;
 					 
 					  }
+					  if($marks->theory_marks=='ABS'){
+						$fc1_abs .= $marks->theory_marks;
+					 
+					  }
 					$fc1 += (int) $marks->theory_marks;
 					$fc1_max += (int) $marks->max_theory_marks;
 					$fc1_min += (int) $marks->min_theory_marks;
@@ -121,10 +129,15 @@
 						$rw_count++;
 					   
 					  }
+					  if($marks->theory_marks=='ABS'){
+						$fc2_abs .= $marks->theory_marks;
+					 
+					  }
 					  $fc2 += (int) $marks->theory_marks;
 					  $fc2_max += (int) $marks->max_theory_marks;
 					  $fc2_min += (int) $marks->min_theory_marks;
 					}
+					
 				  }else{
 					if($classData->internal!="N"){
 						$total_obtained_marks +=$marks->theory_marks+$marks->int_marks;
@@ -140,8 +153,7 @@
 						$theory_abs_count++;
 						$abs_count++;
 						array_push( $ATKT_paper_codes,$marks->paper_code );
-					}
-					if($marks->theory_marks+$marks->int_marks<$marks->min_theory_marks+$marks->min_internal_marks){
+					}elseif($marks->theory_marks+$marks->int_marks<$marks->min_theory_marks+$marks->min_internal_marks){
 						$fail_count++;
 						$get_tot_marks += $marks->theory_marks+$marks->int_marks ;
 						$require_tot_marks += $marks->min_theory_marks+$marks->min_internal_marks;
@@ -161,6 +173,7 @@
 					}
 				}
 			}else{
+				$practical_paper_count++;
 				$total_obtained_marks +=$marks->p_marks;
 				$total_max_marks +=$marks->max_theory_marks;
 				if($marks->p_marks=='' || $marks->p_marks=='N'){
@@ -172,7 +185,10 @@
 				}
 				if($marks->p_marks=='ABS'){
 					$abs_count++;
+					$practical_abs_count++;
+					array_push( $ATKT_paper_codes,$marks->paper_code );
 				}
+				
 			}
 		}else{
 			if($marks->type=="theory" ){
@@ -226,6 +242,7 @@
 					}
 				}
 			}else{
+				$practical_paper_count++;
 				$total_obtained_marks +=$marks->p_marks;
 				$total_max_marks +=$marks->max_theory_marks;
 				if($marks->p_marks=='' || $marks->p_marks=='N'){
@@ -241,12 +258,18 @@
 			}
 		}
 	}
-		$total_obtained_marks +=$fc1+$fc2;
-		$total_marks_obt  +=$fc1+$fc2;
-		// $total_max_marks +=$fc1_max +$fc2_max;
+		 $total_obtained_marks +=$fc1+$fc2;
+		 $total_marks_obt  +=$fc1+$fc2;
+		$total_max_marks +=$fc1_max +$fc2_max;
 		// $tot_marks += $fc1_max +$fc2_max;
 		// $tot_std_marks += $fc1+$fc2;
 		// $count_theory +=  $fc1+$fc2;
+		if($fc1_abs === 'ABSABS'){
+			$theory_abs_count++;
+		   }
+		   if($fc2_abs === 'ABSABS'){
+			$theory_abs_count++;
+		   }
 	   
 		if($fc1 < $fc1_min ){
 		  array_push( $ATKT_paper_codes ,'FC1' );
@@ -265,7 +288,7 @@
 		if((in_array($student->old_class_id, $class_ids)) && $mode=='REG')	
 			{
 				
-			 $require_grace_marks = ($require_tot_marks+1)-$get_tot_marks.'<br>';
+			 $require_grace_marks = $require_tot_marks-$get_tot_marks.'<br>';
 				              }else{
 								$require_grace_marks = $require_tot_marks-$get_tot_marks;
 							  }	              // echo $fail_count;
@@ -286,6 +309,8 @@
 			<hr>
 			<tr>
 				<td colspan="3">
+					<p class="size" style="line-height:2px">AGPA-Annual Grade Point Average</p>
+		 			<p class="size" style="line-height:2px">SGPA-Semester Grade Point Average</p>
 					<p class="size" style="line-height:2px">RW-Result Withheld</p>
 					<p class="size" style="line-height:2px">RWE-Want of Enrolment</p>
 					<p class="size"style="line-height:2px">RWPM-Want of Prev. Sem/Year Marks</p>
@@ -309,6 +334,7 @@
 		<p align="center" style="line-height:0px">Head Office: Karaundi, Post-Mahner ,Distt- Katni(MP) </p>
 		<h2 align="center"><strong>Result Notification of</strong><br><p style="margin-top:8px"><strong><?php echo $this->Common_model->getCourseNameByCourseId($course_group_id).' '. $course_duration .'  '. $exam_session?></strong></p></h2>
 	</div>
+	
 	<title>Notification <?php echo $this->Common_model->getCourseNameByCourseId($course_group_id)?></title> 
 
 	<table class="style-p-0" width="100%">
@@ -323,10 +349,10 @@
 		<thead>
 			<tr bgcolor="#FFFF00">
 				<th class="text-center" scope="row" width="10%" ><span class="style5">Roll No.</span></th>
-				<th  class="text-center" style="text-align:left" scope="row"  width="35%" ><span class="style5" style="padding-left: 10px;" >Name and F/H Name</span></th>
+				<th  class="text-center" style="text-align:left" scope="row"  width="35%" ><span class="style5" style="padding-left: 10px;" >Name of the Candidate and F/H Name</span></th>
 				<th class="text-center" scope="row"  width="10%" >Result</span></th>
 				
-					<th class="text-center" style="padding:0px" align="center" class="text-center" scope="row"  width="20%" colspan='<?php echo ($isFinalClass && !$isOneClass)?"2":"1";?>'><?php if($isFinalClass){
+				<?php if((!in_array($student->old_class_id, $class_ids)) || $mode=='PVT'){ ?>	<th class="text-center" style="padding:0px" align="center" class="text-center" scope="row"  width="20%" colspan='<?php echo ($isFinalClass && !$isOneClass)?"2":"1";?>'><?php if($isFinalClass){
 						?>
 						<table width="100%" border="1" class="m-0">
 							<tr>
@@ -346,13 +372,14 @@
 								
 					</table>
 						<?php
-}else{?><span class="style5">Total</span> <?php }
-?></th>
+				}else{ ?><span class="style5">Total</span> <?php }
+				?></th><?php } ?>
 				
 				
 				<?php if((in_array($student->old_class_id, $class_ids)) && $mode=='REG')	
 			{ ?>
-				<th class="text-center" scope="row" width="10%"><span class="style5">SGPA</span></th>
+				<th class="text-center" scope="row" width="10%"><span class="style5">
+					<?php if($classData->mode=="Annual") echo 'AGPA'; else echo 'SGPA'; ?></span></th>
 				<?php } ?>
 				<?php	if ($isFinalClass) {	?>
 					<th class="text-center" scope="row"  width="10%"><span class="style5">Division</span></th>
@@ -412,11 +439,20 @@
 					$grand_obtain = $grand_obt + $total_obtained_marks;
 						$grand_total = $grand_tot+$total_max_marks;
 					}else{
-						if($fail_count>0 || $abs_count>0){
-							echo $final_result = ($check_grace_marks) ? 'PASS BY GRACE' : 'FAIL';
+						if($p_fail_count>0){
+							$final_result = 'FAIL';
+						}
+						else if($fail_count>0 || $abs_count>0){
+							 $final_result = ($check_grace_marks) ? 'PASS BY GRACE' : 'FAIL';
 
 						}else{
-							echo $final_result = 'PASS';
+							 $final_result = 'PASS';
+							
+						}
+						if((in_array($student->old_class_id, $class_ids)) && $mode=='REG'){
+						echo $this->Gradesheet_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+						}else{
+							echo $final_result;
 						}
 					}
 				}
@@ -433,15 +469,15 @@
 <?php
 				}else{
 ?>
-<td class="text-center" style="padding:0px" width='10%' align="center"><?php  if($final_result != 'FAIL' ){ echo $total_obtained_marks .' / '. $total_max_marks ;}?></td>
+<td class="text-center" style="padding:0px" width='10%' align="center"><?php  if(!in_array($final_result, array("FAIL","RW") )){ echo $total_obtained_marks .' / '. $total_max_marks ;}?></td>
 <?php if(!$isOneClass) { ?>
-<td class="text-center" style="padding:0px" align="center"><?php if($final_result != 'FAIL'){ echo  $grand_obtain .' / '. $grand_total;} ?></td>
+<td class="text-center" style="padding:0px" align="center"><?php if(!in_array($final_result, array("FAIL","RW") )){ echo  $grand_obtain .' / '. $grand_total;} ?></td>
 <?php
 			}			}
-			}else{
+			}else if((!in_array($student->old_class_id, $class_ids)) || $mode=='PVT'){ 
 				?>
 			<td  class="text-center" style="padding:0px" align="center"><?php
-			if($final_result != 'FAIL'){
+			if(!in_array($final_result, array("FAIL","RW") )){
 				echo $total_obtained_marks .' / '. $total_max_marks;
 			}
 		}
@@ -450,8 +486,10 @@
 
 		<?php	
 		if((in_array($student->old_class_id, $class_ids)) && $mode=='REG'){
-			if($final_result != 'FAIL' || $final_result != 'RWPM'){
-		$gradesheetData = $this->Gradesheet_tr_model->view_notification($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+			
+			if($final_result != 'FAIL'){
+				
+				$gradesheetData = $this->Gradesheet_tr_model->view_notification($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
 			}else{
 				?>
 				<td  class="text-center" style="padding:0px" align="center"></td>
@@ -487,17 +525,57 @@
 		} ?>
 		<td class="text-center" >
 			<?php
+		if((in_array($student->old_class_id, $class_ids)) && $mode=='REG'){	
 			if($final_result == 'RWPM'){
 				echo 'RWPM';
 			}else{
 			if(count($ATKT_paper_codes)==0 || $Withheld) {
 				$remark='';
-			}elseif($theory_paper_count==$theory_abs_count){
-				echo 'ABS In Theory';
+			}elseif(($theory_paper_count -2)==$theory_abs_count && $practical_paper_count == $practical_abs_count){
+				echo 'Year Break';
+			}
+			elseif($practical_paper_count == $practical_abs_count){
+				echo 'Absent In Practical';
+			}elseif(($theory_paper_count-2)==$theory_abs_count){
+				echo 'Year Break';
+			}else{
+				if($fail_count == ($theory_paper_count -2 )){
+					echo 'Year Break';
+				}else{
+					if($require_grace_marks>=4 || $abs_count!=0 ){
+
+						$remark= ($check_grace_marks) ? 'FAIL' : 'SUPP IN ';
+						echo $remark;
+	
+						foreach($ATKT_paper_codes as $paper_code){
+							echo  "". $paper_code.' ' ;
+						} 
+					}
+				}
+				
+			}
+		}	
+	}else{
+		
+		if($final_result == 'RWPM'){
+			echo 'RWPM';
+		}else{
+		if(count($ATKT_paper_codes)==0 || $Withheld) {
+			$remark='';
+		}elseif($theory_paper_count ==$theory_abs_count && $practical_paper_count == $practical_abs_count){
+			echo 'Year Break';
+		}
+		elseif($practical_paper_count == $practical_abs_count){
+			echo 'Absent In Practical';
+		}elseif($theory_paper_count==$theory_abs_count){
+			echo 'Year Break';
+		}else{
+			if($fail_count == $theory_paper_count ){
+				echo 'Year Break';
 			}else{
 				if($require_grace_marks>=4 || $abs_count!=0 ){
 
-					$remark= ($check_grace_marks) ? 'FAIL' : 'ATKT IN ';
+					$remark= ($check_grace_marks) ? 'FAIL' : 'SUPP IN ';
 					echo $remark;
 
 					foreach($ATKT_paper_codes as $paper_code){
@@ -505,7 +583,10 @@
 					} 
 				}
 			}
-		}			
+			
+		}
+	}	
+	}		
 			?>	
 		</td>
 	</tr>
@@ -525,6 +606,11 @@
 	</tr>
 	<tr>
 		<td colspan="3">
+		
+			<p class="size" style="line-height:2px">AGPA-Annual Grade Point Average</p>
+		
+			<p class="size" style="line-height:2px">SGPA-Semester Grade Point Average</p>
+		
 			<p class="size" style="line-height:2px">RW-Result Withheld</p>
 			<p class="size" style="line-height:2px">RWE-Want of Enrolment</p>
 			<p class="size"style="line-height:2px">RWPM-Want of Prev. Sem/Year Marks</p>

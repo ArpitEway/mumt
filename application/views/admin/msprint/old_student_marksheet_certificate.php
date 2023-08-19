@@ -45,7 +45,7 @@
   <center>
     <?php
     $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
-    $marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
+    //$marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
        $papers = $old_result_data;
        $isFinalClass = $this->Common_model->hasOneClass($classData->course_group_id);
@@ -64,7 +64,7 @@
             <tr>
               <td height="100" colspan="2" valign="bottom">
                 <center>
-                  <strong><?php echo $exam_data->course_name.' ' .$course_duration.' '.$exam_data->exam_year ?></strong>
+                  <strong><?php echo $exam_data->course_name.' ' .$course_duration.' Examination '.$exam_data->exam_year ?></strong>
                 </center>
               </td>
             </tr>
@@ -386,7 +386,7 @@
               <tr>
                 <td width="17" align="center">
                   <div align="left">
-                    <?php echo "Date :".$marksheet_variables->result_date; ?></div></td>
+                    <?php echo "Date :".$exam_data->marksheet_date; ?></div></td>
                   </tr>
                   <tr class="">
                     <td colspan="">

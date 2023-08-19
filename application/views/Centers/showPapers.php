@@ -187,7 +187,7 @@
 					<tr>
 						<th>#</th>
 						<th>Paper Code</th>
-					<?php if ($papers[0]->sub_group_id!=0): ?>
+					<?php if ($papers[0]->sub_group!=0): ?>
 						<th>Sub Group</th>
 					<?php endif ?>
 						<th>Paper Name</th>
@@ -202,8 +202,8 @@
             <tr>
             <td><?php echo $i; ?></td>
             <td><?php echo $paper->paper_code; ?></td>
-            <?php if ($paper->sub_group_id!=0): ?>
-            <td><?php echo $this->Common_model->getSubGroupNameById($paper->sub_group_id); ?></td>
+            <?php if ($paper->sub_group!=0): ?>
+            <td><?php echo $this->Common_model->getSubGroupNameById($paper->sub_group); ?></td>
             <?php endif ?>
             <td><?php echo $paper->paper_name; ?></td>
             </tr>
@@ -226,9 +226,12 @@
 		<?php
 			$student_id = $this->Common_model->encrypt_decrypt($student['student_id']);
 			$center_id =  $this->session->center_id;
-			$center_permission = $this->Common_model->get_record('center','exam_form_permission',array('id'=>$center_id));
+			$center_permission = $this->Common_model->get_record('center','exam_form_permission,temp_exam_form,temp_admission_payment',array('id'=>$center_id));
+			$master = $this->Common_model->getSingleRow('master');
+			$remove_class_from_center =explode(',', $master->remove_class_from_center);
 			$class_permission = $this->Common_model->get_record('class_master','exam_form_permission',array('id'=>$student['class_id']));
-			if($center_permission[0]['exam_form_permission']=='Y' && $class_permission[0]['exam_form_permission']=='Y' &&$student['new_exam_form']=='N' && $student['temp_exam_form']=='Y'){ 
+			
+			if(($center_permission[0]['exam_form_permission']=='Y' && $student['new_exam_form']=='N' && $student['temp_exam_form']=='Y')  && ($class_permission[0]['exam_form_permission']=='Y' || $center_permission[0]['temp_exam_form']=='Y') ){ 
 				$center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29 );
 				if(in_array($this->session->center_id, $center_ids) ){
 						?> 
@@ -238,7 +241,8 @@
 						
 						<?php
 
-				}else{
+				}else if((!in_array($student['class_id'],$remove_class_from_center)) || ( $center_permission[0]['temp_exam_form']  !='N')) 
+						{
 						?> 
 							<div class="row d-flex justify-content-center p-3">
 								<a class="btn btn-success" href="<?= base_url('Payment/exam_form/'.$student_id) ?>">Process To Payment</a>

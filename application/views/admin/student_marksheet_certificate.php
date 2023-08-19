@@ -171,6 +171,7 @@
                         $abs_count = 0 ;
                         $tot_std_marks = 0;
                         foreach($papers as $marks){
+                          if($university_mode=='REG'){
                           if($marks->type=='theory'){
                             $tot_std_marks += $marks->theory_marks;
                             $tot_marks += $marks->max_theory_marks;
@@ -194,6 +195,33 @@
                               $require_tot_marks += $marks->min_theory_marks;
                             }
                           }
+                        }else{
+
+                          if($marks->type=='theory'){
+                            $tot_std_marks += $marks->theory_marks;
+                            $tot_marks += $marks->private_max_theory_marks;
+                            if($marks->theory_marks<$marks->private_min_theory_marks){
+                              $result = "FAIL";
+                              $fail_count++;
+                              $fail_tot_marks += $marks->theory_marks;
+                              $require_tot_marks += $marks->private_min_theory_marks;
+                            }
+                            if($marks->theory_marks == 'ABS'){
+                              $result = 'FAIL';
+                              $abs_count++ ;
+                            }
+                          }else{
+                            $tot_std_marks += $marks->p_marks;
+                            $tot_marks += $marks->private_max_theory_marks;
+                            if($marks->p_marks<$marks->private_min_theory_marks){
+                              $result = "FAIL";
+                              $fail_count++;
+                              $fali_tot_marks += $marks->p_marks;
+                              $require_tot_marks += $marks->private_min_theory_marks;
+                            }
+                          }
+
+                        }
                         }
 
 // $aggregate_per =   ($tot_std_marks/$tot_marks) * 100;     
@@ -208,6 +236,7 @@
                         foreach($papers as $paper)
                         {
                           $paper_name = explode(' - ',$paper->paper_name);
+                         
                           ?>
                           <tr>
                             <td colspan="9">&nbsp;</td>
@@ -232,16 +261,21 @@
                          
                             <td style="margin-top:2px;" align="left"><strong><?php echo  $paper->paper_code; ?></strong></td>
                            
-                            <td align="left"><strong><?php  echo ($paper_name[0] == 'Moukhiki')? $paper_name[1] : $paper->paper_name ;  ?></strong></td>
+                            <td align="left"><strong><?php if($paper_name[0] == 'Moukhiki'){ 
+                                echo (is_null($paper_name[1]))?$paper_name[0]:$paper_name[1];
+                              }else {
+                                 echo $paper->paper_name;
+                               } ?></strong></td>
                             <td align="center" ><span class="style4">
-                              <?php echo  $paper->max_theory_marks;?></span>
+                              <?php echo  ($university_mode=='REG')?$paper->max_theory_marks:$paper->private_max_theory_marks;?></span>
                             </td>
                             <td align="center" ><span class="style4">
-                              <?php echo  $paper->min_theory_marks; ?></span>
+                              <?php echo  ($university_mode=='REG')?$paper->min_theory_marks:$paper->private_min_theory_marks; ?></span>
                             </td>
                             
                             <td align="center" ><span class="style4" >
                               <?php
+                              if($university_mode=='REG'){
                               if ($paper->type=='theory') {
                                 if(($paper->theory_marks <  $paper->min_theory_marks) && $check_grace_marks==false){
                                   echo $paper->theory_marks . ' F' ;
@@ -262,29 +296,71 @@
                                     echo $paper->p_marks;
                                   }
                               }
-
-                              ?>
-                            </span></td>
-                            <td align="center" class="style2"><span class="style4">
-                              <?php 
+                            }else{
                               if ($paper->type=='theory') {
-                                if($paper->theory_marks<$paper->min_theory_marks){
-                                  echo  $paper->theory_marks . '' ;
-                                  echo ($check_grace_marks) ? ' G' : ' F';
-                                }elseif($paper->theory_marks=="ABS"){
-                                  echo 'ABS'. ' F' ;
+                                if(($paper->theory_marks <  $paper->private_min_theory_marks) && $check_grace_marks==false){
+                                  echo $paper->theory_marks . ' F' ;
+                                }elseif($paper->theory_marks<$paper->private_min_theory_marks){
+                                  echo $paper->theory_marks; 
+                                  echo ($check_grace_marks) ? ' G' : '';
+                                }elseif($paper->theory_marks=='ABS'){
+                                  echo 'ABS F';
                                 }else{
                                   echo $paper->theory_marks;
                                 }
                               }else{
-                                if($paper->p_marks<$paper->min_theory_marks && $check_grace_marks==false){
-                                  echo  $paper->p_marks . ' F' ; 
-                                }elseif($paper->p_marks=="ABS"){
-                                  echo 'ABS'. ' F';
-                                }else{
-                                  echo $paper->p_marks;
-                                }
+                                  if($paper->p_marks<$paper->private_min_theory_marks){
+                                    echo $paper->p_marks.' F';
+                                  }elseif($paper->p_marks=='ABS'){
+                                    echo 'ABS F';
+                                  }else{
+                                    echo $paper->p_marks;
+                                  }
                               }
+                            }
+                              ?>
+                            </span></td>
+                            <td align="center" class="style2"><span class="style4">
+                              <?php 
+                               if($university_mode=='REG'){
+                                  if ($paper->type=='theory') {
+                                    if($paper->theory_marks<$paper->min_theory_marks){
+                                      echo  $paper->theory_marks . '' ;
+                                      echo ($check_grace_marks) ? ' G' : ' F';
+                                    }elseif($paper->theory_marks=="ABS"){
+                                      echo 'ABS'. ' F' ;
+                                    }else{
+                                      echo $paper->theory_marks;
+                                    }
+                                  }else{
+                                    if($paper->p_marks<$paper->min_theory_marks && $check_grace_marks==false){
+                                      echo  $paper->p_marks . ' F' ; 
+                                    }elseif($paper->p_marks=="ABS"){
+                                      echo 'ABS'. ' F';
+                                    }else{
+                                      echo $paper->p_marks;
+                                    }
+                                  }
+                               }else{
+                                if ($paper->type=='theory') {
+                                  if($paper->theory_marks<$paper->private_min_theory_marks){
+                                    echo  $paper->theory_marks . '' ;
+                                    echo ($check_grace_marks) ? ' G' : ' F';
+                                  }elseif($paper->theory_marks=="ABS"){
+                                    echo 'ABS'. ' F' ;
+                                  }else{
+                                    echo $paper->theory_marks;
+                                  }
+                                }else{
+                                  if($paper->p_marks<$paper->private_min_theory_marks && $check_grace_marks==false){
+                                    echo  $paper->p_marks . ' F' ; 
+                                  }elseif($paper->p_marks=="ABS"){
+                                    echo 'ABS'. ' F';
+                                  }else{
+                                    echo $paper->p_marks;
+                                  }
+                                }
+                               }
                             ?></span>
                           </td>
                         </tr>

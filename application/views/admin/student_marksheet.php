@@ -30,6 +30,9 @@
       image-orientation: none;
     }
     @media print {
+       @page{
+        margin: 0;
+      }
       .breakhere { page-break-after:always;  };
     }
     th.border.border-dark {
@@ -55,23 +58,24 @@
         <table align="center" border="0" width="100%">
           <tbody>
             <tr>
-              <td height="100" colspan="2" valign="bottom">
+              <td height="130" colspan="2" valign="bottom">
                 <center>
-                  <strong><?php echo  ($isOneClass) ? $student->course_name .' '."(One Year Course)" :$student->course_name .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->old_class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
+                  <?php $course = ($student->course_group_id == 75)?'Bachelor of Arts and Bachelor of Education (B.A.B.Ed.)':$student->course_name;?>
+                  <strong><?php echo  ($isOneClass) ? $course .' '."(One Year Course)" :$course .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->old_class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
                 </center>
               </td>
             </tr>
             <tr>
               <td align="center" height="120" colspan="2">
-                <table class="mytable" border="0" cellpadding="2" cellspacing="2" width="100%">
+                <table class="mytable" border="0" cellpadding="1" cellspacing="1" width="100%">
                   <tbody>
                     <?php if($student->university_mode == 'REG'){?>
                     <tr>
                       <td class="Normaltext" colspan="2">
-                        <div align="center"><font size="4">  &nbsp; </font></div>
+                        <div align="center"><font size="3">  &nbsp; </font></div>
                       </td>
                       <td class="Normaltext">
-                        <div align="center"><font size="4">  Regular </font></div>
+                        <div align="center"><font size="3">  Regular </font></div>
                       </td>
                     </tr>
                     <?php }?>
@@ -107,12 +111,15 @@
                       <td class="Normaltext" align="left" width="29%"><div align="left">Father's / Husband's Name</div></td>
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo strtoupper( $student->f_h_name); ?></span></div></td>
                     </tr>
-                    <?php if ($student->course_group_id==76): ?>
+                    <?php if ($student->course_group_id==76 || $student->course_group_id==75): ?>
                     <tr>
                       <td class="Normaltext" align="left" width="29%"><div align="left">Department</div></td>
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;">
-                        <?php if ($student->center_id==10) {
-                          echo "University Teaching Department Karaundi";
+                        <?php 
+                        // if ($student->center_id==10) {
+                        $center_ids = array(10,13,21,22,23,24,25,26,27,28,29);
+                        if(in_array($student->center_id, $center_ids)){
+                          echo "University Teaching Department Karoundi";
                         }else if ($student->center_id==12) {
                           echo "Shiksha Vibhag, Lamti Jabalpur";
                         } ?>
@@ -207,6 +214,9 @@
                                 $fail_count++;
                                 $fali_tot_marks += $marks->p_marks;
                                 $require_tot_marks += $marks->min_theory_marks;
+                              }else if($marks->p_marks == 'ABS'){
+                                $result = 'FAIL';
+                                $abs_count++ ;
                               }
                             }else{
                               $tot_std_marks += $marks->p_marks;
@@ -216,6 +226,10 @@
                                 $fail_count++;
                                 $fali_tot_marks += $marks->p_marks;
                                 $require_tot_marks += $marks->min_theory_marks;
+                              }
+                              else if($marks->p_marks == 'ABS'){
+                                $result = 'FAIL';
+                                $abs_count++ ;
                               }
                             }
                           }
@@ -332,7 +346,11 @@
                               if($paper->type=='Sessional'){
                                echo  $paper->int_marks;
                               }else{
-                             echo  ($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->int_marks : '-'; 
+                             if($paper->type=='theory' || $classData->practical_internal_marks=='Y'){
+                              echo ($paper->int_marks=='ABS') ? 'ABS F' : $paper->int_marks; 
+                             }else{
+                              echo '-';
+                             }
                               }?></span>
                             </td>
                             <td align="left" class="style2">&nbsp;&nbsp;&nbsp;&nbsp;<span class="style4" style="padding-left:10px;">
@@ -342,7 +360,7 @@
                                   echo  $paper->theory_marks +  $paper->int_marks . '' ;
                                   echo ($check_grace_marks) ? ' G' : ' F';
                                 }elseif($paper->theory_marks=="ABS"){
-                                  echo 'ABS'. ' F' ;
+                                  echo ($paper->int_marks=='ABS') ? 'ABS F' : $paper->int_marks.' F';
                                 }else{
                                   echo $paper->theory_marks + $paper->int_marks;
                                 }
@@ -360,7 +378,7 @@
                                   if($paper->int_marks<$paper->min_internal_marks || $paper->p_marks<$paper->min_theory_marks && $check_grace_marks==false){
                                     echo  $paper->p_marks +  $paper->int_marks . ' F' ; 
                                   }elseif($paper->p_marks=="ABS" || $paper->int_marks=="ABS"){
-                                    echo 'ABS'. ' F' ;
+                                    echo ($paper->int_marks=='ABS') ? 'ABS F' : $paper->int_marks.' F';
                                   }else{
                                     echo $paper->p_marks + $paper->int_marks ;
                                   } 
@@ -368,7 +386,7 @@
                                   if($paper->p_marks<$paper->min_theory_marks && $check_grace_marks==false){
                                     echo  $paper->p_marks . ' F' ; 
                                   }elseif($paper->p_marks=="ABS"){
-                                    echo 'ABS'. ' F';
+                                    echo ($paper->int_marks=='ABS') ? 'ABS F' : $paper->int_marks.' F';
                                   }else{
                                     echo $paper->p_marks;
                                   }
@@ -516,7 +534,7 @@
               <!-- if starts -->
               <tr>
                 <td align="left" colspan="2">
-                  <table width="100%" style="margin-top:50px">
+                  <table width="100%" style="margin-top:80px">
                     <tr>
                     </tr>
                   </table>    

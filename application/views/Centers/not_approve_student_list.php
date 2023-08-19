@@ -17,18 +17,31 @@
 			foreach($students as $student){
 
 				$remark = $student->remark;
+				
 				if ($student->remark!='') {
 
 					$admissionDocWhere = " student_id = ".$student->student_id." and document_category_id in  (".$remark.") and status='N'";
-					$admissionDocCount = $this->Common_model->getCountByWhere('admission_document',$admissionDocWhere);
+					 $admissionDocCount = $this->Common_model->getCountByWhere('admission_document',$admissionDocWhere);
+					 $remarkCount= substr_count($remark,',');
+
+					$remarkCount+=1;
+					
 				}else{
 					$admissionDocCount =0;
+				
+				
+				$admissionDocWhere = " student_id = ".$student->student_id."  and status='N'";
+					 $admissionDocCount = $this->Common_model->getCountByWhere('admission_document',$admissionDocWhere);
+				  
+				   	$admissionDocWhereYes = " student_id = ".$student->student_id." and status='Y'";
+					$admissionDocCountYes = $this->Common_model->getCountByWhere('admission_document',$admissionDocWhereYes);
+					 $doc_count = ( $admissionDocCount ==  $admissionDocCountYes)?1:0;
+					 $remarkCount =0;
 				}
-				$remarkCount= substr_count($remark,',');
+				
+				
 
-				$remarkCount+=1;
-
-				if(($admissionDocCount!=$remarkCount) || $remark==''){
+				if(($admissionDocCount!=$remarkCount && $remark!='') || ($remark=='' && $doc_count !=1)){
 
 					?>
 					<tr>

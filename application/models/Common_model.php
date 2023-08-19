@@ -602,7 +602,7 @@ class Common_Model extends CI_Model{
 			'new_exam_form.class_id' => $class_id,
 			
 			);
-		$this->db->select('new_exam_form.*,paper_master.credit_point,paper_master.paper_name,paper_master.paper_code,paper_master.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks');
+		$this->db->select('new_exam_form.*,paper_master.credit_point,paper_master.paper_name,paper_master.paper_code,paper_master.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks,new_exam_form.sub_group_id,new_exam_form.group_id,new_exam_form.paper_order');
 		$this->db->from('paper_master');
 		$this->db->order_by('paper_no','asc');
 		$this->db->join('new_exam_form','new_exam_form.paper_id = paper_master.id');
@@ -619,16 +619,16 @@ class Common_Model extends CI_Model{
 	public function get_all_group_papers($id,$class_id){
 		$where = array(
 			'student_id' => $id,
-			'new_exam_form.class_id' => $class_id,
-			'new_exam_form.sub_group_id !='=>1,
+			'exam_form.class_id' => $class_id,
+			'exam_form.sub_group_id !='=>1,
 			 
 			
 			);
-		$this->db->select('new_exam_form.*,group_paper.credit_point,paper_master.paper_name,paper_master.paper_code,group_paper.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks');
+		$this->db->select('exam_form.*,group_paper.credit_point,paper_master.paper_name,paper_master.paper_code,group_paper.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks,exam_form.sub_group_id,exam_form.group_id,exam_form.paper_order');
 		$this->db->from('paper_master');
 		$this->db->order_by('group_paper.sub_group_id,paper_no','asc');
-		$this->db->join('new_exam_form','new_exam_form.paper_id = paper_master.id','left');
-		$this->db->join('group_paper','paper_master.id=group_paper.paper_id and group_paper.group_id=new_exam_form.group_id','left');
+		$this->db->join('exam_form','exam_form.paper_id = paper_master.id','left');
+		$this->db->join('group_paper','paper_master.id=group_paper.paper_id and group_paper.group_id=exam_form.group_id','left');
 		$this->db->where($where); 
 		// $this->db->where(`group_paper`.`group_id`=`new_exam_form`.`group_id` );
 		$query = $this->db->get();
@@ -887,7 +887,7 @@ class Common_Model extends CI_Model{
 
 		$this->db->where($where);
 		$this->db->select('count(*) as cnt,course_group_id,class_id');
-		$this->db->group_by('class_id');			
+		$this->db->group_by('class_id');
 		$this->db->from("backlog_student");
 		$this->db->order_by("course_group_id,class_id ","asc");
 		$query = $this->db->get();
@@ -912,6 +912,18 @@ class Common_Model extends CI_Model{
 		return $this->db->get()->result();
 	}
 
+	public function student_info_for_backlog_result($student_id,$class_id,$exam_data_id)
+	{
+		$this->db->select('*');
+        $this->db->from('paper_master');
+        $this->db->order_by('backlog_exam_form.paper_order,paper_no','ASC');
+        $this->db->join('backlog_exam_form', 'paper_master.paper_code = backlog_exam_form.paper_code');
+        $this->db->where('backlog_exam_form.student_id',$student_id);
+        $this->db->where('backlog_exam_form.class_id',$class_id);
+		$this->db->where('backlog_exam_form.backlog_student_id',$exam_data_id);
+		return $this->db->get()->result();
+	}
+
 	public function hasOneClass($course_id)
 	{
 		$this->db->select('*');
@@ -932,6 +944,18 @@ class Common_Model extends CI_Model{
 		$this->db->join('paper_master', 'new_exam_form.paper_id = paper_master.id');
 		$this->db->where('new_exam_form.class_id',$class_id); 
 		$this->db->where('new_exam_form.student_id',$student); 
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	public function backlog_notification_marks_details_($student,$class_id,$exam_data_id)
+	{
+		$this->db->select('*');
+		$this->db->from('backlog_exam_form');
+		$this->db->join('paper_master', 'backlog_exam_form.paper_code = paper_master.paper_code');
+		$this->db->where('backlog_exam_form.class_id',$class_id); 
+		$this->db->where('backlog_exam_form.student_id',$student); 
+		$this->db->where('backlog_exam_form.backlog_student_id',$exam_data_id); 
 		$query = $this->db->get();
 		return $query->result();
 	}
@@ -991,7 +1015,17 @@ class Common_Model extends CI_Model{
 		$query = $this->db->get();
 		return $query->result_array();
 	}
+	public function backlog_old_exam_form_permission_status($where){
 
+		$this->db->where($where);
+		$this->db->select('count(*) as cnt,course_group_id,class_id');
+		$this->db->group_by('class_id');
+		$this->db->where('exam_year','Dec 2022');			
+		$this->db->from("backlog_student");
+		$this->db->order_by("course_group_id,class_id ","asc");
+		$query = $this->db->get();
+		return $query->result_array();
+	}
 
 	public function get_paper_count_list($class_id = ''){
 		$this->db->select('count(*) as num, paper_id, paper_code, student.class_id, student.class_id, student.course_group_id,paper_type');
@@ -1039,6 +1073,90 @@ class Common_Model extends CI_Model{
 		$query = $this->db->get();
 		return $query->result_array();
 	}
+
+	public function get_all_old_papers($id,$class_id){
+		$class_check = $this->Common_model->getRecordById('class_master','id',$class_id);
+		$where = array(
+			'student_id' => $id,
+			'old_result_data.class_id' => $class_id,
+			
+			);
+		$this->db->select('old_result_data.*,paper_master.credit_point,paper_master.paper_name,paper_master.paper_code,paper_master.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks');
+		$this->db->from('paper_master');
+		$this->db->order_by('paper_no','asc');
+		$this->db->join('old_result_data','old_result_data.paper_code = paper_master.paper_code');
+		// $this->db->join('group_paper','paper_master.id=group_paper.paper_id');
+		$this->db->where($where); 
+		if($class_check->class_group == 'Y'){
+		$this->db->where('old_result_data.sub_group_id',1);
+		}
+		$query = $this->db->get();
+		// $this->Common_model->last_query();
+		return $query->result_array();
+		
+	}
+	public function get_all_old_group_papers($id,$class_id){
+		$where = array(
+			'student_id' => $id,
+			'old_result_data.class_id' => $class_id,
+			'old_result_data.sub_group_id !='=>1,
+			 
+			
+			);
+		$this->db->select('old_result_data.*,group_paper.credit_point,paper_master.paper_name,paper_master.paper_code,group_paper.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks');
+		$this->db->from('paper_master');
+		$this->db->order_by('group_paper.sub_group_id,paper_no','asc');
+		$this->db->join('old_result_data','old_result_data.paper_code = paper_master.paper_code','left');
+		$this->db->join('group_paper','paper_master.id=group_paper.paper_id and group_paper.group_id=old_result_data.group_id','left');
+		$this->db->where($where); 
+		// $this->db->where(`group_paper`.`group_id`=`new_exam_form`.`group_id` );
+		$query = $this->db->get();
+		// $this->Common_model->last_query();
+		return $query->result_array();
+		
+	}
+	public function get_backlog_student_papers($id,$class_id,$withheld = ""){
+		$where = array(
+			'student_id' => $id,
+			'backlog_exam_form.class_id' => $class_id,
+			'backlog_exam_form.status'=>'B'
+			
+			);
+		$this->db->select('*');
+		$this->db->from('paper_master');
+		$this->db->order_by('paper_no','asc');
+		$this->db->join('backlog_exam_form','backlog_exam_form.paper_code = paper_master.paper_code and `backlog_exam_form`.`class_id` = `paper_master`.`class_id`');
+		$this->db->join('class_master','class_master.id=backlog_exam_form.class_id');
+		// $this->db->order_by('new_exam_form.sub_group_id,paper_order');
+		$this->db->where($where); 
+		if($withheld == 'withheld'){
+			$this->db->where(array('theory_marks'=>'','backlog_exam_form.paper_type' => 'theory'));
+		}
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+	public function get_backlog_student_allpapers($id,$class_id,$withheld = ""){
+		$where = array(
+			'student_id' => $id,
+			'backlog_exam_form.class_id' => $class_id,
+			//'backlog_exam_form.status'=>'B'
+			
+			);
+		$this->db->select('*');
+		$this->db->from('paper_master');
+		$this->db->order_by('paper_no','asc');
+		$this->db->join('backlog_exam_form','backlog_exam_form.paper_code = paper_master.paper_code and `backlog_exam_form`.`class_id` = `paper_master`.`class_id`');
+		$this->db->join('class_master','class_master.id=backlog_exam_form.class_id');
+		// $this->db->order_by('new_exam_form.sub_group_id,paper_order');
+		$this->db->where($where); 
+		if($withheld == 'withheld'){
+			$this->db->where(array('theory_marks'=>'','backlog_exam_form.paper_type' => 'theory'));
+		}
+		$query = $this->db->get();
+		return $query->result_array();
+	}
 }
+
+
 
 ?>

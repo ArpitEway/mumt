@@ -18,7 +18,9 @@ class Permission extends CI_Controller {
        
 		$this->load->view('header',array("title"=>"Class Wise Permission"));	
 		$table ="class_master";
-		$where = 'admission_permission="Y" or class_name="II Sem" or class_name="III Sem"';
+		$where = 'admission_permission="Y" or class_name="II Sem" or class_name="II Year" or class_name="III Sem" or class_name="IV Sem"';
+		
+		// or class_name="II Sem" or class_name="III Sem"
 		 // $order = 'id ASC';
         $data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
@@ -207,6 +209,26 @@ class Permission extends CI_Controller {
 		}
 	}
 
+	public function update_backlog_result_permission(){
+		$status =  $this->input->post('backlog_result_permission');
+     
+		if(isset($_POST['class_id'])){
+			$class_id =  $this->input->post('class_id');
+			$where = array('id'=>$class_id);
+		}
+
+        if($status!=''){
+        	$st = ($status == 'Y') ? 'N' : 'Y';
+        	$data=array('backlog_result_permission'=>$st);
+        }
+        
+		$res=$this->Common_model->updateRecordByConditions('class_master',$where,$data);
+		if($status == 'Y'){
+			echo json_encode(array('success'=>true));
+		}else if($status == 'N'){
+			echo json_encode(array('error'=>false));
+		}
+	}
 
 	public function center_wise_permission()
 
@@ -348,7 +370,28 @@ class Permission extends CI_Controller {
 					"data" => $data
 				));	 
 	}
-
+	public function update_temp_exam_form_permission()
+	{	
+            $id    = $this->input->post("id");
+			$temp_exam_form_permission = $this->input->post("temp_exam_form_permission");	
+			$data = $this->Common_model->updateRecordByConditions("center",array("id" => $id ),array("temp_exam_form" => $temp_exam_form_permission ));
+				 $status = true;
+				echo json_encode(array(
+					 "status" => $status,
+					"data" => $data
+				));	 
+	}
+	public function update_temp_admission_payment()
+	{	
+            $id    = $this->input->post("id");
+			$temp_admission_payment = $this->input->post("temp_admission_payment");	
+			$data = $this->Common_model->updateRecordByConditions("center",array("id" => $id ),array("temp_admission_payment" => $temp_admission_payment ));
+				 $status = true;
+				echo json_encode(array(
+					 "status" => $status,
+					"data" => $data
+				));	 
+	}
 	public function update_final_result_permission(){
 		$status =  $this->input->post('final_result_permission');
      

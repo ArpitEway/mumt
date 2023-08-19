@@ -23,6 +23,8 @@ class MsPrint extends CI_Controller {
 		 $this->roll_no = $this->master->roll_number_col;
 		 $this->result_table = $this->master->student_result_table;
 		 $this->exam_form_table = $this->master->exam_form_table;
+		 $this->old_result_table = $this->master->old_student_result_table;
+		 $this->old_exam_form_table = $this->master->old_exam_form_table;
 		if($this->session->account_type!='MsPrint'){
 			redirect(base_url('admin/logout')); 
 		}
@@ -46,7 +48,7 @@ class MsPrint extends CI_Controller {
 			redirect(base_url('admin'));
 			exit;
 		}else{
-			$this->load->view('header',array('title' =>'Search Student Result'));
+			$this->load->view('header',array('title' =>'Search Student Old Result'));
 			$data = array(
 				'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash(),
@@ -70,16 +72,18 @@ class MsPrint extends CI_Controller {
 				}else if($text_val !='' && $radio_val == 'student_id'){
 					$student = $this->Common_model->getRecordById('student','student_id',$text_val);
 				}  
+				$this->db->where_not_in('exam_year',array('Feb 2023','March 2023'));
 				$result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id' =>$student->student_id));
-				//,"exam_year"=>"Feb 2022"
 				$data = array(
 					'result' => $result,
 					'student' => $student,
 					'name_csrf' => $this->security->get_csrf_token_name(),
 					'hash_csrf' => $this->security->get_csrf_hash(),
 				);
-
-				$dt =  $this->load->view('admin/msprint/view_student_result',$data,true);
+				
+						$dt =  $this->load->view('admin/msprint/view_student_result',$data,true);
+					
+				
 				echo json_encode(array(
 					"status" => true,
 					"data" => $dt
@@ -102,9 +106,19 @@ class MsPrint extends CI_Controller {
 		$data['class_id']  = $new_exam_form[0]->class_id;
 		$title = array('title' => 'Result');
 		$data['exam_data'] = $this->Common_model->getRecordById('old_exam_data','id',$exam_data_id);
+		
+		$data['student'] = $this->Common_model->getRecordById('student','student_id', $data['exam_data']->student_id);
 		// $course_id !=36 && $course_id !=37
 		$class = $this->Common_model->getRecordByID('class_master','id', $data['exam_data']->class_id);
-		if($class->internal=="Y" && $data['exam_data']->university_mode!="PVT" ){ 
+
+		$class_ids=array(101,104,107,110,116,119,125,128,131,134);
+					if($data['exam_data']->university_mode == "REG" && in_array($data['class_id'] , $class_ids)){
+						
+						$this->load->model('Gradesheet_old_model');
+						$dt =  $this->load->view('admin/msprint/student_marksheet_grade',$data);
+					}else if ($data['exam_data']->exam_status == "B") {
+						$this->load->view('admin/msprint/old_backlog_student_marksheet',$data);
+					}else if($class->internal=="Y" && $data['exam_data']->university_mode!="PVT" ){ 
 			$this->load->view('admin/msprint/old_student_marksheet',$data);
 		}else{
 			$this->load->view('admin/msprint/old_student_marksheet_certificate',$data);
@@ -126,7 +140,7 @@ class MsPrint extends CI_Controller {
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('DISTINCT(center_id)');
-			$this->db->from($this->result_table);
+			$this->db->from($this->old_result_table);
 			$this->db->where(array('exam_form'=>'Y'));
 			$centers = $this->db->get()->result_array();
 			$ids = array_column($centers, 'center_id');
@@ -145,7 +159,7 @@ class MsPrint extends CI_Controller {
 	public function get_center_wise_marksheet_dispatchlist(){
 		$center = $this->input->post('center');
 		$this->db->select('DISTINCT(center_id)');
-		$this->db->from($this->result_table);
+		$this->db->from($this->old_result_table);
 		$this->db->where(array('exam_form'=>'Y'));
 		$centers = $this->db->get()->result_array();
 		$ids = array_column($centers, 'center_id');
@@ -162,4 +176,58 @@ class MsPrint extends CI_Controller {
 		
 		echo $this->load->view('admin/examController/get_center_wise_marksheet_dispatchlist',$data, TRUE);
 	}
+
+	public function update_marksheet_date(){
+		
+		if ($this->input->method() == "post") 
+		{ 
+			$marksheet_date  = $this->input->post("marksheet_date");
+			$record_id  = $this->input->post("record_id");
+	      	$record_id = $this->Common_model->encrypt_decrypt($record_id,'decrypt');
+			
+			$updateData = array(
+				'marksheet_date' => date('d/m/Y', strtotime($marksheet_date)) ,
+			);
+		
+			$where = array(
+				'id'=> $record_id
+			);
+			
+			$response = $this->Common_model->updateRecordByConditions('old_exam_data',$where,$updateData);
+
+			if($response){
+			echo json_encode(array("status" => 'true'));
+			}
+		}
+	}
+
+	public function view_center_wise_complaint(){
+			
+		if($this->session->has_userdata('adminData')){
+			$admin_id = $this->session->admin_id;
+			$admin = $this->Common_model->getRecordById('admin_master','id',$admin_id);
+			$where = "support_complaint.status = 'Pending' AND support_system.id IN (".$admin->support_ids.")";
+				$this->db->select('count(*) as count,'.'center_id');
+				$this->db->from('support_complaint');
+				$this->db->join('support_system','support_system.name = support_complaint.type');
+				$this->db->where($where);
+				$this->db->group_by('center_id');
+				$centers = $this->db->get()->result_array();
+
+			$data = array('name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+				'centers' =>$centers
+			);
+			
+			$titleData = array('title' => 'Complaints');
+			$this->load->view('header',$titleData);
+			$this->load->view('admin/view_center_wise_complaint',$data);
+			$this->load->view('footer');
+		}
+		else
+		{
+			redirect(base_url());
+		}
+	}
+
 }

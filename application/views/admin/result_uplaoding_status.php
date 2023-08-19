@@ -42,7 +42,7 @@
 			<tr>
                 <td>1</td>
 				<td><?php echo  $total_paper_count_backlog ; ?></td>
-				<td><?php echo $uploaded_backlog;//=$uploaded-$absent ; ?></td>
+				<td><?php echo $uploaded_backlog ; ?></td>
                 <td><?php echo $absent_backlog ; ?></td>
 				<td><?php  echo $total_paper_count_backlog-$uploaded_backlog -$absent_backlog; ?></td>
 				

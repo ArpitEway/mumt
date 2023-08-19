@@ -382,7 +382,7 @@ table.last_table, .last_table td, .last_table th{
         <tr>
           <th  class="align-middle text-center roll_no" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_number  ?> <br> <?php echo $student->enrollment_no  ?></th>
           <th class="align-middle text-center ms_no" rowspan="<?php echo $rowspandata ?>">
-            <?php  //echo $student->marksheet_no  ?>
+            <?php  echo $student->marksheet_no  ?>
           </th>
           <th  class="align-middle text-center photo" rowspan="<?php echo $rowspandata ?>"><img alt="N/A" src="<?= base_url('assets/student_image/'.$student->session.'/'.$student->photo) ?>" width="65px" height="90px"></th>
           <td  class="align-middle text-center name"  rowspan="<?php  echo $rowspandata ?>"><?php  echo $student->name ?>/ <br><?php  echo $student->f_h_name ?></td>
@@ -403,9 +403,12 @@ table.last_table, .last_table td, .last_table th{
               echo "";
             }
             elseif($int_abs_count>0 &&  $theory_abs_count>0 && $p_abs_count>0){
-              echo 'ABS In ALL';
-            }elseif($int_abs_count == $count_int ||  $theory_abs_count == $count_theory || ($p_abs_count == $count_practical && $count_practical!=0)){
-              echo 'ABS In';
+              echo 'Absent In All';
+            } elseif($int_abs_count == $count_int &&  $theory_abs_count == $count_theory){
+              echo 'Absent In All';
+            }
+            elseif($int_abs_count == $count_int ||  $theory_abs_count == $count_theory || ($p_abs_count == $count_practical && $count_practical!=0)){
+              echo 'Absent In';
               if($theory_abs_count == $count_theory){
                 echo ' Theory';
               }elseif($int_abs_count == $count_int){
@@ -441,7 +444,7 @@ table.last_table, .last_table td, .last_table th{
               }
             }else{
               if($new_exam_form->theory_marks==''){
-                echo '-';
+                echo ($student->university_mode == 'PVT')?'-':'';
               }elseif($new_exam_form->theory_marks>=$new_exam_form->private_min_theory_marks && $new_exam_form->theory_marks!="ABS"){
                 echo $new_exam_form->theory_marks;
               }else{

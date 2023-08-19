@@ -195,7 +195,7 @@
             <td><?php echo $i; ?></td>
             <td><?php echo $paper->paper_code; ?></td>
             <td><?php 
-              $paper_name  = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$paper->paper_code));
+              $paper_name  = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$paper->paper_code,'class_id'=>$paper->class_id));
              echo $paper_name[0]->paper_name;
             ?></td>
             </tr>
@@ -207,23 +207,29 @@
 		</div>
 	    </div>
 		<?php if ($papers[0]->exam_form =='N'): ?>
-	   <?php $student_id = $this->Common_model->encrypt_decrypt($papers[0]->student_id);
+	   <?php $backlog_student_id = $this->Common_model->encrypt_decrypt($papers[0]->backlog_student_id);
+	   		$student_id = $this->Common_model->encrypt_decrypt($papers[0]->student_id);
 	     $class_id = $this->Common_model->encrypt_decrypt($papers[0]->class_id);
+		 $center_id =  $this->session->center_id;
+		 $master = $this->Common_model->getSingleRow('master');
+		 $remove_class_from_center =explode(',', $master->remove_class_from_center);
+		 $center_permission = $this->Common_model->get_record('center','exam_form_permission,temp_exam_form,temp_admission_payment',array('id'=>$center_id));
+		$class_permission = $this->Common_model->get_record('class_master','backlog_exam_form_permission',array('id'=>$papers[0]->class_id));
 	    ?>
 			<div class="row justify-content-center mt-10">
 			<?php 
+			if(($center_permission[0]['exam_form_permission']=='Y' && $papers[0]->exam_form=='N' ) &&  ($class_permission[0]['backlog_exam_form_permission']=='Y' || $center_permission[0]['temp_exam_form']=='Y') ){ 
+
 		$center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29 );
 		if(in_array($this->session->center_id, $center_ids)){
 			?>
-       <a class="btn btn-success" href="<?= base_url('paid_by_university/'.$student_id) ?>">Paid By University</a>
+       <a class="btn btn-success" href="<?= base_url('paid_by_university_backlog/'.$backlog_student_id) ?>">Paid By University</a>
 			<?php
-		}
-		else{
-			?>
-			
-				<a class="btn btn-success" href="<?= base_url('center/Payment/backlog_exam_form/'.$student_id .'/'. $class_id) ?>">Process To Payment</a>
-			<?php } ?>
-			
+			}else if((!in_array($papers[0]->class_id,$remove_class_from_center)) || ( $center_permission[0]['temp_exam_form']  !='N')) 
+			{	?>	
+				<a class="btn btn-success" href="<?= base_url('center/Payment/backlog_exam_form/'.$student_id .'/'. $class_id.'/'.$papers[0]->backlog_student_id.'/BACKLOG') ?>">Process To Payment</a>
+			<?php } 
+			} ?>
 	  </div>
     <?php endif ?>
 </div>

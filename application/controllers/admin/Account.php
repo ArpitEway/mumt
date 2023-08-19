@@ -185,9 +185,11 @@
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		$student = $this->Common_model->getRecordById('student','student_id',$student_id);
 		$paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student_id));
+		$studentContactData = $this->Common_model->getRecordById('student_data','student_id',$student_id);
 		$data = array(
 			'student' => $student,
 			'paymentDetails' => $paymentDetails,
+			'studentContactData'=>$studentContactData,
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 		);
@@ -204,11 +206,17 @@
 		$dateTime = $this->input->post('dateTime');
 		$student_id = $this->input->post('student_id');
 		$dateTime = explode(' ',$dateTime);
-		$updateData = array('txnId' => $txnid,'payment_date' => $dateTime[0],'payment_time' => $dateTime[1],'payment' => 'Y', 'payment_status' => 'captured');
+		$updateData = array('txnId' => $txnid,'payment_date' => $dateTime[0],'payment_time' => $dateTime[1],'payment' => 'Y', 'payment_status' => 'success');
 		$where = array('id' => $id);
 		$result = $this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$updateData);
 		$whereStudent = array('student_id'=> $student_id);
-		$result = $this->Common_model->updateRecordByConditions('student',$whereStudent,array('payment_status'=> 'Y'));
+		$txnDetails = $this->Common_model->getRecordById('online_payment_transaction','id',$id);
+		if($txnDetails->fees_head=='Exam Fees'){
+			$updateDataStd = array('new_exam_form'=> 'Y'); 
+		}elseif ($txnDetails->fees_head=='Admission Fees') {
+			$updateDataStd = array('payment_status'=> 'Y'); 
+		}
+		$result = $this->Common_model->updateRecordByConditions('student',$whereStudent,$updateDataStd);
 		if($result){
 			$paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student_id));
 			$data = array('paymentDetails' => $paymentDetails);
@@ -427,7 +435,7 @@
 		if($Fess_head == 'Admission Fees'){
 	     $session = $student_details[0]->session;
 		}else{
-			$session = 'Dec 2022';
+			$session = 'June 2023';
 		}
 		$class_id = $student_details[0]->class_id;
 		$name = $student_details[0]->name;
@@ -586,4 +594,32 @@
 			));
 		}
 	}
+	public function view_center_wise_complaint(){
+			
+		if($this->session->has_userdata('adminData')){
+			$admin_id = $this->session->admin_id;
+			$admin = $this->Common_model->getRecordById('admin_master','id',$admin_id);
+			$where = "support_complaint.status = 'Pending' AND support_system.id IN (".$admin->support_ids.")";
+				$this->db->select('count(*) as count,'.'center_id');
+				$this->db->from('support_complaint');
+				$this->db->join('support_system','support_system.name = support_complaint.type');
+				$this->db->where($where);
+				$this->db->group_by('center_id');
+				$centers = $this->db->get()->result_array();
+			$data = array('name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+				'centers' =>$centers
+			);
+			
+			$titleData = array('title' => 'Complaints');
+			$this->load->view('header',$titleData);
+			$this->load->view('admin/view_center_wise_complaint',$data);
+			$this->load->view('footer');
+		}
+		else
+		{
+			redirect(base_url());
+		}
+	}
+
 }

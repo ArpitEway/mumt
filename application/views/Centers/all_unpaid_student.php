@@ -4,12 +4,13 @@
 	<table id="memListTable" class="table table-striped dt-responsive" style="width:100%">
 		<thead>
 			<tr>
-				<th>Form No.</th>
+				<th>#</th>
+				<th>Form No.s</th>
 				<th>Student Name</th>
 				<th>Father Name</th>
 				<th>Course</th>
 				<th>Class</th>
-				<th>Fees Amount</th>
+				<th>Fees Amount<?php if($course_type=='PVT'&& $late_privte_admission_fees=='Y'){ echo ' + Late Fees';}?></th>
 				<th>Pay</th>
 			</tr>
 		</thead>

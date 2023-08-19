@@ -59,11 +59,12 @@ class Otherscript extends CI_Controller {
 		//$where = " paper_code in ('2RMAEDU5', '2RMAGEO6', '2RMAGEO7', '2RMAGEO8', '2RMAPSY5', '2RMSCC7', '2RMSCC8', '2RMSCM7', '2RMSW7')";
 		// $where = " paper_code in ('2RBED6')";
 		//$where = " paper_code in ('1RMLIS10','1RMLIS11')";
-		$where="`paper_code` in ('1RCMSCCH7','1RCMSCCH8','1RCMSCCH9','1RCMSCBT7','1RCMSCBT8','1RCMSCC7','1RCMSCM7','3RMSCC6','3RMSCC7')";
+		//$where="`paper_code` in ('1RCMSCCH7','1RCMSCCH8','1RCMSCCH9','1RCMSCBT7','1RCMSCBT8','1RCMSCC7','1RCMSCM7','3RMSCC6','3RMSCC7')";
+		$where="`id` in (1220,1221,1222)";
 		$papers = $this->Common_model->get_record('paper_master','*',$where);
 
 		foreach ($papers as $paper) {
-			$where = ' class_id = "'.$paper['class_id'].'" and temp_exam_form="Y"';
+			$where = ' old_class_id = "'.$paper['class_id'].'" and temp_exam_form="Y"';
 			$students = $this->Common_model->get_record('student','*',$where);
 			$studentData = array(
 				'course_group_id' => $paper['course_group_id'],
@@ -75,7 +76,7 @@ class Otherscript extends CI_Controller {
 			);
 			foreach ($students as $student) {
 				$studentData['student_id'] = $student['student_id'];
-				//$this->Common_model->insertAll('new_exam_form',$studentData);
+				$this->Common_model->insertAll('new_exam_form',$studentData);
 				echo $this->db->last_query().'<br>';
 			}
 		}	
@@ -154,10 +155,10 @@ class Otherscript extends CI_Controller {
 
 	public function update_int_marks($cls_id =0)
 	{
-		// $marks = array('18','17','16','18','17','16','15','15');
+		 $marks = array('18','17','16','18','17','16','15','15');
 		// $marks = array('09','08','07','09','08','07','06','06');
-		$marks = array('27','26','25','27','26','25','24','24'); 
-		$cls_id=104;
+		//$marks = array('27','26','25','27','26','25','24','24'); 
+		$cls_id=182;
 		$sql = "select * from student where class_id='".$cls_id."' and exam_form='Y' and int_marks_sub='N' and roll_number!=0 and university_mode='REG' limit 100";
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
@@ -209,7 +210,7 @@ class Otherscript extends CI_Controller {
 	public function update_project_marks($cls_id =0)
 	{
 		$marks = array('85','84','83','82'); 
-		$cls_id=104;
+		$cls_id=182;
 		$sql = "select * from student where class_id='".$cls_id."' and exam_form='Y' and p_marks_sub='N' and  university_mode='REG' and  roll_number!=0 order by roll_number  limit 100";
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
@@ -305,11 +306,11 @@ class Otherscript extends CI_Controller {
 			echo "<br> ".$i." ". $row->paper_code ." ". $row->test_id;
 			$data  = array('test_id'=>$row->test_id);
             $where = array('test_id'=>'0','paper_code'=> $row->paper_code);
-            // $update =$this->Common_model->updateRecordByConditions('paper_master',$where,$data);
-			// echo  $this->db->last_query(); die;
+            $update =$this->Common_model->updateRecordByConditions('paper_master',$where,$data);
+			 echo  $this->db->last_query(); //die;
 			$i++;
-		$this->Common_model->updateRecordByConditions('new_exam_form',$where,$data);
-		echo $this->db->last_query().'<br>';
+		// $this->Common_model->updateRecordByConditions('new_exam_form',$where,$data);
+		// echo $this->db->last_query().'<br>';
 		}
 	}
 	public function remaining_failed_student_list(){
@@ -510,6 +511,78 @@ public function update_roll_no_old_data(){
 			"data" => $dt
 		));
 	}
+
+	public function update_sub_group_id(){
+	
+		$this->db->select('paper_code,sub_group_id,class_id,group_id,student_id');
+		$this->db->from('new_exam_form');
+		$this->db->where_in('class_id',array(101,104,107,110,116,119,125,128,131,134));
+		// $this->db->limit(100);
+		$papers = $this->db->get()->result();
+		
+		foreach($papers as $paper){
+			
+			$where = array('paper_code'=>$paper->paper_code,'class_id'=>$paper->class_id,'student_id'=>$paper->student_id,'sub_group_id'=>0);
+			$data = array ('sub_group_id'=>$paper->sub_group_id,'group_id'=>$paper->group_id);
+			$this->Common_model->updateRecordByConditions('old_result_data',$where,$data);
+			echo $this->db->last_query();
+		}
+	}
+
+	public function add_extra_papers_in_old_result_data()
+	{
+		
+		//$class_id=253;
+		 $class_id=205;
+		$num_of_papers=5;
+		
+		$sql="SELECT count(*)as num,e.* FROM `old_result_data` as e join `old_exam_data` as s on s.id=e.`exam_data_id` WHERE s.`class_id`=".$class_id." AND exam_year='Feb 2023' and exam_status='R' group by s.student_id HAVING num='".$num_of_papers."'";
+		$sql_result = $this->db->query($sql);
+        $students = $sql_result->result_array();
+		foreach ($students as $student) {
+			 	$query="SELECT * FROM `new_exam_form` WHERE `student_id`='".$student['student_id']."' and class_id='".$class_id."' and paper_type!='Theory'";
+			$query_result = $this->db->query($query);
+			$student_practical_records = $query_result->result_array();
+			foreach ($student_practical_records as $row) {
+				$where="`id` = '".$row['paper_id']."'"  ;
+				$papers = $this->Common_model->get_record('paper_master','*',$where);
+				//print_r($papers);
+				$ResultData = array(
+					'exam_data_id' =>  $student['exam_data_id'] ,
+					'student_id' =>  $row['student_id'] ,
+					'course_group_id' => $row['course_group_id'] ,
+					'class_id' => $row['class_id'] ,
+					'paper_code'=> $row['paper_code'] ,
+					'type'=> $row['paper_type'] ,
+					'max_theory_marks'=> $papers[0]['max_theory_marks'],
+					'max_int_marks'=> $papers[0]['max_internal_marks'],
+					'min_theory_marks'=> $papers[0]['min_theory_marks'],
+					'min_int_marks'=> $papers[0]['min_internal_marks'],
+					'theory_marks'=> $row['theory_marks'],
+					'p_marks'=> $row['p_marks'],
+					'int_marks'=> $row['int_marks'],
+					'paper_name'=>  $papers[0]['paper_name'],
+					'result' => 'PASS',
+					'group_id' => $row['group_id'],
+					'sub_group_id' => $row['sub_group_id'],
+					'p_order'=> $row['paper_order'] 
+				);
+				
+				echo "<pre>";
+				
+				//print_r($ResultData);
+
+			   //$insert = $this->Common_model->insertAll('old_result_data',$ResultData);
+				echo $this->db->last_query().'<br>';
+				
+			}
+			
+			
+		}	
+		
+	}
+
+	
 }
 
 ?>

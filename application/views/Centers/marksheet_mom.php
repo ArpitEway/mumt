@@ -7,6 +7,22 @@ $fali_tot_marks = 0;
 $require_tot_marks = 0;
 $tot_marks = 0;
 $abs_count = 0;
+$old_fail = false;
+$isFinalClass = $this->Common_model->hasOneClass($student->course_group_id);
+if($classData->last_class == 'L' && $isFinalClass == false){
+  $classes = $this->Common_model->getRecordByWhere('class_master',array('id !='=>$student->class_id,'course_group_id'=>$student->course_group_id));
+  foreach($classes as $old){
+ $this->db->where_in('exam_result',array('PASS','PASS BY GRACE'));
+$old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id'=>$old->id));
+
+  if($old_result){
+    $old_fail = false;
+  
+  }else{
+    $old_fail = true;
+  }
+}
+}
 foreach($new_exam_form as $marks){
   $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code,"class_id"=>$marks->class_id));
 
@@ -107,6 +123,13 @@ if ($withheld) {
   <div class="text-center text-primary border-right border-left border-bottom border-dark py-3">
     <h1 class=" text-center mb-0">Statement Of Marks</h1>
     <h3 class="text-center">WH</h3>
+  </div>
+  <?php
+}elseif ($old_fail) {
+  ?>
+  <div class="text-center text-primary border-right border-left border-bottom border-dark py-3">
+    <h1 class=" text-center mb-0">Statement Of Marks</h1>
+    <h3 class="text-center">RWPM</h3>
   </div>
   <?php
 }else{
@@ -313,18 +336,20 @@ if ($withheld) {
 <div class="form-group col-md-12 text-center mt-3"  id="print_btn">
 	<button  type="button" onclick="printhiv('printarea')"  class="btn btn-primary font-weight-bold mr-2" >Print</button>
 </div>
-<script type="text/javascript">
-	function printhiv(divName) {
+<script>
+function printhiv(divName) {
 		var printContents = document.getElementById(divName).innerHTML;
 		var originalContents = document.body.innerHTML;
 
-		$('#'+divName).css("margin-top"," 20px");
-		$("#first_div").css("display","none");
+    $('#'+divName).css("margin-top"," 20px");
+		
 		$("#print_btn").css("display", "none");
-		$("#submit_btn").css("display", "none");
-		$("#title_nm").css("display", "none");
-		$("#institute").css("display", "none");
-		$("#head_img").css("display", "none");
+		$(".offcanvas-footer").css("display", "none");
+		$("#radio_btn_select").css("display", "none");
+    $("#center").css("display", "none");
+    $(".content-head").css("display", "none");
+    $("#pro_remark").css("display", "none");
+    $("#result_msg").css("display", "none");
 		window.print();
 		document.body.innerHTML = originalContents;
 	}

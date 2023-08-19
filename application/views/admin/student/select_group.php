@@ -279,7 +279,7 @@ $('#group_submit').attr("disabled","disabled");
     //console.log(data);
     
 	 $.ajax({
-	        	url: "<?=base_url('admin/Admins/submit_group');?>",  
+	        	url: "<?=base_url('admin/Admins/submit_group/'.$student['university_mode'].'');?>",  
               
                 type:'post',
                 dataType : 'JSON',

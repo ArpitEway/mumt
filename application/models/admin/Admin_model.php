@@ -823,6 +823,7 @@ class Admin_model extends CI_Model {
 		$data['remark_detail'] = $remark_detail;
 		$data['remark_detail'] .= (count($other_remark)>0) ? ' ( '.implode(", ",$other_remark).' ) ' : '';
 		$data['approved'] = "N";
+		$data['approved_by'] = $this->session->admin_id;
 		
 		$this->db->where('student_id', $param1);
 		$this->db->update('student', $data);
@@ -1130,6 +1131,48 @@ class Admin_model extends CI_Model {
 		$response = array(
 			'status' => true,
 			'notification' => 'form_request_added_successfully'
+		);
+		return json_encode($response);
+	}
+	public function create_support_system()
+    {
+        $data['name'] = html_escape($this->input->post('name'));
+		$this->db->order_by('id','desc');
+		$this->db->limit(1);
+        $support = $this->db->get_where('support_system',array())->row_array();
+        if($support)
+        {
+             $data['support_order'] = $support['support_order'] + 1;
+        }else
+        {
+             $data['support_order'] = 1;
+        }
+        $this->db->insert('support_system', $data);
+        $support_system = $this->db->insert_id();
+        $response = array(
+        			'status' => true
+        			);
+        return json_encode($response);
+    }
+
+     public function delete_support_system($param1 = '')
+	{
+		$this->db->where('id', $param1);
+		$this->db->delete('support_system');
+		$response = array(
+			'status' => true
+		);
+		return json_encode($response);
+	}
+
+
+	public function update_support_system($param1 = '')
+	{
+		$data['name'] = html_escape($this->input->post('name'));
+		$this->db->where('id', $param1);
+		$this->db->update('support_system', $data);
+		$response = array(
+			'status' => true
 		);
 		return json_encode($response);
 	}

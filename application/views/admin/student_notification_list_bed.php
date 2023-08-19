@@ -8,7 +8,7 @@
 <body>
 	<br><?php
 $notification_no = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id' => $students[0]->old_class_id));
-
+$classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 $notification=($mode == "REG")?$notification_no[0]->notification_no:$notification_no[0]->pvt_notification_no;
 $date=$notification_no[0]->result_date;
 $exam_session=$notification_no[0]->exam_session;
@@ -92,6 +92,8 @@ $abs_count = 0 ;
 					$p_paper_count = 0;
 					$fc1 =0;
 					$fc2=0;
+					$fc1_abs ='';
+					$fc2_abs='';
 					$fc1_max =0;
 					$fc2_max =0;
 					$fc1_min =0;
@@ -113,6 +115,10 @@ $abs_count = 0 ;
 										$rw_count++;
 							
 									}
+									if($new_exam_form->theory_marks=='ABS'){
+										$fc1_abs .= $new_exam_form->theory_marks;
+									 
+									  }
 						 			$fc1 += (int) $new_exam_form->theory_marks;
 						  			$fc1_max += (int) $new_exam_form->max_theory_marks;
 						  			$fc1_min += (int) $new_exam_form->min_theory_marks;
@@ -121,6 +127,10 @@ $abs_count = 0 ;
 									$rw_count++;
 									
 									}
+									if($new_exam_form->theory_marks=='ABS'){
+										$fc2_abs .= $new_exam_form->theory_marks;
+									 
+									  }
 									$fc2 += (int) $new_exam_form->theory_marks;
 									$fc2_max += (int) $new_exam_form->max_theory_marks;
 									$fc2_min += (int) $new_exam_form->min_theory_marks;
@@ -141,7 +151,7 @@ $abs_count = 0 ;
 								if($new_exam_form->theory_marks==''){
 									$rw_count++;
 								}
-								if($new_exam_form->theory_marks+$new_exam_form->int_marks<$new_exam_form->min_theory_marks+$new_exam_form->min_internal_marks  && $new_exam_form->theory_marks!=''){
+								if($new_exam_form->theory_marks+$new_exam_form->int_marks<$new_exam_form->min_theory_marks+$new_exam_form->min_internal_marks && $new_exam_form->theory_marks!=''){
 									array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
 									$fail_count++;
 									$fail_tot_marks += $new_exam_form->theory_marks+$new_exam_form->int_marks;
@@ -169,6 +179,7 @@ $abs_count = 0 ;
 							}
 							if($new_exam_form->p_marks=='ABS'){
 								$p_abs_count++;
+								array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
 							}
 							if($new_exam_form->p_marks<$new_exam_form->min_theory_marks){
 								$p_fail_count++;
@@ -235,6 +246,7 @@ $abs_count = 0 ;
 							}
 							if($new_exam_form->p_marks=='ABS'){
 								$p_abs_count++;
+								array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
 							}
 							if($new_exam_form->p_marks<$new_exam_form->min_theory_marks){
 								$p_fail_count++;
@@ -260,7 +272,13 @@ $abs_count = 0 ;
 					$total_paper_marks +=$fc1_max +$fc2_max;
 					$tot_marks += $fc1_max +$fc2_max;
 					$tot_std_marks += $fc1+$fc2;
-					$count_theory +=  $fc1+$fc2;
+					// $count_theory +=  $fc1+$fc2;
+					if($fc1_abs === 'ABSABS'){
+						$theory_abs_count++;
+					   }
+					   if($fc2_abs === 'ABSABS'){
+						$theory_abs_count++;
+					   }
 	   
 		if($fc1 < $fc1_min ){
 		  array_push( $atkt_paper_codes_array ,'FC1' );
@@ -282,7 +300,7 @@ $abs_count = 0 ;
 						if((in_array($student->old_class_id, $class_ids)) && $mode=='REG')	
 			{
 		
-		$require_grace_marks =($require_tot_marks+1)-$fail_tot_marks;
+		$require_grace_marks =$require_tot_marks-$fail_tot_marks;
 				              }else{
 								
 								$require_grace_marks =$require_tot_marks-$fail_tot_marks;
@@ -310,6 +328,8 @@ $abs_count = 0 ;
       <table width="100%" >
 	  <tr>
 		<td colspan="3">
+			<p class="size" style="line-height:2px">AGPA-Annual Grade Point Average</p>
+		 	<p class="size" style="line-height:2px">SGPA-Semester Grade Point Average</p>
 			<p class="size" style="line-height:2px">RW-Result Withheld</p>
 			<p class="size" style="line-height:2px">RWE-Want of Enrolment</p>
 			<p class="size"style="line-height:2px">RWPM-Want of Prev. Sem/Year Marks</p>
@@ -332,6 +352,7 @@ $abs_count = 0 ;
 		<div>
 			<h1 class="text-center" ><strong> Maharishi Mahesh Yogi Vedic Vishwavidyalaya </strong> </h1>
 		<p align="center" style="line-height:0px">Head Office: Karaundi, Post-Mahner ,Distt- Katni(MP) </p>
+		
 		<h2 align="center"><strong>Result Notification of</strong><br><p style="margin-top:8px"><strong><?php echo $this->Common_model->getCourseNameByCourseId($course_group_id).' - '. $this->Common_model->getClassNameByClassId($class_id) .'  '. $exam_session?></strong></p></h2>
 		</div>
 				<title>Notification <?php echo $this->Common_model->getCourseNameByCourseId($course_group_id)?></title>
@@ -343,20 +364,22 @@ $abs_count = 0 ;
 					<tr> <th class="text-center" colspan="2">The Result of the following examinees of the above exam is hereby declared as under :</th> </tr>
 				</table>
 				<hr>
+				
 				<table width="100%"  class="fully_size"  border="1">
 					<thead>
 						<tr bgcolor="#FFFF00">
 							<th scope="row" class="text-center" width="10%"><span class="style5">Roll No.</span></th>
-							<th style="text-align:left" scope="row"  width="45%"><span class="style5" >Name and F/H Name</span></th>
+							<th style="text-align:left" scope="row"  width="45%"><span class="style5" >Name of the Candidate and F/H Name</span></th>
 							<th scope="row" class="text-center"  width="15%">Result</span></th>
+							<?php if((!in_array($student->old_class_id, $class_ids)) || $mode=='PVT'){ ?>
 							<th scope="row" class="text-center" width="10%"><span class="style5">Total</span></th>
 							<?php	
-						
+							}
 							if((in_array($student->old_class_id, $class_ids)) && $mode=='REG')	
 							{
 						
 								?>
-								<th scope="row" class="text-center" width="10%"><span class="style5">SGPA/AGPA</span></th>
+								<th scope="row" class="text-center" width="10%"><span class="style5"><?php if($classData->mode=="Annual") echo 'AGPA'; else echo 'SGPA'; ?></span></th>
 								<?php
 
 							}
@@ -369,7 +392,9 @@ $abs_count = 0 ;
 					}
 					$page_break_count++;	
 					?>
+					
 					<tr class="alternate">
+					
 						<td class="text-center" scope="row">
 							<?php echo $student->roll_number ?>
 							</td>
@@ -377,8 +402,15 @@ $abs_count = 0 ;
 								<?php echo $student->name .' / '.  $student->f_h_name; ?>
 							</td>
 							<td align="center" >
-								<?=$final_result; ?>  	
+								<?php
+							if((in_array($student->old_class_id, $class_ids)) && $mode=='REG'){
+						echo $this->Gradesheet_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+						}else{
+							echo $final_result;
+						}
+						?>
 							</td>
+							<?php if((!in_array($student->old_class_id, $class_ids)) || $mode=='PVT'){ ?>
 							<td align="center" style="padding:0px">					
 								<?php 
 								if($final_result=='PASS' || $final_result=='PASS BY GRACE'){
@@ -388,7 +420,7 @@ $abs_count = 0 ;
 								} 
 								?>
 							</td>
-							<?php
+							<?php }
 							if((in_array($student->old_class_id, $class_ids)) && $mode=='REG'){
 								if($final_result != 'FAIL'){
 							$gradesheetData = $this->Gradesheet_tr_model->view_notification($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
@@ -403,30 +435,47 @@ $abs_count = 0 ;
 								<?php 
 								if((in_array($student->old_class_id, $class_ids)) && $mode=='REG')	
 								{
-								if($check_grace_marks){
-									echo " ";
-								}elseif(sizeof($atkt_paper_codes_array)>0){
-									echo "ATKT in ";
-									$atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
-									foreach($atkt_paper_codes_array as $paper_code){
-										echo  "<br>". $paper_code;
+									if($check_grace_marks){
+										echo " ";
+									}elseif( $theory_abs_count== ($theory_paper_count-2) && $p_abs_count==$p_paper_count){
+										echo 'Year Break';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
+									  }elseif( $theory_abs_count== ($theory_paper_count -2)){
+										echo 'Year Break';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
+									  }elseif( $p_abs_count==$p_paper_count){
+										echo 'Absent In Practical';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
+									  }
+									elseif(sizeof($atkt_paper_codes_array)>0){
+										if($fail_count == ($theory_paper_count -2 )){
+											echo 'Year Break';
+										}else{
+											echo "SUPP in ";
+										$atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
+										foreach($atkt_paper_codes_array as $paper_code){
+											echo  "<br>". $paper_code;
+										}
+										}
+										
+									}else{
+										echo '';
 									}
 								}else{
-									echo '';
-								}
-							 }else{
-								if($check_grace_marks){
-									echo " ";
-								}elseif(sizeof($atkt_paper_codes_array)==1){
-									echo "ATKT in ";
-									$atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
-									foreach($atkt_paper_codes_array as $paper_code){
-										echo  "<br>". $paper_code;
+									if($check_grace_marks){
+										echo " ";
 									}
-								}else{
-									echo '';
-								}	
-							 } ?>
+									elseif( $theory_abs_count==$theory_paper_count && $p_abs_count==$p_paper_count && $student->course_group_id == 76){
+										echo 'Absent In ALL';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
+									  }
+									
+									elseif(sizeof($atkt_paper_codes_array)==1){
+										echo "ATKT in ";
+										$atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
+										foreach($atkt_paper_codes_array as $paper_code){
+											echo  "<br>". $paper_code;
+										}
+									}else{
+										echo '';
+									}	
+								} ?>
 							</td>
 						</tr>
 						<?php
@@ -445,6 +494,8 @@ $abs_count = 0 ;
 			</tr>
 			<tr>
 				<td colspan="3">
+					<p class="size" style="line-height:2px">AGPA-Annual Grade Point Average</p>
+		 			<p class="size" style="line-height:2px">SGPA-Semester Grade Point Average</p>
 					<p class="size" style="line-height:2px">RW-Result Withheld</p>
 					<p class="size" style="line-height:2px">RWE-Want of Enrolment</p>
 					<p class="size"style="line-height:2px">RWPM-Want of Prev. Sem/Year Marks</p>

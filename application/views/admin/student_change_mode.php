@@ -7,24 +7,24 @@
 						  <tbody>
 						  <tr>
 							  <td><b>Form No.: </b> <?=$student[0]->student_id;?></td>
-							  <td colspan="2"><b>Enrollment No: </b> <?=$student[0]->enrollment_no;?></td>
+							  <td ><b>Enrollment No: </b> <?=$student[0]->enrollment_no;?></td>
 							</tr>
 						
 							<tr>
-							  <td><b>Course: </b> <?=$student[0]->course_name;?></td>
-							  <td colspan="2"><b>Class: </b> <?=$student[0]->class_name;?></td>
+							  <td><b>Course: </b> <?=$student[0]->course_name;?> <b>Class: </b> <?=$student[0]->class_name;?></td>
+							  <td ><b>Session: </b> <?=$student[0]->session;?></td>
 							</tr>
 							<tr>
 							  <td><b>Student Name: </b> <?=$student[0]->name;?></td>
-							  <td colspan="2"><b>DOB: </b> <?=date("d-m-Y", strtotime($student[0]->dob));?></td>
+							  <td ><b>DOB: </b> <?=date("d-m-Y", strtotime($student[0]->dob));?></td>
 							</tr>	
 							<tr>
 							  <td><b>Student Email: </b> <?=$student_data[0]->p_email;?></td>
-							  <td colspan="2"><b>Mobile No: </b> <?=$student_data[0]->p_mobile_no;?></td>
+							  <td ><b>Mobile No: </b> <?=$student_data[0]->p_mobile_no;?></td>
 							</tr>	
 							<tr>
 							  <td><b>Center: </b><?php echo $this->Common_model->getCenterNameById($student[0]->center_id); ?></td>
-							  <td colspan="2"><b>Center Code:</b> <?=$student[0]->center_code;?></td>
+							  <td ><b>Center Code:</b> <?=$student[0]->center_code;?></td>
 							</tr>				
 							<tr>
 							   <div>
@@ -50,7 +50,11 @@
 <!--  -->
 </div>
 <div style="text-align: center;">
+<?php if($this->session->account_type=='Admins'){ ?>
 <button  href="#" class="btn btn-primary btn-sm font-weight-bold mode m-auto" >Change Mode</button>
+<?php }else if($this->session->account_type=='Enrollment' &&  (trim($student[0]->enrollment_no)=='-')){ ?>
+<button  href="#" class="btn btn-primary btn-sm font-weight-bold mode m-auto" >Change Mode</button>
+<?php } else{ echo "<b>Mode may not change ,Entrollement Number already alloated</b>"; }?>
 </div>
 
 <script>
@@ -69,13 +73,14 @@ $(".mode").click(function(){
         console.log(response);
             if(response.status==true){
                 toastr.success("Mode Changed Successfully");
-				if(response.mode=="REG")
-				{
-					$('#mode').replaceWith("<td  id='mode'><b>Mode:</b> Regular</td>");
-				}
-				if(response.mode=="PVT"){
-					$('#mode').replaceWith("<td  id='mode'><b>Mode:</b> Private</td>");
-				}
+				search_student_data();
+				// if(response.mode=="REG")
+				// {
+				// 	$('#mode').replaceWith("<td  id='mode'><b>Mode:</b> Regular</td>");
+				// }
+				// if(response.mode=="PVT"){
+				// 	$('#mode').replaceWith("<td  id='mode'><b>Mode:</b> Private</td>");
+				// }
             }else{
                 toastr.error(response.message);
             }

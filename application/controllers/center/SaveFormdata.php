@@ -118,15 +118,23 @@ class saveFormdata extends CI_Controller {
 		$amount = $this->Common_model->getRecordByWhere('course',array('course_group_id'=> $course_group_id));
 	
 	    $mode = $this->input->post('mode');
+		$late_fees=0;
+		$remark="";
 		if($mode=='regular'){
 			$amount = $amount[0]->form_fees+$amount[0]->admission_fees;
 			$admission_type = 'regular';
 		}else{
-			$amount = $amount[0]->p_form_fees+ $amount[0]->p_admission_fees;
+			$late = $this->Common_model->getRecordByWhere('master',array('p_late_fee_status'=> 'Y'));
+			if($late){
+				$late_fees=$late[0]->p_late_fees;
+				$remark=" With Late Fees";
+			}
+			
+			$amount = $amount[0]->p_form_fees+ $amount[0]->p_admission_fees+$late_fees;
 			$admission_type = 'private';
 		}
 	    
-		$OnlinePayTxnData = array('student_id' => $student_id,'center_id' => $this->session->center_id,'fees_head' => 'Admission Fees','amount' => $amount,'payment_status'=>'pending','course_group_id' => $course_group_id,'class_id' => $class_id,'student_name' => $data['name'],'admission_type'=>$admission_type);
+		$OnlinePayTxnData = array('student_id' => $student_id,'center_id' => $this->session->center_id,'fees_head' => 'Admission Fees','amount' => $amount,'payment_status'=>'pending','course_group_id' => $course_group_id,'class_id' => $class_id,'student_name' => $data['name'],'admission_type'=>$admission_type,'remark'=>$remark);
 	  // || in_array($this->session->center_id, $center_ids_dep)
 		if(in_array($this->session->center_id, $center_ids_uni))
 		{

@@ -31,18 +31,19 @@
 					    $where = array(
 							'exam_form' => 'Y',
 							'roll_no' =>'0',
+							'exam_year'=>'June 2023'
 							
 						);
-						
+						 $this->db->where_in('class_id',array(101,104,107,110,119,125,128,131,134,153,154,155,159,161,168,171,172,181,182,194,198,202,204,214,216,224,226,228,273,283,285,287,289,291,293,295,297,299));
 						$students = $this->Common_model->getRecordByWhereByOrder('backlog_student',$where,'center_id,center_code,class_id,course_group_id','ASC');
-						$whereRollNo = "exam_form = 'Y' and roll_no !='0'";
+						$whereRollNo = "exam_form = 'Y' and roll_no !='0' and exam_year = 'June 2023'";
 						$countData = $this->db->query("Select max(substr(`roll_no`, 3, 6)) as afterRemove from backlog_student WHERE $whereRollNo")->row();
 						$count = $countData->afterRemove;
 						$last_number = ($count==0) ? '1001'  : $count+1;
 						foreach ($students as $student) {
 								$roll_no = ($student->mode=='REG') ? '91'.$last_number : '92'.$last_number;
 							if($action=='generate'){
-								$whereUpdate = array('student_id' => $student->student_id);
+								$whereUpdate = array('student_id' => $student->student_id,'exam_year'=>'June 2023','class_id' => $student->class_id);
 								$updateData = array('roll_no' =>$roll_no);
 								$this->Common_model->updateRecordByConditions('backlog_student',$whereUpdate,$updateData);
 							}

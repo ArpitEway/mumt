@@ -20,7 +20,7 @@
 				?>
 				   <tr>
 					<td><?php echo $i ; ?></td>
-					<td><?php echo $student->roll_no; ?></td>
+					<td><?php echo $student->roll_number; ?></td>
 					<td><?php echo $student->enrollment_no; ?></td>
 					<td><?php echo $student->name; ?></td>
 					<td><?php echo $student->course_name; ?></td>

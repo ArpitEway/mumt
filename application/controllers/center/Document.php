@@ -30,6 +30,7 @@
 	}
 
 	public function Doc_list(){
+		
 		$course_type=$this->input->post('course_type');
 		$data = array();
 		$where="";
@@ -53,8 +54,15 @@
 		
 		
 		$where .= " ) "; 
-
 		// $where.= "document_uploaded!='Y' and payment_status='Y' and center_id=".$this->session->center_id ."  and ( (student.class_name not like '%SEM%' and student.session='July 2021') or session!='July 2021')";
+		//START
+		$master = $this->Common_model->getSingleRow('master');
+		$centerData = $this->Common_model->getRecordById('center','id',$this->session->center_id);
+		if(!empty($master->remove_class_from_center) && $centerData->temp_admission_payment =='N'){
+			$where.=" and `student`.`class_id` NOT IN ($master->remove_class_from_center)";
+		}
+		//END
+		
 		$column_order = array('student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name',null);
 		$column_search = array('enrollment_no', 'name', 'f_h_name', 'course_name','class_name');
 		$DataTableArray = array(
@@ -74,7 +82,7 @@
 		foreach($tableData as $result){
 			$btn = '<a href="'.base_url('center/document/upload/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" target="_blank" class="btn btn-primary btn-sm" target="_blank" >Upload</a>';			
 			$i++;
-			$data[] = array($result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$btn);
+			$data[] = array($i,$result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$btn);
 		}
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
@@ -108,6 +116,16 @@
 			$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 			$where = 'student_id='.$student_id;
 			$student = $this->Common_model->student_info($student_id);
+			//START
+			$master = $this->Common_model->getSingleRow('master');
+			$centerData = $this->Common_model->getRecordById('center','id',$this->session->center_id);
+			$remove_class_from_center =explode(',', $master->remove_class_from_center);
+			if(in_array($student['class_id'],$remove_class_from_center) && ($centerData->temp_admission_payment =='N')) 
+			{ 
+				redirect(base_url('dashboard'));
+			}
+			//END	
+
 			if($student['approved']=='Y' && $student['document_uploaded']=='Y'){
 			$this->session->set_flashdata('warning','Document Already Submitted');
 			redirect(base_url('student/dashboard'));
