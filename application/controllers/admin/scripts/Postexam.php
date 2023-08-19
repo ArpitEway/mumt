@@ -844,10 +844,10 @@ class Postexam extends CI_Controller {
               $this->db->where('exam_data_id', $row->id);
             
               $obtain=$this->db->get()->result();
-          
-              $per=(float)round(($obtain[0]->obt/$row->total_marks)*100,2);
-              $calPer=(float)round(($row->obtain_marks/$row->total_marks)*100,2);
-              $savedPer=(float)round($row->percentage,2);
+              //$aggregate_per = round(  ($tot_std_marks/$tot_marks) * 100,2);
+              $per=round(($obtain[0]->obt/$row->total_marks)*100,2);
+              $calPer=round(($row->obtain_marks/$row->total_marks)*100,2);
+              $savedPer=round($row->percentage,2);
             
               if(($obtain[0]->obt!=$row->obtain_marks) || ($savedPer!=$per) ){
                 echo "<p> Row ID ".$row->id." Stdent ID ".$row->student_id." Marks on Record ".$row->obtain_marks." And in Subject Total ".$obtain[0]->obt." %% ".$row->percentage." % ".$per."</p>";
