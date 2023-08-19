@@ -822,7 +822,7 @@ class Postexam extends CI_Controller {
             $this->load->view('footer');
        }
 
-       public function maeks_checking_script($class_id="",$startlimit=1){
+       public function marks_checking_script($class_id="",$startlimit=1){
             $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
           
             //SELECT SUM(theory_marks)+sum(int_marks)+sum(p_marks) FROM `old_result_data` WHERE `exam_data_id`=1 

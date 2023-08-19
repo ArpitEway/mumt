@@ -23,7 +23,7 @@
                     <td><?php echo $course->course_name; ?></td>
                     <td><?php echo $course->class_name; ?></td>
                     <td><?php echo $course->cnt; ?></td>
-                    <td><a target="_blank" href="<?=base_url('admin/scripts/Postexam/maeks_checking_script/'.$course->class_id)?>">Check</a></td>
+                    <td><a target="_blank" href="<?=base_url('admin/scripts/Postexam/marks_checking_script/'.$course->class_id)?>">Check</a></td>
                 </tr>
             
         
