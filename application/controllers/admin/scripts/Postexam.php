@@ -1241,5 +1241,61 @@ public function backlog_marks_move_scripts($class_id='')
          } 
         }
      }
-
+     
+    function backlog_student_course_complete(){
+        $exam_year="Dec 2022";
+        $class_id = 'backlog_student.class_id';
+          $this->db->select('DISTINCT(backlog_student.course_group_id),'.$class_id.'');
+          $this->db->from('backlog_student');
+          $this->db->join('class_master','class_master.id = '.$class_id.'');
+          $this->db->join('student','student.student_id = backlog_student.student_id');
+          $this->db->where('class_master.last_class','L');
+          $this->db->where(array("course_complete"=>'N','backlog_student.upload_result' => 'Y','backlog_student.exam_form'=>'Y','backlog_student.exam_year'=>$exam_year)); 
+          // $this->db->group_by('course_group_id'); 
+          $data = array(
+              'name_csrf' => $this->security->get_csrf_token_name(),
+              'hash_csrf' => $this->security->get_csrf_hash(),
+          );
+          $data['courses'] =  $this->db->get()->result_array();
+          $this->load->view('header',array('title' => 'Course Complete Script For Backlog Student '));
+          $this->load->view('admin/script/backlog_student_course_complete',$data);
+          $this->load->view('footer');
+      
+      }
+      public function backlog_student_course_complete_script()
+    { //
+            $exam_year="Dec 2022";    
+            $course_group_id =$_POST['course_group_id'];
+            $class_id= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course_group_id,'last_class'=>'L'));
+            
+          $this->db->select('*');
+          $this->db->from('backlog_student');
+          $this->db->join('student','student.student_id = backlog_student.student_id');
+          $this->db->where(array("course_complete"=>'N','backlog_student.upload_result' => 'Y','backlog_student.exam_form'=>'Y','backlog_student.exam_year'=>$exam_year,'backlog_student.class_id'=>$class_id[0]->id)); 
+          $students =$this->db->get()->result_array();
+         
+        $classes= $this->Common_model->getRecordByWhere('class_master',array('course_group_id'=>$course_group_id,'mode'=>$class_id[0]->mode));
+        $class_count = count($classes);  
+        $sno =1; 
+        foreach($students as $student){
+            $this->pass_count = 0;
+            foreach($classes as $class){
+                $results = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student['student_id'],'class_id'=>$class->id,'exam_result !='=>'FAIL'));
+               // echo $this->db->last_query();      
+                if($results !=  Array ( )){
+                    $this->pass_count++;
+                }
+            }			
+                    
+            if($class_count == $this->pass_count){
+                $data = array('course_complete' => 'Y','new_admission_permission'=>"Y");
+                $where = array('student_id'=>$student['student_id']);
+                $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+              //  echo $this->db->last_query(); die;       
+                echo '<div class="row justify-content-center">'.'<h6>'.$sno++.'--'.$student['enrollment_no'].'<h6>'.'</div>';
+               
+            }
+         
+        }
+    }
 }
