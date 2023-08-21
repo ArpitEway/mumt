@@ -2,6 +2,9 @@
 .btn.btn-primary i {
     color: #FFFFFF !important;
 }
+.btn.btn-primary{
+	padding: 8px 10px;
+}
 </style>
 <div class="text-right mt-3">
 

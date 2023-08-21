@@ -47,7 +47,7 @@
 		<option value="all">All</option>
 		<?php 
 		// $courses = $this->db->get_where('course', array())->result_array();
-		$courses = $this->Common_model->get_record('course_group','id,course_name');
+		
 		
 		foreach($courses as $course){
 			?>

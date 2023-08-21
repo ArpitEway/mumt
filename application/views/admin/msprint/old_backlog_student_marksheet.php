@@ -60,8 +60,8 @@
                 <table class="mytable" border="0" cellpadding="2" cellspacing="2" width="100%">
                   <tbody>
                     <?php
-                    $check_mode = $this->Common_model->getRecordById('student','student_id', $papers[0]->student_id);
-                    if($check_mode->university_mode == "REG"){
+                    $check_mode = $this->Common_model->getRecordById('backlog_student','student_id', $papers[0]->student_id);
+                    if($check_mode->mode == "REG"){
                     ?>
                     <tr>
                       <td class="Normaltext" colspan="2">
@@ -83,7 +83,7 @@
                         </div>
                       </td>
                       <td align="center" width="18%" rowspan="4">
-                        <img border="1"  class="student_image" src="<?= base_url('assets/student_image/'.$exam_data->session.'/'.$exam_data->photo) ?>" width="90px" height="105px">
+                        <img border="1"  class="student_image" src="<?= base_url('assets/student_image/'.$student->session.'/'.$student->photo) ?>" width="90px" height="105px">
                       </td>
                     </tr>
                     <tr>
@@ -99,12 +99,12 @@
                         <div align="left">Name of the Candidate</div>
                       </td>
                       <td class="resultText"><div align="left">
-                        <span id="lblSemesterGrading" style="color:Black;"><?php echo  $exam_data->name; ?></span></div>
+                        <span id="lblSemesterGrading" style="color:Black;"><?php echo  $student->name; ?></span></div>
                       </td>
                     </tr>
                     <tr>
                       <td class="Normaltext" align="left" width="29%"><div align="left">Father's / Husband's Name</div></td>
-                      <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo strtoupper( $exam_data->f_h_name); ?></span></div></td>
+                      <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo strtoupper( $student->f_h_name); ?></span></div></td>
                     </tr>
                     <?php if ($exam_data->course_group_id==76 || $exam_data->course_group_id==75){ ?>
                     <?php if ($exam_data->center_id==10 || $exam_data->center_id==12){ ?>
@@ -225,11 +225,11 @@
 
 // $aggregate_per =   ($tot_std_marks/$tot_marks) * 100;     
                         $require_grace_marks = $require_tot_marks-$fail_tot_marks;
-                        if ($fail_count<2 && $require_grace_marks<4 && $int_fail_count==0 && $fail_count!=0 && $require_grace_marks!=0 && $abs_count==0) {
-// echo $require_grace_marks ;
-                          $check_grace_marks = true;
-                          $result = "PASS BY GRACE";
-                        }
+//                         if ($fail_count<2 && $require_grace_marks<4 && $int_fail_count==0 && $fail_count!=0 && $require_grace_marks!=0 && $abs_count==0) {
+// // echo $require_grace_marks ;
+//                           $check_grace_marks = true;
+//                           $result = "PASS BY GRACE";
+//                         }
                         foreach($papers as $paper)
                         {
                           $paper_name=$paper->paper_name;
@@ -292,6 +292,9 @@
                             </td>
                             <td align="left" >&nbsp;&nbsp;<span class="style4">
                             <?php
+                            // print_r($paper);
+                              $status = ($paper->carry_theory == "C")?' C':'';
+                             
                               if ($paper->type=='theory') {
                                 if(($paper->theory_marks <  $paper->min_theory_marks || $paper->int_marks <  $paper->min_int_marks) && $check_grace_marks==false){
                                   echo $paper->theory_marks . ' F' ;
@@ -301,7 +304,7 @@
                                 }elseif($paper->theory_marks=='ABS'){
                                   echo 'ABS F';
                                 }else{
-                                  echo $paper->theory_marks;
+                                  echo $paper->theory_marks.$status;
                                 }
                               }else if($paper->type=="Sessional"){
                                 echo '-';
@@ -312,7 +315,7 @@
                                   }elseif($paper->p_marks=='ABS'){
                                     echo 'ABS F';
                                   }else{
-                                    echo $paper->p_marks;
+                                    echo $paper->p_marks.$status;
                                   }
                                 }else{
                                   if($paper->p_marks<$paper->min_theory_marks){
@@ -320,7 +323,7 @@
                                   }elseif($paper->p_marks=='ABS'){
                                     echo 'ABS F';
                                   }else{
-                                    echo $paper->p_marks;
+                                    echo $paper->p_marks.$status;
                                   }
                                 }
                               }
@@ -330,9 +333,13 @@
                             <td align="left" class="style4"><span class="style2" style="padding-left:10px;">
                             <?php
                               if($paper->type=='Sessional'){
-                               echo  $paper->int_marks;
+                               echo  $paper->int_marks.$status;
                               }else{
-                             echo  ($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->int_marks : '-'; 
+                                if($paper->type=='theory' || $classData->practical_internal_marks=='Y'){
+                                    echo ($paper->int_marks=='ABS') ? 'ABS F' : $paper->int_marks.' C'; 
+                                   }else{
+                                    echo '-';
+                                   }
                               }?></span>
                             </td>
                             <td align="left" class="style2">&nbsp;&nbsp;&nbsp;&nbsp;<span class="style4" style="padding-left:10px;">
@@ -344,7 +351,7 @@
                                 }elseif($paper->theory_marks=="ABS"){
                                   echo 'ABS'. ' F' ;
                                 }else{
-                                  echo $paper->theory_marks + $paper->int_marks;
+                                  echo $paper->theory_marks + $paper->int_marks.$status;
                                 }
                               }else if($paper->type=="Sessional"){
                                 if($paper->int_marks<$paper->min_int_marks){
@@ -353,7 +360,7 @@
                                 }elseif($paper->int_marks=="ABS"){
                                   echo 'ABS'. ' F' ;
                                 }else{
-                                  echo $paper->int_marks;
+                                  echo $paper->int_marks.' C';
                                 }
                               }else{
                                 if($classData->practical_internal_marks=='Y') {
@@ -362,7 +369,7 @@
                                   }elseif($paper->p_marks=="ABS" || $paper->int_marks=="ABS"){
                                     echo 'ABS'. ' F' ;
                                   }else{
-                                    echo $paper->p_marks + $paper->int_marks ;
+                                    echo $paper->p_marks + $paper->int_marks.$satus  ;
                                   } 
                                 }else{
                                   if($paper->p_marks<$paper->min_theory_marks && $check_grace_marks==false){
@@ -370,7 +377,7 @@
                                   }elseif($paper->p_marks=="ABS"){
                                     echo 'ABS'. ' F';
                                   }else{
-                                    echo $paper->p_marks;
+                                    echo $paper->p_marks.$satus ;
                                   }
                                 }
                               }

@@ -48,16 +48,16 @@
     // var_dump($isOneClass);
     foreach($students as $student)
     {
-      $papers = $this->Common_model->student_info_for_backlog_result($student->student_id,$student->class_id);
+      $papers = $this->Common_model->student_info_for_backlog_result($student->student_id,$student->class_id,$student->id);
       ?>
       <fieldset id="printarea" class="breakhere" style="width:90%;border: 0px solid #22316C;"> 
-        <div align="left"> MS No. <?php echo $student->marksheet_no; ?> </div>
+        <div align="left"> MS No. <?php echo $student->back_marksheet_no; ?> </div>
         <table align="center" border="0" width="100%">
           <tbody>
             <tr>
               <td height="100" colspan="2" valign="bottom">
                 <center>
-                  <strong><?php echo  ($isOneClass) ? $student->course_name .' '."(One Year Course)" :$student->course_name .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
+                  <strong><?php echo  ($isOneClass) ? $student->course_name .' '."(One Year Course)" :$student->course_name .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->class_id)); ?> <?= 'Backlog '.$marksheet_variables->exam_session ?></strong>
                 </center>
               </td>
             </tr>
@@ -65,7 +65,7 @@
               <td align="center" height="120" colspan="2">
                 <table class="mytable" border="0" cellpadding="2" cellspacing="2" width="100%">
                   <tbody>
-                    <?php if($student->university_mode == 'REG'){?>
+                    <?php if($student->mode == 'REG'){?>
                     <tr>
                       <td class="Normaltext" colspan="2">
                         <div align="center"><font size="4">  &nbsp; </font></div>

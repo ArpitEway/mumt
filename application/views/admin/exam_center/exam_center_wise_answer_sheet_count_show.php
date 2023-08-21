@@ -18,7 +18,7 @@ $total = 0;
     foreach($exam_centers as $row)
     {
         /*****************/
-		$sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE     `s`.`exam_center_id` = '".$row->id."' AND   course_complete='N'  AND  paper_type='theory' AND new_exam_form in ('Y','N')  ";
+		$sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE     `s`.`exam_center_id` = '".$row->id."' AND   course_complete='N'  AND  paper_type='theory' AND new_exam_form in ('Y')  ";
 
         //(new_exam_form!='D' OR ( `s`.`session` = 'July 2022' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2023' AND `s`.`class_name` = 'I SEM' )  OR ( `s`.`exam_form` = 'Y' AND `s`.`class_name` = 'III SEM' ) OR ( `s`.`exam_form` = 'Y' AND `s`.`class_name` = 'I SEM' ))
 
@@ -27,7 +27,7 @@ $total = 0;
        /* $sql_rem="SELECT count(*) as cnt FROM `paper_master` as p join `student` as s on s.class_id=p.class_id and s.`course_group_id`=p.`course_group_id` WHERE s.new_exam_form!='D' and s.temp_exam_form='N' and p.type='theory'  AND `s`.`exam_center_id` = '".$row->id."' AND   course_complete='N'";
         $query_rem = $this->db->query($sql_rem);
 		$count_rem = $query_rem->result_array();*/
-        $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND s.id=e.backlog_student_id  WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form in ('Y','N') and s.exam_year='June 2023' AND `e`.`status`='B'";    
+        $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND s.id=e.backlog_student_id  WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form in ('Y') and s.exam_year='June 2023' AND `e`.`status`='B'";    
         $query_back = $this->db->query($sql_back);
         $count_backlog = $query_back->result_array();
       

@@ -2161,8 +2161,8 @@ class Center extends CI_Controller {
 		// $where['class_master.result_permission'] = 'Y';
 		// Fetch member's records
 		
-		$column_order = array('backlog_student.student_id','enrollment_no','course_group_id','backlog_student.class_id',null);
-		$column_search = array('backlog_student.student_id','enrollment_no','course_group_id','backlog_student.class_id');
+		$column_order = array('backlog_student.student_id','backlog_student.enrollment_no','backlog_student.course_group_id','backlog_student.class_id','class_master.class_name',null);
+		$column_search = array('backlog_student.student_id','backlog_student.enrollment_no','backlog_student.course_group_id','backlog_student.class_id','class_master.class_name');
 	
 		$DataTableArray = array(
 			'select' => 'backlog_student.*',
@@ -2283,6 +2283,7 @@ public function backlog_marksheet($student_id="")
 		$this->db->from('backlog_exam_form');
 		$this->db->where('backlog_exam_form.student_id',$data['student']->student_id);
 		$this->db->where('backlog_exam_form.class_id',$data['student']->class_id);
+		$this->db->where('backlog_exam_form.backlog_student_id',$data['student']->id);
 		$this->db->order_by('backlog_exam_form.paper_order','backlog_exam_form.paper_order');
 		$new_exam_form = $this->db->get()->result();
 		$data['new_exam_form']  = $new_exam_form;

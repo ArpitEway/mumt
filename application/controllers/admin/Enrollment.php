@@ -50,6 +50,20 @@
 				$data['sessions'] = $this->db->get_where('session', array('enrollment_permission'=>'Y'))->result_array();
 				$data['name_csrf'] = $this->security->get_csrf_token_name();
 				$data['hash_csrf'] = $this->security->get_csrf_hash();
+				//START
+				$master = $this->Common_model->getSingleRow('master');
+				if(!empty($master->remove_class_from_center) ){
+					
+					$sql="SELECT GROUP_CONCAT(DISTINCT(`course_group_id`)) as id FROM `class_master` where `id`  IN ($master->remove_class_from_center) and admission_permission = 'Y'";
+					$query = $this->db->query($sql);
+        			$group_ids = $query->result_array();
+					$grouparr=explode(',',$group_ids[0]['id']);
+					$this->db->where_not_in('id',$grouparr );
+					
+				 }
+				 //END
+				$data['courses'] = $this->Common_model->get_record('course_group','id,course_name');
+				
 				$this->load->view('admin/enrollment/view_student_report',$data);
 				$this->load->view('footer');
 			}
@@ -234,7 +248,7 @@
 				$approved = $this->input->post("approved");
 				$session = $this->input->post("session");
 				$university_mode = $this->input->post("university_mode");
-
+				$master = $this->Common_model->getSingleRow('master');
                 if($center != "all"){	 
 					
 					$dt['center_id'] = $center;
@@ -257,6 +271,13 @@
 				$dt['document_uploaded'] = "Y";
 				// $dt['university_mode'] = "REG";	
 				$this->db->where('new_admission_permission', 'N');
+				//START
+				
+				 if(!empty($master->remove_class_from_center) ){
+					$remove_classes=explode(',',$master->remove_class_from_center);
+					$this->db->where_not_in('student.class_id', $remove_classes );
+				 }
+				
 				$data['students'] = $this->Common_model->student_data($dt);
 				
 				$dt =  $this->load->view('admin/student/getstudent',$data,true);
@@ -660,62 +681,62 @@
 			//$session_july='July 2021';		// All Class
 			$session_july=$record[0]['session'];
 			$where = array('session'=>$session_july,);
-			if($mode!=""){ 	$where = array('session'=>$session_july,'university_mode'=>$mode); 	}
+			if($mode!=""){ 	$where = array('session'=>$session_july,'university_mode'=>$mode ,'new_admission_permission'=>'N'); 	}
 			$data['total_student'] = $this->Common_model->getCountByWhere('student',$where);
 			
 	       //---paid------
 			$where = array('payment_status'=>'Y','session'=>$session_july);
-			if($mode!=""){ 	$where = array('payment_status'=>'Y','session'=>$session_july,'university_mode'=>$mode); 	}
+			if($mode!=""){ 	$where = array('payment_status'=>'Y','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 			$data['tot_paid'] = $this->Common_model->getCountByWhere('student',$where);
 
 	       // --- not paid------
 			$where = array('payment_status'=>'N','session'=>$session_july);
-			if($mode!=""){ 	$where = array('payment_status'=>'N','session'=>$session_july,'university_mode'=>$mode); 	}
+			if($mode!=""){ 	$where = array('payment_status'=>'N','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 			$data['tot_unpaid'] = $this->Common_model->getCountByWhere('student',$where);
 
 	       //---paid and uploaded--------
-			$where = array('document_uploaded'=>'Y','payment_status'=>'Y','session'=>$session_july);
-			if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','session'=>$session_july,'university_mode'=>$mode); 	}
+			$where = array('document_uploaded'=>'Y','payment_status'=>'Y','session'=>$session_july,'new_admission_permission'=>'N');
+			if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 			$data['uploaded'] = $this->Common_model->getCountByWhere('student',$where);
 
 	        //---not uploaded--------
 			$where = array('document_uploaded'=>'N','payment_status'=>'Y','session'=>$session_july);
-			if($mode!=""){ 	$where = array('document_uploaded'=>'N','payment_status'=>'Y','session'=>$session_july,'university_mode'=>$mode); 	}
+			if($mode!=""){ 	$where = array('document_uploaded'=>'N','payment_status'=>'Y','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 			$data['not_uploaded'] = $this->Common_model->getCountByWhere('student',$where);
 
 	        //---paid/uploaded/ non approved---
-			$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'N','session'=>$session_july);
-			if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'N','session'=>$session_july,'university_mode'=>$mode); 	}
+			$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'N','session'=>$session_july,'new_admission_permission'=>'N');
+			if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'N','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 			$data['non_approved'] = $this->Common_model->getCountByWhere('student',$where);
 
 	        // paid + uploaded but approved = '' not verified----
-			$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'','session'=>$session_july);
-			if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'','session'=>$session_july,'university_mode'=>$mode); 	}
+			$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'','session'=>$session_july,'new_admission_permission'=>'N');
+			if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 			$data['not_verified'] = $this->Common_model->getCountByWhere('student',$where);
 
 	         // paid + uploaded + approved = Y  verified----
-			$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'Y','session'=>$session_july);
-			if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'Y','session'=>$session_july,'university_mode'=>$mode); 	}
+			$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'Y','session'=>$session_july,'new_admission_permission'=>'N');
+			if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'Y','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 			$data['approved'] = $this->Common_model->getCountByWhere('student',$where);
 
 			// enrollement genrated
-			$where = array('enrollment_no !='=>'-','approved='=>'Y','session'=>$session_july);
-			if($mode!=""){ 	$where = array('enrollment_no !='=>'-','approved='=>'Y','session'=>$session_july,'university_mode'=>$mode); 	}
+			$where = array('enrollment_no !='=>'-','approved='=>'Y','session'=>$session_july,'new_admission_permission'=>'N');
+			if($mode!=""){ 	$where = array('enrollment_no !='=>'-','approved='=>'Y','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 			$data['en_generated'] = $this->Common_model->getCountByWhere('student',$where);
 
 			// not enrollement genrated
-			$where = array('enrollment_no'=>'-','approved='=>'Y','session'=>$session_july);
-			if($mode!=""){ 	$where = array('enrollment_no '=>'-','approved='=>'Y','session'=>$session_july,'university_mode'=>$mode); 	}
+			$where = array('enrollment_no'=>'-','approved='=>'Y','session'=>$session_july,'new_admission_permission'=>'N');
+			if($mode!=""){ 	$where = array('enrollment_no '=>'-','approved='=>'Y','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 			$data['not_en_generated'] = $this->Common_model->getCountByWhere('student',$where);
 
 			// enrolled
-			$where = array('enrolled'=>'Y','approved='=>'Y','enrollment_no !='=>'-','session'=>$session_july);
-			if($mode!=""){ 	$where = array('enrolled'=>'Y','approved='=>'Y','enrollment_no !='=>'-','session'=>$session_july,'university_mode'=>$mode); 	}
+			$where = array('enrolled'=>'Y','approved='=>'Y','enrollment_no !='=>'-','session'=>$session_july,'new_admission_permission'=>'N');
+			if($mode!=""){ 	$where = array('enrolled'=>'Y','approved='=>'Y','enrollment_no !='=>'-','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 			$data['tot_enrolled'] = $this->Common_model->getCountByWhere('student',$where);
 
 			// not enrolled
-			$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july);
-			if($mode!=""){ 	$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july,'university_mode'=>$mode); 	}
+			$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july,'new_admission_permission'=>'N');
+			if($mode!=""){ 	$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 			$data['tot_not_enrolled'] = $this->Common_model->getCountByWhere('student',$where);
 
 			
@@ -745,87 +766,87 @@
 				if($param =='paid')
 				{
                    //---paid------
-					$where = array('payment_status'=>'Y','session'=>$session_july);
-					if($mode!=""){ 	$where = array('payment_status'=>'Y','session'=>$session_july,'university_mode'=>$mode); 	}
+					$where = array('payment_status'=>'Y','session'=>$session_july,'new_admission_permission'=>'N');
+					if($mode!=""){ 	$where = array('payment_status'=>'Y','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 					$msg = array('title' => 'Center Wise Student List(Paid)');
 				}
 				if($param =='not_paid'){
 					// --- not paid------
-					$where = array('payment_status'=>'N','session'=>$session_july);
-					if($mode!=""){ 	$where = array('payment_status'=>'N','session'=>$session_july,'university_mode'=>$mode); 	}
+					$where = array('payment_status'=>'N','session'=>$session_july,'new_admission_permission'=>'N');
+					if($mode!=""){ 	$where = array('payment_status'=>'N','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 					$msg = array('title' => 'Center Wise Student List(Unpaid)');
 				}
 
 				if($param =='uploaded')
 				{
 					//---paid and uploaded--------
-					$where = array('document_uploaded'=>'Y','payment_status'=>'Y','session'=>$session_july);
-					if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','session'=>$session_july,'university_mode'=>$mode); 	}
+					$where = array('document_uploaded'=>'Y','payment_status'=>'Y','session'=>$session_july,'new_admission_permission'=>'N');
+					if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 					$msg = array('title' => 'Center Wise Student List(Documents Uploaded)');
 				}
 				if($param =='not_uploaded')
 				{
 //---not uploaded--------
-					$where = array('document_uploaded'=>'N','payment_status'=>'Y','session'=>$session_july);
-					if($mode!=""){ 	$where = array('document_uploaded'=>'N','payment_status'=>'Y','session'=>$session_july,'university_mode'=>$mode); 	}
+					$where = array('document_uploaded'=>'N','payment_status'=>'Y','session'=>$session_july,'new_admission_permission'=>'N');
+					if($mode!=""){ 	$where = array('document_uploaded'=>'N','payment_status'=>'Y','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 					$msg = array('title' => 'Center Wise Student List(Documents Not Uploaded)');
 				}
 				if($param =='approved')
 				{
 
 					// paid + uploaded + approved = Y  verified----
-					$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'Y','session'=>$session_july);
-					if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'Y','session'=>$session_july,'university_mode'=>$mode); 	}
+					$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'Y','session'=>$session_july,'new_admission_permission'=>'N');
+					if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'Y','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 					$msg = array('title' => 'Center Wise Student List(Approved)');
 				}
 				if($param =='not_verified')
 				{
 					 // paid + uploaded but approved = '' not verified----
-					$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'','session'=>$session_july);
-					if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'','session'=>$session_july,'university_mode'=>$mode); 	}
+					$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'','session'=>$session_july,'new_admission_permission'=>'N');
+					if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 					$msg = array('title' => 'Center Wise Student List(Not Verified)');
 				}
 				if($param =='non_approved')
 				{
 					  //---paid/uploaded/ non approved---
-					$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'N','session'=>$session_july);
-					if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'N','session'=>$session_july,'university_mode'=>$mode); 	}
+					$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'N','session'=>$session_july,'new_admission_permission'=>'N');
+					if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'N','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 					$msg = array('title' => 'Center Wise Student List(Non-Approved)');
 				}
 				if($param =='generated')
 				{
 					// enrollement genrated
-					$where = array('enrollment_no !='=>'-','approved='=>'Y','session'=>$session_july);
-					if($mode!=""){ 	$where = array('enrollment_no !='=>'-','approved='=>'Y','session'=>$session_july,'university_mode'=>$mode); 	}
+					$where = array('enrollment_no !='=>'-','approved='=>'Y','session'=>$session_july,'new_admission_permission'=>'N');
+					if($mode!=""){ 	$where = array('enrollment_no !='=>'-','approved='=>'Y','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 					$msg = array('title' => 'Center Wise Student List(Generated)');
 				}
 				if($param =='not_generated')
 				{
 					// not enrollement genrated
-					$where = array('enrollment_no'=>'-','approved='=>'Y','session'=>$session_july);
-					if($mode!=""){ 	$where = array('enrollment_no '=>'-','approved='=>'Y','session'=>$session_july,'university_mode'=>$mode); 	}
+					$where = array('enrollment_no'=>'-','approved='=>'Y','session'=>$session_july,'new_admission_permission'=>'N');
+					if($mode!=""){ 	$where = array('enrollment_no '=>'-','approved='=>'Y','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 					$msg = array('title' => 'Center Wise Student List(Not Generated)');
 				}
 				if($param =='enrolled')
 				{
                   // enrolled
-					$where = array('enrolled'=>'Y','approved='=>'Y','enrollment_no !='=>'-','session'=>$session_july);
-					if($mode!=""){ 	$where = array('enrolled'=>'Y','approved='=>'Y','enrollment_no !='=>'-','session'=>$session_july,'university_mode'=>$mode); 	}
+					$where = array('enrolled'=>'Y','approved='=>'Y','enrollment_no !='=>'-','session'=>$session_july,'new_admission_permission'=>'N');
+					if($mode!=""){ 	$where = array('enrolled'=>'Y','approved='=>'Y','enrollment_no !='=>'-','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 					$msg = array('title' => 'Center Wise Student List(Enrolled)');
 				}
 				if($param =='not_enrolled')
 				{
 					// not enrolled
-					$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july);
-					if($mode!=""){ 	$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july,'university_mode'=>$mode); 	}
+					$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july,'new_admission_permission'=>'N');
+					if($mode!=""){ 	$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 					$msg = array('title' => 'Center Wise Student List(Not Enrolled)');
 				}
 
 				if($param == 'all')
 				{
 
-					$where = array('session'=>$session_july);
-					if($mode!=""){ 	$where = array('session'=>$session_july,'university_mode'=>$mode); 	}
+					$where = array('session'=>$session_july,'new_admission_permission'=>'N');
+					if($mode!=""){ 	$where = array('session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 					$msg = array('title' => 'Center Wise Student List');
 				}
 
@@ -861,86 +882,86 @@
 			if($params_value =='paid')
 			{
                    //---paid------
-				$where = array('payment_status'=>'Y','session'=>$session_july ,'center_id'=>$center_id);
-				if($mode!=""){ 	$where = array('payment_status'=>'Y','session'=>$session_july ,'center_id'=>$center_id,'university_mode'=>$mode); 	}
+				$where = array('payment_status'=>'Y','session'=>$session_july ,'center_id'=>$center_id,'new_admission_permission'=>'N');
+				if($mode!=""){ 	$where = array('payment_status'=>'Y','session'=>$session_july ,'center_id'=>$center_id,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 				$msg = array('title' => 'Center Wise Student List(Paid)');
 			}
 			if($params_value =='not_paid'){
 					// --- not paid------
-				$where = array('payment_status'=>'N','session'=>$session_july,'center_id'=>$center_id);
-				if($mode!=""){ 	$where = array('payment_status'=>'N','session'=>$session_july ,'center_id'=>$center_id,'university_mode'=>$mode); 	}
+				$where = array('payment_status'=>'N','session'=>$session_july,'center_id'=>$center_id,'new_admission_permission'=>'N');
+				if($mode!=""){ 	$where = array('payment_status'=>'N','session'=>$session_july ,'center_id'=>$center_id,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 				$msg = array('title' => 'Center Wise Student List(Unpaid)');
 			}
 
 			if($params_value =='uploaded')
 			{
 					//---paid and uploaded--------
-				$where = array('document_uploaded'=>'Y','payment_status'=>'Y','session'=>$session_july,'center_id'=>$center_id);
-				if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','session'=>$session_july,'center_id'=>$center_id,'university_mode'=>$mode); 	}
+				$where = array('document_uploaded'=>'Y','payment_status'=>'Y','session'=>$session_july,'center_id'=>$center_id,'new_admission_permission'=>'N');
+				if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','session'=>$session_july,'center_id'=>$center_id,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 				$msg = array('title' => 'Center Wise Student List(Documents Uploaded)');
 			}
 			if($params_value =='not_uploaded')
 			{
 //---not uploaded--------
-				$where = array('document_uploaded'=>'N','payment_status'=>'Y','session'=>$session_july,'center_id'=>$center_id);
-				if($mode!=""){ 	$where = array('document_uploaded'=>'N','payment_status'=>'Y','session'=>$session_july,'center_id'=>$center_id,'university_mode'=>$mode); 	}
+				$where = array('document_uploaded'=>'N','payment_status'=>'Y','session'=>$session_july,'center_id'=>$center_id,'new_admission_permission'=>'N');
+				if($mode!=""){ 	$where = array('document_uploaded'=>'N','payment_status'=>'Y','session'=>$session_july,'center_id'=>$center_id,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 				$msg = array('title' => 'Center Wise Student List(Documents Not Uploaded)');
 			}
 			if($params_value =='approved')
 			{
 
 					// paid + uploaded + approved = Y  verified----
-				$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'Y','session'=>$session_july,'center_id'=>$center_id);
-				if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'Y','session'=>$session_july,'center_id'=>$center_id,'university_mode'=>$mode); 	}
+				$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'Y','session'=>$session_july,'center_id'=>$center_id,'new_admission_permission'=>'N');
+				if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'Y','session'=>$session_july,'center_id'=>$center_id,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 				$msg = array('title' => 'Center Wise Student List(Approved)');
 			}
 			if($params_value =='not_verified')
 			{
 					 // paid + uploaded but approved = '' not verified----
-				$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'','session'=>$session_july,'center_id'=>$center_id);
-				if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'','session'=>$session_july,'center_id'=>$center_id,'university_mode'=>$mode); 	}
+				$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'','session'=>$session_july,'center_id'=>$center_id,'new_admission_permission'=>'N');
+				if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'','session'=>$session_july,'center_id'=>$center_id,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 				$msg = array('title' => 'Center Wise Student List(Not Verified)');
 			}
 			if($params_value =='non_approved')
 			{
 					  //---paid/uploaded/ non approved---
-				$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'N','session'=>$session_july,'center_id'=>$center_id);
-				if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'N','session'=>$session_july,'center_id'=>$center_id,'university_mode'=>$mode); 	}
+				$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'N','session'=>$session_july,'center_id'=>$center_id,'new_admission_permission'=>'N');
+				if($mode!=""){ 	$where = array('document_uploaded'=>'Y','payment_status'=>'Y','approved='=>'N','session'=>$session_july,'center_id'=>$center_id,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 				$msg = array('title' => 'Center Wise Student List(Non-Approved)');
 			}
 			if($params_value =='generated')
 			{
 					// enrollement genrated
-				$where = array('enrollment_no !='=>'-','approved='=>'Y','session'=>$session_july,'center_id'=>$center_id);
-				if($mode!=""){ 	$where = array('enrollment_no !='=>'-','approved='=>'Y','session'=>$session_july,'center_id'=>$center_id,'university_mode'=>$mode); 	}
+				$where = array('enrollment_no !='=>'-','approved='=>'Y','session'=>$session_july,'center_id'=>$center_id,'new_admission_permission'=>'N');
+				if($mode!=""){ 	$where = array('enrollment_no !='=>'-','approved='=>'Y','session'=>$session_july,'center_id'=>$center_id,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 				$msg = array('title' => 'Center Wise Student List(Generated)');
 			}
 			if($params_value =='not_generated')
 			{
 					// not enrollement genrated
-				$where = array('enrollment_no'=>'-','approved='=>'Y','session'=>$session_july,'center_id'=>$center_id);
-				if($mode!=""){ 	$where = array('enrollment_no '=>'-','approved='=>'Y','session'=>$session_july,'center_id'=>$center_id,'university_mode'=>$mode); 	}
+				$where = array('enrollment_no'=>'-','approved='=>'Y','session'=>$session_july,'center_id'=>$center_id,'new_admission_permission'=>'N');
+				if($mode!=""){ 	$where = array('enrollment_no '=>'-','approved='=>'Y','session'=>$session_july,'center_id'=>$center_id,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 				$msg = array('title' => 'Center Wise Student List(Not Generated)');
 			}
 			if($params_value =='enrolled')
 			{
                   // enrolled
-				$where = array('enrolled'=>'Y','approved='=>'Y','enrollment_no !='=>'-','session'=>$session_july,'center_id'=>$center_id);
-				if($mode!=""){ 	$where = array('enrolled'=>'Y','approved='=>'Y','enrollment_no !='=>'-','session'=>$session_july,'center_id'=>$center_id,'university_mode'=>$mode); 	}
+				$where = array('enrolled'=>'Y','approved='=>'Y','enrollment_no !='=>'-','session'=>$session_july,'center_id'=>$center_id,'new_admission_permission'=>'N');
+				if($mode!=""){ 	$where = array('enrolled'=>'Y','approved='=>'Y','enrollment_no !='=>'-','session'=>$session_july,'center_id'=>$center_id,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 				$msg = array('title' => 'Center Wise Student List(Enrolled)');
 			}
 			if($params_value =='not_enrolled')
 			{
 					// not enrolled
-				$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july,'center_id'=>$center_id);
-				if($mode!=""){ 	$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july,'center_id'=>$center_id,'university_mode'=>$mode); 	}
+				$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july,'center_id'=>$center_id,'new_admission_permission'=>'N');
+				if($mode!=""){ 	$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july,'center_id'=>$center_id,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 				$msg = array('title' => 'Center Wise Student List(Not Enrolled)');
 			}
 			if($params_value == 'all')
 				{
 
-					$where = array('session'=>$session_july);
-					if($mode!=""){ 	$where = array('session'=>$session_july,'university_mode'=>$mode); 	}
+					$where = array('session'=>$session_july,'new_admission_permission'=>'N');
+					if($mode!=""){ 	$where = array('session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
 					$msg = array('title' => 'Center Wise Student List');
 				}
 			

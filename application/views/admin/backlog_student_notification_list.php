@@ -105,7 +105,7 @@
    		$fc2_min =0;
 		   $grand_obt=0;
 		   $grand_tot =0;
-		$paper_marks = $this->Common_model->backlog_notification_marks_details_($student->student_id,$student->class_id);
+		$paper_marks = $this->Common_model->backlog_notification_marks_details_($student->student_id,$student->class_id,$student->id);
 		$class_ids=array(101,104,107,110,116,119,125,128,131,134);
 		foreach($paper_marks as  $marks){
 			if((in_array($student->class_id, $class_ids)) && $mode=='REG')	
@@ -113,6 +113,7 @@
 			if($marks->type=="theory" ){
 				$theory_paper_count++;
 				if($marks->sub_group_id == 1){
+					
 					if($marks->group_paper_name == 'FC1' ){
 					  if($marks->theory_marks==''){
 						$rw_count++;
@@ -150,7 +151,8 @@
 					if($marks->theory_marks==''){
 						$Withheld = true;
 					}
-					if($marks->theory_marks=="ABS"){
+					
+					if($marks->theory_marks=="ABS" ){
 						$theory_abs_count++;
 						$abs_count++;
 						array_push( $ATKT_paper_codes,$marks->paper_code );
@@ -193,7 +195,7 @@
 			}
 		}else{
 			if($marks->type=="theory" ){
-				$theory_paper_count++;
+				
 				if($classData->internal!="N"){
 					$total_obtained_marks +=$marks->theory_marks+$marks->int_marks;
 					$total_max_marks +=$marks->max_theory_marks+$marks->max_internal_marks;
@@ -204,7 +206,10 @@
 				if($marks->theory_marks==''){
 					$Withheld = true;
 				}
-				if($marks->theory_marks=="ABS"){
+				if($marks->status == 'B'){
+					$theory_paper_count++;
+				}
+				if($marks->theory_marks=="ABS" && $marks->status == 'B'){
 					$theory_abs_count++;
 					$abs_count++;
 					array_push( $ATKT_paper_codes,$marks->paper_code );
@@ -538,11 +543,11 @@
 			elseif(($p_abs_count == $count_practical && $count_practical!=0)){
 				echo 'Absent In Practical';
 			}elseif($theory_paper_count==$theory_abs_count){
-				echo 'Year Break';
+				echo 'ABSENT';
 			}else{
-				if($fail_count == $theory_paper_count){
-					echo 'Year Break';
-				}else{
+				// if($fail_count == $theory_paper_count){
+				// 	echo 'Year Break';
+				// }else{
 					if($require_grace_marks>=4 || $abs_count!=0 ){
 
 						$remark= ($check_grace_marks) ? 'FAIL' : 'ATKT IN ';
@@ -552,7 +557,7 @@
 							echo  "". $paper_code.' ' ;
 						} 
 					}
-				}
+				// }
 				
 			}
 		}			

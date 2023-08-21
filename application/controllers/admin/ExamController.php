@@ -1634,7 +1634,7 @@ class ExamController extends CI_Controller {
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('DISTINCT(exam_center_id) ');
 			$this->db->from('student');
-			$where = array('new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>9);
+			$where = array('new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>13);
 			$this->db->where($where);
 			$ecenters=$this->db->get()->result_array();
 			//print_r($this->db->last_query()); 
@@ -1668,7 +1668,7 @@ class ExamController extends CI_Controller {
 		$this->db->from('student');
 		$this->db->order_by("roll_no", "asc");
 		// if($exam_center!="All")
-		$where = array('exam_center_id'=>$exam_center,'new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>9);
+		$where = array('exam_center_id'=>$exam_center,'new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>13);
 		$this->db->where($where);	
 		$data['exam_center_students'] = $this->db->get()->result();
 		echo $this->load->view('admin/exam_center/get_exam_center_wise_student_attendance_sheet',$data, TRUE);
@@ -1691,7 +1691,7 @@ class ExamController extends CI_Controller {
 		
 			$this->db->where('exam_form','Y');
 			$this->db->where('exam_year','June 2023');
-			$this->db->where('notification_no','8');
+			$this->db->where('notification_no','12');
 			$this->db->order_by('exam_center_code', "asc");
 			$data['exam_centers'] = $this->db->get()->result();
 
@@ -1707,7 +1707,7 @@ class ExamController extends CI_Controller {
 		$this->db->join('student', 'backlog_student.student_id = student.student_id ');
 		$this->db->order_by("roll_no", "asc");
 		
-		$where = array('backlog_student.exam_center_id'=>$exam_center,'backlog_student.exam_form'=>'Y', 'backlog_student.roll_no!=' => 0 ,'backlog_student.notification_no'=>8,'backlog_student.exam_year'=>'June 2023');
+		$where = array('backlog_student.exam_center_id'=>$exam_center,'backlog_student.exam_form'=>'Y', 'backlog_student.roll_no!=' => 0 ,'backlog_student.notification_no'=>12,'backlog_student.exam_year'=>'June 2023');
 		$this->db->where($where);	
 		$data['exam_center_students'] = $this->db->get()->result();
 		echo $this->load->view('admin/exam_center/get_exam_center_wise_backlog_student_attendance_sheet',$data, TRUE);
@@ -2673,7 +2673,7 @@ public function getStudentData()
 
 
 	public function search_student_result($rollno=""){
-		// redirect(base_url().'ExamController/');
+		 redirect(base_url().'ExamController/');
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
 		$data['rollno']=$rollno;
@@ -2965,6 +2965,7 @@ public function getStudentData()
 						$data['practical_internal_marks']=$classData->practical_internal_marks;
 						$this->db->select('*');
 						$this->db->from('backlog_exam_form');
+						$this->db->where('backlog_exam_form.backlog_student_id',$data['student']->id);
 						$this->db->where('backlog_exam_form.student_id',$data['student']->student_id);
 						$this->db->where('backlog_exam_form.class_id',$data['student']->class_id);
 						$new_exam_form = $this->db->get()->result();
@@ -3150,7 +3151,7 @@ public function getStudentData()
 		$this->load->view('admin/generate_tr/footer2');
 	}
 	public function search_student_backlog_result($rollno=""){
-		// redirect(base_url().'ExamController/');
+		 redirect(base_url().'ExamController/');
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
 		$data['rollno']=$rollno;

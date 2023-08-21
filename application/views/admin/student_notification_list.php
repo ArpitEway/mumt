@@ -526,20 +526,22 @@
 		<td class="text-center" >
 			<?php
 		if((in_array($student->old_class_id, $class_ids)) && $mode=='REG'){	
+			
 			if($final_result == 'RWPM'){
 				echo 'RWPM';
 			}else{
 			if(count($ATKT_paper_codes)==0 || $Withheld) {
 				$remark='';
-			}elseif(($theory_paper_count -2)==$theory_abs_count && $practical_paper_count == $practical_abs_count){
+			}elseif($theory_paper_count ==$theory_abs_count && $practical_paper_count == $practical_abs_count){
 				echo 'Year Break';
 			}
-			elseif($practical_paper_count == $practical_abs_count){
+			
+			elseif($practical_paper_count == $practical_abs_count && $practical_paper_count!=0){
 				echo 'Absent In Practical';
 			}elseif(($theory_paper_count-2)==$theory_abs_count){
 				echo 'Year Break';
 			}else{
-				if($fail_count == ($theory_paper_count -2 )){
+				if($fail_count == $theory_paper_count){
 					echo 'Year Break';
 				}else{
 					if($require_grace_marks>=4 || $abs_count!=0 ){
@@ -562,27 +564,27 @@
 		}else{
 		if(count($ATKT_paper_codes)==0 || $Withheld) {
 			$remark='';
-		}elseif($theory_paper_count ==$theory_abs_count && $practical_paper_count == $practical_abs_count){
-			echo 'Year Break';
+		}elseif($theory_paper_count ==$theory_abs_count && ($practical_paper_count == $practical_abs_count && $practical_paper_count!=0)){
+			echo 'Absent in All';
 		}
-		elseif($practical_paper_count == $practical_abs_count){
+		elseif($practical_paper_count == $practical_abs_count && $practical_paper_count!=0){
 			echo 'Absent In Practical';
 		}elseif($theory_paper_count==$theory_abs_count){
-			echo 'Year Break';
+			echo 'Absent In Theory';
 		}else{
-			if($fail_count == $theory_paper_count ){
-				echo 'Year Break';
-			}else{
+			// if($fail_count == $theory_paper_count ){
+			// 	echo 'Year Break';
+			// }else{
 				if($require_grace_marks>=4 || $abs_count!=0 ){
 
-					$remark= ($check_grace_marks) ? 'FAIL' : 'SUPP IN ';
+					$remark= ($check_grace_marks) ? 'FAIL' : 'ATKT IN ';
 					echo $remark;
 
 					foreach($ATKT_paper_codes as $paper_code){
 						echo  "". $paper_code.' ' ;
 					} 
 				}
-			}
+			// }
 			
 		}
 	}	

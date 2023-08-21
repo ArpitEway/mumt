@@ -24,7 +24,7 @@
 	</style>
   </head>
   <body>
-<section>
+<section style="overflow: scroll;">
 	<div class="">
 	<div  id="container_content"  style="margin: auto; width:1150px;">
 		<div class="admit-card">

@@ -121,6 +121,11 @@ class updateFormdata extends CI_Controller {
 				$PhotoData = array('photo' => $upload['file_name']);
 				$where = array('student_id'=>$student_id);
 				$this->Common_model->updateRecordByConditions('student',$where,$PhotoData);
+				//Old Exam Data update Start
+				$oldphoto['photo']= $upload['file_name'] ;
+				$this->db->where('student_id', $student_id);
+				$this->db->update('old_exam_data', $oldphoto);
+				//Old Exam Data update End
 			}
 		}
 		$studentData['student_id'] = $student_id;
@@ -129,7 +134,13 @@ class updateFormdata extends CI_Controller {
 		
         $this->db->where('student_id', $student_id);
 		$this->db->update('student_data', $studentData);
-		
+		//Old Exam Data update Start
+		$old['name']=$data['name'] ;
+		$old['f_h_name']=$data['f_h_name'] ;
+		$old['mother_name']=$data['mother_name'];
+		$this->db->where('student_id', $student_id);
+		$this->db->update('old_exam_data', $old);
+		//Old Exam Data update End
 		$OnlinePayTxnData = array('course_group_id' => $course_group_id,'class_id' => $class_id);
 
         $this->db->where('student_id', $student_id);
