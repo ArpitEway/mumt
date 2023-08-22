@@ -23,7 +23,7 @@
                         $this->db->from('backlog_exam_form');
                         $this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id  and backlog_exam_form.class_id = backlog_student.class_id and backlog_exam_form.backlog_student_id=backlog_student.id');
                         $this->db->where('backlog_student.exam_form','Y');
-                        $this->db->where('backlog_student.exam_year','Dec 2022');
+                        $this->db->where('backlog_student.exam_year','June 2023');
                     
                         $this->db->where('backlog_exam_form.course_group_id',$course_detail['course_group_id']);
                         $this->db->where('backlog_exam_form.class_id',$course_detail['class_id']);
@@ -36,7 +36,7 @@
                     $this->db->from('backlog_exam_form');
                     $this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id and backlog_exam_form.class_id = backlog_student.class_id and backlog_exam_form.backlog_student_id=backlog_student.id');
                     $this->db->where('backlog_student.exam_form','Y');
-                    $this->db->where('backlog_student.exam_year','Dec 2022');
+                    $this->db->where('backlog_student.exam_year','June 2023');
                     
                         // $this->db->where('student.university_mode',$courseType);
                     $this->db->where('backlog_exam_form.course_group_id',$course_detail['course_group_id']);
@@ -50,7 +50,7 @@
                     $this->db->from('backlog_exam_form');
                     $this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id and backlog_exam_form.class_id = backlog_student.class_id  and backlog_exam_form.backlog_student_id=backlog_student.id');
                     $this->db->where('backlog_student.exam_form','Y');
-                    $this->db->where('backlog_student.exam_year','Dec 2022');
+                    $this->db->where('backlog_student.exam_year','June 2023');
                     
                         // $this->db->where('student.university_mode',$courseType);
                     $this->db->where('backlog_exam_form.course_group_id',$course_detail['course_group_id']);
