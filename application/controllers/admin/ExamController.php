@@ -2364,7 +2364,7 @@ public function getStudentData()
 			$this->db->where_in('id',$ids);
 		$this->db->order_by('center_code', "asc");
 		$data['centers'] = $this->db->get()->result();
-		$data['examTitle'] = "July 2023";
+		$data['examTitle'] = "March 2023";
 		
 		echo $this->load->view('admin/examController/get_center_wise_marksheet_dispatchlist',$data, TRUE);
 	}
@@ -2413,7 +2413,7 @@ public function getStudentData()
 			$this->db->where_in('id',$ids);
 		$this->db->order_by('center_code', "asc");
 		$data['centers'] = $this->db->get()->result();
-		$data['examTitle'] = "July 2023";
+		$data['examTitle'] = "March 2023";
 		
 		echo $this->load->view('admin/examController/get_center_wise_marksheet_dispatch_rolllist',$data, TRUE);
 	}
