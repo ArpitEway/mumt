@@ -8,12 +8,12 @@ page-break-before: always;
 </style><?php 
 $pageno=1;
 $perpagecount=30;
-$table = $this->Common_model->getMaster('old_student_result_table');
+$table = $this->Common_model->getMaster('student_result_table');
 foreach($centers as $center)  {
 	$this->db->select('*');
 	$this->db->from($table);
 	$this->db->order_by("roll_number", "asc");
-	$where = array('center_id'=>$center->id, 'roll_number!=' => 0 ,'exam_form'=>'Y','marksheet_dispatch' =>'N');
+	$where = array('center_id'=>$center->id, 'roll_number!=' => 0 ,'exam_form'=>'Y');//,'marksheet_dispatch' =>'N'
 	$this->db->where($where);	
 	$center_students = $this->db->get()->result();
 	if($center_students){
@@ -43,7 +43,7 @@ foreach($centers as $center)  {
 					<td valign="middle"><?php	echo $student->enrollment_no ;?></td>
 					<td valign="middle" align="left"><?php	echo $student->name ;?></td>
 					<td valign="middle" align="left"><?php	echo $student->course_name ;?></td>
-					<td valign="middle"><?php	echo $student->class_name ;?></td>
+					<td valign="middle"><?php	echo $this->Common_model->getClassNameByClassId($student->old_class_id); ?></td>
 					<td valign="middle" style="width: 20%;"></td>
 				</tr>
 			<?php  

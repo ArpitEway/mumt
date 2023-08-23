@@ -17,6 +17,7 @@ class Center extends CI_Controller {
 		$this->master = $this->Common_model->getSingleRow('master');
 		 $this->exam_table = $this->master->student_exam_table;
 		 $this->exam_form = $this->master->exam_form_col;
+		 $this->exam_form_result = $this->master->exam_form_col_result;
 		 $this->roll_no = $this->master->roll_number_col;
 		 $this->result_table = $this->master->student_result_table;
 		 $this->exam_form_table = $this->master->exam_form_table;
@@ -1964,7 +1965,7 @@ class Center extends CI_Controller {
 		$this->db->where('class_master.result_permission', 'Y');
 		$this->db->where('center_id', $center_id);
 		$this->db->where('old_result_show','Y');
-		$this->db->where('exam_form','Y');
+		$this->db->where($this->exam_form_result,'Y');
 		//$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,197,203,211,213)');
 		$data['courses'] = $this->db->get()->result();
 		// echo $this->db->last_query(); die;
@@ -2045,7 +2046,7 @@ class Center extends CI_Controller {
 		$data = $row = array();
 		// $where1 ='';
 	
-		$where = array('center_id' => $this->session->center_id,'exam_form'=>'Y','old_result_show'=>'Y');
+		$where = array('center_id' => $this->session->center_id,$this->exam_form_result=>'Y','old_result_show'=>'Y');
 	
 
 		if($_POST['course_group_id']!='All' and $_POST['course_group_id']!=''){
@@ -2223,7 +2224,7 @@ class Center extends CI_Controller {
 		$this->db->where_in('provisional_remark', $provisional);
 		
 		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
-		$student = $this->Common_model->getRecordByWhere($this->result_table,array($this->exam_form=>'Y','old_result_show'=>'Y','student_id'=>$student_id));
+		$student = $this->Common_model->getRecordByWhere($this->result_table,array($this->exam_form_result=>'Y','old_result_show'=>'Y','student_id'=>$student_id));
 		// ($student->course_group_id == 12 && $student->university_mode == 'REG') || ($student->course_group_id == 13 && $student->university_mode == 'REG')
 		if ((count($student)==0)  ) {
 			redirect(base_url());
@@ -2352,7 +2353,7 @@ public function marksheet_admin($student_id="")
  public function grade_marksheet($student_id=""){
 	
 	 $student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
-		$student = $this->Common_model->getRecordByWhere($this->result_table,array('exam_form'=>'Y','old_result_show'=>'Y','student_id'=>$student_id));
+		$student = $this->Common_model->getRecordByWhere($this->result_table,array($this->exam_form_result=>'Y','old_result_show'=>'Y','student_id'=>$student_id));
 		// print_r($student);die;
 		if (count($student)==0) {
 			redirect(base_url());
@@ -2361,7 +2362,7 @@ public function marksheet_admin($student_id="")
 		$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
 		$data['practical_internal_marks']=$classData->practical_internal_marks;
 		$this->db->select('*');
-		$this->db->from('new_exam_form');
+		$this->db->from($this->exam_form_table.' as new_exam_form');
 		$this->db->where('new_exam_form.student_id',$data['student']->student_id);
 		$this->db->where('new_exam_form.class_id',$data['student']->old_class_id);
 		$this->db->order_by('new_exam_form.paper_order','new_exam_form.paper_id');
@@ -2383,7 +2384,7 @@ public function marksheet_admin($student_id="")
  public function grade_marksheet_pg($student_id=""){
 	
 	$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
-	   $student = $this->Common_model->getRecordByWhere($this->result_table,array('exam_form'=>'Y','old_result_show'=>'Y','student_id'=>$student_id));
+	   $student = $this->Common_model->getRecordByWhere($this->result_table,array($this->exam_form_result=>'Y','old_result_show'=>'Y','student_id'=>$student_id));
 	   // print_r($student);die;
 	   if (count($student)==0) {
 		   redirect(base_url());
@@ -2392,7 +2393,7 @@ public function marksheet_admin($student_id="")
 	   $classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
 	   $data['practical_internal_marks']=$classData->practical_internal_marks;
 	   $this->db->select('*');
-	   $this->db->from('new_exam_form');
+	   $this->db->from($this->exam_form_table.' as new_exam_form');
 	   $this->db->where('new_exam_form.student_id',$data['student']->student_id);
 	   $this->db->where('new_exam_form.class_id',$data['student']->old_class_id);
 	   $this->db->order_by('new_exam_form.paper_order','new_exam_form.paper_id');

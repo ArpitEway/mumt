@@ -14,7 +14,8 @@ foreach($centers as $center)  {
 	$this->db->from($table);
 	$this->db->order_by("roll_number", "asc");
 	$this->db->join('course_group', ''.$table.'.course_group_id = course_group.id');
-	$where = array('center_id'=>$center->id, 'roll_number!=' => 0 ,'exam_form'=>'Y', 'marksheet_dispatch' =>'N');
+	$where = array('center_id'=>$center->id, 'roll_number!=' => 0 ,'exam_form'=>'Y');
+	//, 'marksheet_dispatch' =>'N'
 	$this->db->where($where);	
 	$center_students = $this->db->get()->result();
 	if($center_students){

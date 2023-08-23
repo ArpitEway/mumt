@@ -58,11 +58,11 @@ class Dataentry extends CI_Controller {
 		$this->load->view('header',$titleData);
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();	
-		$data['courses'] = $this->Common_model->get_record('backlog_student','DISTINCT (course_group_id)','exam_form="Y" and exam_year ="Dec 2022"');
+		$data['courses'] = $this->Common_model->get_record('backlog_student','DISTINCT (course_group_id)','exam_form="Y" and exam_year ="June 2023"');
 		$this->db->select('DISTINCT(exam_center.id),exam_center.*');
 		$this->db->from('exam_center');
 		$this->db->join('backlog_student', 'backlog_student.exam_center_id = exam_center.id');
-		$this->db->where('exam_year','Dec 2022');
+		$this->db->where('exam_year','June 2023');
 		$this->db->order_by('exam_center.id');
 		$data['exam_centers'] = $this->db->get()->result();
 		$this->load->view('admin/Dataentry/backlog_marks_entry_course',$data);
@@ -142,7 +142,7 @@ class Dataentry extends CI_Controller {
 		$papersArr = $this->Common_model->getRecordByWhere('paper_master',$where);
 		$data['papers'] =$papersArr[0];
 		$data['class_id']=$class_id;
-		$data['examSession']="March 2023";
+		$data['examSession']="July 2023";
 		$data['university_mode'] = $mode;
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
@@ -170,9 +170,9 @@ class Dataentry extends CI_Controller {
 		$titleData = array('title' => 'Backlog Marks Entry'); 
 		$this->load->view('header',$titleData);
 
-		$where = array('backlog_exam_form.paper_code' => $paper_code, 'theory_marks' => '','mode' => $mode,'paper_type' => 'theory','exam_center_id'=>$exam_center,'backlog_student.exam_form' => 'Y','backlog_student.exam_year'=>'Dec 2022');
+		$where = array('backlog_exam_form.paper_code' => $paper_code, 'theory_marks' => '','mode' => $mode,'paper_type' => 'theory','exam_center_id'=>$exam_center,'backlog_student.exam_form' => 'Y','backlog_student.exam_year'=>'June 2023','backlog_exam_form.backlog_student_id'=>'backlog_student.id');
 		//,'student.result_show'=>'N'
-		$this->db->select('backlog_student.student_id,enrollment_no,roll_no');
+		$this->db->select('backlog_student.id,backlog_student.student_id,enrollment_no,roll_no');
 		$this->db->from('backlog_exam_form');
 		$this->db->order_by("backlog_student.roll_no","backlog_student.enrollment_no","asc");
 		$this->db->join('backlog_student', 'backlog_student.student_id = backlog_exam_form.student_id');
@@ -185,7 +185,7 @@ class Dataentry extends CI_Controller {
 		$config = array();
 		$config["base_url"] = base_url() ."Dataentry/backlog_marks_entry_form/".$this->Common_model->encrypt_decrypt($mode,'encrypt')."/".$this->Common_model->encrypt_decrypt($class_id,'encrypt')."/".$this->Common_model->encrypt_decrypt($paper_code,'encrypt')."/".$exam_center;
 
-				$this->db->select('backlog_student.student_id,enrollment_no,roll_no');
+		$this->db->select('backlog_student.student_id,enrollment_no,roll_no');
 		$this->db->from('backlog_exam_form');
 		$this->db->order_by("backlog_student.roll_no","backlog_student.enrollment_no","asc");
 		$this->db->join('backlog_student', 'backlog_student.student_id = backlog_exam_form.student_id');
@@ -206,7 +206,7 @@ class Dataentry extends CI_Controller {
 		$papersArr = $this->Common_model->getRecordByWhere('paper_master',$where);
 		$data['papers'] =$papersArr[0];
 		$data['class_id']=$class_id;
-		$data['examSession']="March 2023";
+		$data['examSession']="July 2023";
 		$data['university_mode'] = $mode;
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
@@ -252,6 +252,7 @@ class Dataentry extends CI_Controller {
 		$data['student_id'] = $this->input->post('student_id');	
 		$data['class_id']=$class_id = $this->input->post('class_id');	
 		$data['marks'] = $this->input->post('marks');
+		$record_id = $this->input->post('backlog_student_record_id');
 		foreach ($data['student_id'] as $key => $value){
 			if($data['marks'][$key]==''){
 				continue;
@@ -264,6 +265,7 @@ class Dataentry extends CI_Controller {
 				'paper_code'  =>$_POST['paper_code'],
 				'class_id'=>$class_id,
 				'status'=>'B',
+				'backlog_student_id'=>$record_id,
 			);
 			$Marksentry = $this->Common_model->updateRecordByConditions('backlog_exam_form',$where,$studentData);	
 		}
@@ -393,11 +395,11 @@ class Dataentry extends CI_Controller {
 			$dataArray["exam_center_id"]=$_POST['exam_center_id'];
 			$dataArray['examname']= $this->Common_model->getCourseNameByCourseId($_POST['course_group_id']);
 			$dataArray['class_name']= $this->Common_model->getClassNameByClassId($_POST['class_id']);
-			$this->db->where('old_exam_date!=',"");
-			$this->db->where('old_exam_date!=',"0000-00-00");	
+			$this->db->where('exam_date!=',"");
+			$this->db->where('exam_date!=',"0000-00-00");	
 			$dataArray['paper']= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'] , 'paper_code'=>$_POST['paper_code']));
 			$dataArray['title'] = 'COUNTERFOIL';
-			$dataArray['examSession']="Feb 2023";
+			$dataArray['examSession']="July 2023";
 			$this->load->view('admin/examController/show_examcenter_folio',$dataArray);
 		}
 	}
@@ -410,7 +412,7 @@ class Dataentry extends CI_Controller {
 			foreach($_POST['exam_center_id'] as $exam_center_id){
 				$this->db->select('*');
 				$this->db->from("backlog_student");
-				$this->db->join('backlog_exam_form', 'backlog_exam_form.student_id = backlog_student.student_id and backlog_exam_form.class_id=backlog_student.class_id');
+				$this->db->join('backlog_exam_form', 'backlog_exam_form.student_id = backlog_student.student_id and backlog_exam_form.class_id=backlog_student.class_id AND backlog_exam_form.backlog_student_id=backlog_student.id');
 				$this->db->where('backlog_exam_form.paper_code',$_POST['paper_code']);
 				$this->db->where('backlog_exam_form.course_group_id',$_POST['course_group_id']);
 				$this->db->where('backlog_exam_form.class_id',$_POST['class_id']);
@@ -432,11 +434,11 @@ class Dataentry extends CI_Controller {
 			$dataArray["exam_center_id"]=$_POST['exam_center_id'];
 			$dataArray['examname']= $this->Common_model->getCourseNameByCourseId($_POST['course_group_id']);
 			$dataArray['class_name']= $this->Common_model->getClassNameByClassId($_POST['class_id']);
-			$this->db->where('old_exam_date!=',"");
-			$this->db->where('old_exam_date!=',"0000-00-00");	
+			$this->db->where('exam_date!=',"");
+			$this->db->where('exam_date!=',"0000-00-00");	
 			$dataArray['paper']= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'] , 'paper_code'=>$_POST['paper_code']));
 			$dataArray['title'] = 'COUNTERFOIL';
-			$dataArray['examSession']="Feb 2023";
+			$dataArray['examSession']="July 2023";
 			$this->load->view('admin/examController/backlog_show_examcenter_folio',$dataArray);
 		}
 	}
