@@ -2331,8 +2331,8 @@ public function getStudentData()
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('DISTINCT(center_id)');
-			$this->db->from($this->old_result_table);
-			$this->db->where(array('exam_form'=>'Y','marksheet_dispatch'=>'N'));
+			$this->db->from($this->result_table);
+			$this->db->where(array('exam_form'=>'Y'));//,'marksheet_dispatch'=>'N'
 			$centers = $this->db->get()->result_array();
 			$ids = array_column($centers, 'center_id');
 			//print_r($ids);die;
@@ -2351,7 +2351,7 @@ public function getStudentData()
 	public function get_center_wise_marksheet_dispatchlist(){
 		$center = $this->input->post('center');
 		$this->db->select('DISTINCT(center_id)');
-		$this->db->from($this->old_result_table);
+		$this->db->from($this->result_table);
 		$this->db->where(array($this->exam_form_result=>'Y'));//,'marksheet_dispatch'=>'N'
 		$centers = $this->db->get()->result_array();
 		$ids = array_column($centers, 'center_id');
@@ -2381,7 +2381,7 @@ public function getStudentData()
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('DISTINCT(center_id)');
-			$this->db->from($this->old_result_table);
+			$this->db->from($this->result_table);
 			$this->db->where(array('exam_form'=>'Y'));//,'marksheet_dispatch'=>'N'
 			$centers = $this->db->get()->result_array();
 			$ids = array_column($centers, 'center_id');
@@ -2400,8 +2400,8 @@ public function getStudentData()
 	public function get_center_wise_marksheet_dispatch_rolllist(){
 		$center = $this->input->post('center');
 		$this->db->select('DISTINCT(center_id)');
-		$this->db->from($this->old_result_table);
-		$this->db->where(array('exam_form'=>'Y','marksheet_dispatch'=>'N'));
+		$this->db->from($this->result_table);
+		$this->db->where(array('exam_form'=>'Y'));//,'marksheet_dispatch'=>'N'
 		$centers = $this->db->get()->result_array();
 		$ids = array_column($centers, 'center_id');
 	
