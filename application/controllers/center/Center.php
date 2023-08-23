@@ -1832,7 +1832,9 @@ class Center extends CI_Controller {
 		}
 	 }
 	public function internal_marks_list(){
+		if($this->session->center_id!=12 && $this->session->center_id!=28){
 	 		 redirect(base_url());
+		}
 	 	if(!$this->session->has_userdata('centerdata')){
 	 		redirect(base_url());
 	 	}
@@ -1844,7 +1846,7 @@ class Center extends CI_Controller {
 	 	$titleData = array('title' => 'Regular Internal Marks Submission' );
 	 	$this->load->view('Centers/header',$titleData);
 	 	$center_id =  $this->session->center_id;
-	 	$where = array('university_mode' => 'REG','center_id' => $center_id, $this->exam_form => 'Y','internal'=>"Y",'old_result_show ' => 'N');
+	 	$where = array('university_mode' => 'REG','center_id' => $center_id, $this->exam_form => 'Y','internal'=>"Y",'result_show ' => 'N','class_id'=>264);
 	 	// ,"demo"=>'N'
 	 	$this->db->order_by("int_marks_sub,".$this->exam_table.".course_group_id,".$this->exam_table.".class_id", "asc");
 	 	$this->db->select('*');
@@ -2497,7 +2499,9 @@ public function marksheet_admin($student_id="")
 	}
 
 	public function practical_marks_list(){
+		if($this->session->center_id!=12 && $this->session->center_id!=28){
 		 redirect(base_url());
+		}
 		//  $master = $this->Common_model->getSingleRow('master');
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
@@ -2509,7 +2513,7 @@ public function marksheet_admin($student_id="")
 		$titleData = array('title' => 'Regular Practical Marks Submission' );
 		$this->load->view('Centers/header',$titleData);
 		$center_id =  $this->session->center_id;
-		$where = array('university_mode' => 'REG','center_id' => $center_id,'old_result_show' => 'N',$this->exam_form => 'Y');
+		$where = array('university_mode' => 'REG','center_id' => $center_id,'result_show' => 'N',$this->exam_form => 'Y','class_id'=>264);
 		// ,'demo'=>'N'
 		$this->db->order_by("p_marks_sub,".$this->exam_table.".course_group_id,".$this->exam_table.".class_id", "asc");
 		$this->db->select('*');
