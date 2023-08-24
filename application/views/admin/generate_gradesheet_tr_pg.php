@@ -417,7 +417,7 @@ table.last_table, .last_table td, .last_table th{
 		<td class="align-middle text-right">Course Credit</td>
     <?php
     $credit = 0;
-    $std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $student->old_class_id,'student_id'=>$student->student_id));
+    $std  = $this->Common_model->getRecordByWhere('exam_form',array('class_id'=> $student->old_class_id,'student_id'=>$student->student_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$student->old_class_id);
    
    
