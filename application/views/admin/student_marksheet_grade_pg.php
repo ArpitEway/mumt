@@ -63,8 +63,8 @@
             <tr>
               <td height="100" colspan="2" valign='bottom'>
                 <center>
-                <?php  $course_name = explode('(',$student->course_name);?>
-                  <strong><?php echo  ($isOneClass) ? $course_name[0] .' '."(One Year Course)" :$course_name[0] .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->old_class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
+                <?php  //$course_name = explode('(',$student->course_name);?>
+                  <strong><?php echo  ($isOneClass) ? $student->course_name .' '."(One Year Course)" :$student->course_name .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->old_class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
                 </center>
               </td>
             </tr>
