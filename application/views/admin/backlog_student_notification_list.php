@@ -214,7 +214,9 @@
 					$abs_count++;
 					array_push( $ATKT_paper_codes,$marks->paper_code );
 				}
+				
 				if($marks->theory_marks<$marks->min_theory_marks){
+					
 					$fail_count++;
 					$get_tot_marks += $marks->theory_marks;
 					$require_tot_marks += $marks->min_theory_marks;
@@ -545,10 +547,11 @@
 			}elseif($theory_paper_count==$theory_abs_count){
 				echo 'ABSENT';
 			}else{
+				
 				// if($fail_count == $theory_paper_count){
 				// 	echo 'Year Break';
 				// }else{
-					if($require_grace_marks>=4 || $abs_count!=0 ){
+					if($abs_count!=0  || $fail_count!=0){
 
 						$remark= ($check_grace_marks) ? 'FAIL' : 'ATKT IN ';
 						echo $remark;

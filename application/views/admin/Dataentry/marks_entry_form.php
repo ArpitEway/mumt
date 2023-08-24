@@ -39,7 +39,7 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 			<th>Year/Sem:</th>
 			<td><?php echo $this->Common_model->getClassNameByClassId($papers->class_id); ?></td>
 			<th>Date of Exam:</th>
-			<td><?php echo $papers->old_exam_date; ?></td>
+			<td><?php echo $papers->exam_date; ?></td>
 		</tr>
 		<tr>
 			<th>Exam Session:</th>

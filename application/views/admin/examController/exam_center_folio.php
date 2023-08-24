@@ -122,6 +122,8 @@
     $('#course_group_id').change(function(){
         var value = $(this).val();
         $('#course_group_id').trigger('change');
+        var paper_id = document.getElementById("paper_id");
+        paper_id.selectedIndex = 0;
     });
 
 
