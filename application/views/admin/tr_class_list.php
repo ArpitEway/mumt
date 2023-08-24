@@ -74,7 +74,7 @@
 				 } ?>
 			</td>
 			<td>
-				<?php if ($class->practical_internal_marks=='Y'){ 
+				<?php if ($class->practical_internal_marks=='Y' && $class->id !=205){ 
 					if($class->regular_class=='Y') {?>
 				<a target="_blank" href="<?php echo  base_url('admin/admins/student_notification_list_bed/'."/REG/".$course_id.'/'.$class_id)  ?>">Notification Regular</a>
 					<?php }if($class->private_class=='Y') { echo $flag;  ?>
@@ -94,7 +94,8 @@
 				<?php
 			if($class->regular_class=='Y') { 
 				$class_ids=array(101,104,107,110,116,119,125,128,131,134);
-				if(in_array($class->id , $class_ids)){
+				$class_cbcs = array(193,197,201,203,205,211,213,221,223,225,227,275,279);
+				if(in_array($class->id , $class_ids) || in_array($class->id , $class_cbcs)){
 					$std_marksheet = 'student_marksheet_grade';
 				}else{
 					$std_marksheet = 'student_marksheet';

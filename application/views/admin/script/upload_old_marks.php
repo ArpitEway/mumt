@@ -17,6 +17,7 @@
     <?php
     $i = 1;
     $class_ids=array(101,104,107,110,116,119,125,128,131,134);
+    $class_cbcs = array(193,197,201,203,205,211,213,221,223,225,227,275,279);
     foreach($courses as $course){
         ?>
                 <tr>
@@ -29,7 +30,12 @@
                             ?>
                             <td><a target="_blank" href="<?=base_url('admin/scripts/Postexam/upload_old_grade_data_script/'.$course->class_id.'/'.$course->university_mode)?>">upload</a></td>
                             <?php
-                    }else{
+                    }else if((in_array($course->class_id, $class_cbcs)) && $course->university_mode=='REG'){
+                        ?>
+                        <td><a target="_blank" href="<?=base_url('admin/scripts/Postexam/upload_old_grade_data_script_pg/'.$course->class_id.'/'.$course->university_mode)?>">upload</a></td>
+                        <?php
+                    }
+                    else{
                         ?>
                          <td><a target="_blank" href="<?=base_url('admin/scripts/Postexam/upload_old_data_script/'.$course->class_id.'/'.$course->university_mode)?>">upload</a></td>
                         <?php

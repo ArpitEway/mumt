@@ -2966,6 +2966,7 @@ public function update_exam_datewise_permission(){
 
 	public function student_notification_list($mode = "",$course_id="",$class_id=""){
 		$this->load->model('Gradesheet_tr_model');
+		
 		$course_id = $this->Common_model->encrypt_decrypt($course_id,'decrypt');
 		$class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
 		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
@@ -2973,7 +2974,14 @@ public function update_exam_datewise_permission(){
 		$data['mode']= $mode;
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y' ,'roll_number!='=>'0', 'university_mode'=>$mode));//'result_show'=>'Y'
 		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
-		$this->load->view('admin/student_notification_list',$data);
+		$class_cbcs = array(193,197,201,203,205,211,213,221,223,225,227,275,279);
+		if((in_array($class_id, $class_cbcs))){
+			$this->load->model('Gradesheet_tr_model_pg');
+			$this->load->view('admin/student_notification_list_pg',$data);
+		}else{
+			$this->load->view('admin/student_notification_list',$data);	
+		}
+		
 	}
 
 	public function marksheet_variable(){
@@ -3042,8 +3050,7 @@ public function update_exam_datewise_permission(){
 		$this->db->order_by('roll_number','ASC');
 		
 		// $data['students'] = $this->Common_model->getRecordByWhere('student_result_aug_22',$where);
-		//$this->db->where_in('student_id',array(706121,718812,722503));
-			//701860,720053,702910,702308,718424,705865,706121,718812,722503,683825,722577,713969,723571
+		// $this->db->where_in('student_id',array(701860,720053,702910,702308,718424,705865,706121,718812,722503,683825,722577,713969,723571));
 		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
 		
 		// $this->Common_model->last_query();
@@ -3291,20 +3298,29 @@ public function update_exam_datewise_permission(){
 		$data['title'] = $title;
 		$data['university_mode'] = $mode;
 		// $this->load->model('Gradesheet_model');
-		$this->load->model('Gradesheet_model');
+		
 
 		if($class->last_class == 'L'){
 			$this->db->order_by('center_id,roll_number','ASC');
-			$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','course_complete'=>'Y','university_mode'=>$mode ));
+			$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','course_complete'=>'Y','university_mode'=>$mode,'old_result_show'=>'Y' ));
 		}else{
 			$this->db->order_by('center_id,roll_number','ASC');
 			// $this->db->limit(1);
 			//  $this->db->where('student_id = "373373"');
-		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode));
+		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode,'old_result_show'=>'Y'));
 		}
 	 	// if($class->internal=="Y" && $mode!="PVT"){
+			$class_cbcs = array(193,197,201,203,205,211,213,221,223,225,227,275,279);
+			if(in_array($class_id , $class_cbcs))
+			{
+				$this->load->model('Gradesheet_model_pg');
+				$this->load->view('admin/student_marksheet_grade_pg',$data);
+			}else{
+				$this->load->model('Gradesheet_model');
+				$this->load->view('admin/student_marksheet_grade1',$data);
+			}
 			
-			$this->load->view('admin/student_marksheet_grade1',$data);
+
 		// }else{
 			// $this->load->view('admin/student_marksheet_certificate',$data);
 		// }
@@ -5297,6 +5313,7 @@ public function forward_complaint(){
 		$data['old_result_data']  = $new_exam_form;
 		$data['class_id']  = $new_exam_form[0]->class_id;
 		$class_ids=array(101,104,107,110,116,119,125,128,131,134);
+		$class_cbcs = array(193,197,201,203,205,211,213,221,223,225,227,275,279);
 		// $title = array('title' => 'Result');
 		$data['exam_data'] = $this->Common_model->getRecordById('old_exam_data','id',$exam_data_id);
 		
@@ -5309,6 +5326,9 @@ public function forward_complaint(){
 		if((in_array($new_exam_form[0]->class_id , $class_ids)) && $data['exam_data']->university_mode=='REG'){
 			$this->load->model('Gradesheet_old_model');
 			$this->load->view('admin/grade_marksheet',$data);
+		}else if((in_array($new_exam_form[0]->class_id, $class_cbcs)) && $data['exam_data']->university_mode=='REG'){
+				$this->load->model('Gradesheet_model_pg');
+				$this->load->view('admin/grade_marksheet_pg',$data);
 		}else if($data['exam_data']->university_mode !="PVT"  && $class->internal !='N'){
 			
 			$this->load->view('admin/marksheet_student',$data);
