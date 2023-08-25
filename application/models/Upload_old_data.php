@@ -416,10 +416,10 @@ class Upload_old_data extends CI_Model
 				$this->result_array[$this->paper['paper_code']]['int_obt_marks'] = $this->paper['int_marks'];
 			}else{
 				$this->result_array[$this->paper['paper_code']]['min_marks'] = $this->paper['min_theory_marks'];
-				$this->result_array[$this->paper['paper_code']]['int_max_marks'] = '-';
-				$this->result_array[$this->paper['paper_code']]['int_min_marks'] = '-';
+				$this->result_array[$this->paper['paper_code']]['int_max_marks'] = $this->paper['max_internal_marks'];
+				$this->result_array[$this->paper['paper_code']]['int_min_marks'] = $this->paper['min_internal_marks'];
 				$this->result_array[$this->paper['paper_code']]['obt_marks'] = $this->paper['p_marks'];
-				$this->result_array[$this->paper['paper_code']]['int_obt_marks'] = '-';
+				$this->result_array[$this->paper['paper_code']]['int_obt_marks'] = $this->paper['int_marks'];
 			}
 		}
 	}
