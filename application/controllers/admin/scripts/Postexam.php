@@ -854,10 +854,10 @@ class Postexam extends CI_Controller {
             
               if(($obtain[0]->obt!=$row->obtain_marks) ){ // || ($savedPer!=$per)
                 echo "<p> Row ID ".$row->id." Stdent ID ".$row->student_id." Marks on Record ".$row->obtain_marks." And in Subject Total ".$obtain[0]->obt." %% ".$row->percentage." % ".$per."</p>";
-                $update_marks = "update old_exam_data set obtain_marks='".$obtain[0]->obt."' ,percentage='".$per."' where id=".$row->id." and class_id in(205,253)";
-			echo '<br>';
+            //     $update_marks = "update old_exam_data set obtain_marks='".$obtain[0]->obt."' ,percentage='".$per."' where id=".$row->id." and class_id in(205,253)";
+			// echo '<br>';
 			
-				$this->db->query($update_marks);
+			// 	$this->db->query($update_marks);
 
               }
             //   if($savedPer!=$calPer){
