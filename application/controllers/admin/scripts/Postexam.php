@@ -805,8 +805,8 @@ class Postexam extends CI_Controller {
  
     public function marks_checking()
        {
-        $tbname="student_result_aug_22"; 
-        //$tbname="student";    
+        //$tbname="student_result_aug_22"; 
+        $tbname="student";    
         $this->db->select('course_name,'.$tbname.'.class_name,class_id, COUNT(student_id) as cnt');
             $this->db->join('class_master', $tbname.'.old_class_id = class_master.id');
            
@@ -825,7 +825,7 @@ class Postexam extends CI_Controller {
             $this->load->view('footer');
        }
 
-       public function marks_checking_script($class_id="",$startlimit=1){
+       public function marks_checking_script($class_id="",$startlimit=1){ 
             $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
           
             //SELECT SUM(theory_marks)+sum(int_marks)+sum(p_marks) FROM `old_result_data` WHERE `exam_data_id`=1 
@@ -854,6 +854,10 @@ class Postexam extends CI_Controller {
             
               if(($obtain[0]->obt!=$row->obtain_marks) ){ // || ($savedPer!=$per)
                 echo "<p> Row ID ".$row->id." Stdent ID ".$row->student_id." Marks on Record ".$row->obtain_marks." And in Subject Total ".$obtain[0]->obt." %% ".$row->percentage." % ".$per."</p>";
+                $update_marks = "update old_exam_data set obtain_marks='".$obtain[0]->obt."' ,percentage='".$per."' where id=".$row->id." and class_id in(205,253)";
+			echo '<br>';
+			
+				$this->db->query($update_marks);
 
               }
             //   if($savedPer!=$calPer){
