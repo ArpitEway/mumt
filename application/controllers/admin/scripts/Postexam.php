@@ -805,8 +805,8 @@ class Postexam extends CI_Controller {
  
     public function marks_checking()
        {
-        //$tbname="student_result_aug_22"; 
-        $tbname="student";    
+        $tbname="student_result_aug_22"; 
+        //$tbname="student";    
         $this->db->select('course_name,'.$tbname.'.class_name,class_id, COUNT(student_id) as cnt');
             $this->db->join('class_master', $tbname.'.old_class_id = class_master.id');
            
