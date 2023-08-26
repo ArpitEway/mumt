@@ -623,7 +623,7 @@ class Gradesheet_model_pg extends CI_Model
 		foreach ($this->result_array as $result) {
 			$result_data[$key] = array();
 			$result_data[$key]['paper_name'] = $result['paper_name'];
-			if ($this->fail_count>0 && $require_grace_marks<4 && $result['letter_grade']=='F') {
+			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F') {
 				$this->check_grace_marks = true;
 				$this->obt_tot_credit += $result['credit'];
 				$result_data[$key]['credit'] = $result['credit'];
