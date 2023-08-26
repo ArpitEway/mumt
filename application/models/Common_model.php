@@ -912,6 +912,17 @@ class Common_Model extends CI_Model{
 		return $this->db->get()->result();
 	}
 
+	public function student_info_for_BEd_result($student_id,$class_id)
+	{
+		$this->db->select('*');
+        $this->db->from('paper_master');
+        $this->db->order_by('new_exam_form.sub_group_id,paper_order,paper_no','ASC');
+        $this->db->join('new_exam_form', 'paper_master.id = new_exam_form.paper_id');
+        $this->db->where('new_exam_form.student_id',$student_id);
+        $this->db->where('new_exam_form.class_id',$class_id);
+		return $this->db->get()->result();
+	}
+
 	public function student_info_for_backlog_result($student_id,$class_id,$exam_data_id)
 	{
 		$this->db->select('*');
