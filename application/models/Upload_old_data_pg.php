@@ -383,7 +383,7 @@ class Upload_old_data_pg extends CI_Model
 			if ($result['type']=='theory') {
 				$ResultData['max_theory_marks'] = $result['max_marks'];
 				$ResultData['min_theory_marks'] = $result['min_marks'];
-				if ($this->fail_count>0 && $require_grace_marks<4 && ($result['letter_grade']=='F' || $result['letter_grade']=='ABS')) {
+				if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && ($result['letter_grade']=='F' || $result['letter_grade']=='ABS')) {
 					$ResultData['theory_marks'] = $result['obt_marks'];
 					$ResultData['result'] = 'PASS BY GRACE';
 					// $oldreultdata['credit'] = $result['credit'];

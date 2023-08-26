@@ -460,7 +460,7 @@ class Gradesheet_tr_model extends CI_Model
 		echo '<td class="align-middle text-right">'.'Credit Earned'.'</td>';
 		foreach ($this->result_array as $key => $result) {
 			
-			if ($this->fail_count>0 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				$this->check_grace_marks = true;
 				$this->obt_tot_credit += $result['credit'];
 				$req_marks = $result['min_marks']-$result['obt_marks'];
@@ -517,7 +517,7 @@ class Gradesheet_tr_model extends CI_Model
 			// 	echo "<td>".$result['int_max_marks']."</td>";
 			// 	echo "<td>".$result['int_min_marks']."</td>";
 			// }
-			if ($this->fail_count>0 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				
 				$this->obt_tot_credit +=$result['credit'];
 				
@@ -571,7 +571,7 @@ class Gradesheet_tr_model extends CI_Model
 		echo '<td class="align-middle text-right">'.'Credit Points'.'</td>';
 		foreach ($this->result_array as $key => $result) {
 			
-			if ($this->fail_count>0 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				$this->check_grace_marks = true;
 				$this->obt_tot_credit += $result['credit'];
 				$req_marks = $result['min_marks']-$result['obt_marks'];
@@ -732,7 +732,7 @@ class Gradesheet_tr_model extends CI_Model
 	  
 	   foreach ($this->result_array as $key => $result) {
 		  
-		   if ($this->fail_count>0 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+		   if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 			   
 			   $this->obt_tot_credit +=$result['credit'];
 			   
@@ -767,7 +767,7 @@ class Gradesheet_tr_model extends CI_Model
 	  
 	   foreach ($this->result_array as $key => $result) {
 		  
-		   if ($this->fail_count>0 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+		   if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 			   
 			   $this->obt_tot_credit +=$result['credit'];
 			   

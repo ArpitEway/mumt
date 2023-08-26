@@ -379,7 +379,7 @@ class Gradesheet_model_pg extends CI_Model
 			echo "<tr>";
 			echo "<th>".$key."</th>";
 			echo "<th>".$result['paper_name']."</th>";
-			if ($this->fail_count>0 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				$this->check_grace_marks = true;
 				$this->obt_tot_credit += $result['credit'];
 				$req_marks = $result['min_marks']-$result['obt_marks'];
@@ -425,7 +425,7 @@ class Gradesheet_model_pg extends CI_Model
 			echo '<tr style="padding:4px;font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="center">';
 			echo '<td style="margin-top:2px;" align="center"><strong>'.$key.'</strong></td>';
 			echo "<td align='left'><strong>".$result['paper_name']."</strong></td>";
-			if ($this->fail_count>0 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				$this->check_grace_marks = true;
 				$this->obt_tot_credit += $result['credit'];
 				$req_marks = $result['min_marks']-$result['obt_marks'];
@@ -648,7 +648,7 @@ class Gradesheet_model_pg extends CI_Model
 			echo "<tr>";
 			echo "<td class='text-center'>".$key."</td>";
 			echo "<td>".$result['paper_name']."</td>";
-			if ($this->fail_count>0 && $require_grace_marks<4 && $result['letter_grade']=='F') {
+			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F') {
 				$this->check_grace_marks = true;
 				$this->obt_tot_credit += $result['credit'];
 				$req_marks = $result['min_marks']-$result['obt_marks'];

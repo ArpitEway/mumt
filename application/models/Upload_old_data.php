@@ -534,7 +534,7 @@ class Upload_old_data extends CI_Model
 			if ($result['type']=='theory') {
 				$ResultData['max_theory_marks'] = $result['max_marks'];
 				$ResultData['min_theory_marks'] = $result['min_marks'];
-				if ($this->fail_count>0 && $require_grace_marks<4 && ($result['letter_grade']=='F' || $result['letter_grade']=='ABS')) {
+				if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && ($result['letter_grade']=='F' || $result['letter_grade']=='ABS')) {
 					$ResultData['theory_marks'] = $result['obt_marks']+$require_grace_marks;
 					$oldreResultDataultdata['result'] = 'PASS BY GRACE';
 					// $oldreultdata['credit'] = $result['credit'];
@@ -579,7 +579,7 @@ class Upload_old_data extends CI_Model
 		}else{
              $pap = explode(']',$result['paper_name']);
             // echo $pap[0];
-            if ($this->fail_count>0 && $require_grace_marks<4 && ($result['letter_grade']=='F' || $result['letter_grade']=='ABS')) {
+            if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && ($result['letter_grade']=='F' || $result['letter_grade']=='ABS')) {
                 $ResultData['theory_marks'] = $result['obt_marks']+$require_grace_marks;
                 $result_this = 'PASS BY GRACE';
                 // $oldreultdata['credit'] = $result['credit'];
