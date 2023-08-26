@@ -647,7 +647,7 @@
   ?>
   <tr class="">
     <td  class="align-middle text-left " colspan="<?=$BarCodecolspan ?>">
-          <?php  echo $generator->getBarcode($student->roll_number.$marksheetData[0]->bar_code_no, $generator::TYPE_CODE_128,2,25); ?>
+          <?php  echo $generator->getBarcode($marksheetData[0]->bar_code_no.$student->roll_no, $generator::TYPE_CODE_128,2,25); ?>
     </td>
   </tr>
 </tbody>
