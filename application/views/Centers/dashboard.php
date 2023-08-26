@@ -249,11 +249,11 @@
 							</div>
 						</a>
 					<?php endif ?>
-					<a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
+					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
 					 	<div>
 							<span class="nav-text">Time Table July 2023</span>
 					 	</div>
-					</a>  
+					</a>   -->
 					
 					
 
@@ -263,7 +263,7 @@
 						</div>
 					</a> -->
 					
-					<?php if ($center->admit_card_permission=='Y'): ?>
+					<?php /*if ($center->admit_card_permission=='Y'): ?>
 						<a class="border-0 custom-menu-item" href="<?=base_url('admit_card_list');?>">
 						<div>
 							<span class="nav-text">Admit Card</span>
@@ -274,7 +274,7 @@
 							<span class="nav-text">Backlog Admit Card</span>
 						</div>
 					</a> 
-					<?php endif ?>
+					<?php endif */ ?>
 
 				</div>
 			</div> 
