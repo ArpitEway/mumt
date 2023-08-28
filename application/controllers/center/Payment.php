@@ -162,7 +162,11 @@ class Payment extends CI_Controller {
 			$payment = ($status=='success') ? 'Y' : 'N';
 			$remsg = ($status=='success') ? 'success' : 'error';
 			$msg = ($status=='success') ? 'Payment submitted Successfully' : 'An error occurred';
-
+			$remark="";
+			if($productinfo == 'Demo Exam Fees'){
+				$productinfo="Exam Fees";
+				$remark="Demo Exam Fees";
+			}
 			$response = array(
 				"student_id" => $student_id,
 				"amount" => $amount,
@@ -173,6 +177,7 @@ class Payment extends CI_Controller {
 				"payment_time" => $time,
 				"txnId" => $txnid,
 				"admission_type" =>$udf2,
+				"remark"=>$remark,
 			);
 			$student = $this->Common_model->getRecordById('student','student_id',$student_id);
 
@@ -207,6 +212,7 @@ class Payment extends CI_Controller {
 				$student = array($status=>'Y');
 				$this->Common_model->updateRecordByConditions('student',$where,$student);
 			}
+		
 			$student = $this->Common_model->getRecordById('student','student_id',$student_id);
 			$sessionData = $data = array('loged_in' => true,
 				'centerdata' => $student->center_code,
@@ -216,6 +222,7 @@ class Payment extends CI_Controller {
 			$this->session->set_userdata($sessionData);
 			$this->session->set_flashdata($remsg,$msg);
 			$id = $this->Common_model->encrypt_decrypt($txnid);
+			
 			redirect(base_url('center/payment/detail/'.$id));
 		}
 	}
@@ -304,6 +311,7 @@ class Payment extends CI_Controller {
 			redirect(base_url('login'));
 		}
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		$productinfo = 'Exam Fees';
 		if($student_id!=''){
 			$student = $this->Common_model->student_info($student_id);
 			$where = array(
@@ -315,12 +323,14 @@ class Payment extends CI_Controller {
 				$mode = "regular";
 				if($student['demo']=='Y'){
 					$txnAmt = $fees[0]->exam_fees;
+					$productinfo = 'Demo Exam Fees';
 				}else{
 					$txnAmt = $fees[0]->program_fees+$fees[0]->exam_fees;
 				}
 			}else{
 				$mode = "private";
 				if($student['demo']=='Y'){
+					$productinfo = 'Demo Exam Fees';
 					$txnAmt = $fees[0]->p_exam_fees;
 				}else{
 					$txnAmt = $fees[0]->p_program_fees+$fees[0]->p_exam_fees;
@@ -351,7 +361,7 @@ class Payment extends CI_Controller {
 			$posted['firstname'] = $student['name'];
 			$posted['email'] = $student['p_email'];
 			$posted['phone'] = $student['p_mobile_no'];
-			$posted['productinfo'] = "Exam Fees";
+			$posted['productinfo'] = $productinfo;
 			$posted['address1'] = $student['p_address'];
 			$posted['city'] = $student['p_city'];
 			$posted['state'] = $student['p_state'];
