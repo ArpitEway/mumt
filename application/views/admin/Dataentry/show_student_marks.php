@@ -33,7 +33,7 @@
 		</div>  
 		<div class="col-md-4">
 			<strong for="">Class Name :</strong>
-			<?= $this->Common_model->getClassNameByClassId($student[0]->old_class_id) ?>
+			<?= $this->Common_model->getClassNameByClassId($student[0]->class_id) ?>
 		</div>
 		<div class="col-md-4">
 			<strong for="">IC Code :</strong>
