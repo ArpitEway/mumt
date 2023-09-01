@@ -114,7 +114,7 @@ class Dataentry extends CI_Controller {
 		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
 		$this->db->where('student.class_id = new_exam_form.class_id');
 		$this->db->where($where); 
-		$this->db->limit(20,$page);
+		$this->db->limit(30,$page);
 		$resultData = $this->db->get();
 		$data['resultData'] = $resultData->result();
 
@@ -128,7 +128,7 @@ class Dataentry extends CI_Controller {
 		$this->db->where('student.class_id = new_exam_form.class_id');
 		$this->db->where($where);
 		$config["total_rows"] = $this->db->get()->num_rows();		
-		$config["per_page"] = 20;
+		$config["per_page"] = 30;
 		$config["uri_segment"] = 7;
 		$this->pagination->initialize($config);
 		$data["links"] = $this->pagination->create_links();
