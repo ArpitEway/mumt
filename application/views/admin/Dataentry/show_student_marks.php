@@ -15,7 +15,7 @@
 
 		<div class="col-md-4">
 			<strong for="">Roll Number :</strong>
-			<?=$student[0]->roll_number ?>
+			<?=$student[0]->roll_no ?>
 		</div>
 		<div class="col-md-4">
 			<strong for="">Enrollment Number :</strong>
