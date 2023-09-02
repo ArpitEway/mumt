@@ -4483,6 +4483,7 @@ public function update_exam_datewise_permission(){
 		$i = 1;
 		$this->db->where_in('paper_code',$paper_code);
 		$this->db->where('class_id',$class_id);
+		$this->db->order_by('paper_no');
 		$paper_data = $this->Common_model->get_record('paper_master','*');
 		
 		foreach($paper_data as $paper){
@@ -4512,6 +4513,7 @@ public function update_exam_datewise_permission(){
 			if($mode == "PVT"){
 				$this->db->where('type',"theory");
 			}
+			$this->db->order_by('paper_no');
 			$papers = $this->Common_model->get_record('paper_master','*');
 			foreach($papers as $paper){
 				$data['course_group_id']=$paper['course_group_id'];
