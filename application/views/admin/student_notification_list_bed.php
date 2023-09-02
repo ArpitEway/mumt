@@ -7,8 +7,15 @@
 </head>
 <body>
 	<br><?php
+	
+	$isFinalClass = false;
 $notification_no = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id' => $students[0]->class_id));
 $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+// print_r($classData);die;
+$isOneClass = $this->Common_model->hasOneClass($course_group_id);
+if($classData->last_class == 'L'){
+	$isFinalClass = true;
+  }
 $notification=($mode == "REG")?$notification_no[0]->notification_no:$notification_no[0]->pvt_notification_no;
 $date=$notification_no[0]->result_date;
 $exam_session=$notification_no[0]->exam_session;
@@ -90,6 +97,7 @@ $abs_count = 0 ;
 					$final_result = '';
 					$theory_paper_count = 0;
 					$p_paper_count = 0;
+					$Withheld = false;
 					$fc1 =0;
 					$fc2=0;
 					$fc1_abs ='';
@@ -98,8 +106,11 @@ $abs_count = 0 ;
 					$fc2_max =0;
 					$fc1_min =0;
 					$fc2_min =0;
+					$grand_obt=0;
+					$grand_tot =0;
 					$class_ids=array(101,104,107,110,116,119,125,128,131,134);
-					$paper_marks = $this->Common_model->notification_marks_details_($student->student_id,$student->class_id);
+					$paper_marks = $this->Common_model->student_info_for_BEd_result($student->student_id,$student->class_id);
+					// $this->Common_model->last_query();
 					foreach($paper_marks as  $new_exam_form){
 					if((in_array($student->class_id, $class_ids)) && $mode=='REG')	
 					{
@@ -218,6 +229,7 @@ $abs_count = 0 ;
 							}
 							if($new_exam_form->theory_marks==''){
 								$rw_count++;
+								$Withheld =true;
 							}
 							if($new_exam_form->theory_marks<$new_exam_form->min_theory_marks  && $new_exam_form->theory_marks!=''){
 								array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
@@ -227,6 +239,7 @@ $abs_count = 0 ;
 							}
 							if($new_exam_form->int_marks=='N'){
 								$rw_count++;
+								$Withheld;
 							}
 							if($new_exam_form->int_marks<$new_exam_form->min_internal_marks){
 								$int_fail_count++;
@@ -243,6 +256,7 @@ $abs_count = 0 ;
 							$total_marks_obt += $new_exam_form->p_marks+$new_exam_form->int_marks;
 							if($new_exam_form->p_marks=='' || $new_exam_form->p_marks=='N'){
 								$rwpr_count++;
+								$Withheld=true;
 							}
 							if($new_exam_form->p_marks=='ABS'){
 								$p_abs_count++;
@@ -254,6 +268,7 @@ $abs_count = 0 ;
 							}
 							if($new_exam_form->int_marks=='N'){
 								$rwpr_count++;
+								$Withheld =true;
 							}
 
 		         		if($new_exam_form->int_marks<$new_exam_form->min_internal_marks){
@@ -372,7 +387,29 @@ $abs_count = 0 ;
 							<th style="text-align:left" scope="row"  width="45%"><span class="style5" >Name of the Candidate and F/H Name</span></th>
 							<th scope="row" class="text-center"  width="15%">Result</span></th>
 							<?php if((!in_array($student->class_id, $class_ids)) || $mode=='PVT'){ ?>
-							<th scope="row" class="text-center" width="10%"><span class="style5">Total</span></th>
+								<th class="text-center" style="padding:0px" align="center" class="text-center" scope="row"  width="20%" colspan='<?php echo ($isFinalClass && !$isOneClass)?"2":"1";?>'><?php
+								if($isFinalClass){ ?>
+						<table width="100%" border="1" class="m-0">
+							<tr>
+							<td class="text-center">Marks Obtd</td>
+							<?php if(!$isOneClass){?>
+							<td class="text-center">Marks Obtd</td>
+							<?php }?>
+							
+					</tr>
+					<tr>
+							<td class="text-center"><?= $student->class_name?> </td>
+							<?php if(!$isOneClass){?>
+							<td class="text-center">Grand Total</td>
+							<?php }?>	
+					</tr>
+								
+								
+					</table>
+						<?php
+				}else{ ?><span class="style5">Total</span> <?php }
+				?></th>
+							<!-- <th scope="row" class="text-center" width="10%"><span class="style5">Total</span></th> -->
 							<?php	
 							}
 							if((in_array($student->class_id, $class_ids)) && $mode=='REG')	
@@ -402,25 +439,115 @@ $abs_count = 0 ;
 								<?php echo $student->name .' / '.  $student->f_h_name; ?>
 							</td>
 							<td align="center" >
-								<?php
-							if((in_array($student->class_id, $class_ids)) && $mode=='REG'){
-						echo $this->Gradesheet_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
+							<?php
+				if($Withheld){
+					// echo 'RW';
+					echo $final_result = "RW";
+				}else{
+					if($isFinalClass && $isOneClass == false){
+						$final_fail =0;
+						$classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$course_group_id,'mode'=>$classData->mode,'id!='=>$class_id
+					));
+					// echo '<pre>';
+					// print_r($classes);die;
+					
+						foreach($classes as $cls){
+						
+							$this->db->order_by('id','desc');
+							$this->db->limit(1);
+							// $this->db->where_in('exam_result',array('PASS','PASS BY GRACE'));
+							$results = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id='=>$cls->id));
+							// echo  $this->db->last_query();
+							//  echo count($results);die;
+							// if(count($results)>0){
+								foreach($results as $row){
+
+									if($row->exam_result == "FAIL"){
+										$final_fail++;
+										$row->obtain_marks ='-';
+										$row->total_marks = '-';
+										
+										 }
+									
+									$grand_obt += $row->obtain_marks;
+									$grand_tot += $row->total_marks;
+								}
+								if($fail_count>0 || $abs_count>0){
+									$final_result = ($check_grace_marks) ? 'PASS BY GRACE' : 'FAIL';
+
+								}elseif($final_fail !=0){
+									$final_result = 'RWPM';
+								}else{
+									$final_result = 'PASS';
+								}
+							// }else{
+							// 	$final_result = 'RWPM';
+							// }
+							
+							
+							
+						}
+				  
+				   echo $final_result;
+					$grand_obtain = $grand_obt + $total_marks_obt;
+						$grand_total = $grand_tot+$total_paper_marks;
+					}else{
+						if($p_fail_count>0){
+							$final_result = 'FAIL';
+						}
+						else if($fail_count>0 || $abs_count>0){
+							 $final_result = ($check_grace_marks) ? 'PASS BY GRACE' : 'FAIL';
+
+						}else{
+							 $final_result = 'PASS';
+							
+						}
+						if((in_array($student->old_class_id, $class_ids)) && $mode=='REG'){
+						echo $this->Gradesheet_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
 						}else{
 							echo $final_result;
 						}
-						?>
+					}
+				}
+				
+				?>
 							</td>
-							<?php if((!in_array($student->class_id, $class_ids)) || $mode=='PVT'){ ?>
+							<!-- <?php //if((!in_array($student->class_id, $class_ids)) || $mode=='PVT'){ ?>
 							<td align="center" style="padding:0px">					
 								<?php 
-								if($final_result=='PASS' || $final_result=='PASS BY GRACE'){
-									echo $total_marks_obt.'/'.$total_paper_marks;
-								}else{
-									echo '-';
-								} 
+								// if($final_result=='PASS' || $final_result=='PASS BY GRACE'){
+								// 	echo $total_marks_obt.'/'.$total_paper_marks;
+								// }else{
+								// 	echo '-';
+								// } 
 								?>
-							</td>
-							<?php }
+							</td>-->
+							<?php //} -->
+							
+							if($isFinalClass){
+								
+								if($final_result == "RWPM"){
+				?>
+				<td class="text-center" style="padding:0px" width='10%' align="center"></td>
+				<td class="text-center" style="padding:0px" width='10%' align="center"></td>
+				<?php
+								}else{
+				?>
+				<td class="text-center" style="padding:0px" width='10%' align="center"><?php  if(!in_array($final_result, array("FAIL","RW") )){ echo  $total_marks_obt.' / '. $total_paper_marks ;}?></td>
+				<?php if(!$isOneClass) { ?>
+				<td class="text-center" style="padding:0px" align="center"><?php if(!in_array($final_result, array("FAIL","RW") )){ echo  $grand_obtain .' / '. $grand_total;} ?></td>
+				<?php
+							}			}
+							}else if((!in_array($student->old_class_id, $class_ids)) || $mode=='PVT'){ 
+								?>
+							<td  class="text-center" style="padding:0px" align="center"><?php
+							if(!in_array($final_result, array("FAIL","RW") )){
+								echo $total_obtained_marks .' / '. $total_max_marks;
+							}
+						}
+							?>
+						</td>
+						<?php
 							if((in_array($student->class_id, $class_ids)) && $mode=='REG'){
 								if($final_result != 'FAIL'){
 							$gradesheetData = $this->Gradesheet_tr_model->view_notification($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
