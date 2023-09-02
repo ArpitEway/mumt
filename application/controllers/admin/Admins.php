@@ -3265,11 +3265,11 @@ public function update_exam_datewise_permission(){
 		$data['university_mode'] = $mode;
 
 		if($class->last_class == 'L'){
-			$this->db->order_by('center_id,roll_number','ASC');
-			$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','course_complete'=>'Y','university_mode'=>$mode,'old_result_show'=>'Y' ));
+			$this->db->order_by('center_id,roll_no','ASC');
+			$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'new_exam_form'=>'Y','roll_no!='=>'0','course_complete'=>'Y','university_mode'=>$mode,'old_result_show'=>'Y' ));
 		}else{
-			$this->db->order_by('center_id,roll_number','ASC');
-		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode,'old_result_show'=>'Y'));
+			$this->db->order_by('center_id,roll_no','ASC');
+		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'new_exam_form'=>'Y','roll_no!='=>'0','university_mode'=>$mode,'old_result_show'=>'Y'));
 		}
 	 	if($class->internal=="Y" && $mode!="PVT"){
 			$this->load->view('admin/student_marksheet',$data);
@@ -3674,9 +3674,9 @@ public function update_exam_datewise_permission(){
 		$this->load->model('Gradesheet_tr_model');
 		$course_id=$this->Common_model->encrypt_decrypt($course_id,'decrypt');
 		$class_id=$this->Common_model->encrypt_decrypt($class_id,'decrypt');
-		$this->db->order_by('roll_number','ASC');
+		$this->db->order_by('roll_no','ASC');
 		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
-		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id, 'old_class_id' => $class_id, 'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode ));
+		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id, 'class_id' => $class_id, 'new_exam_form'=>'Y','roll_no!='=>'0','university_mode'=>$mode ));
 		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$data['mode'] = $mode;
 		$this->load->view('admin/student_notification_list_bed',$data);
