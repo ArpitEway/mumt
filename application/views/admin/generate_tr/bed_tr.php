@@ -575,6 +575,8 @@
             $colspan=1;
             $degreecolspan=2;
           }
+          $grandTotal_ob=0;
+          $grandTotal_mar=0;
        ?>   <tr>
   <td class="align-middle text-center "  colspan="<?=$colspan?>"><strong>
   <?= 'Session'.'<br>'.'Sem/Year'.'<br>'.'Roll no'.'<br>'.'Marks'?></strong> <?php
@@ -585,6 +587,7 @@
   ?> 
  
 </td> <?php
+
  foreach($old_result as $old){
   if($old->exam_result == "FAIL"){
  $final_fail++;
@@ -592,17 +595,10 @@
  $old->total_marks = '-';
  
   }
-
-  $total_ob = $total_marks_obt + $old->obtain_marks;
-  $total_mar =  $total_paper_marks + $old->total_marks;
-  $percent = round(($total_ob/$total_mar)*100,2);    
-    if($percent>=60){
-      $div = "First";
-    }elseif($percent<60 && $percent>=40){
-      $div  = "Second";
-    }else{
-      $div = "Third";
-    }
+  $grandTotal_ob=$grandTotal_ob+ $old->obtain_marks;
+  $grandTotal_mar=$grandTotal_mar+ $old->total_marks;
+  
+  
   ?> 
   
   
@@ -612,10 +608,21 @@
  
 </td>  
  <?php }
+
   }
+  $grandTotal_ob = $total_marks_obt + $grandTotal_ob;
+  $grandTotal_mar =  $total_paper_marks + $grandTotal_mar;
+  $percent = round(($grandTotal_ob/$grandTotal_mar)*100,2);    
+    if($percent>=60){
+      $div = "First";
+    }elseif($percent<60 && $percent>=40){
+      $div  = "Second";
+    }else{
+      $div = "Third";
+    }
  if($final_result == "FAIL" || $final_result == "RW" || $final_fail !=0 ){
-  $total_ob = '-';
-  $total_mar = '-';
+  $grandTotal_ob = '-';
+  $grandTotal_mar = '-';
   $percent = '-';
   $div = '-';
   if($final_fail !=0){
@@ -627,7 +634,7 @@
  ?>
   
 <td class="align-middle text-center " ><strong>Result</strong><br><?= $final_result?></td>
-<td class="align-middle text-center "  colspan="2"><strong>Grand Total</strong><br><?= $total_ob.'/'.$total_mar?></td>
+<td class="align-middle text-center "  colspan="2"><strong>Grand Total</strong><br><?= $grandTotal_ob.'/'.$grandTotal_mar?></td>
 <td class="align-middle text-center "  colspan="<?=$colspan?>"><strong>%</strong><br><?= $percent?></td>
 <td class="align-middle text-center "  colspan="2"><strong>Division</strong><br><?= $div?></td>
 <td class="align-middle text-center "  colspan="3"><strong>Degree No. And Date</strong><br>-</td>
