@@ -421,6 +421,9 @@ $abs_count = 0 ;
 
 							}
 					?>
+									<?php	if ($isFinalClass) {	?>
+								<th class="text-center" scope="row"  width="10%"><span class="style5">Division</span></th>
+							<?php	}	?>
 							<th scope="row" class="text-center" width="20%"><span class="style5">Remark</span></th>
 						</tr>
 					</thead>
@@ -557,7 +560,31 @@ $abs_count = 0 ;
 									<?php
 								}
 							}
-							?>
+							if ($isFinalClass) {	?>
+									<td  class="text-center" style="padding:0px" align="center"><?php
+										if(!$isOneClass){
+											$percentage = round(($grand_obtain/$grand_total)*100,2);  
+										}else{
+											$percentage = round(($total_obtained_marks/$total_max_marks)*100,2);	
+										}
+										
+										if($percentage>=60){
+										$division = "First";
+										}elseif($percentage<60 && $percentage>=40){
+										$division  = "Second";
+										}else{
+										$division = "Third";
+										}
+										if($final_result == 'RWPM' ){
+											echo '';
+										}else
+										if($final_result != 'FAIL'){
+										echo ($Withheld && $isFinalClass) ? '' : $division;
+										}
+										?>
+									</td>
+									<?php
+									} ?>
 							<td class="text-center">
 								<?php 
 								if((in_array($student->class_id, $class_ids)) && $mode=='REG')	
