@@ -437,6 +437,7 @@
                       <th height="20" width="22%" style="text-align:left" ><strong><?=$classData->mode ?></strong></th>
                       <?php
                         $whereClass = array( 'course_group_id'=> $classData->course_group_id,'class_id !=' => $classData->id,'student_id' =>$student->student_id,'exam_result!='=>"FAIL");
+                        $this->db->order_by('old_exam_data.class_order,old_exam_data.class_id');
                        $oldClassResult = $this->Common_model->getRecordByWhere('old_exam_data',$whereClass);
                         foreach ($oldClassResult as $row) {
                         $i++;
