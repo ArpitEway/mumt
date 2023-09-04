@@ -51,17 +51,17 @@
     // var_dump($isOneClass);
     foreach($students as $student)
     {
-      $papers = $this->Common_model->student_info_for_BEd_result($student->student_id,$student->class_id);
+      $papers = $this->Common_model->student_info_for_result($student->student_id,$student->old_class_id);
       ?>
       <fieldset id="printarea" class="breakhere" style="width:90%;border: 0px solid #22316C;"> 
-        <div align="left"> MS No. <?php echo $student->marksheet_no; ?> </div>
+        <div align="left"> MS No. <?php echo $student->old_marksheet_no; ?> </div>
         <table align="center" border="0" width="100%">
           <tbody>
             <tr>
               <td height="130" colspan="2" valign="bottom">
                 <center>
                   <?php $course = ($student->course_group_id == 75)?'Bachelor of Arts and Bachelor of Education (B.A.B.Ed.)':$student->course_name;?>
-                  <strong><?php echo  ($isOneClass) ? $course .' '."(One Year Course)" :$course .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
+                  <strong><?php echo  ($isOneClass) ? $course .' '."(One Year Course)" :$course .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->old_class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
                 </center>
               </td>
             </tr>
@@ -83,7 +83,7 @@
                       <td width="35%" class="Normaltext" align="left"><div align="left">Roll No</div></td>
                       <td width="53%" class="resultText">
                         <div align="left">
-                          <span id="lblSemesterGrading" style="color:Black;"><?php echo $student->roll_no; ?></span>
+                          <span id="lblSemesterGrading" style="color:Black;"><?php echo $student->roll_number; ?></span>
                           <!-- <div style="float:right"> &nbsp;&nbsp;&nbsp; Mode - Distance Education </div> -->
                         </div>
                       </td>
@@ -441,15 +441,15 @@
                         foreach ($oldClassResult as $row) {
                         $i++;
                         ?>
-                         <th width="12%" style="text-align: center;"><?=$this->Common_model->getClassNameByClassId($row->class_id); ?></th>
+                         <th width="20%" style="text-align: center;"><?=$this->Common_model->getClassNameByClassId($row->class_id); ?></th>
                         <?php } ?>
-                        <th style="text-align: center"><?=$classData->class_name ?></th>
-                        <th style="text-align: center">Grand Total</th>
+                        <th width="20%" style="text-align: center"><?=$classData->class_name ?></th>
+                        <th width="21%" style="text-align: center">Grand Total</th>
                         
-                        <?php $j=$i; ?>
+                        <?php /* $j=$i; ?>
                         <?php while ($j<=5): ?>
                           <td><?php $j++; ?></td>
-                        <?php endwhile; ?>
+                        <?php endwhile;*/ ?>
                     </tr>
                     <?php endif ?>
                     <?php $j=$i; ?>
@@ -468,9 +468,9 @@
                       <?php endif ?>
                       <th style="text-align: center"><?=$tot_std_marks ; ?></th>
                       <th style="text-align: center"><?=$gtot_obtain_marks ?></th>
-                      <?php while ($j<=3): ?>
+                      <?php /* while ($j<=3): ?>
                         <td><?php $j++; ?></td>
-                      <?php endwhile; ?>
+                      <?php endwhile; */ ?>
                       <?php if ($classData->last_class=="L") { ?>
                         <td>
                         <?php
@@ -512,9 +512,9 @@
                       <?php endif ?>
                       <td style="text-align: center"><b><?php echo $tot_marks ; ?></b></td>
                       <td style="text-align: center"><b><?=$gtot_total_marks; ?></b></td>
-                      <?php while ($i<=3): ?>
+                      <?php /* while ($i<=3): ?>
                           <td><?php $i++; ?></td>
-                        <?php endwhile; ?>
+                        <?php endwhile; */ ?>
                         <?php if ($classData->last_class=="L"){ ?>
                         <th style="text-align:left;">Percentage</th>
                         <th style="text-align:left;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo (!$isOneClass)? round(($gtot_obtain_marks/$gtot_total_marks)*100,2) :
@@ -549,7 +549,7 @@
                   </tr>
                   <tr class="">
                     <td colspan="">
-                      <?php  echo $generator->getBarcode($marksheet_variables->bar_code_no.$student->roll_no, $generator::TYPE_CODE_128,2,25); ?>
+                      <?php  echo $generator->getBarcode($marksheet_variables->bar_code_no.$student->roll_number, $generator::TYPE_CODE_128,2,25); ?>
                     </td>
                   </tr>
                   <tr>
