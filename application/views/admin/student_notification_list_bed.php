@@ -384,8 +384,8 @@ $abs_count = 0 ;
 					<thead>
 						<tr bgcolor="#FFFF00">
 							<th scope="row" class="text-center" width="10%"><span class="style5">Roll No.</span></th>
-							<th style="text-align:left" scope="row"  width="45%"><span class="style5" >Name of the Candidate and F/H Name</span></th>
-							<th scope="row" class="text-center"  width="15%">Result</span></th>
+							<th style="text-align:left" scope="row"  width="35%"><span class="style5" >Name of the Candidate and F/H Name</span></th>
+							<th scope="row" class="text-center"  width="12%">Result</span></th>
 							<?php if((!in_array($student->class_id, $class_ids)) || $mode=='PVT'){ ?>
 								<th class="text-center" style="padding:0px" align="center" class="text-center" scope="row"  width="20%" colspan='<?php echo ($isFinalClass && !$isOneClass)?"2":"1";?>'><?php
 								if($isFinalClass){ ?>
