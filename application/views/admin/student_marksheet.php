@@ -429,8 +429,10 @@
                         </b></div></strong></div>
                       </td>
                     </tr>
+                    <?php if ($classData->last_class=="L" && !$isOneClass): ?>
                     </table>
                     <table border="0" cellpadding="0" height="112" width="100%">
+                    <?php endif ?>    
                     <?php $i=1; ?>
                     <?php if ($classData->last_class=="L" && !$isOneClass): ?>
                     <tr>
