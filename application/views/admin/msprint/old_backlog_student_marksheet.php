@@ -51,7 +51,7 @@
               <td height="100" colspan="2" valign="bottom">
                 <center>
                 <?php $course = ($exam_data->course_group_id == 75)?'Bachelor of Arts and Bachelor of Education (B.A.B.Ed.)':$exam_data->course_name;?>
-                  <strong><?php echo  ($isOneClass) ? $course .' '."(One Year Course)" :$course.' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)).' Examination '; ?> <?=$exam_data->exam_year ?></strong>
+                  <strong><?php echo  ($isOneClass) ? $course .' '."(One Year Course)" :$course.' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)); ?> <?= ' Examination '.$exam_data->exam_year ?></strong>
                 </center>
               </td>
             </tr>

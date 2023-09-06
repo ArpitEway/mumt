@@ -523,7 +523,7 @@ class Gradesheet_model extends CI_Model
 			echo "<tr>";
 			echo "<th>".$key."</th>";
 			echo "<td><table style='border:0px solid black'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='100px' style='border:0px solid black'><strong>".$paper[0]."</strong></td><td style='border:0px solid black'></td><td style='border:0px solid black'><strong>".$paper[1]."</strong></td></tr></table></td>";
-			if ($this->fail_count>0 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				$this->check_grace_marks = true;
 				$this->obt_tot_credit += $result['credit'];
 				$req_marks = $result['min_marks']-$result['obt_marks'];
@@ -570,7 +570,7 @@ class Gradesheet_model extends CI_Model
 			echo '<tr style="padding:4px;font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="center">';
 			echo '<td style="margin-top:2px;" align="center"><strong>'.$key.'</strong></td>';
 			echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='50px'><strong>".$paper[0]."</strong></td><td></td><td><strong>".$paper[1]."</strong></td></tr></table></td>";
-			if ($this->fail_count>0 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				$this->check_grace_marks = true;
 				$this->obt_tot_credit += $result['credit'];
 				$req_marks = $result['min_marks']-$result['obt_marks'];
@@ -769,7 +769,7 @@ class Gradesheet_model extends CI_Model
 		foreach ($this->result_array as $result) {
 			$result_data[$key] = array();
 			$result_data[$key]['paper_name'] = $result['paper_name'];
-			if ($this->fail_count>0 && $require_grace_marks<4 && $result['letter_grade']=='F') {
+			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F') {
 				$this->check_grace_marks = true;
 				$this->obt_tot_credit += $result['credit'];
 				$result_data[$key]['credit'] = $result['credit'];
@@ -794,7 +794,7 @@ class Gradesheet_model extends CI_Model
 			echo "<tr>";
 			echo "<td class='text-center'>".$key."</td>";
 			echo "<td>".$result['paper_name']."</td>";
-			if ($this->fail_count>0 && $require_grace_marks<4 && $result['letter_grade']=='F') {
+			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F') {
 				$this->check_grace_marks = true;
 				$this->obt_tot_credit += $result['credit'];
 				$req_marks = $result['min_marks']-$result['obt_marks'];

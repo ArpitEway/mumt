@@ -51,7 +51,7 @@
               <td height="100" colspan="2" valign="bottom">
                 <center>
                 <?php $course = ($exam_data->course_group_id == 75)?'Bachelor of Arts and Bachelor of Education (B.A.B.Ed.)':$exam_data->course_name;?>
-                  <strong><?php echo  ($isOneClass) ? $course .' '."(One Year Course)" :$course.' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)).' Examination '; ?> <?=$exam_data->exam_year ?></strong>
+                  <strong><?php echo  ($isOneClass) ? $course .' '."(One Year Course)" :$course.' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)); ?> <?= ' Examination '.$exam_data->exam_year ?></strong>
                 </center>
               </td>
             </tr>
@@ -416,7 +416,7 @@
                     <tr>
                       <td height="20" ><strong><?=$classData->mode ?></strong></td>
                       <?php
-                        $whereClass = array( 'course_group_id'=> $classData->course_group_id,'class_id !=' => $classData->id,'student_id' =>$papers[0]->student_id);
+                        $whereClass = array( 'course_group_id'=> $classData->course_group_id,'class_id !=' => $classData->id,'student_id' =>$papers[0]->student_id,'exam_result!='=>'FAIL');
                        $oldClassResult = $this->Common_model->getRecordByWhere('old_exam_data',$whereClass);
                       
                         foreach ($oldClassResult as $row) {

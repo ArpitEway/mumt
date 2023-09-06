@@ -112,12 +112,10 @@ class Gradesheet_model_pg extends CI_Model
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
 		
-		if($std[0]->sub_group_id == 1){
+		
 			$papers = $this->Common_model->get_all_papers($student_id,$class_id);
-		}
-		if($this->classData->class_group == 'Y'){
-		$papers_list = $this->Common_model->get_all_group_papers($student_id,$class_id);
-		}
+		
+		
 		// get_all_group_papers
 		// print_r($papers);die;
 		
@@ -166,29 +164,7 @@ class Gradesheet_model_pg extends CI_Model
 			$this->_row();
 			
 		}
-		foreach ($papers_list as $paper) {
-			$this->paper = $paper;
-			if($this->withheld){
-				
-				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
-				 '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
-				  '<h3 class="text-center">'.'WH'.'</h3>'.
-				'</div>';
-				return $this->result();
-			
-				die;
-			}
-			// if ($this->fail_count>0 && !$this->check_grace_marks && $this->classData->final_result_permission!='Y' ) {  
-			// 	echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
-			// 	'<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
-			// 	 '<h3 class="text-center">'.'WH'.'</h3>'.
-			//    '</div>';
-			//    return $this->result();
-		   
-			//    die;
-			// }
-			$this->_row();
-		}
+		
 		
 		// var_dump($this->result_array);
 		
@@ -403,7 +379,7 @@ class Gradesheet_model_pg extends CI_Model
 			echo "<tr>";
 			echo "<th>".$key."</th>";
 			echo "<th>".$result['paper_name']."</th>";
-			if ($this->fail_count>0 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				$this->check_grace_marks = true;
 				$this->obt_tot_credit += $result['credit'];
 				$req_marks = $result['min_marks']-$result['obt_marks'];
@@ -448,34 +424,33 @@ class Gradesheet_model_pg extends CI_Model
 			
 			echo '<tr style="padding:4px;font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="center">';
 			echo '<td style="margin-top:2px;" align="center"><strong>'.$key.'</strong></td>';
-			echo "<td align='left'>".$result['paper_name']."</td>";
-			if ($this->fail_count>0 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+			echo "<td align='left'><strong>".$result['paper_name']."</strong></td>";
+			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				$this->check_grace_marks = true;
 				$this->obt_tot_credit += $result['credit'];
 				$req_marks = $result['min_marks']-$result['obt_marks'];
 				$obt_marks = $result['obt_marks']+$req_marks;
-				$credit_point = $result['credit']*4;
+				$tot_obt_grace = $result['obt_marks']+$result['int_obt_marks'];
+				$tot_marks_grace = $result['max_marks']+$result['int_max_marks'];
+				$persent = $tot_obt_grace*100/$tot_marks_grace;
+				$where = 'min_marks <= '.$persent.' and  max_marks >= '.$persent.'';
+				$gradeData = $this->Common_model->getRecordByWhere('letter_grade_pg',$where);
+				$result['grade_point'] = $gradeData[0]->grade_point;
+				$credit_point = $result['credit']*$result['grade_point'];
 				$this->result_array[$key]['credit_point']=$credit_point;
 				$this->tot_credit_point += $credit_point;
 				echo "<td align='center' colspan='3'><span class='style4'>".$result['credit']."</span></td>";
 				echo "<td align='center' colspan='3'><span class='style4'>".$result['credit']."</span></td>";
-				echo "<td align='center' colspan='2'><span class='style4'>4</span></td>";
+				echo "<td align='center' colspan='2'><span class='style4'>".$result['grade_point']."</span></td>";
 				echo "<td align='center' colspan='2''><span class='style4'>".$credit_point."</span></td>";
-				echo "<td align='center' colspan='2'><span class='style4'>".'P-G'."</span></td>";
+				echo "<td align='center' colspan='2'><span class='style4'>".$gradeData[0]->letter_grade.'-G'."</span></td>";
 				
 			}else{
 				if($result['obt_marks'] === 'ABS' || ($result['f_abs'] === 'ABS' && $result['obt_marks'] == '0')
 			){
 					$result['letter_grade'] = 'ABS';
 			}
-			if(($result['f_abs'] === 'ABS' && $result['obt_marks'] != '0')){
-				$result['obt_credit'] = 2;
-				$this->obt_tot_credit -=2; 
-				$credit_point = $result['obt_credit']*$result['grade_point'];
-				$result['credit_point']=$credit_point;
-				$this->tot_credit_point -= $credit_point;
-				
-			}
+			
 				echo "<td align='center' colspan='3'><span class='style4'>".$result['credit']."</span></td>";
 				echo "<td align='center' colspan='3'><span class='style4'>".$result['obt_credit']."</span></td>";
 				echo "<td align='center' colspan='2'><span class='style4'>".$result['grade_point']."</span></td>";
@@ -648,7 +623,7 @@ class Gradesheet_model_pg extends CI_Model
 		foreach ($this->result_array as $result) {
 			$result_data[$key] = array();
 			$result_data[$key]['paper_name'] = $result['paper_name'];
-			if ($this->fail_count>0 && $require_grace_marks<4 && $result['letter_grade']=='F') {
+			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F') {
 				$this->check_grace_marks = true;
 				$this->obt_tot_credit += $result['credit'];
 				$result_data[$key]['credit'] = $result['credit'];
@@ -673,7 +648,7 @@ class Gradesheet_model_pg extends CI_Model
 			echo "<tr>";
 			echo "<td class='text-center'>".$key."</td>";
 			echo "<td>".$result['paper_name']."</td>";
-			if ($this->fail_count>0 && $require_grace_marks<4 && $result['letter_grade']=='F') {
+			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F') {
 				$this->check_grace_marks = true;
 				$this->obt_tot_credit += $result['credit'];
 				$req_marks = $result['min_marks']-$result['obt_marks'];

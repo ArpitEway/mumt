@@ -60,11 +60,11 @@ class Otherscript extends CI_Controller {
 		// $where = " paper_code in ('2RBED6')";
 		//$where = " paper_code in ('1RMLIS10','1RMLIS11')";
 		//$where="`paper_code` in ('1RCMSCCH7','1RCMSCCH8','1RCMSCCH9','1RCMSCBT7','1RCMSCBT8','1RCMSCC7','1RCMSCM7','3RMSCC6','3RMSCC7')";
-		$where="`id` in (1220,1221,1222)";
+		$where="`id` in (1253)";
 		$papers = $this->Common_model->get_record('paper_master','*',$where);
 
 		foreach ($papers as $paper) {
-			$where = ' old_class_id = "'.$paper['class_id'].'" and temp_exam_form="Y"';
+			$where = ' class_id = "'.$paper['class_id'].'" and temp_exam_form="Y"';
 			$students = $this->Common_model->get_record('student','*',$where);
 			$studentData = array(
 				'course_group_id' => $paper['course_group_id'],
@@ -581,7 +581,29 @@ public function update_roll_no_old_data(){
 		}	
 		
 	}
+	public function update_int_marks_new_exam_form_to_old_result_data()
+	{
+		
+		$sql = "SELECT * FROM `old_result_data` WHERE `int_marks`='-' and type!='theory' order by student_id limit 1000";
+		$rs = $this->db->query($sql)->result_array();
+		$s_no=1;
+		foreach ($rs as $student) {
+			
+			$new_exam_sql = "SELECT * FROM `new_exam_form` WHERE `student_id`='".$student['student_id']."' and class_id= '".$student['class_id']."' and paper_type!='Theory' and paper_code='".$student['paper_code']."' ";
+			$new_exam_data =	$this->db->query($new_exam_sql)->result_array();
+			//print_r($new_exam_data);
+			$i=0;
+			
+				echo $s_no++.' student_id =>'.$student['student_id'].' paper_code =>'.$new_exam_data[0]['paper_code'].' Marks=>'.$new_exam_data[0]['int_marks'].'<br>';
 
+			echo	$update_marks = "update old_result_data set int_marks='".$new_exam_data[0]['int_marks']."' where id=".$student['id']." and int_marks='-'";
+			echo '<br>';
+				$i++;
+				$this->db->query($update_marks);
+		
+		
+		}
+	}
 	
 }
 

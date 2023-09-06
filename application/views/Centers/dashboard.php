@@ -225,7 +225,8 @@
 					//  if($count>0){ ?>
 				 
 					<?php //} ?>
-					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
+					<?php if($this->session->center_id==12 || $this->session->center_id==28){ ?>
+					 <a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
 						<div>
 							<span class="nav-text">Practical Marks Submission (Regular)</span>
 						</div>
@@ -234,7 +235,8 @@
 						<div>
 							<span class="nav-text">Internal Marks Submission (Regular)</span>
 						</div>
-					</a> -->
+					</a> 
+					<?php } ?>
 					<?php if ($center->result_permission=='Y'): ?>
 						<a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
 							<div>
@@ -247,11 +249,11 @@
 							</div>
 						</a>
 					<?php endif ?>
-					<a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
+					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
 					 	<div>
 							<span class="nav-text">Time Table July 2023</span>
 					 	</div>
-					</a>  
+					</a>   -->
 					
 					
 
@@ -267,12 +269,12 @@
 							<span class="nav-text">Admit Card</span>
 						</div>
 					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('admit_card_backlog_student_list');?>">
+					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('admit_card_backlog_student_list');?>">
 						<div>
 							<span class="nav-text">Backlog Admit Card</span>
 						</div>
-					</a> 
-					<?php endif ?>
+					</a>  -->
+					<?php endif  ?>
 
 				</div>
 			</div> 

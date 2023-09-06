@@ -1635,7 +1635,7 @@ class ExamController extends CI_Controller {
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('DISTINCT(exam_center_id) ');
 			$this->db->from('student');
-			$where = array('new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>13);
+			$where = array('new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>0);
 			$this->db->where($where);
 			$ecenters=$this->db->get()->result_array();
 			//print_r($this->db->last_query()); 
@@ -1669,7 +1669,7 @@ class ExamController extends CI_Controller {
 		$this->db->from('student');
 		$this->db->order_by("roll_no", "asc");
 		// if($exam_center!="All")
-		$where = array('exam_center_id'=>$exam_center,'new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>13);
+		$where = array('exam_center_id'=>$exam_center,'new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>0);
 		$this->db->where($where);	
 		$data['exam_center_students'] = $this->db->get()->result();
 		echo $this->load->view('admin/exam_center/get_exam_center_wise_student_attendance_sheet',$data, TRUE);
@@ -2331,8 +2331,8 @@ public function getStudentData()
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('DISTINCT(center_id)');
-			$this->db->from($this->old_result_table);
-			$this->db->where(array('exam_form'=>'Y','marksheet_dispatch'=>'N'));
+			$this->db->from($this->result_table);
+			$this->db->where(array('exam_form'=>'Y'));//,'marksheet_dispatch'=>'N'
 			$centers = $this->db->get()->result_array();
 			$ids = array_column($centers, 'center_id');
 			//print_r($ids);die;
@@ -2351,7 +2351,7 @@ public function getStudentData()
 	public function get_center_wise_marksheet_dispatchlist(){
 		$center = $this->input->post('center');
 		$this->db->select('DISTINCT(center_id)');
-		$this->db->from($this->old_result_table);
+		$this->db->from($this->result_table);
 		$this->db->where(array($this->exam_form_result=>'Y'));//,'marksheet_dispatch'=>'N'
 		$centers = $this->db->get()->result_array();
 		$ids = array_column($centers, 'center_id');
@@ -2364,7 +2364,7 @@ public function getStudentData()
 			$this->db->where_in('id',$ids);
 		$this->db->order_by('center_code', "asc");
 		$data['centers'] = $this->db->get()->result();
-		$data['examTitle'] = "July 2023";
+		$data['examTitle'] = "March 2023";
 		
 		echo $this->load->view('admin/examController/get_center_wise_marksheet_dispatchlist',$data, TRUE);
 	}
@@ -2429,7 +2429,7 @@ public function getStudentData()
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('DISTINCT(center_id)');
-			$this->db->from($this->old_result_table);
+			$this->db->from($this->result_table);
 			$this->db->where(array('exam_form'=>'Y'));//,'marksheet_dispatch'=>'N'
 			$centers = $this->db->get()->result_array();
 			$ids = array_column($centers, 'center_id');
@@ -2448,8 +2448,8 @@ public function getStudentData()
 	public function get_center_wise_marksheet_dispatch_rolllist(){
 		$center = $this->input->post('center');
 		$this->db->select('DISTINCT(center_id)');
-		$this->db->from($this->old_result_table);
-		$this->db->where(array('exam_form'=>'Y','marksheet_dispatch'=>'N'));
+		$this->db->from($this->result_table);
+		$this->db->where(array('exam_form'=>'Y'));//,'marksheet_dispatch'=>'N'
 		$centers = $this->db->get()->result_array();
 		$ids = array_column($centers, 'center_id');
 	
@@ -2461,7 +2461,7 @@ public function getStudentData()
 			$this->db->where_in('id',$ids);
 		$this->db->order_by('center_code', "asc");
 		$data['centers'] = $this->db->get()->result();
-		$data['examTitle'] = "July 2023";
+		$data['examTitle'] = "March 2023";
 		
 		echo $this->load->view('admin/examController/get_center_wise_marksheet_dispatch_rolllist',$data, TRUE);
 	}
@@ -2770,7 +2770,7 @@ public function getStudentData()
 
 
 	public function search_student_result($rollno=""){
-		 redirect(base_url().'ExamController/');
+		
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
 		$data['rollno']=$rollno;
@@ -2782,17 +2782,17 @@ public function getStudentData()
 	public function getEditStudentMarksData()
 	{
 		$roll_no = $this->input->post('roll_no');
-		$studentData = $this->Common_model->getRecordByWhere('student',array('roll_number'=>$roll_no,'exam_form'=>'Y'));
+		$studentData = $this->Common_model->getRecordByWhere('student',array('roll_no'=>$roll_no,'new_exam_form'=>'Y'));
 		
-		$studentPaper = $this->Common_model->get_student_papers($studentData[0]->student_id,$studentData[0]->old_class_id);
+		$studentPaper = $this->Common_model->get_student_papers($studentData[0]->student_id,$studentData[0]->class_id);
 		$this->db->where('new_exam_form.theory_marks','');
-		$studentPaperWithHeld = $this->Common_model->get_student_papers($studentData[0]->student_id,$studentData[0]->old_class_id,'withheld');
+		$studentPaperWithHeld = $this->Common_model->get_student_papers($studentData[0]->student_id,$studentData[0]->class_id,'withheld');
 		//print_r($studentPaperWithHeld);
-		// $this->Common_model->last_query();
+	//	echo  $this->Common_model->last_query();
 		$data['student'] = $studentData;
 		if($studentData){
 		$data['studentPaper'] = $studentPaper;
-		if ($studentData[0]->old_result_show=='Y' && (count($studentPaperWithHeld)==0) ) {
+		if ($studentData[0]->result_show=='Y' && (count($studentPaperWithHeld)==0) ) {
 			$result['data'] = $this->load->view('admin/Dataentry/show_student_marks',$data,true);
 		}else{
 			$result['data'] = $this->load->view('admin/Dataentry/edit_student_marks',$data,true);
@@ -3248,7 +3248,7 @@ public function getStudentData()
 		$this->load->view('admin/generate_tr/footer2');
 	}
 	public function search_student_backlog_result($rollno=""){
-		 redirect(base_url().'ExamController/');
+		
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
 		$data['rollno']=$rollno;
@@ -3260,7 +3260,7 @@ public function getStudentData()
 	public function getEditBacklogStudentMarksData()
 	{
 		$roll_no = $this->input->post('roll_no');
-		$where = array('backlog_student.roll_no'=>$roll_no,'backlog_student.exam_form'=>'Y','backlog_student.exam_year'=>'Dec 2022');
+		$where = array('backlog_student.roll_no'=>$roll_no,'backlog_student.exam_form'=>'Y','backlog_student.exam_year'=>'June 2023');
 		$this->db->select('student.name,student.course_name,backlog_student.*');
 		$this->db->from('backlog_student');
 		$this->db->join('student','student.student_id = backlog_student.student_id');

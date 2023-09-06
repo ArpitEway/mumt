@@ -599,17 +599,17 @@ class Common_Model extends CI_Model{
 		$class_check = $this->Common_model->getRecordById('class_master','id',$class_id);
 		$where = array(
 			'student_id' => $id,
-			'new_exam_form.class_id' => $class_id,
+			'exam_form.class_id' => $class_id,
 			
 			);
-		$this->db->select('new_exam_form.*,paper_master.credit_point,paper_master.paper_name,paper_master.paper_code,paper_master.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks,new_exam_form.sub_group_id,new_exam_form.group_id,new_exam_form.paper_order');
+		$this->db->select('exam_form.*,paper_master.credit_point,paper_master.paper_name,paper_master.paper_code,paper_master.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks,exam_form.sub_group_id,exam_form.group_id,exam_form.paper_order');
 		$this->db->from('paper_master');
 		$this->db->order_by('paper_no','asc');
-		$this->db->join('new_exam_form','new_exam_form.paper_id = paper_master.id');
+		$this->db->join('exam_form','exam_form.paper_id = paper_master.id');
 		// $this->db->join('group_paper','paper_master.id=group_paper.paper_id');
 		$this->db->where($where); 
 		if($class_check->class_group == 'Y'){
-		$this->db->where('new_exam_form.sub_group_id',1);
+		$this->db->where('exam_form.sub_group_id',1);
 		}
 		$query = $this->db->get();
 		// $this->Common_model->last_query();
@@ -905,6 +905,17 @@ class Common_Model extends CI_Model{
 	{
 		$this->db->select('*');
         $this->db->from('paper_master');
+        $this->db->order_by('exam_form.sub_group_id,paper_order,paper_no','ASC');
+        $this->db->join('exam_form', 'paper_master.id = exam_form.paper_id');
+        $this->db->where('exam_form.student_id',$student_id);
+        $this->db->where('exam_form.class_id',$class_id);
+		return $this->db->get()->result();
+	}
+
+	public function student_info_for_BEd_result($student_id,$class_id)
+	{
+		$this->db->select('*');
+        $this->db->from('paper_master');
         $this->db->order_by('new_exam_form.sub_group_id,paper_order,paper_no','ASC');
         $this->db->join('new_exam_form', 'paper_master.id = new_exam_form.paper_id');
         $this->db->where('new_exam_form.student_id',$student_id);
@@ -940,10 +951,10 @@ class Common_Model extends CI_Model{
 	public function notification_marks_details_($student,$class_id)
 	{
 		$this->db->select('*');
-		$this->db->from('new_exam_form');
-		$this->db->join('paper_master', 'new_exam_form.paper_id = paper_master.id');
-		$this->db->where('new_exam_form.class_id',$class_id); 
-		$this->db->where('new_exam_form.student_id',$student); 
+		$this->db->from('exam_form');
+		$this->db->join('paper_master', 'exam_form.paper_id = paper_master.id');
+		$this->db->where('exam_form.class_id',$class_id); 
+		$this->db->where('exam_form.student_id',$student); 
 		$query = $this->db->get();
 		return $query->result();
 	}

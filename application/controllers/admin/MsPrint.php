@@ -140,7 +140,7 @@ class MsPrint extends CI_Controller {
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('DISTINCT(center_id)');
-			$this->db->from($this->old_result_table);
+			$this->db->from($this->result_table);
 			$this->db->where(array('exam_form'=>'Y'));
 			$centers = $this->db->get()->result_array();
 			$ids = array_column($centers, 'center_id');
@@ -159,7 +159,7 @@ class MsPrint extends CI_Controller {
 	public function get_center_wise_marksheet_dispatchlist(){
 		$center = $this->input->post('center');
 		$this->db->select('DISTINCT(center_id)');
-		$this->db->from($this->old_result_table);
+		$this->db->from($this->result_table);
 		$this->db->where(array('exam_form'=>'Y'));
 		$centers = $this->db->get()->result_array();
 		$ids = array_column($centers, 'center_id');
@@ -172,7 +172,7 @@ class MsPrint extends CI_Controller {
 			$this->db->where_in('id',$ids);
 		$this->db->order_by('center_code', "asc");
 		$data['centers'] = $this->db->get()->result();
-		$data['examTitle'] = "Aug 2022";
+		$data['examTitle'] = "March 2023";
 		
 		echo $this->load->view('admin/examController/get_center_wise_marksheet_dispatchlist',$data, TRUE);
 	}

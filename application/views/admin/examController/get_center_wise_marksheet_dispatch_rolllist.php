@@ -8,7 +8,7 @@ size: auto;
 </style>
 <?php 
 $pageno=1;
-$table = $this->Common_model->getMaster('old_student_result_table');
+$table = $this->Common_model->getMaster('student_result_table');
 foreach($centers as $center)  {
 	$this->db->select('*');
 	$this->db->from($table);
