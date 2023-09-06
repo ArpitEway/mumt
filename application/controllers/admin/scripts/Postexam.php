@@ -170,7 +170,7 @@ class Postexam extends CI_Controller {
                         $tot_std_marks += $marks->p_marks;
                         $tot_marks += $paper_master[0]->max_theory_marks;
                     }
-                    if($marks->p_marks=='' && $marks->p_marks=='N'){
+                    if($marks->p_marks=='' || $marks->p_marks=='N'){
                         $whCount++;
                     }
                     if($marks->p_marks=='ABS'){
