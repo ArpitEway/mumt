@@ -6,6 +6,7 @@ $fali_tot_marks = 0;
 $require_tot_marks = 0;
 $tot_marks = 0;
 $abs_count = 0;
+
 foreach($old_result_data as $marks){
   $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code,"class_id"=>$marks->class_id));
 
@@ -93,9 +94,9 @@ foreach($old_result_data as $marks){
         if($marks->type=='Sessional'){
           echo $paper_master[0]->max_internal_marks;
         }
-          else if( $marks->type !='theory' || $paper_master[0]->max_internal_marks == 0){
+          else if( $marks->type !='theory' && $paper_master[0]->max_internal_marks == 0){
             echo '-';
-          }else if($marks->type !='theory' && $practical_internal_marks=='Y'){
+          }else if($marks->type !='theory' &&$class->practical_internal_marks=='Y'){
             echo $paper_master[0]->max_internal_marks;
           }else{
             echo $paper_master[0]->max_internal_marks;
@@ -112,9 +113,9 @@ foreach($old_result_data as $marks){
           }
         }else{
         
-        if( $marks->type !='theory' || $paper_master[0]->max_internal_marks == 0){
+        if( $marks->type !='theory' &&  $paper_master[0]->max_internal_marks == 0){
           echo '-';
-        }elseif($marks->type !='theory' && $practical_internal_marks=='Y') {
+        }elseif($marks->type !='theory' &&$class->practical_internal_marks=='Y') {
           if($marks->int_marks<$paper_master[0]->min_internal_marks || $marks->int_marks=='ABS'){
             echo $marks->int_marks;
             $result_1_paper = 'FAIL';
@@ -135,10 +136,10 @@ foreach($old_result_data as $marks){
       </th>
       <th class="text-center">
         <?php  
-        if($marks->type!="theory" && $practical_internal_marks=='N' ){
+        if($marks->type!="theory" &&$class->practical_internal_marks=='N' ){
                        echo (int)$paper_master[0]->max_theory_marks;
               }
-              elseif($marks->type!="theory" && $practical_internal_marks=='Y' ){  
+              elseif($marks->type!="theory" &&$class->practical_internal_marks=='Y' ){  
                 echo (int) $paper_master[0]->max_theory_marks + (int) $paper_master[0]->max_internal_marks;
                 
               }else{ 
@@ -150,15 +151,13 @@ foreach($old_result_data as $marks){
         if($marks->type=='Sessional'){
           echo  (int) $marks->int_marks; 
         }else{
-            if($marks->type!="theory"){
-                       echo (int)$marks->p_marks ;
-              }
-              elseif($marks->type!="theory" && $practical_internal_marks=='Y' ){  
+            
+              if($marks->type!="theory" &&$class->practical_internal_marks=='Y' ){  
                 echo (int) $marks->p_marks + (int) $marks->int_marks;
                 
-              }
-              
-              else{ 
+              }else if($marks->type!="theory"){
+                echo (int)$marks->p_marks ;
+              }else{ 
                 echo (int) $marks->theory_marks + (int) $marks->int_marks;
               } 
          } ?>

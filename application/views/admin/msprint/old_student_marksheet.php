@@ -201,6 +201,7 @@
 
                           
                           }else{
+                           
                             if ($classData->practical_internal_marks=='Y') {
                               $tot_std_marks += $marks->p_marks+$marks->int_marks;
                               $tot_marks += $marks->max_theory_marks+$marks->max_int_marks;
@@ -209,6 +210,9 @@
                                 $fail_count++;
                                 $fali_tot_marks += $marks->p_marks;
                                 $require_tot_marks += $marks->min_theory_marks;
+                              }
+                              if($marks->p_marks == 'N' || $marks->p_marks == ''){
+                                $result = "FAIL";
                               }
                             }else{
                               $tot_std_marks += $marks->p_marks;
