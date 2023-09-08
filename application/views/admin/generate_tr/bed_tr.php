@@ -151,6 +151,7 @@
   $previous_center=$current_center="";
   foreach($students as $student)
   {
+    $current_center=$student->center_id;
     $page_break_count++;
     $marks = $this->Common_model->student_info_for_BEd_result($student->student_id,$student->class_id);
     $BarCodecolspan = 9 + count($marks); 
@@ -348,8 +349,11 @@
       </tbody>
     </table>
     <?php 
-    $center_code = substr($student->center_code, -4);
-      echo '<span>'.$center_code. '</span>';
+      if($previous_center!=$current_center){
+        $center_code = substr($student->center_code, -4);
+        echo '<span>'.$center_code. '</span>';
+      }
+   
     }
     ?>
     <table class="table table1">

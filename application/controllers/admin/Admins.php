@@ -4382,18 +4382,12 @@ public function update_exam_datewise_permission(){
 	public function student_image_delete()
 	{
   		 $student_id = $this->input->post('student_id');
-		 $classid = $this->input->post('classid'); 
-		// $where=array("student_id"=>$student_id,"class_id"=> $classid);
-		// $response = $this->Common_model->deleteByWhere('new_exam_form',$where);
-		//$response = $this->Common_model->deleteById('new_exam_form','student_id',$student_id);
-
-		echo json_encode(array("status" => 'true'));
-		$where = array('student_id' => $student_id);
-		$data = array('temp_exam_form' => 'N');
-		
-		$response= $this->Common_model->updateRecordByConditions('student',$where,$data );
-		
-		$this->session->set_flashdata('ajax_flash_message','Status Successfully Updated');
+		 $where=array("student_id"=>$student_id);
+		 $studentData = $this->Common_model->get_record('student','*', $where);
+	     $session=$studentData[0]['session'];
+	     unlink('assets/student_image/'.$session.'/'.$studentData[0]['photo']);
+		 echo json_encode(array("status" => 'true'));
+		 $this->session->set_flashdata('ajax_flash_message','Image Deleted Successfully !');
 	}
 
 	public function regular_exam_controller($method,$admin_id)
