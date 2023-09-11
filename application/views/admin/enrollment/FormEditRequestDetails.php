@@ -14,6 +14,7 @@
 				<th>Date</th>
 				<th>Status</th>
 				<th>Remark</th>
+				<th>Image</th>
 				<th>Action</th>
 			</tr>
 		</thead>
@@ -46,8 +47,12 @@
 						<?php } ?>
 					</td>
 					<td>
+						<button  class="btn btn-sm  " onclick="delete__student_image(this)" data-id = "<?=$center['student_id']; ?>" title="Delete Image"><i class="fa fa-trash" aria-hidden="true"></i></button>  
+					</td>
+					<td>
 						<a target="_blank"  href='<?php echo base_url('/admin/enrollment/editForm/').$this->Common_model->encrypt_decrypt($center["student_id"],'encrypt'); ?>' title="Edit Form"><i class="fa fa-edit" aria-hidden="true"></i></a>
-						<button  class="btn btn-sm  " onclick="delete__student_paper(this)" data-id = "<?=$center['student_id']; ?>" title="Delete Paper"><i class="fa fa-trash" aria-hidden="true"></i></button>  		
+						<button  class="btn btn-sm  " onclick="delete__student_paper(this)" data-id = "<?=$center['student_id']; ?>" title="Delete Paper"><i class="fa fa-trash" aria-hidden="true"></i></button> 
+								
 					</td>		
 				</tr>
 				<?php	$i++; } ?>
@@ -124,6 +129,31 @@
 				console.log(response);
 					if(response.status=='true'){
 					toastr.success("successfully Deleted all paper");
+					}
+
+					else{
+					toastr.error("Something wrong");
+					}
+				}
+			});	
+		}
+	}
+	function delete__student_image(student_id)
+	{
+		if (confirm('Are you sure to remove  ?')) {
+			var csrfName = $('.csrfname').attr('name');
+			var csrfHash = $('.csrfname').val(); 
+			var student_id = $(student_id).attr('data-id');
+			// alert(student_id);
+			$.ajax({
+				type: "POST",
+				url: BASE_URL+"admin/Admins/student_image_delete",
+				dataType:"json",
+				data: {student_id: student_id,[csrfName]:csrfHash},
+				success: function(response){
+				console.log(response);
+					if(response.status=='true'){
+					toastr.success("successfully Image Deleted");
 					}
 
 					else{

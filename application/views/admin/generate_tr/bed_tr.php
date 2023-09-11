@@ -148,8 +148,10 @@
   $br_code_id = 0;
   // $roll_no = array(); 
   $page_no = 0;
+  $previous_center=$current_center="";
   foreach($students as $student)
   {
+    $current_center=$student->center_id;
     $page_break_count++;
     $marks = $this->Common_model->student_info_for_BEd_result($student->student_id,$student->class_id);
     $BarCodecolspan = 9 + count($marks); 
@@ -272,9 +274,9 @@
     }else{
       $division = "Third";
     }
-
-    if($page_break_count%2==0 || $page_break_count==0){
-      $page_no++;
+    
+    if($page_break_count%2==0 || $page_break_count==0 || $previous_center!=$current_center){
+      $page_no++;$page_break_count=0;
       ?>
       <p align="center" class="h4 break"><b>Maharishi Mahesh Yogi Vedic Vishvavidyalaya, Madhya Pradesh</b></p>
       <p align="center" class="line-height">Tabulation Register for <strong><?php echo $student->course_name; echo '&nbsp'. $marksheetData[0]->class_name; ?></strong> <?php echo $marksheetData[0]->exam_session;?>
@@ -346,8 +348,12 @@
         <?php }  ?>
       </tbody>
     </table>
-    <?php $center_code = substr($student->center_code, -4);
-      echo '<span>'.$center_code. '</span>';
+    <?php 
+      if($previous_center!=$current_center){
+        $center_code = substr($student->center_code, -4);
+        echo '<span>'.$center_code. '</span>';
+      }
+   
     }
     ?>
     <table class="table table1">
@@ -668,6 +674,7 @@
 </tbody>
 </table>
 <?php
+ $previous_center=$current_center; 
 }
 ?>
 

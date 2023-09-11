@@ -3266,7 +3266,9 @@ public function update_exam_datewise_permission(){
  
 		if($class->last_class == 'L'){
 			$this->db->order_by('center_id,roll_no','ASC');
+			// $this->db->where_in('student_id',array(188247,188249,188265,188272,188302,188306,188311,188322,188324,188338,188343,188346,188353,188361,188366,188368,188455,188495));
 			$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'new_exam_form'=>'Y','roll_no!='=>'0','course_complete'=>'Y','university_mode'=>$mode,'result_show'=>'Y' ));
+			
 		}else{
 			$this->db->order_by('center_id,roll_no','ASC');
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'new_exam_form'=>'Y','roll_no!='=>'0','university_mode'=>$mode,'result_show'=>'Y'));
@@ -4377,6 +4379,17 @@ public function update_exam_datewise_permission(){
 		$response= $this->Common_model->updateRecordByConditions('student',$where,$data );
 		
 		$this->session->set_flashdata('ajax_flash_message','Status Successfully Updated');
+	}
+
+	public function student_image_delete()
+	{
+  		 $student_id = $this->input->post('student_id');
+		 $where=array("student_id"=>$student_id);
+		 $studentData = $this->Common_model->get_record('student','*', $where);
+	     $session=$studentData[0]['session'];
+	     unlink('assets/student_image/'.$session.'/'.$studentData[0]['photo']);
+		 echo json_encode(array("status" => 'true'));
+		 $this->session->set_flashdata('ajax_flash_message','Image Deleted Successfully !');
 	}
 
 	public function regular_exam_controller($method,$admin_id)
