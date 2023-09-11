@@ -65,7 +65,7 @@
                 <center>
                 <?php  //$course_name = explode('(',$exam_data->course_name);?>
                   <strong><?php echo  ($isOneClass) ? $exam_data->course_name .' '."(One Year Course)" :$exam_data->course_name .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)); ?> <?php $session = explode(' ',$exam_data->exam_year); 
-                   if($session[0] == 'Aug') $month = ' August '; elseif ($session[0] == 'Feb') $month =' February ';else $month = ' March ';
+                   if($session[0] == 'Aug') $month = ' August '; elseif ($session[0] == 'Feb') $month =' March ';else $month = ' March ';
                   echo ' Examination '.$month.$session[1];
                   ?></strong>
                 </center>
