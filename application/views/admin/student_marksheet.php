@@ -461,12 +461,15 @@
                       <?php if ($classData->last_class=="L" && !$isOneClass): ?>
                       <?php
                         $gtot_obtain_marks = 0;
+                        $gtot_total_marks = 0;
                         foreach ($oldClassResult as $row) { 
                         $gtot_obtain_marks += $row->obtain_marks;
+                        $gtot_total_marks +=$row->total_marks;
                         ?>
                          <th style="text-align: center"><?=$row->obtain_marks; ?></th>
                       <?php } 
                       $gtot_obtain_marks += $tot_std_marks;
+                      $gtot_total_marks +=$tot_marks;
                       ?>
                       <?php endif ?>
                       <th style="text-align: center"><?=$tot_std_marks ; ?></th>
@@ -505,14 +508,9 @@
                       <td height="20"><strong>Maximum Marks</strong></td>
                       <?php if ($classData->last_class=="L" && !$isOneClass): ?>
                       <?php 
-                      $gtot_total_marks = 0;
-                      foreach ($oldClassResult as $row) { 
-                        $gtot_total_marks +=$row->total_marks;
-                      ?>
+                      foreach ($oldClassResult as $row) {  ?>
                          <th style="text-align: center;width:10%"><?=$row->total_marks; ?></th>
-                      <?php } 
-                      $gtot_total_marks +=$tot_marks;
-                      ?>
+                      <?php } ?>
                       <?php endif ?>
                       <td style="text-align: center"><b><?php echo $tot_marks ; ?></b></td>
                       <td style="text-align: center"><b><?=$gtot_total_marks; ?></b></td>
