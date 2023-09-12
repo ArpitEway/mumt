@@ -3,7 +3,7 @@
 /**
  * 
  */
-class Gradesheet_old_model_pg extends CI_Model
+class GradeSheet_old_model_pg extends CI_Model
 {
 	protected $paper;
 	protected $percent;
