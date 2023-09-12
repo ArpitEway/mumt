@@ -444,10 +444,10 @@
                         foreach ($oldClassResult as $row) {
                         $i++;
                         ?>
-                         <th width="12%" style="text-align: center;"><?=$this->Common_model->getClassNameByClassId($row->class_id); ?></th>
+                         <th width="20%" style="text-align: center;"><?=$this->Common_model->getClassNameByClassId($row->class_id); ?></th>
                         <?php } ?>
-                        <th style="text-align: center"><?=$classData->class_name ?></th>
-                        <th style="text-align: center">Grand Total</th>
+                        <th width='20%' style="text-align: center"><?=$classData->class_name ?></th>
+                        <th width='21%' style="text-align: center">Grand Total</th>
                         
                         <?php $j=$i; ?>
                         <?php while ($j<=5): ?>
