@@ -438,16 +438,18 @@
                     <tr>
                       <th height="20" width="22%" style="text-align:left" ><strong><?=$classData->mode ?></strong></th>
                       <?php
+
                         $whereClass = array( 'course_group_id'=> $classData->course_group_id,'class_id !=' => $classData->id,'student_id' =>$student->student_id,'exam_result!='=>"FAIL");
                         $this->db->order_by('old_exam_data.class_order,old_exam_data.class_id');
                        $oldClassResult = $this->Common_model->getRecordByWhere('old_exam_data',$whereClass);
+                      $width = (count($oldClassResult)<3)?'20.3%':'12.18%';
                         foreach ($oldClassResult as $row) {
                         $i++;
                         ?>
-                         <th width="20%" style="text-align: center;"><?=$this->Common_model->getClassNameByClassId($row->class_id); ?></th>
+                         <th  width='<?=$width?>' style="text-align: center;"><?=$this->Common_model->getClassNameByClassId($row->class_id); ?></th>
                         <?php } ?>
-                        <th width='20%' style="text-align: center"><?=$classData->class_name ?></th>
-                        <th width='21%' style="text-align: center">Grand Total</th>
+                        <th width='<?=$width?>' style="text-align: center"><?=$classData->class_name ?></th>
+                        <th width='<?=$width?>' style="text-align: center">Grand Total</th>
                         
                         <?php $j=$i; ?>
                         <?php while ($j<=5): ?>

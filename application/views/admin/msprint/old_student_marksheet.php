@@ -201,6 +201,7 @@
 
                           
                           }else{
+                           
                             if ($classData->practical_internal_marks=='Y') {
                               $tot_std_marks += $marks->p_marks+$marks->int_marks;
                               $tot_marks += $marks->max_theory_marks+$marks->max_int_marks;
@@ -209,6 +210,9 @@
                                 $fail_count++;
                                 $fali_tot_marks += $marks->p_marks;
                                 $require_tot_marks += $marks->min_theory_marks;
+                              }
+                              if($marks->p_marks == 'N' || $marks->p_marks == ''){
+                                $result = "FAIL";
                               }
                             }else{
                               $tot_std_marks += $marks->p_marks;
@@ -395,9 +399,9 @@
                         <td align=""><strong><u>Total</u></strong></td>
                         <td align="">&nbsp;&nbsp;&nbsp;&nbsp;<strong><u><?php echo $tot_std_marks; ?></u></strong> </td>
                       </tr>
-                      <tr>
+                      <!-- <tr>
                         <td colspan="8"></td>
-                      </tr>
+                      </tr> -->
                       <tr>
                         <td width="22%" height="20"><strong><?php //echo $year; //$dt_row['year']; ?></strong></td>
                         <td width="13%" style="text-align: center"><strong><?php //echo $year_num;//$dt_row['sem']; ?></strong></td>
@@ -413,19 +417,21 @@
                     </tr>
                     <?php $i=1; ?>
                     <?php if ($classData->last_class=="L" && !$isOneClass): ?>
+                      </table>
+                    <table border="0" cellpadding="0" height="112" width="100%">
                     <tr>
-                      <td height="20" ><strong><?=$classData->mode ?></strong></td>
+                      <td height="20"  width="22%" style="text-align:left"><strong><?=$classData->mode ?></strong></td>
                       <?php
                         $whereClass = array( 'course_group_id'=> $classData->course_group_id,'class_id !=' => $classData->id,'student_id' =>$papers[0]->student_id,'exam_result!='=>'FAIL');
                        $oldClassResult = $this->Common_model->getRecordByWhere('old_exam_data',$whereClass);
-                      
+                       $width = (count($oldClassResult)<3)?'20.3%':'12.18%';
                         foreach ($oldClassResult as $row) {
                         $i++;
                         ?>
-                         <th style="text-align: center"><?=$this->Common_model->getClassNameByClassId($row->class_id); ?></th>
+                         <th width='<?=$width?>' style="text-align: center;"><?=$this->Common_model->getClassNameByClassId($row->class_id); ?></th>
                         <?php } ?>
-                        <th style="text-align: center"><?=$classData->class_name ?></th>
-                        <th style="text-align: center">Grand Total</th>
+                        <th width='<?=$width?>' style="text-align: center"><?=$classData->class_name ?></th>
+                        <th width='<?=$width?>' style="text-align: center">Grand Total</th>
                         
                         <?php $j=$i; ?>
                         <?php while ($j<=5): ?>
@@ -487,7 +493,7 @@
                       <?php 
                       foreach ($oldClassResult as $row) { 
                        ?>
-                         <th style="text-align: center"><?=$row->total_marks; ?></th>
+                         <th style="text-align: center;width:10%"><?=$row->total_marks; ?></th>
                       <?php } 
                       ?>
                       <?php endif ?>

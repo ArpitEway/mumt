@@ -5333,7 +5333,7 @@ public function forward_complaint(){
 		$data['exam_data'] = $this->Common_model->getRecordById('old_exam_data','id',$exam_data_id);
 		
 		// $course_id !=36 && $course_id !=37
-		$class = $this->Common_model->getRecordByID('class_master','id', $data['exam_data']->class_id);
+		$data['class'] = $this->Common_model->getRecordByID('class_master','id', $data['exam_data']->class_id);
 		
 		$this->load->view('admin/generate_tr/header2',$title);
 		$this->load->view('admin/old_marksheet_top',$data);
@@ -5344,7 +5344,7 @@ public function forward_complaint(){
 		}else if((in_array($new_exam_form[0]->class_id, $class_cbcs)) && $data['exam_data']->university_mode=='REG'){
 				$this->load->model('Gradesheet_model_pg');
 				$this->load->view('admin/grade_marksheet_pg',$data);
-		}else if($data['exam_data']->university_mode !="PVT"  && $class->internal !='N'){
+		}else if($data['exam_data']->university_mode !="PVT"  && $data['class']->internal !='N'){
 			
 			$this->load->view('admin/marksheet_student',$data);
 		}else{

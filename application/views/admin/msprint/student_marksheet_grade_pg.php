@@ -63,8 +63,8 @@
             <tr>
               <td height="100" colspan="2" valign='bottom'>
                 <center>
-                <?php  $course_name = explode('(',$exam_data->course_name);?>
-                  <strong><?php echo  ($isOneClass) ? $course_name[0] .' '."(One Year Course)" :$course_name[0] .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)); ?> <?php echo ' Examination '.$exam_data->exam_year;
+                <?php  //$course_name = explode('(',$exam_data->course_name);?>
+                  <strong><?php echo  ($isOneClass) ? $exam_data->course_name .' '."(One Year Course)" :$exam_data->course_name .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)); ?> <?php echo ' Examination '.$exam_data->exam_year;
                   ?></strong>
                 </center>
               </td>
@@ -159,18 +159,19 @@
                        
                         <?php 
        
-                          $gradesheetData = $this->Gradesheet_old_model->view_result_grade($exam_data->student_id,$exam_data->course_group_id,$exam_data->class_id,$exam_data->university_mode);
+                          $gradesheetData = $this->Gradesheet_old_model_pg->view_result_grade($exam_data->student_id,$exam_data->course_group_id,$exam_data->class_id,$exam_data->university_mode);
                           
                             ?>
                     </tbody></table>
                   </div>
-                  <h4 style="text-align:center;margin:10px;">Result Year Wise</h4>
+                  <h4 style="text-align:center;margin:10px;">Result Semester Wise</h4>
                   <table border='1' cellpadding="2"  width="103%">
                     <tbody>
-                     <tr align="center"><th width='12.5%'>Year</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>AGPA</th></tr>
+                     <tr align="center"><th width='12.5%'>Semester</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>SGPA</th></tr>
                      <tr align="center"><th>First</th><td><?= $gradesheetData['tot_credit']?></td><td><?= $gradesheetData['obt_credit']?></td><td><?= $gradesheetData['credit_point']?></td><td><?= ($gradesheetData['result']== 'FAIL' || $gradesheetData['result']== 'SUPP')?'0.00':number_format((float)$gradesheetData['agpa'], 2, '.', '')?></td></tr>
                      <tr align="center"><th>Second</th><td></td><td></td><td></td><td></td></tr>
                      <tr align="center"><th>Third</th><td></td><td></td><td></td><td></td></tr>
+                     <tr align="center"><th>Fourth</th><td></td><td></td><td></td><td></td></tr>
                    
                     </tbody>
                  </table>

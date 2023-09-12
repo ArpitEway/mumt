@@ -227,7 +227,7 @@
                           ?>
                           <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="middle">
                             <td style="margin-top:2px;" align="left"><strong><?php echo  $paper->paper_code; ?></strong></td>
-                            <td align="left"><strong><?php  echo ($paper_name[0] == 'Moukhiki')? $paper_name[1] : $paper->paper_name ;  ?></strong></td>
+                            <td align="left"><strong><?php  echo ($paper_name[0] == 'Moukhiki' && $class_id == 169 && $check_mode->university_mode == "REG")? $paper_name[1] : $paper->paper_name ;  ?></strong></td>
                             <td align="center" ><span class="style4">
                               <?php echo  $paper->max_theory_marks;?></span>
                             </td>
