@@ -424,7 +424,7 @@
                       <?php
                         $whereClass = array( 'course_group_id'=> $classData->course_group_id,'class_id !=' => $classData->id,'student_id' =>$papers[0]->student_id,'exam_result!='=>'FAIL');
                        $oldClassResult = $this->Common_model->getRecordByWhere('old_exam_data',$whereClass);
-                       $width = (count($oldClassResult)<3)?'20%':'12%';
+                       $width = (count($oldClassResult)<3)?'20.3%':'12.18%';
                         foreach ($oldClassResult as $row) {
                         $i++;
                         ?>
