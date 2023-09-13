@@ -244,6 +244,17 @@
               
                 </div>
             </div>
+            <div class="form-group row">
+                <label for="example-date-input" class="col-5 col-form-label">Remark</label>
+                <div class="col-7 mt-3">
+                    
+                <input type="checkbox" class="all_checked_permitt" name="remark_date" value='Duplicate'> Duplicate
+                <input type="checkbox" class="all_checked_permitt" name="remark_date" value='After Correction'> After Correction
+                <div class="text-danger" id="date_error"></div>
+                <input type="hidden" value="" name="record_id" id="record_id">
+              
+                </div>
+            </div>
            <div class="card-footer pb-0">
             <div class="row justify-content-center">
             
@@ -273,16 +284,27 @@
 	var formimage = $('#ajaxForm');
 	var frm = new FormData(formimage[0]);
 		
+      
         var record_id = $('#record_id').val();
 		var marksheet_date = $('#marksheet_date').val();
+        var remark_date = $("input:checkbox").filter(":checked").val();
+       
+       
 		var roll_number = $('#roll_number').html();
+        // console.log(marksheet_date);
 		if(marksheet_date==''){
 			$('#error').text('Please Select Date');
 			return false;
 		}
+
+        if($("input:checkbox").filter(":checked").length>1){
+            $('#date_error').text('Please one checkbox');
+        return false ;
+        }
+        
 				
 		$.ajax({
-		url: '<?php echo site_url('MsPrint/update_marksheet_date'); ?>',
+		url: '<?php echo site_url('admin/MsPrint/update_marksheet_date'); ?>',
 		type: 'POST',
 		dataType : 'json',
 		data: frm,
