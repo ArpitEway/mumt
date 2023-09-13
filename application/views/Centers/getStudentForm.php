@@ -2,7 +2,7 @@
     <div class="row d-felx justify-content-center m-3" >
             <h3>Application Form</h3>
         </div>
-    <form action="<?= base_url()?>center/center/application_submit" method="post" onsubmit="return validate()">
+    <form action="<?= base_url()?>center/center/application_submit" method="post" onsubmit="return validate()" enctype='multipart/form-data' >
     <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
     <input type="hidden" class="csrfname" name="center_id" value="<?= $center_id; ?>">
         <div class="row d-felx justify-content-center m-2">
@@ -116,6 +116,16 @@
                 <textarea type="text" class="form-control" col="10" name="address" readonly><?= $students[0]['c_address']?></textarea>
             </div>
         </div>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="name">Adhar Card</label>
+                <input type="file" class="form-control" id="adhar" name ="adhar" accept=".png, .jpg, .jpeg" >
+            </div>
+            <div class="form-group col-md-6">
+                <label for="name">Final Sem Marksheet</label>
+                <input type="file" class="form-control" id="marksheet" name ="marksheet" accept=".png, .jpg, .jpeg" >
+            </div>
+        </div>    
         <!-- <div class="row">
             
             <div class="form-group col-md-12">
