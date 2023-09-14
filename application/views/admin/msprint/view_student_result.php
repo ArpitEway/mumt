@@ -240,8 +240,6 @@
                     
                 <input class="form-control" type="date" name="marksheet_date"   id="marksheet_date"  />
                 <div class="text-danger" id="error"></div>
-                <input type="hidden" value="" name="record_id" id="record_id">
-              
                 </div>
             </div>
             <div class="form-group row">
