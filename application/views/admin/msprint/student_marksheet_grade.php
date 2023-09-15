@@ -197,7 +197,7 @@
                      echo $generator->getBarcode($barcode_no, $generator::TYPE_CODE_128,2,25); ?>
                     </td>
                   </tr>
-                 
+                  <tr><td> <?=$exam_data->remark_date?></td></tr>
               </td>
             </tr>
           </tbody>

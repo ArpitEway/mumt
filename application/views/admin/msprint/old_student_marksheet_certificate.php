@@ -401,6 +401,7 @@
                   </tr>
                   <tr>
                     <td>
+                    <?=$exam_data->remark_date?>
                   </td>
                 </tr>
               </td>

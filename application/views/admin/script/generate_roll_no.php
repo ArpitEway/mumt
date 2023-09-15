@@ -31,7 +31,7 @@
 
 					$i=1;
 					
-					$this->db->where_in('id',array(262,300));
+					// $this->db->where_in('id',array(262,300));
 					$whereclass = array('temp_id!=' => 0);
 					 
 					 //'exam_form_permission' => 'Y'
