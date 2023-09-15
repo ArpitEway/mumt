@@ -2977,11 +2977,22 @@ public function practical_assignment_marks_edit(){
 				}
 
 				}else{
+					$adhar_image=$marksheet_image="";
+					$session=$this->input->post("session");
+					if (!is_dir('assets/center_degree/'.$session)) {
+						mkdir('assets/center_degree/'.$session, 0777, TRUE);
+					}
 					if($_FILES['adhar']['name']!=""){
 						
 						$ext1=strtolower(pathinfo($_FILES['adhar']['name'],PATHINFO_EXTENSION));
-						$department_image=$std_id."_adhar".$ext1;
-						$upload_file = move_uploaded_file($_FILES['adhar']['tmp_name'],"assets/center_degree/".$department_image);
+						$adhar_image=$std_id."_adhar.".$ext1;
+						$upload_file = move_uploaded_file($_FILES['adhar']['tmp_name'],"assets/center_degree/".$session."/".$adhar_image);
+					}
+					if($_FILES['marksheet']['name']!=""){
+						
+						$ext1=strtolower(pathinfo($_FILES['marksheet']['name'],PATHINFO_EXTENSION));
+						$marksheet_image=$std_id."_marksheet.".$ext1;
+						$upload_file = move_uploaded_file($_FILES['marksheet']['tmp_name'],"assets/center_degree/".$session."/".$marksheet_image);
 					}
 					$data = array(
 						"student_uid"=>$std_id,
@@ -2999,6 +3010,8 @@ public function practical_assignment_marks_edit(){
 						"amount"=>$amount->amount,
 						"phone"=>$this->input->post("phone"),
 						"address"=>$this->input->post("address"),
+						"adhar"=>$adhar_image,
+						"marksheet"=>$marksheet_image,
 
 					);
 

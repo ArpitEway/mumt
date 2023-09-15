@@ -119,11 +119,13 @@
         <div class="row">
             <div class="form-group col-md-6">
                 <label for="name">Adhar Card</label>
-                <input type="file" class="form-control" id="adhar" name ="adhar" accept=".png, .jpg, .jpeg" >
+                <input type="file" class="form-control imgupload" id="adhar" name ="adhar" accept=".png, .jpg, .jpeg" >
+                <span class="text-danger" id="adharerr"></span>
             </div>
             <div class="form-group col-md-6">
-                <label for="name">Final Sem Marksheet</label>
-                <input type="file" class="form-control" id="marksheet" name ="marksheet" accept=".png, .jpg, .jpeg" >
+                <label for="name">Final Marksheet</label>
+                <input type="file" class="form-control imgupload" id="marksheet" name ="marksheet" accept=".png, .jpg, .jpeg" >
+                <span class="text-danger" id="marksheeterr"></span>
             </div>
         </div>    
         <!-- <div class="row">
@@ -146,15 +148,31 @@
 
 </div>
 <script>
-
+$(".imgupload").change(function(){
+    var file = this.files[0];
+    var fileType = file["type"];
+    var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+    if ($.inArray(fileType, validImageTypes) < 0) {
+        // invalid file type code goes here.
+       
+       var a=$(this).attr("id");
+       b=a+"err";
+       document.getElementById(b).innerHTML= "*Please select proper file!";
+       document.getElementById(a).value = null;
+            adhar.focus();
+        this.val("");
+    }
+});
 function validate(){
 
        const apply = document.getElementById("apply");
        const sname = document.getElementById("sname");
-        const fname = document.getElementById("fname");
+       const fname = document.getElementById("fname");
+       const adhar = document.getElementById("adhar");
+       const marksheet = document.getElementById("marksheet");
         // const check = document.getElementById("check");
-        const cls = document.getElementById("cls");
         
+        const cls = document.getElementById("cls");
         
 
         if (apply.value === "") {
@@ -197,6 +215,22 @@ function validate(){
             
 
           }
+          if (adhar.value === "") {
+            document.getElementById("adharerr").innerHTML= "*Please select Adhar Card!";
+            adhar.focus();
+            return false;
+          }else{
+            document.getElementById("adharerr").innerHTML="";
+          }
+        
+          if (marksheet.value === "") {
+            document.getElementById("marksheeterr").innerHTML= "*Please select Adhar Card!";
+            adhar.focus();
+            return false;
+          }else{
+            document.getElementById("marksheeterr").innerHTML="";
+          }
+        
 
 }
 
