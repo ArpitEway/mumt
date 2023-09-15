@@ -255,7 +255,7 @@ class Otherscript extends CI_Controller {
 			echo $update_marks = "update old_exam_data set total_marks='".$paper_master_total_marks."',obtain_marks='".$obtain_marks."',percentage='".$percentage."' where id=".$student['id'];
 			$i++;
 
-			 $this->db->query($update_marks);
+			// $this->db->query($update_marks);
 		}
 	}
 
@@ -574,7 +574,7 @@ public function update_roll_no_old_data(){
 				
 				//print_r($ResultData);
 
-			   $insert = $this->Common_model->insertAll('old_result_data',$ResultData);
+			 //  $insert = $this->Common_model->insertAll('old_result_data',$ResultData);
 				echo $this->db->last_query().'<br>';
 				
 			}
