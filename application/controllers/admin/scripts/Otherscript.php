@@ -238,11 +238,11 @@ class Otherscript extends CI_Controller {
 	public function update_oldexam_marks($cls_id =0)
 	{
 
-		$cls_id=195;
-		$old_totoal_marks=400;
-		$paper_master_total_marks=500;
+		$cls_id=227;
+		$old_totoal_marks=600;
+		$paper_master_total_marks=700;
 
-		$sql = "SELECT * FROM `old_exam_data` WHERE `class_id`='".$cls_id."'  AND total_marks='".$old_totoal_marks."'  limit 250";
+		$sql = "SELECT * FROM `old_exam_data` WHERE `class_id`='".$cls_id."'  AND total_marks='".$old_totoal_marks."' AND exam_year='March 2023'  limit 250";
 		$rs = $this->db->query($sql)->result_array();
 		$i=0;
 		foreach ($rs as $student) {
@@ -255,7 +255,7 @@ class Otherscript extends CI_Controller {
 			echo $update_marks = "update old_exam_data set total_marks='".$paper_master_total_marks."',obtain_marks='".$obtain_marks."',percentage='".$percentage."' where id=".$student['id'];
 			$i++;
 
-			// $this->db->query($update_marks);
+			 $this->db->query($update_marks);
 		}
 	}
 
