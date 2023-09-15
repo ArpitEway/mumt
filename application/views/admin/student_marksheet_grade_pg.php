@@ -57,7 +57,7 @@
       // print_r($papers);
       ?>
       <fieldset id="printarea" class="breakhere" style="width:90%;border: 0px solid #22316C;"> 
-        <div align="left" class="margin-top-marksheet"> MS No. <?php echo $student->marksheet_no; ?> </div>
+        <div align="left" class="margin-top-marksheet"> MS No. <?php echo $student->old_marksheet_no; ?> </div>
         <table align="center" border="0" width="100%">
           <tbody>
             <tr>
