@@ -328,7 +328,7 @@ table.last_table, .last_table td, .last_table th{
       $division = "Third";
     }
 
-    if($page_break_count%4==0 || $page_break_count==0 || $previous_center!=$current_center){
+    if($page_break_count%2==0 || $page_break_count==0 || $previous_center!=$current_center){
       $page_no++;$page_break_count=0;
       ?>
       <h3 align="center" class="h4 break"><b>Maharishi Mahesh Yogi Vedic Vishvavidyalaya, Madhya Pradesh</b></h3>
