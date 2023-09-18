@@ -2957,6 +2957,10 @@ public function practical_assignment_marks_edit(){
 		$apply = $this->input->post("apply_for");
 		$std_id = $this->input->post("student_id");
 		$enroll = $this->input->post("enrollment");
+		if($_FILES['adhar']['name']==""){
+			$this->session->set_flashdata('warning','Adhar Card is required !');
+				redirect(base_url().'application_form');
+		}
 		$student_id = $this->Common_model->encrypt_decrypt($std_id,'encrypt');
 		// if($apply != "DUPLICATE-MARKSHEET"){
 			$where = 'enrollment="'.$enroll.'" and apply_for="'.$apply.'"';
@@ -2974,7 +2978,23 @@ public function practical_assignment_marks_edit(){
 				}
 
 				}else{
-					
+					$adhar_image=$marksheet_image="";
+					$session=$this->input->post("session");
+					if (!is_dir('assets/center_degree/'.$session)) {
+						mkdir('assets/center_degree/'.$session, 0777, TRUE);
+					}
+					if($_FILES['adhar']['name']!=""){
+						
+						$ext1=strtolower(pathinfo($_FILES['adhar']['name'],PATHINFO_EXTENSION));
+						$adhar_image=$std_id."_adhar.".$ext1;
+						$upload_file = move_uploaded_file($_FILES['adhar']['tmp_name'],"assets/center_degree/".$session."/".$adhar_image);
+					}
+					if($_FILES['marksheet']['name']!=""){
+						
+						$ext1=strtolower(pathinfo($_FILES['marksheet']['name'],PATHINFO_EXTENSION));
+						$marksheet_image=$std_id."_marksheet.".$ext1;
+						$upload_file = move_uploaded_file($_FILES['marksheet']['tmp_name'],"assets/center_degree/".$session."/".$marksheet_image);
+					}
 					$data = array(
 						"student_uid"=>$std_id,
 						"center_id"=>$this->input->post("center_id"),
@@ -2991,6 +3011,8 @@ public function practical_assignment_marks_edit(){
 						"amount"=>$amount->amount,
 						"phone"=>$this->input->post("phone"),
 						"address"=>$this->input->post("address"),
+						"adhar"=>$adhar_image,
+						"marksheet"=>$marksheet_image,
 
 					);
 
