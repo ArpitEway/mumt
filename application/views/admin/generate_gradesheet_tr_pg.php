@@ -328,7 +328,7 @@ table.last_table, .last_table td, .last_table th{
       $division = "Third";
     }
 
-    if($page_break_count%4==0 || $page_break_count==0 || $previous_center!=$current_center){
+    if($page_break_count%2==0 || $page_break_count==0 || $previous_center!=$current_center){
       $page_no++;$page_break_count=0;
       ?>
       <h3 align="center" class="h4 break"><b>Maharishi Mahesh Yogi Vedic Vishvavidyalaya, Madhya Pradesh</b></h3>
@@ -461,7 +461,7 @@ table.last_table, .last_table td, .last_table th{
         <tr>
           <th  class="align-middle text-center roll_no" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_number  ?> <br> <?php echo $student->enrollment_no  ?></th>
           <th class="align-middle text-center ms_no" rowspan="<?php echo $rowspandata ?>">
-            <?php  echo $student->marksheet_no  ?>
+            <?php  echo $student->old_marksheet_no  ?>
           </th>
           <th  class="align-middle text-center photo" rowspan="<?php echo $rowspandata ?>"><img alt="N/A" src="<?= base_url('assets/student_image/'.$student->session.'/'.$student->photo) ?>" width="65px" height="90px"></th>
           <td  class="align-middle text-center name"  rowspan="<?php  echo $rowspandata ?>"><?php  echo $student->name ?>/ <br><?php  echo $student->f_h_name ?></td>

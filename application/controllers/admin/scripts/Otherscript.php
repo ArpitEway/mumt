@@ -60,11 +60,11 @@ class Otherscript extends CI_Controller {
 		// $where = " paper_code in ('2RBED6')";
 		//$where = " paper_code in ('1RMLIS10','1RMLIS11')";
 		//$where="`paper_code` in ('1RCMSCCH7','1RCMSCCH8','1RCMSCCH9','1RCMSCBT7','1RCMSCBT8','1RCMSCC7','1RCMSCM7','3RMSCC6','3RMSCC7')";
-		$where="`id` in (1253)";
+		$where="`id` in (1254)";
 		$papers = $this->Common_model->get_record('paper_master','*',$where);
 
 		foreach ($papers as $paper) {
-			$where = ' class_id = "'.$paper['class_id'].'" and temp_exam_form="Y"';
+			$where = ' old_class_id = "'.$paper['class_id'].'" and temp_exam_form="Y"';
 			$students = $this->Common_model->get_record('student','*',$where);
 			$studentData = array(
 				'course_group_id' => $paper['course_group_id'],
@@ -210,8 +210,8 @@ class Otherscript extends CI_Controller {
 	public function update_project_marks($cls_id =0)
 	{
 		$marks = array('85','84','83','82'); 
-		$cls_id=182;
-		$sql = "select * from student where class_id='".$cls_id."' and exam_form='Y' and p_marks_sub='N' and  university_mode='REG' and  roll_number!=0 order by roll_number  limit 100";
+		$cls_id=227;
+		$sql = "select * from student where old_class_id='".$cls_id."' and exam_form='Y' and p_marks_sub='N' and  university_mode='REG' and  roll_number!=0 order by roll_number  limit 100";
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
 		foreach ($rs as $student) {
@@ -223,11 +223,13 @@ class Otherscript extends CI_Controller {
 				echo $s_no++.' student_id =>'.$student['student_id'].' paper_code =>'.$new_exam_data['paper_code'].' Marks=>'.$marks[$i].'<br>';
 
 				$update_marks = "update new_exam_form set p_marks='".$marks[$i]."' where id=".$new_exam_data['id'];
+				$update_marks_exam_form = "update exam_form set p_marks='".$marks[$i]."' where id=".$new_exam_data['id'];
 				$i++;
 				$this->db->query($update_marks);
+				$this->db->query($update_marks_exam_form);
 				shuffle($marks);
 			}
-			$update_student = "update student set p_marks_sub='Y' where student_id='".$student['student_id']."' and class_id='".$cls_id."'";
+			$update_student = "update student set p_marks_sub='Y' where student_id='".$student['student_id']."' and old_class_id='".$cls_id."'";
 
 			$this->db->query($update_student);
 		
@@ -236,11 +238,11 @@ class Otherscript extends CI_Controller {
 	public function update_oldexam_marks($cls_id =0)
 	{
 
-		$cls_id=195;
-		$old_totoal_marks=400;
-		$paper_master_total_marks=500;
+		$cls_id=227;
+		$old_totoal_marks=600;
+		$paper_master_total_marks=700;
 
-		$sql = "SELECT * FROM `old_exam_data` WHERE `class_id`='".$cls_id."'  AND total_marks='".$old_totoal_marks."'  limit 250";
+		$sql = "SELECT * FROM `old_exam_data` WHERE `class_id`='".$cls_id."'  AND total_marks='".$old_totoal_marks."' AND exam_year='March 2023'  limit 250";
 		$rs = $this->db->query($sql)->result_array();
 		$i=0;
 		foreach ($rs as $student) {
@@ -533,10 +535,10 @@ public function update_roll_no_old_data(){
 	{
 		
 		//$class_id=253;
-		 $class_id=205;
-		$num_of_papers=5;
+		 $class_id=227;
+		$num_of_papers=6;
 		
-		$sql="SELECT count(*)as num,e.* FROM `old_result_data` as e join `old_exam_data` as s on s.id=e.`exam_data_id` WHERE s.`class_id`=".$class_id." AND exam_year='Feb 2023' and exam_status='R' group by s.student_id HAVING num='".$num_of_papers."'";
+		$sql="SELECT count(*)as num,e.* FROM `old_result_data` as e join `old_exam_data` as s on s.id=e.`exam_data_id` WHERE s.`class_id`=".$class_id." AND exam_year='March 2023' and exam_status='R' group by s.student_id HAVING num='".$num_of_papers."'";
 		$sql_result = $this->db->query($sql);
         $students = $sql_result->result_array();
 		foreach ($students as $student) {
@@ -572,7 +574,7 @@ public function update_roll_no_old_data(){
 				
 				//print_r($ResultData);
 
-			   //$insert = $this->Common_model->insertAll('old_result_data',$ResultData);
+			 //  $insert = $this->Common_model->insertAll('old_result_data',$ResultData);
 				echo $this->db->last_query().'<br>';
 				
 			}
