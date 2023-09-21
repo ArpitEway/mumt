@@ -107,11 +107,11 @@
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo strtoupper( $exam_data->f_h_name); ?></span></div></td>
                     </tr>
                     <?php if ($exam_data->course_group_id==76 || $exam_data->course_group_id==75){ ?>
-                    <?php if ($exam_data->center_id==10 || $exam_data->center_id==12){ ?>
+                    <?php if ($exam_data->center_id==10 || $exam_data->center_id==28 ||$exam_data->center_id==12){ ?>
                     <tr>
                       <td class="Normaltext" align="left" width="29%"><div align="left">Department</div></td>
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;">
-                        <?php if ($exam_data->center_id==10) {
+                        <?php if ($exam_data->center_id==10 || $exam_data->center_id==28) {
                           echo "University Teaching Department Karaundi";
                         }else if ($exam_data->center_id==12) {
                           echo "Shiksha Vibhag, Lamti Jabalpur";
