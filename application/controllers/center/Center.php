@@ -2737,6 +2737,68 @@ public function practical_assignment_marks_edit(){
 			}
 		}
 	}
+
+	public function update_unpaid_student_exam_form(){
+			
+		if ($this->input->method() == "post") 
+		{  
+			
+		    $exam_session='Dec 2023';
+			$payment_date  = $this->input->post("payment_date");
+			$student_id  = $this->input->post("student_id");
+	      	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+			$remark  = $this->input->post("remark");
+			$payment_mode  = $this->input->post("payment_mode");
+			$amount  = $this->input->post("amount");
+			$student = $this->Common_model->getRecordById('student','student_id',$student_id);
+			$class_id = $student->class_id;
+			$course_group_id = $student->course_group_id;
+			$mode = ($student->university_mode == 'REG')?'Regular':'Private';
+			$student_name = $student->name;
+			$center_id = $student->center_id;
+			$file_name = '';
+			if(isset($_FILES['images']) && $_FILES['images']['tmp_name']!=''){
+			$filename = $student_id.'-'.date('Ymdhis');
+			$this->upload->initialize($this->Common_model->set_upload_options('./assets/transactionImgaes/',$filename));
+			if(!$this->upload->do_upload('images')){
+				$error = $this->upload->display_errors();
+				$msg = array('error'=>$error);
+				echo json_encode($msg);
+				exit();
+				
+			}else{
+			$uploadData = $this->upload->data();
+			$file_name = $uploadData['file_name'];
+			}
+			}
+			$paymentData = array(
+				'fees_head'=>'Exam Fees',
+				'student_id'=> $student_id,
+				'course_group_id'=>$course_group_id,
+				'admission_type'=>$mode,
+				'class_id'=>$class_id,
+				'exam_session'=>$exam_session,
+				'center_id'=>$center_id,
+				'student_name'=>$student_name,
+				'payment_date' => $payment_date,
+				'remark' => $remark,
+				'payment_mode' => $payment_mode,
+				'amount' => $amount,
+				'image' => $file_name,
+				'payment_status' => "Paid By University",
+				'payment' => 'Y'
+			);
+		
+			
+			$update = $this->Common_model->insertAll('online_payment_transaction',$paymentData);
+			// $this->Common_model->last_query();
+			$response = $this->Common_model->updateRecordByConditions('student',array('student_id'=> $student_id),array('new_exam_form'=>'Y'));
+
+			if($response){
+			echo json_encode(array("status" => 'true'));
+			}
+		}
+	}
 	
 	public function search_exam_by_course(){
 		// redirect(base_url('dashboard'));
