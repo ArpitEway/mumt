@@ -3312,6 +3312,18 @@ public function practical_assignment_marks_edit(){
 				$this->load->view('Centers/get_student_support_system_wise',$data);
 				$this->load->view('Centers/footer');
 			}else{
+				// print_r($this->input->post());die;
+				if(isset($_FILES['photo']) && $_FILES['photo']['tmp_name']!=''){
+					// print_r($_FILES['photo']);die;
+					$this->upload->initialize($this->Common_model->set_upload_options('./assets/complaintImages/',$filename));
+					if(!$this->upload->do_upload('photo')){
+						$error = $this->upload->display_errors();
+						$msg = array('error'=>$error);
+						echo json_encode($msg);
+						exit();
+						
+					}
+				}
 				$details = html_escape($this->input->post('detail'));
 				$complaint_type = html_escape($this->input->post('complaint_type'));
 				$student_detail = $this->Common_model->getSingleRow("student","*",array("student_id" => $param));
@@ -3320,6 +3332,7 @@ public function practical_assignment_marks_edit(){
 				$data['center_id'] 		= $student_detail->center_id;
 				$data['enrollment_no'] 	= $student_detail->enrollment_no;
 				$data['student_id'] 	= $param;
+				$data['image'] 			= $_FILES['photo']['name'];
 				$data['date']   		=  date("Y-m-d");
 				$data['status']   		= "Pending";
 	    //   $check = $this->Common_model->getSingleRow("support_complaint","*",array("student_id" => $param, 'status !=' => 'Done' ));
