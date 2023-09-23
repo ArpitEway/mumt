@@ -238,7 +238,7 @@ class MsPrint extends CI_Controller {
 	public function view_application_request(){
 			
 		if($this->session->has_userdata('adminData')){
-			$where = array("status" => "Pending","payment"=>"Y");
+			$where = array("status" => "Pending");//,"payment"=>"Y"
 			$centers = $this->Common_model->get_record_group_by_where('application_form','center_id',$where);
 
 			$data = array('name_csrf' => $this->security->get_csrf_token_name(),
@@ -265,7 +265,7 @@ class MsPrint extends CI_Controller {
 				
 			$center_id  = $this->input->post("center_id");
 			$centerData = $this->Common_model->getRecordById('center','id',$center_id);
-			$wherecenter = 'center_id='.$center_id.' and status="Pending" and payment="Y"';
+			$wherecenter = 'center_id='.$center_id.' and status="Pending" ';//and payment="Y"
 			$complaints = $this->Common_model->get_record('application_form','*',$wherecenter);
 			
 			$data = array('complaints' => $complaints ,'name_csrf' => $this->security->get_csrf_token_name(),
