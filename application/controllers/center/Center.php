@@ -3313,8 +3313,10 @@ public function practical_assignment_marks_edit(){
 				$this->load->view('Centers/footer');
 			}else{
 				// print_r($this->input->post());die;
+				$file_name ='';
 				if(isset($_FILES['photo']) && $_FILES['photo']['tmp_name']!=''){
 					// print_r($_FILES['photo']);die;
+					$filename = $param.'-'.date('Ymdhis');
 					$this->upload->initialize($this->Common_model->set_upload_options('./assets/complaintImages/',$filename));
 					if(!$this->upload->do_upload('photo')){
 						$error = $this->upload->display_errors();
@@ -3322,6 +3324,9 @@ public function practical_assignment_marks_edit(){
 						echo json_encode($msg);
 						exit();
 						
+					}else{
+						$uploadData = $this->upload->data();
+						$file_name = $uploadData['file_name'];
 					}
 				}
 				$details = html_escape($this->input->post('detail'));
@@ -3332,7 +3337,7 @@ public function practical_assignment_marks_edit(){
 				$data['center_id'] 		= $student_detail->center_id;
 				$data['enrollment_no'] 	= $student_detail->enrollment_no;
 				$data['student_id'] 	= $param;
-				$data['image'] 			= $_FILES['photo']['name'];
+				$data['attachment'] 	= $file_name;
 				$data['date']   		=  date("Y-m-d");
 				$data['status']   		= "Pending";
 	    //   $check = $this->Common_model->getSingleRow("support_complaint","*",array("student_id" => $param, 'status !=' => 'Done' ));
@@ -3366,7 +3371,7 @@ public function practical_assignment_marks_edit(){
 			'column_order' => $column_order,
 			'column_search' => $column_search,
 			// 'select' => 'student.name, student.student_id, student.course_name, student.class_name, support_complaint.date, support_complaint.details, support_complaint.remark,support_complaint.status',
-			'select' => 'student.name, student.student_id, student.course_name, student.class_name, support_complaint.date, support_complaint.details, support_complaint.remark,support_complaint.status,support_complaint.type',
+			'select' => 'student.name, student.student_id, student.course_name, student.class_name, support_complaint.date, support_complaint.details, support_complaint.remark,support_complaint.status,support_complaint.type,support_complaint.id,support_complaint.attachment',
 			'where' => $where,
 			'table' => 'support_complaint',
 			'table2' => 'student',
@@ -3379,8 +3384,14 @@ public function practical_assignment_marks_edit(){
 			$i++;
 			$date = $this->Common_model->viewDate($result->date);
 			$status = ($result->status=="Pending") ? 'Pending' : 'Done';
+			$reply =$this->Common_model->getSinglefield('complaint_reply','reply_text','complaint_id = '.$result->id.'');
+			if($result->attachment != ''){
+			$attachment = '<a target="_blank"  href="'.base_url().'assets/complaintImages/'.$result->attachment.'">'.'<i class="fa fa-eye">'.'</i>'.'</a>';
+			}else{
+				$attachment = '';	
+			}
 			// $data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->details,$date,$status,$result->remark);
-			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->type,$result->details,$date,$status,$remark);
+			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->type,$result->details,$date,$status,$remark,$reply,$attachment);
 
 		}
 		$output = array(
@@ -3422,5 +3433,20 @@ public function practical_assignment_marks_edit(){
 		if($update){
 			redirect(base_url('backlog_exam_form_students'));
 		}
+	}
+
+	public function complaint_reply_list(){
+		
+		$titleData = array('title' => 'Support Complaint Reply');
+		$this->db->select('sp.*,cr.id,cr.reply_text,std.class_name,std.course_name,std.name');
+		$this->db->from('support_complaint as sp');
+		$this->db->join('student as std','std.student_id=sp.student_id');
+		$this->db->join('complaint_reply as cr','cr.complaint_id = sp.id');
+		$this->db->where('cr.center_id',$this->session->center_id);
+		$this->db->order_by('cr.id','desc');
+		$data['complaints'] = $this->db->get()->result();
+		$this->load->view('Centers/header',$titleData);
+		$this->load->view('Centers/complaint_reply_list',$data);
+		$this->load->view('Centers/footer');
 	}
 }//class
