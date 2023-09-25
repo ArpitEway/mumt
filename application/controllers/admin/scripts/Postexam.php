@@ -55,7 +55,7 @@ class Postexam extends CI_Controller {
             // $this->db->where('cbcs', 'Y');
            // $this->db->where('last_class', 'L');
             $this->db->where('mode', 'Semester');
-            $this->db->where('exam_form', 'Y');
+            $this->db->where('new_exam_form', 'Y');
             $this->db->where('upload_result', 'N');
             // $this->db->where('student_id',702308);
             // $this->db->where('result_show', 'Y');
@@ -74,7 +74,7 @@ class Postexam extends CI_Controller {
         $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
         $this->db->limit(500);
        
-        $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'N','university_mode'=>$mode)); //, "marksheet_dispatch"=>'Y'
+        $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "new_exam_form"=>'Y', "upload_result"=>'N','university_mode'=>$mode)); //, "marksheet_dispatch"=>'Y'
          // $this->db->where_in('course_group.course_type',array('Diploma','PGDiploma'));
         // $course_type = $this->Common_model->getRecordByWhere("course_group",array('id'=> $students[0]->course_group_id));
 
@@ -107,7 +107,7 @@ class Postexam extends CI_Controller {
                 'enrollment_no' => $student->enrollment_no,
                 'roll_no' => $student->roll_no,
                 'name' => $student->name,
-                'exam_year' => 'May 2023',
+                'exam_year' => 'July 2023',
                 'f_h_name' => $student->f_h_name,
                 'mother_name' => $student->mother_name,
                 'marksheet_no' =>$student->marksheet_no,
