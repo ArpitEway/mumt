@@ -30,6 +30,7 @@ exam_pdf/*
 assets/exam_answersheet/*
 assets/activity/*
 assets/department/*
+assets/center_degree/*
 application/composer.lock
 application/vendor/*
 assets/model_paper/*

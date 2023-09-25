@@ -606,6 +606,29 @@ public function update_roll_no_old_data(){
 		
 		}
 	}
+
+	public function grade_pattern_papers_list(){
+		
+		$this->db->select('pm.*,cm.class_name');
+		$this->db->from('paper_master as pm');
+		$this->db->join('class_master as cm','cm.id = pm.class_id');
+		$this->db->where('cbcs','Y');
+		$this->db->where('cbcs_paper','Y');
+		$this->db->order_by('cm.id');
+		$papers_pg = $this->db->get()->result();
+	
+		$this->db->select('pm.*,cm.class_name');
+		$this->db->from('paper_master as pm');
+		$this->db->join('class_master as cm','cm.id = pm.class_id');
+		$this->db->where_in('cm.course_group_id',array(11,12,13,14,16,17,18,19,20,21));
+		$this->db->where_in('cm.class_name',array('I Year','II Year'));
+		$papers_ug = $this->db->get()->result();
+ 		$data['papers'] = array_merge($papers_pg,$papers_ug);
+		$this->load->view('header',array('title' => 'Grade Pattern Papers'));
+		$this->load->view('admin/grade_pattern_papers',$data);
+		$this->load->view('footer');
+	
+	}
 	
 }
 

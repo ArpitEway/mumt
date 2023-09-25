@@ -238,7 +238,8 @@
                 <label for="example-date-input" class="col-5 col-form-label">Marksheet Date</label>
                 <div class="col-7">
                     
-                <input class="form-control" type="date" name="marksheet_date"   id="marksheet_date"  />
+                <!-- <input class="form-control" type="date" name="marksheet_date"   id="marksheet_date"  /> -->
+                <input type="text" class="form-control "  name="marksheet_date" id="marksheet_date">
                 <div class="text-danger" id="error"></div>
                 </div>
             </div>
@@ -264,6 +265,7 @@
             </form>
 </div>
 <script>
+    $('#marksheet_date').mask('99/99/9999',{placeholder:"dd/mm/yyyy"});
     $(document).on('click','.marksheet_update',function(){
 	    var name_csrf = $(this).attr('data-name_csrf');
 	    var hash_csrf = $(this).attr('data-hash_csrf');
