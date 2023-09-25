@@ -443,6 +443,76 @@ class Dataentry extends CI_Controller {
 			$this->load->view('admin/examController/backlog_show_examcenter_folio',$dataArray);
 		}
 	}
+	public function search_student(){
+		
+		$segment = $this->uri->segment(2);
+		
+		$this->load->view('header',array('title' => 'Search Students'));
 
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+			'segment' => $segment
+		);
+
+		$this->load->view('admin/search_student',$data);
+		$this->load->view('footer');
+	}
+
+	public function getStudentData()
+	{
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}
+
+		$text_val =$this->input->post('text_val');
+		$radio_val = $this->input->post('radio_val');
+
+
+		if($text_val !='')
+		{
+			if($text_val !='' && $radio_val == 'enrollment_no')
+			{
+				$where = array('enrollment_no'=>$text_val);
+
+			}else if($text_val !='' && $radio_val == 'student_id')
+			{
+				$where = array('student.student_id'=>$text_val);
+
+			}else if($text_val !='' && $radio_val == 'roll_no')
+			{
+				$where = array('roll_no'=>$text_val);
+
+			}else if($text_val !='' && $radio_val == 'student_name')
+			{
+				$where = array();
+				$this->db->like('name', $text_val);
+
+			}else if($text_val !='' && $radio_val == 'adhar_no')
+			{
+				$where =  array('adhar_no' => $text_val);
+			}
+
+			$data['students'] = $this->Common_model->student_data($where);
+
+
+			$dt =  $this->load->view('admin/student/getStudentConsolidate',$data,true);
+			echo json_encode(array(
+				"status" => true,
+				"data" => $dt
+			));
+		}
+	}//fun
+	public function show_form($student_id){
+		$data = array();
+		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt'); 
+		$data['student'] = $this->Common_model->student_info($student_id);
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();
+		$this->load->view('header',array('title' => 'Admission Form'));	
+		$this->load->view('template/form',$data);
+		$this->load->view('footer');
+	}
 	
 }
