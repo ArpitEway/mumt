@@ -86,7 +86,7 @@
 					?>
 					<td id="rep_<?= $complaint['id']?>">
 					<!-- <a type="button"  class="btn btn-outline-primary btn-rounded" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/complaint/reply/'.$complaint['id'].''); ?>', 'Reply')" >Reply</a> -->
-					<button class="btn btn-primary modal-button demo" id="reply" data-target="#bd-example-modal" data-id="<?= $complaint['id']?>" data-center="<?= $complaint['center_id']?>"> Reply</button>
+					<button class="btn btn-primary modal-button demo" id="reply" data-target="#bd-example-modal" data-id="<?= $complaint['id']?>"> Reply</button>
 					</td>
 					<?php }?>
                     <td>
@@ -127,7 +127,6 @@
 		$("#reply").on('click',function(){
         
 			$('#bd-example-modal').show();
-			$('#ctr_id').val($(this).attr('data-center'));
 			$('#complaint_id').val($(this).attr('data-id'));
 			
 		});

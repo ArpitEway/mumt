@@ -3366,12 +3366,12 @@ public function practical_assignment_marks_edit(){
 		$data = $row = array();
 		$where = 'support_complaint.center_id='.$this->session->center_id;
 		$column_order = array(null,'name','student.student_id','course_name','class_name','details','date','status','support_complaint.remark');
-		$column_search = array('name','student.student_id','course_name','class_name','details','date','support_complaint.status','support_complaint.remark');
+		$column_search = array('name','student.student_id','course_name','class_name','details','date','support_complaint.status','support_complaint.remark,support_complaint.reply_text');
 		$DataTableArray = array(
 			'column_order' => $column_order,
 			'column_search' => $column_search,
 			// 'select' => 'student.name, student.student_id, student.course_name, student.class_name, support_complaint.date, support_complaint.details, support_complaint.remark,support_complaint.status',
-			'select' => 'student.name, student.student_id, student.course_name, student.class_name, support_complaint.date, support_complaint.details, support_complaint.remark,support_complaint.status,support_complaint.type,support_complaint.id,support_complaint.attachment',
+			'select' => 'student.name, student.student_id, student.course_name, student.class_name, support_complaint.date, support_complaint.details, support_complaint.remark,support_complaint.status,support_complaint.type,support_complaint.id,support_complaint.attachment,support_complaint.reply_text',
 			'where' => $where,
 			'table' => 'support_complaint',
 			'table2' => 'student',
@@ -3384,14 +3384,13 @@ public function practical_assignment_marks_edit(){
 			$i++;
 			$date = $this->Common_model->viewDate($result->date);
 			$status = ($result->status=="Pending") ? 'Pending' : 'Done';
-			$reply =$this->Common_model->getSinglefield('complaint_reply','reply_text','complaint_id = '.$result->id.'');
 			if($result->attachment != ''){
 			$attachment = '<a target="_blank"  href="'.base_url().'assets/complaintImages/'.$result->attachment.'">'.'<i class="fa fa-eye">'.'</i>'.'</a>';
 			}else{
 				$attachment = '';	
 			}
 			// $data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->details,$date,$status,$result->remark);
-			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->type,$result->details,$date,$status,$remark,$reply,$attachment);
+			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->type,$result->details,$date,$status,$remark,$result->reply_text,$attachment);
 
 		}
 		$output = array(
@@ -3438,12 +3437,10 @@ public function practical_assignment_marks_edit(){
 	public function complaint_reply_list(){
 		
 		$titleData = array('title' => 'Support Complaint Reply');
-		$this->db->select('sp.*,cr.id,cr.reply_text,std.class_name,std.course_name,std.name');
+		$this->db->select('sp.*,std.class_name,std.course_name,std.name');
 		$this->db->from('support_complaint as sp');
 		$this->db->join('student as std','std.student_id=sp.student_id');
-		$this->db->join('complaint_reply as cr','cr.complaint_id = sp.id');
-		$this->db->where('cr.center_id',$this->session->center_id);
-		$this->db->order_by('cr.id','desc');
+		$this->db->where('sp.center_id',$this->session->center_id);
 		$data['complaints'] = $this->db->get()->result();
 		$this->load->view('Centers/header',$titleData);
 		$this->load->view('Centers/complaint_reply_list',$data);

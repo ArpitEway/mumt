@@ -41,8 +41,7 @@
         <div class="modal-header"><label>Remark</label></div>
         <div class="container">
           <input type="hidden" name="complaint_id" id="complaint_id">
-		  <input type="hidden" name="ctr_id" id="ctr_id">
-          <textarea id="remark" name="remarks" class="form-control m-3"></textarea>
+		  <textarea id="remark" name="remarks" class="form-control m-3"></textarea>
         </div>
         <div class="modal-footer"><button type="button" class="btn btn-danger mx-2" id="close">Close<button type="button" class="btn btn-primary" id="sub_btn">Submit</button></div>
       </div>
@@ -201,12 +200,10 @@ $('#row_'+i).hide();
 			var csrfHash = $('.csrfname').val();
 			var self = this;
 			var complaint_id = $("#complaint_id").val();
-			var center_id = $("#ctr_id").val();
 			var remark = $("#remark").val();
 
 			var data = {
 				complaint_id: complaint_id,
-				center_id : center_id,
 				remark: remark,
 				[csrfName]: csrfHash,
 			};
@@ -222,9 +219,9 @@ $('#row_'+i).hide();
 					$("#sta_"+complaint_id).html(data.statusBtn);
 					$("#rem_"+complaint_id).html(data.remarkBtn);
 					$("#rep_"+complaint_id).html(data.replyBtn);
-          $("#complaint_id").val('');
-			    $("#ctr_id").val('');
-			    $("#remark").val('');
+          			$("#complaint_id").val('');
+			   		 $("#ctr_id").val('');
+			    	$("#remark").val('');
 					$('#bd-example-modal').hide();
 				}
 			});
