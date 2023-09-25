@@ -170,12 +170,12 @@ class Dataentry extends CI_Controller {
 		$titleData = array('title' => 'Backlog Marks Entry'); 
 		$this->load->view('header',$titleData);
 
-		$where = array('backlog_exam_form.paper_code' => $paper_code, 'theory_marks' => '','mode' => $mode,'paper_type' => 'theory','exam_center_id'=>$exam_center,'backlog_student.exam_form' => 'Y','backlog_student.exam_year'=>'June 2023','backlog_exam_form.backlog_student_id'=>'backlog_student.id');
+		$where = array('backlog_exam_form.paper_code' => $paper_code, 'theory_marks' => '','mode' => $mode,'paper_type' => 'theory','exam_center_id'=>$exam_center,'backlog_student.exam_form' => 'Y','backlog_student.exam_year'=>'June 2023');
 		//,'student.result_show'=>'N'
 		$this->db->select('backlog_student.id,backlog_student.student_id,enrollment_no,roll_no');
 		$this->db->from('backlog_exam_form');
 		$this->db->order_by("backlog_student.roll_no","backlog_student.enrollment_no","asc");
-		$this->db->join('backlog_student', 'backlog_student.student_id = backlog_exam_form.student_id');
+		$this->db->join('backlog_student', 'backlog_student.student_id = backlog_exam_form.student_id and backlog_exam_form.backlog_student_id =backlog_student.id');
 		$this->db->where('backlog_student.class_id = backlog_exam_form.class_id');
 		$this->db->where($where); 
 		$this->db->limit(20,$page);
@@ -188,7 +188,7 @@ class Dataentry extends CI_Controller {
 		$this->db->select('backlog_student.student_id,enrollment_no,roll_no');
 		$this->db->from('backlog_exam_form');
 		$this->db->order_by("backlog_student.roll_no","backlog_student.enrollment_no","asc");
-		$this->db->join('backlog_student', 'backlog_student.student_id = backlog_exam_form.student_id');
+		$this->db->join('backlog_student', 'backlog_student.student_id = backlog_exam_form.student_id and backlog_exam_form.backlog_student_id =backlog_student.id');
 		$this->db->where('backlog_student.class_id = backlog_exam_form.class_id');
 		$this->db->where($where);
 		$config["total_rows"] = $this->db->get()->num_rows();		
@@ -424,6 +424,7 @@ class Dataentry extends CI_Controller {
 				$this->db->where('backlog_student.mode',$_POST['university_mode']);
 				$this->db->order_by('backlog_student.roll_no');
 				$dataArray['students'][$exam_center_id] = $this->db->get()->result();
+				
 				$dataArray['teachername'][$exam_center_id] = $this->Common_model->getSinglefield('exam_center','superintendent',array('id'=>$exam_center_id));
 				$dataArray['detail'][$exam_center_id] = $this->Common_model->getRecordByWhere('exam_center',array('id'=>$exam_center_id));	
 			}
