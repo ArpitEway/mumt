@@ -49,7 +49,7 @@
 		<div class="form-group text-center">
 			<label class="h3 font-weight-bold mt-5">Details</label>
 			<div class="mt-5 m-auto">
-				<textarea type="text" rows="8" name="detail" id="detail" class="form-control form-control-lg form-control-solid message_detail" ></textarea>
+				<textarea type="text" rows="4" name="detail" id="detail" class="form-control form-control-lg form-control-solid message_detail" ></textarea>
 				<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 				<input type="hidden" name="student_id" id="student_id" value="<?=$student_id?>">
 			</div>

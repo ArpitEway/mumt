@@ -41,7 +41,7 @@
         <div class="modal-header"><label>Remark</label></div>
         <div class="container">
           <input type="hidden" name="complaint_id" id="complaint_id">
-		  <textarea id="remark" name="remarks" class="form-control m-3"></textarea>
+		  <textarea id="remark" name="remarks" class="form-control my-3" rows='3'></textarea>
         </div>
         <div class="modal-footer"><button type="button" class="btn btn-danger mx-2" id="close">Close<button type="button" class="btn btn-primary" id="sub_btn">Submit</button></div>
       </div>

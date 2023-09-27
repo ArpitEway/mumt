@@ -86,7 +86,7 @@
 					?>
 					<td id="rep_<?= $complaint['id']?>">
 					<!-- <a type="button"  class="btn btn-outline-primary btn-rounded" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/complaint/reply/'.$complaint['id'].''); ?>', 'Reply')" >Reply</a> -->
-					<button class="btn btn-primary modal-button demo" id="reply" data-target="#bd-example-modal" data-id="<?= $complaint['id']?>"> Reply</button>
+					<button class="btn btn-primary modal-button demo" onclick="return getModel(<?=$complaint['id']?>)" data-target="#bd-example-modal" data-id="<?= $complaint['id']?>"> Reply</button>
 					</td>
 					<?php }?>
                     <td>
@@ -124,12 +124,12 @@
 	</table>
 	
 <script>
-		$("#reply").on('click',function(){
+		function getModel(param){
         
 			$('#bd-example-modal').show();
-			$('#complaint_id').val($(this).attr('data-id'));
+			$('#complaint_id').val(param);
 			
-		});
+		};
 
 		$("#close").on('click',function(){
 				$('#bd-example-modal').hide();	
