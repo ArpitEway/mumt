@@ -5271,7 +5271,7 @@ public function update_center_wise_complaint_remark()
 		if ($this->input->post("id")) 
 		{
 			$data = $this->Common_model->updateRecordByConditions("support_complaint",array("id" => $id ),array("remark" => $remark,"status" => $status));
-			
+
 			$dt = $this->db->get_where("support_complaint",array("id" => $id ))->result_array();
 			
 			if($dt[0]['remark'] != 'Invalid'){
@@ -5624,4 +5624,45 @@ public function forward_complaint(){
 			$this->load->view('admin/student_marksheet_certificate',$data);
 		}
 	}
+
+	public function complaint_reply(){
+		if ($this->input->post("complaint_id")) 
+		{
+			
+			$complaint_id = $this->input->post('complaint_id');
+		 	$reply_text = $this->input->post('remark');
+		 	
+		
+		 $this->Common_model->updateRecordByConditions("support_complaint",array("id" => $complaint_id ),array("remark" => 'Invalid',"status" => 'Done','reply_text'=>$reply_text));
+
+			$dt = $this->db->get_where("support_complaint",array("id" => $complaint_id))->result_array();
+			
+			if($dt[0]['remark'] != 'Invalid'){
+			
+			$sts_btn = '<input type="button" name="update_req_remark" data-id='.$complaint_id.' class="btn btn-success remark_check" value="Set">';
+			
+			$sts_btn2 = '<input type="button" name="update_req_stats" data-id='.$complaint_id.' class="btn btn-danger req_check" value="Pending">';
+			$sts_btn3 ='<button class="btn btn-primary" id="reply" disabled> Reply</button>';
+			}else{
+			
+			$sts_btn = '<input type="button" name="req_remark" data-id='.$complaint_id.' class="btn btn-danger remark_check" value="Invalid">';
+			
+			$sts_btn2 = '<input type="button" name="update_req_stats" data-id='.$complaint_id.' class="btn btn-success req_check" value="Done">';
+			$sts_btn3 ='<button class="btn btn-primary" id="reply" disabled> Reply</button>';
+			}
+
+			$status = true;
+			$msg    = "";
+			
+			echo json_encode(array(
+				"status" => $status,
+				"msg" => $msg,
+				"remarkBtn" => $sts_btn,
+				"statusBtn" => $sts_btn2,
+				'replyBtn'=>$sts_btn3,
+			));
+		}	
+	}
+		
+	
 }// class
