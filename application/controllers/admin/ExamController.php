@@ -1950,7 +1950,7 @@ class ExamController extends CI_Controller {
 			foreach($_POST['exam_center_id'] as $exam_center_id){
 				$this->db->select('*');
 				$this->db->from("backlog_student");
-				$this->db->join('backlog_exam_form', 'backlog_exam_form.student_id = backlog_student.student_id and backlog_exam_form.class_id=backlog_student.class_id');
+				$this->db->join('backlog_exam_form', 'backlog_exam_form.student_id = backlog_student.student_id and backlog_exam_form.class_id=backlog_student.class_id AND backlog_exam_form.backlog_student_id=backlog_student.id');
 				$this->db->where('backlog_exam_form.paper_code',$_POST['paper_code']);
 				$this->db->where('backlog_exam_form.course_group_id',$_POST['course_group_id']);
 				$this->db->where('backlog_exam_form.class_id',$_POST['class_id']);
@@ -1962,6 +1962,7 @@ class ExamController extends CI_Controller {
 				$this->db->where('backlog_student.mode',$_POST['university_mode']);
 				$this->db->order_by('backlog_student.roll_no');
 				$dataArray['students'][$exam_center_id] = $this->db->get()->result();
+				
 				$dataArray['teachername'][$exam_center_id] = $this->Common_model->getSinglefield('exam_center','superintendent',array('id'=>$exam_center_id));
 				$dataArray['detail'][$exam_center_id] = $this->Common_model->getRecordByWhere('exam_center',array('id'=>$exam_center_id));	
 			}

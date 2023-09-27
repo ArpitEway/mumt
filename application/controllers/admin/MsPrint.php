@@ -190,7 +190,7 @@ class MsPrint extends CI_Controller {
 	      	$record_id = $this->Common_model->encrypt_decrypt($record_id,'decrypt');
 			
 			$updateData = array(
-				'marksheet_date' => date('d/m/Y', strtotime($marksheet_date)) ,
+				'marksheet_date' => $marksheet_date ,
 				'remark_date' => $remark
 			);
 		
