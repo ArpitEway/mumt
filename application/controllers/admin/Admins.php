@@ -5407,7 +5407,7 @@ public function forward_complaint(){
 			$permisssion    = $this->input->post("permission");
 
 			$data = array($parameter1 => $permisssion);
-			
+			$where = array('status' => 'Y');
 			$res = $this->Common_model->updateRecordByConditions('center',$where,$data);
 			
 			//echo $this->db->last_query();
