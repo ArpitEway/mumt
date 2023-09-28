@@ -9,7 +9,7 @@ class center_model extends CI_Model {
 
 	public function checkUser($centercode,$password)
 	{
-		$query = $this->db->get($this->table." where center_code='".$centercode."' and password='".$password."'");
+		$query = $this->db->get($this->table." where center_code='".$centercode."' and password='".$password."' and status='Y'");
 		if($query->num_rows()>0){
 			$result = $query->result();
 			return $result[0];
