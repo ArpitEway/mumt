@@ -1,3 +1,8 @@
+<style type="text/css">
+	.table th, .table td {
+    vertical-align: middle;
+	}
+</style>
 <div class="container mb-5">
 	<?php $flag = ($centerData->mobile_no_2 == '')?'':',';?>
 	<h3 class="text-primary text-center h2"><?= ' ( '.$centerData->center_code.' ) ( '.$centerData->center_name.' ) ( '.$centerData->contactpersonname.' ) ( '.$centerData->mobile_no_1.' '.$flag.' '.$centerData->mobile_no_2.' ) '; ?></h3>
