@@ -171,7 +171,7 @@ $('#row_'+i).hide();
 			var csrfHash = $('.csrfname').val();
 			var self = this;
 
-			var remark = (val=='Set') ? 'Invalid' : 'Set';
+			var remark = (val=='Set') ? 'Invalid' : 'N';
 
 			var data = {
 				id: $(this).attr('data-id'),

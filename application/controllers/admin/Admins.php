@@ -5239,9 +5239,7 @@ public function update_center_wise_complaint_status()
 		
 		if ($this->input->post("id")) 
 		{
-			$remark_table = $this->Common_model->getRecordById('support_complaint','id',$id);
-			$remark = ($status == 'Done')?'N':$remark_table->remark;
-			$data = $this->Common_model->updateRecordByConditions("support_complaint",array("id" => $id ),array("status" => $status,'remark'=>$remark));
+			$data = $this->Common_model->updateRecordByConditions("support_complaint",array("id" => $id ),array("status" => $status));
 			$dt = $this->db->get_where("support_complaint",array("id" => $id ))->result_array();
 
 			if($dt[0]['status'] == 'Done'){
