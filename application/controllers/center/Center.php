@@ -157,7 +157,7 @@ class Center extends CI_Controller {
 		$center_ids_dep = array(21,22,23,24,25,26,27,28,29);
 		$whereSession = array();
 		if (in_array($center_id, $center_ids_dep)){
-			$passing_exam_year = '2022';
+			$passing_exam_year = '2023';
 			$whereSession['admission_permission_dep'] =  'Y';
 			if($center_session_permission =='N'){
 				$this->db->order_by("id", "desc");
@@ -166,7 +166,7 @@ class Center extends CI_Controller {
 			
 		}else{
 			// $passing_exam_year = '2021';
-			$passing_exam_year = '2022';
+			$passing_exam_year = '2023';
 			if($center_session_permission!='Y')
 			{
 				$whereSession['admission_permission_ic'] =  'Y';
