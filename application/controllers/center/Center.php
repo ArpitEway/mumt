@@ -3366,7 +3366,7 @@ public function practical_assignment_marks_edit(){
 		$data = $row = array();
 		$where = 'support_complaint.center_id='.$this->session->center_id;
 		$column_order = array(null,'name','student.student_id','course_name','class_name','details','date','status','support_complaint.remark');
-		$column_search = array('name','student.student_id','course_name','class_name','details','date','support_complaint.status','support_complaint.remark,support_complaint.reply_text');
+		$column_search = array('name','student.student_id','course_name','class_name','details','date','support_complaint.status','support_complaint.remark','support_complaint.reply_text');
 		$DataTableArray = array(
 			'column_order' => $column_order,
 			'column_search' => $column_search,
