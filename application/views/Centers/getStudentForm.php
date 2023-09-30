@@ -1,10 +1,42 @@
-<div class="container p-3">
-    <div class="row d-felx justify-content-center m-3" >
-            <h3>Application Form</h3>
-        </div>
-    <form action="<?= base_url()?>center/center/application_submit" method="post" onsubmit="return validate()" enctype='multipart/form-data' >
-    <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-    <input type="hidden" class="csrfname" name="center_id" value="<?= $center_id; ?>">
+<div class="BoxD border- padding mar-bot">
+				<div class="row">
+					<div class="col-12">
+						<table class="table table-bordered">
+							 <input type="hidden" class="csrfnamen" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+							<input type="hidden" value="<?php echo $students[0]['student_id'] ; ?>" id="student_id">
+						  <tr>
+							  <td width="50%"><b>Form No.: </b> <?=$students[0]['student_id'];?></td>
+							  <td width="50%"><b>Enrollment No: </b> <?=$students[0]['enrollment_no'];?></td>
+							</tr>
+						
+							<tr>
+							  <td><b>Course: </b> <?=$student[0]->course_name;?>  <?=$students[0]['course_name'];?></td>
+							  <td ><b>Session: </b> <?=$students[0]['session'];?></td>
+							</tr>
+							<tr>
+							  <td><b>Student Name: </b> <?=$students[0]['name'];?></td>
+							  <td ><b>Father/Husband Name: </b>  <?=$students[0]['f_h_name'];?></td>
+							</tr>	
+							<tr>
+							  
+							  <td ><b>Mobile No: </b> <?=$students[0]['p_mobile_no'];?></td>
+                              <td ><b>DOB: </b> <?=date("d-m-Y", strtotime($students[0]['dob']));?></td>
+							</tr>	
+										
+									
+						  </tbody>
+						</table>
+					</div>
+				</div>
+<!--  -->
+</div>
+
+         <!--Start-->        
+         <!-- <div class="container p-3"> -->
+    
+    <!-- <form action="<?= base_url()?>center/center/application_submit" method="post" onsubmit="return validate()" enctype='multipart/form-data' > -->
+    <!-- <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>"> -->
+    <!-- <input type="hidden" class="csrfname" name="center_id" value="<?= $center_id; ?>"> -->
         <div class="row d-felx justify-content-center m-2">
             <?php $course_group = $this->Common_model->getRecordByWhere('course_group',array('course_name'=>$students[0]['course_name']));
             
@@ -20,8 +52,8 @@
             }
            
             ?>
-            <div class="form-group col-md-6">
-                <label>Apply For</label>
+            <div class="form-group col-md-2">
+                <!-- <label>Apply For</label> -->
                 <select name="apply_for" class="form-control" id="apply">
                 <option value="">Select</option>
                 <?php 
@@ -41,209 +73,80 @@
                 </select>
                 <span class="text-danger" id="aerr"></span>
             </div>
-        </div>
-        <div class="row d-felx justify-content-center m-2" style="display:none;" id="c_class">
-           
-           <div class="form-group col-md-6">
-               <label>Class</label>
-              
-               <select name="class" class="form-control" id="cls">
-                    <option value="">Select</option>
-                    <?php
-                    foreach($mode as $rs){
-                     ?>
-                        <option value="<?= $rs->class_name?>"><?= $rs->class_name?></option>
-                        <?php
-                        
-                    }?>
-                   
-               </select>
-              
-           </div>
-       </div>
-      
-        <div class="row">
-            
-            <div class="form-group col-md-3">
-                <label>Name of Student (In English)</label>
-                <input type="text" class="form-control" name="name_eng" value="<?= $students[0]['name']?>" readonly/>
-                <input type="hidden" class="form-control" name="student_id" value="<?= $students[0]['student_id']?>" readonly/>
-            </div>
-            <div class="form-group col-md-3">
-                <label>Name of Student(In Hindi)</label>
-                <input type="text" class="form-control" name="name_hindi" id="sname"/>
-                <span class="text-danger" id="serr"></span>
-            </div>
-            <div class="form-group col-md-3">
-                <label>Father's Name(In English)</label>
-                <input type="text" class="form-control" name="fname_eng" value="<?= $students[0]['f_h_name']?>" readonly/>
-            </div>
-            <div class="form-group col-md-3">
-                <label>Father's Name(In Hindi)</label>
-                <input type="text" class="form-control" name="fname_hindi" id="fname"/>
-                <span class="text-danger" id="ferr"></span>
+            <input type="hidden" class="form-control" name="enrollment" id="student_enroll" value="<?= $students[0]['enrollment_no'] ?>" />
+            <div class="form-group col-md-2">
+        
+                    <button type="button" class="btn btn-primary btn-sm m-auto" onclick="open_form()">Apply For</button>
             </div>
         </div>
-      
-        <div class="row">
-            
-            <div class="form-group col-md-3">
-                <label>Roll No.</label>
-                <input type="text" class="form-control" name="roll_no" value="<?= $students[0]['roll_no']?>" readonly/>
-            </div>
-            <div class="form-group col-md-3">
-                <label>Enroll. No.</label>
-                <input type="text" class="form-control" name="enrollment" value="<?= $students[0]['enrollment_no'] ?>" readonly/>
-            </div>
-            <div class="form-group col-md-3">
-                <label>Session</label>
-                <input type="text" class="form-control" name="session" value="<?= $students[0]['session']?>" readonly/>
-            </div>
-            <div class="form-group col-md-3">
-                <label>Course</label>
-                <input type="text" class="form-control" name="course" id="course" value="<?= $students[0]['course_name']?>" readonly/>
-            </div>
+        <div align="center" id="myLoaderNext" class="loader_div" style="display: none;" >
+            <svg>
+                <circle cx="50" cy="50" r="40" stroke="red" stroke-dasharray="78.5 235.5" stroke-width="3" fill="none" />
+                <circle cx="50" cy="50" r="30" stroke="blue" stroke-dasharray="62.8 188.8" stroke-width="3" fill="none" />
+                <circle cx="50" cy="50" r="20" stroke="green" stroke-dasharray="47.1 141.3" stroke-width="3" fill="none" />
+            </svg>
         </div>
-       
-        <div class="row">
-            
-            <div class="form-group col-md-6">
-                <label>Phone No.</label>
-                <input type="text" class="form-control" name="phone" value="<?= $students[0]['p_mobile_no']?>" readonly/>
-            </div>
-            <div class="form-group col-md-6">
-                <label>Address</label>
-                <textarea type="text" class="form-control" col="10" name="address" readonly><?= $students[0]['c_address']?></textarea>
-            </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-md-6">
-                <label for="name">Adhar Card</label>
-                <input type="file" class="form-control imgupload" id="adhar" name ="adhar" accept=".png, .jpg, .jpeg" >
-                <span class="text-danger" id="adharerr"></span>
-            </div>
-            <div class="form-group col-md-6">
-                <label for="name">Final Marksheet</label>
-                <input type="file" class="form-control imgupload" id="marksheet" name ="marksheet" accept=".png, .jpg, .jpeg" >
-                <span class="text-danger" id="marksheeterr"></span>
-            </div>
-        </div>    
-        <!-- <div class="row">
-            
-            <div class="form-group col-md-12">
-                
-                <input type="checkbox" name="check" id="check"/> &nbsp <strong>Rs.<?= $field[0]->amount?>/- is Fixed for Degree by the University. The Demand Draft Should be in favour of 
-                    MMYVV DDE RECEIPT A/C JABALPUR. Without Demand Draft the Application will not be 
-                    considered. Attach Photocopy of Mark sheet.</strong>
-                    <span class="text-danger" id="cerr"></span> 
-            </div>
-           
-        </div> -->
-        <div class="row d-felx justify-content-center m-2">
-            
-               <button name="submit" type="submit" class="btn btn-success" width="50%">Submit</button>
-            
-        </div>
+            <span id="apply_form"></span>
     </form>
 
-</div>
+<!-- </div> -->
+         <!--End--->                   
+
+
+
+
 <script>
-$(".imgupload").change(function(){
-    var file = this.files[0];
-    var fileType = file["type"];
-    var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
-    if ($.inArray(fileType, validImageTypes) < 0) {
-        // invalid file type code goes here.
+function open_form(){
+    var csrfName = $('.csrfnamen').attr('name');
+        var csrfHash = $('.csrfnamen').val();
+        var text_val = $('#apply').val();
+        var center_id = $('#center_id').val();
+        var student_enroll=$('#student_enroll').val();
+        if(text_val =='')
+        { 
+            alert('Please select apply for form !');
+        }
        
-       var a=$(this).attr("id");
-       b=a+"err";
-       document.getElementById(b).innerHTML= "*Please select proper file!";
-       document.getElementById(a).value = null;
-            adhar.focus();
-        this.val("");
-    }
-});
-function validate(){
-
-       const apply = document.getElementById("apply");
-       const sname = document.getElementById("sname");
-       const fname = document.getElementById("fname");
-       const adhar = document.getElementById("adhar");
-       const marksheet = document.getElementById("marksheet");
-        // const check = document.getElementById("check");
-        
-        const cls = document.getElementById("cls");
-        
-
-        if (apply.value === "") {
-            document.getElementById("aerr").innerHTML= "*Please select purpose!";
-            apply.focus();
-            return false;
-          }else{
-            document.getElementById("aerr").innerHTML="";
-          }
-         
-        
-          if (sname.value === "") {
-            document.getElementById("serr").innerHTML= "*Please enter student name!";
-            sname.focus();
-            return false;
-          }else{
-            document.getElementById("serr").innerHTML="";
-          }
-          if (fname.value === "") {
-            document.getElementById("ferr").innerHTML= "*Please enter father name!";
-            fname.focus();
-            return false;
-          }else{
-            document.getElementById("ferr").innerHTML="";
-          }
-        // if (!check.checked) {
-        //     // alert();
-        //     document.getElementById("cerr").innerHTML= "*Please check checkbox!";
-        //     check.focus();
-        //     return false;
-        //   }else{
-        //     document.getElementById("cerr").innerHTML="";
-        //   }
-          if(apply.value == "DUPLICATE-MARKSHEET"){
-           
-             if(cls.value == ""){
-                alert("Please select Class")
-                return false;
+        else
+        {
+          
+            let studentData = {
+                    'apply':text_val,
+                    'center_id':center_id,
+                    'student_enroll':student_enroll,
+                    [csrfName]:csrfHash
                 }
-            
+                console.log("student_enroll"+studentData);
+                console.log("csrfName"+csrfName);
+                console.log("csrfHash"+csrfHash);
+            $.ajax({
+                url:site_url+'center/<?=$this->session->account_type; ?>/applyApplicationForm',
+                type:'post',
+               // processData: false,
+                dataType : 'JSON',
+              
+                data: studentData,
+                
+                beforeSend: function()
+              {
+                $("#myLoaderNext").show();
+               },
+                success:function(resp)
+                {
+                    console.log(resp.data);
+                    if( $("#myLoaderNext").show()){
+						$('#apply_form').hide();
+						 $('#apply_form').html(resp.data);
 
-          }
-          if (adhar.value === "") {
-            document.getElementById("adharerr").innerHTML= "*Please select Adhar Card!";
-            adhar.focus();
-            return false;
-          }else{
-            document.getElementById("adharerr").innerHTML="";
-          }
-        
-          if (marksheet.value === "") {
-            document.getElementById("marksheeterr").innerHTML= "*Please select Adhar Card!";
-            adhar.focus();
-            return false;
-          }else{
-            document.getElementById("marksheeterr").innerHTML="";
-          }
-        
-
+					}if( $('#myLoaderNext').hide()){
+                       
+						$('#apply_form').show();
+						
+					}
+                            
+                }//success
+                
+            })//ajax
+        }
 }
-
-$("#apply").on('change',function(){
-
-   var app =  $("#apply").val();
-  if(app == "DUPLICATE-MARKSHEET"){
-   $("#c_class").show();
-    
-  }else{
-    $("#c_class").hide();
-  } 
-
-})
-
 </script>

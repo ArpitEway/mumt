@@ -3496,6 +3496,48 @@ public function practical_assignment_marks_edit(){
 			redirect(base_url('backlog_exam_form_students'));
 		}
 	}
+	
+	public function applyApplicationForm()
+	{
+	
+		$text_val =$this->input->post('apply'); 
+		$center_id =$this->input->post('center_id');
+		$student_enroll =$this->input->post('student_enroll');
+		
+		if($text_val !='')
+		{
+			$where = array('enrollment_no'=>$student_enroll,'center_id'=>$center_id);
+			$data = array(
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+				'center_id'=>$center_id,
+				'enrollment_no'=>$student_enroll
+			);
+			$data['students'] = $this->Common_model->student_data($where);
+			//echo $this->db->last_query(); die;
+			// print_r($data['students']);die;
+			if($data['students']){
+				$data['apply']=$text_val;
+				$data['center_id']=$center_id;
+				$dt =  $this->load->view('Centers/getApplicationForm',$data,true);
+			echo json_encode(array(
+				"status" => true,
+				"data" => $dt
+			));
+
+			}else{
+				echo json_encode(array(
+					"status" => true,
+					"data" => "Student Not Found"
+				));
+
+			}
+
+
+			
+		}
+	}
+
 
 	public function complaint_reply_list(){
 		
