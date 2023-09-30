@@ -7,31 +7,52 @@
 	<table id="memListTable" class="table table-striped dt-responsive" style="width:100%">
 		<thead>
 			<tr>
+				<th>S.NO.</th>
 				<th>Form No.</th>
+				<th>Enrollment No.</th>
 				<th>Student Name</th>
 				<th>Father Name</th>
 				<th>Course</th>
 				<th>Class</th>
-				<!-- <th>Fees Amount</th> -->
+				<th>Fees Amount</th>
 				<th>Pay</th>
 			</tr>
 		</thead>
 		<tbody>
 		<?php //print_r($complaints);die;
+		$i=1;
 		foreach($complaints as $complaint){ 
+			$where = array(
+                'session' =>$complaint->session,
+                'course_group_id' => $complaint->course_group_id,
+            );
+
+            $fees = $this->Common_model->getRecordByWhere('course',$where);
+			if($complaint->university_mode=="REG"){
+                $program_fees =  $fees[0]->program_fees;    
+                $exam_fees =  $fees[0]->exam_fees;    
+              }else{
+                $program_fees =  $fees[0]->p_program_fees;    
+                $exam_fees =  $fees[0]->p_exam_fees;    
+              }
+			  if($complaint->demo=='Y'){
+                $amount =  $exam_fees ;
+               }else{
+                $amount =   $program_fees+$exam_fees; 
+                }
 			
 			?>
 
 		<tr id="row_<?=$complaint->student_id ?>">
-
-			
+			<td><?= $i++;?></td>
 			<td><?php echo $complaint->student_id; ?></td>
+			<td><?php echo $complaint->enrollment_no; ?></td>
 			<td><?php echo $complaint->name; ?></td>
 			<td><?php echo $complaint->f_h_name; ?></td>
 			<td><?php echo $complaint->course_name; ?></td>
 			<td><?php echo $complaint->class_name; ?></td>
-			<!-- <td><?php //echo $complaint->amount; ?></td> -->
-			<td><?php echo '<a href="#" data-student_name = "'.$complaint->name.'"  data-idstudent="'.$complaint->student_id.'" data-student_id="'.$this->Common_model->encrypt_decrypt($complaint->student_id).'" class="btn btn-primary btn-sm font-weight-bold pay1" data-toggle="modal" data-target="#kt_datepicker_modal" "  >Receive</a>';?></td>
+			 <td><?php echo $amount;?></td>
+			<td><?php echo '<a href="#" data-student_name = "'.$complaint->name.'"  data-idstudent="'.$complaint->student_id.'" data-student_id="'.$this->Common_model->encrypt_decrypt($complaint->student_id).'" data-amount="'.$amount.'"class="btn btn-primary btn-sm font-weight-bold pay1" data-toggle="modal" data-target="#kt_datepicker_modal" "  >Receive</a>';?></td>
 		</tr>
 		<?php	
 		}?>
@@ -65,7 +86,8 @@
     <label for="example-date-input" class="col-5 col-form-label">Receive Payment Date</label>
     <div class="col-7">
 		
-     <input class="form-control" type="date" name="payment_date"   id="payment_date" min="<?= date('Y-m-d', strtotime('-3 month')); ?>" max="<?= date('Y-m-d'); ?>"   />
+     <!-- <input class="form-control" type="date" name="payment_date"   id="payment_date" min="<?= date('d-m-Y', strtotime('-3 month')); ?>" max="<?= date('d-m-Y'); ?>" /> -->
+	  <input class="form-control" type="text" name="payment_date"   id="payment_date" />
 	 <div class="text-danger" id="error"></div>
 	 <input type="hidden" value="" name="student_id" id="student_id">
 	 <input type="hidden" value="" name="idstudent" id="idstudent">
@@ -112,13 +134,9 @@
    </div>
   
   <div class="card-footer pb-0">
-   <div class="row justify-content-center">
-  
- 
-     <button type="reset" class="btn btn-success mr-2" id="payment_submit">Submit</button>
-     
-   
-   </div>
+   	<div class="row justify-content-center">
+  		<button type="reset" class="btn btn-success mr-2" id="payment_submit">Submit</button>
+    </div>
   </div>
  </form>
 </div>
@@ -126,6 +144,7 @@
 	</div>
 </div>
 <script>
+	$('#payment_date').mask('99/99/9999',{placeholder:"dd/mm/yyyy"});
 	$(document).ready(function(){
 		
 		$('#memListTable').DataTable({});
@@ -139,9 +158,11 @@
 	    var student_id = $(this).attr('data-student_id');
 		var idstudent = $(this).attr('data-idstudent');
 		var student_name = $(this).attr('data-student_name');
+		var amount = $(this).attr('data-amount');
 		$('#student_id').val(student_id);
 		$('#idstudent').val(idstudent);
 		$('#student_name').html(student_name);
+		$('#amount').val(amount);
 		
      
 	});

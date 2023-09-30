@@ -2742,9 +2742,10 @@ public function practical_assignment_marks_edit(){
 			
 		if ($this->input->method() == "post") 
 		{  
-			
 		    $exam_session='Dec 2023';
-			$payment_date  = $this->input->post("payment_date");
+			 $date = $this->input->post('payment_date');
+			 $date = str_replace('/', '-', $date);
+			 $payment_date = date('Y-m-d', strtotime($date));
 			$student_id  = $this->input->post("student_id");
 	      	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 			$remark  = $this->input->post("remark");

@@ -550,7 +550,7 @@
 				'centers' =>$centers
 			);
 		//	print_r($centers);
-			$this->load->view('header',array('title' => 'Centerwise Unpaid Student'));
+			$this->load->view('header',array('title' => 'Centerwise Exam Fees Unpaid Student'));
 			$this->load->view('admin/account_section/unpaid_student_exam_form',$data);
 			$this->load->view('footer');
 		}
