@@ -157,7 +157,7 @@ class Center extends CI_Controller {
 		$center_ids_dep = array(21,22,23,24,25,26,27,28,29);
 		$whereSession = array();
 		if (in_array($center_id, $center_ids_dep)){
-			$passing_exam_year = '2022';
+			$passing_exam_year = '2023';
 			$whereSession['admission_permission_dep'] =  'Y';
 			if($center_session_permission =='N'){
 				$this->db->order_by("id", "desc");
@@ -166,7 +166,7 @@ class Center extends CI_Controller {
 			
 		}else{
 			// $passing_exam_year = '2021';
-			$passing_exam_year = '2022';
+			$passing_exam_year = '2023';
 			if($center_session_permission!='Y')
 			{
 				$whereSession['admission_permission_ic'] =  'Y';
@@ -3374,6 +3374,23 @@ public function practical_assignment_marks_edit(){
 				$this->load->view('Centers/get_student_support_system_wise',$data);
 				$this->load->view('Centers/footer');
 			}else{
+				// print_r($this->input->post());die;
+				$file_name ='';
+				if(isset($_FILES['photo']) && $_FILES['photo']['tmp_name']!=''){
+					// print_r($_FILES['photo']);die;
+					$filename = $param.'-'.date('Ymdhis');
+					$this->upload->initialize($this->Common_model->set_upload_options('./assets/complaintImages/',$filename));
+					if(!$this->upload->do_upload('photo')){
+						$error = $this->upload->display_errors();
+						$msg = array('error'=>$error);
+						echo json_encode($msg);
+						exit();
+						
+					}else{
+						$uploadData = $this->upload->data();
+						$file_name = $uploadData['file_name'];
+					}
+				}
 				$details = html_escape($this->input->post('detail'));
 				$complaint_type = html_escape($this->input->post('complaint_type'));
 				$student_detail = $this->Common_model->getSingleRow("student","*",array("student_id" => $param));
@@ -3382,6 +3399,7 @@ public function practical_assignment_marks_edit(){
 				$data['center_id'] 		= $student_detail->center_id;
 				$data['enrollment_no'] 	= $student_detail->enrollment_no;
 				$data['student_id'] 	= $param;
+				$data['attachment'] 	= $file_name;
 				$data['date']   		=  date("Y-m-d");
 				$data['status']   		= "Pending";
 	    //   $check = $this->Common_model->getSingleRow("support_complaint","*",array("student_id" => $param, 'status !=' => 'Done' ));
@@ -3410,12 +3428,12 @@ public function practical_assignment_marks_edit(){
 		$data = $row = array();
 		$where = 'support_complaint.center_id='.$this->session->center_id;
 		$column_order = array(null,'name','student.student_id','course_name','class_name','details','date','status','support_complaint.remark');
-		$column_search = array('name','student.student_id','course_name','class_name','details','date','support_complaint.status','support_complaint.remark');
+		$column_search = array('name','student.student_id','course_name','class_name','details','date','support_complaint.status','support_complaint.remark','support_complaint.reply_text');
 		$DataTableArray = array(
 			'column_order' => $column_order,
 			'column_search' => $column_search,
 			// 'select' => 'student.name, student.student_id, student.course_name, student.class_name, support_complaint.date, support_complaint.details, support_complaint.remark,support_complaint.status',
-			'select' => 'student.name, student.student_id, student.course_name, student.class_name, support_complaint.date, support_complaint.details, support_complaint.remark,support_complaint.status,support_complaint.type',
+			'select' => 'student.name, student.student_id, student.course_name, student.class_name, support_complaint.date, support_complaint.details, support_complaint.remark,support_complaint.status,support_complaint.type,support_complaint.id,support_complaint.attachment,support_complaint.reply_text',
 			'where' => $where,
 			'table' => 'support_complaint',
 			'table2' => 'student',
@@ -3428,8 +3446,13 @@ public function practical_assignment_marks_edit(){
 			$i++;
 			$date = $this->Common_model->viewDate($result->date);
 			$status = ($result->status=="Pending") ? 'Pending' : 'Done';
+			if($result->attachment != ''){
+			$attachment = '<a target="_blank"  href="'.base_url().'assets/complaintImages/'.$result->attachment.'">'.'<i class="fa fa-eye">'.'</i>'.'</a>';
+			}else{
+				$attachment = '';	
+			}
 			// $data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->details,$date,$status,$result->remark);
-			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->type,$result->details,$date,$status,$remark);
+			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->type,$result->details,$date,$status,$remark,$result->reply_text,$attachment);
 
 		}
 		$output = array(
@@ -3471,5 +3494,18 @@ public function practical_assignment_marks_edit(){
 		if($update){
 			redirect(base_url('backlog_exam_form_students'));
 		}
+	}
+
+	public function complaint_reply_list(){
+		
+		$titleData = array('title' => 'Support Complaint Reply');
+		$this->db->select('sp.*,std.class_name,std.course_name,std.name');
+		$this->db->from('support_complaint as sp');
+		$this->db->join('student as std','std.student_id=sp.student_id');
+		$this->db->where('sp.center_id',$this->session->center_id);
+		$data['complaints'] = $this->db->get()->result();
+		$this->load->view('Centers/header',$titleData);
+		$this->load->view('Centers/complaint_reply_list',$data);
+		$this->load->view('Centers/footer');
 	}
 }//class
