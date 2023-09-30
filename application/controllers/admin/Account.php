@@ -539,6 +539,57 @@
 		}
 	}
 
+	public function unpaid_student_exam_form(){
+			
+		if($this->session->has_userdata('adminData')){
+			$where = array("status" => "Pending");
+			//$centers = $this->Common_model->get_record_group_by_where('payment_complaint','center_id',$where);
+			$centers = $this->Common_model->getRecordByWhere('center',array('payment_gateway_permission'=>'N'));
+			$data = array('name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+				'centers' =>$centers
+			);
+		//	print_r($centers);
+			$this->load->view('header',array('title' => 'Centerwise Exam Fees Unpaid Student'));
+			$this->load->view('admin/account_section/unpaid_student_exam_form',$data);
+			$this->load->view('footer');
+		}
+		else
+		{
+			redirect(base_url('admin/login'));
+		}
+	}
+
+	public function get_unpaid_student_exam_form()
+	{
+		if ($this->input->method() == "post") 
+		{
+			$course_group_id = 0;
+			$data = array();
+			$dt   = array();
+				
+			$center_id  = $this->input->post("center_id");
+			$centerData = $this->Common_model->getRecordById('center','id',$center_id);
+			
+			$complaints = $this->Common_model->getRecordByWhere('student',array('new_exam_form'=>'N','center_id'=>$center_id));
+			// $this->Common_model->last_query();
+			
+			$data = array('complaints' => $complaints ,'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+				'centerData' => $centerData,
+			);
+
+			
+				$dt =  $this->load->view('admin/account_section/getUnpaidStudentExamForm',$data,true);
+				$status = true;
+			
+			echo json_encode(array(
+			"status" => $status,
+			"data" => $dt
+			));
+		}
+	}
+
 	public function search_unpaid_student(){
 			
 		if($this->session->has_userdata('adminData')){

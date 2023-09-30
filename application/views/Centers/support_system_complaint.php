@@ -29,6 +29,8 @@
 					<th>Date</th>
 					<th>Status</th>
 					<th>Remark</th>
+					<th>Reply</th>
+					<th>Attachment</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -102,23 +104,31 @@
 		});
 
 		$(document).on('click','#submit',function(e){
+			// alert($('#photo').val())
 			var csrfName = $('.csrfname').attr('name');
 			var csrfHash = $('.csrfname').val(); 
 			var student_id = $('#student_id').val(); 
 			detail = $('#detail').val(); 
 			complaint_type = $('#Complaint').val();
+			photo = $('#photo').val();
 			if(complaint_type == 'N'){
 				toastr.error("Please Select Complaint Type");
 				return false;
 			}
 			if(detail)
 			{
-				var frm = $('.ajaxForm').serialize();		
+				//var frm = $('.ajaxForm').serialize();
+				var form = $('form');
+				var formData = new FormData(form[0]);
+					
 				$.ajax({
 					url: BASE_URL + 'center/center/student_support_system_sub/' + student_id,
 					type: 'POST',
 					dataType : 'json',
-					data: frm,
+					data: formData,
+					cache:false,
+					contentType: false,
+					processData: false,
 					success: function (data) 
 					{
 						console.log(data.msg);

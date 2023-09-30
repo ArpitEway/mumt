@@ -1,15 +1,20 @@
+<style type="text/css">
+	.table th, .table td {
+    vertical-align: middle;
+	}
+</style>
 <div class="container mb-5">
 	<?php $flag = ($centerData->mobile_no_2 == '')?'':',';?>
 	<h3 class="text-primary text-center h2"><?= ' ( '.$centerData->center_code.' ) ( '.$centerData->center_name.' ) ( '.$centerData->contactpersonname.' ) ( '.$centerData->mobile_no_1.' '.$flag.' '.$centerData->mobile_no_2.' ) '; ?></h3>
 </div>
 <div class="text-center">
-	<table id="table" class="table table-striped dt-responsive nowrap" width="70%" >
+	<table id="table" class="table table-striped dt-responsive nowrap" width="80%" >
 		<thead>
 			<tr>
 				
 				<th>S.No.</th>
-				<th>Student Name</th>
 				<th>Form No</th>
+				<th>Student Name</th>
 				<th>Course </th>
 				<th>Class</th>
                 <th>Type</th>
@@ -17,7 +22,9 @@
 				<th>Date</th>
 				<th>Status</th>
 				<th>Remark</th>
+				<th>Reply</th>
                 <th>Forward To</th>
+				<th>Attachment</th>
 				
 			</tr>
 		</thead>
@@ -35,15 +42,15 @@
                 <tr id="<?= "row_".$i?>">
 
 					<td><?php echo $i; ?></td>
-					<td><?php echo $student->name; ?></td>
 					<td><?php echo $complaint["student_id"]; ?></td>
+					<td><?php echo $student->name; ?></td>
 					<td><?php echo $student->course_name; ?></td>
 					<td><?php echo $student->class_name; ?></td>
                     <td><?php echo $complaint["type"]; ?></td>
 					<td><?php echo $complaint["details"]; ?></td>
 					<td><?php echo $this->Common_model->viewDate($complaint["date"]); ?></td>
 
-					<td >
+					<td id="sta_<?= $complaint['id']?>">
 
 						<?php
 						if($complaint['status'] == 'Done')
@@ -61,7 +68,7 @@
 						?> 
 
 					</td>
-					<td>
+					<td id="rem_<?= $complaint['id']?>">
 
 						<?php
 						if($session['remark'] == '' || $session['remark'] != 'Invalid')
@@ -69,6 +76,7 @@
 							?>
 
 							<input type="button" name="update_req_remark" data-id = "<?=$complaint["id"];?>" class="btn btn-success remark_check" value="Set">
+							
 
 						<?php }else{ ?>
 
@@ -78,6 +86,14 @@
 						}
 						?>
 					</td>
+					<?php
+					if($session['remark'] == '' || $session['remark'] != 'Invalid'){
+					?>
+					<td id="rep_<?= $complaint['id']?>">
+					<!-- <a type="button"  class="btn btn-outline-primary btn-rounded" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/complaint/reply/'.$complaint['id'].''); ?>', 'Reply')" >Reply</a> -->
+					<button class="btn btn-primary modal-button demo" onclick="return getModel(<?=$complaint['id']?>)" data-target="#bd-example-modal" data-id="<?= $complaint['id']?>"> Reply</button>
+					</td>
+					<?php }?>
                     <td>
 					<input type="hidden" name="complain_id" id="<?= 'com_'.$i ?>" value="<?= $complaint['id']?>" >
 						<select name="complaint_type" id="<?= "Complaint_".$i ?>" class="form-control" onchange="return forward(<?= $i?>)">
@@ -94,80 +110,34 @@
 							} 
 							?> 
 						</select>    
+						</td>
 					<td>
+						<?php if($complaint["attachment"] != ''){
+							?>
+							<a target="_blank"  href="<?= base_url().'assets/complaintImages/'.$complaint["attachment"]?>"><i class="fa fa-eye"></i></a>
+							<?php
+						}?>
+					</td>
 					
 				</tr>
-
-
 				<?php
-
 				$i++;
 			} 
 
 			?>
 		</tbody>
 	</table>
+	
+<script>
+		function getModel(param){
+        
+			$('#bd-example-modal').show();
+			$('#complaint_id').val(param);
+			
+		};
 
-
-	<script>
-
-		$(document).on('click', '.req_check', function() {
-
-			var val = $(this).val();
-			var csrfName = $('.csrfname').attr('name');
-			var csrfHash = $('.csrfname').val();
-			var self = this;
-
-			var status = (val=='Done') ? 'Pending' : 'Done';
-
-			var data = {
-				id: $(this).attr('data-id'),
-				status: status,
-				[csrfName]: csrfHash,
-			}; 
-
-			var url = BASE_URL + "admin/Admins/update_center_wise_complaint_status";
-
-			$.ajax({
-				url: url,
-				type: 'POST',
-				dataType: 'json',
-				data: data,
-				success: function (data) {
-
-					$(self).parent().html(data.data);
-
-				}
-			});
-
+		$("#close").on('click',function(){
+				$('#bd-example-modal').hide();	
 		});
-
-		$(document).on('click', '.remark_check', function() 
-		{
-
-			var val = $(this).val();
-			var csrfName = $('.csrfname').attr('name');
-			var csrfHash = $('.csrfname').val();
-			var self = this;
-
-			var remark = (val=='Set') ? 'Invalid' : 'Set';
-
-			var data = {
-				id: $(this).attr('data-id'),
-				remark: remark,
-				[csrfName]: csrfHash,
-			};
-			var url = BASE_URL + "admin/admins/update_center_wise_complaint_remark";
-
-			$.ajax({
-				url: url,
-				type: 'POST',
-				dataType: 'json',
-				data: data,
-				success: function (data) {
-					$(self).parent().prev().html(data.statusBtn);
-					$(self).parent().html(data.remarkBtn);
-				}
-			});
-		});
-	</script>
+</script>
+	

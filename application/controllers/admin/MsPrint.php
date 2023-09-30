@@ -185,7 +185,9 @@ class MsPrint extends CI_Controller {
 		if ($this->input->method() == "post") 
 		{ 
 			if(isset($_POST['remark_date'])){ $remark = $this->input->post('remark_date');}else{ $remark = '';}
-			$marksheet_date  = $this->input->post("marksheet_date");
+			$date = $this->input->post('marksheet_date');
+			$date = str_replace('/', '-', $date);
+			$marksheet_date = date('Y-m-d', strtotime($date));
 			$record_id  = $this->input->post("record_id");
 	      	$record_id = $this->Common_model->encrypt_decrypt($record_id,'decrypt');
 			

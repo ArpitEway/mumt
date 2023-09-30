@@ -157,7 +157,7 @@ class Center extends CI_Controller {
 		$center_ids_dep = array(21,22,23,24,25,26,27,28,29);
 		$whereSession = array();
 		if (in_array($center_id, $center_ids_dep)){
-			$passing_exam_year = '2022';
+			$passing_exam_year = '2023';
 			$whereSession['admission_permission_dep'] =  'Y';
 			if($center_session_permission =='N'){
 				$this->db->order_by("id", "desc");
@@ -166,7 +166,7 @@ class Center extends CI_Controller {
 			
 		}else{
 			// $passing_exam_year = '2021';
-			$passing_exam_year = '2022';
+			$passing_exam_year = '2023';
 			if($center_session_permission!='Y')
 			{
 				$whereSession['admission_permission_ic'] =  'Y';
@@ -1213,7 +1213,7 @@ class Center extends CI_Controller {
 					$this->db->where_not_in('student.class_id', $remove_classes );
 				
 				}
-				$this->db->where_in('class_id',array( 256,258));
+				$this->db->where_in('class_id',array( 256,258,268,270));
 				$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
 				
 			}
@@ -2737,6 +2737,69 @@ public function practical_assignment_marks_edit(){
 			}
 		}
 	}
+
+	public function update_unpaid_student_exam_form(){
+			
+		if ($this->input->method() == "post") 
+		{  
+		    $exam_session='Dec 2023';
+			 $date = $this->input->post('payment_date');
+			 $date = str_replace('/', '-', $date);
+			 $payment_date = date('Y-m-d', strtotime($date));
+			$student_id  = $this->input->post("student_id");
+	      	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+			$remark  = $this->input->post("remark");
+			$payment_mode  = $this->input->post("payment_mode");
+			$amount  = $this->input->post("amount");
+			$student = $this->Common_model->getRecordById('student','student_id',$student_id);
+			$class_id = $student->class_id;
+			$course_group_id = $student->course_group_id;
+			$mode = ($student->university_mode == 'REG')?'Regular':'Private';
+			$student_name = $student->name;
+			$center_id = $student->center_id;
+			$file_name = '';
+			if(isset($_FILES['images']) && $_FILES['images']['tmp_name']!=''){
+			$filename = $student_id.'-'.date('Ymdhis');
+			$this->upload->initialize($this->Common_model->set_upload_options('./assets/transactionImgaes/',$filename));
+			if(!$this->upload->do_upload('images')){
+				$error = $this->upload->display_errors();
+				$msg = array('error'=>$error);
+				echo json_encode($msg);
+				exit();
+				
+			}else{
+			$uploadData = $this->upload->data();
+			$file_name = $uploadData['file_name'];
+			}
+			}
+			$paymentData = array(
+				'fees_head'=>'Exam Fees',
+				'student_id'=> $student_id,
+				'course_group_id'=>$course_group_id,
+				'admission_type'=>$mode,
+				'class_id'=>$class_id,
+				'exam_session'=>$exam_session,
+				'center_id'=>$center_id,
+				'student_name'=>$student_name,
+				'payment_date' => $payment_date,
+				'remark' => $remark,
+				'payment_mode' => $payment_mode,
+				'amount' => $amount,
+				'image' => $file_name,
+				'payment_status' => "Paid By University",
+				'payment' => 'Y'
+			);
+		
+			
+			$update = $this->Common_model->insertAll('online_payment_transaction',$paymentData);
+			// $this->Common_model->last_query();
+			$response = $this->Common_model->updateRecordByConditions('student',array('student_id'=> $student_id),array('new_exam_form'=>'Y'));
+
+			if($response){
+			echo json_encode(array("status" => 'true'));
+			}
+		}
+	}
 	
 	public function search_exam_by_course(){
 		// redirect(base_url('dashboard'));
@@ -3312,6 +3375,23 @@ public function practical_assignment_marks_edit(){
 				$this->load->view('Centers/get_student_support_system_wise',$data);
 				$this->load->view('Centers/footer');
 			}else{
+				// print_r($this->input->post());die;
+				$file_name ='';
+				if(isset($_FILES['photo']) && $_FILES['photo']['tmp_name']!=''){
+					// print_r($_FILES['photo']);die;
+					$filename = $param.'-'.date('Ymdhis');
+					$this->upload->initialize($this->Common_model->set_upload_options('./assets/complaintImages/',$filename));
+					if(!$this->upload->do_upload('photo')){
+						$error = $this->upload->display_errors();
+						$msg = array('error'=>$error);
+						echo json_encode($msg);
+						exit();
+						
+					}else{
+						$uploadData = $this->upload->data();
+						$file_name = $uploadData['file_name'];
+					}
+				}
 				$details = html_escape($this->input->post('detail'));
 				$complaint_type = html_escape($this->input->post('complaint_type'));
 				$student_detail = $this->Common_model->getSingleRow("student","*",array("student_id" => $param));
@@ -3320,6 +3400,7 @@ public function practical_assignment_marks_edit(){
 				$data['center_id'] 		= $student_detail->center_id;
 				$data['enrollment_no'] 	= $student_detail->enrollment_no;
 				$data['student_id'] 	= $param;
+				$data['attachment'] 	= $file_name;
 				$data['date']   		=  date("Y-m-d");
 				$data['status']   		= "Pending";
 	    //   $check = $this->Common_model->getSingleRow("support_complaint","*",array("student_id" => $param, 'status !=' => 'Done' ));
@@ -3348,12 +3429,12 @@ public function practical_assignment_marks_edit(){
 		$data = $row = array();
 		$where = 'support_complaint.center_id='.$this->session->center_id;
 		$column_order = array(null,'name','student.student_id','course_name','class_name','details','date','status','support_complaint.remark');
-		$column_search = array('name','student.student_id','course_name','class_name','details','date','support_complaint.status','support_complaint.remark');
+		$column_search = array('name','student.student_id','course_name','class_name','details','date','support_complaint.status','support_complaint.remark','support_complaint.reply_text');
 		$DataTableArray = array(
 			'column_order' => $column_order,
 			'column_search' => $column_search,
 			// 'select' => 'student.name, student.student_id, student.course_name, student.class_name, support_complaint.date, support_complaint.details, support_complaint.remark,support_complaint.status',
-			'select' => 'student.name, student.student_id, student.course_name, student.class_name, support_complaint.date, support_complaint.details, support_complaint.remark,support_complaint.status,support_complaint.type',
+			'select' => 'student.name, student.student_id, student.course_name, student.class_name, support_complaint.date, support_complaint.details, support_complaint.remark,support_complaint.status,support_complaint.type,support_complaint.id,support_complaint.attachment,support_complaint.reply_text',
 			'where' => $where,
 			'table' => 'support_complaint',
 			'table2' => 'student',
@@ -3366,8 +3447,13 @@ public function practical_assignment_marks_edit(){
 			$i++;
 			$date = $this->Common_model->viewDate($result->date);
 			$status = ($result->status=="Pending") ? 'Pending' : 'Done';
+			if($result->attachment != ''){
+			$attachment = '<a target="_blank"  href="'.base_url().'assets/complaintImages/'.$result->attachment.'">'.'<i class="fa fa-eye">'.'</i>'.'</a>';
+			}else{
+				$attachment = '';	
+			}
 			// $data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->details,$date,$status,$result->remark);
-			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->type,$result->details,$date,$status,$remark);
+			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->type,$result->details,$date,$status,$remark,$result->reply_text,$attachment);
 
 		}
 		$output = array(
@@ -3452,4 +3538,17 @@ public function practical_assignment_marks_edit(){
 		}
 	}
 
+
+	public function complaint_reply_list(){
+		
+		$titleData = array('title' => 'Support Complaint Reply');
+		$this->db->select('sp.*,std.class_name,std.course_name,std.name');
+		$this->db->from('support_complaint as sp');
+		$this->db->join('student as std','std.student_id=sp.student_id');
+		$this->db->where('sp.center_id',$this->session->center_id);
+		$data['complaints'] = $this->db->get()->result();
+		$this->load->view('Centers/header',$titleData);
+		$this->load->view('Centers/complaint_reply_list',$data);
+		$this->load->view('Centers/footer');
+	}
 }//class
