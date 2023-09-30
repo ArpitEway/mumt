@@ -183,7 +183,9 @@
                     <tr>
                     <td width="17" align="center">
                   <div align="left">
-                    <?php echo "Date :".$exam_data->marksheet_date; ?></div></td>
+                    <?php 
+                    $date = ($exam_data->marksheet_date !='')?date('d/m/Y',strtotime($exam_data->marksheet_date)):'';
+                    echo "Date :".$date; ?></div></td>
                     </tr>
                   </table>    
                 </td>
