@@ -52,7 +52,7 @@ $exam = $this->Common_model->getRecordByWhere("old_exam_data",array('id'=>$old_r
       <th class="border-top-0 text-primary pl-3">Enrollment No.</th>
       <th class="border-top-0"><?php  echo $student[0]->enrollment_no ?></th>
       <th class="border-top-0 text-primary pl-3">Roll No.</th>
-      <th class="border-top-0"><?php echo  $student[0]->roll_number; ?></th>
+      <th class="border-top-0"><?php echo  $exam[0]->roll_no; ?></th>
       <th rowspan="3" class="border-top-0 text-center" width="120px"><img class="img img-thumbnail" src="<?=base_url('assets/student_image/').$student[0]->session.'/'.$student[0]->photo?>" ></th>
     </tr>
     <tr>
