@@ -5105,7 +5105,70 @@ public function update_exam_datewise_permission(){
 					"data" => $data));
 				}
 			}
+	}
+
+	public function complaint_department($param1 = '', $param2 = '', $param3 = '')
+	{
+
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+
+			if($param1 == 'create'){
+
+				$response = $this->admin_model->create_complaint_department();
+				$this->session->set_flashdata('ajax_flash_message','Create Department Successfully');
+				redirect(base_url().'complaint_department');
+
+			}
+			if($param1 == 'update'){
+
+				$response = $this->admin_model->update_complaint_department($param2);
+				$this->session->set_flashdata('ajax_flash_message','Update Department Successfully');
+				redirect(base_url().'complaint_department');
+			}
+
+			if($param1 == 'delete'){
+
+				$response = $this->admin_model->delete_complaint_department($param2);
+				$this->session->set_flashdata('ajax_flash_message','Department Successfully Deleted');
+				redirect(base_url().'complaint_department');
+			}
+
+			if(empty($param1) ){
+				$data = array();
+				$titleData = array('title' => 'Complaint Department');
+				$this->load->view('header',$titleData);
+				$csrf = array(
+					'name_csrf' => $this->security->get_csrf_token_name(),
+					'hash_csrf' => $this->security->get_csrf_hash()
+				);
+				$this->load->view('admin/complaint_department',$csrf);
+				$this->load->view('footer');
+			}    
 		}
+	}
+
+	public function update_department_status()
+	{
+		if ($this->input->method() == "post") 
+		{
+			$id    = $this->input->post("id");
+			$status = $this->input->post("status");
+			if ($this->input->post("id")) 
+			{
+				$data = $this->Common_model->updateRecordByConditions("department_complaint",array("id" => $id ),array("status" => $status));
+				$status = true;
+				$msg    = "";
+				echo json_encode(array(
+					"status" => $status,
+					"msg" => $msg,
+					"data" => $data));
+				}
+			}
+	}
 				
 	public function student_old_result(){
 		if(!$this->session->has_userdata('adminData')){

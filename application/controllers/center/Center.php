@@ -3393,10 +3393,12 @@ public function practical_assignment_marks_edit(){
 					}
 				}
 				$details = html_escape($this->input->post('detail'));
+				$department = html_escape($this->input->post('complaint_department'));
 				$complaint_type = html_escape($this->input->post('complaint_type'));
 				$student_detail = $this->Common_model->getSingleRow("student","*",array("student_id" => $param));
 				$data['details']   		= $details;
 				$data['type'] 		    = $complaint_type;
+				$data['department']		= $department;
 				$data['center_id'] 		= $student_detail->center_id;
 				$data['enrollment_no'] 	= $student_detail->enrollment_no;
 				$data['student_id'] 	= $param;
@@ -3429,12 +3431,12 @@ public function practical_assignment_marks_edit(){
 		$data = $row = array();
 		$where = 'support_complaint.center_id='.$this->session->center_id;
 		$column_order = array(null,'name','student.student_id','course_name','class_name','details','date','status','support_complaint.remark');
-		$column_search = array('name','student.student_id','course_name','class_name','details','date','support_complaint.status','support_complaint.remark','support_complaint.reply_text');
+		$column_search = array('name','student.student_id','course_name','class_name','details','date','support_complaint.status','support_complaint.remark','support_complaint.reply_text','support_complaint.department');
 		$DataTableArray = array(
 			'column_order' => $column_order,
 			'column_search' => $column_search,
 			// 'select' => 'student.name, student.student_id, student.course_name, student.class_name, support_complaint.date, support_complaint.details, support_complaint.remark,support_complaint.status',
-			'select' => 'student.name, student.student_id, student.course_name, student.class_name, support_complaint.date, support_complaint.details, support_complaint.remark,support_complaint.status,support_complaint.type,support_complaint.id,support_complaint.attachment,support_complaint.reply_text',
+			'select' => 'student.name, student.student_id, student.course_name, student.class_name, support_complaint.date, support_complaint.details, support_complaint.remark,support_complaint.status,support_complaint.type,support_complaint.id,support_complaint.attachment,support_complaint.reply_text,support_complaint.department',
 			'where' => $where,
 			'table' => 'support_complaint',
 			'table2' => 'student',
@@ -3452,8 +3454,9 @@ public function practical_assignment_marks_edit(){
 			}else{
 				$attachment = '';	
 			}
+			$department = $this->Common_model->getRecordById('department_complaint','id',$result->department);
 			// $data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->details,$date,$status,$result->remark);
-			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->type,$result->details,$date,$status,$remark,$result->reply_text,$attachment);
+			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$department->name,$result->type,$result->details,$date,$status,$remark,$result->reply_text,$attachment);
 
 		}
 		$output = array(
@@ -3550,5 +3553,21 @@ public function practical_assignment_marks_edit(){
 		$this->load->view('Centers/header',$titleData);
 		$this->load->view('Centers/complaint_reply_list',$data);
 		$this->load->view('Centers/footer');
+	}
+
+	public function getComplaintType(){
+		$department_id = $this->input->post('department');
+		// $state_id = $this->Common_model->getSinglefield('state','state_id',array('name' => $state));
+		$nameAttr = $this->input->post('nameAttr');
+		$department = $this->Common_model->getRecordById('department_complaint',"id",$department_id);
+		$ids = explode(',',$department->support_ids);
+		$this->db->where_in('id',$ids);
+		$this->db->where('status !=','N');
+		$complaints = $this->Common_model->getRecordByWhere('support_system');
+		$data = array(
+			'complaints' => $complaints,
+			'nameAttr' => $nameAttr
+		);
+		echo $this->load->view('admin/complaint_department/getcomplaint',$data,true);
 	}
 }//class
