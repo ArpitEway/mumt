@@ -4109,6 +4109,7 @@ public function update_exam_datewise_permission(){
 				}
 				
 					$this->db->where('approved',$approved);
+					//$this->db->where('university_mode',"PVT");
 					$this->db->group_by('class_id');
 				
 				
@@ -4169,7 +4170,7 @@ public function update_exam_datewise_permission(){
 			}
 				$this->db->where('approved',$approved);
 				//$this->db->group_by('class_id');
-			
+				//$this->db->where('university_mode',"PVT");
 			
 			$data['students'] =  $this->db->get()->result_array();
 				
