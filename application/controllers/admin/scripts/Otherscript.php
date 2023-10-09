@@ -629,6 +629,50 @@ public function update_roll_no_old_data(){
 		$this->load->view('footer');
 	
 	}
+
+	public function check_div_form_to_old_result_data()
+	{
+		echo "<h3>Check Div of final and Avg % of all Sem</h3>";
+		$sql = "SELECT o.* FROM `old_exam_data`as o join student as s on s.student_id= o.student_id and s.class_id=o.class_id and s.course_complete='Y' WHERE exam_year='March 2023' and o.class_id in (155,182)   ";//order by o.student_id limit 1000";
+		//and o.enrollment_no='AH/22100348'
+		$rs = $this->db->query($sql)->result_array();
+		$s_no=1;
+		foreach ($rs as $student) {
+			$result= "<br> ".$s_no." ".$student['class_id']." ".$student['student_id']."  ".$student['enrollment_no'];
+			$percent=$student['percentage'];
+			if($percent>=60){
+				$div = "First";
+			  }elseif($percent<60 && $percent>=40){
+				$div  = "Second";
+			  }else{
+				$div = "Third";
+			  }
+			  $result.= " Division  ". $div;
+			$query = "SELECT * FROM `old_exam_data` WHERE student_id ='".$student['student_id']."' and exam_result!='FAIL'";
+			$rset = $this->db->query($query)->result_array();
+			$per_total=0;
+			foreach ($rset as $all_class_result) {
+				//echo "<br>".	$all_class_result["percentage"];
+				$per_total+=$all_class_result["percentage"];
+			}
+		
+			//echo "<br>".$per_total/2;
+			$per_total=$per_total/2;
+			$percentage = round($per_total,2);
+			if($percentage>=60){
+			  $division = "First";
+			}elseif($percentage<60 && $percentage>=40){
+			  $division  = "Second";
+			}else{
+			  $division = "Third";
+			}
+			$result.= " Correct  ". $division;
+			if($division!=$div){
+			echo $result;
+			$s_no++;
+			}
+		}
+	}
 	
 }
 
