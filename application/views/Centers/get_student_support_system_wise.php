@@ -30,13 +30,27 @@
 		</tbody>
 	</table>
 	<form method="POST" class="d-block  mt-15" enctype="multipart/form-data">
-    <div class="form-group m-auto w-50">	
-			<label for="Complaint" class=" font-weight-bold h5">Complaint Type</label>
-			<select name="complaint_type" id="Complaint" class="form-control" >
-				<option value="N">Select</option>
+	<div class="form-group m-auto my-5 w-50">	
+			<label for="Complaint" class=" font-weight-bold h5">Department</label>
+			<select name="complaint_department" id="complaint_department" class="form-control" data-id='complaint_type'>
+				<option value="N">Select Department</option>
 				<?php
-				// $supports = $this->Common_model->getRecordByWhere('support_system',array());
-                $supports = $this->Common_model->getRecordByWhere('support_system',array('status !='=>'N'));
+				
+                $departments = $this->Common_model->getRecordByWhere('department_complaint',array('status !='=>'N'));
+				foreach($departments as $department){
+					?>
+					<option value="<?php echo $department->id; ?>"><?php echo $department->name; ?></option>
+					<?php
+				} 
+				?> 
+			</select>    
+		</div> 
+    <div class="form-group mx-auto w-50 mt-5">	
+			<label for="Complaint" class=" font-weight-bold h5">Complaint Type</label>
+			<select name="complaint_type" id="Complaint" class="form-control" disabled>
+				<option value="N">Select Type</option>
+				<?php
+				$supports = $this->Common_model->getRecordByWhere('support_system',array('status !='=>'N'));
 				foreach($supports as $support){
 					?>
 					<option value="<?php echo $support->name; ?>"><?php echo $support->name; ?></option>
@@ -65,3 +79,23 @@
 		</div>
 	</form>
 </div>
+<script>
+	$("#complaint_department").on('change', function(){
+		var department = $(this).val();
+		var nameAttr = $(this).attr('data-id');
+		var csrfName = $('.csrfname').attr('name');
+		var csrfHash = $('.csrfname').val();
+    	var url = '<?= base_url("center/center/getComplaintType")?>';
+	$.ajax({
+		method: "POST",
+		url: url,
+		data: {department : department, nameAttr: nameAttr,[csrfName]:csrfHash},
+	})
+	.done(function( msg ) {
+		console.log($("select[name='"+nameAttr+"']"));
+         $("select[name='"+nameAttr+"']").removeAttr("disabled");
+		$("select[name='"+nameAttr+"']").html(msg);
+       
+	});
+	})
+</script>

@@ -24,6 +24,7 @@
 					<th>Form no</th>
 					<th>Course </th>
 					<th>Class</th>
+					<th>Department</th>
                     <th>Type</th>
 					<th>Detail</th>
 					<th>Date</th>
@@ -40,6 +41,7 @@
 </div>
 
 <script>
+	
 	$(document).ready(function(){
 		
 		var csrfName = $('.csrfname').attr('name');
@@ -110,6 +112,7 @@
 			var student_id = $('#student_id').val(); 
 			detail = $('#detail').val(); 
 			complaint_type = $('#Complaint').val();
+			department = $('#complaint_department').val();
 			photo = $('#photo').val();
 			if(complaint_type == 'N'){
 				toastr.error("Please Select Complaint Type");
@@ -153,4 +156,5 @@
 		});
 
 	});
+
 </script>

@@ -1177,6 +1177,52 @@ class Admin_model extends CI_Model {
 		return json_encode($response);
 	}
 
+	public function create_complaint_department()
+    {
+		
+		$data['support_ids'] =implode(',',$this->input->post('department'));
+        $data['name'] = html_escape($this->input->post('name'));
+		$this->db->order_by('id','desc');
+		$this->db->limit(1);
+        $support = $this->db->get_where('department_complaint',array())->row_array();
+        if($support)
+        {
+             $data['department_order'] = $support['department_order'] + 1;
+        }else
+        {
+             $data['department_order'] = 1;
+        }
+        $this->db->insert('department_complaint', $data);
+        $support_system = $this->db->insert_id();
+        $response = array(
+        			'status' => true
+        			);
+        return json_encode($response);
+    }
+
+     public function delete_complaint_department($param1 = '')
+	{
+		$this->db->where('id', $param1);
+		$this->db->delete('department_complaint');
+		$response = array(
+			'status' => true
+		);
+		return json_encode($response);
+	}
+
+
+	public function update_complaint_department($param1 = '')
+	{
+		$data['support_ids'] =implode(',',$this->input->post('department'));
+		$data['name'] = html_escape($this->input->post('name'));
+		$this->db->where('id', $param1);
+		$this->db->update('department_complaint', $data);
+		$response = array(
+			'status' => true
+		);
+		return json_encode($response);
+	}
+
 
 
 }
