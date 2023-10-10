@@ -26,18 +26,26 @@ foreach($new_exam_form as $marks){
   $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code,"class_id"=>$marks->class_id));
 
   if($marks->paper_type=='theory'){
-    $tot_marks +=  $paper_master[0]->max_theory_marks;
-    if($marks->theory_marks>=$paper_master[0]->min_theory_marks){
+    if($student->university_mode != 'PVT'){
+      $max_theory_marks= $paper_master[0]->max_theory_marks;
+      $min_theory_marks= $paper_master[0]->min_theory_marks;
+    }
+    else{
+     $max_theory_marks= $paper_master[0]->private_max_theory_marks;
+     $min_theory_marks= $paper_master[0]->private_min_theory_marks;
+    }
+    $tot_marks +=  $max_theory_marks;
+    if($marks->theory_marks>=$min_theory_marks){
       $result = "PASS";
     }
     if($marks->theory_marks==''){
       $withheld = true;
     }
-    if($marks->theory_marks<$paper_master[0]->min_theory_marks){
+    if($marks->theory_marks<$min_theory_marks){
       $result = "Fail";
       $fail_count++;
       $fali_tot_marks += $marks->theory_marks;
-      $require_tot_marks +=$paper_master[0]->min_theory_marks;
+      $require_tot_marks +=$min_theory_marks;
     }
     if($marks->theory_marks=='ABS'){
       $abs_count++;
@@ -137,11 +145,11 @@ if ($withheld) {
     ?>
     <tr>
       <th><?php echo $this->Common_model->getPaperNameById($marks->paper_id); ?></th>
-      <th class="text-center"><?php  echo $paper_master[0]->max_theory_marks; ?></th>
+      <th class="text-center"><?php  echo $max_theory_marks; ?></th>
       <th class="text-center">
         <?php
           if($marks->paper_type=='theory'){
-            $total_max_marks += $paper_master[0]->max_theory_marks+ $paper_master[0]->max_internal_marks;
+            $total_max_marks += $max_theory_marks+ $paper_master[0]->max_internal_marks;
             $total_obtained_marks += $marks->theory_marks+$marks->int_marks;
             if($marks->theory_marks<$paper_master[0]->min_theory_marks || $marks->theory_marks=="ABS"){
               echo $marks->theory_marks;
