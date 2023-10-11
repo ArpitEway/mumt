@@ -137,7 +137,7 @@ class saveFormdata extends CI_Controller {
 			$admission_type = 'private';
 		}
 	    
-		$OnlinePayTxnData = array('student_id' => $student_id,'center_id' => $this->session->center_id,'fees_head' => 'Admission Fees','amount' => $amount,'payment_status'=>'pending','course_group_id' => $course_group_id,'class_id' => $class_id,'student_name' => $data['name'],'admission_type'=>$admission_type,'remark'=>$remark);
+		$OnlinePayTxnData = array('student_id' => $student_id,'center_id' => $data['center_id'] ,'fees_head' => 'Admission Fees','amount' => $amount,'payment_status'=>'pending','course_group_id' => $course_group_id,'class_id' => $class_id,'student_name' => $data['name'],'admission_type'=>$admission_type,'remark'=>$remark);
 
 		// Department center by default set status & approved
 
