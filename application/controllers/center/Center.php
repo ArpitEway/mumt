@@ -1954,7 +1954,13 @@ class Center extends CI_Controller {
 	{
 		
 		$center_id =  $this->session->center_id;
-        $where = array('center_id'=>$center_id);
+        //$where = array('center_id'=>$center_id);
+		if ($this->session->center_id!=13) {
+			$this->db->where('center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+		}
+
 		$data = array('name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 		);
@@ -1966,7 +1972,7 @@ class Center extends CI_Controller {
 		//$this->db->where('class_master.id', 'student.class_id');
 		
 		$this->db->where('class_master.result_permission', 'Y');
-		$this->db->where('center_id', $center_id);
+	//	$this->db->where('center_id', $center_id);
 		$this->db->where('old_result_show','Y');
 		$this->db->where($this->exam_form_result,'Y');
 		//$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,197,203,211,213)');
@@ -1981,7 +1987,12 @@ class Center extends CI_Controller {
 	{
 		
 		$center_id =  $this->session->center_id;
-        $where = array('center_id'=>$center_id);
+        //$where = array('center_id'=>$center_id);
+		if ($this->session->center_id!=13) {
+			$this->db->where('center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+		}
 		$data = array('name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 		);
@@ -1993,7 +2004,7 @@ class Center extends CI_Controller {
 		//$this->db->where('class_master.id', 'student.class_id');
 		
 		$this->db->where('class_master.backlog_result_permission', 'Y');
-		$this->db->where('center_id', $center_id);
+		//$this->db->where('center_id', $center_id);
 		$this->db->where('result_show','Y');
 		$this->db->where('exam_form','Y');
 		$this->db->where('exam_year','Dec 2022');
@@ -2049,8 +2060,12 @@ class Center extends CI_Controller {
 		$data = $row = array();
 		// $where1 ='';
 	
-		$where = array('center_id' => $this->session->center_id,$this->exam_form_result=>'Y','old_result_show'=>'Y');
-	
+		$where = array($this->exam_form_result=>'Y','old_result_show'=>'Y');
+		if ($this->session->center_id!=13) {
+			$this->db->where('center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+		}
 
 		if($_POST['course_group_id']!='All' and $_POST['course_group_id']!=''){
 			$where[''.$this->result_table.'.course_group_id'] = $this->input->post('course_group_id');
@@ -2068,6 +2083,7 @@ class Center extends CI_Controller {
 		// if($this->input->post('course_group_id') == 12 || $this->input->post('course_group_id') == 13){
 		// 	$where['university_mode'] = 'PVT';
 		// }
+		
 		$where['result_permission'] = 'Y';
 		// Fetch member's records
 		
@@ -2083,12 +2099,11 @@ class Center extends CI_Controller {
 			'table2' => 'class_master',
 			'joinOn' => ''.$this->result_table.'.old_class_id=class_master.id'
 		);
-		// if($where1 != ''){
-		// $this->db->where($where1);
-		// }
+		
+		
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
-		// $this->Common_model->last_query();
-		//die;
+		
+	
 		$i = $_POST['start'];
 		foreach($tableData as $result){
 			   
@@ -2125,12 +2140,27 @@ class Center extends CI_Controller {
 			$class_name =  $this->Common_model->getClassNameByClassId($result->old_class_id); 
 			$data[] = array($i,$result->student_id,$enrollment,$result->name, $result->f_h_name, $result->course_name,$class_name,$btn);
 		}
+		
+		/********************************************/
+		if ($this->session->center_id!=13) {
+			$this->db->where('center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+		}
+		$recordsTotal =$this->Datatable_join_model->joincountAll($_POST,$DataTableArray);
+
+		if ($this->session->center_id!=13) {
+			$this->db->where('center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+		}
+		$recordsFiltered = $this->Datatable_join_model->countFiltered($_POST,$DataTableArray);
+		/*******************************************/		
 
 		$output = array(
 			"draw" => $_POST['draw'],
-			"recordsTotal" => $this->Datatable_join_model->joincountAll($_POST,$DataTableArray),
-			//"recordsTotal" => $this->Datatable_join_model->countAll('student',$where),
-			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
+			"recordsTotal" => $recordsTotal,
+			"recordsFiltered" =>$recordsFiltered,
 			"data" => $data,
 		);
 
@@ -2143,8 +2173,12 @@ class Center extends CI_Controller {
 		$data = $row = array();
 		// $where1 ='';
 	
-		$where = array('center_id' => $this->session->center_id,'exam_form'=>'Y','result_show'=>'Y','exam_year'=>'Dec 2022');
-	
+		$where = array('exam_form'=>'Y','result_show'=>'Y','exam_year'=>'Dec 2022');
+		if ($this->session->center_id!=13) {
+			$this->db->where('center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+		}
 
 		if($_POST['course_group_id']!='All' and $_POST['course_group_id']!=''){
 			$where['backlog_student.course_group_id'] = $this->input->post('course_group_id');
@@ -2207,12 +2241,26 @@ class Center extends CI_Controller {
 			$class_name =  $this->Common_model->getClassNameByClassId($result->old_class_id); 
 			$data[] = array($result->student_id,$enrollment,$student->name, $student->f_h_name, $student->course_name,$this->Common_model->getClassNameByClassId($result->class_id),$btn);
 		}
+		/********************************************/
+		if ($this->session->center_id!=13) {
+			$this->db->where('center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+		}
+		$recordsTotal =$this->Datatable_join_model->joincountAll($_POST,$DataTableArray);
+
+		if ($this->session->center_id!=13) {
+			$this->db->where('center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+		}
+		$recordsFiltered = $this->Datatable_join_model->countFiltered($_POST,$DataTableArray);
+		/*******************************************/		
 
 		$output = array(
 			"draw" => $_POST['draw'],
-			"recordsTotal" => $this->Datatable_join_model->joincountAll($_POST,$DataTableArray),
-			//"recordsTotal" => $this->Datatable_join_model->countAll('student',$where),
-			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
+			"recordsTotal" =>$recordsTotal ,
+			"recordsFiltered" => $recordsFiltered,
 			"data" => $data,
 		);
 
