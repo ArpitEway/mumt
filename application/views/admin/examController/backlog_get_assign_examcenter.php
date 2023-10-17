@@ -1,7 +1,7 @@
 <form method="post"  action="<?=base_url();?><?=$this->session->account_type; ?>/show_backlog_examcenter_folio" class="mt-3 answersheet" target="_blank">
 	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	<div class="dt-responsive d-flex justify-content-center">
-		<table id=""  class="table table-striped w-50" >
+		<table id=""  class="table table-striped w-50 table-hover" >
 			<thead>
 				<tr>
 					<th class="text-center">Sno.</th>
@@ -25,7 +25,7 @@
 					<tr>
 						<td><?php echo $i++; ?></td>
                         <!-- <td><?php //echo $center->schoolcollegename;?></td> -->
-						<td><?php echo $center->exam_center_code;?></td>
+						<td class="font-weight-bolder text-primary"><?php echo $center->exam_center_code;?></td>
 						
 						<td><input type="checkbox" class="checkbox" name="exam_center_id[]" value="<?=$center->exam_center_id;?>"></td>
 					</tr>
