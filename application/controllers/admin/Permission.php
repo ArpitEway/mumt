@@ -105,22 +105,16 @@ class Permission extends CI_Controller {
 		$this->load->view('header',array("title"=>"Course Wise Permission"));	
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
-		
-		//$data['course']= $this->Common_model->getRecordByWhere("course_group");
 		$data['sessions'] = $this->db->get_where('session', array())->result_array();
-		if($session==0)
+		if($session==1)
 			{
 				$LastSessionElement = end($data['sessions']);
-				$session=$LastSessionElement['id'];
-				
-			}
+				 $session=$LastSessionElement['id'];
 			
-	
-			$record=$this->db->get_where('session', array("id"=>$session))->result_array();
-			$this->db->order_by("course_name", "asc");
-			$data['course']= $this->Common_model->getRecordByWhere("course",array('session'=>$record[0]['session']));	
-		
-		
+			}
+		$record=$this->db->get_where('session', array("id"=>$session))->result_array();
+		$this->db->order_by("course_name", "asc");
+		$data['course']= $this->Common_model->getRecordByWhere("course",array('session'=>$record[0]['session']));	
 		$data['sessionsSelect'] =$session;
 		
 		$this->load->view('admin/permission/course_wise_permission',$data);

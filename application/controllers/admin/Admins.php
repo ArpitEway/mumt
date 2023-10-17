@@ -279,6 +279,12 @@ class Admins extends CI_Controller {
 		}else{
 
 			if($param1 == 'create'){
+				$new_session=$_POST['session'];
+				$arr=explode(" ",$new_session);
+				$new_month=$arr[0];
+				$old_year=$arr[1]-1;
+				$oldSession=$new_month." ".$old_year;
+				$this->db->where('session', $oldSession);
 				$this->db->select('session');	
 				$this->db->order_by("id", "desc");
 				$this->db->limit(1);
@@ -292,7 +298,7 @@ class Admins extends CI_Controller {
 				}else{
 					$this->db->select('*');	
 					$this->db->from('course'); 
-					$this->db->where('session',$old_session);
+					$this->db->where('session',$oldSession);
 					$query = $this->db->get();
 					$courses = $query->result(); 	
 					$response = $this->admin_model->create_session();
@@ -313,6 +319,17 @@ class Admins extends CI_Controller {
 							$Data['p_program_fees'] = $course->p_program_fees;
 							$Data['p_exam_fees'] = $course->p_exam_fees;
 							$Data['session'] = $_POST['session'];
+							if($new_month=="Jan"){
+								$Data['admission_permission_regular'] =$course->admission_permission_regular;
+								$Data['admission_permission_private'] =$course->admission_permission_private;
+							}else{
+								$Data['admission_permission_regular'] ="Y";
+								if(in_array($course->course_group_id,array(12,13,21,22,23,24,25,39,40,41,52,53,54,55,57,59,61,62,65,66,71,73)))
+									$Data['	admission_permission_private'] ="Y";
+								else	
+									$Data['	admission_permission_private'] ="N";
+							}
+							
 							$this->db->insert('course',$Data);
 						}
 					}
