@@ -369,15 +369,16 @@
                                   }elseif($paper->p_marks=="ABS" || $paper->int_marks=="ABS"){
                                     echo 'ABS'. ' F' ;
                                   }else{
-                                    echo $paper->p_marks + $paper->int_marks.$satus  ;
+                                    echo $paper->p_marks + $paper->int_marks.$status ;
                                   } 
                                 }else{
+
                                   if($paper->p_marks<$paper->min_theory_marks && $check_grace_marks==false){
                                     echo  $paper->p_marks . ' F' ; 
                                   }elseif($paper->p_marks=="ABS"){
                                     echo 'ABS'. ' F';
                                   }else{
-                                    echo $paper->p_marks.$satus ;
+                                    echo $paper->p_marks.$status ;
                                   }
                                 }
                               }
