@@ -281,16 +281,25 @@
 		</div>
 	</div>
 </div>
-
+<style>
+	#swal2-content{
+		text-align:justify !important;
+	}
+</style>
 	<script type="text/javascript">
 $(".kt_popup").click(function(e) {
  
 Swal.fire({
-	 text:  "एडमिशन सेशन चेक करने के बाद ही फॉर्म भरे, एक बार फॉर्म भरने के पश्चात् सेशन में कोई परिवर्तन नहीं होगा|"
+	 text:  "सत्र 2023-24 के नियमित पाठ्यक्रमों में प्रवेश केवल मुख्यालय करौंदी में ही होंगे| नियमित पाठ्यक्रमों में प्रवेशित समस्त छात्रों का अध्यापन एवं परीक्षा विश्वविद्यालय मुख्यालय करौंदी में संपन्न होगी| अधिक जानकारी के लिए कॉल करे 8815259585 या व्हाट्स एप्प करे 9755590032.",
+	 icon: "info",
+	showCancelButton: true,
+	confirmButtonText: "I Agree"
 }).then((result) => {
   if (result.isConfirmed) {	
-  	window.location.href =  "<?=base_url('admission_form/regular');?>";
-      }
+		window.location.href =  "<?=base_url('admission_form/regular');?>";
+	}else{
+			return false;
+	}
 })
 
 });
