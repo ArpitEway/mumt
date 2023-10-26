@@ -120,7 +120,7 @@
 					  ?>
 	        <a class="border-0 custom-menu-item kt_popup" >
 						<div>
-							<span class="nav-text">Admission Form Regular</span>
+							<span class="nav-text">Admission Form Regular for Karoundi</span>
 						</div>
 					</a>
 				<?php
