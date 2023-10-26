@@ -29,6 +29,8 @@
 					<th>Exam Center Code</th>
 					<th>Gender</th>
 					<th>Category</th>
+					<th>Center Name</th>	
+					<th>Aadhaar No.</th>
 					<th>Paper</th>
 					<?php if($this->session->account_type =="Enrollment"){?>
 					<th>TC Generate</th><?php	}?>
@@ -108,6 +110,8 @@
 					<td><?php echo $student["examcentercode"]; ?></td>
 					<td><?php echo $student["gender"]; ?></td>
 					<td><?php echo $student["category"]; ?></td>
+					<td><?php echo $student["center_name"]; ?></td>
+				   <td><?php echo $student["adhar_no"]; ?></td>
 					<td>
 						<?php if($student["temp_exam_form"]=='Y'){ ?>
 						<a target="_blank"  class="" href="<?=base_url('show_paper/'.$student_id);?>"><i class="fa fa-eye" aria-hidden="true"></i></a>
@@ -119,7 +123,7 @@
 							<?php } ?>
 							
 				   </td>
-				   <?php if($this->session->account_type =="Enrollment"){?>
+				 <?php if($this->session->account_type =="Enrollment"){?>
 				   <td>
 					   <?php if($student["tc_date"]){ echo $this->Common_model->viewDate($student["tc_date"]) ; } else{ ?>
 				   <a href="javascript:void(0);" style="margin:5px;" class="btn btn-success" id="<?php echo  $std  ?>"   onclick="rightModal('<?php echo site_url('admin/modal/student_popup/admin/student/update/tc_generate/'.$student_id); ?>', '<?php echo 'Fill TC Detail' ?>')">TC</a>
