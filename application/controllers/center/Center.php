@@ -2377,7 +2377,7 @@ public function marksheet_admin($student_id="")
 		$this->db->from('new_exam_form');
 		$this->db->where('new_exam_form.student_id',$data['student']->student_id);
 		$this->db->where('new_exam_form.class_id',$data['student']->class_id);
-		$this->db->order_by('new_exam_form.paper_order','new_exam_form.paper_id');
+		$this->db->order_by('new_exam_form.sub_group_id','new_exam_form.paper_order','new_exam_form.paper_id');
 		$new_exam_form = $this->db->get()->result();
 		$data['new_exam_form']  = $new_exam_form;
 		$data['classData']  = $classData;
