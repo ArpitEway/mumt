@@ -2520,53 +2520,30 @@ public function getStudentData()
 			$course_group = $this->Common_model->get_record('course_group','*',array('id'=>$course_group_id));
 			$data['course_group']=$course_group[0]['course_name'];
 			$class = $this->Common_model->get_record('class_master','*',array('id'=>$class_id));
+			$this->db->select('DISTINCT(examcentercode)');
+			$this->db->from('new_exam_form');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+			$this->db->where('student.'.$this->exam_form.'','Y');
+			if($courseType!="ALL")
+				$this->db->where('student.university_mode',$courseType);
+			$this->db->where('new_exam_form.theory_marks','');
+			$this->db->where('new_exam_form.course_group_id',$course_group_id);
+			$this->db->where('new_exam_form.class_id',$class_id);
+			$this->db->where('new_exam_form.paper_type',"theory");
+			$data['examcentercode'] = $this->db->get()->result();
 				
-			if($remaining=="theory"){
-				$this->db->select('*');
-				$this->db->from('new_exam_form');
-				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
-				$this->db->where('student.'.$this->exam_form.'','Y');
-				if($courseType!="ALL")
-					$this->db->where('student.university_mode',$courseType);
-				$this->db->where('new_exam_form.theory_marks','');
-				$this->db->where('new_exam_form.course_group_id',$course_group_id);
-				$this->db->where('new_exam_form.class_id',$class_id);
-				$this->db->where('new_exam_form.paper_type',"theory");
-				$data['students'] = $this->db->get()->result();
 
-			}
-			if($remaining=="internal"){
-				$this->db->select('*');
-				$this->db->from('new_exam_form');
-				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
-				$this->db->where('student.'.$this->exam_form.'','Y');
-				$this->db->where('student.university_mode','REG');
-				$this->db->where('new_exam_form.course_group_id',$course_group_id);
-				$this->db->where('new_exam_form.class_id',$class_id);
-				$this->db->where('new_exam_form.int_marks', "N");
-				$this->db->where('new_exam_form.paper_type',"theory");
-				$this->db->join('paper_master', 'new_exam_form.class_id = paper_master.class_id  and new_exam_form.paper_code = paper_master.paper_code ');
-				$this->db->where('paper_master.max_internal_marks!=',"0");
-				$data['students'] = $this->db->get()->result();
-			}	
-			if($remaining=="practical"){
-				$this->db->select('*');
-				$this->db->from('new_exam_form');
-				$this->db->join('student', 'new_exam_form.student_id = student.student_id');
-				$this->db->where('student.'.$this->exam_form.'','Y');
-				$this->db->where('student.university_mode','REG');
-				$this->db->where('new_exam_form.course_group_id',$course_group_id);
-				$this->db->where('new_exam_form.class_id',$class_id);
-				$this->db->where('new_exam_form.paper_type!=',"theory");
-				$this->db->where('new_exam_form.paper_type!=',"Sessional");
-				$this->db->where('new_exam_form.p_marks', "N");
-				$data['students'] = $this->db->get()->result();
-			}
 			$title=" Students";
 			if($courseType=="REG")
 			$title=" Regular Students";
 			elseif($courseType=="PVT")
 			$title=" Private Students";	
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$data['course_group_id']= $course_group_id;
+			$data['class_id']= $class_id;
+			$data['remaining']= $remaining;
+			$data['courseType'] = $courseType;
 			$this->load->view('header',array('title' => ' '.ucfirst($remaining).' Marks not submitted of the following'.$title));
 			$this->load->view('admin/class_wise_remaining_report_table',$data);
 			$this->load->view('footer');
@@ -3310,5 +3287,85 @@ public function getStudentData()
 		echo json_encode(array('success' => 'Marks Updated Successfully'));
 	}
 	
+	public function getExamcenterWiseRemainingStudent(){
+		$exam_center = $this->input->post('exam_center');
+		$course_group_id = $this->input->post('course_group_id');
+		$class_id = $this->input->post('class_id');
+		$remaining = $this->input->post('remaining');
+		$courseType = $this->input->post('courseType');
+				
+				if($remaining=="theory"){
+					$this->db->select('*');
+					$this->db->from('new_exam_form');
+					$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+					$this->db->where('student.'.$this->exam_form.'','Y');
+					if($courseType!="ALL")
+						$this->db->where('student.university_mode',$courseType);
+					$this->db->where('new_exam_form.theory_marks','');
+					if($exam_center!="all"){
+					 	$this->db->where('student.examcentercode',$exam_center);
+					 }
+					$this->db->where('new_exam_form.course_group_id',$course_group_id);
+					$this->db->where('new_exam_form.class_id',$class_id);
+					$this->db->where('new_exam_form.paper_type',"theory");
+					$data['students'] = $this->db->get()->result();
+					$this->db->select('DISTINCT(examcentercode)');
+					$this->db->from('new_exam_form');
+					$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+					$this->db->where('student.'.$this->exam_form.'','Y');
+					if($courseType!="ALL")
+						$this->db->where('student.university_mode',$courseType);
+					$this->db->where('new_exam_form.theory_marks','');
+					$this->db->where('new_exam_form.course_group_id',$course_group_id);
+					$this->db->where('new_exam_form.class_id',$class_id);
+					$this->db->where('new_exam_form.paper_type',"theory");
+					$data['examcentercode'] = $this->db->get()->result();
+					
+	
+				}
+				if($remaining=="internal"){
+					$this->db->select('*');
+					$this->db->from('new_exam_form');
+					$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+					$this->db->where('student.'.$this->exam_form.'','Y');
+					$this->db->where('student.university_mode','REG');
+					$this->db->where('new_exam_form.course_group_id',$course_group_id);
+					$this->db->where('new_exam_form.class_id',$class_id);
+					if($exam_center!="all"){
+						$this->db->where('student.examcentercode',$exam_center);
+					 }
+					$this->db->where('new_exam_form.int_marks', "N");
+					$this->db->where('new_exam_form.paper_type',"theory");
+					$this->db->join('paper_master', 'new_exam_form.class_id = paper_master.class_id  and new_exam_form.paper_code = paper_master.paper_code ');
+					$this->db->where('paper_master.max_internal_marks!=',"0");
+					$data['students'] = $this->db->get()->result();
+				}	
+				if($remaining=="practical"){
+					$this->db->select('*');
+					$this->db->from('new_exam_form');
+					$this->db->join('student', 'new_exam_form.student_id = student.student_id');
+					$this->db->where('student.'.$this->exam_form.'','Y');
+					$this->db->where('student.university_mode','REG');
+					$this->db->where('new_exam_form.course_group_id',$course_group_id);
+					$this->db->where('new_exam_form.class_id',$class_id);
+					if($exam_center!="all"){
+						 	$this->db->where('student.examcentercode',$exam_center);
+					 }
+					$this->db->where('new_exam_form.paper_type!=',"theory");
+					$this->db->where('new_exam_form.paper_type!=',"Sessional");
+					$this->db->where('new_exam_form.p_marks', "N");
+					$data['students'] = $this->db->get()->result();
+				}
+			
+		//  $this->Common_model->getRecordByWhere('backlog_student',array('institute_id'=>$institute_id,'exam_year'=>'Sept 2023'));
+
+		$dt = $this->load->view('admin/getExamcenterWiseRemainingStudent',$data,true);
+		
+		echo json_encode(array(
+			"status" => true,
+			"data" => $dt
+		));
+	}
+
 
 }// class
