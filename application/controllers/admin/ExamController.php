@@ -2530,6 +2530,7 @@ public function getStudentData()
 			$this->db->where('new_exam_form.course_group_id',$course_group_id);
 			$this->db->where('new_exam_form.class_id',$class_id);
 			$this->db->where('new_exam_form.paper_type',"theory");
+			$this->db->order_by('student.examcentercode','desc');
 			$data['examcentercode'] = $this->db->get()->result();
 				
 

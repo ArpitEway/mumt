@@ -5,7 +5,7 @@
 <input type="hidden" class="" name="class_id" id="class_id" value="<?= $class_id; ?>">
 <input type="hidden" class="" name="remaining" id="remaining" value="<?= $remaining; ?>">
 <input type="hidden" class="" name="courseType" id="courseType" value="<?= $courseType; ?>">
-			<label for="class">Exam Center</label>
+			<label for="class"><strong>Exam Center</strong></label>
 			<select name="exam_center" id="exam_center" class="form-control" >
 			    <option value="all">All </option> 
 				<?php
