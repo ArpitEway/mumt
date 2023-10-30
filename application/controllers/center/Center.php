@@ -2894,6 +2894,28 @@ public function practical_assignment_marks_edit(){
 		);	
 		echo $this->load->view('template/getclass',$data,true);
 	}
+
+	public function getClassByCourseForBothOld(){
+		$course = $this->input->post('course');
+	
+		$this->db->select('class_master.id,class_master.class_name');
+                $this->db->from('class_master');
+                $this->db->join('paper_master', 'paper_master.class_id = class_master.id');
+                $this->db->where('paper_master.old_exam_date!=','');
+				$this->db->where('paper_master.old_exam_date!=','0000-00-00'); 
+                $this->db->where('paper_master.type','theory'); 
+				$this->db->where('class_master.course_group_id',$course); 
+			 
+                $this->db->group_by('class_master.class_name');
+				$this->db->order_by('class_master.class_name', 'Asc');
+                $class_list= $this->db->get()->result_array();
+			
+		$data = array(
+			'class_list' => $class_list,
+			//'all' => 'All',
+		);	
+		echo $this->load->view('template/getclass',$data,true);
+	}
 	//Time Table
 	public function getExamTimeTable(){
 		$course = $this->input->post('course');
@@ -2909,6 +2931,19 @@ public function practical_assignment_marks_edit(){
 		echo $this->load->view('Centers/time_table',$data,true);
 	}
 
+	public function getExamTimeTableOld(){
+		$course = $this->input->post('course');
+		$class_id = $this->input->post('class_id');
+		$data['class'] = $this->Common_model->get_record('class_master','*',array("course_group_id"=>$course,"id"=>$class_id));
+		$this->db->order_by('old_exam_date', 'Asc');
+		$this->db->order_by('old_exam_shift', 'Desc');
+		$this->db->order_by('paper_no', 'Asc');
+		$cbcs = $data['class'][0]['cbcs'];
+		$data['paper_list'] = $this->Common_model->get_record('paper_master','*',array("course_group_id"=>$course,"class_id"=>$class_id,"type"=>'theory','paper_master.old_exam_date!='=>'','paper_master.old_exam_date!='=>'0000-00-00','cbcs_paper'=>$cbcs));
+	
+	//	echo $this->db->last_query();																				  
+		echo $this->load->view('Centers/time_table_old',$data,true);
+	}
 
 	public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
 		$data = array(
