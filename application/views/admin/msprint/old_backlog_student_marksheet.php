@@ -542,7 +542,7 @@
                     <?php 
                      $arr=explode(" ",$exam_data->exam_year);
                      $first=substr($arr[1], -2);
-                     $second=date('m',strtotime($arr[0]));
+                     $second = ($arr[0] == 'Feb' || $arr[0] == 'February')?'02':date('m',strtotime($arr[0]));
                      $barcode_no=$first.$second.$exam_data->roll_no;
                      echo $generator->getBarcode($barcode_no, $generator::TYPE_CODE_128,2,25); ?>
                     </td>
