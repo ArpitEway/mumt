@@ -2383,8 +2383,14 @@ public function marksheet_admin($student_id="")
 		$data['classData']  = $classData;
 		$data['exam_session']  = 'July 2023';
 		$title = array('title' => 'Result - '.$data['student']->enrollment_no);
+		$class_ids=array(101,104,107,110,116,119,125,128,131,134);
+		$class_cbcs = array(193,197,201,203,205,211,213,221,223,225,227,275,279);
 		$this->load->view('admin/generate_tr/header2',$title);	
 		//$this->load->view('Centers/marksheet',$data);
+		if((in_array($student[0]->class_id , $class_ids)) && $student[0]->university_mode=='REG'){
+			$this->load->model('Gradesheet_model');
+			$this->load->view('Centers/grade_marksheet_admin',$data);	
+		}else{
 		$this->load->view('Centers/marksheet_top_admin',$data);
 		//if ($student[0]->course_group_id==36 || $student[0]->course_group_id==37 || $student[0]->course_group_id==33) {
 		if($classData->internal=='N'){
@@ -2395,6 +2401,7 @@ public function marksheet_admin($student_id="")
 			}else{
 				$this->load->view('Centers/marksheet_bottom',$data);
 			}
+		}
 			
 		$this->load->view('admin/generate_tr/footer2');
 	}

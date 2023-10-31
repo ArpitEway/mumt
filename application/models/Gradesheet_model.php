@@ -33,9 +33,23 @@ class Gradesheet_model extends CI_Model
 		
 	}
 
-	public function view_result($student_id,$course_group_id,$class_id,$mode)
+	public function view_result($student_id,$course_group_id,$class_id,$mode,$work_table='')
 	{
-		$table = $this->Common_model->getMaster('exam_form_table');
+		if($work_table != ''){
+			$std  = $this->Common_model->getRecordByWhere($work_table,array('class_id'=> $class_id,'student_id'=>$student_id));
+		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+		
+		
+		if($std[0]->sub_group_id == 1){
+			$papers = $this->Common_model->get_all_papers_admin($student_id,$class_id);
+		}
+		if($this->classData->class_group == 'Y'){
+		$papers_list = $this->Common_model->get_all_group_papers_admin($student_id,$class_id);
+		// echo '<pre>';
+		// print_r($papers_list);
+		}
+		}else{
+			$table = $this->Common_model->getMaster('exam_form_table');
 		$std  = $this->Common_model->getRecordByWhere($table,array('class_id'=> $class_id,'student_id'=>$student_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
@@ -45,6 +59,7 @@ class Gradesheet_model extends CI_Model
 		}
 		if($this->classData->class_group == 'Y'){
 		$papers_list = $this->Common_model->get_all_group_papers($student_id,$class_id);
+		}
 		}
 		// get_all_group_papers
 		//  print_r($papers);die;
@@ -233,7 +248,6 @@ class Gradesheet_model extends CI_Model
 	public function _row()
 	{
 		
-
 		// print_r($this->foundation_paper[$this->paper['sub_group_id']]);die;
 		if($this->paper['sub_group_id']=='1'){
 			 $this->obt_marks += $this->paper["theory_marks"];
@@ -251,6 +265,7 @@ class Gradesheet_model extends CI_Model
 				$this->foundation_paper[$this->paper['group_paper_name']]['max_theory_marks'] += $this->paper['max_theory_marks'];
 				$this->_echo_row_foudation($this->paper['group_paper_name']);
 			}else{
+				
 				if ($this->paper['theory_marks']=='') {
 					$this->withheld = true;
 				}
