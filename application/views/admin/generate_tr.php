@@ -138,6 +138,7 @@ table.last_table, .last_table td, .last_table th{
   $course_duration = ($isFinalClass) ? "(One Year Course)" : $classData->class_name;
   $rowspanhead = ($classData->project!='N' || $classData->practical!='N') ? "4" : "3";
   $rowspandata = ($classData->project!='N' || $classData->practical!='N') ? "5" : "4";
+  $examDataColspan = ($this->Common_model->getClassNameByClassId($class_id) == "IV SEM")?'1':'2';
   if($classData->internal=='N'){
     $rowspandata--;  
   }
@@ -151,8 +152,8 @@ table.last_table, .last_table td, .last_table th{
   {
     $current_center=$student->center_id;
     $page_break_count++;
-    $marks = $this->Common_model->student_info_for_result($student->student_id,$student->old_class_id);
-    $BarCodecolspan = 9 + count($marks); 
+    $marks = $this->Common_model->student_info_for_result($student->student_id,$student->class_id);
+    $BarCodecolspan = 10 + count($marks); 
     $total_theory_marks_obt = 0;
     $total_int_marks_obt = 0;
     $total_marks_obt = 0;
@@ -380,7 +381,7 @@ table.last_table, .last_table td, .last_table th{
     <table class="table table1">
       <tbody>
         <tr>
-          <th  class="align-middle text-center roll_no" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_number  ?> <br> <?php echo $student->enrollment_no  ?></th>
+          <th  class="align-middle text-center roll_no" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_no  ?> <br> <?php echo $student->enrollment_no  ?></th>
           <th class="align-middle text-center ms_no" rowspan="<?php echo $rowspandata ?>">
             <?php  echo $student->marksheet_no  ?>
           </th>
@@ -394,8 +395,8 @@ table.last_table, .last_table td, .last_table th{
           <td  class="align-middle text-center obtained" rowspan="<?php echo $rowspandata ?>"><?php 
                   echo $total_marks_obt .'/'. $total_paper_marks;
           ?></td>
-          <td  class="align-middle text-center result" rowspan="<?php echo $rowspandata ?>"><?php echo $final_result; ?></td>
-          <td  class="align-middle text-cente remarks"  rowspan="<?php echo $rowspandata ?>"><?php 
+          <td  class="align-middle text-center result" rowspan="<?php echo $rowspandata ?>" colspan="4"><?php echo $final_result; ?></td>
+          <td  class="align-middle text-cente remarks"  rowspan="<?php echo $rowspandata ?>" ><?php 
           if($check_grace_marks){
             echo "-";
           }else{
@@ -559,7 +560,7 @@ table.last_table, .last_table td, .last_table th{
     <?php } ?>
     <td class="align-middle text-center"><?php echo $total_marks_obt; ?></td>
   </tr>
- 
+ <tr>
   <?php  
   if($final_class && $isFinalClass == false){
     $final_rw = 0;
@@ -573,8 +574,8 @@ table.last_table, .last_table td, .last_table th{
   $this->db->order_by('id','desc');
   $this->db->limit(1);
   $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id'=>$cls->id));
-  ?> <tr>
-  <td class="align-middle text-center "  colspan="2"><strong>
+  ?> 
+  <td class="align-middle text-center"  colspan="<?= $examDataColspan?>"><strong>
   <?= 'Session'.'<br>'.'Sem/Year'.'<br>'.'Roll no'.'<br>'.'Marks'?></strong>
  
 </td> <?php
@@ -600,7 +601,7 @@ table.last_table, .last_table td, .last_table th{
   
   
  
-<td class="align-middle text-center "  colspan="2">
+<td class="align-middle text-center "  colspan="<?= $examDataColspan?>">
   <?= $old->exam_year.'<br>'.$this->Common_model->getClassNameByClassId($old->class_id).'<br>'.$old->roll_no.'<br>'.$old->obtain_marks.'/'.$old->total_marks?>
  
 </td>  
@@ -620,11 +621,11 @@ table.last_table, .last_table td, .last_table th{
  ?>
   
 <td class="align-middle text-center " ><strong>Result</strong><br><?= $final_result?></td>
-<td class="align-middle text-center "  colspan="2"><strong>Grand Total</strong><br><?= $total_ob.'/'.$total_mar?></td>
+<td class="align-middle text-center "  colspan="<?= $examDataColspan?>"><strong>Grand Total</strong><br><?= $total_ob.'/'.$total_mar?></td>
 <td class="align-middle text-center "  colspan="2"><strong>%</strong><br><?= $percent?></td>
 <td class="align-middle text-center "  colspan="2"><strong>Division</strong><br><?= $div?></td>
 <td class="align-middle text-center "  colspan="3"><strong>Degree No. And Date</strong><br>-</td>
-<td class="align-middle text-center "  colspan="2"><strong>Remark</strong><br><?= $final_remark?></td>
+<td class="align-middle text-center "  colspan="6"><strong>Remark</strong><br><?= $final_remark?></td>
   </tr>
   <?php
  
@@ -647,8 +648,8 @@ table.last_table, .last_table td, .last_table th{
   }
   ?>
   <tr class="">
-    <td  class="align-middle text-left " colspan="<?=$BarCodecolspan ?>">
-          <?php  echo $generator->getBarcode($marksheetData[0]->bar_code_no.$student->roll_number, $generator::TYPE_CODE_128,2,25); ?>
+    <td  class="align-middle text-left " colspan="20">
+          <?php  echo $generator->getBarcode($marksheetData[0]->bar_code_no.$student->roll_no, $generator::TYPE_CODE_128,2,25); ?>
     </td>
   </tr>
 </tbody>

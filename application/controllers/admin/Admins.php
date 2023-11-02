@@ -3061,7 +3061,7 @@ public function update_exam_datewise_permission(){
 			$pagetitle=$startlimit;
 		}
 		
-		$where =array("course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y', 'roll_number!='=>'0' ,'university_mode'=> $mode);
+		$where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y', 'roll_no!='=>'0' ,'university_mode'=> $mode,'examcentercode'=>'MDE165');
 		//,'student_id'=>702823
 		$this->db->order_by('center_id','ASC');
 		$this->db->order_by('roll_number','ASC');
@@ -3150,7 +3150,7 @@ public function update_exam_datewise_permission(){
 	}
 
 	public function tr_class_list(){
-		$where = "id in (select distinct(course_group_id) from student where exam_form = 'Y')";
+		$where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y')";
 		//and old_class_id in (193,197,201,203,205,211,213,221,223,225,227,275,279,255,261)
 		//(253,193,197,201,203,205,211,275,279,221,223,225,227,213) )";
 		// new_exam_form = 'Y' or student_result_aug_22
