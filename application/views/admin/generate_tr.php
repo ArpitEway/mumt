@@ -561,6 +561,10 @@ table.last_table, .last_table td, .last_table th{
     <td class="align-middle text-center"><?php echo $total_marks_obt; ?></td>
   </tr>
  <tr>
+ <td class="align-middle text-center"  colspan="<?= $examDataColspan?>"><strong>
+  <?= 'Session'.'<br>'.'Sem/Year'.'<br>'.'Roll no'.'<br>'.'Marks'?></strong>
+ 
+</td> 
   <?php  
   if($final_class && $isFinalClass == false){
     $final_rw = 0;
@@ -575,10 +579,7 @@ table.last_table, .last_table td, .last_table th{
   $this->db->limit(1);
   $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id'=>$cls->id));
   ?> 
-  <td class="align-middle text-center"  colspan="<?= $examDataColspan?>"><strong>
-  <?= 'Session'.'<br>'.'Sem/Year'.'<br>'.'Roll no'.'<br>'.'Marks'?></strong>
- 
-</td> <?php
+ <?php
  foreach($old_result as $old){
   if($old->exam_result == "FAIL"){
  $final_fail++;
@@ -621,7 +622,7 @@ table.last_table, .last_table td, .last_table th{
  ?>
   
 <td class="align-middle text-center " ><strong>Result</strong><br><?= $final_result?></td>
-<td class="align-middle text-center "  colspan="<?= $examDataColspan?>"><strong>Grand Total</strong><br><?= $total_ob.'/'.$total_mar?></td>
+<td class="align-middle text-center "  colspan="2"><strong>Grand Total</strong><br><?= $total_ob.'/'.$total_mar?></td>
 <td class="align-middle text-center "  colspan="2"><strong>%</strong><br><?= $percent?></td>
 <td class="align-middle text-center "  colspan="2"><strong>Division</strong><br><?= $div?></td>
 <td class="align-middle text-center "  colspan="3"><strong>Degree No. And Date</strong><br>-</td>
