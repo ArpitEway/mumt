@@ -64,7 +64,7 @@ class Otherscript extends CI_Controller {
 		$papers = $this->Common_model->get_record('paper_master','*',$where);
 
 		foreach ($papers as $paper) {
-			$where = ' old_class_id = "'.$paper['class_id'].'" and temp_exam_form="Y"';
+			$where = ' class_id = "'.$paper['class_id'].'" and temp_exam_form="Y"';
 			$students = $this->Common_model->get_record('student','*',$where);
 			$studentData = array(
 				'course_group_id' => $paper['course_group_id'],
