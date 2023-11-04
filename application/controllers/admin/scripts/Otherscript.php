@@ -75,8 +75,8 @@ class Otherscript extends CI_Controller {
 				'paper_order' => $paper['paper_no'],		
 			);
 			foreach ($students as $student) {
-				echo 	$studentData['student_id'] = $student['student_id'];
-				//$this->Common_model->insertAll('new_exam_form',$studentData);
+					$studentData['student_id'] = $student['student_id'];
+				$this->Common_model->insertAll('new_exam_form',$studentData);
 				echo $this->db->last_query().'<br>';
 			}
 		}	
