@@ -2755,6 +2755,8 @@ public function practical_assignment_marks_edit(){
 			$remark  = $this->input->post("remark");
 			$payment_mode  = $this->input->post("payment_mode");
 			$amount  = $this->input->post("amount");
+			$transaction_number  = $this->input->post("transaction_number");
+			$receipt_number  = $this->input->post("receipt_number");
 			$file_name = '';
 			if(isset($_FILES['images']) && $_FILES['images']['tmp_name']!=''){
 			$filename = $student_id.'-'.date('Ymdhis');
@@ -2775,6 +2777,8 @@ public function practical_assignment_marks_edit(){
 				'remark' => $remark,
 				'payment_mode' => $payment_mode,
 				'amount' => $amount,
+				'txnId' =>$transaction_number,
+				'receipt_number'=>$receipt_number,
 				'image' => $file_name,
 				'payment_status' => "Paid By University",
 				'payment' => 'Y'

@@ -103,13 +103,26 @@
 	 <div class="text-danger" id="error2"></div>
 	</div>
    </div>
+   <div class="form-group row">
+    <label for="transaction_number" class="col-5 col-form-label">UPI / Online Transaction No.</label>
+    <div class="col-7">
+     <input class="form-control" type="text" name="transaction_number" id="transaction_number" required />
+	
+    </div>
+   </div>
+   <div class="form-group row">
+    <label for="amount" class="col-5 col-form-label">Receipt No.</label>
+    <div class="col-7">
+     <input class="form-control" type="text" name="receipt_number" id="receipt_number" required />
+	</div>
+   </div>
+   
      <div class="form-group row">
     <label for="example-date-input" class="col-5 col-form-label">Remark</label>
     <div class="col-7">
 	<textarea class="form-control remark" placeholder="Remark detail" id="kt_autosize_2" rows="4" name="remark" id="remark"  ></textarea>
     </div>
    </div>
-  
   <div class="card-footer pb-0">
    <div class="row justify-content-center">
   
@@ -155,6 +168,8 @@
 		var payment_date = $('#payment_date').val();
 		var payment_mode = $('#payment_mode').val();
 		var amount = $('#amount').val();
+		var transaction_number = $('#transaction_number').val();
+		var receipt_number = $('#receipt_number').val();
 		if(payment_date==''){
 			$('#error').text('Please Select Date');
 			return false;
