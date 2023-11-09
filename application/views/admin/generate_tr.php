@@ -162,6 +162,8 @@ table.last_table, .last_table td, .last_table th{
     $require_tot_marks = 0;
     $tot_std_marks = 0;
     $tot_marks = 0;
+    $total_ob=0;
+    $total_mar=0;
     $rw_count = 0;
     $theory_abs_count = 0;
     $atkt_paper_codes_array = array(); 
