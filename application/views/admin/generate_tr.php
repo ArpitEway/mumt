@@ -574,6 +574,8 @@ table.last_table, .last_table td, .last_table th{
       $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$course_group_id,'mode'=>$classData->mode,'id!='=>$class_id
 					));
           // $this->Common_model->last_query();
+          $total_ob += $total_marks_obt;
+          $total_mar += $total_paper_marks;
    foreach($classes as $cls){
   $this->db->order_by('id','desc');
   $this->db->limit(1);
@@ -588,8 +590,8 @@ table.last_table, .last_table td, .last_table th{
  
   }
 
-  $total_ob = $total_marks_obt + $old->obtain_marks;
-  $total_mar =  $total_paper_marks + $old->total_marks;
+  $total_ob +=  $old->obtain_marks;
+  $total_mar +=   $old->total_marks;
   $percent = round(($total_ob/$total_mar)*100,2);    
     if($percent>=60){
       $div = "First";
