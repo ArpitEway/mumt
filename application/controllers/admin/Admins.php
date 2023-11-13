@@ -3103,7 +3103,7 @@ public function update_exam_datewise_permission(){
 			$pagetitle=$startlimit;
 		}
 		
-		$where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'exam_form'=>'Y', 'roll_no!='=>'0' ,'mode'=> $mode,'exam_year'=>'Dec 2022');
+		$where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'exam_form'=>'Y', 'roll_no!='=>'0' ,'mode'=> $mode,'exam_year'=>'June 2023');
 		//,'student_id'=>702823
 		$this->db->order_by('center_id','ASC');
 		$this->db->order_by('roll_no','ASC');
@@ -3128,9 +3128,42 @@ public function update_exam_datewise_permission(){
 		else if ($class_id!=168) {
 			$this->load->view('admin/backlog_generate_tr',$data);
 		}else{
-			$this->load->view('admin/generate_tr_mom',$data);
+			$this->load->view('admin/backlog_tr_mom',$data);
 		}
 
+	}
+
+    public function backlog_generate_tr_bed($mode="",$course_group_id="",$class_id=""){
+		// $this->db->order_by('center_id,roll_number','ASC');
+		
+		// $data['students'] = $this->Common_model->getRecordByWhere('student',array("university_mode"=>$mode,"course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y','roll_no!='=>'0' ));
+
+		// // $data['students'] = $this->Common_model->getRecordByWhere('student_result_aug_22',array("university_mode"=>$mode,"course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y','roll_number!='=>'0' ));
+		// //'result_show' => 'N' ,'student_id'=>'685381'
+        $where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'exam_form'=>'Y', 'roll_no!='=>'0' ,'mode'=> $mode,'exam_year'=>'June 2023');
+		//,'student_id'=>702823
+		$this->db->order_by('center_id','ASC');
+		$this->db->order_by('roll_no','ASC');
+		
+		// $data['students'] = $this->Common_model->getRecordByWhere('student_result_aug_22',$where);
+		
+		$data['students'] = $this->Common_model->getRecordByWhere('backlog_student',$where);
+		$data['class_id'] = $class_id;
+		$data['course_group_id'] = $course_group_id;
+		$data['title'] = "TR ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
+		// $this->load->view('admin/generate_tr/header2',array('title' =>$title));
+
+		// if($class_id == '110' || $class_id == '119' || $class_id == '131')
+		$class_ids=array(110,119,125,128,131,);
+		if(in_array($class_id, $class_ids))		
+		{
+			$this->load->model('Gradesheet_tr_model');
+			$this->load->view('admin/generate_tr/backlog_practical_internal_tr',$data);
+		}else{
+			$this->load->view('admin/generate_tr/bed_tr',$data);
+		}
+		
+		// $this->load->view('admin/generate_tr/footer2');
 	}
 
 	public function UpdateStudentDataMarks()
@@ -3163,7 +3196,7 @@ public function update_exam_datewise_permission(){
 	}
 
 	public function backlog_tr_class_list(){
-		$where = "id in (select distinct(course_group_id) from backlog_student where exam_form = 'Y' and exam_year='Dec 2022' )";
+		$where = "id in (select distinct(course_group_id) from backlog_student where exam_form = 'Y' and exam_year='June 2023' )";
 		// new_exam_form = 'Y' or student_result_aug_22
 		// and class_id in (104,107,134,283,285,287,289,293,295,297,291)
 		
