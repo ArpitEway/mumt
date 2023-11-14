@@ -3111,7 +3111,7 @@ public function update_exam_datewise_permission(){
 		// $data['students'] = $this->Common_model->getRecordByWhere('student_result_aug_22',$where);
 		
 		$data['students'] = $this->Common_model->getRecordByWhere('backlog_student',$where);
-		
+		// print_r($data['students']);die;
 		//  $this->Common_model->last_query();
 		$data['class_id'] = $class_id;
 		$data['pagenumber']=$pagenumber;
@@ -3122,8 +3122,8 @@ public function update_exam_datewise_permission(){
 		$class_ids=array(101,104,107,110,116,119,125,128,131,134);
 		if((in_array($class_id, $class_ids)) && $mode=='REG')	
 		{
-			$this->load->model('Gradesheet_tr_model');
-			$this->load->view('admin/generate_gradesheet_tr',$data);
+			$this->load->model('Gradesheet_backlog_tr_model');
+			$this->load->view('admin/generate_backlog_gradesheet_tr',$data);
 		}
 		else if ($class_id!=168) {
 			$this->load->view('admin/backlog_generate_tr',$data);
@@ -3157,7 +3157,7 @@ public function update_exam_datewise_permission(){
 		$class_ids=array(110,119,125,128,131,);
 		if(in_array($class_id, $class_ids))		
 		{
-			$this->load->model('Gradesheet_tr_model');
+			$this->load->model('Gradesheet_backlog_tr_model');
 			$this->load->view('admin/generate_tr/backlog_practical_internal_tr',$data);
 		}else{
 			$this->load->view('admin/generate_tr/bed_tr',$data);
@@ -5620,9 +5620,9 @@ public function forward_complaint(){
 			redirect(base_url());
 			exit;
 		}
-		$data['not_permited_students']= $this->Common_model->getRecordByWhere('backlog_student',array("course_group_id"=>$course_id ,'class_id' => $class_id , 'result_show'=>'N' , 'exam_form'=>'Y' ,'mode'=>$mode,'exam_year'=>'Dec 2022'));
+		$data['not_permited_students']= $this->Common_model->getRecordByWhere('backlog_student',array("course_group_id"=>$course_id ,'class_id' => $class_id , 'result_show'=>'N' , 'exam_form'=>'Y' ,'mode'=>$mode,'exam_year'=>'June 2023'));
 
-		$data['permited_students']= $this->Common_model->getRecordByWhere('backlog_student',array("course_group_id"=>$course_id ,'class_id' => $class_id , 'result_show'=>'Y' , 'exam_form'=>'Y' ,'mode'=>$mode,'exam_year'=>'Dec 2022'));
+		$data['permited_students']= $this->Common_model->getRecordByWhere('backlog_student',array("course_group_id"=>$course_id ,'class_id' => $class_id , 'result_show'=>'Y' , 'exam_form'=>'Y' ,'mode'=>$mode,'exam_year'=>'June 2023'));
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
 		$data['mode']=$mode;
@@ -5639,12 +5639,12 @@ public function forward_complaint(){
 		if($_POST['not_permitted']){
 			$student_ids = (implode(',',$_POST['not_permitted']));
 			$data = array('result_show' => 'Y');
-			$where = " student_id in (".$student_ids.") and exam_year = 'Dec 2022'";//provisional_remark in ('','N') &&
+			$where = " student_id in (".$student_ids.") and exam_year = 'June 2023' and class_id=".$_POST['class_id']."";//provisional_remark in ('','N') &&
 			$update =$this->Common_model->updateRecordByConditions('backlog_student',$where,$data);
 		}else{
 			$student_ids = (implode(',',$_POST['permitted']));
 			$data = array('result_show' => 'N');
-			$where ='student_id in ('.$student_ids.') and exam_year = "Dec 2022"';
+			$where ='student_id in ('.$student_ids.') and exam_year = "June 2023" and class_id='.$_POST["class_id"].'';
 			$update = 	$this->Common_model->updateRecordByConditions('backlog_student',$where,$data);
 		}  
 		if($update){

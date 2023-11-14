@@ -2003,11 +2003,12 @@ class Center extends CI_Controller {
 		$this->db->join('class_master', 'class_master.course_group_id = course_group.id');
 		//$this->db->where('class_master.id', 'student.class_id');
 		
-		$this->db->where('class_master.backlog_result_permission', 'Y');
+		// $this->db->where('class_master.backlog_result_permission', 'Y');
+        $this->db->where('class_master.backlog_exam_form_permission', 'Y');
 		//$this->db->where('center_id', $center_id);
 		$this->db->where('result_show','Y');
 		$this->db->where('exam_form','Y');
-		$this->db->where('exam_year','Dec 2022');
+		$this->db->where('exam_year','June 2023');
 		//$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,197,203,211,213)');
 		$data['courses'] = $this->db->get()->result();
 		//  echo $this->db->last_query(); die;
@@ -2173,7 +2174,7 @@ class Center extends CI_Controller {
 		$data = $row = array();
 		// $where1 ='';
 	
-		$where = array('exam_form'=>'Y','result_show'=>'Y','exam_year'=>'Dec 2022');
+		$where = array('exam_form'=>'Y','result_show'=>'Y','exam_year'=>'June 2023');
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{
@@ -2321,7 +2322,7 @@ public function backlog_marksheet($student_id="")
 		$this->db->select('backlog_student.*,student.name,student.f_h_name,student.course_name,student.photo,student.session');
 				$this->db->from('backlog_student');
 				$this->db->join('student','backlog_student.student_id=student.student_id');
-				$this->db->where(array('backlog_student.exam_form'=>'Y','backlog_student.result_show'=>'Y','backlog_student.student_id'=>$student_id,'exam_year'=>'Dec 2022'));
+				$this->db->where(array('backlog_student.exam_form'=>'Y','backlog_student.result_show'=>'Y','backlog_student.student_id'=>$student_id,'exam_year'=>'June 2023'));
 				$student = $this->db->get()->result();
 		if ((count($student)==0)  ) {
 			redirect(base_url());

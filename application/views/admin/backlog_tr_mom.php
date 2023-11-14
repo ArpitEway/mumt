@@ -238,6 +238,12 @@ table.last_table, .last_table td, .last_table th{
       if ($new_exam_form->type=='Sessional') {
         $total_paper_marks += (int) $new_exam_form->max_internal_marks;
         $total_marks_obt += (int) $new_exam_form->int_marks;
+            if($new_exam_form->int_marks<$new_exam_form->min_internal_marks && $new_exam_form->status == 'B'){
+            $int_fail_count++;
+            array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
+          }else{
+            $count_int++;
+          }
       }
 
       if($new_exam_form->type!='theory' && $new_exam_form->type!='Sessional'){
@@ -248,7 +254,7 @@ table.last_table, .last_table td, .last_table th{
         if($new_exam_form->p_marks=='' || $new_exam_form->p_marks=='N'){
           $rw_count++;
         }
-        if($new_exam_form->p_marks=='ABS'){
+        if($new_exam_form->p_marks=='ABS' && $new_exam_form->status == 'B'){
           $p_abs_count++;
         }
         if($new_exam_form->p_marks<$new_exam_form->min_theory_marks){
@@ -261,12 +267,13 @@ table.last_table, .last_table td, .last_table th{
     if ($fail_count==0 && $rw_count==0 && $p_fail_count==0 && $int_fail_count==0 && $theory_abs_count==0) {
        $final_result = "PASS";
     }else{
-      $require_grace_marks = $require_tot_marks-$fail_tot_marks;
+    //   $require_grace_marks = $require_tot_marks-$fail_tot_marks;
       // tot 3 grace marks in 1 subjects
-      if ($fail_count<2 && $require_grace_marks<4 && $int_fail_count==0 && $p_fail_count==0 && $rw_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0) {
-        $check_grace_marks = true;
-        $final_result = "PASS BY GRACE";
-      }elseif($rw_count>0){
+    //   if ($fail_count<2 && $require_grace_marks<4 && $int_fail_count==0 && $p_fail_count==0 && $rw_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0) {
+    //     $check_grace_marks = true;
+    //     $final_result = "PASS BY GRACE";
+    //   }else
+      if($rw_count>0){
         $final_result = "RW";
       }else{
         $final_result = "FAIL";
@@ -627,7 +634,7 @@ table.last_table, .last_table td, .last_table th{
   }
   ?>
 <?php if($isFinalClass){ ?>
-  <?php if($final_result !="PASS" && !$check_grace_marks){ ?>
+  <?php if($final_result !="PASS"){ ?>
     <tr>
       <td class="text-center align-middle" colspan="<?=$BarCodecolspan ?>">    -   </td>
     </tr>

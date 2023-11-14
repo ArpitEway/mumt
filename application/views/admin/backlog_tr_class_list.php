@@ -13,7 +13,7 @@
 			//$this->db->where_in('id',array(101,104,107,110,116,119,125,128,131,134,137,154,155,159,160,162,163,164,165,168,169,170,171,172,173,174,175,177,178,180,181,182,183,191,194,196,198,200,202,204,206,208,210,212,214,222,224,226,228,256,262,268,273,274,283,285,287,289,291,293,295,297,299));
 			// $this->db->where_in('id',array(104,107,134,283,285,287,289,293,295,297,291));
 			//  $this->db->where_in('id',array(154,155,181,182,299));
-        $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id']));
+        $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id'],'backlog_exam_form_permission'=>'Y'));
 		// , "backlog_result_permission"=>'Y'
 		
         // , 'exam_form_permission' => 'Y'
@@ -36,7 +36,7 @@
         <td></td>
 		<?php 
 		$class_ids=array(101,104,107,110,116,119,125,128,131,134);
-		$cbcs = ($class->cbcs == 'Y' || in_array($class->id, $class_ids))?' (CBCS)':'';?>
+		$cbcs = (in_array($class->id, $class_ids))?' (CBCS)':'';?>
 			<td><?= $class->class_name.$cbcs ?></td>
 			<td><?php 
 			$flag=($class->regular_class == 'Y' && $class->private_class == 'Y')? '/': '';
