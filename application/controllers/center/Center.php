@@ -2225,9 +2225,9 @@ class Center extends CI_Controller {
 			// if($result->provisional_remark=="N" || $result->provisional_remark==""){
 				// if(($result->old_class_id == '104' || $result->old_class_id == '107' || $result->old_class_id == '101' || $result->old_class_id == '134' || $result->old_class_id == '116'|| $result->old_class_id == '110' || $result->old_class_id == '119' || $result->old_class_id == '131') && $result->university_mode == 'REG')
 				$class_ids=array(101,104,107,110,116,119,125,128,131,134);
-				if((in_array($result->old_class_id , $class_ids)) && $result->university_mode=='REG')	
+				if((in_array($result->class_id , $class_ids)) && $result->mode=='REG')	
 				{
-					$btn =	'<a href="'.base_url('center/Center/grade_marksheet/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm dt-center" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
+					$btn =	'<a href="'.base_url('center/Center/backlog_grade_marksheet/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm dt-center" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
 				}else{
 					$btn =	'<a href="'.base_url('center/Center/backlog_marksheet/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm dt-center" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
 				}
@@ -2239,7 +2239,7 @@ class Center extends CI_Controller {
 			}else{
 				$enrollment = $result->enrollment_no;
 				}
-			$class_name =  $this->Common_model->getClassNameByClassId($result->old_class_id); 
+			$class_name =  $this->Common_model->getClassNameByClassId($result->class_id); 
 			$data[] = array($result->student_id,$enrollment,$student->name, $student->f_h_name, $student->course_name,$this->Common_model->getClassNameByClassId($result->class_id),$btn);
 		}
 		/********************************************/
@@ -2330,6 +2330,7 @@ public function backlog_marksheet($student_id="")
 		// $data['students'] =$this->Common_model->getRecordById('student','student_id',$student[0]->student_id);
 		
 		$data['student']=$student[0];
+        $data['student_info']= $this->Common_model->getRecordById('student','student_id',$data['student']->student_id);
 		$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
 		$data['practical_internal_marks']=$classData->practical_internal_marks;
 		$this->db->select('*');
@@ -2338,8 +2339,8 @@ public function backlog_marksheet($student_id="")
 		$this->db->where('backlog_exam_form.class_id',$data['student']->class_id);
 		$this->db->where('backlog_exam_form.backlog_student_id',$data['student']->id);
 		$this->db->order_by('backlog_exam_form.paper_order','backlog_exam_form.paper_order');
-		$new_exam_form = $this->db->get()->result();
-		$data['new_exam_form']  = $new_exam_form;
+		$backlog_exam_form = $this->db->get()->result();
+		$data['backlog_exam_form']  = $backlog_exam_form;
 		$data['classData']  = $classData;
 		$data['exam_session']  = 'March 2023';
 		$title = array('title' => 'Result - '.$data['student']->enrollment_no);
@@ -2348,10 +2349,10 @@ public function backlog_marksheet($student_id="")
 		$this->load->view('Centers/marksheet_top_backlog',$data);
 		//if ($student[0]->course_group_id==36 || $student[0]->course_group_id==37 || $student[0]->course_group_id==33) {
 		if($classData->internal=='N'){
-			$this->load->view('Centers/marksheet_without_int',$data);
+			$this->load->view('Centers/marksheet_without_int_backlog',$data);
 		}else{
-			if($student[0]->old_class_id=='168'){
-				$this->load->view('Centers/marksheet_mom',$data);
+			if($student[0]->class_id=='168'){
+				$this->load->view('Centers/marksheet_mom_backlog',$data);
 			}else{
 				$this->load->view('Centers/marksheet_bottom_backlog',$data);
 			}
@@ -2468,6 +2469,32 @@ public function marksheet_admin($student_id="")
 	   $this->load->view('Centers/grade_marksheet_pg',$data);
 	   //$this->load->view('Centers/footer');
 	   $this->load->view('admin/generate_tr/footer2');
+
+}
+
+
+public function backlog_grade_marksheet($student_id=""){
+	
+    $student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
+       $student = $this->Common_model->getRecordByWhere('backlog_student',array('exam_form'=>'Y','result_show'=>'Y','student_id'=>$student_id));
+       // print_r($student);die;
+       if (count($student)==0) {
+           redirect(base_url());
+       }
+       $data['student']=$student[0];
+       $data['student_info'] = $this->Common_model->getRecordById('student','student_id',$data['student']->student_id);
+       $classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
+       $data['practical_internal_marks']=$classData->practical_internal_marks;
+       $data['classData']  = $classData;
+       $data['exam_session']  = 'March 2023';
+       $this->load->model('Gradesheet_backlog_model');
+       // $title = array('title' => 'Result - '.$data['student']->enrollment_no);
+       $title ="";
+       $this->load->view('admin/generate_tr/header2');
+       //$this->load->view('Centers/header',$title);
+       $this->load->view('Centers/backlog_grade_marksheet',$data);
+       //$this->load->view('Centers/footer');
+       $this->load->view('admin/generate_tr/footer2');
 
 }
 

@@ -120,6 +120,7 @@ table.last_table, .last_table td, .last_table th{
     div#footer_content {
       font-weight: bold;
     }
+}
 </style>
 <div id="footer_wrapper">
   <div id="footer_content">
