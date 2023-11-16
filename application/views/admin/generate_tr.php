@@ -562,13 +562,15 @@ table.last_table, .last_table td, .last_table th{
     <?php } ?>
     <td class="align-middle text-center"><?php echo $total_marks_obt; ?></td>
   </tr>
+  <?php  
+  if($final_class && $isFinalClass == false){ ?>
  <tr>
  <td class="align-middle text-center"  colspan="<?= $examDataColspan?>"><strong>
   <?= 'Session'.'<br>'.'Sem/Year'.'<br>'.'Roll no'.'<br>'.'Marks'?></strong>
  
 </td> 
   <?php  
-  if($final_class && $isFinalClass == false){
+ // if($final_class && $isFinalClass == false){
     $final_rw = 0;
     $final_fail =0;
     
