@@ -26,6 +26,7 @@ class Postexam extends CI_Controller {
             221 - June 2022
             231 - June 2023
         */
+            $this->db->order_by('center_id,course_group_id,class_id,roll_no');
             $data['students'] = $this->Common_model->getRecordByWhere('student', array('new_exam_form'=>'Y' ,'roll_no!='=>0 ,'marksheet_no'=>''));
             $starting_no = 10001 ;
             foreach($data['students']  as $key =>  $student){
