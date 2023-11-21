@@ -54,13 +54,13 @@
         </table>';
         echo $heading;
     $rowCounter=0; $position="left"; ?>
-    <table   border="1" class="form-group col-md-6" style="width:49%;float:left;margin:2px;">
+    <table   border="1" class="form-group col-md-6" style="width:32%;float:left;margin:2px;">
         <tr style="text-align:center;">
-            <th width="20%">Exam Center </th>
+            <th width="20%">EC</th>
             <th width="20%">En.No. </th>
             <th width="15%">Roll No.</th>
             <th width="15%">Marks</th>
-            <th width="27%">Remark</th>
+            <!-- <th width="27%">Remark</th> -->
         </tr>
         
         <?php 
@@ -75,7 +75,7 @@
                 
                 <td style='text-align:center;'><?php echo $student->theory_marks; ?></td>
                 
-                <td class="font-19">&nbsp;&nbsp;<?php //echo $result; ?></td>
+                <!-- <td class="font-19">&nbsp;&nbsp;<?php //echo $result; ?></td> -->
             </tr>
             <?php 
                 if($rowCounter%$pageCounter==0){
@@ -83,20 +83,21 @@
                 ?>
             </table>
             <?php
-                if($position=="right")
-                {  echo '<p class="break"></p>'.$heading;
-                $position="left"; }
-                else if($position=="left")
-                $position="right"; 
+                 if($rowCounter%105==0)//$position=="right"
+                 {  echo '<p class="break"></p>'.$heading;
+                // $position="left";
+                 }
+                // else if($position=="left")
+                // $position="right"; 
             ?>
             <!---Header Part--->
-            <table   border="1" class="form-group col-md-6" style="float:<?=$position?>;width:49%;margin:2px;">
+            <table   border="1" class="form-group col-md-6" style="float:<?=$position?>;width:32%;margin:2px;">
                 <tr style="text-align:center;">
-                    <th width="20%">Exam Center </th>
+                    <th width="20%">EC </th>
                     <th width="20%">En.No. </th>
                     <th width="15%">Roll No.</th>
                     <th width="15%">Marks</th>
-                    <th width="27%">Remark</th>
+                    <!-- <th width="27%">Remark</th> -->
                 </tr>
                 <?php
                 }
