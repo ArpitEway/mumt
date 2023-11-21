@@ -985,7 +985,7 @@ public function upload_old_grade_data_script_pg($class_id="",$mode){
     public function generate_backlog_marksheet_no(){
           
             $this->db->limit(100,0);
-            $data['students'] = $this->Common_model->getRecordByWhere('backlog_student', array('exam_form'=>'Y' ,'exam_year'=>"Dec 2022",'roll_no!='=>0 ,'back_marksheet_no'=>''));
+            $data['students'] = $this->Common_model->getRecordByWhere('backlog_student', array('exam_form'=>'Y' ,'exam_year'=>"June 2023",'roll_no!='=>0 ,'back_marksheet_no'=>''));
             
           
             foreach($data['students']  as $key =>  $student){
