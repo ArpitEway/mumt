@@ -2987,9 +2987,9 @@ public function update_exam_datewise_permission(){
 		$course_id = $this->Common_model->encrypt_decrypt($course_id,'decrypt');
 		$class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
 		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
-		$this->db->order_by('roll_number','ASC');
+		$this->db->order_by('roll_no','ASC');
 		$data['mode']= $mode;
-		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y' ,'roll_number!='=>'0', 'university_mode'=>$mode));//'result_show'=>'Y'
+		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'new_exam_form'=>'Y' ,'roll_no!='=>'0', 'university_mode'=>$mode,'result_show'=>'Y'));//'result_show'=>'Y'
 		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$class_cbcs = array(193,197,201,203,205,211,213,221,223,225,227,275,279);
 		if((in_array($class_id, $class_cbcs))){
@@ -3064,7 +3064,7 @@ public function update_exam_datewise_permission(){
 		$where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y', 'roll_no!='=>'0' ,'university_mode'=> $mode,'examcentercode'=>'MDE165');
 		//,'student_id'=>702823
 		$this->db->order_by('center_id','ASC');
-		$this->db->order_by('roll_number','ASC');
+		$this->db->order_by('roll_no','ASC');
 		
 		// $data['students'] = $this->Common_model->getRecordByWhere('student_result_aug_22',$where);
 		// $this->db->where_in('student_id',array(701860,720053,702910,702308,718424,705865,706121,718812,722503,683825,722577,713969,723571));
@@ -3178,7 +3178,7 @@ public function update_exam_datewise_permission(){
 			redirect(base_url());
 			exit;
 		}
-		$data['not_permited_students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id , 'result_show'=>'N' , 'new_exam_form'=>'Y' ,'university_mode'=>$mode));
+		$data['not_permited_students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id , 'result_show'=>'N' , 'new_exam_form'=>'Y' ,'university_mode'=>$mode ,'examcentercode'=>'MDE165'));
 
 		$data['permited_students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id , 'result_show'=>'Y' , 'new_exam_form'=>'Y' ,'university_mode'=>$mode));
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
