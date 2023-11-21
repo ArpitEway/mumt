@@ -418,7 +418,8 @@
 							$results = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id='=>$cls->id));
 							// $this->Common_model->last_query();
 							// echo count($results);die;
-							if(count($results)>0){
+							
+							if(count($results)!=0){
 								foreach($results as $row){
 									
 									$grand_obtain += $row->obtain_marks;
@@ -431,7 +432,8 @@
 									$final_result = 'PASS';
 								}
 							}else{
-								$final_result = 'RWPM';
+								 $final_result = 'RWPM';
+								 break;
 							}
 							
 							

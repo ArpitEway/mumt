@@ -3150,11 +3150,10 @@ public function update_exam_datewise_permission(){
 	}
 
 	public function tr_class_list(){
-		$where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y')";
-		//and old_class_id in (193,197,201,203,205,211,213,221,223,225,227,275,279,255,261)
-		//(253,193,197,201,203,205,211,275,279,221,223,225,227,213) )";
+		$where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y' and class_id in (232,238,240,246,216,248,270,250,254,168,173,174,182,169,171,155,273))";
+		
 		// new_exam_form = 'Y' or student_result_aug_22
-		// and class_id in (104,107,134,283,285,287,289,293,295,297,291)
+		
 		
 		$data['courses'] = $this->Common_model->get_record('course_group','*',$where);
 		$this->load->view('header',array('title' => 'Class List'));
@@ -5768,5 +5767,14 @@ public function forward_complaint(){
 		}	
 	}
 		
-	
+	public function getFinalClassByCourse(){
+		$course = $this->input->post('course_group_id');
+		$this->db->order_by('id');
+		$class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$course."' AND  last_class='L' ");
+		$data = array(
+			'class_list' => $class_list,
+			
+		);	
+		echo $this->load->view('template/getclass',$data,true);
+	}
 }// class

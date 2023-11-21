@@ -994,7 +994,7 @@ class Common_Model extends CI_Model{
 	public function notification_marks_details_($student,$class_id)
 	{
 		$this->db->select('*');
-		$this->db->from('exam_form');
+		$this->db->from('new_exam_form as exam_form');
 		$this->db->join('paper_master', 'exam_form.paper_id = paper_master.id');
 		$this->db->where('exam_form.class_id',$class_id); 
 		$this->db->where('exam_form.student_id',$student); 
