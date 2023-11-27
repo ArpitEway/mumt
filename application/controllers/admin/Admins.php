@@ -3061,7 +3061,8 @@ public function update_exam_datewise_permission(){
 			$pagetitle=$startlimit;
 		}
 		
-		$where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y', 'roll_no!='=>'0' ,'university_mode'=> $mode,'examcentercode'=>'MDE165');
+		$where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y', 'roll_no!='=>'0' ,'university_mode'=> $mode);
+		//,'examcentercode'=>'MDE165'
 		//,'student_id'=>702823
 		$this->db->order_by('center_id','ASC');
 		$this->db->order_by('roll_no','ASC');
