@@ -211,8 +211,9 @@ class Otherscript extends CI_Controller {
 
 	public function update_project_marks($cls_id =0)
 	{
-		$marks = array('85','84','83','82'); 
-		$cls_id=250;
+		$marks = array('166','168','170','165'); 
+		//$marks = array('85','84','83','82'); 
+		$cls_id=254;
 		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and  university_mode='REG' and  roll_no!=0 order by roll_no  limit 100";
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
