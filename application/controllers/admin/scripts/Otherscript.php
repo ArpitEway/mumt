@@ -187,8 +187,8 @@ class Otherscript extends CI_Controller {
 	{
 		$marks = array('43','42','41','40'); 
 		//$marks = array('85','84','83','82'); 
-		$cls_id=182;
-		$sql = "select * from student where class_id='".$cls_id."' and exam_form='Y' and p_marks_sub='N' and roll_number!=0 and university_mode='REG' order by roll_number limit 100";
+		$cls_id=250;
+		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and roll_no!=0 and university_mode='REG' order by roll_no limit 100";
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
 		foreach ($rs as $student) {
@@ -212,8 +212,8 @@ class Otherscript extends CI_Controller {
 	public function update_project_marks($cls_id =0)
 	{
 		$marks = array('85','84','83','82'); 
-		$cls_id=227;
-		$sql = "select * from student where old_class_id='".$cls_id."' and exam_form='Y' and p_marks_sub='N' and  university_mode='REG' and  roll_number!=0 order by roll_number  limit 100";
+		$cls_id=250;
+		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and  university_mode='REG' and  roll_no!=0 order by roll_no  limit 100";
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
 		foreach ($rs as $student) {
@@ -225,13 +225,13 @@ class Otherscript extends CI_Controller {
 				echo $s_no++.' student_id =>'.$student['student_id'].' paper_code =>'.$new_exam_data['paper_code'].' Marks=>'.$marks[$i].'<br>';
 
 				$update_marks = "update new_exam_form set p_marks='".$marks[$i]."' where id=".$new_exam_data['id'];
-				$update_marks_exam_form = "update exam_form set p_marks='".$marks[$i]."' where id=".$new_exam_data['id'];
+				//$update_marks_exam_form = "update exam_form set p_marks='".$marks[$i]."' where id=".$new_exam_data['id'];
 				$i++;
 				$this->db->query($update_marks);
-				$this->db->query($update_marks_exam_form);
+				//$this->db->query($update_marks_exam_form);
 				shuffle($marks);
 			}
-			$update_student = "update student set p_marks_sub='Y' where student_id='".$student['student_id']."' and old_class_id='".$cls_id."'";
+			$update_student = "update student set p_marks_sub='Y' where student_id='".$student['student_id']."' and class_id='".$cls_id."'";
 
 			$this->db->query($update_student);
 		
