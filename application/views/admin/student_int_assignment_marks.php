@@ -62,7 +62,7 @@
  $removeCounter = 0;
       foreach($details as $student){
        
-       $paper_data=  $this->Common_model->getRecordByWhere("paper_master",array('class_id'=>$student->old_class_id,'paper_code'=>$student->paper_code));
+       $paper_data=  $this->Common_model->getRecordByWhere("paper_master",array('class_id'=>$student->class_id,'paper_code'=>$student->paper_code));
       //  print_r($view);die;
       $percentage = 90;  
       $max_internal=  $paper_data[0]->max_internal_marks;
