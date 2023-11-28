@@ -3463,7 +3463,7 @@ public function update_exam_datewise_permission(){
 		$this->db->order_by("int_marks_sub,student.course_group_id,student.class_id", "asc");
 		$this->db->select('*');
 		$this->db->from('student');
-		$this->db->join('new_exam_form', 'student.student_id = new_exam_form.student_id');
+		$this->db->join('new_exam_form', 'student.student_id = new_exam_form.student_id and student.class_id=new_exam_form.class_id');
 		$this->db->join('class_master', 'student.class_id = class_master.id');
 		$this->db->group_by('new_exam_form.student_id');
 		$this->db->Where('new_exam_form','Y');
@@ -3592,7 +3592,7 @@ public function update_exam_datewise_permission(){
 		$this->db->order_by("p_marks_sub,student.course_group_id,student.class_id", "asc");
 		$this->db->select('*');
 		$this->db->from('student');
-		$this->db->join('new_exam_form', 'student.student_id = new_exam_form.student_id');
+		$this->db->join('new_exam_form', 'student.student_id = new_exam_form.student_id and student.class_id=new_exam_form.class_id');
 		$this->db->join('class_master', 'student.class_id = class_master.id');
 		$this->db->group_by('new_exam_form.student_id');
 		$where = array('paper_type!='=>'theory','new_exam_form'=>'Y','p_marks_sub'=>'N');
