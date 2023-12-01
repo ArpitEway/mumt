@@ -3181,8 +3181,8 @@ public function update_exam_datewise_permission(){
 			redirect(base_url());
 			exit;
 		}
-		$data['not_permited_students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id , 'result_show'=>'N' , 'new_exam_form'=>'Y' ,'university_mode'=>$mode ,'examcentercode'=>'MDE165'));
-
+		$data['not_permited_students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id , 'result_show'=>'N' , 'new_exam_form'=>'Y' ,'university_mode'=>$mode ));
+		// ,'examcentercode'=>'MDE165'
 		$data['permited_students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id , 'result_show'=>'Y' , 'new_exam_form'=>'Y' ,'university_mode'=>$mode));
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
