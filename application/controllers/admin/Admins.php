@@ -3151,13 +3151,14 @@ public function update_exam_datewise_permission(){
 	}
 
 	public function tr_class_list(){
-		$where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y' and class_id in (290,284,232,252,234) )";
+		$where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y' and class_id in (232,236,238,240,244,246,216,248,250,254,290,284) )";
+		
+		// 290,284,232,252,234
 		// 244,248,250,252,254,236,238,246,234,216,240
 		// 240,274,173,162,174,169,171
 		// 232,238,246,216,248,250,254,168,182,155
 		// new_exam_form = 'Y' or student_result_aug_22
-		//and class_id in (240,246,273,274,173,174,162,169,170,171)
-		
+				
 		$data['courses'] = $this->Common_model->get_record('course_group','*',$where);
 		$this->load->view('header',array('title' => 'Class List'));
 		$this->load->view('admin/tr_class_list',$data);
