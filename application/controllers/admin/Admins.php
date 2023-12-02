@@ -3075,6 +3075,7 @@ public function update_exam_datewise_permission(){
 		$data['class_id'] = $class_id;
 		$data['pagenumber']=$pagenumber;
 		$data['course_group_id'] = $course_group_id;
+        $data['date_mode'] =$mode;
 		$title = "TR ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
 		$data['title'] .= $title;//echo $this->db->last_query(); die;
@@ -3151,8 +3152,7 @@ public function update_exam_datewise_permission(){
 	}
 
 	public function tr_class_list(){
-		$where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y' and class_id in (232,236,238,240,244,246,216,248,250,254,290,284) )";
-		
+		$where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y' and class_id in (232,236,238,240,244,246,216,248,250,254,290,284))";
 		// 290,284,232,252,234
 		// 244,248,250,252,254,236,238,246,234,216,240
 		// 240,274,173,162,174,169,171
@@ -3675,6 +3675,7 @@ public function update_exam_datewise_permission(){
 		//'result_show' => 'N' ,'student_id'=>'685381'
 		$data['class_id'] = $class_id;
 		$data['course_group_id'] = $course_group_id;
+        $data['date_mode'] = $mode;
 		$data['title'] = "TR ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		// $this->load->view('admin/generate_tr/header2',array('title' =>$title));
 
