@@ -17,9 +17,9 @@ $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('stude
 
   if($old_result){
     $old_fail = false;
-  
   }else{
     $old_fail = true;
+    break;
   }
 }
 }
