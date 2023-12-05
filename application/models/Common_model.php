@@ -1227,6 +1227,16 @@ class Common_Model extends CI_Model{
 		$query = $this->db->get();
 		//echo $this->Common_model->last_query(); die;
 		//return $students=$query->result_array();
+		$students=$query->result_array();
+		foreach($students as $student){
+			$this->db->select('*');
+			$this->db->from($this->exam_form_table);
+			$this->db->where(''.$this->exam_form_table.'.student_id',$student['student_id']);
+			$this->db->where(''.$this->exam_form_table.'.class_id',$student['class_id']);
+			$this->db->order_by(''.$this->exam_form_table.'.paper_order',''.$this->exam_form_table.'.paper_id');
+			$new_exam_form = $this->db->get()->result();
+			print_r($new_exam_form);
+		}
 
 
 	}

@@ -29,7 +29,7 @@
 		<div class="form-group col-md-3">
 			<label for="course">Course</label>
 			<select name="course_group_id" id="course_group" class="form-control course_group_id" data-target="#class_id" required >
-				<option value="all">All</option>
+				<!-- <option value="all">All</option> -->
 				<?php 
 				$this->db->group_by('course_group_id');
 				$where=array('result_permission'=>'Y','final_result_permission'=>'Y');
@@ -51,7 +51,7 @@
 		<div class="form-group col-md-3">
 			<label for="class_id">Class</label>
 			<select name="class_id" id="class_id" class="form-control"  required >
-				<option value="">All</option>
+				<!-- <option value="">All</option> -->
 			</select>       
 		</div>
 		
@@ -60,7 +60,7 @@
 		<div class="form-group col-md-2">
 			<label for="class">Admission Mode</label>
 			<select name="university_mode" id="university_mode" class="form-control" >
-			    <option value="all">All </option> 
+			    <!-- <option value="all">All </option>  -->
 				<option value="REG">Regular </option> 
 				<option value="PVT" >Private</option>
 			</select>
