@@ -3385,5 +3385,87 @@ public function getStudentData()
 		));
 	}
 
+	public function result_consolidate_report(){
+      
+		$dt = array();
+		$dt['title'] = "Student Result Consolidate Report";
+		$this->load->view('header',$dt);
+		$this->db->order_by('id', 'Desc');
+		$dt['name_csrf'] = $this->security->get_csrf_token_name();
+		$dt['hash_csrf'] = $this->security->get_csrf_hash();
+		$dt['sessions'] = $this->db->get_where('session', array())->result_array();
+		$this->load->view('admin/examController/result_consolidate_report',$dt);
+		$this->load->view('footer');
+	}
+	public function getResultClassByCourse(){
+		$course = $this->input->post('course_group_id');
+		$this->db->order_by('id');
+		
+		$class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$course."' and result_permission='Y' and final_result_permission='Y'");
+		$data = array(
+			'class_list' => $class_list,
+			'all' => 'All',
+		);	
+		//echo $this->Common_model->last_query();die;
+		echo $this->load->view('template/getclass',$data,true);
+	}
 
+	public function get_student_result_consolidate_data()
+		{   
+
+			if ($this->input->method() == "post") 
+			{
+				$course_group_id = 0;
+				$data = array();
+				$dt   = array();
+				$course_group_id  = $this->input->post("course_group_id");
+				$class_id  		  = $this->input->post("class_id");
+				
+				$new_exam_form    ='Y';
+				$filter  		  = $this->input->post("filter");
+				$division  		  = $this->input->post("count_filter");
+				$center_id	  	  = $this->input->post("center_id");
+				$university_mode	  	  = $this->input->post("university_mode");
+				
+				if($university_mode!="all"){
+					$dt['student.university_mode'] = $university_mode ;
+				}
+				
+				if($class_id !=  "All" && $class_id !=  "" ){	 
+
+					$dt['class_id'] = $class_id;
+				}
+
+				if($new_exam_form != "all"){
+
+					$dt['new_exam_form'] = $new_exam_form;
+				}
+				if($course_group_id != "all"){
+
+					$dt['course_group_id'] = $course_group_id;
+				}
+
+				
+				if($filter == "list"){
+
+					$data['students'] = $this->Common_model->student_result_data_consolidate($dt,"list",$division);
+					
+				}
+				if($filter == "count"){				
+					$data['course_count'] = $this->Common_model->student_result_data_consolidate($dt,"count",$division);
+				
+				}
+				//echo $this->Common_model->last_query(); die;
+		
+				$dt = $this->load->view('admin/student/getStudentResultConsolidate',$data,true);
+
+				echo json_encode(array(
+					"status" => true,
+					"data" => $dt
+				));
+
+
+
+			}
+		}
 }// class
