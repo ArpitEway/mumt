@@ -11,44 +11,36 @@
 					<th>Enrollment no</th>
 					<th>Name</th>
 					<th>F/H Name</th>
-					<th>DOB</th>
+					
 					<th>Course</th>
 					<th>Class</th>
-					<th>
-					<?php if($this->session->account_type == "Admins" || $this->session->account_type == "Enrollment"){ ?>	
-					Edit	
-					<?php } ?>
-					</th>
+					
+					<th>Division</th>
+					
+					<th>(%)</th>
 					<th>Mobile no</th>
-					<th>Payment</th>
-					<th>Document Uploaded</th>
-					<th>Approved</th>
-					<th>Enrolled</th>
-					<th>Exam Form</th>
 					<th>Roll No.</th>
 					<th>Exam Center Code</th>
 					<th>Gender</th>
 					<th>Category</th>
 					<th>Center Name</th>	
 					<th>Aadhaar No.</th>
-					<th>Paper</th>
+					
 					<?php if($this->session->account_type =="Enrollment"){?>
 					<th>TC Generate</th><?php	}?>
 					<?php
 					}
-					if(isset($course_count)){
-						if($_POST['count_filter']=='course_group_id'){
+					if(isset($course_count) ){
+						if($_POST['count_filter']=='all'){
 							?>
 						<th>Sno</th>
 						<th>Course</th>
-						<th>Count</th>
-					<?php }else if($_POST['count_filter']=='center_id'){  ?>
-						<th>Sno</th>
-						<th>Center</th>
-						<th>Center Code</th>
-	
-						<th>Count</th> 
-						  <?php	}else{   ?>
+						<th>Class</th>
+						<th>First</th>
+						<th>Second</th>
+						<th>Third</th>
+						
+					<?php }else{   ?>
 						 <th>Sno</th>
 						 <th>Course</th>
 						 <th>Class</th>
@@ -82,28 +74,19 @@
 							<td><?php echo $student["name"] ; ?></td>
 							<td><?php echo $student["f_h_name"]; ?></td>
 							
-							<td><?php $newDate = ($student["dob"]=='') ? 'N/A' : $student["dob"]; echo date("d-m-Y", strtotime($newDate)); ?></td>
+							
 							<td><?php 
 								echo $student["course_name"];
 							?></td>
 							<td><?php 
 								echo $student["class_name"];
 							 ?></td>
-							<td>
-							<?php if(($this->session->account_type == "Admins" || $this->session->account_type == "Enrollment") && $student['enrolled']!='Y'){ ?> 
-								
-								<a target="_blank"  href='<?php echo base_url($this->session->account_type.'/editForm/').$this->Common_model->encrypt_decrypt($student["student_id"],'encrypt'); ?>'><i class="fa fa-pen"></i></a> 
-								
-							<?php } ?></td>
+							<td><?php echo $student["div"]; ?></td>	
+							<td><?php echo $student["per"]; ?></td>	
 							<td><?php echo $this->Common_model->getMobileNoByStudentID($student["student_id"]) ?></td>
-							<td><?php if( $student["payment_status"]=='Y'){echo 'Paid' ;}else{echo 'Unpaid' ;} ?></td>
-							<td><?php if( $student["document_uploaded"]=='Y'){echo 'Uploaded' ;}else{echo 'Not Uploaded' ;} ?></td>
+							
 
-							<td><?php if( $student["approved"]=='Y'){echo 'Approved' ;}else if($student["approved"]=='N'){echo 'Non Approved' ;}else{echo 'Non Verified';} ?></td>
-
-							<td><?php if( $student["enrolled"]=='Y'){echo 'Enrolled' ;}else{echo 'Non Enrolled' ;} ?></td>
-
-							<td><?php if( $student["new_exam_form"]=='Y'){echo 'Submit' ;}else if($student["new_exam_form"]=='D'){echo 'Not Permitted' ;}else{echo 'Not Submitted';} ; ?></td>					
+											
 						<?php $student_id = $this->Common_model->encrypt_decrypt($student['student_id']); ?>
 					</td>
 					<td><?php echo $student["roll_no"]; ?></td>
@@ -112,17 +95,7 @@
 					<td><?php echo $student["category"]; ?></td>
 					<td><?php echo $student["center_name"]; ?></td>
 				   <td><?php echo $student["adhar_no"]; ?></td>
-					<td>
-						<?php if($student["temp_exam_form"]=='Y'){ ?>
-						<a target="_blank"  class="" href="<?=base_url('show_paper/'.$student_id);?>"><i class="fa fa-eye" aria-hidden="true"></i></a>
-					 	<?php if($this->session->account_type =="Admins"){?>
-					  <button  class="btn btn-sm  " onclick="delete__student_paper(this)" data-id = "<?=$student['student_id']; ?>" data-classid = "<?=$student['class_id']; ?>"><i class="fa fa-trash" aria-hidden="true"></i></button>   
-					 <?php }
-					 }else{ ?>
-							<a target="_blank"  class="" href="<?=base_url('select_paper/'.$student_id);?>"><i class="fa fa-plus" aria-hidden="true"></i></a>
-							<?php } ?>
-							
-				   </td>
+					
 				 <?php if($this->session->account_type =="Enrollment"){?>
 				   <td>
 					   <?php if($student["tc_date"]){ echo $this->Common_model->viewDate($student["tc_date"]) ; } else{ ?>
@@ -135,38 +108,30 @@
 				}
 			}
 		
-			if(isset($course_count)){
+			if(isset($course_count) && isset($course_count["course_name"])){
 				$total = 0;
-				foreach($course_count as $student){	
 				
-		   $class = $this->db->get_where("class_master",array('id'=>$student['class_id']))->result_array();
-		   $course_group_id = $class[0]['course_group_id'];
-		   $course = $this->db->get_where("course_group",array('id'=>$course_group_id))->result_array();
-	       
 			?>
 			<tr>
 				
 			<td><?php echo $i; ?></td>
-			<td><?php 	if($_POST['count_filter']=='course_group_id'){ echo $this->Common_model->getCourseNameByCourseId($student["course_group_id"]);}else if($_POST['count_filter']=='center_id'){echo $this->Common_model->getCenterNameById($student["center_id"]);}else{echo $course[0]['course_name'] ;} ; ?></td>
-	     	<?php if($_POST['count_filter']=='center_id'){ ?>	<td><?php 	 echo $this->Common_model->getCenterCodeById($student["center_id"]); ; ?></td><?php } ?>
-	     	<?php if($_POST['count_filter']=='class_id'){ ?>	<td><?php echo $class[0]['class_name'] ; ?></td><?php } ?>
-
-			<td><?php echo $student["cnt"]; ?></td>
-			<?php $total = $total + $student["cnt"];?>
+			<td><?php 	 echo $course_count["course_name"]; ?></td>
+	     	<td><?php 	 echo $course_count["class_name"]; ?>
+	     	
+			<?php if($_POST['count_filter']=='all'){ ?>
+			<td><?php echo $course_count["first"]; ?></td>
+			<td><?php echo $course_count["second"]; ?></td>
+			<td><?php echo $course_count["third"]; ?></td>	
+			<?php }else{ ?>
+				<td><?php 
+				echo $course_count[$_POST['count_filter']];
+			} ?>		
 			</tr>
 			
 			
 			
-			<?php $i++; } ?>
-			<tfoot>
-			<tr>
-			<td></td>
-			<td><?php echo "Total"; ?></td>
-			<?php  if($_POST['count_filter']=='class_id' ||$_POST['count_filter']=='center_id'  ) { ?>  <td></td><?php } ; ?>
-
-			<td><?php echo $total ?></td>
-			</tr>
-			<tfoot>
+			<?php $i++;  ?>
+			
 			<?php } ?>
 
 

@@ -30,6 +30,7 @@
 			<label for="course">Course</label>
 			<select name="course_group_id" id="course_group" class="form-control course_group_id" data-target="#class_id" required >
 				<!-- <option value="all">All</option> -->
+				<option value="">Select Course</option>
 				<?php 
 				$this->db->group_by('course_group_id');
 				$where=array('result_permission'=>'Y','final_result_permission'=>'Y');
@@ -93,6 +94,7 @@
 		<div class="form-group col-md-2">
 			<label for="class">Student Count</label>
 			<select name="count_filter" id="count_filter" class="form-control" >
+				<option value="all">All </option> 
 				<option value="first">First Division </option> 
 				<option value="second" >Second Division </option>
 				<option value="third" >Third Division </option>
@@ -124,14 +126,14 @@
 	</div>
 </div>
 <script>
-	$('input:radio[name="filter"]').change(function() {
-		if ($(this).val()=='list') {
-			$('#count_filter').attr('disabled', true);
-		} 
-		else if ($(this).val()=='count') {
-			$('#count_filter').attr('disabled', false);
-		}
-	});
+	// $('input:radio[name="filter"]').change(function() {
+	// 	if ($(this).val()=='list') {
+	// 		$('#count_filter').attr('disabled', true);
+	// 	} 
+	// 	else if ($(this).val()=='count') {
+	// 		$('#count_filter').attr('disabled', false);
+	// 	}
+	// });
 
 	$(document).on("click","#submit_btn",function(){
 		$('#dt').hide();

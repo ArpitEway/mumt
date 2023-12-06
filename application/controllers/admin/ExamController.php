@@ -3404,7 +3404,7 @@ public function getStudentData()
 		$class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$course."' and result_permission='Y' and final_result_permission='Y'");
 		$data = array(
 			'class_list' => $class_list,
-			'all' => 'All',
+			//'all' => 'All',
 		);	
 		//echo $this->Common_model->last_query();die;
 		echo $this->load->view('template/getclass',$data,true);
@@ -3423,6 +3423,7 @@ public function getStudentData()
 				
 				$new_exam_form    ='Y';
 				$filter  		  = $this->input->post("filter");
+				$division  		  = $this->input->post("count_filter");
 				$center_id	  	  = $this->input->post("center_id");
 				$university_mode	  	  = $this->input->post("university_mode");
 				//$center_type	  = "all";//$this->input->post("center_type");
@@ -3458,16 +3459,16 @@ public function getStudentData()
 				
 				if($filter == "list"){
 
-					$data['students'] = $this->Common_model->student_result_data_consolidate($dt,"");
+					$data['students'] = $this->Common_model->student_result_data_consolidate($dt,"list",$division);
 					
 				}
 				if($filter == "count"){				
-					$data['course_count'] = $this->Common_model->student_result_data_consolidate($dt,$_POST['count_filter']);
+					$data['course_count'] = $this->Common_model->student_result_data_consolidate($dt,"count",$division);
 				
 				}
 				//echo $this->Common_model->last_query(); die;
 		
-				$dt = $this->load->view('admin/student/getStudentConsolidate',$data,true);
+				$dt = $this->load->view('admin/student/getStudentResultConsolidate',$data,true);
 
 				echo json_encode(array(
 					"status" => true,
