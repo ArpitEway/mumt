@@ -3404,7 +3404,7 @@ public function getStudentData()
 		$class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$course."' and result_permission='Y' and final_result_permission='Y'");
 		$data = array(
 			'class_list' => $class_list,
-			//'all' => 'All',
+			'all' => 'All',
 		);	
 		//echo $this->Common_model->last_query();die;
 		echo $this->load->view('template/getclass',$data,true);
@@ -3426,26 +3426,15 @@ public function getStudentData()
 				$division  		  = $this->input->post("count_filter");
 				$center_id	  	  = $this->input->post("center_id");
 				$university_mode	  	  = $this->input->post("university_mode");
-				//$center_type	  = "all";//$this->input->post("center_type");
-
-				// if($mode != "all"){	 
-					
-				// 	$dt['mode'] = $mode;
-				// }
+				
 				if($university_mode!="all"){
 					$dt['student.university_mode'] = $university_mode ;
 				}
 				
-				
-
-
 				if($class_id !=  "All" && $class_id !=  "" ){	 
 
 					$dt['class_id'] = $class_id;
 				}
-
-				
-
 
 				if($new_exam_form != "all"){
 

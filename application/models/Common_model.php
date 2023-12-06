@@ -1215,6 +1215,7 @@ class Common_Model extends CI_Model{
 		$this->db->select('* , student.university_mode ');
 		$this->db->from("student");
 		$this->db->where($where);
+		$this->db->where('result_show','Y');
 		$this->db->join("course_group", "student.course_group_id = course_group.id", 'left'); 
 		$query = $this->db->get();
 		
