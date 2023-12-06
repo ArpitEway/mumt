@@ -1216,11 +1216,12 @@ class Common_Model extends CI_Model{
 		$this->db->from("student");
 		$this->db->where($where);
 		$this->db->where('result_show','Y');
-		$this->db->join("course_group", "student.course_group_id = course_group.id", 'left'); 
+		//$this->db->join("course_group", "student.course_group_id = course_group.id", 'left'); 
 		$query = $this->db->get();
 		
 		$students=$query->result_array();
 		$data=array();$first=$second=$third=0;
+		//echo $this->Common_model->last_query(); die;
 		foreach($students as $student){
 			$this->db->select('*');
 			$this->db->from($this->exam_form_table);
@@ -1245,11 +1246,13 @@ class Common_Model extends CI_Model{
 			$obt_int_marks=0;
 			$obt_p_marks=0;
 			//$arr=array();
+	
 			foreach($new_exam_form as $marks){
 				$paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code,"class_id"=>$marks->class_id));
 			  
 				if($marks->paper_type=='theory'){
-				   if($student->university_mode != 'PVT'){
+				   if($student['university_mode'] != 'PVT'){
+				
 				  $tot_marks +=  $paper_master[0]->max_theory_marks;
 				  $total_internal_marks+=$paper_master[0]->max_internal_marks;
 				  if($marks->theory_marks>=$paper_master[0]->min_theory_marks){
@@ -1288,7 +1291,8 @@ class Common_Model extends CI_Model{
 				   $withheld = true;
 				 }
 				}else{
-				  $tot_marks +=  $paper_master[0]->private_max_theory_marks;
+				
+				   $tot_marks +=  $paper_master[0]->private_max_theory_marks;
 				  if($marks->theory_marks>=$paper_master[0]->private_min_theory_marks){
 					$obt_theory_marks+= $marks->theory_marks;
 					$result = "PASS";
@@ -1310,7 +1314,7 @@ class Common_Model extends CI_Model{
 			  
 				}
 				}else{
-					if($student->university_mode != 'PVT'){
+					if($student['university_mode'] != 'PVT'){
 					$tot_std_marks += $marks->p_marks;
 					$tot_marks += $paper_master[0]->max_theory_marks;
 				
