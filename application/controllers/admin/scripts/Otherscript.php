@@ -538,7 +538,7 @@ public function update_roll_no_old_data(){
 		
 		//$class_id=253;
 		 $class_id=269;
-		$num_of_papers=8;
+		$num_of_papers=4;
 		
 		$sql="SELECT count(*)as num,e.* FROM `old_result_data` as e join `old_exam_data` as s on s.id=e.`exam_data_id` WHERE s.`class_id`=".$class_id." AND exam_year='May 2023' and exam_status='R' group by s.student_id HAVING num='".$num_of_papers."'";
 		$sql_result = $this->db->query($sql);
