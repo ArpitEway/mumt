@@ -322,15 +322,16 @@ $abs_count = 0 ;
 							  }	  
 						
       // tot 3 grace marks in 1 subjects
+	 
 						if ($fail_count<2 && $require_grace_marks<4 && $int_fail_count==0 && $p_fail_count==0 && $rw_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0 && $rwpr_count==0) {
 							$check_grace_marks = true;
 							$final_result = "PASS BY GRACE";
 						}elseif($rwpr_count>0){
-							$final_result = "RWPR";
+							 $final_result = "RWPR";
 						}elseif($rw_count>0){
-							$final_result = "RW";
+							 $final_result = "RW";
 						}else{
-							$final_result = "FAIL";
+							 $final_result = "FAIL";
 						}
 					}
 		    if($page_break_count%18==0 ||  $page_break_count==0 ){
@@ -495,7 +496,8 @@ $abs_count = 0 ;
 					$grand_obtain = $grand_obt + $total_marks_obt;
 						$grand_total = $grand_tot+$total_paper_marks;
 					}else{
-						if($p_fail_count>0){
+						
+						if($p_fail_count>0 || $p_abs_count>0){
 							$final_result = 'FAIL';
 						}
 						else if($fail_count>0 || $abs_count>0){
@@ -588,7 +590,7 @@ $abs_count = 0 ;
 									</td>
 									<?php
 									} ?>
-							<td class="text-center">
+							<td class="text-center"> 
 								<?php 
 								if((in_array($student->class_id, $class_ids)) && $mode=='REG')	
 								{
@@ -616,13 +618,16 @@ $abs_count = 0 ;
 										echo '';
 									}
 								}else{
+									
 									if($check_grace_marks){
 										echo " ";
 									}
 									elseif( $theory_abs_count==$theory_paper_count && $p_abs_count==$p_paper_count && $student->course_group_id == 76){
 										echo 'Absent In ALL';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
 									  }
-									
+									elseif( $p_abs_count==$p_paper_count){
+										echo 'Absent In Practical';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
+									  }
 									elseif(sizeof($atkt_paper_codes_array)==1){
 										echo "ATKT in ";
 										$atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
