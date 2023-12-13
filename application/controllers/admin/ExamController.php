@@ -2893,12 +2893,12 @@ public function getStudentData()
 		{
 			if($text_val !='' && $radio_val == 'enrollment_no')
 			{
-				$where = array('exam_form'=>'Y','enrollment_no'=>$text_val);
+				$where = array('new_exam_form'=>'Y','enrollment_no'=>$text_val,'result_show'=>'Y');
 				//,'result_show'=>'Y'
 
 			}else if($text_val !='' && $radio_val == 'roll_no')
 			{
-				$where = array('exam_form'=>'Y','roll_number'=>$text_val);
+				$where = array('new_exam_form'=>'Y','roll_no'=>$text_val ,'result_show'=>'Y');
 			//,'result_show'=>'Y'
 			}
 
@@ -2915,12 +2915,12 @@ public function getStudentData()
 					
 				}else{
 			
-					if($student[0]->old_result_show =="N"){
+					if($student[0]->result_show =="N"){
 						
 							$msg="<p style='text-align: center;' id='result_msg'><b>Student result not declared!</b></p>"; 
 					}
 						$data['student']=$student[0];
-						$data['exam_session']  = 'March 2023';
+						$data['exam_session']  = 'July 2023';
 						/**********************/
 						if($data['student']->provisional_remark!="N" && $data['student']->provisional_remark!="")
 						{
@@ -2932,23 +2932,23 @@ public function getStudentData()
 						}
 						/************************/
 						
-						$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
+						$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
 						$data['practical_internal_marks']=$classData->practical_internal_marks;
 						$this->db->select('*');
 						$this->db->from($this->exam_form_table);
 						$this->db->where(''.$this->exam_form_table.'.student_id',$data['student']->student_id);
-						$this->db->where(''.$this->exam_form_table.'.class_id',$data['student']->old_class_id);
+						$this->db->where(''.$this->exam_form_table.'.class_id',$data['student']->class_id);
 						$new_exam_form = $this->db->get()->result();
 						$data['classData']  = $classData;
 						$data['new_exam_form']  = $new_exam_form;
 						// if(($data['student']->old_class_id == '104' || $data['student']->old_class_id == '107' || $data['student']->old_class_id == '101' || $data['student']->old_class_id == '134' || $data['student']->old_class_id == '116' || $data['student']->old_class_id == '110'|| $data['student']->old_class_id == '119' || $data['student']->old_class_id == '131') && $data['student']->university_mode == 'REG')
 						$class_ids=array(101,104,107,110,116,119,125,128,131,134);
 						$class_cbcs = array(193,197,201,203,205,211,213,221,223,225,227,275,279);
-						if((in_array($data['student']->old_class_id, $class_ids)) && $data['student']->university_mode=='REG')	
+						if((in_array($data['student']->class_id, $class_ids)) && $data['student']->university_mode=='REG')	
 						{
 							$this->load->model('Gradesheet_model');
 							$dt = $provisional_remark_details.$msg.$this->load->view('Centers/grade_marksheet',$data,true);
-						}else if((in_array($data['student']->old_class_id, $class_cbcs)) && $data['student']->university_mode=='REG'){
+						}else if((in_array($data['student']->class_id, $class_cbcs)) && $data['student']->university_mode=='REG'){
 							$this->load->model('Gradesheet_model_pg');
 							$dt = $provisional_remark_details.$msg.$this->load->view('Centers/grade_marksheet_pg',$data,true);
 						}else{
@@ -2966,7 +2966,7 @@ public function getStudentData()
 							if($classData->internal=='N'){
 								$marksheet_bottom = $this->load->view('Centers/marksheet_without_int',$data,true);
 							}else{
-								if($student[0]->old_class_id=='168'){
+								if($student[0]->class_id=='168'){
 									$marksheet_bottom  = $this->load->view('Centers/marksheet_mom',$data,true);
 								}else{
 									$marksheet_bottom = $this->load->view('Centers/marksheet_bottom',$data,true);

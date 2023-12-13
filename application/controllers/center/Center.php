@@ -3114,6 +3114,8 @@ public function practical_assignment_marks_edit(){
 		$apply = $this->input->post("apply_for");
 		$std_id = $this->input->post("student_id");
 		$enroll = $this->input->post("enrollment");
+		$class_id = $this->input->post("class_id");
+		
 		if($_FILES['adhar']['name']==""){
 			$this->session->set_flashdata('warning','Adhar Card is required !');
 				redirect(base_url().'application_form');
@@ -3156,7 +3158,7 @@ public function practical_assignment_marks_edit(){
 						"student_uid"=>$std_id,
 						"center_id"=>$this->input->post("center_id"),
 						"apply_for"=>$apply,
-						"class"=>$this->input->post("class"),
+						"class"=>$class_id,
 						"name_eng"=>$this->input->post("name_eng"),
 						"name_hindi"=>$this->input->post("name_hindi"),
 						"fname_eng"=>$this->input->post("fname_eng"),

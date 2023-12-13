@@ -288,10 +288,10 @@ $abs_count = 0 ;
 					$tot_marks += $fc1_max +$fc2_max;
 					$tot_std_marks += $fc1+$fc2;
 					// $count_theory +=  $fc1+$fc2;
-					if($fc1_abs === 'ABSABS'){
+					if($fc1_abs === 'ABS'){
 						$theory_abs_count++;
 					   }
-					   if($fc2_abs === 'ABSABS'){
+					   if($fc2_abs === 'ABS'){
 						$theory_abs_count++;
 					   }
 	   
@@ -505,8 +505,8 @@ $abs_count = 0 ;
 							 $final_result = 'PASS';
 							
 						}
-						if((in_array($student->old_class_id, $class_ids)) && $mode=='REG'){
-						echo $this->Gradesheet_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+						if((in_array($student->class_id, $class_ids)) && $mode=='REG'){
+						echo $this->Gradesheet_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
 						}else{
 							echo $final_result;
 						}
@@ -541,11 +541,13 @@ $abs_count = 0 ;
 				<td class="text-center" style="padding:0px" align="center"><?php if(!in_array($final_result, array("FAIL","RW") )){ echo  $grand_obtain .' / '. $grand_total;} ?></td>
 				<?php
 							}			}
-							}else if((!in_array($student->old_class_id, $class_ids)) || $mode=='PVT'){ 
+							}else if((!in_array($student->class_id, $class_ids)) || $mode=='PVT'){ 
 								?>
-							<td  class="text-center" style="padding:0px" align="center"><?php
+							<td  class="text-center" style="padding:0px" align="center"><?php 
 							if(!in_array($final_result, array("FAIL","RW") )){
-								echo $total_obtained_marks .' / '. $total_max_marks;
+								
+								//echo $total_obtained_marks .' / '. $total_max_marks;
+								echo $total_marks_obt .' / '. $total_paper_marks;
 							}
 						}
 							?>
@@ -565,7 +567,8 @@ $abs_count = 0 ;
 										if(!$isOneClass){
 											$percentage = round(($grand_obtain/$grand_total)*100,2);  
 										}else{
-											$percentage = round(($total_obtained_marks/$total_max_marks)*100,2);	
+											//$percentage = round(($total_obtained_marks/$total_max_marks)*100,2);
+											$percentage = round(($total_marks_obt/$total_paper_marks)*100,2);	
 										}
 										
 										if($percentage>=60){

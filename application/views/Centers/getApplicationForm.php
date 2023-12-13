@@ -6,8 +6,30 @@
            
                 <input type="hidden" class="form-control" name="name_eng" value="<?= $students[0]['name']?>" readonly/>
                 <input type="hidden" class="form-control" name="student_id" value="<?= $students[0]['student_id']?>" readonly/>
-           
-            <div class="form-group col-md-6">
+            <?php 
+            $col="col-md-6"; 
+            if($apply=="DUPLICATE-MARKSHEET"){ ?>
+                <div class="form-group col-md-2">
+                <label>Class </label>
+               <?php 
+              if($students[0]['university_mode']=="REG"){
+                  $class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$students[0]['course_group_id']."' AND mode='Semester'");
+              }else  if($students[0]['university_mode']=="REG"){
+                  $class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$students[0]['course_group_id']."' AND mode='Annual'");
+               } ?>
+               
+                <select class="form-control" name="class_id" id="class">
+                  <option value=""><?=(isset($all)) ? 'All': 'Select Class';?></option>
+                  <?php foreach($class_list as $class){ 
+                    if($class['id']<=$students[0]['class_id']){
+                    ?>
+                    <option value="<?=$class['id']?>"><?=$class['class_name']?></option>
+                  <?php }} ?>
+                </select>
+            </div>
+            <?php $col="col-md-5"; } ?>
+
+            <div class="form-group <?=$col?>">
                 <label>Name of Student(In Hindi)</label>
                 <input type="text" class="form-control" name="name_hindi" id="sname"/>
                 <span class="text-danger" id="serr"></span>
@@ -15,7 +37,7 @@
            
                 <input type="hidden" class="form-control" name="fname_eng" value="<?= $students[0]['f_h_name']?>" readonly/>
             
-            <div class="form-group col-md-6">
+            <div class="form-group <?=$col?>">
                 <label>Father's Name(In Hindi)</label>
                 <input type="text" class="form-control" name="fname_hindi" id="fname"/>
                 <span class="text-danger" id="ferr"></span>
