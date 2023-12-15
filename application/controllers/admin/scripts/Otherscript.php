@@ -60,7 +60,7 @@ class Otherscript extends CI_Controller {
 		// $where = " paper_code in ('2RBED6')";
 		//$where = " paper_code in ('1RMLIS10','1RMLIS11')";
 		//$where="`paper_code` in ('1RCMSCCH7','1RCMSCCH8','1RCMSCCH9','1RCMSCBT7','1RCMSCBT8','1RCMSCC7','1RCMSCM7','3RMSCC6','3RMSCC7')";
-		$where="`id` in (1044,1349)";
+		$where="`id` in (1043,1351,1352)";
 		$papers = $this->Common_model->get_record('paper_master','*',$where);
 
 		foreach ($papers as $paper) {
@@ -77,7 +77,7 @@ class Otherscript extends CI_Controller {
 			foreach ($students as $student) {
 				echo	$studentData['student_id'] = $student['student_id'];
 				echo "<br>";
-				//$this->Common_model->insertAll('new_exam_form',$studentData);
+				$this->Common_model->insertAll('new_exam_form',$studentData);
 				echo $this->db->last_query().'<br>';
 			}
 		}	
