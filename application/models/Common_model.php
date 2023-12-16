@@ -974,8 +974,10 @@ class Common_Model extends CI_Model{
         $this->db->join('backlog_exam_form', 'paper_master.paper_code = backlog_exam_form.paper_code');
         $this->db->where('backlog_exam_form.student_id',$student_id);
         $this->db->where('backlog_exam_form.class_id',$class_id);
+		$this->db->where('paper_master.class_id',$class_id);
 		$this->db->where('backlog_exam_form.backlog_student_id',$exam_data_id);
 		return $this->db->get()->result();
+
 	}
 
 	public function hasOneClass($course_id)
