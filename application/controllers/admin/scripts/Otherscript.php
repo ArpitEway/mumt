@@ -159,7 +159,9 @@ class Otherscript extends CI_Controller {
 		$marks = array('18','17','16','18','17','16','15','15');
 		// $marks = array('09','08','07','09','08','07','06','06');
 		// $marks = array('27','26','25','27','26','25','24','24'); 
-		$cls_id=154;
+		$cls_id=273;
+		$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
+		
 		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and int_marks_sub='N' and roll_no!=0 and university_mode='REG' limit 100";
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
@@ -184,9 +186,10 @@ class Otherscript extends CI_Controller {
 
 	public function update_practical_marks($cls_id =0)
 	{
-		$marks = array('43','42','41','40'); 
-		//$marks = array('85','84','83','82'); 
-		$cls_id=154;
+		//$marks = array('43','42','41','40'); 
+		$marks = array('85','84','83','82'); 
+		$cls_id=273;
+		$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
 		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and roll_no!=0 and university_mode='REG' order by roll_no limit 100";
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
@@ -202,9 +205,9 @@ class Otherscript extends CI_Controller {
 				$this->db->query($update_marks);
 				shuffle($marks);
 			}
-			 // $update_student = "update student set p_marks_sub='Y' where student_id='".$student['student_id']."' and class_id='".$cls_id."'";
+			  $update_student = "update student set p_marks_sub='Y' where student_id='".$student['student_id']."' and class_id='".$cls_id."'";
 
-			 // $this->db->query($update_student);
+			 $this->db->query($update_student);
 		}
 	}
 
@@ -212,7 +215,8 @@ class Otherscript extends CI_Controller {
 	{
 		//$marks = array('166','168','170','165'); 
 		$marks = array('85','84','83','82'); 
-		$cls_id=155;
+		$cls_id=273;
+		$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
 		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and  university_mode='REG' and  roll_no!=0 order by roll_no  limit 100";
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
