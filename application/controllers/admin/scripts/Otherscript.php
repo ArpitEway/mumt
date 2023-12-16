@@ -159,7 +159,7 @@ class Otherscript extends CI_Controller {
 		$marks = array('18','17','16','18','17','16','15','15');
 		// $marks = array('09','08','07','09','08','07','06','06');
 		// $marks = array('27','26','25','27','26','25','24','24'); 
-		$cls_id=273;
+		$cls_id=168;
 		$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
 		
 		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and int_marks_sub='N' and roll_no!=0 and university_mode='REG' limit 100";
@@ -167,7 +167,7 @@ class Otherscript extends CI_Controller {
 		$s_no=1;
 		foreach ($rs as $student) {
 			
-			$new_exam_sql = "select * from new_exam_form where student_id='".$student['student_id']."' and paper_type='Theory' and int_marks in ('N') and class_id='".$cls_id."' and paper_code not in ('1RBA1','1RBA2','1RBA3','1RBA4') ORDER by rand()";
+			$new_exam_sql = "select * from new_exam_form where student_id='".$student['student_id']."' and paper_type='Theory' and int_marks in ('N') and class_id='".$cls_id."' and paper_code not in ('1RBA1','1RBA2','1RBA3','1RBA4','1RMOM1') ORDER by rand()";
 			$new_exam_rs =	$this->db->query($new_exam_sql)->result_array();
 			$i=0;
 			foreach ($new_exam_rs as $new_exam_data) {
@@ -188,7 +188,7 @@ class Otherscript extends CI_Controller {
 	{
 		//$marks = array('43','42','41','40'); 
 		$marks = array('85','84','83','82'); 
-		$cls_id=273;
+		$cls_id=168;
 		$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
 		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and roll_no!=0 and university_mode='REG' order by roll_no limit 100";
 		$rs = $this->db->query($sql)->result_array();
@@ -205,9 +205,9 @@ class Otherscript extends CI_Controller {
 				$this->db->query($update_marks);
 				shuffle($marks);
 			}
-			  $update_student = "update student set p_marks_sub='Y' where student_id='".$student['student_id']."' and class_id='".$cls_id."'";
+			//  $update_student = "update student set p_marks_sub='Y' where student_id='".$student['student_id']."' and class_id='".$cls_id."'";
 
-			 $this->db->query($update_student);
+			// $this->db->query($update_student);
 		}
 	}
 
@@ -215,7 +215,7 @@ class Otherscript extends CI_Controller {
 	{
 		//$marks = array('166','168','170','165'); 
 		$marks = array('85','84','83','82'); 
-		$cls_id=273;
+		$cls_id=168;
 		$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
 		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and  university_mode='REG' and  roll_no!=0 order by roll_no  limit 100";
 		$rs = $this->db->query($sql)->result_array();
