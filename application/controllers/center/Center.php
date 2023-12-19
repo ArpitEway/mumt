@@ -1973,7 +1973,7 @@ class Center extends CI_Controller {
 		
 		$this->db->where('class_master.result_permission', 'Y');
 	//	$this->db->where('center_id', $center_id);
-		$this->db->where('old_result_show','Y');
+		$this->db->where('result_show','Y');
 		$this->db->where($this->exam_form_result,'Y');
 		//$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,197,203,211,213)');
 		$data['courses'] = $this->db->get()->result();
@@ -2061,7 +2061,7 @@ class Center extends CI_Controller {
 		$data = $row = array();
 		// $where1 ='';
 	
-		$where = array($this->exam_form_result=>'Y','old_result_show'=>'Y');
+		$where = array($this->exam_form_result=>'Y','result_show'=>'Y');
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{
@@ -2078,7 +2078,7 @@ class Center extends CI_Controller {
 		// 	AND `result_permission` = 'Y'and ((student.course_group_id!=12 ) or (student.course_group_id=12 and university_mode='PVT' ) ) and ((student.course_group_id!=13 ) or (student.course_group_id=13 and university_mode='PVT' ) ) ";
 		// }
 		if($_POST['class_id']!='All' and $_POST['class_id']!=''){
-			$where['old_class_id'] = $this->input->post('class_id');
+			$where['class_id'] = $this->input->post('class_id');
 		
 		}
 		// if($this->input->post('course_group_id') == 12 || $this->input->post('course_group_id') == 13){
@@ -2098,7 +2098,7 @@ class Center extends CI_Controller {
 			'where' => $where,
 			'table' => $this->result_table,
 			'table2' => 'class_master',
-			'joinOn' => ''.$this->result_table.'.old_class_id=class_master.id'
+			'joinOn' => ''.$this->result_table.'.class_id=class_master.id'
 		);
 		
 		
@@ -2112,10 +2112,10 @@ class Center extends CI_Controller {
 				// if(($result->old_class_id == '104' || $result->old_class_id == '107' || $result->old_class_id == '101' || $result->old_class_id == '134' || $result->old_class_id == '116'|| $result->old_class_id == '110' || $result->old_class_id == '119' || $result->old_class_id == '131') && $result->university_mode == 'REG')
 				$class_ids=array(101,104,107,110,116,119,125,128,131,134);
 				$class_cbcs = array(193,197,201,203,205,211,213,221,223,225,227,275,279);
-				if((in_array($result->old_class_id , $class_ids)) && $result->university_mode=='REG')	
+				if((in_array($result->class_id , $class_ids)) && $result->university_mode=='REG')	
 				{
 					$btn =	'<a href="'.base_url('center/Center/grade_marksheet/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm dt-center" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
-				}else if((in_array($result->old_class_id, $class_cbcs)) && $result->university_mode=='REG'){
+				}else if((in_array($result->class_id, $class_cbcs)) && $result->university_mode=='REG'){
 					$btn =	'<a href="'.base_url('center/Center/grade_marksheet_pg/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm dt-center" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
 				}else{
 					$btn =	'<a href="'.base_url('center/Center/marksheet/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm dt-center" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
@@ -2138,7 +2138,7 @@ class Center extends CI_Controller {
 			}else{
 				$enrollment = $result->enrollment_no;
 				}
-			$class_name =  $this->Common_model->getClassNameByClassId($result->old_class_id); 
+			$class_name =  $this->Common_model->getClassNameByClassId($result->class_id); 
 			$data[] = array($i,$result->student_id,$enrollment,$result->name, $result->f_h_name, $result->course_name,$class_name,$btn);
 		}
 		
@@ -2276,23 +2276,23 @@ class Center extends CI_Controller {
 		$this->db->where_in('provisional_remark', $provisional);
 		
 		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
-		$student = $this->Common_model->getRecordByWhere($this->result_table,array($this->exam_form_result=>'Y','old_result_show'=>'Y','student_id'=>$student_id));
+		$student = $this->Common_model->getRecordByWhere($this->result_table,array($this->exam_form_result=>'Y','result_show'=>'Y','student_id'=>$student_id));
 		// ($student->course_group_id == 12 && $student->university_mode == 'REG') || ($student->course_group_id == 13 && $student->university_mode == 'REG')
 		if ((count($student)==0)  ) {
 			redirect(base_url());
 		}
 		$data['student']=$student[0];
-		$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
+		$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
 		$data['practical_internal_marks']=$classData->practical_internal_marks;
 		$this->db->select('*');
 		$this->db->from($this->exam_form_table);
 		$this->db->where(''.$this->exam_form_table.'.student_id',$data['student']->student_id);
-		$this->db->where(''.$this->exam_form_table.'.class_id',$data['student']->old_class_id);
+		$this->db->where(''.$this->exam_form_table.'.class_id',$data['student']->class_id);
 		$this->db->order_by(''.$this->exam_form_table.'.paper_order',''.$this->exam_form_table.'.paper_id');
 		$new_exam_form = $this->db->get()->result();
 		$data['new_exam_form']  = $new_exam_form;
 		$data['classData']  = $classData;
-		$data['exam_session']  = 'March 2023';
+		$data['exam_session']  = 'July 2023';
 		$title = array('title' => 'Result - '.$data['student']->enrollment_no);
 		$this->load->view('admin/generate_tr/header2',$title);	
 		//$this->load->view('Centers/marksheet',$data);
@@ -2342,7 +2342,7 @@ public function backlog_marksheet($student_id="")
 		$backlog_exam_form = $this->db->get()->result();
 		$data['backlog_exam_form']  = $backlog_exam_form;
 		$data['classData']  = $classData;
-		$data['exam_session']  = 'March 2023';
+		$data['exam_session']  = 'July 2023';
 		$title = array('title' => 'Result - '.$data['student']->enrollment_no);
 		$this->load->view('admin/generate_tr/header2',$title);	
 		//$this->load->view('Centers/marksheet',$data);
@@ -2413,23 +2413,23 @@ public function marksheet_admin($student_id="")
  public function grade_marksheet($student_id=""){
 	
 	 $student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
-		$student = $this->Common_model->getRecordByWhere($this->result_table,array($this->exam_form_result=>'Y','old_result_show'=>'Y','student_id'=>$student_id));
+		$student = $this->Common_model->getRecordByWhere($this->result_table,array($this->exam_form_result=>'Y','result_show'=>'Y','student_id'=>$student_id));
 		// print_r($student);die;
 		if (count($student)==0) {
 			redirect(base_url());
 		}
 		$data['student']=$student[0];
-		$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
+		$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
 		$data['practical_internal_marks']=$classData->practical_internal_marks;
 		$this->db->select('*');
 		$this->db->from($this->exam_form_table.' as new_exam_form');
 		$this->db->where('new_exam_form.student_id',$data['student']->student_id);
-		$this->db->where('new_exam_form.class_id',$data['student']->old_class_id);
+		$this->db->where('new_exam_form.class_id',$data['student']->class_id);
 		$this->db->order_by('new_exam_form.paper_order','new_exam_form.paper_id');
 		$new_exam_form = $this->db->get()->result();
 		$data['new_exam_form']  = $new_exam_form;
 		$data['classData']  = $classData;
-		$data['exam_session']  = 'March 2023';
+		$data['exam_session']  = 'July 2023';
 		$this->load->model('Gradesheet_model');
 		// $title = array('title' => 'Result - '.$data['student']->enrollment_no);
 		$title ="";
@@ -2444,23 +2444,23 @@ public function marksheet_admin($student_id="")
  public function grade_marksheet_pg($student_id=""){
 	
 	$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
-	   $student = $this->Common_model->getRecordByWhere($this->result_table,array($this->exam_form_result=>'Y','old_result_show'=>'Y','student_id'=>$student_id));
+	   $student = $this->Common_model->getRecordByWhere($this->result_table,array($this->exam_form_result=>'Y','result_show'=>'Y','student_id'=>$student_id));
 	   // print_r($student);die;
 	   if (count($student)==0) {
 		   redirect(base_url());
 	   }
 	   $data['student']=$student[0];
-	   $classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
+	   $classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
 	   $data['practical_internal_marks']=$classData->practical_internal_marks;
 	   $this->db->select('*');
 	   $this->db->from($this->exam_form_table.' as new_exam_form');
 	   $this->db->where('new_exam_form.student_id',$data['student']->student_id);
-	   $this->db->where('new_exam_form.class_id',$data['student']->old_class_id);
+	   $this->db->where('new_exam_form.class_id',$data['student']->class_id);
 	   $this->db->order_by('new_exam_form.paper_order','new_exam_form.paper_id');
 	   $new_exam_form = $this->db->get()->result();
 	   $data['new_exam_form']  = $new_exam_form;
 	   $data['classData']  = $classData;
-	   $data['exam_session']  = 'March 2023';
+	   $data['exam_session']  = 'July 2023';
 	   $this->load->model('Gradesheet_model_pg');
 	   // $title = array('title' => 'Result - '.$data['student']->enrollment_no);
 	   $title ="";
@@ -3142,6 +3142,8 @@ public function practical_assignment_marks_edit(){
 		$apply = $this->input->post("apply_for");
 		$std_id = $this->input->post("student_id");
 		$enroll = $this->input->post("enrollment");
+		$class_id = $this->input->post("class_id");
+		
 		if($_FILES['adhar']['name']==""){
 			$this->session->set_flashdata('warning','Adhar Card is required !');
 				redirect(base_url().'application_form');
@@ -3184,7 +3186,7 @@ public function practical_assignment_marks_edit(){
 						"student_uid"=>$std_id,
 						"center_id"=>$this->input->post("center_id"),
 						"apply_for"=>$apply,
-						"class"=>$this->input->post("class"),
+						"class"=>$class_id,
 						"name_eng"=>$this->input->post("name_eng"),
 						"name_hindi"=>$this->input->post("name_hindi"),
 						"fname_eng"=>$this->input->post("fname_eng"),

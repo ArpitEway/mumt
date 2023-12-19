@@ -2893,12 +2893,12 @@ public function getStudentData()
 		{
 			if($text_val !='' && $radio_val == 'enrollment_no')
 			{
-				$where = array('exam_form'=>'Y','enrollment_no'=>$text_val);
+				$where = array('new_exam_form'=>'Y','enrollment_no'=>$text_val,'result_show'=>'Y');
 				//,'result_show'=>'Y'
 
 			}else if($text_val !='' && $radio_val == 'roll_no')
 			{
-				$where = array('exam_form'=>'Y','roll_number'=>$text_val);
+				$where = array('new_exam_form'=>'Y','roll_no'=>$text_val ,'result_show'=>'Y');
 			//,'result_show'=>'Y'
 			}
 
@@ -2915,12 +2915,12 @@ public function getStudentData()
 					
 				}else{
 			
-					if($student[0]->old_result_show =="N"){
+					if($student[0]->result_show =="N"){
 						
 							$msg="<p style='text-align: center;' id='result_msg'><b>Student result not declared!</b></p>"; 
 					}
 						$data['student']=$student[0];
-						$data['exam_session']  = 'March 2023';
+						$data['exam_session']  = 'July 2023';
 						/**********************/
 						if($data['student']->provisional_remark!="N" && $data['student']->provisional_remark!="")
 						{
@@ -2932,23 +2932,23 @@ public function getStudentData()
 						}
 						/************************/
 						
-						$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
+						$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
 						$data['practical_internal_marks']=$classData->practical_internal_marks;
 						$this->db->select('*');
 						$this->db->from($this->exam_form_table);
 						$this->db->where(''.$this->exam_form_table.'.student_id',$data['student']->student_id);
-						$this->db->where(''.$this->exam_form_table.'.class_id',$data['student']->old_class_id);
+						$this->db->where(''.$this->exam_form_table.'.class_id',$data['student']->class_id);
 						$new_exam_form = $this->db->get()->result();
 						$data['classData']  = $classData;
 						$data['new_exam_form']  = $new_exam_form;
 						// if(($data['student']->old_class_id == '104' || $data['student']->old_class_id == '107' || $data['student']->old_class_id == '101' || $data['student']->old_class_id == '134' || $data['student']->old_class_id == '116' || $data['student']->old_class_id == '110'|| $data['student']->old_class_id == '119' || $data['student']->old_class_id == '131') && $data['student']->university_mode == 'REG')
 						$class_ids=array(101,104,107,110,116,119,125,128,131,134);
 						$class_cbcs = array(193,197,201,203,205,211,213,221,223,225,227,275,279);
-						if((in_array($data['student']->old_class_id, $class_ids)) && $data['student']->university_mode=='REG')	
+						if((in_array($data['student']->class_id, $class_ids)) && $data['student']->university_mode=='REG')	
 						{
 							$this->load->model('Gradesheet_model');
 							$dt = $provisional_remark_details.$msg.$this->load->view('Centers/grade_marksheet',$data,true);
-						}else if((in_array($data['student']->old_class_id, $class_cbcs)) && $data['student']->university_mode=='REG'){
+						}else if((in_array($data['student']->class_id, $class_cbcs)) && $data['student']->university_mode=='REG'){
 							$this->load->model('Gradesheet_model_pg');
 							$dt = $provisional_remark_details.$msg.$this->load->view('Centers/grade_marksheet_pg',$data,true);
 						}else{
@@ -2966,7 +2966,7 @@ public function getStudentData()
 							if($classData->internal=='N'){
 								$marksheet_bottom = $this->load->view('Centers/marksheet_without_int',$data,true);
 							}else{
-								if($student[0]->old_class_id=='168'){
+								if($student[0]->class_id=='168'){
 									$marksheet_bottom  = $this->load->view('Centers/marksheet_mom',$data,true);
 								}else{
 									$marksheet_bottom = $this->load->view('Centers/marksheet_bottom',$data,true);
@@ -3385,5 +3385,87 @@ public function getStudentData()
 		));
 	}
 
+	public function result_consolidate_report(){
+      
+		$dt = array();
+		$dt['title'] = "Student Result Consolidate Report";
+		$this->load->view('header',$dt);
+		$this->db->order_by('id', 'Desc');
+		$dt['name_csrf'] = $this->security->get_csrf_token_name();
+		$dt['hash_csrf'] = $this->security->get_csrf_hash();
+		$dt['sessions'] = $this->db->get_where('session', array())->result_array();
+		$this->load->view('admin/examController/result_consolidate_report',$dt);
+		$this->load->view('footer');
+	}
+	public function getResultClassByCourse(){
+		$course = $this->input->post('course_group_id');
+		$this->db->order_by('id');
+		
+		$class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$course."' and result_permission='Y' and final_result_permission='Y'");
+		$data = array(
+			'class_list' => $class_list,
+			'all' => 'All',
+		);	
+		//echo $this->Common_model->last_query();die;
+		echo $this->load->view('template/getclass',$data,true);
+	}
 
+	public function get_student_result_consolidate_data()
+		{   
+
+			if ($this->input->method() == "post") 
+			{
+				$course_group_id = 0;
+				$data = array();
+				$dt   = array();
+				$course_group_id  = $this->input->post("course_group_id");
+				$class_id  		  = $this->input->post("class_id");
+				
+				$new_exam_form    ='Y';
+				$filter  		  = $this->input->post("filter");
+				$division  		  = $this->input->post("count_filter");
+				$center_id	  	  = $this->input->post("center_id");
+				$university_mode	  	  = $this->input->post("university_mode");
+				
+				if($university_mode!="all"){
+					$dt['student.university_mode'] = $university_mode ;
+				}
+				
+				if($class_id !=  "All" && $class_id !=  "" ){	 
+
+					$dt['class_id'] = $class_id;
+				}
+
+				if($new_exam_form != "all"){
+
+					$dt['new_exam_form'] = $new_exam_form;
+				}
+				if($course_group_id != "all"){
+
+					$dt['course_group_id'] = $course_group_id;
+				}
+
+				
+				if($filter == "list"){
+
+					$data['students'] = $this->Common_model->student_result_data_consolidate($dt,"list",$division);
+					
+				}
+				if($filter == "count"){				
+					$data['course_count'] = $this->Common_model->student_result_data_consolidate($dt,"count",$division);
+				
+				}
+				//echo $this->Common_model->last_query(); die;
+		
+				$dt = $this->load->view('admin/student/getStudentResultConsolidate',$data,true);
+
+				echo json_encode(array(
+					"status" => true,
+					"data" => $dt
+				));
+
+
+
+			}
+		}
 }// class

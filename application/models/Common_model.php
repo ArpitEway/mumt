@@ -599,17 +599,17 @@ class Common_Model extends CI_Model{
 		$class_check = $this->Common_model->getRecordById('class_master','id',$class_id);
 		$where = array(
 			'student_id' => $id,
-			'exam_form.class_id' => $class_id,
+			'new_exam_form.class_id' => $class_id,
 			
 			);
-		$this->db->select('exam_form.*,paper_master.credit_point,paper_master.paper_name,paper_master.paper_code,paper_master.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks,exam_form.sub_group_id,exam_form.group_id,exam_form.paper_order');
+		$this->db->select('new_exam_form.*,paper_master.credit_point,paper_master.paper_name,paper_master.paper_code,paper_master.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks,new_exam_form.sub_group_id,new_exam_form.group_id,new_exam_form.paper_order');
 		$this->db->from('paper_master');
 		$this->db->order_by('paper_no','asc');
-		$this->db->join('exam_form','exam_form.paper_id = paper_master.id');
+		$this->db->join('new_exam_form','new_exam_form.paper_id = paper_master.id');
 		// $this->db->join('group_paper','paper_master.id=group_paper.paper_id');
 		$this->db->where($where); 
 		if($class_check->class_group == 'Y'){
-		$this->db->where('exam_form.sub_group_id',1);
+		$this->db->where('new_exam_form.sub_group_id',1);
 		}
 		$query = $this->db->get();
 		// $this->Common_model->last_query();
@@ -619,16 +619,16 @@ class Common_Model extends CI_Model{
 	public function get_all_group_papers($id,$class_id){
 		$where = array(
 			'student_id' => $id,
-			'exam_form.class_id' => $class_id,
-			'exam_form.sub_group_id !='=>1,
+			'new_exam_form.class_id' => $class_id,
+			'new_exam_form.sub_group_id !='=>1,
 			 
 			
 			);
-		$this->db->select('exam_form.*,group_paper.credit_point,paper_master.paper_name,paper_master.paper_code,group_paper.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks,exam_form.sub_group_id,exam_form.group_id,exam_form.paper_order');
+		$this->db->select('new_exam_form.*,group_paper.credit_point,paper_master.paper_name,paper_master.paper_code,group_paper.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks,new_exam_form.sub_group_id,new_exam_form.group_id,new_exam_form.paper_order');
 		$this->db->from('paper_master');
 		$this->db->order_by('group_paper.sub_group_id,paper_no','asc');
-		$this->db->join('exam_form','exam_form.paper_id = paper_master.id','left');
-		$this->db->join('group_paper','paper_master.id=group_paper.paper_id and group_paper.group_id=exam_form.group_id','left');
+		$this->db->join('new_exam_form','new_exam_form.paper_id = paper_master.id','left');
+		$this->db->join('group_paper','paper_master.id=group_paper.paper_id and group_paper.group_id=new_exam_form.group_id','left');
 		$this->db->where($where); 
 		// $this->db->where(`group_paper`.`group_id`=`new_exam_form`.`group_id` );
 		$query = $this->db->get();
@@ -1016,8 +1016,10 @@ class Common_Model extends CI_Model{
         $this->db->join('backlog_exam_form', 'paper_master.paper_code = backlog_exam_form.paper_code and paper_master.class_id = backlog_exam_form.class_id');
         $this->db->where('backlog_exam_form.student_id',$student_id);
         $this->db->where('backlog_exam_form.class_id',$class_id);
+		$this->db->where('paper_master.class_id',$class_id);
 		$this->db->where('backlog_exam_form.backlog_student_id',$exam_data_id);
 		return $this->db->get()->result();
+
 	}
 
 	public function hasOneClass($course_id)
@@ -1036,7 +1038,7 @@ class Common_Model extends CI_Model{
 	public function notification_marks_details_($student,$class_id)
 	{
 		$this->db->select('*');
-		$this->db->from('exam_form');
+		$this->db->from('new_exam_form as exam_form');
 		$this->db->join('paper_master', 'exam_form.paper_id = paper_master.id');
 		$this->db->where('exam_form.class_id',$class_id); 
 		$this->db->where('exam_form.student_id',$student); 
@@ -1251,6 +1253,232 @@ class Common_Model extends CI_Model{
 		$query = $this->db->get();
 		return $query->result_array();
 	}
+
+	function student_result_data_consolidate($where = "",$group_by = "" ,$div="first"){
+	
+		$this->db->select('* , student.university_mode ');
+		$this->db->from("student");
+		$this->db->where($where);
+		$this->db->where('result_show','Y');
+		//$this->db->join("course_group", "student.course_group_id = course_group.id", 'left'); 
+		$query = $this->db->get();
+		
+		$students=$query->result_array();
+		$data=array();$first=$second=$third=0;
+		//echo $this->Common_model->last_query(); die;
+		foreach($students as $student){
+			$this->db->select('*');
+			$this->db->from($this->exam_form_table);
+			$this->db->where(''.$this->exam_form_table.'.student_id',$student['student_id']);
+			$this->db->where(''.$this->exam_form_table.'.class_id',$student['class_id']);
+			$this->db->order_by(''.$this->exam_form_table.'.paper_order',''.$this->exam_form_table.'.paper_id');
+			$new_exam_form = $this->db->get()->result();
+	
+			/***********Start*************/
+			$withheld = false;
+			$check_grace_marks = false;
+			$fail_count = 0;
+			$fali_tot_marks = 0;
+			$require_tot_marks = 0;
+			$tot_marks = 0;
+			$abs_count = 0;
+			$int_fail_count = 0;
+			$old_fail = false;
+			$total_internal_marks=0;
+			$theory_marks=0;
+			$obt_theory_marks=0;
+			$obt_int_marks=0;
+			$obt_p_marks=0;
+			//$arr=array();
+	
+			foreach($new_exam_form as $marks){
+				$paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code,"class_id"=>$marks->class_id));
+			  
+				if($marks->paper_type=='theory'){
+				   if($student['university_mode'] != 'PVT'){
+				
+				  $tot_marks +=  $paper_master[0]->max_theory_marks;
+				  $total_internal_marks+=$paper_master[0]->max_internal_marks;
+				  if($marks->theory_marks>=$paper_master[0]->min_theory_marks){
+					  $obt_theory_marks+= $marks->theory_marks;
+					$result = "PASS";
+				  }
+				  if($marks->theory_marks==''){
+					$withheld = true;
+				  }
+				  if($marks->theory_marks<$paper_master[0]->min_theory_marks){
+					$result = "Fail";
+					$fail_count++;
+					$fali_tot_marks += $marks->theory_marks;
+					$require_tot_marks +=$paper_master[0]->min_theory_marks;
+				  }
+				  if($marks->theory_marks=='ABS'){
+					$abs_count++;
+					$result = "Fail";
+					$fail_count++;
+				  }
+				  if($marks->int_marks=='ABS'){
+					$abs_count++;
+					$result = "Fail";
+					$fail_count++;
+				  }
+				  if($paper_master[0]->max_internal_marks != 0){
+					$obt_int_marks+=$marks->int_marks;
+				  if($marks->int_marks<$paper_master[0]->min_internal_marks){
+					
+					$result = "Fail";
+					$fail_count++;
+					$int_fail_count++;
+				  }
+				}
+				  if(($marks->int_marks=='N' || $marks->int_marks=='') && $marks->max_internal_marks !=0) {
+				   $withheld = true;
+				 }
+				}else{
+				
+				   $tot_marks +=  $paper_master[0]->private_max_theory_marks;
+				  if($marks->theory_marks>=$paper_master[0]->private_min_theory_marks){
+					$obt_theory_marks+= $marks->theory_marks;
+					$result = "PASS";
+				  }
+				  if($marks->theory_marks==''){
+					$withheld = true;
+				  }
+				  if($marks->theory_marks<$paper_master[0]->private_min_theory_marks){
+					$result = "Fail";
+					$fail_count++;
+					$fali_tot_marks += $marks->theory_marks;
+					$require_tot_marks +=$paper_master[0]->private_min_theory_marks;
+				  }
+				  if($marks->theory_marks=='ABS'){
+					$abs_count++;
+					$result = "Fail";
+					$fail_count++;
+				  }
+			  
+				}
+				}else{
+					if($student['university_mode'] != 'PVT'){
+					$tot_std_marks += $marks->p_marks;
+					$tot_marks += $paper_master[0]->max_theory_marks;
+				
+					if($marks->p_marks>=$paper_master[0]->min_theory_marks){
+						$obt_p_marks+=$marks->p_marks;
+						$result = "PASS";
+					}
+					if($marks->p_marks=='' || $marks->p_marks=='N'){
+						$withheld = true;
+					}
+					if($marks->p_marks<$paper_master[0]->min_theory_marks){
+						$result = "FAIL";
+						$fail_count++;
+						$fali_tot_marks += $marks->p_marks;
+						$require_tot_marks += $paper_master[0]->min_theory_marks;
+					}
+					if($paper_master[0]->max_internal_marks != 0){
+						$obt_int_marks+=$marks->int_marks;
+						if($marks->int_marks<$paper_master[0]->min_internal_marks){
+						$result = "Fail";
+						$fail_count++;
+						$int_fail_count++;
+						}
+					}
+					if ($marks->p_marks=='ABS') {
+						$abs_count++;
+						$result = "FAIL";
+						$fail_count++;
+					}
+				}
+			  }
+				
+			}
+			
+			if($fail_count==0 && $abs_count==0){
+				$arr=array();
+				$division="";
+				$obt_total=$obt_theory_marks+$obt_int_marks+$obt_p_marks;
+				$from_marks=$tot_marks+$total_internal_marks;
+				$per=($obt_total*100)/$from_marks;
+				$per=number_format((float)$per, 2, '.', '');
+				if($per>=40 && $div=="all"){
+					if($per>=60 ){
+						$division="First";
+						$first++;
+					}
+					if(($per>=45 && $per<60) ){
+						$division="Second";
+						$second++;
+					}
+					if(($per>=40 && $per<45) ){
+						$division="Third";
+						$third++;
+					}
+				}
+				if($per>=60 && $div=="first"){
+					$division="First";
+					$first++;
+				}
+				if(($per>=45 && $per<60) && $div=="second"){
+					$division="Second";
+					$second++;
+				}
+				if(($per>=40 && $per<45) && $div=="third"){
+					$division="Third";
+					$third++;
+				}
+				$arr=array(
+					'student_id'=>$student['student_id'],
+					'enrollment_no'=>$student['enrollment_no'],
+					'name'=>$student['name'],
+					'center_code'=>$student['center_code'],
+					'session'=>$student['session'],
+					'university_mode'=>$student['university_mode'],
+					'f_h_name'=>$student['f_h_name'],
+					'gender'=>$student['gender'],
+					'category'=>$student['category'],
+					'roll_no'=>$student['roll_no'],
+					'adhar_no'=>$student['adhar_no'],
+					'center_name'=>$student['center_name'],
+					'class_id'=>$student['class_id'],
+					'course_name'=>$student['course_name'],
+					'class_name'=>$student['class_name'],
+					'examcentercode'=>$student['examcentercode'],
+					'per'=>$per,
+					'div'=>$division,
+				);
+				if(!empty($division))
+				$data[]=$arr;
+			}
+			
+		
+			/************End**************/
+		}//paper subject loop end
+		if($group_by!="list"){
+			if($div=="all"){
+				$countData=array(
+					'course_name'=>$student['course_name'],
+					'class_name'=>$student['class_name'],
+					'first'=>$first,
+					'second'=>$second,
+					'third'=>$third,
+				);
+			}
+			else{
+				$countData=array(
+					'course_name'=>$student['course_name'],
+					'class_name'=>$student['class_name'],
+					$div=>$$div,
+				);
+			}
+			//print_r($countData);
+			return $countData;
+
+			
+		}else{
+			return $data;
+		}
+
+	}//student loop end
 }
 
 

@@ -307,7 +307,7 @@ table.last_table, .last_table td, .last_table th{
       <p align="center" class="line-height">Tabulation Register for <strong><?php echo $student->course_name; echo '&nbsp'. $course_duration; ?></strong> <?php echo $marksheetData[0]->exam_session;?>
       </p>
       <div>
-        <div style="float: left;">DATE: <?php echo $marksheetData[0]->result_date;?></div>
+        <div style="float: left;">DATE: <?php if($date_mode != 'PVT') echo $marksheetData[0]->result_date;else echo $marksheetData[0]->pvt_result_date;?></div>
         <div style="float: right;">Page : <?php  echo $page_no; ?></div>
       </div>
       <table class="table table1 mb-0">
@@ -385,7 +385,7 @@ table.last_table, .last_table td, .last_table th{
         <tr>
           <th  class="align-middle text-center roll_no" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_no  ?> <br> <?php echo $student->enrollment_no  ?></th>
           <th class="align-middle text-center ms_no" rowspan="<?php echo $rowspandata ?>">
-            <?php  //echo $student->marksheet_no  ?>
+            <?php  echo $student->marksheet_no  ?>
           </th>
           <th  class="align-middle text-center photo" rowspan="<?php echo $rowspandata ?>"><img alt="N/A" src="<?= base_url('assets/student_image/'.$student->session.'/'.$student->photo) ?>" width="65px" height="90px"></th>
           <td  class="align-middle text-center name"  rowspan="<?php  echo $rowspandata ?>"><?php  echo $student->name ?>/ <br><?php  echo $student->f_h_name ?></td>
@@ -562,13 +562,15 @@ table.last_table, .last_table td, .last_table th{
     <?php } ?>
     <td class="align-middle text-center"><?php echo $total_marks_obt; ?></td>
   </tr>
+  <?php  
+  if($final_class && $isFinalClass == false){ ?>
  <tr>
  <td class="align-middle text-center"  colspan="<?= $examDataColspan?>"><strong>
   <?= 'Session'.'<br>'.'Sem/Year'.'<br>'.'Roll no'.'<br>'.'Marks'?></strong>
  
 </td> 
   <?php  
-  if($final_class && $isFinalClass == false){
+ // if($final_class && $isFinalClass == false){
     $final_rw = 0;
     $final_fail =0;
     

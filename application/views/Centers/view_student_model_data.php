@@ -187,15 +187,13 @@ if (document.getElementById(`id_${i}`).value=='ABS')
     }
   }
   var center_id= $("#center_id").val();
-  const centers = [10,11,12,13,20,21,22,23,24,25,26,27,28,29];
-  if(centers.includes(center_id)){
-    
-    if(check_marks==false){ 
-      alert('आपने दो से अधिक बार समान अंक दर्ज किए हैं');
-      return false; 
-    }
-  }
+  const centers = ['10','11','12','13','20','21','22','23','24','25','26','27','28','29'];
+  let result = centers.includes(center_id);
   
+    if((!result) && (check_marks==false)){
+     alert('आपने दो से अधिक बार समान अंक दर्ज किए हैं');
+      return false; 
+  }
 
   if(check==false){
     if(confirm('Are You want to set Absent ?')==false){

@@ -1,9 +1,10 @@
 <div class="container-fluid">
+<div class="row table">
 	<div class="form-group col-md-5 m-auto">
     <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	
 		<label class="label_form">Course</label>
-		<select class="form-control" name="course_group_id" id="course_group_id">
+		<select class="form-control" name="course_group_id" id="final_course_group_id" data-target="#class_id" required >
 			 <option value="">Select Course</option>
 			<?php foreach ($courses as $course) {
 			 ?>
@@ -11,6 +12,13 @@
 			<?php 
 		} ?>
 		</select>
+	</div>
+	<div class="form-group col-md-5 m-auto">
+		<label for="class">Class</label>
+		<select name="class_id" id="class_id" class="form-control"  > 
+		<option value="">Select Class</option>
+		</select>
+	</div>
 	</div>
 </div>
 <div align="center" id="myLoader" class="loader_div" style="display: none;" >
@@ -23,16 +31,34 @@
 <div class="container my-5" id="studentData">	
 </div>
  <script type="text/javascript">	
-$("#course_group_id").on('change',function (e){
+ $("#final_course_group_id").on('change', function(){
+	var csrfName = $('.csrfname').attr('name');
+	var csrfHash = $('.csrfname').val(); 
+
+	var course = $(this).val();
+		$.ajax({
+			method: "POST",
+			url: BASE_URL+"admin/Admins/getFinalClassByCourse",
+			data: { course_group_id : course,
+					[csrfName]:csrfHash
+
+					},
+		})
+		.done(function( msg ) {
+            $('#class_id').html(msg);
+		});
+	});
+$("#class_id").on('change',function (e){
     $('#studentData').hide();
-	var course_group_ids = $('#course_group_id').val();	
+	var course_group_ids = $('#final_course_group_id').val();	
+	var class_id = $('#class_id').val();	
 	
     var csrfName = $('.csrfname').attr('name');
 			var csrfHash = $('.csrfname').val();
 	$.ajax({
 		url: '<?php echo site_url('admin/scripts/Postexam/course_complete_script'); ?>',
 		type: 'POST',
-		data: {course_group_id:course_group_ids,[csrfName]:csrfHash},
+		data: {course_group_id:course_group_ids,class_id:class_id,[csrfName]:csrfHash},
         beforeSend: function()
 			{
 				$("#myLoader").show();

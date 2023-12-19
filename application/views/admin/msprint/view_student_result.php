@@ -150,8 +150,7 @@
                   <div class="col-md-1">
                       <label class="text-heading">Edit Date</label>
                   </div>    
-               
-              </div>
+                </div>
               <?php 
               $i=1;
               foreach ($result as $res) {
@@ -171,6 +170,9 @@
                  </div> 
                  <div class="col-md-2">
                     <label class="text-heading mt-3"><?= $res->exam_result;?></label>
+                    <!-- <?php //if($res->exam_result == 'FAIL' && $this->session->account_type == 'Admins' ){?>
+                        <label class="text-heading mt-3"><a href="<?= base_url( 'admin/scripts/Postexam/backlog_marks_add_scripts/'.$student->student_id.'/'.$res->class_id.'/'.$res->exam_year.'')?>" target="_blank"><i class="fa fa-plus"></i></a></label>
+                        <?php //}?>    -->
                  </div> 
               <div class="col-md-2 text-heading mt-3">
                     <?php 
@@ -195,7 +197,7 @@
                               data-roll_number = "<?= $res->roll_no; ?>" data-marksheet_date = "<?php echo date('d/m/Y', strtotime($res->marksheet_date)); ?>"  data-target="#kt_datepicker_modal" "  ><i class="fa fa-edit"></i></a>
                         </label>
                      </div>
-                        
+                    
                  </div>
              <?php } ?>
         </div>

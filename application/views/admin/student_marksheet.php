@@ -475,15 +475,14 @@
                       ?>
                       <?php endif ?>
                       <th style="text-align: center"><?=$tot_std_marks ; ?></th>
-                      <th style="text-align: center"><?=$gtot_obtain_marks ?></th>
+                      <th style="text-align: center"><?=$gtot_obtain_marks; ?></th>
                       <?php while ($j<=3): ?>
                         <td><?php $j++; ?></td>
                       <?php endwhile; ?>
                       <?php if ($classData->last_class=="L") { ?>
                         <td>
                         <?php
-                       
-                         $percentage = round(($gtot_obtain_marks/$gtot_total_marks)*100,2);
+                         $percentage = (!$isOneClass)? round(($gtot_obtain_marks/$gtot_total_marks)*100,2) : round(($tot_std_marks/$tot_marks)*100,2);
                           if($percentage>=60){
                             $division = "First";
                           }elseif($percentage<60 && $percentage>=40){

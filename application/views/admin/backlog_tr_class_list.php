@@ -16,17 +16,11 @@
         $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id'],'backlog_exam_form_permission'=>'Y'));
 		// , "backlog_result_permission"=>'Y'
 		
-        // , 'exam_form_permission' => 'Y'
-		//, 'old_exam_form_permission' => 'Y' 
         ?>
 		<tr>
 			<th><?=$i++?></th>
 			<th colspan="6"><?=$course['course_name']?></th>
-            <!-- <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th> -->
+           
 		</tr>
         <?php foreach($classes as $class) { 
         	$course_id = $this->Common_model->encrypt_decrypt($course['id']);
