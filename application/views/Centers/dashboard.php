@@ -243,12 +243,13 @@
 								<span class="nav-text">Result(July 2023)</span>
 							</div>
 						</a>
-						<!-- <a class="border-0 custom-menu-item" href="<?=base_url('backlog_result');?>">
+						 <a class="border-0 custom-menu-item" href="<?=base_url('backlog_result');?>">
 							<div>
 								<span class="nav-text">Backlog Result (July 2023)</span>
 							</div>
-						</a> -->
-					<?php endif ?>
+						</a> 
+						
+						<?php endif ?>
 					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
 					 	<div>
 							<span class="nav-text">Time Table July 2023</span>
