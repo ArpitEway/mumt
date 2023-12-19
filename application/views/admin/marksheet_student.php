@@ -135,8 +135,11 @@ foreach($old_result_data as $marks){
         ?>
       </th>
       <th class="text-center">
-        <?php  
-        if($marks->type!="theory" &&$class->practical_internal_marks=='N' ){
+        <?php
+        if($marks->type=='Sessional'){
+            echo  (int) $paper_master[0]->max_internal_marks;
+        }
+        else if($marks->type!="theory" &&$class->practical_internal_marks=='N' ){
                        echo (int)$paper_master[0]->max_theory_marks;
               }
               elseif($marks->type!="theory" &&$class->practical_internal_marks=='Y' ){  

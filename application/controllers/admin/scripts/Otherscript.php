@@ -460,6 +460,65 @@ public function update_sub_group_id_in_new_exam_form_sub(){
 }
 }
 
+public function update_sub_group_id_in_backlog_exam_form(){
+    $this->db->limit(300);
+    $this->db->where_in('class_id',array(101,104,107,110,116,119,125,128,131,134));
+    $students = $this->Common_model->getRecordByWhere('backlog_student',array('exam_year'=>'June 2023',
+    'exam_form'=>'Y','mode'=>'REG'));
+    // $this->Common_model->last_query();
+    echo count($students);
+    foreach($students as $student){
+     $papers =   $this->Common_model->getRecordByWhere('old_result_data',array('student_id'=>$student->student_id,'class_id'=>$student->class_id));
+    //  $this->Common_model->last_query();
+    //  echo $papers[0]->student_id;die;
+    //  echo '<pre>';
+    //  print_r($papers);die;
+     foreach ($papers as $paper){
+        $where = array(
+             	'paper_code'=>$paper->paper_code,
+             	'class_id'=>$paper->class_id,
+                'student_id'=>$paper->student_id,
+            	'sub_group_id'=>0,
+             );
+            $data = array(
+            	'sub_group_id'=>$paper->sub_group_id
+            );
+        $this->Common_model->updateRecordByConditions('backlog_exam_form',$where,$data);
+	        echo $this->db->last_query().'<br>';
+     }
+    }
+
+}
+
+public function update_group_id_in_backlog_exam_form(){
+    $this->db->limit(300);
+    $this->db->where_in('class_id',array(101,104));
+    $students = $this->Common_model->getRecordByWhere('backlog_student',array('exam_year'=>'June 2023',
+    'exam_form'=>'Y','mode'=>'REG'));
+    // $this->Common_model->last_query();
+    echo count($students);
+    foreach($students as $student){
+     $papers =   $this->Common_model->getRecordByWhere('old_result_data',array('student_id'=>$student->student_id,'class_id'=>$student->class_id));
+    //  $this->Common_model->last_query();
+    //  echo $papers[0]->student_id;die;
+    //  echo '<pre>';
+    //  print_r($papers);die;
+     foreach ($papers as $paper){
+        $where = array(
+             	'paper_code'=>$paper->paper_code,
+             	'class_id'=>$paper->class_id,
+                'student_id'=>$paper->student_id,
+            	'group_id'=>'',
+             );
+            $data = array(
+            	'group_id'=>$paper->group_id
+            );
+        $this->Common_model->updateRecordByConditions('backlog_exam_form',$where,$data);
+	        echo $this->db->last_query().'<br>';
+     }
+    }
+
+}
 // public function update_sub_group_id_in_new_exam_form_group_paper(){
 // 	// $this->db->limit(10);
 // 	// $this->db->where_in('class_id',array(101,104));
