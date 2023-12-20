@@ -172,7 +172,7 @@ if ($withheld) {
       $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code,'class_id'=>$marks->class_id));
     ?>
     <tr>
-      <th><?php echo $this->Common_model->getPaperNameById($paper_master[0]->id); ?></th>
+      <th><?php echo $paper_master[0]->paper_name; ?></th>
       <th class="text-center"><?php  if($marks->paper_type=='Sessional'){ echo '-';}else{
         echo $paper_master[0]->max_theory_marks;
       } ?></th>

@@ -192,10 +192,10 @@ if ($withheld) {
     $total_obtained_marks = 0;    
     foreach($new_exam_form as  $marks){
       $result_1_paper = '';
-      $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code));
+      $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code,'class_id'=>$marks->class_id));
     ?>
     <tr>
-      <th><?php echo $this->Common_model->getPaperNameById($marks->paper_id); ?></th>
+      <th><?php echo $paper_master[0]->paper_name; ?></th>
       <th class="text-center"><?php echo ($student->university_mode != 'PVT')?  $paper_master[0]->max_theory_marks : $paper_master[0]->private_max_theory_marks; ?></th>
       <th class="text-center">
         <?php
