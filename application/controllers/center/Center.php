@@ -2301,7 +2301,7 @@ class Center extends CI_Controller {
 		if($classData->internal=='N'){
 			$this->load->view('Centers/marksheet_without_int',$data);
 		}else{
-			if($student[0]->old_class_id=='168'){
+			if($student[0]->class_id=='168'){
 				$this->load->view('Centers/marksheet_mom',$data);
 			}else{
 				$this->load->view('Centers/marksheet_bottom',$data);
