@@ -1019,10 +1019,10 @@ public function upload_old_backlog_marks()
     //  $this->db->where('mode', 'Semester');
      $this->db->where('exam_form', 'Y');
      $this->db->where('upload_result', 'N');
-     $this->db->where('exam_year','Dec 2022');
-     // $this->db->where('result_show', 'Y');
-    // $this->db->where('result_permission', 'Y');
-    //  $this->db->where('final_result_permission', 'Y');
+     $this->db->where('exam_year','June 2023');
+     $this->db->where('result_show', 'Y');
+     $this->db->where('class_master.result_permission', 'Y');
+     $this->db->where('class_master.final_result_permission', 'Y');
      // $this->db->where('marksheet_dispatch', 'Y');
     // $this->db->where('university_mode','REG');
      $this->db->group_by('class_id,mode');          
@@ -1037,7 +1037,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
     $this->db->select('backlog_student.*,student.name,student.f_h_name,student.course_name,student.mother_name,student.photo');
     $this->db->from('backlog_student');
     $this->db->join('student','student.student_id=backlog_student.student_id');
-    $this->db->where(array("backlog_student.class_id"=>$class_id, "backlog_student.exam_form"=>'Y', "backlog_student.upload_result"=>'N','backlog_student.mode'=>$mode,'backlog_student.exam_year'=>'Dec 2022'));
+    $this->db->where(array("backlog_student.class_id"=>$class_id, "backlog_student.exam_form"=>'Y', "backlog_student.upload_result"=>'N','backlog_student.mode'=>$mode,'backlog_student.exam_year'=>'June 2023','backlog_student.result_show'=>'Y' ));
     $this->db->limit(500);
     $students = $this->db->get()->result();
     
@@ -1069,7 +1069,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
             'enrollment_no' => $student->enrollment_no,
             'roll_no' => $student->roll_no,
             'name' => $student->name,
-            'exam_year' => 'March 2023',
+            'exam_year' => 'July 2023',
             'f_h_name' => $student->f_h_name,
             'mother_name' => $student->mother_name,
             'marksheet_no' =>$student->back_marksheet_no,
@@ -1151,7 +1151,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
         }else{
             $final_result = 'PASS';   
         }
-        if($whCount!=0) {
+        if($whCount!=0  || $final_result=='FAIL'  ) {
             // $final_result=='FAIL' || 
              //  && count($course_type)==0 && $student->course_group_id!=76 && $student->course_group_id!=77
             continue;
