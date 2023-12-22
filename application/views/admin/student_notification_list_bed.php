@@ -98,6 +98,7 @@ $abs_count = 0 ;
 					$theory_paper_count = 0;
 					$p_paper_count = 0;
 					$Withheld = false;
+					$WithheldPR = false;
 					$fc1 =0;
 					$fc2=0;
 					$fc1_abs ='';
@@ -256,7 +257,7 @@ $abs_count = 0 ;
 							$total_marks_obt += $new_exam_form->p_marks+$new_exam_form->int_marks;
 							if($new_exam_form->p_marks=='' || $new_exam_form->p_marks=='N'){
 								$rwpr_count++;
-								$Withheld=true;
+								$WithheldPR=true;
 							}
 							if($new_exam_form->p_marks=='ABS'){
 								$p_abs_count++;
@@ -268,7 +269,7 @@ $abs_count = 0 ;
 							}
 							if($new_exam_form->int_marks=='N'){
 								$rwpr_count++;
-								$Withheld =true;
+								$WithheldPR =true;
 							}
 
 		         		if($new_exam_form->int_marks<$new_exam_form->min_internal_marks){
@@ -447,6 +448,10 @@ $abs_count = 0 ;
 				if($Withheld){
 					// echo 'RW';
 					echo $final_result = "RW";
+				}
+				elseif($WithheldPR){
+					
+					echo $final_result = "RWPR";
 				}else{
 					if($isFinalClass && $isOneClass == false){
 						$final_fail =0;
@@ -546,7 +551,7 @@ $abs_count = 0 ;
 							}else if((!in_array($student->class_id, $class_ids)) || $mode=='PVT'){ 
 								?>
 							<td  class="text-center" style="padding:0px" align="center"><?php 
-							if(!in_array($final_result, array("FAIL","RW") )){
+							if(!in_array($final_result, array("FAIL","RW","RWPR") )){
 								
 								//echo $total_obtained_marks .' / '. $total_max_marks;
 								echo $total_marks_obt .' / '. $total_paper_marks;
@@ -592,15 +597,18 @@ $abs_count = 0 ;
 									} ?>
 							<td class="text-center"> 
 								<?php 
+								
 								if((in_array($student->class_id, $class_ids)) && $mode=='REG')	
 								{
+									
 									if($check_grace_marks){
 										echo " ";
 									}elseif( $theory_abs_count== ($theory_paper_count-2) && $p_abs_count==$p_paper_count){
 										echo 'Year Break';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
 									  }elseif( $theory_abs_count== ($theory_paper_count -2)){
 										echo 'Year Break';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
-									  }elseif( $p_abs_count==$p_paper_count){
+									  }
+									 elseif( $p_abs_count==$p_paper_count){
 										echo 'Absent In Practical';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
 									  }
 									elseif(sizeof($atkt_paper_codes_array)>0){
@@ -625,6 +633,9 @@ $abs_count = 0 ;
 									elseif( $theory_abs_count==$theory_paper_count && $p_abs_count==$p_paper_count && $student->course_group_id == 76){
 										echo 'Absent In ALL';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
 									  }
+									elseif( $theory_abs_count==$theory_paper_count && $p_abs_count==$p_paper_count){
+										echo 'Absent In All';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
+							  }
 									elseif( $p_abs_count==$p_paper_count){
 										echo 'Absent In Practical';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
 									  }
