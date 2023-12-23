@@ -2991,7 +2991,7 @@ public function update_exam_datewise_permission(){
 		$data['mode']= $mode;
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'new_exam_form'=>'Y' ,'roll_no!='=>'0', 'university_mode'=>$mode,'result_show'=>'Y'));//'result_show'=>'Y'
 		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
-		$class_cbcs = array(193,197,201,203,205,211,213,221,223,225,227,275,279);
+		$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280);
 		if((in_array($class_id, $class_cbcs))){
 			$this->load->model('Gradesheet_tr_model_pg');
 			$this->load->view('admin/student_notification_list_pg',$data);
@@ -3080,7 +3080,7 @@ public function update_exam_datewise_permission(){
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
 		$data['title'] .= $title;//echo $this->db->last_query(); die;
 		$class_ids=array(101,104,107,110,116,119,125,128,131,134);
-		$class_cbcs = array(193,197,201,203,205,211,213,221,223,225,227,275,279);
+		$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280);
 		if((in_array($class_id, $class_ids)) && $mode=='REG')	
 		{
 			$this->load->model('Gradesheet_tr_model');
@@ -3370,7 +3370,7 @@ public function update_exam_datewise_permission(){
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode,'old_result_show'=>'Y'));
 		}
 	 	// if($class->internal=="Y" && $mode!="PVT"){
-			$class_cbcs = array(193,197,201,203,205,211,213,221,223,225,227,275,279);
+			$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280);
 			if(in_array($class_id , $class_cbcs))
 			{
 				$this->load->model('Gradesheet_model_pg');
