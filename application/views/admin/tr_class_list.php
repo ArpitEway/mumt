@@ -59,18 +59,24 @@
 					 
 					 
 					 if($class->regular_class=='Y') { ?>    
-					 <a href="<?php echo base_url("admin/admins/generate_tr_bed")."/REG/".$course['id']."/".$class->id; ?>">Regular Tr</a>
-					 <?php } if($class->private_class=='Y') { echo $flag; ?>
-					 <a href="<?php echo base_url("admin/admins/generate_tr_bed")."/PVT/".$course['id']."/".$class->id; ?>">Private Tr</a>
+					 <a href="<?php echo base_url("admin/admins/generate_tr_bed")."/REG/M/".$course['id']."/".$class->id; ?>">Regular Tr</a>
+					 <?php if(!empty($cbcs) ){ ?>
+					 / <a href="<?php echo base_url("admin/admins/generate_tr_bed")."/REG/G/".$course['id']."/".$class->id; ?>">Grade Tr</a>
+					 <?php } 
+					 } if($class->private_class=='Y') { echo $flag; ?>
+					 <a href="<?php echo base_url("admin/admins/generate_tr_bed")."/PVT/M/".$course['id']."/".$class->id; ?>">Private Tr</a>
 					  <?php }  
 				
 
 					 }else{ 
 				
 				if($class->regular_class=='Y') { ?>    
-					 <a href="<?php echo base_url("admin/admins/generate_tr")."/REG/".$course['id']."/".$class->id; ?>">Regular Tr</a>
-					 <?php } if($class->private_class=='Y') { echo $flag; ?>
-					 <a href="<?php echo base_url("admin/admins/generate_tr")."/PVT/".$course['id']."/".$class->id; ?>">Private Tr</a>
+					 <a href="<?php echo base_url("admin/admins/generate_tr")."/REG/M/".$course['id']."/".$class->id; ?>">Regular Tr</a>
+					 <?php if(!empty($cbcs) ){ ?>
+					 / <a href="<?php echo base_url("admin/admins/generate_tr")."/REG/G/".$course['id']."/".$class->id; ?>"> Grade Tr</a>
+					 <?php } 
+					 } if($class->private_class=='Y') { echo $flag; ?>
+					 <a href="<?php echo base_url("admin/admins/generate_tr")."/PVT/M/".$course['id']."/".$class->id; ?>">Private Tr</a>
 					  <?php }  
 				 } ?>
 			</td>

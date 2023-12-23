@@ -3053,15 +3053,20 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
-	public function generate_tr($mode="",$course_group_id="",$class_id="",$startlimit=0,$pagenumber=0){
+	public function generate_tr($mode="",$exam_pattern="M",$course_group_id="",$class_id="",$startlimit=0,$pagenumber=0){
 		$start=0;
 		if($startlimit==!0){
 			$start=($startlimit-1)*1000;
 			$this->db->limit(1000,$start);
 			$pagetitle=$startlimit;
 		}
-		
-		$where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y', 'roll_no!='=>'0' ,'university_mode'=> $mode);
+		if($exam_pattern=="M"){
+			$pattern="MARKS";
+		}
+		else{
+			$pattern="GRADE";
+		}
+		$where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y', 'roll_no!='=>'0' ,'university_mode'=> $mode ,'exam_pattern'=>$pattern);
 		//,'examcentercode'=>'MDE165'
 		//,'student_id'=>702823
 		$this->db->order_by('center_id','ASC');
@@ -3081,11 +3086,11 @@ public function update_exam_datewise_permission(){
 		$data['title'] .= $title;//echo $this->db->last_query(); die;
 		$class_ids=array(101,104,107,110,116,119,125,128,131,134,120);
 		$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280);
-		if((in_array($class_id, $class_ids)) && $mode=='REG')	
+		if((in_array($class_id, $class_ids)) && $mode=='REG' && $pattern!="MARKS")	
 		{
 			$this->load->model('Gradesheet_tr_model');
 			$this->load->view('admin/generate_gradesheet_tr',$data);
-		}else if((in_array($class_id, $class_cbcs)) && $mode=='REG'){
+		}else if((in_array($class_id, $class_cbcs)) && $mode=='REG' && $pattern!="MARKS"){
 			$this->load->model('Gradesheet_tr_model_pg');
 			$this->load->view('admin/generate_gradesheet_tr_pg',$data);
 		}
