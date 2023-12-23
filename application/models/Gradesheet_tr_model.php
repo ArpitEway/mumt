@@ -470,7 +470,7 @@ class Gradesheet_tr_model extends CI_Model
 				$this->tot_credit_point += $credit_point;
 				
 				
-				$paper_codes=array('2RBCA2','2RBCA4','1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4');
+				$paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4','2RBBA2','2RBBA4','2RBA2','2RBA4','2RBCOM2','2RBCOM4','2RBCOMCA2','2RBCOMCA4','2RBCOMT2','2RBCOMT4','2RBCA2','2RBCA4','2RBSCCBC2','2RBSCCBC4','2RBSCCS2','2RBSCCS4','2RBSCPCM2','2RBSCPCM4','2RBSW2','2RBSW4');
 				if(in_array($key,$paper_codes))	
 				{
 				echo "<td colspan= '2' class='text-center'>".$result['credit']."</td>";
@@ -489,7 +489,7 @@ class Gradesheet_tr_model extends CI_Model
 				$this->tot_credit_point -= $credit_point;
 					
 				}
-				$paper_codes=array('2RBCA2','2RBCA4','1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4');
+				$paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4','2RBBA2','2RBBA4','2RBA2','2RBA4','2RBCOM2','2RBCOM4','2RBCOMCA2','2RBCOMCA4','2RBCOMT2','2RBCOMT4','2RBCA2','2RBCA4','2RBSCCBC2','2RBSCCBC4','2RBSCCS2','2RBSCCS4','2RBSCPCM2','2RBSCPCM4','2RBSW2','2RBSW4');
 				if(in_array($key,$paper_codes))	
 				{
 				echo "<td colspan= '2' class='text-center'>".$result['obt_credit']."</td>";
@@ -551,7 +551,7 @@ class Gradesheet_tr_model extends CI_Model
 
 				// if($key=='1RBCOM2' || $key=='1RBCOM4' || $key == '1RBCOMCA2' || $key == '1RBCOMCA4' || $key == '1RBA2' || $key == '1RBA4' || $key == '1RBBA2' || $key == '1RBBA4' || $key == '1RBCOMT2' || $key == '1RBCOMT4' || $key == '1RBSW2' || $key == '1RBSW4' || $key =='1RBCOMCA2'	|| $key == '1RBCOMCA4' || $key == '1RBCA2' || $key == '1RBCA4' || $key == '1RBSCPCM2' || $key == '1RBSCPCM4')
 
-				$paper_codes=array('2RBCA2','2RBCA4','1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4');
+				$paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4','2RBBA2','2RBBA4','2RBA2','2RBA4','2RBCOM2','2RBCOM4','2RBCOMCA2','2RBCOMCA4','2RBCOMT2','2RBCOMT4','2RBCA2','2RBCA4','2RBSCCBC2','2RBSCCBC4','2RBSCCS2','2RBSCCS4','2RBSCPCM2','2RBSCPCM4','2RBSW2','2RBSW4');
 				if(in_array($key,$paper_codes))	
 				{
 				echo "<td colspan= '2' class='text-center'>".$result['grade_point']."</td>";
@@ -581,7 +581,7 @@ class Gradesheet_tr_model extends CI_Model
 				$this->tot_credit_point += $credit_point;
 				
 				
-				$paper_codes=array('2RBCA2','2RBCA4','1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4');
+				$paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4','2RBBA2','2RBBA4','2RBA2','2RBA4','2RBCOM2','2RBCOM4','2RBCOMCA2','2RBCOMCA4','2RBCOMT2','2RBCOMT4','2RBCA2','2RBCA4','2RBSCCBC2','2RBSCCBC4','2RBSCCS2','2RBSCCS4','2RBSCPCM2','2RBSCPCM4','2RBSW2','2RBSW4');
 				if(in_array($key,$paper_codes))	
 				{
 				echo "<td colspan= '2' class='text-center'>".$credit_point."</td>";
@@ -595,7 +595,7 @@ class Gradesheet_tr_model extends CI_Model
 				if($result['obt_marks'] === 'ABS'){
 					$result['letter_grade'] = 'ABS';
 				}
-				$paper_codes=array('2RBCA2','2RBCA4','1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4');
+				$paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4','2RBBA2','2RBBA4','2RBA2','2RBA4','2RBCOM2','2RBCOM4','2RBCOMCA2','2RBCOMCA4','2RBCOMT2','2RBCOMT4','2RBCA2','2RBCA4','2RBSCCBC2','2RBSCCBC4','2RBSCCS2','2RBSCCS4','2RBSCPCM2','2RBSCPCM4','2RBSW2','2RBSW4');
 				if(in_array($key,$paper_codes))	
 				{
 				echo "<td colspan= '2' class='text-center'>".$result['credit_point']."</td>";
@@ -639,7 +639,7 @@ class Gradesheet_tr_model extends CI_Model
 
 			// if($key=='1RBCOM2' || $key=='1RBCOM4' || $key == '1RBCOMCA2' || $key == '1RBCOMCA4' || $key == '1RBA2' || $key == '1RBA4' || $key == '1RBBA2' || $key == '1RBBA4' || $key == '1RBCOMT2' || $key == '1RBCOMT4' || $key == '1RBSW2' || $key == '1RBSW4' || $key =='1RBCOMCA2' || $key == '1RBCOMCA4' || $key == '1RBCA2' || $key == '1RBCA4' || $key == '1RBSCPCM2' || $key == '1RBSCPCM4')
 
-			$paper_codes=array('2RBCA2','2RBCA4','1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4');
+			$paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4','2RBBA2','2RBBA4','2RBA2','2RBA4','2RBCOM2','2RBCOM4','2RBCOMCA2','2RBCOMCA4','2RBCOMT2','2RBCOMT4','2RBCA2','2RBCA4','2RBSCCBC2','2RBSCCBC4','2RBSCCS2','2RBSCCS4','2RBSCPCM2','2RBSCPCM4','2RBSW2','2RBSW4');
 			if(in_array($key,$paper_codes))	
 				{
 				echo "<td colspan= '2' class='text-center'>".$result['letter_grade']."</td>";
