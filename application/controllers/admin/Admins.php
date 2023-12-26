@@ -3084,7 +3084,7 @@ public function update_exam_datewise_permission(){
 		$title = "TR ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
 		$data['title'] .= $title;//echo $this->db->last_query(); die;
-		$class_ids=array(101,104,107,110,116,119,125,128,131,134,120);
+		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
 		$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280);
 		if((in_array($class_id, $class_ids)) && $mode=='REG' && $pattern!="MARKS")	
 		{
@@ -3126,7 +3126,7 @@ public function update_exam_datewise_permission(){
 		$title = "TR ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
 		$data['title'] .= $title;//echo $this->db->last_query(); die;
-		$class_ids=array(101,104,107,110,116,119,125,128,131,134);
+		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
 		if((in_array($class_id, $class_ids)) && $mode=='REG')	
 		{
 			$this->load->model('Gradesheet_backlog_tr_model');
@@ -3190,7 +3190,7 @@ public function update_exam_datewise_permission(){
 	}
 
 	public function tr_class_list(){
-		$where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y' and class_id in (293,295,183,300,268,256,258,289,283,291,174,191,177,194,196,204,276,280,120,287,297))";
+		$where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y' and class_id in (293,295,183,300,268,256,258,289,283,291,174,191,177,194,196,204,276,280,120,287,297,101,102,119))";
 		/******Final TR*******/
 		//155,182,296,288,292,262,268,270,300,294,286,298,256,258,274
 		// 232,236,238,240,244,246,216,248,250,254,290,284
@@ -5478,7 +5478,7 @@ public function forward_complaint(){
 		$course_id = $new_exam_form[0]->course_group_id;
 		$data['old_result_data']  = $new_exam_form;
 		$data['class_id']  = $new_exam_form[0]->class_id;
-		$class_ids=array(101,104,107,110,116,119,125,128,131,134);
+		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
 		$class_cbcs = array(193,197,201,203,205,211,213,221,223,225,227,275,279);
 		// $title = array('title' => 'Result');
 		$data['exam_data'] = $this->Common_model->getRecordById('old_exam_data','id',$exam_data_id);

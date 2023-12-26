@@ -11,7 +11,7 @@
 		<?php foreach ($courses as $course){
 			$this->db->order_by('id');
 			
-			 $this->db->where_in('id',array(293,295,183,300,268,256,258,289,283,291,174,191,177,194,196,204,276,280,120,287,297));
+			 $this->db->where_in('id',array(293,295,183,300,268,256,258,289,283,291,174,191,177,194,196,204,276,280,120,287,297,101,102,119));
 			
         $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id'] , 'exam_form_permission' => 'Y'));
 		//, 'old_exam_form_permission' => 'Y'
@@ -35,7 +35,8 @@
         <tr>
         <td></td>
 		<?php 
-		$class_ids=array(101,104,107,110,116,119,125,128,131,134,120);
+		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
+		
 		$cbcs = ($class->cbcs == 'Y' || in_array($class->id, $class_ids))?' (CBCS)':'';?>
 			<td><?= $class->class_name.$cbcs ?></td>
 			<td><?php 
@@ -100,7 +101,7 @@
 			<td>
 				<?php
 			if($class->regular_class=='Y') { 
-				$class_ids=array(101,104,107,110,116,119,125,128,131,134);
+				$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
 				$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280);
 				if(in_array($class->id , $class_ids) || in_array($class->id , $class_cbcs)){
 					$std_marksheet = 'student_marksheet_grade';
