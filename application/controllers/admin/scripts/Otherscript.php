@@ -394,18 +394,21 @@ class Otherscript extends CI_Controller {
 
 	public function update_group_id_in_new_exam_form(){
 		// $this->db->limit(10);
-		$students = $this->Common_model->getRecordByWhere('student',array('group_id !='=>''));
+		//$students = $this->Common_model->getRecordByWhere('student',array('group_id !='=>''));
+		$sql="SELECT DISTINCT(s.student_id),s.group_id,s.class_id FROM `new_exam_form` as e join student as s on s.student_id=e.student_id and s.class_id=e.class_id WHERE e.group_id='' and s.group_id!='' order by s.class_id";
+		$students = $this->db->query($sql)->result_array();
+
 		foreach($students as $student){
 		$where = array(
-			'student_id'=>$student->student_id,
-			'class_id'=>$student->old_class_id,
+			'student_id'=>$student['student_id'],
+			'class_id'=>$student['class_id'],
 		);
 		$data = array(
-			'group_id'=>$student->group_id
+			'group_id'=>$student['group_id']
 		);
 
 		$this->Common_model->updateRecordByConditions('new_exam_form',$where,$data);
-		echo $this->db->last_query().'<br>';
+		echo $this->db->last_query().'<br>';//die;
 	}
 }
 
