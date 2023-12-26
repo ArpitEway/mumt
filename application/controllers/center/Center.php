@@ -2227,9 +2227,9 @@ class Center extends CI_Controller {
 				$class_ids=array(101,104,107,110,116,119,125,128,131,134);
 				if((in_array($result->class_id , $class_ids)) && $result->mode=='REG')	
 				{
-					$btn =	'<a href="'.base_url('center/Center/backlog_grade_marksheet/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm dt-center" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
+					$btn =	'<a href="'.base_url('center/Center/backlog_grade_marksheet/'.$this->Common_model->encrypt_decrypt($result->id)).'" class="btn btn-info btn-sm dt-center" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
 				}else{
-					$btn =	'<a href="'.base_url('center/Center/backlog_marksheet/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm dt-center" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
+					$btn =	'<a href="'.base_url('center/Center/backlog_marksheet/'.$this->Common_model->encrypt_decrypt($result->id)).'" class="btn btn-info btn-sm dt-center" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
 				}
 			
 			// }
@@ -2322,7 +2322,7 @@ public function backlog_marksheet($student_id="")
 		$this->db->select('backlog_student.*,student.name,student.f_h_name,student.course_name,student.photo,student.session');
 				$this->db->from('backlog_student');
 				$this->db->join('student','backlog_student.student_id=student.student_id');
-				$this->db->where(array('backlog_student.exam_form'=>'Y','backlog_student.result_show'=>'Y','backlog_student.student_id'=>$student_id,'exam_year'=>'June 2023'));
+				$this->db->where(array('backlog_student.exam_form'=>'Y','backlog_student.result_show'=>'Y','backlog_student.id'=>$student_id,'exam_year'=>'June 2023'));
 				$student = $this->db->get()->result();
 		if ((count($student)==0)  ) {
 			redirect(base_url());
@@ -2476,7 +2476,7 @@ public function marksheet_admin($student_id="")
 public function backlog_grade_marksheet($student_id=""){
 	
     $student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
-       $student = $this->Common_model->getRecordByWhere('backlog_student',array('exam_form'=>'Y','result_show'=>'Y','student_id'=>$student_id));
+       $student = $this->Common_model->getRecordByWhere('backlog_student',array('exam_form'=>'Y','result_show'=>'Y','id'=>$student_id));
        // print_r($student);die;
        if (count($student)==0) {
            redirect(base_url());
