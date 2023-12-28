@@ -3190,8 +3190,9 @@ public function update_exam_datewise_permission(){
 	}
 
 	public function tr_class_list(){
-		$where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y' and class_id in (293,295,183,300,268,256,258,289,283,291,174,191,177,194,196,204,276,280,120,287,297,101,102,119))";
+		$where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y' and class_id in (262,270,293,295,183,300,268,256,258,289,283,291,214,200,210,222))";
 		/******Final TR*******/
+		// 293,295,183,300,268,256,258,289,283,291,174,191,177,194,196,204,276,280,120,287,297,101,102,119
 		//155,182,296,288,292,262,268,270,300,294,286,298,256,258,274
 		// 232,236,238,240,244,246,216,248,250,254,290,284
 		// 155,182,296,288,292
