@@ -3729,7 +3729,7 @@ public function update_exam_datewise_permission(){
 		// $this->load->view('admin/generate_tr/header2',array('title' =>$title));
 
 		// if($class_id == '110' || $class_id == '119' || $class_id == '131')
-		$class_ids=array(110,119,125,128,131,);
+		$class_ids=array(110,119,125,128,131,129);
 		if(in_array($class_id, $class_ids))		
 		{
 			$this->load->model('Gradesheet_tr_model');
