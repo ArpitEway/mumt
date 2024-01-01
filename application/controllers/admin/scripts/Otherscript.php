@@ -189,7 +189,7 @@ class Otherscript extends CI_Controller {
 		//$marks = array('43','42','41','40'); 
 		//$marks = array('85','84','83','82'); 
 		$marks = array('68','67','66','65'); 
-		$cls_id=242;
+		$cls_id=206;
 		$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
 		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and roll_no!=0 and university_mode='REG' order by roll_no limit 100";
 		$rs = $this->db->query($sql)->result_array();
