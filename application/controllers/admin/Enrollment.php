@@ -1414,4 +1414,106 @@ public function getStudentData()
 			"data" => $html_comment
 		));
 	}
+	public function update_student_session(){
+		$student_id = $_POST['student_id'];
+		$course_group_id = $_POST['course_group_id_admission'];
+		
+		///////////////////////////
+
+		$mode = $this->Common_model->getRecordByWhere('student',array("student_id"=>$_POST['student_id'] ));	
+		// code for delete papers 
+		if($_POST['old_course_group_id']!=$_POST['course_group_id']){
+			$delete  =  $this->Common_model->deleteByWhere('new_exam_form' ,array('student_id'=>$_POST['student_id']));
+			$class_master =   $this->Common_model->getRecordByWhere('class_master' ,array("id"=>$_POST['class_id']));
+			$cbcs = ($class_master[0]->cbcs == 'Y')?'Y':'N';
+			if($class_master[0]->class_group=='N'){
+				if($mode[0]->university_mode=='PVT') 
+					$paperWhere=array('class_id'=>$_POST['class_id'],'type'=>'theory','cbcs_paper'=>$cbcs);
+				else			
+					$paperWhere=array('class_id'=>$_POST['class_id'],'cbcs_paper'=>$cbcs);
+				$papers = $this->Common_model->getRecordByWhere('paper_master',$paperWhere);
+				
+					if(count($papers)>0){
+						foreach($papers as $paper){
+							$insert_paper = array(
+								'student_id'=>$_POST['student_id'],
+								'course_group_id' =>$_POST['course_group_id'],
+								'class_id' =>$_POST['class_id'],
+								'paper_id' =>$paper->id,
+								'paper_code' =>$paper->paper_code,
+								'paper_type'=>$paper->type,
+								'book_code'=>$paper->book_code,
+								'paper_order'=>$paper->paper_no,
+								'sub_group_id'=>$paper->sub_group_id
+							);
+							$insert = $this->Common_model->insertAll('new_exam_form',$insert_paper);
+						}
+						$data['temp_exam_form'] = 'Y';
+					}else{
+						$data['temp_exam_form'] = 'N';
+					}
+			}else{
+				$data['temp_exam_form'] = 'N';
+			}
+		}
+
+		$course_group_id = html_escape($this->input->post('course_group_id'));
+		$class_id = html_escape($this->input->post('class_id'));
+		$session = html_escape($this->input->post('session'));
+
+		$data['session'] = $session;
+		$data['course_group_id'] = $course_group_id;
+		$data['course_name'] = $this->Common_model->getCourseNameByCourseId($course_group_id);
+		$data['class_name'] = $this->Common_model->getClassNameByClassId($class_id);
+		$data['class_id'] = $class_id;
+		
+
+		$studentData['eligibility'] = html_escape($this->input->post('eligibility'));
+	
+		// transaction start from here 
+		// https://codeigniter.com/userguide3/database/transactions.html
+		
+		$this->db->trans_start();
+		$student_id = html_escape($this->input->post('student_id'));
+		$course_permission= $this->Common_model->getRecordByWhere('course',array("session"=>$session,'course_group_id'=>$course_group_id ));
+		$session_permission= $this->Common_model->getRecordByWhere('session',array("session"=>$session));	
+		
+		if ($session!=$mode[0]->session) {
+			if(($mode[0]->university_mode=='REG' && $course_permission[0]->admission_permission_regular=='Y') ||  ($mode[0]->university_mode=='PVT' &&  $course_permission[0]->admission_permission_private=='Y'))
+			{
+				$path = 'assets/student_image/'.$session.'/'.$mode[0]->photo;
+				$prev_path = 'assets/student_image/'.$mode[0]->session.'/'.$mode[0]->photo;
+				$upload = rename($prev_path,$path);
+			}
+			else {
+				return false;
+			}
+		}
+	
+		$studentData['student_id'] = $student_id;
+		$this->db->where('student_id', $student_id);
+		$this->db->update('student', $data);
+		
+		$this->db->where('student_id', $student_id);
+		$this->db->update('student_data', $studentData);
+	
+		
+		$OnlinePayTxnData = array('course_group_id' => $course_group_id,'class_id' => $class_id);
+
+		$this->db->where('student_id', $student_id);
+		$this->db->update('online_payment_transaction', $OnlinePayTxnData);
+		
+		if ($this->db->trans_status() === FALSE){
+			$this->db->trans_rollback();
+		}else{ 
+			$this->db->trans_complete();
+		}
+
+		
+		///////////////////////////
+		
+		
+		$result = array("status" => true, "student_id"=> $student_id);
+		echo json_encode($result);
+	}
 }

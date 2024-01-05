@@ -21,8 +21,8 @@ $("#eligibility").on('change', function(){
 	
 	var csrfName = $('.csrfname').attr('name');
 	var csrfHash = $('.csrfname').val();
-	var mode = $('#mode').val();
-	var session=$('#session').val();
+	var mode = $('#mode').val(); 
+	var session=$('#session').val(); console.log("mode "+mode)
 	$('input[name="qualifying_exam"]').val(eligibility); 
 	$.ajax({
 		method: "POST",

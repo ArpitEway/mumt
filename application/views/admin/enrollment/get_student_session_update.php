@@ -11,12 +11,12 @@
 							</tr>
 						
 							<tr>
-							  <td><b>Course: </b> <?=$student[0]->course_name;?> <b>Class: </b> <?=$student[0]->class_name;?></td>
-							  <td ><b>Session: </b> <?=$student[0]->session;?></td>
+							  <td><b>Course: </b> <?=$student[0]->course_name;?> </td>
+							  <td ><b>Class: </b> <?=$student[0]->class_name;?></td>
 							</tr>
 							<tr>
 							  <td><b>Student Name: </b> <?=$student[0]->name;?></td>
-							  <td ><b>DOB: </b> <?=date("d-m-Y", strtotime($student[0]->dob));?></td>
+							  <td ><b>Father Name: </b><?=$student[0]->f_h_name;?></td>
 							</tr>	
 							<tr>
 							  <td><b>Student Email: </b> <?=$student_data[0]->p_email;?></td>
@@ -48,12 +48,12 @@
 						</table>
 					</div>
 				</div>
-
+<?php if($student[0]->enrollment_no=='-' && $student[0]->enrolled=='N'){  ?>
                 <div class="row">
                             <div class="col-md-6">
 
                                 <?php 
-                                $sessions = $this->db->get_where('session', array())->result_array();
+                                $sessions = $this->db->get_where('session', array('enrollment_permission'=>'Y'))->result_array();
                                     ?>
                                     <div class="form-group"  >
                                         <label>Session</label><span class="text-danger"> *</span>
@@ -143,40 +143,134 @@
 </div>
 <div style="text-align: center;">
 
-<button  href="#" class="btn btn-primary btn-sm font-weight-bold mode m-auto" >Change Mode</button>
+<button  href="#" class="btn btn-primary btn-sm font-weight-bold studentSession m-auto" >Change Session</button>
 
 </div>
-<script src="<?=base_url();?>assets/theme/admission.js?token=<?=date('YmdHis')?>"></script>
+<?php }else{
+    ?>
+     <div class="alert alert-warning alert-dismissible fade show">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <strong>Warning!</strong> Student is already Enrolled!.
+  </div>
+    <?php
+} ?>
 <script>
 $(document).ready(function(){
 
-$(".mode").click(function(){
-    var student_id = document.getElementById('student_id').value ;
-   var csrfName = $('.csrfname').attr('name');
-    var csrfHash = $('.csrfname').val();
-    $.ajax({
-        type: "POST",
-        url: BASE_URL+"admin/Admins/update_student_mode",
-        dataType:"json",
-        data: {student_id: student_id,[csrfName]:csrfHash},
-        success: function(response){
-        console.log(response);
-            if(response.status==true){
-                toastr.success("Mode Changed Successfully");
-				search_student_data();
-				// if(response.mode=="REG")
-				// {
-				// 	$('#mode').replaceWith("<td  id='mode'><b>Mode:</b> Regular</td>");
-				// }
-				// if(response.mode=="PVT"){
-				// 	$('#mode').replaceWith("<td  id='mode'><b>Mode:</b> Private</td>");
-				// }
-            }else{
-                toastr.error(response.message);
-            }
-        }
-    });
+    $("#eligibility").on('change', function(){
+	var eligibility = $(this).val();
+	
+	var csrfName = $('.csrfname').attr('name');
+	var csrfHash = $('.csrfname').val();
+	var mode ='<?=$student[0]->university_mode;?>' ; 
+	var session=$('#session').val(); 
+    $("#class_id").html('');
+	$('input[name="qualifying_exam"]').val(eligibility); 
+	$.ajax({
+		method: "POST",
+		url: BASE_URL+"center/center/getCourseByEligibility",
+		data: {mode:mode,session:session,eligibility : eligibility,[csrfName]:csrfHash},
+	})
+	.done(function( msg ) {
+		$('#course_group_id').html(msg);
+		$('#course_group_id_admission').html(msg);
+	});
 });
+
+$("#session").on('change', function(){
+    $("#eligibility").val('');
+    $("#course_group_id").html('');
+    $('#course_group_id_admission').html('');
+    $("#class_id").html('');
+    
+
+});
+
+
+
+    $(".studentSession").click(function(){
+        var student_id = document.getElementById('student_id').value ;
+        var eligibility = document.getElementById('eligibility').value ;
+        var mode = document.getElementById('mode').value ;
+        var course_group_id = document.getElementById('course_group_id_admission').value ;
+        var old_course_group_id = document.getElementById('old_course_group_id').value ;
+        var class_id = document.getElementById('class_id').value ;
+        var session = document.getElementById('session').value ;
+        var csrfName = $('.csrfname').attr('name');
+        var csrfHash = $('.csrfname').val();
+        if(session==''){
+		$('select[name="session"]').next('div').text('Session is Required');
+		document.getElementById('session').focus();
+		// submit = false
+		
+            return false;
+        }else{
+            $('select[name="session"]').next('div').text('');
+        }
+        if(eligibility==''){
+            $('select[name="eligibility"]').next('div').text('eligibility is Required');
+            document.getElementById('eligibility').focus();
+            return false;
+        }else{
+            $('select[name="eligibility"]').next('div').text('');
+        }
+        if(course_group_id==''){
+            $('select[name="course_group_id"]').next('div').text('Course is Required');
+            document.getElementById('course_group_id').focus();
+            // course_group_id = false
+            return false;
+        }else{
+            $('select[name="course_group_id"]').next('div').text('');
+        }
+        if(class_id==''){
+            $('select[name="class_id"]').next('div').text('Class is Required');
+            document.getElementById('class_id').focus();
+            // submit = false
+            return false;
+        }else{
+            $('select[name="class_id"]').next('div').text('');
+        }
+
+        if(session!="" && eligibility!="" && course_group_id!="" && class_id!=""){
+                $.ajax({
+                    type: "POST",
+                    url: BASE_URL+"admin/Enrollment/update_student_session",
+                    dataType:"json",
+                    data: {student_id: student_id,eligibility:eligibility,mode:mode,session:session,course_group_id:course_group_id,old_course_group_id:old_course_group_id,class_id:class_id,[csrfName]:csrfHash},
+                    success: function(response){
+                    console.log(response);
+                        if(response.status==true){
+                            toastr.success("Session Changed Successfully");
+                            search_student_data();
+                        
+                        }else{
+                            toastr.error(response.message);
+                        }
+                    }
+                });
+            }
+            else{
+
+            }
+    });
+
+    $("#course_group_id_admission").on('change', function(){
+		var csrfName = $('.csrfname').attr('name');
+		var csrfHash = $('.csrfname').val(); 
+		var mode = document.getElementById('mode').value;
+		var course = $(this).val();
+			$.ajax({
+				method: "POST",
+				url: BASE_URL+"admin/Admins/getClassByCourseInAdmission",
+				data: { course_group_id : course,
+						[csrfName]:csrfHash
+						, mode : mode
+						},
+			})
+			.done(function( msg ) {
+				$('#class_id').html(msg);
+			});
+		});
 });
 
 </script>
