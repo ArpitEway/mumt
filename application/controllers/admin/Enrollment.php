@@ -1388,7 +1388,7 @@ public function getStudentData()
 	}
 
 	public function search_student_session_change(){
-		$this->load->view('header',array('title' => 'Search Students'));
+		$this->load->view('header',array('title' => 'Search Students to Update Session'));
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
