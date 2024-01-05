@@ -1386,4 +1386,32 @@ public function getStudentData()
 			redirect(base_url());
 		}
 	}
+
+	public function search_student_session_change(){
+		$this->load->view('header',array('title' => 'Search Students'));
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);	
+		$this->load->view('admin/enrollment/search_student_session_change',$data );
+		$this->load->view('footer');
+	}
+
+	public function get_student_session_update(){
+		
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);	
+		$student_id =$_POST['student_id'];
+		$data['eligibility_list'] = $this->Common_model->get_record('course_group','DISTINCT (eligibility)');
+		$data['course_group_list'] = $this->Common_model->get_record('course','*');
+		$data['student']= $this->Common_model->getRecordByWhere('student',array("student_id"=>$student_id));
+		$data['student_data']= $this->Common_model->getRecordByWhere('student_data',array("student_id"=>$student_id));
+		$html_comment = $this->load->view('admin/enrollment/get_student_session_update' ,$data,true);
+		echo json_encode(array(
+			"status" => true,
+			"data" => $html_comment
+		));
+	}
 }
