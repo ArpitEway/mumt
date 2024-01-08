@@ -5083,7 +5083,7 @@ public function update_exam_datewise_permission(){
 				
 			$data['students'] = $this->db->get()->result();
 			
-			$dt = $this->load->view('admin/class_wise_remaining_report_table',$data,true);
+			$dt = $this->load->view('admin/class_wise_remaining_report_table_old',$data,true);
 		
 			echo json_encode(array(
                 "status" => true,
