@@ -161,6 +161,7 @@ $abs_count = 0 ;
 								if($new_exam_form->theory_marks=='ABS'){
 									array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
 									$theory_abs_count++;
+                                
 								}
 								if($new_exam_form->theory_marks==''){
 									$rw_count++;
@@ -229,6 +230,7 @@ $abs_count = 0 ;
 							if($new_exam_form->theory_marks=='ABS'){
 								array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
 								$theory_abs_count++;
+                                $abs_count++;
 							}
 							if($new_exam_form->theory_marks==''){
 								$rw_count++;
