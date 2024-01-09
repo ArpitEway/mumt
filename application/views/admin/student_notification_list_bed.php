@@ -230,7 +230,7 @@ $abs_count = 0 ;
 							if($new_exam_form->theory_marks=='ABS'){
 								array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
 								$theory_abs_count++;
-                                $abs_count++;
+                                // $abs_count++;
 							}
 							if($new_exam_form->theory_marks==''){
 								$rw_count++;
@@ -493,7 +493,7 @@ $abs_count = 0 ;
 									$grand_obt += $row->obtain_marks;
 									$grand_tot += $row->total_marks;
 								}
-								if($fail_count>0 || $abs_count>0){
+								if($fail_count>0 || $theory_abs_count>0){
 									$final_result = ($check_grace_marks) ? 'PASS BY GRACE' : 'FAIL';
 
 								}elseif($final_fail !=0){
@@ -517,7 +517,7 @@ $abs_count = 0 ;
 						if($p_fail_count>0 || $p_abs_count>0){
 							$final_result = 'FAIL';
 						}
-						else if($fail_count>0 || $abs_count>0){
+						else if($fail_count>0 || $theory_abs_count>0){
 							 $final_result = ($check_grace_marks) ? 'PASS BY GRACE' : 'FAIL';
 
 						}else{
