@@ -92,6 +92,7 @@ $abs_count = 0 ;
 					$p_abs_count = 0;
 					$p_fail_count = 0;
 					$rwpr_count = 0;
+                    $rwas_count =0;
 					$fail_count = 0;
 					$fail_tot_marks = 0;
 					$final_result = '';
@@ -99,6 +100,7 @@ $abs_count = 0 ;
 					$p_paper_count = 0;
 					$Withheld = false;
 					$WithheldPR = false;
+                    $WithheldAS = false;
 					$fc1 =0;
 					$fc2=0;
 					$fc1_abs ='';
@@ -170,7 +172,7 @@ $abs_count = 0 ;
 									$require_tot_marks += $new_exam_form->min_theory_marks+$new_exam_form->min_internal_marks;
 								}
 								if($new_exam_form->int_marks=='N'){
-									$rw_count++;
+									$rwas_count++;
 								}
 								if($new_exam_form->int_marks<$new_exam_form->min_internal_marks){
 									$int_fail_count++;
@@ -199,7 +201,7 @@ $abs_count = 0 ;
 							}
 							if($new_exam_form->type!='Project'){
 							if($new_exam_form->int_marks=='N'){
-								$rwpr_count++;
+								$rwas_count++;
 							}
 						}
 
@@ -239,8 +241,8 @@ $abs_count = 0 ;
 								$require_tot_marks += $new_exam_form->min_theory_marks;
 							}
 							if($new_exam_form->int_marks=='N'){
-								$rw_count++;
-								$Withheld;
+								$rwas_count++;
+								$WithheldAS=true;
 							}
 							if($new_exam_form->int_marks<$new_exam_form->min_internal_marks){
 								$int_fail_count++;
@@ -268,8 +270,8 @@ $abs_count = 0 ;
 								array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
 							}
 							if($new_exam_form->int_marks=='N'){
-								$rwpr_count++;
-								$WithheldPR =true;
+								$rwas_count++;
+								$WithheldAS =true;
 							}
 
 		         		if($new_exam_form->int_marks<$new_exam_form->min_internal_marks){
@@ -310,7 +312,7 @@ $abs_count = 0 ;
 		  $require_tot_marks += $fc2_min;
 	
 		}
-					if ($fail_count==0 && $rw_count==0 && $p_fail_count==0 && $int_fail_count==0 && $theory_abs_count==0 && $p_abs_count==0 && $rwpr_count==0) {
+					if ($fail_count==0 && $rw_count==0 && $p_fail_count==0 && $int_fail_count==0 && $theory_abs_count==0 && $p_abs_count==0 && $rwpr_count==0 && $rwas_count == 0) {
 						$final_result = "PASS";
 					}else{
 						if((in_array($student->class_id, $class_ids)) && $mode=='REG')	
@@ -324,12 +326,16 @@ $abs_count = 0 ;
 						
       // tot 3 grace marks in 1 subjects
 	 
-						if ($fail_count<2 && $require_grace_marks<4 && $int_fail_count==0 && $p_fail_count==0 && $rw_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0 && $rwpr_count==0) {
+						if ($fail_count<2 && $require_grace_marks<4 && $int_fail_count==0 && $p_fail_count==0 && $rw_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0 && $rwpr_count==0 && $rwas_count == 0) {
 							$check_grace_marks = true;
 							$final_result = "PASS BY GRACE";
-						}elseif($rwpr_count>0){
+						}elseif($rwas_count>0 && $rwpr_count>0){
+                            $final_result = "RWAS RWPR";
+                        }elseif($rwpr_count >0){
 							 $final_result = "RWPR";
-						}elseif($rw_count>0){
+						}elseif($rwas_count>0){
+                            $final_result = "RWAS";
+                        }elseif($rw_count>0){
 							 $final_result = "RW";
 						}else{
 							 $final_result = "FAIL";
@@ -448,11 +454,15 @@ $abs_count = 0 ;
 				if($Withheld){
 					// echo 'RW';
 					echo $final_result = "RW";
-				}
-				elseif($WithheldPR){
+				}elseif($WithheldPR && $WithheldAS){
+					
+					echo $final_result = "RWAS RWPR";
+				}elseif($WithheldPR){
 					
 					echo $final_result = "RWPR";
-				}else{
+				}elseif($WithheldAS){
+                    echo $final_result = "RWAS";
+                }else{
 					if($isFinalClass && $isOneClass == false){
 						$final_fail =0;
 						$classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$course_group_id,'mode'=>$classData->mode,'id!='=>$class_id
