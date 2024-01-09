@@ -561,7 +561,7 @@ $abs_count = 0 ;
 							}else if((!in_array($student->class_id, $class_ids)) || $mode=='PVT'){ 
 								?>
 							<td  class="text-center" style="padding:0px" align="center"><?php 
-							if(!in_array($final_result, array("FAIL","RW","RWPR") )){
+							if(!in_array($final_result, array("FAIL","RW","RWPR", "RWAS", "RWAS RWPR") )){
 								
 								//echo $total_obtained_marks .' / '. $total_max_marks;
 								echo $total_marks_obt .' / '. $total_paper_marks;
