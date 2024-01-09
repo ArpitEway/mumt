@@ -89,19 +89,21 @@ class Gradesheet_backlog_tr_model extends CI_Model
 	}
 
 	// notification 
-	public function view_notification($student_id,$course_group_id,$class_id,$mode)
+	public function view_notification($student_id,$course_group_id,$class_id,$mode,$exam_id)
 	{
-		
-		$std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $class_id,'student_id'=>$student_id));
+		$this->db->order_by('sub_group_id');
+		$std  = $this->Common_model->getRecordByWhere('backlog_exam_form',array('class_id'=> $class_id,'student_id'=>$student_id,'backlog_student_id'=>$exam_id));
+        
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
 		
 		if($std[0]->sub_group_id == 1){
-			$papers = $this->Common_model->get_all_backlog_papers($student_id,$class_id);
+			$papers = $this->Common_model->get_all_backlog_papers($student_id,$class_id,$exam_id);
+            
 		}
 
 		if($this->classData->class_group == 'Y'){
-			$papers_list = $this->Common_model->get_all_backlog_group_papers($student_id,$class_id);
+			$papers_list = $this->Common_model->get_all_backlog_group_papers($student_id,$class_id,$exam_id);
 		}
 	
 		
@@ -725,11 +727,30 @@ class Gradesheet_backlog_tr_model extends CI_Model
 		if ($this->fail_count>0) {
 			$require_grace_marks = $this->fail_min_marks-$this->fail_obt_marks;
 	   }
+
+       foreach ($this->result_array as $key => $result) {
+			
+		
+				if(($result['f_abs'] === 'ABS' && $result['obt_marks'] != '0')){
+					$result['obt_credit'] = 2;
+					$this->obt_tot_credit -=2; 
+					$credit_point = $result['obt_credit']*$result['grade_point'];
+				$this->result_array[$key]['credit_point']=$credit_point;
+				$this->tot_credit_point -= $credit_point;
+					
+				}
+				
+				
+				
+			// }
+			
+		}
 	  
 	   foreach ($this->result_array as $key => $result) {
 		  
 		   if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 			   
+          
 			   $this->obt_tot_credit +=$result['credit'];
 			   
 			   $this->check_grace_marks = true;
@@ -750,8 +771,7 @@ class Gradesheet_backlog_tr_model extends CI_Model
 		
 		$this->agpa = $this->tot_credit_point/$this->tot_credit;
 		$this->set_result();
-		
-		$agpa = ($this->result == 'FAIL')?'0.00':number_format((float)$this->agpa, 2, '.', '');
+	    $agpa = ($this->result == 'FAIL' || $this->result == 'WITHHELD')?'0.00':number_format((float)$this->agpa, 2, '.', '');
 		echo '<td class="text-center" style="padding:0px" align="center">'.$agpa.'</td>';
 		
 	}

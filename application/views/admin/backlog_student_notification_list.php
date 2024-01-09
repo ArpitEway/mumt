@@ -497,7 +497,7 @@
 			
 			if($final_result != 'FAIL'){
 				
-				$gradesheetData = $this->Gradesheet_tr_model->view_notification($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
+				$gradesheetData = $this->Gradesheet_backlog_tr_model->view_notification($student->student_id,$student->course_group_id,$student->class_id,$student->mode,$student->id);
 			}else{
 				?>
 				<td  class="text-center" style="padding:0px" align="center"></td>

@@ -5674,7 +5674,7 @@ public function forward_complaint(){
 	}
 
 	public function backlog_student_notification_list($mode = "",$course_id="",$class_id=""){
-		// $this->load->model('Gradesheet_tr_model');
+		$this->load->model('Gradesheet_backlog_tr_model');
 		$course_id = $this->Common_model->encrypt_decrypt($course_id,'decrypt');
 		$class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
 		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
