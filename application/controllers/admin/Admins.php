@@ -3161,7 +3161,7 @@ public function update_exam_datewise_permission(){
 		// $this->load->view('admin/generate_tr/header2',array('title' =>$title));
 
 		// if($class_id == '110' || $class_id == '119' || $class_id == '131')
-		$class_ids=array(110,119,125,128,131,126,129,132);
+		$class_ids=array(110,119,125,128,131,111,126,129,132);
 		if(in_array($class_id, $class_ids))		
 		{
 			$this->load->model('Gradesheet_backlog_tr_model');
@@ -3190,8 +3190,9 @@ public function update_exam_datewise_permission(){
 	}
 
 	public function tr_class_list(){
-		$where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y' and class_id in (206,228,230,242,299,126,132))";
+		$where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y' and class_id in (228,126,108,111,117,285,262))";
 		/******Final TR*******/
+		//206,228,230,242,299,126,132
 		// 293,295,183,300,268,256,258,289,283,291,174,191,177,194,196,204,276,280,120,287,297,101,102,119
 		//155,182,296,288,292,262,268,270,300,294,286,298,256,258,274
 		// 232,236,238,240,244,246,216,248,250,254,290,284
@@ -3729,7 +3730,7 @@ public function update_exam_datewise_permission(){
 		// $this->load->view('admin/generate_tr/header2',array('title' =>$title));
 
 		// if($class_id == '110' || $class_id == '119' || $class_id == '131')
-		$class_ids=array(110,119,125,128,131,126,129,132);
+		$class_ids=array(110,119,125,128,131,111,126,129,132);
 		if(in_array($class_id, $class_ids))		
 		{
 			$this->load->model('Gradesheet_tr_model');
@@ -5070,15 +5071,15 @@ public function update_exam_datewise_permission(){
 			$set = array_column($classes,'id');
 				$this->db->select('*');
 				$this->db->from('new_exam_form');
-				$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.old_class_id');
-				$this->db->where('student.exam_form','Y');
+				$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id');
+				$this->db->where('student.new_exam_form','Y');
 				// if($mode != 'All'){
 				// 	$this->db->where_in('new_exam_form.class_id',$set);
 				// }
 				$this->db->where_in('new_exam_form.class_id',$set);
 				 $this->db->where('new_exam_form.theory_marks','');
 				$this->db->where('new_exam_form.paper_type',"theory");
-				$this->db->order_by('student.course_group_id','student.old_class_id','student.university_mode','student.roll_number');
+				$this->db->order_by('student.course_group_id','student.class_id','student.university_mode','student.roll_no');
 				
 			$data['students'] = $this->db->get()->result();
 			
