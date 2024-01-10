@@ -1866,15 +1866,15 @@ class Center extends CI_Controller {
 		$classData	= $this->Common_model->getRecordById('class_master','id',$class_id);
 	 	//$where=array('student.student_id'=>$student_id,'paper_type'=>'theory');
 	 	$this->db->select('*');
-	 	$this->db->from('exam_form');
+	 	$this->db->from('new_exam_form');
 	 	//$this->db->Where($where );
 		$this->db->where(''.$this->exam_table.'.student_id',$student_id);
-		$this->db->where('exam_form.class_id',$class_id);
+		$this->db->where('new_exam_form.class_id',$class_id);
 		if($classData->practical_internal_marks=="N")
 			// $this->db->where('paper_type','theory');
 		$this->db->where_in('paper_type',array('Sessional','theory'));
-	 	$this->db->join($this->exam_table, ''.$this->exam_table.'.student_id = exam_form.student_id');
-		$this->db->order_by('exam_form.sub_group_id,paper_order');
+	 	$this->db->join($this->exam_table, ''.$this->exam_table.'.student_id = new_exam_form.student_id');
+		$this->db->order_by('new_exam_form.sub_group_id,paper_order');
 	 	$details = $this->db->get()->result();
 		//  echo $classData->practical_internal_marks.
 		//echo $this->db->last_query(); die;
@@ -1907,7 +1907,7 @@ class Center extends CI_Controller {
 	 			'paper_id' =>$value,
 	 			'student_id'  =>$_POST['student_id']
 	 		);
-	 		$Marksentry = $this->Common_model->updateRecordByConditions('exam_form',$where,$studentData);
+	 		$Marksentry = $this->Common_model->updateRecordByConditions('new_exam_form',$where,$studentData);
 	 	}
 	 	$where1 =  array(
 	 		'student_id'  =>$_POST['student_id']
@@ -2616,11 +2616,11 @@ public function backlog_grade_marksheet($student_id=""){
 		$student_id = $this->input->post('student_id');
 		$where=array(''.$this->exam_table.'.student_id'=>$student_id);
 		$this->db->select('*');
-		$this->db->from('exam_form');
+		$this->db->from('new_exam_form');
 		$this->db->Where($where );
 		$this->db->where_not_in('paper_type',array('Sessional','theory'));
-		$this->db->join($this->exam_table, ''.$this->exam_table.'.student_id = exam_form.student_id and '.$this->exam_table.'.old_class_id = exam_form.class_id');
-		$this->db->join('paper_master', 'paper_master.id = exam_form.paper_id');
+		$this->db->join($this->exam_table, ''.$this->exam_table.'.student_id = new_exam_form.student_id and '.$this->exam_table.'.old_class_id = new_exam_form.class_id');
+		$this->db->join('paper_master', 'paper_master.id = new_exam_form.paper_id');
 		$details = $this->db->get()->result();
 		$data = array(
 			'details' => $details,
@@ -2649,7 +2649,7 @@ public function backlog_grade_marksheet($student_id=""){
 				'paper_id' =>$value,
 				'student_id'  =>$_POST['student_id']
 			);
-			$this->Common_model->updateRecordByConditions('exam_form',$where,$studentData);
+			$this->Common_model->updateRecordByConditions('new_exam_form',$where,$studentData);
 		}
 		$where1 =  array('student_id'  => $_POST['student_id'] );
 		$Data = array('p_marks_sub' => 'Y');
@@ -2673,13 +2673,13 @@ public function backlog_grade_marksheet($student_id=""){
 			$classData	= $this->Common_model->getRecordById('class_master','id',$class_id); 
 		 	$where=array(''.$this->exam_table.'.student_id'=>$student_id,'paper_master.sub_group_id !='=>1);
 		 	$this->db->select('*');
-		 	$this->db->from('exam_form');
+		 	$this->db->from('new_exam_form');
 		 	$this->db->Where($where );
 			 if($classData->internal == "N"){
 				$this->db->where('paper_master.type !=','theory'); }
-		 	$this->db->join($this->exam_table, ''.$this->exam_table.'.student_id = exam_form.student_id and '.$this->exam_table.'.old_class_id = exam_form.class_id');
-			$this->db->join('paper_master',''.$this->exam_table.'.old_class_id= paper_master.class_id and paper_master.paper_code = exam_form.paper_code');
-			$this->db->order_by('exam_form.sub_group_id,paper_order,paper_no');
+		 	$this->db->join($this->exam_table, ''.$this->exam_table.'.student_id = new_exam_form.student_id and '.$this->exam_table.'.old_class_id = new_exam_form.class_id');
+			$this->db->join('paper_master',''.$this->exam_table.'.old_class_id= paper_master.class_id and paper_master.paper_code = new_exam_form.paper_code');
+			$this->db->order_by('new_exam_form.sub_group_id,paper_order,paper_no');
 		 	$details = $this->db->get()->result();
 		 	$data = array(
 				'classData' =>$classData,
@@ -2700,13 +2700,13 @@ public function backlog_grade_marksheet($student_id=""){
 		$student_id = $this->input->post('student_id');
 	    $class_id = $this->input->post('old_class_id');
 	   $classData	= $this->Common_model->getRecordById('class_master','id',$class_id); 
-		$where=array(''.$this->exam_table.'.student_id'=>$student_id,'exam_form.class_id'=>$class_id);
+		$where=array(''.$this->exam_table.'.student_id'=>$student_id,'new_exam_form.class_id'=>$class_id);
 		$this->db->select('*');
-		$this->db->from('exam_form');
+		$this->db->from('new_exam_form');
 		$this->db->Where($where );
-		$this->db->join($this->exam_table, ''.$this->exam_table.'.student_id = exam_form.student_id');
+		$this->db->join($this->exam_table, ''.$this->exam_table.'.student_id = new_exam_form.student_id');
 	//    $this->db->join('paper_master','student.class_id= paper_master.class_id and paper_master.paper_code = new_exam_form.paper_code');
-	   $this->db->order_by('exam_form.sub_group_id,paper_order');
+	   $this->db->order_by('new_exam_form.sub_group_id,paper_order');
 		$details = $this->db->get()->result();
 		// $this->Common_model->last_query();
 		$data = array(
@@ -2730,12 +2730,12 @@ public function practical_assignment_marks_edit(){
    $classData	= $this->Common_model->getRecordById('class_master','id',$class_id); 
 	$where=array(''.$this->exam_table.'.student_id'=>$student_id,'paper_master.sub_group_id !='=>1);
 	$this->db->select('*');
-	$this->db->from('exam_form');
+	$this->db->from('new_exam_form');
 	$this->db->Where($where );
 	$this->db->where_not_in('paper_type',array('Sessional','theory'));
-	$this->db->join($this->exam_table, ''.$this->exam_table.'.student_id = exam_form.student_id and '.$this->exam_table.'.old_class_id = exam_form.class_id');
-    $this->db->join('paper_master','student.old_class_id= paper_master.class_id and paper_master.paper_code = exam_form.paper_code');
-   $this->db->order_by('exam_form.sub_group_id,paper_order,paper_no');
+	$this->db->join($this->exam_table, ''.$this->exam_table.'.student_id = new_exam_form.student_id and '.$this->exam_table.'.old_class_id = new_exam_form.class_id');
+    $this->db->join('paper_master','student.old_class_id= paper_master.class_id and paper_master.paper_code = new_exam_form.paper_code');
+   $this->db->order_by('new_exam_form.sub_group_id,paper_order,paper_no');
 	$details = $this->db->get()->result();
 	$data = array(
 	   'classData' =>$classData,

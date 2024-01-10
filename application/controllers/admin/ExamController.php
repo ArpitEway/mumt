@@ -2790,7 +2790,7 @@ public function getStudentData()
 		$studentData = $this->Common_model->getRecordByWhere('student',array('roll_number'=>$roll_no,'exam_form'=>'Y'));
 		
 		$studentPaper = $this->Common_model->get_student_papers($studentData[0]->student_id,$studentData[0]->old_class_id);
-		$this->db->where('exam_form.theory_marks','');
+		$this->db->where('new_exam_form.theory_marks','');
 		$studentPaperWithHeld = $this->Common_model->get_student_papers($studentData[0]->student_id,$studentData[0]->old_class_id,'withheld');
 		//print_r($studentPaperWithHeld);
 	//	echo  $this->Common_model->last_query();
@@ -2830,7 +2830,7 @@ public function getStudentData()
 			$paper = $this->input->post('p_marks_paper_id');
 			$paper_int_marks = $this->input->post('paper_int_marks');
 			foreach ($paper as $key => $id) {
-				$this->Common_model->updateRecordByConditions('exam_form',array('paper_id' => $id, 'student_id' => $student_id),array('p_marks' => $p_marks[$key],'int_marks'=>$paper_int_marks[$key]));
+				$this->Common_model->updateRecordByConditions('new_exam_form',array('paper_id' => $id, 'student_id' => $student_id),array('p_marks' => $p_marks[$key],'int_marks'=>$paper_int_marks[$key]));
 			}
 		}
 
@@ -2839,7 +2839,7 @@ public function getStudentData()
 			$proj_paper = $this->input->post('pro_marks_paper_id');
 			$proj_int_marks = $this->input->post('proj_int_marks');
 			foreach ($proj_paper as $key => $id) {
-				$this->Common_model->updateRecordByConditions('exam_form',array('paper_id' => $id, 'student_id' => $student_id),array('p_marks' => $pro_marks[$key], 'int_marks' => $proj_int_marks[$key]));
+				$this->Common_model->updateRecordByConditions('new_exam_form',array('paper_id' => $id, 'student_id' => $student_id),array('p_marks' => $pro_marks[$key], 'int_marks' => $proj_int_marks[$key]));
 			}
 		}
 
@@ -2847,7 +2847,7 @@ public function getStudentData()
 			$sessional_marks = $this->input->post('sessional_marks');
 			$sessional_paper = $this->input->post('s_marks_paper_id');
 			foreach ($sessional_paper as $key => $id) {
-				$this->Common_model->updateRecordByConditions('exam_form',array('paper_id' => $id, 'student_id' => $student_id),array('int_marks' => $sessional_marks[$key]));
+				$this->Common_model->updateRecordByConditions('new_exam_form',array('paper_id' => $id, 'student_id' => $student_id),array('int_marks' => $sessional_marks[$key]));
 			}
 
 		}
@@ -2858,7 +2858,7 @@ public function getStudentData()
 			if (isset($_POST['int_marks'])) {
 				$data['int_marks'] = $int_marks[$key];
 			}
-			$this->Common_model->updateRecordByConditions('exam_form',$where,$data);
+			$this->Common_model->updateRecordByConditions('new_exam_form',$where,$data);
 		}
 		echo json_encode(array('success' => 'Marks Updated Successfully'));
 	}
