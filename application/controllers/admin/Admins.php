@@ -3755,6 +3755,19 @@ public function update_exam_datewise_permission(){
 		$this->load->view('admin/student_notification_list_bed',$data);
 	}
 
+    public function backlog_student_notification_list_bed($mode="",$course_id="",$class_id=""){
+		// echo $mode;die;
+		$this->load->model('Gradesheet_backlog_tr_model');
+		$course_id=$this->Common_model->encrypt_decrypt($course_id,'decrypt');
+		$class_id=$this->Common_model->encrypt_decrypt($class_id,'decrypt');
+		$this->db->order_by('roll_no','ASC');
+		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
+		$data['students']= $this->Common_model->getRecordByWhere('backlog_student',array("course_group_id"=>$course_id, 'class_id' => $class_id, 'exam_form'=>'Y','roll_no!='=>'0','mode'=>$mode,'exam_year'=>"June 2023" ));
+		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
+		$data['mode'] = $mode;
+		$this->load->view('admin/backlog_student_notification_list_bed',$data);
+	}
+
 	// public function updatePaperpgd()
 	// {
 	// 	$where = 'id in (140, 139)';
