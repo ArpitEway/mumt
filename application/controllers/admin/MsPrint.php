@@ -335,6 +335,55 @@ class MsPrint extends CI_Controller {
 		$this->load->view('admin/msprint/search_student_marksheet',$data);
 		$this->load->view('footer');
 	}
+
+    public function view_application($id){
+        $this->load->view('header',array('title' => 'Student Application'));
+        $this->db->select('application_form.*,student.dob,student.class_name,student.photo');
+        $this->db->from('application_form');
+        $this->db->join('student', 'application_form.student_uid= student.student_id');
+        $this->db->where('application_form.id',$id);
+        $data = $this->db->get()->result();
+        
+       $this->load->view('admin/msprint/view_application',array('data'=>$data,'name_csrf' => $this->security->get_csrf_token_name(),
+       'hash_csrf' => $this->security->get_csrf_hash()));
+		$this->load->view('footer');
+    }
+
+    public function store_file(){
+        
+        $student_id = $this->input->post('student_id');
+        $id = $this->input->post('id');
+       
+        $path = './assets/student_application/'.$session;
+		if(!file_exists($path)){
+			mkdir($path);
+		}
+        $upload = $this->do_upload('doc',$path,$student_id);
+        $PhotoData = array('document' => $upload['file_name'],'status'=>'Done');
+		$this->Common_model->updateRecordByConditions('application_form', array('id'=>$id), $PhotoData);
+		
+        $this->session->set_flashdata('success','upload document successfully');
+		redirect('MsPrint/view_application_request');
+
+       
+    }
+
+    public function do_upload($file,$path,$name)
+	{
+		$config['upload_path'] = $path;
+		$config['allowed_types'] = 'gif|jpg|png|jpeg';
+		$config['file_name'] =  $name;
+
+		$this->load->library('upload', $config);
+		$this->upload->initialize($config);
+		if ( ! $this->upload->do_upload($file))
+		{
+			return $error = array('error' => $this->upload->display_errors());
+		}else{
+			return   $this->upload->data();
+		}
+	}
+
 	public function getStudentMarksheetData()
 	{
 		// if(!$this->session->has_userdata('adminData')){
