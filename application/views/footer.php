@@ -139,3 +139,23 @@ function callTheCallBackFunction() {
 </body>
     <!--end::Body-->
 </html>
+<?php if ($this->session->flashdata('success') != ""):?>
+
+<script type="text/javascript">
+  toastr.success('<?php echo $this->session->flashdata("success");?>');
+</script>
+
+<?php endif;?>
+
+<?php if ($this->session->flashdata('error') != ""):?>
+
+<script type="text/javascript">
+  toastr.error('<?php echo $this->session->flashdata("error");?>');
+</script>
+<?php endif;?>
+<?php if ($this->session->flashdata('warning') != ""):?>
+
+<script type="text/javascript">
+  toastr.warning('<?php echo $this->session->flashdata("warning");?>');
+</script>
+<?php endif;?>

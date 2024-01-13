@@ -354,16 +354,30 @@ class MsPrint extends CI_Controller {
         $student_id = $this->input->post('student_id');
         $id = $this->input->post('id');
        
-        $path = './assets/student_application/'.$session;
-		if(!file_exists($path)){
-			mkdir($path);
-		}
-        $upload = $this->do_upload('doc',$path,$student_id);
-        $PhotoData = array('document' => $upload['file_name'],'status'=>'Done');
-		$this->Common_model->updateRecordByConditions('application_form', array('id'=>$id), $PhotoData);
-		
-        $this->session->set_flashdata('success','upload document successfully');
-		redirect('MsPrint/view_application_request');
+
+        if(empty($_FILES['doc']['name'])){
+            
+            $this->form_validation->set_rules('doc','Document', 'required');
+            if ($this->form_validation->run() == false) {
+              
+           
+                $this->session->set_flashdata('error','Please Upload a file');
+                $this->view_application($id);
+
+            }
+        }else{
+            $path = './assets/student_application/'.$session;
+            if(!file_exists($path)){
+                mkdir($path);
+            }
+            $upload = $this->do_upload('doc',$path,$student_id);
+            $PhotoData = array('document' => $upload['file_name'],'status'=>'Done');
+            $this->Common_model->updateRecordByConditions('application_form', array('id'=>$id), $PhotoData);
+            $this->session->set_flashdata('success','upload document successfully');
+            redirect('MsPrint/view_application_request');
+        }
+
+      
 
        
     }

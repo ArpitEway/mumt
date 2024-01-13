@@ -23,6 +23,7 @@ assets/enrolled_documents/*
 assets/student_image/*
 assets/transactionImgaes/*
 assets/complaintImages/*
+assets/student_application/*
 .htaccess
 assets/regular_syllabus/*
 application/config/routes.php
