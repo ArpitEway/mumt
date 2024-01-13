@@ -353,6 +353,8 @@ class MsPrint extends CI_Controller {
         
         $student_id = $this->input->post('student_id');
         $id = $this->input->post('id');
+        $session = $this->input->post('session');
+        $apply_for = $this->input->post('apply_for');
        
 
         if(empty($_FILES['doc']['name'])){
@@ -370,7 +372,7 @@ class MsPrint extends CI_Controller {
             if(!file_exists($path)){
                 mkdir($path);
             }
-            $upload = $this->do_upload('doc',$path,$student_id);
+            $upload = $this->do_upload('doc',$path,$apply_for.'_'.$student_id);
             $PhotoData = array('document' => $upload['file_name'],'status'=>'Done');
             $this->Common_model->updateRecordByConditions('application_form', array('id'=>$id), $PhotoData);
             $this->session->set_flashdata('success','upload document successfully');

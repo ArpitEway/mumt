@@ -248,6 +248,8 @@ hr.new2 {
                 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
                     <input type="hidden" name="id" value="<?=$data[0]->id?>"/>
                     <input type="hidden" name="student_id" value="<?=$data[0]->student_uid?>"/>
+                    <input type="hidden" name="session" value="<?=$data[0]->session?>"/>
+                    <input type="hidden" name="apply_for" value="<?=$data[0]->apply_for?>"/>
                     <input type="file" class="form-control" id="photo" name="doc"/>
                     <span id="errPhoto" class="text-danger"></span>
                 </div>
