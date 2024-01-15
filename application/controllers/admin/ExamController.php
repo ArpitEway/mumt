@@ -26,7 +26,12 @@ class ExamController extends CI_Controller {
 		 $this->old_result_table = $this->master->old_student_result_table;
 		 $this->exam_form_table = $this->master->exam_form_table;
 		 $this->old_exam_form_table = $this->master->old_exam_form_table;
-		if($this->session->account_type!='ExamController'){
+		 $currentURL = current_url();
+		 $arr=explode('/',$currentURL);
+		 if((end($arr)=="search_student_result_for_wh") || (end($arr)=="getEditStudentMarksDataWH") || (end($arr)=="edit_student_marks_sub") ){
+ 
+		 }
+		else if($this->session->account_type!='ExamController'){
 				redirect(base_url('admin/logout')); 
 		}
 	}
@@ -3145,6 +3150,7 @@ public function getStudentData()
 			//  $whereWh = array('student_id' =>$studentData[0]->student_id ,'class_id' =>$studentData[0]->class_id,'paper_type' =>'theory' , 'theory_marks' =>'' );
 			//$countWh = $this->Common_model->getCountByWhere('new_exam_form',$whereWh);
 			$countWh = $qry->num_rows();
+		
 			if ($studentData[0]->result_show=='Y' && $countWh==0) {
 				$result['data'] = $this->load->view('admin/Dataentry/show_student_marks',$data,true);
 			}else{

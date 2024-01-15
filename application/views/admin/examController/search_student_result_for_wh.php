@@ -44,7 +44,7 @@
             alert('Roll Number is required !');
         }else{
             $.ajax({
-                url: BASE_URL+'admin/<?=$this->session->account_type;?>/getEditStudentMarksDataWH',
+                url: BASE_URL+'admin/ExamController/getEditStudentMarksDataWH',
                 type:'post',
                 dataType : 'JSON',
                 data:{'roll_no':roll_no,[csrfName]: csrfHash},
