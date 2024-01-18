@@ -242,9 +242,10 @@
                           $check_grace_marks = true;
                           $result = "PASS BY GRACE";
                         }
+                        $part_count = 0;
                         foreach($papers as $paper)
                         {
-                          
+                            $part_count++;
                           $paper_name=$paper->paper_name;
                           if($paper->class_id=="168"){
                               if($paper->paper_code=="1RMOM3(A)")
@@ -275,6 +276,26 @@
                                 if($medium=='Hindi'){$paper_name='Practical- II Short Hand Speed (Hindi-100 w.p.m.)'; }
                                 if($medium=='English'){$paper_name='Practical- II Short Hand Speed (English 120 w.p.m.)'; }		
                               }
+                            }
+                          ?>
+                           <?php 
+                          if($class_id == 270){
+                            
+                          if($paper->ce == 'compulsory' && $part_count==1) { echo '<tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.
+                                '<td style="margin-top:2px;" align="left">'.'</td>'.
+                                    '<td colspan="8" align="left">'.'<strong>'.
+                                '<u>'.'PART:-A'.'</u>'.'</strong>'.'</td>'.
+                                '</tr>'.'<tr>'
+                                .'</tr>';}elseif($paper->paper_no == 5 && $part_count==5){ echo '<tr><td colspan="9">'.'&nbsp;'.'</td></tr><tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.'<td style="margin-top:2px;" align="left">'.'</td>'.
+                                    
+                                    '<td colspan="8" align="left">'.'<strong>'.
+                                '<u>'.'PART:-B'.'</u>'.'</strong>'.'</td>'.'</tr>'.'<tr>'
+                                .'</tr>';}
+                            elseif($paper->paper_no == 7 && $part_count==7){ echo ' <tr><td colspan="9">'.'&nbsp;'.'</td></tr><tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.'<td style="margin-top:2px;" align="left">'.'</td>'.
+                                
+                                    '<td colspan="8" align="left">'.'<strong>'.
+                                '<u>'.'PART:-C'.'</u>'.'</strong>'.'</td>'.'</tr>'.'<tr>'
+                                .'</tr>';}
                             }
                           ?>
                           <tr>
