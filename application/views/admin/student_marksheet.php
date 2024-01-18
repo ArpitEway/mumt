@@ -286,12 +286,12 @@
                                     '<td colspan="8" align="left">'.'<strong>'.
                                 '<u>'.'PART:-A'.'</u>'.'</strong>'.'</td>'.
                                 '</tr>'.'<tr>'
-                                .'</tr>';}elseif($paper->paper_no == 5 && $part_count==5){ echo '<tr><td colspan="9">'.'&nbsp;'.'</td></tr><tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.'<td style="margin-top:2px;" align="left">'.'</td>'.
+                                .'</tr>';}elseif($paper->ce == 'elective' && $paper->paper_no == 5 && $part_count==5){ echo '<tr><td colspan="9">'.'&nbsp;'.'</td></tr><tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.'<td style="margin-top:2px;" align="left">'.'</td>'.
                                     
                                     '<td colspan="8" align="left">'.'<strong>'.
                                 '<u>'.'PART:-B'.'</u>'.'</strong>'.'</td>'.'</tr>'.'<tr>'
                                 .'</tr>';}
-                            elseif($paper->paper_no == 7 && $part_count==7){ echo ' <tr><td colspan="9">'.'&nbsp;'.'</td></tr><tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.'<td style="margin-top:2px;" align="left">'.'</td>'.
+                            elseif($paper->ce == 'elective' && $paper->paper_no == 7 && $part_count==7){ echo ' <tr><td colspan="9">'.'&nbsp;'.'</td></tr><tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.'<td style="margin-top:2px;" align="left">'.'</td>'.
                                 
                                     '<td colspan="8" align="left">'.'<strong>'.
                                 '<u>'.'PART:-C'.'</u>'.'</strong>'.'</td>'.'</tr>'.'<tr>'
