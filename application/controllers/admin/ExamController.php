@@ -26,7 +26,12 @@ class ExamController extends CI_Controller {
 		 $this->old_result_table = $this->master->old_student_result_table;
 		 $this->exam_form_table = $this->master->exam_form_table;
 		 $this->old_exam_form_table = $this->master->old_exam_form_table;
-		if($this->session->account_type!='ExamController'){
+		 $currentURL = current_url();
+		 $arr=explode('/',$currentURL);
+		 if((end($arr)=="search_student_result_for_wh") || (end($arr)=="getEditStudentMarksDataWH") || (end($arr)=="edit_student_marks_sub") ){
+ 
+		 }
+		else if($this->session->account_type!='ExamController'){
 				redirect(base_url('admin/logout')); 
 		}
 	}
@@ -3117,7 +3122,7 @@ public function getStudentData()
 	  }
 	}
 	public function search_student_result_for_wh(){
-		redirect(base_url().'ExamController/');
+		//redirect(base_url().'ExamController/');
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
 		$this->load->view('header',array('title' => 'Edit Student Marks'));	
@@ -3128,23 +3133,25 @@ public function getStudentData()
 	public function getEditStudentMarksDataWH()
 	{
 		$roll_no = $this->input->post('roll_no');
-		$studentData = $this->Common_model->getRecordByWhere('student',array('roll_number'=>$roll_no,'exam_form'=>'Y'));
+		$studentData = $this->Common_model->getRecordByWhere('student',array('roll_no'=>$roll_no,'new_exam_form'=>'Y'));
 		$studentPaper = $this->Common_model->get_student_papers($studentData[0]->student_id,$studentData[0]->class_id);
 		$data['student'] = $studentData;
 		$data['wh'] = true;
 		if($studentData){
 			$data['studentPaper'] = $studentPaper;
-			if($studentData[0]->university_mode == "REG"){
+		/*	if($studentData[0]->university_mode == "REG"){
 			$qry = $this->db->query("SELECT * FROM `new_exam_form` as e join paper_master as p on p.id=e.paper_id and p.paper_code=e.paper_code WHERE `student_id`=".$studentData[0]->student_id." AND p.class_id=".$studentData[0]->class_id." and e.class_id=".$studentData[0]->class_id." and paper_type='Theory' and e.theory_marks<p.min_theory_marks
 			 ");
 			}else{
 				$qry = $this->db->query("SELECT * FROM `new_exam_form` as e join paper_master as p on p.id=e.paper_id and p.paper_code=e.paper_code WHERE `student_id`=".$studentData[0]->student_id." AND p.class_id=".$studentData[0]->class_id." and e.class_id=".$studentData[0]->class_id." and paper_type='Theory' and e.theory_marks<p.private_min_theory_marks
 			 ");
 			 }
+			 $countWh = $qry->num_rows();
+			*/
+			 $whereWh = array('student_id' =>$studentData[0]->student_id ,'class_id' =>$studentData[0]->class_id,'paper_type' =>'theory' , 'theory_marks' =>'' );
+			$countWh = $this->Common_model->getCountByWhere('new_exam_form',$whereWh);
 			
-			//  $whereWh = array('student_id' =>$studentData[0]->student_id ,'class_id' =>$studentData[0]->class_id,'paper_type' =>'theory' , 'theory_marks' =>'' );
-			//$countWh = $this->Common_model->getCountByWhere('new_exam_form',$whereWh);
-			$countWh = $qry->num_rows();
+		
 			if ($studentData[0]->result_show=='Y' && $countWh==0) {
 				$result['data'] = $this->load->view('admin/Dataentry/show_student_marks',$data,true);
 			}else{

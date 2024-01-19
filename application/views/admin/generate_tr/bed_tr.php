@@ -176,6 +176,7 @@
     $theory_paper_count = 0;
     $p_paper_count = 0;
     $rwpr_count = 0;
+    $rwas_count =0;
     foreach($marks as $new_exam_form)
     {
       if($new_exam_form->type=='theory'){
@@ -205,7 +206,7 @@
         }
 
         if($new_exam_form->int_marks=='N' && $new_exam_form->max_internal_marks!=0){
-          $rw_count++;
+          $rwas_count++;
         }
 
         if($new_exam_form->int_marks<$new_exam_form->min_internal_marks){
@@ -233,8 +234,9 @@
           $p_fail_count++;
           array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
         }
+        
         if($new_exam_form->int_marks=='N' && $new_exam_form->max_internal_marks!=0){
-            $rwpr_count++;
+            $rwas_count++;
         }
         
         if($new_exam_form->int_marks<$new_exam_form->min_internal_marks){
@@ -249,18 +251,22 @@
       }
     }
 
-    if ($fail_count==0 && $rw_count==0 && $p_fail_count==0 && $int_fail_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0 && $rwpr_count==0) {
+    if ($fail_count==0 && $rw_count==0 && $p_fail_count==0 && $int_fail_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0 && $rwpr_count==0 && $rwas_count==0) {
        $final_result = "PASS";
     }else{
       $require_grace_marks = $require_tot_marks-$fail_tot_marks;
       // tot 3 grace marks in 1 subjects
-      if ($fail_count<2 && $require_grace_marks<4 && $int_fail_count==0 && $p_fail_count==0 && $rw_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0 && $rwpr_count==0) {
+      if ($fail_count<2 && $require_grace_marks<4 && $int_fail_count==0 && $p_fail_count==0 && $rw_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0 && $rwpr_count==0 && $rwas_count==0) {
         $check_grace_marks = true;
         $final_result = "PASS BY GRACE";
       }elseif($rw_count>0){
         $final_result = "RW";
+      }elseif($rwas_count>0 && $rwpr_count>0){
+        $final_result = "RWAS RWPR";
       }elseif($rwpr_count>0){
         $final_result = "RWPR";
+      }elseif($rwas_count>0){
+        $final_result = "RWAS";
       }else{
         $final_result = "FAIL";
       }
@@ -523,7 +529,7 @@
       ?>
       <td  class="align-middle text-center paper_code"><?php 
       if($new_exam_form->int_marks=="N"){
-        echo " ";
+        echo " - ";
       }else{
         if($new_exam_form->int_marks < $new_exam_form->min_internal_marks || $new_exam_form->int_marks=='ABS'){
           echo  $new_exam_form->int_marks .' F';

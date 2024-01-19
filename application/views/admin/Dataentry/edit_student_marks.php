@@ -236,6 +236,12 @@
 </div>
 <?php 
 $url = (isset($wh) && $wh==true) ? 'search_student_result_for_wh' : 'search_student_result';
+if(!(@$this->session->account_type)){
+ 	$controller="ExamController";
+}
+else{
+ 	$controller=$this->session->account_type;
+}
  ?>
 <script type="text/javascript">
 	$('.select2').select2();
@@ -243,14 +249,14 @@ $url = (isset($wh) && $wh==true) ? 'search_student_result_for_wh' : 'search_stud
 		    event.stopImmediatePropagation();
 		var  serialized = $('form').serialize();
 		$.ajax({
-			url: BASE_URL+"admin/<?=$this->session->account_type;?>/edit_student_marks_sub",
+			url: BASE_URL+"admin/<?=$controller?>/edit_student_marks_sub",
 			type: 'POST',
 			dataType : 'json',
 			data: serialized ,
 			success: function (data) {
 				if(data.success){
 					toastr.success(data.success);
-					setTimeout(function(){location.href=BASE_URL+'<?=$this->session->account_type.'/'.$url;?>'} , 2000);
+					setTimeout(function(){location.href=BASE_URL+'<?=$controller.'/'.$url;?>'} , 2000);
 				}else{
 					toastr.error(data.error);
 				}

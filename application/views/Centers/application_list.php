@@ -15,6 +15,7 @@
 				<th>Amount</th>
 				<!-- <th>Txn Id</th> -->
 				<th>Receipt</th>
+                <th>Document</th>
 			</tr>
 		</thead>
 		<tbody>

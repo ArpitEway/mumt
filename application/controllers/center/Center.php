@@ -3263,10 +3263,16 @@ public function practical_assignment_marks_edit(){
 			}else{
 				$btn = '<a href="'.base_url('show_fees/'.$this->Common_model->encrypt_decrypt($txn[0]['id'])).'" class="btn btn-primary btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>';
 			}
+
+            if($result->payment == "N"){
+				$btn_download = '';
+			}else{
+				$btn_download = '<a href="'.base_url('assets/student_application/'.$result->session.'/'.$result->document).'" class="btn btn-primary btn-sm"  download> Download</a>';
+			}
 			
 			$i++;
 			$university_mode = ($result->university_mode=='REG') ? 'Regular' : 'Private';
-			$data[] = array($x++, $result->student_uid,$result->enrollment_no, $result->name, $result->f_h_name, $result->course_name,$university_mode,$result->apply_for,$result->amount,$btn);
+			$data[] = array($x++, $result->student_uid,$result->enrollment_no, $result->name, $result->f_h_name, $result->course_name,$university_mode,$result->apply_for,$result->amount,$btn,$btn_download);
 		}
 
 		$output = array(

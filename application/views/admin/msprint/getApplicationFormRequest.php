@@ -15,6 +15,7 @@
 				<th>Detail</th>
 				<th>Date</th>
 				<th>Status</th>
+                <th>Action</th>
 			
 				
 
@@ -62,7 +63,7 @@
 
 					</td>
 				
-					
+					<td><a href="<?= base_url('MsPrint/view_application/'.$complaint['id'].'')?>" class="text-primary"><i class="fas fa-solid fa-eye"></i></a></td>
 				</tr>
 
 

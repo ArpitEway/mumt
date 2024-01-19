@@ -12,15 +12,18 @@
                 <div class="form-group col-md-2">
                 <label>Class </label>
                <?php 
-              if($students[0]['university_mode']=="REG"){
-                  $class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$students[0]['course_group_id']."' AND mode='Semester'");
-              }else  if($students[0]['university_mode']=="REG"){
+              $mode = explode(' ',$students[0]['class_name']);
+             
+              if($mode[1] == "SEM"){
+                $class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$students[0]['course_group_id']."' AND mode='Semester'");
+              }else  if($mode[1] == "Year"){
                   $class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$students[0]['course_group_id']."' AND mode='Annual'");
                } ?>
-               
+             
                 <select class="form-control" name="class_id" id="class">
                   <option value=""><?=(isset($all)) ? 'All': 'Select Class';?></option>
-                  <?php foreach($class_list as $class){ 
+                  <?php foreach($class_list as $class){
+                    
                     if($class['id']<=$students[0]['class_id']){
                     ?>
                     <option value="<?=$class['id']?>"><?=$class['class_name']?></option>
