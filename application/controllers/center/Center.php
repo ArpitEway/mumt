@@ -2486,7 +2486,7 @@ public function backlog_grade_marksheet($student_id=""){
        $classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
        $data['practical_internal_marks']=$classData->practical_internal_marks;
        $data['classData']  = $classData;
-       $data['exam_session']  = 'March 2023';
+       $data['exam_session']  = 'July 2023';
        $this->load->model('Gradesheet_backlog_model');
        // $title = array('title' => 'Result - '.$data['student']->enrollment_no);
        $title ="";
