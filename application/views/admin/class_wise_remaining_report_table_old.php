@@ -51,7 +51,7 @@
                 <td><?= $i ?></td>
                 <td><?= $student->center_code ?></td>
                 <td><?= $student->examcentercode ?></td>
-                <td><?= $student->roll_no ?></td>
+                <td><?= $student->roll_number ?></td>
                 <td><?= $student->enrollment_no ?></td>
                 <td><?= $student->name ?></td>
                 <td><?= $student->course_name ?></td>
@@ -59,7 +59,7 @@
                 <!-- <td><?= $student->session ?></td> -->
                 <td><?= $student->paper_code ?></td>
                 <?php if($this->session->account_type == "ExamController"){ ?>
-                <td><a target="_blank" href="<?php echo  base_url()."ExamController/search_student_result/$student->roll_no" ?>">Edit </a></td>
+                <td><a target="_blank" href="<?php echo  base_url()."ExamController/search_student_result/$student->roll_number" ?>">Edit </a></td>
                 <?php } ?>
               
             </tr>
