@@ -26,7 +26,7 @@
       height: 25px;
     }
     .student_image{
-      image-orientation: none;
+      /* image-orientation: none; */
     }
     @media print {
       /*.margin-top-marksheet{
