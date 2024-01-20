@@ -2216,7 +2216,7 @@ public function getStudentData()
 
 	public function exam_form_status(){
 
-		$this->load->view('header',array('title' => 'Exam Form Status(June 2023)'));
+		$this->load->view('header',array('title' => 'Exam Form Status(Jan 2024)'));
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
@@ -2236,16 +2236,16 @@ public function getStudentData()
 
 		//backlog
 
-		$where = array('exam_form !=' =>'D','exam_year' =>'June 2023');
+		$where = array('exam_form !=' =>'D','exam_year' =>'Dec 2023');
 		$data['permitted_backlog_student'] = $this->Common_model->getCountByWhere('backlog_student',$where);
 
-		$where = array('exam_form' =>'Y','exam_year' =>'June 2023');
+		$where = array('exam_form' =>'Y','exam_year' =>'Dec 2023');
 		$data['filled_backlog_student'] = $this->Common_model->getCountByWhere('backlog_student',$where);
 
-		$where = array('exam_form ' =>'S','exam_year' =>'June 2023');
+		$where = array('exam_form ' =>'S','exam_year' =>'Dec 2023');
 		$data['skipped_backlog_student'] = $this->Common_model->getCountByWhere('backlog_student',$where);
 
-		$where = array('exam_form' =>'N','exam_year' =>'June 2023');
+		$where = array('exam_form' =>'N','exam_year' =>'Dec 2023');
 		$data['not_filled_backlog_student'] = $this->Common_model->getCountByWhere('backlog_student',$where);
 
 
@@ -2257,7 +2257,7 @@ public function getStudentData()
 
 	public function class_wise_exam_from_status(){
 
-		$this->load->view('header',array('title' => 'Class Wise Exam Form Status(June 2023)'));
+		$this->load->view('header',array('title' => 'Class Wise Exam Form Status(Jan 2024)'));
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
@@ -2270,7 +2270,7 @@ public function getStudentData()
 
 	public function class_wise_old_exam_from_status(){
 
-		$this->load->view('header',array('title' => 'Class Wise Exam Form Status(Feb 2023)'));
+		$this->load->view('header',array('title' => 'Class Wise Exam Form Status(June 2023)'));
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
@@ -2283,12 +2283,12 @@ public function getStudentData()
 
 	public function class_wise_old_backlog_exam_form_status(){
 
-		$this->load->view('header',array('title' => 'Class Wise Backlog Exam Form Status(Feb 2023)'));
+		$this->load->view('header',array('title' => 'Class Wise Backlog Exam Form Status(June 2023)'));
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 		);
-		$where = array('exam_form !=' =>'D' );
+		$where = array('exam_form !=' =>'D' , 'exam_year'=>'June 2023');
 		$data['counts']=$this->Common_model->backlog_old_exam_form_permission_status($where);
 		$this->load->view('admin/class_wise_backlog_old_exam_from_status',$data);
 		$this->load->view('footer');
@@ -2296,12 +2296,12 @@ public function getStudentData()
 
 	public function class_wise_backlog_exam_from_status(){
 
-		$this->load->view('header',array('title' => 'Class Wise Backlog Exam Form Status(June 2023)'));
+		$this->load->view('header',array('title' => 'Class Wise Backlog Exam Form Status(Jan 2024)'));
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 		);
-		$where = array('exam_form !=' =>'D','exam_year'=>'June 2023');
+		$where = array('exam_form !=' =>'D','exam_year'=>'Dec 2023');
 		$data['counts']=$this->Common_model->backlog_exam_form_permission_status($where);
 		$this->load->view('admin/class_wise_backlog_exam_from_status',$data);
 		$this->load->view('footer');
