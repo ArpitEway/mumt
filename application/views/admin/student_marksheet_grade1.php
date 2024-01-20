@@ -108,7 +108,7 @@
                         <div align="left">Enrolment / Registration No.</div>
                       </td>
                       <td class="resultText">
-                        <div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo  $student->enrollment_no;; ?></span></div>
+                        <div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo  $student->enrollment_no; ?></span></div>
                       </td>
                     </tr>
                     <tr>

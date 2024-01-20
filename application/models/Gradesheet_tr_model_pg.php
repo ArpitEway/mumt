@@ -83,7 +83,7 @@ class Gradesheet_tr_model_pg extends CI_Model
 	public function view_notification($student_id,$course_group_id,$class_id,$mode)
 	{
 		
-		$std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $class_id,'student_id'=>$student_id));
+		$std  = $this->Common_model->getRecordByWhere('exam_form',array('class_id'=> $class_id,'student_id'=>$student_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
 		
