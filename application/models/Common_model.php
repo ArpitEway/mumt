@@ -1113,17 +1113,7 @@ class Common_Model extends CI_Model{
 		$query = $this->db->get();
 		return $query->result_array();
 	}
-	public function backlog_old_exam_form_permission_status($where){
-
-		$this->db->where($where);
-		$this->db->select('count(*) as cnt,course_group_id,class_id');
-		$this->db->group_by('class_id');
-		$this->db->where('exam_year','June 2023');			
-		$this->db->from("backlog_student");
-		$this->db->order_by("course_group_id,class_id ","asc");
-		$query = $this->db->get();
-		return $query->result_array();
-	}
+	
 
 	public function get_paper_count_list($class_id = ''){
 		$this->db->select('count(*) as num, paper_id, paper_code, student.class_id, student.class_id, student.course_group_id,paper_type');
