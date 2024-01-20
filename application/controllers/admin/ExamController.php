@@ -2020,7 +2020,7 @@ class ExamController extends CI_Controller {
 			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.old_class_id');
 			$this->db->where('student.'.$this->exam_form.'','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
-			$this->db->where_not_in('theory_marks',array('')); // 'ABS',
+			$this->db->where_not_in('theory_marks',array('ABS','')); // 'ABS',
 
 			
 			$uploaded = $this->db->get()->result();
