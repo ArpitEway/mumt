@@ -103,8 +103,8 @@ class Preexam extends CI_Controller {
 		$class_ids = $classes[0]['class_id'];
 		
 		$this->db->select('count(class_id) as num,course_name,class_name,class_id');
-		$this->db->where('class_id in ('.$class_ids.') and new_exam_form="D" and new_admission_permission="N" and enrolled = "Y" and  session="July 2023" and  class_name = "I SEM"');
-		//and (( session="July 2022" and class_name = "I Year") || ( session="Jan 2023" and class_name = "I SEM"))
+		$this->db->where('class_id in ('.$class_ids.') and new_exam_form="D" and new_admission_permission="N" and enrolled = "Y" and (( session="Jan 2023" and class_name = "I Year") || ( session="July 2023" and class_name = "I SEM")) ');
+		
 		$this->db->group_by('class_id');
 		$this->db->order_by('course_group_id');
 		$studentClasses = $this->db->get('student')->result();
@@ -125,8 +125,8 @@ class Preexam extends CI_Controller {
 					
 				);
 		//'temp_exam_form' => "Y",
-		$this->db->where('session="July 2023" and class_name = "I SEM" ');
-		//((session="July 2022" and class_name = "I Year") || ( session="Jan 2023" and class_name = "I SEM"))
+		$this->db->where('((session="Jan 2023" and class_name = "I Year") || ( session="July 2023" and class_name = "I SEM"))');
+		//
 		$students = $this->Common_model->get_record('student','*',$where);
 		// $this->Common_model->last_query();
 
