@@ -13,8 +13,8 @@
 			
 			 $this->db->where_in('id',array(228,126,108,111,117,285,262,293,295,107,125,298,105,270,116,110,104));
 			
-        $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id'] , 'exam_form_permission' => 'Y'));
-		//, 'old_exam_form_permission' => 'Y'
+        $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id'] , 'old_exam_form_permission' => 'Y'));
+	
 		
         // , 'exam_form_permission' => 'Y'
 		//, 'old_exam_form_permission' => 'Y' 
