@@ -203,14 +203,14 @@
 				<?php if ($center->exam_form_permission=='Y'): ?>
 				 <a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
 							<div>
-								<span class="nav-text">Exam Form July 2023</span>
+								<span class="nav-text">Exam Form Jan 2024</span>
 							</div>
 					</a> 
-					<a class="border-0 custom-menu-item" href="<?=base_url('backlog_exam_form_students');?>">
+					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('backlog_exam_form_students');?>">
 							<div>
-								<span class="nav-text">Backlog Exam Form July 2023</span>
+								<span class="nav-text">Backlog Exam Form Jan 2024</span>
 							</div>
-					</a>  
+					</a>   -->
 					<?php endif ?>
 					<?php 
 					/* $count = $this->Common_model->getCountByWhere('student',array('center_id'=>$center->id,'new_exam_form !='=>'D'));
@@ -225,7 +225,7 @@
 					//  if($count>0){ ?>
 				 
 					<?php //} ?>
-					<?php //if($this->session->center_id==12 || $this->session->center_id==28){ ?>
+					<?php /* //if($this->session->center_id==12 || $this->session->center_id==28){ ?>
 					 <a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
 						<div>
 							<span class="nav-text">Practical Marks Submission (Regular)</span>
@@ -236,7 +236,8 @@
 							<span class="nav-text">Internal Marks Submission (Regular)</span>
 						</div>
 					</a> 
-					<?php // } ?>
+					<?php // } 
+					*/ ?>
 					<?php if ($center->result_permission=='Y'): ?>
 						<a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
 							<div>
