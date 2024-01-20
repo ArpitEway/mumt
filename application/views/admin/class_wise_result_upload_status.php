@@ -31,12 +31,9 @@ color:red;
                 <?php 
                 $this->db->order_by('mode','desc');
                 $this->db->order_by('class_name','ASC');
-                $class_master = $this->db->get_where('class_master', array('course_group_id' => $course_detail['course_group_id'] ,'exam_form_permission' => 'Y'))->result_array();
+                $class_master = $this->db->get_where('class_master', array('course_group_id' => $course_detail['course_group_id'] ,'old_exam_form_permission' => 'Y'))->result_array();
                 // ,'exam_form_permission' => 'Y'
-              // echo "<pre>"; print_r($course_detail);die;
-             //  echo $course_detail['course_group_id'];
-              //  echo $this->db->last_query();
-              //  print_r($class_master);
+             
                 
                 $i = 1;
                $account_type = ($this->session->account_type=='Admins') ? '' : $this->session->account_type.'/';
