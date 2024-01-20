@@ -1118,7 +1118,7 @@ class Common_Model extends CI_Model{
 		$this->db->where($where);
 		$this->db->select('count(*) as cnt,course_group_id,class_id');
 		$this->db->group_by('class_id');
-		$this->db->where('exam_year','Dec 2022');			
+		$this->db->where('exam_year','June 2023');			
 		$this->db->from("backlog_student");
 		$this->db->order_by("course_group_id,class_id ","asc");
 		$query = $this->db->get();
