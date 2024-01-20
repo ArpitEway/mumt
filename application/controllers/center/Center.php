@@ -1213,7 +1213,7 @@ class Center extends CI_Controller {
 					$this->db->where_not_in('student.class_id', $remove_classes );
 				
 				}
-				$this->db->where_in('class_id',array( 256,258,268,270));
+			//	$this->db->where_in('class_id',array( 256,258,268,270));
 				$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
 				
 			}
