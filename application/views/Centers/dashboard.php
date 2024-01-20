@@ -200,7 +200,10 @@
 			<div class="tab-pane fade" id="exam" role="tabpanel" aria-labelledby="exam-tab">
 				<div class="row">
 				
-				<?php if ($center->exam_form_permission=='Y'): ?>
+				<?php 
+                $count = $this->Common_model->getCountByWhere('student',array('center_id'=>$center->id,'new_exam_form !='=>'D'));
+                
+                if ($center->exam_form_permission=='Y' && $count>0): ?>
 				 <a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
 							<div>
 								<span class="nav-text">Exam Form Jan 2024</span>
@@ -212,20 +215,9 @@
 							</div>
 					</a>   -->
 					<?php endif ?>
-					<?php 
-					/* $count = $this->Common_model->getCountByWhere('student',array('center_id'=>$center->id,'new_exam_form !='=>'D'));
-					//  && $count>0
-					if ( $center->exam_form_permission=='Y' ){ ?>
-					<a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
-							<div>
-								<span class="nav-text">Exam Form July 2023</span>
-							</div>
-					</a> 
-					<?php }*/
-					//  if($count>0){ ?>
-				 
-					<?php //} ?>
-					<?php /* //if($this->session->center_id==12 || $this->session->center_id==28){ ?>
+					
+					<?php /* 
+                    //if($this->session->center_id==12 || $this->session->center_id==28){ ?>
 					 <a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
 						<div>
 							<span class="nav-text">Practical Marks Submission (Regular)</span>
