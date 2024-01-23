@@ -1339,7 +1339,7 @@ class Center extends CI_Controller {
 		$this->load->view('Centers/header',$titleData);
 		$student = $this->Common_model->student_info($student_id);
 		$classData = $this->Common_model->getRecordById('class_master','id', $student['class_id']);
-		$cbcs = ($classData->cbcs == 'Y')?'Y':'N';
+		$cbcs = ($classData->cbcs == 'Y' && $student['exam_pattern']=="GRADE")?'Y':'N';
 		if($student['temp_exam_form'] == "Y"){
 			$std_id = $this->Common_model->encrypt_decrypt($student_id);
 			redirect(base_url('center/center/showPapers/'.$std_id.''));	
@@ -1348,16 +1348,17 @@ class Center extends CI_Controller {
 		if($student['university_mode'] != "PVT"){
 		
 		$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory" and cbcs_paper="'.$cbcs.'"');
-		$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id where class_id='.$student['class_id'].' Order by g.id,sub_group_id,p.id')->result();
+		$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id join paper_master as m on m.id=p.paper_id where g.class_id='.$student['class_id'].' and cbcs_paper="'.$cbcs.'"  Order by g.id,p.sub_group_id,p.id')->result();
+		//echo $this->Common_model->last_query();
 		}else{
 			$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory" and type="theory" and cbcs_paper="'.$cbcs.'"');
 			 $this->db->select('p.*,g.group_name') ;
 			 $this->db->from('group_paper as p');
 			 $this->db->join('group as g','g.id = p.group_id');
 			 $this->db->join('paper_master','paper_master.id = p.paper_id') ;
-			$this->db->where(array('g.class_id'=>$student['class_id'],'paper_master.type'=>"theory"));
+			$this->db->where(array('g.class_id'=>$student['class_id'],'paper_master.type'=>"theory", 'cbcs_paper'=> $cbcs));
 			$groupPaper =$this->db->get()->result();	
-			// $this->Common_model->last_query();
+		
 		}
 		
 		$data['compulsoryPapers'] = $compulsoryPapers;
