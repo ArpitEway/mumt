@@ -51,7 +51,7 @@
 					</td>
 					<td>
 						<a target="_blank"  href='<?php echo base_url('/admin/enrollment/editForm/').$this->Common_model->encrypt_decrypt($center["student_id"],'encrypt'); ?>' title="Edit Form"><i class="fa fa-edit" aria-hidden="true"></i></a>
-						<button  class="btn btn-sm  " onclick="delete__student_paper(this)" data-id = "<?=$center['student_id']; ?>" title="Delete Paper" data-classid = "<?=$center['class_id']; ?>"><i class="fa fa-trash" aria-hidden="true"></i></button> 
+						<button  class="btn btn-sm  " onclick="delete__student_paper(this)" data-id = "<?=$center['student_id']; ?>" title="Delete Paper" data-classid = "<?=$student->class_id; ?>"><i class="fa fa-trash" aria-hidden="true"></i></button> 
 								
 					</td>		
 				</tr>
