@@ -289,7 +289,7 @@
       </p>
       <!--<p align="center" class="line-height">Directorate of Distance Education</p>-->
       <div>
-        <div style="float: left;">DATE: <?php if($date_mode != 'PVT') echo $marksheetData[0]->result_date;else echo $marksheetData[0]->pvt_result_date;?></div>
+        <div style="float: left;">DATE: <?php if($student->mode != 'PVT') echo $marksheetData[0]->backlog_result_date;else echo $marksheetData[0]->backlog_pvt_result_date;?></div>
         <div style="float: right;">Page : <?php  echo $page_no; ?></div>
       </div>
       <table class="table table1 mb-0">
