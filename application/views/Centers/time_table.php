@@ -1,7 +1,7 @@
 <div id="ss">
     <h3 align="center">&nbsp;</h3>
     <h3 align="center" class="style1" style="text-align:center;font-size:24px;">Maharishi Mahesh Yogi Vedic Vishwavidyalaya  </h3>
-    <p style="text-align:center;font-size:12px;"><strong>Programme for Annual/Semester - Main/Backlog Examination Jan 2024 </strong></p>
+    <p style="text-align:center;font-size:12px;"><strong>Programme for Annual/Semester - Main/Backlog Examination January 2024 </strong></p>
     <!-- <p style="text-align:center;font-size:12px;">(Regular/Private)</p> -->
     <!-- <p style="text-align:center;font-size:12px;"><strong>Early Morning Shift Time 07:00 AM To 10:00 AM </strong></p> -->
     <p style="text-align:center;font-size:12px;"><strong> Morning Shift Time 10:30 AM To 01:30 PM </strong></p>
