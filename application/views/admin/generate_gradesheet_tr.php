@@ -484,7 +484,7 @@ table.last_table, .last_table td, .last_table th{
      
 		}
 
-		if($this->classData->class_group == 'Y'){
+		if($this->classData->class_group == 'Y' && count($std) !=0){
 			$papers_list = $this->Common_model->get_all_group_papers($student->student_id,$student->old_class_id);
 		}
 		
