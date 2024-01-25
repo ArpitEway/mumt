@@ -54,8 +54,8 @@ class Postexam extends CI_Controller {
             $this->db->select('course_name,student.class_name,class_id, COUNT(student_id) as cnt,student.university_mode');
             $this->db->join('class_master', 'student.class_id = class_master.id');
             // $this->db->where('cbcs', 'Y');
-           // $this->db->where('last_class', 'L');
-            $this->db->where('mode', 'Semester');
+           $this->db->where('last_class', 'L');
+            // $this->db->where('mode', 'Semester');
             $this->db->where('exam_form', 'Y');
             $this->db->where('upload_result', 'N');
             // $this->db->where('student_id',702308);
