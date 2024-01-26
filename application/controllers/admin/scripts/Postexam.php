@@ -377,14 +377,14 @@ class Postexam extends CI_Controller {
         $this->db->from('class_master');
         // $this->db->where('class_name','I Year');
       //  $this->db->where('backlog_exam_form_permission','Y');
-        //$this->db->where('old_exam_form_permission','N');
+        $this->db->where('old_exam_form_permission','N');
         $this->db->where('exam_form_permission','Y');
         $classes = $this->db->get()->result();
        $class_id = array_column($classes,'id');
        if($classes){
 
            $this->db->select('course_name,class_id, COUNT(student_id) as cnt');
-           $this->db->where('exam_year', 'July 2023');
+           $this->db->where('exam_year', 'March 2023');
            $this->db->where('exam_result', 'FAIL');
            $this->db->where('exam_status', 'R');
            $this->db->where_in('class_id',$class_id );
@@ -405,7 +405,7 @@ class Postexam extends CI_Controller {
         $this->load->view('header',array('title' => 'Backlog Students'));
         $this->db->select('*');
         $this->db->from('old_exam_data');
-        $this->db->where('exam_year', 'July 2023');
+        $this->db->where('exam_year', 'March 2023');
         $this->db->where('exam_result', 'FAIL');
         $this->db->where('exam_status', 'R');
         // $this->db->where('id>', '36941');
