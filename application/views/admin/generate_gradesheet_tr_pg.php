@@ -697,7 +697,7 @@ table.last_table, .last_table td, .last_table th{
    $ddd = $this->Gradesheet_tr_model_pg->view_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
   
    
-   if($ddd['agpa']<4 && $student->promote!="D"){
+   if($ddd['agpa']<4 && $student->promote!="D" && $student->exam_form !="D"){
     array_push($promote_student,$student->student_id);
    } 
   
