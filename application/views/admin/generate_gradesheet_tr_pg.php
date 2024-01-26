@@ -697,9 +697,9 @@ table.last_table, .last_table td, .last_table th{
    $ddd = $this->Gradesheet_tr_model_pg->view_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
   
    
-   if($ddd['agpa']<4 && $student->promote!="D" && $student->new_exam_form !="D"){
-    array_push($promote_student,$student->student_id);
-   } 
+//    if($ddd['agpa']<4 && $student->promote!="D" && $student->new_exam_form !="D"){
+//     array_push($promote_student,$student->student_id);
+//    } 
   
   ?>
   
@@ -798,8 +798,8 @@ table.last_table, .last_table td, .last_table th{
   $previous_center=$current_center; 
   //=$student->center_id;
   }
- $stud = implode(',',$promote_student);
- echo $stud;
+//  $stud = implode(',',$promote_student);
+//  echo $stud;
 ?>
 <hr>
 <table width="100%" class="last_table" border="0">
