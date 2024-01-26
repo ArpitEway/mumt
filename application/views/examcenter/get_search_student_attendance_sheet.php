@@ -151,13 +151,15 @@
 					<td><?php echo $i ; ?></td>
 					<td><?php echo date("d-m-Y", strtotime($paper->exam_date)); ?></td>
 					<td>
-					<?php if($paper->exam_shift=='Morning'){
-						echo '10:30 AM To 01:30 PM';
+					<?php if($paper->exam_shift=='Early Morning'){
+						echo '7:00 AM To 10:00 AM';
+					}elseif($paper->exam_shift=='Morning'){
+						echo '11:00 AM To 02:00 PM';
 					}elseif($paper->exam_shift=='Afternoon'){
-						echo '02:30 PM To 05:30 PM';
-					}else{
-						echo '12:00 To 3:00 PM';
-					} ?>
+						echo '03:00 PM To 06:00 PM';
+					}// else{
+					// 	echo '12:00 To 3:00 PM';
+					// } ?>
 					</td>
 					<td style="text-align:left;"><?php echo $paper->paper_name; ?></td>
 					<td ></td>

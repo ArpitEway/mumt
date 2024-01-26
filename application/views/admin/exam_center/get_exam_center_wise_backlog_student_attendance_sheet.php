@@ -163,23 +163,19 @@
 					if($paper->exam_shift=='Morning' && ($student->class_id==264)){
 						echo '11:00 AM To 2:00 PM';
 					}elseif($paper->exam_shift=='Morning'){
-						echo '10:30 AM To 1:30 PM';
+						echo '11:00 AM To 2:00 PM';
 					}elseif($paper->exam_shift=='Afternoon' ){ 
-						echo '02:30 PM To 5:30 PM';
-					}else{
-						echo '07:00 To 10:00 AM';
-					} ?></td>
+						echo '03:00 PM To 6:00 PM';
+					}
+					// else{
+					// 	echo '07:00 To 10:00 AM';
+					// }
+					 ?></td>
 					<td style="text-align:left;"><?php echo $paper->paper_name; ?></td>
 					<td ></td>
 					<td ></td>
 					<td ></td>
-					<!-- <?php //if ($i==1): ?>
-						
-					<td rowspan="<?=$paper_count?>" style="vertical-align: middle;"><?php echo  $this->Common_model->viewDate($paper->exam_start_date); ?></td>
-					<td rowspan="<?=$paper_count?>" style="vertical-align: middle;"><?php echo $this->Common_model->viewDate($paper->exam_end_date); ?></td>
 					
-					<?php //endif ?> -->
-					<!-- <td><?= ($paper->exam_shift=='मध्याह्न') ? '१२:०० से ०३:०० बजे तक' : ''; ?></td> -->
 					
 			</tr>
 			<?php 

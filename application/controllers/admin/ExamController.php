@@ -1302,7 +1302,9 @@ class ExamController extends CI_Controller {
 			//II Year
 			//$this->db->where_in('class_id',array(102,105,108,111,117,120,126,129,132,135,284,286,288,290,292,294,296,298));
 			//II & IV SEM
-			$this->db->where_in('class_id',array(157,194,196,198,200,202,204,206,208,210,212,222,224,226,228,230,232,234,236,238,240,242,244,246,248,250,252,254,256,258,262,264,268,270,218,276,278,280,282));
+			//$this->db->where_in('class_id',array(157,194,196,198,200,202,204,206,208,210,212,222,224,226,228,230,232,234,236,238,240,242,244,246,248,250,252,254,256,258,262,264,268,270,218,276,278,280,282));
+			//I & III Sem
+			$this->db->where_in('class_id',array(152,154,155,158,160,162,163,164,165,166,167,168,169,170,171,172,173,174,175,177,178,180,181,182,193,195,197,199,201,203,205,207,209,211,213,215,217,221,223,225,227,229,231,233,235,237,239,241,243,245,247,249,251,253,255,257,261,263,267,269,275,277,279,281,299,302));
 			$this->db->where_not_in('class_id',array(163,175));
 			$this->db->where('exam_date!=','0000-00-00');
 			$this->db->where('exam_date!=','');
@@ -1331,7 +1333,8 @@ class ExamController extends CI_Controller {
 			//II Year
 			//$this->db->where_in('class_id',array(102,105,108,111,117,120,126,129,132,135,284,286,288,290,292,294,296,298));
 			//II & IV SEM
-			$this->db->where_in('class_id',array(157,194,196,198,200,202,204,206,208,210,212,222,224,226,228,230,232,234,236,238,240,242,244,246,248,250,252,254,256,258,262,264,268,270,218,276,278,280,282));
+			//$this->db->where_in('class_id',array(157,194,196,198,200,202,204,206,208,210,212,222,224,226,228,230,232,234,236,238,240,242,244,246,248,250,252,254,256,258,262,264,268,270,218,276,278,280,282));
+			$this->db->where_in('class_id',array(152,154,155,158,160,162,163,164,165,166,167,168,169,170,171,172,173,174,175,177,178,180,181,182,193,195,197,199,201,203,205,207,209,211,213,215,217,221,223,225,227,229,231,233,235,237,239,241,243,245,247,249,251,253,255,257,261,263,267,269,275,277,279,281,299,302));
 			$this->db->where('test_id!=','');
 			$this->db->where_not_in('class_id',array(163,175));
 			$this->db->where('exam_date!=','0000-00-00');
@@ -1362,6 +1365,7 @@ class ExamController extends CI_Controller {
 			$this->db->where('test_id!=','');
 			// $this->db->where_not_in('class_id',array(163,175,153,155,182,299,161,216,214,159,154,158,181,172,160,152));
 			// $this->db->where_in('class_id',array(137,138,140,143,146,149,183,184,185,187,189,191,192));
+			$this->db->where_in('class_id',array(154,155,181,182));
 			$this->db->where('exam_date!=','0000-00-00');
 			$this->db->where('exam_date!=','');
 			$this->db->group_by('test_id ');
@@ -1377,7 +1381,7 @@ class ExamController extends CI_Controller {
 	public function getEnvelope(){
 		$test_id = $this->input->post('test_id');
 		$multiple = $this->input->post('multiple');
-		$data['examSession'] = 'July 2023';
+		$data['examSession'] = 'January 2024';
 		$this->db->select('*');
 		$this->db->from('exam_center');
 		//$this->db->where('examcentercode','MDE034');
@@ -1418,6 +1422,7 @@ class ExamController extends CI_Controller {
 			$this->db->where('type','Theory');
 			// $this->db->where_not_in('class_id',array(163,175,153,155,182,299,161,216,214,159,154,158,181,172,160,152));
 			// $this->db->where_in('class_id',array(137,138,140,143,146,149,183,184,185,187,189,191,192));
+			$this->db->where_in('class_id',array(154,155,181,182));
 			$this->db->where('test_id!=','');
 			$this->db->where('exam_date!=','0000-00-00');
 			$this->db->where('exam_date!=','');
