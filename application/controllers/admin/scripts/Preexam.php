@@ -139,7 +139,7 @@ class Preexam extends CI_Controller {
 	
 	// Fetching Student record & Update  exam center by Center ID 
     public function update_stdent_exam_center($startlimit=1){
-        echo "update_stdent_allottment_exam_center<br>";
+        echo "update_stdent_allottment_exam_center<br>"; 
         $this->db->select('*');
         $this->db->from('student');
         $this->db->where('exam_center_id','0');
@@ -148,7 +148,7 @@ class Preexam extends CI_Controller {
 		//$start=($startlimit-1)*1000;
 		$this->db->limit(2000,$start);
         $rows=$this->db->get()->result();
-        //echo $this->db->last_query();
+       // echo $this->db->last_query();
         $i=1;
 		$class_ids=array(101,104,107,110,113,116,119,125,128,131,134,137,140,143,146,149,183,185,187,189,191,193,195,197,199,201,203,205,207,209,211,213,221,223,225,227,273,274,275,279,302);
          foreach($rows as $row){
@@ -156,6 +156,9 @@ class Preexam extends CI_Controller {
 			 if($row->session=="July 2023"  && $row->university_mode=="REG" && in_array($row->class_id, $class_ids)){
 
 				$data  = array('exam_center_id'=>169 ,'examcentercode'=>'MDE165' );
+				$where = array('student_id'=>$row->student_id);
+			 $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+			 echo $i." ".$row->	center_code." ".$row->student_id." ".$row->name." Exam Code =>".$allottment[0]->examcentercode." <br>";
                
 			 }
 			 else{
@@ -166,14 +169,15 @@ class Preexam extends CI_Controller {
             	if(!empty($allottment)){
 				
 					$data  = array('exam_center_id'=>$allottment[0]->exam_center_id ,'examcentercode'=>$allottment[0]->examcentercode );
+					$where = array('student_id'=>$row->student_id);
+			 $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+			 echo $i." ".$row->	center_code." ".$row->student_id." ".$row->name." Exam Code =>".$allottment[0]->examcentercode." <br>";
 					
 				
 				}
 			 }
             
-			 $where = array('student_id'=>$row->student_id);
-			 $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
-			 echo $i." ".$row->	center_code." ".$row->student_id." ".$row->name." Exam Code =>".$allottment[0]->examcentercode." <br>";
+			 
 			 $i++;
          }
     }
