@@ -1486,12 +1486,13 @@ class ExamController extends CI_Controller {
 			$data['exam_centers'] = $this->db->get()->result();
 			$this->db->select('*');
 			$this->db->from('paper_master');
-			$this->db->where_not_in('class_id',array(163,175,264));
-			$this->db->where_in('class_id',array(141,150,186) );
+			//$this->db->where_not_in('class_id',array(163,175,264));
+			//$this->db->where_in('class_id',array(141,150,186) );
 			// 101,102,104,105,107,108,110,111,113,116,117,119,120,125,126,128,129,131,132,134,137,140,143,146,149,184,192,284,286,288,290,292,294,296,298,135
+			$this->db->where_in('class_id',array(154,155,181,182) );
 			$this->db->where('exam_date!=',"");
 			$this->db->where('exam_date!=',"0000-00-00");
-			$this->db->where('exam_date>=',"2023-07-31");		
+			//$this->db->where('exam_date>=',"2023-07-31");		
 			$this->db->group_by('exam_date');
 			$this->db->order_by('exam_date', "asc");
 			$data['examDate'] = $this->db->get()->result();
@@ -1545,10 +1546,12 @@ class ExamController extends CI_Controller {
 
 		$where.="   GROUP BY `paper_master`.`exam_date`";
 
-		 $sql="SELECT DISTINCT(paper_master.id), `exam_date`, `exam_shift`, `exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student` ON `student`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = 'theory' AND `paper_master`.`exam_date` != '' AND paper_master.exam_date!='0000-00-00'  AND paper_master.exam_date>='2023-07-31'  ".$where; 
-		 $this->db->where_not_in('class_id',array(163,175,264));
-		 $this->db->where_in('class_id',array(141,150,186));
+		 $sql="SELECT DISTINCT(paper_master.id), `exam_date`, `exam_shift`, `exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student` ON `student`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = 'theory' AND `paper_master`.`exam_date` != '' AND paper_master.exam_date!='0000-00-00'   ".$where; 
+		 //AND paper_master.exam_date>='2023-07-31' 
+		// $this->db->where_not_in('class_id',array(163,175,264));
+		// $this->db->where_in('class_id',array(141,150,186));
 		 // 101,102,104,105,107,108,110,111,113,116,117,119,120,125,126,128,129,131,132,134,137,140,143,146,149,184,192,284,286,288,290,292,294,296,298,135
+		 $this->db->where_in('class_id',array(154,155,181,182) );
 		$query = $this->db->query($sql);
         $data['papers'] = $query->result();
 		echo $this->load->view('admin/exam_center/exam_center_paper_count_show',$data, TRUE);
@@ -1740,7 +1743,7 @@ class ExamController extends CI_Controller {
 			$this->db->from('paper_master');
 			$this->db->where('exam_date!=',"");
 			$this->db->where('exam_date!=',"0000-00-00");	
-			$this->db->where('exam_date>=',"2023-07-31");	
+			//$this->db->where('exam_date>=',"2023-07-31");	
 			$this->db->where_not_in('course_group_id',array('75','76','77'));
 			$this->db->group_by('exam_date');
 			$this->db->order_by('exam_date', "asc");
