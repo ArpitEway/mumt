@@ -150,23 +150,31 @@ class Preexam extends CI_Controller {
         $rows=$this->db->get()->result();
         //echo $this->db->last_query();
         $i=1;
+		$class_ids=array(101,104,107,110,113,116,119,125,128,131,134,137,140,143,146,149,183,185,187,189,191,193,195,197,199,201,203,205,207,209,211,213,221,223,225,227,273,274,275,279,302);
          foreach($rows as $row){
-            $this->db->select('*');
-            $this->db->from('allot_exam_center');
-            $this->db->where('center_id',$row->center_id);
-            $allottment=$this->db->get()->result();
+			$data  = array();
+			 if($row->session=="July 2023"  && $row->university_mode=="REG" && in_array($row->class_id, $class_ids)){
+
+				$data  = array('exam_center_id'=>169 ,'examcentercode'=>'MDE165' );
+               
+			 }
+			 else{
+				$this->db->select('*');
+				$this->db->from('allot_exam_center');
+				$this->db->where('center_id',$row->center_id);
+				$allottment=$this->db->get()->result();
+            	if(!empty($allottment)){
+				
+					$data  = array('exam_center_id'=>$allottment[0]->exam_center_id ,'examcentercode'=>$allottment[0]->examcentercode );
+					
+				
+				}
+			 }
             
-            
-            if(!empty($allottment)){
-             
-                $data  = array('exam_center_id'=>$allottment[0]->exam_center_id ,'examcentercode'=>$allottment[0]->examcentercode );
-                $where = array('student_id'=>$row->student_id);
-                $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
-                echo $i." ".$row->	center_code." ".$row->student_id." ".$row->name." Exam Code =>".$allottment[0]->examcentercode." <br>";
-               $i++;
-            }
-           
-           
+			 $where = array('student_id'=>$row->student_id);
+			 $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+			 echo $i." ".$row->	center_code." ".$row->student_id." ".$row->name." Exam Code =>".$allottment[0]->examcentercode." <br>";
+			 $i++;
          }
     }
 
@@ -176,7 +184,7 @@ class Preexam extends CI_Controller {
         $this->db->select('*');
         $this->db->from('backlog_student');
         $this->db->where('exam_center_id','0');
-		$this->db->where('exam_year','June 2023');
+		$this->db->where('exam_year','Dec 2023');
         //$this->db->where('examcentercode','NU');
         $start=0;
 		//$start=($startlimit-1)*1000;
@@ -194,7 +202,7 @@ class Preexam extends CI_Controller {
             if(!empty($allottment)){
              
                 $data  = array('exam_center_id'=>$allottment[0]->exam_center_id ,'exam_center_code'=>$allottment[0]->examcentercode );
-                $where = array('student_id'=>$row->student_id,'exam_year'=>'June 2023');
+                $where = array('student_id'=>$row->student_id,'exam_year'=>'Dec 2023');
                 $update =$this->Common_model->updateRecordByConditions('backlog_student',$where,$data);
                 echo $i." ".$row->	center_code." ".$row->student_id." ".$row->name." Exam Code =>".$allottment[0]->examcentercode." <br>";
                $i++;
