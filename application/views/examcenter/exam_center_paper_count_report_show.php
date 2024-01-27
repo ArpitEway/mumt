@@ -129,7 +129,7 @@ foreach($papers as $pap)
          $count= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
 
 
-         $where="`e`.`paper_code` = '".$paper->paper_code."' AND `s`.`class_id` = '".$paper->class_id."'  AND s.course_group_id='".$paper->course_group_id."'  AND s.exam_center_id='".$exam_center."'";
+         $where="`e`.`paper_code` = '".$paper->paper_code."' AND `s`.`class_id` = '".$paper->class_id."'  AND s.course_group_id='".$paper->course_group_id."'  AND s.exam_center_id='".$exam_center."' AND exam_year='Dec 2023'";
          $sql_backlog="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND   `s`.`course_group_id` = `e`.`course_group_id`  join paper_master as p on s.class_id=p.class_id and s.course_group_id=p.course_group_id  and `e`.`paper_code` = p.paper_code WHERE   ".$where."  and exam_form in ('Y') and `e`.status= 'B'";
          
         
