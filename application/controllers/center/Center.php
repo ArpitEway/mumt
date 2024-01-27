@@ -1561,7 +1561,7 @@ class Center extends CI_Controller {
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
-		$titleData = array('title' => 'Admit Card Backlog Student List 2023' );
+		$titleData = array('title' => 'Admit Card Backlog Student List 2024' );
 		$this->load->view('Centers/header',$titleData);
 		//$center_id =  $this->session->center_id;
 		if ($this->session->center_id!=13) {
@@ -1573,7 +1573,7 @@ class Center extends CI_Controller {
 			//'center_id' => $center_id,
 			'roll_no!=' => 0,
 			'exam_form' => 'Y',
-			'exam_year' => 'June 2023'
+			'exam_year' => 'Dec 2023'
 		);
 		$this->db->order_by('course_group_id,class_id');
 		$data['students'] = $this->Common_model->getRecordByWhere('backlog_student',$where);
@@ -1630,7 +1630,7 @@ class Center extends CI_Controller {
 		}
 		// $en_student_id = $student_id;
 		$backlog_student_id=$this->Common_model->encrypt_decrypt($backlog_student_id,'decrypt');
-		$titleData = array('title' => 'Backlog Admit Card 2023' );
+		$titleData = array('title' => 'Backlog Admit Card 2024' );
 		$this->load->view('Centers/header',$titleData);
 		//$center_id =  $this->session->center_id;
 		if ($this->session->center_id!=13) {
@@ -1644,7 +1644,7 @@ class Center extends CI_Controller {
 			'backlog_student.roll_no !=' => 0,
 			//'backlog_student.center_id' => $center_id,
 			'backlog_student.exam_form' => 'Y',
-			'backlog_student.exam_year'=>'June 2023'
+			'backlog_student.exam_year'=>'Dec 2023'
 		);
 
 		$this->db->select('backlog_student.*,student.name,student.f_h_name,student.session,student.photo');
