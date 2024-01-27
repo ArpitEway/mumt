@@ -3141,7 +3141,7 @@ public function getStudentData()
 	public function getEditStudentMarksDataWH()
 	{
 		$roll_no = $this->input->post('roll_no');
-		$studentData = $this->Common_model->getRecordByWhere('student',array('roll_no'=>$roll_no,'new_exam_form'=>'Y'));
+		$studentData = $this->Common_model->getRecordByWhere('student',array('roll_number'=>$roll_no,'exam_form'=>'Y'));
 		$studentPaper = $this->Common_model->get_student_papers($studentData[0]->student_id,$studentData[0]->class_id);
 		$data['student'] = $studentData;
 		$data['wh'] = true;
@@ -3156,11 +3156,11 @@ public function getStudentData()
 			 }
 			 $countWh = $qry->num_rows();
 			*/
-			 $whereWh = array('student_id' =>$studentData[0]->student_id ,'class_id' =>$studentData[0]->class_id,'paper_type' =>'theory' , 'theory_marks' =>'' );
+			 $whereWh = array('student_id' =>$studentData[0]->student_id ,'class_id' =>$studentData[0]->old_class_id,'paper_type' =>'theory' , 'theory_marks' =>'' );
 			$countWh = $this->Common_model->getCountByWhere('new_exam_form',$whereWh);
 			
 		
-			if ($studentData[0]->result_show=='Y' && $countWh==0) {
+			if ($studentData[0]->old_result_show=='Y' && $countWh==0) {
 				$result['data'] = $this->load->view('admin/Dataentry/show_student_marks',$data,true);
 			}else{
 				$result['data'] = $this->load->view('admin/Dataentry/edit_student_marks',$data,true);
