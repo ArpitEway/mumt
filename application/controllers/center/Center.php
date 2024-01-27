@@ -2902,7 +2902,7 @@ public function practical_assignment_marks_edit(){
 		$this->db->from('course_group');
 		$this->db->join('paper_master', 'paper_master.course_group_id = course_group.id');
 		$this->db->where('paper_master.exam_date!=','');
-		$this->db->where_not_in('paper_master.course_group_id',array(75,76));
+		//$this->db->where_not_in('paper_master.course_group_id',array(75,76));
 		$this->db->where('paper_master.exam_date!=','0000-00-00');  
 		$this->db->where('paper_master.type','theory'); 
 	   // $this->db->where_not_in('class_id',array(163,175));
