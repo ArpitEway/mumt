@@ -228,7 +228,7 @@ class Payment extends CI_Controller {
 	}
 		
 	public function detail($id){
-	if(!$this->session->has_userdata('centerdata')){
+    if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url('center/login'));
 		}
 		$id = $this->Common_model->encrypt_decrypt($id,'decrypt');
@@ -394,7 +394,7 @@ class Payment extends CI_Controller {
 
 
    public function backlog_exam_form($student_id,$class_id,$back_id){
-   	if(!$this->session->has_userdata('centerdata')){
+    if(!$this->session->has_userdata('centerdata')){
    		redirect(base_url('login'));
    	}
    	$titleData = array('title'=>'Exam Form Payment');
@@ -570,6 +570,12 @@ class Payment extends CI_Controller {
 				$student = array($status=>'Y');
 				$this->Common_model->updateRecordByConditions('backlog_student',$where,$student);
 			}
+            $sessionData = $data = array('loged_in' => true,
+				'centerdata' => $student[0]->center_code,
+				'center_id' => $student[0]->center_id,
+				'account_type' => 'center'
+			);
+			$this->session->set_userdata($sessionData);
 			$this->session->set_flashdata($remsg,$msg);
 			$id = $this->Common_model->encrypt_decrypt($txnid);
 			redirect(base_url('center/payment/detail/'.$id));

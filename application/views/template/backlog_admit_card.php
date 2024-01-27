@@ -42,13 +42,13 @@
 			<div class="BoxC border- padding mar-bot">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Schedule of Exam for Annual/Semester Backlog Examination of
+						<h5>Schedule of Exam for Annual/Semester Backlog Examination of January 2024
 								<?php
-							if($student[0]->course_group_id==33 || $student[0]->course_group_id==45 || $student[0]->course_group_id==76){
-								echo 'June 2023';
-							}else{
-								echo 'July 2023';
-							}
+							// if($student[0]->course_group_id==33 || $student[0]->course_group_id==45 || $student[0]->course_group_id==76){
+							// 	echo 'June 2023';
+							// }else{
+							// 	echo 'July 2023';
+							// }
 							?> 
 						</h5>
 					</div>
