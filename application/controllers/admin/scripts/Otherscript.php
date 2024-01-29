@@ -752,7 +752,7 @@ public function update_roll_no_old_data(){
 		$s_no=1;
 		echo "<table>";
 		foreach ($rs as $paper) {
-		echo	$result= "<tr><td> ".$s_no."</td><td> ".$paper['id']." </td><td>".$paper['paper_code']." ".$paper['paper_name']." </td><td> ".$paper['private_max_theory_marks']."</td><td>";
+		echo	$result= "<tr><td> ".$s_no."</td><td> ".$paper['id']." </td><td>".$paper['paper_code']." </td><td>".$paper['paper_name']." </td><td> ".$paper['private_max_theory_marks']."</td><td>";
 		if($paper['sub_group_id']==1){
 			$th_marks=25;
 		}
