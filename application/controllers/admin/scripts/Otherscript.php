@@ -746,7 +746,7 @@ public function update_roll_no_old_data(){
 	public function get_below_fifty_per_marks()
 	{
 		echo "<h3>Get BA I Sem PVT Student LIst of below 50% Marks in Subjects</h3>";
-		 $sql = "SELECT * FROM `paper_master` WHERE `class_id`=104 AND paper_type='theory' ORDER BY `paper_master`.`paper_no` ASC  ";
+		 $sql = "SELECT * FROM `paper_master` WHERE `class_id`=104 AND type='theory' ORDER BY `paper_master`.`paper_no` ASC  ";
 	
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
