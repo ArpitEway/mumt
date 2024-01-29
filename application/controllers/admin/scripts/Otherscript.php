@@ -750,8 +750,9 @@ public function update_roll_no_old_data(){
 	
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
+		echo "<table>";
 		foreach ($rs as $paper) {
-		echo	$result= "<br> ".$s_no." ".$paper['id']." ".$paper['paper_name']." ".$paper['paper_code']."  ".$paper['private_max_theory_marks'];
+		echo	$result= "<tr><td> ".$s_no."</td><td> ".$paper['id']." </td><td>".$paper['paper_code']." ".$paper['paper_name']." </td><td> ".$paper['private_max_theory_marks']."</td><td>";
 		if($paper['sub_group_id']==1){
 			$th_marks=25;
 		}
@@ -763,9 +764,10 @@ public function update_roll_no_old_data(){
 		$exam_papers = $this->db->query($studentsql)->result_array();
 		
 		//print_r($exam_papers);
-		echo "==><b>". $exam_papers[0]['total']."</b>";
+		echo "<b>". $exam_papers[0]['total']."</b></td></tr>";
 		$s_no++;
 		}
+		echo "</table>";
 	}
 }
 
