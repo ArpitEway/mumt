@@ -164,10 +164,9 @@
 					<td><?php echo $i ; ?></td>
 					<td><?php echo date("d-m-Y", strtotime($paper->exam_date)); ?></td>
 					<td><?php 
-					if($paper->exam_shift=='Morning' && ($student->class_id==264) ){
-						echo '11:00 AM To 2:00 PM';
-					}
-					elseif($paper->exam_shift=='Early Morning'){
+					if($paper->exam_shift=='Afternoon' && ($student->class_id==267 || $student->class_id==269) ){
+						echo '12:00 PM To 3:00 PM';
+					}elseif($paper->exam_shift=='Early Morning'){
 						echo '07:00 To 10:00 AM';
 					}elseif($paper->exam_shift=='Morning'){
 						echo '11:00 AM To 2:00 PM';
