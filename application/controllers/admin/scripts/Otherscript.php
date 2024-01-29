@@ -743,7 +743,30 @@ public function update_roll_no_old_data(){
 			}
 		}
 	}
+	public function get_list_form_to_old_result_data()
+	{
+		echo "<h3>Get BA I Sem PVT Student LIst of below 50% Marks in Subjects</h3>";
+		 $sql = "SELECT * FROM `paper_master` WHERE `class_id`=104 ORDER BY `paper_master`.`paper_no` ASC  ";
 	
+		$rs = $this->db->query($sql)->result_array();
+		$s_no=1;
+		foreach ($rs as $paper) {
+		echo	$result= "<br> ".$s_no." ".$paper['id']." ".$paper['paper_name']." ".$paper['paper_code']."  ".$paper['private_max_theory_marks'];
+		if($paper['sub_group_id']==1){
+			$th_marks=25;
+		}
+		else{
+			$th_marks=50;
+		}
+		 $studentsql = "SELECT count(*) as total FROM `new_exam_form` WHERE `class_id`=104 AND paper_code= '".$paper['paper_code']."' AND theory_marks not in('','ABS') and theory_marks<='".$th_marks."' and student_id in (SELECT `student_id` FROM `student` WHERE `class_id`=104 and exam_form='Y' and `university_mode`='PVT'); ";
+	
+		$exam_papers = $this->db->query($studentsql)->result_array();
+		
+		//print_r($exam_papers);
+		echo "==><b>". $exam_papers[0]['total']."</b>";
+		$s_no++;
+		}
+	}
 }
 
 ?>

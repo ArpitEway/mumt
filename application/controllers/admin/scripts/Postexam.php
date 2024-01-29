@@ -370,6 +370,93 @@ class Postexam extends CI_Controller {
 
 
 
+    public function check_backlog_fail_student()
+    {
+      $this->db->select('DISTINCT(id)');
+      $this->db->from('class_master');
+      $this->db->where('backlog_exam_form_permission','Y');
+      $classes = $this->db->get()->result();
+     $class_id = array_column($classes,'id');
+     if($classes){
+    
+         $this->db->select('course_name,class_id, COUNT(student_id) as cnt');
+         $this->db->where('exam_year', 'July 2023');
+         $this->db->where('exam_result', 'FAIL');
+         $this->db->where('exam_status', 'B');
+         $this->db->where_in('class_id',$class_id );
+         $this->db->where('id>', '36941');
+         $this->db->group_by('class_id');         
+         $data['courses'] = $this->db->get('old_exam_data')->result();
+     }else{
+      $data['courses'] = "No Data Found";
+     }
+        //  $this->Common_model->last_query();
+         $this->load->view('header',array('title' => 'Check Backlog Student'));
+         $this->load->view('admin/script/check_backlog_fail_student',$data);
+         $this->load->view('footer');
+    }
+    
+    public function backlog_marks_move_scripts($class_id='')
+        {
+           // $this->db->where('id>', '36941');
+            $studentall = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$class_id,'exam_result'=>'Fail','exam_year'=>'July 2023','exam_status'=>'B'));
+            foreach($studentall as $key=>$students){
+              //  print_r($students); die;
+            $whereResult = array("class_id"=>$students->class_id ,"student_id"=>$students->student_id, 'exam_data_id' => $students->id);
+            $old_result_datas = $this->Common_model->getRecordByWhere("old_result_data",$whereResult );
+                $data = array(
+                    'student_id' => $students->student_id,
+                    'course_group_id' =>$students->course_group_id,
+                    'class_id' => $students->class_id,
+                    'roll_no' => 0,
+                    'session' => $students->session,
+                    'mode'=>$students->university_mode,
+                    'exam_year'=>'Dec 2023',
+                    'exam_form' => 'N',
+                    'enrollment_no' => $students->enrollment_no,
+                    'center_id' => $students->center_id,
+                    'center_code' => $students->center_code,
+                    'attempt_no' => 1,
+                    'exam_center_id' => 0,
+                    'exam_center_code'=>'',
+                    'back_marksheet_no' => '',
+                    'upload_result' =>  'N',
+                    'result_permission' => 'N',
+                   );
+                  $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students->student_id,'class_id'=>$students->class_id,'exam_year'=>'Dec 2023'));
+                if( $duplicate !== Array ( )){
+                    echo "Already Exist";
+                  }else{
+    
+                    $backlog_student_id = $this->Common_model->insertAll('backlog_student',$data);
+                    echo $this->db->last_query().'<br>';
+                    foreach($old_result_datas as $old_result_data)
+                    {
+                        $examData = array(
+                            'student_id' => $old_result_data->student_id ,
+                            'backlog_student_id' => $backlog_student_id,
+                            'course_group_id' =>$old_result_data->course_group_id,
+                            'class_id' => $old_result_data->class_id,
+                            'paper_code' => $old_result_data->paper_code,
+                            'paper_type' => $old_result_data->type,
+                            'group_id' => '',
+                            'paper_order' => $old_result_data->p_order,
+                            'theory_marks' =>$old_result_data->theory_marks,
+                            'int_marks' =>$old_result_data->int_marks,
+                            'p_marks' => $old_result_data->p_marks,
+                            'status' => 'C',
+                        );
+                        if ($old_result_data->result=='FAIL'){
+                            $examData['status'] = 'B';
+                            $examData['theory_marks'] = '';
+                        }
+                        $backlog_exam_form_june = $this->Common_model->insertAll('backlog_exam_form',$examData);
+                        echo $this->db->last_query().'<br>';
+                }
+             } 
+            }
+         }
+         
     
     public function check_demo_backlog_student()
       {
@@ -384,7 +471,7 @@ class Postexam extends CI_Controller {
        if($classes){
 
            $this->db->select('course_name,class_id, COUNT(student_id) as cnt');
-           $this->db->where('exam_year', 'March 2023');
+           $this->db->where('exam_year', 'July 2023');
            $this->db->where('exam_result', 'FAIL');
            $this->db->where('exam_status', 'R');
            $this->db->where_in('class_id',$class_id );
@@ -405,7 +492,7 @@ class Postexam extends CI_Controller {
         $this->load->view('header',array('title' => 'Backlog Students'));
         $this->db->select('*');
         $this->db->from('old_exam_data');
-        $this->db->where('exam_year', 'March 2023');
+        $this->db->where('exam_year', 'July 2023');
         $this->db->where('exam_result', 'FAIL');
         $this->db->where('exam_status', 'R');
         // $this->db->where('id>', '36941');
@@ -1248,93 +1335,6 @@ public function upload_old_backlog_data_script($class_id="",$mode){
     }
 }
 
-public function check_backlog_fail_student()
-{
-  $this->db->select('DISTINCT(id)');
-  $this->db->from('class_master');
-  $this->db->where('backlog_exam_form_permission','Y');
-  $classes = $this->db->get()->result();
- $class_id = array_column($classes,'id');
- if($classes){
-
-     $this->db->select('course_name,class_id, COUNT(student_id) as cnt');
-     $this->db->where('exam_year', 'March 2023');
-     $this->db->where('exam_result', 'FAIL');
-     $this->db->where('exam_status', 'B');
-     $this->db->where_in('class_id',$class_id );
-     $this->db->where('id>', '36941');
-     $this->db->group_by('class_id');         
-     $data['courses'] = $this->db->get('old_exam_data')->result();
- }else{
-  $data['courses'] = "No Data Found";
- }
-    //  $this->Common_model->last_query();
-     $this->load->view('header',array('title' => 'Check Backlog Student'));
-     $this->load->view('admin/script/check_backlog_fail_student',$data);
-     $this->load->view('footer');
-}
-
-public function backlog_marks_move_scripts($class_id='')
-    {
-        $this->db->where('id>', '36941');
-        $studentall = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$class_id,'exam_result'=>'Fail','exam_year'=>'March 2023','exam_status'=>'B'));
-        foreach($studentall as $key=>$students){
-          //  print_r($students); die;
-        $whereResult = array("class_id"=>$students->class_id ,"student_id"=>$students->student_id, 'exam_data_id' => $students->id);
-        $old_result_datas = $this->Common_model->getRecordByWhere("old_result_data",$whereResult );
-            $data = array(
-                'student_id' => $students->student_id,
-                'course_group_id' =>$students->course_group_id,
-                'class_id' => $students->class_id,
-                'roll_no' => 0,
-                'session' => $students->session,
-                'mode'=>$students->university_mode,
-                'exam_year'=>'June 2023',
-                'exam_form' => 'N',
-                'enrollment_no' => $students->enrollment_no,
-                'center_id' => $students->center_id,
-                'center_code' => $students->center_code,
-                'attempt_no' => 1,
-                'exam_center_id' => 0,
-                'exam_center_code'=>'',
-                'back_marksheet_no' => '',
-                'upload_result' =>  'N',
-                'result_permission' => 'N',
-               );
-              $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students->student_id,'class_id'=>$students->class_id,'exam_year'=>'June 2023'));
-            if( $duplicate !== Array ( )){
-                echo "Already Exist";
-              }else{
-
-                $backlog_student_id = $this->Common_model->insertAll('backlog_student',$data);
-                echo $this->db->last_query().'<br>';
-                foreach($old_result_datas as $old_result_data)
-                {
-                    $examData = array(
-                        'student_id' => $old_result_data->student_id ,
-                        'backlog_student_id' => $backlog_student_id,
-                        'course_group_id' =>$old_result_data->course_group_id,
-                        'class_id' => $old_result_data->class_id,
-                        'paper_code' => $old_result_data->paper_code,
-                        'paper_type' => $old_result_data->type,
-                        'group_id' => '',
-                        'paper_order' => $old_result_data->p_order,
-                        'theory_marks' =>$old_result_data->theory_marks,
-                        'int_marks' =>$old_result_data->int_marks,
-                        'p_marks' => $old_result_data->p_marks,
-                        'status' => 'C',
-                    );
-                    if ($old_result_data->result=='FAIL'){
-                        $examData['status'] = 'B';
-                        $examData['theory_marks'] = '';
-                    }
-                    $backlog_exam_form_june = $this->Common_model->insertAll('backlog_exam_form',$examData);
-                    echo $this->db->last_query().'<br>';
-            }
-         } 
-        }
-     }
-     
     function backlog_student_course_complete(){
         $exam_year="Dec 2022";
         $class_id = 'backlog_student.class_id';

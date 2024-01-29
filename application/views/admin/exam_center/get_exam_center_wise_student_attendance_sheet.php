@@ -43,7 +43,7 @@
 	 if($paper_count){
 
 		  // $newstring = date('y')."1".substr($student->center_code, -4); 
-		  $newstring = "231".substr($student->center_code, -4); 
+		  $newstring = "232".substr($student->center_code, -4); 
      ?>   
 <section class="break" style="font-size: 16px;">
 		<div class="admit-card" style="width:1030px !important; ">
@@ -63,15 +63,18 @@
 					<div class="col-12 text-center">
 						<h5>Attendance Sheet Examination 
 							<?php
-							// if($student->course_group_id==77){
-							// 	echo '2023';
-							// }
+							if($student->course_group_id==77){
+								echo '2024';
+							}
+							else{
+								echo 'January 2024';
+							}
 							// if($student->course_group_id==33 || $student->course_group_id==45 || $student->course_group_id==76){
 							// 	echo 'June 2023';
 							// }else{
 							// 	echo 'July 2023';
 							// }
-							echo 'Sep 2023';
+							
 							?>
 						</h5>
 						
