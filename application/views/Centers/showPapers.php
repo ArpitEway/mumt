@@ -253,10 +253,15 @@
 		);
 
 		$fees = $this->Common_model->getRecordByWhere('course',$where);
+        if($student['demo']=='Y'){
+            $total_fees = $fees[0]->exam_fees;
+        }else{
+            $total_fees = $fees[0]->program_fees+$fees[0]->exam_fees;
+        }
 						?> 
 							<div class="row d-flex justify-content-center p-3">
 								<!-- <a class="btn btn-success" data-fees='<?=$fees[0]->program_fees+$fees[0]->exam_fees;?>'  href="<?= base_url('paid_by_university/'.$student_id) ?>">Paid By University</a> -->
-                                <a href="#"  data-student_name = "<?=$student['name']?>"  data-idstudent="<?=$student['student_id']?>" data-student_id="<?= $student_id?>" class="btn btn-primary btn-sm font-weight-bold pay1" data-toggle="modal" data-target="#kt_datepicker_modal" data-amount= "<?=$fees[0]->program_fees+$fees[0]->exam_fees;?>"  data-url="<?=base_url('paid_by_university/'.$student_id)?>" data-head='fees'>Paid By University</a>
+                                <a href="#"  data-student_name = "<?=$student['name']?>"  data-idstudent="<?=$student['student_id']?>" data-student_id="<?= $student_id?>" class="btn btn-primary btn-sm font-weight-bold pay1" data-toggle="modal" data-target="#kt_datepicker_modal" data-amount= "<?=$total_fees;?>"  data-url="<?=base_url('paid_by_university/'.$student_id)?>" data-head='fees'>Paid By University</a>
 							</div> 
 						
 						<?php
@@ -311,10 +316,17 @@
     </div>
    </div>
    <div class="form-group row">
-    <label for="amount" class="col-5 col-form-label">Amount</label>
+    <label for="amount" class="col-5 col-form-label">Required Amount</label>
     <div class="col-7">
      <input class="form-control" type="number" name="amount" id="amount" required readonly />
 	 <div class="text-danger" id="error3"></div>
+    </div>
+   </div>
+   <div class="form-group row">
+    <label for="amount" class="col-5 col-form-label">Paid Amount</label>
+    <div class="col-7">
+     <input class="form-control" type="number" name="paid_amount" id="paid_amount" required />
+	 <!-- <div class="text-danger" id="error3"></div> -->
     </div>
    </div>
   
@@ -369,12 +381,17 @@ $(document).on('click','.pay1',function(){
 		var payment_date = $('#payment_date').val();
 		var payment_mode = $('#payment_mode').val();
 		var amount = $('#amount').val();
+        var paid_amount = $('#paid_amount').val();
         var transaction_number = $('#transaction_number').val();
 		var receipt_number = $('#receipt_number').val();
         var csrfName = $('.csrfname').attr('name');
         var csrfHash = $('.csrfname').val(); 
         var uri = $('#url').val();
         var head1 = $('#head').val();
+        if(amount !== paid_amount){
+            toastr.warning('Paid Amount Diffrent from Required Amount');
+            return false;
+        }
         
        
 		if(payment_date==''){

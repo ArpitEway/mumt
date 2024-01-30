@@ -1703,12 +1703,17 @@ class Center extends CI_Controller {
 		);
 
 		$fees = $this->Common_model->getRecordByWhere('course',$where);
+        if($student_data[0]->demo == 'Y'){
+            $total_fees = $fees[0]->exam_fees;
+        }else{
+            $total_fees =$fees[0]->program_fees+$fees[0]->exam_fees;
+        }
 		$data['student_id']=$student_data[0]->student_id;
 		$data['center_id']=$student_data[0]->center_id;
 		$data['exam_session'] = "Dec 2023";
 		$data['course_group_id']=$student_data[0]->course_group_id;
 		$data['class_id']=$student_data[0]->class_id;
-		$data['amount']=$fees[0]->program_fees+$fees[0]->exam_fees;
+		$data['amount'] = $total_fees;
 		$data['fees_head']='Exam Fees';
 		$data['student_name']=$student_data[0]->name;
 		$data['payment']='Y';
