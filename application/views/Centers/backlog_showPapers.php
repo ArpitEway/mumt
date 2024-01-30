@@ -279,13 +279,19 @@
     </div>
    </div>
    <div class="form-group row">
-    <label for="amount" class="col-5 col-form-label">Amount</label>
+    <label for="amount" class="col-5 col-form-label">Required Amount</label>
     <div class="col-7">
      <input class="form-control" type="number" name="amount" id="amount" required readonly />
 	 <div class="text-danger" id="error3"></div>
     </div>
    </div>
-  
+   <div class="form-group row">
+    <label for="amount" class="col-5 col-form-label">Paid Amount</label>
+    <div class="col-7">
+     <input class="form-control" type="number" name="paid_amount" id="paid_amount" required />
+	 <!-- <div class="text-danger" id="error3"></div> -->
+    </div>
+   </div>
    <div class="form-group row">
     <label for="amount" class="col-5 col-form-label">Receipt No.</label>
     <div class="col-7">
@@ -336,13 +342,17 @@ $(document).on('click','.pay1',function(){
 		var payment_date = $('#payment_date').val();
 		var payment_mode = $('#payment_mode').val();
 		var amount = $('#amount').val();
+        var paid_amount = $('#paid_amount').val();
         var transaction_number = $('#transaction_number').val();
 		var receipt_number = $('#receipt_number').val();
         var csrfName = $('.csrfname').attr('name');
         var csrfHash = $('.csrfname').val(); 
         var uri = $('#url').val();
         var head1 = $('#head').val();
-        
+        if(amount !== paid_amount){
+            toastr.warning('Paid Amount Diffrent from Required Amount');
+            return false;
+        }
        
 		if(payment_date==''){
 			$('#error').text('Please Select Date');
