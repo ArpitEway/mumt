@@ -759,7 +759,7 @@ public function update_roll_no_old_data(){
 		else{
 			$th_marks=50;
 		}
-		 $studentsql = "SELECT count(*) as total FROM `new_exam_form` WHERE `class_id`=104 AND paper_code= '".$paper['paper_code']."' AND theory_marks not in('','ABS') and theory_marks<'".$th_marks."' and student_id in (SELECT `student_id` FROM `student` WHERE `class_id`=104 and exam_form='Y' and `university_mode`='PVT'); ";
+		 $studentsql = "SELECT count(*) as total FROM `new_exam_form` WHERE `class_id`=104 AND paper_code= '".$paper['paper_code']."' AND theory_marks not in('','ABS') and theory_marks='".$th_marks."' and student_id in (SELECT `student_id` FROM `student` WHERE `class_id`=104 and exam_form='Y' and `university_mode`='PVT'); ";
 	
 		$exam_papers = $this->db->query($studentsql)->result_array();
 		
