@@ -3069,6 +3069,8 @@ public function practical_assignment_marks_edit(){
     	$this->db->where('status','B');
 		$this->db->order_by('paper_order', 'asc');
     	$data['papers'] = $this->db->get()->result();
+        $data['name_csrf'] =  $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();
     	$this->load->view('Centers/backlog_showPapers',$data);
     	$this->load->view('Centers/footer');
     }
@@ -3638,14 +3640,21 @@ public function practical_assignment_marks_edit(){
 		$data['student_name']=$student->name;
 		$data['payment']='Y';
 		$data['payment_status']='Paid By University';
-		$data['payment_date']= date("Y-m-d");
+		$data['payment_date']= $this->input->post('payment_date');
+        $data['receipt_number'] = $this->input->post('receipt_number');
 		$data['admission_type']= 'Regular';
 		$data['payment_time']=date("h:i:s");
 		$insert = $this->Common_model->insertAll('online_payment_transaction',$data);
 		$student_data = array('exam_form' => 'Y');
 		$update = $this->Common_model->updateRecordByConditions('backlog_student','id='.$backlog_student_id,$student_data);
 		if($update){
-			redirect(base_url('backlog_exam_form_students'));
+			//redirect(base_url('backlog_exam_form_students'));
+            $response = array(
+                'status' => true,
+                'msg' => "Complained Succesfuly Registered",
+                'url'=> "backlog_exam_form_students"
+            );
+            echo json_encode($response);
 		}
 	}
 	

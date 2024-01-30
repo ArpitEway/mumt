@@ -256,7 +256,7 @@
 						?> 
 							<div class="row d-flex justify-content-center p-3">
 								<!-- <a class="btn btn-success" data-fees='<?=$fees[0]->program_fees+$fees[0]->exam_fees;?>'  href="<?= base_url('paid_by_university/'.$student_id) ?>">Paid By University</a> -->
-                                <a href="#"  data-student_name = "<?=$student['name']?>"  data-idstudent="<?=$student['student_id']?>" data-student_id="<?= $student_id?>" class="btn btn-primary btn-sm font-weight-bold pay1" data-toggle="modal" data-target="#kt_datepicker_modal" data-amount= "<?=$fees[0]->program_fees+$fees[0]->exam_fees;?>"  data-url="<?=base_url('paid_by_university/'.$student_id)?>" data-head='fees'>Paid By Universityee</a>
+                                <a href="#"  data-student_name = "<?=$student['name']?>"  data-idstudent="<?=$student['student_id']?>" data-student_id="<?= $student_id?>" class="btn btn-primary btn-sm font-weight-bold pay1" data-toggle="modal" data-target="#kt_datepicker_modal" data-amount= "<?=$fees[0]->program_fees+$fees[0]->exam_fees;?>"  data-url="<?=base_url('paid_by_university/'.$student_id)?>" data-head='fees'>Paid By University</a>
 							</div> 
 						
 						<?php
