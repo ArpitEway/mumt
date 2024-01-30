@@ -796,9 +796,9 @@ public function update_roll_no_old_data(){
 			$new_marks=round($new_marks,0);
 			echo "<tr><td>".$i."</td><td>".$stud['student_id']."</td><td>".$stud['name']."</td><td>".$stud['enrollment_no']."</td><td>".$stud['theory_marks']."</td><td><b>".$new_marks."</b></td></tr>";
 			$updateSQL="update `new_exam_form` set theory_marks='".$new_marks."' WHERE `class_id`=104 AND paper_id= '".$paperID."' AND student_id='".$stud['student_id']."' AND id='".$stud['id']."'";
-			$st = $this->db->query($updateSQL)->result_array();
+			 $this->db->query($updateSQL);
 			$updateStatus="update new_exam_form_backup_ba_pvt set update_marks_status='Y' where id='".$stud['id']."'";
-			$pap = $this->db->query($updateStatus)->result_array();
+			 $this->db->query($updateStatus);
 
 			$i++;
 		}
