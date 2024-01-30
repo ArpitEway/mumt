@@ -784,7 +784,8 @@ public function update_roll_no_old_data(){
 		else{
 			$th_marks=50;
 		}
-		  $studentsql = "SELECT e.*,s.name,s.enrollment_no,s.roll_number FROM `new_exam_form` as e join student as s on s.student_id=e.student_id  WHERE e.`class_id`=104 AND e.paper_id= '".$paperID."' AND e.theory_marks not in('','ABS','00') and theory_marks<='".$th_marks."' and s.`class_id`=104 and s.exam_form='Y' and s.`university_mode`='PVT' ";
+		 // $studentsql = "SELECT e.*,s.name,s.enrollment_no,s.roll_number FROM `new_exam_form` as e join student as s on s.student_id=e.student_id  WHERE e.`class_id`=104 AND e.paper_id= '".$paperID."' AND e.theory_marks not in('','ABS','00') and theory_marks<='".$th_marks."' and s.`class_id`=104 and s.exam_form='Y' and s.`university_mode`='PVT' ";
+		 $studentsql = "SELECT e.*,s.name,s.enrollment_no,s.roll_number FROM `new_exam_form_backup_ba_pvt` as e join student as s on s.student_id=e.student_id  WHERE e.`class_id`=104 AND e.paper_id= '".$paperID."' AND e.theory_marks not in('','ABS','00') and theory_marks<='".$th_marks."' and s.`class_id`=104 and s.exam_form='Y' and s.`university_mode`='PVT' and update_marks_status='N' limit 1";
 	
 		$student_papers = $this->db->query($studentsql)->result_array();
 		echo "<table>";
@@ -794,7 +795,11 @@ public function update_roll_no_old_data(){
 			$new_marks=$stud['theory_marks']+$a;
 			$new_marks=round($new_marks,0);
 			echo "<tr><td>".$i."</td><td>".$stud['student_id']."</td><td>".$stud['name']."</td><td>".$stud['enrollment_no']."</td><td>".$stud['theory_marks']."</td><td><b>".$new_marks."</b></td></tr>";
-			$updateSQL="update `new_exam_form` set theory_marks='".$new_marks."' WHERE `class_id`=104 AND paper_id= '".$paperID."' AND student_id='".$stud['student_id']."'";
+			$updateSQL="update `new_exam_form` set theory_marks='".$new_marks."' WHERE `class_id`=104 AND paper_id= '".$paperID."' AND student_id='".$stud['student_id']."' AND id='".$stud['id']."'";
+			$st = $this->db->query($updateSQL)->result_array();
+			$updateStatus="update new_exam_form_backup_ba_pvt set update_marks_status='Y' where id='".$stud['id']."'";
+			$pap = $this->db->query($updateStatus)->result_array();
+
 			$i++;
 		}
 		echo "</table>";
