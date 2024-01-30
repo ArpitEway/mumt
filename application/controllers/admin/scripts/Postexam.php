@@ -1238,7 +1238,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
         }else{
             $final_result = 'PASS';   
         }
-        if($whCount!=0  || $final_result=='FAIL'  ) {
+        if($whCount!=0   ) {
             // $final_result=='FAIL' || 
              //  && count($course_type)==0 && $student->course_group_id!=76 && $student->course_group_id!=77
             continue;
