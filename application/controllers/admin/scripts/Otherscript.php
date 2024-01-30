@@ -785,7 +785,7 @@ public function update_roll_no_old_data(){
 			$th_marks=50;
 		}
 		 // $studentsql = "SELECT e.*,s.name,s.enrollment_no,s.roll_number FROM `new_exam_form` as e join student as s on s.student_id=e.student_id  WHERE e.`class_id`=104 AND e.paper_id= '".$paperID."' AND e.theory_marks not in('','ABS','00') and theory_marks<='".$th_marks."' and s.`class_id`=104 and s.exam_form='Y' and s.`university_mode`='PVT' ";
-		 $studentsql = "SELECT e.*,s.name,s.enrollment_no,s.roll_number FROM `new_exam_form_backup_ba_pvt` as e join student as s on s.student_id=e.student_id  WHERE e.`class_id`=104 AND e.paper_id= '".$paperID."' AND e.theory_marks not in('','ABS','00') and theory_marks<='".$th_marks."' and s.`class_id`=104 and s.exam_form='Y' and s.`university_mode`='PVT' and update_marks_status='N' limit 1";
+		 $studentsql = "SELECT e.*,s.name,s.enrollment_no,s.roll_number FROM `new_exam_form_backup_ba_pvt` as e join student as s on s.student_id=e.student_id  WHERE e.`class_id`=104 AND e.paper_id= '".$paperID."' AND e.theory_marks not in('','ABS','00') and theory_marks<='".$th_marks."' and s.`class_id`=104 and s.exam_form='Y' and s.`university_mode`='PVT' and update_marks_status='N' limit 1000";
 	
 		$student_papers = $this->db->query($studentsql)->result_array();
 		echo "<table>";
