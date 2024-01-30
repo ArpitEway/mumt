@@ -1440,7 +1440,8 @@ class Center extends CI_Controller {
 		$student_id=$this->Common_model->encrypt_decrypt($_POST['student_id'],'decrypt');
 		$mode = $this->Common_model->getRecordById('student','student_id',$student_id);
 		$classData = $this->Common_model->getRecordById('class_master','id', $mode->class_id);
-		$cbcs = ($classData->cbcs == 'Y')?'Y':'N';
+		//$cbcs = ($classData->cbcs == 'Y')?'Y':'N';
+		$cbcs = ($classData->cbcs == 'Y' && $mode->exam_pattern=="GRADE")?'Y':'N';
 		$i = 1;
 		$this->db->where_in('paper_code',$paper_code);
 		$this->db->where('class_id',$class_id);
@@ -1466,8 +1467,11 @@ class Center extends CI_Controller {
 			$this->db->from('group_paper');
 			if($mode->university_mode == "PVT"){
 			$this->db->join('paper_master','paper_master.id = group_paper.paper_id');
-			$this->db->where(array('paper_master.type'=>"theory"));
+			$this->db->where(array('paper_master.type'=>"theory" ));
 			}
+			// else{
+			// 	$this->db->where(array('cbcs_paper'=>$cbcs ));
+			// }
 			$this->db->where_in('group_id',$group_id);
 			
 			$groupPaperData = $this->db->get()->result_array();
@@ -1475,6 +1479,8 @@ class Center extends CI_Controller {
 			$groupPaperCodes = array_column($groupPaperData, 'paper_code');
 			$this->db->where_in('paper_code',$groupPaperCodes);
 			$this->db->where('class_id',$class_id);
+			$this->db->where('cbcs_paper',$cbcs );
+			$this->db->order_by('paper_no');
 			$papers = $this->Common_model->get_record('paper_master','*');
 			foreach($papers as $paper){
 				$data['course_group_id']=$paper['course_group_id'];
