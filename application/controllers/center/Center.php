@@ -1277,12 +1277,14 @@ class Center extends CI_Controller {
 			);
 			$student = $this->Common_model->student_info($student_id);
 			$data['student'] = $student;
+			$classData = $this->Common_model->getRecordById('class_master','id', $student['class_id']);
+			$cbcs = ($classData->cbcs == 'Y')?'Y':'N';
 			$this->db->select('paper_master.*,new_exam_form.sub_group_id as sub_group');
 			$this->db->from('paper_master');
 			$this->db->order_by('new_exam_form.sub_group_id,paper_master.cbcs_paper,paper_order');
 			$this->db->join('new_exam_form', 'paper_master.paper_code = new_exam_form.paper_code and  paper_master.class_id = new_exam_form.class_id');
 			$where = array('paper_master.class_id' => $student['class_id'],
-				'student_id' => $student_id
+				'student_id' => $student_id,'cbcs_paper'=>$cbcs
 			);
 			$this->db->where($where);
 			$data['papers'] = $this->db->get()->result();
