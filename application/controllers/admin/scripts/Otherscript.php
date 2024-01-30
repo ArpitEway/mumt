@@ -746,7 +746,7 @@ public function update_roll_no_old_data(){
 	public function get_below_fifty_per_marks()
 	{
 		echo "<h3>Get BA I Sem PVT Student LIst of below 50% Marks in Subjects</h3>";
-		 $sql = "SELECT * FROM `paper_master` WHERE `class_id`=104 AND type='theory' ORDER BY `paper_master`.`paper_no` ASC  ";
+		 $sql = "SELECT * FROM `paper_master` WHERE `class_id`=104 AND type='theory' AND id in(367,368,371,381) ORDER BY `paper_master`.`paper_no` ASC  ";
 	
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
@@ -759,15 +759,50 @@ public function update_roll_no_old_data(){
 		else{
 			$th_marks=50;
 		}
-		 $studentsql = "SELECT count(*) as total FROM `new_exam_form` WHERE `class_id`=104 AND paper_code= '".$paper['paper_code']."' AND theory_marks not in('','ABS') and theory_marks='".$th_marks."' and student_id in (SELECT `student_id` FROM `student` WHERE `class_id`=104 and exam_form='Y' and `university_mode`='PVT'); ";
+		 $studentsql = "SELECT count(*) as total FROM `new_exam_form` WHERE `class_id`=104 AND paper_code= '".$paper['paper_code']."' AND theory_marks not in('','ABS','00') and theory_marks<='".$th_marks."' and student_id in (SELECT `student_id` FROM `student` WHERE `class_id`=104 and exam_form='Y' and `university_mode`='PVT'); ";
 	
 		$exam_papers = $this->db->query($studentsql)->result_array();
 		
 		//print_r($exam_papers);
-		echo "<b>". $exam_papers[0]['total']."</b></td></tr>";
+		echo "<b><a href='get_new_marks/".$paper['id']."'>". $exam_papers[0]['total']."</a></b></td></tr>";
 		$s_no++;
 		}
 		echo "</table>";
+	}
+	public function get_new_marks($paperID)
+	{
+		$sql = "SELECT * FROM `paper_master` WHERE `class_id`=104 AND type='theory' AND id='".$paperID."' ";
+	//30 Jan 24
+		$rs = $this->db->query($sql)->result_array();
+		$s_no=1;
+		echo "<table>";
+		foreach ($rs as $paper) {
+		echo	$result= "<tr><td> ".$s_no."</td><td> ".$paper['id']." </td><td>".$paper['paper_code']." </td><td>".$paper['paper_name']." </td><td> ".$paper['private_max_theory_marks']."</td><td></tr></table>";
+		if($paper['sub_group_id']==1){
+			$th_marks=25;
+		}
+		else{
+			$th_marks=50;
+		}
+		  $studentsql = "SELECT e.*,s.name,s.enrollment_no,s.roll_number FROM `new_exam_form` as e join student as s on s.student_id=e.student_id  WHERE e.`class_id`=104 AND e.paper_id= '".$paperID."' AND e.theory_marks not in('','ABS','00') and theory_marks<='".$th_marks."' and s.`class_id`=104 and s.exam_form='Y' and s.`university_mode`='PVT' ";
+	
+		$student_papers = $this->db->query($studentsql)->result_array();
+		echo "<table>";
+		$i=1;
+		foreach ($student_papers as $stud) {
+			$a=(int)$stud['theory_marks']/3;
+			$new_marks=$stud['theory_marks']+$a;
+			$new_marks=round($new_marks,0);
+			echo "<tr><td>".$i."</td><td>".$stud['student_id']."</td><td>".$stud['name']."</td><td>".$stud['enrollment_no']."</td><td>".$stud['theory_marks']."</td><td><b>".$new_marks."</b></td></tr>";
+			$updateSQL="update `new_exam_form` set theory_marks='".$new_marks."' WHERE `class_id`=104 AND paper_id= '".$paperID."' AND student_id='".$stud['student_id']."'";
+			$i++;
+		}
+		echo "</table>";
+		
+		$s_no++;
+		}
+		
+
 	}
 }
 
