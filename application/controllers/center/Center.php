@@ -506,7 +506,7 @@ class Center extends CI_Controller {
 		$counttableData = $this->Datatable_join_model->joincountAll($_POST,$DataTableArray);
 				  
 		foreach($tableData as $result){
-			$center_ids_dep = array( 21,22,23,24,25,26,27,28,29);
+			$center_ids_dep = array( 10,11,12,13,20,21,22,23,24,25,26,27,28,29);
 			if(in_array($this->session->center_id, $center_ids_dep)){
 				$modal ='<a href="#"  data-student_name = "'.$result->name.'"  data-student_id="'.$this->Common_model->encrypt_decrypt($result->student_id).'" class="btn btn-primary btn-sm font-weight-bold pay1" data-toggle="modal" data-target="#kt_datepicker_modal" "  data-amount= "'.$result->amount.'">Receive</a>';
 			}else{
@@ -1288,6 +1288,9 @@ class Center extends CI_Controller {
 			);
 			$this->db->where($where);
 			$data['papers'] = $this->db->get()->result();
+            $data['name_csrf']= $this->security->get_csrf_token_name();
+            $data['hash_csrf'] = $this->security->get_csrf_hash();
+            
 			// $this->Common_model->last_query();
 			$this->load->view('Centers/showPapers',$data);
 			$this->load->view('Centers/footer');
@@ -1710,14 +1713,20 @@ class Center extends CI_Controller {
 		$data['student_name']=$student_data[0]->name;
 		$data['payment']='Y';
 		$data['payment_status']='Paid By University';
-		$data['payment_date']= date("Y-m-d");
+		$data['payment_date']= $this->input->post('payment_date');
+        $data['receipt_number']= $this->input->post('receipt_number');
 		$data['admission_type']= 'Regular';
 		$data['payment_time']=date("h:i:s");
 		$insert = $this->Common_model->insertAll('online_payment_transaction',$data);
 		$student_data = array('new_exam_form' => 'Y');
 		$update = $this->Common_model->updateRecordByConditions('student','student_id='.$student_id,$student_data);
+       
 		if($update){
-			redirect(base_url('exam_form_students'));
+            echo json_encode(array(
+                "status" => 'success',
+                "data" => 'exam_form_students'
+            ));
+			// redirect(base_url('exam_form_students'));
 		}
 	}
 

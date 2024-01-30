@@ -33,7 +33,13 @@
 <form method="POST" class="d-block" id="ajaxForm" action="<?php echo site_url('admin/enrollment/update_unpaid_student'); ?>">
   <div class="card-body">
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-
+<!-- <div class="form-group row">
+    <label for="example-date-input" class="col-5 col-form-label">Form No.</label>
+    <div class="col-7">
+    <label for="example-date-input" class="col-form-label"><span id="student_id_show"></span></label>
+	</div>
+	
+   </div> -->
     <div class="form-group row">
     <label for="example-date-input" class="col-5 col-form-label">Student Name</label>
     <div class="col-7">
@@ -56,38 +62,13 @@
 	 <div class="text-danger" id="error3"></div>
     </div>
    </div>
-   <div class="form-group row">
-   	<label for="images" class="col-5 col-form-label">Image</label>
-   	<div class="col-7">
-   		<input class="form-control" type="file" name="images" id="images" required />
-   		<div class="text-danger" id="errimg"></div>
-   	</div>
-   </div>
-   <div class="form-group row">
-    <label for="example-date-input" class="col-5 col-form-label">Payment Mode</label>
+  <div class="form-group row">
+    <label for="amount" class="col-5 col-form-label">Receipt No.</label>
     <div class="col-7">
-     <select class="form-control" name="payment_mode" id="payment_mode" required>
-	 <option value="">Select</option>
-	    <option>Cash</option>
-		<option>Bank Deposit</option>
-		<option>Credit Card</option>
-		<option>Debit Card</option>
-		<option>Net Banking</option>
-		<option>IMPS</option>
-		<option>Wallets</option>
-		<option>UPI</option>
-		<option>NEFT/RTGS</option>
-	 </select>
-	 <div class="text-danger" id="error2"></div>
+     <input class="form-control" type="text" name="receipt_number" id="receipt_number" required />
 	</div>
    </div>
-     <div class="form-group row">
-    <label for="example-date-input" class="col-5 col-form-label">Remark</label>
-    <div class="col-7">
-	<textarea class="form-control remark" placeholder="Remark detail" id="kt_autosize_2" rows="4" name="remark" id="remark"  ></textarea>
-    </div>
-   </div>
-  
+   
   <div class="card-footer pb-0">
    <div class="row justify-content-center">
   
@@ -161,6 +142,7 @@ buttons: [
 		var student_name = $(this).attr('data-student_name');
 		var amount = $(this).attr('data-amount');
 		$('#student_id').val(student_id);
+        // $('#student_id_show').html(student_id);
 		$('#student_name').html(student_name);
 		$('#amount').val(amount);
 		
@@ -174,6 +156,8 @@ buttons: [
 		var payment_date = $('#payment_date').val();
 		var payment_mode = $('#payment_mode').val();
 		var amount = $('#amount').val();
+        var transaction_number = $('#transaction_number').val();
+		var receipt_number = $('#receipt_number').val();
 		if(payment_date==''){
 			$('#error').text('Please Select Date');
 			return false;
