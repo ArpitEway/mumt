@@ -2840,7 +2840,7 @@ public function practical_assignment_marks_edit(){
 				'student_id'=> $student_id
 			);
 			$update = $this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$updateData);
-			$response = $this->Common_model->updateRecordByConditions('student',array('student_id'=> $student_id),array('payment_status'=>'Y'));
+			$response = $this->Common_model->updateRecordByConditions('student',array('student_id'=> $student_id),array('payment_status'=>'Y','document_uploaded'=>'Y','approved'=>'Y'));
 
 			if($response){
 			echo json_encode(array("status" => 'true'));
