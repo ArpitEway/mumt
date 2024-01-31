@@ -1469,6 +1469,18 @@ class Common_Model extends CI_Model{
 		}
 
 	}//student loop end
+
+	function getExamCenterNameById($id){
+
+		$qry = $this->db->select("schoolcollegename");
+		
+		$qry = $this->db->where("id",$id);
+
+		$qry = $this->db->get("exam_center");
+		
+		return $qry->row()->schoolcollegename;
+
+	}
 }
 
 

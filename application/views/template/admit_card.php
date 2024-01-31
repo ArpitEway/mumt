@@ -72,10 +72,13 @@
 						<table class="table table-bordered">
 							<input type="hidden" value="<?php echo $student[0]->student_id ; ?>" id="student_id">
 						  <tbody>
-							<!-- <tr>
-							  <td colspan="4"><b>Exam Center: </b><?= $this->Common_model->getCenterNameById($student[0]->id); ?></td>
+							  <?php //MDE165 MMYVV UTD KAROUNDI
+							  if($student[0]->exam_center_id==169){ ?>
+							<tr>
+							  <td colspan="4"><b>Exam Center: </b><?= $this->Common_model->getExamCenterNameById($student[0]->exam_center_id); ?></td>
 							</tr>
-								<tr>
+							<?php } ?>
+								<!-- <tr>
 							  <td colspan="4"><b>College: </b><?=$student[0]->center_name; ?></td>
 							    </tr> -->
 							<tr>
