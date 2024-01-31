@@ -506,7 +506,7 @@ class Center extends CI_Controller {
 		$counttableData = $this->Datatable_join_model->joincountAll($_POST,$DataTableArray);
 				  
 		foreach($tableData as $result){
-			$center_ids_dep = array( 10,11,12,13,20,21,22,23,24,25,26,27,28,29);
+			$center_ids_dep = array( 10,11,12,13,20,21,22,23,24,25,26,27,28,29,1975,2098,2115);
 			if(in_array($this->session->center_id, $center_ids_dep)){
 				$modal ='<a href="#"  data-student_name = "'.$result->name.'"  data-student_id="'.$this->Common_model->encrypt_decrypt($result->student_id).'" class="btn btn-primary btn-sm font-weight-bold pay1" data-toggle="modal" data-target="#kt_datepicker_modal" "  data-amount= "'.$result->amount.'">Receive</a>';
 			}else{

@@ -216,7 +216,7 @@
 	</div>
 	
 	   	<?php if($student['payment_status'] == 'N'){ 
-            $center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29 );
+            $center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29,1975,2098,2115 );
             $student_id = $this->Common_model->encrypt_decrypt($student['student_id']);
             if(in_array($this->session->center_id, $center_ids) ){
                 ?>
@@ -246,7 +246,7 @@
 			$class_permission = $this->Common_model->get_record('class_master','exam_form_permission',array('id'=>$student['class_id']));
 			
 			if(($center_permission[0]['exam_form_permission']=='Y' && $student['new_exam_form']=='N' && $student['temp_exam_form']=='Y')  && ($class_permission[0]['exam_form_permission']=='Y' || $center_permission[0]['temp_exam_form']=='Y') ){ 
-				$center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29 );
+				$center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29,1975,2098,2115 );
 				if(in_array($this->session->center_id, $center_ids) ){
                     $where = array('session' =>$student['session'],
 			'course_group_id' => $student['course_group_id'],
