@@ -441,13 +441,23 @@
 		$name = $student_details[0]->name;
 
         if($student_details[0]->university_mode=='REG'){
-		if($Fess_head!=''){
-			$exam_fees = ($Fess_head== 'Exam Fees') ? $course_details[0]->exam_fees+$course_details[0]->program_fees : $course_details[0]->form_fees+$course_details[0]->admission_fees;
-		} 
+            if($Fess_head!=''){
+                if($student_details[0]->demo == 'Y'){
+                    $exam_fees = ($Fess_head== 'Exam Fees') ? $course_details[0]->exam_fees : $course_details[0]->form_fees+$course_details[0]->admission_fees;
+                }else{
+                    
+                    $exam_fees = ($Fess_head== 'Exam Fees') ? $course_details[0]->exam_fees+$course_details[0]->program_fees : $course_details[0]->form_fees+$course_details[0]->admission_fees;
+                }
+                
+            } 
 	    }else{
            if($Fess_head!=''){
-			$exam_fees = ($Fess_head== 'Exam Fees') ? $course_details[0]->p_exam_fees+$course_details[0]->p_program_fees : $course_details[0]->p_form_fees+$course_details[0]->p_admission_fees;
-		} 
+                if($student_details[0]->demo == 'Y'){
+                $exam_fees = ($Fess_head== 'Exam Fees') ? $course_details[0]->p_exam_fees : $course_details[0]->p_form_fees+$course_details[0]->p_admission_fees;
+                }else{
+                    $exam_fees = ($Fess_head== 'Exam Fees') ? $course_details[0]->p_exam_fees+$course_details[0]->p_program_fees : $course_details[0]->p_form_fees+$course_details[0]->p_admission_fees;
+                }
+		    } 
 	    }
 	    
 		$dateTime = explode(' ',$dateTime);
