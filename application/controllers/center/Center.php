@@ -1528,6 +1528,7 @@ class Center extends CI_Controller {
 		}
 		//'center_id'=>$this->session->center_id , 
 		$where = array('admit_card_permission' =>'Y',"student.roll_no!="=>0);
+        $this->db->where_not_in('student_id', array(374292,374779,379155,379652,380605,380673,381026,382024,385894,685803,686581,686621,687158,687165,687390,687395,687622,722149));
 		$this->db->select('DISTINCT(student.class_id) as
 			class_id,course_name,student.class_name,class_id');
 		$this->db->from('student');
@@ -1535,7 +1536,7 @@ class Center extends CI_Controller {
 		$this->db->join('class_master', 'class_master.id = student.class_id');
 		$this->db->order_by("student.course_name,student.class_id");
 		$data['students'] = $this->db->get()->result();
-		//echo $this->db->last_query();
+		// echo $this->db->last_query();
 		 //  $this->Common_model->last_query();
 		$this->load->view('Centers/class_wise_admit_card',$data);
 		$this->load->view('Centers/footer');
@@ -1563,6 +1564,7 @@ class Center extends CI_Controller {
 			'roll_no!=' => 0,
 			'new_exam_form' => 'Y'
 		);
+        $this->db->where_not_in('student_id', array(374292,374779,379155,379652,380605,380673,381026,382024,385894,685803,686581,686621,687158,687165,687390,687395,687622,722149));
 		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
 		$this->load->view('Centers/class_wise_admit_card_list',$data);
 		$this->load->view('Centers/footer');
@@ -1587,6 +1589,7 @@ class Center extends CI_Controller {
 			'exam_year' => 'Dec 2023'
 		);
 		$this->db->order_by('course_group_id,class_id');
+        $this->db->where_not_in('student_id', array(188428,686377,375381));
 		$data['students'] = $this->Common_model->getRecordByWhere('backlog_student',$where);
 		$this->load->view('Centers/class_wise_backlog_admit_card_list',$data);
 		$this->load->view('Centers/footer');
@@ -1657,7 +1660,7 @@ class Center extends CI_Controller {
 			'backlog_student.exam_form' => 'Y',
 			'backlog_student.exam_year'=>'Dec 2023'
 		);
-
+        $this->db->where_not_in('student_id', array(188428,686377,375381));
 		$this->db->select('backlog_student.*,student.name,student.f_h_name,student.session,student.photo');
 		$this->db->from('backlog_student');
 		$this->db->join('student','student.student_id = backlog_student.student_id');
