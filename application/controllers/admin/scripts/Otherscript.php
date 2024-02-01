@@ -771,7 +771,7 @@ public function update_roll_no_old_data(){
 	}
 	public function get_new_marks($paperID)
 	{
-		$sql = "SELECT * FROM `paper_master` WHERE `class_id`=104 AND type='theory' AND id='".$paperID."' ";
+		$sql = "SELECT * FROM `paper_master` WHERE `class_id`=104 AND type='theory' AND id in (367,368,371,381)";
 	//30 Jan 24
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
@@ -806,6 +806,90 @@ public function update_roll_no_old_data(){
 		
 		$s_no++;
 		}
+		
+
+	}
+	public function get_single_subject_fail_student()
+	{
+		 $sql = "SELECT count(*) as num ,s.student_id,e.paper_code FROM `paper_master` as p join `new_exam_form` as e on p.id=e.paper_id join student as s on s.student_id =e.student_id WHERE  p.paper_code=e.paper_code and  e.class_id=104 and p.class_id=104 and  s.class_id=104 and s.exam_form='Y' and s.university_mode='PVT' and p.private_min_theory_marks>e.theory_marks and e.theory_marks not in ('','00','ABS') group by s.student_id having num=1 order by s.student_id";
+		//1 Feb 24
+		$rs = $this->db->query($sql)->result_array();
+		$s_no=1;
+		echo count($rs);
+	
+		$total_fail_count=1;
+		foreach ($rs as $student) {
+			 $failsql = "SELECT count(*) as num ,s.student_id,e.paper_code,e.theory_marks FROM `new_exam_form` as e  join student as s on s.student_id =e.student_id WHERE   e.class_id=104 and  s.class_id=104 and s.exam_form='Y' and s.university_mode='PVT'  and s.student_id='".$student['student_id']."' and e.paper_code!='".$student['paper_code']."' and e.theory_marks  in ('','00','ABS') having num=0 ";
+			$failrs = $this->db->query($failsql)->result_array();
+			if($failrs){
+				echo "<br> ";
+				echo $total_fail_count++;
+				echo " , ".$student['student_id']." , ".$student['paper_code'];
+				
+				//echo "<pre>";
+			   // print_r($failrs);
+			}
+			
+		}
+		echo "<br> ";
+		echo " total_fail_count ".$total_fail_count;
+	
+		
+
+	}
+	public function get_single_subject_zero_marks_student()
+	{
+		 $sql = "SELECT count(*) as num ,s.student_id,e.paper_code FROM `paper_master` as p join `new_exam_form` as e on p.id=e.paper_id join student as s on s.student_id =e.student_id WHERE  p.paper_code=e.paper_code and  e.class_id=104 and p.class_id=104 and  s.class_id=104 and s.exam_form='Y' and s.university_mode='PVT' and e.theory_marks='00' and e.theory_marks not in ('','ABS') group by s.student_id having num=1 order by s.student_id";
+		//1 Feb 24
+		$rs = $this->db->query($sql)->result_array();
+		$s_no=1;
+		echo count($rs);
+	
+		$total_fail_count=1;
+		foreach ($rs as $student) {
+			 $failsql = "SELECT count(*) as num ,s.student_id,e.paper_code FROM `paper_master` as p join `new_exam_form` as e on p.id=e.paper_id join student as s on s.student_id =e.student_id WHERE  p.paper_code=e.paper_code and  e.class_id=104 and p.class_id=104 and  s.class_id=104 and s.exam_form='Y' and s.university_mode='PVT'   and s.student_id='".$student['student_id']."' and e.paper_code!='".$student['paper_code']."' AND (p.private_min_theory_marks>e.theory_marks OR e.theory_marks  in ('','ABS')) having num=0 ";
+			$failrs = $this->db->query($failsql)->result_array();
+			if($failrs){
+				echo "<br> ";
+				echo $total_fail_count++;
+				echo " , ".$student['student_id']." , ".$student['paper_code'];
+				
+				//echo "<pre>";
+			   // print_r($failrs);
+			}
+			
+		}
+		echo "<br> ";
+		echo " total_zero_count ".$total_fail_count;
+	
+		
+
+	}
+	public function get_single_subject_blank_marks_student()
+	{
+		 $sql = "SELECT count(*) as num ,s.student_id,e.paper_code FROM `paper_master` as p join `new_exam_form` as e on p.id=e.paper_id join student as s on s.student_id =e.student_id WHERE  p.paper_code=e.paper_code and  e.class_id=104 and p.class_id=104 and  s.class_id=104 and s.exam_form='Y' and s.university_mode='PVT' and e.theory_marks='' and e.theory_marks not in ('00','ABS') group by s.student_id having num=1 order by s.student_id";
+		//1 Feb 24
+		$rs = $this->db->query($sql)->result_array();
+		$s_no=1;
+		echo count($rs);
+	
+		$total_fail_count=1;
+		foreach ($rs as $student) {
+			 $failsql = "SELECT count(*) as num ,s.student_id,e.paper_code FROM `paper_master` as p join `new_exam_form` as e on p.id=e.paper_id join student as s on s.student_id =e.student_id WHERE  p.paper_code=e.paper_code and  e.class_id=104 and p.class_id=104 and  s.class_id=104 and s.exam_form='Y' and s.university_mode='PVT'   and s.student_id='".$student['student_id']."' and e.paper_code!='".$student['paper_code']."' AND (p.private_min_theory_marks>e.theory_marks OR e.theory_marks  in ('00','ABS')) having num=0 ";
+			$failrs = $this->db->query($failsql)->result_array();
+			if($failrs){
+				echo "<br> ";
+				echo $total_fail_count++;
+				echo " , ".$student['student_id']." , ".$student['paper_code'];
+				
+				//echo "<pre>";
+			   // print_r($failrs);
+			}
+			
+		}
+		echo "<br> ";
+		echo " total_zero_count ".$total_fail_count;
+	
 		
 
 	}
