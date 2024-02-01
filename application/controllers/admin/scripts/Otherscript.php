@@ -771,7 +771,7 @@ public function update_roll_no_old_data(){
 	}
 	public function get_new_marks($paperID)
 	{
-		$sql = "SELECT * FROM `paper_master` WHERE `class_id`=104 AND type='theory' AND id in (367,368,371,381)";
+		$sql = "SELECT * FROM `paper_master` WHERE `class_id`=104 AND type='theory' AND id ='".$paperID."'";
 	//30 Jan 24
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
@@ -795,11 +795,11 @@ public function update_roll_no_old_data(){
 			$new_marks=$stud['theory_marks']+$a;
 			$new_marks=round($new_marks,0);
 			echo "<tr><td>".$i."</td><td>".$stud['student_id']."</td><td>".$stud['name']."</td><td>".$stud['enrollment_no']."</td><td>".$stud['theory_marks']."</td><td><b>".$new_marks."</b></td></tr>";
-			$updateSQL="update `new_exam_form` set theory_marks='".$new_marks."' WHERE `class_id`=104 AND paper_id= '".$paperID."' AND student_id='".$stud['student_id']."' AND id='".$stud['id']."'";
+			/*$updateSQL="update `new_exam_form` set theory_marks='".$new_marks."' WHERE `class_id`=104 AND paper_id= '".$paperID."' AND student_id='".$stud['student_id']."' AND id='".$stud['id']."'";
 			 $this->db->query($updateSQL);
 			$updateStatus="update new_exam_form_backup_ba_pvt set update_marks_status='Y' where id='".$stud['id']."'";
 			 $this->db->query($updateStatus);
-
+			*/
 			$i++;
 		}
 		echo "</table>";
@@ -881,7 +881,11 @@ public function update_roll_no_old_data(){
 				echo "<br> ";
 				echo $total_fail_count++;
 				echo " , ".$student['student_id']." , ".$student['paper_code'];
-				
+				 $avgsql="SELECT sum(e.theory_marks) as obtain , sum(p.private_max_theory_marks) as obtainfrom FROM `paper_master` as p  join `new_exam_form` as e on p.id=e.paper_id WHERE p.paper_code=e.paper_code and e.class_id=104 and p.class_id=104 and  `student_id`='".$student['student_id']."' and e.paper_code!='".$student['paper_code']."'";
+				$avg = $this->db->query($avgsql)->result_array();
+				$average=($avg[0]['obtain']*100)/$avg[0]['obtainfrom'];
+				$average=number_format((float)$average, 2, '.', '');
+				echo " , ".$avg[0]['obtain']." , ".$avg[0]['obtainfrom']." , ".$average;
 				//echo "<pre>";
 			   // print_r($failrs);
 			}
@@ -889,6 +893,34 @@ public function update_roll_no_old_data(){
 		}
 		echo "<br> ";
 		echo " total_zero_count ".$total_fail_count;
+	
+		
+
+	}
+	public function get_single_subject_abs_student()
+	{
+		 $sql = "SELECT count(*) as num ,s.student_id,e.paper_code FROM `paper_master` as p join `new_exam_form` as e on p.id=e.paper_id join student as s on s.student_id =e.student_id WHERE  p.paper_code=e.paper_code and  e.class_id=104 and p.class_id=104 and  s.class_id=104 and s.exam_form='Y' and s.university_mode='PVT' and e.theory_marks='ABS' and e.theory_marks not in ('','00') group by s.student_id having num=1 order by s.student_id";
+		//1 Feb 24
+		$rs = $this->db->query($sql)->result_array();
+		$s_no=1;
+		echo count($rs);
+	
+		$total_fail_count=1;
+		foreach ($rs as $student) {
+			 $failsql = "SELECT count(*) as num ,s.student_id,e.paper_code FROM `paper_master` as p join `new_exam_form` as e on p.id=e.paper_id join student as s on s.student_id =e.student_id WHERE  p.paper_code=e.paper_code and  e.class_id=104 and p.class_id=104 and  s.class_id=104 and s.exam_form='Y' and s.university_mode='PVT'   and s.student_id='".$student['student_id']."' and e.paper_code!='".$student['paper_code']."' AND (p.private_min_theory_marks>e.theory_marks OR e.theory_marks  in ('','00')) having num=0 ";
+			$failrs = $this->db->query($failsql)->result_array();
+			if($failrs){
+				echo "<br> ";
+				echo $total_fail_count++;
+				echo " , ".$student['student_id']." , ".$student['paper_code'];
+				
+				//echo "<pre>";
+			   // print_r($failrs);
+			}
+			
+		}
+		echo "<br> ";
+		echo " Total ABS count ".$total_fail_count;
 	
 		
 
