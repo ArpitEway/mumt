@@ -76,13 +76,13 @@
                 $("#btn_admission_reg_"+id).removeClass("btn btn-success");
                 $("#btn_admission_reg_"+id).addClass("btn btn-danger");
                 $("#btn_admission_reg_"+id).html("No");
-                var s="admission_permission("+ id +",'N')";
+                var s="admission_permission_reg("+ id +",'N')";
                 $("#btn_admission_reg_"+id).attr("onclick",s);
               }else  if(response.error==false){
                 $("#btn_admission_reg_"+id).removeClass("btn btn-danger");
                 $("#btn_admission_reg_"+id).addClass("btn btn-success");
                 $("#btn_admission_reg_"+id).html("Yes");
-                var s="admission_permission("+ id +",'Y')";
+                var s="admission_permission_reg("+ id +",'Y')";
                 $("#btn_admission_reg_"+id).attr("onclick",s);
               }
             }
