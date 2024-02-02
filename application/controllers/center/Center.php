@@ -1660,7 +1660,7 @@ class Center extends CI_Controller {
 			'backlog_student.exam_form' => 'Y',
 			'backlog_student.exam_year'=>'Dec 2023'
 		);
-        $this->db->where_not_in('student_id', array(188428,686377,375381));
+        $this->db->where_not_in('backlog_student.student_id', array(188428,686377,375381));
 		$this->db->select('backlog_student.*,student.name,student.f_h_name,student.session,student.photo');
 		$this->db->from('backlog_student');
 		$this->db->join('student','student.student_id = backlog_student.student_id');
