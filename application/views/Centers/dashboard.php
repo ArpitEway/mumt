@@ -201,9 +201,9 @@
 				<div class="row">
 				
 				<?php 
-                $count = $this->Common_model->getCountByWhere('student',array('center_id'=>$center->id,'new_exam_form !='=>'D'));
-                
-                if ($center->exam_form_permission=='Y' && $count>0): ?>
+              //  $count = $this->Common_model->getCountByWhere('student',array('center_id'=>$center->id,'new_exam_form !='=>'D'));
+                //&& $count>0
+                if ($center->exam_form_permission=='Y' ): ?>
 				 <a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
 							<div>
 								<span class="nav-text">Exam Form Jan 2024</span>
