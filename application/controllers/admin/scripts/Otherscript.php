@@ -834,7 +834,7 @@ public function update_roll_no_old_data(){
 				echo " , ".$avg[0]['obtain']." , ".$avg[0]['obtainfrom']." , ".$average." , ".$student['private_max_theory_marks']." , ".$avg_marks;
 				$updateSql="Update new_exam_form set theory_marks='".$avg_marks."' WHERE paper_code='".$student['paper_code']."' AND student_id='".$student['student_id']."' ";
 				//Set AVG Marks in remaining paper
-				$this->db->query($updateSql);
+				//$this->db->query($updateSql);
 			}
 			
 		}
@@ -869,7 +869,7 @@ public function update_roll_no_old_data(){
 				echo " , ".$avg[0]['obtain']." , ".$avg[0]['obtainfrom']." , ".$average." , ".$student['private_max_theory_marks']." , ".$avg_marks;
 				$updateSql="Update new_exam_form set theory_marks='".$avg_marks."' WHERE paper_code='".$student['paper_code']."' AND student_id='".$student['student_id']."' ";
 				//Set AVG Marks in remaining paper
-				$this->db->query($updateSql);
+			//	$this->db->query($updateSql);
 			}
 			
 		}
@@ -904,7 +904,7 @@ public function update_roll_no_old_data(){
 				echo " , ".$avg[0]['obtain']." , ".$avg[0]['obtainfrom']." , ".$average." , ".$student['private_max_theory_marks']." , ".$avg_marks;
 				 $updateSql="Update new_exam_form set theory_marks='".$avg_marks."' WHERE paper_code='".$student['paper_code']."' AND student_id='".$student['student_id']."' ";
 				//Set AVG Marks in remaining paper
-				$this->db->query($updateSql);
+				//$this->db->query($updateSql);
 				
 			}
 			
