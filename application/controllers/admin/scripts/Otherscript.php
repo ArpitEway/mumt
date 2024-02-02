@@ -838,8 +838,9 @@ public function update_roll_no_old_data(){
 			}
 			
 		}
+		$total_fail_count--;
 		echo "<br> ";
-		echo " total_fail_count ".$total_fail_count-1;
+		echo " total_fail_count ".$total_fail_count;
 	
 		
 
@@ -872,8 +873,9 @@ public function update_roll_no_old_data(){
 			}
 			
 		}
+		$total_fail_count--;
 		echo "<br> ";
-		echo " total_zero_count ".$total_fail_count-1;
+		echo " total_zero_count ".$total_fail_count;
 	
 		
 
@@ -907,8 +909,9 @@ public function update_roll_no_old_data(){
 			}
 			
 		}
+		$total_fail_count--;
 		echo "<br> ";
-		echo " total_zero_count ".$total_fail_count-1;
+		echo " total_zero_count ".$total_fail_count;
 	
 		
 
@@ -935,6 +938,7 @@ public function update_roll_no_old_data(){
 			}
 			
 		}
+		$total_fail_count--;
 		echo "<br> ";
 		echo " Total ABS count ".$total_fail_count;
 	
