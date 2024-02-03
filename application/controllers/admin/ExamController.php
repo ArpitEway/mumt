@@ -1486,7 +1486,7 @@ class ExamController extends CI_Controller {
 			$data['exam_centers'] = $this->db->get()->result();
 			$this->db->select('*');
 			$this->db->from('paper_master');
-			//$this->db->where_not_in('class_id',array(163,175,264));
+			$this->db->where_not_in('class_id',array(166,167,267,164,165,162,163,169,170,171,174,175,177,178,168,180,173,269));
 			//$this->db->where_in('class_id',array(141,150,186) );
 			// 101,102,104,105,107,108,110,111,113,116,117,119,120,125,126,128,129,131,132,134,137,140,143,146,149,184,192,284,286,288,290,292,294,296,298,135
 			$this->db->where_in('class_id',array(154,155,181,182) );
