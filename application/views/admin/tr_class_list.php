@@ -13,9 +13,9 @@
 			
 			// $this->db->where_in('id',array(101,228,126,108,111,117,285,262,293,295,107,125,298,105,270,116,110,104,183));
 			//193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280
-        $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id'] , 'old_exam_form_permission' => 'Y' , 'result_permission' => 'Y'));
+        $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id'] , 'old_exam_form_permission' => 'Y' ));
 	
-		
+		//, 'result_permission' => 'Y'
         // , 'exam_form_permission' => 'Y'
 		//, 'old_exam_form_permission' => 'Y' 
         ?>
