@@ -1103,7 +1103,7 @@ public function upload_old_backlog_marks()
      $this->db->join('class_master', 'backlog_student.class_id = class_master.id');
      // $this->db->where('cbcs', 'Y');
     // $this->db->where('last_class', 'L');
-     $this->db->where('class_master.mode', 'Semester');
+  //   $this->db->where('class_master.mode', 'Semester');
      $this->db->where('exam_form', 'Y');
      $this->db->where('upload_result', 'N');
      $this->db->where('exam_year','June 2023');
