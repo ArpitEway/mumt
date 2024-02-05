@@ -1108,7 +1108,7 @@ public function upload_old_backlog_marks()
      $this->db->where('upload_result', 'N');
      $this->db->where('exam_year','June 2023');
      $this->db->where('result_show', 'Y');
-     $this->db->where('class_master.result_permission', 'Y');
+     $this->db->where('class_master.backlog_result_permission', 'Y');
      $this->db->where('class_master.final_result_permission', 'Y');
      // $this->db->where('marksheet_dispatch', 'Y');
     // $this->db->where('university_mode','REG');
