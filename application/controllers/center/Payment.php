@@ -228,7 +228,7 @@ class Payment extends CI_Controller {
 	}
 		
 	public function detail($id){
-	if(!$this->session->has_userdata('centerdata')){
+    if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url('center/login'));
 		}
 		$id = $this->Common_model->encrypt_decrypt($id,'decrypt');
@@ -369,7 +369,7 @@ class Payment extends CI_Controller {
 			$posted['zipcode'] = $student['p_pin_code'];
 			$posted['udf1'] = $student_id;
 			$posted['udf2'] = $mode ;
-			$posted['udf3'] = "June 2023";
+			$posted['udf3'] = "Dec 2023";
 			$posted['udf4'] = $student["center_id"].' / '.$student['class_id'];
 			$posted['udf5'] = $student["name"]."/".$student["f_h_name"];
 			$hash = '';
@@ -394,7 +394,7 @@ class Payment extends CI_Controller {
 
 
    public function backlog_exam_form($student_id,$class_id,$back_id){
-   	if(!$this->session->has_userdata('centerdata')){
+    if(!$this->session->has_userdata('centerdata')){
    		redirect(base_url('login'));
    	}
    	$titleData = array('title'=>'Exam Form Payment');
@@ -473,7 +473,7 @@ class Payment extends CI_Controller {
 			$posted['zipcode'] = $student['p_pin_code'];
 			$posted['udf1'] = $student_id;
 			$posted['udf2'] = $mode; 
-			$posted['udf3'] = "June 2023";
+			$posted['udf3'] = "Dec 2023";
 			$posted['udf4'] = $student["center_id"].' / '.$class_id;
 			$posted['udf5'] = $student["name"]."/".$student["f_h_name"];
 			
@@ -542,7 +542,7 @@ class Payment extends CI_Controller {
 				"txnId" => $txnid,
 				"admission_type" =>$udf2,
 			);
-		$student = $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$student_id,'class_id'=>$class_id,'exam_year'=>'June 2023'));
+		$student = $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$student_id,'class_id'=>$class_id,'exam_year'=>'Dec 2023'));
        $student_name =  $this->Common_model->getSinglefield('student','name',array('student_id'=>$student_id));
 			$where = 'student_id='.$student_id.' and fees_head="'.$productinfo.'" and class_id='.$class_id.' and exam_session= "'.$udf3.'"';
 			$txnData = $this->Common_model->get_record('online_payment_transaction','*',$where);
@@ -566,10 +566,16 @@ class Payment extends CI_Controller {
 				$status = 'exam_form';
 			}
 			if($payment=='Y'){
-				$where = array('student_id'=>$student_id,'class_id'=>$class_id,'exam_year'=>'June 2023');
+				$where = array('student_id'=>$student_id,'class_id'=>$class_id,'exam_year'=>'Dec 2023');
 				$student = array($status=>'Y');
 				$this->Common_model->updateRecordByConditions('backlog_student',$where,$student);
 			}
+            $sessionData = $data = array('loged_in' => true,
+				'centerdata' => $student[0]->center_code,
+				'center_id' => $student[0]->center_id,
+				'account_type' => 'center'
+			);
+			$this->session->set_userdata($sessionData);
 			$this->session->set_flashdata($remsg,$msg);
 			$id = $this->Common_model->encrypt_decrypt($txnid);
 			redirect(base_url('center/payment/detail/'.$id));

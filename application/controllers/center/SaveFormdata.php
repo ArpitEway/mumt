@@ -83,6 +83,12 @@ class saveFormdata extends CI_Controller {
 		$studentData['nationality'] = html_escape($this->input->post('nationality'));
 		$studentData['minority'] = html_escape($this->input->post('minority'));
 		
+		$class_ids=array(101,104,107,110,116,119,125,128,131,134);
+		$class = $this->Common_model->getRecordByWhere('class_master',array('id' =>$class_id));
+		if(($class[0]->cbcs == 'Y' || in_array($class_id, $class_ids)))
+		{
+			$data['exam_pattern'] ="GRADE";
+		}
 		// transaction start from here 
 	
 		
@@ -164,7 +170,7 @@ class saveFormdata extends CI_Controller {
 		}
 		
 			//	paper add code 
-		$class = $this->Common_model->getRecordByWhere('class_master',array('id' =>$class_id));
+		
        
 		// if($class[0]->exam_form_permission =='Y' && $class[0]->class_group=="N"){
 			$cbcs = ($class[0]->cbcs == 'Y')?'Y':'N';

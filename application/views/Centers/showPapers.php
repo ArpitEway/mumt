@@ -215,11 +215,25 @@
 		</div>
 	</div>
 	
-	   	<?php if($student['payment_status'] == 'N'){ ?>
+	   	<?php if($student['payment_status'] == 'N'){ 
+            $center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29,1975,2098,2115 );
+            $student_id = $this->Common_model->encrypt_decrypt($student['student_id']);
+            if(in_array($this->session->center_id, $center_ids) ){
+                ?>
+                <div class="row d-flex justify-content-center p-3">
+					<!-- <a class="btn btn-success" href="<?= base_url('paid_by_university/'.$student_id) ?>">Paid By University</a> -->
+                    <a href="#"  data-student_name = "<?=$student['name']?>"  data-idstudent="<?=$student['student_id']?>" data-student_id="<?= $student_id?>" class="btn btn-primary btn-sm font-weight-bold pay1" data-toggle="modal" data-target="#kt_datepicker_modal" data-amount= "1500" data-url="<?php echo site_url('center/center/update_unpaid_student'); ?>" data-head='addmission'>Paid By University</a>
+				</div> 
+                <?php
+            }else{
+            
+            ?>
+            
 			<div class="row d-flex justify-content-center p-3">
 				<a class="btn btn-success" href="<?= base_url('center/Payment/admission/'.$this->Common_model->encrypt_decrypt($student['student_id'])) ?>">Process To Payment</a>
 			</div>
 			<?php
+            }
 		}
 		?>
 
@@ -232,11 +246,22 @@
 			$class_permission = $this->Common_model->get_record('class_master','exam_form_permission',array('id'=>$student['class_id']));
 			
 			if(($center_permission[0]['exam_form_permission']=='Y' && $student['new_exam_form']=='N' && $student['temp_exam_form']=='Y')  && ($class_permission[0]['exam_form_permission']=='Y' || $center_permission[0]['temp_exam_form']=='Y') ){ 
-				$center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29 );
+				$center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29,1975,2098,2115 );
 				if(in_array($this->session->center_id, $center_ids) ){
+                    $where = array('session' =>$student['session'],
+			'course_group_id' => $student['course_group_id'],
+		);
+
+		$fees = $this->Common_model->getRecordByWhere('course',$where);
+        if($student['demo']=='Y'){
+            $total_fees = $fees[0]->exam_fees;
+        }else{
+            $total_fees = $fees[0]->program_fees+$fees[0]->exam_fees;
+        }
 						?> 
 							<div class="row d-flex justify-content-center p-3">
-								<a class="btn btn-success" href="<?= base_url('paid_by_university/'.$student_id) ?>">Paid By University</a>
+								<!-- <a class="btn btn-success" data-fees='<?=$fees[0]->program_fees+$fees[0]->exam_fees;?>'  href="<?= base_url('paid_by_university/'.$student_id) ?>">Paid By University</a> -->
+                                <a href="#"  data-student_name = "<?=$student['name']?>"  data-idstudent="<?=$student['student_id']?>" data-student_id="<?= $student_id?>" class="btn btn-primary btn-sm font-weight-bold pay1" data-toggle="modal" data-target="#kt_datepicker_modal" data-amount= "<?=$total_fees;?>"  data-url="<?=base_url('paid_by_university/'.$student_id)?>" data-head='fees'>Paid By University</a>
 							</div> 
 						
 						<?php
@@ -255,5 +280,176 @@
 
 		?>
 </div>
+<div class="modal fade" id="kt_datepicker_modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-md" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Student Payment</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<i aria-hidden="true" class="ki ki-close"></i>
+				</button>
+			</div>
+			<div class="card card-custom">
 
+ <!--begin::Form-->
+<form method="POST" class="d-block" id="ajaxForm" action="">
+  <div class="card-body">
+<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+
+    <div class="form-group row">
+    <label for="example-date-input" class="col-5 col-form-label">Student Name</label>
+    <div class="col-7">
+    <label for="example-date-input" class="col-form-label"><span id="student_name"></span></label>
+	</div>
+	
+   </div>
+   <div class="form-group row">
+    <label for="example-date-input" class="col-5 col-form-label">Receive Payment Date</label>
+    <div class="col-7">
+		
+     <input class="form-control" type="date" name="payment_date"   id="payment_date" min="<?= date('Y-m-d', strtotime('-18 month')); ?>" max="<?= date('Y-m-d'); ?>"   />
+	 <div class="text-danger" id="error"></div>
+	 <input type="hidden" value="" name="student_id" id="student_id">
+	 <input type="hidden" value="" name="idstudent" id="idstudent">
+     <input type="hidden" value="" name="idstudent" id="url">
+     <input type="hidden" value="" name="head" id="head">
+    </div>
+   </div>
+   <div class="form-group row">
+    <label for="amount" class="col-5 col-form-label">Required Amount</label>
+    <div class="col-7">
+     <input class="form-control" type="number" name="amount" id="amount" required readonly />
+	 <div class="text-danger" id="error3"></div>
+    </div>
+   </div>
+   <div class="form-group row">
+    <label for="amount" class="col-5 col-form-label">Paid Amount</label>
+    <div class="col-7">
+     <input class="form-control" type="number" name="paid_amount" id="paid_amount" required />
+	 <!-- <div class="text-danger" id="error3"></div> -->
+    </div>
+   </div>
+  
+   <div class="form-group row">
+    <label for="amount" class="col-5 col-form-label">Receipt No.</label>
+    <div class="col-7">
+     <input class="form-control" type="text" name="receipt_number" id="receipt_number" required />
+	</div>
+   </div>
+  <div class="card-footer pb-0">
+   <div class="row justify-content-center">
+  
+ 
+     <button type="reset" class="btn btn-success mr-2" id="payment_submit">Submit</button>
+     
+   
+   </div>
+  </div>
+ </form>
+</div>
+		</div>
+	</div>
+</div>
+
+<script>
+
+$(document).on('click','.pay1',function(){
+	    var name_csrf = $(this).attr('data-name_csrf');
+	    var hash_csrf = $(this).attr('data-hash_csrf');
+	    var student_id = $(this).attr('data-student_id');
+	    var student_id = $(this).attr('data-student_id');
+		var student_name = $(this).attr('data-student_name');
+        var url = $(this).attr('data-url');
+		var amount = $(this).attr('data-amount');
+        var head = $(this).attr('data-head');
+		$('#student_id').val(student_id);
+        $('#url').val(url);
+        $('#head').val(head);
+        // $('#student_id_show').html(student_id);
+		$('#student_name').html(student_name);
+		$('#amount').val(amount);
+		
+	});
+
+    $("#payment_submit").on('click',function (e){
+        
+    //    e.preventDefault();
+	var formimage = $('#ajaxForm');
+	var frm = new FormData(formimage[0]);
+		
+        var student_id = $('#student_id').val();
+		var payment_date = $('#payment_date').val();
+		var payment_mode = $('#payment_mode').val();
+		var amount = $('#amount').val();
+        var paid_amount = $('#paid_amount').val();
+        var transaction_number = $('#transaction_number').val();
+		var receipt_number = $('#receipt_number').val();
+        var csrfName = $('.csrfname').attr('name');
+        var csrfHash = $('.csrfname').val(); 
+        var uri = $('#url').val();
+        var head1 = $('#head').val();
+        if(amount !== paid_amount){
+            toastr.warning('Paid Amount Diffrent from Required Amount');
+            return false;
+        }
+        
+       
+		if(payment_date==''){
+			$('#error').text('Please Select Date');
+			return false;
+		}
+		if(amount==''){
+			$('#error3').text('Please Enter Amount');
+			return false;
+		}
+		if(payment_mode==''){
+			$('#error2').text('Please Select Payment Mode');
+			return false;
+		}
+		
+		$.ajax({
+		// url: '<?php //echo site_url('center/center/update_unpaid_student'); ?>',
+        url:uri,
+		type: 'POST',
+		dataType : 'json',
+		data: frm,
+		cache:false,
+		contentType: false,
+		processData: false,
+		beforsend: function()
+              {
+                console.log('loading..');
+                $("#myLoader").show();
+               },
+		success: function (data) {
+		if(data){
+			console.log(data);
+			$('#kt_datepicker_modal').modal('toggle');
+			//$('#student_tr_'+student_id).remove();
+            // if(head1 == 'fees'){
+            //     // window.location.href = '';
+            //     window.location.href
+            //     window.location.assign("<?php// echo base_url('exam_form_students'); ?>")
+            // }else{
+                location.reload();
+            // }
+			
+			
+		
+			toastr.success("Submitted");
+			
+		}else{
+			toastr.error("Something wrong");
+		}
+			},
+			complete: function()
+              {
+                console.log('loading...over');
+                $("#myLoader").hide();
+               },
+		});	
+	
+});	
+    
+</script>
 

@@ -307,7 +307,7 @@ table.last_table, .last_table td, .last_table th{
       <p align="center" class="line-height">Tabulation Register for <strong><?php echo $student_info->course_name; echo '&nbsp'. $course_duration; ?></strong> <?php echo ' Backlog '.$marksheetData[0]->exam_session;?>
       </p>
       <div>
-        <div style="float: left;">DATE: <?php echo $marksheetData[0]->backlog_result_date;?></div>
+        <div style="float: left;">DATE: <?php if($student->mode != 'PVT') echo $marksheetData[0]->backlog_result_date;else echo $marksheetData[0]->backlog_pvt_result_date;?></div>
         <div style="float: right;">Page : <?php  echo $page_no; ?></div>
       </div>
       <table class="table table1 mb-0">

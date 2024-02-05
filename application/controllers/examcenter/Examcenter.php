@@ -115,8 +115,8 @@ class Examcenter extends CI_Controller {
 			$this->db->from('paper_master');
 			$this->db->where('exam_date!=',"");
 			$this->db->where('exam_date!=',"0000-00-00");
-			$this->db->where('exam_date>=',"2023-07-31");	
-			$this->db->where_not_in('course_group_id',array('75','76','77'));
+			//$this->db->where('exam_date>=',"2023-07-31");	
+			//$this->db->where_not_in('course_group_id',array('75','76','77'));
 			$this->db->group_by('exam_date');
 			$this->db->order_by('exam_date', "asc");
 			$data['examDate'] = $this->db->get()->result();
@@ -263,7 +263,7 @@ class Examcenter extends CI_Controller {
 				$this->db->from('backlog_student');
 				$this->db->join('student', 'backlog_student.student_id = student.student_id ' );
 				$this->db->order_by("roll_no", "asc");
-				$this->db->where('backlog_student.exam_year','June 2023');
+				$this->db->where('backlog_student.exam_year','Dec 2023');
 				$this->db->where($where);	
 				$data['exam_center_students'] = $this->db->get()->result();
 		   echo $this->load->view('examcenter/get_search_backlog_student_attendance_sheet',$data, TRUE);

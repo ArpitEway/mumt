@@ -9,7 +9,7 @@
         <label for="course">Exam Center</label>
         <select  name="exam_center" readonly="readonly" id="exam_center" class="form-control course" required>
             <option value="" selected >Select Exam Center</option>
-            <!-- <option value="All"  >All</option> -->
+            <option value="All"  ><?= count($exam_centers)?></option>
             <?php 
 
             foreach($exam_centers as $ecenter)

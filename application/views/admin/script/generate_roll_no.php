@@ -32,10 +32,10 @@
 					$i=1;
 					
 					// $this->db->where_in('id',array(262,300));
-					$whereclass = array('temp_id!=' => 0);
+					$whereclass = array('temp_id!=' => 0,'exam_form_permission' => 'Y');
 					 
 					 //'exam_form_permission' => 'Y'
-					
+					// $this->db->where_in('id',array(166,167,267,164,165,162,163,169,170,171,174,175,177,178,168,180,173,269));
 					$classData = $this->Common_model->getRecordByWhere('class_master',$whereclass);
 					$j=0;
 					foreach ($classData as $class) {
@@ -47,10 +47,13 @@
 						);
 						// $this->db->where_not_in('center_id',array('261','1252'));
 						$students = $this->Common_model->getRecordByWhereByOrder('student',$where,'center_id,name','ASC');
+					
 						$whereRollNo = "new_exam_form = 'Y' and roll_no !='0' and class_id = $class->id";
 						$countData = $this->db->query("Select max(substr(`roll_no`, 2, 8)) as afterRemove from student WHERE $whereRollNo")->row();
 						$count = $countData->afterRemove;
 						$last_number = ($count==0) ? $class->temp_id.'10001'  : $count+1;
+						
+					//	echo $this->db->last_query(); die;
 						foreach ($students as $student) {
 							$j++;
 								$roll_no = ($student->university_mode=='REG') ? '1'.$last_number : '2'.$last_number;

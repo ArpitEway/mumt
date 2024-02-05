@@ -47,7 +47,7 @@
 	 $paper_count = count($papers);
 	 if($paper_count){
 
-		  $newstring = "231".substr($student->center_code, -4); 
+		  $newstring = "232".substr($student->center_code, -4); 
      ?>  
 <!-- <div id="ss">       -->
 <section class="break" style="font-size: 16px;" >
@@ -68,10 +68,10 @@
 					<div class="col-12 text-center">
 						<h5>Attendance Sheet Backlog Examination 
 							<?php
-							if($student->course_group_id==75 || $student->course_group_id==76){
-								echo 'Feb 2023';
+							if($student->course_group_id==77 ){
+								echo '2024';
 							}else{
-								echo 'July 2023';
+								echo 'January 2024';
 							}
 							
 							?>
@@ -151,13 +151,19 @@
 					<td><?php echo $i ; ?></td>
 					<td><?php echo date("d-m-Y", strtotime($paper->exam_date)); ?></td>
 					<td>
-					<?php if($paper->exam_shift=='Morning'){
-						echo '10:30 AM To 01:30 PM';
+					<?php 
+					if($paper->exam_shift=='Afternoon' && ($student->class_id==267 || $student->class_id==269) ){
+						echo '12:00 PM To 3:00 PM';
+					}
+					 if($paper->exam_shift=='Early Morning'){
+						 echo "07:00 AM To 10:00 AM";
+					} 
+					elseif($paper->exam_shift=='Morning'){
+						echo '11:00 AM To 02:00 PM';
 					}elseif($paper->exam_shift=='Afternoon'){
-						echo '02:30 PM To 05:30 PM';
-					}else{
-						echo '12:00 To 3:00 PM';
-					} ?>
+						echo '03:00 PM To 06:00 PM';
+					}
+					  ?>
 					</td>
 					<td style="text-align:left;"><?php echo $paper->paper_name; ?></td>
 					<td ></td>

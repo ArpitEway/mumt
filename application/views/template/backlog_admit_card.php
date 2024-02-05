@@ -42,13 +42,13 @@
 			<div class="BoxC border- padding mar-bot">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Schedule of Exam for Annual/Semester Backlog Examination of
+						<h5>Schedule of Exam for Annual/Semester Backlog Examination of January 2024
 								<?php
-							if($student[0]->course_group_id==33 || $student[0]->course_group_id==45 || $student[0]->course_group_id==76){
-								echo 'June 2023';
-							}else{
-								echo 'July 2023';
-							}
+							// if($student[0]->course_group_id==33 || $student[0]->course_group_id==45 || $student[0]->course_group_id==76){
+							// 	echo 'June 2023';
+							// }else{
+							// 	echo 'July 2023';
+							// }
 							?> 
 						</h5>
 					</div>
@@ -133,12 +133,12 @@
 						if($paper->exam_shift=='Morning' && ($student[0]->class_id==264) ){
 							echo '11:00 AM To 2:00 PM';
 						}
-						else if($paper->exam_shift=='Morning'){
-							echo '10:30 AM To 1:30 PM';
+						else if($paper->exam_shift=='Early Morning'){
+							echo '7:00 AM To 10:00 AM';
+						}else if($paper->exam_shift=='Morning'){
+							echo '11:00 AM To 2:00 PM';
 						}elseif($paper->exam_shift=='Afternoon'){
-							echo '02:30 PM To 5:30 PM';
-						}else{
-							echo '07:00 To 10:00 AM';
+							echo '03:00 PM To 6:00 PM';
 						}
 
 					

@@ -43,7 +43,7 @@
 	 if($paper_count){
 
 		  // $newstring = date('y')."1".substr($student->center_code, -4); 
-		  $newstring = "231".substr($student->center_code, -4); 
+		  $newstring = "232".substr($student->center_code, -4); 
      ?>   
 <section class="break" style="font-size: 16px;">
 		<div class="admit-card" style="width:1030px !important; ">
@@ -63,15 +63,18 @@
 					<div class="col-12 text-center">
 						<h5>Attendance Sheet Examination 
 							<?php
-							// if($student->course_group_id==77){
-							// 	echo '2023';
-							// }
+							if($student->course_group_id==77){
+								echo '2024';
+							}
+							else{
+								echo 'January 2024';
+							}
 							// if($student->course_group_id==33 || $student->course_group_id==45 || $student->course_group_id==76){
 							// 	echo 'June 2023';
 							// }else{
 							// 	echo 'July 2023';
 							// }
-							echo 'Sep 2023';
+							
 							?>
 						</h5>
 						
@@ -161,16 +164,15 @@
 					<td><?php echo $i ; ?></td>
 					<td><?php echo date("d-m-Y", strtotime($paper->exam_date)); ?></td>
 					<td><?php 
-					if($paper->exam_shift=='Morning' && ($student->class_id==264) ){
-						echo '11:00 AM To 2:00 PM';
-					}
-					elseif($paper->exam_shift=='Morning'){
-						echo '10:30 AM To 1:30 PM';
-					}elseif($paper->exam_shift=='Afternoon' ){ 
-						//echo '02:30 PM To 5:30 PM';
+					if($paper->exam_shift=='Afternoon' && ($student->class_id==267 || $student->class_id==269) ){
 						echo '12:00 PM To 3:00 PM';
 					}elseif($paper->exam_shift=='Early Morning'){
 						echo '07:00 To 10:00 AM';
+					}elseif($paper->exam_shift=='Morning'){
+						echo '11:00 AM To 2:00 PM';
+					}elseif($paper->exam_shift=='Afternoon' ){ 
+						echo '03:00 PM To 6:00 PM';
+						//echo '12:00 PM To 3:00 PM';
 					} ?></td>
 					<td style="text-align:left;"><?php echo $paper->paper_name; ?></td>
 					<td ></td>
