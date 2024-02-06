@@ -102,6 +102,51 @@ class GradeSheet_old_model_pg extends CI_Model
 		// print_r($this->foundation_paper);
 	}
 
+    public function view_old_results($student_id,$course_group_id,$class_id,$mode)
+	{
+        $papers = $this->Common_model->get_all_old_papers($student_id,$class_id);
+	
+	
+		// get_all_group_papers
+		//  print_r($papers);die;
+		
+		// print_r($this->allclass);die;
+		$this->classCount = count($this->allclass);
+		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+		$this->foundation_paper = array();
+		$this->result_array = array();
+		$this->tot_credit_point = 0;
+		$this->tot_credit = 0;
+		$this->mode = $mode;
+		$this->fail_count=0;
+		$this->obt_tot_credit=0;
+		$this->fail_tot_marks = 0;
+		$this->fail_min_marks = 0;
+		$this->fail_obt_marks = 0;
+		$this->check_grace_marks = false;
+		$this->withheld = false;
+		foreach ($papers as $paper) {
+			$this->paper = $paper;
+            $this->_row();
+			
+		}
+		
+		// var_dump($this->result_array);
+		
+		// $this->total();
+		$this->agpa = $this->tot_credit_point/$this->tot_credit;
+		if($this->mode=='REG'){
+			// $this->result_head();
+			$this->set_result();
+			// $this->AGPA();
+		}else{
+			// $this->result_head_pvt();
+			$this->set_result();
+			// $this->AGPA_pvt();
+		}
+		return $this->result();
+
+    }
 	public function view_result_grade($student_id,$course_group_id,$class_id,$mode)
 	{
 		

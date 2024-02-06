@@ -159,10 +159,22 @@
                         <?php 
        
                           $gradesheetData = $this->Gradesheet_model_pg->view_result_grade($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
-                          
                             ?>
                     </tbody></table>
                   </div>
+                  <p>
+                    <?php
+                     $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$student->course_group_id,'mode'=>'Semester'));
+                    
+                    
+                     foreach($classes as $cls){
+                        
+                     $gradeData   = $this->GradeSheet_old_model_pg->view_old_results($student->student_id,$student->course_group_id,$cls->id,$student->university_mode);
+                     print_r($gradeData );
+                     echo '<br>';
+                     }
+                    ?>
+                  </p>
                   <h4 style="text-align:center;margin:10px;">Result Semester Wise</h4>
                   <table border='1' cellpadding="2"  width="103%">
                     <tbody>

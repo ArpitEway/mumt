@@ -31,13 +31,16 @@
         <?php foreach($classes as $class) { 
         	$course_id = $this->Common_model->encrypt_decrypt($course['id']);
 			$class_id = $this->Common_model->encrypt_decrypt($class->id);
+           
         	?>
         <tr>
         <td></td>
 		<?php 
 		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
 		
-		$cbcs = ($class->cbcs == 'Y' || in_array($class->id, $class_ids))?' (CBCS)':'';?>
+		$cbcs = ($class->cbcs == 'Y' || in_array($class->id, $class_ids))?' (CBCS)':'';
+        $pattern = (!empty($cbcs))?'G':'M';
+        ?>
 			<td><?= $class->class_name.$cbcs ?></td>
 			<td><?php 
 			$flag=($class->regular_class == 'Y' && $class->private_class == 'Y')? '/': '';
@@ -84,16 +87,16 @@
 			<td>
 				<?php if ($class->practical_internal_marks=='Y' && $class->id !=205){ 
 					if($class->regular_class=='Y') {?>
-				<a target="_blank" href="<?php echo  base_url('admin/admins/student_notification_list_bed/'."/REG/".$course_id.'/'.$class_id)  ?>">Notification Regular</a>
+				<a target="_blank" href="<?php echo  base_url('admin/admins/student_notification_list_bed/'."/REG/".$pattern."/".$course_id.'/'.$class_id)  ?>">Notification Regular</a>
 					<?php }if($class->private_class=='Y') { echo $flag;  ?>
-				<a target="_blank" href="<?php echo  base_url('admin/admins/student_notification_list_bed/'."/PVT/".$course_id.'/'.$class_id)  ?>"><?= $notification?>Private</a>
+				<a target="_blank" href="<?php echo  base_url('admin/admins/student_notification_list_bed/'."/PVT/M/".$course_id.'/'.$class_id)  ?>"><?= $notification?>Private</a>
 				<?php
 					} 
 				}else{
 					if($class->regular_class=='Y') { ?>    
-					 <a href="<?php echo base_url("admin/admins/student_notification_list")."/REG/".$course_id."/".$class_id; ?>">Notification Regular</a>
+					 <a href="<?php echo base_url("admin/admins/student_notification_list")."/REG/".$pattern."/".$course_id."/".$class_id; ?>">Notification Regular</a>
 					 <?php } if($class->private_class=='Y') { echo $flag; ?>
-					 <a href="<?php echo base_url("admin/admins/student_notification_list")."/PVT/".$course_id."/".$class_id; ?>"><?= $notification?>Private</a>
+					 <a href="<?php echo base_url("admin/admins/student_notification_list")."/PVT/M/".$course_id."/".$class_id; ?>"><?= $notification?>Private</a>
 					  <?php }  
 				
 					 }?>
