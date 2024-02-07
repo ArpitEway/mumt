@@ -669,7 +669,7 @@ class Postexam extends CI_Controller {
                         'new_admission_permission'=>'Y',
                     );
                     $where = array('student_id'=>$student->student_id);
-                   // $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+                    $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
                         echo "<br>&nbsp;&nbsp;".$i++."  &nbsp;&nbsp;&nbsp;  ".$student->student_id. "   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   ".$student->enrollment_no;
                 }
                
@@ -1385,7 +1385,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
             if($class_count == $this->pass_count){
                 $data = array('course_complete' => 'Y','new_admission_permission'=>"Y");
                 $where = array('student_id'=>$student['student_id']);
-              //  $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+                $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
               //  echo $this->db->last_query(); die;       
                 echo '<div class="row justify-content-center">'.'<h6>'.$sno++.'--'.$student['enrollment_no'].'<h6>'.'</div>';
                
