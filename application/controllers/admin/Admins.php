@@ -5856,4 +5856,20 @@ public function forward_complaint(){
 		);	
 		echo $this->load->view('template/getclass',$data,true);
 	}
+	public function center_wise_current_student_count(){
+
+		$title = array('title' => 'Center Wise Student Remaining Form List');
+		$this->load->view('header',$title);	
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		$sql="SELECT `id`,c.`center_code`,c.`center_name`,`address`,`city`,`contactpersonname`,c.`phoneno`,c.`mobile_no_1`,c.`mobile_no_2`,COUNT(*)
+		as total FROM `center` as c JOIN student as s on s.center_id=c.id and s.enrolled='Y' and course_complete='N' and new_admission_permission='N' group by center_id  order by center_code ";
+		$rs = $this->db->query($sql)->result_array();
+		$data['listing'] =$rs;
+		$this->load->view('admin/center_wise_current_student_count',$data); 
+		$this->load->view('footer');
+	}
+	
 }// class
