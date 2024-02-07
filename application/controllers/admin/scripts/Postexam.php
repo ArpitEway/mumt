@@ -879,7 +879,7 @@ class Postexam extends CI_Controller {
         $this->session->set_flashdata('ajax_flash_message','Course complete Successfully ');
         redirect(base_url('admin/scripts/Postexam/course_complete'));
     }
-*/
+
 
     function student_course_complete(){
       $class_id = 'student.class_id';
@@ -931,6 +931,7 @@ class Postexam extends CI_Controller {
          
         }
     }
+    */
 
     public function view_student_examination_details()
     {
