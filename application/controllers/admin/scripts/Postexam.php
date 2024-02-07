@@ -54,8 +54,8 @@ class Postexam extends CI_Controller {
             $this->db->select('course_name,student.class_name,class_id, COUNT(student_id) as cnt,student.university_mode');
             $this->db->join('class_master', 'student.class_id = class_master.id');
             // $this->db->where('cbcs', 'Y');
-            // $this->db->where('last_class', 'L');
-            $this->db->where('mode', 'Semester');
+             $this->db->where('last_class', 'L');
+           // $this->db->where('mode', 'Semester');
             $this->db->where('exam_form', 'Y');
             $this->db->where('upload_result', 'N');
             // $this->db->where('student_id',702308);
@@ -649,7 +649,7 @@ class Postexam extends CI_Controller {
      }
      public function update_course_complete_status($course_group_id="",$class_id=""){
             $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
-            $this->db->limit(500);
+            $this->db->limit(1000);
             $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'Y','course_complete'=>'N'));
             $courseClassData = $this->Common_model->getRecordByWhere("class_master",array("course_group_id"=>$course_group_id,"mode"=>$classData->mode));
     
@@ -879,7 +879,7 @@ class Postexam extends CI_Controller {
         $this->session->set_flashdata('ajax_flash_message','Course complete Successfully ');
         redirect(base_url('admin/scripts/Postexam/course_complete'));
     }
-*/
+
 
     function student_course_complete(){
       $class_id = 'student.class_id';
@@ -931,6 +931,7 @@ class Postexam extends CI_Controller {
          
         }
     }
+    */
 
     public function view_student_examination_details()
     {
@@ -1336,7 +1337,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
 }
 
     function backlog_student_course_complete(){
-        $exam_year="Dec 2022";
+        $exam_year="June 2023";
         $class_id = 'backlog_student.class_id';
           $this->db->select('DISTINCT(backlog_student.course_group_id),'.$class_id.'');
           $this->db->from('backlog_student');
@@ -1350,6 +1351,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
               'hash_csrf' => $this->security->get_csrf_hash(),
           );
           $data['courses'] =  $this->db->get()->result_array();
+          //echo $this->Common_model->last_query();die;
           $this->load->view('header',array('title' => 'Course Complete Script For Backlog Student '));
           $this->load->view('admin/script/backlog_student_course_complete',$data);
           $this->load->view('footer');
@@ -1357,7 +1359,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
       }
       public function backlog_student_course_complete_script()
     { //
-            $exam_year="Dec 2022";    
+            $exam_year="June 2023";    
             $course_group_id =$_POST['course_group_id'];
             $class_id= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course_group_id,'last_class'=>'L'));
             

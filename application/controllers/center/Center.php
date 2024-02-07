@@ -1529,7 +1529,7 @@ class Center extends CI_Controller {
 		//'center_id'=>$this->session->center_id , 
 		$where = array('admit_card_permission' =>'Y',"student.roll_no!="=>0);
         $this->db->where_not_in('student_id', array(374292,374779,379155,379652,380605,380673,381026,382024,385894,685803,686581,686621,687158,687165,687390,687395,687622,722149));
-		$this->db->select('DISTINCT(student.class_id) as
+        $this->db->select('DISTINCT(student.class_id) as
 			class_id,course_name,student.class_name,class_id');
 		$this->db->from('student');
 		$this->db->Where($where);
@@ -1565,7 +1565,7 @@ class Center extends CI_Controller {
 			'new_exam_form' => 'Y'
 		);
         $this->db->where_not_in('student_id', array(374292,374779,379155,379652,380605,380673,381026,382024,385894,685803,686581,686621,687158,687165,687390,687395,687622,722149));
-		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
+        $data['students'] = $this->Common_model->getRecordByWhere('student',$where);
 		$this->load->view('Centers/class_wise_admit_card_list',$data);
 		$this->load->view('Centers/footer');
 	}
@@ -1624,7 +1624,7 @@ class Center extends CI_Controller {
 		if ($data['student'][0]->temp_exam_form=='N') {
 			redirect(base_url('select_papers/'.$en_student_id));
 		}
-		$wherePaper = array('student_id' => $student_id,'paper_master.type'=>'theory','paper_master.class_id'=>$data['student'][0]->class_id,'paper_master.course_group_id'=>$data['student'][0]->course_group_id);
+		$wherePaper = array('student_id' => $student_id,'paper_master.type'=>'theory','paper_master.class_id'=>$data['student'][0]->class_id,'paper_master.course_group_id'=>$data['student'][0]->course_group_id,'paper_master.exam_date!=' =>'0000-00-00');
 		$this->db->select('*');
 		$this->db->from('paper_master');
 		$this->db->join('new_exam_form', 'new_exam_form.paper_id = paper_master.id');
@@ -1669,7 +1669,7 @@ class Center extends CI_Controller {
 		$data['student'] = $this->db->get()->result();
 		// print_r($data['student'] );
 		
-		$wherePaper = array('backlog_student_id' => $backlog_student_id,'paper_master.type'=>'theory','paper_master.class_id'=>$data['student'][0]->class_id,'paper_master.course_group_id'=>$data['student'][0]->course_group_id,'status'=>'B','backlog_student_id'=>$data['student'][0]->id);
+		$wherePaper = array('backlog_student_id' => $backlog_student_id,'paper_master.type'=>'theory','paper_master.class_id'=>$data['student'][0]->class_id,'paper_master.course_group_id'=>$data['student'][0]->course_group_id,'status'=>'B','backlog_student_id'=>$data['student'][0]->id,'paper_master.exam_date!=' =>'0000-00-00');
 		$this->db->select('*');
 		$this->db->from('paper_master');
 		$this->db->join('backlog_exam_form', 'backlog_exam_form.paper_code = paper_master.paper_code and backlog_exam_form.class_id = paper_master.class_id');

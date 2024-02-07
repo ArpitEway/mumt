@@ -3206,23 +3206,11 @@ public function update_exam_datewise_permission(){
 	}
 
 	public function tr_class_list(){
-		// array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280);
-		$where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and old_result_show='Y')";
+		
+		$where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and old_class_id in (155,182,299,218,230,232,234,236,238,240,242,244,246,216,248,250,252,254,172,154,181,196,200,208,210,162,165,173,174,177,180)) ";
+		// and old_result_show='Y'
 		//old_class_id in (101,228,126,108,111,117,285,262,293,295,107,125,298,270,105,116,110,104,183)
-		//101,228,126,108,111,117,285,262,293,295,107,125,298,270,105,116,110,104
-        //193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280
-		/******Final TR*******/
-
-		//206,228,230,242,299,126,132
-		// 293,295,183,300,268,256,258,289,283,291,174,191,177,194,196,204,276,280,120,287,297,101,102,119
-		//155,182,296,288,292,262,268,270,300,294,286,298,256,258,274
-		// 232,236,238,240,244,246,216,248,250,254,290,284
-		// 155,182,296,288,292
-		/******Final TR*******/
-		// 290,284,232,252,234
-		// 244,248,250,252,254,236,238,246,234,216,240
-		// 240,274,173,162,174,169,171
-		// 232,238,246,216,248,250,254,168,182,155
+		
 		// new_exam_form = 'Y' or student_result_aug_22
 				
 		$data['courses'] = $this->Common_model->get_record('course_group','*',$where);
@@ -5889,4 +5877,20 @@ public function forward_complaint(){
 		);	
 		echo $this->load->view('template/getclass',$data,true);
 	}
+	public function center_wise_current_student_count(){
+
+		$title = array('title' => 'Center Wise Current Student Count List');
+		$this->load->view('header',$title);	
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		$sql="SELECT `id`,c.`center_code`,c.`center_name`,`address`,`city`,`contactpersonname`,c.`phoneno`,c.`mobile_no_1`,c.`mobile_no_2`,COUNT(*)
+		as total FROM `center` as c JOIN student as s on s.center_id=c.id and s.enrolled='Y' and course_complete='N' and new_admission_permission='N' group by center_id  order by center_code ";
+		$rs = $this->db->query($sql)->result_array();
+		$data['listing'] =$rs;
+		$this->load->view('admin/center_wise_current_student_count',$data); 
+		$this->load->view('footer');
+	}
+	
 }// class
