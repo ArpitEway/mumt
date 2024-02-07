@@ -669,7 +669,7 @@ class Postexam extends CI_Controller {
                         'new_admission_permission'=>'Y',
                     );
                     $where = array('student_id'=>$student->student_id);
-                    $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+                   // $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
                         echo "<br>&nbsp;&nbsp;".$i++."  &nbsp;&nbsp;&nbsp;  ".$student->student_id. "   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   ".$student->enrollment_no;
                 }
                
@@ -1337,7 +1337,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
 }
 
     function backlog_student_course_complete(){
-        $exam_year="Dec 2022";
+        $exam_year="June 2023";
         $class_id = 'backlog_student.class_id';
           $this->db->select('DISTINCT(backlog_student.course_group_id),'.$class_id.'');
           $this->db->from('backlog_student');
@@ -1351,6 +1351,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
               'hash_csrf' => $this->security->get_csrf_hash(),
           );
           $data['courses'] =  $this->db->get()->result_array();
+          //echo $this->Common_model->last_query();die;
           $this->load->view('header',array('title' => 'Course Complete Script For Backlog Student '));
           $this->load->view('admin/script/backlog_student_course_complete',$data);
           $this->load->view('footer');
@@ -1358,7 +1359,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
       }
       public function backlog_student_course_complete_script()
     { //
-            $exam_year="Dec 2022";    
+            $exam_year="June 2023";    
             $course_group_id =$_POST['course_group_id'];
             $class_id= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course_group_id,'last_class'=>'L'));
             
@@ -1384,7 +1385,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
             if($class_count == $this->pass_count){
                 $data = array('course_complete' => 'Y','new_admission_permission'=>"Y");
                 $where = array('student_id'=>$student['student_id']);
-                $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+              //  $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
               //  echo $this->db->last_query(); die;       
                 echo '<div class="row justify-content-center">'.'<h6>'.$sno++.'--'.$student['enrollment_no'].'<h6>'.'</div>';
                
