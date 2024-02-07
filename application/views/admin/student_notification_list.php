@@ -256,6 +256,7 @@
 				}
 				if($marks->p_marks=='ABS'){
 					$abs_count++;
+                    $practical_abs_count++;
 				}
 			}
 		}

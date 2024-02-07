@@ -647,17 +647,27 @@ $abs_count = 0 ;
 									  }
 									elseif( $theory_abs_count==$theory_paper_count && $p_abs_count==$p_paper_count){
 										echo 'Absent In All';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
-							  }
+							  }elseif( $theory_abs_count==$theory_paper_count){
+                                echo 'Absent In Theory';
+                              }
 									elseif( $p_abs_count==$p_paper_count){
 										echo 'Absent In Practical';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
 									  }
-									elseif(sizeof($atkt_paper_codes_array)==1){
+									elseif(sizeof($atkt_paper_codes_array)>1
+                                     && $course_group_id!=76 ){
 										echo "ATKT in ";
 										$atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
 										foreach($atkt_paper_codes_array as $paper_code){
-											echo  "<br>". $paper_code;
+											echo  "". $paper_code.' ' ;
 										}
-									}else{
+									}elseif(sizeof($atkt_paper_codes_array) == 1 ){
+                                       echo "ATKT in ";
+                                       $atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
+                                       foreach($atkt_paper_codes_array as $paper_code){
+                                           echo  "<br>". $paper_code;
+                                       }
+                                   }
+                                    else{
 										echo '';
 									}	
 								} ?>
