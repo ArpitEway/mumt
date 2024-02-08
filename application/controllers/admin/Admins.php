@@ -3009,7 +3009,7 @@ public function update_exam_datewise_permission(){
          // $this->Common_model->last_query();
 		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280);
-		if((in_array($class_id, $class_cbcs)) && $exam_pattern=="G"){
+		if((in_array($class_id, $class_cbcs)) && $pattern=="GRADE"){
 			$this->load->model('Gradesheet_tr_model_pg');
 			$this->load->view('admin/student_notification_list_pg',$data);
 		}else{
