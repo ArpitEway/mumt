@@ -70,9 +70,9 @@
 			<td>
 				<?php if ($class->practical_internal_marks=='Y'){ 
 					if($class->regular_class=='Y') {?>
-				<a target="_blank" href="<?php echo  base_url('admin/admins/student_notification_list_bed/'."/REG/".$course_id.'/'.$class_id)  ?>">Notification Regular</a>
+				<a target="_blank" href="<?php echo  base_url('admin/admins/backlog_student_notification_list_bed/'."/REG/".$course_id.'/'.$class_id)  ?>">Notification Regular</a>
 					<?php }if($class->private_class=='Y') { echo $flag;  ?>
-				<a target="_blank" href="<?php echo  base_url('admin/admins/student_notification_list_bed/'."/PVT/".$course_id.'/'.$class_id)  ?>"><?= $notification?>Private</a>
+				<a target="_blank" href="<?php echo  base_url('admin/admins/backlog_student_notification_list_bed/'."/PVT/".$course_id.'/'.$class_id)  ?>"><?= $notification?>Private</a>
 				<?php
 					} 
 				}else{

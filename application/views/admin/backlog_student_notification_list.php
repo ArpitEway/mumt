@@ -340,7 +340,7 @@
 	<div>
 		<h1 class="text-center" ><strong> Maharishi Mahesh Yogi Vedic Vishwavidyalaya </strong> </h1>
 		<p align="center" style="line-height:0px">Head Office: Karaundi, Post-Mahner ,Distt- Katni(MP) </p>
-		<h2 align="center"><strong>Result Notification of</strong><br><p style="margin-top:8px"><strong><?php echo $this->Common_model->getCourseNameByCourseId($course_group_id).' '. $course_duration .'  '. $exam_session?></strong></p></h2>
+		<h2 align="center"><strong>Backlog Result Notification of</strong><br><p style="margin-top:8px"><strong><?php echo $this->Common_model->getCourseNameByCourseId($course_group_id).' '. $course_duration .'  '. $exam_session?></strong></p></h2>
 	</div>
 	
 	<title>Notification <?php echo $this->Common_model->getCourseNameByCourseId($course_group_id)?></title> 
@@ -451,14 +451,14 @@
 							$final_result = 'FAIL';
 						}
 						else if($fail_count>0 || $abs_count>0){
-							 $final_result = ($check_grace_marks) ? 'PASS BY GRACE' : 'FAIL';
+							 $final_result = 'FAIL';
 
 						}else{
 							 $final_result = 'PASS';
 							
 						}
 						if((in_array($student->class_id, $class_ids)) && $mode=='REG'){
-						echo $this->Gradesheet_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
+						$this->Gradesheet_backlog_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->class_id,$student->mode, $student->id);
 						}else{
 							echo $final_result;
 						}
@@ -497,7 +497,7 @@
 			
 			if($final_result != 'FAIL'){
 				
-				$gradesheetData = $this->Gradesheet_tr_model->view_notification($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
+				$gradesheetData = $this->Gradesheet_backlog_tr_model->view_notification($student->student_id,$student->course_group_id,$student->class_id,$student->mode,$student->id);
 			}else{
 				?>
 				<td  class="text-center" style="padding:0px" align="center"></td>

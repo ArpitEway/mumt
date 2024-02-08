@@ -314,7 +314,7 @@
                             if($paper->type=="Sessional"){
                               echo $paper->max_internal_marks;
                             }else{
-                              echo ($paper->type=='theory' || $classData->practical_internal_marks=='Y') ?  $paper->max_internal_marks : '-'; 
+                              echo ($paper->type=='theory' || $classData->practical_internal_marks=='Y' && $classData->id !=206) ?  $paper->max_internal_marks : '-'; 
                             }?></span>
                             </td>
                             <td align="center" ><span class="style4">
@@ -322,7 +322,7 @@
                                if($paper->type=="Sessional"){
                                 echo $paper->min_internal_marks;
                               }else{
-                              echo ($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->min_internal_marks : '-'; 
+                              echo ($paper->type=='theory' || ($classData->practical_internal_marks=='Y' && $classData->id !=206)) ? $paper->min_internal_marks : '-'; 
                               }?></span>
                             </td>
                             <td align="left" ><span class="style4" style="padding-left:10px;">
@@ -367,7 +367,7 @@
                               if($paper->type=='Sessional'){
                                echo  $paper->int_marks;
                               }else{
-                             if($paper->type=='theory' || $classData->practical_internal_marks=='Y'){
+                             if($paper->type=='theory' || ($classData->practical_internal_marks=='Y' && $classData->id !=206)){
                               echo ($paper->int_marks=='ABS') ? 'ABS F' : $paper->int_marks; 
                              }else{
                               echo '-';
@@ -395,7 +395,7 @@
                                   echo $paper->int_marks;
                                 }
                               }else{
-                                if($classData->practical_internal_marks=='Y') {
+                                if($classData->practical_internal_marks=='Y' && $classData->id !=206) {
                                   if($paper->int_marks<$paper->min_internal_marks || $paper->p_marks<$paper->min_theory_marks && $check_grace_marks==false){
                                     echo  $paper->p_marks +  $paper->int_marks . ' F' ; 
                                   }elseif($paper->p_marks=="ABS" || $paper->int_marks=="ABS"){

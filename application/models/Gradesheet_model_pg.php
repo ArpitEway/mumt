@@ -139,8 +139,6 @@ class Gradesheet_model_pg extends CI_Model
 		$this->withheld = false;
 		foreach ($papers as $paper) {
 			$this->paper = $paper;
-			
-			
 			if($this->withheld){
 				
 				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
@@ -254,6 +252,11 @@ class Gradesheet_model_pg extends CI_Model
 			if ($this->paper['p_marks']==''){
 				$this->withheld = true;
 			}
+            if($this->paper['int_marks']=='N'&& $mode != 'PVT' && $this->paper['max_internal_marks'] !=0 && $this->classData->practical_internal_marks == 'Y'){
+                // $rwas_count++;
+                $this->withheld = true;
+                
+              }
 			$check_fail_marks = $this->paper["p_marks"];
 				$check_fail_min_marks = $this->paper["min_theory_marks"];
 				$check_fail_tot_marks = $this->paper["max_theory_marks"];
@@ -414,6 +417,16 @@ class Gradesheet_model_pg extends CI_Model
 
 	public function echo_result_grade()
 	{
+        if($this->withheld){
+				
+            echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
+             '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
+              '<h3 class="text-center">'.'WH'.'</h3>'.
+            '</div>';
+            return $this->result();
+        
+            die;
+        }
 		$this->fail_count;
 		if ($this->fail_count>0) {
 			 $require_grace_marks = $this->fail_min_marks-$this->fail_obt_marks;

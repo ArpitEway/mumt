@@ -169,6 +169,8 @@ table.last_table, .last_table td, .last_table th{
     $tot_std_marks = 0;
     $tot_marks = 0;
     $rw_count = 0;
+    $rwpr_count = 0;
+    $rwas_count =0;
     $theory_abs_count = 0;
     $atkt_paper_codes_array = array(); 
     $int_abs_count = 0;
@@ -234,8 +236,10 @@ table.last_table, .last_table td, .last_table th{
           $rw_count++;
         }
 
+        
+
         if($new_exam_form->int_marks=='N' && $classData->internal=="Y" && $student->university_mode != 'PVT' && $new_exam_form->max_internal_marks !=0){
-          $rw_count++;
+          $rwas_count++;
         }
         if($student->university_mode != 'PVT'){
             if($new_exam_form->theory_marks<$new_exam_form->min_theory_marks  && $new_exam_form->theory_marks!=''){
@@ -273,7 +277,7 @@ table.last_table, .last_table td, .last_table th{
      
     }
     if($new_exam_form->type!='theory' && $student->university_mode != 'PVT'){
-      // echo $new_exam_form->p_marks;die;
+    //   echo $new_exam_form->p_marks;die;
      
       $count_practical++;
       if($classData->practical_internal_marks !='N'){
@@ -295,13 +299,16 @@ table.last_table, .last_table td, .last_table th{
         $p_fail_count++;
         array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
       }
+      if($new_exam_form->int_marks=='N' && $classData->practical_internal_marks=="Y" && $student->university_mode != 'PVT' && $new_exam_form->max_internal_marks !=0){
+        $rwas_count++;
+      }
     }
 
     }
    
   
     // echo $fail_count.'rw'.$rw_count.'tabs'.$theory_abs_count.'pabs'.$p_fail_count.'intabs'.$int_fail_count;
-    if ($fail_count==0 && $rw_count==0 && $p_fail_count==0 && $int_fail_count==0 && $theory_abs_count==0 && $p_abs_count==0) {
+    if ($fail_count==0 && $rw_count==0 && $p_fail_count==0 && $int_fail_count==0 && $theory_abs_count==0 && $p_abs_count==0 && $rwas_count==0) {
        $final_result = "PASS";
     }else{
       
@@ -309,12 +316,15 @@ table.last_table, .last_table td, .last_table th{
       $require_grace_marks = $require_tot_marks-$fail_tot_marks;
       // tot 3 grace marks in 1 subjects
      
-      if ($fail_count<2 && $require_grace_marks<4 && $int_fail_count==0 && $p_fail_count==0 && $rw_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0) {
+      if ($fail_count<2 && $require_grace_marks<4 && $int_fail_count==0 && $p_fail_count==0 && $rw_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0 && $rwas_count==0) {
         $check_grace_marks = true;
         $final_result = "PASS BY GRACE";
       }elseif($rw_count>0){
         $final_result = "RW";
-      }else{
+      }elseif($rwas_count>0){
+        $final_result = "RWAS";
+      }
+      else{
         $final_result = "FAIL";
       }
     }
@@ -695,7 +705,7 @@ table.last_table, .last_table td, .last_table th{
   
   <?php
    $ddd = $this->Gradesheet_tr_model_pg->view_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
-  
+//   echo $final_result;die;
    
 //    if($ddd['agpa']<4 && $student->promote!="D" && $student->new_exam_form !="D"){
 //     array_push($promote_student,$student->student_id);
