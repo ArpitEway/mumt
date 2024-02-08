@@ -221,6 +221,9 @@
                               }else if($marks->p_marks == 'ABS'){
                                 $result = 'FAIL';
                                 $abs_count++ ;
+                              }else if(($marks->p_marks == '' || $marks->p_marks == 'N') && $classData->practical=='Y'){
+                                $result = 'FAIL';
+                                $fail_count++ ;
                               }
                             }else{
                               $tot_std_marks += $marks->p_marks;
@@ -351,7 +354,7 @@
                                   }elseif($paper->p_marks=='ABS'){
                                     echo 'ABS F';
                                   }else{
-                                    echo $paper->p_marks;
+                                    echo ($paper->p_marks == '' || $paper->p_marks == 'N')?'-':$paper->p_marks;
                                   }
                                 }else{
                                   if($paper->p_marks<$paper->min_theory_marks){
@@ -359,7 +362,7 @@
                                   }elseif($paper->p_marks=='ABS'){
                                     echo 'ABS F';
                                   }else{
-                                    echo $paper->p_marks;
+                                    echo ($paper->p_marks == '' || $paper->p_marks == 'N')?'-':$paper->p_marks;
                                   }
                                 }
                               }
