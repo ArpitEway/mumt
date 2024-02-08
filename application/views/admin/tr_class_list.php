@@ -12,7 +12,7 @@
 			$this->db->order_by('id');
 			
 			// $this->db->where_in('id',array(101,228,126,108,111,117,285,262,293,295,107,125,298,105,270,116,110,104,183));
-			//$this->db->where_in('id',array(155,182,299,218,230,232,234,236,238,240,242,244,246,216,248,250,252,254,172,154,181,196,200,208,210,162,165,173,174,177,180));
+			$this->db->where_in('id',array(155,182,299,218,230,232,234,236,238,240,242,244,246,216,248,250,252,254,172,154,181,196,200,208,210,162,165,173,174,177,180));
         $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id'] , 'old_exam_form_permission' => 'Y' ));
 	
 		//, 'result_permission' => 'Y'
@@ -80,7 +80,7 @@
 				 } ?>
 			</td>
 			<td>
-				<?php if ($class->practical_internal_marks=='Y' && $class->id !=205){ 
+				<?php if ($class->practical_internal_marks=='Y' && $class->id !=205 && $class->id !=206){ 
 					if($class->regular_class=='Y') {?>
 				<a target="_blank" href="<?php echo  base_url('admin/admins/student_notification_list_bed/'."/REG/M/".$course_id.'/'.$class_id)  ?>">Notification Regular</a>
                 <?php if(!empty($cbcs) ){ ?>
