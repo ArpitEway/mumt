@@ -3207,7 +3207,7 @@ public function update_exam_datewise_permission(){
 
 	public function tr_class_list(){
 		
-		$where = "id in (select distinct(course_group_id) from student where exam_form = 'Y'and old_class_id in (155,182,299,218,230,232,234,236,238,240,242,244,246,216,248,250,252,254,172,154,181,196,200,208,210,162,165,173,174,177,180)) ";
+		$where = "id in (select distinct(course_group_id) from student where exam_form = 'Y') ";
 		// and old_result_show='Y'
 		//old_class_id in (101,228,126,108,111,117,285,262,293,295,107,125,298,270,105,116,110,104,183)
 		//and old_class_id in (155,182,299,218,230,232,234,236,238,240,242,244,246,216,248,250,252,254,172,154,181,196,200,208,210,162,165,173,174,177,180)
@@ -3341,7 +3341,7 @@ public function update_exam_datewise_permission(){
 		if($class->last_class == 'L'){
 			$this->db->order_by('center_id,roll_number','ASC');
 			// $this->db->where_in('student_id',array(188247,188249,188265,188272,188302,188306,188311,188322,188324,188338,188343,188346,188353,188361,188366,188368,188455,188495));
-            $this->db->where('student_id',686246);
+            // $this->db->where('student_id',686246);
 			$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','course_complete'=>'Y','university_mode'=>$mode,'old_result_show'=>'Y' ,'exam_pattern'=>'MARKS'));
 			
 		}else{
