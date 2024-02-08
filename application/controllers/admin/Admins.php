@@ -3403,6 +3403,65 @@ public function update_exam_datewise_permission(){
 		// }
 	}
 
+    public function backlog_student_marksheet_grade($mode="",$course_id="",$class_id="",$startlimit=0)
+	{
+		$data = array('class_id' => $class_id,'course_group_id' =>$course_id );
+				$start=0;
+				
+		// 'enrollment_no'=>'AG/21220737'
+		// ,'enrollment_no'=>'AG/21200364'
+		$title = "Marksheet ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
+		
+		$class = $this->Common_model->getRecordByID('class_master','id',$class_id);
+
+		if($startlimit!=0){
+			$start=($startlimit-1)*1000;
+			$this->db->limit(1000,$start);
+			$pagetitle=$startlimit;
+		}	
+		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
+		$data['title'] = $title;
+		$data['university_mode'] = $mode;
+		// $this->load->model('Gradesheet_model');
+		
+
+		if($class->last_class == 'L'){
+			$this->db->order_by('bs.center_id,bs.roll_no','ASC');
+			$this->db->select('bs.*, st.photo,st.session,st.course_name');
+            $this->db->from('backlog_student as bs');
+            $this->db->join('student as st','st.student_id=bs.student_id');
+            $this->db->where(array("bs.course_group_id"=>$course_id ,'bs.class_id' => $class_id,'bs.exam_form'=>'Y','bs.roll_no!='=>'0','mode'=>$mode,'st.course_complete'=>'Y' ));
+            $data['students']=  $this->db->get()->result();
+            // $this->Common_model->getRecordByWhere('backlog_student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'exam_form'=>'Y','roll_no!='=>'0','mode'=>$mode ));
+		}else{
+			$this->db->order_by('bs.center_id,bs.roll_no','ASC');
+            $this->db->select('bs.*, st.photo,st.session,st.course_name,st.name,st.f_h_name');
+            $this->db->from('backlog_student as bs');
+            $this->db->join('student as st','st.student_id=bs.student_id');
+            $this->db->where(array("bs.course_group_id"=>$course_id ,'bs.class_id' => $class_id,'bs.exam_form'=>'Y','bs.roll_no!='=>'0','mode'=>$mode ));
+            $data['students']=  $this->db->get()->result();
+			// $this->db->limit(1);
+			//  $this->db->where('student_id = "721275"');
+		// $data['students']= $this->Common_model->getRecordByWhere('backlog_student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'exam_form'=>'Y','roll_no!='=>'0','mode'=>$mode));
+		}
+	 	// if($class->internal=="Y" && $mode!="PVT"){
+			$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280);
+			if(in_array($class_id , $class_cbcs))
+			{
+                $this->load->model('GradeSheet_old_model_pg');
+                $this->load->model('Gradesheet_model_pg');
+                $this->load->view('admin/student_marksheet_grade_pg',$data);
+			}else{
+				$this->load->model('Gradesheet_backlog_model');
+				$this->load->view('admin/backlog_student_marksheet_grade',$data);
+			}
+			
+
+		// }else{
+			// $this->load->view('admin/student_marksheet_certificate',$data);
+		// }
+	}
+
 	public function update_fees_in_program()
 	{
 		$programs = $this->Common_model->get_record('program','id, course_group_id','course_group_id!=0' );

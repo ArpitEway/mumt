@@ -89,7 +89,7 @@
 			if($class->regular_class=='Y') { 
 				$class_ids=array(101,104,107,110,116,119,125,128,131,134);
 				if(in_array($class->id , $class_ids)){
-					$std_marksheet = 'student_marksheet_grade';
+					$std_marksheet = 'backlog_student_marksheet_grade';
 				}else{
 					$std_marksheet = 'backlog_student_marksheet';
 				}

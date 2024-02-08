@@ -135,18 +135,18 @@ class Gradesheet_backlog_model extends CI_Model
 		// print_r($this->foundation_paper);
 	}
 
-	public function view_result_grade($student_id,$course_group_id,$class_id,$mode)
+	public function view_result_grade($student_id,$course_group_id,$class_id,$mode,$exam_id)
 	{
-		$table = $this->Common_model->getMaster('exam_form_table');
-		$std  = $this->Common_model->getRecordByWhere($table,array('class_id'=> $class_id,'student_id'=>$student_id));
+		$this->db->order_by('sub_group_id');
+			$std  = $this->Common_model->getRecordByWhere('backlog_exam_form',array('class_id'=> $class_id,'student_id'=>$student_id,'backlog_student_id'=>$exam_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
 		
 		if($std[0]->sub_group_id == 1){
-			$papers = $this->Common_model->get_all_papers($student_id,$class_id);
+			$papers = $this->Common_model->get_all_backlog_papers($student_id,$class_id,$exam_id);
 		}
 		if($this->classData->class_group == 'Y'){
-		$papers_list = $this->Common_model->get_all_group_papers($student_id,$class_id);
+		$papers_list = $this->Common_model->get_all_backlog_group_papers($student_id,$class_id,$exam_id);
 		}
 		// get_all_group_papers
 		// print_r($papers);die;
