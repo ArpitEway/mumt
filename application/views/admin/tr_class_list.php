@@ -35,7 +35,6 @@
 		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
 		
 		$cbcs = ($class->cbcs == 'Y' || in_array($class->id, $class_ids))?' (CBCS)':'';
-        $pattern = (!empty($cbcs))?'G':'M';
         ?>
 			<td><?= $class->class_name.$cbcs ?></td>
 			<td><?php 
@@ -83,15 +82,21 @@
 			<td>
 				<?php if ($class->practical_internal_marks=='Y' && $class->id !=205){ 
 					if($class->regular_class=='Y') {?>
-				<a target="_blank" href="<?php echo  base_url('admin/admins/student_notification_list_bed/'."/REG/".$pattern."/".$course_id.'/'.$class_id)  ?>">Notification Regular</a>
-					<?php }if($class->private_class=='Y') { echo $flag;  ?>
+				<a target="_blank" href="<?php echo  base_url('admin/admins/student_notification_list_bed/'."/REG/M/".$course_id.'/'.$class_id)  ?>">Notification Regular</a>
+                <?php if(!empty($cbcs) ){ ?>
+					 / <a href="<?php echo base_url("admin/admins/student_notification_list_bed")."/REG/G/".$course_id."/".$class_id; ?>">Grade</a>
+					 <?php } 
+					 }if($class->private_class=='Y') { echo $flag;  ?>
 				<a target="_blank" href="<?php echo  base_url('admin/admins/student_notification_list_bed/'."/PVT/M/".$course_id.'/'.$class_id)  ?>"><?= $notification?>Private</a>
 				<?php
 					} 
 				}else{
 					if($class->regular_class=='Y') { ?>    
-					 <a href="<?php echo base_url("admin/admins/student_notification_list")."/REG/".$pattern."/".$course_id."/".$class_id; ?>">Notification Regular</a>
-					 <?php } if($class->private_class=='Y') { echo $flag; ?>
+					 <a href="<?php echo base_url("admin/admins/student_notification_list")."/REG/M/".$course_id."/".$class_id; ?>">Notification Regular</a>
+                     <?php if(!empty($cbcs) ){ ?>
+					 / <a href="<?php echo base_url("admin/admins/student_notification_list")."/REG/G/".$course_id."/".$class->id; ?>"> Grade</a>
+					 <?php } 
+					  } if($class->private_class=='Y') { echo $flag; ?>
 					 <a href="<?php echo base_url("admin/admins/student_notification_list")."/PVT/M/".$course_id."/".$class_id; ?>"><?= $notification?>Private</a>
 					  <?php }  
 				
@@ -108,8 +113,11 @@
 					$std_marksheet = 'student_marksheet';
 				}
 				?>   
-				<a target="_blank" href="<?php echo  base_url('admin/admins/'.$std_marksheet."/REG/".$course['id'].'/'.$class->id)  ?>">Marksheet Regular</a>
-				<?php } if($class->private_class=='Y') { echo $flag; ?>
+				<a target="_blank" href="<?php echo  base_url('admin/admins/student_marksheet'."/REG/".$course['id'].'/'.$class->id)  ?>">Marksheet Regular</a>
+                <?php if(!empty($cbcs) ){ ?>
+					 / <a href="<?php echo base_url("admin/admins/student_marksheet_grade")."/REG/".$course['id']."/".$class->id; ?>"> Grade</a>
+					 <?php } 
+				 } if($class->private_class=='Y') { echo $flag; ?>
 					 <a href="<?php echo base_url("admin/admins/student_marksheet")."/PVT/".$course['id']."/".$class->id; ?>"><?= $marksheet?>Private</a>
 					  <?php }  ?>
 			</td>
