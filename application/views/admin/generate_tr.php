@@ -646,10 +646,10 @@ table.last_table, .last_table td, .last_table th{
     </tr>
     <?php }else{  ?>
       <tr class="">
-        <td  class="align-middle text-center " colspan="4" style="padding: 10px;"><?php  echo 'Tot : '. $total_marks_obt .'/'. $total_paper_marks; ?></td>
+        <td  class="align-middle text-center " colspan="<?=($class_id == 178)?3:4?>" style="padding: 10px;"><?php  echo 'Tot : '. $total_marks_obt .'/'. $total_paper_marks; ?></td>
         <td class="align-middle text-center "  colspan="3"><?php  echo  'Per : '.$percentage .'%'; ?></td>
-        <td class="align-middle text-center "  colspan="3"><?php  echo $final_result;?></td>
-        <td class="align-middle text-center " colspan="5"> <?php  echo 'Division : '.$division;  ?></td>
+        <td class="align-middle text-center "  colspan="<?=($class_id == 178)?2:3?>"><?php  echo $final_result;?></td>
+        <td class="align-middle text-center " colspan="<?=($class_id == 178)?2:5?>"> <?php  echo 'Division : '.$division;  ?></td>
       </tr>
       <?php
     }
