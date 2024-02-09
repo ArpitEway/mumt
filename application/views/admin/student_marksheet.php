@@ -62,7 +62,7 @@
         <table align="center" border="0" width="100%">
           <tbody>
             <tr>
-              <td height="130" colspan="2" valign="bottom">
+              <td height="150" colspan="2" valign="bottom">
                 <center>
                   <?php $course = ($student->course_group_id == 75)?'Bachelor of Arts and Bachelor of Education (B.A.B.Ed.)':$student->course_name;?>
                   <strong><?php echo  ($isOneClass) ? $course .' '."(One Year Course)" :$course .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->old_class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
