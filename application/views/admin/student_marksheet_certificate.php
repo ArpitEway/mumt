@@ -29,6 +29,10 @@
     .barcode img{
       height: 25px;
     }
+    .tdFont{
+ font-size:13px;
+ font-weight:bold;
+    }
     .student_image{
       /* image-orientation: none; */
     }
@@ -64,7 +68,7 @@
         <table align="center" border="0" width="100%">
           <tbody>
             <tr>
-              <td height="100" colspan="2" valign="bottom">
+              <td height="130" colspan="2" valign="bottom">
                 <center>
                   
                   <strong><?php echo $student->course_name .' '.$course_duration.' '.$marksheet_variables->exam_session ?></strong>
@@ -139,7 +143,7 @@
             <tr>
               <td height="72" colspan="2">
                 <fieldset style="border: 0px solid #22316C;">       
-                  <div style="min-height:420px;margin-top: 20px;">
+                  <div style="min-height:420px;margin-top: 40px;">
                     <table id="" style="width:100%;" border="0" cellspacing="0" cellpadding="0" align="center">
                       <tbody>
                         <tr style="font-family:Arial, Helvetica, sans-serif; font-size:11px" align="center">
@@ -259,21 +263,21 @@
                           ?>
                           <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="middle">
                          
-                            <td style="margin-top:2px;" align="left"><strong><?php echo  $paper->paper_code; ?></strong></td>
+                            <td style="margin-top:2px;" align="left"><strong class="tdFont"><?php echo  $paper->paper_code; ?></strong></td>
                            
-                            <td align="left"><strong><?php if($paper_name[0] == 'Moukhiki'){ 
+                            <td align="left"><strong class="tdFont"><?php if($paper_name[0] == 'Moukhiki'){ 
                                 echo (is_null($paper_name[1]))?$paper_name[0]:$paper_name[1];
                               }else {
                                  echo $paper->paper_name;
                                } ?></strong></td>
-                            <td align="center" ><span class="style4">
+                            <td align="center" ><span class="style4 tdFont">
                               <?php echo  ($university_mode=='REG')?$paper->max_theory_marks:$paper->private_max_theory_marks;?></span>
                             </td>
-                            <td align="center" ><span class="style4">
+                            <td align="center" ><span class="style4 tdFont">
                               <?php echo  ($university_mode=='REG')?$paper->min_theory_marks:$paper->private_min_theory_marks; ?></span>
                             </td>
                             
-                            <td align="center" ><span class="style4" >
+                            <td align="center" ><span class="style4 tdFont" >
                               <?php
                               if($university_mode=='REG'){
                               if ($paper->type=='theory') {
@@ -320,7 +324,7 @@
                             }
                               ?>
                             </span></td>
-                            <td align="center" class="style2"><span class="style4">
+                            <td align="center" class="style2"><span class="style4 tdFont">
                               <?php 
                                if($university_mode=='REG'){
                                   if ($paper->type=='theory') {
@@ -511,7 +515,7 @@
               <!-- if starts -->
               <tr>
                 <td align="left" colspan="2">
-                  <table width="100%" style="margin-top:50px">
+                  <table width="100%" style="margin-top:40px">
                     <tr>
                     </tr>
                   </table>    

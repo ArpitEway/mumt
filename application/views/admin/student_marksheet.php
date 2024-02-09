@@ -29,6 +29,10 @@
     .student_image{
       /* image-orientation: none; */
     }
+    .tdFont{
+ font-size:13px;
+ font-weight:bold;
+    }
     @media print {
        @page{
         margin: 0;
@@ -58,7 +62,7 @@
         <table align="center" border="0" width="100%">
           <tbody>
             <tr>
-              <td height="130" colspan="2" valign="bottom">
+              <td height="150" colspan="2" valign="bottom">
                 <center>
                   <?php $course = ($student->course_group_id == 75)?'Bachelor of Arts and Bachelor of Education (B.A.B.Ed.)':$student->course_name;?>
                   <strong><?php echo  ($isOneClass) ? $course .' '."(One Year Course)" :$course .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->old_class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
@@ -133,7 +137,7 @@
             <tr>
               <td height="72" colspan="2">
                 <fieldset style="border: 0px solid #22316C;">       
-                  <div style="min-height:450px;margin-top: 20px;">
+                  <div style="min-height:450px;margin-top: 40px;font-size:13px !important;">
                     <table id="" style="width:100%;" border="0" cellspacing="0" cellpadding="0" align="center">
                       <tbody>
                         <tr style="font-family:Arial, Helvetica, sans-serif; font-size:11px" align="center">
@@ -217,6 +221,9 @@
                               }else if($marks->p_marks == 'ABS'){
                                 $result = 'FAIL';
                                 $abs_count++ ;
+                              }else if(($marks->p_marks == '' || $marks->p_marks == 'N') && $classData->practical=='Y'){
+                                $result = 'FAIL';
+                                $fail_count++ ;
                               }
                             }else{
                               $tot_std_marks += $marks->p_marks;
@@ -302,22 +309,22 @@
                             <td colspan="9">&nbsp;</td>
                           </tr>
                           <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="middle">
-                            <td style="margin-top:2px;" align="left"><strong><?php echo  $paper->paper_code; ?></strong></td>
-                            <td align="left"><strong><?php  echo $paper_name ;  ?></strong></td>
-                            <td align="center" ><span class="style4">
+                            <td style="margin-top:2px;" align="left"><strong class="tdFont"><?php echo  $paper->paper_code; ?></strong></td>
+                            <td align="left"><strong class="tdFont"><?php  echo $paper_name ;  ?></strong></td>
+                            <td align="center" ><span class="style4 tdFont">
                               <?php echo  ($paper->type !='Sessional')?$paper->max_theory_marks:'-';?></span>
                             </td>
-                            <td align="center" ><span class="style4">
+                            <td align="center" ><span class="style4 tdFont">
                               <?php echo  ($paper->type !='Sessional')? $paper->min_theory_marks:'-'; ?></span>
                             </td>
-                            <td align="center" ><span class="style4"><?php
+                            <td align="center" ><span class="style4 tdFont"><?php
                             if($paper->type=="Sessional"){
                               echo $paper->max_internal_marks;
                             }else{
                               echo ($paper->type=='theory' || $classData->practical_internal_marks=='Y' && $classData->id !=206) ?  $paper->max_internal_marks : '-'; 
                             }?></span>
                             </td>
-                            <td align="center" ><span class="style4">
+                            <td align="center" ><span class="style4 tdFont">
                               <?php 
                                if($paper->type=="Sessional"){
                                 echo $paper->min_internal_marks;
@@ -325,7 +332,7 @@
                               echo ($paper->type=='theory' || ($classData->practical_internal_marks=='Y' && $classData->id !=206)) ? $paper->min_internal_marks : '-'; 
                               }?></span>
                             </td>
-                            <td align="left" ><span class="style4" style="padding-left:10px;">
+                            <td align="left" ><span class="style4 tdFont" style="padding-left:10px;">
                               <?php
                               if ($paper->type=='theory') {
                                 if(($paper->theory_marks <  $paper->min_theory_marks || $paper->int_marks <  $paper->min_internal_marks) && $check_grace_marks==false){
@@ -347,7 +354,7 @@
                                   }elseif($paper->p_marks=='ABS'){
                                     echo 'ABS F';
                                   }else{
-                                    echo $paper->p_marks;
+                                    echo ($paper->p_marks == '' || $paper->p_marks == 'N')?'-':$paper->p_marks;
                                   }
                                 }else{
                                   if($paper->p_marks<$paper->min_theory_marks){
@@ -355,14 +362,14 @@
                                   }elseif($paper->p_marks=='ABS'){
                                     echo 'ABS F';
                                   }else{
-                                    echo $paper->p_marks;
+                                    echo ($paper->p_marks == '' || $paper->p_marks == 'N')?'-':$paper->p_marks;
                                   }
                                 }
                               }
 
                               ?>
                             </span></td>
-                            <td align="left" class="style4"><span class="style2" style="padding-left:10px;">
+                            <td align="left" class="style4"><span class="style2 tdFont" style="padding-left:10px;">
                               <?php
                               if($paper->type=='Sessional'){
                                echo  $paper->int_marks;
@@ -374,7 +381,7 @@
                              }
                               }?></span>
                             </td>
-                            <td align="left" class="style2">&nbsp;&nbsp;&nbsp;&nbsp;<span class="style4" style="padding-left:10px;">
+                            <td align="left" class="style2 ">&nbsp;&nbsp;&nbsp;&nbsp;<span class="style4 tdFont" style="padding-left:10px;">
                               <?php 
                               if ($paper->type=='theory') {
                                 if($paper->int_marks<$paper->min_internal_marks || $paper->theory_marks<$paper->min_theory_marks){
@@ -457,7 +464,7 @@
                     <?php $i=1; ?>
                     <?php if ($classData->last_class=="L" && !$isOneClass): ?>
                     <tr>
-                      <th height="20" width="22%" style="text-align:left" ><strong><?=$classData->mode ?></strong></th>
+                      <th height="20" width="16%" style="text-align:left" ><strong><?=$classData->mode ?></strong></th>
                       <?php
 
                         $whereClass = array( 'course_group_id'=> $classData->course_group_id,'class_id !=' => $classData->id,'student_id' =>$student->student_id,'exam_result!='=>"FAIL");
@@ -560,7 +567,7 @@
               <!-- if starts -->
               <tr>
                 <td align="left" colspan="2">
-                  <table width="100%" style="margin-top:80px">
+                  <table width="100%" style="margin-top:40px">
                     <tr>
                     </tr>
                   </table>    
