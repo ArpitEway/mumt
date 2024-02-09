@@ -137,7 +137,7 @@
             <tr>
               <td height="72" colspan="2">
                 <fieldset style="border: 0px solid #22316C;">       
-                  <div style="min-height:450px;margin-top: 20px;font-size:13px !important;">
+                  <div style="min-height:450px;margin-top: 40px;font-size:13px !important;">
                     <table id="" style="width:100%;" border="0" cellspacing="0" cellpadding="0" align="center">
                       <tbody>
                         <tr style="font-family:Arial, Helvetica, sans-serif; font-size:11px" align="center">
@@ -567,7 +567,7 @@
               <!-- if starts -->
               <tr>
                 <td align="left" colspan="2">
-                  <table width="100%" style="margin-top:80px">
+                  <table width="100%" style="margin-top:40px">
                     <tr>
                     </tr>
                   </table>    
