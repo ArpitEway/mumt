@@ -1062,7 +1062,7 @@ class Common_Model extends CI_Model{
 	{
 		$this->db->select('*');
 		$this->db->from('backlog_exam_form');
-		$this->db->join('paper_master', 'backlog_exam_form.paper_code = paper_master.paper_code');
+		$this->db->join('paper_master', 'backlog_exam_form.paper_code = paper_master.paper_code and paper_master.class_id = backlog_exam_form.class_id');
 		$this->db->where('backlog_exam_form.class_id',$class_id); 
 		$this->db->where('backlog_exam_form.student_id',$student); 
 		$this->db->where('backlog_exam_form.backlog_student_id',$exam_data_id); 

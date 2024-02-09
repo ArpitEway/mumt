@@ -5884,7 +5884,7 @@ public function forward_complaint(){
 	 	if($class->internal=="Y" && $mode!="PVT"){
 			$this->load->view('admin/backlog_student_marksheet',$data);
 		}else{
-			$this->load->view('admin/student_marksheet_certificate',$data);
+			$this->load->view('admin/backlog_student_marksheet_certificate',$data);
 		}
 	}
 
