@@ -24,7 +24,7 @@
              $regsql="SELECT COUNT(*) as reg FROM student as s where s.enrolled='Y' and course_complete='N' and new_admission_permission='N' AND university_mode='REG' and center_id='".$list['id']."' and class_id in (193,195,197,199,201,203,205,207,209,211,213,221,223,225,227,275,279,302) and new_exam_form='Y' group by center_id ";
 		    $regrs = $this->db->query($regsql)->result_array();
             $fill=0;
-             $fill= $regrs[0]['reg']
+             $fill= $regrs[0]['reg'];
             
             ?>
 			<tr>
