@@ -3207,9 +3207,9 @@ public function update_exam_datewise_permission(){
 
 	public function tr_class_list(){
 		
-		$where = "id in (select distinct(course_group_id) from student where exam_form = 'Y') ";
+		$where = "id in (select distinct(course_group_id) from student where exam_form = 'Y') and old_class_id in (187,134,135,159,178,137,138,140,143,146,149,169,170) ";
 		// and old_result_show='Y'
-		//old_class_id in (101,228,126,108,111,117,285,262,293,295,107,125,298,270,105,116,110,104,183)
+		
 		//and old_class_id in (155,182,299,218,230,232,234,236,238,240,242,244,246,216,248,250,252,254,172,154,181,196,200,208,210,162,165,173,174,177,180,300,258,256,268)
 		// new_exam_form = 'Y' or student_result_aug_22
 				
@@ -5893,5 +5893,23 @@ public function forward_complaint(){
 		$this->load->view('admin/center_wise_current_student_count',$data); 
 		$this->load->view('footer');
 	}
+
 	
+	public function center_wise_list_for_course(){
+
+		$title = array('title' => 'Center Wise List for Student Master I Sem');
+		$this->load->view('header',$title);	
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		 $sql="SELECT `id`,c.`center_code`,c.`center_name`,`address`,`city`,`contactpersonname`,c.`phoneno`,c.`mobile_no_1`,c.`mobile_no_2`,COUNT(*)
+		as total FROM `center` as c JOIN student as s on s.center_id=c.id  and course_complete='N' and new_admission_permission='N'  and s.class_id in (193,195,197,199,201,203,205,207,209,211,213,221,223,225,227,275,279,302) and (s.new_exam_form ='Y' OR session='July 2023') group by center_id  order by center_code ";
+		$rs = $this->db->query($sql)->result_array(); 
+		$data['listing'] =$rs;
+		$this->load->view('admin/center_wise_list_for_course',$data); 
+		$this->load->view('footer');
+	}
+
+
 }// class
