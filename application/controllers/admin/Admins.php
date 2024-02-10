@@ -3296,16 +3296,16 @@ public function update_exam_datewise_permission(){
 			exit;
 		}
 		$this->db->select('count(*) as cnt ,student.name,student.roll_number,student.course_name, student.class_name , student.center_code,student.course_group_id,student.old_class_id,student.student_id');
-		$this->db->from('exam_form');
-		$this->db->join('student', 'exam_form.student_id = student.student_id');
+		$this->db->from('new_exam_form');
+		$this->db->join('student', 'new_exam_form.student_id = student.student_id');
 		$this->db->where('student.exam_form','Y'); 
 		$this->db->where('student.old_result_show','Y'); 
-		$this->db->where('exam_form.paper_type','theory'); 
-		$this->db->where('exam_form.theory_marks',''); 
+		$this->db->where('new_exam_form.paper_type','theory'); 
+		$this->db->where('new_exam_form.theory_marks',''); 
 		$this->db->where('student.course_group_id',$course_id); 
 		$this->db->where('student.old_class_id',$class_id); 
-		$this->db->where('exam_form.class_id',$class_id); 
-		$this->db->group_by('exam_form.student_id');
+		$this->db->where('new_exam_form.class_id',$class_id); 
+		$this->db->group_by('new_exam_form.student_id');
 		
 		$data['students'] = $this->db->get()->result();
 		
