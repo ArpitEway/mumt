@@ -635,7 +635,7 @@ class Postexam extends CI_Controller {
      public function course_complete_status()
      {
           $this->db->select('course_name,student.class_name,student.course_group_id,class_id, COUNT(student_id) as cnt');
-          $this->db->join('class_master', 'student.class_id = class_master.id');
+          $this->db->join('class_master', 'student.old_class_id = class_master.id');
           $this->db->where('last_class', 'L');
           $this->db->where('exam_form', 'Y');
           $this->db->where('result_permission', 'Y');
@@ -650,7 +650,7 @@ class Postexam extends CI_Controller {
      public function update_course_complete_status($course_group_id="",$class_id=""){
             $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
             $this->db->limit(1000);
-            $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'Y','course_complete'=>'N'));
+            $students = $this->Common_model->getRecordByWhere("student",array("old_class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'Y','course_complete'=>'N'));
             $courseClassData = $this->Common_model->getRecordByWhere("class_master",array("course_group_id"=>$course_group_id,"mode"=>$classData->mode));
     
             $i=1;
