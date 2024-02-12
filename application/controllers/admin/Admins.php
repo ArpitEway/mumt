@@ -3005,6 +3005,7 @@ public function update_exam_datewise_permission(){
 		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
 		$this->db->order_by('roll_number','ASC');
 		$data['mode']= $mode;
+		$this->db->where_in('student_id',array(684617,686662,694798,697873,698007,700430,702015,702222,703277,703382,703805,704056,704298,704571,704669,705033,705300,705311,705608,705676,705679,705680,705919,706114,706730,706830,706901,706903,707683,708924,709366,709384,709388,709869,710320,710547,711105,711143,711294,711463,711576,711791,711807,711895,712083,712091,712872,712929,713582,713754,715144,715544,715675,716397,717811,718445,718507,718510,718539,718665,719168,719192,719206,719436,719483,719854,720604,720955,722565,722959,723251,723395,723776,724678));
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y' ,'roll_number!='=>'0', 'university_mode'=>$mode,'old_result_show'=>'Y','exam_pattern'=>$pattern));//'result_show'=>'Y'
          // $this->Common_model->last_query();
 		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
@@ -3090,7 +3091,7 @@ public function update_exam_datewise_permission(){
 		$this->db->order_by('roll_no','ASC');
 		
 		// $data['students'] = $this->Common_model->getRecordByWhere('student_result_aug_22',$where);
-		// $this->db->where_in('student_id',array(701860,720053,702910,702308,718424,705865,706121,718812,722503,683825,722577,713969,723571));
+		 $this->db->where_in('student_id',array(684617,686662,694798,697873,698007,700430,702015,702222,703277,703382,703805,704056,704298,704571,704669,705033,705300,705311,705608,705676,705679,705680,705919,706114,706730,706830,706901,706903,707683,708924,709366,709384,709388,709869,710320,710547,711105,711143,711294,711463,711576,711791,711807,711895,712083,712091,712872,712929,713582,713754,715144,715544,715675,716397,717811,718445,718507,718510,718539,718665,719168,719192,719206,719436,719483,719854,720604,720955,722565,722959,723251,723395,723776,724678));
 		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
 		// $this->Common_model->last_query();
 		$data['class_id'] = $class_id;
