@@ -1662,7 +1662,7 @@ class ExamController extends CI_Controller {
 			$this->db->select('*');
 			$this->db->from('exam_center');
 			
-		//	$this->db->where_in('id',array('21','169','78','32','82','16','167','87','15','132','117','118','123','62','133','149','75','30'));
+			$this->db->where_in('examcentercode',array('MDE012','MDE015','MDE017','MDE022','MDE024	','MDE032','MDE043','MDE055','MDE057','MDE064','MDE073','MDE089','MDE094','MDE105','MDE114','MDE117','MDE123','MDE130','MDE143','MDE154','MDE156','MDE163','MDE165','MDE171'));
 		if(count($examCenter))
 			$this->db->where_in('id',$examCenter);
 		else
