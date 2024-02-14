@@ -120,6 +120,7 @@ hr.new2 {
 
 </style>
 <script src="<?=BASE_URL()?>assets/light_box/js/jquery.magnify.js"></script>
+<a  style="float:right;margin-top:-35px;font-size:16px;color: #781e19!important; " href="<?=BASE_URL()?><?=$this->session->account_type?>/view_application_request/<?=$data[0]->center_id ?>"><i class="fa fa-arrow-left "></i> Back</a>
 <div id="printThisDivIdOnButtonClick" class="mt-10">
 	<div id="printablediv">
 		<div class="form-block row text-center d-block" id="printHeaderdiv">
@@ -254,7 +255,7 @@ hr.new2 {
                 </div>
                 <div class="col-md-6">
 					<?php if($data[0]->marksheet!=""){ ?>
-					<a data-magnify="gallery" data-src="" data-caption="Adhar Card" data-group="a" href="<?php echo BASE_URL('assets/center_degree/'.$data[0]->session.'/'.$data[0]->marksheet); ?>">
+					<a data-magnify="gallery" data-src="" data-caption="MarkSheet" data-group="a" href="<?php echo BASE_URL('assets/center_degree/'.$data[0]->session.'/'.$data[0]->marksheet); ?>">
 								MarkSheet
 							</a>
                     <?php } ?>
