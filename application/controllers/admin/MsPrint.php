@@ -237,15 +237,16 @@ class MsPrint extends CI_Controller {
 		}
 	}
 
-	public function view_application_request(){
+	public function view_application_request($center_id=0){
 			
 		if($this->session->has_userdata('adminData')){
 			$where = array("status" => "Pending");//,"payment"=>"Y"
 			$centers = $this->Common_model->get_record_group_by_where('application_form','center_id',$where);
-
+			
 			$data = array('name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash(),
-				'centers' =>$centers
+				'centers' =>$centers,
+				'center_id'=>$center_id,
 			);
 			
 			$this->load->view('header',array('title'=>"Center Application Form Request"));
@@ -353,6 +354,7 @@ class MsPrint extends CI_Controller {
         
         $student_id = $this->input->post('student_id');
         $id = $this->input->post('id');
+		$center_id = $this->input->post('center_id');
         $session = $this->input->post('session');
         $apply_for = $this->input->post('apply_for');
        
@@ -376,7 +378,7 @@ class MsPrint extends CI_Controller {
             $PhotoData = array('document' => $upload['file_name'],'status'=>'Done');
             $this->Common_model->updateRecordByConditions('application_form', array('id'=>$id), $PhotoData);
             $this->session->set_flashdata('success','upload document successfully');
-            redirect('MsPrint/view_application_request');
+            redirect('MsPrint/view_application_request/'.$center_id);
         }
 
       
@@ -387,7 +389,7 @@ class MsPrint extends CI_Controller {
     public function do_upload($file,$path,$name)
 	{
 		$config['upload_path'] = $path;
-		$config['allowed_types'] = 'gif|jpg|png|jpeg';
+		$config['allowed_types'] = 'gif|jpg|png|jpeg|pdf';
 		$config['file_name'] =  $name;
 
 		$this->load->library('upload', $config);

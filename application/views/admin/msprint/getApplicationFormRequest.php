@@ -12,6 +12,7 @@
 				<th>Course </th>
 				<th>Class</th>
 				<th>Mode</th>
+				<th>Payment Status</th>
 				<th>Detail</th>
 				<th>Date</th>
 				<th>Status</th>
@@ -41,6 +42,7 @@
 					<td><?php echo $student->course_name; ?></td>
 					<td><?php echo $student->class_name; ?></td>
 					<td><?php if($student->university_mode=='REG') echo "Regular"; else echo "Private"; ?></td>
+					<td><?php  if($complaint["payment"]=='Y') echo "<span style='color:green;'>Paid</span>"; else echo "<span style='color:red;'>Unpaid</span>"; ?></td>
 					<td><?php echo $complaint["apply_for"]; ?></td>
 					<td><?php echo $this->Common_model->viewDate($payment->payment_date); ?></td>
 
@@ -63,7 +65,7 @@
 
 					</td>
 				
-					<td><a href="<?= base_url('MsPrint/view_application/'.$complaint['id'].'')?>" class="text-primary" target="_blank" ><i class="fas fa-solid fa-eye"></i></a></td>
+					<td><a href="<?= base_url('MsPrint/view_application/'.$complaint['id'].'')?>" class="text-primary"  ><i class="fas fa-solid fa-eye"></i></a></td>
 				</tr>
 
 

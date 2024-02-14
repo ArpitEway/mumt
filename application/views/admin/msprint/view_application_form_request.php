@@ -8,7 +8,7 @@
             foreach($centers as $center)
             {
             ?>            
-           		<option value="<?php echo $center['center_id']; ?>"><?php echo $this->Common_model->getSinglefield("center","center_code",array("id" => $center['center_id'] ))." (".$center['count'].")"; ?></option>
+           		<option value="<?php echo $center['center_id']; ?>" <?php if($center['center_id']==$center_id){ echo "selected"; }?>><?php echo $this->Common_model->getSinglefield("center","center_code",array("id" => $center['center_id'] ))." (".$center['count'].")"; ?></option>
             <?php
             } 
             ?> 
@@ -36,6 +36,12 @@
 </div>
 
 <script>
+  $( document ).ready(function() {
+    if($("#center_id").val()!=''){
+          $("#submit_btn").click();
+    }
+   
+  });
 
 $(document).on("click","#submit_btn",function(){
 	$('#dt').hide();

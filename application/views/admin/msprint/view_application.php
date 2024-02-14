@@ -246,6 +246,7 @@ hr.new2 {
                        
                 <div class="col-md-8" >
                 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+					<input type="hidden" name="center_id" value="<?=$data[0]->center_id?>"/>	
                     <input type="hidden" name="id" value="<?=$data[0]->id?>"/>
                     <input type="hidden" name="student_id" value="<?=$data[0]->student_uid?>"/>
                     <input type="hidden" name="session" value="<?=$data[0]->session?>"/>
