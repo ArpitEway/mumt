@@ -119,6 +119,7 @@ hr.new2 {
 
 
 </style>
+<script src="<?=BASE_URL()?>assets/light_box/js/jquery.magnify.js"></script>
 <div id="printThisDivIdOnButtonClick" class="mt-10">
 	<div id="printablediv">
 		<div class="form-block row text-center d-block" id="printHeaderdiv">
@@ -239,6 +240,30 @@ hr.new2 {
 		</div>
 		
 	</div>
+
+	<label class="label_form mt-5 label_heading"><b>Document Attached</b></label>
+    <div class="form-block  text-center">
+       
+            <div class="row col-md-6 m-auto p-5" >
+                       
+                <div class="col-md-6" >
+						<a data-magnify="gallery" data-src="" data-caption="Adhar Card" data-group="a" href="<?php echo BASE_URL('assets/center_degree/'.$data[0]->session.'/'.$data[0]->adhar); ?>">
+								Adhar Card
+							</a>
+					
+                </div>
+                <div class="col-md-6">
+					<?php if($data[0]->marksheet!=""){ ?>
+					<a data-magnify="gallery" data-src="" data-caption="Adhar Card" data-group="a" href="<?php echo BASE_URL('assets/center_degree/'.$data[0]->session.'/'.$data[0]->marksheet); ?>">
+								MarkSheet
+							</a>
+                    <?php } ?>
+                </div>
+                        
+            </div>
+        
+    </div>
+
     <label class="label_form mt-5 label_heading"><b>Upload File</b></label>
     <div class="form-block  text-center">
         <form  method="post" action="<?= base_url('MsPrint/store_file')?>"  id="data" name="sub" enctype="multipart/form-data">

@@ -15,7 +15,7 @@
 				<th>Payment Status</th>
 				<th>Detail</th>
 				<th>Date</th>
-				<th>Status</th>
+				<!-- <th>Status</th> -->
                 <th>Action</th>
 			
 				
@@ -46,10 +46,10 @@
 					<td><?php echo $complaint["apply_for"]; ?></td>
 					<td><?php echo $this->Common_model->viewDate($payment->payment_date); ?></td>
 
-					<td >
+					<!-- <td > -->
 							
 						<?php
-						if($complaint['status'] == 'Done')
+					/*	if($complaint['status'] == 'Done')
 						{
 							?>
 
@@ -60,10 +60,10 @@
 							<input type="button" name="update_req_stats" data-id = "<?=$complaint["id"];?> " class="btn btn-danger req_check" value="Pending">
 
 							<?php 
-						}	
+						}	*/
 						?> 
 
-					</td>
+					<!-- </td> -->
 				
 					<td><a href="<?= base_url('MsPrint/view_application/'.$complaint['id'].'')?>" class="text-primary"  ><i class="fas fa-solid fa-eye"></i></a></td>
 				</tr>
