@@ -40,7 +40,7 @@
 					<td><?php echo $student->name; ?></td>
 					<td><?php echo $student->course_name; ?></td>
 					<td><?php echo $student->class_name; ?></td>
-					<td><?php echo $student->university_mode; ?></td>
+					<td><?php if($student->university_mode=='REG') echo "Regular"; else echo "Private"; ?></td>
 					<td><?php echo $complaint["apply_for"]; ?></td>
 					<td><?php echo $this->Common_model->viewDate($payment->payment_date); ?></td>
 
@@ -63,7 +63,7 @@
 
 					</td>
 				
-					<td><a href="<?= base_url('MsPrint/view_application/'.$complaint['id'].'')?>" class="text-primary"><i class="fas fa-solid fa-eye"></i></a></td>
+					<td><a href="<?= base_url('MsPrint/view_application/'.$complaint['id'].'')?>" class="text-primary" target="_blank" ><i class="fas fa-solid fa-eye"></i></a></td>
 				</tr>
 
 

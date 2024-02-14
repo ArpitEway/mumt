@@ -240,11 +240,11 @@ hr.new2 {
 		
 	</div>
     <label class="label_form mt-5 label_heading"><b>Upload File</b></label>
-    <div class="form-block row text-center">
-        <form style="margin-left:30%;" method="post" action="<?= base_url('MsPrint/store_file')?>"  id="data" name="sub" enctype="multipart/form-data">
-            <div class="row col-md-12 m-auto p-5" >
+    <div class="form-block  text-center">
+        <form  method="post" action="<?= base_url('MsPrint/store_file')?>"  id="data" name="sub" enctype="multipart/form-data">
+            <div class="row col-md-6 m-auto p-5" >
                        
-                <div class="col-md-6" >
+                <div class="col-md-8" >
                 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
                     <input type="hidden" name="id" value="<?=$data[0]->id?>"/>
                     <input type="hidden" name="student_id" value="<?=$data[0]->student_uid?>"/>
@@ -253,7 +253,7 @@ hr.new2 {
                     <input type="file" class="form-control" id="photo" name="doc"/>
                     <span id="errPhoto" class="text-danger"></span>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     
                     <button class="btn btn-primary font-weight-bold" name="submit" type="submit">Upload</button>
                 </div>
@@ -278,17 +278,19 @@ hr.new2 {
         
 	var file = $(this);
     var fileExtensions = file[0].files[0].name.split(".")[1];
-	var validFileExtensions = ["jpg", "JPG", "JPEG", "jpeg", "png", "PNG", 'PDF'];
+	var validFileExtensions = ["jpg", "JPG", "JPEG", "jpeg", "png", "PNG", 'PDF','pdf'];
    
 	if(!validFileExtensions.includes(fileExtensions)){
 		$('#errPhoto').text('Please Select Valid file');
+		$(this).val('');
 		return false;
 	}else{
 		$('#errPhoto').text('');
 	}
 	var filesize = parseFloat(file[0].files[0].size / 1024).toFixed(2);
-	if(filesize>500){
-		$('#errPhoto').text('Document size must be less than 500kb');
+	if(filesize>1024){
+		$('#errPhoto').text('Document size must be less than 1Mb');
+		$(this).val('');
 		return false;
 	}else{
 		$('#errPhoto').text('');
