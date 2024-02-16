@@ -5573,7 +5573,7 @@ public function forward_complaint(){
 			$class_dataids = array_column($class_data, 'id');
 			$this->db->where_in('class_id',$class_dataids);
 		
-		  $courseData= $this->Common_model->get_record_group_by_where('student','course_group_id,class_id,class_name,course_name',array($this->exam_form=>'Y'));
+		  $courseData= $this->Common_model->get_record_group_by_where('student','course_group_id,old_class_id,class_name,course_name',array($this->exam_form=>'Y'));
 			$data = array('course_group' => $courseData,
 				'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash(),
