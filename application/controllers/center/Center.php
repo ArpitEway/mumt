@@ -3172,6 +3172,16 @@ public function practical_assignment_marks_edit(){
 		$std_id = $this->input->post("student_id");
 		$enroll = $this->input->post("enrollment");
 		$class_id = $this->input->post("class_id");
+		if($apply == "DUPLICATE-MARKSHEET"){
+			if($_FILES['policecomplaint']['name']==""){
+				$this->session->set_flashdata('warning','Police Complaint is required !');
+					redirect(base_url().'application_form');
+			}
+			if($_FILES['affidavit']['name']==""){
+				$this->session->set_flashdata('warning','Affidavit is required !');
+					redirect(base_url().'application_form');
+			}
+		}
 		
 		if($_FILES['adhar']['name']==""){
 			$this->session->set_flashdata('warning','Adhar Card is required !');
