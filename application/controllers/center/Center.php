@@ -3221,6 +3221,20 @@ public function practical_assignment_marks_edit(){
 						$marksheet_image=$std_id."_marksheet.".$ext1;
 						$upload_file = move_uploaded_file($_FILES['marksheet']['tmp_name'],"assets/center_degree/".$session."/".$marksheet_image);
 					}
+					if($apply == "DUPLICATE-MARKSHEET"){
+						if($_FILES['policecomplaint']['name']!=""){
+						
+							$pext=strtolower(pathinfo($_FILES['policecomplaint']['name'],PATHINFO_EXTENSION));
+							$policecomplaint_image=$std_id."_policecomplaint.".$pext;
+							$upload_file = move_uploaded_file($_FILES['policecomplaint']['tmp_name'],"assets/center_degree/".$session."/".$policecomplaint_image);
+						}
+						if($_FILES['affidavit']['name']!=""){
+						
+							$pext=strtolower(pathinfo($_FILES['affidavit']['name'],PATHINFO_EXTENSION));
+							$affidavit_image=$std_id."_affidavit.".$pext;
+							$upload_file = move_uploaded_file($_FILES['affidavit']['tmp_name'],"assets/center_degree/".$session."/".$affidavit_image);
+						}
+					}
 					$data = array(
 						"student_uid"=>$std_id,
 						"center_id"=>$this->input->post("center_id"),
