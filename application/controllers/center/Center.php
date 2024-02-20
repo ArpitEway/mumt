@@ -3167,7 +3167,7 @@ public function practical_assignment_marks_edit(){
 	}
 
 	public function application_submit(){
-		
+	
 		$apply = $this->input->post("apply_for");
 		$std_id = $this->input->post("student_id");
 		$enroll = $this->input->post("enrollment");
@@ -3221,6 +3221,7 @@ public function practical_assignment_marks_edit(){
 						$marksheet_image=$std_id."_marksheet.".$ext1;
 						$upload_file = move_uploaded_file($_FILES['marksheet']['tmp_name'],"assets/center_degree/".$session."/".$marksheet_image);
 					}
+					$policecomplaint_image=$affidavit_image="";
 					if($apply == "DUPLICATE-MARKSHEET"){
 						if($_FILES['policecomplaint']['name']!=""){
 						
@@ -3253,11 +3254,14 @@ public function practical_assignment_marks_edit(){
 						"address"=>$this->input->post("address"),
 						"adhar"=>$adhar_image,
 						"marksheet"=>$marksheet_image,
+						"policecomplaint"=>$policecomplaint_image,
+						"affidavit"=>$affidavit_image,
 
 					);
 
 					$this->Common_model->insertAll('application_form',$data);
 					$this->session->set_flashdata('success','Application Successfully Submit');
+					
 					redirect('center/payment/application/'.$student_id.'/'.$apply.'');
 
 			}
