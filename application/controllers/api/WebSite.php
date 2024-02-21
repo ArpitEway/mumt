@@ -92,4 +92,94 @@ class WebSite extends REST_Controller {
         return $this->response($response, REST_Controller::HTTP_OK);
     }
 
+    public function getEligibility_list_get()
+    {
+        $eligibility_list = $this->Common_model->get_record('course_group','DISTINCT (eligibility)');
+        
+        
+        return $this->response($eligibility_list, REST_Controller::HTTP_OK);
+    }
+
+    public function getCourseByEligibility_get()
+	{
+		//$eligibility = html_escape($this->input->post('eligibility'));
+        $eligibility ="GRADUATION";
+		$session ="July 2023";
+		$mode = 'REG';
+		$myString =$eligibility;
+		
+		 
+		// if($this->session->has_userdata('center_id')){
+		// $center_id =  $this->session->center_id;
+		
+		// $centerdata = $this->Common_model->getRecordById('center','id',$center_id);
+		// $this->db->group_start();
+		// $this->db->where('course_group_id in ('.$centerdata->allot_course_group_id.')');
+		// $this->db->group_end();
+		// }
+		 $where['eligibility'] = $eligibility;
+		
+		
+		$this->db->select('course_group.id,course.course_name');
+		$this->db->from('course');
+		$this->db->join('course_group', 'course_group.id = course.course_group_id'); 
+		$this->db->group_start();
+		$this->db->where('eligibility',$eligibility);
+		$this->db->where('course.session',$session);
+		if($mode=='REG' || $mode=='regular'){
+			$where['admission_permission_regular'] = 'Y';
+			$this->db->where('admission_permission_regular','Y');
+		  }
+		  $this->db->group_end();
+		//   if($center_id == 11 || $center_id == 13 || $center_id == 2115 || $center_id == 1707 ){
+		// 	$this->db->or_group_start();
+		//   $this->db->or_where_in('course_group.id',array(33,45));
+		//   $this->db->where(array('eligibility' => $eligibility ,'course.session'=>$session));
+		//   $this->db->group_end();
+		 
+		//   }
+		$query = $this->db->get();
+		$course_group_list= $query->result_array();
+		
+		$data = array('course_group_list'=>$course_group_list);
+        
+        return $this->response($data, REST_Controller::HTTP_OK);
+	}
+    public function checkDuplicateMobileNo_get()
+	{
+		$p_mobile_no = $this->input->post('p_mobile_no');
+       
+		$count = $this->db->query("select * from student_data as d join student as s on s.student_id=d.student_id where s.course_complete='N' and s.new_admission_permission='N' and d.p_mobile_no = '".$p_mobile_no."' limit 1")->num_rows();
+		if($count>0){
+			$data= "Duplicate Mobile No";
+		}else{
+            $data="";
+        }
+        return $this->response($data, REST_Controller::HTTP_OK);
+	}
+    public function checkDuplicateAadhaarNo_get()
+	{
+		$adhar_no = $this->input->post('adhar_no');
+		$where = array('adhar_no'=>$adhar_no,'course_complete'=>'N','new_admission_permission'=>'N');
+		$count = $this->Common_model->getCountByWhere('student',$where);
+		if($count>0){
+			$data= "Duplicate Aadhaar Card Number";
+		}else{
+            $data="";
+        }
+        return $this->response($data, REST_Controller::HTTP_OK);
+	}
+
+    public function checkDuplicateEmail_get()
+	{
+		$p_email = $this->input->post('p_email');
+       
+		$count = $this->db->query("select * from student_data as d join student as s on s.student_id=d.student_id where s.course_complete='N' and s.new_admission_permission='N' and d.p_email = '".$p_email."' limit 1")->num_rows();
+		if($count>0){
+			$data= "Duplicate Email";
+		}else{
+            $data="";
+        }
+        return $this->response($data, REST_Controller::HTTP_OK);
+	}
 }
