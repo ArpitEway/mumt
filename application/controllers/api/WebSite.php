@@ -100,7 +100,7 @@ class WebSite extends REST_Controller {
         return $this->response($eligibility_list, REST_Controller::HTTP_OK);
     }
 
-    public function getCourseByEligibility_get()
+    public function getCourseByEligibility_post()
 	{
 		$eligibility = html_escape($this->input->post('eligibility'));
         //$eligibility ="GRADUATION";
@@ -145,7 +145,7 @@ class WebSite extends REST_Controller {
         
         return $this->response($data, REST_Controller::HTTP_OK);
 	}
-    public function checkDuplicateMobileNo_get()
+    public function checkDuplicateMobileNo_post()
 	{
 		$p_mobile_no = $this->input->post('p_mobile_no');
        
@@ -157,7 +157,7 @@ class WebSite extends REST_Controller {
         }
         return $this->response($data, REST_Controller::HTTP_OK);
 	}
-    public function checkDuplicateAadhaarNo_get()
+    public function checkDuplicateAadhaarNo_post()
 	{
 		$adhar_no = $this->input->post('adhar_no');
 		$where = array('adhar_no'=>$adhar_no,'course_complete'=>'N','new_admission_permission'=>'N');
@@ -170,7 +170,7 @@ class WebSite extends REST_Controller {
         return $this->response($data, REST_Controller::HTTP_OK);
 	}
 
-    public function checkDuplicateEmail_get()
+    public function checkDuplicateEmail_post()
 	{
 		$p_email = $this->input->post('p_email');
        
