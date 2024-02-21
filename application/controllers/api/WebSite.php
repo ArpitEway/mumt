@@ -102,8 +102,8 @@ class WebSite extends REST_Controller {
 
     public function getCourseByEligibility_get()
 	{
-		//$eligibility = html_escape($this->input->post('eligibility'));
-        $eligibility ="GRADUATION";
+		$eligibility = html_escape($this->input->post('eligibility'));
+        //$eligibility ="GRADUATION";
 		$session ="July 2023";
 		$mode = 'REG';
 		$myString =$eligibility;
