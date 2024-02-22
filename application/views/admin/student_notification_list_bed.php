@@ -293,10 +293,10 @@ $abs_count = 0 ;
 					$tot_marks += $fc1_max +$fc2_max;
 					$tot_std_marks += $fc1+$fc2;
 					// $count_theory +=  $fc1+$fc2;
-					if($fc1_abs === 'ABS'){
+					if($fc1_abs === 'ABSABS'){
 						$theory_abs_count++;
 					   }
-					   if($fc2_abs === 'ABS'){
+					   if($fc2_abs === 'ABSABS'){
 						$theory_abs_count++;
 					   }
 	   
