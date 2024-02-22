@@ -141,9 +141,9 @@ class WebSite extends REST_Controller {
 		$query = $this->db->get();
 		$course_group_list= $query->result_array();
 		
-		$data = array('course_group_list'=>$course_group_list);
+		//$data = array('course_group_list'=>$course_group_list);
         
-        return $this->response($data, REST_Controller::HTTP_OK);
+        return $this->response($course_group_list, REST_Controller::HTTP_OK);
 	}
     public function checkDuplicateMobileNo_post()
 	{
