@@ -194,8 +194,26 @@ class WebSite extends REST_Controller {
         $p_email = html_escape($this->input->post("p_email"));
         $dob = html_escape($this->input->post("dob"));
         $adhar_no = html_escape($this->input->post("adhar_no"));
-        $data = array('course_group_id'=>$course_group_id, 'name' =>$name,'f_h_name'=>$f_h_name,'adhar_no'=>$adhar_no,'dob'=>$dob,'admission_by'=>'web');
-       
+
+        $this->db->select('class_master.*');
+		$this->db->from('class_master');
+		$this->db->join('course_group', 'class_master.course_group_id = course_group.id');
+		$this->db->where('class_master.mode=course_group.mode');
+		$this->db->where('class_master.admission_permission','Y');
+		$this->db->where('course_group_id',$course_group_id);
+		$class_list = $this->db->get()->result_array();
+
+        $data['course_group_id']=$course_group_id;
+        $data['name']=$name;
+        $data['f_h_name']=$f_h_name;
+        $data['adhar_no']=$adhar_no;
+        $data['dob']=$dob;
+        $data['university_mode']='REG';
+        $data['admission_by']='web';
+        $data['session']='July 2023';
+        $data['class_name']=$class_list['class_name'];
+        $data['class_id']=$class_list['id'];
+        $data['course_name']=$this->Common_model->getCourseNameByCourseId($course_group_id);
         $student_id = $this->Common_model->insertAll('student',$data);
         if($student_id){
             $studentData['eligibility'] = $eligibility;
