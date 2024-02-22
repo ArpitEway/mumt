@@ -182,4 +182,31 @@ class WebSite extends REST_Controller {
         }
         return $this->response($data, REST_Controller::HTTP_OK);
 	}
+    
+    public function insertStudent_post() {
+
+       
+        $eligibility = html_escape($this->input->post("eligibility"));
+        $course_group_id = html_escape($this->input->post("course_group_id"));
+        $name    = html_escape($this->input->post("name"));
+        $f_h_name    = html_escape($this->input->post("f_h_name"));
+        $p_mobile_no    = html_escape($this->input->post("p_mobile_no"));
+        $p_email = html_escape($this->input->post("p_email"));
+        $dob = html_escape($this->input->post("dob"));
+        $adhar_no = html_escape($this->input->post("adhar_no"));
+        $data = array('course_group_id'=>$course_group_id, 'name' =>$name,'f_h_name'=>$f_h_name,'adhar_no'=>$adhar_no,'dob'=>$dob,'admission_by'=>'web');
+       
+        $student_id = $this->Common_model->insertAll('student',$data);
+        if($student_id){
+            $studentData['eligibility'] = $eligibility;
+            $studentData['p_mobile_no'] = $p_mobile_no;
+			$studentData['p_email'] = $p_email;
+            $studentData['student_id'] = $student_id;
+            $this->Common_model->insertAll('student_data',$studentData);
+            $results['msg'] = 'Enquiry Submitted Successfully';
+        }else{
+            $results['msg']= "An Error Occurred";
+        }
+            return $this->response($results, REST_Controller::HTTP_OK);
+    }
 }
