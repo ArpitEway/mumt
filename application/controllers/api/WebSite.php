@@ -192,7 +192,7 @@ class WebSite extends REST_Controller {
         $f_h_name    = html_escape($this->input->post("f_h_name"));
         $p_mobile_no    = html_escape($this->input->post("p_mobile_no"));
         $p_email = html_escape($this->input->post("p_email"));
-        $dob = html_escape($this->input->post("dob"));
+        $dob= html_escape(date("Y-m-d", strtotime($this->input->post('dob'))));
         $adhar_no = html_escape($this->input->post("adhar_no"));
 
         $this->db->select('class_master.*');
@@ -203,6 +203,12 @@ class WebSite extends REST_Controller {
 		$this->db->where('course_group_id',$course_group_id);
 		$class_list = $this->db->get()->result_array();
 
+        $class_ids=array(101,104,107,110,116,119,125,128,131,134);
+		
+		if(($class_list[0]['cbcs'] == 'Y' || in_array($class_list[0]['id'], $class_ids)))
+		{
+			$data['exam_pattern'] ="GRADE";
+		}
         $data['course_group_id']=$course_group_id;
         $data['name']=$name;
         $data['f_h_name']=$f_h_name;
@@ -227,4 +233,10 @@ class WebSite extends REST_Controller {
         }
             return $this->response($results, REST_Controller::HTTP_OK);
     }
+
+    public function getStudentSession_post($st){
+        echo $st;
+
+    }
+    
 }
