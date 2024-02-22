@@ -234,9 +234,10 @@ class WebSite extends REST_Controller {
             return $this->response($results, REST_Controller::HTTP_OK);
     }
 
-    public function getStudentSession_post($st){
-        echo $st;
-
+    public function getStudentSession_post(){
+        $student_id = html_escape($this->input->post("student_id"));
+        $results= $student_id;
+        return $this->response($results, REST_Controller::HTTP_OK);
     }
     
 }
