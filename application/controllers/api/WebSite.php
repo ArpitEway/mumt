@@ -211,8 +211,8 @@ class WebSite extends REST_Controller {
         $data['university_mode']='REG';
         $data['admission_by']='web';
         $data['session']='July 2023';
-        $data['class_name']=$class_list['class_name'];
-        $data['class_id']=$class_list['id'];
+        $data['class_name']=$class_list[0]['class_name'];
+        $data['class_id']=$class_list[0]['id'];
         $data['course_name']=$this->Common_model->getCourseNameByCourseId($course_group_id);
         $student_id = $this->Common_model->insertAll('student',$data);
         if($student_id){
