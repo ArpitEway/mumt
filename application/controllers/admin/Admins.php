@@ -5568,7 +5568,7 @@ public function forward_complaint(){
 		}else{
 			
 			$admin_id = $this->session->admin_id;
-			$this->db->where_not_in('id',array(236,238,240,244,246,216,248,250,254,232,234,252,300,258,256,268,218,230,242,155,182,154,181,180,174,196,162,200,210,172,299));
+			$this->db->where_not_in('id',array(236,238,240,244,246,216,248,250,254,232,234,252,300,258,256,268,218,230,242,155,182,154,181,180,174,196,162,200,210,172,299,273,165,289,110,116,149,170,187,140,143,146,290,284,294,296,292,192,184,159,138));
 			$class_data = $this->db->get_where('class_master', array('result_permission' => 'Y'))->result_array();
 			$class_dataids = array_column($class_data, 'id');
 			$this->db->where_in('class_id',$class_dataids);
