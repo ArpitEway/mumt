@@ -236,7 +236,7 @@ class WebSite extends REST_Controller {
 
     public function getStudentSession_post(){
         $student_id = html_escape($this->input->post("student_id"));
-        $results= $student_id;
+        $results=   $this->Common_model->getRecordById('student','student_id',$student_id);;
         return $this->response($results, REST_Controller::HTTP_OK);
     }
     
