@@ -249,4 +249,24 @@ class Student extends CI_Controller {
 		$this->load->view('students/footer');					
 	}
 
+	public function student_login($student_id){
+		
+		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		$results=   $this->Common_model->getRecordById('student','student_id',$student_id);;
+		
+		if($results){
+			$data = array(
+				'loged_in' 	  => true,
+				'studentdata' => $results->enrollment_no,
+				'dob' 	  	  => $results->dob,
+				'student_id'  => $student_id,
+				//'Users_id'  => $check_user->user_id
+			);
+			
+			$this->session->set_userdata($data);
+		}
+	
+		redirect(base_url('dashboard'));
+	}
+
 }

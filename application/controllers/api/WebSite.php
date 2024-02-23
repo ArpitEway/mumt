@@ -228,16 +228,17 @@ class WebSite extends REST_Controller {
             $studentData['student_id'] = $student_id;
             $this->Common_model->insertAll('student_data',$studentData);
             $results['msg'] = 'Enquiry Submitted Successfully';
+            $results['student_id']=$center_code = $this->Common_model->encrypt_decrypt($student_id,'encrypt');
         }else{
             $results['msg']= "An Error Occurred";
         }
             return $this->response($results, REST_Controller::HTTP_OK);
     }
 
-    public function getStudentSession_post(){
-        $student_id = html_escape($this->input->post("student_id"));
-        $results=   $this->Common_model->getRecordById('student','student_id',$student_id);;
-        return $this->response($results, REST_Controller::HTTP_OK);
-    }
+    // public function getStudentSession_post(){
+    //     $student_id = html_escape($this->input->post("student_id"));
+    //     $results=   $this->Common_model->getRecordById('student','student_id',$student_id);;
+    //     return $this->response($results, REST_Controller::HTTP_OK);
+    // }
     
 }
