@@ -73,7 +73,7 @@
         </div>
         <div class="row">
             <div class="form-group col-md-6">
-                <label for="name">Adhar Card</label>
+                <label for="name">Aadhar Card</label>
                 <input type="file" class="form-control imgupload" id="adhar" name ="adhar" accept=".png, .jpg, .jpeg" required>
                 <span class="text-danger" id="adharerr"></span>
             </div>
@@ -83,7 +83,20 @@
                 <span class="text-danger" id="marksheeterr"></span>
             </div>
         </div>    
-       
+       <?php if($apply=="DUPLICATE-MARKSHEET"){ ?>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="name">Police Complaint Copy</label>
+                <input type="file" class="form-control imgupload" id="policecomplaint" name ="policecomplaint" accept=".png, .jpg, .jpeg" required>
+                <span class="text-danger" id="policecomplainterr"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="name">Affidavit</label>
+                <input type="file" class="form-control imgupload" id="affidavit" name ="affidavit" accept=".png, .jpg, .jpeg" required>
+                <span class="text-danger" id="afitdebiterr"></span>
+            </div>
+        </div> 
+        <?php } ?>
         <div class="row d-felx justify-content-center m-2">
             
                <button name="submit" type="submit" class="btn btn-success" width="50%">Submit</button>
@@ -113,6 +126,8 @@ function validate(){
        const fname = document.getElementById("fname");
        const adhar = document.getElementById("adhar");
        const marksheet = document.getElementById("marksheet");
+       const policecomplaint = document.getElementById("policecomplaint");
+       const affidavit = document.getElementById("affidavit");
         // const check = document.getElementById("check");
         
         const cls = document.getElementById("cls");
@@ -159,7 +174,7 @@ function validate(){
 
           }
           if (adhar.value === "") {
-            document.getElementById("adharerr").innerHTML= "*Please select Adhar Card!";
+            document.getElementById("adharerr").innerHTML= "*Please upload Adhar Card!";
             adhar.focus();
             return false;
           }else{
@@ -167,12 +182,28 @@ function validate(){
           }
         
           if (marksheet.value === "") {
-            document.getElementById("marksheeterr").innerHTML= "*Please select Adhar Card!";
+            document.getElementById("marksheeterr").innerHTML= "*Please upload Marksheet!";
             adhar.focus();
             return false;
           }else{
             document.getElementById("marksheeterr").innerHTML="";
           }
+          <?php if($apply=="DUPLICATE-MARKSHEET"){ ?>
+            if (policecomplaint.value === "") {
+              document.getElementById("policecomplainterr").innerHTML= "*Please upload Police complaint document!";
+              policecomplaint.focus();
+              return false;
+            }else{
+              document.getElementById("policecomplainterr").innerHTML="";
+            }
+            if (affidavit.value === "") {
+              document.getElementById("affidaviterr").innerHTML= "*Please upload affidavit document!";
+              affidavit.focus();
+              return false;
+            }else{
+              document.getElementById("affidaviterr").innerHTML="";
+            }
+          <?php } ?>
         
 
 }

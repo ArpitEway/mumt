@@ -3167,11 +3167,21 @@ public function practical_assignment_marks_edit(){
 	}
 
 	public function application_submit(){
-		
+	
 		$apply = $this->input->post("apply_for");
 		$std_id = $this->input->post("student_id");
 		$enroll = $this->input->post("enrollment");
 		$class_id = $this->input->post("class_id");
+		if($apply == "DUPLICATE-MARKSHEET"){
+			if($_FILES['policecomplaint']['name']==""){
+				$this->session->set_flashdata('warning','Police Complaint is required !');
+					redirect(base_url().'application_form');
+			}
+			if($_FILES['affidavit']['name']==""){
+				$this->session->set_flashdata('warning','Affidavit is required !');
+					redirect(base_url().'application_form');
+			}
+		}
 		
 		if($_FILES['adhar']['name']==""){
 			$this->session->set_flashdata('warning','Adhar Card is required !');
@@ -3211,6 +3221,21 @@ public function practical_assignment_marks_edit(){
 						$marksheet_image=$std_id."_marksheet.".$ext1;
 						$upload_file = move_uploaded_file($_FILES['marksheet']['tmp_name'],"assets/center_degree/".$session."/".$marksheet_image);
 					}
+					$policecomplaint_image=$affidavit_image="";
+					if($apply == "DUPLICATE-MARKSHEET"){
+						if($_FILES['policecomplaint']['name']!=""){
+						
+							$pext=strtolower(pathinfo($_FILES['policecomplaint']['name'],PATHINFO_EXTENSION));
+							$policecomplaint_image=$std_id."_policecomplaint.".$pext;
+							$upload_file = move_uploaded_file($_FILES['policecomplaint']['tmp_name'],"assets/center_degree/".$session."/".$policecomplaint_image);
+						}
+						if($_FILES['affidavit']['name']!=""){
+						
+							$pext=strtolower(pathinfo($_FILES['affidavit']['name'],PATHINFO_EXTENSION));
+							$affidavit_image=$std_id."_affidavit.".$pext;
+							$upload_file = move_uploaded_file($_FILES['affidavit']['tmp_name'],"assets/center_degree/".$session."/".$affidavit_image);
+						}
+					}
 					$data = array(
 						"student_uid"=>$std_id,
 						"center_id"=>$this->input->post("center_id"),
@@ -3229,11 +3254,14 @@ public function practical_assignment_marks_edit(){
 						"address"=>$this->input->post("address"),
 						"adhar"=>$adhar_image,
 						"marksheet"=>$marksheet_image,
+						"policecomplaint"=>$policecomplaint_image,
+						"affidavit"=>$affidavit_image,
 
 					);
 
 					$this->Common_model->insertAll('application_form',$data);
 					$this->session->set_flashdata('success','Application Successfully Submit');
+					
 					redirect('center/payment/application/'.$student_id.'/'.$apply.'');
 
 			}

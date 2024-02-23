@@ -246,20 +246,36 @@ hr.new2 {
     <div class="form-block  text-center">
        
             <div class="row col-md-6 m-auto p-5" >
-                       
-                <div class="col-md-6" >
+			<?php $cc=6; if($data[0]->apply_for=="DUPLICATE-MARKSHEET"){ $cc=3; } ?>      
+                <div class="col-md-<?=$cc?>" >
 						<a data-magnify="gallery" data-src="" data-caption="Adhar Card" data-group="a" href="<?php echo BASE_URL('assets/center_degree/'.$data[0]->session.'/'.$data[0]->adhar); ?>">
 								Adhar Card
 							</a>
 					
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-<?=$cc?>">
 					<?php if($data[0]->marksheet!=""){ ?>
 					<a data-magnify="gallery" data-src="" data-caption="MarkSheet" data-group="a" href="<?php echo BASE_URL('assets/center_degree/'.$data[0]->session.'/'.$data[0]->marksheet); ?>">
 								MarkSheet
 							</a>
                     <?php } ?>
                 </div>
+				<?php if($data[0]->apply_for=="DUPLICATE-MARKSHEET"){ ?>
+					<div class="col-md-3">
+						<?php if($data[0]->policecomplaint!=""){ ?>
+						<a data-magnify="gallery" data-src="" data-caption="Police Complaint" data-group="a" href="<?php echo BASE_URL('assets/center_degree/'.$data[0]->session.'/'.$data[0]->policecomplaint); ?>">
+						Police Complaint
+								</a>
+						<?php } ?>
+					</div>
+					<div class="col-md-3">
+						<?php if($data[0]->affidavit!=""){ ?>
+						<a data-magnify="gallery" data-src="" data-caption="Affidavit" data-group="a" href="<?php echo BASE_URL('assets/center_degree/'.$data[0]->session.'/'.$data[0]->affidavit); ?>">
+						Affidavit
+								</a>
+						<?php } ?>
+					</div>
+				<?php } ?>
                         
             </div>
         
