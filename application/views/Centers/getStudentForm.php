@@ -57,7 +57,7 @@
                 <select name="apply_for" class="form-control" id="apply">
                 <option value="">Select</option>
                 <?php 
-                if($students[0]['course_complete'] == 'N'){
+                if($students[0]['course_complete'] == 'N' || $course_group[0]->course_type == 'Certificate'){
                     $field = $this->Common_model->getRecordByWhere('application_field',array('field'=>'DUPLICATE-MARKSHEET','status'=>'Y'));
                 }else if($course_group[0]->course_type == 'PGDiploma' || $course_group[0]->course_type == 'Diploma'){
                     $field = $this->Common_model->getRecordByWhere('application_field',array('field !='=>'DEGREE','status'=>'Y'));

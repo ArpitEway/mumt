@@ -129,6 +129,12 @@ class updateFormdata extends CI_Controller {
 			}
 		}
 		$studentData['student_id'] = $student_id;
+
+		$class_ids=array(101,104,107,110,113,116,119,125,128,131,134,137,140,143,146,149,183,185,187,189,191,193,195,197,199,201,203,205,207,209,211,213,221,223,225,227,273,274,275,279,302);
+		if( $mode[0]->university_mode=="REG" && in_array($class_id, $class_ids)){
+			$data['examcentercode'] = 'MDE165';
+			$data['exam_center_id'] = 169;
+		}
 		$this->db->where('student_id', $student_id);
 		$this->db->update('student', $data);
 		

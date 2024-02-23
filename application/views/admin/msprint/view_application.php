@@ -119,6 +119,8 @@ hr.new2 {
 
 
 </style>
+<script src="<?=BASE_URL()?>assets/light_box/js/jquery.magnify.js"></script>
+<a  style="float:right;margin-top:-35px;font-size:16px;color: #781e19!important; " href="<?=BASE_URL()?><?=$this->session->account_type?>/view_application_request/<?=$data[0]->center_id ?>"><i class="fa fa-arrow-left "></i> Back</a>
 <div id="printThisDivIdOnButtonClick" class="mt-10">
 	<div id="printablediv">
 		<div class="form-block row text-center d-block" id="printHeaderdiv">
@@ -239,13 +241,38 @@ hr.new2 {
 		</div>
 		
 	</div>
-    <label class="label_form mt-5 label_heading"><b>Upload File</b></label>
-    <div class="form-block row text-center">
-        <form style="margin-left:30%;" method="post" action="<?= base_url('MsPrint/store_file')?>"  id="data" name="sub" enctype="multipart/form-data">
-            <div class="row col-md-12 m-auto p-5" >
+
+	<label class="label_form mt-5 label_heading"><b>Document Attached</b></label>
+    <div class="form-block  text-center">
+       
+            <div class="row col-md-6 m-auto p-5" >
                        
                 <div class="col-md-6" >
+						<a data-magnify="gallery" data-src="" data-caption="Adhar Card" data-group="a" href="<?php echo BASE_URL('assets/center_degree/'.$data[0]->session.'/'.$data[0]->adhar); ?>">
+								Adhar Card
+							</a>
+					
+                </div>
+                <div class="col-md-6">
+					<?php if($data[0]->marksheet!=""){ ?>
+					<a data-magnify="gallery" data-src="" data-caption="MarkSheet" data-group="a" href="<?php echo BASE_URL('assets/center_degree/'.$data[0]->session.'/'.$data[0]->marksheet); ?>">
+								MarkSheet
+							</a>
+                    <?php } ?>
+                </div>
+                        
+            </div>
+        
+    </div>
+
+    <label class="label_form mt-5 label_heading"><b>Upload File</b></label>
+    <div class="form-block  text-center">
+        <form  method="post" action="<?= base_url('MsPrint/store_file')?>"  id="data" name="sub" enctype="multipart/form-data">
+            <div class="row col-md-6 m-auto p-5" >
+                       
+                <div class="col-md-8" >
                 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+					<input type="hidden" name="center_id" value="<?=$data[0]->center_id?>"/>	
                     <input type="hidden" name="id" value="<?=$data[0]->id?>"/>
                     <input type="hidden" name="student_id" value="<?=$data[0]->student_uid?>"/>
                     <input type="hidden" name="session" value="<?=$data[0]->session?>"/>
@@ -253,7 +280,7 @@ hr.new2 {
                     <input type="file" class="form-control" id="photo" name="doc"/>
                     <span id="errPhoto" class="text-danger"></span>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     
                     <button class="btn btn-primary font-weight-bold" name="submit" type="submit">Upload</button>
                 </div>
@@ -278,17 +305,19 @@ hr.new2 {
         
 	var file = $(this);
     var fileExtensions = file[0].files[0].name.split(".")[1];
-	var validFileExtensions = ["jpg", "JPG", "JPEG", "jpeg", "png", "PNG", 'PDF'];
+	var validFileExtensions = ["jpg", "JPG", "JPEG", "jpeg", "png", "PNG", 'PDF','pdf'];
    
 	if(!validFileExtensions.includes(fileExtensions)){
 		$('#errPhoto').text('Please Select Valid file');
+		$(this).val('');
 		return false;
 	}else{
 		$('#errPhoto').text('');
 	}
 	var filesize = parseFloat(file[0].files[0].size / 1024).toFixed(2);
-	if(filesize>500){
-		$('#errPhoto').text('Document size must be less than 500kb');
+	if(filesize>1024){
+		$('#errPhoto').text('Document size must be less than 1Mb');
+		$(this).val('');
 		return false;
 	}else{
 		$('#errPhoto').text('');

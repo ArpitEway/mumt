@@ -40,7 +40,7 @@ class Gradesheet_model_pg extends CI_Model
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
 		$papers = $this->Common_model->get_all_papers($student_id,$class_id);
-	
+        $this->allclass = $this->Common_model->getRecordByWhere('class_master',array('course_group_id'=> $course_group_id));
 	
 		// get_all_group_papers
 		//  print_r($papers);die;

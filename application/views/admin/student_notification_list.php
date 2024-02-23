@@ -68,7 +68,7 @@
 	$course_duration = ($isOneClass) ? "(One Year Course)" : $classData->class_name;
 	// $notification=$notification_no[0]->notification_no;
 	$notification=($mode == "REG")?$notification_no[0]->notification_no:$notification_no[0]->pvt_notification_no;
-	$date=$notification_no[0]->result_date;
+	$date=($mode == "REG")?$notification_no[0]->result_date:$notification_no[0]->pvt_result_date;
 	$exam_session=$notification_no[0]->exam_session;
 	$page_no = 0;
 	$abs_count = 0;
@@ -199,8 +199,13 @@
 					$total_obtained_marks +=$marks->theory_marks+$marks->int_marks;
 					$total_max_marks +=$marks->max_theory_marks+$marks->max_internal_marks;
 				}else{
+                    if($mode != 'PVT'){
 					$total_obtained_marks +=$marks->theory_marks;
 					$total_max_marks +=$marks->max_theory_marks;
+                    }else{
+                        $total_obtained_marks +=$marks->theory_marks;
+					$total_max_marks +=$marks->private_max_theory_marks;
+                    }
 				}
 				if($marks->theory_marks==''){
 					$Withheld = true;
@@ -210,12 +215,21 @@
 					$abs_count++;
 					array_push( $ATKT_paper_codes,$marks->paper_code );
 				}
+                if($mode != 'PVT'){
 				if($marks->theory_marks<$marks->min_theory_marks){
 					$fail_count++;
 					$get_tot_marks += $marks->theory_marks;
 					$require_tot_marks += $marks->min_theory_marks;
 					array_push( $ATKT_paper_codes,$marks->paper_code );
 				}
+                }else{
+                    if($marks->theory_marks<$marks->private_min_theory_marks){
+                        $fail_count++;
+                        $get_tot_marks += $marks->theory_marks;
+                        $require_tot_marks += $marks->private_min_theory_marks;
+                        array_push( $ATKT_paper_codes,$marks->paper_code );
+                    }  
+                }
 				if($classData->internal!="N" && $mode == "REG"){
 					if($marks->int_marks<$marks->min_internal_marks){
 						$int_fail_count++;

@@ -11,8 +11,9 @@
 		<?php foreach ($courses as $course){
 			$this->db->order_by('id');
 			
-			// $this->db->where_in('id',array(101,228,126,108,111,117,285,262,293,295,107,125,298,105,270,116,110,104,183));
-		 $this->db->where_in('id',array(155,182,299,218,230,232,234,236,238,240,242,244,246,216,248,250,252,254,172,154,181,196,200,208,210,162,165,173,174,177,180,300,258,256,268));
+			// $this->db->where_in('id',array(154,155,162,172,174,180,181,182,196,200,210,299));
+			// 187,134,135,159,178,137,138,140,143,146,149,169,170
+		//  $this->db->where_in('id',array(155,182,299,218,230,232,234,236,238,240,242,244,246,216,248,250,252,254,172,154,181,196,200,208,210,162,165,173,174,177,180,300,258,256,268));
         $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id'] , 'old_exam_form_permission' => 'Y' ));
 	
 		//, 'result_permission' => 'Y'
@@ -94,7 +95,7 @@
 					if($class->regular_class=='Y') { ?>    
 					 <a href="<?php echo base_url("admin/admins/student_notification_list")."/REG/M/".$course_id."/".$class_id; ?>">Notification Regular</a>
                      <?php if(!empty($cbcs) ){ ?>
-					 / <a href="<?php echo base_url("admin/admins/student_notification_list")."/REG/G/".$course_id."/".$class->id; ?>"> Grade</a>
+					 / <a href="<?php echo base_url("admin/admins/student_notification_list")."/REG/G/".$course_id."/".$class_id; ?>"> Grade</a>
 					 <?php } 
 					  } if($class->private_class=='Y') { echo $flag; ?>
 					 <a href="<?php echo base_url("admin/admins/student_notification_list")."/PVT/M/".$course_id."/".$class_id; ?>"><?= $notification?>Private</a>

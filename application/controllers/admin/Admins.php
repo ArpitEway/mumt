@@ -1651,7 +1651,7 @@ class Admins extends CI_Controller {
 		$dde_student['class_name'] = $classData[0]->class_name;
 		$dde_student['medium'] = $studentdata[0]['medium'];
 		$dde_student['university_mode'] = 'REG';
-		$dde_student['session'] = 'July 2022';
+		$dde_student['session'] = 'July 2023';
 		unset($dde_student['admit_card']);
 		unset($dde_student['cls_id']);
 		unset($dde_student['form_no']);
@@ -3005,6 +3005,7 @@ public function update_exam_datewise_permission(){
 		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
 		$this->db->order_by('roll_number','ASC');
 		$data['mode']= $mode;
+		//$this->db->where_in('student_id',array(379146,386106,684818,698913,698935,699440,699688,701898,701899,703694,703888,703975,704028,704055,704305,704409,704469,704783,705021,706439,706847,707041,707337,708030,708197,708273,708298,708485,708918,709142,709236,709265,709365,709953,710434,711824,711864,711971,712142,712149,712334,712568,712742,713081,713086,713178,713241,713315,713513,714111,714126,714131,714588,714715,715096,715361,715750,715807,715826,715833,716010,716336,716338,716340,716515,718064,718991,719124,719153,719358,719361,719601,719952,720778,720794,720900,721070,721977,722129,722265,722285,722615,722616,722642,722644,722711,723053,723529,723536,723716,723718,724366));
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y' ,'roll_number!='=>'0', 'university_mode'=>$mode,'old_result_show'=>'Y','exam_pattern'=>$pattern));//'result_show'=>'Y'
          // $this->Common_model->last_query();
 		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
@@ -3090,7 +3091,7 @@ public function update_exam_datewise_permission(){
 		$this->db->order_by('roll_no','ASC');
 		
 		// $data['students'] = $this->Common_model->getRecordByWhere('student_result_aug_22',$where);
-		// $this->db->where_in('student_id',array(701860,720053,702910,702308,718424,705865,706121,718812,722503,683825,722577,713969,723571));
+		// $this->db->where_in('student_id',array(379146,386106,684818,698913,698935,699440,699688,701898,701899,703694,703888,703975,704028,704055,704305,704409,704469,704783,705021,706439,706847,707041,707337,708030,708197,708273,708298,708485,708918,709142,709236,709265,709365,709953,710434,711824,711864,711971,712142,712149,712334,712568,712742,713081,713086,713178,713241,713315,713513,714111,714126,714131,714588,714715,715096,715361,715750,715807,715826,715833,716010,716336,716338,716340,716515,718064,718991,719124,719153,719358,719361,719601,719952,720778,720794,720900,721070,721977,722129,722265,722285,722615,722616,722642,722644,722711,723053,723529,723536,723716,723718,724366));
 		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
 		// $this->Common_model->last_query();
 		$data['class_id'] = $class_id;
@@ -3207,10 +3208,11 @@ public function update_exam_datewise_permission(){
 
 	public function tr_class_list(){
 		
-		$where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and old_class_id in (155,182,299,218,230,232,234,236,238,240,242,244,246,216,248,250,252,254,172,154,181,196,200,208,210,162,165,173,174,177,180,300,258,256,268)) ";
+		$where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' )  ";
 		// and old_result_show='Y'
-		//old_class_id in (101,228,126,108,111,117,285,262,293,295,107,125,298,270,105,116,110,104,183)
-		//and old_class_id in (155,182,299,218,230,232,234,236,238,240,242,244,246,216,248,250,252,254,172,154,181,196,200,208,210,162,165,173,174,177,180)
+		//and old_class_id in (154,155,162,172,174,180,181,182,196,200,210,299)
+		//187,134,135,159,178,137,138,140,143,146,149,169,170
+		//and old_class_id in (155,182,299,218,230,232,234,236,238,240,242,244,246,216,248,250,252,254,172,154,181,196,200,208,210,162,165,173,174,177,180,300,258,256,268)
 		// new_exam_form = 'Y' or student_result_aug_22
 				
 		$data['courses'] = $this->Common_model->get_record('course_group','*',$where);
@@ -3296,16 +3298,16 @@ public function update_exam_datewise_permission(){
 			exit;
 		}
 		$this->db->select('count(*) as cnt ,student.name,student.roll_number,student.course_name, student.class_name , student.center_code,student.course_group_id,student.old_class_id,student.student_id');
-		$this->db->from('exam_form');
-		$this->db->join('student', 'exam_form.student_id = student.student_id');
+		$this->db->from('new_exam_form');
+		$this->db->join('student', 'new_exam_form.student_id = student.student_id');
 		$this->db->where('student.exam_form','Y'); 
 		$this->db->where('student.old_result_show','Y'); 
-		$this->db->where('exam_form.paper_type','theory'); 
-		$this->db->where('exam_form.theory_marks',''); 
+		$this->db->where('new_exam_form.paper_type','theory'); 
+		$this->db->where('new_exam_form.theory_marks',''); 
 		$this->db->where('student.course_group_id',$course_id); 
 		$this->db->where('student.old_class_id',$class_id); 
-		$this->db->where('exam_form.class_id',$class_id); 
-		$this->db->group_by('exam_form.student_id');
+		$this->db->where('new_exam_form.class_id',$class_id); 
+		$this->db->group_by('new_exam_form.student_id');
 		
 		$data['students'] = $this->db->get()->result();
 		
@@ -5625,11 +5627,12 @@ public function forward_complaint(){
 		}else{
 			
 			$admin_id = $this->session->admin_id;
+			$this->db->where_not_in('id',array(236,238,240,244,246,216,248,250,254,232,234,252,300,258,256,268,218,230,242,155,182,154,181,180,174,196,162,200,210,172,299,273,165,289,110,116,149,170,187,140,143,146,290,284,294,296,292,192,184,159,138));
 			$class_data = $this->db->get_where('class_master', array('result_permission' => 'Y'))->result_array();
 			$class_dataids = array_column($class_data, 'id');
 			$this->db->where_in('class_id',$class_dataids);
 		
-		  $courseData= $this->Common_model->get_record_group_by_where('student','course_group_id,class_id,class_name,course_name',array($this->exam_form=>'Y'));
+		  $courseData= $this->Common_model->get_record_group_by_where('student','course_group_id,old_class_id,class_name,course_name',array($this->exam_form=>'Y'));
 			$data = array('course_group' => $courseData,
 				'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash(),
@@ -5952,5 +5955,23 @@ public function forward_complaint(){
 		$this->load->view('admin/center_wise_current_student_count',$data); 
 		$this->load->view('footer');
 	}
+
 	
+	public function center_wise_list_for_course(){
+
+		$title = array('title' => 'Center Wise List for Student Master I Sem');
+		$this->load->view('header',$title);	
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+		);
+		 $sql="SELECT `id`,c.`center_code`,c.`center_name`,`address`,`city`,`contactpersonname`,c.`phoneno`,c.`mobile_no_1`,c.`mobile_no_2`,COUNT(*)
+		as total FROM `center` as c JOIN student as s on s.center_id=c.id  and course_complete='N' and new_admission_permission='N'  and s.class_id in (193,195,197,199,201,203,205,207,209,211,213,221,223,225,227,275,279,302) and (s.new_exam_form ='Y' OR session='July 2023') group by center_id  order by center_code ";
+		$rs = $this->db->query($sql)->result_array(); 
+		$data['listing'] =$rs;
+		$this->load->view('admin/center_wise_list_for_course',$data); 
+		$this->load->view('footer');
+	}
+
+
 }// class

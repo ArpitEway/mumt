@@ -52,6 +52,7 @@
     $marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
     $isFinalClass = $this->Common_model->hasOneClass($course_group_id);
+    $isOneClass = $this->Common_model->hasOneClass($course_group_id);
     if($isFinalClass){
       $course_duration = '(One Year Course)';
     }else if($course_group_id == 36 || $course_group_id == 37){
@@ -524,7 +525,9 @@
               <tr>
                 <td width="17" align="center">
                   <div align="left">
-                    <?php echo "Date :".$marksheet_variables->result_date; ?></div></td>
+                    <!-- <?php //echo "Date :".$marksheet_variables->result_date; ?> -->
+                    <?php if($university_mode != 'PVT')  echo "Date :".$marksheet_variables->result_date;else  echo "Date :".$marksheet_variables->pvt_result_date;?>
+                </div></td>
                   </tr>
                   <tr class="">
                     <td colspan="">

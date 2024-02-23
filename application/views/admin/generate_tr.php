@@ -181,7 +181,7 @@ table.last_table, .last_table td, .last_table th{
     if($student->university_mode == 'REG'){
       $rowspanhead = ($classData->project!='N' || $classData->practical!='N') ? "4" : "3";
       // $rowspandata = (($classData->project!='N' || $classData->practical!='N') && $classData->internal!='N')? "5" : "4";
-      if($classData->project!='N' || $classData->practical!='N' && $classData->internal!='N'){
+      if(($classData->project!='N'  || $classData->practical!='N') && $classData->internal!='N'){
         $rowspandata = "5";
       }else if($classData->project!='N' || $classData->practical!='N' && $classData->internal =='Y'){
         $rowspandata = "4";

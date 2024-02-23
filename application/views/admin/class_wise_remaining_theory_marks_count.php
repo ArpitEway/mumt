@@ -9,6 +9,7 @@ color:red;
         <thead>
             <th>#</th>
             <th style="width:20%;">Course</th>
+            <th>Class Id</th>
             <th style="width:20%;">Class</th>
             <th>REGULAR(Remaining)</th>
             <th>PRIVATE(Remaining)</th>
@@ -27,7 +28,7 @@ color:red;
                     $this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.old_class_id');
                     $this->db->where('student.exam_form','Y');
                     $this->db->where('student.university_mode',$classMode);                  
-                    $this->db->where_in('new_exam_form.class_id',$course_detail['class_id']);
+                    $this->db->where_in('new_exam_form.class_id',$course_detail['old_class_id']);
                     $this->db->where('new_exam_form.theory_marks','');
                     $this->db->where('new_exam_form.paper_type',"theory");
                    
@@ -42,6 +43,7 @@ color:red;
                     <td class="course_css">
                     <?php echo $course_detail['course_name']; ?>
                     </td>
+                    <td><?php  echo $course_detail['old_class_id']; ?></td>
                     <td><?php  echo $course_detail['class_name']; ?></td>
                     <td>
                        

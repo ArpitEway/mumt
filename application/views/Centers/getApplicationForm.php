@@ -20,7 +20,7 @@
                   $class_list = $this->Common_model->get_record('class_master','*',"course_group_id='".$students[0]['course_group_id']."' AND mode='Annual'");
                } ?>
              
-                <select class="form-control" name="class_id" id="class">
+                <select class="form-control" name="class_id" id="class" required>
                   <option value=""><?=(isset($all)) ? 'All': 'Select Class';?></option>
                   <?php foreach($class_list as $class){
                     
@@ -34,7 +34,7 @@
 
             <div class="form-group <?=$col?>">
                 <label>Name of Student(In Hindi)</label>
-                <input type="text" class="form-control" name="name_hindi" id="sname"/>
+                <input type="text" class="form-control" name="name_hindi" id="sname" required />
                 <span class="text-danger" id="serr"></span>
             </div>
            
@@ -42,7 +42,7 @@
             
             <div class="form-group <?=$col?>">
                 <label>Father's Name(In Hindi)</label>
-                <input type="text" class="form-control" name="fname_hindi" id="fname"/>
+                <input type="text" class="form-control" name="fname_hindi" id="fname" required />
                 <span class="text-danger" id="ferr"></span>
             </div>
         </div>
@@ -74,7 +74,7 @@
         <div class="row">
             <div class="form-group col-md-6">
                 <label for="name">Adhar Card</label>
-                <input type="file" class="form-control imgupload" id="adhar" name ="adhar" accept=".png, .jpg, .jpeg" >
+                <input type="file" class="form-control imgupload" id="adhar" name ="adhar" accept=".png, .jpg, .jpeg" required>
                 <span class="text-danger" id="adharerr"></span>
             </div>
             <div class="form-group col-md-6">
