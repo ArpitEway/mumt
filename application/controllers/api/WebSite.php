@@ -235,7 +235,7 @@ class WebSite extends REST_Controller {
             return $this->response($results, REST_Controller::HTTP_OK);
     }
 
-    public function getStudentSession_get(){
+    public function getStudentSession_post(){
          $p_mobile_no    = html_escape($this->input->post("p_mobile_no"));
          $dob= html_escape(date("Y-m-d", strtotime($this->input->post('dob'))));
       
