@@ -945,6 +945,100 @@ public function update_roll_no_old_data(){
 		
 
 	}
+
+    public function check_old_percentage(){
+        // $this->db->limit(1);
+        // $this->db->where('id',37339);
+        $old_datas = $this->Common_model->getRecordByWhere('old_exam_data', array('exam_year'=>'July 2023'));
+       $student = [];
+        foreach($old_datas as $data){
+           
+            $old_result_datas = $this->Common_model->getRecordByWhere('old_result_data', array('exam_data_id'=>$data->id));
+            $class_data = $this->Common_model->getRecordById('class_master', 'id', $data->class_id);
+            $total_marks= 0;
+            $total_obtained_marks=0;
+            foreach($old_result_datas as $old){
+                if($old->type == 'theory'){
+                    if($class_data->internal == 'Y' && $data->university_mode !='PVT'){
+                        
+                        if($old->theory_marks == 'ABS' || $old->int_marks == 'ABS'){
+                            if($old->theory_marks == 'ABS' && $old->int_marks == 'ABS'){
+                                $total_obtained_marks +=0;
+                            }elseif($old->int_marks == 'ABS'){
+                                $total_obtained_marks += $old->theory_marks; 
+                            }elseif($old->theory_marks == 'ABS'){
+                                $total_obtained_marks +=$old->int_marks;
+                            }
+                            
+                            $total_marks += $old->max_theory_marks + $old->max_int_marks;
+                        }else{
+                            $total_obtained_marks += $old->theory_marks + $old->int_marks;
+                            $total_marks += $old->max_theory_marks + $old->max_int_marks;
+                        }
+                       
+                    }else{
+                        if($old->theory_marks == 'ABS'){
+                            $total_obtained_marks += 0;
+                            $total_marks += $old->max_theory_marks;
+                        }else{
+                            $total_obtained_marks += $old->theory_marks;
+                            $total_marks += $old->max_theory_marks;
+                        }
+                       
+                    }
+                }else if($old->type == 'Sessional'){
+                    $total_obtained_marks += $old->int_marks;
+                    $total_marks += $old->max_int_marks;
+                }else{
+                    if($class_data->practical_internal_marks == 'Y' && $data->university_mode !='PVT'){
+                        if($class_data->id == 206 && $data->marks_pattern == 'MARKS'){
+                            $total_obtained_marks += $old->p_marks;
+                            $total_marks += $old->max_theory_marks;
+                        }
+                        elseif($old->p_marks == 'ABS' || $old->int_marks == 'ABS'){
+                            if($old->p_marks == 'ABS' && $old->int_marks == 'ABS'){
+                                $total_obtained_marks += 0;
+                            }elseif($old->int_marks == 'ABS'){
+                                $total_obtained_marks += $old->theory_marks; 
+                            }elseif($old->p_marks == 'ABS'){
+                                $total_obtained_marks +=$old->int_marks;
+                            }
+                            $total_marks += $old->max_theory_marks + $old->max_int_marks;;
+                        }else{
+                            $total_obtained_marks += $old->p_marks + $old->int_marks;
+                            $total_marks += $old->max_theory_marks + $old->max_int_marks;
+                        }
+                       
+                    }else{
+                        if($old->p_marks == 'ABS'){
+                            $total_obtained_marks += 0;
+                            $total_marks += $old->max_theory_marks;
+                        }else{
+                            $total_obtained_marks += $old->p_marks;
+                            $total_marks += $old->max_theory_marks;
+                        }
+                       
+                    }
+                }
+            }
+           
+            if($total_obtained_marks == 0 || $total_marks ==0){
+                $percentage = 0;
+            }else{
+                $percentage = round(($total_obtained_marks/$total_marks) *100,2);
+            }
+           
+           
+            if($total_marks != $data->total_marks || $total_obtained_marks != $data->obtain_marks || $percentage != $data->percentage){
+                echo 'Total :'.$total_marks.'Obtain :'.$total_obtained_marks.'Percentage :'.$percentage .'<br>';
+                // echo $data->percentage .'actual'.$percentage ;
+                $student[] =  $data->id;
+                echo 'Exam Id :'. $data->id.'<br>';
+            }
+        }
+       
+         echo 'Count :' .count($student);
+    }
 }
 
 ?>

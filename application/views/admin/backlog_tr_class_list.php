@@ -89,14 +89,14 @@
 			if($class->regular_class=='Y') { 
 				$class_ids=array(101,104,107,110,116,119,125,128,131,134);
 				if(in_array($class->id , $class_ids)){
-					$std_marksheet = 'student_marksheet_grade';
+					$std_marksheet = 'backlog_student_marksheet_grade';
 				}else{
 					$std_marksheet = 'backlog_student_marksheet';
 				}
 				?>   
 				<a target="_blank" href="<?php echo  base_url('admin/admins/'.$std_marksheet."/REG/".$course['id'].'/'.$class->id)  ?>">Marksheet Regular</a>
 				<?php } if($class->private_class=='Y') { echo $flag; ?>
-					 <a href="<?php echo base_url("admin/admins/student_marksheet")."/PVT/".$course['id']."/".$class->id; ?>"><?= $marksheet?>Private</a>
+					 <a href="<?php echo base_url("admin/admins/backlog_student_marksheet")."/PVT/".$course['id']."/".$class->id; ?>"><?= $marksheet?>Private</a>
 					  <?php }  ?>
 			</td>
 			<td ><a target="_blank" href="<?php echo  base_url('admin/admins/withheld_backlog_student_list/'.$course['id'].'/'.$class->id)  ?>">Withheld Result (WH)</a></td>

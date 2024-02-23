@@ -21,6 +21,10 @@
       font-size: 13px;
       font-weight: bold;
     }
+    .tdFont{
+ font-size:13px;
+ font-weight:bold;
+    }
     .style4 {font-size: 14px; font-weight: bold; }
     .style7 {font-size: 12px; font-weight: bold; }
     .barcode img{
@@ -48,7 +52,7 @@
         <table align="center" border="0" width="100%">
           <tbody>
             <tr>
-              <td height="100" colspan="2" valign="bottom">
+              <td height="150" colspan="2" valign="bottom">
                 <center>
                 <?php $course = ($exam_data->course_group_id == 75)?'Bachelor of Arts and Bachelor of Education (B.A.B.Ed.)':$exam_data->course_name;?>
                   <strong><?php echo  ($isOneClass) ? $course .' '."(One Year Course)" :$course.' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)); ?> <?= ' Backlog Examination '.$exam_data->exam_year ?></strong>
@@ -127,7 +131,7 @@
             <tr>
               <td height="72" colspan="2">
                 <fieldset style="border: 0px solid #22316C;">       
-                  <div style="min-height:450px;margin-top: 20px;">
+                  <div style="min-height:450px;margin-top: 40px;">
                     <table id="" style="width:100%;" border="0" cellspacing="0" cellpadding="0" align="center">
                       <tbody>
                         <tr style="font-family:Arial, Helvetica, sans-serif; font-size:11px" align="center">
@@ -268,21 +272,21 @@
                             <td colspan="9">&nbsp;</td>
                           </tr>
                           <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="middle">
-                            <td style="margin-top:2px;" align="left"><strong><?php echo  $paper->paper_code; ?></strong></td>
-                            <td align="left"><strong><?php  echo $paper_name ;  ?></strong></td>
-                            <td align="center" ><span class="style4">
+                            <td style="margin-top:2px;" align="left"><strong class="tdFont"><?php echo  $paper->paper_code; ?></strong></td>
+                            <td align="left"><strong class="tdFont"><?php  echo $paper_name ;  ?></strong></td>
+                            <td align="center" ><span class="style4 tdFont">
                             <?php echo  ($paper->type !='Sessional')?$paper->max_theory_marks:'-';?></span>
                             </td>
-                            <td align="center" ><span class="style4">
+                            <td align="center" ><span class="style4 tdFont">
                             <?php echo  ($paper->type !='Sessional')? $paper->min_theory_marks:'-'; ?></span>
                             </td>
-                            <td align="center" ><span class="style4"><?php if($paper->type=="Sessional"){
+                            <td align="center" ><span class="style4 tdFont"><?php if($paper->type=="Sessional"){
                               echo $paper->max_int_marks;
                             }else{
                               echo ($paper->type=='theory' || $classData->practical_internal_marks=='Y') ?  $paper->max_int_marks : '-'; 
                             }?></span>
                             </td>
-                            <td align="center" ><span class="style4">
+                            <td align="center" ><span class="style4 tdFont">
                               <?php 
                                if($paper->type=="Sessional"){
                                 echo $paper->min_int_marks;
@@ -290,7 +294,7 @@
                               echo ($paper->type=='theory' || $classData->practical_internal_marks=='Y') ? $paper->min_int_marks : '-'; 
                               }?></span>
                             </td>
-                            <td align="left" >&nbsp;&nbsp;<span class="style4">
+                            <td align="left" >&nbsp;&nbsp;<span class="style4 tdFont">
                             <?php
                             // print_r($paper);
                               $status = ($paper->carry_theory == "C")?' C':'';
@@ -330,7 +334,7 @@
 
                               ?>
                             </span></td>
-                            <td align="left" class="style4"><span class="style2" style="padding-left:10px;">
+                            <td align="left" class="style4"><span class="style2 tdFont" style="padding-left:10px;">
                             <?php
                               if($paper->type=='Sessional'){
                                echo  $paper->int_marks.$status;
@@ -342,7 +346,7 @@
                                    }
                               }?></span>
                             </td>
-                            <td align="left" class="style2">&nbsp;&nbsp;&nbsp;&nbsp;<span class="style4" style="padding-left:10px;">
+                            <td align="left" class="style2">&nbsp;&nbsp;&nbsp;&nbsp;<span class="style4 tdFont" style="padding-left:10px;">
                             <?php 
                               if ($paper->type=='theory') {
                                 if($paper->int_marks<$paper->min_int_marks || $paper->theory_marks<$paper->min_theory_marks){
@@ -526,7 +530,7 @@
               <!-- if starts -->
               <tr>
                 <td align="left" colspan="2">
-                  <table width="100%" style="margin-top:50px">
+                  <table width="100%" style="margin-top:40px">
                     <tr>
                     </tr>
                   </table>    

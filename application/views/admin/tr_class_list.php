@@ -95,7 +95,7 @@
 					if($class->regular_class=='Y') { ?>    
 					 <a href="<?php echo base_url("admin/admins/student_notification_list")."/REG/M/".$course_id."/".$class_id; ?>">Notification Regular</a>
                      <?php if(!empty($cbcs) ){ ?>
-					 / <a href="<?php echo base_url("admin/admins/student_notification_list")."/REG/G/".$course_id."/".$class->id; ?>"> Grade</a>
+					 / <a href="<?php echo base_url("admin/admins/student_notification_list")."/REG/G/".$course_id."/".$class_id; ?>"> Grade</a>
 					 <?php } 
 					  } if($class->private_class=='Y') { echo $flag; ?>
 					 <a href="<?php echo base_url("admin/admins/student_notification_list")."/PVT/M/".$course_id."/".$class_id; ?>"><?= $notification?>Private</a>

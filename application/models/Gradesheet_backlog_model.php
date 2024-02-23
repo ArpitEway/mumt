@@ -135,24 +135,24 @@ class Gradesheet_backlog_model extends CI_Model
 		// print_r($this->foundation_paper);
 	}
 
-	public function view_result_grade($student_id,$course_group_id,$class_id,$mode)
+	public function view_result_grade($student_id,$course_group_id,$class_id,$mode,$exam_id)
 	{
-		$table = $this->Common_model->getMaster('exam_form_table');
-		$std  = $this->Common_model->getRecordByWhere($table,array('class_id'=> $class_id,'student_id'=>$student_id));
+		$this->db->order_by('sub_group_id');
+			$std  = $this->Common_model->getRecordByWhere('backlog_exam_form',array('class_id'=> $class_id,'student_id'=>$student_id,'backlog_student_id'=>$exam_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
 		
 		if($std[0]->sub_group_id == 1){
-			$papers = $this->Common_model->get_all_papers($student_id,$class_id);
+			$papers = $this->Common_model->get_all_backlog_papers($student_id,$class_id,$exam_id);
 		}
 		if($this->classData->class_group == 'Y'){
-		$papers_list = $this->Common_model->get_all_group_papers($student_id,$class_id);
+		$papers_list = $this->Common_model->get_all_backlog_group_papers($student_id,$class_id,$exam_id);
 		}
 		// get_all_group_papers
 		// print_r($papers);die;
 		
 		// print_r($this->allclass);die;
-		$this->classCount = count($this->allclass);
+		// $this->classCount = count($this->allclass);
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		$this->foundation_paper = array();
 		$this->result_array = array();
@@ -571,6 +571,7 @@ class Gradesheet_backlog_model extends CI_Model
 			 $require_grace_marks = $this->fail_min_marks-$this->fail_obt_marks;
 		}
 		foreach ($this->result_array as $key => $result) {
+           
 			$paper = explode('#',$result['paper_name']);
 			
 			
@@ -597,7 +598,12 @@ class Gradesheet_backlog_model extends CI_Model
 					$result['letter_grade'] = 'ABS';
 			}
 			if(($result['f_abs'] === 'ABS' && $result['obt_marks'] != '0')){
-				$result['obt_credit'] = 2;
+                if($result['obt_credit'] == '4 C'){
+                    $result['obt_credit'] = '2 C';
+                }else{
+                    $result['obt_credit'] = 2;
+                }
+				
 				$this->obt_tot_credit -=2; 
 				$credit_point = $result['obt_credit']*$result['grade_point'];
 				$result['credit_point']=$credit_point;
