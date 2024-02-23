@@ -33,11 +33,21 @@
             $i=0;foreach($students as $student) {
                  $this->db->where_in('exam_result',array('FAIL'));
                  $results = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id<'=>$student->old_class_id));
+                //  $this->db->where_in('exam_result',array('PASS', 'PASS BY GRACE'));
+                //  $results2 = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id<'=>$student->old_class_id));
                 //  $this->Common_model->last_query();
                 //  echo count($results);die;
                  
                  if(count($results)!=0){
+
+                    
                 $i++;
+                foreach($results as $res){
+                    $this->db->where_in('exam_result',array('PASS', 'PASS BY GRACE'));
+                 $results2 = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id'=>$res->class_id));
+                 if(count($results2) !=0){
+                    continue;
+                 }
                 ?>
             <tr>
                 <input type="hidden" name ="class_id" value = "<?php echo  $student->old_class_id  ?>">
@@ -48,12 +58,13 @@
                 <td><?= $student->enrollment_no ?></td>
                 <td><?= $student->name ?></td>
                 <td><?= $student->course_name ?></td>
-                <td><?= $student->class_name ?></td>
+                <td><?= $this->Common_model->getClassNameByClassId($student->old_class_id) ?></td>
                
                 <td><input type="checkbox" name="permitted[]" value="<?=$student->student_id;?>"></td>
             </tr>
             <?php 
-                 }
+                }    
+            }
         }  ?>
         </tbody>
     </table>

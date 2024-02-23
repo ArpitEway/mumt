@@ -41,7 +41,7 @@ class Upload_old_data extends CI_Model
     public function update_old_data($student)
 	{
 		// $table = $this->Common_model->getMaster('exam_form_table');
-		$std  = $this->Common_model->getRecordByWhere('exam_form',array('class_id'=> $student->class_id,'student_id'=>$student->student_id));
+		$std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $student->class_id,'student_id'=>$student->student_id));
         // print_r($std);die;
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$student->class_id);
 		
@@ -466,7 +466,8 @@ class Upload_old_data extends CI_Model
             'enrollment_no' => $this->student->enrollment_no,
             'roll_no' => $this->student->roll_number,
             'name' => $this->student->name,
-            'exam_year' => 'Aug 2022',
+            'exam_year' => 'July 2023',
+            'marks_pattern' => 'GRADE',
             'f_h_name' => $this->student->f_h_name,
             'mother_name' => $this->student->mother_name,
             'marksheet_no' =>$this->student->marksheet_no,
@@ -535,8 +536,10 @@ class Upload_old_data extends CI_Model
 				$ResultData['max_theory_marks'] = $result['max_marks'];
 				$ResultData['min_theory_marks'] = $result['min_marks'];
 				if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && ($result['letter_grade']=='F' || $result['letter_grade']=='ABS')) {
-					$ResultData['theory_marks'] = $result['obt_marks']+$require_grace_marks;
-					$oldreResultDataultdata['result'] = 'PASS BY GRACE';
+					$ResultData['theory_marks'] = $result['obt_marks'];
+					// $oldreResultDataultdata['result'] = 'PASS BY GRACE';
+                    $result_this =  'PASS BY GRACE';
+                    $ResultData['result'] = $result_this;
 					// $oldreultdata['credit'] = $result['credit'];
 					$this->check_grace_marks = true;
 				}else{
@@ -580,7 +583,7 @@ class Upload_old_data extends CI_Model
              $pap = explode(']',$result['paper_name']);
             // echo $pap[0];
             if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && ($result['letter_grade']=='F' || $result['letter_grade']=='ABS')) {
-                $ResultData['theory_marks'] = $result['obt_marks']+$require_grace_marks;
+                $ResultData['theory_marks'] = $result['obt_marks'];
                 $result_this = 'PASS BY GRACE';
                 // $oldreultdata['credit'] = $result['credit'];
                 $this->check_grace_marks = true;
@@ -658,7 +661,7 @@ class Upload_old_data extends CI_Model
         }else{
             $studentData['promote'] = 'N';
         }
-       $this->Common_model->updateRecordByConditions('student_result_aug_22',array('student_id'=>$this->student->student_id),$studentData);
+    //    $this->Common_model->updateRecordByConditions('student_result_aug_22',array('student_id'=>$this->student->student_id),$studentData);
        $this->Common_model->updateRecordByConditions('student',array('student_id'=>$this->student->student_id),$studentData);   
 		// $this->Common_model->updateRecordByConditions('student_result_aug_22',array('student_id'=>$this->student->student_id),array('upload_result' => 'Y'));
 		echo $this->db->last_query().'<br>';

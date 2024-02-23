@@ -107,7 +107,8 @@
 		   $grand_obtain =0;
 			$grand_total =0;
 		$paper_marks = $this->Common_model->notification_marks_details_($student->student_id,$student->old_class_id);
-		$class_ids=array(101,104,107,110,116,119,125,128,131,134);
+		// $class_ids=array(101,104,107,110,116,119,125,128,131,134);
+        $class_ids = array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
 		foreach($paper_marks as  $marks){
 			if((in_array($student->old_class_id, $class_ids)) && $mode=='REG')	
 			{

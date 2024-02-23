@@ -165,6 +165,33 @@
                   </div>
                   <h4 style="text-align:center;margin:10px;">Result Year Wise</h4>
                   <table border='1' cellpadding="2"  width="103%">
+                  <tr align="center"><th width='12.5%'>Year</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>AGPA</th></tr>
+                    <?php
+                     $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$student->course_group_id));
+                    
+                    $count = 0;
+                     foreach($classes as $cls){
+                        $count++;
+                        if($count == 1){ $sno = 'First';}elseif($count == 2){ $sno = 'Second';}elseif($count == 3){ $sno = 'Third';}
+                         $gradeData   = $this->Gradesheet_model->view_old_results($student->student_id,$student->course_group_id,$cls->id,$student->university_mode);
+                     ?>
+                      <tr align="center"><th><?=$sno?></th><td><?= ($gradeData['tot_credit'] == 0)?'':$gradeData['tot_credit']?></td><td><?= ($gradeData['obt_credit'] == 0)?'':$gradeData['obt_credit']?></td><td><?= ($gradeData['credit_point'] == 0)?'':$gradeData['credit_point']?></td><td>
+                        <?php if(is_nan($gradeData['agpa'])){
+                            echo '';
+                        }else{
+                           echo  ($gradeData['result']== 'FAIL' || $gradeData['result']== 'SUPP')?'0.00':number_format((float)$gradeData['agpa'], 2, '.', '');
+                           
+                        }
+                        ?>
+                        </td>
+                     </tr>
+                     <?php
+                     }
+                    ?>
+                   
+                   </tbody>
+                 </table>
+                  <!-- <table border='1' cellpadding="2"  width="103%">
                     <tbody>
                      <tr align="center"><th width='12.5%'>Year</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>AGPA</th></tr>
                      <tr align="center"><th>First</th><td><?= $gradesheetData['tot_credit']?></td><td><?= $gradesheetData['obt_credit']?></td><td><?= $gradesheetData['credit_point']?></td><td><?= ($gradesheetData['result']== 'FAIL' || $gradesheetData['result']== 'SUPP')?'0.00':number_format((float)$gradesheetData['agpa'], 2, '.', '')?></td></tr>
@@ -172,7 +199,7 @@
                      <tr align="center"><th>Third</th><td></td><td></td><td></td><td></td></tr>
                    
                     </tbody>
-                 </table>
+                 </table> -->
               </fieldset>
               <!-- if starts -->
               <tr>
