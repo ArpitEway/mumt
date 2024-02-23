@@ -5632,7 +5632,7 @@ public function forward_complaint(){
             $this->db->where_in('id', array(102,105,108,111,117,120,126,129,132,135,194,198,202,204,206,212,214,222,224,226,228,276,280,303));
 			$class_data = $this->db->get_where('class_master', array('result_permission' => 'Y'))->result_array();
 			$class_dataids = array_column($class_data, 'id');
-			$this->db->where_in('class_id',$class_dataids);
+			$this->db->where_in('old_class_id',$class_dataids);
 		
 		  $courseData= $this->Common_model->get_record_group_by_where('student','course_group_id,old_class_id,class_name,course_name',array($this->exam_form=>'Y'));
 			$data = array('course_group' => $courseData,
