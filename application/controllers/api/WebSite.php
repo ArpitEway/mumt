@@ -236,12 +236,18 @@ class WebSite extends REST_Controller {
     }
 
     public function getStudentSession_post(){
+         $validation    = html_escape($this->input->post("validation"));
          $p_mobile_no    = html_escape($this->input->post("p_mobile_no"));
          $dob= html_escape(date("Y-m-d", strtotime($this->input->post('dob'))));
       
-         $sql="SELECT * FROM `student` as s join student_data as sd on s.`student_id`= sd.`student_id` WHERE dob='".$dob."' AND p_mobile_no='".$p_mobile_no."'";
-        $rs = $this->db->query($sql)->result_array();
-        
+         if($validation=="user"){
+            $sql="SELECT * FROM `student` as s join student_data as sd on s.`student_id`= sd.`student_id` WHERE dob='".$dob."' AND p_mobile_no='".$p_mobile_no."'";
+            $rs = $this->db->query($sql)->result_array();
+        }
+        if($validation=="student"){
+            $sql="SELECT * FROM `student` WHERE dob='".$dob."' AND enrollment_no='".$p_mobile_no."'";
+            $rs = $this->db->query($sql)->result_array();
+        }
         if(@$rs[0]['student_id']){
             $results['msg']= 'Login Successfully';
             $results['student_id']=$center_code = $this->Common_model->encrypt_decrypt($rs[0]['student_id'],'encrypt');
