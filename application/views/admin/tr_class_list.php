@@ -11,7 +11,7 @@
 		<?php foreach ($courses as $course){
 			$this->db->order_by('id');
 			
-			// $this->db->where_in('id',array(102,105,108,111,117,120,126,129,132,135,194,198,202,204,206,212,214,222,224,226,228,276,280,303));
+			 $this->db->where_in('id',array(102,105,108,111,117,120,126,129,132,135,194,198,202,204,206,212,214,222,224,226,228,276,280,303));
 			// 187,134,135,159,178,137,138,140,143,146,149,169,170
 		//  $this->db->where_in('id',array(155,182,299,218,230,232,234,236,238,240,242,244,246,216,248,250,252,254,172,154,181,196,200,208,210,162,165,173,174,177,180,300,258,256,268));
         $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id'] , 'old_exam_form_permission' => 'Y' ));
@@ -22,7 +22,7 @@
         ?>
 		<tr>
 			<th><?=$i++?></th>
-			<th colspan="6"><?=$course['course_name']?></th>
+			<th colspan="7"><?=$course['course_name']?></th>
           
 		</tr>
         <?php foreach($classes as $class) { 
@@ -123,6 +123,7 @@
 					  <?php }  ?>
 			</td>
 			<td><a target="_blank" href="<?php echo  base_url('admin/admins/withheld_student_list/'.$course['id'].'/'.$class->id)  ?>">Withheld Result (WH)</a></td>
+            <td><a target="_blank" href="<?php echo  base_url('admin/admins/student_previous_fail/REG/'.$course_id.'/'.$class_id)  ?>">Previous Fail</a></td>
 		</tr>
         <?php } ; }  ?>
 	</tbody>
