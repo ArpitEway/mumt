@@ -152,7 +152,7 @@ class Gradesheet_backlog_model extends CI_Model
 		// print_r($papers);die;
 		
 		// print_r($this->allclass);die;
-		$this->classCount = count($this->allclass);
+		// $this->classCount = count($this->allclass);
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		$this->foundation_paper = array();
 		$this->result_array = array();
@@ -571,6 +571,7 @@ class Gradesheet_backlog_model extends CI_Model
 			 $require_grace_marks = $this->fail_min_marks-$this->fail_obt_marks;
 		}
 		foreach ($this->result_array as $key => $result) {
+           
 			$paper = explode('#',$result['paper_name']);
 			
 			
@@ -597,7 +598,12 @@ class Gradesheet_backlog_model extends CI_Model
 					$result['letter_grade'] = 'ABS';
 			}
 			if(($result['f_abs'] === 'ABS' && $result['obt_marks'] != '0')){
-				$result['obt_credit'] = 2;
+                if($result['obt_credit'] == '4 C'){
+                    $result['obt_credit'] = '2 C';
+                }else{
+                    $result['obt_credit'] = 2;
+                }
+				
 				$this->obt_tot_credit -=2; 
 				$credit_point = $result['obt_credit']*$result['grade_point'];
 				$result['credit_point']=$credit_point;
