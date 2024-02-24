@@ -218,7 +218,7 @@ class WebSite extends REST_Controller {
         $data['admission_by']='web';
         $data['session']='July 2023';
         $data['class_name']=$class_list[0]['class_name'];
-        $data['class_id']=$class_list[0]['id'];
+        $class_id=$data['class_id']=$class_list[0]['id'];
         $data['course_name']=$this->Common_model->getCourseNameByCourseId($course_group_id);
         $student_id = $this->Common_model->insertAll('student',$data);
         if($student_id){
@@ -229,6 +229,19 @@ class WebSite extends REST_Controller {
             $this->Common_model->insertAll('student_data',$studentData);
             $results['msg'] = 'Enquiry Submitted Successfully';
             $results['student_id']=$center_code = $this->Common_model->encrypt_decrypt($student_id,'encrypt');
+            $amount = $this->Common_model->getRecordByWhere('course',array('course_group_id'=> $course_group_id));
+	
+            $mode = 'regular';
+            $late_fees=0;
+            $remark="From Web";
+            if($mode=='regular'){
+                $amount = $amount[0]->form_fees+$amount[0];//->admission_fees;
+                $admission_type = 'regular';
+            }
+
+
+            $OnlinePayTxnData = array('student_id' => $student_id,'center_id' => 0 ,'fees_head' => 'Form Fees','amount' => $amount,'payment_status'=>'pending','course_group_id' => $course_group_id,'class_id' => $class_id,'student_name' => $data['name'],'admission_type'=>$admission_type,'remark'=>$remark);
+            $OnlinePayTxn = $this->Common_model->insertAll('online_payment_transaction',$OnlinePayTxnData);
         }else{
             $results['msg']= "An Error Occurred";
         }

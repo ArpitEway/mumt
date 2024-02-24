@@ -82,6 +82,7 @@ class Student extends CI_Controller {
 							'studentdata' => $check_user->enrollment_no,
 							'dob' 	  	  => $check_user->dob,
 							'student_id'  => $check_user->student_id,
+							'admission_by' =>$check_user->admission_by
 							//'Users_id'  => $check_user->user_id
 						);
 				
@@ -260,6 +261,7 @@ class Student extends CI_Controller {
 				'studentdata' => $results->enrollment_no,
 				'dob' 	  	  => $results->dob,
 				'student_id'  => $student_id,
+				'admission_by' =>$results->admission_by
 				//'Users_id'  => $check_user->user_id
 			);
 			
@@ -269,4 +271,46 @@ class Student extends CI_Controller {
 		redirect(base_url('dashboard'));
 	}
 
+	public function admission_form(){
+		if(!$this->session->has_userdata('studentdata')){
+			redirect(base_url('students/login'));
+	   }
+	//    if($this->session->admission_by!="web"){
+	// 		redirect(base_url('students/login'));
+	//    }
+	   $titleData = array('title' => 'Student Admission Form','page_slug' => 'admission_form'); 
+			$this->load->view('students/header',$titleData);
+			$id =  $this->session->student_id;
+			$student = $this->Common_model->getRecordById('student','student_id',$id);
+			$data = array('student' => $student);
+			//$this->getNotification();
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+
+			//$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+			$student_id=$this->session->student_id;
+			$titleData = array('title' => 'Admission Form'); 
+			$state_list = $this->Common_model->get_record('state','*');
+			$eligibility_list = $this->Common_model->get_record('course_group','DISTINCT (eligibility)');
+			$district_list = $this->Common_model->get_record('distt','*');
+			$course_group_list = $this->Common_model->get_record('course','*');
+
+			$data = array(
+				'state_list' => $state_list,
+				'district_list' => $district_list,
+				'course_group_list' => $course_group_list,
+				'eligibility_list' => $eligibility_list,
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+				'student_detail' => $this->db->get_where('student', array("student_id" => $student_id))->row(),
+				'student_data'  => $this->db->get_where('student_data', array("student_id" => $student_id))->row()
+			);
+
+
+			$this->load->view('students/admissionForm',$data);
+			$this->load->view('students/footer');
+
+	}
+
+	
 }

@@ -63,24 +63,36 @@
                     <!--begin::Menu-->
                     <div id="kt_header_menu" class="header-menu header-menu-mobile header-menu-layout-default">
                       <!--begin::Nav-->
+                      <?php 
+                      $studentData = $this->Common_model->getRecordById('student','student_id',$this->session->student_id);
+                      ?>
                       <ul class="menu-nav p-0">
                         <li class="menu-item <?= ($page_slug=='') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
                           <a href="<?=base_url()?>" class="menu-link">
                             <span class="menu-text">Home</span>
                           </a>
                         </li>
+                        <?php if($studentData->admission_by=='web'){  ?>
+                        <li class="menu-item <?= ($page_slug=='Admission Form') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
+                          <a href="<?=base_url('admission_form')?>" class="menu-link">
+                            <span class="menu-text">Admission Form</span>
+                          </a>
+                        </li>
+                        <?php } ?>
                         <li class="menu-item <?= ($page_slug=='profile') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
                           <a href="<?=base_url('profile')?>" class="menu-link">
                             <span class="menu-text">Profile</span>
                           </a>
                         </li>
+                       
                         <li class="menu-item <?= ($page_slug=='student_model_paper') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
                           <a href="<?=base_url('student_model_paper')?>" class="menu-link">
                             <span class="menu-text">Model Paper</span>
                           </a>
                         </li>
+                        
                         <?php 
-                        $studentData = $this->Common_model->getRecordById('student','student_id',$this->session->student_id);
+                        
                         $whereClass = array('class_id' => $studentData->class_id,
                           'exam_permission' => 'Y',
                         );
