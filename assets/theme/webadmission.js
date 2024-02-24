@@ -241,7 +241,7 @@ $(document).on('click','#edit_submit', function () {
 					if(data.student_id){
 					toastr.success('Form Submitted Successfully');
 					setTimeout(function(){
-						window.location.href = BASE_URL+"admin/"+data.userType+"/show_form/"+data.student_id;
+						window.location.href = BASE_URL+"profile";
 					}, 1000);
 					}
 					},
@@ -277,6 +277,7 @@ function validation(step=""){
 	var course_category = $('select[name="course_category"]').val();
 	var category = $('select[name="category"]').find(":selected").val();
 	var photo = $('input[name="photo"]').val();
+	var oldphoto = $('input[name="oldphoto"]').val();
 	var name_hindi = $('input[name="name_hindi"]').val();
 	var name = $('input[name="name"]').val();
 	var f_h_name_hindi = $('input[name="f_h_name_hindi"]').val();
@@ -341,8 +342,8 @@ function validation(step=""){
 	}else{
 		$('select[name="class_id"]').next('div').text('');
 	}
-	if(!$('input[name="student_id"]').length>0){
-		if(photo==''){
+	//if(!$('input[name="student_id"]').length>0){
+		if(photo=='' && oldphoto==''){
 			$('#errPhoto').text('photo is Required');
 			ph.focus();
 			// submit = false
@@ -350,7 +351,7 @@ function validation(step=""){
 		}else{
 			$('#errPhoto').text('');
 		}
-	}
+	//}
 	if(name==''){
 		$('input[name="name"]').next('div').text('Name is Required');
 		document.getElementById('name').focus();
@@ -466,7 +467,7 @@ function validation(step=""){
 	}else{
 		$('input[name="c_city"]').next('div').text('');
 	}
-	if(c_pin_code==''){
+	if(c_pin_code=='' || c_pin_code==0){
 		$('input[name="c_pin_code"]').next('div').text('Pin Code is Required');
 		document.getElementById('c_pin_code').focus();
 		// submit = false
@@ -506,7 +507,7 @@ function validation(step=""){
 	}else{
 		$('input[name="p_city"]').next('div').text('');
 	}
-	if(p_pin_code==''){
+	if(p_pin_code=='' || p_pin_code==0){
 		$('input[name="p_pin_code"]').next('div').text('Pin Code is Required');
 		document.getElementById('p_pin_code').focus();
 		// submit = false

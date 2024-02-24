@@ -148,11 +148,11 @@
 				<div class="col-form-label">
 					<div class="radio-inline">
 						<label class="radio radio-success">
-							<input type="radio" name="gender" value="Male"  <?php if($student_detail->gender == 'Male'){ echo "checked"; } ?> >
+							<input type="radio" name="gender" value="Male"  <?php  if($student_detail->gender == 'Male'){ echo "checked"; } ?> >
 							<span></span>Male
 						</label>
 						<label class="radio radio-success">
-							<input type="radio" name="gender" value="Female"  <?php if($student_detail->gender == 'Female'){ echo "checked"; } ?>>
+							<input type="radio" name="gender" value="Female"  <?php if($student_detail->gender == ''){ echo "checked"; }  else if($student_detail->gender == 'Female'){ echo "checked"; } ?>>
 							<span></span>Female
 						</label>
 					</div>
@@ -166,7 +166,7 @@
 				<div class="col-form-label">
 					<div class="radio-inline">
 						<label class="radio radio-success">
-							<input type="radio" name="medium" value="Hindi"  <?php if($student_detail->medium == 'Hindi'){ echo "checked"; } ?>>
+							<input type="radio" name="medium" value="Hindi"  <?php if($student_detail->medium == ''){ echo "checked"; }  else if($student_detail->medium == 'Hindi'){ echo "checked"; } ?>>
 							<span></span>Hindi
 						</label>
 						<label class="radio radio-success">
@@ -188,7 +188,7 @@
 							<span></span>Married
 						</label>
 						<label class="radio radio-success">
-							<input type="radio" name="marital_status" value="Unmarried"  <?php if($student_data->marital_status == 'Unmarried'){ echo "checked"; } ?>>
+							<input type="radio" name="marital_status" value="Unmarried"  <?php if($student_detail->marital_status == ''){ echo "checked"; }  else if($student_data->marital_status == 'Unmarried'){ echo "checked"; } ?>>
 							<span></span>Unmarried
 						</label>
 					</div>
@@ -265,7 +265,7 @@
 							<span></span>Yes
 						</label>
 						<label class="radio radio-success">
-							<input type="radio" name="minority" value="N"  <?php if($student_data->minority == 'N'){ echo "checked"; } ?>>
+							<input type="radio" name="minority" value="N"  <?php if($student_detail->minority == ''){ echo "checked"; }  else if($student_data->minority == 'N'){ echo "checked"; } ?>>
 							<span></span>No
 						</label>
 					</div>
@@ -283,7 +283,7 @@
 							<span></span>Yes
 						</label>
 						<label class="radio radio-success">
-							<input type="radio" name="handicapped" value="N"  <?php if($student_data->handicapped == 'N'){ echo "checked"; } ?>>
+							<input type="radio" name="handicapped" value="N"  <?php if($student_detail->handicapped == ''){ echo "checked"; }  else if($student_data->handicapped == 'N'){ echo "checked"; } ?>>
 							<span></span>No
 						</label>
 					</div>
@@ -465,10 +465,10 @@
 				</div>
 			</div>
 			<div class="row">
-
+				<input type="hidden" name="oldphoto" id="oldphoto"  value="<?=$student_detail->photo;?>">
 				<input type="hidden" name="student_id" id="student_id"  value="<?=$student_detail->student_id;?>">
 				<input type="hidden" name="center_id"  id="center_id"   value="<?=$student_detail->center_id;?>" >
-				<input type="button" name="edit_submit" id="edit_submit" class="btn btn-primary m-auto" value="submit">
+				<input type="button" name="submit" id="submit" class="btn btn-primary m-auto" value="submit">
 			
 			</div>
 		</div>
