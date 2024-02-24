@@ -215,6 +215,7 @@ class WebSite extends REST_Controller {
         $data['adhar_no']=$adhar_no;
         $data['dob']=$dob;
         $data['university_mode']='REG';
+        $data['form_fees']='N';
         $data['admission_by']='web';
         $data['session']='July 2023';
         $data['class_name']=$class_list[0]['class_name'];
