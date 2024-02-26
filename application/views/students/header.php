@@ -72,7 +72,7 @@
                             <span class="menu-text">Home</span>
                           </a>
                         </li>
-                        <?php if($studentData->admission_by=='web'){  ?>
+                        <?php if($studentData->admission_by=='web' && $studentData->form_fees=='N'){  ?>
                         <li class="menu-item <?= ($page_slug=='Admission Form') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
                           <a href="<?=base_url('admission_form')?>" class="menu-link">
                             <span class="menu-text">Admission Form</span>
@@ -139,7 +139,7 @@
           <!--end::Top-->
         </div>
           <!--end::Header-->
-<div class="container mt-5">
+<div class="container mt-5" style="max-width: 100%;">
       <div class="card card-custom gutter-b example example-compact mb-10">
         <div class="card-body " style="min-height:300px;">
           <div class="content-head row   justify-content-between mb-3">
