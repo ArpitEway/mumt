@@ -30,7 +30,8 @@ class Student extends CI_Controller {
 			$this->load->view('students/header',$titleData);
 			$id =  $this->session->student_id;
 			$student = $this->Common_model->getRecordById('student','student_id',$id);
-			$data = array('student' => $student);
+			
+			$data = array('studentData' => $student);
 			//$this->getNotification();
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
@@ -74,7 +75,7 @@ class Student extends CI_Controller {
 			$password = $_POST['dob'];
 			
 			$check_user = $this->Student_model->checkStudent($username,$password);
-			
+			//print_r($check_user); die;
 			if($check_user){
 				
 				$data = array(
@@ -273,8 +274,9 @@ class Student extends CI_Controller {
 	// 	if(!$this->session->has_userdata('studentdata')){
 	// 		redirect(base_url('students/login'));
 	//    }
+	
 	   if($this->session->admission_by!="web"){
-			redirect(base_url('students/login'));
+			redirect(base_url('login'));
 	   }
 	   $titleData = array('title' => 'Student Admission Form','page_slug' => 'admission_form'); 
 			$this->load->view('students/header',$titleData);

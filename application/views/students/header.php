@@ -64,7 +64,7 @@
                     <div id="kt_header_menu" class="header-menu header-menu-mobile header-menu-layout-default">
                       <!--begin::Nav-->
                       <?php 
-                      $studentData = $this->Common_model->getRecordById('student','student_id',$this->session->student_id);
+                     // $studentData = $this->Common_model->getRecordById('student','student_id',$this->session->student_id);
                       ?>
                       <ul class="menu-nav p-0">
                         <li class="menu-item <?= ($page_slug=='') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
@@ -72,10 +72,20 @@
                             <span class="menu-text">Home</span>
                           </a>
                         </li>
-                        <?php if($studentData->admission_by=='web' && $studentData->form_fees=='N'){  ?>
-                        <li class="menu-item <?= ($page_slug=='Admission Form') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
+                        <?php if($this->session->admission_by=='web' && $studentData->form_fees=='N'){  ?>
+                        <li class="menu-item <?= ($page_slug=='admission_form') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
                           <a href="<?=base_url('admission_form')?>" class="menu-link">
                             <span class="menu-text">Admission Form</span>
+                          </a>
+                        </li>
+                        <?php } ?>
+                        <?php if($this->session->admission_by=='web' && $studentData->form_fees=='Y'  && $studentData->approved!='Y'){  
+                          //&& $studentData->document_uploaded== 'N'
+                           $st=$this->Common_model->encrypt_decrypt($this->session->student_id,'encrypt');
+                          ?>
+                        <li class="menu-item <?= ($page_slug=='documents') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
+                          <a href="<?=base_url()?>/document_upload/<?=$st?>" class="menu-link">
+                            <span class="menu-text">Documents </span>
                           </a>
                         </li>
                         <?php } ?>

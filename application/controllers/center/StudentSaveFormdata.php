@@ -8,9 +8,9 @@ class studentSaveFormdata extends CI_Controller {
 		parent::__construct();
 		$this->load->model('Common_model');
 		$this->load->model('Center/center_model');
-		// if(!$this->session->has_userdata('studentdata')){
-		// 	exit();
-		// }
+		if(!$this->session->has_userdata('studentdata')){
+			exit();
+		}
 	}
 
 	public function index(){
@@ -41,6 +41,7 @@ class studentSaveFormdata extends CI_Controller {
 								'paper_order'=>$paper->paper_no,
 								'sub_group_id'=>$paper->sub_group_id
 							);
+							
 							$insert = $this->Common_model->insertAll('new_exam_form',$insert_paper);
 						}
 						$data['temp_exam_form'] = 'Y';
@@ -101,7 +102,16 @@ class studentSaveFormdata extends CI_Controller {
         $student_id = html_escape($this->input->post('student_id'));
 		$course_permission= $this->Common_model->getRecordByWhere('course',array("session"=>$session,'course_group_id'=>$course_group_id ));
 		$session_permission= $this->Common_model->getRecordByWhere('session',array("session"=>$session));	
-		
+		/****************Center Allotment**************************/
+		$this->db->like('allot_course_group_id',$course_group_id);
+		$this->db->where_in('id',array(21, 22, 23, 24, 25, 26, 27, 28));
+		$this->db->from('center');
+		$centerData = $this->db->get()->row();
+		$data['center_id'] = $centerData->id;
+		$data['center_code'] = $centerData->center_code;
+		$data['center_name'] = $centerData->center_name;
+		$OnlinePayTxnData['center_id']= $centerData->id;
+		/****************Center Allotment**************************/
 		if ($session!=$mode[0]->session) {
 			if(($mode[0]->university_mode=='REG' && $course_permission[0]->admission_permission_regular=='Y') ||  ($mode[0]->university_mode=='PVT' &&  $course_permission[0]->admission_permission_private=='Y'))
 			{

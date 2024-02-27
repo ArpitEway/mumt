@@ -267,7 +267,7 @@
 				}if($session != "All"){
 					$dt['session'] = $session;
 				}	
-				$dt['payment_status'] = "Y";
+				//$dt['payment_status'] = "Y";
 				$dt['document_uploaded'] = "Y";
 				// $dt['university_mode'] = "REG";	
 				$this->db->where('new_admission_permission', 'N');
