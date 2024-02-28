@@ -248,10 +248,13 @@ class Common_Model extends CI_Model{
 		else if($center_type=="Other")
 			$this->db->where_not_in('center_id',  $center_naac );
 
+		$this->db->where_not_in('new_admission_permission',  'Y' );
 		$this->db->join("course_group", "student.course_group_id = course_group.id", 'left'); 
 		$query = $this->db->get();
 			
-		return $query->result_array();
+		$result= $query->result_array();
+		//echo $this->db->last_query(); die;
+		return $result;
 
 	}
 	public function getStudentNameById($id){
