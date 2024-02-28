@@ -44,18 +44,14 @@
 					<div class="col-12 text-center">
 						<h5>Schedule of Exam for Annual/Semester Examination of
 								<?php
-								if($student[0]->course_group_id==77)
+								if($student[0]->course_group_id==75 || $student[0]->course_group_id==76 || $student[0]->course_group_id==77)
 								{
 									echo '2024';
 								}
 								else{
 									echo 'January 2024';
 								} 
-								// if($student[0]->course_group_id==33 || $student[0]->course_group_id==45 || $student[0]->course_group_id==76){
-								//  	echo 'June 2023';
-								// }else{
-								// 	echo 'July 2023';
-								// }
+								
 								
 							?> 
 							
@@ -142,7 +138,7 @@
 					<?php //endif ?> -->
 					<td><?php
 					
-					if($paper->exam_shift=='Afternoon' && ($student[0]->class_id==267 || $student[0]->class_id==269) ){
+					if($paper->exam_shift=='Afternoon' && ($student[0]->class_id==259 || $student[0]->class_id==261 || $student[0]->class_id==263) ){
 						echo '12:00 PM To 3:00 PM';
 					}
 					elseif($paper->exam_shift=='Morning'){
