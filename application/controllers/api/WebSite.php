@@ -236,7 +236,7 @@ class WebSite extends REST_Controller {
             $late_fees=0;
             $remark="From Web";
             if($mode=='regular'){
-                $amount = $amount[0]->form_fees+$amount[0];//->admission_fees;
+                $amount = $amount[0]->form_fees;//+$amount[0]->admission_fees;
                 $admission_type = 'regular';
             }
 

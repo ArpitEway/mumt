@@ -386,6 +386,11 @@ class Student extends CI_Controller {
 		);
 		$student = $this->Common_model->student_info($student_id);
 		$data['student'] = $student;
+
+		if($student['temp_exam_form'] == "N"){
+			$std_id = $this->Common_model->encrypt_decrypt($student_id);
+			redirect(base_url('select_papers/'.$std_id.''));	
+		}
 		$classData = $this->Common_model->getRecordById('class_master','id', $student['class_id']);
 		$cbcs = ($classData->cbcs == 'Y' && $student['exam_pattern']=="GRADE")?'Y':'N';
 		$this->db->select('paper_master.*,new_exam_form.sub_group_id as sub_group');

@@ -10,8 +10,8 @@ class Payment extends CI_Controller {
 	
 	public function admission($student_id){
 
-		if(!$this->session->has_userdata('centerdata')){
-			redirect(base_url('center/login'));
+		if((!$this->session->has_userdata('centerdata')) && (!$this->session->has_userdata('studentdata'))) {
+			redirect(base_url('login'));
 		}
 		$titleData = array('title'=>'Admission Payment');
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
@@ -50,7 +50,7 @@ class Payment extends CI_Controller {
 	}
 	
 	public function admission_payment($student_id){
-		if(!$this->session->has_userdata('centerdata')){
+		if((!$this->session->has_userdata('centerdata')) && (!$this->session->has_userdata('studentdata'))) {
 			redirect(base_url('login'));
 		}
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
@@ -233,8 +233,8 @@ class Payment extends CI_Controller {
 	}
 		
 	public function detail($id){
-    if(!$this->session->has_userdata('centerdata')){
-			redirect(base_url('center/login'));
+		if((!$this->session->has_userdata('centerdata')) && (!$this->session->has_userdata('studentdata'))) {
+			redirect(base_url('login'));
 		}
 		$id = $this->Common_model->encrypt_decrypt($id,'decrypt');
 		$where = 'id='.$id;

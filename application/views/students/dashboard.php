@@ -1,30 +1,42 @@
 <?php 
 if($this->session->admission_by=='web'){
+  $st=$this->Common_model->encrypt_decrypt($this->session->student_id,'encrypt');
     $step1=$step2=$step3=$step4=$step5=$step6="";
-    //$this->session->student_id
-    //$paperData = $this->Common_model->getRecordByWhere('new_exam_form',array('student_id'=>$this->session->student_id));
-   
-    if(($studentData->form_fees=='N') && ($studentData->temp_exam_form=='N')){
-        $step1="active";
-    }
-  else if(($studentData->form_fees=='N') && ($studentData->temp_exam_form=='Y')){
+    $step1Url= $step2Url=$step3Url=$step4Url="#";
+    $step1="active";
+         $step1Url=base_url('admission_form');
+  //   if(($studentData->form_fees=='N') && ($studentData->temp_exam_form=='N')){
+  //       $step1="active";
+  //       $step1Url=base_url('admission_form');
+  //   }
+  // else 
+  if(($studentData->form_fees=='N') && ($studentData->temp_exam_form=='N')){
         $step1=$step2="active";
+        $step1Url="#";
+        $step2Url=base_url('showPapers').'/'.$st;
+    }
+    elseif( $studentData->form_fees=='N' && ($studentData->temp_exam_form=='Y')  && $studentData->document_uploaded!='Y' && $studentData->approved!='Y'){ 
+        $step1=$step2=$step3="active";
+        $step1Url= $step2Url="#";
+        $step3Url=base_url('Payment/formfess/').'/'.$st;
+        
     }
     elseif( $studentData->form_fees=='Y'  && $studentData->document_uploaded!='Y' && $studentData->approved!='Y'){ 
-        $step1=$step2=$step3="active";
-        
-    }
-    elseif( $studentData->form_fees=='Y'  && $studentData->approved!='Y'){ 
         $step1=$step2=$step3=$step4="active";
+        $step1Url= $step2Url= $step3Url="#";
+        $step4Url=base_url('document_upload').'/'.$st;
         
     }
-    elseif( $studentData->form_fees=='Y'  && $studentData->approved=='Y' && $studentData->payment_status!='Y'){ 
+    elseif( $studentData->form_fees=='Y' && $studentData->document_uploaded=='Y' && $studentData->approved=='' && $studentData->payment_status!='Y'){ 
         $step1=$step2=$step3=$step4=$step5="active";
+        $step1Url= $step2Url= $step3Url=$step4Url="#";
+        $step5Url="#";
        
     }
-    elseif($studentData->payment_status=='Y'){
+    elseif($studentData->approved=='Y' && $studentData->payment_status!='Y'){
         $step1=$step2=$step3=$step4=$step5=$step6="active";
-        
+        $step1Url= $step2Url= $step3Url=$step4Url=$step5Url="#";
+        $step6Url=base_url('Payment/admission').'/'.$st;
     }
 ?>
 <div>
@@ -32,32 +44,32 @@ if($this->session->admission_by=='web'){
         <section class="step-indicator">
             <div class="step step1 <?=$step1?> ">
                 <div class="step-icon">1</div>
-                <p>Admission </p>
+                <p><a href="<?=$step1Url?>">Admission </a> </p>
             </div>
             <div class="indicator-line <?=$step1?>"></div>
             <div class="step step2 <?=$step2?>">
                 <div class="step-icon">2</div>
-            <p>Paper</p>
+            <p><a href="<?=$step2Url?>">Paper </a></p>
             </div>
-            <div class="indicator-line <?=$step2?> "></div>
+            <div class="indicator-line <?=$step3?> "></div>
             <div class="step step3 <?=$step3?>">
                 <div class="step-icon">3</div>
-            <p>FormFees</p>
-            </div>
-            <div class="indicator-line <?=$step3?>"></div>
-            <div class="step step4 <?=$step4?>">
-                <div class="step-icon">4</div>
-            <p>Document</p>
+            <p><a href="<?=$step3Url?>">FormFees</a></p>
             </div>
             <div class="indicator-line <?=$step4?>"></div>
-            <div class="step step5 <?=$step5?>">
-                <div class="step-icon">5</div>
-            <p>Verification</p>
+            <div class="step step4 <?=$step4?>">
+                <div class="step-icon">4</div>
+            <p><a href="<?=$step4Url?>">Document</a></p>
             </div>
             <div class="indicator-line <?=$step5?>"></div>
+            <div class="step step5 <?=$step5?>">
+                <div class="step-icon">5</div>
+            <p><a href="<?=$step5Url?>">Verification</a></p>
+            </div>
+            <div class="indicator-line <?=$step6?>"></div>
             <div class="step step6 <?=$step6?>">
                 <div class="step-icon">6</div>
-            <p>Admmission Fees</p>
+            <p style="bottom: -59px;"><a href="<?=$step6Url?>">Admmission Fees</a></p>
             </div>
         </section>
         </div>
