@@ -3,7 +3,7 @@
 /**
  * 
  */
-class Upload_old_data extends CI_Model
+class Upload_old_data_backlog extends CI_Model
 {
     protected $student;
 	protected $paper;
@@ -41,19 +41,21 @@ class Upload_old_data extends CI_Model
     public function update_old_data($student)
 	{
 		// $table = $this->Common_model->getMaster('exam_form_table');
-		$std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $student->class_id,'student_id'=>$student->student_id));
+        $this->db->order_by('sub_group_id', 'asc');
+		$std  = $this->Common_model->getRecordByWhere('backlog_exam_form',array('class_id'=> $student->class_id,'student_id'=>$student->student_id));
         // print_r($std);die;
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$student->class_id);
 		
 		
 		if($std[0]->sub_group_id == 1){
-			$papers = $this->Common_model->get_all_papers($student->student_id,$student->class_id);
+			$papers = $this->Common_model->get_all_backlog_papers($student->student_id,$student->class_id,$student->id);
 		}
 		if($this->classData->class_group == 'Y'){
-		$papers_list = $this->Common_model->get_all_group_papers($student->student_id,$student->class_id);
+		$papers_list = $this->Common_model->get_all_backlog_group_papers($student->student_id,$student->class_id,$student->id);
 		}
 		// get_all_group_papers
-		// print_r($papers);die;
+        // echo '<pre>';
+		// print_r($papers_list);die;
 		
 		// print_r($this->allclass);die;
 		$this->classCount = count($this->allclass);
@@ -64,7 +66,7 @@ class Upload_old_data extends CI_Model
 		$this->percent = 0;
 		$this->tot_credit = 0;
         $this->student = $student;
-		$this->mode = $student->university_mode;
+		$this->mode = $student->mode;
 		$this->fail_count=0;
 		$this->obt_tot_credit=0;
 		$this->fail_tot_marks = 0;
@@ -126,10 +128,10 @@ class Upload_old_data extends CI_Model
 			// }
 			$this->_row();
 		}
-        // echo $this->tot_credit_point.'ddd'.$this->tot_credit;die;
+        //  $this->tot_credit_point.'ddd'.$this->tot_credit.'<br>';
 		
 		$this->set_result();
-        $this->agpa = $this->tot_credit_point/$this->tot_credit;
+         echo  $this->agpa = $this->tot_credit_point/$this->tot_credit;
 		$this->upload_exam_data();
 		echo "<hr>";
 		// var_dump($this->result_array);
@@ -279,7 +281,7 @@ class Upload_old_data extends CI_Model
 			$min_marks = $this->paper["min_theory_marks"]+$this->paper["min_internal_marks"];
 		}
 		$persent = $tot_obt_marks*100/$tot_marks;
-		// echo $tot_obt_marks.'tot'.$tot_marks;
+		// echo $tot_obt_marks.'tot'.$tot_marks.'<br>';
 		//  $tot_marks ;die;
 		$where = 'min_marks <= '.$persent.' and  max_marks >= '.$persent.'';
 		$gradeData = $this->Common_model->getRecordByWhere('letter_grade',$where);
@@ -294,6 +296,10 @@ class Upload_old_data extends CI_Model
 			$this->obt_tot_credit += $this->paper['credit_point'];
 			 $this->result_array[$this->paper['paper_code']]['obt_credit'] = $this->paper['credit_point'];
 		}
+
+        
+        $this->result_array[$this->paper['paper_code']]["status"] = ($this->paper["status"] == "C")?"C":"";
+      
 		// var_dump($this->check_grace_marks);
 		// echo $student_id;
 		// echo $this->classData->final_result_permission;
@@ -311,7 +317,7 @@ class Upload_old_data extends CI_Model
 	private function credit_point()
 
 	{
-		
+		// echo $this->grade_point.'ss'.$this->credit_point,'dd';
 		$this->tot_credit_point += $this->grade_point*$this->credit_point;
 		$this->result_array[$this->paper['paper_code']]['credit_point'] = $this->grade_point*$this->credit_point;
 	}
@@ -365,27 +371,28 @@ class Upload_old_data extends CI_Model
 	{
 		// var_dump($this->withheld);die;
         // echo $this->agpa.'dd'.$this->fail_count;
+        // echo '<pre>';
+        
         foreach ($this->result_array  as $key => $result) {
-            if($result['sub_group'] == 1){
-                if(($result['f_abs'] === 'ABS' && $result['obt_marks'] != '0')){
-                        $result['obt_credit'] = 2;
-                        $this->obt_tot_credit -=2; 
-                        $credit_point = $result['obt_credit']*$result['grade_point'];
-                        $result['credit_point']=$credit_point;
-                        $this->tot_credit_point -= $credit_point;
+                if($result['sub_group'] == 1){
+                    if(($result['f_abs'] === 'ABS' && $result['obt_marks'] != '0')){
+                            $result['obt_credit'] = 2;
+                            $this->obt_tot_credit -=2; 
+                            $credit_point = $result['obt_credit']*$result['grade_point'];
+                            $result['credit_point']=$credit_point;
+                            $this->tot_credit_point -= $credit_point;
+                    }
                 }
-            }
-        }
-        $this->agpa = $this->tot_credit_point/$this->tot_credit;
+         }
+      $this->agpa = $this->tot_credit_point/$this->tot_credit;
+        
 		if ($this->withheld==true) {
 			$this->result = 'WITHHELD';
 		}
 		else if ($this->fail_count!=0 && $this->agpa>=4) {
-			if ($this->check_grace_marks) {
-				$this->result = 'PASS BY GRACE';
-			}else{
+			
 				$this->result = 'FAIL';
-			}
+			
 		}else if($this->agpa<4){
 			$this->result = 'FAIL';
 		}else{
@@ -477,25 +484,27 @@ class Upload_old_data extends CI_Model
             'course_name' => $this->student->course_name,
             'class_id' => $this->student->class_id,
             'enrollment_no' => $this->student->enrollment_no,
-            'roll_no' => $this->student->roll_number,
+            'roll_no' => $this->student->roll_no,
             'name' => $this->student->name,
             'exam_year' => 'July 2023',
             'marks_pattern' => 'GRADE',
             'f_h_name' => $this->student->f_h_name,
             'mother_name' => $this->student->mother_name,
-            'marksheet_no' =>$this->student->marksheet_no,
-            'university_mode'=>$this->student->university_mode,
+            'marksheet_no' =>$this->student->back_marksheet_no,
+            'university_mode'=>$this->student->mode,
             'photo'=>$this->student->photo,
             'total_marks'=>$this->total_marks,
             'obtain_marks'=>$this->obt_marks,
             'percentage' => $percentage,
             'update_date'=>date('Y-m-d'),
-            'exam_status'=>'R',
+            'exam_status'=>'B',
             'exam_result'=>$result
            
         );
-       		 $exam_data_id = $this->Common_model->insertAll('old_exam_data',$examData);
-		  echo $this->db->last_query().'<br>';
+
+        // print_r($examData);
+       		  $exam_data_id = $this->Common_model->insertAll('old_exam_data',$examData);
+		   echo $this->db->last_query().'<br>';
 		 $this->upload_old_result_data($exam_data_id);
 	}
 
@@ -508,8 +517,10 @@ class Upload_old_data extends CI_Model
 		foreach ($this->result_array  as $key => $result) {
            
         //    echo $x; 
-// print_r($result);die;
+       
         if($result['sub_group'] != 1){
+            // echo '<pre>';
+            $status = ($result['status'] == 'C')?'C':'';
 			$paper_name = explode(']',$result['paper_name']);
             $ResultData = array(
                 'exam_data_id' =>  $old_exam_data_id ,
@@ -520,6 +531,9 @@ class Upload_old_data extends CI_Model
                 'type'=> $result['type'] ,
                  'sub_group_id'=>$result['sub_group'] ,
                  'group_id'=>$result['group'] ,
+                 'carry_theory'=>$status,
+                 'carry_int'=>'C',
+                 'status'=>'B',
                 // 'max_theory_marks'=> $max_theory_marks,
                 // 'max_int_marks'=> $max_int_marks,
                 // 'min_theory_marks'=> $min_theory_marks,
@@ -548,14 +562,14 @@ class Upload_old_data extends CI_Model
 			if ($result['type']=='theory') {
 				$ResultData['max_theory_marks'] = $result['max_marks'];
 				$ResultData['min_theory_marks'] = $result['min_marks'];
-				if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && ($result['letter_grade']=='F' || $result['letter_grade']=='ABS')) {
-					$ResultData['theory_marks'] = $result['obt_marks'];
-					// $oldreResultDataultdata['result'] = 'PASS BY GRACE';
-                    $result_this =  'PASS BY GRACE';
-                    $ResultData['result'] = $result_this;
-					// $oldreultdata['credit'] = $result['credit'];
-					$this->check_grace_marks = true;
-				}else{
+				// if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && ($result['letter_grade']=='F' || $result['letter_grade']=='ABS')) {
+				// 	$ResultData['theory_marks'] = $result['obt_marks'];
+				// 	// $oldreResultDataultdata['result'] = 'PASS BY GRACE';
+                //     $result_this =  'PASS BY GRACE';
+                //     $ResultData['result'] = $result_this;
+				// 	// $oldreultdata['credit'] = $result['credit'];
+				// 	$this->check_grace_marks = true;
+				// }else{
 					if ($result['letter_grade']=='F' || $result['letter_grade']=='ABS') {
 						$result_this = 'FAIL';
 					}else{
@@ -563,9 +577,9 @@ class Upload_old_data extends CI_Model
 					}
 					$ResultData['theory_marks'] = $result['obt_marks'];
 					$ResultData['result'] = $result_this;
-				}
+				// }
 
-				if ($this->student->university_mode=='REG') {
+				if ($this->student->mode=='REG') {
 					$ResultData['max_int_marks'] = $result['int_max_marks'];
 					$ResultData['min_int_marks'] = $result['int_min_marks'];
 					$ResultData['int_marks'] = $result['int_obt_marks'];
@@ -576,7 +590,7 @@ class Upload_old_data extends CI_Model
 				}else{
 					$result_this = 'PASS';
 				}
-                if ($this->student->university_mode=='REG' && $this->classData->practical_internal_marks == 'Y') {
+                if ($this->student->mode=='REG' && $this->classData->practical_internal_marks == 'Y') {
 					$ResultData['max_int_marks'] = $result['int_max_marks'];
 					$ResultData['min_int_marks'] = $result['int_min_marks'];
 					$ResultData['int_marks'] = $result['int_obt_marks'];
@@ -586,29 +600,24 @@ class Upload_old_data extends CI_Model
 				$ResultData['p_marks'] = $result['obt_marks'];
 				$ResultData['result'] = $result_this;
 			}
-
+            // echo '<pre>';
+            // print_r($ResultData);
 			 $this->Common_model->insertAll('old_result_data',$ResultData);
 			 echo $this->db->last_query().'<br>';
 			// var_dump($oldreultdata);
             // echo '<pre>';
             // print_r($ResultData);
 		}else{
+
+           
              $pap = explode(']',$result['paper_name']);
-            // echo $pap[0];
-            if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && ($result['letter_grade']=='F' || $result['letter_grade']=='ABS')) {
-                $ResultData['theory_marks'] = $result['obt_marks'];
-                $result_this = 'PASS BY GRACE';
-                // $oldreultdata['credit'] = $result['credit'];
-                $this->check_grace_marks = true;
-            }else{
-                
+          
                 if ($result['letter_grade']=='F' || $result['letter_grade']=='ABS') {
                     $result_this = 'FAIL';
                 }else{
                     $result_this = 'PASS';
                 }
-            }
-        //   echo $x;
+        
            if($x === 0){
             $this->result_this_fc1 = $result_this;
            }else{
@@ -617,11 +626,13 @@ class Upload_old_data extends CI_Model
             
              if($x == 1){
                
-            $papers = $this->Common_model->get_all_papers($this->student->student_id,$this->student->class_id);
+            $papers = $this->Common_model->get_all_backlog_papers($this->student->student_id,$this->student->class_id,$this->student->id);
           
            
         foreach($papers as $paper){
+           
 			if($paper['sub_group_id'] == 1){
+                $status = ($paper['status'] == 'C')?"C":"";
 				$ResultData1 = array(
 					'exam_data_id' =>  $old_exam_data_id ,
 					'student_id' =>  $this->student->student_id ,
@@ -639,6 +650,8 @@ class Upload_old_data extends CI_Model
 					'p_marks'=> $paper['p_marks'],
 					'int_marks'=> $paper['int_marks'],
 					'paper_name'=>  $paper['paper_name'],
+                    'carry_theory'=>$status,
+                    'status'=>'B',
 					// 'result' => $result ,
 					'p_order'=> $paper['paper_order'] 
 				);
@@ -650,8 +663,10 @@ class Upload_old_data extends CI_Model
 				
 					$ResultData1['result'] =  $this->result_this_fc2;
 				}
-				$this->Common_model->insertAll('old_result_data',$ResultData1);
-				echo $this->db->last_query().'<br>';
+                // echo '<pre>';
+                // print_r($ResultData1);
+				  $this->Common_model->insertAll('old_result_data',$ResultData1);
+				 echo $this->db->last_query().'<br>';
         	}
 	}
          }
@@ -659,25 +674,16 @@ class Upload_old_data extends CI_Model
         $x++;
         
     }
-    $this->update_old_exam_result($old_exam_data_id);	
+     $this->update_old_exam_result($old_exam_data_id);	
 	}
     public function update_old_exam_result($old_exam_data_id)
 	{
-		if ($this->check_grace_marks) {
-			$this->Common_model->updateRecordByConditions('old_exam_data',array('id' => $old_exam_data_id), array('exam_result' =>'PASS BY GRACE'));
-			echo $this->db->last_query().'<br>';
-		}
+		
         $studentData = array('upload_result'=>'Y');
-       
-        if($this->agpa < 4){
-            $studentData['promote'] = 'D';    
-        }else{
-            $studentData['promote'] = 'N';
-        }
-    //    $this->Common_model->updateRecordByConditions('student_result_aug_22',array('student_id'=>$this->student->student_id),$studentData);
-       $this->Common_model->updateRecordByConditions('student',array('student_id'=>$this->student->student_id),$studentData);   
-		// $this->Common_model->updateRecordByConditions('student_result_aug_22',array('student_id'=>$this->student->student_id),array('upload_result' => 'Y'));
-		echo $this->db->last_query().'<br>';
+        $this->Common_model->updateRecordByConditions('backlog_student',array('student_id'=>$this->student->student_id),$studentData);    
+         	echo $this->db->last_query().'<br>';      
+    
+	
 	}
 	
 }

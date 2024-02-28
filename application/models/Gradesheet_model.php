@@ -245,21 +245,21 @@ class Gradesheet_model extends CI_Model
 		// print_r($this->foundation_paper);
 	}
 
-    public function view_old_results($student_id,$course_group_id,$class_id,$mode)
+    public function view_old_results($student_id,$course_group_id,$class_id,$mode,$id)
 	{
         // $papers = $this->Common_model->get_all_old_papers($student_id,$class_id);
         $this->db->order_by('sub_group_id');
-		$std  = $this->Common_model->getRecordByWhere('old_result_data',array('class_id'=> $class_id,'student_id'=>$student_id));
+		$std  = $this->Common_model->getRecordByWhere('old_result_data',array('class_id'=> $class_id,'student_id'=>$student_id, 'exam_data_id'=>$id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
 		// echo $std[0]->sub_group_id;die;
         // echo $this->classData->class_group;die;
 		if($std[0]->sub_group_id == 1){
-			$papers = $this->Common_model->get_all_old_papers($student_id,$class_id);
+			$papers = $this->Common_model->get_all_old_papers($student_id,$class_id,$id);
             // print_r($papers);
 		}
 		if($this->classData->class_group == 'Y'){
-		$papers_list = $this->Common_model->get_all_old_group_papers($student_id,$class_id);
+		$papers_list = $this->Common_model->get_all_old_group_papers($student_id,$class_id,$id);
 		}
 	
 	
