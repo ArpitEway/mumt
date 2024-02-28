@@ -288,7 +288,7 @@
                             }elseif($sub_group->id == 5 || $sub_group->id == 6){
                                 echo ' <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.'<td style="margin-top:2px;" align="left">'.'</td>'.
                                 '<td colspan="8" align="left">'.'<strong>'.
-                              '<u>'.$sub_group->sub_group_name.' - '.'</u>'.'</strong>'.'</td>'.'</tr>'.'<tr>'
+                              '<u>'.$sub_group->sub_group_name.'</u>'.'</strong>'.'</td>'.'</tr>'.'<tr>'
                               .'<td colspan="9">'.'&nbsp;'.'</td>'.
                             '</tr>';
                             }
