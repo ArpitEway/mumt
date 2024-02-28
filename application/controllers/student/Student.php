@@ -409,5 +409,25 @@ class Student extends CI_Controller {
 		$this->load->view('Centers/showPapers',$data);
 		$this->load->view('students/footer');
 	
-}
+	}
+
+	public function transactions()
+	{
+		$course_type ='REG'; 
+		
+		$data = array( 
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+			'course_type' => $course_type,
+			
+		);
+		
+		$data['transactions']=$this->Common_model->getAllRow("online_payment_transaction", "", array(
+			"student_id" => $this->session->student_id	),'id DESC');
+			//print_r($transactions); die;
+		$titleData = array('title' => 'Student Transaction List');
+		$this->load->view('students/header',$titleData);
+		$this->load->view('students/transactions',$data);
+		$this->load->view('students/footer');
+	}
 }

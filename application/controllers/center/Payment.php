@@ -227,8 +227,11 @@ class Payment extends CI_Controller {
 			$this->session->set_userdata($sessionData);
 			$this->session->set_flashdata($remsg,$msg);
 			$id = $this->Common_model->encrypt_decrypt($txnid);
-			
-			redirect(base_url('center/payment/detail/'.$id));
+			if($student->admission_by=='web'){
+				redirect(base_url('payment/detail/'.$id));
+			}else{
+				redirect(base_url('center/payment/detail/'.$id));
+			}
 		}
 	}
 		
@@ -251,9 +254,21 @@ class Payment extends CI_Controller {
 		'transaction' => $transaction[0],
 		);
 		$titleData = array('title'=>'Payment Details');
-		$this->load->view('Centers/header',$titleData);
+		if($student[0]['admission_by']=='web'){
+			$this->load->view('students/header',$titleData);
+		}
+		else{
+			$this->load->view('Centers/header',$titleData);
+		}
+		
 		$this->load->view('Centers/payment_detail',$data);
-		$this->load->view('Centers/footer');
+		
+		if($student[0]['admission_by']=='web'){
+			$this->load->view('students/footer');
+		}
+		else{
+			$this->load->view('Centers/footer');
+		}
 	}
 
 	public function exam_form($student_id){
