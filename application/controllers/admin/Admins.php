@@ -3334,7 +3334,7 @@ public function update_exam_datewise_permission(){
 
 		if($startlimit!=0){
 			$start=($startlimit-1)*1000;
-			$this->db->limit(1000,$start);
+			$this->db->limit(1,$start);
 			$pagetitle=$startlimit;
 		}	
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
