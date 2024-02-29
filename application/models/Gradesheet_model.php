@@ -245,7 +245,7 @@ class Gradesheet_model extends CI_Model
 		// print_r($this->foundation_paper);
 	}
 
-    public function view_old_results($student_id,$course_group_id,$class_id,$mode,$id)
+    public function view_old_results($student_id,$course_group_id,$class_id,$mode,$id, $exam_status)
 	{
         // $papers = $this->Common_model->get_all_old_papers($student_id,$class_id);
         $this->db->order_by('sub_group_id');
@@ -314,7 +314,23 @@ class Gradesheet_model extends CI_Model
 		// var_dump($this->result_array);
 		
 		// $this->total();
-        $this->check_grace_for_old();
+        if($exam_status !="B"){
+            $this->check_grace_for_old();
+        }
+        // echo '<pre>';
+        // print_r($this->result_array);
+        foreach ($this->result_array  as $key => $result) {
+            if($result['sub_group'] == 1){
+                if(($result['f_abs'] === 'ABS' && $result['obt_marks'] != '0')){
+                        $result['obt_credit'] = 2;
+                        $this->obt_tot_credit -=2; 
+                        $credit_point = $result['obt_credit']*$result['grade_point'];
+                        $result['credit_point']=$credit_point;
+                        $this->tot_credit_point -= $credit_point;
+                }
+            }
+        }
+    //   echo $this->tot_credit_point;die;
 		$this->agpa = $this->tot_credit_point/$this->tot_credit;
 		if($this->mode=='REG'){
 			// $this->result_head();
@@ -344,6 +360,8 @@ class Gradesheet_model extends CI_Model
 					$this->foundation_paper[$this->paper['group_paper_name']]['obt'] = 'ABS';
 				}
 				$this->foundation_paper[$this->paper['group_paper_name']]['type'] = $this->paper['type'];
+                $this->foundation_paper[$this->paper['group_paper_name']]['sub_group'] = $this->paper['sub_group_id'];
+                $this->foundation_paper[$this->paper['group_paper_name']]['group'] = $this->paper['group_id'];
 				$this->foundation_paper[$this->paper['group_paper_name']]['tot_marks'] += $this->paper['theory_marks'];
 				$this->foundation_paper[$this->paper['group_paper_name']]['credit_point'] += $this->paper['credit_point'];
 				$this->foundation_paper[$this->paper['group_paper_name']]['max_theory_marks'] += $this->paper['max_theory_marks'];
@@ -357,6 +375,8 @@ class Gradesheet_model extends CI_Model
 					$this->foundation_paper[$this->paper['group_paper_name']]['obt'] = 'ABS';
 				}
 				$this->foundation_paper[$this->paper['group_paper_name']]['type'] = $this->paper['type'];
+                $this->foundation_paper[$this->paper['group_paper_name']]['sub_group'] = $this->paper['sub_group_id'];
+                $this->foundation_paper[$this->paper['group_paper_name']]['group'] = $this->paper['group_id'];
 				$this->foundation_paper[$this->paper['group_paper_name']]['tot_marks'] = $this->paper['theory_marks'];
 				$this->foundation_paper[$this->paper['group_paper_name']]['max_theory_marks'] = $this->paper['max_theory_marks'];
 				$this->foundation_paper[$this->paper['group_paper_name']]['paper_code'] = $this->paper['paper_code'];
@@ -402,6 +422,8 @@ class Gradesheet_model extends CI_Model
 	private function paper_name()
 	{
 		$this->result_array[$this->paper['paper_code']]["type"] = $this->paper["type"];
+        $this->result_array[$this->paper['paper_code']]['sub_group'] = $this->paper['sub_group_id'];
+        $this->result_array[$this->paper['paper_code']]['group'] = $this->paper['group_id'];
 		$this->result_array[$this->paper['paper_code']]["paper_name"] ='['. $this->paper["group_paper_name"].']#'.$this->paper["paper_name"];
 	}
 
@@ -500,6 +522,8 @@ class Gradesheet_model extends CI_Model
 	private function paper_name_foudation($sub_group_id){
 		$data = '['.$this->paper["group_paper_name"].']#'.$this->foundation_paper[$sub_group_id]["paper_name"].'<br><br>'.'B) '.$this->paper["paper_name"];
 		// print_r($this->paper["paper_name"]);
+        $this->result_array[$this->paper['paper_code']]['sub_group'] = $this->foundation_paper[$sub_group_id]['sub_group'];
+        $this->result_array[$this->paper['paper_code']]['group'] = $this->foundation_paper[$sub_group_id]['group'];
 		$this->result_array[$this->paper['paper_code']]['paper_name'] = $data;
 		$this->result_array[$this->paper['paper_code']]['type'] = $this->foundation_paper[$sub_group_id]["type"];
 	}
@@ -507,7 +531,7 @@ class Gradesheet_model extends CI_Model
 	private function credit_foudation($sub_group_id){
 		$this->credit_point = $this->foundation_paper[$sub_group_id]["credit_point"];
 		$this->tot_credit += $this->foundation_paper[$sub_group_id]["credit_point"];
-		$this->result_array[$this->paper['paper_code']]['credit'] = $this->foundation_paper[$sub_group_id]["credit_point"];
+        $this->result_array[$this->paper['paper_code']]['credit'] = $this->foundation_paper[$sub_group_id]["credit_point"];
 	}
 
 	private function grade_foudation($sub_group_id){
