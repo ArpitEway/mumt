@@ -1,0 +1,300 @@
+<?php
+	defined('BASEPATH') OR exit('No direct script access allowed');
+	
+	class StudentDocument extends CI_Controller {
+		function __construct(){
+
+			parent::__construct();
+			$this->load->model('Common_model');
+			$this->load->model('Center/center_model');
+			$this->load->model('Datatable_join_model');
+			if(!$this->session->has_userdata('studentdata')){
+				redirect(base_url('login'));
+			}
+		}
+
+	public function index($course_type ="REG"){
+		//$course_type = $this->uri->segment(2);  
+		$csrf = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+			'course_type' =>$course_type
+		);
+		if($course_type=="PVT")	
+			$titleData = array('title' => 'Upload Private Admission Document List'); 
+		else
+			$titleData = array('title' => 'Upload Regular Admission Document List'); 	
+		$this->load->view('students/header',$titleData);	
+		$this->load->view('students/upload_admission_document',$csrf);	
+		$this->load->view('students/footer');
+	}
+
+	public function Doc_list(){
+		
+		$course_type=$this->input->post('course_type');
+		$data = array();
+		$where="";
+		if(!empty($course_type))
+			$where .="student.university_mode='".$course_type."' AND ";	
+		
+		
+		
+		$permission_session= $this->Common_model->getRecordByWhere('session',array('document_permission'=>'Y' )); 
+		$where.= "document_uploaded!='Y' and payment_status='Y'  and ( "; //and student.class_name not like '%SEM%'
+		foreach($permission_session as $key=>$row){
+			
+			if($row->semester_permission=='N' && $row->annual_permission=='Y' )
+			$where.=" (student.class_name not like '%SEM%' and student.session='".$row->session."') or ";
+			else if($row->annual_permission=='N' && $row->semester_permission=='Y')
+			$where.="  (student.class_name not like '%YEAR%' and student.session='".$row->session."') or ";
+			else if($row->annual_permission=='Y' && $row->semester_permission=='Y')
+			$where.="   session='".$row->session."'";
+			
+		}
+		
+		
+		$where .= " ) "; 
+		// $where.= "document_uploaded!='Y' and payment_status='Y' and center_id=".$this->session->center_id ."  and ( (student.class_name not like '%SEM%' and student.session='July 2021') or session!='July 2021')";
+		//START
+		$master = $this->Common_model->getSingleRow('master');
+		$centerData = $this->Common_model->getRecordById('center','id',$this->session->center_id);
+		if(!empty($master->remove_class_from_center) && $centerData->temp_admission_payment =='N'){
+			$where.=" and `student`.`class_id` NOT IN ($master->remove_class_from_center)";
+		}
+		//END
+		
+		$column_order = array('student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name',null);
+		$column_search = array('enrollment_no', 'name', 'f_h_name', 'course_name','class_name');
+		$DataTableArray = array(
+			'column_order' => $column_order,
+			'column_search' => $column_search,
+			'where' => $where,
+			'table' => 'student',
+		);
+		if ($this->session->center_id!=13) {
+			$this->db->where('center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+		}
+		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
+		//print_r($this->db->last_query());    
+		$i = $_POST['start'];
+		foreach($tableData as $result){
+			$btn = '<a href="'.base_url('student/document_upload/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" target="_blank" class="btn btn-primary btn-sm" target="_blank" >Upload</a>';			
+			$i++;
+			$data[] = array($i,$result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$btn);
+		}
+		if ($this->session->center_id!=13) {
+			$this->db->where('center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+		}
+		$counttableData = $this->Datatable_join_model->joincountAll($_POST,$DataTableArray);
+		if ($this->session->center_id!=13) {
+			$this->db->where('center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+		}
+		$recordsFiltered = $this->Datatable_join_model->countFiltered($_POST,$DataTableArray);
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $counttableData,//$this->Datatable_join_model->countAll('student',$where),
+			"recordsFiltered" => $recordsFiltered,
+			"data" => $data,
+		);
+
+		// Output to JSON format
+		echo json_encode($output);	
+	}
+
+		public function upload($student_id){
+			$csrf = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
+			$titleData = array('title'=>'Upload Admission Document');
+			$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+			$where = 'student_id='.$student_id;
+			$student = $this->Common_model->student_info($student_id);
+			//START
+			$master = $this->Common_model->getSingleRow('master');
+			$centerData = $this->Common_model->getRecordById('center','id',$this->session->center_id);
+			$remove_class_from_center =explode(',', $master->remove_class_from_center);
+			if(in_array($student['class_id'],$remove_class_from_center) && ($centerData->temp_admission_payment =='N')) 
+			{ 
+				redirect(base_url('dashboard'));
+			}
+			//END	
+
+			if($student['approved']=='Y' && $student['document_uploaded']=='Y'){
+			$this->session->set_flashdata('warning','Document Already Submitted');
+			redirect(base_url('dashboard'));
+			}
+			$courseData	= $this->Common_model->getRecordById('course_group','id',$student['course_group_id']);
+			$order = 'id asc';
+			if (($courseData->course_type=='Diploma' || $courseData->course_type=='PGDiploma') ||        $student['university_mode']=='PVT') {
+				$whereDoc = 'category in ('.$courseData->document_id.')';
+			}else{
+				$whereDoc = 'category in ('.$courseData->document_id.',0)';
+			}
+
+			$documentData = $this->Common_model->get_record_by_order('document_category','*',$order,$whereDoc);
+			$data = array(
+			'courseData' => $courseData,
+			'documentData' => $documentData,
+			'student' => $student,
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
+			$this->load->view('students/header',$titleData);
+			$this->load->view('students/document',$data);
+			$this->load->view('students/footer');
+		}
+		
+		public function uploadDoc(){
+			$student_id = html_escape($this->input->post('student_id'));
+			$document_name = html_escape($this->input->post('document_name'));
+			$document_category_id = html_escape($this->input->post('document_category_id'));
+			$course_group_id = html_escape($this->input->post('course_group_id'));
+			$admissionDocWhere = " student_id = ".$student_id." and document_category_id = ".$document_category_id;
+			$admissionDocCount = $this->Common_model->getCountByWhere('admission_document',$admissionDocWhere);
+				
+			$path = './assets/documents/';
+			$this->load->library('upload');
+				if($_FILES['document']['name']==''){
+					echo 'an error occcerd';
+					exit;
+				}
+				
+				if($admissionDocCount>0){
+				$nextid = $this->Common_model->getSinglefield('admission_document','id',$admissionDocWhere);
+				}else{
+				$nextid = $this->Common_model->getNextOrder('admission_document','id');
+				}
+				$this->upload->initialize($this->set_upload_options($path,$nextid));
+				if(!$this->upload->do_upload('document')){
+					$error = $this->upload->display_errors();
+					$msg = array('error'=>$error);
+					echo json_encode($msg);
+					exit();
+				}
+				$uploadData = $this->upload->data();
+				
+				$docData['document_name'] = $document_name;
+				$docData['document_image'] = $uploadData['file_name'];
+				$image_name = $uploadData['file_name'];
+				$docData['document_category_id'] = $document_category_id;
+				
+				
+				if($admissionDocCount>0){
+					$this->Common_model->updateRecordByConditions('admission_document',$admissionDocWhere,$docData);
+				}else{
+				
+				$docData['student_id'] = $student_id;
+				$docData['course_group_id'] = $course_group_id;
+					$this->Common_model->insertAll('admission_document',$docData);
+				}
+				
+				$msg = array(
+				'success'=>"document Uploaded Successfully",
+				'btn' => "<a href='".base_url('assets/documents/'.$image_name)."' download>
+								Download
+							</a>",
+				);
+					echo json_encode($msg);
+					exit();
+		}
+		
+		private function set_upload_options($path,$name)
+		{   
+			//upload an image options
+			$config = array();
+			$config['upload_path'] = $path;
+			$config['allowed_types'] = 'gif|jpg|png|pdf|JPEG|jpeg';
+			$config['max_size']      = '0';
+			$config['overwrite']     = True;
+			$config['file_name'] =  $name;
+			
+			return $config;
+		}
+		
+		
+		public function checkDocumentStatus(){
+			$student_id =  html_escape($this->input->post('student_id'));;
+			
+			$course_group_id = html_escape($this->input->post('course_group_id'));
+			
+			$document_id = $this->Common_model->getSinglefield('course_group','document_id',' id='.$course_group_id);
+			$documentData = $this->Common_model->get_record('document_category','*','category='.$document_id.' and status="Y"');
+		
+			foreach($documentData as $document){
+			$admissionDocWhere = " student_id = ".$student_id." and document_category_id = ".$document['id'];
+				
+				$admissionDocCount = $this->Common_model->getCountByWhere('admission_document',$admissionDocWhere);
+				if($admissionDocCount==0){
+					$msg = array('error'=>'Please Submit All Required Document');
+					echo json_encode($msg);
+					exit();
+				}
+				
+			}
+			$student['document_uploaded'] = 'Y';
+			$where = 'student_id='.$student_id;
+			$document_uploaded = $this->Common_model->updateRecordByConditions('student',$where,$student);
+				$msg = array('success'=>'All Required Document Submited');
+					echo json_encode($msg);
+					exit();
+		}
+
+		public function uploadRemainingDocument(){
+			$student_id = html_escape($this->input->post('student_id'));
+			$document_name = html_escape($this->input->post('document_name'));
+			$document_category_id = html_escape($this->input->post('document_category_id'));
+			$course_group_id = html_escape($this->input->post('course_group_id'));
+			$admissionDocWhere = " student_id = ".$student_id." and document_category_id = ".$document_category_id." and status='N'";
+			$admissionDocCount = $this->Common_model->getCountByWhere('admission_document',$admissionDocWhere);
+				
+			$path = './assets/documents/';
+			$this->load->library('upload');
+				if($_FILES['document']['name']==''){
+					echo 'an error occcerd';
+					exit;
+				}
+				
+				if($admissionDocCount>0){
+				$nextid = $this->Common_model->getSinglefield('admission_document','id',$admissionDocWhere);
+				}else{
+				$nextid = $this->Common_model->getNextOrder('admission_document','id');
+				}
+				$this->upload->initialize($this->set_upload_options($path,$nextid));
+				if(!$this->upload->do_upload('document')){
+					$error = $this->upload->display_errors();
+					$msg = array('error'=>$error);
+					echo json_encode($msg);
+					exit();
+				}
+				
+			$uploadData = $this->upload->data();
+			
+			$docData['document_name'] = $document_name.' Not Found';
+			$docData['document_image'] = $uploadData['file_name'];
+			$image_name = $uploadData['file_name'];
+			$docData['document_category_id'] = $document_category_id;
+			$docData['status'] = 'N';
+
+			if($admissionDocCount>0){
+				$this->Common_model->updateRecordByConditions('admission_document',$admissionDocWhere,$docData);
+				}else{
+					$docData['student_id'] = $student_id;
+					$docData['course_group_id'] = $course_group_id;
+					$this->Common_model->insertAll('admission_document',$docData);
+			}
+			
+			$msg = array('success'=>"Document Uploaded Successfully",
+							'btn' => "<a href='".base_url('assets/documents/'.$image_name)."' download>Download</a>",
+							);
+			echo json_encode($msg);
+			exit();
+		}
+
+	}

@@ -267,7 +267,7 @@
 				}if($session != "All"){
 					$dt['session'] = $session;
 				}	
-				$dt['payment_status'] = "Y";
+				//$dt['payment_status'] = "Y";
 				$dt['document_uploaded'] = "Y";
 				// $dt['university_mode'] = "REG";	
 				$this->db->where('new_admission_permission', 'N');
@@ -1125,6 +1125,26 @@
 		$data['provisional_remark'] = implode(",",$remark);
 		$data['approved'] = 'Y';
 		$data ['approved_by'] = $this->session->admin_id;
+
+		$student = $this->Common_model->getRecordById('student','student_id',$param);
+		$wherearray=array('student_id'=>$param, 'fees_head' => 'Admission Fees','course_group_id' => $student->course_group_id,'class_id' => $student->class_id);
+		$admissionEntry = $this->Common_model->get_record('online_payment_transaction','*',$wherearray);
+		
+		if(($student->admission_by=='web' )  && (!@($admissionEntry))){
+			$amount = $this->Common_model->getRecordByWhere('course',array('course_group_id'=> $student->course_group_id));
+	
+            $mode = 'regular';
+            $late_fees=0;
+            $remark="From Web";
+            if($mode=='regular'){
+                $amount = $amount[0]->admission_fees;
+                $admission_type = 'regular';
+            }
+
+
+            $OnlinePayTxnData = array('student_id' => $param,'center_id' => $student->center_id ,'fees_head' => 'Admission Fees','amount' => $amount,'payment_status'=>'pending','course_group_id' =>$student->course_group_id,'class_id' => $student->class_id,'student_name' => $student->name,'admission_type'=>$admission_type,'remark'=>$remark);
+            $OnlinePayTxn = $this->Common_model->insertAll('online_payment_transaction',$OnlinePayTxnData);
+		}
 		$this->db->where('student_id', $param);
 		$this->db->update('student', $data);	
 		$this->session->set_flashdata('ajax_flash_message','approved');
