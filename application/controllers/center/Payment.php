@@ -219,11 +219,22 @@ class Payment extends CI_Controller {
 			}
 		
 			$student = $this->Common_model->getRecordById('student','student_id',$student_id);
-			$sessionData = $data = array('loged_in' => true,
+			if($student->admission_by=='web'){
+				$sessionData = $data = array('loged_in' => true,
+					'studentdata' => $student->enrollment_no,
+					'dob' 	  	  => $student->dob,
+					'student_id'  => $student->student_id,
+					'admission_by' =>$student->admission_by
+				);
+			}
+			else{
+				$sessionData = $data = array('loged_in' => true,
 				'centerdata' => $student->center_code,
 				'center_id' => $student->center_id,
 				'account_type' => 'center'
-			);
+				);
+			}	
+
 			$this->session->set_userdata($sessionData);
 			$this->session->set_flashdata($remsg,$msg);
 			$id = $this->Common_model->encrypt_decrypt($txnid);
@@ -242,7 +253,7 @@ class Payment extends CI_Controller {
 		$id = $this->Common_model->encrypt_decrypt($id,'decrypt');
 		$where = 'id='.$id;
 		$transaction = $this->Common_model->get_record('online_payment_transaction','*',$where);
-		if($transaction[0]['center_id']!=$this->session->center_id){
+		if($transaction[0]['center_id']!=$this->session->center_id && $this->session->admission_by !="web"){
 			$this->session->set_flashdata('error','Details Not Found');
 			redirect(base_url('dashboard'));
 		}
@@ -590,11 +601,23 @@ class Payment extends CI_Controller {
 				$student = array($status=>'Y');
 				$this->Common_model->updateRecordByConditions('backlog_student',$where,$student);
 			}
-            $sessionData = $data = array('loged_in' => true,
+            
+			if($student[0]->admission_by=='web'){
+				$sessionData = $data = array('loged_in' => true,
+					'studentdata' => $student[0]->enrollment_no,
+					'dob' 	  	  => $student[0]->dob,
+					'student_id'  => $student[0]->student_id,
+					'admission_by' =>$student[0]->admission_by
+				);
+			}
+			else{
+				$sessionData = $data = array('loged_in' => true,
 				'centerdata' => $student[0]->center_code,
 				'center_id' => $student[0]->center_id,
 				'account_type' => 'center'
-			);
+				);
+			}	
+
 			$this->session->set_userdata($sessionData);
 			$this->session->set_flashdata($remsg,$msg);
 			$id = $this->Common_model->encrypt_decrypt($txnid);
@@ -783,15 +806,30 @@ class Payment extends CI_Controller {
 				}
 				
 			$student = $this->Common_model->getRecordById('student','student_id',$student_id);
-			$sessionData = $data = array('loged_in' => true,
+			if($student->admission_by=='web'){
+				$sessionData = $data = array('loged_in' => true,
+					'studentdata' => $student->enrollment_no,
+					'dob' 	  	  => $student->dob,
+					'student_id'  => $student->student_id,
+					'admission_by' =>$student->admission_by
+				);
+			}
+			else{
+				$sessionData = $data = array('loged_in' => true,
 				'centerdata' => $student->center_code,
 				'center_id' => $student->center_id,
 				'account_type' => 'center'
-			);
+				);
+			}	
 			$this->session->set_userdata($sessionData);
 			$this->session->set_flashdata($remsg,$msg);
 			$id = $this->Common_model->encrypt_decrypt($txnid);
-			redirect(base_url('center/payment/detail/'.$id));
+			
+			if($student->admission_by=='web'){
+				redirect(base_url('payment/detail/'.$id));
+			}else{
+				redirect(base_url('center/payment/detail/'.$id));
+			}
 		}
 	}
 

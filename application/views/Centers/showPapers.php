@@ -215,7 +215,7 @@
 		</div>
 	</div>
 	
-	   	<?php if($student['payment_status'] == 'N'){ 
+	   	<?php if($student['payment_status'] == 'N' ){ 
             $center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29,1975,2098,2115 );
             $student_id = $this->Common_model->encrypt_decrypt($student['student_id']);
             if(in_array($this->session->center_id, $center_ids) ){
@@ -230,7 +230,7 @@
             ?>
             
 			<div class="row d-flex justify-content-center p-3">
-				<?php if(@($this->session->center_id) && ($this->session->admission_by!="web")){ ?>
+				<?php if(@($this->session->center_id )   && ($this->session->admission_by!="web")){ ?>
 				<a class="btn btn-success" href="<?= base_url('center/Payment/admission/'.$this->Common_model->encrypt_decrypt($student['student_id'])) ?>">Process To Payment</a>
 				<?php } else{
 					?>
@@ -251,7 +251,7 @@
 			$remove_class_from_center =explode(',', $master->remove_class_from_center);
 			$class_permission = $this->Common_model->get_record('class_master','exam_form_permission',array('id'=>$student['class_id']));
 			
-			if(($center_permission[0]['exam_form_permission']=='Y' && $student['new_exam_form']=='N' && $student['temp_exam_form']=='Y')  && ($class_permission[0]['exam_form_permission']=='Y' || $center_permission[0]['temp_exam_form']=='Y') ){ 
+			if(($center_permission[0]['exam_form_permission']=='Y' && $student['new_exam_form']=='N' && $student['temp_exam_form']=='Y' )  && ($class_permission[0]['exam_form_permission']=='Y' || $center_permission[0]['temp_exam_form']=='Y') ){ 
 				$center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29,1975,2098,2115 );
 				if(in_array($this->session->center_id, $center_ids) ){
                     $where = array('session' =>$student['session'],
@@ -259,11 +259,11 @@
 		);
 
 		$fees = $this->Common_model->getRecordByWhere('course',$where);
-        if($student['demo']=='Y'){
-            $total_fees = $fees[0]->exam_fees;
-        }else{
-            $total_fees = $fees[0]->program_fees+$fees[0]->exam_fees;
-        }
+				if($student['demo']=='Y'){
+					$total_fees = $fees[0]->exam_fees;
+				}else{
+					$total_fees = $fees[0]->program_fees+$fees[0]->exam_fees;
+				}
 						?> 
 							<div class="row d-flex justify-content-center p-3">
 								<!-- <a class="btn btn-success" data-fees='<?=$fees[0]->program_fees+$fees[0]->exam_fees;?>'  href="<?= base_url('paid_by_university/'.$student_id) ?>">Paid By University</a> -->
