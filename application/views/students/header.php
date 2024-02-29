@@ -72,7 +72,7 @@
                             <span class="menu-text">Home</span>
                           </a>
                         </li>
-                        <?php if($this->session->admission_by=='web' && $studentData->form_fees=='N'){  ?>
+                        <?php if($this->session->admission_by=='web' && $studentData->form_fees=='N' && $studentData->mother_name==''){  ?>
                         <li class="menu-item <?= ($page_slug=='admission_form') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
                           <a href="<?=base_url('admission_form')?>" class="menu-link">
                             <span class="menu-text">Admission Form</span>

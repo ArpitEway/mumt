@@ -10,7 +10,7 @@ if($this->session->admission_by=='web'){
   //       $step1Url=base_url('admission_form');
   //   }
   // else 
-  if(($studentData->form_fees=='N') && ($studentData->temp_exam_form=='N')){
+  if(($studentData->form_fees=='N') && ($studentData->temp_exam_form=='N') && ($studentData->mother_name!="")){
         $step1=$step2="active";
         $step1Url="#";
         $step2Url=base_url('showPapers').'/'.$st;
@@ -46,7 +46,7 @@ if($this->session->admission_by=='web'){
                 <div class="step-icon">1</div>
                 <p><a href="<?=$step1Url?>">Admission </a> </p>
             </div>
-            <div class="indicator-line <?=$step1?>"></div>
+            <div class="indicator-line <?=$step2?>"></div>
             <div class="step step2 <?=$step2?>">
                 <div class="step-icon">2</div>
             <p><a href="<?=$step2Url?>">Paper </a></p>
