@@ -10,8 +10,8 @@ class Payment extends CI_Controller {
 	
 	public function admission($student_id){
 
-		if(!$this->session->has_userdata('centerdata')){
-			redirect(base_url('center/login'));
+		if((!$this->session->has_userdata('centerdata')) && (!$this->session->has_userdata('studentdata'))) {
+			redirect(base_url('login'));
 		}
 		$titleData = array('title'=>'Admission Payment');
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
@@ -50,7 +50,7 @@ class Payment extends CI_Controller {
 	}
 	
 	public function admission_payment($student_id){
-		if(!$this->session->has_userdata('centerdata')){
+		if((!$this->session->has_userdata('centerdata')) && (!$this->session->has_userdata('studentdata'))) {
 			redirect(base_url('login'));
 		}
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
@@ -184,11 +184,16 @@ class Payment extends CI_Controller {
 			$where = 'student_id='.$student_id.' and fees_head="'.$productinfo.'" and class_id='.$student->class_id;
 			$txnData = $this->Common_model->get_record('online_payment_transaction','*',$where);
 
-			if($productinfo == 'Admission Fees'){
+			if($productinfo == 'Form Fees'){
 			$this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$response);
-				$status = 'payment_status';
+				$status = 'form_fees';
 				$txnid = $txnData[0]['id'];
-			}elseif($productinfo == 'Exam Fees'){
+			}elseif($productinfo == 'Admission Fees'){
+				$this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$response);
+					$status = 'payment_status';
+					$txnid = $txnData[0]['id'];
+				}
+			elseif($productinfo == 'Exam Fees'){
 				if(count($txnData)>0){
 					$response["exam_session"] = $udf3;
 					$this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$response);
@@ -214,27 +219,41 @@ class Payment extends CI_Controller {
 			}
 		
 			$student = $this->Common_model->getRecordById('student','student_id',$student_id);
-			$sessionData = $data = array('loged_in' => true,
+			if($student->admission_by=='web'){
+				$sessionData = $data = array('loged_in' => true,
+					'studentdata' => $student->enrollment_no,
+					'dob' 	  	  => $student->dob,
+					'student_id'  => $student->student_id,
+					'admission_by' =>$student->admission_by
+				);
+			}
+			else{
+				$sessionData = $data = array('loged_in' => true,
 				'centerdata' => $student->center_code,
 				'center_id' => $student->center_id,
 				'account_type' => 'center'
-			);
+				);
+			}	
+
 			$this->session->set_userdata($sessionData);
 			$this->session->set_flashdata($remsg,$msg);
 			$id = $this->Common_model->encrypt_decrypt($txnid);
-			
-			redirect(base_url('center/payment/detail/'.$id));
+			if($student->admission_by=='web'){
+				redirect(base_url('payment/detail/'.$id));
+			}else{
+				redirect(base_url('center/payment/detail/'.$id));
+			}
 		}
 	}
 		
 	public function detail($id){
-    if(!$this->session->has_userdata('centerdata')){
-			redirect(base_url('center/login'));
+		if((!$this->session->has_userdata('centerdata')) && (!$this->session->has_userdata('studentdata'))) {
+			redirect(base_url('login'));
 		}
 		$id = $this->Common_model->encrypt_decrypt($id,'decrypt');
 		$where = 'id='.$id;
 		$transaction = $this->Common_model->get_record('online_payment_transaction','*',$where);
-		if($transaction[0]['center_id']!=$this->session->center_id){
+		if($transaction[0]['center_id']!=$this->session->center_id && $this->session->admission_by !="web"){
 			$this->session->set_flashdata('error','Details Not Found');
 			redirect(base_url('dashboard'));
 		}
@@ -246,9 +265,21 @@ class Payment extends CI_Controller {
 		'transaction' => $transaction[0],
 		);
 		$titleData = array('title'=>'Payment Details');
-		$this->load->view('Centers/header',$titleData);
+		if($student[0]['admission_by']=='web'){
+			$this->load->view('students/header',$titleData);
+		}
+		else{
+			$this->load->view('Centers/header',$titleData);
+		}
+		
 		$this->load->view('Centers/payment_detail',$data);
-		$this->load->view('Centers/footer');
+		
+		if($student[0]['admission_by']=='web'){
+			$this->load->view('students/footer');
+		}
+		else{
+			$this->load->view('Centers/footer');
+		}
 	}
 
 	public function exam_form($student_id){
@@ -570,11 +601,23 @@ class Payment extends CI_Controller {
 				$student = array($status=>'Y');
 				$this->Common_model->updateRecordByConditions('backlog_student',$where,$student);
 			}
-            $sessionData = $data = array('loged_in' => true,
+            
+			if($student[0]->admission_by=='web'){
+				$sessionData = $data = array('loged_in' => true,
+					'studentdata' => $student[0]->enrollment_no,
+					'dob' 	  	  => $student[0]->dob,
+					'student_id'  => $student[0]->student_id,
+					'admission_by' =>$student[0]->admission_by
+				);
+			}
+			else{
+				$sessionData = $data = array('loged_in' => true,
 				'centerdata' => $student[0]->center_code,
 				'center_id' => $student[0]->center_id,
 				'account_type' => 'center'
-			);
+				);
+			}	
+
 			$this->session->set_userdata($sessionData);
 			$this->session->set_flashdata($remsg,$msg);
 			$id = $this->Common_model->encrypt_decrypt($txnid);
@@ -763,15 +806,144 @@ class Payment extends CI_Controller {
 				}
 				
 			$student = $this->Common_model->getRecordById('student','student_id',$student_id);
-			$sessionData = $data = array('loged_in' => true,
+			if($student->admission_by=='web'){
+				$sessionData = $data = array('loged_in' => true,
+					'studentdata' => $student->enrollment_no,
+					'dob' 	  	  => $student->dob,
+					'student_id'  => $student->student_id,
+					'admission_by' =>$student->admission_by
+				);
+			}
+			else{
+				$sessionData = $data = array('loged_in' => true,
 				'centerdata' => $student->center_code,
 				'center_id' => $student->center_id,
 				'account_type' => 'center'
-			);
+				);
+			}	
 			$this->session->set_userdata($sessionData);
 			$this->session->set_flashdata($remsg,$msg);
 			$id = $this->Common_model->encrypt_decrypt($txnid);
-			redirect(base_url('center/payment/detail/'.$id));
+			
+			if($student->admission_by=='web'){
+				redirect(base_url('payment/detail/'.$id));
+			}else{
+				redirect(base_url('center/payment/detail/'.$id));
+			}
+		}
+	}
+
+	public function formfess($student_id){
+
+		
+		if($this->session->admission_by!="web"){
+			redirect(base_url('students/login'));
+	   }
+		$titleData = array('title'=>'Form Payment');
+		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		
+		$centerData = $this->Common_model->getRecordById('center','id',$this->session->center_id);
+		$master = $this->Common_model->getSingleRow('master');
+		$student = $this->Common_model->student_info($student_id);
+		//stop admission of class start
+		$remove_class_from_center =explode(',', $master->remove_class_from_center);
+		if(in_array($student['class_id'],$remove_class_from_center) && ($centerData->temp_admission_payment =='N')) 
+		{ 
+			redirect(base_url('dashboard'));
+		}
+		//stop admission of class End	
+		//$txnAmt = $this->Common_model->getRecordByWhere("course",array('course_group_id'=>$student['course_group_id']));
+		$txnAmt = $this->Common_model->getRecordByWhere("online_payment_transaction",array('student_id'=>$student_id,'fees_head'=>'Form Fees'));
+		$data['txnAmt'] = $txnAmt[0]->amount;
+		if($student['payment_status']=='Y'){
+			$this->session->set_flashdata('warning','Payment Already Submitted');
+			redirect(base_url('dashboard'));
+		}
+		$data['student'] = $student;
+		$data['url'] = 'paynow';
+		$data['paymentType'] = 'Form Fees';
+		$mode = 'regular';
+		
+	
+		
+		$this->load->view('students/header',$titleData);
+		$this->load->view('Centers/admission_payment',$data);
+		$this->load->view('students/footer');
+	}
+
+
+	public function formfees_payment($student_id){
+		if($this->session->admission_by!="web"){
+			redirect(base_url('students/login'));
+	   }
+		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		if($student_id!=''){
+
+			$student = $this->Common_model->student_info($student_id);
+	      	
+			$txnAmtData = $this->Common_model->getRecordByWhere("online_payment_transaction",array('student_id'=>$student_id,'fees_head'=>'Form Fees'));
+			  $txnAmt = $txnAmtData[0]->amount;
+			if($student['university_mode']=='REG'){
+				$mode = "Regular";
+			
+			}else{
+				$mode = "Private";
+			
+			}
+			if($student['payment_status']=='Y'){
+				$this->session->set_flashdata('warning','Payment Already Submitted');
+				redirect(base_url('dashboard'));
+			}
+			$hash_string = '';
+		/*  testing credential 
+			$MERCHANT_KEY = "9WEOTe";
+			$SALT = "uFYw7ClQ"; 
+			$PAYU_BASE_URL = "https://test.payu.in"; */
+		/*  live credential  */
+			$MERCHANT_KEY = "h9OyBB";
+			$SALT = "rzu8VRFb";
+			$PAYU_BASE_URL = "https://secure.payu.in";
+		
+			$action = '';
+			$txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);
+
+			$posted = array();
+			$posted['key'] = $MERCHANT_KEY;
+			$posted['txnid'] = $txnid; 
+			$posted['surl'] =base_url('center/payment/response');
+			$posted['furl'] =base_url('center/payment/response');
+			$posted['amount'] =$txnAmt;
+			$posted['firstname'] = $student['name'];
+			$posted['email'] = $student['p_email'];
+			$posted['phone'] = $student['p_mobile_no'];
+			$posted['productinfo'] = "Form Fees";
+			$posted['address1'] = $student['p_address'];
+			$posted['city'] = $student['p_city'];
+			$posted['state'] = $student['p_state'];
+			$posted['country'] = $student['nationality'];
+			$posted['zipcode'] = $student['p_pin_code'];
+			$posted['udf1'] = $student_id;
+			$posted['udf2'] = $mode;
+			$posted['udf3'] = "-";
+			$posted['udf4'] = $student["center_id"].' / '.$student['class_id'];
+			$posted['udf5'] = $student["name"]."/".$student["f_h_name"];
+			$hash = '';
+
+			$hashSequence = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10";
+
+			$hashVarsSeq = explode('|', $hashSequence);
+
+			foreach($hashVarsSeq as $hash_var) {
+				$hash_string .= isset($posted[$hash_var]) ? $posted[$hash_var] : '';
+				$hash_string .= '|';
+			}
+
+			$hash_string .= $SALT;
+			$hash = strtolower(hash('sha512', $hash_string));
+			$action = $PAYU_BASE_URL . '/_payment';
+			$posted['hash'] = $hash;
+			$posted['action'] = $action;
+			$this->load->view('template/payment_submit',$posted);
 		}
 	}
 }

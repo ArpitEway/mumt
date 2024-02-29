@@ -187,7 +187,11 @@ hr.new2 {
 					</div>
 				</div>
 				<div class="row col-md-2">
+					<?php if(@$student['photo']){ ?>
 					<img class="student_form_img" src="<?php echo base_url('/assets/student_image/').$student['session'].'/'.$student['photo'];?>"></img>
+					<?php }else{ ?>
+						<img class="student_form_img" src="<?php echo base_url('/assets/images/center/student.bmp')?>"></img>
+						<?php } ?>
 				</div>
 			</div>
 		</div>

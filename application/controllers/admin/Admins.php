@@ -3344,11 +3344,12 @@ public function update_exam_datewise_permission(){
 		if($class->last_class == 'L'){
 			$this->db->order_by('center_id,roll_number','ASC');
 			// $this->db->where_in('student_id',array(188247,188249,188265,188272,188302,188306,188311,188322,188324,188338,188343,188346,188353,188361,188366,188368,188455,188495));
-            // $this->db->where('student_id',686246);
+            // $this->db->where('student_id',702679);
 			$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','course_complete'=>'Y','university_mode'=>$mode,'old_result_show'=>'Y' ,'exam_pattern'=>'MARKS'));
 			
 		}else{
 			$this->db->order_by('center_id,roll_number','ASC');
+            // $this->db->limit(1);
             // $this->db->where_in('student_id', array(687872,689923,697856,698112,695552,688384,688896,723712,745473,734208,731648,733440,725504,720896));
            $data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode,'old_result_show'=>'Y','exam_pattern'=>'MARKS'));
 		}
@@ -5629,8 +5630,8 @@ public function forward_complaint(){
 		}else{
 			
 			$admin_id = $this->session->admin_id;
-			// $this->db->where_not_in('id',array(236,238,240,244,246,216,248,250,254,232,234,252,300,258,256,268,218,230,242,155,182,154,181,180,174,196,162,200,210,172,299,273,165,289,110,116,149,170,187,140,143,146,290,284,294,296,292,192,184,159,138));
-            $this->db->where_in('id', array(102,105,108,111,117,120,126,129,132,135,194,198,202,204,206,212,214,222,224,226,228,276,280,303));
+			$this->db->where_not_in('id',array(236,238,240,244,246,216,248,250,254,232,234,252,300,258,256,268,218,230,242,155,182,154,181,180,174,196,162,200,210,172,299,273,165,289,110,116,149,170,187,140,143,146,290,284,294,296,292,192,184,159,138,194,198,202,204,206,212,214,222,276,280,224,226,228,164,105,102,111,117,120,129,132,135));
+            // $this->db->where_in('id', array(102,105,108,111,117,120,126,129,132,135,194,198,202,204,206,212,214,222,224,226,228,276,280,303));
 			$class_data = $this->db->get_where('class_master', array('result_permission' => 'Y'))->result_array();
 			$class_dataids = array_column($class_data, 'id');
 			$this->db->where_in('old_class_id',$class_dataids);

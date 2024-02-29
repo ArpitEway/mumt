@@ -22,7 +22,7 @@
   <!--end::Layout Themes-->
   <link rel="shortcut icon" href="<?=base_url()?>assets/images/maskgroup/MaskGroup1.png" />
   <link href="https:////cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
-
+	<link href="<?=base_url()?>assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script type="text/javascript">
     var BASE_URL = "<?php echo base_url();?>";
@@ -63,24 +63,48 @@
                     <!--begin::Menu-->
                     <div id="kt_header_menu" class="header-menu header-menu-mobile header-menu-layout-default">
                       <!--begin::Nav-->
+                      <?php 
+                      $studentData = $this->Common_model->getRecordById('student','student_id',$this->session->student_id);
+                      ?>
                       <ul class="menu-nav p-0">
                         <li class="menu-item <?= ($page_slug=='') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
                           <a href="<?=base_url()?>" class="menu-link">
                             <span class="menu-text">Home</span>
                           </a>
                         </li>
+                        <?php
+                       
+                        if(($this->session->admission_by=='web') && ($studentData->form_fees=='N') && ($studentData->mother_name=='')){  ?>
+                        <li class="menu-item <?= ($page_slug=='admission_form') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
+                          <a href="<?=base_url('admission_form')?>" class="menu-link">
+                            <span class="menu-text">Admission Form</span>
+                          </a>
+                        </li>
+                        <?php } ?>
+                        <?php if($this->session->admission_by=='web' && $studentData->form_fees=='Y'  && $studentData->approved!='Y'){  
+                          //&& $studentData->document_uploaded== 'N'
+                           $st=$this->Common_model->encrypt_decrypt($this->session->student_id,'encrypt');
+                          ?>
+                        <li class="menu-item <?= ($page_slug=='documents') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
+                          <a href="<?=base_url()?>/document_upload/<?=$st?>" class="menu-link">
+                            <span class="menu-text">Documents </span>
+                          </a>
+                        </li>
+                        <?php } ?>
                         <li class="menu-item <?= ($page_slug=='profile') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
                           <a href="<?=base_url('profile')?>" class="menu-link">
                             <span class="menu-text">Profile</span>
                           </a>
                         </li>
+                       
                         <li class="menu-item <?= ($page_slug=='student_model_paper') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
                           <a href="<?=base_url('student_model_paper')?>" class="menu-link">
                             <span class="menu-text">Model Paper</span>
                           </a>
                         </li>
+                        
                         <?php 
-                        $studentData = $this->Common_model->getRecordById('student','student_id',$this->session->student_id);
+                        
                         $whereClass = array('class_id' => $studentData->class_id,
                           'exam_permission' => 'Y',
                         );
@@ -127,7 +151,7 @@
           <!--end::Top-->
         </div>
           <!--end::Header-->
-<div class="container mt-5">
+<div class="container mt-5" style="max-width: 100%;">
       <div class="card card-custom gutter-b example example-compact mb-10">
         <div class="card-body " style="min-height:300px;">
           <div class="content-head row   justify-content-between mb-3">
