@@ -62,7 +62,7 @@
     }
     foreach($students as $student)
     {
-      $papers = $this->Common_model->student_info_for_result($student->student_id,$student->old_class_id);
+      $papers = $this->Common_model->student_info_for_result($student->student_id,$student->old_class_id, $student->course_group_id);
       ?>
       <fieldset id="printarea" class="breakhere" style="width:90%;border: 0px solid #22316C;"> 
         <div align="left"> MS No. <?php echo $student->marksheet_no; ?> </div>
@@ -238,6 +238,7 @@
                         }
                         $flag = 1;
                         $tflag = 1;
+                         $sub_count = 1;
                         foreach($papers as $paper)
                         {
                           $paper_name = explode(' - ',$paper->paper_name);
@@ -260,6 +261,38 @@
                         '<u>'.'Viva-Voce'.'</u>'.':'.'</strong>'.'</td>'.'</tr>'.'<tr>'
                         .'<td colspan="9">'.'&nbsp;'.'</td>'.
                       '</tr>';}else{ echo'';};
+                          }else if($course_group_id == 12 && $paper->sub_group_id !=1){
+                            $sub_group = $this->Common_model->getRecordById('sub_group', 'id', $paper->sub_group_id);
+                            $group = explode('(', $paper->group_name);
+                            $group_name = explode(',',$group[1]);
+                           
+                            if($sub_group->id == 2 && $sub_count == 1){
+                                $sub_count=2;
+                                echo ' <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.'<td style="margin-top:2px;" align="left">'.'</td>'.
+                                '<td colspan="8" align="left">'.'<strong>'.
+                              '<u>'.$sub_group->sub_group_name.' - '.$group_name[0].'</u>'.'</strong>'.'</td>'.'</tr>'.'<tr>'
+                              .'<td colspan="9">'.'&nbsp;'.'</td>'.
+                            '</tr>';
+                            }elseif($sub_group->id == 3){
+                                echo ' <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.'<td style="margin-top:2px;" align="left">'.'</td>'.
+                                '<td colspan="8" align="left">'.'<strong>'.
+                              '<u>'.$sub_group->sub_group_name.' - '.$group_name[1].'</u>'.'</strong>'.'</td>'.'</tr>'.'<tr>'
+                              .'<td colspan="9">'.'&nbsp;'.'</td>'.
+                            '</tr>';
+                            }elseif($sub_group->id == 4){
+                                echo ' <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.'<td style="margin-top:2px;" align="left">'.'</td>'.
+                                '<td colspan="8" align="left">'.'<strong>'.
+                              '<u>'.$sub_group->sub_group_name.' - '.substr($group_name[2], 0, -1).'</u>'.'</strong>'.'</td>'.'</tr>'.'<tr>'
+                              .'<td colspan="9">'.'&nbsp;'.'</td>'.
+                            '</tr>';
+                            }elseif($sub_group->id == 5 || $sub_group->id == 6){
+                                echo ' <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.'<td style="margin-top:2px;" align="left">'.'</td>'.
+                                '<td colspan="8" align="left">'.'<strong>'.
+                              '<u>'.$sub_group->sub_group_name.'</u>'.'</strong>'.'</td>'.'</tr>'.'<tr>'
+                              .'<td colspan="9">'.'&nbsp;'.'</td>'.
+                            '</tr>';
+                            }
+                           
                           }
                           ?>
                           <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="middle">

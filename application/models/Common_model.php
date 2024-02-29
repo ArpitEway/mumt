@@ -248,10 +248,13 @@ class Common_Model extends CI_Model{
 		else if($center_type=="Other")
 			$this->db->where_not_in('center_id',  $center_naac );
 
+		$this->db->where_not_in('new_admission_permission',  'Y' );
 		$this->db->join("course_group", "student.course_group_id = course_group.id", 'left'); 
 		$query = $this->db->get();
 			
-		return $query->result_array();
+		$result= $query->result_array();
+		//echo $this->db->last_query(); die;
+		return $result;
 
 	}
 	public function getStudentNameById($id){
@@ -986,12 +989,15 @@ class Common_Model extends CI_Model{
 		// die;
 	}
      
-	public function student_info_for_result($student_id,$class_id)
+	public function student_info_for_result($student_id,$class_id,$course_group_id = '')
 	{
 		$this->db->select('*');
         $this->db->from('paper_master');
         $this->db->order_by('e.sub_group_id,paper_order,paper_no','ASC');
         $this->db->join('new_exam_form as e', 'paper_master.id = e.paper_id');
+        if($course_group_id != '' && $course_group_id == 12){
+            $this->db->join('group', 'e.group_id = group.id');
+        }
         $this->db->where('e.student_id',$student_id);
         $this->db->where('e.class_id',$class_id);
 		return $this->db->get()->result();

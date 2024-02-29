@@ -51,10 +51,11 @@ class Postexam extends CI_Controller {
 
        public function upload_old_marks()
        {
+            
             $this->db->select('course_name,student.class_name,class_id, COUNT(student_id) as cnt,student.university_mode');
             $this->db->join('class_master', 'student.class_id = class_master.id');
             // $this->db->where('cbcs', 'Y');
-             $this->db->where('last_class', 'L');
+            //  $this->db->where('last_class', 'L');
            // $this->db->where('mode', 'Semester');
             $this->db->where('exam_form', 'Y');
             $this->db->where('upload_result', 'N');
@@ -74,7 +75,7 @@ class Postexam extends CI_Controller {
     public function upload_old_data_script($class_id="",$mode){
         $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
         $this->db->limit(500);
-       
+       $this->db->where_not_in('student_id',array(704033,711707,708907));
         $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'N','university_mode'=>$mode ,'old_result_show'=>'Y')); //, "marksheet_dispatch"=>'Y'
          // $this->db->where_in('course_group.course_type',array('Diploma','PGDiploma'));
         // $course_type = $this->Common_model->getRecordByWhere("course_group",array('id'=> $students[0]->course_group_id));
@@ -106,7 +107,7 @@ class Postexam extends CI_Controller {
                 'course_name' => $student->course_name,
                 'class_id' => $student->class_id,
                 'enrollment_no' => $student->enrollment_no,
-                'roll_no' => $student->roll_no,
+                'roll_no' => $student->roll_number,
                 'name' => $student->name,
                 'exam_year' => 'July 2023',
                 'f_h_name' => $student->f_h_name,
@@ -1025,9 +1026,10 @@ class Postexam extends CI_Controller {
 public function upload_old_grade_data_script($class_id="",$mode){
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
     $this->db->limit(500);
-    // $this->db->where_in('student_id',array(188516,188517,188518,188519,188520,188522,685336,685337,685340,685342,685343,685344,685346,685347,685348,685349,685350,685351,685352,685353,685362,685364,685366,685368,685369,685370,685372,685373,685374,685381,685383,685386,685441,685443,685444,685446,685447,685449,685453,685456,685473,685474,685487,685489,685490,685491,685493,685494,685496,686004,686022,700042,700150,700155,702602,702648,702653,702654,702655,702657,702658,702660,702669,702671,702674,702676,702678,702823,702829,702830,702831,702838,702839,702847,702851,702981,702986,702989,703155,703163,703228,703278,703394,703395));
-    // $this->db->where('student_id',384259);
-    $students = $this->Common_model->getRecordByWhere("student_result_aug_22",array("class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'N','university_mode'=>$mode));
+    $this->db->where_not_in('student_id',array(711707,708907));
+   // $this->db->where_in('student_id',array(702981,700979));
+    // $this->db->where('student_id',758798);
+    $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'N','university_mode'=>$mode));
     //, "marksheet_dispatch"=>'Y'
     // $this->Common_model->last_query();
      // $this->db->where_in('course_group.course_type',array('Diploma','PGDiploma'));

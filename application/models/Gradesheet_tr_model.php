@@ -467,7 +467,7 @@ class Gradesheet_tr_model extends CI_Model
 				$obt_marks = $result['obt_marks']+$req_marks;
 				$credit_point = $result['credit']*4;
 				$this->result_array[$key]['credit_point']=$credit_point;
-				$this->tot_credit_point += $credit_point;
+				 $this->tot_credit_point += $credit_point;
 				
 				
 				$paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4','2RBBA2','2RBBA4','2RBA2','2RBA4','2RBCOM2','2RBCOM4','2RBCOMCA2','2RBCOMCA4','2RBCOMT2','2RBCOMT4','2RBCA2','2RBCA4','2RBSCCBC2','2RBSCCBC4','2RBSCCS2','2RBSCCS4','2RBSCPCM2','2RBSCPCM4','2RBSW2','2RBSW4');
@@ -527,7 +527,7 @@ class Gradesheet_tr_model extends CI_Model
 				$credit_point = $result['credit']*4;
 				$this->result_array[$key]['credit_point']=$credit_point;
 				
-				$this->tot_credit_point += $credit_point;
+				// $this->tot_credit_point += $credit_point;
 				$this->grade_tot_point += 4;
 				$result['grade_point'] =4;
 			}else{
@@ -578,7 +578,7 @@ class Gradesheet_tr_model extends CI_Model
 				$obt_marks = $result['obt_marks']+$req_marks;
 				$credit_point = $result['credit']*4;
 				$this->result_array[$key]['credit_point']=$credit_point;
-				$this->tot_credit_point += $credit_point;
+				// $this->tot_credit_point += $credit_point;
 				
 				
 				$paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4','2RBBA2','2RBBA4','2RBA2','2RBA4','2RBCOM2','2RBCOM4','2RBCOMCA2','2RBCOMCA4','2RBCOMT2','2RBCOMT4','2RBCA2','2RBCA4','2RBSCCBC2','2RBSCCBC4','2RBSCCS2','2RBSCCS4','2RBSCPCM2','2RBSCPCM4','2RBSW2','2RBSW4');
