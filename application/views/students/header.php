@@ -64,7 +64,7 @@
                     <div id="kt_header_menu" class="header-menu header-menu-mobile header-menu-layout-default">
                       <!--begin::Nav-->
                       <?php 
-                     // $studentData = $this->Common_model->getRecordById('student','student_id',$this->session->student_id);
+                      $studentData = $this->Common_model->getRecordById('student','student_id',$this->session->student_id);
                       ?>
                       <ul class="menu-nav p-0">
                         <li class="menu-item <?= ($page_slug=='') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
@@ -73,9 +73,7 @@
                           </a>
                         </li>
                         <?php
-                        echo '1 '. $this->session->admission_by .'<br>';
-                        echo '2 '.$studentData->form_fees.'<br>';
-                        echo '3 '.$studentData->mother_name.'<br>';
+                       
                         if(($this->session->admission_by=='web') && ($studentData->form_fees=='N') && ($studentData->mother_name=='')){  ?>
                         <li class="menu-item <?= ($page_slug=='admission_form') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
                           <a href="<?=base_url('admission_form')?>" class="menu-link">
