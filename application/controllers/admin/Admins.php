@@ -3350,7 +3350,7 @@ public function update_exam_datewise_permission(){
 		}else{
 			$this->db->order_by('center_id,roll_number','ASC');
             // $this->db->limit(1);
-            // $this->db->where_in('student_id', array(687872,689923,697856,698112,695552,688384,688896,723712,745473,734208,731648,733440,725504,720896));
+             $this->db->where_in('student_id', array(687872,689923,697856,698112,695552,688384,688896,723712,745473,734208,731648,733440,725504,720896));
            $data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode,'old_result_show'=>'Y','exam_pattern'=>'MARKS'));
 		}
 	 	if($class->internal=="Y" && $mode!="PVT"){
