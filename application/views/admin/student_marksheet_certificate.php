@@ -51,6 +51,8 @@
     $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
     $marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+    $border = ($classData->admission_permission == 'Y')?'border: 1px solid black;margin-top:20px;':'border: 0px solid #22316C;';
+    $margin = ($classData->admission_permission == 'Y')?'min-height:420px;margin-top: 20px;':'min-height:420px;margin-top: 40px;';
     $isFinalClass = $this->Common_model->hasOneClass($course_group_id);
     $isOneClass = $this->Common_model->hasOneClass($course_group_id);
     if($isFinalClass){
@@ -143,8 +145,8 @@
             </tr>
             <tr>
               <td height="72" colspan="2">
-                <fieldset style="border: 1px solid black;margin-top:20px;">       
-                  <div style="min-height:420px;margin-top: 20px;">
+                <fieldset style="<?= $border?>">       
+                  <div style="<?= $margin?>">
                     <table id="" style="width:100%;" border="0" cellspacing="0" cellpadding="0" align="center">
                       <tbody>
                         <tr style="font-family:Arial, Helvetica, sans-serif; font-size:11px" align="center">
