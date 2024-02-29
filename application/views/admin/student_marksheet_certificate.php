@@ -143,8 +143,8 @@
             </tr>
             <tr>
               <td height="72" colspan="2">
-                <fieldset style="border: 0px solid #22316C;">       
-                  <div style="min-height:420px;margin-top: 40px;">
+                <fieldset style="border: 1px solid black;margin-top:20px;">       
+                  <div style="min-height:420px;margin-top: 20px;">
                     <table id="" style="width:100%;" border="0" cellspacing="0" cellpadding="0" align="center">
                       <tbody>
                         <tr style="font-family:Arial, Helvetica, sans-serif; font-size:11px" align="center">
@@ -270,19 +270,19 @@
                                 $sub_count=2;
                                 echo ' <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.'<td style="margin-top:2px;" align="left">'.'</td>'.
                                 '<td colspan="8" align="left">'.'<strong>'.
-                              '<u>'.$sub_group->sub_group_name.' - '.$group_name[0].'</u>'.'</strong>'.'</td>'.'</tr>'.'<tr>'
+                              '<u>'.$sub_group->sub_group_name.' - '.$group_name[0].' Literature'.'</u>'.'</strong>'.'</td>'.'</tr>'.'<tr>'
                               .'<td colspan="9">'.'&nbsp;'.'</td>'.
                             '</tr>';
                             }elseif($sub_group->id == 3){
                                 echo ' <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.'<td style="margin-top:2px;" align="left">'.'</td>'.
                                 '<td colspan="8" align="left">'.'<strong>'.
-                              '<u>'.$sub_group->sub_group_name.' - '.$group_name[1].'</u>'.'</strong>'.'</td>'.'</tr>'.'<tr>'
+                              '<u>'.$sub_group->sub_group_name.' - '.$group_name[1].' Literature'.'</u>'.'</strong>'.'</td>'.'</tr>'.'<tr>'
                               .'<td colspan="9">'.'&nbsp;'.'</td>'.
                             '</tr>';
                             }elseif($sub_group->id == 4){
                                 echo ' <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.'<td style="margin-top:2px;" align="left">'.'</td>'.
                                 '<td colspan="8" align="left">'.'<strong>'.
-                              '<u>'.$sub_group->sub_group_name.' - '.substr($group_name[2], 0, -1).'</u>'.'</strong>'.'</td>'.'</tr>'.'<tr>'
+                              '<u>'.$sub_group->sub_group_name.' - '.substr($group_name[2], 0, -1).' Literature'.'</u>'.'</strong>'.'</td>'.'</tr>'.'<tr>'
                               .'<td colspan="9">'.'&nbsp;'.'</td>'.
                             '</tr>';
                             }elseif($sub_group->id == 5 || $sub_group->id == 6){
