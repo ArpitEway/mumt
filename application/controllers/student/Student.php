@@ -294,8 +294,12 @@ class Student extends CI_Controller {
 			$eligibility_list = $this->Common_model->get_record('course_group','DISTINCT (eligibility)');
 			$district_list = $this->Common_model->get_record('distt','*');
 			$course_group_list = $this->Common_model->get_record('course','*');
-
-			$data = array(
+	   		$stData= $this->db->get_where('student_data', array("student_id" => $student_id))->row();
+			  
+			   if($student->mother_name!=""){
+				redirect(base_url('profile'));
+			}
+			   $data = array(
 				'state_list' => $state_list,
 				'district_list' => $district_list,
 				'course_group_list' => $course_group_list,
@@ -303,7 +307,7 @@ class Student extends CI_Controller {
 				'name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash(),
 				'student_detail' => $this->db->get_where('student', array("student_id" => $student_id))->row(),
-				'student_data'  => $this->db->get_where('student_data', array("student_id" => $student_id))->row()
+				'student_data'  =>$this->db->get_where('student_data', array("student_id" => $student_id))->row()
 			);
 
 
@@ -329,7 +333,7 @@ class Student extends CI_Controller {
 		$cbcs = ($classData->cbcs == 'Y' && $student['exam_pattern']=="GRADE")?'Y':'N';
 		if($student['temp_exam_form'] == "Y"){
 			$std_id = $this->Common_model->encrypt_decrypt($student_id);
-			redirect(base_url('center/center/showPapers/'.$std_id.''));	
+			redirect(base_url('showPapers/'.$std_id.''));	
 		}
 		$this->db->order_by('id');
 		if($student['university_mode'] != "PVT"){

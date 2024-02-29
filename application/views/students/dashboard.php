@@ -4,7 +4,8 @@ if($this->session->admission_by=='web'){
     $step1=$step2=$step3=$step4=$step5=$step6="";
     $step1Url= $step2Url=$step3Url=$step4Url="#";
     $step1="active";
-         $step1Url=base_url('admission_form');
+    $step1Url=base_url('admission_form');
+    $verification="Verification";
   //   if(($studentData->form_fees=='N') && ($studentData->temp_exam_form=='N')){
   //       $step1="active";
   //       $step1Url=base_url('admission_form');
@@ -27,15 +28,24 @@ if($this->session->admission_by=='web'){
         $step4Url=base_url('document_upload').'/'.$st;
         
     }
+    elseif( $studentData->form_fees=='Y'  && $studentData->document_uploaded=='Y' && $studentData->approved=='N'){ 
+      $step1=$step2=$step3=$step4="active";
+      $step1Url= $step2Url= $step3Url="#";
+      $step4Url=base_url('document_upload').'/'.$st;
+      $verification="Verification Failed";
+      
+  }
     elseif( $studentData->form_fees=='Y' && $studentData->document_uploaded=='Y' && $studentData->approved=='' && $studentData->payment_status!='Y'){ 
         $step1=$step2=$step3=$step4=$step5="active";
         $step1Url= $step2Url= $step3Url=$step4Url="#";
         $step5Url="#";
+        $verification="Verification Pending";
        
     }
     elseif($studentData->approved=='Y' && $studentData->payment_status!='Y'){
         $step1=$step2=$step3=$step4=$step5=$step6="active";
         $step1Url= $step2Url= $step3Url=$step4Url=$step5Url="#";
+        $verification="Document Verified";
         $step6Url=base_url('Payment/admission').'/'.$st;
     }
 ?>
@@ -64,7 +74,7 @@ if($this->session->admission_by=='web'){
             <div class="indicator-line <?=$step5?>"></div>
             <div class="step step5 <?=$step5?>">
                 <div class="step-icon">5</div>
-            <p><a href="<?=$step5Url?>">Verification</a></p>
+            <p <?php if($verification!="Verification"){ echo 'style="bottom: -59px;"';}  ?>><a href="<?=$step5Url?>"><?=$verification?></a></p>
             </div>
             <div class="indicator-line <?=$step6?>"></div>
             <div class="step step6 <?=$step6?>">
