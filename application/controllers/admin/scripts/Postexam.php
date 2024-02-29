@@ -1048,6 +1048,30 @@ public function upload_old_grade_data_script($class_id="",$mode){
  
 
 }
+// backlog grade
+public function upload_old_backlog_grade_data_script($class_id="",$mode){
+    $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+    $this->db->limit(500);
+   
+    $this->db->select('backlog_student.*,student.name,student.f_h_name,student.course_name,student.mother_name,student.photo');
+    $this->db->from('backlog_student');
+    $this->db->join('student','student.student_id=backlog_student.student_id');
+    $this->db->where(array("backlog_student.class_id"=>$class_id, "backlog_student.exam_form"=>'Y', "backlog_student.upload_result"=>'N','backlog_student.mode'=>$mode,'backlog_student.exam_year'=>'June 2023','backlog_student.result_show'=>'Y' ));
+    $this->db->limit(500);
+    $students = $this->db->get()->result();
+    $this->load->model('Upload_old_data_backlog');
+    $x=1;
+    foreach($students as $student)
+    {
+       
+       echo $x.'<br>';
+        // $this->upload_old_data->update_old_data($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
+        $this->Upload_old_data_backlog->update_old_data($student);
+     $x++;  
+    }
+ 
+
+}
 public function upload_old_grade_data_script_pg($class_id="",$mode){
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
     $this->db->limit(500);

@@ -1180,7 +1180,7 @@ class Common_Model extends CI_Model{
 		return $query->result_array();
 	}
 
-	public function get_all_old_papers($id,$class_id){
+	public function get_all_old_papers($id,$class_id,$exam_id=''){
 		$class_check = $this->Common_model->getRecordById('class_master','id',$class_id);
 		$where = array(
 			'student_id' => $id,
@@ -1191,6 +1191,9 @@ class Common_Model extends CI_Model{
 		$this->db->from('paper_master');
 		$this->db->order_by('paper_no','asc');
 		$this->db->join('old_result_data','old_result_data.paper_code = paper_master.paper_code');
+        if($exam_id !=''){
+            $this->db->where('exam_data_id',$exam_id );
+        }
 		// $this->db->join('group_paper','paper_master.id=group_paper.paper_id');
 		$this->db->where($where); 
 		if($class_check->class_group == 'Y'){
@@ -1201,7 +1204,7 @@ class Common_Model extends CI_Model{
 		return $query->result_array();
 		
 	}
-	public function get_all_old_group_papers($id,$class_id){
+	public function get_all_old_group_papers($id,$class_id, $exam_id=''){
 		$where = array(
 			'student_id' => $id,
 			'old_result_data.class_id' => $class_id,
@@ -1214,7 +1217,10 @@ class Common_Model extends CI_Model{
 		$this->db->order_by('group_paper.sub_group_id,paper_no','asc');
 		$this->db->join('old_result_data','old_result_data.paper_code = paper_master.paper_code','left');
 		$this->db->join('group_paper','paper_master.id=group_paper.paper_id and group_paper.group_id=old_result_data.group_id','left');
-		$this->db->where($where); 
+        if($exam_id !=''){
+            $this->db->where('exam_data_id',$exam_id );
+        }
+        $this->db->where($where); 
 		// $this->db->where(`group_paper`.`group_id`=`new_exam_form`.`group_id` );
 		$query = $this->db->get();
 		// $this->Common_model->last_query();
