@@ -127,7 +127,7 @@ foreach($exam_centers as $row)
             $this->db->where_not_in('paper_no_for_time_table', array('1B','2B'));
             $papers_all = $this->Common_model->get_record('paper_master','*',$where);
             $papersid = array_column($papers_all, 'id');
-
+            echo $this->db->last_query(); 
             $this->db->select('count(*) as cnt');
             $this->db->from('student as s');
             $this->db->join('new_exam_form  as e', 'e.student_id = s.student_id AND s.class_id = e.class_id');
