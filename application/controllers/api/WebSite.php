@@ -218,6 +218,7 @@ class WebSite extends REST_Controller {
         $data['form_fees']='N';
         $data['admission_by']='web';
         $data['session']='July 2023';
+        $data['enrollment_no']='-';
         $data['class_name']=$class_list[0]['class_name'];
         $class_id=$data['class_id']=$class_list[0]['id'];
         $data['course_name']=$this->Common_model->getCourseNameByCourseId($course_group_id);

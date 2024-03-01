@@ -42,8 +42,10 @@
 				'session' => $session,
 				'approved' =>'Y',
 				'enrolled' =>'N',
-				'enrollment_no'=>'-'
+				'enrollment_no'=>'-',
+				'payment_status' =>'Y',
 			);
+
 			
 			$students = $this->db->get_where('student',$where)->result_array();
 			$enrolment_code = $this->db->get_where('session', array('session'=>$session))->result_array();
