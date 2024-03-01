@@ -29,7 +29,14 @@
                 <td><?= $ptrans['fees_head'];?></td>
 				<td><?= $ptrans['amount'];?></td>
 				
-				<td><?php if($ptrans['payment_status']=='pending'){ }else{
+				<td><?php if($ptrans['payment_status']=='pending'){
+						$st=$this->Common_model->encrypt_decrypt($this->session->student_id,'encrypt');
+						if($ptrans['fees_head']=="Form Fees")
+							$url=base_url('Payment/formfess/').'/'.$st;
+						if($ptrans['fees_head']=="Admission Fees")
+							$url=base_url('Payment/admission/').'/'.$st;
+						echo "<a href='".$url."' class='btn btn-info btn-sm' target='_blank'>Pay</a>";		
+				 }else{
 					echo $ptrans['payment_status'];
 				} ?></td>
                 </tr>

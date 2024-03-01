@@ -68,7 +68,7 @@
 					<div class="col-12 text-center">
 						<h5>Attendance Sheet Examination 
 							<?php
-							if($student['course_group_id']==77 ){
+							if($student['course_group_id']==75 || $student['course_group_id']==76 ||$student['course_group_id']==77 ){
 								echo '2024';
 							}else{
 								echo 'January 2024';
@@ -152,7 +152,7 @@
 					<td><?php echo date("d-m-Y", strtotime($paper->exam_date)); ?></td>
 					<td>
 					<?php 
-					if($paper->exam_shift=='Afternoon' && ($student['class_id']==267 || $student['class_id']==269) ){
+					if($paper->exam_shift=='Afternoon' && ($student['class_id']==259 || $student['class_id']==261 || $student['class_id']==263) ){
 						echo '12:00 PM To 3:00 PM';
 					}
 					if($paper->exam_shift=='Early Morning'){

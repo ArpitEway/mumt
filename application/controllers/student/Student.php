@@ -418,7 +418,11 @@ class Student extends CI_Controller {
 	public function transactions()
 	{
 		$course_type ='REG'; 
-		
+		$id =  $this->session->student_id;
+		$student = $this->Common_model->getRecordById('student','student_id',$id);
+		if($student->mother_name==''){
+			redirect(base_url(''));
+		}
 		$data = array( 
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
@@ -428,8 +432,8 @@ class Student extends CI_Controller {
 		
 		$data['transactions']=$this->Common_model->getAllRow("online_payment_transaction", "", array(
 			"student_id" => $this->session->student_id	),'id DESC');
-			//print_r($transactions); die;
-		$titleData = array('title' => 'Student Transaction List');
+			
+		$titleData = array('title' => 'Student Transaction List','page_slug' => 'transactions');
 		$this->load->view('students/header',$titleData);
 		$this->load->view('students/transactions',$data);
 		$this->load->view('students/footer');

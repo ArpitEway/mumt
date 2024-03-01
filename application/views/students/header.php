@@ -91,6 +91,14 @@
                           </a>
                         </li>
                         <?php } ?>
+
+                        <?php if(($this->session->admission_by=='web')  && ($studentData->mother_name!='')){  ?>
+                        <li class="menu-item <?= ($page_slug=='transactions') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
+                          <a href="<?=base_url('transactions')?>" class="menu-link">
+                            <span class="menu-text">Transactions</span>
+                          </a>
+                        </li>
+                        <?php } ?>
                         <li class="menu-item <?= ($page_slug=='profile') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
                           <a href="<?=base_url('profile')?>" class="menu-link">
                             <span class="menu-text">Profile</span>
