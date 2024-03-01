@@ -4478,6 +4478,7 @@ public function update_exam_datewise_permission(){
 		$this->db->select('*');
 			$this->db->from('paper_master');
 			$this->db->where('exam_date!=',"");
+			$this->db->where_not_in('class_id',array("259","261","263"));
 			$this->db->where('exam_date!=',"0000-00-00");	
 			//$this->db->where('exam_date>=',"2023-07-31");	
 			$this->db->group_by(array('exam_date','exam_shift'));
