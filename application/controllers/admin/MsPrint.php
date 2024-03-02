@@ -151,7 +151,7 @@ class MsPrint extends CI_Controller {
 			$this->db->select('*');
 			$this->db->from('center');
 			$this->db->where_in('id',$ids);
-			$this->db->order_by('center_code', "asc");
+			$this->db->order_by('center_code','ASC');
 			$data['centers'] = $this->db->get()->result();
 			
 			$this->load->view('admin/examController/center_wise_marksheet_dispatch',$data);
