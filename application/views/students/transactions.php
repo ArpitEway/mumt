@@ -14,6 +14,7 @@
                 <th>Fees Head</th>
 				<th>Fees Amount</th>
 				<th>Payment Status</th>
+				<th>View</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -24,10 +25,11 @@
                 <td><?= date('d-m-Y',strtotime($ptrans['payment_date'])) ?></td>
 				<td><?= $ptrans['student_id'];?></td>
 				<td><?= $ptrans['student_name'];?></td>
-				<td><?= $ptrans['course_group_id'];?></td>
-				<td><?= $ptrans['class_id'];?></td>
+				<td><?= $this->Common_model->getCourseNameByCourseId($ptrans['course_group_id']);?></td>
+				<td><?= $this->Common_model->getClassNameByClassId($ptrans['class_id']);?></td>
                 <td><?= $ptrans['fees_head'];?></td>
 				<td><?= $ptrans['amount'];?></td>
+				<td><?= $ptrans['payment_status'];?></td>
 				
 				<td><?php if($ptrans['payment_status']=='pending'){
 						$st=$this->Common_model->encrypt_decrypt($this->session->student_id,'encrypt');
@@ -37,7 +39,7 @@
 							$url=base_url('Payment/admission/').'/'.$st;
 						echo "<a href='".$url."' class='btn btn-info btn-sm' target='_blank'>Pay</a>";		
 				 }else{
-					echo $ptrans['payment_status'];
+					echo '<a href="'.base_url('show_fees/'.$this->Common_model->encrypt_decrypt($ptrans['id'],'encrypt')).'" class="btn btn-primary btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>';
 				} ?></td>
                 </tr>
            <?php $i++; } ?>

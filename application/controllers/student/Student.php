@@ -438,4 +438,63 @@ class Student extends CI_Controller {
 		$this->load->view('students/transactions',$data);
 		$this->load->view('students/footer');
 	}
+
+	public function remaining_documents($student_id){
+		if($this->session->admission_by!="web"){
+			redirect(base_url('students/login'));
+	   }
+		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		if($student_id!=''){
+			$student = $this->Common_model->getRecordById('student','student_id',$student_id);
+			$remark = $student->remark;
+			if($remark!=''){
+				$where = ' id in ( '.$remark.' ) ';
+				$document = $this->Common_model->getRecordByWhere('document_category',$where);
+			}else{
+				// $document=array();
+				$doc = array();
+				$document_required = $this->Common_model->getRecordByWhere('admission_document',array('student_id'=>$student_id));
+				foreach($document_required as $doc_req){
+					array_push($doc,$doc_req->document_category_id);
+				}
+				$this->db->where_in('id',$doc);
+				$document = $this->Common_model->getRecordByWhere('document_category');
+				
+			}
+			$titleData = array('title' => 'Unapproved Document List');
+
+			$data = array(
+				'student' => $student,
+				'documentData' => $document,
+				'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+			);
+			$this->load->view('students/header',$titleData);
+			$this->load->view('students/remaining_documents',$data);
+			$this->load->view('students/footer');
+		}
+	}
+	public function show_fees($onlinePayTxnId)
+	{
+		$onlinePayTxnId = $this->Common_model->encrypt_decrypt($onlinePayTxnId,'decrypt');
+		$where = 'id='.$onlinePayTxnId;
+		$transaction = $this->Common_model->get_record('online_payment_transaction','*',$where);
+		// if($transaction[0]['center_id']!=$this->session->center_id){
+		// 	$this->session->set_flashdata('error','Details Not Found');
+		// 	redirect(base_url('dashboard'));
+		// }
+		$wherestudent = 'student_id='.$transaction[0]['student_id'];
+		$student = $this->Common_model->get_record('student','*',$wherestudent);
+		$data = array(
+		'student' => $student[0],
+		'transaction' => $transaction[0],
+		'name_csrf' => $this->security->get_csrf_token_name(),
+		'hash_csrf' => $this->security->get_csrf_hash()
+		);
+
+		$titleData = array('title'=>'Payment Details');
+		$this->load->view('students/header',$titleData);
+		$this->load->view('Centers/payment_detail',$data);
+		$this->load->view('students/footer');
+	}
 }
