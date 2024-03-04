@@ -1214,7 +1214,7 @@ class Center extends CI_Controller {
 				
 				}
 			//	$this->db->where_in('class_id',array( 256,258,268,270));
-				$this->db->order_by("class_id", "ASC");
+				$this->db->order_by("class_id", "DESC");
 				$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
 				
 			}
