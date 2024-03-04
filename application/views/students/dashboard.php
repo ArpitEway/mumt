@@ -22,17 +22,32 @@ if($this->session->admission_by=='web'){
         $step3Url=base_url('Payment/formfess/').'/'.$st;
         
     }
-    elseif( $studentData->form_fees=='Y'  && $studentData->document_uploaded!='Y' && $studentData->approved!='Y'){ 
+    elseif( $studentData->form_fees=='Y'  && $studentData->document_uploaded!='Y' && $studentData->approved==''){ 
         $step1=$step2=$step3=$step4="active";
         $step1Url= $step2Url= $step3Url="#";
         $step4Url=base_url('document_upload').'/'.$st;
         
     }
     elseif( $studentData->form_fees=='Y'  && $studentData->document_uploaded=='Y' && $studentData->approved=='N'){ 
+      
+      
+      $docData = $this->Common_model->getRecordByWhere('admission_document',array('student_id'=>$this->session->student_id,'status'=>'N'));
+     
+		 // $docData_remain = $docData[0]->status;
+     
+     if( $docData[0]->status=='N'){
+      $step1=$step2=$step3=$step4=$step5="active";
+      $step1Url= $step2Url= $step3Url="#";
+      $step4Url="#";
+       $verification="Verification Pending";
+     }else{
       $step1=$step2=$step3=$step4="active";
       $step1Url= $step2Url= $step3Url="#";
-      $step4Url=base_url('document_upload').'/'.$st;
+      $step4Url=base_url('remaining_documents').'/'.$st;
       $verification="Verification Failed";
+     }
+      
+      
       
   }
     elseif( $studentData->form_fees=='Y' && $studentData->document_uploaded=='Y' && $studentData->approved=='' && $studentData->payment_status!='Y'){ 
