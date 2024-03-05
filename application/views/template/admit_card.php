@@ -75,6 +75,12 @@
 							<tr>
 							  <td colspan="4"><b>Exam Center: </b><?= $this->Common_model->getExamCenterNameById($student[0]->exam_center_id); ?></td>
 							</tr>
+							<?php }  
+							$st=array(768558,771451,771494,771507,772866,772882);
+							if(in_array($student[0]->student_id,$st)){ ?>
+							<tr>
+							  <td colspan="4"><b>Exam Center: </b>Education Department, Lamti, Vijay Nagar, Jabalpur</td>
+							</tr>
 							<?php } ?>
 								<!-- <tr>
 							  <td colspan="4"><b>College: </b><?=$student[0]->center_name; ?></td>
