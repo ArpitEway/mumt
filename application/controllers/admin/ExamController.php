@@ -2401,7 +2401,7 @@ public function getStudentData()
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('DISTINCT(center_id)');
 			$this->db->from('backlog_student');
-			$this->db->where(array('exam_form'=>'Y','exam_year'=>'Dec 2023'));
+			$this->db->where(array('exam_form'=>'Y','exam_year'=>'June 2023'));
 			$centers = $this->db->get()->result_array();
 			$ids = array_column($centers, 'center_id');
 			$this->db->select('*');
@@ -2418,7 +2418,7 @@ public function getStudentData()
 		$center = $this->input->post('center');
 		$this->db->select('DISTINCT(center_id)');
 		$this->db->from('backlog_student');
-		$this->db->where(array('exam_form'=>'Y','exam_year'=>'Dec 2023'));//,'marksheet_dispatch'=>'N'
+		$this->db->where(array('exam_form'=>'Y','exam_year'=>'June 2023'));//,'marksheet_dispatch'=>'N'
 		$centers = $this->db->get()->result_array();
 		$ids = array_column($centers, 'center_id');
 	
