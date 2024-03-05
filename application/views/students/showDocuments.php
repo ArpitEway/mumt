@@ -10,11 +10,11 @@
 			$d++;
 	}
 ?>
-<script src="<?=BASE_URL()?>assets/light_box/js/jquery.magnify.js"></script>
+
 <script>
 	var docCatIdArray = [<?php echo '"'.implode('","',  $docCatId ).'"' ?>];
 </script>
-
+<link href="<?=base_url()?>/assets/light_box/css/jquery.magnify.css" rel="stylesheet">
 <div class="card card-custom card-stretch my-10 details-bg" id="profile">
 <div class="container-fluid profile mt-5">
 	<div class="row ">
@@ -70,12 +70,10 @@
 </div>
 </div>
 	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-<form method="post" action="<?=base_url('student/StudentDocument/uploadDoc');?>" enctype='multipart/form-data' id="target" >
+
 	<div id="loader">
 	</div>
 	<div class="row input-div">
-		<input type="hidden" name="course_group_id" id="course_group_id" value="<?=$courseData->id; ?>" >
-		<input type="hidden" name="student_id" id="student_id" value="<?=$student['student_id']; ?>" >
 		
 		<?php 		foreach($documentData as $document){ 
 
@@ -88,7 +86,7 @@
 			<div class="col-md-6">
 				<div class="form-group">
 					<label class="w-100"><?=$document['document'];?><strong class="text-danger"><?= ($document['status']=='N') ? '' : ' *'; ?></strong>
-						<span class="float-right" id="<?='downloadBtnId_'.$document['id']?>">
+						<!-- <span class="float-right" id="<?='downloadBtnId_'.$document['id']?>"> -->
 							<?php 
 							$file = $this->Common_model->GetAdmissonDocFile($student['student_id'],$document['id']);
 							if($file){
@@ -103,7 +101,7 @@
 					
 							<?php }
 							?>
-						</span>
+						<!-- </span> -->
 					</label>
 
 					
@@ -120,10 +118,8 @@
 <li class="text-danger my-3 font-weight-bold">समस्त डाक्यूमेंट्स अपलोड करने के बाद नीचे दिए गए "Submit" बटन पर अवश्य क्लिक करें| </li>
 </ul>
 
-	<div class="row justify-content-center my-3">
-		<button type="submit" class="btn btn-primary btn-lg" id="submit" name="submit">Submit</button>
-	</div>
-</form>
+
+<script src="<?=BASE_URL()?>assets/light_box/js/jquery.magnify.js"></script>
 <script>
 	$(".custom-file-input").on('change',function (){
 		var csrfName = $('.csrfname').attr('name');

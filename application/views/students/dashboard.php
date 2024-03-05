@@ -53,7 +53,7 @@ if($this->session->admission_by=='web'){
       $recipt= $this->Common_model->getAllRow("online_payment_transaction", "", array(
         "student_id" => $this->session->student_id,"fees_head"=>"Form Fees","class_id"=>$studentData->class_id));
       $step3Url=base_url('show_fees/'.$this->Common_model->encrypt_decrypt($recipt[0]['id'],'encrypt'));
-      $step4Url="#";
+      $step4Url=base_url('document_upload').'/'.$st;;
        $verification="Verification Pending";
      }else{
       $step1=$step2=$step3=$step4="active";
@@ -79,6 +79,7 @@ if($this->session->admission_by=='web'){
           "student_id" => $this->session->student_id,"fees_head"=>"Form Fees","class_id"=>$studentData->class_id));
          
         $step3Url=base_url('show_fees/'.$this->Common_model->encrypt_decrypt($recipt[0]['id'],'encrypt'));
+        $step4Url=base_url('document_upload').'/'.$st;
         $step5Url="#";
         $verification="Verification Pending";
        
@@ -91,6 +92,7 @@ if($this->session->admission_by=='web'){
         $recipt= $this->Common_model->getAllRow("online_payment_transaction", "", array(
           "student_id" => $this->session->student_id,"fees_head"=>"Form Fees","class_id"=>$studentData->class_id));
         $step3Url=base_url('show_fees/'.$this->Common_model->encrypt_decrypt($recipt[0]['id'],'encrypt'));
+        $step4Url=base_url('showDocuments/'.$st);
         $verification="Document Verified";
         $step6Url=base_url('Payment/admission').'/'.$st;
     }
@@ -131,7 +133,7 @@ if($this->session->admission_by=='web'){
         </div>
  </div> 
 
-<br>
+<br><br><br>
 <br>
 <?php } ?>
  <style>
