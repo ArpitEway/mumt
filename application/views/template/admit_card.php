@@ -79,7 +79,7 @@
 							$st=array(768558,771451,771494,771507,772866,772882);
 							if(in_array($student[0]->student_id,$st)){ ?>
 							<tr>
-							  <td colspan="4"><b>Exam Center: </b>Maharishi Shiksha Sansthan Lamti, Vijay Nagar, Jabalpur</td>
+							  <td colspan="4"><b>Exam Center: </b>Maharishi Mahesh Yogi Vedic Vishwavidyalaya, C/O Maharishi Shiksha Sansthan, Lamti, Jabalpur, Madhya Pradesh</td>
 							</tr>
 							<?php }  ?>
 								<!-- <tr>
