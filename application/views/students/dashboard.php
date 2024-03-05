@@ -13,19 +13,29 @@ if($this->session->admission_by=='web'){
   // else 
   if(($studentData->form_fees=='N') && ($studentData->temp_exam_form=='N') && ($studentData->mother_name!="")){
         $step1=$step2="active";
-        $step1Url="#";
+        $step1Url= base_url('profile');
+       
         $step2Url=base_url('showPapers').'/'.$st;
     }
     elseif( $studentData->form_fees=='N' && ($studentData->temp_exam_form=='Y')  && $studentData->document_uploaded!='Y' && $studentData->approved!='Y'){ 
         $step1=$step2=$step3="active";
         $step1Url= $step2Url="#";
+        $step1Url= base_url('profile');
+        $step2Url=base_url('showPapers').'/'.$st;
         $step3Url=base_url('Payment/formfess/').'/'.$st;
         
     }
     elseif( $studentData->form_fees=='Y'  && $studentData->document_uploaded!='Y' && $studentData->approved==''){ 
         $step1=$step2=$step3=$step4="active";
         $step1Url= $step2Url= $step3Url="#";
+       
+        $step1Url= base_url('profile');
+        $step2Url=base_url('showPapers').'/'.$st;
+        $recipt= $this->Common_model->getAllRow("online_payment_transaction", "", array(
+          "student_id" => $this->session->student_id,"fees_head"=>"Form Fees","class_id"=>$studentData->class_id));
+        $step3Url=base_url('show_fees/'.$this->Common_model->encrypt_decrypt($recipt[0]['id'],'encrypt'));
         $step4Url=base_url('document_upload').'/'.$st;
+        
         
     }
     elseif( $studentData->form_fees=='Y'  && $studentData->document_uploaded=='Y' && $studentData->approved=='N'){ 
@@ -38,11 +48,21 @@ if($this->session->admission_by=='web'){
      if( $docData[0]->status=='N'){
       $step1=$step2=$step3=$step4=$step5="active";
       $step1Url= $step2Url= $step3Url="#";
+      $step1Url= base_url('profile');
+      $step2Url=base_url('showPapers').'/'.$st;
+      $recipt= $this->Common_model->getAllRow("online_payment_transaction", "", array(
+        "student_id" => $this->session->student_id,"fees_head"=>"Form Fees","class_id"=>$studentData->class_id));
+      $step3Url=base_url('show_fees/'.$this->Common_model->encrypt_decrypt($recipt[0]['id'],'encrypt'));
       $step4Url="#";
        $verification="Verification Pending";
      }else{
       $step1=$step2=$step3=$step4="active";
       $step1Url= $step2Url= $step3Url="#";
+      $step1Url= base_url('profile');
+      $step2Url=base_url('showPapers').'/'.$st;
+      $recipt= $this->Common_model->getAllRow("online_payment_transaction", "", array(
+        "student_id" => $this->session->student_id,"fees_head"=>"Form Fees","class_id"=>$studentData->class_id));
+      $step3Url=base_url('show_fees/'.$this->Common_model->encrypt_decrypt($recipt[0]['id'],'encrypt'));
       $step4Url=base_url('remaining_documents').'/'.$st;
       $verification="Verification Failed";
      }
@@ -53,6 +73,12 @@ if($this->session->admission_by=='web'){
     elseif( $studentData->form_fees=='Y' && $studentData->document_uploaded=='Y' && $studentData->approved=='' && $studentData->payment_status!='Y'){ 
         $step1=$step2=$step3=$step4=$step5="active";
         $step1Url= $step2Url= $step3Url=$step4Url="#";
+        $step1Url= base_url('profile');
+        $step2Url=base_url('showPapers').'/'.$st;
+        $recipt= $this->Common_model->getAllRow("online_payment_transaction", "", array(
+          "student_id" => $this->session->student_id,"fees_head"=>"Form Fees","class_id"=>$studentData->class_id));
+         
+        $step3Url=base_url('show_fees/'.$this->Common_model->encrypt_decrypt($recipt[0]['id'],'encrypt'));
         $step5Url="#";
         $verification="Verification Pending";
        
@@ -60,6 +86,11 @@ if($this->session->admission_by=='web'){
     elseif($studentData->approved=='Y' && $studentData->payment_status!='Y'){
         $step1=$step2=$step3=$step4=$step5=$step6="active";
         $step1Url= $step2Url= $step3Url=$step4Url=$step5Url="#";
+        $step1Url= base_url('profile');
+        $step2Url=base_url('showPapers').'/'.$st;
+        $recipt= $this->Common_model->getAllRow("online_payment_transaction", "", array(
+          "student_id" => $this->session->student_id,"fees_head"=>"Form Fees","class_id"=>$studentData->class_id));
+        $step3Url=base_url('show_fees/'.$this->Common_model->encrypt_decrypt($recipt[0]['id'],'encrypt'));
         $verification="Document Verified";
         $step6Url=base_url('Payment/admission').'/'.$st;
     }
@@ -138,7 +169,7 @@ if($this->session->admission_by=='web'){
 }
 
 .step.active .step-icon {
-  background: crimson;
+  background: #771E18;
 }
 
 .step p {
@@ -151,7 +182,7 @@ if($this->session->admission_by=='web'){
 }
 
 .step.active p {
-  color: crimson;
+  color: #771E18;
 }
 
 .step.step2 p,
@@ -168,7 +199,8 @@ if($this->session->admission_by=='web'){
 }
 
 .indicator-line.active {
-  background: crimson;
+  background: #771E18
+  /* crimson; */
 }
 
 @media screen and (max-width: 500px) {
@@ -201,8 +233,8 @@ $studentData = $this->Common_model->getRecordById('student','student_id',$this->
 		  <li>January 2024 परीक्षा कार्यक्रम - <strong> <a href="#" id="getTimeTable">Click Here</a>	 
 			</strong>
 		</li> 
-        <li class="mt-5">Model Paper  - <strong><a href="<?=base_url('student_model_paper') ?>">Click Here</a></strong>
-        </li>
+        <!-- <li class="mt-5">Model Paper  - <strong><a href="<?=base_url('student_model_paper') ?>">Click Here</a></strong>
+        </li> -->
 	</ul>
 	<div id="timeTable" class="mx-auto"> </div>
 	<!-- <ul>
