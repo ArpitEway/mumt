@@ -1052,6 +1052,10 @@ public function update_roll_no_old_data(){
 		foreach ($rs as $student) {
 			echo "<br>".$i." ";
 			echo $student['id']." ".$student['student_id']." ".$student['class_id']." ".$student['roll_number'];
+
+			$data  = array('roll_no'=>$student['roll_number'] );
+			$where = array('student_id'=>$student['student_id'],'id'=> $student['id']);
+			$update =$this->Common_model->updateRecordByConditions('old_exam_data',$where,$data);
 			$i++;
 		}
 	}
