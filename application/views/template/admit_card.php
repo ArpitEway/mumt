@@ -75,7 +75,13 @@
 							<tr>
 							  <td colspan="4"><b>Exam Center: </b><?= $this->Common_model->getExamCenterNameById($student[0]->exam_center_id); ?></td>
 							</tr>
-							<?php } ?>
+							<?php }  
+							/*$st=array(768558,771451,771494,771507,772866,772882);
+							if(in_array($student[0]->student_id,$st)){ ?>
+							<tr>
+							  <td colspan="4"><b>Exam Center: </b>Maharishi Mahesh Yogi Vedic Vishwavidyalaya, C/O Maharishi Shiksha Sansthan Lamti, Jabalpur, Madhya Pradesh</td>
+							</tr>
+							<?php }  */ ?>
 								<!-- <tr>
 							  <td colspan="4"><b>College: </b><?=$student[0]->center_name; ?></td>
 							    </tr> -->

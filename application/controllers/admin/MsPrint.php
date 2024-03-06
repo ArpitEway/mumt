@@ -141,14 +141,14 @@ class MsPrint extends CI_Controller {
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('DISTINCT(center_id)');
 			$this->db->from($this->result_table);
-			$this->db->where(array('exam_form'=>'Y'));
+			$this->db->where(array('exam_form'=>'Y','marksheet_dispatch'=>'Y'));
 			$centers = $this->db->get()->result_array();
 			$ids = array_column($centers, 'center_id');
 			//print_r($ids);die;
 			$this->db->select('*');
 			$this->db->from('center');
 			$this->db->where_in('id',$ids);
-			$this->db->order_by('center_code', "asc");
+			$this->db->order_by('center_code', "ASC");
 			$data['centers'] = $this->db->get()->result();
 			
 			$this->load->view('admin/examController/center_wise_marksheet_dispatch',$data);
@@ -160,7 +160,7 @@ class MsPrint extends CI_Controller {
 		$center = $this->input->post('center');
 		$this->db->select('DISTINCT(center_id)');
 		$this->db->from($this->result_table);
-		$this->db->where(array('exam_form'=>'Y'));
+		$this->db->where(array('exam_form'=>'Y','marksheet_dispatch'=>'Y'));
 		$centers = $this->db->get()->result_array();
 		$ids = array_column($centers, 'center_id');
 	
@@ -172,10 +172,59 @@ class MsPrint extends CI_Controller {
 			$this->db->where_in('id',$ids);
 		$this->db->order_by('center_code', "asc");
 		$data['centers'] = $this->db->get()->result();
-		$data['examTitle'] = "March 2023";
+		$data['examTitle'] = "July 2023";
 		
 		echo $this->load->view('admin/examController/get_center_wise_marksheet_dispatchlist',$data, TRUE);
 	}
+
+	//////////
+	public function center_wise_marksheet_dispatch_backlog(){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+			$titleData = array('title' => 'Center Wise MarkSheet Dispatch Backlog'); 
+			$this->load->view('header',$titleData);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			$this->db->select('DISTINCT(center_id)');
+			$this->db->from('backlog_student');
+			$this->db->where(array('exam_form'=>'Y','exam_year'=>'June 2023'));
+			$centers = $this->db->get()->result_array();
+			$ids = array_column($centers, 'center_id');
+			$this->db->select('*');
+			$this->db->from('center');
+			$this->db->where_in('id',$ids);
+			$this->db->order_by('center_code', "asc");
+			$data['centers'] = $this->db->get()->result();
+			$this->load->view('admin/examController/center_wise_marksheet_dispatch_backlog',$data);
+			$this->load->view('footer');
+		}
+	}
+
+	public function get_center_wise_marksheet_dispatchlist_backlog(){
+		$center = $this->input->post('center');
+		$this->db->select('DISTINCT(center_id)');
+		$this->db->from('backlog_student');
+		$this->db->where(array('exam_form'=>'Y','exam_year'=>'June 2023'));//,'marksheet_dispatch'=>'N'
+		$centers = $this->db->get()->result_array();
+		$ids = array_column($centers, 'center_id');
+	
+		$this->db->select('*');
+		$this->db->from('center');
+		if($center!="All")
+			$this->db->where( array('id'=>$center));
+		else
+		$this->db->where_in('id',$ids);
+		$this->db->order_by('center_code', "asc");
+		$data['centers'] = $this->db->get()->result();
+		$data['examTitle'] = "July 2023";
+
+		
+		echo $this->load->view('admin/examController/get_center_wise_marksheet_dispatchlist_backlog',$data, TRUE);
+	}
+	/////////
 
 	public function update_marksheet_date(){
 		

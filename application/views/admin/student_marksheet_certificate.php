@@ -241,6 +241,8 @@
                         $flag = 1;
                         $tflag = 1;
                          $sub_count = 1;
+                         $group = explode('(', $papers[0]->group_name);
+                         $group_name = explode(',',$group[1]);
                         foreach($papers as $paper)
                         {
                           $paper_name = explode(' - ',$paper->paper_name);
@@ -265,8 +267,7 @@
                       '</tr>';}else{ echo'';};
                           }else if($course_group_id == 12 && $paper->sub_group_id !=1){
                             $sub_group = $this->Common_model->getRecordById('sub_group', 'id', $paper->sub_group_id);
-                            $group = explode('(', $paper->group_name);
-                            $group_name = explode(',',$group[1]);
+                           
                            
                             if($sub_group->id == 2 && $sub_count == 1){
                                 $sub_count=2;

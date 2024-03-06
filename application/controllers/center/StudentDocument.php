@@ -297,4 +297,46 @@
 			exit();
 		}
 
+
+		public function showDocuments($student_id){
+			$csrf = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
+			$titleData = array('title'=>'Uploaded Admission Document');
+			$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+			$where = 'student_id='.$student_id;
+			$student = $this->Common_model->student_info($student_id);
+			//START
+			// $master = $this->Common_model->getSingleRow('master');
+			// $centerData = $this->Common_model->getRecordById('center','id',$this->session->center_id);
+			// $remove_class_from_center =explode(',', $master->remove_class_from_center);
+			// if(in_array($student['class_id'],$remove_class_from_center) && ($centerData->temp_admission_payment =='N')) 
+			// { 
+			// 	redirect(base_url('dashboard'));
+			// }
+			//END	
+
+			
+			$courseData	= $this->Common_model->getRecordById('course_group','id',$student['course_group_id']);
+			$order = 'id asc';
+			if (($courseData->course_type=='Diploma' || $courseData->course_type=='PGDiploma') ||        $student['university_mode']=='PVT') {
+				$whereDoc = 'category in ('.$courseData->document_id.')';
+			}else{
+				$whereDoc = 'category in ('.$courseData->document_id.',0)';
+			}
+
+			$documentData = $this->Common_model->get_record_by_order('document_category','*',$order,$whereDoc);
+			$data = array(
+			'courseData' => $courseData,
+			'documentData' => $documentData,
+			'student' => $student,
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
+			$this->load->view('students/header',$titleData);
+			$this->load->view('students/showDocuments',$data);
+			$this->load->view('students/footer');
+		}
+
 	}

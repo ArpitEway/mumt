@@ -127,12 +127,14 @@ foreach($exam_centers as $row)
             $this->db->where_not_in('paper_no_for_time_table', array('1B','2B'));
             $papers_all = $this->Common_model->get_record('paper_master','*',$where);
             $papersid = array_column($papers_all, 'id');
-
+            // echo "<br>";
+            // echo $this->db->last_query(); 
+            // echo "<br>";
             $this->db->select('count(*) as cnt');
             $this->db->from('student as s');
             $this->db->join('new_exam_form  as e', 'e.student_id = s.student_id AND s.class_id = e.class_id');
             $this->db->where('s.new_exam_form',"Y");
-                    // $this->db->where('s.notification_no',1);	
+            $this->db->where('s.notification_no',1);	
             $this->db->where('s.examcentercode',$row->examcentercode);	
             $this->db->where('s.exam_center_id',$row->id);	
             $this->db->where_in('paper_id', $papersid );
