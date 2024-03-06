@@ -6,11 +6,7 @@ $fali_tot_marks = 0;
 $require_tot_marks = 0;
 $tot_marks = 0;
 $abs_count = 0;
-foreach($old_result_data as $marks){
-  $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code,"class_id"=>$marks->class_id));
 
-  
-}
 
 
 ?>
@@ -46,7 +42,7 @@ foreach($old_result_data as $marks){
     foreach($old_result_data as  $marks){
       // print_r($marks);die;
       $result_1_paper = '';
-      $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code));
+      $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code,"class_id"=>$marks->class_id));
     ?>
     <tr>
       <th><?php echo $marks->paper_name; ?></th>
