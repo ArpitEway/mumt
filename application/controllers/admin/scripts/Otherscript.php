@@ -1039,6 +1039,25 @@ public function update_roll_no_old_data(){
        
          echo 'Count :' .count($student);
     }
+
+	public function roll_number_correction(){
+
+		$sql = "SELECT o.id,o.student_id,o.class_id ,s.roll_number FROM `old_exam_data` as o join student as s on o.student_id=s.student_id WHERE o.class_id=s.old_class_id and o.`roll_no`!=s.roll_number and exam_year='July 2023' and exam_status='R'";
+		//6 March 24
+		$rs = $this->db->query($sql)->result_array();
+		
+		echo count($rs);
+	
+		$i=1;
+		foreach ($rs as $student) {
+			echo "<br>".$i." ";
+			echo $student['id']." ".$student['student_id']." ".$student['class_id']." ".$student['roll_number'];
+			$i++;
+		}
+	}
 }
+
+
+
 
 ?>
