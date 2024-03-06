@@ -5596,7 +5596,7 @@ public function forward_complaint(){
 		$data['old_result_data']  = $new_exam_form;
 		$data['class_id']  = $new_exam_form[0]->class_id;
 		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
-		$class_cbcs = array(193,197,201,203,205,211,213,221,223,225,227,275,279);
+		//$class_cbcs = array(193,197,201,203,205,211,213,221,223,225,227,275,279);
 		// $title = array('title' => 'Result');
 		$data['exam_data'] = $this->Common_model->getRecordById('old_exam_data','id',$exam_data_id);
 		
@@ -5609,7 +5609,7 @@ public function forward_complaint(){
 		if((in_array($new_exam_form[0]->class_id , $class_ids)) && $data['exam_data']->university_mode=='REG'){
 			$this->load->model('Gradesheet_old_model');
 			$this->load->view('admin/grade_marksheet',$data);
-		}else if((in_array($new_exam_form[0]->class_id, $class_cbcs)) && $data['exam_data']->university_mode=='REG'){
+		}else if($data['class']->cbcs=='Y' && $data['exam_data']->university_mode=='REG' && $data['exam_data']->marks_pattern=='GRADE'){
 				$this->load->model('Gradesheet_model_pg');
 				$this->load->view('admin/grade_marksheet_pg',$data);
 		}else if($data['exam_data']->university_mode !="PVT"  && $data['class']->internal !='N'){

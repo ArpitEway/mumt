@@ -72,7 +72,7 @@ class MsPrint extends CI_Controller {
 				}else if($text_val !='' && $radio_val == 'student_id'){
 					$student = $this->Common_model->getRecordById('student','student_id',$text_val);
 				}  
-				 $this->db->where_not_in('exam_year',array('June 2023','July 2023'));
+				// $this->db->where_not_in('exam_year',array('June 2023','July 2023'));
 				$result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id' =>$student->student_id));
 				$data = array(
 					'result' => $result,
@@ -111,12 +111,12 @@ class MsPrint extends CI_Controller {
 		// $course_id !=36 && $course_id !=37
 		$class = $this->Common_model->getRecordByID('class_master','id', $data['exam_data']->class_id);
 
-		$class_ids=array(101,104,107,110,116,119,125,128,131,134);
-		$class_cbcs = array(193,197,201,203,205,211,213,221,223,225,227,275,279);
+		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
+		
 		if($data['exam_data']->university_mode == "REG" && in_array($data['class_id'] , $class_ids)){
 			$this->load->model('Gradesheet_old_model');
 			$dt =  $this->load->view('admin/msprint/student_marksheet_grade',$data);
-		}elseif ($data['exam_data']->marks_pattern=='GRADE' && $data['exam_data']->university_mode == "REG" && in_array($data['class_id'] , $class_cbcs)) {
+		}elseif ($data['exam_data']->marks_pattern=='GRADE' && $data['exam_data']->university_mode == "REG" &&  $class->cbcs=='Y' && $data['exam_data']->marks_pattern=='GRADE') {
 			$this->load->model('GradeSheet_old_model_pg');
 			$dt =  $this->load->view('admin/msprint/student_marksheet_grade_pg',$data);
 		}else if ($data['exam_data']->exam_status == "B") {
@@ -127,10 +127,7 @@ class MsPrint extends CI_Controller {
 			$this->load->view('admin/msprint/old_student_marksheet_certificate',$data);
 		}
 
-		// $this->load->view('admin/generate_tr/header2',$title);
-		// $this->load->view('admin/old_marksheet_top',$data);
-		// $this->load->view('admin/marksheet_student',$data);
-		// $this->load->view('admin/generate_tr/footer2');
+		
 	}
 	public function center_wise_marksheet_dispatch(){
 		if(!$this->session->has_userdata('adminData')){

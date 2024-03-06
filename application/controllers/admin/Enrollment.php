@@ -1583,6 +1583,7 @@ public function getStudentData()
 			}
 		}
 	}
+	
 	public function marksheet($exam_data_id="")
 	{
 		$this->load->library('numbertowordconvertsconver');
@@ -1595,19 +1596,25 @@ public function getStudentData()
 		$course_id = $new_exam_form[0]->course_group_id;
 		$data['old_result_data']  = $new_exam_form;
 		$data['class_id']  = $new_exam_form[0]->class_id;
-		$class_ids=array(101,104,107,110,116,119,125,128,131,134);
+		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
+		
 		// $title = array('title' => 'Result');
 		$data['exam_data'] = $this->Common_model->getRecordById('old_exam_data','id',$exam_data_id);
+		
 		// $course_id !=36 && $course_id !=37
-		$class = $this->Common_model->getRecordByID('class_master','id', $data['exam_data']->class_id);
+		$data['class'] = $this->Common_model->getRecordByID('class_master','id', $data['exam_data']->class_id);
 		
 		$this->load->view('admin/generate_tr/header2',$title);
 		$this->load->view('admin/old_marksheet_top',$data);
 		
-		if((in_array($new_exam_form[0]->class_id , $class_ids)) && $data['exam_data']->university_mode=='REG'){
+		if((in_array($new_exam_form[0]->class_id , $class_ids)) && $data['exam_data']->university_mode=='REG' && $data['exam_data']->marks_pattern=='GRADE'){
 			$this->load->model('Gradesheet_old_model');
 			$this->load->view('admin/grade_marksheet',$data);
-		}else if($data['exam_data']->university_mode !="PVT" || $class->internal !='N'){
+		}else if($data['class']->cbcs=='Y' && $data['exam_data']->university_mode=='REG' && $data['exam_data']->marks_pattern=='GRADE')
+		{
+				$this->load->model('Gradesheet_model_pg');
+				$this->load->view('admin/grade_marksheet_pg',$data);
+		}else if($data['exam_data']->university_mode !="PVT"  && $data['class']->internal !='N'){
 			
 			$this->load->view('admin/marksheet_student',$data);
 		}else{

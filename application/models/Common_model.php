@@ -1505,6 +1505,33 @@ class Common_Model extends CI_Model{
 		return $qry->row()->schoolcollegename;
 
 	}
+
+	function checkGradePreviousResult($student_id,$class_id){
+
+		$qry = $this->db->select("class_id");
+		
+		$qry = $this->db->where("student_id",$student_id);
+		$qry = $this->db->where("class_id<",$class_id);
+		$qry = $this->db->get("old_exam_data");
+		
+		$all_class_id=$qry->result_array();
+		foreach($all_class_id as $prev_class){
+			 $this->db->order_by('id',"desc");
+			 $this->db->limit(1);
+			$results2 = $this->getRecordByWhere('old_exam_data',array('student_id'=>$student_id,'class_id'=>$prev_class['class_id'],'exam_result!='=>"FAIL"));
+			
+			if(count($results2) !=0){
+				continue;
+			}
+			else{
+				
+				return false;
+			}
+
+		}
+
+		return true;
+	}
 }
 
 

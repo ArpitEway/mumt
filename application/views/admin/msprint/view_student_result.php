@@ -186,11 +186,19 @@
                    
                     ?>
                 </div>
-
+                      <?php 
+                      $flag=true;
+                       if($this->session->account_type == 'MsPrint' && $student->exam_pattern=='GRADE'){
+                        $flag= $this->Common_model->checkGradePreviousResult($student->student_id,$res->class_id);
+                        
+                       }
+                      ?>
                       <div class="col-md-1">
                         <?php $id = $this->Common_model->encrypt_decrypt($res->id,'encrypt');?>
                          <!-- <label class="text-heading mt-3"><a class="  btn-sm" href="<?= base_url('MsPrint/marksheet/'.$id.'')?>" target="_blank"><i class="fa fa-eye"></i></a></label> -->
+                         <?php if($flag){  ?>
                          <label class="text-heading mt-3"><a href="<?= base_url( $this->session->account_type.'/marksheet/'.$id.'')?>" target="_blank"><i class="fa fa-eye"></i></a></label>
+                        <?php } ?>
                     </div>
                     <?php if( $this->session->account_type == 'Admins' || $this->session->account_type == 'MsPrint'){ ?>
                     <div class="col-md-1">  
