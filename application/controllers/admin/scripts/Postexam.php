@@ -113,6 +113,7 @@ class Postexam extends CI_Controller {
                 'f_h_name' => $student->f_h_name,
                 'mother_name' => $student->mother_name,
                 'marksheet_no' =>$student->marksheet_no,
+                'marks_pattern'=>$student->exam_pattern,
             );
             $new_exam_form = $this->Common_model->getRecordByWhere('new_exam_form',array('student_id' => $student->student_id,'class_id'=>$class_id));
             foreach($new_exam_form  as $marks)
