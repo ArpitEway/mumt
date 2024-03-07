@@ -1043,7 +1043,7 @@ public function update_roll_no_old_data(){
 	public function roll_number_correction(){
 
 		//$sql = "SELECT o.id,o.student_id,o.class_id ,s.roll_number FROM `old_exam_data` as o join student as s on o.student_id=s.student_id WHERE o.class_id=s.old_class_id and o.`roll_no`!=s.roll_number and exam_year='July 2023' and exam_status='R'";
-		$sql="SELECT * FROM `old_exam_data` as o JOIN student as s on o.student_id=s.student_id WHERE o.marks_pattern!=s.exam_pattern";
+		echo $sql="SELECT * FROM `old_exam_data` as o JOIN student as s on o.student_id=s.student_id WHERE o.marks_pattern!=s.exam_pattern";
 		//7 March 24
 		$rs = $this->db->query($sql)->result_array();
 		
