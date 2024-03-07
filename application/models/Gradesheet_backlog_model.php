@@ -36,7 +36,7 @@ class Gradesheet_backlog_model extends CI_Model
 	public function view_result($student_id,$course_group_id,$class_id,$mode,$exam_id)
 	{
             $this->db->order_by('sub_group_id');
-			$std  = $this->Common_model->getRecordByWhere('backlog_exam_form',array('class_id'=> $class_id,'student_id'=>$student_id));
+			$std  = $this->Common_model->getRecordByWhere('backlog_exam_form',array('class_id'=> $class_id,'student_id'=>$student_id,'backlog_student_id'=>$exam_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
 		

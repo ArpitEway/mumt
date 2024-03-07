@@ -544,7 +544,9 @@
               <tr>
                 <td width="17" align="center">
                   <div align="left">
-                    <?php echo "Date :".$marksheet_variables->backlog_result_date; ?></div></td>
+                    <?php //echo "Date :".$marksheet_variables->backlog_result_date; ?>
+                    <?php if($university_mode != 'PVT')  echo "Date :".$marksheet_variables->backlog_result_date;else  echo "Date :".$marksheet_variables->backlog_pvt_result_date;?>
+                  </div></td>
                   </tr>
                   <tr class="">
                     <td colspan="">
