@@ -1042,8 +1042,9 @@ public function update_roll_no_old_data(){
 
 	public function roll_number_correction(){
 
-		$sql = "SELECT o.id,o.student_id,o.class_id ,s.roll_number FROM `old_exam_data` as o join student as s on o.student_id=s.student_id WHERE o.class_id=s.old_class_id and o.`roll_no`!=s.roll_number and exam_year='July 2023' and exam_status='R'";
-		//6 March 24
+		//$sql = "SELECT o.id,o.student_id,o.class_id ,s.roll_number FROM `old_exam_data` as o join student as s on o.student_id=s.student_id WHERE o.class_id=s.old_class_id and o.`roll_no`!=s.roll_number and exam_year='July 2023' and exam_status='R'";
+		$sql="SELECT * FROM `old_exam_data` as o JOIN student as s on o.student_id=s.student_id WHERE o.marks_pattern!=s.exam_pattern";
+		//7 March 24
 		$rs = $this->db->query($sql)->result_array();
 		
 		echo count($rs);
@@ -1051,12 +1052,13 @@ public function update_roll_no_old_data(){
 		$i=1;
 		foreach ($rs as $student) {
 			echo "<br>".$i." ";
-			echo $student['id']." ".$student['student_id']." ".$student['class_id']." ".$student['roll_number'];
+			echo $student['id']." ".$student['student_id']." ".$student['class_id']." ".$student['roll_number'] ." ".$student['marks_pattern']." ".$student['exam_pattern'];
 
-			$data  = array('roll_no'=>$student['roll_number'] );
-			$where = array('student_id'=>$student['student_id'],'id'=> $student['id']);
-			$update =$this->Common_model->updateRecordByConditions('old_exam_data',$where,$data);
+			//$data  = array('roll_no'=>$student['roll_number'] );
+			//$where = array('student_id'=>$student['student_id'],'id'=> $student['id']);
+			//$update =$this->Common_model->updateRecordByConditions('old_exam_data',$where,$data);
 			$i++;
+			break;
 		}
 	}
 }
