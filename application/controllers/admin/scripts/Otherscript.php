@@ -1046,18 +1046,20 @@ public function update_roll_no_old_data(){
 		echo $sql="SELECT * FROM `old_exam_data` as o JOIN student as s on o.student_id=s.student_id WHERE o.marks_pattern!=s.exam_pattern";
 		//7 March 24
 		$rs = $this->db->query($sql)->result_array();
-		
+		echo "<br>";
 		echo count($rs);
-	
+		echo "<br>";
 		$i=1;
 		foreach ($rs as $student) {
 			echo "<br>".$i." ";
 			echo $student['id']." ".$student['student_id']." ".$student['class_id']." ".$student['roll_number'] ." ".$student['marks_pattern']." ".$student['exam_pattern'];
 
 			//$data  = array('roll_no'=>$student['roll_number'] );
-			//$where = array('student_id'=>$student['student_id'],'id'=> $student['id']);
-			//$update =$this->Common_model->updateRecordByConditions('old_exam_data',$where,$data);
+			$data  = array('marks_pattern'=>$student['exam_pattern'] );
+			$where = array('student_id'=>$student['student_id'],'id'=> $student['id']);
+			$update =$this->Common_model->updateRecordByConditions('old_exam_data',$where,$data);
 			$i++;
+			
 			break;
 		}
 	}
