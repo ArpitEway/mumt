@@ -297,12 +297,12 @@ class Gradesheet_backlog_model extends CI_Model
 	{
 		$this->credit_point = $this->paper["credit_point"];
 		$this->tot_credit += $this->paper["credit_point"];
-		// $this->result_array[$this->paper['paper_code']]["credit"] = $this->paper["credit_point"];
-        if($this->paper["status"]=="C"){
-			$this->result_array[$this->paper['paper_code']]["credit"] = $this->paper["credit_point"]." C";
-		}else{
-			$this->result_array[$this->paper['paper_code']]["credit"] = $this->paper["credit_point"];
-		}
+		$this->result_array[$this->paper['paper_code']]["credit"] = $this->paper["credit_point"];
+        // if($this->paper["status"]=="C"){
+		// 	$this->result_array[$this->paper['paper_code']]["credit"] = $this->paper["credit_point"]." C";
+		// }else{
+		// 	$this->result_array[$this->paper['paper_code']]["credit"] = $this->paper["credit_point"];
+		// }
 	}
 
 	private function grade()
@@ -405,12 +405,12 @@ class Gradesheet_backlog_model extends CI_Model
 	private function credit_foudation($sub_group_id){
 		$this->credit_point = $this->foundation_paper[$sub_group_id]["credit_point"];
 		$this->tot_credit += $this->foundation_paper[$sub_group_id]["credit_point"];
-		// $this->result_array[$this->paper['paper_code']]['credit'] = $this->foundation_paper[$sub_group_id]["credit_point"];
-        if($this->paper["status"] == "C"){
-            $this->result_array[$this->paper['paper_code']]['credit'] = $this->foundation_paper[$sub_group_id]["credit_point"]." C";
-       }else{
-           $this->result_array[$this->paper['paper_code']]['credit'] = $this->foundation_paper[$sub_group_id]["credit_point"];	
-       }
+		$this->result_array[$this->paper['paper_code']]['credit'] = $this->foundation_paper[$sub_group_id]["credit_point"];
+    //     if($this->paper["status"] == "C"){
+    //         $this->result_array[$this->paper['paper_code']]['credit'] = $this->foundation_paper[$sub_group_id]["credit_point"]." C";
+    //    }else{
+    //        $this->result_array[$this->paper['paper_code']]['credit'] = $this->foundation_paper[$sub_group_id]["credit_point"];	
+    //    }
 	}
 
 	private function grade_foudation($sub_group_id){

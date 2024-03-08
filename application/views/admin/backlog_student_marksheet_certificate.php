@@ -51,7 +51,8 @@
     $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
     $marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
-    $isFinalClass = $this->Common_model->hasOneClass($course_group_id);
+    $isOneClass = $isFinalClass = $this->Common_model->hasOneClass($course_group_id);
+     
     if($isFinalClass){
       $course_duration = '(One Year Course)';
     }else if($course_group_id == 36 || $course_group_id == 37){

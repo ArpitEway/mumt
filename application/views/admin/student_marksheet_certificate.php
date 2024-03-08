@@ -53,8 +53,8 @@
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
     $border = ($classData->admission_permission == 'Y')?'border: 1px solid black;margin-top:20px;':'border: 0px solid #22316C;';
     $margin = ($classData->admission_permission == 'Y')?'min-height:420px;margin-top: 20px;':'min-height:420px;margin-top: 40px;';
-    $isFinalClass = $this->Common_model->hasOneClass($course_group_id);
-    $isOneClass = $this->Common_model->hasOneClass($course_group_id);
+    $isOneClass = $isFinalClass = $this->Common_model->hasOneClass($course_group_id);
+     
     if($isFinalClass){
       $course_duration = '(One Year Course)';
     }else if($course_group_id == 36 || $course_group_id == 37){

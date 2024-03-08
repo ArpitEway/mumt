@@ -454,7 +454,7 @@
                     <?php $j=$i; ?>
                     <tr>
                       <td height="20" ><strong>Obtained Marks</strong></td>
-                      <?php if ($classData->last_class=="L" && !$isOneClass): ?>
+                      <?php  if ($classData->last_class=="L" && !$isOneClass): ?>
                       <?php
                         $gtot_obtain_marks = 0;
                         $gtot_total_marks = 0;
@@ -476,7 +476,8 @@
                       <?php if ($classData->last_class=="L") { ?>
                         <td>
                         <?php
-                          $percentage = round(($gtot_obtain_marks/$gtot_total_marks)*100,2);
+                         // $percentage = round(($gtot_obtain_marks/$gtot_total_marks)*100,2);
+                          $percentage = (!$isOneClass)? round(($gtot_obtain_marks/$gtot_total_marks)*100,2) : round(($tot_std_marks/$tot_marks)*100,2);
                           if($percentage>=60){
                             $division = "First";
                           }elseif($percentage<60 && $percentage>=40){
