@@ -2031,7 +2031,7 @@ class Center extends CI_Controller {
 		//$this->db->where('class_master.id', 'student.class_id');
 		
 		// $this->db->where('class_master.backlog_result_permission', 'Y');
-        $this->db->where('class_master.backlog_exam_form_permission', 'Y');
+        $this->db->where('class_master.backlog_result_permission', 'Y');
 		//$this->db->where('center_id', $center_id);
 		$this->db->where('result_show','Y');
 		$this->db->where('exam_form','Y');
