@@ -48,7 +48,8 @@
     $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
     $marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
-    $border = ($classData->admission_permission == 'Y')?'border: 1px solid black;margin-top:20px;':'border: 0px solid #22316C;';
+    //$border = ($classData->admission_permission == 'Y')?'border: 1px solid black;margin-top:20px;':'border: 0px solid #22316C;';
+    $border ='border: 0px solid #22316C;';
     $isOneClass = $this->Common_model->hasOneClass($course_group_id);
     // var_dump($isOneClass);
     foreach($students as $student)
