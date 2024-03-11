@@ -158,14 +158,14 @@ class Gradesheet_model extends CI_Model
 			$papers = $this->Common_model->get_all_papers($student_id,$class_id);
 		}
 		if($this->classData->class_group == 'Y'){
-		$papers_list = $this->Common_model->get_all_group_papers($student_id,$class_id);
+		$papers_list = $this->Common_model->get_all_group_papers($student_id,$class_id,$course_group_id);
 		}
 		// get_all_group_papers
-		// print_r($papers);die;
+		// print_r($papers_list);
 		
 		// print_r($this->allclass);die;
 		$this->classCount = count($this->allclass);
-		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+	//	$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		$this->foundation_paper = array();
 		$this->result_array = array();
 		$this->tot_credit_point = 0;
@@ -183,7 +183,6 @@ class Gradesheet_model extends CI_Model
 		$this->withheld = false;
 		foreach ($papers as $paper) {
 			$this->paper = $paper;
-			
 			
 			if($this->withheld){
 				
@@ -210,6 +209,12 @@ class Gradesheet_model extends CI_Model
 		}
 		foreach ($papers_list as $paper) {
 			$this->paper = $paper;
+			if(@$this->paper["group_name"]){
+				$group = explode('(', $this->paper["group_name"]);
+				 $group_name = explode(',',$group[1]);
+				// if($this->paper["group_name"])
+				echo $group_name[0];
+			 }
 			if($this->withheld){
 				
 				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
@@ -424,7 +429,20 @@ class Gradesheet_model extends CI_Model
 		$this->result_array[$this->paper['paper_code']]["type"] = $this->paper["type"];
         $this->result_array[$this->paper['paper_code']]['sub_group'] = $this->paper['sub_group_id'];
         $this->result_array[$this->paper['paper_code']]['group'] = $this->paper['group_id'];
+		echo "<pre>";
+		print_r($this->paper);echo "</pre>";
+		
+			
+		// 	$group_array = $this->Common_model->getRecordById('group', 'id', $this->paper['group_id']);
+		// 	$group = explode('(', $group_array[0]->group_name);
+        //     $group_name = explode(',',$group[1]);
+
+		// 	$this->result_array[$this->paper['paper_code']]["paper_name"] ='X'.$this->paper['sub_group_id'].'X['. $this->paper["group_paper_name"].']#'.$this->paper["paper_name"];
+		// }
+		// else{
+
 		$this->result_array[$this->paper['paper_code']]["paper_name"] ='['. $this->paper["group_paper_name"].']#'.$this->paper["paper_name"];
+		//}
 	}
 
 	private function credit()
@@ -520,7 +538,7 @@ class Gradesheet_model extends CI_Model
 	}
 
 	private function paper_name_foudation($sub_group_id){
-		$data = '['.$this->paper["group_paper_name"].']#'.$this->foundation_paper[$sub_group_id]["paper_name"].'<br><br>'.'B) '.$this->paper["paper_name"];
+		$data = 'XX['.$this->paper["group_paper_name"].']#'.$this->foundation_paper[$sub_group_id]["paper_name"].'<br><br>'.'B) '.$this->paper["paper_name"];
 		// print_r($this->paper["paper_name"]);
         $this->result_array[$this->paper['paper_code']]['sub_group'] = $this->foundation_paper[$sub_group_id]['sub_group'];
         $this->result_array[$this->paper['paper_code']]['group'] = $this->foundation_paper[$sub_group_id]['group'];

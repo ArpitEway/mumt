@@ -239,8 +239,11 @@
 				$total_obtained_marks +=$marks->int_marks;
 				$total_max_marks +=$marks->max_internal_marks;
 				if($classData->internal!="N" && $mode == "REG"){
+				
 					if($marks->int_marks<$marks->min_internal_marks){
+						
 						$int_fail_count++;
+						$fail_count++;
 						array_push($ATKT_paper_codes ,$marks->paper_code );
 					}
 					if($marks->int_marks=='N' || $marks->int_marks==''){
@@ -249,6 +252,7 @@
 					if($marks->int_marks=="ABS"){
 						$abs_count++;
 					}
+					
 				}
 			}else{
 				$practical_paper_count++;
