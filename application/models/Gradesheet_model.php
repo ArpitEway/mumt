@@ -440,7 +440,13 @@ class Gradesheet_model extends CI_Model
 			if($this->paper['sub_group_id']==4){
 				$group_paper_name=' - '.substr($this->paper['group_name_array'][2],0,-1);
 			}
-		$this->result_array[$this->paper['paper_code']]["paper_name"] ='['. $this->paper["group_paper_name"].$group_paper_name.']#'.$this->paper["paper_name"];
+			if($this->paper['sub_group_id']==5){
+				$group_paper_name=' - '.'Vocational Subject';
+			}
+			if($this->paper['sub_group_id']==6){
+				$group_paper_name=' - '.'Field Work';
+			}
+		$this->result_array[$this->paper['paper_code']]["paper_name"] =''. $this->paper["group_paper_name"].$group_paper_name.'#'.$this->paper["paper_name"];
 		//}
 	}
 
@@ -543,11 +549,11 @@ class Gradesheet_model extends CI_Model
 				$foundation_fc=' - Foundation Course 1 ';
 			else
 				$foundation_fc=' - Foundation Course 2 ';
-			$data = '['.$this->paper["group_paper_name"].$foundation_fc.']#'.$this->foundation_paper[$sub_group_id]["paper_name"].'<br><br>'.'B) '.$this->paper["paper_name"];
+			$data = ''.$this->paper["group_paper_name"].$foundation_fc.'#'.$this->foundation_paper[$sub_group_id]["paper_name"].'<br><br>'.'B) '.$this->paper["paper_name"];
 		}
 		
 		else
-		$data = '['.$this->paper["group_paper_name"].']#'.$this->foundation_paper[$sub_group_id]["paper_name"].'<br><br>'.'B) '.$this->paper["paper_name"];
+		$data = $this->paper["group_paper_name"].'#'.$this->foundation_paper[$sub_group_id]["paper_name"].'<br><br>'.'B) '.$this->paper["paper_name"];
 		// print_r($this->paper["paper_name"]);
         $this->result_array[$this->paper['paper_code']]['sub_group'] = $this->foundation_paper[$sub_group_id]['sub_group'];
         $this->result_array[$this->paper['paper_code']]['group'] = $this->foundation_paper[$sub_group_id]['group'];
@@ -719,7 +725,7 @@ class Gradesheet_model extends CI_Model
 			
 			echo '<tr style="padding:4px;font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="center">';
 			echo '<td style="margin-top:2px;" align="center"><strong>'.$key.'</strong></td>';
-			echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='180px'><strong>".$paper[0]."</strong></td><td></td><td><strong>".$paper[1]."</strong></td></tr></table></td>";
+			echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td ><strong>".$paper[0]."</strong><br><br><strong>".$paper[1]."</strong></td></tr></table></td>";
 			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				$this->check_grace_marks = true;
 				$this->obt_tot_credit += $result['credit'];
