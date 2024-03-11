@@ -212,8 +212,9 @@ class Gradesheet_model extends CI_Model
 			if(@$this->paper["group_name"]){
 				$group = explode('(', $this->paper["group_name"]);
 				 $group_name = explode(',',$group[1]);
+				 $this->paper['group_name_array']=$group_name;
 				// if($this->paper["group_name"])
-				echo $group_name[0];
+				//echo $group_name[0];
 			 }
 			if($this->withheld){
 				
@@ -429,19 +430,17 @@ class Gradesheet_model extends CI_Model
 		$this->result_array[$this->paper['paper_code']]["type"] = $this->paper["type"];
         $this->result_array[$this->paper['paper_code']]['sub_group'] = $this->paper['sub_group_id'];
         $this->result_array[$this->paper['paper_code']]['group'] = $this->paper['group_id'];
-		echo "<pre>";
-		print_r($this->paper);echo "</pre>";
-		
-			
-		// 	$group_array = $this->Common_model->getRecordById('group', 'id', $this->paper['group_id']);
-		// 	$group = explode('(', $group_array[0]->group_name);
-        //     $group_name = explode(',',$group[1]);
-
-		// 	$this->result_array[$this->paper['paper_code']]["paper_name"] ='X'.$this->paper['sub_group_id'].'X['. $this->paper["group_paper_name"].']#'.$this->paper["paper_name"];
-		// }
-		// else{
-
-		$this->result_array[$this->paper['paper_code']]["paper_name"] ='['. $this->paper["group_paper_name"].']#'.$this->paper["paper_name"];
+	
+			if($this->paper['sub_group_id']==2){
+				$group_paper_name=' - '.$this->paper['group_name_array'][0];
+			}
+			if($this->paper['sub_group_id']==3){
+				$group_paper_name=' - '.$this->paper['group_name_array'][1];
+			}
+			if($this->paper['sub_group_id']==4){
+				$group_paper_name=' - '.substr($this->paper['group_name_array'][2],0,-1);
+			}
+		$this->result_array[$this->paper['paper_code']]["paper_name"] ='['. $this->paper["group_paper_name"].$group_paper_name.']#'.$this->paper["paper_name"];
 		//}
 	}
 
@@ -538,7 +537,17 @@ class Gradesheet_model extends CI_Model
 	}
 
 	private function paper_name_foudation($sub_group_id){
-		$data = 'XX['.$this->paper["group_paper_name"].']#'.$this->foundation_paper[$sub_group_id]["paper_name"].'<br><br>'.'B) '.$this->paper["paper_name"];
+		if($this->paper["course_group_id"]==12){
+			
+			if($this->paper["group_paper_name"]=="FC1")
+				$foundation_fc=' - Foundation Course 1 ';
+			else
+				$foundation_fc=' - Foundation Course 2 ';
+			$data = '['.$this->paper["group_paper_name"].$foundation_fc.']#'.$this->foundation_paper[$sub_group_id]["paper_name"].'<br><br>'.'B) '.$this->paper["paper_name"];
+		}
+		
+		else
+		$data = '['.$this->paper["group_paper_name"].']#'.$this->foundation_paper[$sub_group_id]["paper_name"].'<br><br>'.'B) '.$this->paper["paper_name"];
 		// print_r($this->paper["paper_name"]);
         $this->result_array[$this->paper['paper_code']]['sub_group'] = $this->foundation_paper[$sub_group_id]['sub_group'];
         $this->result_array[$this->paper['paper_code']]['group'] = $this->foundation_paper[$sub_group_id]['group'];
@@ -710,7 +719,7 @@ class Gradesheet_model extends CI_Model
 			
 			echo '<tr style="padding:4px;font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="center">';
 			echo '<td style="margin-top:2px;" align="center"><strong>'.$key.'</strong></td>';
-			echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='50px'><strong>".$paper[0]."</strong></td><td></td><td><strong>".$paper[1]."</strong></td></tr></table></td>";
+			echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='180px'><strong>".$paper[0]."</strong></td><td></td><td><strong>".$paper[1]."</strong></td></tr></table></td>";
 			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				$this->check_grace_marks = true;
 				$this->obt_tot_credit += $result['credit'];
