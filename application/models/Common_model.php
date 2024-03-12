@@ -619,7 +619,7 @@ class Common_Model extends CI_Model{
 		return $query->result_array();
 		
 	}
-	public function get_all_group_papers($id,$class_id){
+	public function get_all_group_papers($id,$class_id,$course_group_id= ''){
 		$where = array(
 			'student_id' => $id,
 			'e.class_id' => $class_id,
@@ -627,11 +627,24 @@ class Common_Model extends CI_Model{
 			 
 			
 			);
-		$this->db->select('e.*,group_paper.credit_point,paper_master.paper_name,paper_master.paper_code,group_paper.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks,e.sub_group_id,e.group_id,e.paper_order');
+
+		if($course_group_id != '' && $course_group_id == 12){
+			$this->db->select('e.*,group_paper.credit_point,paper_master.paper_name,paper_master.paper_code,group_paper.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks,e.sub_group_id,e.group_id,e.paper_order,g.group_name');
+			
+
+		}else{
+			$this->db->select('e.*,group_paper.credit_point,paper_master.paper_name,paper_master.paper_code,group_paper.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks,e.sub_group_id,e.group_id,e.paper_order');
+		}	
+		
 		$this->db->from('paper_master');
 		$this->db->order_by('group_paper.sub_group_id,paper_no','asc');
 		$this->db->join('new_exam_form as e','e.paper_id = paper_master.id','left');
 		$this->db->join('group_paper','paper_master.id=group_paper.paper_id and group_paper.group_id=e.group_id','left');
+		if($course_group_id != '' && $course_group_id == 12){
+			
+			$this->db->join('group as g', 'e.group_id = g.id');
+
+		}
 		$this->db->where($where); 
 		// $this->db->where(`group_paper`.`group_id`=`exam_form`.`group_id` );
 		$query = $this->db->get();
