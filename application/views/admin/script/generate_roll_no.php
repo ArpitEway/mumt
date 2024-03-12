@@ -31,7 +31,7 @@
 
 					$i=1;
 					
-					 $this->db->where_not_in('id',array(255,257));
+					// $this->db->where_not_in('id',array(255,257));
 					$whereclass = array('temp_id!=' => 0,'exam_form_permission' => 'Y');
 					 
 					 //'exam_form_permission' => 'Y'
