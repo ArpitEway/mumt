@@ -64,7 +64,10 @@
 						<h5>Attendance Sheet Examination 
 							<?php
 							if($student->course_group_id==75 || $student->course_group_id==76 || $student->course_group_id==77){
-								echo '2024';
+								if($student[0]->class_id==255 || $student[0]->class_id==257 )
+									echo 'March 2024';
+								else
+									echo '2024';
 							}
 							else{
 								echo 'January 2024';
@@ -160,7 +163,7 @@
 					<td><?php echo $i ; ?></td>
 					<td><?php echo date("d-m-Y", strtotime($paper->exam_date)); ?></td>
 					<td><?php 
-					if($paper->exam_shift=='Afternoon' && ($student->class_id==259 || $student->class_id==261 || $student->class_id==263) ){
+					if($paper->exam_shift=='Afternoon' && ($student->class_id==259 || $student->class_id==261 || $student->class_id==263 || $student->class_id==255 || $student->class_id==257) ){
 						echo '12:00 PM To 3:00 PM';
 					}elseif($paper->exam_shift=='Early Morning'){
 						echo '07:00 To 10:00 AM';

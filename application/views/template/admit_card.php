@@ -46,6 +46,9 @@
 								<?php
 								if($student[0]->course_group_id==75 || $student[0]->course_group_id==76 || $student[0]->course_group_id==77)
 								{
+									if($student[0]->class_id==255 || $student[0]->class_id==257 )
+									echo 'March 2024';
+									else
 									echo '2024';
 								}
 								else{
@@ -146,7 +149,7 @@
 					<?php //endif ?> -->
 					<td><?php
 					
-					if($paper->exam_shift=='Afternoon' && ($student[0]->class_id==259 || $student[0]->class_id==261 || $student[0]->class_id==263) ){
+					if($paper->exam_shift=='Afternoon' && ($student[0]->class_id==259 || $student[0]->class_id==261 || $student[0]->class_id==263 || $student[0]->class_id==255 || $student[0]->class_id==257) ){
 						echo '12:00 PM To 3:00 PM';
 					}
 					elseif($paper->exam_shift=='Morning'){
