@@ -64,7 +64,7 @@
 						<h5>Attendance Sheet Examination 
 							<?php
 							if($student->course_group_id==75 || $student->course_group_id==76 || $student->course_group_id==77){
-								if($student[0]->class_id==255 || $student[0]->class_id==257 )
+								if($student->class_id==255 || $student->class_id==257 )
 									echo 'March 2024';
 								else
 									echo '2024';
