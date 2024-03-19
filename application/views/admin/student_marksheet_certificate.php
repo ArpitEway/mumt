@@ -74,7 +74,7 @@
               <td height="155" colspan="2" valign="bottom">
                 <center>
                   
-                  <strong style="font-size: 17px;"><?php echo $student->course_name .' '.$course_duration.' '.$marksheet_variables->exam_session ?></strong>
+                  <strong style="font-size: 18px;"><?php echo $student->course_name .' '.$course_duration.' '.$marksheet_variables->exam_session ?></strong>
                 </center>
               </td>
             </tr>
@@ -167,9 +167,9 @@
                           <td width="6%" scope="col"><strong><u>Max</u></strong></td>
                           <td width="6%" scope="col"><strong><u>Min</u></strong></td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                           <td colspan="9">&nbsp;</td>
-                        </tr>
+                        </tr> -->
                         <?php
                         $check_grace_marks = false;
                         $fail_count = 0;
