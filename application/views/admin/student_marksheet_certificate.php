@@ -52,7 +52,7 @@
     $marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
     $border = ($classData->admission_permission == 'Y')?'border: 1px solid black;margin-top:20px;':'border: 0px solid #22316C;';
-    $margin = ($classData->admission_permission == 'Y')?'min-height:420px;margin-top: 20px;':'min-height:420px;margin-top: 40px;';
+    $margin = ($classData->admission_permission == 'Y')?'min-height:420px;margin-top: 20px;':'min-height:420px;margin-top: 20px;';
     $isOneClass = $isFinalClass = $this->Common_model->hasOneClass($course_group_id);
      
     if($isFinalClass){
@@ -67,20 +67,22 @@
       $papers = $this->Common_model->student_info_for_result($student->student_id,$student->old_class_id, $student->course_group_id);
       ?>
       <fieldset id="printarea" class="breakhere" style="width:90%;border: 0px solid #22316C;"> 
-        <div align="left"> MS No. <?php echo $student->marksheet_no; ?> </div>
+       
         <table align="center" border="0" width="100%">
           <tbody>
             <tr>
-              <td height="130" colspan="2" valign="bottom">
+              <td height="155" colspan="2" valign="bottom">
                 <center>
                   
-                  <strong><?php echo $student->course_name .' '.$course_duration.' '.$marksheet_variables->exam_session ?></strong>
+                  <strong style="font-size: 17px;"><?php echo $student->course_name .' '.$course_duration.' '.$marksheet_variables->exam_session ?></strong>
                 </center>
               </td>
             </tr>
+            <tr></tr>
             <tr>
               <td align="center" height="120" colspan="2">
-                <table class="mytable" border="0" cellpadding="2" cellspacing="2" width="100%">
+                <table class="mytable" border="0" cellpadding="2" cellspacing="2" width="100%" style="
+    margin-top: 10px;">
                   <tbody>
                     <?php
                   if($university_mode=='REG'){
@@ -558,11 +560,12 @@
                     </tr>
                   </tbody>
                 </table>
+               
               </fieldset>
               <!-- if starts -->
               <tr>
                 <td align="left" colspan="2">
-                  <table width="100%" style="margin-top:40px">
+                  <table width="100%" style="margin-top:30px">
                     <tr>
                     </tr>
                   </table>    
@@ -581,13 +584,14 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>
+                    <td><div align="left"> MS No. <?php echo $student->marksheet_no; ?> </div>
                   </td>
                 </tr>
               </td>
             </tr>
           </tbody>
         </table>
+        
       </fieldset>
     <?php } ?>
   </center>
