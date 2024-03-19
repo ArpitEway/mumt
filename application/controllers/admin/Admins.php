@@ -3078,7 +3078,7 @@ public function update_exam_datewise_permission(){
 			$this->db->limit(1000,$start);
 			$pagetitle=$startlimit;
 		}
-		$this->db->limit(10,$start);
+		$this->db->limit(1000,$start);
 		if($exam_pattern=="M"){
 			$pattern="MARKS";
 		}
