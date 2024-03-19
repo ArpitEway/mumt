@@ -74,15 +74,15 @@ class Gradesheet_tr_model extends CI_Model
 		// var_dump($this->result_array);
 		$this->echo_result(); 
 		$this->total();
-		if($this->mode=='REG'){
+		// if($this->mode=='REG'){
 			$this->result_head();
 			$this->set_result();
 			$this->AGPA();
-		}else{
-			$this->result_head_pvt();
-			$this->set_result();
-			$this->AGPA_pvt();
-		}
+		// }else{
+		// 	$this->result_head_pvt();
+		// 	$this->set_result();
+		// 	$this->AGPA_pvt();
+		// }
 		return $this->result();
 		// echo "<pre>";
 		// print_r($this->foundation_paper);

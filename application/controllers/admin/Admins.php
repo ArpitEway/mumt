@@ -3078,6 +3078,7 @@ public function update_exam_datewise_permission(){
 			$this->db->limit(1000,$start);
 			$pagetitle=$startlimit;
 		}
+		$this->db->limit(10,$start);
 		if($exam_pattern=="M"){
 			$pattern="MARKS";
 		}
@@ -3103,7 +3104,7 @@ public function update_exam_datewise_permission(){
 		$data['title'] .= $title;//echo $this->db->last_query(); die;
 		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
 		$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280);
-		if((in_array($class_id, $class_ids)) && $mode=='REG' && $pattern!="MARKS")	
+		if((in_array($class_id, $class_ids))  && $pattern!="MARKS")	//&& $mode=='REG'
 		{
 			$this->load->model('Gradesheet_tr_model');
 			$this->load->view('admin/generate_gradesheet_tr',$data);
@@ -3377,7 +3378,7 @@ public function update_exam_datewise_permission(){
 			$this->db->limit(1000,$start);
 			$pagetitle=$startlimit;
 		}	
-		//$this->db->limit(1);
+		$this->db->limit(10);
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
 		$data['title'] = $title;
 		$data['university_mode'] = $mode;

@@ -191,7 +191,7 @@ table.last_table, .last_table td, .last_table th{
     $fc2_min =0;
     $final_result = '';
 
-    if($student->university_mode == 'REG'){
+     if($student->university_mode == 'REG'){
       $rowspanhead = ($classData->project!='N' || $classData->practical!='N') ? "6" : "3";
       // $rowspandata = (($classData->project!='N' || $classData->practical!='N') && $classData->internal!='N')? "5" : "4";
       if($classData->project!='N' || $classData->practical!='N' && $classData->internal!='N'){
@@ -203,10 +203,11 @@ table.last_table, .last_table td, .last_table th{
       }
 
       
-    }else{
-      $rowspanhead = "3";
-      $rowspandata = "4";
-    }
+     }
+     else{
+       $rowspanhead = "4";
+       $rowspandata = "8";
+     }
     foreach($marks as $new_exam_form)
     {
       
@@ -591,7 +592,7 @@ table.last_table, .last_table td, .last_table th{
             elseif($int_abs_count>0 &&  $theory_abs_count>0 && $p_abs_count>0){
               echo 'Year Break';
             }
-            elseif($int_abs_count == $count_int ||  $theory_abs_count == ($count_theory - 2) || ($p_abs_count == $count_practical)){
+            elseif(($int_abs_count == $count_int && $student->university_mode != 'PVT') ||  $theory_abs_count == ($count_theory - 2) || ($p_abs_count == $count_practical && $student->university_mode != 'PVT')){
              
               if($theory_abs_count == ($count_theory-2)){
                 echo 'Year Break';
