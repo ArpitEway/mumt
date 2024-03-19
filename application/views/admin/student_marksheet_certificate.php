@@ -428,7 +428,7 @@
                   <table border="0" cellpadding="0" height="112" width="100%">
                     <tbody>
                       <tr>
-                        <td  colspan="8">  </td>
+                        <td  > &nbsp; </td>
                       </tr>
                       <tr>
                         <td height="20">&nbsp;</td>
