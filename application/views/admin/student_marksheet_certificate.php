@@ -241,7 +241,8 @@
                         $flag = 1;
                         $tflag = 1;
                          $sub_count = 1;
-                         $foundation_count = 1;
+                         $foundation_count = 0;
+                         $foundation_count_show = 0;
                          $group = explode('(', $papers[0]->group_name);
                          $group_name = explode(',',$group[1]);
                         foreach($papers as $paper)
@@ -268,12 +269,13 @@
                       '</tr>';}else{ echo'';};
                           }else if($course_group_id == 12 ){
                             $sub_group = $this->Common_model->getRecordById('sub_group', 'id', $paper->sub_group_id);
-                            
-                            if($sub_group->id == 1 && $foundation_count == 1){
-                              $foundation_count=2;
+                            $foundation_count++;
+                            if($sub_group->id == 1 && ($foundation_count == 1 ||  $foundation_count == 3 ) ){
+                              //$foundation_count=2;
+                              $foundation_count_show++;
                               echo ' <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.'<td style="margin-top:2px;" align="left">'.'</td>'.
                               '<td colspan="8" align="left">'.'<strong>'.
-                            '<u>'.$sub_group->sub_group_name.'</u>'.'</strong>'.'</td>'.'</tr>'.'<tr>'
+                            '<u>'.$sub_group->sub_group_name.' - '.$foundation_count_show.'</u>'.'</strong>'.'</td>'.'</tr>'.'<tr>'
                             .'<td colspan="9">'.'&nbsp;'.'</td>'.
                           '</tr>';
                           }
