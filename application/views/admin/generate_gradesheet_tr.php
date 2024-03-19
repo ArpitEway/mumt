@@ -752,6 +752,9 @@ table.last_table, .last_table td, .last_table th{
 
         if($paper_master->theory_marks==''){
           echo "-";
+        }
+        elseif($paper_master->theory_marks=='ABS'){
+          echo 'ABS F' ;
         }else{
           echo (int) $paper_master->theory_marks ." F";
         }
