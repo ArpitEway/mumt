@@ -351,6 +351,8 @@ class Gradesheet_tr_model extends CI_Model
 		$persent = $tot_obt_marks*100/$tot_marks;
 		$where = 'min_marks <= '.$persent.' and  max_marks >= '.$persent.'';
 		$gradeData = $this->Common_model->getRecordByWhere('letter_grade',$where);
+		//echo "<pre>";
+		//print_r($this->foundation_paper);echo "</pre>";
 		if ('F'==$gradeData[0]->letter_grade || 'ABS' ==$gradeData[0]->letter_grade) {
 			$this->fail_count++;
 			$this->fail_obt_marks += $tot_obt_marks;
@@ -433,6 +435,7 @@ class Gradesheet_tr_model extends CI_Model
 			$this->result_array[$this->paper['paper_code']]['max_marks'] = $this->foundation_paper[$sub_group_id]['max_theory_marks'];
 			$this->result_array[$this->paper['paper_code']]['min_marks'] = 35;
 			$this->result_array[$this->paper['paper_code']]['obt_marks'] = $this->foundation_paper[$sub_group_id]['tot_marks'];
+			$this->result_array[$this->paper['paper_code']]['f_abs'] = $this->foundation_paper[$sub_group_id]['obt'];
 		}else{
 			$this->result_array[$this->paper['paper_code']]['max_marks'] = $this->foundation_paper[$sub_group_id]['max_theory_marks'];
 			$this->result_array[$this->paper['paper_code']]['min_marks'] = '35';
@@ -624,13 +627,14 @@ class Gradesheet_tr_model extends CI_Model
 		}
 		
 		foreach ($this->result_array as $key => $result) {
-			// print_r($this->result_array);
+		
 			// echo $this->fail_count.'grace'.$require_grace_marks.'kkkg'.$result['letter_grade'].'<br>';
-			if($result['obt_marks'] === 'ABS' || ($result['f_abs'] === 'ABS' && $result['obt_marks'] == '0')
+			if($result['obt_marks'] === 'ABS' || ($result['f_abs'] === 'ABS' && $result['obt_marks'] == '0') 
 			){
-					$result['letter_grade'] = 'ABS';
+				
+				$result['letter_grade'] = 'ABS';
 			}
-			elseif ($this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+			elseif ($this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') { 
 			// echo $require_grace_marks;
 				$result['letter_grade'] = 'P-G';
 			}else{
