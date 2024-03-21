@@ -274,7 +274,7 @@ class Gradesheet_model extends CI_Model
 		
 		// print_r($this->allclass);die;
 		$this->classCount = count($this->allclass);
-		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+	//	$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		$this->foundation_paper = array();
 		$this->result_array = array();
 		$this->tot_credit_point = 0;
@@ -294,6 +294,7 @@ class Gradesheet_model extends CI_Model
 		}
 
         foreach ($papers_list as $paper) {
+			//echo "<pre>".print_r( $paper)." </pre>";
 			$this->paper = $paper;
 			if($this->withheld){
 				
@@ -333,10 +334,10 @@ class Gradesheet_model extends CI_Model
                         $credit_point = $result['obt_credit']*$result['grade_point'];
                         $result['credit_point']=$credit_point;
                         $this->tot_credit_point -= $credit_point;
-                }
+			        }
             }
         }
-    //   echo $this->tot_credit_point;die;
+      // echo $this->tot_credit_point;die;
 		$this->agpa = $this->tot_credit_point/$this->tot_credit;
 		if($this->mode=='REG'){
 			// $this->result_head();
@@ -358,6 +359,7 @@ class Gradesheet_model extends CI_Model
 		if($this->paper['sub_group_id']=='1'){
 			 $this->obt_marks += $this->paper["theory_marks"];
 		 	 $this->total_marks += $this->paper["max_theory_marks"];
+			//  echo " OBT ". $this->obt_marks." TOTAL ".$this->total_marks;
 			if (isset($this->foundation_paper[$this->paper['group_paper_name']])) {
 				if ($this->paper['theory_marks']=='') {
 					$this->withheld = true;
@@ -463,10 +465,11 @@ class Gradesheet_model extends CI_Model
 	private function grade()
 	{
 		if ($this->paper["type"]=='theory') {
-			$this->obt_marks += $this->paper["theory_marks"] + $this->paper["int_marks"];
-		 	$this->total_marks += $this->paper["max_theory_marks"]+ $this->paper["max_internal_marks"];
-		
+			
 			if($this->mode=='REG'){
+				$this->obt_marks += $this->paper["theory_marks"] + $this->paper["int_marks"];
+		 		$this->total_marks += $this->paper["max_theory_marks"]+ $this->paper["max_internal_marks"];
+		
 				if ($this->paper['theory_marks']=='' || ($this->paper["int_marks"]=='' || $this->paper["int_marks"]=='N')) {
 					$this->withheld = true;
 				}
@@ -477,6 +480,10 @@ class Gradesheet_model extends CI_Model
 				 $tot_marks = $this->paper["max_theory_marks"] + $this->paper["max_internal_marks"];
 				$min_marks = $this->paper["min_theory_marks"] + $this->paper["min_internal_marks"];
 			}else{
+				$this->obt_marks += $this->paper["theory_marks"] ;//+ $this->paper["int_marks"];
+			
+		 	    $this->total_marks += $this->paper["private_max_theory_marks"];//+ $this->paper["max_internal_marks"];
+		
 				if ($this->paper['theory_marks']==''){
 					$this->withheld = true;
 				}
@@ -513,7 +520,8 @@ class Gradesheet_model extends CI_Model
 			$this->fail_min_marks += $check_fail_min_marks;
 			$this->result_array[$this->paper['paper_code']]['obt_credit'] = 0;
 		}else{
-			$this->obt_tot_credit += $this->paper['credit_point'];
+			
+			 $this->obt_tot_credit += $this->paper['credit_point'];
 			$this->result_array[$this->paper['paper_code']]['obt_credit'] = $this->paper['credit_point'];
 		}
 		// var_dump($this->check_grace_marks);
