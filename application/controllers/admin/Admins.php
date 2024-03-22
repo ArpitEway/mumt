@@ -3007,7 +3007,7 @@ public function update_exam_datewise_permission(){
 		$data['mode']= $mode;
 		//$this->db->where_in('student_id',array(379146,386106,684818,698913,698935,699440,699688,701898,701899,703694,703888,703975,704028,704055,704305,704409,704469,704783,705021,706439,706847,707041,707337,708030,708197,708273,708298,708485,708918,709142,709236,709265,709365,709953,710434,711824,711864,711971,712142,712149,712334,712568,712742,713081,713086,713178,713241,713315,713513,714111,714126,714131,714588,714715,715096,715361,715750,715807,715826,715833,716010,716336,716338,716340,716515,718064,718991,719124,719153,719358,719361,719601,719952,720778,720794,720900,721070,721977,722129,722265,722285,722615,722616,722642,722644,722711,723053,723529,723536,723716,723718,724366));
 		//$this->db->limit(1000);
-		//$this->db->where('roll_number','210426570');
+		// $this->db->where('roll_number','210410110');
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y' ,'roll_number!='=>'0', 'university_mode'=>$mode,'exam_pattern'=>$pattern));//'result_show'=>'Y','old_result_show'=>'Y',
          // $this->Common_model->last_query();
 		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
@@ -3080,7 +3080,7 @@ public function update_exam_datewise_permission(){
 			$this->db->limit(1000,$start);
 			$pagetitle=$startlimit;
 		}
-		$this->db->limit(1000,$start);
+		// $this->db->limit(1000,$start);
 		if($exam_pattern=="M"){
 			$pattern="MARKS";
 		}
@@ -3092,7 +3092,7 @@ public function update_exam_datewise_permission(){
 		//,'student_id'=>702823
 		$this->db->order_by('center_id','ASC');
 		$this->db->order_by('roll_number','ASC');
-		// $this->db->where('student_id', 727343);
+		$this->db->where('student_id', 729115);
 		// $data['students'] = $this->Common_model->getRecordByWhere('student_result_aug_22',$where);
 		// $this->db->where_in('student_id',array(708559 , 718754 , 719824 , 724046 , 727650 , 704681 , 730174 , 731649 , 731834 , 709937 , 731983 , 712006 , 733696 , 735380 , 737073 , 739237 , 741754 , 743117 , 743133 , 744835 , 696859 , 746645 , 746891 , 749029 , 699498 , 712916 , 750144 , 751359 , 752799 , 700802 , 752674 , 754280 , 736358 , 729015 , 749305 , 704312 , 719967 , 758552 , 758778 , 712930 , 718693));
 		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);

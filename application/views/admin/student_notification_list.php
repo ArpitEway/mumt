@@ -317,7 +317,7 @@
 
 		?>
 		<?php 
-		if($page_break_count%12==0 || $page_break_count==0){
+		if($page_break_count%17000==0 || $page_break_count==0){
 			$page_no++ ;
 			if ($page_break_count>1) {
 				?>
@@ -507,14 +507,14 @@
 		<?php	
 		if((in_array($student->old_class_id, $class_ids)) && $student->exam_pattern=='GRADE'){//&& $mode=='REG'
 		
-			if($final_result != 'FAIL' && $final_result!="RW"){
+			//if($final_result != 'FAIL' && $final_result!="RW"){
 				
 				$gradesheetData = $this->Gradesheet_tr_model->view_notification($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
-			}else{
+		/*	}else{
 				?>
 				<td  class="text-center" style="padding:0px" align="center"></td>
 				<?php
-			}
+			}*/
 		}
 	
 		
