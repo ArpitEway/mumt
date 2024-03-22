@@ -482,7 +482,7 @@
 			<?php
 			if($isFinalClass){
 				
-				if($final_result == "RWPM"){
+				if($final_result == "RWPM" ){
 ?>
 <td class="text-center" style="padding:0px" width='10%' align="center"></td>
 <td class="text-center" style="padding:0px" width='10%' align="center"></td>
@@ -506,8 +506,8 @@
 
 		<?php	
 		if((in_array($student->old_class_id, $class_ids)) && $student->exam_pattern=='GRADE'){//&& $mode=='REG'
-			
-			if($final_result != 'FAIL'){
+		
+			if($final_result != 'FAIL' && $final_result!="RW"){
 				
 				$gradesheetData = $this->Gradesheet_tr_model->view_notification($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
 			}else{

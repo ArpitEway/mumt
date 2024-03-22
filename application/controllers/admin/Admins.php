@@ -3006,7 +3006,8 @@ public function update_exam_datewise_permission(){
 		$this->db->order_by('roll_number','ASC');
 		$data['mode']= $mode;
 		//$this->db->where_in('student_id',array(379146,386106,684818,698913,698935,699440,699688,701898,701899,703694,703888,703975,704028,704055,704305,704409,704469,704783,705021,706439,706847,707041,707337,708030,708197,708273,708298,708485,708918,709142,709236,709265,709365,709953,710434,711824,711864,711971,712142,712149,712334,712568,712742,713081,713086,713178,713241,713315,713513,714111,714126,714131,714588,714715,715096,715361,715750,715807,715826,715833,716010,716336,716338,716340,716515,718064,718991,719124,719153,719358,719361,719601,719952,720778,720794,720900,721070,721977,722129,722265,722285,722615,722616,722642,722644,722711,723053,723529,723536,723716,723718,724366));
-	//	$this->db->limit(10,$start);
+		//$this->db->limit(1000);
+		//$this->db->where('roll_number','210426570');
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y' ,'roll_number!='=>'0', 'university_mode'=>$mode,'exam_pattern'=>$pattern));//'result_show'=>'Y','old_result_show'=>'Y',
          // $this->Common_model->last_query();
 		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
@@ -3379,7 +3380,7 @@ public function update_exam_datewise_permission(){
 			$this->db->limit(1000,$start);
 			$pagetitle=$startlimit;
 		}	
-		$this->db->limit(10);
+		//$this->db->limit(10);
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
 		$data['title'] = $title;
 		$data['university_mode'] = $mode;
