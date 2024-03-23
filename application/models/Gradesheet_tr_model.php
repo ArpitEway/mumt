@@ -353,17 +353,18 @@ class Gradesheet_tr_model extends CI_Model
 		$gradeData = $this->Common_model->getRecordByWhere('letter_grade',$where);
 		//echo "<pre>";
 		//print_r($this->foundation_paper);echo "</pre>";
+		
 		if ('F'==$gradeData[0]->letter_grade || 'ABS' ==$gradeData[0]->letter_grade) {
 			$this->fail_count++;
 			$this->fail_obt_marks += $tot_obt_marks;
 			$this->fail_tot_marks += $tot_marks;
 			$this->fail_min_marks += 35;
-			$this->result_array[$this->paper['paper_code']]["obt_credit"] = 0;
+		 	$this->result_array[$this->paper['paper_code']]["obt_credit"] = 0;
 			
 		}else{
-			$this->obt_tot_credit += $this->foundation_paper[$sub_group_id]['credit_point'];
+			 $this->obt_tot_credit += $this->foundation_paper[$sub_group_id]['credit_point'];
 			// $this->grade_tot_point += $this->foundation_paper[$sub_group_id]['grade_point'];
-			$this->result_array[$this->paper['paper_code']]["obt_credit"] = $this->foundation_paper[$sub_group_id]['credit_point'];
+			 $this->result_array[$this->paper['paper_code']]["obt_credit"] = $this->foundation_paper[$sub_group_id]['credit_point'];
 		}
 		$this->grade_point = $gradeData[0]->grade_point;
 		$this->result_array[$this->paper['paper_code']]['letter_grade'] = $gradeData[0]->letter_grade;
@@ -461,21 +462,33 @@ class Gradesheet_tr_model extends CI_Model
 		
 		echo "<tr>";
 		echo '<td class="align-middle text-right">'.'Credit Earned'.'</td>';
+	//	$i=1;
 		foreach ($this->result_array as $key => $result) {
-			
+	//if($i==1){echo "<pre> ".$i;	print_r($result);echo "</pre>";$i++;}
 			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				$this->check_grace_marks = true;
 				$this->obt_tot_credit += $result['credit'];
 				$req_marks = $result['min_marks']-$result['obt_marks'];
 				$obt_marks = $result['obt_marks']+$req_marks;
+				if(($result['f_abs'] == 'ABS' && $result['obt_marks'] != '0' )){
+					$result['credit']=2;
+					$result['obt_credit'] = 2;
+					$this->obt_tot_credit -=2;
+					$this->result_array[$key]['credit']=2;
+					$credit_point = $result['obt_credit']*4;
+					$this->result_array[$key]['credit_point']=$credit_point;
+					$this->tot_credit_point += $credit_point;
+					
+				}else{
 				$credit_point = $result['credit']*4;
 				$this->result_array[$key]['credit_point']=$credit_point;
 				 $this->tot_credit_point += $credit_point;
-				
-				
+				}
+				 
 				$paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4','2RBBA2','2RBBA4','2RBA2','2RBA4','2RBCOM2','2RBCOM4','2RBCOMCA2','2RBCOMCA4','2RBCOMT2','2RBCOMT4','2RBCA2','2RBCA4','2RBSCCBC2','2RBSCCBC4','2RBSCCS2','2RBSCCS4','2RBSCPCM2','2RBSCPCM4','2RBSW2','2RBSW4');
 				if(in_array($key,$paper_codes))	
 				{
+					// $result['credit']=$result['credit']-2;
 				echo "<td colspan= '2' class='text-center'>".$result['credit']."</td>";
 				}else{
 					
@@ -484,9 +497,10 @@ class Gradesheet_tr_model extends CI_Model
 				
 				
 			}else{
+				
 				if(($result['f_abs'] === 'ABS' && $result['obt_marks'] != '0')){
 					$result['obt_credit'] = 2;
-					$this->obt_tot_credit -=2; 
+					$this->obt_tot_credit -=2;
 					$credit_point = $result['obt_credit']*$result['grade_point'];
 				$this->result_array[$key]['credit_point']=$credit_point;
 				$this->tot_credit_point -= $credit_point;
@@ -523,7 +537,7 @@ class Gradesheet_tr_model extends CI_Model
 			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				
 				$this->obt_tot_credit +=$result['credit'];
-				
+			//	echo "XX ". $result['obt_marks'].'credit'.$result['credit'];
 				$this->check_grace_marks = true;
 				$req_marks = $result['min_marks']-$result['obt_marks'];
 				$obt_marks = $result['obt_marks']+$req_marks;
@@ -533,6 +547,7 @@ class Gradesheet_tr_model extends CI_Model
 				// $this->tot_credit_point += $credit_point;
 				$this->grade_tot_point += 4;
 				$result['grade_point'] =4;
+				
 			}else{
 				$result['grade_point'] =$result['grade_point'];
 			}
