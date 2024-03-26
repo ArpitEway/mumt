@@ -70,7 +70,7 @@
 	$notification=($mode == "REG")?$notification_no[0]->notification_no:$notification_no[0]->pvt_notification_no;
 	$date=($mode == "REG")?$notification_no[0]->result_date:$notification_no[0]->pvt_result_date;
 	$exam_session=$notification_no[0]->exam_session;
-	$page_no = 0;
+	$page_no = $pagenumber;
 	$abs_count = 0;
 	$page_break_count = 0 ;
 	$i=1;

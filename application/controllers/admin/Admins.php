@@ -2991,7 +2991,7 @@ public function update_exam_datewise_permission(){
 	}
 	
 
-	public function student_notification_list($mode = "",$exam_pattern="M",$course_id="",$class_id="",$startlimit=0){
+	public function student_notification_list($mode = "",$exam_pattern="M",$course_id="",$class_id="",$startlimit=0,$pagenumber=0){
 		$this->load->model('Gradesheet_tr_model');
         if($exam_pattern=="M"){
 			$pattern="MARKS";
@@ -2999,23 +2999,25 @@ public function update_exam_datewise_permission(){
 		else{
 			$pattern="GRADE";
 		}
-		$start=0;
-		if($startlimit==!0){
-			$start=($startlimit-1)*10000;
-			$this->db->limit(10000,$start);
-			$pagetitle=$startlimit;
-		}
+		
 		$course_id = $this->Common_model->encrypt_decrypt($course_id,'decrypt');
 		$class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
 		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
 		$this->db->order_by('roll_number','ASC');
 		$data['mode']= $mode;
 		//$this->db->where_in('student_id',array(379146,386106,684818,698913,698935,699440,699688,701898,701899,703694,703888,703975,704028,704055,704305,704409,704469,704783,705021,706439,706847,707041,707337,708030,708197,708273,708298,708485,708918,709142,709236,709265,709365,709953,710434,711824,711864,711971,712142,712149,712334,712568,712742,713081,713086,713178,713241,713315,713513,714111,714126,714131,714588,714715,715096,715361,715750,715807,715826,715833,716010,716336,716338,716340,716515,718064,718991,719124,719153,719358,719361,719601,719952,720778,720794,720900,721070,721977,722129,722265,722285,722615,722616,722642,722644,722711,723053,723529,723536,723716,723718,724366));
-		$this->db->limit(1000);
+		//$this->db->limit(1000);
 		//$this->db->where('roll_number','210410110');
+		$start=0;
+		if($startlimit==!0){
+			$start=($startlimit-1)*10000;
+			$this->db->limit(10000,$start);
+			$pagetitle=$startlimit;
+		}
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y' ,'roll_number!='=>'0', 'university_mode'=>$mode,'exam_pattern'=>$pattern));//'result_show'=>'Y','old_result_show'=>'Y',
          // $this->Common_model->last_query();
-		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
+		 $data['pagenumber']=$pagenumber;
+		 $data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280);
 		if((in_array($class_id, $class_cbcs)) && $pattern=="GRADE"){
 			$this->load->model('Gradesheet_tr_model_pg');
