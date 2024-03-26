@@ -3383,7 +3383,7 @@ public function update_exam_datewise_permission(){
 		}	
 		//$this->db->where_in('roll_number',array(210412125,210413275,210417990));
 		//$this->db->limit(10);
-		//$this->db->limit(1);
+		$this->db->limit(1);
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
 		$data['title'] = $title;
 		$data['university_mode'] = $mode;
