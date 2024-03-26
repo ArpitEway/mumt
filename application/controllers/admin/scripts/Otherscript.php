@@ -592,7 +592,7 @@ public function update_roll_no_old_data(){
 		$this->db->where_in('e.class_id',array(104));//,107,134
 		$this->db->where('r.sub_group_id',0);
 		//$this->db->where_in('class_id',array(101,104,107,110,116,119,125,128,131,134));
-		 $this->db->limit(15000);
+		 $this->db->limit(25000);
 		$papers = $this->db->get()->result();
 		
 		foreach($papers as $paper){
