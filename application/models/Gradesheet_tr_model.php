@@ -774,8 +774,8 @@ class Gradesheet_tr_model extends CI_Model
 		$this->agpa = $this->tot_credit_point/$this->tot_credit;
 		$this->set_result();
 		
-		// $agpa = ($this->result == 'FAIL')?'0.00':number_format((float)$this->agpa, 2, '.', '');
-		$agpa = number_format((float)$this->agpa, 2, '.', '');
+		 $agpa = ($this->result == 'FAIL')?'0.00':number_format((float)$this->agpa, 2, '.', '');
+		//$agpa = number_format((float)$this->agpa, 2, '.', '');
 		echo '<td class="text-center" style="padding:0px" align="center">'.$agpa.'</td>';
 		
 	}
