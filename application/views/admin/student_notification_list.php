@@ -317,7 +317,7 @@
 
 		?>
 		<?php 
-		if($page_break_count%12000==0 || $page_break_count==0){
+		if($page_break_count%12==0 || $page_break_count==0){
 			$page_no++ ;
 			if ($page_break_count>1) {
 				?>
