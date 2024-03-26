@@ -222,7 +222,8 @@
                     <tr>
                     <td width="17" align="center">
                   <div align="left">
-                    <?php echo "Date :".$marksheet_variables->result_date; ?></div></td>
+                  <?php if($university_mode != 'PVT')  echo "Date :".$marksheet_variables->result_date;else  echo "Date :".$marksheet_variables->pvt_result_date;?>
+                    </div></td>
                     </tr>
                   </table>    
                 </td>
