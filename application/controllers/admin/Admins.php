@@ -3001,8 +3001,8 @@ public function update_exam_datewise_permission(){
 		}
 		$start=0;
 		if($startlimit==!0){
-			$start=($startlimit-1)*1000;
-			$this->db->limit(1000,$start);
+			$start=($startlimit-1)*10000;
+			$this->db->limit(10000,$start);
 			$pagetitle=$startlimit;
 		}
 		$course_id = $this->Common_model->encrypt_decrypt($course_id,'decrypt');
@@ -3388,7 +3388,7 @@ public function update_exam_datewise_permission(){
 		}	
 		//$this->db->where_in('roll_number',array(210412125,210413275,210417990));
 		//$this->db->limit(10);
-		$this->db->limit(1);
+		
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
 		$data['title'] = $title;
 		$data['university_mode'] = $mode;
