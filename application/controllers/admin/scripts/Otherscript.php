@@ -588,13 +588,13 @@ public function update_roll_no_old_data(){
 	
 		$this->db->select('e.paper_code,e.sub_group_id,e.class_id,e.group_id,e.student_id');
 		$this->db->from('new_exam_form as e');
-		$this->db->join('old_result_data as r', 'r.student_id = e.student_id');
+		$this->db->join('old_result_data as r', 'r.student_id = e.student_id AND r.paper_code=e.paper_code');
 		$this->db->where_in('e.class_id',array(104));//,107,134
 		$this->db->where('r.sub_group_id',0);
 		//$this->db->where_in('class_id',array(101,104,107,110,116,119,125,128,131,134));
-		 $this->db->limit(5000,25000);
+		 $this->db->limit(25000);
 		$papers = $this->db->get()->result();
-		
+		//echo $this->db->last_query();
 		foreach($papers as $paper){
 			
 			$where = array('paper_code'=>$paper->paper_code,'class_id'=>$paper->class_id,'student_id'=>$paper->student_id,'sub_group_id'=>0);
