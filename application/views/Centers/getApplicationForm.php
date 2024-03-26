@@ -34,7 +34,7 @@
 
             <div class="form-group <?=$col?>">
                 <label>Name of Student(In Hindi)</label>
-                <input type="text" class="form-control" name="name_hindi" id="sname" required />
+                <input type="text" class="form-control" name="name_hindi" id="sname" required /><p class="text" style="padding-top:5px">गूगल हिंदी फॉण्ट में टाइप कर पेस्ट करे</p>
                 <span class="text-danger" id="serr"></span>
             </div>
            
@@ -42,7 +42,7 @@
             
             <div class="form-group <?=$col?>">
                 <label>Father's Name(In Hindi)</label>
-                <input type="text" class="form-control" name="fname_hindi" id="fname" required />
+                <input type="text" class="form-control" name="fname_hindi" id="fname" required /><p class="text" style="padding-top:5px" >गूगल हिंदी फॉण्ट में टाइप कर पेस्ट करे</p>
                 <span class="text-danger" id="ferr"></span>
             </div>
         </div>

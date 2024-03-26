@@ -3341,7 +3341,7 @@ public function update_exam_datewise_permission(){
 			$this->db->limit(1000,$start);
 			$pagetitle=$startlimit;
 		}	
-		
+
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
 		$data['title'] = $title;
 		$data['university_mode'] = $mode;
@@ -3381,8 +3381,9 @@ public function update_exam_datewise_permission(){
 			$this->db->limit(1000,$start);
 			$pagetitle=$startlimit;
 		}	
-		$this->db->where_in('roll_number',array(210412125,210413275,210417990));
+		//$this->db->where_in('roll_number',array(210412125,210413275,210417990));
 		//$this->db->limit(10);
+		//$this->db->limit(1);
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
 		$data['title'] = $title;
 		$data['university_mode'] = $mode;
@@ -3451,7 +3452,7 @@ public function update_exam_datewise_permission(){
             $this->db->select('bs.*, st.photo,st.session,st.course_name,st.name,st.f_h_name');
             $this->db->from('backlog_student as bs');
             $this->db->join('student as st','st.student_id=bs.student_id');
-            $this->db->where(array("bs.course_group_id"=>$course_id ,'bs.class_id' => $class_id,'bs.exam_form'=>'Y','bs.roll_no!='=>'0','mode'=>$mode ));
+            $this->db->where(array("bs.course_group_id"=>$course_id ,'bs.class_id' => $class_id,'bs.exam_form'=>'Y','bs.roll_no!='=>'0','mode'=>$mode,'bs.result_show'=>'Y' ));
             $data['students']=  $this->db->get()->result();
 			// $this->db->limit(1);
 			//  $this->db->where('student_id = "721275"');
@@ -5638,7 +5639,7 @@ public function forward_complaint(){
 		}else{
 			
 			$admin_id = $this->session->admin_id;
-			$this->db->where_not_in('id',array(236,238,240,244,246,216,248,250,254,232,234,252,300,258,256,268,218,230,242,155,182,154,181,180,174,196,162,200,210,172,299,273,165,289,110,116,149,170,187,140,143,146,290,284,294,296,292,192,184,159,138,194,198,202,204,206,212,214,222,276,280,224,226,228,164,101,102,111,117,120,129,132,168,183,283,288,287,291,293,298,105,135));
+		//	$this->db->where_not_in('id',array(236,238,240,244,246,216,248,250,254,232,234,252,300,258,256,268,218,230,242,155,182,154,181,180,174,196,162,200,210,172,299,273,165,289,110,116,149,170,187,140,143,146,290,284,294,296,292,192,184,159,138,194,198,202,204,206,212,214,222,276,280,224,226,228,164,101,102,111,117,120,129,132,168,183,283,288,287,291,293,298,105,135));
             // $this->db->where_in('id', array(102,105,108,111,117,120,126,129,132,135,194,198,202,204,206,212,214,222,224,226,228,276,280,303));
 			$class_data = $this->db->get_where('class_master', array('result_permission' => 'Y'))->result_array();
 			$class_dataids = array_column($class_data, 'id');

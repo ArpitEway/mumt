@@ -52,7 +52,7 @@
     $marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
     $border = ($classData->admission_permission == 'Y')?'border: 1px solid black;margin-top:20px;':'border: 0px solid #22316C;';
-    $margin = ($classData->admission_permission == 'Y')?'min-height:420px;margin-top: 20px;':'min-height:420px;margin-top: 40px;';
+    $margin = ($classData->admission_permission == 'Y')?'min-height:420px;margin-top: 20px;':'min-height:420px;margin-top: 20px;';
     $isOneClass = $isFinalClass = $this->Common_model->hasOneClass($course_group_id);
      
     if($isFinalClass){
@@ -67,20 +67,22 @@
       $papers = $this->Common_model->student_info_for_result($student->student_id,$student->old_class_id, $student->course_group_id);
       ?>
       <fieldset id="printarea" class="breakhere" style="width:90%;border: 0px solid #22316C;"> 
-        <div align="left"> MS No. <?php echo $student->marksheet_no; ?> </div>
+       
         <table align="center" border="0" width="100%">
           <tbody>
             <tr>
-              <td height="130" colspan="2" valign="bottom">
+              <td height="155" colspan="2" valign="bottom">
                 <center>
                   
-                  <strong><?php echo $student->course_name .' '.$course_duration.' '.$marksheet_variables->exam_session ?></strong>
+                  <strong style="font-size: 18px;"><?php echo $student->course_name .' '.$course_duration.' '.$marksheet_variables->exam_session ?></strong>
                 </center>
               </td>
             </tr>
+            <tr></tr>
             <tr>
               <td align="center" height="120" colspan="2">
-                <table class="mytable" border="0" cellpadding="2" cellspacing="2" width="100%">
+                <table class="mytable" border="0" cellpadding="2" cellspacing="2" width="100%" style="
+    margin-top: 10px;">
                   <tbody>
                     <?php
                   if($university_mode=='REG'){
@@ -165,9 +167,9 @@
                           <td width="6%" scope="col"><strong><u>Max</u></strong></td>
                           <td width="6%" scope="col"><strong><u>Min</u></strong></td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                           <td colspan="9">&nbsp;</td>
-                        </tr>
+                        </tr> -->
                         <?php
                         $check_grace_marks = false;
                         $fail_count = 0;
@@ -241,7 +243,8 @@
                         $flag = 1;
                         $tflag = 1;
                          $sub_count = 1;
-                         $foundation_count = 1;
+                         $foundation_count = 0;
+                         $foundation_count_show = 0;
                          $group = explode('(', $papers[0]->group_name);
                          $group_name = explode(',',$group[1]);
                         foreach($papers as $paper)
@@ -268,12 +271,13 @@
                       '</tr>';}else{ echo'';};
                           }else if($course_group_id == 12 ){
                             $sub_group = $this->Common_model->getRecordById('sub_group', 'id', $paper->sub_group_id);
-                            
-                            if($sub_group->id == 1 && $foundation_count == 1){
-                              $foundation_count=2;
+                            $foundation_count++;
+                            if($sub_group->id == 1 && ($foundation_count == 1 ||  $foundation_count == 3 ) ){
+                              //$foundation_count=2;
+                              $foundation_count_show++;
                               echo ' <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.'<td style="margin-top:2px;" align="left">'.'</td>'.
                               '<td colspan="8" align="left">'.'<strong>'.
-                            '<u>'.$sub_group->sub_group_name.'</u>'.'</strong>'.'</td>'.'</tr>'.'<tr>'
+                            '<u>'.$sub_group->sub_group_name.' - '.$foundation_count_show.'</u>'.'</strong>'.'</td>'.'</tr>'.'<tr>'
                             .'<td colspan="9">'.'&nbsp;'.'</td>'.
                           '</tr>';
                           }
@@ -424,7 +428,7 @@
                   <table border="0" cellpadding="0" height="112" width="100%">
                     <tbody>
                       <tr>
-                        <td  colspan="8">  </td>
+                        <td  > &nbsp; </td>
                       </tr>
                       <tr>
                         <td height="20">&nbsp;</td>
@@ -556,11 +560,12 @@
                     </tr>
                   </tbody>
                 </table>
+               
               </fieldset>
               <!-- if starts -->
               <tr>
                 <td align="left" colspan="2">
-                  <table width="100%" style="margin-top:40px">
+                  <table width="100%" style="margin-top:30px">
                     <tr>
                     </tr>
                   </table>    
@@ -579,13 +584,14 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>
+                    <td><div align="left"> MS No. <?php echo $student->marksheet_no; ?> </div>
                   </td>
                 </tr>
               </td>
             </tr>
           </tbody>
         </table>
+        
       </fieldset>
     <?php } ?>
   </center>
