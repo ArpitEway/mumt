@@ -327,7 +327,7 @@ class Gradesheet_model extends CI_Model
         // echo '<pre>';
         // print_r($this->result_array);
         foreach ($this->result_array  as $key => $result) {
-            if($result['sub_group'] == 1){
+            if($result['sub_group'] == 1){ 
                 if(($result['f_abs'] === 'ABS' && $result['obt_marks'] != '0')){
                         $result['obt_credit'] = 2;
                         $this->obt_tot_credit -=2; 
@@ -668,6 +668,7 @@ class Gradesheet_model extends CI_Model
 			$this->result_array[$this->paper['paper_code']]['max_marks'] = $this->foundation_paper[$sub_group_id]['max_theory_marks'];
 			$this->result_array[$this->paper['paper_code']]['min_marks'] = 35;
 			$this->result_array[$this->paper['paper_code']]['obt_marks'] = $this->foundation_paper[$sub_group_id]['tot_marks'];
+			$this->result_array[$this->paper['paper_code']]['f_abs'] = $this->foundation_paper[$sub_group_id]['obt'];
 		}else{
 			$this->result_array[$this->paper['paper_code']]['max_marks'] = $this->foundation_paper[$sub_group_id]['max_theory_marks'];
 			$this->result_array[$this->paper['paper_code']]['min_marks'] = '35';
@@ -759,7 +760,7 @@ class Gradesheet_model extends CI_Model
 			){
 					$result['letter_grade'] = 'ABS';
 			}
-			if(($result['f_abs'] === 'ABS' && $result['obt_marks'] != '0')){
+			if(($result['f_abs'] == 'ABS' && $result['obt_marks'] != '0')){
 				$result['obt_credit'] = 2;
 				$this->obt_tot_credit -=2; 
 				$credit_point = $result['obt_credit']*$result['grade_point'];
