@@ -469,7 +469,7 @@
 							 $final_result = 'PASS';
 							
 						}
-						if((in_array($student->old_class_id, $class_ids)) && $student->exam_pattern=='MARKS' ){//&& $mode=='REG'
+						if((in_array($student->old_class_id, $class_ids)) && $student->exam_pattern=='GRADE' ){//&& $mode=='REG'
 						echo $this->Gradesheet_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
 						}else{
 							echo $final_result;
