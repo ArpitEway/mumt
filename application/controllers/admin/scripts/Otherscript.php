@@ -1103,22 +1103,19 @@ public function update_roll_no_old_data(){
 		}
 	}
 	public function dg_locker_data(){
+		$this->load->view('header',array('title' => 'Student Data For DIGI LOCKER'));
 		$sql="SELECT * FROM `old_exam_data` WHERE class_id in (131,125,119,116,110,101,134,107,104) and exam_year in ('August 2022','Aug 2022') and center_id in (21,22,23,24,25,26,27,28) and university_mode='REG'";
 		$rs = $this->db->query($sql)->result_array();
 		$i=1;
 		$this->load->model('Gradesheet_old_model');
-		echo "<table>";
-		foreach ($rs as $student) {
-			$gradesheetData = $this->Gradesheet_old_model->view_result_grade_for_dg_locker($student['student_id'],$student['course_group_id'],$student['class_id'],$student['university_mode']);
-			$exam_arr=explode(" ",$student['exam_year']);
-			echo "<tr><td>".$i."  </td>  ";
-			echo "<td>".$student['student_id']." </td><td>".$student['session']." </td><td>".$student['enrollment_no']." </td><td>".$student['name']." </td><td>".$student['f_h_name']." </td><td>".$student['mother_name']." </td><td>".$student['photo']." </td><td> O </td><td>".$exam_arr[1]." </td><td>".$exam_arr[0]." </td><td>".$gradesheetData['tot_credit']." </td><td>";
-			echo "<tr>";
-			$i++;
-			break;
-		}
-		echo "<table>";
+		$data['rs']=$rs;
+		
+		$this->load->view('admin/digi_locker',$data);
+		$this->load->view('footer');
 	}
+	
+		
+		
 }
 
 

@@ -67,6 +67,7 @@ class Gradesheet_old_model extends CI_Model
 		$this->fail_obt_marks = 0;
 		$this->check_grace_marks = false;
 		$this->withheld = false;
+		
 		foreach ($papers as $paper) {
 			$this->paper = $paper;
 			if($this->withheld){
@@ -169,6 +170,7 @@ class Gradesheet_old_model extends CI_Model
 		$this->total_marks=0;
 		$this->check_grace_marks = false;
 		$this->withheld = false;
+		
 		foreach ($papers as $paper) {
 			$this->paper = $paper;
 			
@@ -233,7 +235,7 @@ class Gradesheet_old_model extends CI_Model
 		// print_r($this->foundation_paper);
 	}
 
-	public function _row()
+	public function _row($forDG="")
 	{
 		
 
@@ -266,7 +268,12 @@ class Gradesheet_old_model extends CI_Model
 				$this->foundation_paper[$this->paper['group_paper_name']]['paper_code'] = $this->paper['paper_code'];
 				$this->foundation_paper[$this->paper['group_paper_name']]['credit_point'] = $this->paper['credit_point'];
 				// $paper_name_post_fix = ($this->paper['group_paper_name']=='FC1') ? 'I' : 'II';
-				$this->foundation_paper[$this->paper['group_paper_name']]['paper_name'] = 'A) '.$this->paper['paper_name'].' ';
+				if(empty($forDG)){
+					$this->foundation_paper[$this->paper['group_paper_name']]['paper_name'] = 'A) '.$this->paper['paper_name'].' ';
+				}
+				else{
+					$this->foundation_paper[$this->paper['group_paper_name']]['paper_name'] = $this->paper['paper_name'].' ';
+				}
 			}
 		}else{
 			
@@ -401,8 +408,12 @@ class Gradesheet_old_model extends CI_Model
 		
 	}
 
-	private function paper_name_foudation($sub_group_id){
-		$data = '['.$this->paper["group_paper_name"].']#'.$this->foundation_paper[$sub_group_id]["paper_name"].'<br><br>'.'B) '.$this->paper["paper_name"];
+	private function paper_name_foudation($sub_group_id,$forDG=""){
+		if(empty($forDG)){
+			$data = '['.$this->paper["group_paper_name"].']#'.$this->foundation_paper[$sub_group_id]["paper_name"].'<br><br>'.'B) '.$this->paper["paper_name"];
+		}else{
+			$data = $this->paper["group_paper_name"].'-'.$this->foundation_paper[$sub_group_id]["paper_name"].'/'.$this->paper["paper_name"];
+		}
 		// print_r($this->paper["paper_name"]);
 		$this->result_array[$this->paper['paper_code']]['paper_name'] = $data;
 		$this->result_array[$this->paper['paper_code']]['type'] = $this->foundation_paper[$sub_group_id]["type"];
@@ -455,18 +466,25 @@ class Gradesheet_old_model extends CI_Model
 		}
 	}
 
-	public function result()
+	public function result($forDG="")
 	{
 		
 		 $this->percent = $this->obt_marks*100/$this->total_marks;
-		return $data = array(
+		 $data = array(
 				'tot_credit' => $this->tot_credit,
 				'obt_credit' => $this->obt_tot_credit,
 				'credit_point' => $this->tot_credit_point,
 				'agpa' => $this->agpa,
 				'result' => $this->result,
-				'equivalent' => ($this->agpa*10)
+				'equivalent' => ($this->agpa*10),
+
+				
 			);
+			if(!empty($forDG)){
+				$data['html']=$this->html;
+				$data['total_grade_point']=$this->total_grade_point;
+			}
+			return $data;
 	}
 
 	public function min_max_no()
@@ -743,6 +761,7 @@ class Gradesheet_old_model extends CI_Model
 		$this->fail_obt_marks = 0;
 		$this->check_grace_marks = false;
 		$this->withheld = false;
+		
 		foreach ($papers as $paper) {
 			$this->paper = $paper;
 			$this->_row();
@@ -850,6 +869,7 @@ class Gradesheet_old_model extends CI_Model
 		$this->fail_obt_marks = 0;
 		$this->check_grace_marks = false;
 		$this->withheld = false;
+		
 		foreach ($papers as $paper) {
 			$this->paper = $paper;
 			$this->_row();
@@ -905,8 +925,10 @@ class Gradesheet_old_model extends CI_Model
 		$this->fail_obt_marks = 0;
 		$this->obt_marks = 0;
 		$this->total_marks=0;
+		$this->total_grade_point=0;
 		$this->check_grace_marks = false;
 		$this->withheld = false;
+		$this->html = "";
 		foreach ($papers as $paper) {
 			$this->paper = $paper;
 			
@@ -963,10 +985,10 @@ class Gradesheet_old_model extends CI_Model
 		//$this->echo_result_grade(); 
 		$this->echo_result_digi();
 		 $this->agpa = $this->tot_credit_point/$this->tot_credit;
-		 $this->set_result();
-		$this->total_grade();
+		// $this->set_result();
+		//$this->total_grade();
 		
-		return $this->result();
+		return $this->result(y);
 		// echo "<pre>";
 		// print_r($this->foundation_paper);
 	}
@@ -979,11 +1001,13 @@ class Gradesheet_old_model extends CI_Model
 		}
 		foreach ($this->result_array as $key => $result) {
 			$paper = explode('#',$result['paper_name']);
+			//print_r($result);
+			$this->html.= "<td >".$paper[0]." / ".$paper[1]."</td>";
+			$this->html.= "<td >".$result[0]."</td>";
+//break;
+			//echo '<tr style="padding:4px;font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="center">';
+		//	echo '<td style="margin-top:2px;" align="center"><strong>'.$key.'</strong></td>';
 			
-			
-			echo '<tr style="padding:4px;font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="center">';
-			echo '<td style="margin-top:2px;" align="center"><strong>'.$key.'</strong></td>';
-			echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='50px'><strong>".$paper[0]."</strong></td><td></td><td><strong>".$paper[1]."</strong></td></tr></table></td>";
 			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				$this->check_grace_marks = true;
 				$this->obt_tot_credit += $result['credit'];
@@ -992,11 +1016,16 @@ class Gradesheet_old_model extends CI_Model
 				$credit_point = $result['credit']*4;
 				$this->result_array[$key]['credit_point']=$credit_point;
 				$this->tot_credit_point += $credit_point;
-				echo "<td align='center' colspan='3'><span class='style4'>".$result['credit']."</span></td>";
-				echo "<td align='center' colspan='3'><span class='style4'>".$result['credit']."</span></td>";
-				echo "<td align='center' colspan='2'><span class='style4'>4</span></td>";
-				echo "<td align='center' colspan='2''><span class='style4'>".$credit_point."</span></td>";
-				echo "<td align='center' colspan='2'><span class='style4'>".'P-G'."</span></td>";
+			//	echo "<td align='center' colspan='3'><span class='style4'>".$result['credit']."</span></td>";
+			//	echo "<td align='center' colspan='3'><span class='style4'>".$result['credit']."</span></td>";
+			//	echo "<td align='center' colspan='2'><span class='style4'>4</span></td>";
+			//	echo "<td align='center' colspan='2''><span class='style4'>".$credit_point."</span></td>";
+			//	echo "<td align='center' colspan='2'><span class='style4'>".'P-G'."</span></td>";
+				$this->html.= "<td >".'P-G'."</td>";
+			//	$this->html.= "<td >4</td>";
+				$this->html.= "<td >".$result['obt_credit']."</td>";
+				$this->html.= "<td >".$credit_point."</td>";
+				$this->html.= "<td >".$result['grade_point']."</td>";
 				
 			}else{
 				if($result['obt_marks'] === 'ABS' || ($result['f_abs'] === 'ABS' && $result['obt_marks'] == '0')
@@ -1011,13 +1040,19 @@ class Gradesheet_old_model extends CI_Model
 				$this->tot_credit_point -= $credit_point;
 				
 			}
-				echo "<td align='center' colspan='3'><span class='style4'>".$result['credit']."</span></td>";
+			/*	echo "<td align='center' colspan='3'><span class='style4'>".$result['credit']."</span></td>";
 				echo "<td align='center' colspan='3'><span class='style4'>".$result['obt_credit']."</span></td>";
 				echo "<td align='center' colspan='2'><span class='style4'>".$result['grade_point']."</span></td>";
 				echo "<td align='center' colspan='2'><span class='style4'>".$result['credit_point']."</span></td>";
-				echo "<td align='center' colspan='2'><span class='style4'>".$result['letter_grade']."</span></td>";
+				echo "<td align='center' colspan='2'><span class='style4'>".$result['letter_grade']."</span></td>";*/
+				$this->html.= "<td >".$result['letter_grade']."</td>";
+			//	$this->html.= "<td >".$result['credit']."</td>";
+				$this->html.= "<td >".$result['obt_credit']."</td>";
+				$this->html.= "<td >".$result['credit_point']."</td>";
+				$this->html.= "<td >".$result['grade_point']."</td>";
+				$this->total_grade_point+=$result['grade_point'];
 			}
-			echo "</tr>";
+			//echo "</tr>";
 		}
 	}
 }
