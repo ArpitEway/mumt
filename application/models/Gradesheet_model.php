@@ -755,14 +755,27 @@ class Gradesheet_model extends CI_Model
 			}
 			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				$this->check_grace_marks = true;
-				$this->obt_tot_credit += $result['credit'];
+				
 				$req_marks = $result['min_marks']-$result['obt_marks'];
 				$obt_marks = $result['obt_marks']+$req_marks;
-				$credit_point = $result['credit']*4;
-				$this->result_array[$key]['credit_point']=$credit_point;
-				$this->tot_credit_point += $credit_point;
+				
+				if($result['sub_group']==1 && $result['f_abs']=='ABS'){
+					$obt_credit=$result['credit']/2;
+					$this->obt_tot_credit += $obt_credit;
+					$credit_point = $result['credit']*2;
+					$this->result_array[$key]['credit_point']=$credit_point;
+					$this->tot_credit_point += $credit_point;
+					
+				}
+				else{
+					$this->obt_tot_credit += $result['credit'];
+					$credit_point = $result['credit']*4;
+					$obt_credit=$result['credit'];
+					$this->result_array[$key]['credit_point']=$credit_point;
+					$this->tot_credit_point += $credit_point;
+				}
 				echo "<td align='center' colspan='3'><span class='style4'>".$result['credit']."</span></td>";
-				echo "<td align='center' colspan='3'><span class='style4'>".$result['credit']."</span></td>";
+				echo "<td align='center' colspan='3'><span class='style4'>".$obt_credit."</span></td>";
 				echo "<td align='center' colspan='2'><span class='style4'>4</span></td>";
 				echo "<td align='center' colspan='2''><span class='style4'>".$credit_point."</span></td>";
 				echo "<td align='center' colspan='2'><span class='style4'>".'P-G'."</span></td>";
@@ -811,12 +824,24 @@ class Gradesheet_model extends CI_Model
 				// $this->result_array[$key]['credit_point']=$credit_point;
 				// echo $this->tot_credit_point += $credit_point;
                 $this->check_grace_marks = true;
-				$this->obt_tot_credit += $result['credit'];
-				$req_marks = $result['min_marks']-$result['obt_marks'];
-				$obt_marks = $result['obt_marks']+$req_marks;
-				$credit_point = $result['credit']*4;
+				// $this->obt_tot_credit += $result['credit'];
+				 $req_marks = $result['min_marks']-$result['obt_marks'];
+				 $obt_marks = $result['obt_marks']+$req_marks;
+				// $credit_point = $result['credit']*4;
+				// $this->result_array[$key]['credit_point']=$credit_point;
+				// $this->tot_credit_point += $credit_point; 
+
+				if($result['sub_group']==1 && $result['f_abs']=='ABS'){
+					 $obt_credit=$result['credit']/2;
+					 $this->obt_tot_credit += $result['credit'];
+					 $credit_point = $result['credit']*$obt_credit;	
+				}
+				else{
+					$this->obt_tot_credit += $result['credit'];
+					$credit_point = $result['credit']*4;
+				}
 				$this->result_array[$key]['credit_point']=$credit_point;
-				$this->tot_credit_point += $credit_point;
+				$this->tot_credit_point += $credit_point; 
             }
         }
     }
