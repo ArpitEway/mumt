@@ -1102,6 +1102,22 @@ public function update_roll_no_old_data(){
 		//	break;
 		}
 	}
+	public function dg_locker_data(){
+		//and enrollment_no in ('AG/21204765','AG/21204615')
+		$this->load->view('header',array('title' => 'Student Data For DIGI LOCKER'));
+		//$this->db->where_in('enrollment_no',array('AG/21204765','AG/21204615'));
+		$sql="SELECT * FROM `old_exam_data` WHERE class_id in (131,125,119,116,110,101,134,107,104) and exam_year in ('August 2022','Aug 2022') and center_id in (21,22,23,24,25,26,27,28)   and university_mode='REG'";
+		$rs = $this->db->query($sql)->result_array();
+		$i=1;
+		$this->load->model('Gradesheet_old_model');
+		$data['rs']=$rs;
+		
+		$this->load->view('admin/digi_locker',$data);
+		$this->load->view('footer');
+	}
+	
+		
+		
 }
 
 
