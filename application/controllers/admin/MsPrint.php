@@ -515,7 +515,7 @@ class MsPrint extends CI_Controller {
 						
 						$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
 						$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280);
-						if((in_array($data['student']->class_id, $class_ids)) && $data['student']->university_mode=='REG' && $data['student']->exam_pattern=='GRADE')	
+						if((in_array($data['student']->class_id, $class_ids))  && $data['student']->exam_pattern=='GRADE')	//&& $data['student']->university_mode=='REG'
 						{
 							$this->load->model('Gradesheet_model');
 							$dt = $provisional_remark_details.$msg.$this->load->view('Centers/grade_marksheet',$data,true);
