@@ -5624,7 +5624,7 @@ public function forward_complaint(){
 		$this->load->view('admin/generate_tr/header2',$title);
 		$this->load->view('admin/old_marksheet_top',$data);
 		
-		if((in_array($new_exam_form[0]->class_id , $class_ids)) && $data['exam_data']->university_mode=='REG'){
+		if((in_array($new_exam_form[0]->class_id , $class_ids)) && $data['exam_data']->marks_pattern=='GRADE'){
 			$this->load->model('Gradesheet_old_model');
 			$this->load->view('admin/grade_marksheet',$data);
 		}else if($data['class']->cbcs=='Y' && $data['exam_data']->university_mode=='REG' && $data['exam_data']->marks_pattern=='GRADE'){
