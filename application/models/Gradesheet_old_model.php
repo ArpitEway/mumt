@@ -595,7 +595,7 @@ class Gradesheet_old_model extends CI_Model
 			$this->tot_credit_point -= $credit_point;
 				
 			}
-				echo "<th class='text-center'>".$result['credit']."</th>";
+				echo "<th class='text-center'>".$result['obt_credit']."</th>";
 				echo "<th class='text-center'>".$result['letter_grade']."</th>";				
 				echo "<th class='text-center'>".$result['grade_point']."</th>";
 				echo "<th class='text-center'>".$result['credit_point']."</th>";
