@@ -705,13 +705,29 @@ class Gradesheet_model extends CI_Model
 				}
 			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				$this->check_grace_marks = true;
-				$this->obt_tot_credit += $result['credit'];
+				
 				$req_marks = $result['min_marks']-$result['obt_marks'];
 				$obt_marks = $result['obt_marks']+$req_marks;
-				$credit_point = $result['credit']*4;
+				
+				//$this->result_array[$key]['credit_point']=$credit_point;
+				//$this->tot_credit_point += $credit_point;
+
+				if($result['sub_group']==1 && $result['f_abs']=='ABS'){
+					$obt_credit=$result['credit']/2;
+					$this->obt_tot_credit += $obt_credit;
+					$credit_point = $result['credit']*2;
+					
+					
+				}
+				else{
+					$obt_credit=$result['credit'];
+					$this->obt_tot_credit += $result['credit'];
+					$credit_point = $result['credit']*4;
+
+				}
 				$this->result_array[$key]['credit_point']=$credit_point;
 				$this->tot_credit_point += $credit_point;
-				echo "<th class='text-center'>".$result['credit']."</th>";
+				echo "<th class='text-center'>".$obt_credit."</th>";
 				echo "<th class='text-center'>P-G</th>";
 				echo "<th class='text-center'>4</th>";
 				echo "<th class='text-center'>".$credit_point."</th>";
@@ -851,7 +867,7 @@ class Gradesheet_model extends CI_Model
 		echo '<tr>';
 			echo '<td></td>';
 			echo '<td class="text-right font-weight-bold" style="padding-right: 3rem!important;">Total</td>';
-			echo '<td class="text-center font-weight-bold">'.$this->tot_credit.'</td>';
+			echo '<td class="text-center font-weight-bold">'.$this->obt_tot_credit.'</td>';
 			echo '<td></td>';
 			echo '<td></td>';
 			echo '<td class="text-center font-weight-bold">'.$this->tot_credit_point.'</td>';
