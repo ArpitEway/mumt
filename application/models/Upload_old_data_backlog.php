@@ -466,7 +466,8 @@ class Upload_old_data_backlog extends CI_Model
 	{
         // echo $this->result;die;
 		if($this->result=='WITHHELD'){
-			return false;
+			//return false;
+			$result = 'FAIL';
 		}elseif ($this->result=='FAIL') {
 			$result = 'FAIL';
 		}else{
