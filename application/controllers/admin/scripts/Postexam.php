@@ -75,7 +75,7 @@ class Postexam extends CI_Controller {
     public function upload_old_data_script($class_id="",$mode){
         $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
         $this->db->limit(500);
-       $this->db->where_not_in('student_id',array(704033,711707,708907));
+        $this->db->where_not_in('student_id',array(711707,708907));
         $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'N','university_mode'=>$mode ,'old_result_show'=>'Y')); //, "marksheet_dispatch"=>'Y'
          // $this->db->where_in('course_group.course_type',array('Diploma','PGDiploma'));
         // $course_type = $this->Common_model->getRecordByWhere("course_group",array('id'=> $students[0]->course_group_id));
@@ -203,6 +203,9 @@ class Postexam extends CI_Controller {
                 // $final_result=='FAIL' || 
                  //  && count($course_type)==0 && $student->course_group_id!=76 && $student->course_group_id!=77
               //  continue;
+            }
+            if(is_nan($aggregate_per)){
+                $aggregate_per=0;
             }
             $examData['university_mode'] = $student->university_mode;
             $examData['photo'] = $student->photo;
