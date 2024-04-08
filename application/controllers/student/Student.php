@@ -137,7 +137,7 @@ class Student extends CI_Controller {
 	}
 
 	public function exam_paper(){
-		redirect(base_url());
+	
 		if(!$this->session->has_userdata('studentdata')){
 			redirect(base_url('students/login'));
 	   }
