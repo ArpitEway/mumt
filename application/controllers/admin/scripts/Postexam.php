@@ -202,7 +202,7 @@ class Postexam extends CI_Controller {
             if($whCount!=0) {
                 // $final_result=='FAIL' || 
                  //  && count($course_type)==0 && $student->course_group_id!=76 && $student->course_group_id!=77
-                continue;
+              //  continue;
             }
             $examData['university_mode'] = $student->university_mode;
             $examData['photo'] = $student->photo;
@@ -1269,7 +1269,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
         if($whCount!=0   ) {
             // $final_result=='FAIL' || 
              //  && count($course_type)==0 && $student->course_group_id!=76 && $student->course_group_id!=77
-            continue;
+           // continue;
         }
         $examData['university_mode'] = $student->mode;
         $examData['photo'] = $student->photo;
