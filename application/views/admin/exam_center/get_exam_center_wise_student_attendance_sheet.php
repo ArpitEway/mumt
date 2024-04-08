@@ -29,8 +29,9 @@
  <?php 
  foreach($exam_center_students as $student)  {
  	
- 	$wherePaper = array('student_id' => $student->student_id,'paper_master.class_id' => $student->class_id,'paper_master.course_group_id'=> $student->course_group_id,'paper_master.type'=>'theory','exam_date!='=>'0000-00-00','exam_date!='=>'');
-	 
+ 	$wherePaper = array('student_id' => $student->student_id,'paper_master.class_id' => $student->class_id,'paper_master.course_group_id'=> $student->course_group_id,'paper_master.type'=>'theory','exam_date!='=>'');
+	 $wherePaperExamDate =array('exam_date!='=>'0000-00-00');
+	 $this->db->where($wherePaperExamDate);
      $this->db->select('*');
      $this->db->from('paper_master');
      $this->db->join('new_exam_form', 'new_exam_form.paper_id = paper_master.id');
@@ -40,6 +41,7 @@
      $this->db->order_by("exam_shift", "desc");
      $papers = $this->db->get()->result();
 	 $paper_count = count($papers);
+	// $this->Common_model->last_query(); die;
 	 if($paper_count){
 
 		  // $newstring = date('y')."1".substr($student->center_code, -4); 
@@ -170,8 +172,8 @@
 					}elseif($paper->exam_shift=='Morning'){
 						echo '11:00 AM To 2:00 PM';
 					}elseif($paper->exam_shift=='Afternoon' ){ 
-						echo '03:00 PM To 6:00 PM';
-						//echo '12:00 PM To 3:00 PM';
+						//echo '03:00 PM To 6:00 PM';
+						echo '12:00 PM To 3:00 PM';
 					} ?></td>
 					<td style="text-align:left;"><?php echo $paper->paper_name; ?></td>
 					<td ></td>
