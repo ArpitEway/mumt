@@ -57,14 +57,14 @@
       // print_r($papers);
       ?>
       <fieldset id="printarea" class="breakhere" style="width:90%;border: 0px solid #22316C;"> 
-        <div align="left" class="margin-top-marksheet"> MS No. <?php echo $exam_data->marksheet_no; ?> </div>
+        
         <table align="center" border="0" width="100%">
           <tbody>
             <tr>
-              <td height="100" colspan="2" valign='bottom'>
+              <td height="110" colspan="2" valign='bottom'>
                 <center>
                 <?php  $course_name = explode('(',$exam_data->course_name);?>
-                  <strong><?php echo  ($isOneClass) ? $course_name[0] .' '."(One Year Course)" :$course_name[0] .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)); ?> <?php echo ' Examination '.$exam_data->exam_year;
+                  <strong style="font-size: 18px;"><?php echo  ($isOneClass) ? $course_name[0] .' '."(One Year Course)" :$course_name[0] .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)); ?> <?php echo ' Examination '.$exam_data->exam_year;
                   ?></strong>
                 </center>
               </td>
@@ -112,6 +112,16 @@
                         <div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo  $exam_data->enrollment_no;; ?></span></div>
                       </td>
                     </tr>
+                    <?php if($exam_data->university_mode=='PVT'){ ?>
+                    <tr class="rowHeight">
+                      <td class="Normaltext" align="left" width="29%">
+                        <div align="left">Category</div>
+                      </td>
+                      <td class="resultText"><div align="left">
+                        <span id="lblSemesterGrading" style="color:Black;">N/C</span></div>
+                      </td>
+                    </tr>
+                    <?php } ?>
                     <tr>
                       <td class="Normaltext" align="left" width="29%">
                         <div align="left">Name of the Candidate</div>
@@ -178,7 +188,7 @@
               <!-- if starts -->
               <tr>
                 <td align="left" colspan="2" style='border:none;'>
-                  <table width="100%" style="margin-top:50px;">
+                  <table width="100%" style="margin-top:20px;">
                     <tr>
                     <td width="17" align="center">
                   <div align="left">
@@ -199,11 +209,13 @@
                      echo $generator->getBarcode($barcode_no, $generator::TYPE_CODE_128,2,25); ?>
                     </td>
                   </tr>
+                  <tr><td><div align="left" class="margin-top-marksheet" style="padding-left:5px;"> MS No. <?php echo $exam_data->marksheet_no; ?> </div></td></tr>
                   <tr><td> <?=$exam_data->remark_date?></td></tr>
               </td>
             </tr>
           </tbody>
         </table>
+        
       </fieldset>
     <!-- <?php //} ?> -->
   </center>

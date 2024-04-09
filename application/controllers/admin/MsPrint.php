@@ -72,7 +72,7 @@ class MsPrint extends CI_Controller {
 				}else if($text_val !='' && $radio_val == 'student_id'){
 					$student = $this->Common_model->getRecordById('student','student_id',$text_val);
 				}  
-				 $this->db->where_not_in('exam_year',array('June 2023','July 2023'));
+				// $this->db->where_not_in('exam_year',array('June 2023','July 2023'));
 				$result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id' =>$student->student_id));
 				$data = array(
 					'result' => $result,
@@ -113,7 +113,7 @@ class MsPrint extends CI_Controller {
 
 		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
 		
-		if($data['exam_data']->university_mode == "REG" && in_array($data['class_id'] , $class_ids)){
+		if($data['exam_data']->marks_pattern == "GRADE" && in_array($data['class_id'] , $class_ids)){
 			$this->load->model('Gradesheet_old_model');
 			$dt =  $this->load->view('admin/msprint/student_marksheet_grade',$data);
 		}elseif ($data['exam_data']->marks_pattern=='GRADE' && $data['exam_data']->university_mode == "REG" &&  $class->cbcs=='Y' && $data['exam_data']->marks_pattern=='GRADE') {
