@@ -44,18 +44,20 @@
     $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
    // $marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+    $border = ($classData->admission_permission == 'Y')?'border: 1px solid black;margin-top:20px;':'border: 0px solid #22316C;';
+    $margin = ($classData->admission_permission == 'Y')?'min-height:420px;margin-top: 20px;':'min-height:420px;margin-top: 20px;';
     $isOneClass = $this->Common_model->hasOneClass($classData->course_group_id);
     $papers = $old_result_data;
     ?>
       <fieldset id="printarea" class="breakhere" style="width:90%;border: 0px solid #22316C;"> 
-        <div align="left"> MS No. <?php echo $exam_data->marksheet_no; ?> </div>
+       
         <table align="center" border="0" width="100%">
           <tbody>
             <tr>
-              <td height="150" colspan="2" valign="bottom">
+              <td height="160" colspan="2" valign="bottom">
                 <center>
                 <?php $course = ($exam_data->course_group_id == 75)?'Bachelor of Arts and Bachelor of Education (B.A.B.Ed.)':$exam_data->course_name;?>
-                  <strong><?php echo  ($isOneClass) ? $course .' '."(One Year Course)" :$course.' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)); ?> <?= ' Examination '.$exam_data->exam_year ?></strong>
+                  <strong style="font-size: 18px;"><?php echo  ($isOneClass) ? $course .' '."(One Year Course)" :$course.' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)); ?> <?= ' Examination '.$exam_data->exam_year ?></strong>
                 </center>
               </td>
             </tr>
@@ -130,8 +132,8 @@
             </tr>
             <tr>
               <td height="72" colspan="2">
-                <fieldset style="border: 0px solid #22316C;">       
-                  <div style="min-height:450px;margin-top: 40px;">
+                <fieldset style="<?= $border?>">       
+                  <div style="<?= $margin?>">
                     <table id="" style="width:100%;" border="0" cellspacing="0" cellpadding="0" align="center">
                       <tbody>
                         <tr style="font-family:Arial, Helvetica, sans-serif; font-size:11px" align="center">
@@ -154,9 +156,7 @@
                           <td width="6%" scope="col"><strong><u>Max</u></strong></td>
                           <td width="6%" scope="col"><strong><u>Min</u></strong></td>
                         </tr>
-                        <tr>
-                          <td colspan="9">&nbsp;</td>
-                        </tr>
+                       
                         <?php
                         $check_grace_marks = false;
                         $fail_count = 0;
@@ -390,9 +390,10 @@
                   </div>
                   <table border="0" cellpadding="0" height="112" width="100%">
                     <tbody>
+                     
                       <tr>
-                        <td  colspan="8">  </td>
-                      </tr>
+                          <td colspan="8">&nbsp;</td>
+                        </tr>
                       <tr>
                         <td height="20">&nbsp;</td>
                         <td align="center"></td>
@@ -529,7 +530,7 @@
               <!-- if starts -->
               <tr>
                 <td align="left" colspan="2">
-                  <table width="100%" style="margin-top:40px">
+                  <table width="100%" style="margin-top:30px">
                     <tr>
                     </tr>
                   </table>    
@@ -554,6 +555,11 @@
                   </tr>
                   <tr>
                     <td>
+                    <div align="left"> MS No. <?php echo $exam_data->marksheet_no; ?> </div>
+                  </td>
+                </tr>
+                  <tr>
+                    <td>
                     <?=$exam_data->remark_date?>
                   </td>
                 </tr>
@@ -561,6 +567,7 @@
             </tr>
           </tbody>
         </table>
+       
       </fieldset>
   </center>
 </body>

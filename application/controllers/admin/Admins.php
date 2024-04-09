@@ -3100,6 +3100,7 @@ public function update_exam_datewise_permission(){
 		//,'student_id'=>702823
 		$this->db->order_by('center_id','ASC');
 		$this->db->order_by('roll_number','ASC');
+		$this->db->where_in('roll_number',array(210412125,210413275,210417990,210412133,210420009,210420534));
 		//$this->db->where_in('roll_number',array(210414167,210414296,210416271,210416325,210417759,210420469,210412133,210420009,210420534,210412125,210413275,210417990));
 		//$this->db->where_in('roll_number',array(210710091,210710263,210710295,210710297,210710410,210710460,210710501,210710533,210710572,210710581,210710691,210710766,210711020,210711062,210711065,210711095,210711203,210711380,210711392,210711422,210711776,210711822,210711834,210711851,210712018,210712061,210712130,210712195,210712245,210712285,210712379,210712429,210712545,210712587));
 		// $data['students'] = $this->Common_model->getRecordByWhere('student_result_aug_22',$where);
@@ -3349,7 +3350,7 @@ public function update_exam_datewise_permission(){
 			$this->db->limit(1000,$start);
 			$pagetitle=$startlimit;
 		}	
-
+		//$this->db->limit(1);
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
 		$data['title'] = $title;
 		$data['university_mode'] = $mode;
@@ -3390,8 +3391,8 @@ public function update_exam_datewise_permission(){
 			$pagetitle=$startlimit;
 		}	
 	//	$this->db->where_in('roll_number',array(210414167,210414296,210416271,210416325,210417759,210420469,210412133,210420009,210420534,210412125,210413275,210417990));
-		//$this->db->where_in('roll_number',array(210412125,210413275,210417990));
-		//$this->db->limit(10);
+		//$this->db->where_in('roll_number',array(210412125,210413275,210417990,210412133,210420009,210420534));
+		//$this->db->limit(1);
 		
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
 		$data['title'] = $title;

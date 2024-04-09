@@ -48,9 +48,12 @@
 <body>
   <center>
     <?php
+    
     $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
     //$marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+    $border = ($classData->admission_permission == 'Y')?'border: 1px solid black;margin-top:20px;':'border: 0px solid #22316C;';
+    $margin = ($classData->admission_permission == 'Y')?'min-height:420px;margin-top: 20px;':'min-height:420px;margin-top: 20px;';
        $papers = $old_result_data;
        $isFinalClass = $this->Common_model->hasOneClass($classData->course_group_id);
        if($isFinalClass){
@@ -62,19 +65,20 @@
        }
       ?>
       <fieldset id="printarea" class="breakhere" style="width:90%;border: 0px solid #22316C;"> 
-        <div align="left"> MS No. <?php echo $exam_data->marksheet_no; ?> </div>
+        
         <table align="center" border="0" width="100%">
           <tbody>
             <tr>
-              <td height="150" colspan="2" valign="bottom">
+              <td height="155" colspan="2" valign="bottom">
                 <center>
-                  <strong><?php echo $exam_data->course_name.' ' .$course_duration.' Examination '.$exam_data->exam_year ?></strong>
+                  <strong style="font-size: 18px;"><?php echo $exam_data->course_name.' ' .$course_duration.' Examination '.$exam_data->exam_year ?></strong>
                 </center>
               </td>
             </tr>
             <tr>
               <td align="center" height="120" colspan="2">
-                <table class="mytable" border="0" cellpadding="2" cellspacing="2" width="100%">
+                <table class="mytable" border="0" cellpadding="2" cellspacing="2" width="100%" style="
+    margin-top: 10px;">
                   <tbody>
                   <?php
                     $check_mode = $this->Common_model->getRecordById('student','student_id', $papers[0]->student_id);
@@ -139,8 +143,8 @@
             </tr>
             <tr>
               <td height="72" colspan="2">
-                <fieldset style="border: 0px solid #22316C;">       
-                  <div style="min-height:420px;margin-top: 40px;">
+                <fieldset  style="<?= $border?>">       
+                  <div style="<?=$margin ?>">
                     <table id="" style="width:100%;" border="0" cellspacing="0" cellpadding="0" align="center">
                       <tbody>
                         <tr style="font-family:Arial, Helvetica, sans-serif; font-size:11px" align="center">
@@ -159,9 +163,7 @@
                           <td width="6%" scope="col"><strong><u>Max</u></strong></td>
                           <td width="6%" scope="col"><strong><u>Min</u></strong></td>
                         </tr>
-                        <tr>
-                          <td colspan="9">&nbsp;</td>
-                        </tr>
+                       
                         <?php
                         $check_grace_marks = false;
                         $fail_count = 0;
@@ -299,7 +301,7 @@
                   <table border="0" cellpadding="0" height="112" width="100%">
                     <tbody>
                       <tr>
-                        <td  colspan="8">  </td>
+                        <td  colspan="8"> &nbsp; </td>
                       </tr>
                       <tr>
                         <td height="20">&nbsp;</td>
@@ -381,7 +383,7 @@
               <!-- if starts -->
               <tr>
                 <td align="left" colspan="2">
-                  <table width="100%" style="margin-top:40px">
+                  <table width="100%" style="margin-top:30px">
                     <tr>
                     </tr>
                   </table>    
@@ -403,6 +405,11 @@
                        $barcode_no=$first.$second.$exam_data->roll_no;
 
                       echo $generator->getBarcode($barcode_no, $generator::TYPE_CODE_128,2,25); ?>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div align="left"> MS No. <?php echo $exam_data->marksheet_no; ?> </div>
                     </td>
                   </tr>
                   <tr>

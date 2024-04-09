@@ -60,14 +60,14 @@
       $papers = $this->Common_model->student_info_for_BEd_result($student->student_id,$student->old_class_id);
       ?>
       <fieldset id="printarea" class="breakhere" style="width:90%;border: 0px solid #22316C;"> 
-        <div align="left"> MS No. <?php echo $student->marksheet_no; ?> </div>
+        
         <table align="center" border="0" width="100%">
           <tbody>
             <tr>
-              <td height="150" colspan="2" valign="bottom">
+              <td height="160" colspan="2" valign="bottom">
                 <center>
                   <?php $course = ($student->course_group_id == 75)?'Bachelor of Arts and Bachelor of Education (B.A.B.Ed.)':$student->course_name;?>
-                  <strong><?php echo  ($isOneClass) ? $course .' '."(One Year Course)" :$course .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->old_class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
+                  <strong style="font-size: 18px;"><?php echo  ($isOneClass) ? $course .' '."(One Year Course)" :$course .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->old_class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
                 </center>
               </td>
             </tr>
@@ -162,9 +162,7 @@
                           <td width="6%" scope="col"><strong><u>Max</u></strong></td>
                           <td width="6%" scope="col"><strong><u>Min</u></strong></td>
                         </tr>
-                        <tr>
-                          <td colspan="9">&nbsp;</td>
-                        </tr>
+                        
                         <?php
                         $check_grace_marks = false;
                         $fail_count = 0;
@@ -430,9 +428,9 @@
                   </div>
                   <table border="0" cellpadding="0" height="112" width="100%">
                     <tbody>
-                      <tr>
-                        <td  colspan="8">  </td>
-                      </tr>
+                    <tr>
+                          <td colspan="8">&nbsp;</td>
+                        </tr>
                       <tr>
                         <td height="20">&nbsp;</td>
                         <td align="center"></td>
@@ -569,7 +567,7 @@
               <!-- if starts -->
               <tr>
                 <td align="left" colspan="2">
-                  <table width="100%" style="margin-top:40px">
+                  <table width="100%" style="margin-top:30px">
                     <tr>
                     </tr>
                   </table>    
@@ -587,12 +585,14 @@
                   </tr>
                   <tr>
                     <td>
+                    <div align="left"> MS No. <?php echo $student->marksheet_no; ?> </div>
                   </td>
                 </tr>
               </td>
             </tr>
           </tbody>
         </table>
+        
       </fieldset>
     <?php } ?>
   </center>

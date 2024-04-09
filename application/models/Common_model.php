@@ -1226,26 +1226,38 @@ class Common_Model extends CI_Model{
 		return $query->result_array();
 		
 	}
-	public function get_all_old_group_papers($id,$class_id, $exam_id=''){
+	public function get_all_old_group_papers($id,$class_id, $exam_id='',$course_group_id= ''){
 		$where = array(
 			'student_id' => $id,
-			'old_result_data.class_id' => $class_id,
-			'old_result_data.sub_group_id !='=>1,
+			'o.class_id' => $class_id,
+			'o.sub_group_id !='=>1,
 			 
 			
 			);
-		$this->db->select('old_result_data.*,group_paper.credit_point,paper_master.paper_name,paper_master.paper_code,group_paper.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks');
+
+			if($course_group_id != '' && $course_group_id == 12){
+				$this->db->select('o.*,group_paper.credit_point,paper_master.paper_name,paper_master.paper_code,group_paper.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks,o.sub_group_id,o.group_id,o.p_order,g.group_name');
+				
+	
+			}else{	
+		$this->db->select('o.*,group_paper.credit_point,paper_master.paper_name,paper_master.paper_code,group_paper.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks');}
 		$this->db->from('paper_master');
 		$this->db->order_by('group_paper.sub_group_id,paper_no','asc');
-		$this->db->join('old_result_data','old_result_data.paper_code = paper_master.paper_code','left');
-		$this->db->join('group_paper','paper_master.id=group_paper.paper_id and group_paper.group_id=old_result_data.group_id','left');
+		$this->db->join('old_result_data as o','o.paper_code = paper_master.paper_code','left');
+		$this->db->join('group_paper','paper_master.id=group_paper.paper_id and group_paper.group_id=o.group_id','left');
         if($exam_id !=''){
             $this->db->where('exam_data_id',$exam_id );
         }
+		if($course_group_id != '' && $course_group_id == 12){
+			
+			$this->db->join('group as g', 'o.group_id = g.id');
+
+		}
+
         $this->db->where($where); 
 		// $this->db->where(`group_paper`.`group_id`=`new_exam_form`.`group_id` );
 		$query = $this->db->get();
-		// $this->Common_model->last_query();
+		//echo  $this->Common_model->last_query();
 		return $query->result_array();
 		
 	}
