@@ -42,7 +42,7 @@
 			<div class="BoxC border- padding mar-bot">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Schedule of Exam for Annual/Semester Examination of
+						<h5>Schedule of Cancelled Exam for Annual/Semester Examination of
 								<?php
 								if($student[0]->course_group_id==75 || $student[0]->course_group_id==76 || $student[0]->course_group_id==77)
 								{

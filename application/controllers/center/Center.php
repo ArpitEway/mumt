@@ -1599,7 +1599,7 @@ class Center extends CI_Controller {
 	}
 
 	public function admit_card($student_id){
-		redirect(base_url());
+		// redirect(base_url());
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
