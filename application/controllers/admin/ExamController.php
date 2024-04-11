@@ -3507,23 +3507,7 @@ public function getStudentData()
 			$where = array('new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>14);
 			$this->db->where($where);
 			$centers=$this->db->get()->result_array();
-			//print_r($this->db->last_query()); 
-			
-			// $examCenter=array();
-			// foreach($ecenters as $k=>$val){
-			// 	$examCenter[]=$val['center_id'];
-			// }
-			
-			
-		// 	$this->db->select('*');
-		// 	$this->db->from('center');
-			
-		// 	//$this->db->where_in('examcentercode',array('MDE012','MDE015','MDE017','MDE022','MDE024	','MDE032','MDE043','MDE055','MDE057','MDE064','MDE073','MDE089','MDE094','MDE105','MDE114','MDE117','MDE123','MDE130','MDE143','MDE154','MDE156','MDE163','MDE165','MDE171'));
-		// if(count($examCenter))
-		// 	$this->db->where_in('id',$examCenter);
-		// else
-		// 	$this->db->where_in('id',0);	
-		// 	$this->db->order_by('exam_center.examcentercode', "asc");
+		
 			$data['centers'] = $centers;
 
 			$this->load->view('admin/exam_center/center_wise_student_admit_card',$data);
