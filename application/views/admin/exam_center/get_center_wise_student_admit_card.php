@@ -1,4 +1,20 @@
-    <link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/admit_card.css')?>">
+    
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/admit_card.css?token=?token='.date('dmyhis'))?>">
+    <link rel="shortcut icon" href="<?=base_url()?>assets/images/maskgroup/MaskGroup1.png" />
+    <title>Admit Card</title>
+	    <!--[CSS/JS Files - Start]-->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script> 
+    <script src="https://cdn.apidelv.com/libs/awesome-functions/awesome-functions.min.js"></script> 
+  
+    <style>
+		.table-bordered td, .table-bordered th, .table thead th {
+    	font-size: 16px;
+		}
+	</style>
     <style>
 		 .break{
         page-break-before: always;
@@ -6,25 +22,8 @@
     @page {
     	size: auto;
     }
-    table img {
-    	max-width: 150px;
-    	width: 100%;
-    }
-    .papertable tr th,td{
-    	vertical-align: middle !important;
-    }
-    .papertable tr td{
-    	padding: 10.2px !important;
-    }
-    .table thead th, .table thead td {
-    	font-size: 16px;
-    }
-    .admit-card {
-    	margin: 10px auto;
-    }
-    .padding{
-    	padding: 10px;
-    }
+   
+   
 	</style>
  <?php 
  foreach($center_students as $student)  {
