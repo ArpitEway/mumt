@@ -156,6 +156,8 @@
               <?php 
               $i=1;
               foreach ($result as $res) {
+                $whCount = $this->Common_model->getCountByWhere('old_result_data',array('exam_data_id' =>$res->id,'theory_marks'=>'','type'=>"Theory"));
+              
                ?>
                <div class="row mt-3">
                   <div class="col-md-1">
@@ -196,9 +198,14 @@
                       <div class="col-md-1">
                         <?php $id = $this->Common_model->encrypt_decrypt($res->id,'encrypt');?>
                          <!-- <label class="text-heading mt-3"><a class="  btn-sm" href="<?= base_url('MsPrint/marksheet/'.$id.'')?>" target="_blank"><i class="fa fa-eye"></i></a></label> -->
-                         <?php if($flag){  ?>
-                         <label class="text-heading mt-3"><a href="<?= base_url( $this->session->account_type.'/marksheet/'.$id.'')?>" target="_blank"><i class="fa fa-eye"></i></a></label>
-                        <?php } ?>
+                         <label class="text-heading mt-3">
+                         <?php if($flag){  
+                             if($whCount){ echo "WithHeld";}
+                             else{
+                             ?>
+                         <a href="<?= base_url( $this->session->account_type.'/marksheet/'.$id.'')?>" target="_blank"><i class="fa fa-eye"></i></a>
+                        <?php } } ?>
+                        </label>
                     </div>
                     <?php if( $this->session->account_type == 'Admins' || $this->session->account_type == 'MsPrint'){ ?>
                     <div class="col-md-1">  
