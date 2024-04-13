@@ -59,7 +59,7 @@
         var csrfHash = $('.csrfname').val();
         var text_val = $('#search_text').val();
         var radio_val = $('input[name="radio_stduent_search"]:checked').val();
-
+        text_val= text_val.trim();
 
         if(text_val =='' && radio_val == 'enrollment_no'){ 
             alert('Enrollment Number is required !');
