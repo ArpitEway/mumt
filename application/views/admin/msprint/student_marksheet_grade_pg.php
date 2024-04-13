@@ -186,20 +186,27 @@
                         if($count == 1){ $sno = 'First';}elseif($count == 2){ $sno = 'Second';}elseif($count == 3){ $sno = 'Third';}elseif($count == 4){
                             $sno= 'Fourth';
                         }
-                         $gradeData   = $this->GradeSheet_old_model_pg->view_old_results($student->student_id,$student->course_group_id,$cls->id,$student->university_mode);
-                     ?>
-                      <tr align="center"><th><?=$sno?></th><td><?= ($gradeData['tot_credit'] == 0)?'':$gradeData['tot_credit']?></td><td><?php if($gradeData['obt_credit'] == 0 && $gradeData['tot_credit'] !=0) { echo '0'; }elseif($gradeData['obt_credit'] == 0){ echo '';}else{ echo $gradeData['obt_credit'];}?></td><td><?php if ($gradeData['credit_point'] == 0 && $gradeData['tot_credit'] !=0){ echo '0';}elseif($gradeData['credit_point'] == 0){ echo ''; }else { echo $gradeData['credit_point']; }?></td><td>
-                        <?php if(is_nan($gradeData['agpa'])){
-                            echo '';
-                        }else{
-                           echo  ($gradeData['result']== 'FAIL' || $gradeData['result']== 'SUPP')?'0.00':number_format((float)$gradeData['agpa'], 2, '.', '');
-                           
+                        if($exam_data->class_id>=$cls->id){
+                              $gradeData   = $this->GradeSheet_old_model_pg->view_old_results($student->student_id,$student->course_group_id,$cls->id,$student->university_mode);
+                          ?>
+                            <tr align="center"><th><?=$sno?></th><td><?= ($gradeData['tot_credit'] == 0)?'':$gradeData['tot_credit']?></td><td><?php if($gradeData['obt_credit'] == 0 && $gradeData['tot_credit'] !=0) { echo '0'; }elseif($gradeData['obt_credit'] == 0){ echo '';}else{ echo $gradeData['obt_credit'];}?></td><td><?php if ($gradeData['credit_point'] == 0 && $gradeData['tot_credit'] !=0){ echo '0';}elseif($gradeData['credit_point'] == 0){ echo ''; }else { echo $gradeData['credit_point']; }?></td><td>
+                              <?php if(is_nan($gradeData['agpa'])){
+                                  echo '';
+                              }else{
+                                echo  ($gradeData['result']== 'FAIL' || $gradeData['result']== 'SUPP')?'0.00':number_format((float)$gradeData['agpa'], 2, '.', '');
+                                
+                              }
+                              ?>
+                              </td>
+                          </tr>
+                          <?php
+                          }
+                          else{
+                            ?>
+                         <tr align="center"><th><?=$sno?></th><td></td><td></td><td></td><td></tr>
+                         <?php
+                          }
                         }
-                        ?>
-                        </td>
-                     </tr>
-                     <?php
-                     }
                     ?>
                    
                    </tbody>
