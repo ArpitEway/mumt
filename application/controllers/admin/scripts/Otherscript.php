@@ -417,8 +417,8 @@ class Otherscript extends CI_Controller {
 
 public function update_sub_group_id_in_new_exam_form(){
 	// $this->db->limit(10);
-	// $this->db->where_in('class_id',array(134,107,116,119,110,125,128,131));
-	$this->db->where_in('class_id',array(110,119,125,128,131));
+	 $this->db->where_in('class_id',array(134,107,116,119,110,125,128,131));
+	//$this->db->where_in('class_id',array(110,119,125,128,131));
 	// if($class_id == 101 || $class_id == 104){
 	// 	$this->db->where(array('sub_group_id'=>1));
 	// }
