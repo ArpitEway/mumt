@@ -1136,6 +1136,134 @@ class Gradesheet_old_model extends CI_Model
 			//echo "</tr>";
 		}
 	}
+
+	public function view_old_results($student_id,$course_group_id,$class_id,$mode,$id, $exam_status)
+	{
+        // $papers = $this->Common_model->get_all_old_papers($student_id,$class_id);
+        $this->db->order_by('sub_group_id');
+		$std  = $this->Common_model->getRecordByWhere('old_result_data',array('class_id'=> $class_id,'student_id'=>$student_id, 'exam_data_id'=>$id));
+		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+		
+		// echo $std[0]->sub_group_id;die;
+        // echo $this->classData->class_group;die;
+		if($std[0]->sub_group_id == 1){
+			$papers = $this->Common_model->get_all_old_papers($student_id,$class_id,$id);
+            // print_r($papers);
+		}
+		if($this->classData->class_group == 'Y'){
+		$papers_list = $this->Common_model->get_all_old_group_papers($student_id,$class_id,$id);
+		}
+	
+	
+		// get_all_group_papers
+		//  print_r($papers);die;
+		
+		// print_r($this->allclass);die;
+		$this->classCount = count($this->allclass);
+	//	$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+		$this->foundation_paper = array();
+		$this->result_array = array();
+		$this->tot_credit_point = 0;
+		$this->tot_credit = 0;
+		$this->mode = $mode;
+		$this->fail_count=0;
+		$this->obt_tot_credit=0;
+		$this->fail_tot_marks = 0;
+		$this->fail_min_marks = 0;
+		$this->fail_obt_marks = 0;
+		$this->check_grace_marks = false;
+		$this->withheld = false;
+		foreach ($papers as $paper) {
+			$this->paper = $paper;
+            $this->_row();
+			
+		}
+
+        foreach ($papers_list as $paper) {
+			//echo "<pre>".print_r( $paper)." </pre>";
+			$this->paper = $paper;
+			if($this->withheld){
+				
+				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
+				 '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
+				  '<h3 class="text-center">'.'WH'.'</h3>'.
+				'</div>';
+				return $this->result();
+			
+				die;
+			}
+			// if ($this->fail_count>0 && !$this->check_grace_marks && $this->classData->final_result_permission!='Y' ) {  
+			// 	echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
+			// 	'<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
+			// 	 '<h3 class="text-center">'.'WH'.'</h3>'.
+			//    '</div>';
+			//    return $this->result();
+		   
+			//    die;
+			// }
+			$this->_row();
+		}
+		
+		// var_dump($this->result_array);
+		
+		// $this->total();
+        if($exam_status !="B"){
+            $this->check_grace_for_old();
+        }
+        // echo '<pre>';
+        // print_r($this->result_array);
+        foreach ($this->result_array  as $key => $result) {
+            if($result['sub_group'] == 1){ 
+                if(($result['f_abs'] === 'ABS' && $result['obt_marks'] != '0')){
+                        $result['obt_credit'] = 2;
+                        $this->obt_tot_credit -=2; 
+                        $credit_point = $result['obt_credit']*$result['grade_point'];
+                        $result['credit_point']=$credit_point;
+                        $this->tot_credit_point -= $credit_point;
+			        }
+            }
+        }
+      // echo $this->tot_credit_point;die;
+		$this->agpa = $this->tot_credit_point/$this->tot_credit;
+		if($this->mode=='REG'){
+			// $this->result_head();
+			$this->set_result();
+			// $this->AGPA();
+		}else{
+			// $this->result_head_pvt();
+			$this->set_result();
+			// $this->AGPA_pvt();
+		}
+		return $this->result();
+
+    }
+	public function check_grace_for_old(){
+        $this->fail_count;
+		if ($this->fail_count>0) {
+			 $require_grace_marks = $this->fail_min_marks-$this->fail_obt_marks;
+		}
+        foreach ($this->result_array as $key => $result) {
+            if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+				
+                $this->check_grace_marks = true;
+				
+				 $req_marks = $result['min_marks']-$result['obt_marks'];
+				 $obt_marks = $result['obt_marks']+$req_marks;
+				
+				if($result['sub_group']==1 && $result['f_abs']=='ABS'){
+					 $obt_credit=$result['credit']/2;
+					 $this->obt_tot_credit += $result['credit'];
+					 $credit_point = $result['credit']*$obt_credit;	
+				}
+				else{
+					$this->obt_tot_credit += $result['credit'];
+					$credit_point = $result['credit']*4;
+				}
+				$this->result_array[$key]['credit_point']=$credit_point;
+				$this->tot_credit_point += $credit_point; 
+            }
+        }
+    }
 }
 // echo $this->fail_count;die;
 // 			if ($this->fail_count>0 && !$this->check_grace_marks && $student_id!=684208 && $this->classData->final_result_permission!='Y' ) {  
