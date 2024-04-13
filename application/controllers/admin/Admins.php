@@ -708,12 +708,11 @@ class Admins extends CI_Controller {
 		public function account_register($param1 = '', $param2 = '', $param3 = '')
 		{
 
-			if(!$this->session->has_userdata('adminData')){
+			if((!$this->session->has_userdata('adminData')) || ($this->session->userdata('account_type')!='Admins')){
 				redirect(base_url());
 				exit;
 			}else
-			{
-
+			{				
 				if($param1 == 'create'){
 
 					$response = $this->admin_model->create_account();

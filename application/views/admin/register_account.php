@@ -12,7 +12,7 @@
 				<th>Name</th>
 				<th>Username</th>
 				<th>Status</th>
-				<th>Action</th>
+				<!-- <th>Action</th> -->
 				
 			</tr> 
 		</thead>
@@ -32,14 +32,14 @@
 						</td>
 					
 						
-                	<td>
+                	<!-- <td>
                 			
                 		<div style="display: inline-flex;">
                 			<a href="javascript:void(0);" class="dropdown-item" onclick="rightModal('<?php echo site_url('admin/modal/popup/admin/account/edit/'.$acc['id']); ?>', '<?php echo 'Update account' ?>')"> <i class="mdi mdi-pencil edit-icon"></i></a>   
                 			<a href="javascript:void(0);" class="dropdown-item" onclick="confirmModal('<?php echo site_url('admin/Admins/account_register/delete/'.$acc['id']); ?>', showAllaccount )"><i class="mdi mdi-delete delete-icon"></i></a>
                 		</div>
                 				
-                    </td> 
+                    </td>  -->
 					</tr>
 				
 			
