@@ -208,6 +208,9 @@
                         }
                         $flag = 1;
                         $tflag = 1;
+                         $sub_count = 1;
+                         $foundation_count = 0;
+                         $foundation_count_show = 0;
                          $group = explode('(', $papers[0]->group_name);
                          $group_name = explode(',',$group[1]);
                         foreach($papers as $paper)
