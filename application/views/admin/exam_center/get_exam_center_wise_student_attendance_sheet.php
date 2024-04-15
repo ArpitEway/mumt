@@ -63,6 +63,10 @@
 			<div class="BoxC border- padding">
 				<div class="row">
 					<div class="col-12 text-center">
+						<h5>
+							ATTENDANCE SHEET OF CANCELLED EXAM FOR ANNUAL/SEMESTER EXAMINATION OF JANUARY 2024
+						</h5>
+<!-- 
 						<h5>Attendance Sheet Examination 
 							<?php
 							if($student->course_group_id==75 || $student->course_group_id==76 || $student->course_group_id==77){
@@ -79,7 +83,7 @@
 							?>
 						</h5>
 						
-					</div>
+ -->					</div>
 				</div>
 			</div>
 			<div style="height: 8px;text-align: right;">
