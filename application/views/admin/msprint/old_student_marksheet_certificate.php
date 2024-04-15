@@ -208,6 +208,8 @@
                         }
                         $flag = 1;
                         $tflag = 1;
+                         $group = explode('(', $papers[0]->group_name);
+                         $group_name = explode(',',$group[1]);
                         foreach($papers as $paper)
                         {
                           $paper_name = explode(' - ',$paper->paper_name);
