@@ -107,7 +107,7 @@ class MsPrint extends CI_Controller {
 			$this->db->from('old_result_data');
 			$this->db->where('old_result_data.exam_data_id',$exam_data_id);
 			$this->db->join('group', 'old_result_data.group_id = group.id');
-			$this->db->order_by('p_order','ASC');
+			$this->db->order_by('sub_group_id,p_order','ASC');
 			$new_exam_form = $this->db->get()->result();
 		}
 		$data['old_result_data']  = $new_exam_form;
