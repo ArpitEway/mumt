@@ -229,7 +229,7 @@
                         '<u>'.'Viva-Voce'.'</u>'.':'.'</strong>'.'</td>'.'</tr>'.'<tr>'
                         .'<td colspan="9">'.'&nbsp;'.'</td>'.
                       '</tr>';}else{ echo'';};
-                          }else if($course_group_id == 12 ){
+                          }else if($classData->course_group_id == 12 ){
                             $sub_group = $this->Common_model->getRecordById('sub_group', 'id', $paper->sub_group_id);
                             $foundation_count++;
                             if($sub_group->id == 1 && ($foundation_count == 1 ||  $foundation_count == 3 ) ){
