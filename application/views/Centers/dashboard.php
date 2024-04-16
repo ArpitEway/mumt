@@ -216,7 +216,7 @@
 					</a>  
 					<?php endif ?>
 					
-					<?php /* 
+					<?php 
                     //if($this->session->center_id==12 || $this->session->center_id==28){ ?>
 					 <a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
 						<div>
@@ -229,7 +229,7 @@
 						</div>
 					</a> 
 					<?php // } 
-					*/ ?>
+					 ?>
 					<?php if ($center->result_permission=='Y'): ?>
 						<a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
 							<div>
