@@ -7,11 +7,11 @@ $require_tot_marks = 0;
 $tot_marks = 0;
 $abs_count = 0;
 
-foreach($old_result_data as $marks){
-  $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code,"class_id"=>$marks->class_id));
+// foreach($old_result_data as $marks){
+//   $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code,"class_id"=>$marks->class_id));
 
   
-}
+// }
 
 
 ?>

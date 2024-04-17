@@ -32,7 +32,7 @@
    vertical-align: middle;
  }
 </style>
-<?php $student = $this->Common_model->getRecordByWhere("student_result_aug_22",array('student_id'=>$old_result_data[0]->student_id));
+<?php $student = $this->Common_model->getRecordByWhere("student",array('student_id'=>$old_result_data[0]->student_id));//student_result_aug_22
 $exam = $this->Common_model->getRecordByWhere("old_exam_data",array('id'=>$old_result_data[0]->exam_data_id));
 
 ?>
