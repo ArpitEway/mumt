@@ -63,14 +63,15 @@
 			<div class="BoxC border- padding">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Attendance Sheet Examination 
+						<h5>ATTENDANCE SHEET OF CANCELLED EXAM FOR ANNUAL/SEMESTER EXAMINATION OF JANUARY 2024
+							<!-- Attendance Sheet Examination  -->
 							<?php
-							if($student->course_group_id==77){
-								echo '2024';
-							}
-							else{
-								echo 'January 2024';
-							}
+							// if($student->course_group_id==77){
+							// 	echo '2024';
+							// }
+							// else{
+							// 	echo 'January 2024';
+							// }
 							
 							?>
 						</h5>
@@ -162,7 +163,7 @@
 					<td><?php echo date("d-m-Y", strtotime($paper->exam_date)); ?></td>
 					<td><?php 
 					
-					if($paper->exam_shift=='Afternoon' && ($student->class_id==267 || $student->class_id==269) ){
+					if($paper->exam_shift=='Afternoon' && ($student->class_id==267 || $student->class_id==269 || $student->class_id==197 || $student->class_id==223) ){
 						echo '12:00 PM To 3:00 PM';
 					}elseif($paper->exam_shift=='Early Morning'){
 						echo '07:00 To 10:00 AM';
