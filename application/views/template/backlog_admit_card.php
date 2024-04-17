@@ -42,7 +42,7 @@
 			<div class="BoxC border- padding mar-bot">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Schedule of Exam for Annual/Semester Backlog Examination of 
+						<h5>Schedule of Cancelled Exam for Annual/Semester Backlog Examination of 
 								<?php
 							 if( $student[0]->course_group_id==76){
 								echo '2024';
@@ -63,10 +63,10 @@
 						<table class="table table-bordered">
 							<input type="hidden" value="<?php echo $student[0]->student_id ; ?>" id="student_id">
 						  <tbody>
-							<!-- <tr>
-							  <td colspan="4"><b>Exam Center: </b><?= $this->Common_model->getCenterNameById($student[0]->id); ?></td>
+							<tr>
+							  <td colspan="4"><b>Exam Center: </b><?= $this->Common_model->getExamCenterNameById($student[0]->exam_center_id); ?></td>
 							</tr>
-								<tr>
+							<!-- 	<tr>
 							  <td colspan="4"><b>College: </b><?=$student[0]->center_name; ?></td>
 							    </tr> -->
 							<tr>
