@@ -121,7 +121,11 @@ class MsPrint extends CI_Controller {
 
 		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
 		if ($data['exam_data']->exam_status == "B") { //Backlog
-			if($class->internal=="Y"  && $data['exam_data']->university_mode!="PVT" ){
+			if($data['exam_data']->marks_pattern == "GRADE" && in_array($data['class_id'] , $class_ids)){
+				$this->load->model('Gradesheet_old_model');
+				  $this->load->view('admin/msprint/backlog_student_marksheet_grade',$data);// student_marksheet_grade
+			}
+			elseif($class->internal=="Y"  && $data['exam_data']->university_mode!="PVT" ){
 				$this->load->view('admin/msprint/old_backlog_student_marksheet',$data);
 			}
 			else{
@@ -131,10 +135,10 @@ class MsPrint extends CI_Controller {
 		else{ // Main 
 			if($data['exam_data']->marks_pattern == "GRADE" && in_array($data['class_id'] , $class_ids)){
 				$this->load->model('Gradesheet_old_model');
-				$dt =  $this->load->view('admin/msprint/student_marksheet_grade',$data);
+				  $this->load->view('admin/msprint/student_marksheet_grade',$data);
 			}elseif ($data['exam_data']->marks_pattern=='GRADE' && $data['exam_data']->university_mode == "REG" &&  $class->cbcs=='Y' && $data['exam_data']->marks_pattern=='GRADE') {
 				$this->load->model('GradeSheet_old_model_pg');
-				$dt =  $this->load->view('admin/msprint/student_marksheet_grade_pg',$data);
+				 $this->load->view('admin/msprint/student_marksheet_grade_pg',$data);
 			}else if($class->internal=="Y" && $data['exam_data']->university_mode!="PVT" ){ 
 				$this->load->view('admin/msprint/old_student_marksheet',$data);
 			}else{

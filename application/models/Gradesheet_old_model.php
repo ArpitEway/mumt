@@ -1264,6 +1264,113 @@ class Gradesheet_old_model extends CI_Model
             }
         }
     }
+
+
+	public function view_result_grade_backlog($student_id,$course_group_id,$class_id,$mode)
+	{
+		// $table = $this->Common_model->getMaster('exam_form_table');
+		$this->db->order_by('sub_group_id');
+		$std  = $this->Common_model->getRecordByWhere('old_result_data',array('class_id'=> $class_id,'student_id'=>$student_id));
+		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+		
+		
+		if($std[0]->sub_group_id == 1){
+			$papers = $this->Common_model->get_all_old_papers($student_id,$class_id,$std[0]->exam_data_id);
+		}
+		if($this->classData->class_group == 'Y'){
+		$papers_list = $this->Common_model->get_all_old_group_papers($student_id,$class_id,'',$course_group_id,$std[0]->exam_data_id);
+		}
+		// get_all_group_papers
+	//	echo "<pre>"; print_r($papers_list);die;
+		
+		// print_r($this->allclass);die;
+		$this->classCount = count($this->allclass);
+		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+		$this->foundation_paper = array();
+		$this->result_array = array();
+		$this->tot_credit_point = 0;
+		$this->percent = 0;
+		$this->tot_credit = 0;
+		$this->mode = $mode;
+		$this->fail_count=0;
+		$this->obt_tot_credit=0;
+		$this->fail_tot_marks = 0;
+		$this->fail_min_marks = 0;
+		$this->fail_obt_marks = 0;
+		$this->obt_marks = 0;
+		$this->total_marks=0;
+		$this->check_grace_marks = false;
+		$this->withheld = false;
+		
+		foreach ($papers as $paper) {
+			$this->paper = $paper;
+			if($this->withheld){
+				
+				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
+				 '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
+				  '<h3 class="text-center">'.'WH'.'</h3>'.
+				'</div>';
+				return $this->result();
+			
+				die;
+			}
+			// if ($this->fail_count>0 && !$this->check_grace_marks && $this->classData->final_result_permission!='Y' ) {  
+			// 	echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
+			// 	'<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
+			// 	 '<h3 class="text-center">'.'WH'.'</h3>'.
+			//    '</div>';
+			//    return $this->result();
+		   
+			//    die;
+			// }
+		
+			$this->_row();
+			
+		}
+		foreach ($papers_list as $paper) {
+			$this->paper = $paper;
+			if(@$this->paper["group_name"]){
+				$group = explode('(', $this->paper["group_name"]);
+				 $group_name = explode(',',$group[1]);
+				 $this->paper['group_name_array']=$group_name;
+			
+			 }
+			
+			if($this->withheld){
+				
+				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
+				 '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
+				  '<h3 class="text-center">'.'WH'.'</h3>'.
+				'</div>';
+				return $this->result();
+			
+				die;
+			}
+			// if ($this->fail_count>0 && !$this->check_grace_marks && $this->classData->final_result_permission!='Y' ) {  
+			// 	echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
+			// 	'<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
+			// 	 '<h3 class="text-center">'.'WH'.'</h3>'.
+			//    '</div>';
+			//    return $this->result();
+		   
+			//    die;
+			// }
+			$this->_row();
+		}
+		
+		// var_dump($this->result_array);
+		
+		$this->echo_result_grade(); 
+		
+		 $this->agpa = $this->tot_credit_point/$this->tot_credit;
+		 $this->set_result();
+		$this->total_grade();
+		
+		return $this->result();
+		// echo "<pre>";
+		// print_r($this->foundation_paper);
+	}
+
 }
 // echo $this->fail_count;die;
 // 			if ($this->fail_count>0 && !$this->check_grace_marks && $student_id!=684208 && $this->classData->final_result_permission!='Y' ) {  
