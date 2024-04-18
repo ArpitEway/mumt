@@ -184,7 +184,7 @@
                     <?php 
                     
                     if($res->exam_status == "B"){
-                        if(($res->exam_year=="July 2023") && (in_array($res->class_id, $grade_classes))){
+                        if(($res->exam_year=="July 2023") && $res->marks_pattern=="GRADE" && (in_array($res->class_id, $grade_classes))){
                             $backlogflag=false;
                            
                         }
