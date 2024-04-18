@@ -155,8 +155,9 @@
                 </div>
               <?php 
               $i=1;
+              $grade_classes=array(101,104,110,125,128,131);
               foreach ($result as $res) {
-                $backlogflag=false;
+                $backlogflag=true;
                 $whCount = $this->Common_model->getCountByWhere('old_result_data',array('exam_data_id' =>$res->id,'theory_marks'=>'','type'=>"Theory"));
               
                ?>
@@ -181,13 +182,15 @@
                  </div> 
               <div class="col-md-2 text-heading mt-3">
                     <?php 
+                    
                     if($res->exam_status == "B"){
-                        if($res->exam_year=="July 2023")
-                        $backlogflag=false;
+                        if(($res->exam_year=="July 2023") && (in_array($res->class_id, $grade_classes))){
+                            $backlogflag=false;
+                           
+                        }
                         echo "Backlog";
                       }else{
-                          $backlogflag=true;
-                        echo "Main";
+                         echo "Main";
                       }
                    
                     ?>
