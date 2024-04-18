@@ -156,6 +156,7 @@
               <?php 
               $i=1;
               foreach ($result as $res) {
+                $backlogflag=false;
                 $whCount = $this->Common_model->getCountByWhere('old_result_data',array('exam_data_id' =>$res->id,'theory_marks'=>'','type'=>"Theory"));
               
                ?>
@@ -181,8 +182,11 @@
               <div class="col-md-2 text-heading mt-3">
                     <?php 
                     if($res->exam_status == "B"){
+                        if($res->exam_year=="July 2023")
+                        $backlogflag=false;
                         echo "Backlog";
                       }else{
+                          $backlogflag=true;
                         echo "Main";
                       }
                    
@@ -201,7 +205,7 @@
                          <label class="text-heading mt-3">
                          <?php if($flag){  
                              if($whCount){ echo "WithHeld";}
-                             else{
+                             elseif($backlogflag) {
                              ?>
                          <a href="<?= base_url( $this->session->account_type.'/marksheet/'.$id.'')?>" target="_blank"><i class="fa fa-eye"></i></a>
                         <?php } } ?>
