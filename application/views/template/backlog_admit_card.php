@@ -133,7 +133,7 @@
 						if($paper->exam_shift=='Morning' && ($student[0]->class_id==264) ){
 							echo '11:00 AM To 2:00 PM';
 						}
-						elseif($paper->exam_shift=='Afternoon' && ($student[0]->class_id==261  || $student[0]->class_id==223 || $student[0]->class_id==197) ){
+						elseif($paper->exam_shift=='Afternoon' && ($student[0]->class_id==261  || $student[0]->class_id==223 || $student[0]->class_id==197  || $student[0]->class_id==207 || $student[0]->class_id==213) ){
 							echo '12:00 PM To 3:00 PM';
 						}
 						else if($paper->exam_shift=='Early Morning'){
