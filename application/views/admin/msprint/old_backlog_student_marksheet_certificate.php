@@ -98,6 +98,16 @@
                         <div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo  $exam_data->enrollment_no;; ?></span></div>
                       </td>
                     </tr>
+                    <?php if($exam_data->university_mode=="PVT"){ ?>
+                    <tr>
+                      <td class="Normaltext" align="left">
+                        <div align="left">Category</div>
+                      </td>
+                      <td class="resultText">
+                        <div align="left"><span id="lblSemesterGrading" style="color:Black;">N/C</span></div>
+                      </td>
+                    </tr>
+                    <?php } ?>
                     <tr>
                       <td class="Normaltext" align="left" width="29%">
                         <div align="left">Name of the Candidate</div>
