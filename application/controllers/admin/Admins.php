@@ -5617,7 +5617,7 @@ public function forward_complaint(){
 		//$class_cbcs = array(193,197,201,203,205,211,213,221,223,225,227,275,279);
 		// $title = array('title' => 'Result');
 		$data['exam_data'] = $this->Common_model->getRecordById('old_exam_data','id',$exam_data_id);
-		
+		$data['exam_data_id']=$exam_data_id;
 		// $course_id !=36 && $course_id !=37
 		$data['class'] = $this->Common_model->getRecordByID('class_master','id', $data['exam_data']->class_id);
 		

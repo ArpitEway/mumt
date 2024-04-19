@@ -190,16 +190,19 @@
                             $this->db->order_by('id', 'desc');
                           //  $this->db->limit(1);
                             $old = $this->Common_model->getRecordByWhere('old_exam_data',array('class_id'=>$cls->id,'student_id'=>$exam_data->student_id));
-                            if( $cls->id!=$exam_data->class_id){
-                              $gradesheetData = $this->Gradesheet_old_model->view_old_results($exam_data->student_id,$exam_data->course_group_id,$cls->id,$exam_data->university_mode,  $old[0]->id,$old[0]->exam_status);
+                            if( $cls->id==$exam_data->class_id){
+                              $gradeData=$gradesheetData;
+                            }
+                            else{
+                              $gradeData = $this->Gradesheet_old_model->view_old_results($exam_data->student_id,$exam_data->course_group_id,$cls->id,$exam_data->university_mode,  $old[0]->id,$old[0]->exam_status);
                             } 
                           ?>
-                          <tr align="center"><th><?=$sno?></th><td><?= ($gradesheetData['tot_credit'] == 0)?'':$gradesheetData['tot_credit']?></td><td><?= ($gradesheetData['obt_credit'] == 0)?'':$gradesheetData['obt_credit']?></td><td><?= $gradesheetData['credit_point']?></td><td>
+                          <tr align="center"><th><?=$sno?></th><td><?= ($gradeData['tot_credit'] == 0)?'':$gradeData['tot_credit']?></td><td><?= ($gradeData['obt_credit'] == 0)?'':$gradeData['obt_credit']?></td><td><?= $gradeData['credit_point']?></td><td>
                           <?php //($gradesheetData['credit_point'] == 0)?'':$gradeData['credit_point']?>
-                            <?php if(is_nan($gradesheetData['agpa'])){
+                            <?php if(is_nan($gradeData['agpa'])){
                                 echo '';
                             }else{
-                                echo  ($gradesheetData['result']== 'FAIL' || $gradesheetData['result']== 'SUPP')?'0.00':number_format((float)$gradesheetData['agpa'], 2, '.', '');
+                                echo  ($gradeData['result']== 'FAIL' || $gradeData['result']== 'SUPP')?'0.00':number_format((float)$gradeData['agpa'], 2, '.', '');
                                 
                             }
                             ?>
