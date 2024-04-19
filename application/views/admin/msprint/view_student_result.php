@@ -155,9 +155,9 @@
                 </div>
               <?php 
               $i=1;
-              $grade_classes=array(101,104,110,125,128,131);
+             // $grade_classes=array(101,104,110,125,128,131);
               foreach ($result as $res) {
-                $backlogflag=true;
+               // $backlogflag=true;
                 $whCount = $this->Common_model->getCountByWhere('old_result_data',array('exam_data_id' =>$res->id,'theory_marks'=>'','type'=>"Theory"));
               
                ?>
@@ -184,10 +184,10 @@
                     <?php 
                     
                     if($res->exam_status == "B"){
-                        if(($res->exam_year=="July 2023") && $res->marks_pattern=="GRADE" && (in_array($res->class_id, $grade_classes))){
-                            $backlogflag=true;
+                        // if(($res->exam_year=="July 2023") && $res->marks_pattern=="GRADE" && (in_array($res->class_id, $grade_classes))){
+                        //     $backlogflag=true;
                            
-                        }
+                        // }
                         echo "Backlog";
                       }else{
                          echo "Main";
@@ -208,10 +208,10 @@
                          <label class="text-heading mt-3">
                          <?php if($flag){  
                              if($whCount){ echo "WithHeld";}
-                             elseif($backlogflag) {
+                            // elseif($backlogflag) {
                              ?>
                          <a href="<?= base_url( $this->session->account_type.'/marksheet/'.$id.'')?>" target="_blank"><i class="fa fa-eye"></i></a>
-                        <?php } } ?>
+                        <?php } // } ?>
                         </label>
                     </div>
                     <?php if( $this->session->account_type == 'Admins' || $this->session->account_type == 'MsPrint'){ ?>

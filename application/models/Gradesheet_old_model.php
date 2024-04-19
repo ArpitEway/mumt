@@ -260,6 +260,7 @@ class Gradesheet_old_model extends CI_Model
 				$this->foundation_paper[$this->paper['group_paper_name']]['tot_marks'] += $this->paper['theory_marks'];
 				$this->foundation_paper[$this->paper['group_paper_name']]['credit_point'] += $this->paper['credit_point'];
 				$this->foundation_paper[$this->paper['group_paper_name']]['max_theory_marks'] += $this->paper['max_theory_marks'];
+				
 				$this->_echo_row_foudation($this->paper['group_paper_name'],$forDG);
 			}else{
 				if ($this->paper['theory_marks']=='') {
@@ -280,8 +281,11 @@ class Gradesheet_old_model extends CI_Model
 				}
 				else{
 					$this->foundation_paper[$this->paper['group_paper_name']]['paper_name'] = $this->paper['paper_name'].' ';
+					
 				}
+				
 			}
+			
 		}else{
 			
 			$this->_echo_row($forDG);
@@ -315,10 +319,12 @@ class Gradesheet_old_model extends CI_Model
 	{
 		$this->result_array[$this->paper['paper_code']] = array();
 		array_push($this->result_array[$this->paper['paper_code']], $this->paper["paper_code"]);
+	
 	}
 
 	private function paper_name($forDG="")
 	{
+		
 		$this->result_array[$this->paper['paper_code']]["type"] = $this->paper["type"];
 		$this->result_array[$this->paper['paper_code']]['sub_group'] = $this->paper['sub_group_id'];
 		if(empty($forDG)){
@@ -347,6 +353,7 @@ class Gradesheet_old_model extends CI_Model
 		}
 		else{
 			$this->result_array[$this->paper['paper_code']]["paper_name"] =$this->paper["group_paper_name"].'-'.$this->paper["paper_name"];
+			
 		}
 	}
 
@@ -464,6 +471,7 @@ class Gradesheet_old_model extends CI_Model
 		$this->result_array[$this->paper['paper_code']]['paper_name'] = $data;
 		$this->result_array[$this->paper['paper_code']]['type'] = $this->foundation_paper[$sub_group_id]["type"];
 		$this->result_array[$this->paper['paper_code']]['sub_group'] = $this->foundation_paper[$sub_group_id]['sub_group'];
+		$this->result_array[$this->paper['paper_code']]['carry_theory'] = $this->paper['carry_theory'];
 	}
 
 	private function credit_foudation($sub_group_id){
@@ -542,9 +550,11 @@ class Gradesheet_old_model extends CI_Model
 			if ($this->paper['type']=='theory') {
 				$this->result_array[$this->paper['paper_code']]['min_marks'] = $this->paper['private_min_theory_marks'];
 				$this->result_array[$this->paper['paper_code']]['obt_marks']= $this->paper['theory_marks'];
+				$this->result_array[$this->paper['paper_code']]['carry_theory'] = $this->paper['carry_theory'];
 			}else{
 				$this->result_array[$this->paper['paper_code']]['min_marks'] = $this->paper['min_theory_marks'];
 				$this->result_array[$this->paper['paper_code']]['obt_marks'] = $this->paper['p_marks'];
+				$this->result_array[$this->paper['paper_code']]['carry_int'] = $this->paper['carry_int'];
 			}
 		}else{
 			$this->result_array[$this->paper['paper_code']]['max_marks'] = $this->paper['max_theory_marks'];
@@ -554,14 +564,19 @@ class Gradesheet_old_model extends CI_Model
 				$this->result_array[$this->paper['paper_code']]['int_min_marks'] = $this->paper['min_internal_marks'];
 				$this->result_array[$this->paper['paper_code']]['obt_marks'] = $this->paper['theory_marks'];
 				$this->result_array[$this->paper['paper_code']]['int_obt_marks'] = $this->paper['int_marks'];
+				$this->result_array[$this->paper['paper_code']]['carry_theory'] = $this->paper['carry_theory'];
+				$this->result_array[$this->paper['paper_code']]['carry_int'] = $this->paper['carry_int'];
 			}else{
 				$this->result_array[$this->paper['paper_code']]['min_marks'] = $this->paper['min_theory_marks'];
 				$this->result_array[$this->paper['paper_code']]['int_max_marks'] = '-';
 				$this->result_array[$this->paper['paper_code']]['int_min_marks'] = '-';
 				$this->result_array[$this->paper['paper_code']]['obt_marks'] = $this->paper['p_marks'];
 				$this->result_array[$this->paper['paper_code']]['int_obt_marks'] = '-';
+				$this->result_array[$this->paper['paper_code']]['carry_theory'] = $this->paper['carry_theory'];
 			}
 		}
+		
+		
 	}
 
 	public function foudation_min_max_no($sub_group_id)
@@ -571,6 +586,7 @@ class Gradesheet_old_model extends CI_Model
 			$this->result_array[$this->paper['paper_code']]['min_marks'] = 35;
 			$this->result_array[$this->paper['paper_code']]['obt_marks'] = $this->foundation_paper[$sub_group_id]['tot_marks'];
 			$this->result_array[$this->paper['paper_code']]['f_abs'] = $this->foundation_paper[$sub_group_id]['obt'];
+			
 		}else{
 			$this->result_array[$this->paper['paper_code']]['max_marks'] = $this->foundation_paper[$sub_group_id]['max_theory_marks'];
 			$this->result_array[$this->paper['paper_code']]['min_marks'] = '35';
@@ -579,7 +595,10 @@ class Gradesheet_old_model extends CI_Model
 			$this->result_array[$this->paper['paper_code']]['obt_marks'] = $this->foundation_paper[$sub_group_id]['tot_marks'];
 			$this->result_array[$this->paper['paper_code']]['int_obt_marks'] = '-';
 			$this->result_array[$this->paper['paper_code']]['f_abs'] = $this->foundation_paper[$sub_group_id]['obt'];
+		
+			
 		}
+	
 	}
 
 	public function echo_result()
@@ -642,15 +661,17 @@ class Gradesheet_old_model extends CI_Model
 		}
 	}
 
-	public function echo_result_grade()
+	public function echo_result_grade($forBacklog="")
 	{
 		$this->fail_count;
 		if ($this->fail_count>0) {
 			 $require_grace_marks = $this->fail_min_marks-$this->fail_obt_marks;
 		}
+		
 		foreach ($this->result_array as $key => $result) {
 			$paper = explode('#',$result['paper_name']);
 			
+		
 			
 			echo '<tr style="padding:4px;font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="center">';
 			echo '<td style="margin-top:2px;" align="center"><strong>'.$key.'</strong></td>';
@@ -697,7 +718,7 @@ class Gradesheet_old_model extends CI_Model
 				
 			}
 				echo "<td align='center' colspan='3'><span class='style4'>".$result['credit']."</span></td>";
-				echo "<td align='center' colspan='3'><span class='style4'>".$result['obt_credit']."</span></td>";
+				echo "<td align='center' colspan='3'><span class='style4'>".$result['obt_credit']." ".$result["carry_theory"]."</span></td>";
 				echo "<td align='center' colspan='2'><span class='style4'>".$result['grade_point']."</span></td>";
 				echo "<td align='center' colspan='2'><span class='style4'>".$result['credit_point']."</span></td>";
 				echo "<td align='center' colspan='2'><span class='style4'>".$result['letter_grade']."</span></td>";
@@ -1266,19 +1287,19 @@ class Gradesheet_old_model extends CI_Model
     }
 
 
-	public function view_result_grade_backlog($student_id,$course_group_id,$class_id,$mode)
+	public function view_result_grade_backlog($student_id,$course_group_id,$class_id,$mode,$exam_data_id)
 	{
 		// $table = $this->Common_model->getMaster('exam_form_table');
 		$this->db->order_by('sub_group_id');
 		$std  = $this->Common_model->getRecordByWhere('old_result_data',array('class_id'=> $class_id,'student_id'=>$student_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
-		
+	
 		if($std[0]->sub_group_id == 1){
-			$papers = $this->Common_model->get_all_old_papers($student_id,$class_id,$std[0]->exam_data_id);
+			$papers = $this->Common_model->get_all_old_papers($student_id,$class_id,$exam_data_id);
 		}
 		if($this->classData->class_group == 'Y'){
-		$papers_list = $this->Common_model->get_all_old_group_papers($student_id,$class_id,'',$course_group_id,$std[0]->exam_data_id);
+		$papers_list = $this->Common_model->get_all_old_group_papers($student_id,$class_id,$exam_data_id,$course_group_id);
 		}
 		// get_all_group_papers
 	//	echo "<pre>"; print_r($papers_list);die;
@@ -1360,7 +1381,7 @@ class Gradesheet_old_model extends CI_Model
 		
 		// var_dump($this->result_array);
 		
-		$this->echo_result_grade(); 
+		$this->echo_result_grade('backlog'); 
 		
 		 $this->agpa = $this->tot_credit_point/$this->tot_credit;
 		 $this->set_result();

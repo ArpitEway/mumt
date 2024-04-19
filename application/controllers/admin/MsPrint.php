@@ -114,7 +114,7 @@ class MsPrint extends CI_Controller {
 		$data['class_id']  = $new_exam_form[0]->class_id;
 		$title = array('title' => 'Result');
 		$data['exam_data'] = $this->Common_model->getRecordById('old_exam_data','id',$exam_data_id);
-		
+		$data['exam_data_id']=$exam_data_id;
 		$data['student'] = $this->Common_model->getRecordById('student','student_id', $data['exam_data']->student_id);
 		// $course_id !=36 && $course_id !=37
 		$class = $this->Common_model->getRecordByID('class_master','id', $data['exam_data']->class_id);

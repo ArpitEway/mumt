@@ -170,7 +170,7 @@
                        
                         <?php 
                             
-                          $gradesheetData = $this->Gradesheet_old_model->view_result_grade_backlog($exam_data->student_id,$exam_data->course_group_id,$exam_data->class_id,$exam_data->university_mode);
+                          $gradeData = $this->Gradesheet_old_model->view_result_grade_backlog($exam_data->student_id,$exam_data->course_group_id,$exam_data->class_id,$exam_data->university_mode,$exam_data_id);
                        
                             ?>
                     </tbody></table>
