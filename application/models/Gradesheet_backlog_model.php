@@ -44,7 +44,7 @@ class Gradesheet_backlog_model extends CI_Model
 			$papers = $this->Common_model->get_all_backlog_papers($student_id,$class_id,$exam_id);
 		}
 		if($this->classData->class_group == 'Y'){
-		$papers_list = $this->Common_model->get_all_backlog_group_papers($student_id,$class_id,$exam_id);
+		$papers_list = $this->Common_model->get_all_backlog_group_papers($student_id,$class_id,$exam_id,$course_group_id);
 		// echo '<pre>';
 		// print_r($papers_list);
 		}
@@ -95,6 +95,12 @@ class Gradesheet_backlog_model extends CI_Model
 		}
 		foreach ($papers_list as $paper) {
 			$this->paper = $paper;
+			if(@$this->paper["group_name"]){
+				$group = explode('(', $this->paper["group_name"]);
+				 $group_name = explode(',',$group[1]);
+				 $this->paper['group_name_array']=$group_name;
+			
+			 }
 			if($this->withheld){
 				
 				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
@@ -118,7 +124,8 @@ class Gradesheet_backlog_model extends CI_Model
 		}
 		
 		// var_dump($this->result_array);
-		$this->echo_result(); 
+		$this->echo_result();
+		//$this->echo_result_grade(); 
 		$this->total();
 		$this->agpa = $this->tot_credit_point/$this->tot_credit;
 		if($this->mode=='REG'){
@@ -575,7 +582,13 @@ class Gradesheet_backlog_model extends CI_Model
 			$paper = explode('#',$result['paper_name']);
 			echo "<tr>";
 			echo "<th>".$key."</th>";
-			echo "<td><table style='border:0px solid black'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='100px' style='border:0px solid black'><strong>".$paper[0]."</strong></td><td style='border:0px solid black'></td><td style='border:0px solid black'><strong>".$paper[1]."</strong></td></tr></table></td>";
+			if($this->paper["course_group_id"]==12){
+				echo "<td><table style='border:0px solid black'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='100%' style='border:0px solid black'><strong>".$paper[0]."</strong><br><strong>".$paper[1]."</strong></td></tr></table></td>
+				";
+				}else{
+				echo "<td><table style='border:0px solid black'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='100px' style='border:0px solid black'><strong>".$paper[0]."</strong></td><td style='border:0px solid black'></td><td style='border:0px solid black'><strong>".$paper[1]."</strong></td></tr></table></td>";
+				}
+			//echo "<td><table style='border:0px solid black'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='100px' style='border:0px solid black'><strong>".$paper[0]."</strong></td><td style='border:0px solid black'></td><td style='border:0px solid black'><strong>".$paper[1]."</strong></td></tr></table></td>";
 			// if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 			// 	$this->check_grace_marks = true;
 			// 	$this->obt_tot_credit += $result['credit'];
