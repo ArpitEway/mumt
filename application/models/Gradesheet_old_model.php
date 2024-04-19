@@ -1289,7 +1289,7 @@ class Gradesheet_old_model extends CI_Model
 
 	public function view_result_grade_backlog($student_id,$course_group_id,$class_id,$mode,$exam_data_id)
 	{
-		// $table = $this->Common_model->getMaster('exam_form_table');
+		
 		$this->db->order_by('sub_group_id');
 		$std  = $this->Common_model->getRecordByWhere('old_result_data',array('class_id'=> $class_id,'student_id'=>$student_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
@@ -1302,9 +1302,7 @@ class Gradesheet_old_model extends CI_Model
 		$papers_list = $this->Common_model->get_all_old_group_papers($student_id,$class_id,$exam_data_id,$course_group_id);
 		}
 		// get_all_group_papers
-	//	echo "<pre>"; print_r($papers_list);die;
-		
-		// print_r($this->allclass);die;
+	
 		$this->classCount = count($this->allclass);
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		$this->foundation_paper = array();
@@ -1335,15 +1333,7 @@ class Gradesheet_old_model extends CI_Model
 			
 				die;
 			}
-			// if ($this->fail_count>0 && !$this->check_grace_marks && $this->classData->final_result_permission!='Y' ) {  
-			// 	echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
-			// 	'<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
-			// 	 '<h3 class="text-center">'.'WH'.'</h3>'.
-			//    '</div>';
-			//    return $this->result();
-		   
-			//    die;
-			// }
+			
 		
 			$this->_row();
 			
@@ -1367,20 +1357,10 @@ class Gradesheet_old_model extends CI_Model
 			
 				die;
 			}
-			// if ($this->fail_count>0 && !$this->check_grace_marks && $this->classData->final_result_permission!='Y' ) {  
-			// 	echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
-			// 	'<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
-			// 	 '<h3 class="text-center">'.'WH'.'</h3>'.
-			//    '</div>';
-			//    return $this->result();
-		   
-			//    die;
-			// }
+		
 			$this->_row();
 		}
-		
-		// var_dump($this->result_array);
-		
+	
 		$this->echo_result_grade('backlog'); 
 		
 		 $this->agpa = $this->tot_credit_point/$this->tot_credit;
@@ -1388,19 +1368,7 @@ class Gradesheet_old_model extends CI_Model
 		$this->total_grade();
 		
 		return $this->result();
-		// echo "<pre>";
-		// print_r($this->foundation_paper);
+		
 	}
 
 }
-// echo $this->fail_count;die;
-// 			if ($this->fail_count>0 && !$this->check_grace_marks && $student_id!=684208 && $this->classData->final_result_permission!='Y' ) {  
-// 				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
-// 				'<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
-// 				 '<h3 class="text-center">'.'WH'.'</h3>'.
-// 			   '</div>';
-// 			   return $this->result();
-		   
-// 			   die;
-// 			}else{
-// 			}

@@ -191,9 +191,7 @@
                             $this->db->order_by('id', 'desc');
                           //  $this->db->limit(1);
                             $old = $this->Common_model->getRecordByWhere('old_exam_data',array('class_id'=>$cls->id,'student_id'=>$exam_data->student_id));
-                            //$gradeData = $this->Gradesheet_backlog_model->view_result_grade($exam_data->student_id,$exam_data->course_group_id,$exam_data->class_id,$exam_data->mode,$exam_data->id);
-                             // $gradeData = $this->Gradesheet_old_model->view_result_grade($exam_data->student_id,$exam_data->course_group_id,$exam_data->class_id,$exam_data->mode,$exam_data->id);
-                              //($exam_data->student_id,$exam_data->course_group_id,$cls->id,$exam_data->university_mode,  $old[0]->id,$old[0]->exam_status);
+                            
                               
                           ?>
                           <tr align="center"><th><?=$sno?></th><td><?= ($gradeData['tot_credit'] == 0)?'':$gradeData['tot_credit']?></td><td><?= ($gradeData['obt_credit'] == 0)?'':$gradeData['obt_credit']?></td><td><?= ($gradeData['credit_point'] == 0)?'':$gradeData['credit_point']?></td><td>
