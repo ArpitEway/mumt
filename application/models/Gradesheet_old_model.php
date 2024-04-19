@@ -135,7 +135,7 @@ class Gradesheet_old_model extends CI_Model
 		// print_r($this->foundation_paper);
 	}
 
-	public function view_result_grade($student_id,$course_group_id,$class_id,$mode)
+	public function view_result_grade($student_id,$course_group_id,$class_id,$mode,$exam_data_id='')
 	{
 		// $table = $this->Common_model->getMaster('exam_form_table');
 		$this->db->order_by('sub_group_id');
@@ -144,10 +144,10 @@ class Gradesheet_old_model extends CI_Model
 		
 		
 		if($std[0]->sub_group_id == 1){
-			$papers = $this->Common_model->get_all_old_papers($student_id,$class_id);
+			$papers = $this->Common_model->get_all_old_papers($student_id,$class_id,$exam_data_id);
 		}
 		if($this->classData->class_group == 'Y'){
-		$papers_list = $this->Common_model->get_all_old_group_papers($student_id,$class_id,'',$course_group_id);
+		$papers_list = $this->Common_model->get_all_old_group_papers($student_id,$class_id,$exam_data_id,$course_group_id);
 		}
 		// get_all_group_papers
 		// print_r($papers);die;
