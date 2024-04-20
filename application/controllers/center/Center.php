@@ -3452,7 +3452,7 @@ public function practical_assignment_marks_edit(){
 		echo json_encode($output);
 	}
 
-	public function photo_missing_list(){
+	public function photo_missing_list($mode){
     	if(!$this->session->has_userdata('centerdata')){
     		redirect(base_url());
     	}
@@ -3464,6 +3464,7 @@ public function practical_assignment_marks_edit(){
     	$this->load->view('Centers/header',$titleData);
     
 		$this->db->where('center_id',$this->session->center_id);
+		$this->db->where('university_mode',$mode);
 		
     	$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
     	$this->load->view('Centers/photo_missing_list',$data);
