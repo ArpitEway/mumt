@@ -55,7 +55,7 @@
     $border = ($classData->admission_permission == 'Y')?'border: 1px solid black;margin-top:20px;':'border: 0px solid #22316C;';
     $margin = ($classData->admission_permission == 'Y')?'min-height:420px;margin-top: 20px;':'min-height:420px;margin-top: 20px;';
        $papers = $old_result_data;
-       $isFinalClass = $this->Common_model->hasOneClass($classData->course_group_id);
+       $isOneClass =  $isFinalClass = $this->Common_model->hasOneClass($classData->course_group_id);
        if($isFinalClass){
          $course_duration = '(One Year Course)';
        }else if($classData->course_group_id == 36 || $classData->course_group_id == 37){
@@ -373,16 +373,63 @@
                         </b></div></strong></div>
                       </td>
                     </tr>
+                   
+
+
+                    <?php if ($classData->last_class=="L" && !$isOneClass): ?>
+                    </table>
+                    <table border="0" cellpadding="0" height="112" width="100%">
+                    <?php endif ?>  
+                    <?php $i=1; ?>
+                    <?php if ($classData->last_class=="L" && !$isOneClass): ?>
+                    <tr>
+                      <th height="20" width="22%" style="text-align:left" ><strong><?=$classData->mode ?></strong></th>
+                      <?php
+
+                        $whereClass = array( 'course_group_id'=> $classData->course_group_id,'class_id !=' => $classData->id,'student_id' =>$student->student_id,'exam_result!='=>"FAIL");
+                        $this->db->order_by('old_exam_data.class_order,old_exam_data.class_id');
+                       $oldClassResult = $this->Common_model->getRecordByWhere('old_exam_data',$whereClass);
+                      $width = (count($oldClassResult)<3)?'20.3%':'12.18%';
+                        foreach ($oldClassResult as $row) {
+                        $i++;
+                        ?>
+                         <th  width='<?=$width?>' style="text-align: center;"><?=$this->Common_model->getClassNameByClassId($row->class_id); ?></th>
+                        <?php } ?>
+                        <th width='<?=$width?>' style="text-align: center"><?=$classData->class_name ?></th>
+                        <th width='<?=$width?>' style="text-align: center">Grand Total</th>
+                        
+                        <?php $j=$i; ?>
+                        <?php while ($j<=5): ?>
+                          <td><?php $j++; ?></td>
+                        <?php endwhile; ?>
+                    </tr>
+                    <?php endif ?>
+                    <?php $j=$i; ?>
                     <tr>
                       <td height="20" ><strong>Obtained Marks</strong></td>
-                      <td style="text-align: center"><b><?php echo  $tot_std_marks ; ?></b></td>
-                      <td>&nbsp;</td>
-                      <td> <div align="center"><b></b></div></td>
-                      <td>&nbsp;</td>
-                      <td>&nbsp;  </td>
-                      <td>
+                      <?php if ($classData->last_class=="L" && !$isOneClass): ?>
                       <?php
-                          $percentage = round(($tot_std_marks/$tot_marks)*100,2);    
+                        $gtot_obtain_marks = 0;
+                        $gtot_total_marks = 0;
+                        foreach ($oldClassResult as $row) { 
+                        $gtot_obtain_marks += $row->obtain_marks;
+                        $gtot_total_marks +=$row->total_marks;
+                        ?>
+                         <th style="text-align: center"><?=$row->obtain_marks; ?></th>
+                      <?php } 
+                      $gtot_obtain_marks += $tot_std_marks;
+                      $gtot_total_marks +=$tot_marks;
+                      ?>
+                      <?php endif ?>
+                      <th style="text-align: center"><?=$tot_std_marks ; ?></th>
+                      <th style="text-align: center"><?=$gtot_obtain_marks; ?></th>
+                      <?php while ($j<=3): ?>
+                        <td><?php $j++; ?></td>
+                      <?php endwhile; ?>
+                      <?php if ($classData->last_class=="L") { ?>
+                        <td>
+                        <?php
+                         $percentage = (!$isOneClass)? round(($gtot_obtain_marks/$gtot_total_marks)*100,2) : round(($tot_std_marks/$tot_marks)*100,2);
                           if($percentage>=60){
                             $division = "First";
                           }elseif($percentage<60 && $percentage>=40){
@@ -390,35 +437,49 @@
                           }else{
                             $division = "Third";
                           }
-
-                        if ($classData->last_class=="L") {
                           ?><strong>Division</strong><?php
-                        }
                         ?>
                       </td>
-                      <td><?php
-                        if ($classData->last_class=="L") {
-                          ?>&nbsp;&nbsp;&nbsp;&nbsp;<strong><?=$division?></strong><?php
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;<strong><?=$division?></strong>
+                      </td>
+                      <?php
+                        }else{
+                          ?>
+                          <td></td>
+                          <td></td>
+                          <?php
                         }
                         ?>
-                      </td>
                     </tr>
-                    
+                    <?php $j=$i; ?>
                     <tr>
                       <td height="20"><strong>Maximum Marks</strong></td>
+                      <?php if ($classData->last_class=="L" && !$isOneClass): ?>
+                      <?php 
+                      foreach ($oldClassResult as $row) {  ?>
+                         <th style="text-align: center;width:10%"><?=$row->total_marks; ?></th>
+                      <?php } ?>
+                      <?php endif ?>
                       <td style="text-align: center"><b><?php echo $tot_marks ; ?></b></td>
-                      <td>&nbsp;</td>
-                      <td><div align="center"><b></b></div></td>
-                      <td></td>
-                      <td><div align="center"></div></td>
-                      <td> <?php if ($classData->last_class=="L") {
-                          ?><strong>Percentage</strong>
-                          <?php } ?></td>
-                      <td>&nbsp;&nbsp;&nbsp;&nbsp;<strong><?= ($classData->last_class=="L") ? $percentage.' %' : '';?></strong></td>
-                    </tr>
+                      <td style="text-align: center"><b><?=$gtot_total_marks; ?></b></td>
+                      <?php while ($i<=3): ?>
+                          <td><?php $i++; ?></td>
+                        <?php endwhile; ?>
+                        <?php if ($classData->last_class=="L"){ ?>
+                        <th style="text-align:left;">Percentage</th>
+                        <th style="text-align:left;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo (!$isOneClass)? round(($gtot_obtain_marks/$gtot_total_marks)*100,2) :
+                           round(($tot_std_marks/$tot_marks)*100,2)
+                        ; ?>%</th>
+                      <?php }else{ ?>
+                        <td></td>
+                        <td></td>
+                      <?php } ?>
+                    </tr>    
+
+                 
                     <tr>
                       <td colspan="8">
-                        <strong>Total Marks Obtained (in words)</strong> &nbsp;&nbsp;<strong><?php echo  $this->numbertowordconvertsconver->convert_number("$tot_std_marks")?></strong>
+                        <strong>Total Marks Obtained (in words)</strong> &nbsp;&nbsp;<strong><?php echo ($classData->last_class=="L" && !$isOneClass) ? $this->numbertowordconvertsconver->convert_number("$gtot_obtain_marks") : $this->numbertowordconvertsconver->convert_number("$tot_std_marks") ?></strong>
                       </td>
                     </tr>
                   </tbody>
