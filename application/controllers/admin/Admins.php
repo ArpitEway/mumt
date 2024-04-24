@@ -3220,7 +3220,7 @@ public function update_exam_datewise_permission(){
 
 	public function tr_class_list(){
 		
-		$where = "id in (select distinct(course_group_id) from student where exam_form = 'Y'  )  ";
+		$where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y'  )  ";
         // and old_class_id in (102,105,108,111,117,120,126,129,132,135,194,198,202,204,206,212,214,222,224,226,228,276,280,303)
 		
 		// and old_result_show='Y'
@@ -3811,7 +3811,7 @@ public function update_exam_datewise_permission(){
 		else{
 			$pattern="GRADE";
 		}
-		$data['students'] = $this->Common_model->getRecordByWhere('student',array("university_mode"=>$mode,"course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y','roll_number!='=>'0' ,'exam_pattern'=> $pattern));
+		$data['students'] = $this->Common_model->getRecordByWhere('student',array("university_mode"=>$mode,"course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y','roll_no!='=>'0' ,'exam_pattern'=> $pattern));
 
 		// $data['students'] = $this->Common_model->getRecordByWhere('student_result_aug_22',array("university_mode"=>$mode,"course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y','roll_number!='=>'0' ));
 		//'result_show' => 'N' ,'student_id'=>'685381'
