@@ -9,7 +9,7 @@
 	<br><?php
 	
 	$isFinalClass = false;
-$notification_no = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id' => $students[0]->old_class_id));
+$notification_no = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id' => $students[0]->class_id));
 $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 // print_r($classData);die;
 $isOneClass = $this->Common_model->hasOneClass($course_group_id);
@@ -112,10 +112,10 @@ $abs_count = 0 ;
 					$grand_obt=0;
 					$grand_tot =0;
 					$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
-					$paper_marks = $this->Common_model->student_info_for_BEd_result($student->student_id,$student->old_class_id);
+					$paper_marks = $this->Common_model->student_info_for_BEd_result($student->student_id,$student->class_id);
 					// $this->Common_model->last_query();
 					foreach($paper_marks as  $new_exam_form){
-					if((in_array($student->old_class_id, $class_ids)) && $mode=='REG')	
+					if((in_array($student->class_id, $class_ids)) && $mode=='REG')	
 					{
 						
 						if($new_exam_form->type=='theory'){
@@ -317,7 +317,7 @@ $abs_count = 0 ;
 					if ($fail_count==0 && $rw_count==0 && $p_fail_count==0 && $int_fail_count==0 && $theory_abs_count==0 && $p_abs_count==0 && $rwpr_count==0 && $rwas_count == 0) {
 						$final_result = "PASS";
 					}else{
-						if((in_array($student->old_class_id, $class_ids)) && $mode=='REG')	
+						if((in_array($student->class_id, $class_ids)) && $mode=='REG')	
 			{
 		
 		$require_grace_marks =$require_tot_marks-$fail_tot_marks;
@@ -396,7 +396,7 @@ $abs_count = 0 ;
 							<th scope="row" class="text-center" width="10%"><span class="style5">Roll No.</span></th>
 							<th style="text-align:left" scope="row"  width="35%"><span class="style5" >Name of the Candidate and F/H Name</span></th>
 							<th scope="row" class="text-center"  width="12%">Result</span></th>
-							<?php if((!in_array($student->old_class_id, $class_ids)) || $mode=='PVT'){ ?>
+							<?php if((!in_array($student->class_id, $class_ids)) || $mode=='PVT'){ ?>
 								<th class="text-center" style="padding:0px" align="center" class="text-center" scope="row"  width="20%" colspan='<?php echo ($isFinalClass && !$isOneClass)?"2":"1";?>'><?php
 								if($isFinalClass){ ?>
 						<table width="100%" border="1" class="m-0">
@@ -422,7 +422,7 @@ $abs_count = 0 ;
 							<!-- <th scope="row" class="text-center" width="10%"><span class="style5">Total</span></th> -->
 							<?php	
 							}
-							if((in_array($student->old_class_id, $class_ids)) && $mode=='REG')	
+							if((in_array($student->class_id, $class_ids)) && $mode=='REG')	
 							{
 						
 								?>
@@ -446,7 +446,7 @@ $abs_count = 0 ;
 					<tr class="alternate">
 					
 						<td class="text-center" scope="row">
-							<?php echo $student->roll_number ?>
+							<?php echo $student->roll_no ?>
 							</td>
 							<td scope="row"  style="padding-left: 10px;" >
 								<?php echo $student->name .' / '.  $student->f_h_name; ?>
@@ -524,8 +524,8 @@ $abs_count = 0 ;
 							 $final_result = 'PASS';
 							
 						}
-						if((in_array($student->old_class_id, $class_ids)) && $mode=='REG'){
-						echo $this->Gradesheet_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+						if((in_array($student->class_id, $class_ids)) && $mode=='REG'){
+						echo $this->Gradesheet_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
 						}else{
 							echo $final_result;
 						}
@@ -560,7 +560,7 @@ $abs_count = 0 ;
 				<td class="text-center" style="padding:0px" align="center"><?php if(!in_array($final_result, array("FAIL","RW") )){ echo  $grand_obtain .' / '. $grand_total;} ?></td>
 				<?php
 							}			}
-							}else if((!in_array($student->old_class_id, $class_ids)) || $mode=='PVT'){ 
+							}else if((!in_array($student->class_id, $class_ids)) || $mode=='PVT'){ 
 								?>
 							<td  class="text-center" style="padding:0px" align="center"><?php 
 							if(!in_array($final_result, array("FAIL","RW","RWPR", "RWAS", "RWAS RWPR") )){
@@ -572,9 +572,9 @@ $abs_count = 0 ;
 							?>
 						</td>
 						<?php
-							if((in_array($student->old_class_id, $class_ids)) && $mode=='REG'){
+							if((in_array($student->class_id, $class_ids)) && $mode=='REG'){
 								if($final_result != 'FAIL'){
-							$gradesheetData = $this->Gradesheet_tr_model->view_notification($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+							$gradesheetData = $this->Gradesheet_tr_model->view_notification($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
 								}else{
 									?>
 									<td  class="text-center" style="padding:0px" align="center"></td>
@@ -610,7 +610,7 @@ $abs_count = 0 ;
 							<td class="text-center"> 
 								<?php 
 								
-								if((in_array($student->old_class_id, $class_ids)) && $mode=='REG')	
+								if((in_array($student->class_id, $class_ids)) && $mode=='REG')	
 								{
 									
 									if($check_grace_marks){
