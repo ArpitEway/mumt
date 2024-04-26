@@ -547,7 +547,7 @@ table.last_table, .last_table td, .last_table th{
         <tr>
           <th  class="align-middle text-center roll_no" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_no  ?> <br> <?php echo $student->enrollment_no  ?></th>
           <th class="align-middle text-center ms_no" rowspan="<?php echo $rowspandata ?>">
-            <?php  //echo $student->marksheet_no  ?>
+            <?php  echo $student->marksheet_no  ?>
           </th>
           <th  class="align-middle text-center photo" rowspan="<?php echo $rowspandata ?>"><img alt="N/A" src="<?= base_url('assets/student_image/'.$student->session.'/'.$student->photo) ?>" width="65px" height="90px"></th>
           <td  class="align-middle text-center name"  rowspan="<?php  echo $rowspandata ?>"><?php  echo $student->name ?>/ <br><?php  echo $student->f_h_name ?></td>
