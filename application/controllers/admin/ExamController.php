@@ -2443,7 +2443,7 @@ public function getStudentData()
 			exit;
 		}else
 		{
-			$titleData = array('title' => 'Center Wise Roll List '); 
+			$titleData = array('title' => 'Center Wise Marksheet Dispatch Roll List '); 
 			$this->load->view('header',$titleData);
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();

@@ -51,8 +51,9 @@
  $("#myLoader").show();
 		$.ajax({
 			method: "POST",
-			url: BASE_URL+"ExamController/get_center_wise_marksheet_dispatch_rolllist",
-			data: { center : center,
+			//url: BASE_URL+"ExamController/get_center_wise_marksheet_dispatch_rolllist",
+			url: BASE_URL+"<?php echo $this->session->account_type;?>/get_center_wise_marksheet_dispatch_rolllist",
+      data: { center : center,
 					[csrfName]:csrfHash
 					},
 		})
