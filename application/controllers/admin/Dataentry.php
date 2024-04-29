@@ -252,7 +252,7 @@ class Dataentry extends CI_Controller {
 		$data['student_id'] = $this->input->post('student_id');	
 		$data['class_id']=$class_id = $this->input->post('class_id');	
 		$data['marks'] = $this->input->post('marks');
-		$record_id = $this->input->post('backlog_student_record_id');
+		$data['record_id'] = $this->input->post('backlog_student_record_id');
 		foreach ($data['student_id'] as $key => $value){
 			if($data['marks'][$key]==''){
 				continue;
@@ -265,7 +265,7 @@ class Dataentry extends CI_Controller {
 				'paper_code'  =>$_POST['paper_code'],
 				'class_id'=>$class_id,
 				'status'=>'B',
-				'backlog_student_id'=>$record_id,
+				'backlog_student_id'=>$data['record_id'][$key],
 			);
 			$Marksentry = $this->Common_model->updateRecordByConditions('backlog_exam_form',$where,$studentData);	
 		}
