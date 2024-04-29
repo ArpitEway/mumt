@@ -3305,7 +3305,7 @@ public function getStudentData()
 			$data['studentPaper'] = $studentPaper;
 			$result['data'] = $this->load->view('admin/Dataentry/show_backlog_student_marks',$data,true);
 		}else{
-			$studentPaper = $this->Common_model->get_backlog_student_papers(,$studentData[0]->id,$studentData[0]->student_id,$studentData[0]->class_id);
+			$studentPaper = $this->Common_model->get_backlog_student_papers($studentData[0]->id,$studentData[0]->student_id,$studentData[0]->class_id);
 			$data['studentPaper'] = $studentPaper;
 			$result['data'] = $this->load->view('admin/Dataentry/edit_backlog_student_marks',$data,true);
 		}
