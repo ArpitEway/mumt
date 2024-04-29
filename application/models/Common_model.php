@@ -1261,10 +1261,11 @@ class Common_Model extends CI_Model{
 		return $query->result_array();
 		
 	}
-	public function get_backlog_student_papers($id,$class_id,$withheld = ""){
+	public function get_backlog_student_papers($backlog_student_id,$student_id,$class_id,$withheld = ""){
 		$where = array(
-			'student_id' => $id,
+			'student_id' => $student_id,
 			'backlog_exam_form.class_id' => $class_id,
+			'backlog_exam_form.backlog_student_id' => $backlog_student_id,
 			'backlog_exam_form.status'=>'B'
 			
 			);
@@ -1281,10 +1282,11 @@ class Common_Model extends CI_Model{
 		$query = $this->db->get();
 		return $query->result_array();
 	}
-	public function get_backlog_student_allpapers($id,$class_id,$withheld = ""){
+	public function get_backlog_student_allpapers($backlog_student_id,$student_id,$class_id,$withheld = ""){
 		$where = array(
-			'student_id' => $id,
+			'student_id' => $student_id,
 			'backlog_exam_form.class_id' => $class_id,
+			'backlog_exam_form.backlog_student_id' => $backlog_student_id,
 			//'backlog_exam_form.status'=>'B'
 			
 			);
