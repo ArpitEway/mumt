@@ -1273,22 +1273,17 @@ class Center extends CI_Controller {
 
     public function showPapers($student_id){
         
-		$this->load->library('user_agent');
+		
         $hide = "";
-            if ($this->agent->is_referral())
-            {
-                $refer =  $this->agent->referrer();
+		$url= $_SERVER['HTTP_REFERER'];
+            
                 
-                //$uri = explode("/",$refer);
-				$a=0;
-				$a=strpos($refer,"all_student");
-               // echo $param = $uri[count($uri) -2];
-                //if($param == "all_student"){
-				if($a){	
+                $uri = explode("/",$url);
+				$z = $uri[count($uri)-2];
+                if($z == "all_student"){
                     $hide = "hide";
                 }
             
-            }
 			$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 			$titleData = array('title' => 'Student Papers');
 			$this->load->view('Centers/header',$titleData);
