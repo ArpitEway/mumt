@@ -426,6 +426,9 @@ class Center extends CI_Controller {
 		$this->load->view('Centers/header',$titleData);
 		$this->load->view('Centers/all_paid_student',$csrf);
 		}elseif($param1=='unpaid'){
+			if($course_type == "REG"){
+				redirect(base_url());
+			}
 			if($course_type=="PVT")	
 				$titleData = array('title' => 'Private Unpaid Student List');
 			else
@@ -439,6 +442,7 @@ class Center extends CI_Controller {
 
 	public function getUnpaidFeesList($param1 = ''){
 		$course_type=$this->input->post('course_type');
+		
 		$data = $row = array();
 		
 		$centerData = $this->Common_model->getRecordById('center','id',$this->session->center_id);

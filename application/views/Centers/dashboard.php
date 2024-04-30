@@ -150,11 +150,11 @@
 							<span class="nav-text">Student Report</span>
 						</div>
 					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('student_list/unpaid/REG');?>">
+					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('student_list/unpaid/REG');?>">
 						<div>
 							<span class="nav-text">Unpaid Student</span>
 						</div>
-					</a>
+					</a> -->
 					<a class="border-0 custom-menu-item" href="<?=base_url('Document/index/REG');?>">
 						<div>
 							<span class="nav-text">Upload Admission Document</span>
