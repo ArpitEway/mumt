@@ -1280,7 +1280,7 @@ class Center extends CI_Controller {
                 $refer =  $this->agent->referrer();
                 
                 $uri = explode("/",$refer);
-                $param = $uri[count($uri) -2];
+                echo $param = $uri[count($uri) -2];
                 if($param == "all_student"){
                     $hide = "hide";
                 }
