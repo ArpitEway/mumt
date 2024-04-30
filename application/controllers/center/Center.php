@@ -426,9 +426,9 @@ class Center extends CI_Controller {
 		$this->load->view('Centers/header',$titleData);
 		$this->load->view('Centers/all_paid_student',$csrf);
 		}elseif($param1=='unpaid'){
-			if($course_type == "REG"){
-				redirect(base_url());
-			}
+			// if($course_type == "REG"){
+			// 	redirect(base_url());
+			// }
 			if($course_type=="PVT")	
 				$titleData = array('title' => 'Private Unpaid Student List');
 			else
@@ -442,18 +442,19 @@ class Center extends CI_Controller {
 
 	public function getUnpaidFeesList($param1 = ''){
 		$course_type=$this->input->post('course_type');
-		
 		$data = $row = array();
-		
 		$centerData = $this->Common_model->getRecordById('center','id',$this->session->center_id);
-		
 		$where = 'online_payment_transaction.payment!="Y"';
 		
 		if($param1=='Admission'){
-			
-
+			$this->db->where_in('course_type', array("UG","PG"));
+            $course = $this->Common_model->getRecordByWhere('course_group');
+            
+            $course_ids = array_column($course,'id');
+            // print_r($course_ids);die;
 			$permission_session= $this->Common_model->getRecordByWhere('session',array('unpaid_permission'=>'Y' ));
 			$where .= " and online_payment_transaction.fees_head='Admission Fees'  and  student.payment_status='N'  and ( "; //and student.class_name not like '%SEM%'
+           
 			foreach($permission_session as $key=>$row){
 			
 				if($row->semester_permission=='N' && $row->annual_permission=='Y' )
@@ -464,24 +465,23 @@ class Center extends CI_Controller {
 				$where.="   session='".$row->session."'";
 				
 			}
-			
-			
 			$where .= "  ) "; 
-				//stop admission of class
+            	//stop admission of class
 				 $master = $this->Common_model->getSingleRow('master');
 				//  echo $centerData->temp_admission_payment ;die;
 				 if(!empty($master->remove_class_from_center) && $centerData->temp_admission_payment =='N')
 				 $where.=" and `student`.`class_id` NOT IN ($master->remove_class_from_center)";
+                 if($course_type == "REG"){
+                    $this->db->where_not_in('student.course_group_id',$course_ids);
+                }
 			// $where.=" or (student.student_id in (715231, 715241, 716487, 717657, 717662, 722810) and online_payment_transaction.payment='N' )";
 			
 			// $where .= " and online_payment_transaction.fees_head='Admission Fees'  and  `student.payment_status`='N' and ( (student.class_name not like '%SEM%' and student.session='July 2021') or session!='July 2021')";
 		}elseif($param1=='Exam'){
 			$where .= ' and online_payment_transaction.fees_head="Exam Fees"';
 		}
-
-		$column_order = array('student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','amount',null);
+        $column_order = array('student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','amount',null);
 		$column_search = array('student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','amount');
-		
 		$DataTableArray = array(
 			'column_order' => $column_order,
 			'column_search' => $column_search,
@@ -498,7 +498,6 @@ class Center extends CI_Controller {
 			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28));
 		}
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
-		
 		$i = $_POST['start'];
 		
 		if ($this->session->center_id!=13) {
@@ -506,7 +505,9 @@ class Center extends CI_Controller {
 		}else{
 			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28));
 		}
-		
+        if($course_type == "REG" && $param1=='Admission'){
+            $this->db->where_not_in('student.course_group_id',$course_ids);
+        }
 		$counttableData = $this->Datatable_join_model->joincountAll($_POST,$DataTableArray);
 				  
 		foreach($tableData as $result){
@@ -526,6 +527,9 @@ class Center extends CI_Controller {
 		}else{
 			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28));
 		}
+        if($course_type == "REG" && $param1=='Admission'){
+            $this->db->where_not_in('student.course_group_id',$course_ids);
+        }
 		$recordsFiltered = $this->Datatable_join_model->countFiltered($_POST,$DataTableArray);
 		$output = array(
 			"draw" => $_POST['draw'],
@@ -533,8 +537,7 @@ class Center extends CI_Controller {
 			"recordsFiltered" => $recordsFiltered,
 			"data" => $data,
 		);
-
-		// Output to JSON format
+        // Output to JSON format
 		echo json_encode($output);
 	}
 
@@ -1272,17 +1275,13 @@ class Center extends CI_Controller {
 	}
 
     public function showPapers($student_id){
-        
-		
-        $hide = "";
-		$url= $_SERVER['HTTP_REFERER'];
-            
-                
-                $uri = explode("/",$url);
-				$z = $uri[count($uri)-2];
-                if($z == "all_student"){
-                    $hide = "hide";
-                }
+            $hide = "";
+            $url= $_SERVER['HTTP_REFERER'];
+            $uri = explode("/",$url);
+            $z = $uri[count($uri)-2];
+            if($z == "all_student"){
+                $hide = "hide";
+            }
             
 			$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 			$titleData = array('title' => 'Student Papers');
