@@ -43,11 +43,11 @@
             top: 0px;
         }
         .labelFont{
-            font-size:16px;
+            font-size:14px;
             color:#32367A;
         }
         .labelBodyFont{
-            font-size:18px;
+            font-size:16px;
             color:#32367A;
         }
         .table tr td{
@@ -68,6 +68,7 @@
                     <td>&nbsp;</td>
                                     <td ><b class="labelFont">अनुक्रमांक  </b>..................</td>
                                     
+                                    <td>&nbsp;</td>
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
@@ -98,6 +99,7 @@
                                     <td>&nbsp;</td>
                                     <td ><b class="labelFont">Roll No.  </b>..................</td>
                                     
+                                    <td>&nbsp;</td>
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
