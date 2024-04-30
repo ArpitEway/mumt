@@ -32,10 +32,11 @@
             background-size:cover;
           
             background-size: 100%;
-             width:1150px;height:1600px; 
+             width:1150px;height:1580px;
+              
           
         }
-        img{
+       #container_content img{
             z-index: -1;
             position: absolute;
             left: 0px;
@@ -55,7 +56,7 @@
 	</style>
   </head>
   <body >
-<section style="overflow: scroll;">
+<section >
 	<div class="">
 	<div  id="container_content"  style="margin: auto; ">
 		<div class="admit-card" style="border:none !important; "> 
@@ -67,6 +68,7 @@
                     <td>&nbsp;</td>
                                     <td ><b class="labelFont">अनुक्रमांक  </b>..................</td>
                                     
+                                    <td>&nbsp;</td>
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
@@ -103,12 +105,13 @@
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
                                     <td ><b class="labelFont">Registration No. </b> ..................</td>
                      </tr>           
                   </tbody>
             </table>
             
-            <p style="margin-top:200px;"><pre><b class="labelBodyFont">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;                  This is to certify that Shri/Smt./Ku. </b> ......................................................................................</pre></p>
+            <p style="margin-top:200px;"><pre><b class="labelBodyFont">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;                  This is to certify that Shri/Smt./Ku. </b> ....................................................................................</pre></p>
             <p ><pre><b class="labelBodyFont">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;       S/o, D/o, W/o Shri </b> .....................................................................................................<b class="labelBodyFont">has passed</b></pre></p>
 		
             <p ><pre><b class="labelBodyFont">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;       the examination for the Degree of</b> ........................................................<b class="labelBodyFont">(Distance Education) of this</b></pre></p>
@@ -116,7 +119,10 @@
 
             <p ><pre><b class="labelBodyFont">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;        University held in</b> ...............................................................<b class="labelBodyFont">in</b>...................................<b class="labelBodyFont">division.</b></pre></p>
             <p ><pre><b class="labelBodyFont">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;        The Degree of</b> ...............................................................................<b class="labelBodyFont">is being awarded to him/her.</b></pre></p>    
-			
+			<p style="margin-top:50px;">
+                <span style="margin-left:50px;"><b class="labelFont" style="font-style: italic;">Date </b>................</span>
+                <span><b class="labelFont" style="font-style: italic;float: right;  margin-right: 50px;">Vice Chancellor </b></span>
+            </p>
 		</div>
 	</div>
 <div class="text-center">
@@ -142,7 +148,7 @@
              
               filename:     'degree_'+student_id+'.pdf',
               image:        { type: 'jpeg', quality: 0.98 },
-              html2canvas:  { scale: 2, width: 1150,height: 1660 },
+              html2canvas:  { scale: 2, width: 1150,height: 1620 },
               jsPDF:        { unit: 'in', format: 'A4', orientation: 'portrait' }
             };
             // New Promise-based usage:
