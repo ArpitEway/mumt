@@ -1272,7 +1272,18 @@ class Center extends CI_Controller {
 	}
 
     public function showPapers($student_id){
-		
+        
+		$this->load->library('user_agent');
+        $hide = "";
+            if ($this->agent->is_referral())
+            {
+                $refer =  $this->agent->referrer();
+                $uri = explode("/",$refer);
+                if($uri[4] == "all_student"){
+                    $hide = "hide";
+                }
+            
+            }
 			$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 			$titleData = array('title' => 'Student Papers');
 			$this->load->view('Centers/header',$titleData);
@@ -1295,6 +1306,7 @@ class Center extends CI_Controller {
 			$data['papers'] = $this->db->get()->result();
             $data['name_csrf']= $this->security->get_csrf_token_name();
             $data['hash_csrf'] = $this->security->get_csrf_hash();
+            $data["hide"] = $hide;
             
 			// $this->Common_model->last_query();
 			$this->load->view('Centers/showPapers',$data);

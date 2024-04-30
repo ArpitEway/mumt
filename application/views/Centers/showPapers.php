@@ -215,7 +215,7 @@
 		</div>
 	</div>
 	
-	   	<?php if($student['payment_status'] == 'N' ){ 
+	   	<?php if($student['payment_status'] == 'N'  && $hide == ""){ 
             $center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29,1975,2098,2115 );
             $student_id = $this->Common_model->encrypt_decrypt($student['student_id']);
             if(in_array($this->session->center_id, $center_ids) ){
