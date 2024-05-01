@@ -43,30 +43,49 @@
             top: 0px;
         }
         .labelFont{
-            font-size:14px;
+            font-size:15px;
             color:#32367A;
         }
         .labelBodyFont{
-            font-size:16px;
+            font-size:17px;
             color:#32367A;
         }
         .table tr td{
             border:none;
         }
+        .dataShow
+        {
+            font-size:18px;
+            font-weight:500;
+            border-bottom: 2px dotted #000;
+                        
+        }
+        input { 
+            
+            outline: 0; 
+            border-width: 0 0 2px; 
+            border-bottom: 2px dotted #000;
+            background: transparent;
+            text-align: center;
+        } 
 	</style>
   </head>
   <body >
 <section >
-	<div class="">
+	<div class=""><pre><?php print_r($student); print_r($old_exam_data);
+    $arr=explode(' ',$old_exam_data[0]->exam_year);
+     $passing_year=end($arr);
+    ?> </pre>
+
 	<div  id="container_content"  style="margin: auto; ">
 		<div class="admit-card" style="border:none !important; "> 
 			
-            <input type="hidden" value="111" id="student_id">
+            <input type="hidden" value="<?=$student->student_id?>" id="student_id">
             <table class="table " style="margin-top:330px;border:none">
                 <tbody style="border:none">
                     <tr style="border:none">
                     <td>&nbsp;</td>
-                                    <td ><b class="labelFont">अनुक्रमांक  </b>..................</td>
+                                    <td ><b class="labelFont">अनुक्रमांक  </b><span class='dataShow'><?=$student[0]->roll_number?></span></td>
                                     
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
@@ -77,13 +96,13 @@
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
-                                    <td ><b class="labelFont">पंजीयन क्रमांक </b> ..................</td>
+                                    <td ><b class="labelFont">पंजीयन क्रमांक </b> <span class='dataShow'><?=$student[0]->enrollment_no?></span></td>
                      </tr>           
                   </tbody>
             </table>
             
             <p style="margin-top:200px;"><pre><b class="labelBodyFont">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;                  प्रमाणित किया जाता है कि श्री/श्रीमती/कुमारी </b> ......................................................................................</pre></p>
-            <p ><pre><b class="labelBodyFont">&nbsp;&nbsp;&nbsp;&nbsp;        पिता/पति श्री </b> ................................................................................................................<b class="labelBodyFont">नै इस विश्वविद्यालय</b></pre></p>
+            <p ><pre><b class="labelBodyFont">&nbsp;&nbsp;&nbsp;&nbsp;        पिता/पति श्री </b> ................................................................................................................<b class="labelBodyFont">ने इस विश्वविद्यालय</b></pre></p>
 		
             <p ><pre><b class="labelBodyFont">&nbsp;&nbsp;&nbsp;&nbsp;        द्वारा </b> ...................................................................<b class="labelBodyFont">में आयोजित</b>...............................................<b class="labelBodyFont">(दूरस्थ शिक्षा)</b></pre></p>
     
@@ -97,7 +116,7 @@
                 <tbody style="border:none">
                     <tr style="border:none">
                                     <td>&nbsp;</td>
-                                    <td ><b class="labelFont">Roll No.  </b>..................</td>
+                                    <td ><b class="labelFont">Roll No.  </b><span class='dataShow'><?=$student[0]->roll_number?></span></td>
                                     
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
@@ -108,26 +127,26 @@
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
-                                    <td ><b class="labelFont">Registration No. </b> ..................</td>
+                                    <td ><b class="labelFont">Registration No. </b> <span class='dataShow'><?=$student[0]->enrollment_no?></span></td>
                      </tr>           
                   </tbody>
             </table>
             
-            <p style="margin-top:200px;"><pre><b class="labelBodyFont">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;                  This is to certify that Shri/Smt./Ku. </b> ....................................................................................</pre></p>
-            <p ><pre><b class="labelBodyFont">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;       S/o, D/o, W/o Shri </b> .....................................................................................................<b class="labelBodyFont">has passed</b></pre></p>
+            <p style="margin-top:200px;"><pre><b class="labelBodyFont">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;                  This is to certify that Shri/Smt./Ku. </b> <input type="text" class="dataShow" value="<?=$student[0]->name?>" style="width:494px" /> </pre></p>
+            <p ><pre><b class="labelBodyFont">&nbsp;&nbsp;&nbsp;&nbsp;        S/o, D/o, W/o Shri </b> <input type="text" class="dataShow" value="<?=$student[0]->f_h_name?>" style="width:609px" /><b class="labelBodyFont">has passed</b></pre></p>
 		
-            <p ><pre><b class="labelBodyFont">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;       the examination for the Degree of</b> ........................................................<b class="labelBodyFont">(Distance Education) of this</b></pre></p>
+            <p ><pre><b class="labelBodyFont">&nbsp;&nbsp;&nbsp;&nbsp;        the examination for the Degree of</b> <input type="text" class="dataShow" value="<?=$student[0]->course_name?>" style="width:336px" /><b class="labelBodyFont">(Distance Education) of this</b></pre></p>
     
 
-            <p ><pre><b class="labelBodyFont">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;        University held in</b> ...............................................................<b class="labelBodyFont">in</b>...................................<b class="labelBodyFont">division.</b></pre></p>
-            <p ><pre><b class="labelBodyFont">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;        The Degree of</b> ...............................................................................<b class="labelBodyFont">is being awarded to him/her.</b></pre></p>    
+            <p ><pre><b class="labelBodyFont">&nbsp;&nbsp;&nbsp;&nbsp;        University held in</b> <input type="text" class="dataShow" value="<?=$passing_year?>" style="width:336px" /><b class="labelBodyFont">in</b><input type="text" class="dataShow" value="First" style="width:336px" /><b class="labelBodyFont">division.</b></pre></p>
+            <p ><pre><b class="labelBodyFont">&nbsp;&nbsp;&nbsp;&nbsp;        The Degree of</b> ...............................................................................<b class="labelBodyFont">is being awarded to him/her.</b></pre></p>    
 			<p style="margin-top:50px;">
                 <span style="margin-left:50px;"><b class="labelFont" style="font-style: italic;">Date </b>................</span>
                 <span><b class="labelFont" style="font-style: italic;float: right;  margin-right: 50px;">Vice Chancellor </b></span>
             </p>
 		</div>
 	</div>
-<div class="text-center">
+<div class="text-center" style="margin-top:10px;">
     <input type="button" id="rep" value="Download" class="btn btn-primary btn_print mb-5">
 </div>
 </section>

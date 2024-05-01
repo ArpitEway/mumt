@@ -672,7 +672,7 @@ class MsPrint extends CI_Controller {
 		echo $this->load->view('admin/examController/get_center_wise_marksheet_dispatch_rolllist_backlog',$data, TRUE);
 	}//fun
 
-	public function degree_view($student_id=''){
+	public function degree_view($student_id='188228'){
 		if(!$this->session->has_userdata('adminData')){
 			redirect(base_url());
 			exit;
@@ -681,8 +681,8 @@ class MsPrint extends CI_Controller {
 			//$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
 			$titleData = array('title' => 'Student Degree' );
 			$this->load->view('header',$titleData);
-			
-			
+			$data['student'] = $this->Common_model->getRecordByWhere('student',array('student_id'=>$student_id));
+			$data['old_exam_data']  = $this->Common_model->getRecordByWhereByOrder('old_exam_data',array('student_id' =>$student_id,'exam_result!='=>"FAIL"),'id',' DESC');
 			//echo $this->db->last_query(); die;
 			$this->load->view('template/degree',$data);
 			$this->load->view('footer');
