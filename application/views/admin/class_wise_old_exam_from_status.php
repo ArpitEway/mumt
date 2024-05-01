@@ -44,13 +44,13 @@
 					
 					$this->db->select('count(*) num');
 					$this->db->from('student s');
-					$this->db->where(array('s.class_id' => $count['class_id'], 'new_exam_form' => 'Y','university_mode'  =>'PVT','paper_type'=> 'theory'));
+					$this->db->where(array('s.class_id' => $count['old_class_id'], 'exam_form' => 'Y','university_mode'  =>'PVT','paper_type'=> 'theory'));
 					$this->db->join('new_exam_form ef','s.student_id=ef.student_id and s.class_id=ef.class_id');
 					$pvt_paper_count = $this->db->get()->result()[0]->num;
 
 					$this->db->select('count(*) num');
 					$this->db->from('student s');
-					$this->db->where(array('s.class_id' => $count['class_id'], 'new_exam_form' => 'Y','university_mode'  =>'REG','paper_type'=> 'theory'));
+					$this->db->where(array('s.class_id' => $count['old_class_id'], 'exam_form' => 'Y','university_mode'  =>'REG','paper_type'=> 'theory'));
 					$this->db->join('new_exam_form ef','s.student_id=ef.student_id and s.class_id=ef.class_id');
 					$reg_paper_count = $this->db->get()->result()[0]->num;
 
