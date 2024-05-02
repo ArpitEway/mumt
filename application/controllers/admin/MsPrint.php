@@ -682,6 +682,8 @@ class MsPrint extends CI_Controller {
 			$titleData = array('title' => 'Student Degree' );
 			$this->load->view('header',$titleData);
 			$data['student'] = $this->Common_model->getRecordByWhere('student',array('student_id'=>$student_id));
+			
+			$data['application'] = $this->Common_model->getRecordByWhere('application_form',array('student_uid'=>$student_id));
 			$data['old_exam_data']  = $this->Common_model->getRecordByWhereByOrder('old_exam_data',array('student_id' =>$student_id,'exam_result!='=>"FAIL"),'id',' DESC');
 			//echo $this->db->last_query(); die;
 			$this->load->view('template/degree',$data);
