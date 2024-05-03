@@ -64,7 +64,7 @@
             
             outline: 0; 
             border-width: 0 0 2px; 
-            border-bottom: 2px dotted #000;
+            border-bottom: 2px dotted #000 !important;
             background: transparent;
             text-align: center;
         } 
@@ -102,11 +102,12 @@
 		<div class="admit-card" style="border:none !important; "> 
 			
             <input type="hidden" value="<?=$student->student_id?>" id="student_id">
-            <table class="table " style="margin-top:330px;border:none">
+            <h2 style="text-align:center;margin-top:220px;"><?=$course_name_hindi?></h2>
+            <table class="table " style="margin-top:110px;border:none">
                 <tbody style="border:none">
                     <tr style="border:none">
                     <td>&nbsp;</td>
-                                    <td ><b class="labelFont">अनुक्रमांक  </b><span class='dataShow'><?=$student[0]->roll_number?></span></td>
+                                    <td ><b class="labelFont">अनुक्रमांक  </b><span class='dataShow'><?=$application[0]->roll_no?></span></td>
                                     
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
@@ -117,7 +118,7 @@
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
-                                    <td ><b class="labelFont">पंजीयन क्रमांक </b> <span class='dataShow'><?=$student[0]->enrollment_no?></span></td>
+                                    <td style="float:right;"><b class="labelFont">पंजीयन क्रमांक </b> <span class='dataShow'><?=$student[0]->enrollment_no?></span></td>
                      </tr>           
                   </tbody>
             </table>
@@ -132,12 +133,12 @@
             <p ><pre><b class="labelBodyFont">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;                  इन्हें</b> <input type="text" class="dataShow" value="<?=$course_name_hindi?>" style="width:336px" readonly /><b class="labelBodyFont">की उपाधि प्रदान की जाती है।</b></pre></p>
 				<!-- <strong>This is a computer-generated document. No signature is required</strong> -->
 			<!-- English -->
-
-                <table class="table " style="margin-top:240px;border:none">
+            <h2 style="text-align:center;margin-top:90px;"><?=$student[0]->course_name?></h2>
+                <table class="table " style="margin-top:80px;border:none">
                 <tbody style="border:none">
                     <tr style="border:none">
                                     <td>&nbsp;</td>
-                                    <td ><b class="labelFont">Roll No.  </b><span class='dataShow'><?=$student[0]->roll_number?></span></td>
+                                    <td ><b class="labelFont">Roll No.  </b><span class='dataShow'><?=$application[0]->roll_no?></span></td>
                                     
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
@@ -148,7 +149,7 @@
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
-                                    <td ><b class="labelFont">Registration No. </b> <span class='dataShow'><?=$student[0]->enrollment_no?></span></td>
+                                    <td style="float:right;"><b class="labelFont">Registration No. </b> <span class='dataShow'><?=$student[0]->enrollment_no?></span></td>
                      </tr>           
                   </tbody>
             </table>
