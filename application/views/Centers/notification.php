@@ -7,6 +7,11 @@
 			<div>
 				<ul>
 				<li><img src="<?=base_url('assets/images/center/new.gif')?>" alt=""> <b>
+				<a  href="<?=base_url('assets/images/center/')?>Adhisuchna-2024.pdf" download> Degree/Diploma/NOC अधिसूचना - Click Here </a>
+				</b>
+				</li><br>
+
+				<li><img src="<?=base_url('assets/images/center/new.gif')?>" alt=""> <b>
 				सूचित किया जाता है कि प्रायवेट प्रवेश से सम्बंधित शेष बची हुई समस्त ऑनलाइन प्रक्रिया सम्पन्न करने के लिए अंतिम तिथि 30 अप्रेल 2024 तय की गई है| अनुरोध है कि उक्त दिनांक के पूर्व अनिवार्य रूप से समस्त प्रक्रिया पूर्ण करे| इसके पश्चात् किसी भी आवेदन पर विचार नहीं किया जावेगा|
 				</b>
 				</li><br>
