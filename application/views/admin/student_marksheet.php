@@ -585,7 +585,7 @@
                   </tr>
                   <tr>
                     <td>
-                    <div align="left"> MS No. <?php echo $student->old_marksheet_no; ?> </div>
+                    <div align="left"> MS No. <?php echo $student->marksheet_no; ?> </div>
                   </td>
                 </tr>
               </td>
