@@ -2256,7 +2256,7 @@ public function getStudentData()
 
 	public function class_wise_exam_from_status(){
 
-		$this->load->view('header',array('title' => 'Class Wise Exam Form Status(Jan 2024)'));
+		$this->load->view('header',array('title' => 'Class Wise Exam Form Status(June 2024)'));
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
