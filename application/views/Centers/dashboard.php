@@ -215,11 +215,11 @@
 								<span class="nav-text">Exam Form June 2024</span>
 							</div>
 					</a> 
-					<a class="border-0 custom-menu-item" href="<?=base_url('backlog_exam_form_students');?>">
+					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('backlog_exam_form_students');?>">
 							<div>
 								<span class="nav-text">Backlog Exam Form June 2024</span>
 							</div>
-					</a>  
+					</a>   -->
 					<?php endif ?>
 					
 					<?php 

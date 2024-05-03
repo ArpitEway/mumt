@@ -1892,7 +1892,7 @@ class Center extends CI_Controller {
 	 	$titleData = array('title' => 'Regular Internal Marks Submission' );
 	 	$this->load->view('Centers/header',$titleData);
 	 	$center_id =  $this->session->center_id;
-	 	$where = array('university_mode' => 'REG','center_id' => $center_id, $this->exam_form => 'Y','internal'=>"Y",'result_show ' => 'N');
+	 	$where = array('university_mode' => 'REG','center_id' => $center_id, $this->exam_form => 'Y','internal'=>"Y",'old_result_show ' => 'N');
 	 	// ,"demo"=>'N' ,'class_id'=>264
 	 	$this->db->order_by("int_marks_sub,".$this->exam_table.".course_group_id,".$this->exam_table.".class_id", "asc");
 	 	$this->db->select('*');
@@ -3092,7 +3092,7 @@ public function practical_assignment_marks_edit(){
     	$this->db->where('backlog_student.student_id',$student_id); 
     	$this->db->where('backlog_student.class_id',$class_id);
 		$this->db->where('backlog_exam_form.class_id',$class_id);
-		$this->db->where('backlog_student.exam_year','January 2024');
+		$this->db->where('backlog_student.exam_year','June 2024');
     	$this->db->where('status','B');
 		$this->db->order_by('paper_order', 'asc');
     	$data['papers'] = $this->db->get()->result();
