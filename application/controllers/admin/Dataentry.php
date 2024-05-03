@@ -112,7 +112,7 @@ class Dataentry extends CI_Controller {
 		$this->db->from('new_exam_form');
 		$this->db->order_by("student.".$this->roll_no."","student.enrollment_no","asc");
 		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
-		$this->db->where('student.class_id = new_exam_form.class_id');
+		$this->db->where('student.old_class_id = new_exam_form.class_id');
 		$this->db->where($where); 
 		$this->db->limit(30,$page);
 		$resultData = $this->db->get();
@@ -317,7 +317,7 @@ class Dataentry extends CI_Controller {
 			$this->db->where('student.university_mode',$_POST['university_mode']);
 			//$this->db->where('student.'.$this->roll_no.'!=',0);
 			//$this->db->where('student.'.$this->exam_form.'','Y');
-			$this->db->where('student.roll_no!=',0);
+			$this->db->where('student.roll_number!=',0);
 			$this->db->where('student.new_exam_form','Y');
 			$this->db->order_by('student.examcentercode');
 			$data['examcenters'] = $this->db->get()->result();
@@ -385,11 +385,11 @@ class Dataentry extends CI_Controller {
 				$this->db->where('student.exam_center_id',$exam_center_id);
 				//$this->db->where('student.'.$this->roll_no.'!=',0);
 				//$this->db->where('student.'.$this->exam_form.'','Y');
-				$this->db->where('student.roll_no!=',0);
+				$this->db->where('student.roll_number!=',0);
 				$this->db->where('student.new_exam_form','Y');
 				$this->db->where('student.university_mode',$_POST['university_mode']);
 				//$this->db->order_by('student.'.$this->roll_no.'');
-				$this->db->order_by('student.roll_no');
+				$this->db->order_by('student.roll_number');
 				$dataArray['students'][$exam_center_id] = $this->db->get()->result();
 				$dataArray['teachername'][$exam_center_id] = $this->Common_model->getSinglefield('exam_center','superintendent',array('id'=>$exam_center_id));
 				$dataArray['detail'][$exam_center_id] = $this->Common_model->getRecordByWhere('exam_center',array('id'=>$exam_center_id));	
