@@ -220,14 +220,14 @@
                 if ($center->exam_form_permission=='Y' ): ?>
 				 <a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
 							<div>
-								<span class="nav-text">Exam Form Jan 2024</span>
+								<span class="nav-text">Exam Form June 2024</span>
 							</div>
 					</a> 
-					<a class="border-0 custom-menu-item" href="<?=base_url('backlog_exam_form_students');?>">
+					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('backlog_exam_form_students');?>">
 							<div>
-								<span class="nav-text">Backlog Exam Form Jan 2024</span>
+								<span class="nav-text">Backlog Exam Form June 2024</span>
 							</div>
-					</a>  
+					</a>   -->
 					<?php endif ?>
 					
 					<?php 
@@ -247,12 +247,12 @@
 					<?php if ($center->result_permission=='Y'): ?>
 						<a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
 							<div>
-								<span class="nav-text">Result(July 2023)</span>
+								<span class="nav-text">Result(January 2024)</span>
 							</div>
 						</a>
 						 <a class="border-0 custom-menu-item" href="<?=base_url('backlog_result');?>">
 							<div>
-								<span class="nav-text">Backlog Result (July 2023)</span>
+								<span class="nav-text">Backlog Result (January 2024)</span>
 							</div>
 						</a> 
 						
