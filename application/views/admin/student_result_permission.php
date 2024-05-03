@@ -27,7 +27,7 @@
           
         ?>
         <tr>
-        <input type="hidden" name ="class_id" value = "<?php echo  $students->class_id  ?>">
+        <input type="hidden" name ="class_id" value = "<?php echo  $students->old_class_id  ?>">
         <input type="hidden" name ="course_group_id" value = "<?php echo  $students->course_group_id  ?>">
         <td><?php  echo $i++ ; ?></td>
         <td><?php  echo $students->student_id ?></td>
@@ -66,7 +66,7 @@
 
         ?>
         <tr>
-        <input type="hidden" name ="class_id" value = "<?php echo  $students->class_id  ?>">
+        <input type="hidden" name ="class_id" value = "<?php echo  $students->old_class_id  ?>">
         <input type="hidden" name ="course_group_id" value = "<?php echo  $students->course_group_id  ?>">
         <td><?php  echo $i++ ; ?></td>
         <td><?php  echo $students->student_id ?></td>
