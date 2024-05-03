@@ -31,7 +31,7 @@
         <input type="hidden" name ="course_group_id" value = "<?php echo  $students->course_group_id  ?>">
         <td><?php  echo $i++ ; ?></td>
         <td><?php  echo $students->student_id ?></td>
-        <td><?php  echo $students->roll_no ?></td>
+        <td><?php  echo $students->roll_number ?></td>
         <td><?php  echo $students->enrollment_no ?></td>
         <td><?php  echo $students->center_code ?></td>
         <td><?php  echo $students->name ?></td>
@@ -70,7 +70,7 @@
         <input type="hidden" name ="course_group_id" value = "<?php echo  $students->course_group_id  ?>">
         <td><?php  echo $i++ ; ?></td>
         <td><?php  echo $students->student_id ?></td>
-        <td><?php  echo $students->roll_no ?></td>
+        <td><?php  echo $students->roll_number ?></td>
         <td><?php  echo $students->enrollment_no ?></td>
         <td><?php  echo $students->center_code ?></td>
         <td><?php  echo $students->name ?></td>
