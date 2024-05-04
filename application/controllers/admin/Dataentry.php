@@ -388,7 +388,7 @@ class Dataentry extends CI_Controller {
 				$this->db->where('student.'.$this->exam_form.'','Y');
 				//$this->db->where('student.roll_no!=',0);
 				//$this->db->where('student.new_exam_form','Y');
-				$this->db->order_by('student.roll_no');
+				// $this->db->order_by('student.roll_no');
 				$this->db->order_by('student.'.$this->roll_no.'');
 				
 				$dataArray['students'][$exam_center_id] = $this->db->get()->result();
