@@ -80,8 +80,8 @@ $words = array('0' => '', '1' => 'One', '2' => 'Two',
                                   ?> 
                                 <tr>
                                     <td  style="text-align:center;"><?php  echo $student->enrollment_no; ?></td>
-                                    <td style="text-align:center;padding: 0px 3px 0px 3px;"><?php //echo $student->roll;?>
-                                    <?php echo $student->$roll_no;?></td>
+                                    <td style="text-align:center;padding: 0px 3px 0px 3px;"><?php //echo $student->roll_no;?>
+                                    <?php echo $student->$roll;?></td>
 
                                     <td style='text-align:center;'><?php //echo $student->total_marks; ?></td>
 
