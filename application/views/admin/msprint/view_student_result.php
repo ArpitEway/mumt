@@ -109,15 +109,25 @@
  						</div>
  					</div>
  				</div>
- -->                <div class="col-md-12">
- 					<div class="row py-4">
- 						<label class="col-sm-2 text-heading">Course/Class</label>
- 						<div class="col-sm-8 text-value">
+ -->                <div class="col-md-8">
+                        <div class="row py-4">
+                            <label class="col-sm-2 text-heading">Course/Class</label>
+                                <div class="col-sm-8 text-value">
 
- 						<?php echo $student->course_name;  ?> (	<?php echo  $this->Common_model->getClassNameByClassId($student->class_id); ?>)
- 						</div>
- 					</div>
- 				</div>
+                                    <?php echo $student->course_name;  ?> (	<?php echo  $this->Common_model->getClassNameByClassId($student->class_id); ?>)
+                                </div>
+                        </div>
+ 				    </div>
+                     <?php if($student->course_complete) { ?>
+                     <div class="col-md-4">
+                            <div class="row py-2">
+                                <!-- <label class="col-sm-4 text-heading">Degree</label> -->
+                                <div class="col-sm-8 text-value">
+                                    <a href="<?= base_url( 'MsPrint/degree_view/'.$student->student_id.'')?>" target="_blank" data-title="Click to see Degree View & Download it!">Degree View & Download</a>
+                                </div>
+                            </div>
+                        </div>
+                        <?php } ?>
  	        </div>
  	    </div>
     </div> 
