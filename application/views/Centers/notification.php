@@ -6,6 +6,11 @@
 		<div class="content-head row mb-3 mt-5">
 			<div>
 				<ul>
+				<li style="color:red"><img src="<?=base_url('assets/images/center/new.gif')?>" alt=""> <b>
+				सूचित किया जाता है कि Unpaid विद्यार्थियों का ऑनलाइन पेमेंट करने की अंतिम तिथि 10 मई 2024 निर्धारित की गई है| इसके पश्चात् Unpaid विद्यार्थी स्वतः ही निरस्त हो जायेंगे| 
+				</b>
+				</li><br>
+
 				<li><img src="<?=base_url('assets/images/center/new.gif')?>" alt=""> <b>
 				<a  href="<?=base_url('assets/images/center/')?>Adhisuchna-2024.pdf" download> Degree/Diploma/NOC अधिसूचना - Click Here </a>
 				</b>
