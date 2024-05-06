@@ -17,7 +17,7 @@
 				<th>Date</th>
 				<!-- <th>Status</th> -->
                 <th>Action</th>
-                <th>Downlod</th>
+                <th>Download</th>
 			
 				
 
