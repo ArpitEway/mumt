@@ -23,10 +23,10 @@
 
                 
 				<!-- अधिक जानकारी के लिए व्हाट्स एप्प करे 9755590032. -->
-				<li><img src="<?=base_url('assets/images/center/new.gif')?>" alt=""> जुलाई 2023 सेशन के ऑनलाइन रजिस्ट्रेशन फॉर्म भरने के पश्चात् विद्यार्थियों के Documents अनिवार्य रूप से Online Upload करके Admission Form का Print एवं Documents की कॉपी (10th,12th, Graduation की Mark Sheet, Marriage Certificate, आधार कार्ड) एवं ओरिजिनल TC, Migration, महर्षि महेश योगी वैदिक विश्विद्यालय, लमती, विजय नगर, जबलपुर (म.प्र.) पर पहुंच जाना आवश्यक है अन्यथा विद्यार्थियों के Form स्वतः ही Cancel कर दिए जायेंगे। 
+				<li> जुलाई 2023 सेशन के ऑनलाइन रजिस्ट्रेशन फॉर्म भरने के पश्चात् विद्यार्थियों के Documents अनिवार्य रूप से Online Upload करके Admission Form का Print एवं Documents की कॉपी (10th,12th, Graduation की Mark Sheet, Marriage Certificate, आधार कार्ड) एवं ओरिजिनल TC, Migration, महर्षि महेश योगी वैदिक विश्विद्यालय, लमती, विजय नगर, जबलपुर (म.प्र.) पर पहुंच जाना आवश्यक है अन्यथा विद्यार्थियों के Form स्वतः ही Cancel कर दिए जायेंगे। 
 				</li><br>	
 				
-				<li> <a target="_blank" href="<?=base_url('assets/images/Notification.png')?>" ><img src="<?=base_url('assets/images/center/new.gif')?>" alt=""> शिक्षक प्रशिक्षण हेतु आमंत्रण - Click Here </a></li><br>
+				<li> <a target="_blank" href="<?=base_url('assets/images/Notification.png')?>" > शिक्षक प्रशिक्षण हेतु आमंत्रण - Click Here </a></li><br>
 
 				<li>दिनांक 5 फरवरी 2024 से 27 फरवरी 2024 के बीच सम्पन्न होने वाली परीक्षाओं के लिये परीक्षा फॉर्म भरने की अंतिम तिथि 31 जनवरी 2024 निर्धारित की गयी है। अनुरोध है कि उक्त दिनांक के पूर्व परीक्षा फॉर्म भरने की प्रक्रिया पूर्ण करे| इसके पश्चात् किसी भी आवेदन पर विचार नहीं किया जावेगा| 
 				</li><br>
