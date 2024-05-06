@@ -115,7 +115,7 @@
                       } 
 
                       ?>
-                      <option value="ABS">ABS</option>    
+                      <option value="ABS" <?php if($student->int_marks== "ABS") { echo 'selected';}?>>ABS</option>    
                     </select>        
                   </td>
                 

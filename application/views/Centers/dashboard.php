@@ -33,6 +33,14 @@
 					</span>
 				</a>
 			</li>
+			<li class="nav-item mb-2">
+				<a class="nav-link border" id="form-tab" data-toggle="tab" href="#download_form">
+					<span class="nav-text">Degree/Diploma/NOC</span>
+					<span class="nav-icon flot-right" >
+						<i class="flaticon2-fast-next"></i>
+					</span>
+				</a>
+			</li>
 		</ul>
 	</div>
 	<div class="col-md-8 col-12 col-sm-12 menu-background p-3">
@@ -150,11 +158,11 @@
 							<span class="nav-text">Student Report</span>
 						</div>
 					</a>
-					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('student_list/unpaid/REG');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('student_list/unpaid/REG');?>">
 						<div>
 							<span class="nav-text">Unpaid Student</span>
 						</div>
-					</a> -->
+					</a>
 					<a class="border-0 custom-menu-item" href="<?=base_url('Document/index/REG');?>">
 						<div>
 							<span class="nav-text">Upload Admission Document</span>
@@ -212,14 +220,14 @@
                 if ($center->exam_form_permission=='Y' ): ?>
 				 <a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
 							<div>
-								<span class="nav-text">Exam Form Jan 2024</span>
+								<span class="nav-text">Exam Form June 2024</span>
 							</div>
 					</a> 
-					<a class="border-0 custom-menu-item" href="<?=base_url('backlog_exam_form_students');?>">
+					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('backlog_exam_form_students');?>">
 							<div>
-								<span class="nav-text">Backlog Exam Form Jan 2024</span>
+								<span class="nav-text">Backlog Exam Form June 2024</span>
 							</div>
-					</a>  
+					</a>   -->
 					<?php endif ?>
 					
 					<?php 
@@ -239,12 +247,12 @@
 					<?php if ($center->result_permission=='Y'): ?>
 						<a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
 							<div>
-								<span class="nav-text">Result(July 2023)</span>
+								<span class="nav-text">Result(January 2024)</span>
 							</div>
 						</a>
 						 <a class="border-0 custom-menu-item" href="<?=base_url('backlog_result');?>">
 							<div>
-								<span class="nav-text">Backlog Result (July 2023)</span>
+								<span class="nav-text">Backlog Result (January 2024)</span>
 							</div>
 						</a> 
 						
@@ -278,6 +286,52 @@
 
 				</div>
 			</div> 
+
+			<!-------Tab START---->		
+			<div class="tab-pane fade" id="download_form" role="tabpanel" aria-labelledby="form-tab">
+				<div class="row">
+					<!-------Regular Form---->	
+					<a class="border-0 custom-menu-item" href="<?=base_url('assets/images/center/Regular/')?>Regular Course Migration 2024.pdf" download>
+						<div>
+							<span class="nav-text">Regular Course Migration</span>
+						</div>
+					</a>
+					<a class="border-0 custom-menu-item" href="<?=base_url('assets/images/center/Regular/')?>Regular Degree Form 2024.pdf" download>
+						<div>
+							<span class="nav-text">Regular Degree Form </span>
+						</div>
+					</a>
+					<a class="border-0 custom-menu-item" href="<?=base_url('assets/images/center/Regular/')?>Regular Diploma Form 2024.pdf" download>
+						<div>
+							<span class="nav-text">Regular Diploma Form </span>
+						</div>
+					</a>
+					<a class="border-0 custom-menu-item" href="<?=base_url('assets/images/center/Regular/')?>Regular Prov. Degree  2024.pdf" download>
+						<div>
+							<span class="nav-text">Regular Prov. Degree</span>
+						</div>
+					</a>
+					<!-------Private Form---->	
+					<a class="border-0 custom-menu-item" href="<?=base_url('assets/images/center/Private/')?>Degree Form 2024.pdf" download>
+						<div>
+							<span class="nav-text">Private Degree Form</span>
+						</div>
+					</a>
+					<a class="border-0 custom-menu-item" href="<?=base_url('assets/images/center/Private/')?>Private NOC 2024.pdf" download>
+						<div>
+							<span class="nav-text">Private NOC Form</span>
+						</div>
+					</a>
+					<a class="border-0 custom-menu-item" href="<?=base_url('assets/images/center/Private/')?>Private Prov. Degree  2024.pdf" download>
+						<div>
+							<span class="nav-text">Private Prov. Degree Form </span>
+						</div>
+					</a>
+					
+				</div>
+			</div> 
+			<!-------Tab End---->		
+
 		</div>
 	</div>
 </div>
