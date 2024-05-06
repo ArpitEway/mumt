@@ -330,7 +330,7 @@ hr.new2 {
 	}else{
 		$('#errPhoto').text('');
 	}
-	var filesize = parseFloat(file[0].files[0].size / 1024).toFixed(2);
+	var filesize = parseFloat(file[0].files[0].size / 1824).toFixed(2);
 	if(filesize>1024){
 		$('#errPhoto').text('Document size must be less than 1Mb');
 		$(this).val('');

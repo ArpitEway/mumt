@@ -76,10 +76,14 @@
     $arr=explode(' ',$old_exam_data[0]->exam_year);
      $passing_year=end($arr);
      $total_marks=$obtain_marks=0;
+     $i=1;$roll_no="";
      foreach($old_exam_data as $old){
-        
+        if($i==1){
+            $roll_no=$old->roll_no;
+        }
          $total_marks+=$old->total_marks;
          $obtain_marks+=$old->obtain_marks;
+         $i++;
      }
      $division ="";
       $percentage=($obtain_marks/$total_marks)*100;
@@ -107,7 +111,7 @@
                 <tbody style="border:none">
                     <tr style="border:none">
                     <td>&nbsp;</td>
-                                    <td ><b class="labelFont">अनुक्रमांक  </b><span class='dataShow'><?=$application[0]->roll_no?></span></td>
+                                    <td ><b class="labelFont">अनुक्रमांक  </b><span class='dataShow'><?=$roll_no?></span></td>
                                     
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
@@ -138,7 +142,7 @@
                 <tbody style="border:none">
                     <tr style="border:none">
                                     <td>&nbsp;</td>
-                                    <td ><b class="labelFont">Roll No.  </b><span class='dataShow'><?=$application[0]->roll_no?></span></td>
+                                    <td ><b class="labelFont">Roll No.  </b><span class='dataShow'><?=$roll_no?></span></td>
                                     
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
