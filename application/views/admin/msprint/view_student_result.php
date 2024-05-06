@@ -118,16 +118,16 @@
                                 </div>
                         </div>
  				    </div>
-                     <?php if($student->course_complete) { ?>
-                     <div class="col-md-4">
+                     <?php //if($student->course_complete) { ?>
+                     <!-- <div class="col-md-4">
                             <div class="row py-2">
-                                <!-- <label class="col-sm-4 text-heading">Degree</label> -->
+                                 <label class="col-sm-4 text-heading">Degree</label>
                                 <div class="col-sm-8 text-value">
-                                    <a href="<?= base_url( 'MsPrint/degree_view/'.$student->student_id.'')?>" target="_blank" data-title="Click to see Degree View & Download it!">Degree View & Download</a>
+                                    <a href="<?php // base_url( 'MsPrint/degree_view/'.$student->student_id.'')?>" target="_blank" data-title="Click to see Degree View & Download it!">Degree View & Download</a>
                                 </div>
                             </div>
-                        </div>
-                        <?php } ?>
+                        </div> -->
+                        <?php //} ?>
  	        </div>
  	    </div>
     </div> 

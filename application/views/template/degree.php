@@ -105,7 +105,7 @@
 	<div  id="container_content"  style="margin: auto; ">
 		<div class="admit-card" style="border:none !important; "> 
 			
-            <input type="hidden" value="<?=$student->student_id?>" id="student_id">
+            <input type="hidden" value="<?=$student[0]->student_id?>" id="student_id">
             <h2 style="text-align:center;margin-top:220px;"><?=$course_name_hindi?></h2>
             <table class="table " style="margin-top:110px;border:none">
                 <tbody style="border:none">

@@ -17,6 +17,7 @@
 				<th>Date</th>
 				<!-- <th>Status</th> -->
                 <th>Action</th>
+                <th>Downlod</th>
 			
 				
 
@@ -66,6 +67,7 @@
 					<!-- </td> -->
 				
 					<td><a href="<?= base_url('MsPrint/view_application/'.$complaint['id'].'')?>" class="text-primary"  ><i class="fas fa-solid fa-eye"></i></a></td>
+                    <td><?php if($student->course_complete == "Y"){?><a href="<?= base_url( 'MsPrint/degree_view/'.$student->student_id.'')?>" target="_blank" data-title="Click to see Degree View & Download it!"> Degree</a><?php }?></td>
 				</tr>
 
 
