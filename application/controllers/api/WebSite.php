@@ -194,6 +194,7 @@ class WebSite extends REST_Controller {
         $p_email = html_escape($this->input->post("p_email"));
         $dob= html_escape(date("Y-m-d", strtotime($this->input->post('dob'))));
         $adhar_no = html_escape($this->input->post("adhar_no"));
+        $abcid = html_escape($this->input->post("abcid"));
 
         $this->db->select('class_master.*');
 		$this->db->from('class_master');
@@ -219,6 +220,8 @@ class WebSite extends REST_Controller {
         $data['admission_by']='web';
         $data['session']='July 2023';
         $data['enrollment_no']='-';
+        $data['abc_id']=$abcid;
+        
         $data['class_name']=$class_list[0]['class_name'];
         $class_id=$data['class_id']=$class_list[0]['id'];
         $data['course_name']=$this->Common_model->getCourseNameByCourseId($course_group_id);
