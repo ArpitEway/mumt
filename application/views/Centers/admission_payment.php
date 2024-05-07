@@ -68,7 +68,7 @@
 	</div>
 	<div class="row py-3 border justify-content-center">
 	<?php
-	
+	$checkbox="";
 		$student_id = $this->Common_model->encrypt_decrypt($student['student_id']);
 		if(@($this->session->center_id) && ($this->session->admission_by!="web" ) ){
 		$url = 'center/payment/admission_payment/'.$student_id;
@@ -79,7 +79,33 @@
 			$url = 'Payment/admission_payment/'.$student_id;
 			
 		}
+
+		if($this->session->admission_by=="web"  && $paymentType=="Form Fees"){
+			$checkbox='<p style="padding: 5px;font-weight: 600;"><input  type="checkbox" name="iagree" id="iagree" > यह केवल ऑनलाइन फॉर्म फी Rs. 200 ली जा रही है, जो कि किसी भी परिस्थिति में वापस नहीं की जाएगी| एलिजिबिलिटी या डॉक्यूमेंट की कमी होने पर फॉर्म निरस्त किया जा सकता है| </p> ';
+			$urlhide=$url;
+			$url="";
+		}
+		echo $checkbox;
 	?>
-	<a class="btn btn-default text-dark font-weight-bold" href="<?=base_url($url);?>">Pay Now</a>
+	<a id="btn"  class="btn btn-default text-dark font-weight-bold <?php if(!empty($checkbox)) { echo  'disabled'; } ?>" href="<?=base_url($url);?>">Pay Now</a>
 </div>
 </div>
+<script>
+var url='<?=base_url($urlhide);?>';
+$('#iagree').change(function() {
+        if(this.checked) {
+			$('#btn').removeClass("disabled");
+			$('#btn').attr("href", url); 
+			console.log(" checked "+url);   
+			
+        }
+		else{
+			  
+			$('#btn').addClass('disabled'); 
+			$('#btn').attr("href", '#'); 
+			console.log("unchecked");   
+           
+		}
+           
+    });
+</script>
