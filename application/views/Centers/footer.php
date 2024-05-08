@@ -166,9 +166,22 @@ function callTheCallBackFunction() {
     toastr.warning('<?php echo $this->session->flashdata("warning");?>');
   </script>
 <?php endif;?>
-
-
-
+<script type="text/javascript">
+$(document).ready(function() {
+    // var loadfirst = getCookie("loadfirsttime");
+    // if(loadfirst == null){
+    // setCookie("loadfirsttime", "again", 1); // 1 is the number of days
+    // document.getElementById("popupbtn").click();
+    // }
+      // var loadfirst = localStorage.getItem("loadfirsttime");
+      // if(loadfirst == null){
+      //   console.log('hello' +loadfirst);
+      // localStorage.setItem('loadfirsttime', 1); // 1 is value assigned.
+     
+      document.getElementById("popupbtn").click();
+      //}
+		});
+</script>
 <!--end::Page Scripts-->
 </body>
 <!--end::Body-->

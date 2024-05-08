@@ -335,12 +335,47 @@
 		</div>
 	</div>
 </div>
+
+
+
+<!-- Button trigger modal-->
+<button type="button" class="btn btn-primary" id="popupbtn" style="    visibility: hidden;" data-toggle="modal" data-target="#exampleModalCenter">
+    Launch demo modal
+</button>
+
+<!-- Modal-->
+<div class="modal fade" id="exampleModalCenter" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Important Notification </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+			<img src="<?=base_url('assets/images/center/new.gif')?>" alt=""> <b>
+				सूचित किया जाता है कि Unpaid विद्यार्थियों का ऑनलाइन पेमेंट करने की अंतिम तिथि 10 मई 2024 निर्धारित की गई है| इसके पश्चात् Unpaid विद्यार्थी स्वतः ही निरस्त हो जायेंगे| 
+				</b>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+               
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <style>
-	#swal2-content{
+		#swal2-content{
 		text-align:justify !important;
 	}
 </style>
 	<script type="text/javascript">
+		
+		
+
 $(".kt_popup").click(function(e) {
  
 Swal.fire({
