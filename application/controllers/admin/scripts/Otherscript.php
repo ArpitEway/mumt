@@ -1119,7 +1119,57 @@ public function update_roll_no_old_data(){
 		$this->load->view('footer');
 	}
 	
+	public function update_AGPA_CGPA_class_list(){
 		
+		$this->db->select('count(class_id) as total, class_id');
+		$this->db->from('old_exam_data');
+		$this->db->where('exam_year ="July 2023" and marks_pattern ="GRADE" ');  
+		$this->db->group_by('class_id');
+		$class_list = $this->db->get()->result();
+	
+		
+ 		$data['class_list'] = $class_list;
+	
+		$this->load->view('header',array('title' => 'Grade Pattern Class List'));
+		$this->load->view('admin/update_AGPA_CGPA_class_list',$data);
+		$this->load->view('footer');
+	
+	}
+	public function update_AGPA_CGPA($class_id,$cbcs){
+		$this->db->select('*');
+		$this->db->from('old_exam_data');
+		$this->db->where('exam_year ="July 2023" and marks_pattern ="GRADE" and class_id="'.$class_id.'"');  
+		$this->db->where('student_id',380243);
+		
+		if($cbcs){
+			$this->load->model('GradeSheet_old_model_pg');
+		}
+		else{
+			$this->load->model('Gradesheet_old_model');
+		}
+		$this->db->limit(10);
+		$student_list = $this->db->get()->result();
+		
+		foreach($student_list as $student){
+		echo "<br>". $student->student_id;
+		if($cbcs){
+
+			$gradeData = $this->GradeSheet_old_model_pg->view_old_results($student->student_id,$student->course_group_id,$class_id,$student->university_mode);
+		}else{
+			$gradeData = $this->Gradesheet_old_model->view_results($student->student_id,$student->course_group_id,$class_id,$student->university_mode,  $student->id,$student->exam_status);
+		}
+			
+			print_r($gradeData);
+			
+			echo "<br> AGPA ".$gradeData['agpa'];
+		echo 	$update_marks = "update old_exam_data set agpa_sgpa='".$gradeData['agpa']."' where id=".$student->id;
+			
+
+			// $this->db->query($update_marks);
+			//die;
+		}
+	
+	}
 		
 }
 
