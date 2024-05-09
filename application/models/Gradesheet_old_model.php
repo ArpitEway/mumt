@@ -1257,7 +1257,7 @@ class Gradesheet_old_model extends CI_Model
             }
         }
       // echo $this->tot_credit_point;die;
-		$this->agpa = $this->tot_credit_point/$this->tot_credit;
+		$this->agpa = round($this->tot_credit_point/$this->tot_credit,2);
 		if($this->mode=='REG'){
 			// $this->result_head();
 			$this->set_result();
