@@ -321,7 +321,7 @@ class Upload_old_data_pg extends CI_Model
             'photo'=>$this->student->photo,
             'total_marks'=>$this->total_marks,
             'obtain_marks'=>$this->obt_marks,
-			'agpa'=>number_format((float)$this->agpa, 2, '.', ''),
+			'agpa_sgpa'=>number_format((float)$this->agpa, 2, '.', ''),
             'percentage' => $percentage,
             'update_date'=>date('Y-m-d'),
             'exam_status'=>'R',
