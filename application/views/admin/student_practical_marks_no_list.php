@@ -10,6 +10,7 @@
 				<th>Student Name</th>
 				<th>Course</th>
 				<th>Class</th>
+                <th>Center Code</th>
 				<th>Marks Submit</th>
 			</tr>
 		</thead>
@@ -25,6 +26,7 @@
 					<td><?php echo $student->name; ?></td>
 					<td><?php echo $student->course_name; ?></td>
 					<td><?php echo $student->class_name; ?></td>
+                    <td><?php echo $student->center_code; ?></td>
                      <td class="col-md-2"   >
 					<?php
 					if($student->p_marks_sub=='N'){
