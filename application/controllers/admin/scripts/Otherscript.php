@@ -1159,10 +1159,11 @@ public function update_roll_no_old_data(){
 			$gradeData = $this->Gradesheet_old_model->view_old_results($student->student_id,$student->course_group_id,$class_id,$student->university_mode,  $student->id,$student->exam_status);
 		}
 			
-			print_r($gradeData);
+			//print_r($gradeData);
 			
-			echo "<br> AGPA ".$gradeData['agpa'];
-		    echo 	$update_marks = "update old_exam_data set agpa_sgpa='".$gradeData['agpa']."' where id=".$student->id;
+			echo "<br> AGPA ".$gradeData['agpa'].' ';
+			echo $agpa=number_format((float)$gradeData['agpa'], 2, '.', '');
+		    echo 	$update_marks = "update old_exam_data set agpa_sgpa='".$agpa."' where id=".$student->id;
 			
 			$this->db->query($update_marks);
 
