@@ -1341,7 +1341,7 @@ class Center extends CI_Controller {
 		}else{
 			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
 		}
-		$this->db->where_not_in('class_id',array( 105,106));
+		$this->db->where_not_in('class_id',array( 102,103,105,106));
     	$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
     	$this->load->view('Centers/paper_missing_list',$data);
     	$this->load->view('Centers/footer');
