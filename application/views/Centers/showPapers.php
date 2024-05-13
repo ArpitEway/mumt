@@ -259,11 +259,21 @@
 		);
 
 		$fees = $this->Common_model->getRecordByWhere('course',$where);
+			if( $student['university_mode']=="REG"){
 				if($student['demo']=='Y'){
 					$total_fees = $fees[0]->exam_fees;
 				}else{
 					$total_fees = $fees[0]->program_fees+$fees[0]->exam_fees;
 				}
+			}
+			else{
+				if($student['demo']=='Y'){
+					$total_fees = $fees[0]->p_exam_fees;
+				}else{
+					$total_fees = $fees[0]->p_program_fees+$fees[0]->p_exam_fees;
+				}
+				
+			}
 						?> 
 							<div class="row d-flex justify-content-center p-3">
 								<!-- <a class="btn btn-success" data-fees='<?=$fees[0]->program_fees+$fees[0]->exam_fees;?>'  href="<?= base_url('paid_by_university/'.$student_id) ?>">Paid By University</a> -->
