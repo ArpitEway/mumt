@@ -3160,10 +3160,14 @@ public function update_exam_datewise_permission(){
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
 		$data['title'] .= $title;//echo $this->db->last_query(); die;
 		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
+        $class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280);
 		if((in_array($class_id, $class_ids)) && $mode=='REG')	
 		{
 			$this->load->model('Gradesheet_backlog_tr_model');
 			$this->load->view('admin/generate_backlog_gradesheet_tr',$data);
+		}else if((in_array($class_id, $class_cbcs)) && $mode=='REG'){
+			$this->load->model('Gradesheet_backlog_tr_model_pg');
+			$this->load->view('admin/generate_backlog_gradesheet_tr_pg',$data);
 		}
 		else if ($class_id!=168) {
 			$this->load->view('admin/backlog_generate_tr',$data);
@@ -3200,7 +3204,7 @@ public function update_exam_datewise_permission(){
 			$this->load->model('Gradesheet_backlog_tr_model');
 			$this->load->view('admin/generate_tr/backlog_practical_internal_tr',$data);
 		}else{
-			$this->load->view('admin/generate_tr/bed_tr',$data);
+			$this->load->view('admin/generate_tr/backlog_bed_tr',$data);
 		}
 		
 		// $this->load->view('admin/generate_tr/footer2');

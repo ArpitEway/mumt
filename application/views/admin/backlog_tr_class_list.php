@@ -48,7 +48,7 @@
 			<td>
 				<?php
 				
-				if ($class->practical_internal_marks=='Y'){ 
+				if ($class->practical_internal_marks=='Y' && $class->id !=205 && $class->id !=206){ 
 					 
 					 
 					 if($class->regular_class=='Y') { ?>    
