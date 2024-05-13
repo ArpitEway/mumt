@@ -36,7 +36,9 @@
          <?php
          $i = 1;
          foreach($documents as $student){
-
+            if($student->university_mode=="REG" && $student->session=="July 2023" && $student->class_name== 'I Year'){
+                continue;
+            }
             $where = array(
                 'session' =>$student->session,
                 'course_group_id' => $student->course_group_id,
