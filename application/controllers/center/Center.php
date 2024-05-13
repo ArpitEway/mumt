@@ -775,12 +775,13 @@ class Center extends CI_Controller {
 		  $this->db->group_end();
 		  if($center_id == 11 || $center_id == 13 || $center_id == 2115 || $center_id == 1707 ){
 			$this->db->or_group_start();
-		  $this->db->or_where_in('course_group.id',array(33,45));
+		  //$this->db->or_where_in('course_group.id',array(33,45));
 		  $this->db->where(array('eligibility' => $eligibility ,'course.session'=>$session));
 		  $this->db->group_end();
 		 
 		  }
 		$query = $this->db->get();
+		//echo $this->db->last_query(); die;
 		$course_group_list= $query->result_array();
 		
 		$data = array('course_group_list'=>$course_group_list);
