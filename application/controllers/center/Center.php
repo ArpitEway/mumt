@@ -2271,11 +2271,17 @@ class Center extends CI_Controller {
 			   
 			// if($result->provisional_remark=="N" || $result->provisional_remark==""){
 				// if(($result->old_class_id == '104' || $result->old_class_id == '107' || $result->old_class_id == '101' || $result->old_class_id == '134' || $result->old_class_id == '116'|| $result->old_class_id == '110' || $result->old_class_id == '119' || $result->old_class_id == '131') && $result->university_mode == 'REG')
-				$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
+				 $class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
+                // $class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
+				$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280);//&& $result->university_mode=='REG' 
+				
 				if((in_array($result->class_id , $class_ids)) && $result->mode=='REG')	
 				{
 					$btn =	'<a href="'.base_url('center/Center/backlog_grade_marksheet/'.$this->Common_model->encrypt_decrypt($result->id)).'" class="btn btn-info btn-sm dt-center" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
-				}else{
+				}else if((in_array($result->class_id, $class_cbcs)) && $result->mode=='REG'){
+					$btn =	'<a href="'.base_url('center/Center/backlog_grade_marksheet_pg/'.$this->Common_model->encrypt_decrypt($result->id)).'" class="btn btn-info btn-sm dt-center" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
+				}
+                else{
 					$btn =	'<a href="'.base_url('center/Center/backlog_marksheet/'.$this->Common_model->encrypt_decrypt($result->id)).'" class="btn btn-info btn-sm dt-center" target="_blank" ><i class="fa fa-eye text-white"></i></a>' ;
 				}
 			
@@ -2534,16 +2540,46 @@ public function backlog_grade_marksheet($student_id=""){
        $data['practical_internal_marks']=$classData->practical_internal_marks;
        $data['classData']  = $classData;
        $data['exam_session']  = 'January 2024';
-       $this->load->model('Gradesheet_backlog_model');
+      
        // $title = array('title' => 'Result - '.$data['student']->enrollment_no);
        $title ="";
+       $this->load->model('Gradesheet_backlog_model');
        $this->load->view('admin/generate_tr/header2');
+       
+        $this->load->view('Centers/backlog_grade_marksheet',$data);
+    
        //$this->load->view('Centers/header',$title);
-       $this->load->view('Centers/backlog_grade_marksheet',$data);
+      
        //$this->load->view('Centers/footer');
        $this->load->view('admin/generate_tr/footer2');
 
 }
+
+public function backlog_grade_marksheet_pg($student_id=""){
+	
+	$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
+    $student = $this->Common_model->getRecordByWhere('backlog_student',array('exam_form'=>'Y','result_show'=>'Y','id'=>$student_id,'exam_year'=>"Dec 2023"));
+	   // print_r($student);die;
+	   if (count($student)==0) {
+		   redirect(base_url());
+	   }
+	   $data['student']=$student[0];
+       $data['student_info'] = $this->Common_model->getRecordById('student','student_id',$data['student']->student_id);
+	   $classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
+	   $data['practical_internal_marks']=$classData->practical_internal_marks;
+	   $data['classData']  = $classData;
+	   $data['exam_session']  = 'January 2024';
+	   $this->load->model('Gradesheet_backlog_model_pg');
+	   // $title = array('title' => 'Result - '.$data['student']->enrollment_no);
+	   $title ="";
+	   $this->load->view('admin/generate_tr/header2');
+	   //$this->load->view('Centers/header',$title);
+	   $this->load->view('Centers/backlog_grade_marksheet_pg',$data);
+	   //$this->load->view('Centers/footer');
+	   $this->load->view('admin/generate_tr/footer2');
+
+}
+
 
 	public function exam_paper($student_id=''){
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
