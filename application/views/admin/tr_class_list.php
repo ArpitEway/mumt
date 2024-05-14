@@ -70,8 +70,20 @@
 
 					 }else{ 
 				
-				if($class->regular_class=='Y') { ?>    
-					 <a href="<?php echo base_url("admin/admins/generate_tr")."/REG/M/".$course['id']."/".$class->id; ?>">Regular Tr</a>
+				if($class->regular_class=='Y') { 
+                        if($class->id == 239){
+                        ?>
+                        <a href="<?php echo base_url("admin/admins/generate_tr_bed")."/REG/M/".$course['id']."/".$class->id; ?>">Regular Tr</a>
+                        <?php
+                        }else{
+                            ?>
+                            <a href="<?php echo base_url("admin/admins/generate_tr")."/REG/M/".$course['id']."/".$class->id; ?>">Regular Tr</a>
+                            <?php
+                        }
+                    
+                    ?>  
+                      
+					
 					 <?php if(!empty($cbcs) ){ ?>
 					 / <a href="<?php echo base_url("admin/admins/generate_tr")."/REG/G/".$course['id']."/".$class->id; ?>"> Grade Tr</a>
 					 <?php } 
