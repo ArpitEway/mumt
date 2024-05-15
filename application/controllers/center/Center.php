@@ -2495,9 +2495,9 @@ public function marksheet_admin($student_id="")
 		$data['classData']  = $classData;
 		$data['exam_session']  = 'January 2024';
 		$this->load->model('Gradesheet_model');
-		// $title = array('title' => 'Result - '.$data['student']->enrollment_no);
-		$title ="";
-		$this->load->view('admin/generate_tr/header2');
+		$title = array('title' => 'Result - '.$data['student']->enrollment_no);
+		// $title ="";
+		$this->load->view('admin/generate_tr/header2',$title);
 		//$this->load->view('Centers/header',$title);
 		$this->load->view('Centers/grade_marksheet',$data);
 		//$this->load->view('Centers/footer');
@@ -2526,9 +2526,9 @@ public function marksheet_admin($student_id="")
 	   $data['classData']  = $classData;
 	   $data['exam_session']  = 'January 2024';
 	   $this->load->model('Gradesheet_model_pg');
-	   // $title = array('title' => 'Result - '.$data['student']->enrollment_no);
-	   $title ="";
-	   $this->load->view('admin/generate_tr/header2');
+	   $title = array('title' => 'Result - '.$data['student']->enrollment_no);
+	//    $title ="";
+	   $this->load->view('admin/generate_tr/header2',$title);
 	   //$this->load->view('Centers/header',$title);
 	   $this->load->view('Centers/grade_marksheet_pg',$data);
 	   //$this->load->view('Centers/footer');
@@ -2552,10 +2552,10 @@ public function backlog_grade_marksheet($student_id=""){
        $data['classData']  = $classData;
        $data['exam_session']  = 'January 2024';
       
-       // $title = array('title' => 'Result - '.$data['student']->enrollment_no);
-       $title ="";
+       $title = array('title' => 'Backlog Result - '.$data['student']->enrollment_no);
+    //    $title ="";
        $this->load->model('Gradesheet_backlog_model');
-       $this->load->view('admin/generate_tr/header2');
+       $this->load->view('admin/generate_tr/header2',$title);
        
         $this->load->view('Centers/backlog_grade_marksheet',$data);
     
