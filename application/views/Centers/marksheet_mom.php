@@ -119,7 +119,7 @@ if ($fail_count>0 && !$check_grace_marks && $marks->student_id!=684208 && $class
 
 ?>
 <?php 
-if ($withheld) { 
+if ($withheld ||  in_array($student->examcentercode ,array('MDE052','MDE081','MDE156') )) { 
   ?>
   <div class="text-center text-primary border-right border-left border-bottom border-dark py-3">
     <h1 class=" text-center mb-0">Statement Of Marks</h1>
