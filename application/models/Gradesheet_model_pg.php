@@ -406,7 +406,7 @@ class Gradesheet_model_pg extends CI_Model
 					$result['letter_grade'] = 'ABS';
 			}
 			
-				echo "<th class='text-center'>".$result['credit']."</th>";
+				echo "<th class='text-center'>".$result['obt_credit']."</th>";
 				echo "<th class='text-center'>".$result['letter_grade']."</th>";				
 				echo "<th class='text-center'>".$result['grade_point']."</th>";
 				echo "<th class='text-center'>".$result['credit_point']."</th>";
@@ -479,7 +479,7 @@ class Gradesheet_model_pg extends CI_Model
 		echo '<tr>';
 			echo '<td></td>';
 			echo '<td class="text-right font-weight-bold" style="padding-right: 3rem!important;">Total</td>';
-			echo '<td class="text-center font-weight-bold">'.$this->tot_credit.'</td>';
+			echo '<td class="text-center font-weight-bold">'.$this->obt_tot_credit.'</td>';
 			echo '<td></td>';
 			echo '<td></td>';
 			echo '<td class="text-center font-weight-bold">'.$this->tot_credit_point.'</td>';
