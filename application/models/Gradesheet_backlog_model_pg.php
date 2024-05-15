@@ -33,8 +33,9 @@ class Gradesheet_backlog_model_pg extends CI_Model
 		
 	}
 
-	public function view_result($student_id,$course_group_id,$class_id,$mode,$exam_id)
+	public function view_result($student,$student_id,$course_group_id,$class_id,$mode,$exam_id)
 	{
+
 		$this->db->order_by('sub_group_id');
 		$std  = $this->Common_model->getRecordByWhere('backlog_exam_form',array('class_id'=> $class_id,'student_id'=>$student_id,'backlog_student_id'=>$exam_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
@@ -63,7 +64,7 @@ class Gradesheet_backlog_model_pg extends CI_Model
 		foreach ($papers as $paper) {
 			$this->paper = $paper;
 			
-			if($this->withheld){
+			if($this->withheld || in_array($student->exam_center_code ,array('MDE052','MDE081','MDE156') )){
 				
 				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
 				 '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.

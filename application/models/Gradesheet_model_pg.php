@@ -33,8 +33,10 @@ class Gradesheet_model_pg extends CI_Model
 		
 	}
 
-	public function view_result($student_id,$course_group_id,$class_id,$mode)
+	public function view_result($student,$student_id,$course_group_id,$class_id,$mode)
 	{
+
+        
 		$table = $this->Common_model->getMaster('exam_form_table');
 		$std  = $this->Common_model->getRecordByWhere($table,array('class_id'=> $class_id,'student_id'=>$student_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
@@ -63,7 +65,7 @@ class Gradesheet_model_pg extends CI_Model
 		foreach ($papers as $paper) {
 			$this->paper = $paper;
 			
-			if($this->withheld){
+			if($this->withheld || in_array($student->examcentercode ,array('MDE052','MDE081','MDE156') )){
 				
 				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
 				 '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.

@@ -85,7 +85,7 @@ th.border.border-dark {
         </tr>
         <?php 
        
-        $gradesheetData = $this->Gradesheet_backlog_model_pg->view_result($student->student_id,$student->course_group_id,$student->class_id,$student->mode,$student->id);
+        $gradesheetData = $this->Gradesheet_backlog_model_pg->view_result($student,$student->student_id,$student->course_group_id,$student->class_id,$student->mode,$student->id);
        
          ?>
       </tbody>
