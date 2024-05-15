@@ -25,7 +25,7 @@
           <td><?php echo $row->roll_no; ?></td>
           <td><?php echo $row->name; ?></td>
           <td><?php echo $row->course_name ; ?></td>
-          <td> <?php  if($paperCount==$absCount){?> 
+          <td> <?php  if($paperCount==$absCount || ( $row->agpa_sgpa<4 && $row->marks_pattern=="GRADE")  ){?> 
             <a class="text-danger" href="<?=base_url('admin/scripts/Postexam/set_demo/'.$row->student_id.'/'.$row->class_id)?>" target="_blank">Set Demo</a> <?php 
               $where = array('student_id'=>$row->student_id,'new_exam_form'=>'D');
               $data = array('demo'=>'Y','new_exam_form'=>'N');
