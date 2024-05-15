@@ -1726,12 +1726,22 @@ class Center extends CI_Controller {
 			'course_group_id' => $student_data[0]->course_group_id,
 		);
 
-		$fees = $this->Common_model->getRecordByWhere('course',$where);
-        if($student_data[0]->demo == 'Y'){
-            $total_fees = $fees[0]->exam_fees;
-        }else{
-            $total_fees =$fees[0]->program_fees+$fees[0]->exam_fees;
-        }
+        $fees = $this->Common_model->getRecordByWhere('course',$where);
+			if( $student['university_mode']=="REG"){
+				if($student['demo']=='Y'){
+					$total_fees = $fees[0]->exam_fees;
+				}else{
+					$total_fees = $fees[0]->program_fees+$fees[0]->exam_fees;
+				}
+			}
+			else{
+				if($student['demo']=='Y'){
+					$total_fees = $fees[0]->p_exam_fees;
+				}else{
+					$total_fees = $fees[0]->p_program_fees+$fees[0]->p_exam_fees;
+				}
+				
+			}
 		$data['student_id']=$student_data[0]->student_id;
 		$data['center_id']=$student_data[0]->center_id;
 		$data['exam_session'] = "June 2024";
@@ -1746,6 +1756,7 @@ class Center extends CI_Controller {
         $data['receipt_number']= $this->input->post('receipt_number');
 		$data['admission_type']= 'Regular';
 		$data['payment_time']=date("h:i:s");
+        $data['remark'] = $this->input->post('remark');
 		$insert = $this->Common_model->insertAll('online_payment_transaction',$data);
 		$student_data = array('new_exam_form' => 'Y');
 		$update = $this->Common_model->updateRecordByConditions('student','student_id='.$student_id,$student_data);

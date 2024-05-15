@@ -352,6 +352,13 @@
      <input class="form-control" type="text" name="receipt_number" id="receipt_number" required />
 	</div>
    </div>
+   <div class="form-group row">
+    <label for="amount" class="col-5 col-form-label">Remark</label>
+    <div class="col-7">
+     
+     <textarea class="form-control" name="remark" id="remark"></textarea>
+	</div>
+   </div>
   <div class="card-footer pb-0">
    <div class="row justify-content-center">
   
@@ -398,6 +405,7 @@ $(document).on('click','.pay1',function(){
 		var payment_mode = $('#payment_mode').val();
 		var amount = $('#amount').val();
         var paid_amount = $('#paid_amount').val();
+        var remark = $('#remark').val();
         var transaction_number = $('#transaction_number').val();
 		var receipt_number = $('#receipt_number').val();
         var csrfName = $('.csrfname').attr('name');
