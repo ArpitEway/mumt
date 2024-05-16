@@ -1727,15 +1727,15 @@ class Center extends CI_Controller {
 		);
 
         $fees = $this->Common_model->getRecordByWhere('course',$where);
-			if( $student['university_mode']=="REG"){
-				if($student['demo']=='Y'){
+			if( $student_data[0]->university_mode=="REG"){
+				if($student_data[0]->demo=='Y'){
 					$total_fees = $fees[0]->exam_fees;
 				}else{
 					$total_fees = $fees[0]->program_fees+$fees[0]->exam_fees;
 				}
 			}
 			else{
-				if($student['demo']=='Y'){
+				if($student_data[0]->demo=='Y'){
 					$total_fees = $fees[0]->p_exam_fees;
 				}else{
 					$total_fees = $fees[0]->p_program_fees+$fees[0]->p_exam_fees;
@@ -1754,7 +1754,7 @@ class Center extends CI_Controller {
 		$data['payment_status']='Paid By University';
 		$data['payment_date']= $this->input->post('payment_date');
         $data['receipt_number']= $this->input->post('receipt_number');
-		$data['admission_type']= 'Regular';
+		$data['admission_type']= ($student_data[0]->university_mode=="REG")?'Regular':'Private';
 		$data['payment_time']=date("h:i:s");
         $data['remark'] = $this->input->post('remark');
 		$insert = $this->Common_model->insertAll('online_payment_transaction',$data);
