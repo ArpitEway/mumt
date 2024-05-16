@@ -178,7 +178,7 @@ $(document).ready(function() {
       //   console.log('hello' +loadfirst);
       // localStorage.setItem('loadfirsttime', 1); // 1 is value assigned.
      
-      //document.getElementById("popupbtn").click();
+      document.getElementById("popupbtn").click();
       //}
 		});
 </script>

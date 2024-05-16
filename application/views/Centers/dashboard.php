@@ -343,8 +343,8 @@
     Launch demo modal
 </button>
 
-<!-- Modal-->
-<div class="modal fade" id="exampleModalCenter" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+<!-- Modal data-backdrop="static"  -->
+<div class="modal fade" id="exampleModalCenter"     tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
     <div class="modal-dialog  modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -355,7 +355,7 @@
             </div>
             <div class="modal-body">
 			<img src="<?=base_url('assets/images/center/new.gif')?>" alt=""> <b>
-				सूचित किया जाता है कि Unpaid विद्यार्थियों का ऑनलाइन पेमेंट करने की अंतिम तिथि 15 मई 2024 निर्धारित की गई है| इसके पश्चात् Unpaid विद्यार्थी स्वतः ही निरस्त हो जायेंगे| 
+			सूचित किया जाता है कि आगामी होने वाली परीक्षाओं के लिये परीक्षा फॉर्म भरने की अंतिम तिथि 31 मई 2024 निर्धारित की गयी है। अनुरोध है कि उक्त दिनांक के पूर्व परीक्षा फॉर्म भरने की प्रक्रिया पूर्ण करे| इसके पश्चात् किसी भी आवेदन पर विचार नहीं किया जावेगा|
 				</b>
             </div>
             <div class="modal-footer">
