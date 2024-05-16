@@ -3748,7 +3748,7 @@ public function practical_assignment_marks_edit(){
 		$data['payment_status']='Paid By University';
 		$data['payment_date']= $this->input->post('payment_date');
         $data['receipt_number'] = $this->input->post('receipt_number');
-		$data['admission_type']= 'Regular';
+		$data['admission_type']= ($student_data[0]->mode == "REG")?'Regular':'Private';
 		$data['payment_time']=date("h:i:s");
 		$insert = $this->Common_model->insertAll('online_payment_transaction',$data);
 		$student_data = array('exam_form' => 'Y');
