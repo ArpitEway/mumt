@@ -2753,7 +2753,13 @@ public function update_exam_datewise_permission(){
 		$dateTime = $this->input->post('dateTime');
 		$student_id = $this->input->post('student_id');
 		$where = array('student_id'=>$student_id);
-		$student_details =  $this->Common_model->getRecordByWhere('student',$where);
+        if($Fess_head == "Backlog Exam Fees"){
+            $this->db->order_by("id",'desc');
+            $student_details =  $this->Common_model->getRecordByWhere('backlog_student',$where);
+        }else{
+            $student_details =  $this->Common_model->getRecordByWhere('student',$where);
+        }
+		
 		$course_details =  $this->Common_model->getRecordByWhere('course',array('course_group_id'=>$student_details[0]->course_group_id,'session'=>$student_details[0]->session));
 		$center_id = $student_details[0]->center_id;
 		$course_group_id = $student_details[0]->course_group_id;
@@ -2764,8 +2770,17 @@ public function update_exam_datewise_permission(){
 			$session = 'June 2024';
 		}	
 		$class_id = $student_details[0]->class_id;
-		$name = $student_details[0]->name;
-        if($student_details[0]->university_mode=='REG'){
+		$name = $this->Common_model->getStudentNameById($student_details[0]->student_id);
+        if($Fess_head == "Backlog Exam Fees"){
+            $failCount = $this->Common_model->getCountByWhere('backlog_exam_form',array('student_id'=>$student_details[0]->student_id,'class_id'=>$student_details[0]->class_id,'paper_type'=>'Theory' ,'status'=>'B','backlog_student_id'=>$student_details[0]->id));
+            // $this->Common_model->last_query();
+            if( $failCount < 8){
+                $exam_fees =$failCount * 100;
+            }else{
+                $exam_fees = 750; 
+            }
+
+        }elseif($student_details[0]->university_mode=='REG'){
             if($Fess_head!=''){
                 if($student_details[0]->demo == 'Y'){
                     $exam_fees = ($Fess_head== 'Exam Fees') ? $course_details[0]->exam_fees : $course_details[0]->form_fees+$course_details[0]->admission_fees;
@@ -2785,9 +2800,11 @@ public function update_exam_datewise_permission(){
 		    } 
 	    }
 		$dateTime = explode(' ',$dateTime);
+        $admission_type = ($Fess_head == "Backlog Exam Fees")?$student_details[0]->mode:$student_details[0]->university_mode;
+        $admission_mode = ($admission_type =="REG")?'Regular':'Private';
 		$updateData = array('txnId' => $txnid,'fees_head'=>$Fess_head,'payment_date' => $dateTime[0],'payment_time' => $dateTime[1],'payment' => 'Y', 'payment_status' => 'success','student_id'=>$student_id
 			,'center_id'=>$center_id,'course_group_id'=>$course_group_id,'class_id'=>$class_id,'remark'=>$remark,'student_name'=>$name,'exam_session'=>$session,
-			'admission_type'=>'Regular','amount'=>
+			'admission_type'=>$admission_mode,'amount'=>
 			$exam_fees
 		);
 
@@ -2797,7 +2814,10 @@ public function update_exam_datewise_permission(){
 			$result = $this->Common_model->updateRecordByConditions('student',$where1,array('payment_status'=> 'Y'));
 		}elseif($Fess_head=='Exam Fees'){
 			$result = $this->Common_model->updateRecordByConditions('student',$where1,array('new_exam_form'=> 'Y'));
-		}
+		}elseif($Fess_head == "Backlog Exam Fees"){
+            $this->db->where('id', $student_details[0]->id);
+            $result = $this->Common_model->updateRecordByConditions('backlog_student',$where1,array('exam_form'=> 'Y'));
+        }
 		if($result){
 			$paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student_id));
 			$data = array('paymentDetails' => $paymentDetails);

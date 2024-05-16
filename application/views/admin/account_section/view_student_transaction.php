@@ -214,6 +214,7 @@
 							<option value="">Select All</option>
 							<option selected value="Admission Fees">Admission fees</option>
 							<option  value="Exam Fees">Exam fees</option>
+                            <option  value="Backlog Exam Fees">Backlog Exam fees</option>
 						</select>
 					</fieldset>
 					<fieldset class="form-group col-md-6">
