@@ -5663,7 +5663,7 @@ public function forward_complaint(){
 			$this->load->model('Gradesheet_old_model');
 			$this->load->view('admin/grade_marksheet',$data);
 		}else if($data['class']->cbcs=='Y' && $data['exam_data']->university_mode=='REG' && $data['exam_data']->marks_pattern=='GRADE'){
-				$this->load->model('Gradesheet_model_pg');
+				$this->load->model('GradeSheet_old_model_pg');
 				$this->load->view('admin/grade_marksheet_pg',$data);
 		}else if($data['exam_data']->university_mode !="PVT"  && $data['class']->internal !='N'){
 			
