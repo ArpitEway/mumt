@@ -110,14 +110,11 @@ class WebSite extends REST_Controller {
 		$myString =$eligibility;
 		
 		 
-		// if($this->session->has_userdata('center_id')){
-		// $center_id =  $this->session->center_id;
+		$center_id=30;
 		
-		// $centerdata = $this->Common_model->getRecordById('center','id',$center_id);
-		// $this->db->group_start();
-		// $this->db->where('course_group_id in ('.$centerdata->allot_course_group_id.')');
-		// $this->db->group_end();
-		// }
+		$centerdata = $this->Common_model->getRecordById('center','id',$center_id);
+		
+		
 		 $where['eligibility'] = $eligibility;
 		
 		
@@ -131,7 +128,10 @@ class WebSite extends REST_Controller {
 			$where['admission_permission_regular'] = 'Y';
 			$this->db->where('admission_permission_regular','Y');
 		  }
-		  $this->db->group_end();
+		$this->db->group_end();
+        $this->db->group_start();
+		$this->db->where('course_group_id in ('.$centerdata->allot_course_group_id.')');
+		$this->db->group_end();
 		//   if($center_id == 11 || $center_id == 13 || $center_id == 2115 || $center_id == 1707 ){
 		// 	$this->db->or_group_start();
 		//   $this->db->or_where_in('course_group.id',array(33,45));
