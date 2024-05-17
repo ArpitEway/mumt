@@ -81,7 +81,7 @@
 		}
 
 		if($this->session->admission_by=="web"  && $paymentType=="Form Fees"){
-			$checkbox='<p style="padding: 5px;font-weight: 600;"><input  type="checkbox" name="iagree" id="iagree" > यह केवल ऑनलाइन फॉर्म फी Rs. 200 ली जा रही है, जो कि किसी भी परिस्थिति में वापस नहीं की जाएगी| एलिजिबिलिटी या डॉक्यूमेंट की कमी होने पर फॉर्म निरस्त किया जा सकता है| </p> ';
+			$checkbox='<p style="padding: 5px;font-weight: 600;"><input  type="checkbox" name="iagree" id="iagree" > सम्बंधित  पाठ्यक्रम में प्रवेश हेतु न्यूनतम योग्यता पूर्ण नहीं होने / दस्तावेजों की कमी होने /अन्य कारणों  से पंजीयन निरस्त  होने पर जमा की  जा रही पंजीयन शुल्क Rs. 200  वापस नहीं होगी I</p> ';
 			$urlhide=$url;
 			$url="";
 		}

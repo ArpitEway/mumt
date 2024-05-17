@@ -57,10 +57,11 @@ class WebSite extends REST_Controller {
     public function GetDepartmentWisePrograms_get()
     {
         $this->db->order_by('orders');
+        
         $departments = $this->Common_model->get_record('department','*');
         $i=0;
         while ( $i < count($departments) ) { 
-            $where = array('department_id' => $departments[$i]['id']);
+            $where = array('department_id' => $departments[$i]['id'],'status'=>'Y');
             $this->db->order_by('course_type_order,p_order');
             $departments[$i]['programs'] = $this->Common_model->get_record('program','*',$where);
             $i++;
@@ -77,7 +78,7 @@ class WebSite extends REST_Controller {
         $response = array();
         foreach ($course_type as $course) {
             $response[$i]['course_type'] = $course['course_type'];
-            $response[$i]['program'] = $this->Common_model->get_record('program','*',array('course_type' => $course['course_type']));
+            $response[$i]['program'] = $this->Common_model->get_record('program','*',array('course_type' => $course['course_type'],'status'=>'Y'));
             $i++;
         }
         return $this->response($response, REST_Controller::HTTP_OK);
