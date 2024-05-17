@@ -212,7 +212,9 @@
            	<label for="fees">Fees Head</label>	
 						<select name="fees_head" id="fees_head" class="form-control" >
 							<option value="">Select All</option>
+                            <?php if( $student->payment_status =="N" || $this->session->account_type=="Admins"){?>
 							<option selected value="Admission Fees">Admission fees</option>
+                            <?php }?>
 							<option  value="Exam Fees">Exam fees</option>
                             <option  value="Backlog Exam Fees">Backlog Exam fees</option>
 						</select>
