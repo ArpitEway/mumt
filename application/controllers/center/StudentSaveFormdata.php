@@ -103,14 +103,14 @@ class studentSaveFormdata extends CI_Controller {
 		$course_permission= $this->Common_model->getRecordByWhere('course',array("session"=>$session,'course_group_id'=>$course_group_id ));
 		$session_permission= $this->Common_model->getRecordByWhere('session',array("session"=>$session));	
 		/****************Center Allotment**************************/
-		$this->db->like('allot_course_group_id',$course_group_id);
-		$this->db->where_in('id',array(21, 22, 23, 24, 25, 26, 27, 28));
-		$this->db->from('center');
-		$centerData = $this->db->get()->row();
-		$data['center_id'] = $centerData->id;
-		$data['center_code'] = $centerData->center_code;
-		$data['center_name'] = $centerData->center_name;
-		$OnlinePayTxnData['center_id']= $centerData->id;
+		// $this->db->like('allot_course_group_id',$course_group_id);
+		// $this->db->where_in('id',array(21, 22, 23, 24, 25, 26, 27, 28));
+		// $this->db->from('center');
+		// $centerData = $this->db->get()->row();
+		// $data['center_id'] = $centerData->id;
+		// $data['center_code'] = $centerData->center_code;
+		// $data['center_name'] = $centerData->center_name;
+		// $OnlinePayTxnData['center_id']= $centerData->id;
 		/****************Center Allotment**************************/
 		if ($session!=$mode[0]->session) {
 			if(($mode[0]->university_mode=='REG' && $course_permission[0]->admission_permission_regular=='Y') ||  ($mode[0]->university_mode=='PVT' &&  $course_permission[0]->admission_permission_private=='Y'))

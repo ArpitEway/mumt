@@ -105,7 +105,7 @@ class WebSite extends REST_Controller {
 	{
 		$eligibility = html_escape($this->input->post('eligibility'));
         //$eligibility ="GRADUATION";
-		$session ="July 2023";
+		$session ="July 2024";
 		$mode = 'REG';
 		$myString =$eligibility;
 		
@@ -187,6 +187,9 @@ class WebSite extends REST_Controller {
     public function insertStudent_post() {
 
        
+        $center_id=30;
+        $center_code='MYUTD';
+        $center_name='MMYVV University Teaching Department';
         $eligibility = html_escape($this->input->post("eligibility"));
         $course_group_id = html_escape($this->input->post("course_group_id"));
         $name    = html_escape($this->input->post("name"));
@@ -219,10 +222,12 @@ class WebSite extends REST_Controller {
         $data['university_mode']='REG';
         $data['form_fees']='N';
         $data['admission_by']='web';
-        $data['session']='July 2023';
+        $data['session']='July 2024';
         $data['enrollment_no']='-';
         $data['abc_id']=$abcid;
-        
+        $data['center_code']=$center_code;
+        $data['center_id']=$center_id;
+        $data['center_name']=$center_name;
         $data['class_name']=$class_list[0]['class_name'];
         $class_id=$data['class_id']=$class_list[0]['id'];
         $data['course_name']=$this->Common_model->getCourseNameByCourseId($course_group_id);
@@ -244,9 +249,9 @@ class WebSite extends REST_Controller {
                 $amount = $amount[0]->form_fees;//+$amount[0]->admission_fees;
                 $admission_type = 'regular';
             }
+            
 
-
-            $OnlinePayTxnData = array('student_id' => $student_id,'center_id' => 0 ,'fees_head' => 'Form Fees','amount' => $amount,'payment_status'=>'pending','course_group_id' => $course_group_id,'class_id' => $class_id,'student_name' => $data['name'],'admission_type'=>$admission_type,'remark'=>$remark);
+            $OnlinePayTxnData = array('student_id' => $student_id,'center_id' => $center_id ,'fees_head' => 'Form Fees','amount' => $amount,'payment_status'=>'pending','course_group_id' => $course_group_id,'class_id' => $class_id,'student_name' => $data['name'],'admission_type'=>$admission_type,'remark'=>$remark);
             $OnlinePayTxn = $this->Common_model->insertAll('online_payment_transaction',$OnlinePayTxnData);
         }else{
             $results['msg']= "An Error Occurred";
