@@ -92,6 +92,7 @@
 	});
 
 		$(document).on("click","#search_btn",function(){
+			$('#dt').html('');
 			var csrfName = $('.csrfname').attr('name');
 			var csrfHash = $('.csrfname').val(); 
 			var data = {
