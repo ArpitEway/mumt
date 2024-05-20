@@ -3,7 +3,8 @@
 		<thead>
 			<tr>
 				<th>Session</th>
-				<th>Form no</th>	
+				<th>Form No</th>
+				<th>Enrollment No</th>	
 				<th>Student Name</th>
 				<th>Course </th>
 				<th>Class</th>
@@ -18,6 +19,7 @@
 				<tr>
 					<td><?php echo $student["session"]; ?></td>
 					<td><?php echo $student["student_id"]; ?></td>
+					<td><?php echo $student["enrollment_no"]; ?></td>
 					<td><?php echo $student["name"]; ?></td>
 					<td><?php echo $student["course_name"]; ?></td>
 					<td><?php echo $student["class_name"]; ?></td>
@@ -72,11 +74,11 @@
 				<input type="hidden" name="student_id" id="student_id" value="<?=$student_id?>">
 			</div>
 		</div>
-		<div class="from-group text-center">
+		<!-- <div class="from-group text-center">
 		<label class="h5 mt-5">Attach File : </label>
 		<input type="file" name="photo" id="photo" accept=".png, .jpg, .jpeg .pdf"/>
 		
-		</div>
+		</div> -->
 		<div class="form-group col-md-12 text-center">
 			<label for="class"></label>
 			<button type="button" class="btn btn-lg btn-custom mt-4 col-sm-3" id="submit">Submit</button>

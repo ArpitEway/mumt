@@ -1,7 +1,7 @@
 <div class="card Payment-complaint">
 	<div class="card-body row text-center">
 		<div class="form-group m-auto w-50" >		
-			<label class="font-weight-bold">Enter Form Number</label>
+			<label class="font-weight-bold">Enter Enrollment Number</label>
 			<input type="text" name="form_no" id="form_no" class="form-control form-control-lg form-control-solid">
 			<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">	
 		</div>		

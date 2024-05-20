@@ -3597,7 +3597,8 @@ public function practical_assignment_marks_edit(){
 			// $dt   = array();
 			$center_id =  $this->session->center_id;
 			$form_no  = $this->input->post("form_no");
-			$wherestudent = array('student_id'=>$form_no,'center_id'=>$center_id);
+			// $wherestudent = array('student_id'=>$form_no,'center_id'=>$center_id);
+			$wherestudent = array('enrollment_no'=>$form_no,'center_id'=>$center_id);
 			$students = $this->Common_model->get_record('student','*',$wherestudent);
 			// $wherestudent = 'center_id='.$center_id;
 			// $center_detail = $this->Common_model->get_record('support_complaint','*',$wherestudent);
@@ -3609,7 +3610,7 @@ public function practical_assignment_marks_edit(){
 			if($data['students']){
 				$dt =  $this->load->view('Centers/get_student_support_system_wise',$data,true);
 			}else{
-				$dt = "Invalid Form no";
+				$dt = "Invalid Data";
 			}
 			echo json_encode(array(
 				"status" => true,
