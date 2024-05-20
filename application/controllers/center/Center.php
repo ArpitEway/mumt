@@ -3714,8 +3714,8 @@ public function practical_assignment_marks_edit(){
 			}
 			$department = $this->Common_model->getRecordById('department_complaint','id',$result->department);
 			// $data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->details,$date,$status,$result->remark);
-			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$department->name,$result->type,$result->details,$date,$status,$remark,$result->reply_text);
-			// ,$attachment
+			$data[] = array($i, $result->name, $result->student_id, $result->course_name,$result->class_name,$result->details,$date,$status,$remark,$result->reply_text);
+			// ,$attachment,$department->name,$result->type
 
 		}
 		$output = array(

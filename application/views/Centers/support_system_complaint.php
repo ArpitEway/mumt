@@ -24,8 +24,8 @@
 					<th>Form no</th>
 					<th>Course </th>
 					<th>Class</th>
-					<th>Department</th>
-                    <th>Type</th>
+					<!-- <th>Department</th> -->
+                    <!-- <th>Type</th> -->
 					<th>Detail</th>
 					<th>Date</th>
 					<th>Status</th>
