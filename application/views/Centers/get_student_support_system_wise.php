@@ -31,33 +31,37 @@
 	</table>
 	<form method="POST" class="d-block  mt-15" enctype="multipart/form-data">
 	<div class="form-group m-auto my-5 w-50">	
-			<label for="Complaint" class=" font-weight-bold h5">Department</label>
-			<select name="complaint_department" id="complaint_department" class="form-control" data-id='complaint_type'>
-				<option value="N">Select Department</option>
+        <input type="hidden" value="3" name="complaint_department" id="complaint_department"/>
+			<!-- <label for="Complaint" class=" font-weight-bold h5">Department</label> -->
+			<!-- <select name="complaint_department" id="complaint_department" class="form-control" data-id='complaint_type'> -->
+				<!-- <option value="N">Select Department</option> -->
+                <!-- <option value="3" selected>Exam Control</option> -->
 				<?php
 				
-                $departments = $this->Common_model->getRecordByWhere('department_complaint',array('status !='=>'N'));
-				foreach($departments as $department){
-					?>
-					<option value="<?php echo $department->id; ?>"><?php echo $department->name; ?></option>
-					<?php
-				} 
-				?> 
-			</select>    
+                // $departments = $this->Common_model->getRecordByWhere('department_complaint',array('status !='=>'N'));
+				// foreach($departments as $department){
+				// 	?>
+				<!-- // 	<option value="<?php //echo $department->id; ?>"><?php //echo $department->name; ?></option> -->
+			 	<?php
+				// } 
+				// ?> 
+			<!-- </select>     -->
 		</div> 
     <div class="form-group mx-auto w-50 mt-5">	
-			<label for="Complaint" class=" font-weight-bold h5">Complaint Type</label>
-			<select name="complaint_type" id="Complaint" class="form-control" disabled>
-				<option value="N">Select Type</option>
+			<!-- <label for="Complaint" class=" font-weight-bold h5">Complaint Type</label> -->
+            <input type="hidden" name="complaint_type" id="Complaint" value="Exam Form Complaint"/>
+			<!-- <select name="complaint_type" id="Complaint" class="form-control"> -->
+            <!-- <option value="Exam Form Complaint" selected>Exam Form Complaint</option> -->
+				<!-- <option value="N">Select Type</option> -->
 				<?php
-				$supports = $this->Common_model->getRecordByWhere('support_system',array('status !='=>'N'));
-				foreach($supports as $support){
-					?>
-					<option value="<?php echo $support->name; ?>"><?php echo $support->name; ?></option>
-					<?php
-				} 
+				// $supports = $this->Common_model->getRecordByWhere('support_system',array('status !='=>'N'));
+				// foreach($supports as $support){
+				// 	?>
+				<!-- // 	<option value="<?php //echo $support->name; ?>"><?php //echo $support->name; ?></option> -->
+				 	<?php
+				// } 
 				?> 
-			</select>    
+			<!-- </select>     -->
 		</div> 
 		
 		<div class="form-group text-center">

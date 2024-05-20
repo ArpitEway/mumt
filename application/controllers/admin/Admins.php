@@ -5486,6 +5486,7 @@ public function update_exam_datewise_permission(){
 				$this->db->select('count(*) as count,'.'center_id');
 				$this->db->from('support_complaint');
 				$this->db->join('support_system','support_system.name = support_complaint.type');
+                $this->db->where('type','Exam Form Complaint');
 				$this->db->where($where);
 				$this->db->group_by('center_id');
 				$centers = $this->db->get()->result_array();
@@ -5524,6 +5525,7 @@ public function update_exam_datewise_permission(){
 			
 				$this->db->select('support_complaint.*');
 				$this->db->from('support_complaint');
+                $this->db->where('type','Exam Form Complaint');
 				$this->db->join('support_system','support_system.name = support_complaint.type');
 				$this->db->where($where);
 				

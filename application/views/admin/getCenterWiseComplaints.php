@@ -23,7 +23,7 @@
 				<th>Status</th>
 				<th>Remark</th>
 				<th>Reply</th>
-                <th>Forward To</th>
+                <!-- <th>Forward To</th> -->
 				<th>Attachment</th>
 				
 			</tr>
@@ -94,23 +94,23 @@
 					<button class="btn btn-primary modal-button demo" onclick="return getModel(<?=$complaint['id']?>)" data-target="#bd-example-modal" data-id="<?= $complaint['id']?>"> Reply</button>
 					</td>
 					<?php }?>
-                    <td>
-					<input type="hidden" name="complain_id" id="<?= 'com_'.$i ?>" value="<?= $complaint['id']?>" >
-						<select name="complaint_type" id="<?= "Complaint_".$i ?>" class="form-control" onchange="return forward(<?= $i?>)">
+                    <!-- <td>
+					<input type="hidden" name="complain_id" id="<?php //echo 'com_'.$i; ?>" value="<?php //echo $complaint['id'];?>" >
+						<select name="complaint_type" id="<?php //echo "Complaint_".$i; ?>" class="form-control" onchange="return forward(<?= $i?>)">
 							<option value="">Select</option>
 							<?php
-							$supports = $this->Common_model->getRecordByWhere('support_system',array('status !='=>'N'));
-							foreach($supports as $support){
-								if($complaint["type"] == $support->name){
-									continue;
-								}
-								?>
-								<option value="<?php echo $support->name; ?>"><?php echo $support->name; ?></option>
-								<?php
-							} 
+							// $supports = $this->Common_model->getRecordByWhere('support_system',array('status !='=>'N'));
+							// foreach($supports as $support){
+							// 	if($complaint["type"] == $support->name){
+							// 		continue;
+							// 	}
+							// 	?>
+							// 	<option value="<?php //echo $support->name; ?>"><?php //echo $support->name; ?></option>
+							// 	<?php
+							// } 
 							?> 
 						</select>    
-						</td>
+						</td> -->
 					<td>
 						<?php if($complaint["attachment"] != ''){
 							?>

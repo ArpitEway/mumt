@@ -93,7 +93,7 @@ $(document).on("click","#submit_btn",function(){
               },
             })
 
-		KTDatatablesBasicBasic.init();
+		
 		 
 });
 function forward(i){
