@@ -31,7 +31,7 @@
 					<th>Status</th>
 					<th>Remark</th>
 					<th>Reply</th>
-					<th>Attachment</th>
+					<!-- <th>Attachment</th> -->
 				</tr>
 			</thead>
 			<tbody>
