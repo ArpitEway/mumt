@@ -3572,7 +3572,8 @@ public function practical_assignment_marks_edit(){
 			redirect(base_url());
 		}else{
 			if(!$param){
-				$titleData = array('title' => 'Support Complaint');
+				// $titleData = array('title' => 'Support Complaint');
+				$titleData = array('title' => 'Exam Form Complaint');
 				$this->load->view('Centers/header',$titleData);
 				$id =  $this->session->center_id;
 				$center = $this->Common_model->getRecordById('center','id',$id);
