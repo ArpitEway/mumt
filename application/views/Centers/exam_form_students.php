@@ -35,8 +35,12 @@
        <tbody>
          <?php
          $i = 1;
+         
+         $exam_course_not=array(11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,71,72,73,74,75,76,77,78,79,69,70,68);
          foreach($documents as $student){
-            if($student->university_mode=="REG" && $student->session=="July 2023" && $student->class_name== 'I Year'){
+           // echo "test".$student->class_id; 
+            if($student->university_mode=="REG" && $student->session=="July 2023" && $student->class_name== 'I Year' && (in_array($student->course_group_id,$exam_course_not)) ){
+                
                 continue;
             }
             $where = array(
