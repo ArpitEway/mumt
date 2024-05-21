@@ -382,16 +382,18 @@ class Postexam extends CI_Controller {
       $this->db->select('DISTINCT(id)');
       $this->db->from('class_master');
       $this->db->where('backlog_exam_form_permission','Y');
+      $this->db->where('old_exam_form_permission','N');
       $classes = $this->db->get()->result();
      $class_id = array_column($classes,'id');
      if($classes){
     
          $this->db->select('course_name,class_id, COUNT(student_id) as cnt');
+         
          $this->db->where('exam_year', 'July 2023');
          $this->db->where('exam_result', 'FAIL');
          $this->db->where('exam_status', 'B');
          $this->db->where_in('class_id',$class_id );
-         $this->db->where('id>', '36941');
+        // $this->db->where('id>', '36941');
          $this->db->group_by('class_id');         
          $data['courses'] = $this->db->get('old_exam_data')->result();
      }else{
@@ -418,7 +420,7 @@ class Postexam extends CI_Controller {
                     'roll_no' => 0,
                     'session' => $students->session,
                     'mode'=>$students->university_mode,
-                    'exam_year'=>'Dec 2023',
+                    'exam_year'=>'June 2024',
                     'exam_form' => 'N',
                     'enrollment_no' => $students->enrollment_no,
                     'center_id' => $students->center_id,
@@ -430,7 +432,7 @@ class Postexam extends CI_Controller {
                     'upload_result' =>  'N',
                     'result_permission' => 'N',
                    );
-                  $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students->student_id,'class_id'=>$students->class_id,'exam_year'=>'Dec 2023'));
+                  $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students->student_id,'class_id'=>$students->class_id,'exam_year'=>'June 2024'));
                 if( $duplicate !== Array ( )){
                     echo "Already Exist";
                   }else{
