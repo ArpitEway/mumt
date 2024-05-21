@@ -14,6 +14,7 @@
 				
 				<th>S.No.</th>
 				<th>Form No</th>
+                <th>Enrollment No</th>
 				<th>Student Name</th>
 				<th>Course </th>
 				<th>Class</th>
@@ -43,6 +44,7 @@
 
 					<td><?php echo $i; ?></td>
 					<td><?php echo $complaint["student_id"]; ?></td>
+                    <td><?php echo $student->enrollment_no; ?></td>
 					<td><?php echo $student->name; ?></td>
 					<td><?php echo $student->course_name; ?></td>
 					<td><?php echo $student->class_name; ?></td>
