@@ -17,14 +17,14 @@
 				<th>Student Name</th>
 				<th>Course </th>
 				<th>Class</th>
-                <th>Type</th>
+                <!-- <th>Type</th> -->
 				<th>Detail</th>
 				<th>Date</th>
 				<th>Status</th>
 				<th>Remark</th>
 				<th>Reply</th>
                 <!-- <th>Forward To</th> -->
-				<th>Attachment</th>
+				<!-- <th>Attachment</th> -->
 				
 			</tr>
 		</thead>
@@ -46,7 +46,7 @@
 					<td><?php echo $student->name; ?></td>
 					<td><?php echo $student->course_name; ?></td>
 					<td><?php echo $student->class_name; ?></td>
-                    <td><?php echo $complaint["type"]; ?></td>
+                    <!-- <td><?php //echo $complaint["type"]; ?></td> -->
 					<td><?php echo $complaint["details"]; ?></td>
 					<td><?php echo $this->Common_model->viewDate($complaint["date"]); ?></td>
 
@@ -111,14 +111,14 @@
 							?> 
 						</select>    
 						</td> -->
-					<td>
-						<?php if($complaint["attachment"] != ''){
+					<!-- <td>
+						<?php //if($complaint["attachment"] != ''){
 							?>
-							<a target="_blank"  href="<?= base_url().'assets/complaintImages/'.$complaint["attachment"]?>"><i class="fa fa-eye"></i></a>
+							<a target="_blank"  href="<?php //echo base_url().'assets/complaintImages/'.$complaint["attachment"]?>"><i class="fa fa-eye"></i></a>
 							<?php
-						}?>
+						//}?>
 					</td>
-					
+					 -->
 				</tr>
 				<?php
 				$i++;

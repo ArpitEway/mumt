@@ -20,8 +20,9 @@
 			<thead>
 				<tr>
 					<th>S.No.</th>
-					<th>Student Name</th>
-					<th>Form no</th>
+					<th>Enrollment No</th>
+					<th>Form No</th>
+                    <th>Student Name</th>
 					<th>Course </th>
 					<th>Class</th>
 					<!-- <th>Department</th> -->
