@@ -72,7 +72,26 @@
  						</div>
  					</div>
  				</div>
-<!--            
+                 <?php if( $this->session->account_type == 'Admins' ){ ?>
+                    <div class="col-md-4">
+ 					<div class="row py-2">
+ 						<label class="col-sm-4 text-heading"> Course Complete</label>
+ 						<div class="col-sm-8 text-value">
+ 							<?php echo $student->course_complete; ?>
+ 						</div>
+ 					</div>
+ 				</div>
+
+                 <div class="col-md-4">
+ 					<div class="row py-2">
+ 						<label class="col-sm-4 text-heading"> Demo Permission</label>
+ 						<div class="col-sm-8 text-value">
+ 							<?php echo $student->demo; ?>
+ 						</div>
+ 					</div>
+ 				</div>
+                
+           
     <div class="col-md-4">
                     <div class="row py-2">
                         <label class="col-sm-4 text-heading">Exam form</label>
@@ -81,17 +100,10 @@
                         </div>
                     </div>
                 </div>
-     <div class="col-md-4">
- 					<div class="row py-2">
- 						<label class="col-sm-4 text-heading"> Course Complete</label>
- 						<div class="col-sm-8 text-value">
- 							<?php echo $student->course_complete; ?>
- 						</div>
- 					</div>
- 				</div>
+    
                   <div class="col-md-4">
  					<div class="row py-2">
- 						<label class="col-sm-4 text-heading">Max Course Duration</label>
+ 						<label class="col-sm-4 text-heading">Max Duration</label>
  						<div class="col-sm-8 text-value">
                          <?php $course_d = $this->Common_model->getRecordById('course','course_name',$student->course_name);
                           $due = explode(" ",$student->session);
@@ -109,7 +121,9 @@
  						</div>
  					</div>
  				</div>
- -->                <div class="col-md-8">
+ 
+                 <?php } ?>
+                 <div class="col-md-8">
                         <div class="row py-4">
                             <label class="col-sm-2 text-heading">Course/Class</label>
                                 <div class="col-sm-8 text-value">
