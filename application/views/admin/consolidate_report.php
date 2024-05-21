@@ -148,6 +148,7 @@
 				<option value="D"> Not Permitted </option>
 				<option value="Y">Submitted </option>
 				<option value="N">Not Submitted </option>
+				<option value="S">Skipped</option>
 			</select>
 		</div>
 
