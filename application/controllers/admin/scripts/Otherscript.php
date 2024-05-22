@@ -162,7 +162,7 @@ class Otherscript extends CI_Controller {
 		//$marks = array('18','17','16','18','17','16','15','15');
 		// $marks = array('09','08','07','09','08','07','06','06');
 		  $marks = array('27','26','25','27','26','25','24','24','23'); 
-		$cls_id=213;
+		$cls_id=215;
 		
 		$sql = "select * from student where class_id='".$cls_id."' and exam_form='Y' and int_marks_sub='N' and roll_number!=0 and university_mode='REG' limit 100";
 		$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
