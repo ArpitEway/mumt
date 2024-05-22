@@ -3248,12 +3248,10 @@ public function update_exam_datewise_permission(){
 
 	public function tr_class_list(){
 		
-		$where = "id in (select distinct(course_group_id) from student where exam_form = 'Y'  )  ";
-        // and old_class_id in (102,105,108,111,117,120,126,129,132,135,194,198,202,204,206,212,214,222,224,226,228,276,280,303)
+		$where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and old_class_id in (193,195,229,197,231,199,233,201,235,203,237,205,239,302,207,241,209,243,211,245,213,215,221,247,275,277,279,281,223,225,227,253) )  ";
+        
 		
 		// and old_result_show='Y'
-		//187,134,135,159,178,137,138,140,143,146,149,169,170
-		//and old_class_id in (155,182,299,218,230,232,234,236,238,240,242,244,246,216,248,250,252,254,172,154,181,196,200,208,210,162,165,173,174,177,180,300,258,256,268)
 		// new_exam_form = 'Y' or student_result_aug_22
 				
 		$data['courses'] = $this->Common_model->get_record('course_group','*',$where);
