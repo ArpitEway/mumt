@@ -3879,9 +3879,9 @@ public function update_exam_datewise_permission(){
 		}
 		$course_id=$this->Common_model->encrypt_decrypt($course_id,'decrypt');
 		$class_id=$this->Common_model->encrypt_decrypt($class_id,'decrypt');
-		$this->db->order_by('roll_no','ASC');
+		$this->db->order_by('roll_number','ASC');
 		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
-		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id, 'class_id' => $class_id, 'new_exam_form'=>'Y','roll_no!='=>'0','university_mode'=>$mode ,'exam_pattern'=>$pattern));
+		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id, 'old_class_id' => $class_id, 'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode ,'exam_pattern'=>$pattern));
 		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$data['mode'] = $mode;
         // $class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280);
