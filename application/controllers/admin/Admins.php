@@ -3639,8 +3639,8 @@ public function update_exam_datewise_permission(){
 		
         	//$this->db->Where('result_show','Y');
 		$this->db->where_in('new_exam_form.int_marks',array('ABS','N'));
-		//$this->db->where_in('student.old_class_id',array(195,197,199,201,203,205,209,211,213,215,217,221,223,227,229,231,237,241,245,247,249,251,253,275,279));
-		$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
+		$this->db->where_in('student.old_class_id',array(193,195,229,197,231,199,233,201,235,203,237,205,239,302,207,241,209,243,211,245,213,215,221,247,275,277,279,281,223,225,227,253,299));
+		//$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
 		$data['students'] = $this->db->get()->result();//echo $this->db->last_query(); die;
 		$this->load->view('admin/student_int_marks_no_list',$data);
 		$this->load->view('footer');
@@ -3766,11 +3766,10 @@ public function update_exam_datewise_permission(){
 		$this->db->Where($where);
 		$this->db->where_in('new_exam_form.p_marks',array('ABS','N'));
 		$this->db->where('university_mode','REG');
-		//$this->db->where('student.class_id','168');
-	    //$this->db->where('`student.old_class_id` in (101,104,107,110,116,119,125,128,131,134,154,155,159,162,164,165,168,169,170,171,172,173,174,175,178,180,181,182,196,200,206,208,224,226,228,256,262,273,274,299)');
-	  //  $this->db->where_in('student.old_class_id',array(195,197,199,201,203,205,209,211,213,215,217,221,223,227,229,231,237,241,245,247,249,251,253,275,279));
+		
 		$this->db->Where('(project="Y" or practical = "Y")');
-		$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
+		$this->db->where_in('student.old_class_id',array(193,195,229,197,231,199,233,201,235,203,237,205,239,302,207,241,209,243,211,245,213,215,221,247,275,277,279,281,223,225,227,253,299));
+		//$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
 		$data['students'] = $this->db->get()->result();
 		 // $this->Common_model->last_query();
 		$this->load->view('admin/student_practical_marks_no_list',$data);
