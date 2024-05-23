@@ -3639,7 +3639,7 @@ public function update_exam_datewise_permission(){
 		
         	//$this->db->Where('result_show','Y');
 		$this->db->where_in('new_exam_form.int_marks',array('ABS','N'));
-		$this->db->where_in('student.old_class_id',array(193,195,229,197,231,199,233,201,235,203,237,205,239,302,207,241,209,243,211,245,213,215,221,247,275,277,279,281,223,225,227,253,299));
+		//$this->db->where_in('student.old_class_id',array(193,195,229,197,231,199,233,201,235,203,237,205,239,302,207,241,209,243,211,245,213,215,221,247,275,277,279,281,223,225,227,253,299));
 		//$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
 		$data['students'] = $this->db->get()->result();//echo $this->db->last_query(); die;
 		$this->load->view('admin/student_int_marks_no_list',$data);
@@ -3768,7 +3768,7 @@ public function update_exam_datewise_permission(){
 		$this->db->where('university_mode','REG');
 		
 		$this->db->Where('(project="Y" or practical = "Y")');
-		$this->db->where_in('student.old_class_id',array(193,195,229,197,231,199,233,201,235,203,237,205,239,302,207,241,209,243,211,245,213,215,221,247,275,277,279,281,223,225,227,253,299));
+		//$this->db->where_in('student.old_class_id',array(193,195,229,197,231,199,233,201,235,203,237,205,239,302,207,241,209,243,211,245,213,215,221,247,275,277,279,281,223,225,227,253,299));
 		//$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
 		$data['students'] = $this->db->get()->result();
 		 // $this->Common_model->last_query();
