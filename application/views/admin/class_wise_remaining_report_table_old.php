@@ -35,10 +35,9 @@
                 <th>Class</th>
                 <!-- <th>Session</th> -->
                 <th>Paper Code</th>
-                <!-- 
                 <?php if($this->session->account_type == "ExamController"){ ?>
-                <th>Action</th>
-                <?php } ?>-->
+                <!-- <th>Action</th> -->
+                <?php } ?>
                
                
             </tr>
@@ -59,11 +58,9 @@
                 <td><?= $this->Common_model->getClassNameByClassId($student->old_class_id) ?></td>
                 <!-- <td><?= $student->session ?></td> -->
                 <td><?= $student->paper_code ?></td>
-                 <!-- 
                 <?php if($this->session->account_type == "ExamController"){ ?>
-                <td><a target="_blank" href="<?php echo  base_url()."ExamController/search_student_result/$student->roll_number" ?>">Edit </a></td>
+                <!-- <td><a target="_blank" href="<?php echo  base_url()."ExamController/search_student_result/$student->roll_number" ?>">Edit </a></td> -->
                 <?php } ?>
-                -->
               
             </tr>
             <?php  }  ?>
