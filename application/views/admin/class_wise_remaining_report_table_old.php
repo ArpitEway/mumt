@@ -18,7 +18,7 @@
                 <!-- <th>Session</th> -->
                 <th>Paper Code</th>
                 <?php if($this->session->account_type == "ExamController"){ ?>
-                <th>Action</th>
+                <!-- <th>Action</th> -->
                 <?php } ?>
                
             </tr>
