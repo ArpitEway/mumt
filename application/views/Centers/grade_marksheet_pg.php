@@ -109,13 +109,17 @@ th.border.border-dark {
          
         </tr>
         <tr>
+            <?php
+            $class_name = explode(' ', $this->Common_model->getClassNameByClassId($student->old_class_id));
+            $attemp_count = $this->Common_model->getRecordByWhere('old_exam_data', array('student_id'=>$student->student_id,'class_id'=>$student->old_class_id));
+            ?>
           <!-- <td>TOTAL CREDIT</td> -->
-          <td class="text-center" style="vertical-align: middle;">I</td>
+          <td class="text-center" style="vertical-align: middle;"><?= $class_name[0]?></td>
           <td class="text-center" style="vertical-align: middle;"><?=$gradesheetData['tot_credit'] ?></td>
           <td class="text-center" style="vertical-align: middle;"><?=$gradesheetData['obt_credit'] ?></td>
           <td class="text-center" style="vertical-align: middle;">-</td>
-          <td class="text-center" style="vertical-align: middle;"><?= round($gradesheetData['agpa'],2) ?></td>
-          <td class="text-center" style="vertical-align: middle;">1</td>
+          <td class="text-center" style="vertical-align: middle;"><?= number_format((float)$gradesheetData['agpa'], 2, '.', '') ?></td>
+          <td class="text-center" style="vertical-align: middle;"><?=(count($attemp_count) == 0)?1:count($attemp_count)?></td>
           <td class="text-center" style="vertical-align: middle;"><?=$gradesheetData['result'] ?></td>
         </tr>
         <!-- <tr>
