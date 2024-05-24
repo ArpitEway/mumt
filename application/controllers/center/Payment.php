@@ -193,8 +193,8 @@ class Payment extends CI_Controller {
 					$status = 'payment_status';
 					$txnid = $txnData[0]['id'];
 				}
-			elseif($productinfo == 'Exam Fees'){
-				if(count($txnData)>0){
+			elseif($productinfo == 'Exam Fees' ){
+				if((count($txnData)>0) && $udf3==$txnData[0]['exam_session']) {
 					$response["exam_session"] = $udf3;
 					$this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$response);
 					$txnid = $txnData[0]['id'];
