@@ -2093,6 +2093,7 @@ public function getStudentData()
 				} 
 				//$mobile_number = $this->Common_model->getSinglefield('student_data','p_mobile_no',array('student_id' => $student->student_id));
 				$studentContactData = $this->Common_model->getRecordById('student_data','student_id',$student->student_id);
+				$this->db->order_by('id');
 				$paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student->student_id ));
 				$data = array(
 					'student' => $student,
