@@ -313,7 +313,7 @@ class Upload_old_data_pg extends CI_Model
             'enrollment_no' => $this->student->enrollment_no,
             'roll_no' => $this->student->roll_number,
             'name' => $this->student->name,
-            'exam_year' => 'Feb 2023',
+            'exam_year' => 'January 2024',
             'f_h_name' => $this->student->f_h_name,
             'mother_name' => $this->student->mother_name,
             'marksheet_no' =>$this->student->marksheet_no,
