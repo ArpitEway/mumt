@@ -151,6 +151,7 @@ class Center extends CI_Controller {
 			redirect(base_url());
 			exit;
 		}
+		$pending = $this->Common_model->getCountByWhere('online_payment_transaction','center_id='.$this->session->center_id.' and  fees_head="Admission Fees"  and payment="N" and remark="With Late Fees" ');
 		$center_id =  $this->session->center_id;
 		$center_data = $this->Common_model->getRecordByWhere('center',array('id'=>$center_id));
 		$center_session_permission = $center_data[0]->old_session_permission;
@@ -201,7 +202,13 @@ class Center extends CI_Controller {
 		if(($mode=='regular' && $check[0]->admission_permission!='Y' ) || ($mode=='private' && $check[0]->admission_permission_private!='Y')){
 			redirect(base_url('dashboard'));
 		}
-
+		$late_admission_fees_pvt = $this->Common_model->getRecordByWhere('master');
+		if($late_admission_fees_pvt[0]->p_late_fee_status=='Y'){
+			$pending = $this->Common_model->getCountByWhere('online_payment_transaction','center_id='.$this->session->center_id.' and  fees_head="Admission Fees"  and payment="N" and remark="With Late Fees" ');
+			if($pending==1){
+				redirect(base_url('dashboard'));
+			}
+		}
 		$titleData = array('title' => 'Admission Form '.$head);
 		$state_list = $this->Common_model->get_record('state','*');
 		$eligibility_list = $this->Common_model->get_record('course_group','DISTINCT (eligibility)');
@@ -442,19 +449,25 @@ class Center extends CI_Controller {
 
 	public function getUnpaidFeesList($param1 = ''){
 		$course_type=$this->input->post('course_type');
+		$late_privte_admission_fees=$this->input->post('late_privte_admission_fees');
 		$data = $row = array();
 		$centerData = $this->Common_model->getRecordById('center','id',$this->session->center_id);
 		$where = 'online_payment_transaction.payment!="Y"';
 		
 		if($param1=='Admission'){
+		
 			$this->db->where_in('course_type', array("UG","PG"));
             $course = $this->Common_model->getRecordByWhere('course_group');
             
             $course_ids = array_column($course,'id');
             // print_r($course_ids);die;
 			$permission_session= $this->Common_model->getRecordByWhere('session',array('unpaid_permission'=>'Y' ));
-			$where .= " and online_payment_transaction.fees_head='Admission Fees'  and  student.payment_status='N'  and ( "; //and student.class_name not like '%SEM%'
-           
+			if($late_privte_admission_fees=='Y'){
+				$where .= "  and online_payment_transaction.remark='With Late Fees'  ";	
+			}
+		
+			$where .= " and online_payment_transaction.fees_head='Admission Fees' and   student.payment_status='N'  and ( "; //and student.class_name not like '%SEM%'
+			
 			foreach($permission_session as $key=>$row){
 			
 				if($row->semester_permission=='N' && $row->annual_permission=='Y' )
@@ -537,6 +550,7 @@ class Center extends CI_Controller {
 			"recordsFiltered" => $recordsFiltered,
 			"data" => $data,
 		);
+	//	echo $this->db->last_query(); die;
         // Output to JSON format
 		echo json_encode($output);
 	}

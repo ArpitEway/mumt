@@ -136,7 +136,7 @@ class saveFormdata extends CI_Controller {
 			$late = $this->Common_model->getRecordByWhere('master',array('p_late_fee_status'=> 'Y'));
 			if($late){
 				$late_fees=$late[0]->p_late_fees;
-				$remark=" With Late Fees";
+				$remark="With Late Fees";
 			}
 			
 			$amount = $amount[0]->p_form_fees+ $amount[0]->p_admission_fees+$late_fees;
