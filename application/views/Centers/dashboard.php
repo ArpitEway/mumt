@@ -60,13 +60,26 @@
 				$center_ids_dep = array(21,22,23,24,25,26,27,28,29);
 				  if($center->admission_permission_private=='Y' ) // && !in_array($center_id, $center_ids_dep)
 				  {
-					?>
-					<a class="border-0 custom-menu-item kt_popup_private">
+					
+					$pending = $this->Common_model->getCountByWhere('online_payment_transaction','center_id='.$this->session->center_id.' and  fees_head="Admission Fees"  and payment="N" and remark="With Late Fees" ');
+					//print_r($pending);
+					if($pending==1){
+						?>
+					<a class="border-0 custom-menu-item " data-toggle="modal" data-target="#exampleModalCenter1">
 						<div>
 							<span class="nav-text">Admission Form Private</span>
 						</div>
 					</a>
 				<?php
+					}else{
+					?>
+					<a class="border-0 custom-menu-item kt_popup_private" >
+						<div>
+							<span class="nav-text">Admission Form Private</span>
+						</div>
+					</a>
+				<?php
+					}//pending end
 				  }
 				  ?>
 					<a class="border-0 custom-menu-item" href="<?=base_url('all_student/PVT');?>">
@@ -360,12 +373,9 @@
             </div>
             <div class="modal-body">
 				<img src="<?=base_url('assets/images/center/new.gif')?>" alt=""> <b>
-				सूचित किया जाता है कि Unpaid प्राईवेट विद्यार्थियों की  ऑनलाइन पेमेंट करने की अंतिम तिथि 25 मई 2024 निर्धारित की गई है | इसके पश्चात् Unpaid विद्यार्थी स्वतः ही निरस्त हो जायेंगे |
-				</b><br>
-				<br>	
-				<img src="<?=base_url('assets/images/center/new.gif')?>" alt=""> <b>
-				सूचित किया जाता है कि आगामी होने वाली परीक्षाओं के लिये परीक्षा फॉर्म भरने की अंतिम तिथि 31 मई 2024 निर्धारित की गयी है। अनुरोध है कि उक्त दिनांक के पूर्व परीक्षा फॉर्म भरने की प्रक्रिया पूर्ण करे| इसके पश्चात् किसी भी आवेदन पर विचार नहीं किया जावेगा|
-				</b>
+				सूचित किया जाता है कि स्वाध्यायी प्रवेश से सम्बंधित शेष प्रक्रिया विलम्ब शुल्क 100 रूपये सहित दिनांक 27 मई 2024 से 31 मई 2024 तक ऑनलाइन पूर्ण  की जा सकती है| प्रवेश सम्बन्धी प्रक्रिया ऑनलाइन करते समय ही पंजीयन शुल्क के साथ विलम्ब शुल्क देय होगा| उक्त तिथि के पश्चात् किसी भी प्रवेश आवेदन पर विचार नहीं किया जायेगा|
+				</b><br><br>
+				
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
@@ -375,7 +385,29 @@
     </div>
 </div>
 
-
+<!-- Modal data-backdrop="static"  -->
+<div class="modal fade "  data-backdrop="static" id="exampleModalCenter1"     tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Important Notification </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+				<img src="<?=base_url('assets/images/center/new.gif')?>" alt=""> <b>
+				सूचित किया जाता है कि स्वाध्यायी प्रवेश से सम्बंधित शेष प्रक्रिया विलम्ब शुल्क 100 रूपये सहित दिनांक 27 मई 2024 से 31 मई 2024 तक ऑनलाइन पूर्ण  की जा सकती है| प्रवेश सम्बन्धी प्रक्रिया ऑनलाइन करते समय ही पंजीयन शुल्क के साथ विलम्ब शुल्क देय होगा| उक्त तिथि के पश्चात् किसी भी प्रवेश आवेदन पर विचार नहीं किया जायेगा|
+				</b><br><br>
+				
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+               
+            </div>
+        </div>
+    </div>
+</div>
 <style>
 		#swal2-content{
 		text-align:justify !important;
