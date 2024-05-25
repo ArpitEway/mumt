@@ -444,7 +444,7 @@ class Upload_old_data_pg extends CI_Model
 	{
 		
 		if ($this->check_grace_marks) {
-			$this->Common_model->updateRecordByConditions('old_exam_data',array('id' => $old_exam_data_id), array('exam_result' =>'PASS BY GRACE','agpa'=>number_format((float)$this->grace_agpa, 2, '.', '')));
+			$this->Common_model->updateRecordByConditions('old_exam_data',array('id' => $old_exam_data_id), array('exam_result' =>'PASS BY GRACE','agpa_sgpa'=>number_format((float)$this->grace_agpa, 2, '.', '')));
 			echo $this->db->last_query().'<br>';
 		}
         $studentData = array('upload_result'=>'Y');
