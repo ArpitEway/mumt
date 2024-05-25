@@ -265,7 +265,7 @@ buttons: [
 										if(response.status=='true'){
 										toastr.success("successfully Deleted Student!");
 										//myTable.draw();
-										window.location.href = BASE_URL+"center/student_list/unpaid/PVT/"+student_id;
+										window.location.href = BASE_URL+"/student_list/unpaid/PVT";
 										}
 
 										else{
