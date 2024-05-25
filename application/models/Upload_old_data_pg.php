@@ -321,6 +321,7 @@ class Upload_old_data_pg extends CI_Model
             'photo'=>$this->student->photo,
             'total_marks'=>$this->total_marks,
             'obtain_marks'=>$this->obt_marks,
+            'marks_pattern'=>"GRADE",
 			'agpa_sgpa'=>number_format((float)$this->agpa, 2, '.', ''),
             'percentage' => $percentage,
             'update_date'=>date('Y-m-d'),
@@ -345,7 +346,7 @@ class Upload_old_data_pg extends CI_Model
            
        
        
-			$paper_name = explode(']',$result['paper_name']);
+			// $paper_name = explode(']',$result['paper_name']);
             $ResultData = array(
                 'exam_data_id' =>  $old_exam_data_id ,
                 'student_id' =>  $this->student->student_id ,
@@ -362,7 +363,7 @@ class Upload_old_data_pg extends CI_Model
                 // 'theory_marks'=> $marks->theory_marks,
                 // 'p_marks'=> $marks->p_marks,
                 // 'int_marks'=> $marks->int_marks,
-                'paper_name'=>  $paper_name[1],
+                'paper_name'=> $result['paper_name'],
                 // 'result' => $result ,
                 'p_order'=> $result['paper_order'] 
             );

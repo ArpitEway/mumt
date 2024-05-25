@@ -10,7 +10,8 @@
             <th>Class</th>
             <th>Mode</th>
             <th>Student Count</th>			
-            <th>upload</th>			
+            <th>upload Grade</th>	
+            <th>upload Marks</th>			
         </tr> 
     </thead>
     <tbody>
@@ -41,7 +42,9 @@
                         <?php
 
                     }
-                  ?> 
+
+                  ?>
+                   <td><a target="_blank" href="<?=base_url('admin/scripts/Postexam/upload_old_data_script/'.$course->class_id.'/'.$course->university_mode)?>">upload</a></td> 
                 </tr>
             
         

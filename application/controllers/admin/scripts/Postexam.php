@@ -53,7 +53,7 @@ class Postexam extends CI_Controller {
        public function upload_old_marks()
        {
             
-            $this->db->select('course_name,student.class_name,class_id, COUNT(student_id) as cnt,student.university_mode');
+            $this->db->select('course_name,student.class_name,class_id, COUNT(student_id) as cnt,student.university_mode,student.exam_pattern');
             $this->db->join('class_master', 'student.class_id = class_master.id');
             // $this->db->where('cbcs', 'Y');
             //  $this->db->where('last_class', 'L');
@@ -203,7 +203,7 @@ class Postexam extends CI_Controller {
             if($whCount!=0) {
                 // $final_result=='FAIL' || 
                  //  && count($course_type)==0 && $student->course_group_id!=76 && $student->course_group_id!=77
-              //  continue;
+                continue;
             }
             if(is_nan($aggregate_per)){
                 $aggregate_per=0;
