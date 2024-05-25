@@ -12,7 +12,9 @@
 				<th>Course</th>
 				<th>Class</th>
 				<th>Fees Amount<?php if($course_type=='PVT'&& $late_privte_admission_fees=='Y'){ echo ' + Late Fees';}?></th>
+				
 				<th>Pay</th>
+				<?php if($course_type=='PVT'&& $late_privte_admission_fees=='Y'){ echo '<th>Action</th>';}?>
 			</tr>
 		</thead>
 		<tbody>
@@ -234,6 +236,43 @@ buttons: [
 					}).then(function(result) {
 						if(result.isConfirmed){
 						window.location.href = BASE_URL+"center/payment/admission/"+student_id;
+						}else{
+							return false;
+						}
+				});
+		});
+		$(document).on('click','.deleteForm',function(){
+				var csrfName = $('.csrfname').attr('name');
+				var csrfHash = $('.csrfname').val(); 
+				var student_id = $(this).data('student_id');
+				var id = $(this).data('id');
+				Swal.fire({
+						title: "Are you sure?",
+						text: "Want To Delete Student Form ?",
+						icon: "info",
+						showCancelButton: true,
+						confirmButtonText: "Yes"
+					}).then(function(result) {
+						if(result.isConfirmed){
+							// alert(student_id);
+								$.ajax({
+									type: "POST",
+									url: BASE_URL+"center/center/delete_student_form",
+									dataType:"json",
+									data: {student_id: student_id,[csrfName]:csrfHash},
+									success: function(response){
+									console.log(response);
+										if(response.status=='true'){
+										toastr.success("successfully Deleted Student!");
+										//myTable.draw();
+										window.location.href = BASE_URL+"center/student_list/unpaid/PVT/"+student_id;
+										}
+
+										else{
+										toastr.error("Something wrong");
+										}
+									}
+								});	
 						}else{
 							return false;
 						}

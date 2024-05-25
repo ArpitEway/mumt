@@ -528,11 +528,20 @@ class Center extends CI_Controller {
 			if(in_array($this->session->center_id, $center_ids_dep)){
 				$modal ='<a href="#"  data-student_name = "'.$result->name.'"  data-student_id="'.$this->Common_model->encrypt_decrypt($result->student_id).'" class="btn btn-primary btn-sm font-weight-bold pay1" data-toggle="modal" data-target="#kt_datepicker_modal" "  data-amount= "'.$result->amount.'">Receive</a>';
 			}else{
+				
 			 $modal = '<a href="#" data-student_id="'.$this->Common_model->encrypt_decrypt($result->student_id).'" data-id="'.$this->Common_model->encrypt_decrypt($result->id).'" class="btn btn-info btn-sm pay" >Pay</a>';
+				if($late_privte_admission_fees=='Y'){
+					$deleteBtn = '<a href="#" data-student_id="'.$result->student_id.'" data-id="'.$this->Common_model->encrypt_decrypt($result->id).'" class="btn btn-info btn-danger deleteForm " >Delete</a>';
+				}
 			}
 			
 			$i++;
-			$data[] = array($i,$result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->amount,$modal);
+			if($late_privte_admission_fees=='Y'){
+			$data[] = array($i,$result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->amount,$modal,$deleteBtn);
+			}
+			else{
+				$data[] = array($i,$result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->amount,$modal);
+			}
 		}
 
 		if ($this->session->center_id!=13) {
@@ -3849,5 +3858,24 @@ public function practical_assignment_marks_edit(){
 			'nameAttr' => $nameAttr
 		);
 		echo $this->load->view('admin/complaint_department/getcomplaint',$data,true);
+	}
+	public function delete_student_form(){
+		//paper Delete
+		$student_id = $this->input->post('student_id');
+		$where=array("student_id"=>$student_id );
+		$response = $this->Common_model->deleteByWhere('new_exam_form',$where);
+		//Image
+		$wherecenter=array("student_id"=>$student_id ,'center_id'=>$this->session->center_id);
+		$studentData = $this->Common_model->get_record('student','*', $wherecenter);
+	     $session=$studentData[0]['session'];
+	     unlink('assets/student_image/'.$session.'/'.$studentData[0]['photo']);
+		 //Payment
+		 $response = $this->Common_model->deleteByWhere('online_payment_transaction',$wherecenter);
+		 //Student Data
+		 $response = $this->Common_model->deleteByWhere('student_data',$where);
+		 $response = $this->Common_model->deleteByWhere('student',$wherecenter);
+
+		echo json_encode(array("status" => 'true'));
+		$this->session->set_flashdata('ajax_flash_message','Student Form Deleted Successfully !');
 	}
 }//class
