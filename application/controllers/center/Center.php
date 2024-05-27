@@ -3970,7 +3970,7 @@ public function practical_assignment_marks_edit(){
 			$center_ids_dep = array( 10,11,12,13,20,21,22,23,24,25,26,27,28,29,1975,2098,2115);
 			
 				
-			 $modal = '<a href="#" data-student_id="'.$this->Common_model->encrypt_decrypt($result->student_id).'" data-id="'.$this->Common_model->encrypt_decrypt($result->id).'" class="btn btn-info btn-sm pay" >Move</a>';
+			 $modal = '<a href="#" id="'.$this->Common_model->encrypt_decrypt($result->student_id).'" data-student_id="'.$this->Common_model->encrypt_decrypt($result->student_id).'" data-id="'.$this->Common_model->encrypt_decrypt($result->id).'" class="btn btn-info btn-sm pay" >Move</a>';
 				
 			
 			
@@ -4005,17 +4005,19 @@ public function practical_assignment_marks_edit(){
 		
 		$student_id = $this->input->post('student_id');
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
-		$data = $this->Common_model->updateRecordByConditions("online_payment_transaction",array("student_id" => $student_id,"fees_head"=>"Admission Fees","admission_type"=>"Private" ),array("remark" => "With Late Fees" ));
+		$data = $this->Common_model->updateRecordByConditions("online_payment_transaction",array("student_id" => $student_id,"fees_head"=>"Admission Fees","admission_type"=>"Private" ),array("remark" => "With Late Fees","amount" => "1600" ));
 
-					$status = true;
-					$msg    = "";
+	
+					// $status = true;
+					// $msg    = "";
 
-					echo json_encode(array(
-						"status" => $status,
-						"msg" => $msg,
-						"data" => $data
-					));
-		echo "test". $student_id;
+					// echo json_encode(array(
+					// 	"status" => $status,
+					// 	"msg" => $msg,
+					// 	"data" => $data
+					// ));
+					echo json_encode(array("status" => 'true'));
+					$this->session->set_flashdata('ajax_flash_message','Student Move Successfully !');
 		
 	}
 

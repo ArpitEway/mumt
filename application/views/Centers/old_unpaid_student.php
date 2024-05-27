@@ -176,7 +176,9 @@ buttons: [
 										if(response.status=='true'){
 										toastr.success("Move Student Successfully !");
 										//myTable.draw();
-										window.location.href = BASE_URL+"/unpaid_student_list";
+										//window.location.href = BASE_URL+"/unpaid_student_list";
+										var a='#'+student_id;
+										$(a).closest('tr').remove();
 										}
 
 										else{
