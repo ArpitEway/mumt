@@ -248,7 +248,7 @@ buttons: [
 				var id = $(this).data('id');
 				Swal.fire({
 						title: "Are you sure?",
-						text: "Want To Delete Student Form ?",
+						text: "Form को Delete करने से पहले यह सुनिश्चित कर ले कि इसका Payment अपने नहीं किया है, अगर किया है और Payment अपडेट नहीं हुआ है तो पहले 'Payment Complaint Option' में जाकर Complaint करे|  ",
 						icon: "info",
 						showCancelButton: true,
 						confirmButtonText: "Yes"
