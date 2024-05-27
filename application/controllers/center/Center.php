@@ -3878,4 +3878,146 @@ public function practical_assignment_marks_edit(){
 		echo json_encode(array("status" => 'true'));
 		$this->session->set_flashdata('ajax_flash_message','Student Form Deleted Successfully !');
 	}
+
+	public function unpaid_student_list()
+	{
+		$late_admission_fees_pvt = $this->Common_model->getRecordByWhere('master');
+		$csrf = array( 
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+			'course_type' => $course_type,
+			'late_privte_admission_fees' => $late_admission_fees_pvt[0]->p_late_fee_status
+		);
+		$titleData = array('title' => 'Private Unpaid Old Student List');	
+		$this->load->view('Centers/header',$titleData);
+		$this->load->view('Centers/old_unpaid_student',$csrf);
+		$this->load->view('Centers/footer');
+	}
+
+	public function getOldUnpaidFeesList($param1 = ''){
+		$course_type='PVT';
+		
+		$data = $row = array();
+		$centerData = $this->Common_model->getRecordById('center','id',$this->session->center_id);
+		$where = 'online_payment_transaction.payment!="Y"';
+		
+		if($param1=='Admission'){
+		
+			$this->db->where_in('course_type', array("UG","PG"));
+            $course = $this->Common_model->getRecordByWhere('course_group');
+            
+            $course_ids = array_column($course,'id');
+            // print_r($course_ids);die;
+			$permission_session= $this->Common_model->getRecordByWhere('session',array('unpaid_permission'=>'Y' ));
+			
+		
+			$where .= " and online_payment_transaction.remark!='With Late Fees' and online_payment_transaction.fees_head='Admission Fees' and   student.payment_status='N'  and ( "; //and student.class_name not like '%SEM%'
+			
+			foreach($permission_session as $key=>$row){
+			
+				if($row->semester_permission=='N' && $row->annual_permission=='Y' )
+				$where.=" (student.class_name not like '%SEM%' and student.session='".$row->session."') or ";
+				else if($row->annual_permission=='N' && $row->semester_permission=='Y')
+				$where.="  (student.class_name not like '%YEAR%' and student.session='".$row->session."') or ";
+				else if($row->annual_permission=='Y' && $row->semester_permission=='Y')
+				$where.="   session='".$row->session."'";
+				
+			}
+			$where .= "  ) "; 
+            	//stop admission of class
+				 $master = $this->Common_model->getSingleRow('master');
+				//  echo $centerData->temp_admission_payment ;die;
+				 if(!empty($master->remove_class_from_center) && $centerData->temp_admission_payment =='N')
+				 $where.=" and `student`.`class_id` NOT IN ($master->remove_class_from_center)";
+                 if($course_type == "REG"){
+                    $this->db->where_not_in('student.course_group_id',$course_ids);
+                }
+		
+		}elseif($param1=='Exam'){
+			$where .= ' and online_payment_transaction.fees_head="Exam Fees"';
+		}
+        $column_order = array('student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','amount',null);
+		$column_search = array('student.student_id','enrollment_no', 'name', 'f_h_name', 'course_name','class_name','amount');
+		$DataTableArray = array(
+			'column_order' => $column_order,
+			'column_search' => $column_search,
+			'where' => $where.' and online_payment_transaction.center_id=student.center_id AND student.university_mode="'.$course_type.'"',
+			
+			'table' => 'student',
+			'table2' => 'online_payment_transaction',
+			'joinOn' => 'student.student_id=online_payment_transaction.student_id'
+		);
+		
+		 if ($this->session->center_id!=13) {
+			$this->db->where('online_payment_transaction.center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28));
+		}
+		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
+		$i = $_POST['start'];
+		
+		if ($this->session->center_id!=13) {
+			$this->db->where('online_payment_transaction.center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28));
+		}
+        if($course_type == "REG" && $param1=='Admission'){
+            $this->db->where_not_in('student.course_group_id',$course_ids);
+        }
+		$counttableData = $this->Datatable_join_model->joincountAll($_POST,$DataTableArray);
+				  
+		foreach($tableData as $result){
+			$center_ids_dep = array( 10,11,12,13,20,21,22,23,24,25,26,27,28,29,1975,2098,2115);
+			
+				
+			 $modal = '<a href="#" data-student_id="'.$this->Common_model->encrypt_decrypt($result->student_id).'" data-id="'.$this->Common_model->encrypt_decrypt($result->id).'" class="btn btn-info btn-sm pay" >Move</a>';
+				
+			
+			
+			$i++;
+			
+				$data[] = array($i,$result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->amount,$modal);
+			
+		}
+
+		if ($this->session->center_id!=13) {
+			$this->db->where('online_payment_transaction.center_id',$this->session->center_id);
+		}else{
+			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28));
+		}
+        if($course_type == "REG" && $param1=='Admission'){
+            $this->db->where_not_in('student.course_group_id',$course_ids);
+        }
+		$recordsFiltered = $this->Datatable_join_model->countFiltered($_POST,$DataTableArray);
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $counttableData,//$this->Datatable_join_model->countAll('online_payment_transaction',$where),
+			"recordsFiltered" => $recordsFiltered,
+			"data" => $data,
+		);
+	//	echo $this->db->last_query(); die;
+        // Output to JSON format
+		echo json_encode($output);
+	}
+
+	
+	public function move_with_late_fees(){
+		
+		$student_id = $this->input->post('student_id');
+		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		$data = $this->Common_model->updateRecordByConditions("online_payment_transaction",array("student_id" => $student_id,"fees_head"=>"Admission Fees","admission_type"=>"Private" ),array("remark" => "With Late Fees" ));
+
+					$status = true;
+					$msg    = "";
+
+					echo json_encode(array(
+						"status" => $status,
+						"msg" => $msg,
+						"data" => $data
+					));
+		echo "test". $student_id;
+		
+	}
+
+
 }//class
