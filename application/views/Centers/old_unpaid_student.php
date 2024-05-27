@@ -159,7 +159,7 @@ buttons: [
 				var id = $(this).data('id');
 				Swal.fire({
 						title: "Are you sure?",
-						text: "Want To Move With Late Fees ?",
+						text: "Want To Move With Rs 100 Late Fees ?",
 						icon: "info",
 						showCancelButton: true,
 						confirmButtonText: "Yes"
@@ -176,9 +176,9 @@ buttons: [
 										if(response.status=='true'){
 										toastr.success("Move Student Successfully !");
 										//myTable.draw();
-										//window.location.href = BASE_URL+"/unpaid_student_list";
-										var a='#'+student_id;
-										$(a).closest('tr').remove();
+										window.location.href = BASE_URL+"/student_list/unpaid/PVT";
+										//var a='#'+student_id;
+										//$(a).closest('tr').remove();
 										}
 
 										else{

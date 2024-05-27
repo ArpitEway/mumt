@@ -3889,7 +3889,7 @@ public function practical_assignment_marks_edit(){
 			'course_type' => $course_type,
 			'late_privte_admission_fees' => $late_admission_fees_pvt[0]->p_late_fee_status
 		);
-		$titleData = array('title' => 'Private Unpaid Old Student List');	
+		$titleData = array('title' => 'Old - Private Unpaid Student List');	
 		$this->load->view('Centers/header',$titleData);
 		$this->load->view('Centers/old_unpaid_student',$csrf);
 		$this->load->view('Centers/footer');
