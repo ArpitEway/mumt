@@ -189,6 +189,9 @@ class Payment extends CI_Controller {
 				$status = 'form_fees';
 				$txnid = $txnData[0]['id'];
 			}elseif($productinfo == 'Admission Fees'){
+				if($txnData[0]['remark']=='With Late Fees'){
+					$response['remark']=$txnData[0]['remark'];
+				}
 				$this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$response);
 					$status = 'payment_status';
 					$txnid = $txnData[0]['id'];
