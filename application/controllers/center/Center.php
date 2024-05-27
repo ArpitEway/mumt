@@ -205,7 +205,8 @@ class Center extends CI_Controller {
 		$late_admission_fees_pvt = $this->Common_model->getRecordByWhere('master');
 		if($late_admission_fees_pvt[0]->p_late_fee_status=='Y'){
 			$pending = $this->Common_model->getCountByWhere('online_payment_transaction','center_id='.$this->session->center_id.' and  fees_head="Admission Fees"  and payment="N" and remark="With Late Fees" ');
-			if($pending!=0){
+			$failureCount = $this->Common_model->getCountByWhere('online_payment_transaction','center_id='.$this->session->center_id.' and  fees_head="Admission Fees"  and payment="N" and remark="With Late Fees" and payment_status!="pending"');
+			if($pending!=0 && $failureCount<2){
 				redirect(base_url('dashboard'));
 			}
 		}

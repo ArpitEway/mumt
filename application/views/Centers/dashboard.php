@@ -62,8 +62,9 @@
 				  {
 					
 					$pending = $this->Common_model->getCountByWhere('online_payment_transaction','center_id='.$this->session->center_id.' and  fees_head="Admission Fees"  and payment="N" and remark="With Late Fees" ');
-					//print_r($pending);
-					if($pending!=0){
+					
+					$failureCount = $this->Common_model->getCountByWhere('online_payment_transaction','center_id='.$this->session->center_id.' and  fees_head="Admission Fees"  and payment="N" and remark="With Late Fees" and payment_status!="pending"');
+					if($pending!=0 && $failureCount<2){
 						?>
 					<a class="border-0 custom-menu-item " data-toggle="modal" data-target="#exampleModalCenter1">
 						<div>
