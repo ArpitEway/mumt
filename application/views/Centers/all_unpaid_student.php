@@ -1,3 +1,8 @@
+<style>
+	#swal2-content{
+		text-align: justify;
+	}
+</style>
 <div class="container-fluid mt-5" >
 	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	<input type="hidden"  class="course_type" value="<?= $course_type; ?>" >
