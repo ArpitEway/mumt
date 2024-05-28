@@ -19,8 +19,8 @@ class Permission extends CI_Controller {
 		$this->load->view('header',array("title"=>"Class Wise Permission"));	
 		$table ="class_master";
 		$where = "";
-		//$where = 'admission_permission="Y" or class_name="II Sem" or class_name="II Year" or class_name="III Sem" or class_name="IV Sem"';
-		
+		$where = ' class_name="II Sem"  or class_name="IV Sem"';
+		//admission_permission="Y" or or class_name="II Year" or class_name="III Sem"
 		// or class_name="II Sem" or class_name="III Sem"
 		 // $order = 'id ASC';
         $data['name_csrf'] = $this->security->get_csrf_token_name();
