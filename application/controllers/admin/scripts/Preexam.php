@@ -493,17 +493,25 @@ class Preexam extends CI_Controller {
 					'group_id!='=>"",
 		);
 		$this->db->limit(1000,0);
+		$this->db->where_in('student_id', array (722503,687120));
 		$students = $this->Common_model->get_record('student','*',$where);
+		$classData = $this->Common_model->getRecordById('class_master','id', $class_id);
+		$cbcs = ($classData->cbcs == 'Y')?'Y':'N';
 		
-		$paperWhere=array('class_id'=>$class_id,'ce'=>'compulsory');
-		$papers = $this->Common_model->get_record('paper_master','*',$paperWhere);
 		$stCount=0;
 		foreach ($students as $student) {
 			$stCount++;
 			
 			
 		//	$group_id=$student['group_id'];
-			
+		if($student['exam_pattern']=="GRADE" && $cbcs=='Y'){
+			$paperWhere=array('class_id'=>$class_id,'ce'=>'compulsory','cbcs_paper'=>'Y');
+		}
+		else{
+			$paperWhere=array('class_id'=>$class_id,'ce'=>'compulsory','cbcs_paper'=>'N');
+		}
+		
+		$papers = $this->Common_model->get_record('paper_master','*',$paperWhere);
 				
 					$data = array(
 						'student_id' => $student['student_id'],
@@ -552,6 +560,14 @@ class Preexam extends CI_Controller {
 			 //
 			 $this->db->order_by("group_id,id");
 			 $electivePaperWhere=array('group_id'=>$electiveGroup[0]['id']);
+
+			 if($student['exam_pattern']=="GRADE" && $cbcs=='Y'){
+			//	$this->db->like('paper_code', 'RC');
+				$this->db->where(" paper_code  like '%RC%'");
+			}
+			else{
+				$this->db->where("paper_code Not like '%RC%'");
+			}
 			 $electivePapers = $this->Common_model->get_record('group_paper','*',$electivePaperWhere);
 			 $electiveData = array(
 				 'student_id' => $student['student_id'],
@@ -559,7 +575,7 @@ class Preexam extends CI_Controller {
 				 'class_id' => $student['class_id'],
 				 );
 			// echo "Elective paper";
-			// echo $this->db->last_query().'<br>';
+		//	echo $this->db->last_query().'<br>';die;
 				foreach ($electivePapers as $electivePaper) {
 
 					$paperMasterWhere=array('id'=>$electivePaper['paper_id']);
