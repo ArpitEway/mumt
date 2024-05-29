@@ -472,6 +472,7 @@ class Postexam extends CI_Controller {
         $this->db->select('DISTINCT(id)');
         $this->db->from('class_master');
         // $this->db->where('class_name','I Year');
+        $this->db->where_in('class_name',array('II SEM','IV SEM'));
       //  $this->db->where('backlog_exam_form_permission','Y');
         $this->db->where('old_exam_form_permission','N');
         $this->db->where('exam_form_permission','Y');
@@ -490,7 +491,7 @@ class Postexam extends CI_Controller {
        }else{
         $data['courses'] = "No Data Found";
        }
-        //    $this->Common_model->last_query();
+       // echo    $this->Common_model->last_query(); die;
            $this->load->view('header',array('title' => 'Check Demo & Backlog Student'));
            $this->load->view('admin/script/check_demo_backlog_student',$data);
            $this->load->view('footer');
