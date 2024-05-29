@@ -399,7 +399,7 @@ class Preexam extends CI_Controller {
 					$elective = $this->Common_model->get_record('group','*',$electiveWhere);
 					
 					
-					$electiveGroupWhere=array('class_id'=>$student['class_id'],'course_group_id'=>$student['course_group_id'],'group_name'=>$elective[0]['group_name'],'group_pattern'=>'NEW');
+					$electiveGroupWhere=array('class_id'=>$student['class_id'],'course_group_id'=>$student['course_group_id'],'group_name'=>$elective[0]['group_name']);
 					$electiveGroup = $this->Common_model->get_record('group','*',$electiveGroupWhere);
 					
 					$data = array(
@@ -554,7 +554,7 @@ class Preexam extends CI_Controller {
 			 $elective = $this->Common_model->get_record('group','*',$electiveWhere);
 			 
 			// print_r($elective);
-			 $electiveGroupWhere=array('class_id'=>$student['class_id'],'course_group_id'=>$student['course_group_id'],'group_name'=>$elective[0]['group_name']);
+			 $electiveGroupWhere=array('class_id'=>$student['class_id'],'course_group_id'=>$student['course_group_id'],'group_name'=>$elective[0]['group_name'],'group_pattern'=>'NEW');
 			 $electiveGroup = $this->Common_model->get_record('group','*',$electiveGroupWhere);
 			 print_r($electiveGroup);
 			 //
