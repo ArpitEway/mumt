@@ -381,7 +381,7 @@ class Preexam extends CI_Controller {
 					'demo'=>"N",
 					'group_id!='=>"",
 		);
-		$this->db->limit(2000,0);
+		$this->db->limit(1,0);
 		$students = $this->Common_model->get_record('student','*',$where);
 		
 		$paperWhere=array('class_id'=>$class_id,'ce'=>'compulsory');
@@ -399,7 +399,7 @@ class Preexam extends CI_Controller {
 					$elective = $this->Common_model->get_record('group','*',$electiveWhere);
 					
 					
-					$electiveGroupWhere=array('class_id'=>$student['class_id'],'course_group_id'=>$student['course_group_id'],'group_name'=>$elective[0]['group_name']);
+					$electiveGroupWhere=array('class_id'=>$student['class_id'],'course_group_id'=>$student['course_group_id'],'group_name'=>$elective[0]['group_name'],'group_pattern'=>'NEW');
 					$electiveGroup = $this->Common_model->get_record('group','*',$electiveGroupWhere);
 					
 					$data = array(
