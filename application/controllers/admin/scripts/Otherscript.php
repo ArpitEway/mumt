@@ -1123,7 +1123,7 @@ public function update_roll_no_old_data(){
 		
 		$this->db->select('count(class_id) as total, class_id');
 		$this->db->from('old_exam_data');
-		$this->db->where('exam_year ="July 2023" and marks_pattern ="GRADE"  and exam_status = "R" and agpa_sgpa=""');  
+		$this->db->where('exam_year ="January 2024" and marks_pattern ="GRADE"  and exam_status = "R" and agpa_sgpa=""');  
 		$this->db->group_by('class_id');
 		$class_list = $this->db->get()->result();
 	
@@ -1138,7 +1138,7 @@ public function update_roll_no_old_data(){
 	public function update_AGPA_CGPA($class_id,$cbcs){
 		$this->db->select('*');
 		$this->db->from('old_exam_data');
-		$this->db->where('exam_year ="July 2023" and exam_status="R" and marks_pattern ="GRADE" and class_id="'.$class_id.'" and agpa_sgpa=""');  
+		$this->db->where('exam_year ="January 2024" and exam_status="R" and marks_pattern ="GRADE" and class_id="'.$class_id.'" and agpa_sgpa=""');  
 		// $this->db->where('student_id',380243);
         // $this->db->where_in('student_id',array(718293,718689,721416));
 		$this->db->limit(1000);
