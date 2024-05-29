@@ -4,7 +4,7 @@ $classes = $this->db->get_where('class_master', array('id' => $param1))->result_
 foreach($classes as $class): ?>
 <?php 
 
-$group_info = $this->db->get_where('group', array('class_id' => $class['id']))->result_array();
+$group_info = $this->db->get_where('group', array('class_id' => $class['id'], 'group_pattern'=>'NEW'))->result_array();
 
 ?>
 <form method="POST" class="d-block ajaxForm" action="<?php echo site_url('admin/Admins/classes/update/'.$param1); ?>">
