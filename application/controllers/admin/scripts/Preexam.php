@@ -492,7 +492,7 @@ class Preexam extends CI_Controller {
 					'demo'=>"N",
 					'group_id!='=>"",
 		);
-		$this->db->limit(1000,0);
+		$this->db->limit(1,0);
 		//$this->db->where_in('student_id', array (722503,687120));
 		$students = $this->Common_model->get_record('student','*',$where);
 		$classData = $this->Common_model->getRecordById('class_master','id', $class_id);
