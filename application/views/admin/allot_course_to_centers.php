@@ -18,6 +18,7 @@
 					$allot_course = str_replace(' ', '', $center->allot_course_group_id);
 					$allot_course_group_id = explode(",", $allot_course);
 					foreach($courses as $course){
+						if (in_array($course['id'], $allot_course_group_id)){
 						?>
 						<tr>
 							<td><?=$i++;?></td>
@@ -27,6 +28,7 @@
 							</tr>
 							<?php 
 						}
+					 }
 					}
 					?>
 				</tbody>
