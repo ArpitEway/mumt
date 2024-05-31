@@ -318,11 +318,11 @@ class Otherscript extends CI_Controller {
 
 			echo "<br> ".$i." ". $row->paper_code ." ". $row->test_id;
 			$data  = array('test_id'=>$row->test_id);
-            $where = array('test_id'=>'0','paper_code'=> $row->paper_code);
+            $where = array('test_id'=>'0','paper_code'=> $row->paper_code,'id'=> $row->paper_id);
             $update =$this->Common_model->updateRecordByConditions('paper_master',$where,$data);
 			 echo  $this->db->last_query(); //die;
 			$i++;
-		// $this->Common_model->updateRecordByConditions('new_exam_form',$where,$data);
+		
 		// echo $this->db->last_query().'<br>';
 		}
 	}
