@@ -103,7 +103,7 @@
 
 							<td><?php if( $student["enrolled"]=='Y'){echo 'Enrolled' ;}else{echo 'Non Enrolled' ;} ?></td>
 
-							<td><?php if( $student["new_exam_form"]=='Y'){echo 'Submit' ;}else if($student["new_exam_form"]=='D'){echo 'Not Permitted' ;}else{echo 'Not Submitted';} ; ?></td>					
+							<td><?php if( $student["new_exam_form"]=='Y'){echo 'Submit' ;}else if($student["new_exam_form"]=='D'){echo 'Not Permitted' ;}else if($student["new_exam_form"]=='S'){echo 'Skiped' ;}else{echo 'Not Submitted';} ; ?></td>					
 						<?php $student_id = $this->Common_model->encrypt_decrypt($student['student_id']); ?>
 					</td>
 					<td><?php echo $student["roll_no"]; ?></td>
