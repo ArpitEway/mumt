@@ -375,21 +375,21 @@ class Postexam extends CI_Controller {
         }
     }
 
-
+//For Backlog Fail student add in backlog exam in current exam
 
     public function check_backlog_fail_student()
     {
       $this->db->select('DISTINCT(id)');
       $this->db->from('class_master');
       $this->db->where('backlog_exam_form_permission','Y');
-      $this->db->where('old_exam_form_permission','N');
+     // $this->db->where('old_exam_form_permission','N');
       $classes = $this->db->get()->result();
      $class_id = array_column($classes,'id');
      if($classes){
     
          $this->db->select('course_name,class_id, COUNT(student_id) as cnt');
          
-         $this->db->where('exam_year', 'July 2023');
+         $this->db->where('exam_year', 'Dec 2023');
          $this->db->where('exam_result', 'FAIL');
          $this->db->where('exam_status', 'B');
          $this->db->where_in('class_id',$class_id );
@@ -408,7 +408,7 @@ class Postexam extends CI_Controller {
     public function backlog_marks_move_scripts($class_id='')
         {
            // $this->db->where('id>', '36941');
-            $studentall = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$class_id,'exam_result'=>'Fail','exam_year'=>'July 2023','exam_status'=>'B'));
+            $studentall = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$class_id,'exam_result'=>'Fail','exam_year'=>'Dec 2023','exam_status'=>'B'));
             foreach($studentall as $key=>$students){
               //  print_r($students); die;
             $whereResult = array("class_id"=>$students->class_id ,"student_id"=>$students->student_id, 'exam_data_id' => $students->id);
