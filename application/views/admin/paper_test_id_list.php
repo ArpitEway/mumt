@@ -4,6 +4,7 @@
 			<th>#</th>
 			<th>Course</th>
 			<th>Class</th>
+			<th>Paper ID</th>
 			<th>Paper No</th>
 			<th>Paper Name</th>
 			<th>Paper Code</th>
@@ -26,6 +27,7 @@
 				<td><?=$i++ ?></td>
 				<td><?=$paper->course_name ?></td>
 				<td><?=$this->Common_model->getClassNameByClassId($paper->class_id); ?></td>
+				<td><?=$paper->id ?></td>
 				<td><?=$paper->paper_no ?></td>
 				<td><?=$paper->paper_name ?></td>
 				<td><?=$paper->paper_code ?></td>
