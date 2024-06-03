@@ -314,8 +314,8 @@ class Upload_old_data_backlog_pg extends CI_Model
 	{
         // echo $this->result;die;
 		if($this->result=='WITHHELD'){
-			//return false;
-			$result = 'FAIL';
+			return false;
+			// $result = 'FAIL';
 		}elseif ($this->result=='FAIL') {
 			$result = 'FAIL';
 		}else{
