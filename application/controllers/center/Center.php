@@ -452,7 +452,9 @@ class Center extends CI_Controller {
 		$course_type=$this->input->post('course_type');
 		$late_privte_admission_fees=$this->input->post('late_privte_admission_fees');
 		$data = $row = array();
-		$centerData = $this->Common_model->getRecordById('center','id',$this->session->center_id);
+		$center_ids_dep = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,1975,2098,2115);
+		$centerData =$this->Common_model->getRecordByWhere('center',array('id'=>$this->session->center_id));
+		$centerData=$centerData[0];
 		$where = 'online_payment_transaction.payment!="Y"';
 		
 		if($param1=='Admission'){
@@ -461,10 +463,14 @@ class Center extends CI_Controller {
             $course = $this->Common_model->getRecordByWhere('course_group');
             
             $course_ids = array_column($course,'id');
-            // print_r($course_ids);die;
+           //  print_r($centerData);//die;
 			$permission_session= $this->Common_model->getRecordByWhere('session',array('unpaid_permission'=>'Y' ));
 			if($late_privte_admission_fees=='Y'){
 				$where .= "  and online_payment_transaction.remark='With Late Fees'  ";	
+			}
+
+			if($centerData->admission_permission=='N'  && $centerData->admission_permission_private=='N'){
+				 $where .= "  and online_payment_transaction.center_id!=".$this->session->center_id;	
 			}
 		
 			$where .= " and online_payment_transaction.fees_head='Admission Fees' and   student.payment_status='N'  and ( "; //and student.class_name not like '%SEM%'
@@ -485,9 +491,11 @@ class Center extends CI_Controller {
 				//  echo $centerData->temp_admission_payment ;die;
 				 if(!empty($master->remove_class_from_center) && $centerData->temp_admission_payment =='N')
 				 $where.=" and `student`.`class_id` NOT IN ($master->remove_class_from_center)";
-                 if($course_type == "REG"){
+                 if($course_type == "REG" && !in_array($this->session->center_id, $center_ids_dep)){
                     $this->db->where_not_in('student.course_group_id',$course_ids);
                 }
+				
+				
 			// $where.=" or (student.student_id in (715231, 715241, 716487, 717657, 717662, 722810) and online_payment_transaction.payment='N' )";
 			
 			// $where .= " and online_payment_transaction.fees_head='Admission Fees'  and  `student.payment_status`='N' and ( (student.class_name not like '%SEM%' and student.session='July 2021') or session!='July 2021')";
@@ -519,13 +527,13 @@ class Center extends CI_Controller {
 		}else{
 			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28));
 		}
-        if($course_type == "REG" && $param1=='Admission'){
+        if($course_type == "REG" && $param1=='Admission' && !in_array($this->session->center_id, $center_ids_dep) ){
             $this->db->where_not_in('student.course_group_id',$course_ids);
         }
 		$counttableData = $this->Datatable_join_model->joincountAll($_POST,$DataTableArray);
 				  
 		foreach($tableData as $result){
-			$center_ids_dep = array( 10,11,12,13,20,21,22,23,24,25,26,27,28,29,1975,2098,2115);
+		
 			if(in_array($this->session->center_id, $center_ids_dep)){
 				$modal ='<a href="#"  data-student_name = "'.$result->name.'"  data-student_id="'.$this->Common_model->encrypt_decrypt($result->student_id).'" class="btn btn-primary btn-sm font-weight-bold pay1" data-toggle="modal" data-target="#kt_datepicker_modal" "  data-amount= "'.$result->amount.'">Receive</a>';
 			}else{
@@ -550,7 +558,7 @@ class Center extends CI_Controller {
 		}else{
 			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28));
 		}
-        if($course_type == "REG" && $param1=='Admission'){
+        if($course_type == "REG" && $param1=='Admission' && !in_array($this->session->center_id, $center_ids_dep)){
             $this->db->where_not_in('student.course_group_id',$course_ids);
         }
 		$recordsFiltered = $this->Datatable_join_model->countFiltered($_POST,$DataTableArray);
@@ -560,7 +568,7 @@ class Center extends CI_Controller {
 			"recordsFiltered" => $recordsFiltered,
 			"data" => $data,
 		);
-	//	echo $this->db->last_query(); die;
+		//echo $this->db->last_query(); die;
         // Output to JSON format
 		echo json_encode($output);
 	}
@@ -3882,6 +3890,7 @@ public function practical_assignment_marks_edit(){
 
 	public function unpaid_student_list()
 	{
+		redirect(base_url('dashboard'));
 		$late_admission_fees_pvt = $this->Common_model->getRecordByWhere('master');
 		$csrf = array( 
 			'name_csrf' => $this->security->get_csrf_token_name(),
