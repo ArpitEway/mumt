@@ -92,7 +92,7 @@
  				</div>
                 
            
-    <div class="col-md-4">
+             <div class="col-md-4">
                     <div class="row py-2">
                         <label class="col-sm-4 text-heading">Exam form</label>
                         <div class="col-sm-8 text-value">
@@ -100,7 +100,7 @@
                         </div>
                     </div>
                 </div>
-    
+               
                   <div class="col-md-4">
  					<div class="row py-2">
  						<label class="col-sm-4 text-heading">Max Duration</label>
@@ -142,6 +142,21 @@
                             </div>
                         </div> -->
                         <?php //} ?>
+
+                        <?php 
+                $backlog = $this->Common_model->getRecordByWhere('backlog_student',array('student_id' =>$student->student_id,'exam_year'=>'June 2024'));
+                if($backlog){
+                ?>
+                <div class="col-md-4">
+                    <div class="row py-2">
+                        <label class="col-sm-4 text-heading">Backlog Exam Form</label>
+                        <div class="col-sm-8 text-value">
+                            <?php 
+                            echo $backlog[0]->exam_form ."(".$this->Common_model->getClassNameByClassId($backlog[0]->class_id) .")";  ?>
+                        </div>
+                    </div>
+                </div>
+                    <?php } ?>
  	        </div>
  	    </div>
     </div> 
