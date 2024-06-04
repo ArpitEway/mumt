@@ -453,8 +453,8 @@ class Center extends CI_Controller {
 		$late_privte_admission_fees=$this->input->post('late_privte_admission_fees');
 		$data = $row = array();
 		$center_ids_dep = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,1975,2098,2115);
-		$centerData =$this->Common_model->getRecordByWhere('center',array('id'=>$this->session->center_id));
-		$centerData=$centerData[0];
+		$centerData_unpaid =$this->Common_model->getRecordByWhere('center',array('id'=>$this->session->center_id));
+		$centerData_unpaid=$centerData_unpaid[0];
 		$where = 'online_payment_transaction.payment!="Y"';
 		
 		if($param1=='Admission'){
@@ -469,7 +469,7 @@ class Center extends CI_Controller {
 				$where .= "  and online_payment_transaction.remark='With Late Fees'  ";	
 			}
 
-			if($centerData->admission_permission=='N'  && $centerData->admission_permission_private=='N'){
+			if($centerData_unpaid->admission_permission=='N'  && $centerData_unpaid->admission_permission_private=='N'){
 				 $where .= "  and online_payment_transaction.center_id!=".$this->session->center_id;	
 			}
 		
@@ -489,7 +489,7 @@ class Center extends CI_Controller {
             	//stop admission of class
 				 $master = $this->Common_model->getSingleRow('master');
 				//  echo $centerData->temp_admission_payment ;die;
-				 if(!empty($master->remove_class_from_center) && $centerData->temp_admission_payment =='N')
+				 if(!empty($master->remove_class_from_center) && $centerData_unpaid->temp_admission_payment =='N')
 				 $where.=" and `student`.`class_id` NOT IN ($master->remove_class_from_center)";
                  if($course_type == "REG" && !in_array($this->session->center_id, $center_ids_dep)){
                     $this->db->where_not_in('student.course_group_id',$course_ids);
