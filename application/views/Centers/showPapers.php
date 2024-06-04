@@ -231,7 +231,7 @@
             
 			<div class="row d-flex justify-content-center p-3">
 				<?php if(@($this->session->center_id )   && ($this->session->admission_by!="web")){ ?>
-				<a class="btn btn-success" href="<?= base_url('center/Payment/admission/'.$this->Common_model->encrypt_decrypt($student['student_id'])) ?>">Process To Payment</a>
+				<!-- <a class="btn btn-success" href="<?= base_url('center/Payment/admission/'.$this->Common_model->encrypt_decrypt($student['student_id'])) ?>">Process To Payment</a> -->
 				<?php } else{
 					?>
 					<a class="btn btn-success" href="<?= base_url('Payment/formfess/'.$this->Common_model->encrypt_decrypt($student['student_id'])) ?>">Process To Payment</a>
