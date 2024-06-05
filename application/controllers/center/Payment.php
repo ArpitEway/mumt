@@ -299,6 +299,10 @@ class Payment extends CI_Controller {
 						$titleData = array('title'=>'Exam Form Payment');
 						$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 						$student = $this->Common_model->student_info($student_id);
+						if($student['new_exam_form']=='D'){
+							$this->session->set_flashdata('error','Student not permitted for Exam !');
+							redirect(base_url('dashboard'));
+						}
 						$master = $this->Common_model->getSingleRow('master');
 						$remove_class_from_center =explode(',', $master->remove_class_from_center);
 						if(in_array($student['class_id'],$remove_class_from_center) && ($center_permission[0]['temp_exam_form'] =='N')) 
