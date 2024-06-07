@@ -1271,6 +1271,7 @@ class Center extends CI_Controller {
 			$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
 		}
 		$data['exam_form_button'] = $exam_form1;
+		$data['master'] = $master;
 		
 		//$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
 		$this->load->view('Centers/header');

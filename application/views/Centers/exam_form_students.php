@@ -25,7 +25,7 @@
                <th>Student Name</th>
                <th>Course</th>
                <th>Class</th>
-               <th>Total Fees</th>
+               <th>Total Fees <?php if($master->late_exam_fee_status=='Y'){ echo ' + Late Fees';}?></th>
                <th>Action</th>
                 <?php if($exam_form_button=="notSubmitted"){ ?>
                     <th>Skip Exam Form</th>
@@ -54,6 +54,9 @@
               }else{
                 $program_fees =  $fees[0]->p_program_fees;    
                 $exam_fees =  $fees[0]->p_exam_fees;    
+              }
+               if($master->late_exam_fee_status=='Y'){ 
+                $exam_fees =$exam_fees + $master->p_late_fees;
               }
                 
             ?>

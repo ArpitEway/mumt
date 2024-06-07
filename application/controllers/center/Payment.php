@@ -163,9 +163,17 @@ class Payment extends CI_Controller {
 			$remsg = ($status=='success') ? 'success' : 'error';
 			$msg = ($status=='success') ? 'Payment submitted Successfully' : 'An error occurred';
 			$remark="";
-			if($productinfo == 'Demo Exam Fees'){
+			if($productinfo == 'Demo Exam Fees'  ){
 				$productinfo="Exam Fees";
 				$remark="Demo Exam Fees";
+			}
+			if($productinfo == 'Late Exam Fees'){
+				$productinfo="Exam Fees";
+				$remark="Late Exam Fees";
+			}
+			if( $productinfo == 'Late Demo Exam Fees'){
+				$productinfo="Exam Fees";
+				$remark="Late Demo Exam Fees";
 			}
 			$response = array(
 				"student_id" => $student_id,
@@ -319,20 +327,26 @@ class Payment extends CI_Controller {
 							'course_group_id' => $student['course_group_id'],
 						);
 						$fees = $this->Common_model->getRecordByWhere('course',$where);
+						$late_exam_fees=0;
+						$data['paymentType'] = 'Exam Fees';
+						if($master->late_exam_fee_status=='Y'){ 
+							$late_exam_fees= $master->p_late_fees;
+							$data['paymentType'] = 'Late Exam Fees';
+						  }
 						$data['student'] = $student;
 						$data['url'] = 'paynow';
-						$data['paymentType'] = 'Exam Fees';
+						
 						if ($student['university_mode']=='REG') {
 							if($student['demo']=='Y'){
-								$data['txnAmt'] = $fees[0]->exam_fees;
+								$data['txnAmt'] = $fees[0]->exam_fees +$late_exam_fees;
 							}else{
-								$data['txnAmt'] = $fees[0]->program_fees+$fees[0]->exam_fees;
+								$data['txnAmt'] = $fees[0]->program_fees+$fees[0]->exam_fees +$late_exam_fees;
 							}
 						}else{
 							if($student['demo']=='Y'){
-								$data['txnAmt'] = $fees[0]->p_exam_fees;
+								$data['txnAmt'] = $fees[0]->p_exam_fees +$late_exam_fees;
 							}else{
-								$data['txnAmt'] = $fees[0]->p_program_fees+$fees[0]->p_exam_fees;
+								$data['txnAmt'] = $fees[0]->p_program_fees+$fees[0]->p_exam_fees +$late_exam_fees;
 							}
 						}
 						$this->load->view('Centers/header',$titleData);
@@ -349,6 +363,7 @@ class Payment extends CI_Controller {
 			redirect(base_url('login'));
 		}
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		$master = $this->Common_model->getSingleRow('master');
 		$productinfo = 'Exam Fees';
 		if($student_id!=''){
 			$student = $this->Common_model->student_info($student_id);
@@ -357,6 +372,9 @@ class Payment extends CI_Controller {
 				'course_group_id' => $student['course_group_id'],
 			);
 			$fees = $this->Common_model->getRecordByWhere('course',$where);
+			
+			
+			
 			if ($student['university_mode']=='REG') {
 				$mode = "regular";
 				if($student['demo']=='Y'){
@@ -374,6 +392,11 @@ class Payment extends CI_Controller {
 					$txnAmt = $fees[0]->p_program_fees+$fees[0]->p_exam_fees;
 				}
 			}
+			if($master->late_exam_fee_status=='Y'){ 
+				$txnAmt =$txnAmt + $master->p_late_fees;
+
+				$productinfo = 'Late '.$productinfo;
+				}
 			if($student['new_exam_form']=='Y'){
 				$this->session->set_flashdata('warning','Payment Already Submitted');
 				redirect(base_url('dashboard'));
