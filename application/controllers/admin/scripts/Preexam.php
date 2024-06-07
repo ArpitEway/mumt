@@ -184,11 +184,12 @@ class Preexam extends CI_Controller {
 
 	// backlog
 	public function update_backlog_stdent_allottment_exam_center($startlimit=1){
+		$exam_year='June 2024';
         echo "update_stdent_allottment_exam_center<br>";
         $this->db->select('*');
         $this->db->from('backlog_student');
         $this->db->where('exam_center_id','0');
-		$this->db->where('exam_year','Dec 2023');
+		$this->db->where('exam_year',$exam_year);
         //$this->db->where('examcentercode','NU');
         $start=0;
 		//$start=($startlimit-1)*1000;
@@ -206,7 +207,7 @@ class Preexam extends CI_Controller {
             if(!empty($allottment)){
              
                 $data  = array('exam_center_id'=>$allottment[0]->exam_center_id ,'exam_center_code'=>$allottment[0]->examcentercode );
-                $where = array('student_id'=>$row->student_id,'exam_year'=>'Dec 2023');
+                $where = array('student_id'=>$row->student_id,'exam_year'=>$exam_year);
                 $update =$this->Common_model->updateRecordByConditions('backlog_student',$where,$data);
                 echo $i." ".$row->	center_code." ".$row->student_id." ".$row->name." Exam Code =>".$allottment[0]->examcentercode." <br>";
                $i++;
