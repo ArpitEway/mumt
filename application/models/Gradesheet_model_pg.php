@@ -64,7 +64,7 @@ class Gradesheet_model_pg extends CI_Model
 		$this->withheld = false;
 		foreach ($papers as $paper) {
 			$this->paper = $paper;
-			
+			/*
 			if($this->withheld || in_array($student->examcentercode ,array('MDE052','MDE081','MDE156') )){
 				
 				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
@@ -74,7 +74,7 @@ class Gradesheet_model_pg extends CI_Model
 				return $this->result();
 			
 				die;
-			}
+			}*/
 			// if ($this->fail_count>0 && !$this->check_grace_marks && $this->classData->final_result_permission!='Y' ) {  
 			// 	echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
 			// 	'<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
