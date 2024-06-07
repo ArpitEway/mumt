@@ -465,11 +465,11 @@ class Center extends CI_Controller {
             $course_ids = array_column($course,'id');
            //  print_r($centerData);//die;
 			$permission_session= $this->Common_model->getRecordByWhere('session',array('unpaid_permission'=>'Y' ));
-			if($late_privte_admission_fees=='Y'){
+			if($late_privte_admission_fees=='Y' && !in_array($this->session->center_id, $center_ids_dep)){
 				$where .= "  and online_payment_transaction.remark='With Late Fees'  ";	
 			}
 
-			if($centerData_unpaid->admission_permission=='N'  && $centerData_unpaid->admission_permission_private=='N'){
+			if($centerData_unpaid->admission_permission=='N'  && $centerData_unpaid->admission_permission_private=='N' && $centerData_unpaid->temp_admission_payment =='N'){
 				 $where .= "  and online_payment_transaction.center_id!=".$this->session->center_id;	
 			}
 		
@@ -3890,7 +3890,11 @@ public function practical_assignment_marks_edit(){
 
 	public function unpaid_student_list()
 	{
+		$center =$this->Common_model->getRecordByWhere('center',array('id'=>$this->session->center_id));
+		$center=$center[0];
+		if($center->temp_admission_payment=='N' ) { 
 		redirect(base_url('dashboard'));
+		}
 		$late_admission_fees_pvt = $this->Common_model->getRecordByWhere('master');
 		$csrf = array( 
 			'name_csrf' => $this->security->get_csrf_token_name(),
