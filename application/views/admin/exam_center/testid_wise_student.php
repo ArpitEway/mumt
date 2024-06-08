@@ -16,6 +16,9 @@
 				<th>Regular Backlog Students</th>		
 				<th>Regular Paper N/A</th>
 				<th>Regular Total Paper</th>
+				<?php if($multiple){ 
+					echo "<th>Private Paper Count/No.</th>";
+				}?>
 				<th>Private Total Students</th>	
 				<th>Private Backlog Students</th>		
 				<th>Private Paper N/A</th>
@@ -36,6 +39,9 @@
 				<th>Regular Backlog Students</th>		
 				<th>Regular Paper N/A</th>
 				<th>Regular Total Paper</th>
+				<?php if($multiple){ 
+					echo "<th>Private Paper Count/No.</th>";
+				}?>
 				<th>Private Total Students</th>	
 				<th>Private Backlog Students</th>		
 				<th>Private Paper N/A</th>
