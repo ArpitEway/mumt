@@ -397,6 +397,29 @@
 		}
 	}
 
+    public function regular_exam_form_permission(){
+		if($this->session->has_userdata('adminData'))
+		{
+            $exam_course_not=array(11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,71,72,73,74,75,76,77,78,79,69,70,68);
+            $this->db->select('count(center_code) as center, center_code,center_id');
+            $this->db->from('student');
+            $this->db->where_in('course_group_id', $exam_course_not);
+            $this->db->where(array('new_exam_form'=>'N', 'university_mode'=>'REG','class_name'=>'I Year','regular_exam_form_permission'=>'N'));
+            $this->db->group_by('center_id');
+            $centers = $this->db->get()->result();
+           //echo '<pre>';
+           //print_r($centers);die;
+			$data = array('name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+				'centers' =>$centers
+			);
+			$this->load->view('header',array('title'=>"Regular Exam Form Permission"));
+			$this->load->view('admin/enrollment/regular_exam_form_permission',$data);
+			$this->load->view('footer');
+		}else{
+			redirect(base_url('admin/login'));
+		}
+	}
 	public function getFormEditRequest()
 	{
 		if ($this->input->method() == "post") 
@@ -416,6 +439,36 @@
 				$dt =  $this->load->view('admin/enrollment/FormEditRequestDetails',$data,true);
 			}else{
 				$dt = "Invalid Center Code";
+			}
+			echo json_encode(array(
+				"status" => true,
+				"data" => $dt
+			));
+		}
+	}
+
+    public function getStudentForRegularExamForm()
+	{
+		if ($this->input->method() == "post") 
+		{
+			//$course_group_id = 0;
+			$data = array();
+			$dt   = array();
+			$center_id  = $this->input->post("center_id");
+            $exam_course_not=array(11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,71,72,73,74,75,76,77,78,79,69,70,68);
+            $this->db->select('student.*,center.center_name,center.contactpersonname,center.mobile_no_1,center.mobile_no_2');
+            $this->db->from('student');
+            $this->db->join('center', 'student.center_id = center.id');
+            $this->db->where_in('course_group_id', $exam_course_not);
+            $this->db->where(array('new_exam_form'=>'N', 'university_mode'=>'REG','class_name'=>'I Year','center_id'=>$center_id,'regular_exam_form_permission'=>'N'));
+           $studentData = $this->db->get()->result();
+			
+			$data = array('name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),'studentData' => $studentData,);
+			if($data['studentData']){
+				$dt =  $this->load->view('admin/enrollment/studentForRegularExamForm',$data,true);
+			}else{
+				$dt = "No Data Found";
 			}
 			echo json_encode(array(
 				"status" => true,
@@ -471,6 +524,35 @@
 
 				}else{
 					$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-danger req_check" value="Pending">';
+				}
+				$status = true;
+				$msg    = "";
+
+				echo json_encode(array(
+					"status" => $status,
+					"msg" => $msg,
+					"data" => $sts_btn
+				));
+			}
+		}
+	}
+
+    public function update_regular_form_status(){
+		if ($this->input->method() == "post"){
+			$id    	= 0;
+			$id    	= $this->input->post("id");
+			$status = $this->input->post("status");
+			if ($this->input->post("id")){
+				$data = $this->Common_model->updateRecordByConditions("student",array("student_id " => $id),array("regular_exam_form_permission" => $status ));
+
+				$dt = $this->db->get_where("student",array("student_id" => $id ))->result_array();
+
+				if($dt[0]['regular_exam_form_permission'] == 'Y')
+				{
+					$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-success req_check" value="Yes">';
+
+				}else{
+					$sts_btn = '<input type="button" name="update_req_stats" data-id='.$id.' class="btn btn-danger req_check" value="No">';
 				}
 				$status = true;
 				$msg    = "";
