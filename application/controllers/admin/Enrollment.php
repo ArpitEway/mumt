@@ -406,6 +406,7 @@
             $this->db->where_in('course_group_id', $exam_course_not);
             $this->db->where(array('new_exam_form'=>'N', 'university_mode'=>'REG','class_name'=>'I Year','regular_exam_form_permission'=>'N'));
             $this->db->group_by('center_id');
+            $this->db->order_by('center_code','asc');
             $centers = $this->db->get()->result();
            //echo '<pre>';
            //print_r($centers);die;
