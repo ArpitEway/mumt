@@ -4,7 +4,7 @@
         <div class="form-group col-md-3 m-auto">
         <label for="center_id">Center</label>
         <select name="center_id" id="center_id" class="form-control" required >
-            <option value="">All</option>
+            <option value="">Select Center</option>
             <?php
             foreach($centers as $center)
             {
