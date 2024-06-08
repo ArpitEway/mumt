@@ -57,7 +57,7 @@
 			foreach($list as $row){
 				if($multiple){
 					$datas=$this->Common_model->getRecordByWhere('paper_master',array("test_id"=>$row->test_id));
-					$allcounter=$counter=$back_counter=0;$paper_code_count=$course_name=$class_name=$paper_code=$paper_name=$ce="";
+					$allcounter_reg=$counter_reg=$back_counter_reg=$allcounter=$counter=$back_counter=0;$paper_code_count=$paper_code_count_reg=$course_name=$class_name=$paper_code=$paper_name=$ce="";
 					foreach($datas as $data){
 						$class=$this->Common_model->getRecordByWhere('class_master',array("id"=>$row->class_id));
 						// $where= array(
