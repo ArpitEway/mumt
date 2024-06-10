@@ -319,8 +319,8 @@ class Preexam extends CI_Controller {
 
 			echo "<br> ".$i." ".$row->papersname ." ". $row->papercode ." ". $row->new_test_id;
 			$data  = array('exam_date'=>$row->new_exam_date , 'exam_day'=>$row->new_exam_day, 'exam_shift'=>$row->new_exam_shift);
-            $where = array('test_id'=>$row->new_test_id,'paper_code'=> $row->papercode);
-            // ,'exam_date'=>'0000-00-00'
+            $where = array('test_id'=>$row->new_test_id,'paper_code'=> $row->papercode ,'exam_date'=>'0000-00-00');
+            
             $update =$this->Common_model->updateRecordByConditions('paper_master',$where,$data);
 		//	echo  $this->db->last_query(); die;
 			$i++;
