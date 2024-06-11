@@ -6,6 +6,7 @@
 			<th>Class</th>
 			<th>Paper ID</th>
 			<th>Paper No</th>
+			<th>New Pattern</th>
 			<th>Paper Name</th>
 			<th>Paper Code</th>
 			<th>Type</th>
@@ -29,6 +30,7 @@
 				<td><?=$this->Common_model->getClassNameByClassId($paper->class_id); ?></td>
 				<td><?=$paper->id ?></td>
 				<td><?=$paper->paper_no ?></td>
+				<td><?=$paper->cbcs_paper ?></td>
 				<td><?=$paper->paper_name ?></td>
 				<td><?=$paper->paper_code ?></td>
 				<td><?=$paper->type ?></td>
