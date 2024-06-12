@@ -45,7 +45,7 @@
 	 if($paper_count){
 
 		  // $newstring = date('y')."1".substr($student->center_code, -4); 
-		  $newstring = "232".substr($student->center_code, -4); 
+		  $newstring = "241".substr($student->center_code, -4); 
      ?>   
 <section class="break" style="font-size: 16px;">
 		<div class="admit-card" style="width:1030px !important; ">
@@ -63,27 +63,23 @@
 			<div class="BoxC border- padding">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>
+						<!-- <h5>
 							ATTENDANCE SHEET OF CANCELLED EXAM FOR ANNUAL/SEMESTER EXAMINATION OF JANUARY 2024
-						</h5>
-<!-- 
+						</h5> -->
 						<h5>Attendance Sheet Examination 
 							<?php
 							if($student->course_group_id==75 || $student->course_group_id==76 || $student->course_group_id==77){
-								if($student->class_id==255 || $student->class_id==257 )
-									echo 'March 2024';
-								else
-									echo '2024';
+								// if($student->class_id==255 || $student->class_id==257 )
+								// 	echo 'March 2024';
+								// else
+									echo ' 2024';
 							}
 							else{
-								echo 'January 2024';
+								echo ' June 2024';
 							}
-							
-							
 							?>
 						</h5>
-						
- -->					</div>
+					</div>
 				</div>
 			</div>
 			<div style="height: 8px;text-align: right;">
@@ -169,7 +165,7 @@
 					<td><?php echo $i ; ?></td>
 					<td><?php echo date("d-m-Y", strtotime($paper->exam_date)); ?></td>
 					<td><?php 
-					if($paper->exam_shift=='Afternoon' && ($student->class_id==259 || $student->class_id==261 || $student->class_id==263 || $student->class_id==255 || $student->class_id==257) ){
+					if($paper->exam_shift=='Afternoon' && ($student->class_id==268 || $student->class_id==264 || $student->class_id==270) ){
 						echo '12:00 PM To 3:00 PM';
 					}elseif($paper->exam_shift=='Early Morning'){
 						echo '07:00 To 10:00 AM';
