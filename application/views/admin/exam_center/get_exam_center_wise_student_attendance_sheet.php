@@ -94,6 +94,16 @@
 						<table class="table table-bordered">
 							<input type="hidden" value="<?php echo $student->student_id ; ?>" id="student_id">
 						  <tbody>
+						  <?php 
+							  // 169 MDE165 MMYVV UTD KAROUNDI
+							  // 178 MDE172 Nachiketa Collage of computer science commerce & Advanced Technology
+							  if($student->course_group_id==75 || $student->course_group_id==76 || $student->course_group_id==77){ ?>
+							<tr>
+							  <td colspan="4"><b>Exam Center: </b>
+							  <?php echo $exam[0]['schoolcollegename'].', '.$exam[0]['examcenteraddress'].', '.$exam[0]['city'];
+							  //$this->Common_model->getExamCenterNameById($student[0]->exam_center_id); ?></td>
+							</tr>
+							<?php }  ?>
 							<!-- <tr>
 							  <td colspan="4"><b>Exam Center: </b><?= $this->Common_model->getCenterNameById($student->id); ?></td>
 							</tr>

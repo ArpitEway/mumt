@@ -64,7 +64,7 @@
 			</div>
 			<?php 
 			$where = array('id' => $student[0]->exam_center_id);
-				//$exam = $this->Common_model->getRecordByWhere('exam_center',$where); ?>
+				$exam = $this->Common_model->getRecordByWhere('exam_center',$where); ?>
 			<div class="BoxD border- padding mar-bot">
 				<div class="row">
 					<div class="col-12">
@@ -76,7 +76,9 @@
 							  // 178 MDE172 Nachiketa Collage of computer science commerce & Advanced Technology
 							  if($student[0]->course_group_id==75 || $student[0]->course_group_id==76 || $student[0]->course_group_id==77){ ?>
 							<tr>
-							  <td colspan="4"><b>Exam Center: </b><?= $this->Common_model->getExamCenterNameById($student[0]->exam_center_id); ?></td>
+							  <td colspan="4"><b>Exam Center: </b>
+							  <?php echo $exam[0]['schoolcollegename'].', '.$exam[0]['examcenteraddress'].', '.$exam[0]['city'];
+							  //$this->Common_model->getExamCenterNameById($student[0]->exam_center_id); ?></td>
 							</tr>
 							<?php }  
 							/*$st=array(768558,771451,771494,771507,772866,772882);
@@ -149,7 +151,7 @@
 					<?php //endif ?> -->
 					<td><?php
 					
-					if($paper->exam_shift=='Afternoon' && ($student[0]->class_id==259 || $student[0]->class_id==261 || $student[0]->class_id==263 || $student[0]->class_id==255 || $student[0]->class_id==257) ){
+					if($paper->exam_shift=='Afternoon' && ($student[0]->class_id==259 || $student[0]->class_id==261 || $student[0]->class_id==263 || $student[0]->class_id==255 || $student[0]->class_id==257 || $student[0]->class_id==268 || $student[0]->class_id==264 || $student[0]->class_id==270) ){
 						echo '12:00 PM To 3:00 PM';
 					}
 					elseif($paper->exam_shift=='Morning'){
