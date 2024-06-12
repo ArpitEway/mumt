@@ -100,7 +100,8 @@
 							  if($student->course_group_id==75 || $student->course_group_id==76 || $student->course_group_id==77){ ?>
 							<tr>
 							  <td colspan="4"><b>Exam Center: </b>
-							  <?php echo $exam[0]->schoolcollegename.', '.$exam[0]->examcenteraddress.', '.$exam[0]->city;
+							  <?php echo $exam[0]->schoolcollegename.', '.$exam[0]->examcenteraddress;
+							  //.', '.$exam[0]->city;
 							  //$this->Common_model->getExamCenterNameById($student[0]->exam_center_id); ?></td>
 							</tr>
 							<?php }  ?>
