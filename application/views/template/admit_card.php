@@ -42,17 +42,17 @@
 			<div class="BoxC border- padding mar-bot">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Schedule of Cancelled Exam for Annual/Semester Examination of
+						<h5>Schedule of Exam for Annual/Semester Examination of
 								<?php
 								if($student[0]->course_group_id==75 || $student[0]->course_group_id==76 || $student[0]->course_group_id==77)
 								{
-									if($student[0]->class_id==255 || $student[0]->class_id==257 )
-									echo 'March 2024';
-									else
+									// if($student[0]->class_id==255 || $student[0]->class_id==257 )
+									// echo 'March 2024';
+									// else
 									echo '2024';
 								}
 								else{
-									echo 'January 2024';
+									echo 'June 2024';
 								} 
 								
 								
@@ -74,7 +74,7 @@
 							  <?php 
 							  // 169 MDE165 MMYVV UTD KAROUNDI
 							  // 178 MDE172 Nachiketa Collage of computer science commerce & Advanced Technology
-							  if($student[0]->exam_center_id==169 || $student[0]->exam_center_id==178){ ?>
+							  if($student[0]->course_group_id==75 || $student[0]->course_group_id==76 || $student[0]->course_group_id==77){ ?>
 							<tr>
 							  <td colspan="4"><b>Exam Center: </b><?= $this->Common_model->getExamCenterNameById($student[0]->exam_center_id); ?></td>
 							</tr>
