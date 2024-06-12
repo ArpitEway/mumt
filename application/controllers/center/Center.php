@@ -1567,7 +1567,7 @@ class Center extends CI_Controller {
 	}
 
 	public function admit_card_list(){
-		redirect(base_url());
+		//redirect(base_url());
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
@@ -1598,7 +1598,7 @@ class Center extends CI_Controller {
 
 
 	public function admit_card_student_list($class_id){
-		redirect(base_url());
+		//redirect(base_url());
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
