@@ -53,8 +53,8 @@ class Postexam extends CI_Controller {
        public function upload_old_marks()
        {
             
-            $this->db->select('course_name,student_result_dec_2023.class_name,class_id, COUNT(student_id) as cnt,student_result_dec_2023.university_mode,student_result_dec_2023.exam_pattern');
-            $this->db->join('class_master', 'student_result_dec_2023.class_id = class_master.id');
+            $this->db->select('course_name,student.class_name,class_id, COUNT(student_id) as cnt,student.university_mode,student.exam_pattern');
+            $this->db->join('class_master', 'student.class_id = class_master.id');
             // $this->db->where('cbcs', 'Y');
             //  $this->db->where('last_class', 'L');
             //$this->db->where('mode', 'Semester');
@@ -62,12 +62,12 @@ class Postexam extends CI_Controller {
             $this->db->where('upload_result', 'N');
             // $this->db->where('student_id',702308);
             $this->db->where('old_result_show', 'Y');
-            //$this->db->where('result_permission', 'Y');
+            $this->db->where('result_permission', 'Y');
             //  $this->db->where('final_result_permission', 'Y');
             // $this->db->where('marksheet_dispatch', 'Y');
             // $this->db->where('university_mode','REG');
             $this->db->group_by('class_id,university_mode');          
-            $data['courses'] = $this->db->get('student_result_dec_2023')->result();
+            $data['courses'] = $this->db->get('student')->result();
             $this->load->view('header',array('title' => ''));
             $this->load->view('admin/script/upload_old_marks',$data);
             $this->load->view('footer');
@@ -1040,10 +1040,10 @@ class Postexam extends CI_Controller {
 public function upload_old_grade_data_script($class_id="",$mode){
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
     $this->db->limit(500);
-    $this->db->where_not_in('student_id',array(711707)); //708907
+    $this->db->where_not_in('student_id',array(711707,708907));
    // $this->db->where_in('student_id',array(702981,700979));
     // $this->db->where('student_id',758798);
-    $students = $this->Common_model->getRecordByWhere("student_result_dec_2023",array("class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'N','university_mode'=>$mode ,'exam_pattern'=>'GRADE'));
+    $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'N','university_mode'=>$mode ,'exam_pattern'=>'GRADE'));
     //, "marksheet_dispatch"=>'Y'
     // $this->Common_model->last_query();
      // $this->db->where_in('course_group.course_type',array('Diploma','PGDiploma'));
