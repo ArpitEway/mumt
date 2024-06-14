@@ -157,7 +157,7 @@ table.last_table, .last_table td, .last_table th{
    
     $current_center=$student->center_id;
     $page_break_count++;
-    $marks = $this->Common_model->student_info_for_result($student->student_id,$student->class_id);
+    $marks = $this->Common_model->student_info_for_result($student->student_id,$student->old_class_id);
     // $this->Common_model->last_query();
     $BarCodecolspan = 10 + count($marks); 
     $total_theory_marks_obt = 0;
@@ -427,11 +427,11 @@ table.last_table, .last_table td, .last_table th{
 		<td class="align-middle text-right">Course Credit</td>
     <?php
     $credit = 0;
-    $std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $student->class_id,'student_id'=>$student->student_id));
-		$this->classData = $this->Common_model->getRecordById('class_master','id',$student->class_id);
+    $std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $student->old_class_id,'student_id'=>$student->student_id));
+		$this->classData = $this->Common_model->getRecordById('class_master','id',$student->old_class_id);
    
    
-			$papers = $this->Common_model->get_all_papers($student->student_id,$student->class_id);
+			$papers = $this->Common_model->get_all_papers($student->student_id,$student->old_class_id);
      
 		
 		
@@ -461,7 +461,7 @@ table.last_table, .last_table td, .last_table th{
     
 <span style="display:none;">
 <?php
-   $gradesheetData = $this->Gradesheet_tr_model_pg->view_result($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
+   $gradesheetData = $this->Gradesheet_tr_model_pg->view_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
   
   ?>
 </span>
@@ -704,7 +704,7 @@ table.last_table, .last_table td, .last_table th{
   </tr>
   
   <?php
-   $ddd = $this->Gradesheet_tr_model_pg->view_result($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
+   $ddd = $this->Gradesheet_tr_model_pg->view_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
 //   echo $final_result;die;
    
 //    if($ddd['agpa']<4 && $student->promote!="D" && $student->new_exam_form !="D"){
@@ -722,7 +722,7 @@ table.last_table, .last_table td, .last_table th{
       $final_remark = "-"; 
     
   
-  $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id<'=>$student->class_id));
+  $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id<'=>$student->old_class_id));
   ?> <tr>
   <td class="align-middle text-center "  colspan="2"><strong>
   <?= 'Session'.'<br>'.'Sem/Year'.'<br>'.'Roll no'.'<br>'.'Marks'?></strong>
