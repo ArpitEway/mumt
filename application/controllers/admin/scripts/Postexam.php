@@ -53,7 +53,7 @@ class Postexam extends CI_Controller {
        public function upload_old_marks()
        {
             
-            $this->db->select('course_name,student_result_dec_2023.class_name,class_id, COUNT(student_id) as cnt,student_result_dec_2023.university_mode,student.exam_pattern');
+            $this->db->select('course_name,student_result_dec_2023.class_name,class_id, COUNT(student_id) as cnt,student_result_dec_2023.university_mode,student_result_dec_2023.exam_pattern');
             $this->db->join('class_master', 'student_result_dec_2023.class_id = class_master.id');
             // $this->db->where('cbcs', 'Y');
             //  $this->db->where('last_class', 'L');
