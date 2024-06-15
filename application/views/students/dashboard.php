@@ -232,9 +232,9 @@ $studentData = $this->Common_model->getRecordById('student','student_id',$this->
 				
 <div class="notification"> 
 	<ul>
-		  <!-- <li>January 2024 परीक्षा कार्यक्रम - <strong> <a href="#" id="getTimeTable">Click Here</a>	 
+		  <li>June 2024 परीक्षा कार्यक्रम - <strong> <a href="#" id="getTimeTable">Click Here</a>	 
 			</strong>
-		</li>  -->
+		</li> 
         <!-- <li class="mt-5">Model Paper  - <strong><a href="<?=base_url('student_model_paper') ?>">Click Here</a></strong>
         </li> -->
 	</ul>

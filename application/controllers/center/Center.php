@@ -3017,7 +3017,7 @@ public function practical_assignment_marks_edit(){
 	}
 	
 	public function search_exam_by_course(){
-		 redirect(base_url('dashboard'));
+		 //redirect(base_url('dashboard'));
 		$dt = array();
 		$titleData = array('title' => 'Course Wise Exam Date ');
 		$this->load->view('Centers/header',$titleData);
