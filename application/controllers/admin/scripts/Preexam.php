@@ -151,9 +151,11 @@ class Preexam extends CI_Controller {
        // echo $this->db->last_query();
         $i=1;
 		$class_ids=array(101,104,107,110,113,116,119,125,128,131,134,137,140,143,146,149,183,185,187,189,191,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,221,222,223,224,225,226,227,228,255,256,261,262,267,268,273,274,275,276,279,280,283,285,287,289,291,293,295,297,302,303,310);
+		$center_ids=array(11,12,20);
          foreach($rows as $row){
+			 
 			$data  = array();
-			 if($row->session=="July 2023"  && $row->university_mode=="REG" && in_array($row->class_id, $class_ids)){
+			 if($row->session=="July 2023"  && $row->university_mode=="REG" && in_array($row->class_id, $class_ids) && (!in_array($row->center_id, $center_ids))){
 
 				$data  = array('exam_center_id'=>169 ,'examcentercode'=>'MDE165' );
 				$where = array('student_id'=>$row->student_id);
@@ -171,6 +173,7 @@ class Preexam extends CI_Controller {
 					$data  = array('exam_center_id'=>$allottment[0]->exam_center_id ,'examcentercode'=>$allottment[0]->examcentercode );
 					$where = array('student_id'=>$row->student_id);
 			 $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+			 $update_report =$this->Common_model->updateRecordByConditions('student_report',$where,$data);
 			 echo $i." ".$row->	center_code." ".$row->student_id." ".$row->name." Exam Code =>".$allottment[0]->examcentercode." <br>";
 					
 				
