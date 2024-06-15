@@ -1176,14 +1176,14 @@ public function update_roll_no_old_data(){
 	public function remove_old_class_paper(){
 		
 
-		$sql="SELECT e.id,e.student_id FROM `student_report` as s JOIN new_exam_form_report as e on s.student_id=e.student_id WHERE s.class_id!=e.class_id limit 25000";
+		$sql="SELECT e.id,e.student_id FROM `student_report` as s JOIN new_exam_form_report as e on s.student_id=e.student_id WHERE s.class_id!=e.class_id limit 50000";
 		$students = $this->db->query($sql)->result_array();
 		
 		foreach($students as $student)
         {
 			$where=array("student_id"=>$student['student_id'],"id"=> $student['id']);
 		    $response = $this->Common_model->deleteByWhere('new_exam_form_report',$where);
-			echo $this->db->last_query();
+			echo $this->db->last_query();echo "<br>";
 
 		}
 	}	
