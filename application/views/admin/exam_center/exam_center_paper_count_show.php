@@ -177,8 +177,8 @@ foreach($papers as $pap)
                </td>
                <td><div align="left"><?= $paper->exam_shift?></div></td>
                <td style="text-align:center;"><?php 
-              //  echo $count[0]['cnt']." ".$allElective." ".$count_backlog[0]['cnt'];
-               echo $count[0]['cnt']+$allElective+$count_backlog[0]['cnt']; ?> </td>
+                echo $count[0]['cnt']." ".$allElective." ".$count_backlog[0]['cnt'];
+              // echo $count[0]['cnt']+$allElective+$count_backlog[0]['cnt']; ?> </td>
             </tr>
             <?php 
                $i++;  $total+= $count[0]['cnt']+$allElective+$count_backlog[0]['cnt'];
