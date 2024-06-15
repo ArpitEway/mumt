@@ -81,7 +81,7 @@ foreach($elist as $row)
             <td style="text-align:center;vertical-align:middle"><h4><?= $paperData[0]['test_id'] ?></h4></td>
             <td style="vertical-align:middle"><strong>Quantity</strong></td>
             <td colspan="" bgcolor="#FFFFFF" style="text-align:center; vertical-align:middle"><span style="font-size:20px;font-weight:bold;text-decoration:underline;font-style:italic;">
-            <?php echo "(All=> ".$allElective.") Fill=> ".$count[0]['cnt'] ." backlog ".$count_backlog[0]['cnt']; 
+            <?php //echo "(All=> ".$allElective.") Fill=> ".$count[0]['cnt'] ." backlog ".$count_backlog[0]['cnt']; 
             echo $allElective +$count[0]['cnt']+$count_backlog[0]['cnt'];
             ?>
            
