@@ -134,7 +134,7 @@ foreach($exam_centers as $row)
             $this->db->from('student as s');
             $this->db->join('new_exam_form  as e', 'e.student_id = s.student_id AND s.class_id = e.class_id');
             $this->db->where('s.new_exam_form',"Y");
-            $this->db->where('s.notification_no',1);	
+            $this->db->where('s.notification_no',0);	
             $this->db->where('s.examcentercode',$row->examcentercode);	
             $this->db->where('s.exam_center_id',$row->id);	
             $this->db->where_in('paper_id', $papersid );
@@ -146,7 +146,7 @@ foreach($exam_centers as $row)
 
 
             /************/
-            $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` and s.id=e.backlog_student_id WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form='Y' AND `e`.`status`='B' AND `e`.`class_id`='".$papers_all[0]['class_id']."' AND `e`.`paper_code`='".$papers_all[0]['paper_code']."' and s.exam_year='Dec 2023'";    
+            $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` and s.id=e.backlog_student_id WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form='Y' AND `e`.`status`='B' AND `e`.`class_id`='".$papers_all[0]['class_id']."' AND `e`.`paper_code`='".$papers_all[0]['paper_code']."' and s.exam_year='June 2024'";    
             $query_back = $this->db->query($sql_back);
             $count_backlog = $query_back->result_array();
             $allStudentCount= $count[0]->cnt+$count_backlog[0]['cnt'];
@@ -212,7 +212,7 @@ foreach($exam_centers as $row)
             </tr>
             <tr>
                 <td colspan="5" align="right" ><!-- Max Student Count (in one shift) --> </td>
-                <td><?php //$mstud=max($max_count); ?></td>
+                <td><?php $mstud=max($max_count); ?></td>
                 <td colspan="8" align="right">महायोग</td>
                 <td><?php echo $tot; 
                 $where = array('examcentercode' => $row->examcentercode,'id'=> $row->id);
