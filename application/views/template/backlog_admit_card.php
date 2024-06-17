@@ -47,7 +47,7 @@
 							 if( $student[0]->course_group_id==76){
 								echo '2024';
 							}else{
-								echo 'January 2024';
+								echo 'June 2024';
 							}
 							?> 
 						</h5>

@@ -183,8 +183,8 @@
 					}elseif($paper->exam_shift=='Morning'){
 						echo '11:00 AM To 2:00 PM';
 					}elseif($paper->exam_shift=='Afternoon' ){ 
-						//echo '03:00 PM To 6:00 PM';
-						echo '12:00 PM To 3:00 PM';
+						echo '03:00 PM To 6:00 PM';
+						//echo '12:00 PM To 3:00 PM';
 					} ?></td>
 					<td style="text-align:left;"><?php echo $paper->paper_name; ?></td>
 					<td ></td>
