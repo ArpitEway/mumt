@@ -36,7 +36,7 @@
 					 
 					 //'exam_form_permission' => 'Y'
 					$this->db->where_not_in('id',array(268,264,270));
-					$this->db->where_in('id',array(104));
+					//$this->db->where_in('id',array(104));
 					$classData = $this->Common_model->getRecordByWhere('class_master',$whereclass);
 					$j=0;
 					foreach ($classData as $class) {
@@ -47,6 +47,7 @@
 							'course_group_id' => $class->course_group_id
 						);
 						// $this->db->where_not_in('center_id',array('261','1252'));
+						$this->db->limit(1);
 						$students = $this->Common_model->getRecordByWhereByOrder('student',$where,'center_id,name','ASC');
 					
 						$whereRollNo = "new_exam_form = 'Y' and roll_no !='0' and class_id = $class->id";
@@ -62,7 +63,7 @@
 								$whereUpdate = array('student_id' => $student->student_id);
 								$updateData = array('roll_no' =>$roll_no);
 								$this->Common_model->updateRecordByConditions('student',$whereUpdate,$updateData);
-								die;
+							
 							}
 							$last_number++ ;
 							?>
