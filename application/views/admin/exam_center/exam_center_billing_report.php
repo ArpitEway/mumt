@@ -8,8 +8,10 @@
 				<th>School/College Name </th>
 				<th>City</th>
 				<th>Max Student</th>
+				<?php  if($this->session->account_type !="ExamController"){ ?>
 				<th>Ans Sheet</th>
 				<th>Amount</th>
+				<?php } ?>
 			</tr>
 		</thead>
 		<tfoot>
@@ -18,9 +20,11 @@
 				<th>Exam Center Code </th>
 				<th>School/College Name </th>
 				<th>City</th>
-				<th>Max Student</th>
+				<th>Max Student </th>
+				<?php  if($this->session->account_type !="ExamController"){ ?>
 				<th>Ans Sheet</th>
 				<th>Amount</th>
+				<?php } ?>
 				
 			</tr>
 		</tfoot>
@@ -39,6 +43,7 @@
 				$this->db->where('s.examcentercode',$examCenter['examcentercode']);	
 				$this->db->where('s.exam_center_id',$examCenter['id']);	
 				$this->db->where('exam_date!=',"0000-00-00");	
+				$this->db->where_not_in('s.class_id',array(264,268,270));
 				$this->db->where_not_in('paper_no_for_time_table', array('1B','2B'));
 				$this->db->where_in('s.new_exam_form ',array('Y'));
 				$this->db->group_by(array('exam_date','exam_shift'));
@@ -52,7 +57,9 @@
 				$this->db->join('paper_master  as p', 's.class_id=p.class_id AND e.paper_code = p.paper_code');
 				$this->db->where('s.exam_center_code',$examCenter['examcentercode']);	
 				$this->db->where('s.exam_center_id',$examCenter['id']);	
+				$this->db->where('e.status','B');	
 				$this->db->where('exam_date!=',"0000-00-00");	
+				$this->db->where_not_in('s.class_id',array(264,268,270));
 				$this->db->where_not_in('paper_no_for_time_table', array('1B','2B'));
 				$this->db->where_in('s.exam_form ',array('Y'));
 				$this->db->group_by(array('exam_date','exam_shift'));
@@ -69,8 +76,10 @@
 					<td><?php echo $examCenter['schoolcollegename']; ?></td>
 					<td><?php echo $examCenter['city']; ?></td>
 					<td><?php echo $tot_max_count; ?></td>
-					<td><?php echo $examCenter['study_center_id']; ?></td>
-					<td><?php echo $examCenter['billing_amount']; ?></td>
+					<?php  if($this->session->account_type !="ExamController"){ ?>
+						<td><?php echo $examCenter['study_center_id']; ?></td>
+						<td><?php echo $examCenter['billing_amount']; ?></td>
+					<?php } ?>
 				</tr>
 				<?php $i++; }
 				?>

@@ -3540,5 +3540,24 @@ public function getStudentData()
 		echo $this->load->view('admin/exam_center/get_center_wise_student_admit_card',$data, TRUE);
 	}
 
-		
+		//Exam Center Wise Billing fetch
+	public function exam_center_wise_max_student_count (){
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}else
+		{
+		$data = array();
+		$data['title'] = "Exam Center Wise Max Student count June 2024";
+		$csrf = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash()
+		);
+		$this->db->order_by('examcentercode');
+		$data['examCenters'] = $this->db->get_where('exam_center', array())->result_array();
+		$this->load->view('header',$data);
+		$this->load->view('admin/exam_center/exam_center_billing_report',$csrf);
+		$this->load->view('footer');
+		}
+	}	
 }// class
