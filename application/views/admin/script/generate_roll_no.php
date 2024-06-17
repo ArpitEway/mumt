@@ -17,6 +17,7 @@
 			<thead>
 				<tr>
 					<th>#</th>
+					<th>Form No.</th>
 					<th>Name</th>
 					<th>Father's / Husband's Name</th>
 					<th>Course Name</th>
@@ -69,6 +70,7 @@
 							?>
 							<tr>
 								<td><?=$i++;?></td>
+								<td><?=$student->student_id;?></td>
 								<td><?=$student->name;?></td>
 								<td><?=$student->f_h_name;?></td>
 								<td><?=$student->course_name;?></td>
