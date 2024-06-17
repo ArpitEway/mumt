@@ -48,7 +48,7 @@
 							'course_group_id' => $class->course_group_id
 						);
 						// $this->db->where_not_in('center_id',array('261','1252'));
-						$this->db->limit(1);
+						$this->db->limit(100);
 						$students = $this->Common_model->getRecordByWhereByOrder('student',$where,'center_id,name','ASC');
 					
 						$whereRollNo = "new_exam_form = 'Y' and roll_no !='0' and class_id = $class->id";
