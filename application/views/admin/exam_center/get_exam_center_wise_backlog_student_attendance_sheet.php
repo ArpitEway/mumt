@@ -44,7 +44,7 @@
 	 if($paper_count){
 
 		  // $newstring = date('y')."1".substr($student->center_code, -4); 
-		  $newstring = "231".substr($student->center_code, -4); 
+		  $newstring = "241".substr($student->center_code, -4); 
 		 //echo "test"; print_r($student);  die;
      ?>   
 <section class="break" style="font-size: 16px;">
@@ -63,7 +63,7 @@
 			<div class="BoxC border- padding">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>ATTENDANCE SHEET OF CANCELLED EXAM FOR ANNUAL/SEMESTER EXAMINATION OF JANUARY 2024
+						<h5>ATTENDANCE SHEET OF EXAM FOR ANNUAL/SEMESTER EXAMINATION OF JUNE 2024
 							<!-- Attendance Sheet Examination  -->
 							<?php
 							// if($student->course_group_id==77){
@@ -91,6 +91,18 @@
 						<table class="table table-bordered">
 							<input type="hidden" value="<?php echo $student->student_id ; ?>" id="student_id">
 						  <tbody>
+
+						  <?php 
+							  // 169 MDE165 MMYVV UTD KAROUNDI
+							  // 178 MDE172 Nachiketa Collage of computer science commerce & Advanced Technology
+							  if($student->course_group_id==75 || $student->course_group_id==76 || $student->course_group_id==77 || $student->exam_center_id==169 || $student->exam_center_id==167){ ?>
+							<tr>
+							  <td colspan="4"><b>Exam Center: </b>
+							  <?php echo $exam[0]->schoolcollegename.', '.$exam[0]->examcenteraddress;
+							  //.', '.$exam[0]->city;
+							  //$this->Common_model->getExamCenterNameById($student[0]->exam_center_id); ?></td>
+							</tr>
+							<?php }  ?>
 							<!-- <tr>
 							  <td colspan="4"><b>Exam Center: </b><?= $this->Common_model->getCenterNameById($student->id); ?></td>
 							</tr>
