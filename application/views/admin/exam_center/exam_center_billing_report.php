@@ -59,6 +59,7 @@
 				$this->db->where('s.exam_center_id',$examCenter['id']);	
 				$this->db->where('e.status','B');	
 				$this->db->where('exam_date!=',"0000-00-00");	
+				$this->db->where('exam_year' , 'June 2024');
 				$this->db->where_not_in('s.class_id',array(264,268,270));
 				$this->db->where_not_in('paper_no_for_time_table', array('1B','2B'));
 				$this->db->where_in('s.exam_form ',array('Y'));
@@ -67,7 +68,7 @@
 				$this->db->limit(1);
 				$backlog_count = $this->db->get()->result();
 				$tot_max_count=$main_count[0]->cnt+$backlog_count[0]->cnt;
-
+				
                // echo $this->db->last_query();
 				?>
 				<tr>
