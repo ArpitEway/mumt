@@ -118,7 +118,7 @@
 							</tr>
 							<tr>
 							  <td><b>Course: </b> <?=$student->course_name;?> (<?= $this->Common_model->getClassNameByClassId($student->class_id);?>) </td>
-							  <td colspan="2"><b>EC Code: </b> <?=$student->exam_center_code;?></td>
+							  <td colspan="2"><b>EC Code: </b> <?=$student->exam_center_user;?></td>
 							</tr>
 							<tr>
 							  <td colspan="3"><b>Student Name: </b> <?=$student->name;?></td>
