@@ -120,7 +120,7 @@
 							</tr>
 							<tr>
 							  <td><b>Course: </b> <?=$student->course_name;?> <?php if($student->class_id!=163 && $student->class_id!=175 ) echo  '('.$student->class_name.')';?> </td>
-							  <td colspan="2"><b>EC Code: </b> <?=$student->exam_center_user;?></td>
+							  <td colspan="2"><b>EC Code: </b> <?=$exam[0]->exam_center_user;?></td>
 							</tr>
 							<tr>
 							  <td colspan="3"><b>Student Name: </b> <?=$student->name;?></td>
