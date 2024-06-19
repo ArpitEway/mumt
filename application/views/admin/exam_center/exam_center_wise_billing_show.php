@@ -144,11 +144,17 @@ foreach($exam_centers as $row)
 
             $exam_date=$edate->exam_date;
 
-
+         
             /************/
-            $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` and s.id=e.backlog_student_id WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form='Y' AND `e`.`status`='B' AND `e`.`class_id`='".$papers_all[0]['class_id']."' AND `e`.`paper_code`='".$papers_all[0]['paper_code']."' and s.exam_year='June 2024'";    
+            $paperscode = array_column($papers_all, 'paper_code');
+            $paperscode=implode("','",$paperscode);
+
+             $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` and s.id=e.backlog_student_id WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form='Y' AND `e`.`status`='B'  AND `e`.`paper_code` in ('".$paperscode."') and s.exam_year='June 2024'  ";  
+          
+        
             $query_back = $this->db->query($sql_back);
             $count_backlog = $query_back->result_array();
+           // echo $this->db->last_query();  die;
             $allStudentCount= $count[0]->cnt+$count_backlog[0]['cnt'];
             /***********/
             array_push($max_count,$allStudentCount);
