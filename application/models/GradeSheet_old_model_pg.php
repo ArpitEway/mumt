@@ -102,9 +102,9 @@ class GradeSheet_old_model_pg extends CI_Model
 		// print_r($this->foundation_paper);
 	}
 
-    public function view_old_results($student_id,$course_group_id,$class_id,$mode)
+    public function view_old_results($student_id,$course_group_id,$class_id,$mode,$exam_id='')
 	{
-        $papers = $this->Common_model->get_all_old_papers($student_id,$class_id);
+        $papers = $this->Common_model->get_all_old_papers($student_id,$class_id,$exam_id);
 	
 	
 		// get_all_group_papers
@@ -148,13 +148,13 @@ class GradeSheet_old_model_pg extends CI_Model
 		return $this->result();
 
     }
-	public function view_result_grade($student_id,$course_group_id,$class_id,$mode)
+	public function view_result_grade($student_id,$course_group_id,$class_id,$mode,$exam_id='')
 	{
 		
 		
 		
 		
-			$papers = $this->Common_model->get_all_old_papers($student_id,$class_id);
+			$papers = $this->Common_model->get_all_old_papers($student_id,$class_id,$exam_id);
 		
 		
 		// get_all_group_papers
