@@ -6,8 +6,9 @@
 <div class="row">
 		<div class="form-group col-md-6">
 			<label for="name">Paper name</label>
-			<input type="text" class="form-control" id="paper_name" name="paper_name" value="<?=$paper->paper_name?>" placeholder="Enter paper name">
+			<input type="text" class="form-control" id="paper_name" name="paper_name" value="<?=$paper->paper_name?>" placeholder="Enter paper name" disabled>
 			<input type="hidden" name="paper_id" value="<?=$param1?>">
+			
 		</div>
 		
     <!--    <div class="form-group col-md-6"> 
@@ -38,7 +39,7 @@
 			<input type="text" class="form-control" id="exam_time" name="exam_time" value="<?=$paper->exam_shift?>" placeholder="Enter Exam time ">        
 		</div> -->
 
-      <div class="form-group col-md-6">
+      <!-- <div class="form-group col-md-6">
 			<label for="code">Max Theory Marks</label>
 			<input type="text" class="form-control" id="max_theory" name="max_theory" value="<?=$paper->max_theory_marks?>" placeholder="Enter Max Theory Marks ">        
 		</div>
@@ -56,7 +57,7 @@
 		<div class="form-group col-md-6">
 			<label for="code">Min Internal Marks</label>
 			<input type="text" class="form-control" id="min_int" name="min_int" value="<?=$paper->min_internal_marks?>" placeholder="Enter Min Internal Marks">        
-		</div>    
+		</div>     -->
            <div class="form-group col-md-6">
             <label for="name">Upload Paper</label>
           <input type="file" class="form-control"  id="file" name="file">
