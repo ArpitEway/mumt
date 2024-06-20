@@ -41,7 +41,7 @@
                      <td>
 						<?php 
 						if($paper["exam_date"] != "0000-00-00" ){
-								$this->Common_model->viewDate($paper["exam_date"]);
+							echo	$this->Common_model->viewDate($paper["exam_date"]);
 						 }
 						?>
                     </td>

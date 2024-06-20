@@ -58,7 +58,7 @@
 			<input type="text" class="form-control" id="min_int" name="min_int" value="<?=$paper->min_internal_marks?>" placeholder="Enter Min Internal Marks">        
 		</div>    
            <div class="form-group col-md-6">
-            <label for="name">Uplode Paper</label>
+            <label for="name">Upload Paper</label>
           <input type="file" class="form-control"  id="file" name="file">
         </div>  
 	</div>
