@@ -3495,8 +3495,8 @@ public function update_exam_datewise_permission(){
 			if(in_array($class_id , $class_cbcs))
 			{
                 $this->load->model('GradeSheet_old_model_pg');
-                $this->load->model('Gradesheet_model_pg');
-                $this->load->view('admin/student_marksheet_grade_pg',$data);
+                $this->load->model('Gradesheet_backlog_model_pg');
+                $this->load->view('admin/backlog_student_marksheet_grade_pg',$data);
 			}else{
 				$this->load->model('Gradesheet_backlog_model');
 				$this->load->view('admin/backlog_student_marksheet_grade',$data);
@@ -5848,7 +5848,13 @@ public function forward_complaint(){
 		$data['mode']= $mode;
 		$data['students']= $this->Common_model->getRecordByWhere('backlog_student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'exam_form'=>'Y' ,'roll_no!='=>'0', 'mode'=>$mode,'exam_year'=>"Dec 2023"));//'result_show'=>'Y'
 		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
-		$this->load->view('admin/backlog_student_notification_list',$data);
+        $class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280);
+        if((in_array($class_id, $class_cbcs))){
+			$this->load->model('Gradesheet_backlog_tr_model_pg');
+			$this->load->view('admin/backlog_student_notification_list_pg',$data);
+		}else{
+		    $this->load->view('admin/backlog_student_notification_list',$data);
+        }
 	}
 
 	public function withheld_backlog_student_list($course_id="",$class_id=""){

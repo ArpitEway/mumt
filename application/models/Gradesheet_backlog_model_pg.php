@@ -322,11 +322,9 @@ class Gradesheet_backlog_model_pg extends CI_Model
 			$this->result = 'RW';
 		}
 		else if ($this->fail_count!=0 && $this->agpa>=4) {
-			if ($this->check_grace_marks) {
-				$this->result = 'PASS BY GRACE';
-			}else{
+			
 				$this->result = 'FAIL';
-			}
+			
 		}else if($this->agpa<4){
 			$this->result = 'FAIL';
 		}else{
@@ -435,9 +433,8 @@ class Gradesheet_backlog_model_pg extends CI_Model
             die;
         }
 		$this->fail_count;
-		if ($this->fail_count>0) {
-			 $require_grace_marks = $this->fail_min_marks-$this->fail_obt_marks;
-		}
+		
+        
 		foreach ($this->result_array as $key => $result) {
 			
 			
@@ -445,27 +442,27 @@ class Gradesheet_backlog_model_pg extends CI_Model
 			echo '<tr style="padding:4px;font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="center">';
 			echo '<td style="margin-top:2px;" align="center"><strong>'.$key.'</strong></td>';
 			echo "<td align='left'><strong>".$result['paper_name']."</strong></td>";
-			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
-				$this->check_grace_marks = true;
-				$this->obt_tot_credit += $result['credit'];
-				$req_marks = $result['min_marks']-$result['obt_marks'];
-				$obt_marks = $result['obt_marks']+$req_marks;
-				$tot_obt_grace = $result['obt_marks']+$result['int_obt_marks'];
-				$tot_marks_grace = $result['max_marks']+$result['int_max_marks'];
-				$persent = $tot_obt_grace*100/$tot_marks_grace;
-				$where = 'min_marks <= '.$persent.' and  max_marks >= '.$persent.'';
-				$gradeData = $this->Common_model->getRecordByWhere('letter_grade_pg',$where);
-				$result['grade_point'] = $gradeData[0]->grade_point;
-				$credit_point = $result['credit']*$result['grade_point'];
-				$this->result_array[$key]['credit_point']=$credit_point;
-				$this->tot_credit_point += $credit_point;
-				echo "<td align='center' colspan='3'><span class='style4'>".$result['credit']."</span></td>";
-				echo "<td align='center' colspan='3'><span class='style4'>".$result['credit']."</span></td>";
-				echo "<td align='center' colspan='2'><span class='style4'>".$result['grade_point']."</span></td>";
-				echo "<td align='center' colspan='2''><span class='style4'>".$credit_point."</span></td>";
-				echo "<td align='center' colspan='2'><span class='style4'>".$gradeData[0]->letter_grade.'-G'."</span></td>";
+			// if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+			// 	$this->check_grace_marks = true;
+			// 	$this->obt_tot_credit += $result['credit'];
+			// 	$req_marks = $result['min_marks']-$result['obt_marks'];
+			// 	$obt_marks = $result['obt_marks']+$req_marks;
+			// 	$tot_obt_grace = $result['obt_marks']+$result['int_obt_marks'];
+			// 	$tot_marks_grace = $result['max_marks']+$result['int_max_marks'];
+			// 	$persent = $tot_obt_grace*100/$tot_marks_grace;
+			// 	$where = 'min_marks <= '.$persent.' and  max_marks >= '.$persent.'';
+			// 	$gradeData = $this->Common_model->getRecordByWhere('letter_grade_pg',$where);
+			// 	$result['grade_point'] = $gradeData[0]->grade_point;
+			// 	$credit_point = $result['credit']*$result['grade_point'];
+			// 	$this->result_array[$key]['credit_point']=$credit_point;
+			// 	$this->tot_credit_point += $credit_point;
+			// 	echo "<td align='center' colspan='3'><span class='style4'>".$result['credit']."</span></td>";
+			// 	echo "<td align='center' colspan='3'><span class='style4'>".$result['credit']."</span></td>";
+			// 	echo "<td align='center' colspan='2'><span class='style4'>".$result['grade_point']."</span></td>";
+			// 	echo "<td align='center' colspan='2''><span class='style4'>".$credit_point."</span></td>";
+			// 	echo "<td align='center' colspan='2'><span class='style4'>".$gradeData[0]->letter_grade.'-G'."</span></td>";
 				
-			}else{
+			// }else{
 				if($result['obt_marks'] === 'ABS' || ($result['f_abs'] === 'ABS' && $result['obt_marks'] == '0')
 			){
 					$result['letter_grade'] = 'ABS';
@@ -476,7 +473,7 @@ class Gradesheet_backlog_model_pg extends CI_Model
 				echo "<td align='center' colspan='2'><span class='style4'>".$result['grade_point']."</span></td>";
 				echo "<td align='center' colspan='2'><span class='style4'>".$result['credit_point']."</span></td>";
 				echo "<td align='center' colspan='2'><span class='style4'>".$result['letter_grade']."</span></td>";
-			}
+			//}
 			echo "</tr>";
 		}
 	}
@@ -502,7 +499,7 @@ class Gradesheet_backlog_model_pg extends CI_Model
 		
 		
 		echo '<th colspan="2" style="font-size:14px;">Total</th>';
-			echo '<th colspan="3" style="font-size:14px;"> '.$this->tot_credit.'</th>';
+			echo '<th colspan="3" style="font-size:14px;">'.$this->tot_credit.'</th>';
 			echo '<th colspan="3" style="font-size:14px;">'.$this->obt_tot_credit.'</th>';
 			echo '<th colspan="2"></th>';
 			echo '<th style="font-size:14px;" colspan="3">'.$this->tot_credit_point.'</th>';
