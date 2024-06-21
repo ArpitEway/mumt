@@ -1581,7 +1581,7 @@ class ExamController extends CI_Controller {
 
 		if ($this->input->method() == "post") 
 		{
-			$class_id    = 0;
+			//$class_id    = 0;
 			$class_id    = $this->input->post("class_id");
 			$paper_status    = $this->input->post("status");
 			$course_group_id    = $this->input->post("course_group_id");
@@ -1589,16 +1589,19 @@ class ExamController extends CI_Controller {
 			if($course_group_id!='All'){
 				$where = array('course_group_id' => $course_group_id);
 			}
-			if($class_id!='All'){
+			if($class_id!=='ALL' && $class_id!=='All' ){
 				$where = array('class_id' => $class_id);
+				
 			}
-			if($paper_status=='Y'){
-				$where = array('paper_file!=' => '');
+			if($paper_status=='Y'){	
+				$this->db->where('paper_file is Not NULL');
 			}
-			if($paper_status=='N'){
-				$where = array('paper_file' => '');
+			if($paper_status=='N'){	
+				$this->db->where('paper_file is  NULL');
 			}
+			$this->db->order_by("course_group_id,class_id,cbcs_paper,sub_group_id", "asc");
 			$papers = $this->db->get_where("paper_master",$where)->result_array();
+			//echo $this->db->last_query(); die;
 			$htmlData = array(
 				'papers' => $papers,
 				'name_csrf' => $this->security->get_csrf_token_name(),
