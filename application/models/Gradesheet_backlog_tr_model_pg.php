@@ -80,15 +80,15 @@ class Gradesheet_backlog_tr_model_pg extends CI_Model
 	}
 
 	// notification 
-	public function view_notification($student_id,$course_group_id,$class_id,$mode)
+	public function view_notification($student_id,$course_group_id,$class_id,$mode,$exam_id)
 	{
 		
-		$std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $class_id,'student_id'=>$student_id));
+		$std  = $this->Common_model->getRecordByWhere('backlog_exam_form',array('class_id'=> $class_id,'student_id'=>$student_id,'backlog_student_id'=>$exam_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
 		
 		
-			$papers = $this->Common_model->get_all_papers($student_id,$class_id);
+			$papers = $this->Common_model->get_all_backlog_papers($student_id,$class_id,$exam_id );
 		
 	
 		
@@ -118,15 +118,14 @@ class Gradesheet_backlog_tr_model_pg extends CI_Model
 		
 	}
 
-	public function view_notification_result($student_id,$course_group_id,$class_id,$mode)
+	public function view_notification_result($student_id,$course_group_id,$class_id,$mode,$exam_id)
 	{
 		
-		$std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $class_id,'student_id'=>$student_id));
+		$std  = $this->Common_model->getRecordByWhere('backlog_exam_form',array('class_id'=> $class_id,'student_id'=>$student_id,'backlog_student_id'=>$exam_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
 		
-		
-			$papers = $this->Common_model->get_all_papers($student_id,$class_id);
+		$papers = $this->Common_model->get_all_backlog_papers($student_id,$class_id,$exam_id );
 		
 	
 		
