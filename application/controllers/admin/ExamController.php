@@ -1599,7 +1599,7 @@ class ExamController extends CI_Controller {
 			if($paper_status=='N'){	
 				$this->db->where('paper_file is  NULL');
 			}
-			$this->db->order_by("course_group_id,class_id,cbcs_paper,sub_group_id", "asc");
+			$this->db->order_by("course_group_id,class_id,cbcs_paper", "asc");
 			$papers = $this->db->get_where("paper_master",$where)->result_array();
 			//echo $this->db->last_query(); die;
 			$htmlData = array(
