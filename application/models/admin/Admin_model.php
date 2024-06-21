@@ -682,16 +682,17 @@ class Admin_model extends CI_Model {
        $test_id = $this->Common_model->getRecordByWhere('paper_master',array('id'=>$param1));
        $paper_testid=  $test_id[0]->test_id;
       
-		$data['paper_name']     = html_escape($this->input->post('paper_name'));
+	//	$data['paper_name']     = html_escape($this->input->post('paper_name'));
 	/*	$data['exam_day']       = html_escape($this->input->post('exam_day'));
 		$data['exam_date']      = html_escape($this->input->post('exam_date'));
 		$data['exam_shift']     = html_escape($this->input->post('exam_time'));
-		*/
+	
 		$data['max_theory_marks']     = html_escape($this->input->post('max_theory'));
         $data['min_theory_marks']     = html_escape($this->input->post('min_theory'));
         $data['max_internal_marks']     = html_escape($this->input->post('max_int'));
         $data['min_internal_marks']     = html_escape($this->input->post('min_int'));
-
+	*/
+	
         if($_FILES['file']['name']!='')
         {
         	if(file_exists(FCPATH.'/assets/model_paper/'.$paper_testid)){
@@ -707,6 +708,7 @@ class Admin_model extends CI_Model {
         }
 		$this->db->where('id', $param1);
 		$this->db->update('paper_master', $data);	
+		
         $response = array(
         			'status' => true
         			);

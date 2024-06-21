@@ -1,7 +1,7 @@
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 <div class="container-fluid mt-5">
 <div class="row table">
-<div class="form-group col-md-6 ">
+<div class="form-group col-md-4 ">
             <label for="course">Course</label>
             <select name="course_group_id" id="course_group_id" class="form-control course_group_id" data-target=".table #class_id" data-all="all" required >
                 <option value="">Select course</option>
@@ -12,18 +12,27 @@
                     foreach($courses as $course)
                     {
                     ?>
-                    <option value="<?php echo $course['id']; ?>"><?php echo $course['course_name']; ?></option>    
+                    <option value="<?php echo $course['id']; ?>" <?php if( $course['id']==$course_group_id) {echo 'selected';}?>><?php echo $course['course_name']; ?></option>    
 					<?php
                     } 
                 ?>
             </select>       
 </div>
-<div class="form-group col-md-6">
+<div class="form-group col-md-4">
 	<label for="class">Class</label>
     <select name="class_id" id="class_id" class="form-control">
     	<option value="All">Select Class</option>
 	</select>
 </div>
+<div class="form-group col-md-4">
+	<label for="class">Modal Paper Status</label>
+    <select name="status" id="status" class="form-control">
+    	<option value="All">All</option>
+        <option value="Y">Uploaded</option>
+        <option value="N">Not Uploaded </option>
+	</select>
+</div>
+
 </div>
 <div align="center" id="myLoader" class="loader_div" style="display: none;" >
   <svg>
@@ -37,12 +46,17 @@
 
 </div>
 <script>
+loadPaper();
+$(document).on("change",".table #status",function(){
+    loadPaper();
 
+});
 $(document).on("change",".table #class_id",function(){
 	    if($("#class_id").val()){
             var csrfName = $('.csrfname').attr('name');
 		var csrfHash = $('.csrfname').val(); 
-		 var class_id = $(this).val()
+		 var class_id = $(this).val();
+        
 		} 
         else 
         {
@@ -50,6 +64,7 @@ $(document).on("change",".table #class_id",function(){
 	    }
 		var data = {
 			class_id : class_id,
+            status : $('#status').val(),
 			course_group_id : $('.table #course_group_id').val(),
             [csrfName]:csrfHash
 			};
@@ -62,12 +77,34 @@ $(document).on("change",".table #class_id",function(){
 });
 
 $(document).on("change",".table #course_group_id",function(){
- $('#dt').hide();
+    loadPaper();
+});
+
+function loadPaper(){
+
+    var csrfName = $('.csrfname').attr('name');
+	var csrfHash = $('.csrfname').val(); 
+
+	var course =$("#course_group_id").val();
+		$.ajax({
+			method: "POST",
+			url: BASE_URL+"admin/Admins/getClassByCourse",
+			data: { course_group_id : course,
+					[csrfName]:csrfHash
+
+					},
+		})
+		.done(function( msg ) {
+            $('#class_id').html(msg);
+		});
+
+    $('#dt').hide();
 	if($("#course_group_id").val()){
         var csrfName = $('.csrfname').attr('name');
 		var csrfHash = $('.csrfname').val(); 
         var data = {
             class_id : $("#class_id").val(),
+            status : $('#status').val(),
             course_group_id : $('.table #course_group_id').val(),
             [csrfName]:csrfHash
         };
@@ -93,5 +130,5 @@ $(document).on("change",".table #course_group_id",function(){
                 }//success
             })
 	} 
-});
+}
 </script>
