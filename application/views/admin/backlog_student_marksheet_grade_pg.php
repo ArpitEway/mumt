@@ -57,14 +57,14 @@
       // print_r($papers);
       ?>
       <fieldset id="printarea" class="breakhere" style="width:90%;border: 0px solid #22316C;"> 
-        <div align="left" class="margin-top-marksheet"> MS No. <?php echo $student->back_marksheet_no; ?> </div>
+       
         <table align="center" border="0" width="100%">
           <tbody>
             <tr>
-              <td height="100" colspan="2" valign='bottom'>
+              <td height="110" colspan="2" valign='bottom'>
                 <center>
                 <?php  //$course_name = explode('(',$student->course_name);?>
-                  <strong><?php echo  ($isOneClass) ? $student->course_name .' '."(One Year Course)" :$student->course_name .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->class_id)); ?> <?= ' Backlog '.$marksheet_variables->exam_session ?></strong>
+                  <strong style="font-size: 18px;"><?php echo  ($isOneClass) ? $student->course_name .' '."(One Year Course)" :$student->course_name .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->class_id)); ?> <?= ' Backlog '.$marksheet_variables->exam_session ?></strong>
                 </center>
               </td>
             </tr>
@@ -228,7 +228,7 @@
                       <?php  echo $generator->getBarcode($marksheet_variables->bar_code_no.$student->roll_no, $generator::TYPE_CODE_128,2,25); ?>
                     </td>
                   </tr>
-                 
+                  <tr><td><div align="left" class="margin-top-marksheet"> MS No. <?php echo $student->back_marksheet_no; ?> </div></td></tr>
               </td>
             </tr>
           </tbody>
