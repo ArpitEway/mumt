@@ -57,14 +57,14 @@
       // print_r($papers);
       ?>
       <fieldset id="printarea" class="breakhere" style="width:90%;border: 0px solid #22316C;"> 
-        <div align="left" class="margin-top-marksheet"> MS No. <?php echo $student->marksheet_no; ?> </div>
+        
         <table align="center" border="0" width="100%">
           <tbody>
             <tr>
-              <td height="100" colspan="2" valign='bottom'>
+              <td height="110" colspan="2" valign='bottom'>
                 <center>
                 <?php  //$course_name = explode('(',$student->course_name);?>
-                  <strong><?php echo  ($isOneClass) ? $student->course_name .' '."(One Year Course)" :$student->course_name .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->old_class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
+                  <strong style="font-size: 18px;"><?php echo  ($isOneClass) ? $student->course_name .' '."(One Year Course)" :$student->course_name .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->old_class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
                 </center>
               </td>
             </tr>
@@ -222,6 +222,7 @@
             </tr>
           </tbody>
         </table>
+        <div align="left" class="margin-top-marksheet" style="padding-left:5px;"> MS No. <?php echo $student->marksheet_no; ?> </div>
       </fieldset>
     <?php } ?>
   </center>
