@@ -1557,19 +1557,21 @@ class ExamController extends CI_Controller {
 		echo $this->load->view('admin/exam_center/exam_center_paper_count_show',$data, TRUE);
 	}
 
-	public function paper()
+	public function paper($param1='')
 	{
 
 		if(!$this->session->has_userdata('adminData')){
 			redirect(base_url('admin'));
 			exit;
 		}	
+		
 		$this->load->view('header',array('title'=>'Paper'));
-		$csrf = array(
+		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
-			'hash_csrf' => $this->security->get_csrf_hash()
+			'hash_csrf' => $this->security->get_csrf_hash(),
+			'course_group_id'=>$param1
 		);
-		$this->load->view('admin/examController/paper',$csrf);
+		$this->load->view('admin/examController/paper',$data);
 		$this->load->view('footer');
 
 	}
@@ -1579,17 +1581,27 @@ class ExamController extends CI_Controller {
 
 		if ($this->input->method() == "post") 
 		{
-			$class_id    = 0;
+			//$class_id    = 0;
 			$class_id    = $this->input->post("class_id");
+			$paper_status    = $this->input->post("status");
 			$course_group_id    = $this->input->post("course_group_id");
 			$where = array();
 			if($course_group_id!='All'){
 				$where = array('course_group_id' => $course_group_id);
 			}
-			if($class_id!='All'){
+			if($class_id!=='ALL' && $class_id!=='All' ){
 				$where = array('class_id' => $class_id);
+				
 			}
+			if($paper_status=='Y'){	
+				$this->db->where('paper_file is Not NULL');
+			}
+			if($paper_status=='N'){	
+				$this->db->where('paper_file is  NULL');
+			}
+			$this->db->order_by("course_group_id,class_id,cbcs_paper,sub_group_id", "asc");
 			$papers = $this->db->get_where("paper_master",$where)->result_array();
+			//echo $this->db->last_query(); die;
 			$htmlData = array(
 				'papers' => $papers,
 				'name_csrf' => $this->security->get_csrf_token_name(),

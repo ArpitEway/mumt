@@ -512,8 +512,13 @@ class Admins extends CI_Controller {
 
 			if($param1 == 'update'){
 				$response = $this->admin_model->update_paper($param2);
+				$paper=$this->Common_model->getRecordByWhere('paper_master',array('id'=>$param2 ));
 				$this->session->set_flashdata('ajax_flash_message','Paper Successfully Updated');
-				redirect(base_url().'paper');
+				if($this->session->account_type=="ExamController")
+					$url=base_url().'/ExamController/paper/'.$paper[0]->course_group_id;
+				else
+					$url=base_url().'/paper/'.$paper[0]->course_group_id;
+				redirect($url);
 			}
 
 			if($param1 == 'delete'){
