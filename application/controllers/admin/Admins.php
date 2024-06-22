@@ -3045,7 +3045,7 @@ public function update_exam_datewise_permission(){
 		 $data['pagenumber']=$pagenumber;
 		 $data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		// $class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280);
-        $class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281);
+        $class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302);
 		if((in_array($class_id, $class_cbcs)) && $pattern=="GRADE"){
 			$this->load->model('Gradesheet_tr_model_pg');
 			$this->load->view('admin/student_notification_list_pg',$data);
@@ -3437,7 +3437,7 @@ public function update_exam_datewise_permission(){
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode,'old_result_show'=>'Y','exam_pattern'=>'GRADE'));
 		}
 	 	// if($class->internal=="Y" && $mode!="PVT"){
-			$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281);
+			$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302);
 			if(in_array($class_id , $class_cbcs))
 			{
                 $this->load->model('GradeSheet_old_model_pg');
@@ -3886,7 +3886,7 @@ public function update_exam_datewise_permission(){
 		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$data['mode'] = $mode;
         // $class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280);
-        $class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281);
+        $class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302);
         
         if((in_array($class_id, $class_cbcs)) && $pattern=="GRADE"){
 			$this->load->model('Gradesheet_tr_model_pg');
