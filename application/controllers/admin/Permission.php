@@ -231,7 +231,7 @@ class Permission extends CI_Controller {
 		$this->load->view('header',array("title"=>"Center Wise Permission"));	
         $data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
-		$data['centers'] = $this->Common_model->getRecordByWhere("center" , array());
+		$data['centers'] = $this->Common_model->getRecordByWhere("center" , array('status'=> 'Y'));
 		$this->load->view('admin/permission/center_wise_permission',$data);
 		$this->load->view('footer');	
 	}
