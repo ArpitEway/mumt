@@ -299,7 +299,7 @@ class Postexam extends CI_Controller {
             //     $studentData['demo'] = 'Y';
             //     $studentData['new_exam_form'] = 'N';
             // }else
-            if(($fail_count>1 && $student->course_group_id==76) || ($paper_count==$theory_abs_count)){
+            if(($fail_count>1 && $student->course_group_id==76) || ($paper_count==$theory_abs_count) || ($paper_count == $whCount)){
                 $studentData['promote'] = 'D';    
             }else{
                 $studentData['promote'] = 'N';
