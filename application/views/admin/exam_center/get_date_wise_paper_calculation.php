@@ -91,7 +91,7 @@ $page_break_count = 1;
          $query = $this->db->query($sql);
          $main_count = $query->result_array();
 
-         $sql_backlog="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND   `s`.`course_group_id` = `e`.`course_group_id`  join paper_master as p on s.class_id=p.class_id and s.course_group_id=p.course_group_id  and `e`.`paper_code` = p.paper_code WHERE   ".$where." and exam_year='Dec 2023' and exam_form in ('Y') and `e`.status= 'B'";
+         $sql_backlog="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND   `s`.`course_group_id` = `e`.`course_group_id`  join paper_master as p on s.class_id=p.class_id and s.course_group_id=p.course_group_id  and `e`.`paper_code` = p.paper_code WHERE   ".$where." and exam_year='June 2024' and exam_form in ('Y') and `e`.status= 'B'";
          
         
          $backlog_query = $this->db->query($sql_backlog);
