@@ -365,9 +365,9 @@
 
 
 <!-- Button trigger modal-->
-<!-- <button type="button" class="btn btn-primary" id="popupbtn" style="    visibility: hidden;" data-toggle="modal" data-target="#exampleModalCenter">
+ <button type="button" class="btn btn-primary" id="popupbtn" style="    visibility: hidden;" data-toggle="modal" data-target="#exampleModalCenter">
     Launch demo modal
-</button> -->
+</button> 
 
 <!-- Modal data-backdrop="static"  -->
 <div class="modal fade" id="exampleModalCenter"     tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
@@ -381,7 +381,7 @@
             </div>
             <div class="modal-body">
 				<img src="<?=base_url('assets/images/center/new.gif')?>" alt=""> <b>
-				सूचित किया जाता है कि आगामी परीक्षाओं के लिये बिना विलम्ब शुल्क के परीक्षा आवेदन पत्र भरने की अंतिम तिथि 07 जून 2024 एवं विलम्ब शुल्क 100 रुपये सहित परीक्षा आवेदन पत्र भरने की तिथि 08 जून 2024 से 15 जून 2024 तक निर्धारित की गयी है। निर्धारित तिथि तक परीक्षा आवेदन पत्र भरने की प्रक्रिया पूर्ण करे| उक्त तिथि के पश्चात् किसी भी आवेदन पर विचार नहीं किया जायेगा|
+				सूचित किया जाता है कि आगामी परीक्षाओं के लिये विलम्ब शुल्क 100 रुपये सहित परीक्षा आवेदन पत्र ऑनलाइन भरने की तिथि में वद्धि कर 23 जून 2024 से 25 जून 2024 तक निर्धारित की गयी है। निर्धारित अंतिम तिथि तक परीक्षा आवेदन पत्र भरने की प्रक्रिया अनिवार्य रूप से पूर्ण करे| उक्त तिथि के पश्चात् किसी भी परीक्षा आवेदन पर विचार नहीं किया जायेगा |
 				</b><br><br>
 				
             </div>
