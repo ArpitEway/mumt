@@ -1218,7 +1218,7 @@ class Common_Model extends CI_Model{
         }
 		// $this->db->join('group_paper','paper_master.id=group_paper.paper_id');
 		$this->db->where($where); 
-		if($class_check->class_group == 'Y'){
+		if($class_check->class_group == 'Y' &&  $class_check->mode!='Semester'){
 		$this->db->where('old_result_data.sub_group_id',1);
 		}
 		$query = $this->db->get();
