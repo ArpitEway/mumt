@@ -116,15 +116,15 @@ if ($fail_count>0 && !$check_grace_marks && $marks->student_id!=684208 && $class
   <?php
 }else{
 ?>
-<?php /*
-if ($withheld ||  in_array($student->examcentercode ,array('MDE052','MDE081','MDE156') )) { 
+<?php 
+if ($withheld ) { //||  in_array($student->examcentercode ,array('MDE052','MDE081','MDE156') )
   ?>
   <div class="text-center text-primary border-right border-left border-bottom border-dark py-3">
     <h1 class=" text-center mb-0">Statement Of Marks</h1>
     <h3 class="text-center">WH</h3>
   </div>
   <?php
-}else */ if ($old_fail) {
+}else  if ($old_fail) {
   ?>
   <div class="text-center text-primary border-right border-left border-bottom border-dark py-3">
     <h1 class=" text-center mb-0">Statement Of Marks</h1>
