@@ -47,7 +47,7 @@
 	 $paper_count = count($papers);
 	 if($paper_count){
 
-		  $newstring = "232".substr($student['center_code'], -4); 
+		  $newstring = "241".substr($student['center_code'], -4); 
      ?>  
 <!-- <div id="ss">       -->
 <section class="break" style="font-size: 16px;" >
@@ -71,7 +71,7 @@
 							if($student['course_group_id']==75 || $student['course_group_id']==76 ||$student['course_group_id']==77 ){
 								echo '2024';
 							}else{
-								echo 'January 2024';
+								echo 'June 2024';
 							}
 							
 							?>
@@ -91,6 +91,17 @@
 						<table class="table table-bordered">
 							<input type="hidden" value="<?php echo $student['student_id'] ; ?>" id="student_id">
 						  <tbody>
+						  <?php 
+							  // 169 MDE165 MMYVV UTD KAROUNDI
+							  // 178 MDE172 Nachiketa Collage of computer science commerce & Advanced Technology
+							  if($student['course_group_id']==75 || $student['course_group_id']==76 || $student['course_group_id']==77 || $student['exam_center_id']==169 || $student['exam_center_id']==167){ ?>
+							<tr>
+							  <td colspan="4"><b>Exam Center: </b>
+							  <?php echo $exam[0]->schoolcollegename.', '.$exam[0]->examcenteraddress;
+							  //.', '.$exam[0]->city;
+							  //$this->Common_model->getExamCenterNameById($student[0]->exam_center_id); ?></td>
+							</tr>
+							<?php }  ?>
 							<!-- <tr>
 							  <td colspan="4"><b>Exam Center: </b><?= $this->Common_model->getCenterNameById($student['id']); ?></td>
 							</tr>
@@ -106,7 +117,7 @@
 							</tr>
 							<tr>
 							  <td><b>Course: </b> <?=$student['course_name'];?> (<?=$student['class_name'];?>) </td>
-							  <td colspan="2"><b>EC Code: </b> <?=$student['examcentercode'];?></td>
+							  <td colspan="2"><b>EC Code: </b> <?=$exam[0]->exam_center_user;?></td>
 							</tr>
 							<tr>
 							  <td colspan="3"><b>Student Name: </b> <?=$student['name'];?></td>
