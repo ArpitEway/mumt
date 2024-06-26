@@ -1389,6 +1389,7 @@ class ExamController extends CI_Controller {
 		$this->db->select('*');
 		$this->db->from('exam_center');
 		//$this->db->where('examcentercode','MDE034');
+		$this->db->where_in('examcentercode',array('MDE143','MDE163','MDE165'));
 		$this->db->order_by("exam_center.examcentercode", "asc");
 		$data['elist'] = $this->db->get()->result();//echo $this->db->last_query(); die;
 		if($multiple){
