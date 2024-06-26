@@ -365,9 +365,9 @@
 
 
 <!-- Button trigger modal-->
- <button type="button" class="btn btn-primary" id="popupbtn" style="    visibility: hidden;" data-toggle="modal" data-target="#exampleModalCenter">
+<!--  <button type="button" class="btn btn-primary" id="popupbtn" style="    visibility: hidden;" data-toggle="modal" data-target="#exampleModalCenter">
     Launch demo modal
-</button> 
+</button>  -->
 
 <!-- Modal data-backdrop="static"  -->
 <div class="modal fade" id="exampleModalCenter"     tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
