@@ -3600,7 +3600,7 @@ public function practical_assignment_marks_edit(){
 	}
 
 	public function support_system_complaint($param = ""){
-
+		redirect(base_url());
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}else{

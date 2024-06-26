@@ -278,16 +278,18 @@
 						</a> 
 						
 						<?php endif ?>
-						<a class="border-0 custom-menu-item" href="<?=base_url('support_system_complaint');?>">
+
+						<!-- <a class="border-0 custom-menu-item" href="<?=base_url('support_system_complaint');?>">
 							<div>
 								<span class="nav-text">Exam Form Complaint</span>
 							</div>
 						</a> 
-					<a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
-					 	<div>
-							<span class="nav-text">Time Table June 2024</span>
-					 	</div>
-					</a>  
+ -->
+						<a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
+					 		<div>
+								<span class="nav-text">Time Table June 2024</span>
+					 		</div>
+						</a>  
 					
 					
 
