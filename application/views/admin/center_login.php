@@ -18,6 +18,7 @@
 						<th>Center Id</th>
 						<th>Center Code</th>
 						<th>Center Name</th>
+						<th>City</th>
 						<th>Contact Person</th>
 						<th>Mobile No</th>
 						<th>Options</th>
