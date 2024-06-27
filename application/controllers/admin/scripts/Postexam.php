@@ -361,6 +361,7 @@ class Postexam extends CI_Controller {
                 'old_class_id' =>$_POST['old_class_id'],
                 'temp_exam_form' => 'N',
                 'new_exam_form' => 'N',
+                'demo' => 'N',
                 'promote' => 'Y'
                 
             );
