@@ -159,7 +159,7 @@
                        
                         <?php 
        
-                          $gradesheetData = $this->GradeSheet_old_model_pg->view_result_grade($exam_data->student_id,$exam_data->course_group_id,$exam_data->class_id,$exam_data->university_mode);
+                          $gradesheetData = $this->GradeSheet_old_model_pg->view_result_grade($exam_data->student_id,$exam_data->course_group_id,$exam_data->class_id,$exam_data->university_mode,$exam_data_id);
                           
                             ?>
                     </tbody></table>
@@ -187,7 +187,7 @@
                             $sno= 'Fourth';
                         }
                         if($exam_data->class_id>=$cls->id){
-                              $gradeData   = $this->GradeSheet_old_model_pg->view_old_results($student->student_id,$student->course_group_id,$cls->id,$student->university_mode);
+                              $gradeData   = $this->GradeSheet_old_model_pg->view_old_results($student->student_id,$student->course_group_id,$cls->id,$student->university_mode,$exam_data_id);
                           ?>
                             <tr align="center"><th><?=$sno?></th><td><?= ($gradeData['tot_credit'] == 0)?'':$gradeData['tot_credit']?></td><td><?php if($gradeData['obt_credit'] == 0 && $gradeData['tot_credit'] !=0) { echo '0'; }elseif($gradeData['obt_credit'] == 0){ echo '';}else{ echo $gradeData['obt_credit'];}?></td><td><?php if ($gradeData['credit_point'] == 0 && $gradeData['tot_credit'] !=0){ echo '0';}elseif($gradeData['credit_point'] == 0){ echo ''; }else { echo $gradeData['credit_point']; }?></td><td>
                               <?php if(is_nan($gradeData['agpa'])){

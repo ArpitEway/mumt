@@ -3268,6 +3268,7 @@ public function getStudentData()
 		$course_id = $new_exam_form[0]->course_group_id;
 		$data['old_result_data']  = $new_exam_form;
 		$data['class_id']  = $new_exam_form[0]->class_id;
+		$data['exam_data_id']=$exam_data_id ;
 		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
 		// $title = array('title' => 'Result');
 		$data['exam_data'] = $this->Common_model->getRecordById('old_exam_data','id',$exam_data_id);

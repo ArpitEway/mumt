@@ -33,10 +33,10 @@ class GradeSheet_old_model_pg extends CI_Model
 		
 	}
 
-	public function view_result($student_id,$course_group_id,$class_id,$mode)
+	public function view_result($student_id,$course_group_id,$class_id,$mode,$exam_data_id='')
 	{
 	
-		$papers = $this->Common_model->get_all_old_papers($student_id,$class_id);
+		$papers = $this->Common_model->get_all_old_papers($student_id,$class_id,$exam_data_id);
 	
 	
 		// get_all_group_papers
