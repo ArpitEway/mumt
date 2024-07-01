@@ -14,11 +14,13 @@
 					<th>DOB</th>
 					<th>Course</th>
 					<th>Class</th>
-					<th>
 					<?php if($this->session->account_type == "Admins" || $this->session->account_type == "Enrollment"){ ?>	
+					<th>
+					
 					Edit	
-					<?php } ?>
+					
 					</th>
+					<?php } ?>
 					<th>Mobile no</th>
 					<th>Payment</th>
 					<th>Document Uploaded</th>
@@ -89,12 +91,14 @@
 							<td><?php 
 								echo $student["class_name"];
 							 ?></td>
+							 <?php if($this->session->account_type == "Admins" || $this->session->account_type == "Enrollment") { ?> 
 							<td>
-							<?php if(($this->session->account_type == "Admins" || $this->session->account_type == "Enrollment") && $student['enrolled']!='Y'){ ?> 
+								<?php if( $student['enrolled']!='Y'){ ?> 
 								
-								<a target="_blank"  href='<?php echo base_url($this->session->account_type.'/editForm/').$this->Common_model->encrypt_decrypt($student["student_id"],'encrypt'); ?>'><i class="fa fa-pen"></i></a> 
-								
-							<?php } ?></td>
+								   <a target="_blank"  href='<?php echo base_url($this->session->account_type.'/editForm/').$this->Common_model->encrypt_decrypt($student["student_id"],'encrypt'); ?>'><i class="fa fa-pen"></i></a> 
+								<?php } ?>
+							</td>
+							<?php } ?>
 							<td><?php echo $this->Common_model->getMobileNoByStudentID($student["student_id"]) ?></td>
 							<td><?php if( $student["payment_status"]=='Y'){echo 'Paid' ;}else{echo 'Unpaid' ;} ?></td>
 							<td><?php if( $student["document_uploaded"]=='Y'){echo 'Uploaded' ;}else{echo 'Not Uploaded' ;} ?></td>
