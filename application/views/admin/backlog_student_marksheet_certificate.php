@@ -277,7 +277,7 @@
                               <?php echo  ($student->mode=='REG')?$paper->max_theory_marks:$paper->private_max_theory_marks;?></span>
                             </td>
                             <td align="center" ><span class="style4 tdFont">
-                              <?php echo  ($syudent->mode=='REG')?$paper->min_theory_marks:$paper->private_min_theory_marks; ?></span>
+                              <?php echo  ($student->mode=='REG')?$paper->min_theory_marks:$paper->private_min_theory_marks; ?></span>
                             </td>
                             
                             <td align="center" ><span class="style4 tdFont" >
