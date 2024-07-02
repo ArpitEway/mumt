@@ -1379,7 +1379,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
 }
 
     function backlog_student_course_complete(){
-        $exam_year="June 2023";
+        $exam_year="Dec 2023";
         $class_id = 'backlog_student.class_id';
           $this->db->select('DISTINCT(backlog_student.course_group_id),'.$class_id.'');
           $this->db->from('backlog_student');
@@ -1401,7 +1401,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
       }
       public function backlog_student_course_complete_script()
     { //
-            $exam_year="June 2023";    
+            $exam_year="Dec 2023";    
             $course_group_id =$_POST['course_group_id'];
             $class_id= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course_group_id,'last_class'=>'L'));
             
