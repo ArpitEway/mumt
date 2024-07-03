@@ -36,7 +36,7 @@
 			
 			foreach($examCenters as $examCenter){
 
-				$this->db->select('count(*) as cnt');
+				/*$this->db->select('count(*) as cnt');
 				$this->db->from('student as s');
 				$this->db->join('new_exam_form  as e', 'e.student_id = s.student_id AND s.class_id = e.class_id');
 				$this->db->join('paper_master  as p', 's.class_id=p.class_id AND e.paper_code = p.paper_code');
@@ -68,7 +68,7 @@
 				$this->db->limit(1);
 				$backlog_count = $this->db->get()->result();
 				$tot_max_count=$main_count[0]->cnt+$backlog_count[0]->cnt;
-				
+				*/
                // echo $this->db->last_query();
 				?>
 				<tr>
@@ -76,7 +76,7 @@
 					<td><?php echo $examCenter['examcentercode']; ?></td>
 					<td><?php echo $examCenter['schoolcollegename']; ?></td>
 					<td><?php echo $examCenter['city']; ?></td>
-					<td><?php echo $tot_max_count; ?></td>
+					<td><?php //echo $tot_max_count; ?></td>
 					<?php  if($this->session->account_type !="ExamController"){ ?>
 						<td><?php echo $examCenter['study_center_id']; ?></td>
 						<td><?php echo $examCenter['billing_amount']; ?></td>
