@@ -46,11 +46,28 @@ $abs_count = 0;
     ?>
     <tr>
       <th><?php echo $marks->paper_name; ?></th>
-      <th class="text-center"><?php  echo $paper_master[0]->private_max_theory_marks; ?></th>
+      <th class="text-center"><?php  echo ($exam_data->university_mode == 'REG')?$paper_master[0]->max_theory_marks:$paper_master[0]->private_max_theory_marks; ?></th>
       <th class="text-center">
       <?php 
             if($marks->type == 'theory'){
-              $total_max_marks += $paper_master[0]->private_max_theory_marks;
+                if($exam_data->university_mode == 'REG'){
+                    $total_max_marks += $paper_master[0]->max_theory_marks;
+            $total_obtained_marks += $marks->theory_marks;
+             if($marks->theory_marks<$paper_master[0]->min_theory_marks || $marks->theory_marks=="ABS"){
+            if($marks->carry_theory==""){
+              echo $marks->theory_marks."<span style='color:red'>"."*"."</span>";
+            }else{
+              echo $marks->theory_marks.$marks->carry_theory;
+            }
+          }else{
+            if($marks->carry_theory==""){
+              echo $marks->theory_marks;
+                 }else{
+                   echo $marks->theory_marks.$marks->carry_theory;
+                 }
+          }
+                }else{
+                    $total_max_marks += $paper_master[0]->private_max_theory_marks;
             $total_obtained_marks += $marks->theory_marks;
              if($marks->theory_marks<$paper_master[0]->private_min_theory_marks || $marks->theory_marks=="ABS"){
             if($marks->carry_theory==""){
@@ -65,14 +82,27 @@ $abs_count = 0;
                    echo $marks->theory_marks.$marks->carry_theory;
                  }
           }
+                }
+              
             }else{
-              $total_max_marks += $paper_master[0]->private_max_theory_marks;
-            $total_obtained_marks += $marks->p_marks;
-            if($marks->p_marks < $paper_master[0]->private_min_theory_marks || $marks->p_marks=="ABS"){
-              echo $marks->p_marks."<span style='color:red'>"."*"."</span>";
-            }else{
-              echo $marks->p_marks;
-            }
+                if($exam_data->university_mode == 'REG'){
+                    $total_max_marks += $paper_master[0]->max_theory_marks;
+                    $total_obtained_marks += $marks->p_marks;
+                    if($marks->p_marks < $paper_master[0]->min_theory_marks || $marks->p_marks=="ABS"){
+                      echo $marks->p_marks."<span style='color:red'>"."*"."</span>";
+                    }else{
+                      echo $marks->p_marks;
+                    }
+                }else{
+                    $total_max_marks += $paper_master[0]->max_theory_marks;
+                    $total_obtained_marks += $marks->p_marks;
+                    if($marks->p_marks < $paper_master[0]->min_theory_marks || $marks->p_marks=="ABS"){
+                      echo $marks->p_marks."<span style='color:red'>"."*"."</span>";
+                    }else{
+                      echo $marks->p_marks;
+                    }
+                }
+             
             }?>
       </th>
       <?php if($marks->course_group_id!=36 && $marks->course_group_id!=37 ){ ?>
@@ -80,13 +110,13 @@ $abs_count = 0;
       <th class="text-center">
         <?php  
         if($marks->type!="theory" && $practical_internal_marks=='N' ){
-                       echo (int)$paper_master[0]->private_max_theory_marks;
+                       echo ($exam_data->university_mode == 'REG')?(int)$paper_master[0]->max_theory_marks:(int)$paper_master[0]->private_max_theory_marks;
               }
               elseif($marks->type!="theory" && $practical_internal_marks=='Y' ){  
-                echo (int) $paper_master[0]->private_max_theory_marks; 
+                echo ($exam_data->university_mode == 'REG')?(int) $paper_master[0]->max_theory_marks:(int) $paper_master[0]->private_max_theory_marks; 
                 
               }else{ 
-                echo (int) $paper_master[0]->private_max_theory_marks ;
+                echo ($exam_data->university_mode == 'REG')?(int) $paper_master[0]->max_theory_marks:(int) $paper_master[0]->private_max_theory_marks ;
               } ?>
       </th>
       <th class="text-center">
