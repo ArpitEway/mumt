@@ -218,7 +218,7 @@ foreach($exam_centers as $row)
             </tr>
             <tr>
                 <td colspan="5" align="right" ><!-- Max Student Count (in one shift) --> </td>
-                <td><?php echo $mstud=max($max_count); ?></td>
+                <td><?php //echo $mstud=max($max_count); ?></td>
                 <td colspan="8" align="right">महायोग</td>
                 <td><?php echo $tot; 
                 $where = array('examcentercode' => $row->examcentercode,'id'=> $row->id);
