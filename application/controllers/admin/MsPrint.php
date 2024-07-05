@@ -124,6 +124,11 @@ class MsPrint extends CI_Controller {
 			if($data['exam_data']->marks_pattern == "GRADE" && in_array($data['class_id'] , $class_ids)){
 				$this->load->model('Gradesheet_old_model');
 				  $this->load->view('admin/msprint/backlog_student_marksheet_grade',$data);// student_marksheet_grade
+			}elseif ($data['exam_data']->marks_pattern=='GRADE' && $data['exam_data']->university_mode == "REG" &&  $class->cbcs=='Y') {
+                $this->load->model('GradeSheet_old_model_pg');
+                // $this->load->model('Gradesheet_backlog_model_pg');
+                $this->load->view('admin/msprint/backlog_student_marksheet_grade_pg',$data);
+				
 			}
 			elseif($class->internal=="Y"  && $data['exam_data']->university_mode!="PVT" ){
 				$this->load->view('admin/msprint/old_backlog_student_marksheet',$data);
@@ -136,7 +141,8 @@ class MsPrint extends CI_Controller {
 			if($data['exam_data']->marks_pattern == "GRADE" && in_array($data['class_id'] , $class_ids)){
 				$this->load->model('Gradesheet_old_model');
 				  $this->load->view('admin/msprint/student_marksheet_grade',$data);
-			}elseif ($data['exam_data']->marks_pattern=='GRADE' && $data['exam_data']->university_mode == "REG" &&  $class->cbcs=='Y' && $data['exam_data']->marks_pattern=='GRADE') {
+			}elseif ($data['exam_data']->marks_pattern=='GRADE' && $data['exam_data']->university_mode == "REG" &&  $class->cbcs=='Y') {
+                $this->load->model('GradeSheet_old_model_pg');
 				$this->load->model('GradeSheet_old_model_pg');
 				 $this->load->view('admin/msprint/student_marksheet_grade_pg',$data);
 			}else if($class->internal=="Y" && $data['exam_data']->university_mode!="PVT" ){ 
@@ -509,7 +515,7 @@ class MsPrint extends CI_Controller {
 							$msg="<p style='text-align: center;' id='result_msg'><b>Student result not declared!</b></p>"; 
 					}
 						$data['student']=$student[0];
-						$data['exam_session']  = 'July 2023';
+						$data['exam_session']  = 'January 2024';
 						/**********************/
 						if($data['student']->provisional_remark!="N" && $data['student']->provisional_remark!="")
 						{
@@ -533,12 +539,12 @@ class MsPrint extends CI_Controller {
 						// if(($data['student']->old_class_id == '104' || $data['student']->old_class_id == '107' || $data['student']->old_class_id == '101' || $data['student']->old_class_id == '134' || $data['student']->old_class_id == '116' || $data['student']->old_class_id == '110'|| $data['student']->old_class_id == '119' || $data['student']->old_class_id == '131') && $data['student']->university_mode == 'REG')
 						
 						$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
-						$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280);
+						$class_cbcs =array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302);
 						if((in_array($data['student']->class_id, $class_ids))  && $data['student']->exam_pattern=='GRADE')	//&& $data['student']->university_mode=='REG'
 						{
 							$this->load->model('Gradesheet_model');
 							$dt = $provisional_remark_details.$msg.$this->load->view('Centers/grade_marksheet',$data,true);
-						}else if((in_array($data['student']->class_id, $class_cbcs)) && $data['student']->university_mode=='REG' && $data['student']->exam_pattern=='GRADE'){
+						}else if((in_array($data['student']->old_class_id, $class_cbcs)) && $data['student']->university_mode=='REG' && $data['student']->exam_pattern=='GRADE'){
 							$this->load->model('Gradesheet_model_pg');
 							$dt = $provisional_remark_details.$msg.$this->load->view('Centers/grade_marksheet_pg',$data,true);
 						}else{

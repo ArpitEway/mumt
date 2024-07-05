@@ -52,15 +52,16 @@
     $isOneClass = $this->Common_model->hasOneClass($exam_data->course_group_id);
       ?>
       <fieldset id="printarea" class="breakhere" style="width:90%;border: 0px solid #22316C;"> 
-       
+        
         <table align="center" border="0" width="100%">
           <tbody>
             <tr>
-              <td height="100" colspan="2" valign='bottom'>
+              <td height="110" colspan="2" valign='bottom'>
                 <center>
-                <?php  //$course_name = explode('(',$exam_data->course_name);?>
-                  <strong style="font-size: 18px;"><?php echo  ($isOneClass) ? $exam_data->course_name .' '."(One Year Course)" :$exam_data->course_name .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)); ?> <?php echo ' Examination '.$exam_data->exam_year;
-                  ?></strong>
+               
+                  <strong style="font-size: 18px;">
+                  <?php echo  ($isOneClass) ? $exam_data->course_name .' '."(One Year Course)" :$exam_data->course_name .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)); ?> <?= ' Backlog '.$marksheet_variables->exam_session ?>
+                 </strong>
                 </center>
               </td>
             </tr>
@@ -107,6 +108,16 @@
                         <div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo  $exam_data->enrollment_no;; ?></span></div>
                       </td>
                     </tr>
+                    <?php if($exam_data->university_mode=='PVT'){ ?>
+                    <tr class="rowHeight">
+                      <td class="Normaltext" align="left" width="29%">
+                        <div align="left">Category</div>
+                      </td>
+                      <td class="resultText"><div align="left">
+                        <span id="lblSemesterGrading" style="color:Black;">N/C</span></div>
+                      </td>
+                    </tr>
+                    <?php } ?>
                     <tr>
                       <td class="Normaltext" align="left" width="29%">
                         <div align="left">Name of the Candidate</div>
@@ -150,47 +161,33 @@
                           <td width="8%" colspan="2" scope="col" style="font-size:11px"><span class="style7"><u>Credit Points</u></span></td>
                           <td width="8%" colspan="2" scope="col" style="font-size:11px" ><span class="style7"><u>Grade</u></span></td>
                         </tr>
-                       
-                       
-                        <?php 
-       
-                          $gradesheetData = $this->GradeSheet_old_model_pg->view_result_grade($exam_data->student_id,$exam_data->course_group_id,$exam_data->class_id,$exam_data->university_mode,$exam_data_id);
-                          
-                            ?>
+                         <?php 
+                            $gradeDat = $this->GradeSheet_old_model_pg->view_result_grade_backlog($exam_data->student_id,$exam_data->course_group_id,$exam_data->class_id,$exam_data->university_mode,$exam_data_id);
+                        ?>
                     </tbody></table>
                   </div>
-                  <h4 style="text-align:center;margin:10px;">Result Semester Wise</h4>
-                  <!-- <table border='1' cellpadding="2"  width="103%">
+                  <h4 style="text-align:center;margin:10px;">Result Semester  Wise</h4>
+                  <table border='1' cellpadding="2"  width="103%">
                     <tbody>
-                     <tr align="center"><th width='12.5%'>Semester</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>SGPA</th></tr>
-                     <tr align="center"><th>First</th><td><?= $gradesheetData['tot_credit']?></td><td><?= $gradesheetData['obt_credit']?></td><td><?= $gradesheetData['credit_point']?></td><td><?= ($gradesheetData['result']== 'FAIL' || $gradesheetData['result']== 'SUPP')?'0.00':number_format((float)$gradesheetData['agpa'], 2, '.', '')?></td></tr>
-                     <tr align="center"><th>Second</th><td></td><td></td><td></td><td></td></tr>
-                     <tr align="center"><th>Third</th><td></td><td></td><td></td><td></td></tr>
-                     <tr align="center"><th>Fourth</th><td></td><td></td><td></td><td></td></tr>
-                   
-                    </tbody>
-                 </table> -->
-                 <table border='1' cellpadding="2"  width="103%">
-                  <tr align="center"><th width='12.5%'>Semester</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>SGPA</th></tr>
-                    <?php
-                     $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$student->course_group_id,'mode'=>'Semester'));
+                     <tr align="center"><th width='12.5%'>Semester </th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>AGPA</th></tr>
+                     <?php
+                     $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$exam_data->course_group_id,'mode'=>'Semester'));
                     
                     $count = 0;
-                     foreach($classes as $cls){
-                        $count++;
-                        if($count == 1){ $sno = 'First';}elseif($count == 2){ $sno = 'Second';}elseif($count == 3){ $sno = 'Third';}elseif($count == 4){
-                            $sno= 'Fourth';
-                        }
+                   
+                    foreach($classes as $cls){
+                       $count++;
+                       if($count == 1){ $sno = 'First';}elseif($count == 2){ $sno = 'Second';}elseif($count == 3){ $sno = 'Third';}elseif($count == 4){
+                        $sno= 'Fourth';}
+                       if($cls->id <= $exam_data->class_id){
                         $this->db->order_by('id', 'desc');
                         $this->db->limit(1);
-                        $old = $this->Common_model->getRecordByWhere('old_exam_data', array('student_id'=>$student->student_id,'class_id'=>$cls->id,'course_group_id'=>$student->course_group_id,'university_mode'=>$student->university_mode));
+                        $old = $this->Common_model->getRecordByWhere('old_exam_data', array('student_id'=>$exam_data->student_id,'class_id'=>$cls->id,'course_group_id'=>$exam_data->course_group_id,'university_mode'=>$exam_data->university_mode));
+                      
+                        $gradeData   = $this->GradeSheet_old_model_pg->view_old_results($exam_data->student_id,$exam_data->course_group_id,$cls->id,$exam_data->university_mode,$old[0]->id);
                        
-                         $gradeData   = $this->GradeSheet_old_model_pg->view_old_results($student->student_id,$student->course_group_id,$cls->id,$student->university_mode,$old[0]->id);
-                      if($cls->id <= $exam_data->class_id)  
-                      {
-                     ?>
-                     
-                      <tr align="center"><th><?=$sno?></th><td><?= ($gradeData['tot_credit'] == 0)?'':$gradeData['tot_credit']?></td><td><?php if($gradeData['obt_credit'] == 0 && $gradeData['tot_credit'] !=0) { echo '0'; }elseif($gradeData['obt_credit'] == 0){ echo '';}else{ echo $gradeData['obt_credit'];}?></td><td><?php if ($gradeData['credit_point'] == 0 && $gradeData['tot_credit'] !=0){ echo '0';}elseif($gradeData['credit_point'] == 0){ echo ''; }else { echo $gradeData['credit_point']; }?></td><td>
+                        ?>
+                        <tr align="center"><th><?=$sno?></th><td><?= ($gradeData['tot_credit'] == 0)?'':$gradeData['tot_credit']?></td><td><?php if($gradeData['obt_credit'] == 0 && $gradeData['tot_credit'] !=0) { echo '0'; }elseif($gradeData['obt_credit'] == 0){ echo '';}else{ echo $gradeData['obt_credit'];}?></td><td><?php if ($gradeData['credit_point'] == 0 && $gradeData['tot_credit'] !=0){ echo '0';}elseif($gradeData['credit_point'] == 0){ echo ''; }else { echo $gradeData['credit_point']; }?></td><td>
                         <?php if(is_nan($gradeData['agpa'])){
                             echo '';
                         }else{
@@ -201,23 +198,23 @@
                         </td>
                      </tr>
                      <?php
-                      }else{
-                        ?>
-                        <tr>
-                        <th><?=$sno?></th><td></td><td></td><td></td><td></td>
-                        </tr>
-                        <?php
-                      }
-                        }
-                    ?>
+                       }
+                       else{
+                         ?>
+                         <tr align="center"><th><?=$sno?></th><td></td><td></td><td></td><td></tr>
+                         <?php
+                       }
+                    }
+                   ?>
+                     
                    
-                   </tbody>
+                    </tbody>
                  </table>
               </fieldset>
               <!-- if starts -->
               <tr>
                 <td align="left" colspan="2" style='border:none;'>
-                  <table width="100%" style="margin-top:50px;">
+                  <table width="100%" style="margin-top:20px;">
                     <tr>
                     <td width="17" align="center">
                   <div align="left">
@@ -238,12 +235,13 @@
                      echo $generator->getBarcode($barcode_no, $generator::TYPE_CODE_128,2,25); ?>
                     </td>
                   </tr>
-                 <tr><td> <?=$exam_data->remark_date?></td></tr>
+                  <tr><td><div align="left" class="margin-top-marksheet" > MS No. <?php echo $exam_data->marksheet_no; ?> </div></td></tr>
+                  <tr><td> <?=$exam_data->remark_date?></td></tr>
               </td>
             </tr>
           </tbody>
         </table>
-        <div align="left" class="margin-top-marksheet" style="padding-left:5px;"> MS No. <?php echo $exam_data->marksheet_no; ?> </div>
+        
       </fieldset>
     <!-- <?php //} ?> -->
   </center>
