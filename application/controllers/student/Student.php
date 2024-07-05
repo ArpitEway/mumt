@@ -248,6 +248,7 @@ class Student extends CI_Controller {
 		$this->db->where('new_exam_form.class_id',$student['class_id']);
 		$this->db->where('new_exam_form.course_group_id',$student['course_group_id']);
 		$this->db->join('new_exam_form', 'new_exam_form.paper_id = paper_master.id');
+		$this->db->where('paper_master.exam_date>=',date('Y-m-d'));
 		$data['students'] = $this->db->get()->result();
 		$this->load->view('students/student_model_paper',$data);
 		$this->load->view('students/footer');					
