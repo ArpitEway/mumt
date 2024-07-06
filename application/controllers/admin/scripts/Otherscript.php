@@ -1188,7 +1188,7 @@ public function update_roll_no_old_data(){
 		}
 	}	
 
-    public function update_old_exam_data_result_date_regular(){
+    public function update_old_exam_data_result_date_main(){
         $exam_year = 'January 2024';
         $this->db->select('DISTINCT(class_id),university_mode');
         $this->db->from('old_exam_data');
