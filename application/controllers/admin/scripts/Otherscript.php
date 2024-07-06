@@ -1200,8 +1200,9 @@ public function update_roll_no_old_data(){
         foreach($classes as $class){
             $marksheet_varible = $this->Common_model->getRecordById('marksheet_variables','class_id', $class->class_id);
            $date = ($class->university_mode == 'REG')?$marksheet_varible->result_date:$marksheet_varible->pvt_result_date;
+           $date = str_replace('/', '-', $date);
            $data = array('marksheet_date'=>date('Y-m-d',strtotime($date)));
-            $update =$this->Common_model->updateRecordByConditions('old_exam_data',array('exam_year'=>$exam_year,'exam_status'=>'R', 'class_id'=>$class->class_id,'university_mode'=>$class->university_mode),$data);
+            $update =$this->Common_model->updateRecordByConditions('old_exam_data',array('exam_year'=>$exam_year,'exam_status'=>'R', 'class_id'=>$class->class_id,'university_mode'=>$class->university_mode,'marksheet_date'=>""),$data);
             echo $this->db->last_query() . '<br>';
         } 
     }
@@ -1218,8 +1219,9 @@ public function update_roll_no_old_data(){
         foreach($classes as $class){
             $marksheet_varible = $this->Common_model->getRecordById('marksheet_variables','class_id', $class->class_id);
             $date = ($class->university_mode == 'REG')?$marksheet_varible->backlog_result_date:$marksheet_varible->backlog_pvt_result_date;
+            $date = str_replace('/', '-', $date);
             $data = array('marksheet_date'=>date('Y-m-d',strtotime($date)));
-            $update =$this->Common_model->updateRecordByConditions('old_exam_data',array('exam_year'=>$exam_year,'exam_status'=>'B', 'class_id'=>$class->class_id,'university_mode'=>$class->university_mode),$data);
+            $update =$this->Common_model->updateRecordByConditions('old_exam_data',array('exam_year'=>$exam_year,'exam_status'=>'B', 'class_id'=>$class->class_id,'university_mode'=>$class->university_mode,'marksheet_date'=>""),$data);
             echo $this->db->last_query() . '<br>';
         } 
     }
