@@ -1193,14 +1193,14 @@ public function update_roll_no_old_data(){
         $this->db->select('DISTINCT(class_id),university_mode');
         $this->db->from('old_exam_data');
         $this->db->limit(20);
+        $this->db->order_by('class_id','university_mode');
         $this->db->where(array('exam_year'=>$exam_year,'exam_status'=>'R','marksheet_date'=>""));
         $classes = $this->db->get()->result();
-      
         foreach($classes as $class){
             $marksheet_varible = $this->Common_model->getRecordById('marksheet_variables','class_id', $class->class_id);
            $date = ($class->university_mode == 'REG')?$marksheet_varible->result_date:$marksheet_varible->pvt_result_date;
             $data = array('marksheet_date'=>$date);
-            $update =$this->Common_model->updateRecordByConditions('old_exam_data',array('exam_year'=>$exam_year,'exam_status'=>'R', 'class_id'=>$class->class_id),$data);
+            $update =$this->Common_model->updateRecordByConditions('old_exam_data',array('exam_year'=>$exam_year,'exam_status'=>'R', 'class_id'=>$class->class_id,'university_mode'=>$class->university_mode),$data);
             echo $this->db->last_query() . '<br>';
         } 
     }
@@ -1209,6 +1209,7 @@ public function update_roll_no_old_data(){
         $exam_year = 'January 2024';
         $this->db->select('DISTINCT(class_id),university_mode');
         $this->db->from('old_exam_data');
+        $this->db->order_by('class_id','university_mode');
         $this->db->limit(20);
         $this->db->where(array('exam_year'=>$exam_year,'exam_status'=>'B','marksheet_date'=>""));
         $classes = $this->db->get()->result();
@@ -1217,7 +1218,7 @@ public function update_roll_no_old_data(){
             $marksheet_varible = $this->Common_model->getRecordById('marksheet_variables','class_id', $class->class_id);
             $date = ($class->university_mode == 'REG')?$marksheet_varible->backlog_result_date:$marksheet_varible->backlog_pvt_result_date;
             $data = array('marksheet_date'=>$date);
-            $update =$this->Common_model->updateRecordByConditions('old_exam_data',array('exam_year'=>$exam_year,'exam_status'=>'B', 'class_id'=>$class->class_id),$data);
+            $update =$this->Common_model->updateRecordByConditions('old_exam_data',array('exam_year'=>$exam_year,'exam_status'=>'B', 'class_id'=>$class->class_id,'university_mode'=>$class->university_mode),$data);
             echo $this->db->last_query() . '<br>';
         } 
     }
