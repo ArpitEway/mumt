@@ -65,7 +65,7 @@
                 <center>
                 <?php  $course_name = explode('(',$exam_data->course_name);?>
                   <strong style="font-size: 18px;">
-                  <?php echo  ($isOneClass) ? $course_name[0] .' '."(One Year Course)" :$course_name[0] .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)); ?> <?= ' Backlog '.$exam_data->exam_year ?>
+                  <?php echo  ($isOneClass) ? $course_name[0] .' '."(One Year Course)" :$course_name[0] .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)); ?> <?= ' Backlog Examination '.$exam_data->exam_year ?>
                  </strong>
                 </center>
               </td>
