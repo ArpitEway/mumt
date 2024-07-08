@@ -46,7 +46,7 @@ class Gradesheet_old_model extends CI_Model
 			$papers = $this->Common_model->get_all_old_papers($student_id,$class_id,$exam_data_id);
             // print_r($papers);
 		}
-		if($this->classData->class_group == 'Y'){
+		if($this->classData->class_group == 'Y' || $class_id ==101){
 		$papers_list = $this->Common_model->get_all_old_group_papers($student_id,$class_id,$exam_data_id,$course_group_id);
 		}
 		// get_all_group_papers
@@ -664,7 +664,7 @@ class Gradesheet_old_model extends CI_Model
 			$this->tot_credit_point -= $credit_point;
 				
 			}
-				echo "<th class='text-center'>".$result['obt_credit']."</th>";
+				echo "<th class='text-center'>".$result['obt_credit']." ".$result["carry_theory"]."</th>";
 				echo "<th class='text-center'>".$result['letter_grade']."</th>";				
 				echo "<th class='text-center'>".$result['grade_point']."</th>";
 				echo "<th class='text-center'>".$result['credit_point']."</th>";
@@ -1183,7 +1183,7 @@ class Gradesheet_old_model extends CI_Model
 			$papers = $this->Common_model->get_all_old_papers($student_id,$class_id,$id);
             // print_r($papers);
 		}
-		if($this->classData->class_group == 'Y'){
+		if($this->classData->class_group == 'Y' || $class_id == 101){
 		$papers_list = $this->Common_model->get_all_old_group_papers($student_id,$class_id,$id);
 		}
 	
