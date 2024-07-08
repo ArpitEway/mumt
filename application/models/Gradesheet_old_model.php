@@ -152,7 +152,7 @@ class Gradesheet_old_model extends CI_Model
 		if($std[0]->sub_group_id == 1){
 			$papers = $this->Common_model->get_all_old_papers($student_id,$class_id,$exam_data_id);
 		}
-		if($this->classData->class_group == 'Y'){
+		if($this->classData->class_group == 'Y' || $class_id ==101){
 		$papers_list = $this->Common_model->get_all_old_group_papers($student_id,$class_id,$exam_data_id,$course_group_id);
 		}
 		// get_all_group_papers
@@ -1310,7 +1310,7 @@ class Gradesheet_old_model extends CI_Model
 		if($std[0]->sub_group_id == 1){
 			$papers = $this->Common_model->get_all_old_papers($student_id,$class_id,$exam_data_id);
 		}
-		if($this->classData->class_group == 'Y'){
+		if($this->classData->class_group == 'Y' || $class_id ==101){
 		$papers_list = $this->Common_model->get_all_old_group_papers($student_id,$class_id,$exam_data_id,$course_group_id);
 		}
 		// get_all_group_papers
