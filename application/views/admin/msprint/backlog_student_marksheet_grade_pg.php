@@ -60,7 +60,7 @@
                 <center>
                
                   <strong style="font-size: 18px;">
-                  <?php echo  ($isOneClass) ? $exam_data->course_name .' '."(One Year Course)" :$exam_data->course_name .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)); ?> <?= ' Backlog '.$marksheet_variables->exam_session ?>
+                  <?php echo  ($isOneClass) ? $exam_data->course_name .' '."(One Year Course)" :$exam_data->course_name .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)); ?> <?= ' Backlog '.$exam_data->exam_year ?>
                  </strong>
                 </center>
               </td>
