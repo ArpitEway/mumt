@@ -2030,7 +2030,7 @@ class ExamController extends CI_Controller {
 			#total
 			$this->db->select('count(*) as num');
 			$this->db->from('new_exam_form');
-			$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.old_class_id');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id');
 			$this->db->where('student.'.$this->exam_form.'','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
 			$count = $this->db->get()->result();
@@ -2038,7 +2038,7 @@ class ExamController extends CI_Controller {
 			#Absent
 			$this->db->select('count(*) as num');
 			$this->db->from('new_exam_form');
-			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.old_class_id');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.class_id');
 			$this->db->where('student.'.$this->exam_form.'','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
 			$this->db->where('new_exam_form.theory_marks','ABS');
@@ -2047,7 +2047,7 @@ class ExamController extends CI_Controller {
 			#uploaded
 			$this->db->select('count(*) as num');
 			$this->db->from('new_exam_form');
-			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.old_class_id');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.class_id');
 			$this->db->where('student.'.$this->exam_form.'','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
 			$this->db->where_not_in('theory_marks',array('ABS','')); // 'ABS',
@@ -2060,7 +2060,7 @@ class ExamController extends CI_Controller {
 			$this->db->from('backlog_exam_form');
 			$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id and backlog_exam_form.class_id = backlog_student.class_id and backlog_exam_form.backlog_student_id=backlog_student.id');
 			$this->db->where('backlog_student.exam_form','Y');
-			$this->db->where('backlog_student.exam_year','Dec 2023');
+			$this->db->where('backlog_student.exam_year','June 2024');
 			$this->db->where('backlog_exam_form.status','B');
 			$this->db->where('backlog_exam_form.paper_type','theory');
 			$backlog_count = $this->db->get()->result();
@@ -2070,7 +2070,7 @@ class ExamController extends CI_Controller {
 			$this->db->from('backlog_exam_form');
 			$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id  and backlog_exam_form.class_id = backlog_student.class_id and backlog_exam_form.backlog_student_id=backlog_student.id');
 			$this->db->where('backlog_student.exam_form','Y');
-			$this->db->where('backlog_student.exam_year','Dec 2023');
+			$this->db->where('backlog_student.exam_year','June 2024');
 			$this->db->where('backlog_exam_form.status','B');
 			$this->db->where('backlog_exam_form.paper_type','theory');
 			$this->db->where('backlog_exam_form.theory_marks','ABS');
@@ -2081,7 +2081,7 @@ class ExamController extends CI_Controller {
 			$this->db->from('backlog_exam_form');
 			$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id  and backlog_exam_form.class_id = backlog_student.class_id and backlog_exam_form.backlog_student_id=backlog_student.id');
 			$this->db->where('backlog_student.exam_form','Y');
-			$this->db->where('backlog_student.exam_year','Dec 2023');
+			$this->db->where('backlog_student.exam_year','June 2024');
 			$this->db->where('backlog_exam_form.status','B');
 			$this->db->where('backlog_exam_form.paper_type','theory');
 			$this->db->where_not_in('theory_marks',array('','ABS'));
@@ -2136,7 +2136,7 @@ class ExamController extends CI_Controller {
             $course_groupids = array_column($course_group, 'id');
  			$this->db->where_in('course_group_id',$course_groupids);
 			$this->db->order_by('course_group_id', "asc");
-			$course_group = $this->Common_model->get_record('backlog_student','DISTINCT(class_id) as  class_id, course_group_id' ,array('exam_form'=>'Y','exam_year'=>'Dec 2023'));
+			$course_group = $this->Common_model->get_record('backlog_student','DISTINCT(class_id) as  class_id, course_group_id' ,array('exam_form'=>'Y','exam_year'=>'June 2024'));
 			
 			$data = array('course_group' => $course_group,
 				'name_csrf' => $this->security->get_csrf_token_name(),

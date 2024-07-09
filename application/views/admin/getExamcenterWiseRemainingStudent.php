@@ -52,7 +52,7 @@
                 <td><?= $student->enrollment_no ?></td>
                 <td><?= $student->name ?></td>
                 <td><?= $student->course_name ?></td>
-                <td><?= $this->Common_model->getClassNameByClassId($student->old_class_id) ?></td>
+                <td><?= $this->Common_model->getClassNameByClassId($student->class_id) ?></td>
                 <!-- <td><?= $student->session ?></td> -->
                 <td><?= $student->paper_code ?></td>
                 <!-- <?php if($this->session->account_type == "ExamController"){ ?>
