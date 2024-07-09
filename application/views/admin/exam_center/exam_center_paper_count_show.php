@@ -109,7 +109,7 @@ foreach($papers as $pap)
       $this->db->where('exam_date!=',"0000-00-00");	
       $this->db->where('exam_shift',$pap->exam_shift);	
       $this->db->where_not_in('class_id',array(264,268,270));
-  
+      $this->db->where_in('class_id',array(101,102,104,105,107,108,110,111,113,116,117,119,120,125,126,128,129,131,132,134,135,194,196,198,200,202,204,206,208,212,214,303,276,280,222,224,226,228,210,177,178,162,163,164,165,168,169,170,171,173,174,175,180,138,141,144,147,150,137,140,143,146,149,183,185,187,189,191) );  
       $this->db->order_by('exam_date','Asc');
       $this->db->order_by('exam_shift','Desc');
 
@@ -121,30 +121,32 @@ foreach($papers as $pap)
 
         
          // New Query start 
-          $sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`exam_center_id`='".$exam_center."'   AND  `e`.`paper_code` = '".$paper->paper_code."' AND `s`.`class_id` = '".$paper->class_id."' AND   `s`.`exam_center_id` = '".$exam_center."'  AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2023' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2024' AND `s`.`class_name` = 'I SEM' )) AND `s`.payment_status='Y'";
+          // $sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`exam_center_id`='".$exam_center."'   AND  `e`.`paper_code` = '".$paper->paper_code."' AND `s`.`class_id` = '".$paper->class_id."' AND   `s`.`exam_center_id` = '".$exam_center."'  AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2023' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2024' AND `s`.`class_name` = 'I SEM' )) AND `s`.payment_status='Y'";
          
-        //$sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`exam_center_id`='".$exam_center."'   AND  `e`.`paper_code` = '".$paper->paper_code."' AND `s`.`class_id` = '".$paper->class_id."' AND   `s`.`exam_center_id` = '".$exam_center."' AND new_exam_form ='Y' and s.class_id  in (193,195,197,199,201,203,205,207,209,211,213,302,275,279,221,223,225,227) ";
+          $sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`exam_center_id`='".$exam_center."'   AND  `e`.`paper_code` = '".$paper->paper_code."' AND `s`.`class_id` = '".$paper->class_id."' AND   `s`.`exam_center_id` = '".$exam_center."' AND new_exam_form ='Y'";
 
         
          $query = $this->db->query($sql);
          $count = $query->result_array();
 
-          $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND s.id=e.backlog_student_id WHERE  `s`.`exam_center_id`='".$exam_center."'   AND  `e`.`paper_code` = '".$paper->paper_code."' AND `s`.`class_id` = '".$paper->class_id."'  AND exam_form!='D' AND `e`.`status`='B'  AND s.exam_year='June 2024'";
-       //AND   `s`.`exam_center_code` = '".$exam_center."'
-      //$sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND s.id=e.backlog_student_id WHERE  `s`.`exam_center_id`='".$exam_center."'   AND  `e`.`paper_code` = '".$paper->paper_code."' AND `s`.`class_id` = '".$paper->class_id."' AND   `s`.`exam_center_id` = '".$exam_center."' AND exam_form='Y' AND `e`.`status`='B' and s.class_id  in (193,195,197,199,201,203,205,207,209,211,213,302,275,279,221,223,225,227) AND s.exam_year='Dec 2023'";
+          // $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND s.id=e.backlog_student_id WHERE  `s`.`exam_center_id`='".$exam_center."'   AND  `e`.`paper_code` = '".$paper->paper_code."' AND `s`.`class_id` = '".$paper->class_id."'  AND exam_form!='D' AND `e`.`status`='B'  AND s.exam_year='June 2024'";
+            
+         //AND   `s`.`exam_center_code` = '".$exam_center."'
+         
+          $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND s.id=e.backlog_student_id WHERE  `s`.`exam_center_id`='".$exam_center."'   AND  `e`.`paper_code` = '".$paper->paper_code."' AND `s`.`class_id` = '".$paper->class_id."' AND   `s`.`exam_center_id` = '".$exam_center."' AND exam_form='Y' AND `e`.`status`='B'  AND s.exam_year='June 2024'";
 
          $query_back = $this->db->query($sql_back);
          $count_backlog = $query_back->result_array();
 
-         $qu="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paper->paper_code."'  AND `p`.`class_id` = '".$paper->class_id."' AND `s`.`exam_center_id`='".$exam_center."'   AND temp_exam_form='N' AND `s`.payment_status='Y' ";
-         //  and `session` = 'July 2022' AND `s`.`class_name` = 'I Year' 
-         // new_exam_form in ('Y','N') AND `p`.`id` = '".$paper->id."' and new_exam_form!='D'
-         $query = $this->db->query($qu);
-         $all = $query->result_array();
+         // $qu="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paper->paper_code."'  AND `p`.`class_id` = '".$paper->class_id."' AND `s`.`exam_center_id`='".$exam_center."'   AND temp_exam_form='N' AND `s`.payment_status='Y' ";
+         // //  and `session` = 'July 2022' AND `s`.`class_name` = 'I Year' 
+         // // new_exam_form in ('Y','N') AND `p`.`id` = '".$paper->id."' and new_exam_form!='D'
+         // $query = $this->db->query($qu);
+         // $all = $query->result_array();
 
-         $allElective= $all[0]['num'];
+         // $allElective= $all[0]['num'];
          
-        //$allElective=0;
+        $allElective=0;
 
          if($paper->class_id==104 && $paper->ce=='elective' && ( $allElective>0)){
             $allElective=round(($all[0]['num']*60)/100); 
