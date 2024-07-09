@@ -32,6 +32,7 @@
             <select name="exam_center"  id="exam_center" class="form-control exam_center">
                 <option value="all">Select Center</option>
                 <?php  
+                $this->db->order_by('id','asc');
                 $exam_centers= $this->Common_model->getRecordByWhere('exam_center',array());
                 foreach($exam_centers as $exam_center){
                  ?>
