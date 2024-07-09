@@ -111,7 +111,7 @@ th.border.border-dark {
         <tr>
             <?php
             $class_name = explode(' ', $this->Common_model->getClassNameByClassId($student->old_class_id));
-            $attemp_count = $this->Common_model->getRecordByWhere('old_exam_data', array('student_id'=>$student->student_id,'class_id'=>$student->old_class_id));
+            $attemp_count = $this->Common_model->getRecordByWhere('old_exam_data', array('student_id'=>$student->student_id,'class_id'=>$student->old_class_id,'exam_status'=>'B'));
             ?>
           <!-- <td>TOTAL CREDIT</td> -->
           <td class="text-center" style="vertical-align: middle;"><?= $class_name[0]?></td>
