@@ -64,7 +64,7 @@
 
                 foreach($details as $student){
                 
-                $paper_data=  $this->Common_model->getRecordByWhere("paper_master",array('class_id'=>$student->old_class_id,'paper_code'=>$student->paper_code));
+                $paper_data=  $this->Common_model->getRecordByWhere("paper_master",array('class_id'=>$student->class_id,'paper_code'=>$student->paper_code));
                   
                 $percentage = 90;  
                 $center_ids_dep = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29);

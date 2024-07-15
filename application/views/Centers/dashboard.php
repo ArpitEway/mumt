@@ -252,8 +252,8 @@
 					<?php endif ?>
 					
 					<?php 
-                    //if($this->session->center_id==12 || $this->session->center_id==28){ ?>
-					 <!-- <a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
+                    if($this->session->center_id==12 || $this->session->center_id==28){ ?>
+					 <a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
 						<div>
 							<span class="nav-text">Practical Marks Submission (Regular)</span>
 						</div>
@@ -262,8 +262,8 @@
 						<div>
 							<span class="nav-text">Internal Marks Submission (Regular)</span>
 						</div>
-					</a>  -->
-					<?php // } 
+					</a>  
+					<?php  } 
 					 ?>
 					<?php if ($center->result_permission=='Y'): ?>
 						<a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
