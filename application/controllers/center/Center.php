@@ -2733,7 +2733,7 @@ public function backlog_grade_marksheet_pg($student_id=""){
 		$this->db->order_by("p_marks_sub,".$this->exam_table.".course_group_id,".$this->exam_table.".class_id", "asc");
 		$this->db->select('*');
 		$this->db->from($this->exam_table);
-		$this->db->join('class_master', ''.$this->exam_table.'.old_class_id = class_master.id');
+		$this->db->join('class_master', ''.$this->exam_table.'.class_id = class_master.id');
         $this->db->where_in($this->exam_table.'.course_group_id', [76,77]);
 		$this->db->Where($where);
 		$this->db->Where('(project="Y" or practical = "Y")');
