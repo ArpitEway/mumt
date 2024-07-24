@@ -615,7 +615,9 @@ $abs_count = 0 ;
 									
 									if($check_grace_marks){
 										echo " ";
-									}elseif( $theory_abs_count== ($theory_paper_count-2) && $p_abs_count==$p_paper_count){
+									}elseif($Withheld){
+                                        echo " ";
+                                    }elseif( $theory_abs_count== ($theory_paper_count-2) && $p_abs_count==$p_paper_count){
 										echo 'Year Break';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
 									  }elseif( $theory_abs_count== ($theory_paper_count -2)){
 										echo 'Year Break';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
@@ -641,7 +643,9 @@ $abs_count = 0 ;
 									
 									if($check_grace_marks){
 										echo " ";
-									}
+									}elseif($Withheld){
+                                        echo " ";
+                                    }
 									elseif( $theory_abs_count==$theory_paper_count && $p_abs_count==$p_paper_count && $student->course_group_id == 76){
 										echo 'Absent In ALL';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
 									  }
