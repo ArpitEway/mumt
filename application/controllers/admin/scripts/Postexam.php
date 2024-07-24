@@ -651,10 +651,10 @@ class Postexam extends CI_Controller {
      public function course_complete_status()
      {
           $this->db->select('course_name,student.class_name,student.course_group_id,class_id, COUNT(student_id) as cnt');
-          $this->db->join('class_master', 'student.old_class_id = class_master.id');
+          $this->db->join('class_master', 'student.class_id = class_master.id');
           $this->db->where('last_class', 'L');
-          $this->db->where('exam_form', 'Y');
-          $this->db->where('result_permission', 'Y');
+          $this->db->where('new_exam_form', 'Y');
+          // $this->db->where('result_permission', 'Y');
           $this->db->where('course_complete', 'N');
           $this->db->where('upload_result', 'Y');
           $this->db->group_by('class_id');          
@@ -666,7 +666,7 @@ class Postexam extends CI_Controller {
      public function update_course_complete_status($course_group_id="",$class_id=""){
             $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
             $this->db->limit(1000);
-            $students = $this->Common_model->getRecordByWhere("student",array("old_class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'Y','course_complete'=>'N'));
+            $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "new_exam_form"=>'Y', "upload_result"=>'Y','course_complete'=>'N'));
             $courseClassData = $this->Common_model->getRecordByWhere("class_master",array("course_group_id"=>$course_group_id,"mode"=>$classData->mode));
     
             $i=1;
@@ -686,7 +686,7 @@ class Postexam extends CI_Controller {
                     );
                     $where = array('student_id'=>$student->student_id);
                     $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
-                    $update =$this->Common_model->updateRecordByConditions('student_report',$where,$data);
+                    // $update =$this->Common_model->updateRecordByConditions('student_report',$where,$data);
                         echo "<br>&nbsp;&nbsp;".$i++."  &nbsp;&nbsp;&nbsp;  ".$student->student_id. "   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   ".$student->enrollment_no;
                 }
                
