@@ -203,7 +203,7 @@ class Postexam extends CI_Controller {
             if($whCount!=0) {
                 // $final_result=='FAIL' || 
                  //  && count($course_type)==0 && $student->course_group_id!=76 && $student->course_group_id!=77
-                continue;
+               // continue;
             }
             if(is_nan($aggregate_per)){
                 $aggregate_per=0;
