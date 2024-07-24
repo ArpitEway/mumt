@@ -3320,12 +3320,12 @@ public function update_exam_datewise_permission(){
 		}
 		if($_POST['not_permitted']){
 			$student_ids = (implode(',',$_POST['not_permitted']));
-			$data = array('old_result_show' => 'Y');
+			$data = array('result_show' => 'Y');
 			$where = 'student_id in ('.$student_ids.')';
 			$update =$this->Common_model->updateRecordByConditions('student',$where,$data);
 		}else{
 			$student_ids = (implode(',',$_POST['permitted']));
-			$data = array('old_result_show' => 'N');
+			$data = array('result_show' => 'N');
 			$where ='student_id in ('.$student_ids.')';
 			$update = 	$this->Common_model->updateRecordByConditions('student',$where,$data);
 		}  
@@ -3339,15 +3339,15 @@ public function update_exam_datewise_permission(){
 			redirect(base_url());
 			exit;
 		}
-		$this->db->select('count(*) as cnt ,student.name,student.roll_number,student.course_name, student.class_name , student.center_code,student.course_group_id,student.old_class_id,student.student_id');
+		$this->db->select('count(*) as cnt ,student.name,student.roll_no,student.course_name, student.class_name , student.center_code,student.course_group_id,student.class_id,student.student_id');
 		$this->db->from('new_exam_form');
 		$this->db->join('student', 'new_exam_form.student_id = student.student_id');
-		$this->db->where('student.exam_form','Y'); 
-		$this->db->where('student.old_result_show','Y'); 
+		$this->db->where('student.new_exam_form','Y'); 
+		$this->db->where('student.result_show','Y'); 
 		$this->db->where('new_exam_form.paper_type','theory'); 
 		$this->db->where('new_exam_form.theory_marks',''); 
 		$this->db->where('student.course_group_id',$course_id); 
-		$this->db->where('student.old_class_id',$class_id); 
+		$this->db->where('student.class_id',$class_id); 
 		$this->db->where('new_exam_form.class_id',$class_id); 
 		$this->db->group_by('new_exam_form.student_id');
 		
@@ -3384,10 +3384,10 @@ public function update_exam_datewise_permission(){
 		$data['university_mode'] = $mode;
  
 		if($class->last_class == 'L'){
-			$this->db->order_by('center_id,roll_number','ASC');
+			$this->db->order_by('center_id,roll_no','ASC');
 			// $this->db->where_in('student_id',array(188247,188249,188265,188272,188302,188306,188311,188322,188324,188338,188343,188346,188353,188361,188366,188368,188455,188495));
             // $this->db->where('student_id',702679);
-			$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','course_complete'=>'Y','university_mode'=>$mode,'old_result_show'=>'Y' ,'exam_pattern'=>'MARKS'));
+			$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'new_exam_form'=>'Y','roll_no!='=>'0','course_complete'=>'Y','university_mode'=>$mode,'result_show'=>'Y' ,'exam_pattern'=>'MARKS'));
 			
 		}else{
 			$this->db->order_by('center_id,roll_number','ASC');
@@ -3881,9 +3881,9 @@ public function update_exam_datewise_permission(){
 		}
 		$course_id=$this->Common_model->encrypt_decrypt($course_id,'decrypt');
 		$class_id=$this->Common_model->encrypt_decrypt($class_id,'decrypt');
-		$this->db->order_by('roll_number','ASC');
+		$this->db->order_by('roll_no','ASC');
 		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
-		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id, 'old_class_id' => $class_id, 'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode ,'exam_pattern'=>$pattern));
+		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id, 'class_id' => $class_id, 'new_exam_form'=>'Y','roll_no!='=>'0','university_mode'=>$mode ,'exam_pattern'=>$pattern));
 		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$data['mode'] = $mode;
         // $class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280);
