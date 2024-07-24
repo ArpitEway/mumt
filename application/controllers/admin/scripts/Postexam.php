@@ -22,18 +22,18 @@ class Postexam extends CI_Controller {
 
        public function generate_marksheet_no(){
         /*
-            222 - Dec 2022
-            221 - June 2022
-            231 - June 2023
-            232 - Dec 2023
+            241 - June 2024
+            242 - Dec 2024
+            251 - June 2025
+            252 - Dec 2025
         */
             $this->db->order_by('center_id,course_group_id,class_id,roll_no');
-            $data['students'] = $this->Common_model->getRecordByWhere('student', array('new_exam_form'=>'Y' ,'roll_no!='=>0 ,'marksheet_no'=>''));
+            $data['students'] = $this->Common_model->getRecordByWhere('student', array('new_exam_form'=>'Y' ,'roll_no!='=>0 ,'marksheet_no'=>'','class_id'=>'264'));
             $starting_no = 10001 ;
             foreach($data['students']  as $key =>  $student){
                 $f_l_center_code = substr($student->center_code, 0, 1);
                 $l_l_center_code =  substr($student->center_code,-4);           
-                $marksheet_no = $f_l_center_code.$starting_no.'232'.$l_l_center_code ;
+                $marksheet_no = $f_l_center_code.$starting_no.'241'.$l_l_center_code ;
                 
                 // $data['students'][$key]->marksheet_no = $marksheet_no;
                 $updateData  = array('marksheet_no'=>$marksheet_no);
