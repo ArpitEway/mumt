@@ -1510,7 +1510,7 @@ class Admins extends CI_Controller {
 				}
 
 
-				if($class_id !=  "All" && $class_id !=  "" ){	 
+				if($class_id !=  "ALL"){	 
 
 					$dt['class_id'] = $class_id;
 				}
