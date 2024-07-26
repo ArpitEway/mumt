@@ -2067,11 +2067,11 @@ class Center extends CI_Controller {
 		
 		$this->db->where('class_master.result_permission', 'Y');
 	//	$this->db->where('center_id', $center_id);
-		$this->db->where('old_result_show','Y');
+		$this->db->where('result_show','Y');
 		$this->db->where($this->exam_form_result,'Y');
 		//$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,197,203,211,213)');
 		$data['courses'] = $this->db->get()->result();
-		// echo $this->db->last_query(); die;
+		//  echo $this->db->last_query(); die;
 		$this->load->view('Centers/header', array('title' => 'Result'));
 		$this->load->view('Centers/result',$data);
 		$this->load->view('Centers/footer');		
@@ -2155,7 +2155,7 @@ class Center extends CI_Controller {
 		$data = $row = array();
 		// $where1 ='';
 	
-		$where = array($this->exam_form_result=>'Y','old_result_show'=>'Y');
+		$where = array($this->exam_form_result=>'Y','result_show'=>'Y');
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{
@@ -2192,7 +2192,7 @@ class Center extends CI_Controller {
 			'where' => $where,
 			'table' => $this->result_table,
 			'table2' => 'class_master',
-			'joinOn' => ''.$this->result_table.'.old_class_id=class_master.id'
+			'joinOn' => ''.$this->result_table.'.class_id=class_master.id'
 		);
 		
 		
@@ -2232,7 +2232,7 @@ class Center extends CI_Controller {
 			}else{
 				$enrollment = $result->enrollment_no;
 				}
-			$class_name =  $this->Common_model->getClassNameByClassId($result->old_class_id); 
+			$class_name =  $this->Common_model->getClassNameByClassId($result->class_id); 
 			$data[] = array($i,$result->student_id,$enrollment,$result->name, $result->f_h_name, $result->course_name,$class_name,$btn);
 		}
 		
@@ -2376,23 +2376,23 @@ class Center extends CI_Controller {
 		$this->db->where_in('provisional_remark', $provisional);
 		
 		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
-		$student = $this->Common_model->getRecordByWhere($this->result_table,array($this->exam_form_result=>'Y','old_result_show'=>'Y','student_id'=>$student_id));
+		$student = $this->Common_model->getRecordByWhere($this->result_table,array($this->exam_form_result=>'Y','result_show'=>'Y','student_id'=>$student_id));
 		// ($student->course_group_id == 12 && $student->university_mode == 'REG') || ($student->course_group_id == 13 && $student->university_mode == 'REG')
 		if ((count($student)==0)  ) {
 			redirect(base_url());
 		}
 		$data['student']=$student[0];
-		$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
+		$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
 		$data['practical_internal_marks']=$classData->practical_internal_marks;
 		$this->db->select('*');
 		$this->db->from($this->exam_form_table);
 		$this->db->where(''.$this->exam_form_table.'.student_id',$data['student']->student_id);
-		$this->db->where(''.$this->exam_form_table.'.class_id',$data['student']->old_class_id);
+		$this->db->where(''.$this->exam_form_table.'.class_id',$data['student']->class_id);
 		$this->db->order_by(''.$this->exam_form_table.'.paper_order',''.$this->exam_form_table.'.paper_id');
 		$new_exam_form = $this->db->get()->result();
 		$data['new_exam_form']  = $new_exam_form;
 		$data['classData']  = $classData;
-		$data['exam_session']  = 'January 2024';
+		$data['exam_session']  = 'July 2024';
 		$title = array('title' => 'Result - '.$data['student']->enrollment_no);
 		$this->load->view('admin/generate_tr/header2',$title);	
 		//$this->load->view('Centers/marksheet',$data);
@@ -2401,7 +2401,7 @@ class Center extends CI_Controller {
 		if($classData->internal=='N'){
 			$this->load->view('Centers/marksheet_without_int',$data);
 		}else{
-			if($student[0]->old_class_id=='168'){
+			if($student[0]->class_id=='168'){
 				$this->load->view('Centers/marksheet_mom',$data);
 			}else{
 				$this->load->view('Centers/marksheet_bottom',$data);
