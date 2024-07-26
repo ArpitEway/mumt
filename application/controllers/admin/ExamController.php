@@ -2822,11 +2822,11 @@ public function getStudentData()
 	public function getEditStudentMarksData()
 	{
 		$roll_no = $this->input->post('roll_no');
-		$studentData = $this->Common_model->getRecordByWhere('student',array('roll_number'=>$roll_no,'exam_form'=>'Y'));
+		$studentData = $this->Common_model->getRecordByWhere('student',array('roll_no'=>$roll_no,'new_exam_form'=>'Y'));
 		
-		$studentPaper = $this->Common_model->get_student_papers($studentData[0]->student_id,$studentData[0]->old_class_id);
+		$studentPaper = $this->Common_model->get_student_papers($studentData[0]->student_id,$studentData[0]->class_id);
 		$this->db->where('new_exam_form.theory_marks','');
-		$studentPaperWithHeld = $this->Common_model->get_student_papers($studentData[0]->student_id,$studentData[0]->old_class_id,'withheld');
+		$studentPaperWithHeld = $this->Common_model->get_student_papers($studentData[0]->student_id,$studentData[0]->class_id,'withheld');
 		//print_r($studentPaperWithHeld);
 	//	echo  $this->Common_model->last_query();
 		$data['student'] = $studentData;
