@@ -166,6 +166,9 @@
 					if($paper->exam_shift=='Afternoon' && ($student['class_id']==259 || $student['class_id']==261 || $student['class_id']==263) ){
 						echo '12:00 PM To 3:00 PM';
 					}
+					elseif($paper->exam_shift=='Afternoon' && ($student['class_id']==256 || $student['class_id']==258 || $student['class_id']==260 || $student['class_id']==262) ){
+						echo '2:00 PM To 5:00 PM';
+					}
 					elseif($paper->exam_shift=='Early Morning'){
 						echo '7:00 AM To 10:00 AM';
 					}elseif($paper->exam_shift=='Morning'){
