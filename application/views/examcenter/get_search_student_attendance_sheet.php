@@ -69,7 +69,10 @@
 						<h5>Attendance Sheet Examination 
 							<?php
 							if($student['course_group_id']==75 || $student['course_group_id']==76 ||$student['course_group_id']==77 ){
-								echo '2024';
+								if($student['class_id']==256 || $student['class_id']==258 ||  $student['class_id']==260 || $student['class_id']==262 )
+									echo 'July 2024';
+									else
+									echo '2024';
 							}else{
 								echo 'June 2024';
 							}

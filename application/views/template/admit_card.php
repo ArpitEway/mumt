@@ -46,9 +46,9 @@
 								<?php
 								if($student[0]->course_group_id==75 || $student[0]->course_group_id==76 || $student[0]->course_group_id==77)
 								{
-									// if($student[0]->class_id==255 || $student[0]->class_id==257 )
-									// echo 'March 2024';
-									// else
+									if($student[0]->class_id==256 || $student[0]->class_id==258 ||  $student[0]->class_id==260 || $student[0]->class_id==262 )
+									echo 'July 2024';
+									else
 									echo '2024';
 								}
 								else{
