@@ -66,13 +66,15 @@
 						<h5>ATTENDANCE SHEET OF EXAM FOR ANNUAL/SEMESTER EXAMINATION OF JUNE 2024
 							<!-- Attendance Sheet Examination  -->
 							<?php
-							// if($student->course_group_id==77){
-							// 	echo '2024';
-							// }
-							// else{
-							// 	echo 'January 2024';
-							// }
-							
+							if($student->course_group_id==75 || $student->course_group_id==76 || $student->course_group_id==77){
+								if($student->class_id==256 || $student->class_id==258 ||  $student->class_id==260 || $student->class_id==262 )
+									echo 'July 2024';
+									else
+									echo ' 2024';
+							}
+							else{
+								echo ' June 2024';
+							}
 							?>
 						</h5>
 						
@@ -177,6 +179,8 @@
 					
 					if($paper->exam_shift=='Afternoon' && ($student->class_id==267 || $student->class_id==269 || $student->class_id==197 || $student->class_id==223 || $student->class_id==207 || $student->class_id==213) ){
 						echo '12:00 PM To 3:00 PM';
+					}elseif($paper->exam_shift=='Afternoon' && ($student->class_id==256 || $student->class_id==258 || $student->class_id==260 || $student->class_id==262) ){
+						echo '02:00 PM To 5:00 PM';
 					}elseif($paper->exam_shift=='Early Morning'){
 						echo '07:00 To 10:00 AM';
 					}elseif($paper->exam_shift=='Morning'){
