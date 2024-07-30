@@ -6,7 +6,7 @@
 		<div class="content-head row mb-3 mt-5">
 			<div>
 				<ul>
-				<li ><img src="<?=base_url('assets/images/center/new.gif')?>" alt=""> <b>
+				<li style="color:red"><img src="<?=base_url('assets/images/center/new.gif')?>" alt=""> <b>
 				सत्र 2024-25 में संचालित समस्त नियमित पाठ्यक्रमों की प्रवेश प्रकिया, अध्ययन, अध्यापन एवं परीक्षाएँ विश्वविद्यालय के मुख्यालय करौंदी में संपन्न होगी I अधिक जानकारी हेतु  मोबाइल नंबर 9752042834 में संपर्क करे | </a>
 				</b>
 				</li><br>
