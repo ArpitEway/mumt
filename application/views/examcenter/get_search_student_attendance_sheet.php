@@ -73,7 +73,11 @@
 									echo 'July 2024';
 									else
 									echo '2024';
-							}else{
+							}
+							elseif($student['course_group_id']==80) {
+								echo 'August 2024';
+							}
+							else{
 								echo 'June 2024';
 							}
 							
@@ -169,7 +173,7 @@
 					if($paper->exam_shift=='Afternoon' && ($student['class_id']==259 || $student['class_id']==261 || $student['class_id']==263) ){
 						echo '12:00 PM To 3:00 PM';
 					}
-					elseif($paper->exam_shift=='Afternoon' && ($student['class_id']==256 || $student['class_id']==258 || $student['class_id']==260 || $student['class_id']==262) ){
+					elseif($paper->exam_shift=='Afternoon' && ($student['class_id']==256 || $student['class_id']==258 || $student['class_id']==260 || $student['class_id']==262 || $student['class_id']==300|| $student['class_id']==301) ){
 						echo '2:00 PM To 5:00 PM';
 					}
 					elseif($paper->exam_shift=='Early Morning'){
