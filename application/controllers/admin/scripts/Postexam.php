@@ -684,7 +684,7 @@ class Postexam extends CI_Controller {
                  if(count($courseClassData)==$passCounter){
                     $data = array(
                         'course_complete' => 'Y',
-                        'new_admission_permission'=>'Y',
+                        // 'new_admission_permission'=>'Y',
                     );
                     $where = array('student_id'=>$student->student_id);
                     $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
@@ -1427,7 +1427,8 @@ public function upload_old_backlog_data_script($class_id="",$mode){
             }			
                     
             if($class_count == $this->pass_count){
-                $data = array('course_complete' => 'Y','new_admission_permission'=>"Y");
+                $data = array('course_complete' => 'Y');
+                //,'new_admission_permission'=>"Y"
                 $where = array('student_id'=>$student['student_id']);
                 $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
               //  echo $this->db->last_query(); die;       
