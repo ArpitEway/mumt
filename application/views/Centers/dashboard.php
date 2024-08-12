@@ -1,23 +1,22 @@
 <div class="row mt-2">
 	<div class="col-12 col-md-3 col-sm-12 menu-background p-3" >
 		<ul class="nav flex-column nav-pills">
-            <li class="nav-item mb-2">
-				<a class="nav-link active show border" id="Enrollment-tab-Private" data-toggle="tab" href="#Enrollment_Private">
-					<span class="nav-text">Enrollment Private</span>
-					<span class="nav-icon flot-right" >
-						<i class="flaticon2-fast-next"></i>
-					</span>
-				</a>
-			</li>
 			<li class="nav-item mb-2">
-				<a class="nav-link   border" id="Enrollment-tab-Regular" data-toggle="tab" href="#Enrollment_Regular">
+				<a class="nav-link active show  border" id="Enrollment-tab-Regular" data-toggle="tab" href="#Enrollment_Regular">
 					<span class="nav-text">Enrollment Regular</span>
 					<span class="nav-icon flot-right" >
 						<i class="flaticon2-fast-next"></i>
 					</span>
 				</a>
 			</li>
-			
+			<li class="nav-item mb-2">
+				<a class="nav-link border" id="Enrollment-tab-Private" data-toggle="tab" href="#Enrollment_Private">
+					<span class="nav-text">Enrollment Private</span>
+					<span class="nav-icon flot-right" >
+						<i class="flaticon2-fast-next"></i>
+					</span>
+				</a>
+			</li>
 		 	<li class="nav-item mb-2">
 				<a class="nav-link border" id="payment-tab" data-toggle="tab" href="#payment">
 					<span class="nav-text">Account</span>
@@ -448,7 +447,7 @@ Swal.fire({
 $(".kt_popup_private").click(function(e) {
  
 Swal.fire({
-	 text:  "महत्त्वपूर्ण सूचना -  सत्र 2024-25 में विश्वविद्यालय के स्वाध्यायी (प्राइवेट) पाठ्यक्रमों में पंजीयन के इच्छुक विद्यार्थियों को सूचित किया जाता है कि, उनकी परीक्षाएं विश्वविद्यालय के मुख्यालय करौंदी जिला कटनी में आयोजित की जाएगी| इस सम्बन्ध में अधिक जानकारी के लिए मोबा नं 9755590031 और 9752042834 पर संपर्क कर सकते है|"
+	 text:  "महत्त्वपूर्ण सूचना सत्र 2024-25 में विश्वविद्यालय के स्वाध्यायी (प्राइवेट) पाठ्यक्रमों में पंजीयन के इच्छुक विद्यार्थियों को सूचित किया जाता है कि, उनकी परीक्षाएं विश्वविद्यालय के मुख्यालय करौंदी जिला कटनी में आयोजित की जाएगी| इस सम्बन्ध में अधिक जानकारी के लिए मोबा नं 9755590031 और 9752042834 पर संपर्क कर सकते है|"
 }).then((result) => {
   if (result.isConfirmed) {	
   	window.location.href =  "<?=base_url('admission_form/private');?>";
