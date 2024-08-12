@@ -1,22 +1,23 @@
 <div class="row mt-2">
 	<div class="col-12 col-md-3 col-sm-12 menu-background p-3" >
 		<ul class="nav flex-column nav-pills">
-			<li class="nav-item mb-2">
-				<a class="nav-link active show  border" id="Enrollment-tab-Regular" data-toggle="tab" href="#Enrollment_Regular">
-					<span class="nav-text">Enrollment Regular</span>
-					<span class="nav-icon flot-right" >
-						<i class="flaticon2-fast-next"></i>
-					</span>
-				</a>
-			</li>
-			<li class="nav-item mb-2">
-				<a class="nav-link border" id="Enrollment-tab-Private" data-toggle="tab" href="#Enrollment_Private">
+            <li class="nav-item mb-2">
+				<a class="nav-link active show border" id="Enrollment-tab-Private" data-toggle="tab" href="#Enrollment_Private">
 					<span class="nav-text">Enrollment Private</span>
 					<span class="nav-icon flot-right" >
 						<i class="flaticon2-fast-next"></i>
 					</span>
 				</a>
 			</li>
+			<li class="nav-item mb-2">
+				<a class="nav-link  border" id="Enrollment-tab-Regular" data-toggle="tab" href="#Enrollment_Regular">
+					<span class="nav-text">Enrollment Regular</span>
+					<span class="nav-icon flot-right" >
+						<i class="flaticon2-fast-next"></i>
+					</span>
+				</a>
+			</li>
+			
 		 	<li class="nav-item mb-2">
 				<a class="nav-link border" id="payment-tab" data-toggle="tab" href="#payment">
 					<span class="nav-text">Account</span>
@@ -45,7 +46,7 @@
 	</div>
 	<div class="col-md-8 col-12 col-sm-12 menu-background p-3">
 		<div class="tab-content">
-			<div class="tab-pane fade" id="Enrollment_Private" role="tabpanel" aria-labelledby="Enrollment-tab-Private">
+			<div class="tab-pane fade active show" id="Enrollment_Private" role="tabpanel" aria-labelledby="Enrollment-tab-Private">
 				<div class="row">
 
 					
@@ -134,7 +135,7 @@
 					</a>	
 				</div>
 			</div>
-			<div class="tab-pane fade active show" id="Enrollment_Regular" role="tabpanel" aria-labelledby="Enrollment-tab-Regular">
+			<div class="tab-pane fade" id="Enrollment_Regular" role="tabpanel" aria-labelledby="Enrollment-tab-Regular">
 				<div class="row">
 
 					<a class="border-0 custom-menu-item" href="<?=base_url('instruction');?>">
