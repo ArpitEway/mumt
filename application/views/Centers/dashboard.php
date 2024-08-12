@@ -58,12 +58,12 @@
 				 <?php
 				$center_id =  $this->session->center_id;	
 				$center_ids_dep = array(21,22,23,24,25,26,27,28,29);
-				//   if($center->admission_permission_private=='Y' ) // && !in_array($center_id, $center_ids_dep)
-				//   {
+				  if($center->admission_permission_private=='Y' ) // && !in_array($center_id, $center_ids_dep)
+				   {
 					
-				// 	$pending = $this->Common_model->getCountByWhere('online_payment_transaction','center_id='.$this->session->center_id.' and  fees_head="Admission Fees"  and payment="N" and remark="With Late Fees" and payment_status="pending"');
+				 	$pending = $this->Common_model->getCountByWhere('online_payment_transaction','center_id='.$this->session->center_id.' and  fees_head="Admission Fees"  and payment="N" and remark="With Late Fees" and payment_status="pending"');
 					
-				// 	$failureCount = $this->Common_model->getCountByWhere('online_payment_transaction','center_id='.$this->session->center_id.' and  fees_head="Admission Fees"  and payment="N" and remark="With Late Fees" and payment_status!="pending"');
+				 	$failureCount = $this->Common_model->getCountByWhere('online_payment_transaction','center_id='.$this->session->center_id.' and  fees_head="Admission Fees"  and payment="N" and remark="With Late Fees" and payment_status!="pending"');
 				// 	if($pending!=0 || ($failureCount!=0 && $failureCount>1)){
 				// 		?>
 				<!-- // 	<a class="border-0 custom-menu-item " data-toggle="modal" data-target="#exampleModalCenter1">
@@ -81,7 +81,7 @@
 					</a>
 				<?php
 				// 	}//pending end
-				//   }
+				   }
 				  ?>
 					<a class="border-0 custom-menu-item" href="<?=base_url('all_student/PVT');?>">
 						<div>
