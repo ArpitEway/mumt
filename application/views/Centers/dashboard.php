@@ -62,18 +62,19 @@
 				  if($center->admission_permission_private=='Y' ) // && !in_array($center_id, $center_ids_dep)
 				   {
 					
-				 	$pending = $this->Common_model->getCountByWhere('online_payment_transaction','center_id='.$this->session->center_id.' and  fees_head="Admission Fees"  and payment="N" and remark="With Late Fees" and payment_status="pending"');
-					
-				 	$failureCount = $this->Common_model->getCountByWhere('online_payment_transaction','center_id='.$this->session->center_id.' and  fees_head="Admission Fees"  and payment="N" and remark="With Late Fees" and payment_status!="pending"');
-				// 	if($pending!=0 || ($failureCount!=0 && $failureCount>1)){
-				// 		?>
-				<!-- // 	<a class="border-0 custom-menu-item " data-toggle="modal" data-target="#exampleModalCenter1">
-				// 		<div>
-				// 			<span class="nav-text">Admission Form Private</span>
-				// 		</div>
-				// 	</a> -->
+				 	$pending = $this->Common_model->getCountByWhere('online_payment_transaction','center_id='.$this->session->center_id.' and  fees_head="Admission Fees"  and payment="N"  and payment_status="pending" and created_at > "2024-08-11"');
+					// and remark="With Late Fees"
+				 	$failureCount = $this->Common_model->getCountByWhere('online_payment_transaction','center_id='.$this->session->center_id.' and  fees_head="Admission Fees"  and payment="N" and payment_status!="pending" and created_at > "2024-08-11"');
+                    
+				 	if($pending!=0 || ($failureCount!=0 && $failureCount>1)){
+				 		?>
+				 	<a class="border-0 custom-menu-item " data-toggle="modal" data-target="#exampleModalCenter1">
+					<div>
+						<span class="nav-text">Admission Form Private</span>
+						</div>
+			 	</a> 
 				 <?php
-				// 	}else{
+				 	}else{
 					?>
 					<a class="border-0 custom-menu-item kt_popup_private" >
 						<div>
@@ -81,7 +82,7 @@
 						</div>
 					</a>
 				<?php
-				// 	}//pending end
+				 	}//pending end
 				   }
 				  ?>
 					<a class="border-0 custom-menu-item" href="<?=base_url('all_student/PVT');?>">

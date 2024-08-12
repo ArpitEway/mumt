@@ -151,7 +151,7 @@ class Center extends CI_Controller {
 			redirect(base_url());
 			exit;
 		}
-		$pending = $this->Common_model->getCountByWhere('online_payment_transaction','center_id='.$this->session->center_id.' and  fees_head="Admission Fees"  and payment="N" and remark="With Late Fees" ');
+		// $pending = $this->Common_model->getCountByWhere('online_payment_transaction','center_id='.$this->session->center_id.' and  fees_head="Admission Fees"  and payment="N" and remark="With Late Fees" ');
 		$center_id =  $this->session->center_id;
 		$center_data = $this->Common_model->getRecordByWhere('center',array('id'=>$center_id));
 		$center_session_permission = $center_data[0]->old_session_permission;
@@ -203,13 +203,14 @@ class Center extends CI_Controller {
 			redirect(base_url('dashboard'));
 		}
 		$late_admission_fees_pvt = $this->Common_model->getRecordByWhere('master');
-		if($late_admission_fees_pvt[0]->p_late_fee_status=='Y'){
-			$pending = $this->Common_model->getCountByWhere('online_payment_transaction','center_id='.$this->session->center_id.' and  fees_head="Admission Fees"  and payment="N" and remark="With Late Fees" and payment_status="pending"');
-			$failureCount = $this->Common_model->getCountByWhere('online_payment_transaction','center_id='.$this->session->center_id.' and  fees_head="Admission Fees"  and payment="N" and remark="With Late Fees" and payment_status!="pending"');
+		// if($late_admission_fees_pvt[0]->p_late_fee_status=='Y'){
+			$pending = $this->Common_model->getCountByWhere('online_payment_transaction','center_id='.$this->session->center_id.' and  fees_head="Admission Fees"  and payment="N"  and payment_status="pending" and created_at > "2024-08-11"');
+            // and remark="With Late Fees"
+			$failureCount = $this->Common_model->getCountByWhere('online_payment_transaction','center_id='.$this->session->center_id.' and  fees_head="Admission Fees"  and payment="N" and payment_status!="pending" and created_at > "2024-08-11"');
 			if($pending!=0 || ($failureCount!=0 && $failureCount>1)){
-				redirect(base_url('dashboard'));
+				 redirect(base_url('dashboard'));
 			}
-		}
+		// }
 		$titleData = array('title' => 'Admission Form '.$head);
 		$state_list = $this->Common_model->get_record('state','*');
 		$eligibility_list = $this->Common_model->get_record('course_group','DISTINCT (eligibility)');
@@ -374,6 +375,7 @@ class Center extends CI_Controller {
 		}else{
 			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
 		}
+        $this->db->where('course_complete',"N");
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
 		$center_ids_dep = array( 21,22,23,24,25,26,27,28,29);
@@ -398,12 +400,14 @@ class Center extends CI_Controller {
 		}else{
 			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
 		}
+        $this->db->where('course_complete',"N");
 		$recordsTotal = $this->Datatable_join_model->countAll('student',$where);
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{
 			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
 		}
+        $this->db->where('course_complete',"N");
 		$recordsFiltered = $this->Datatable_join_model->countFiltered($_POST,$DataTableArray);
 		$output = array(
 			"draw" => $_POST['draw'],
@@ -539,18 +543,18 @@ class Center extends CI_Controller {
 			}else{
 				
 			 $modal = '<a href="#" data-student_id="'.$this->Common_model->encrypt_decrypt($result->student_id).'" data-id="'.$this->Common_model->encrypt_decrypt($result->id).'" class="btn btn-info btn-sm pay" >Pay</a>';
-				if($late_privte_admission_fees=='Y'){
-					$deleteBtn = '<a href="#" data-student_id="'.$result->student_id.'" data-id="'.$this->Common_model->encrypt_decrypt($result->id).'" class="btn btn-info btn-danger deleteForm " >Delete</a>';
-				}
+				//  if($late_privte_admission_fees=='Y'){
+				 	$deleteBtn = '<a href="#" data-student_id="'.$result->student_id.'" data-id="'.$this->Common_model->encrypt_decrypt($result->id).'" class="btn btn-info btn-danger deleteForm " >Delete</a>';
+				//  }
 			}
 			
 			$i++;
-			if($late_privte_admission_fees=='Y'){
+			// if($late_privte_admission_fees=='Y'){
 			$data[] = array($i,$result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->amount,$modal,$deleteBtn);
-			}
-			else{
-				$data[] = array($i,$result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->amount,$modal);
-			}
+			// }
+			// else{
+			// 	$data[] = array($i,$result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->amount,$modal);
+			// }
 		}
 
 		if ($this->session->center_id!=13) {

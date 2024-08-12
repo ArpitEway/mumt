@@ -19,7 +19,8 @@
 				<th>Fees Amount<?php if($course_type=='PVT'&& $late_privte_admission_fees=='Y'){ echo ' + Late Fees';}?></th>
 				
 				<th>Pay</th>
-				<?php if($course_type=='PVT'&& $late_privte_admission_fees=='Y'){ echo '<th>Action</th>';}?>
+                <th>Action</th>
+				<?php //if($course_type=='PVT'&& $late_privte_admission_fees=='Y'){ echo '<th>Action</th>';}?>
 			</tr>
 		</thead>
 		<tbody>
