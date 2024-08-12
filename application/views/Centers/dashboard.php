@@ -2,7 +2,7 @@
 	<div class="col-12 col-md-3 col-sm-12 menu-background p-3" >
 		<ul class="nav flex-column nav-pills">
             <li class="nav-item mb-2">
-				<a class="nav-link border" id="Enrollment-tab-Private" data-toggle="tab" href="#Enrollment_Private">
+				<a class="nav-link active show border" id="Enrollment-tab-Private" data-toggle="tab" href="#Enrollment_Private">
 					<span class="nav-text">Enrollment Private</span>
 					<span class="nav-icon flot-right" >
 						<i class="flaticon2-fast-next"></i>
@@ -10,7 +10,7 @@
 				</a>
 			</li>
 			<li class="nav-item mb-2">
-				<a class="nav-link active show  border" id="Enrollment-tab-Regular" data-toggle="tab" href="#Enrollment_Regular">
+				<a class="nav-link   border" id="Enrollment-tab-Regular" data-toggle="tab" href="#Enrollment_Regular">
 					<span class="nav-text">Enrollment Regular</span>
 					<span class="nav-icon flot-right" >
 						<i class="flaticon2-fast-next"></i>
