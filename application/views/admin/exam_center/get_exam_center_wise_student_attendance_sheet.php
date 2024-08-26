@@ -74,7 +74,7 @@
 									else
 									echo ' 2024';
 							}
-							elseif($student->course_group_id==80){
+							elseif($student->course_group_id==80  || $student->course_group_id==45){
 								echo 'August 2024';
 							}
 							else{
@@ -187,7 +187,10 @@
 					}
 					elseif($paper->exam_shift=='Early Morning'){
 						echo '07:00 To 10:00 AM';
-					}elseif($paper->exam_shift=='Morning'){
+					}elseif($paper->exam_shift=='Morning' &&  $student->course_group_id==45){
+						echo '10:00 AM To 1:00 PM';
+					}
+					elseif($paper->exam_shift=='Morning'){
 						echo '11:00 AM To 2:00 PM';
 					}elseif($paper->exam_shift=='Afternoon' ){ 
 						echo '03:00 PM To 6:00 PM';
