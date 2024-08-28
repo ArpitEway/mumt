@@ -50,8 +50,9 @@
 									echo 'July 2024';
 									else
 									echo '2024';
-								}
-							else{
+								}elseif($student[0]->course_group_id==80 || $student[0]->course_group_id==45 ){
+									echo 'August 2024';
+								}else{
 								echo 'June 2024';
 							}
 							?> 
