@@ -61,11 +61,11 @@ class Otherscript extends CI_Controller {
 		//$where = " paper_code in ('1RMLIS10','1RMLIS11')";
 		//$where="`paper_code` in ('1RCMSCCH7','1RCMSCCH8','1RCMSCCH9','1RCMSCBT7','1RCMSCBT8','1RCMSCC7','1RCMSCM7','3RMSCC6','3RMSCC7')";
 		//$where="`id` in (1587)";
-		$where="`id` = 0";
+		$where="`id` = 382";
 		$papers = $this->Common_model->get_record('paper_master','*',$where);
 
 		foreach ($papers as $paper) {
-			$where = ' class_id = "'.$paper['class_id'].'" and temp_exam_form="Y" and  exam_pattern="GRADE" ';
+			$where = ' class_id = "'.$paper['class_id'].'" and temp_exam_form="Y" and  exam_pattern="GRADE"  and university_mode="PVT" ';
 			
 			//student_id not in (703394,703395,683403,685044,685047,686312,689208,702853,723869,724934)
 			$students = $this->Common_model->get_record('student','*',$where);
