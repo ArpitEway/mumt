@@ -80,7 +80,7 @@ class Otherscript extends CI_Controller {
 			foreach ($students as $student) {
 				$where = ' class_id = "'.$paper['class_id'].'" and student_id=  "'.$student['student_id'].'" and  paper_id="'.$paper['id'].'"  ';
 				$examData = $this->Common_model->get_record('new_exam_form','*',$where);
-				if($examData){
+				if(!$examData){
 					echo	$studentData['student_id'] = $student['student_id'];
 				    echo "<br>";
 				    $this->Common_model->insertAll('new_exam_form',$studentData);
