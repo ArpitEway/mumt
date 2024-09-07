@@ -76,7 +76,6 @@ class Otherscript extends CI_Controller {
 				'paper_code' => $paper['paper_code'],
 				'paper_type' => $paper['type'],
 				'paper_order' => $paper['paper_no'],
-				'sub_group_id' => $paper['sub_group_id'],
 			);
 			foreach ($students as $student) {
 				$where = ' class_id = "'.$paper['class_id'].'" and student_id=  "'.$student['student_id'].'" and  paper_id="'.$paper['id'].'"  ';
