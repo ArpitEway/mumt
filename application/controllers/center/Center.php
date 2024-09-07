@@ -2729,7 +2729,7 @@ public function backlog_grade_marksheet_pg($student_id=""){
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 		);
-		$titleData = array('title' => 'Regular Practical Marks Submission' );
+		$titleData = array('title' => 'Practical Marks Submission' );
 		$this->load->view('Centers/header',$titleData);
 		$center_id =  $this->session->center_id;
 		$where = array('university_mode' => 'REG','center_id' => $center_id,'result_show' => 'N',$this->exam_form => 'Y');
