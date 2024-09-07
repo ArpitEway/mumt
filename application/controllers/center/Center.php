@@ -1930,9 +1930,9 @@ class Center extends CI_Controller {
 		}
 	 }
 	public function internal_marks_list(){
-		 if($this->session->center_id!=12 && $this->session->center_id!=28){
-	 	 	 redirect(base_url());
-		}
+		//  if($this->session->center_id!=12 && $this->session->center_id!=28){
+	 	//  	 redirect(base_url());
+		// }
 	 	if(!$this->session->has_userdata('centerdata')){
 	 		redirect(base_url());
 	 	}
@@ -1949,7 +1949,7 @@ class Center extends CI_Controller {
 	 	$this->db->order_by("int_marks_sub,".$this->exam_table.".course_group_id,".$this->exam_table.".class_id", "asc");
 	 	$this->db->select('*');
 	 	$this->db->from($this->exam_table);
-        $this->db->where_in($this->exam_table.'.course_group_id', [76,77]);
+        // $this->db->where_in($this->exam_table.'.course_group_id', [76,77]);
 		 $this->db->join('class_master', ''.$this->exam_table.'.class_id = class_master.id');
 	 	$this->db->Where($where);
 		
@@ -2718,9 +2718,9 @@ public function backlog_grade_marksheet_pg($student_id=""){
 	}
 
 	public function practical_marks_list(){
-		 if($this->session->center_id!=12 && $this->session->center_id!=28){
-		  redirect(base_url());
-		}
+		//  if($this->session->center_id!=12 && $this->session->center_id!=28){
+		//   redirect(base_url());
+		// }
 		//  $master = $this->Common_model->getSingleRow('master');
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
@@ -2738,7 +2738,7 @@ public function backlog_grade_marksheet_pg($student_id=""){
 		$this->db->select('*');
 		$this->db->from($this->exam_table);
 		$this->db->join('class_master', ''.$this->exam_table.'.class_id = class_master.id');
-        $this->db->where_in($this->exam_table.'.course_group_id', [76,77]);
+        // $this->db->where_in($this->exam_table.'.course_group_id', [76,77]);
 		$this->db->Where($where);
 		$this->db->Where('(project="Y" or practical = "Y")');
 		
