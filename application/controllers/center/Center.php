@@ -2732,8 +2732,10 @@ public function backlog_grade_marksheet_pg($student_id=""){
 		$titleData = array('title' => 'Practical Marks Submission' );
 		$this->load->view('Centers/header',$titleData);
 		$center_id =  $this->session->center_id;
-		$where = array('university_mode' => 'REG','center_id' => $center_id,'result_show' => 'N',$this->exam_form => 'Y');
+		$where = array('center_id' => $center_id,'result_show' => 'N',$this->exam_form => 'Y');
 		// ,'demo'=>'N','class_id'=>264
+		
+		
 		$this->db->order_by("p_marks_sub,".$this->exam_table.".course_group_id,".$this->exam_table.".class_id", "asc");
 		$this->db->select('*');
 		$this->db->from($this->exam_table);
@@ -2742,8 +2744,11 @@ public function backlog_grade_marksheet_pg($student_id=""){
 		$this->db->Where($where);
 		$this->db->Where('(project="Y" or practical = "Y")');
 		
+		$this->db->where("(`university_mode` = 'REG' or (`university_mode` = 'PVT' and exam_pattern='GRADE'))");
+		
+		
 		$data['students'] = $this->db->get()->result();
-		// $this->Common_model->last_query();
+		 //$this->Common_model->last_query();
 		$this->load->view('Centers/practical_marks_no_list',$data);
 		$this->load->view('Centers/footer');
 	}
