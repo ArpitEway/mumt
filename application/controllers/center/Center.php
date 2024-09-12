@@ -2741,6 +2741,8 @@ public function backlog_grade_marksheet_pg($student_id=""){
 		$this->db->from($this->exam_table);
 		$this->db->join('class_master', ''.$this->exam_table.'.class_id = class_master.id');
         // $this->db->where_in($this->exam_table.'.course_group_id', [76,77]);
+		$this->db->where_not_in($this->exam_table.'.student_id', [188419,373587,373700,382024,385894,685840,686621,686647,686890,687165,687390,687395]);// student of old pattern which have no practical of class_id in (232,218,236)
+		
 		$this->db->Where($where);
 		$this->db->Where('(project="Y" or practical = "Y")');
 		
