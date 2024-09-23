@@ -2813,12 +2813,13 @@ public function backlog_grade_marksheet_pg($student_id=""){
 	public function view_student_marks(){
 		 	$student_id = $this->input->post('student_id');
 			$class_id = $this->input->post('old_class_id');
+			$university_mode= $this->input->post('university_mode');
 			$classData	= $this->Common_model->getRecordById('class_master','id',$class_id); 
 		 	$where=array(''.$this->exam_table.'.student_id'=>$student_id,'paper_master.sub_group_id !='=>1);
 		 	$this->db->select('*');
 		 	$this->db->from('new_exam_form');
 		 	$this->db->Where($where );
-			 if($classData->internal == "N"){
+			 if($classData->internal == "N" || $university_mode== 'PVT'){
 				$this->db->where('paper_master.type !=','theory'); }
 		 	$this->db->join($this->exam_table, ''.$this->exam_table.'.student_id = new_exam_form.student_id and '.$this->exam_table.'.class_id = new_exam_form.class_id');
 			$this->db->join('paper_master',''.$this->exam_table.'.class_id= paper_master.class_id and paper_master.paper_code = new_exam_form.paper_code');

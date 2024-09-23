@@ -37,12 +37,12 @@
 						?>
 							<button  class="btn btn-primary btn-sm font-weight-bold student" id="<?="roll_{$student->student_id}"; ?>" data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$student->student_id;?>" onclick="mark_submission(<?=$student->student_id;?>,<?=$student->class_id;?>)">Submission</button>
 
-							<button style="display: none" class="btn btn-info btn-sm font-weight-bold view" id="<?="roll_num{$student->student_id}"; ?>" data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$student->student_id;?>" onclick="view_mark(<?=$student->student_id;?>)">view</button>
+							<button style="display: none" class="btn btn-info btn-sm font-weight-bold view" id="<?="roll_num{$student->student_id}"; ?>" data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$student->student_id;?>" onclick="view_mark(<?=$student->student_id;?>,<?=$student->class_id; ?> ,'<?=$student->university_mode; ?>')">view</button>
 
 						<?php }
 						else{
 							?>
-							<button  class="btn btn-info btn-sm font-weight-bold view" id="<?="roll_num_{$student->student_id}"; ?>" data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$student->student_id;?>" onclick="view_mark(<?=$student->student_id;?>,<?=$student->class_id; ?>)">view</button>
+							<button  class="btn btn-info btn-sm font-weight-bold view" id="<?="roll_num_{$student->student_id}"; ?>" data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$student->student_id;?>" onclick="view_mark(<?=$student->student_id;?>,<?=$student->class_id; ?> ,'<?=$student->university_mode; ?>')">view</button>
 							
 							<button style="btn btn-primary btn-sm font-weight-bold student" class="btn btn-primary btn-sm font-weight-bold view" id="<?="roll_{$student->student_id}"; ?>" data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$student->student_id;?>" onclick="edit_mark(<?=$student->student_id;?>,<?=$student->class_id; ?>)">Edit</button>
 							
@@ -87,16 +87,17 @@
 			});
 		}
 
-		function view_mark(student_id,old_class_id){
+		function view_mark(student_id,old_class_id,mode){
 			var student_id = student_id;
 			var old_class_id = old_class_id;
+			var university_mode = mode;
 			var csrfName = $('.csrfname').attr('name');
 			var csrfHash = $('.csrfname').val();
 			$.ajax({
 				type: "POST",
 				url: BASE_URL+"center/center/view_student_marks",
 				dataType:"JSON",
-				data: {student_id: student_id,old_class_id: old_class_id, [csrfName]:csrfHash},
+				data: {student_id: student_id,old_class_id: old_class_id ,university_mode: university_mode, [csrfName]:csrfHash},
 				success: function(response){
 					$('.modal-body').html(response.data);
 				},
