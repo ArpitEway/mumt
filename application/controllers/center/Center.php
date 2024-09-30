@@ -206,7 +206,7 @@ class Center extends CI_Controller {
 			$pending = $this->Common_model->getCountByWhere('online_payment_transaction','center_id='.$this->session->center_id.' and  fees_head="Admission Fees"  and payment="N"  and payment_status="pending" and created_at > "2024-08-11"');
             // and remark="With Late Fees"
 			$failureCount = $this->Common_model->getCountByWhere('online_payment_transaction','center_id='.$this->session->center_id.' and  fees_head="Admission Fees"  and payment="N" and payment_status!="pending" and created_at > "2024-08-11"');
-			if($pending!=0 || ($failureCount!=0 && $failureCount>1)){
+			if(($pending!=0 || ($failureCount!=0 && $failureCount>1)) && $check[0]->payment_gateway_permission == 'Y'){
 				 redirect(base_url('dashboard'));
 			}
 		// }
