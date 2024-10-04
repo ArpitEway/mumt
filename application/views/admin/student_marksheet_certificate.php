@@ -64,7 +64,7 @@
     }
     foreach($students as $student)
     {
-      $papers = $this->Common_model->student_info_for_result($student->student_id,$student->old_class_id, $student->course_group_id);
+      $papers = $this->Common_model->student_info_for_result($student->student_id,$student->class_id, $student->course_group_id);
       ?>
       <fieldset id="printarea" class="breakhere" style="width:90%;border: 0px solid #22316C;"> 
        
@@ -103,7 +103,7 @@
                       <td width="35%" class="Normaltext" align="left"><div align="left">Roll No</div></td>
                       <td width="53%" class="resultText">
                         <div align="left">
-                          <span id="lblSemesterGrading" style="color:Black;"><?php echo $student->roll_number; ?></span>
+                          <span id="lblSemesterGrading" style="color:Black;"><?php echo $student->roll_no; ?></span>
                           <!-- <div style="float:right"> &nbsp;&nbsp;&nbsp; Mode - Distance Education </div> -->
                         </div>
                       </td>
@@ -580,7 +580,7 @@
                   </tr>
                   <tr class="">
                     <td colspan="">
-                      <?php  echo $generator->getBarcode($marksheet_variables->bar_code_no.$student->roll_number, $generator::TYPE_CODE_128,2,25); ?>
+                      <?php  echo $generator->getBarcode($marksheet_variables->bar_code_no.$student->roll_no, $generator::TYPE_CODE_128,2,25); ?>
                     </td>
                   </tr>
                   <tr>
