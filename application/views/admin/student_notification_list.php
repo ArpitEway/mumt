@@ -106,11 +106,11 @@
 		   //$grand_tot =0;
 		   $grand_obtain =0;
 			$grand_total =0;
-		$paper_marks = $this->Common_model->notification_marks_details_($student->student_id,$student->old_class_id);
+		$paper_marks = $this->Common_model->notification_marks_details_($student->student_id,$student->class_id);
 		// $class_ids=array(101,104,107,110,116,119,125,128,131,134);
         $class_ids = array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
 		foreach($paper_marks as  $marks){
-			if((in_array($student->old_class_id, $class_ids)) && $student->exam_pattern=="GRADE" )	// && $mode=='REG'
+			if((in_array($student->class_id, $class_ids)) && $student->exam_pattern=="GRADE" )	// && $mode=='REG'
 			{
 			if($marks->type=="theory" ){
 				$theory_paper_count++;
@@ -303,7 +303,7 @@
 		  $require_tot_marks += $fc2_min;
 	
 		}
-		if((in_array($student->old_class_id, $class_ids))  && $student->exam_pattern=='GRADE'  )	//$mode=='REG'
+		if((in_array($student->class_id, $class_ids))  && $student->exam_pattern=='GRADE'  )	//$mode=='REG'
 			{
 				
 			 $require_grace_marks = $require_tot_marks-$get_tot_marks.'<br>';
@@ -370,7 +370,7 @@
 				<th  class="text-center" style="text-align:left" scope="row"  width="35%" ><span class="style5" style="padding-left: 10px;" >Name of the Candidate and F/H Name</span></th>
 				<th class="text-center" scope="row"  width="10%" >Result</span></th>
 				
-				<?php if((!in_array($student->old_class_id, $class_ids)) || $student->exam_pattern=='MARKS'){ //$mode=='PVT' ?>	<th class="text-center" style="padding:0px" align="center" class="text-center" scope="row"  width="20%" colspan='<?php echo ($isFinalClass && !$isOneClass)?"2":"1";?>'><?php if($isFinalClass){
+				<?php if((!in_array($student->class_id, $class_ids)) || $student->exam_pattern=='MARKS'){ //$mode=='PVT' ?>	<th class="text-center" style="padding:0px" align="center" class="text-center" scope="row"  width="20%" colspan='<?php echo ($isFinalClass && !$isOneClass)?"2":"1";?>'><?php if($isFinalClass){
 						?>
 						<table width="100%" border="1" class="m-0">
 							<tr>
@@ -394,7 +394,7 @@
 				?></th><?php } ?>
 				
 				
-				<?php if((in_array($student->old_class_id, $class_ids)) && $student->exam_pattern=='GRADE')	//&& $mode=='REG'
+				<?php if((in_array($student->class_id, $class_ids)) && $student->exam_pattern=='GRADE')	//&& $mode=='REG'
 			{ ?>
 				<th class="text-center" scope="row" width="10%"><span class="style5">
 					<?php if($classData->mode=="Annual") echo 'AGPA'; else echo 'SGPA'; ?></span></th>
@@ -412,7 +412,7 @@
 		?>
 		<tr class="alternate">
 			<td class="text-center">
-				<?php echo $student->roll_number; ?>
+				<?php echo $student->roll_no; ?>
 			</td>
 			<td scope="row" style="padding-left: 10px;" >
 				<?php echo $student->name  .' / '.  $student->f_h_name; ?>
@@ -469,8 +469,8 @@
 							 $final_result = 'PASS';
 							
 						}
-						if((in_array($student->old_class_id, $class_ids)) && $student->exam_pattern=='GRADE' ){//&& $mode=='REG'
-						echo $this->Gradesheet_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+						if((in_array($student->class_id, $class_ids)) && $student->exam_pattern=='GRADE' ){//&& $mode=='REG'
+						echo $this->Gradesheet_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
 						}else{
 							echo $final_result;
 						}
@@ -494,7 +494,7 @@
 <td class="text-center" style="padding:0px" align="center"><?php if(!in_array($final_result, array("FAIL","RW") )){ echo  $grand_obtain .' / '. $grand_total;} ?></td>
 <?php
 			}			}
-			}else if((!in_array($student->old_class_id, $class_ids)) || $student->exam_pattern=="MARKS"){ //$mode=='PVT'
+			}else if((!in_array($student->class_id, $class_ids)) || $student->exam_pattern=="MARKS"){ //$mode=='PVT'
 				?>
 			<td  class="text-center" style="padding:0px" align="center"><?php
 			if(!in_array($final_result, array("FAIL","RW") )){
@@ -505,11 +505,11 @@
 		</td>
 
 		<?php	
-		if((in_array($student->old_class_id, $class_ids)) && $student->exam_pattern=='GRADE'){//&& $mode=='REG'
+		if((in_array($student->class_id, $class_ids)) && $student->exam_pattern=='GRADE'){//&& $mode=='REG'
 		
 			//if($final_result != 'FAIL' && $final_result!="RW"){
 				
-				$gradesheetData = $this->Gradesheet_tr_model->view_notification($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+				$gradesheetData = $this->Gradesheet_tr_model->view_notification($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
 		/*	}else{
 				?>
 				<td  class="text-center" style="padding:0px" align="center"></td>
@@ -545,7 +545,7 @@
 		} ?>
 		<td class="text-center" >
 			<?php
-		if((in_array($student->old_class_id, $class_ids)) &&  $student->exam_pattern=="GRADE" ){	//$mode=='REG'
+		if((in_array($student->class_id, $class_ids)) &&  $student->exam_pattern=="GRADE" ){	//$mode=='REG'
 			
 			if($final_result == 'RWPM'){
 				echo 'RWPM';
