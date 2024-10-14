@@ -1131,7 +1131,7 @@ public function upload_old_grade_data_script_pg($class_id="",$mode){
                
                 $new_marksheet_no= $oldData[0]->marksheet_no.'/'.$count;
                 $updateData  = array('back_marksheet_no'=>$new_marksheet_no);
-                $where = array('student_id'=>$student->student_id,'class_id'=>$student->class_id);
+                $where = array('student_id'=>$student->student_id,'class_id'=>$student->class_id,'id'=>$student->id);
                 $this->Common_model->updateRecordByConditions('backlog_student',$where,$updateData); 
                 echo $this->db->last_query()."<br>";
             }
