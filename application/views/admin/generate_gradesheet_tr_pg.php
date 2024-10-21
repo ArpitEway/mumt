@@ -157,7 +157,7 @@ table.last_table, .last_table td, .last_table th{
    
     $current_center=$student->center_id;
     $page_break_count++;
-    $marks = $this->Common_model->student_info_for_result($student->student_id,$student->old_class_id);
+    $marks = $this->Common_model->student_info_for_result($student->student_id,$student->class_id);
     // $this->Common_model->last_query();
     $BarCodecolspan = 10 + count($marks); 
     $total_theory_marks_obt = 0;
@@ -427,11 +427,11 @@ table.last_table, .last_table td, .last_table th{
 		<td class="align-middle text-right">Course Credit</td>
     <?php
     $credit = 0;
-    $std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $student->old_class_id,'student_id'=>$student->student_id));
-		$this->classData = $this->Common_model->getRecordById('class_master','id',$student->old_class_id);
+    $std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $student->class_id,'student_id'=>$student->student_id));
+		$this->classData = $this->Common_model->getRecordById('class_master','id',$student->class_id);
    
    
-			$papers = $this->Common_model->get_all_papers($student->student_id,$student->old_class_id);
+			$papers = $this->Common_model->get_all_papers($student->student_id,$student->class_id);
      
 		
 		
@@ -461,7 +461,7 @@ table.last_table, .last_table td, .last_table th{
     
 <span style="display:none;">
 <?php
-   $gradesheetData = $this->Gradesheet_tr_model_pg->view_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+   $gradesheetData = $this->Gradesheet_tr_model_pg->view_result($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
   
   ?>
 </span>
@@ -469,7 +469,7 @@ table.last_table, .last_table td, .last_table th{
     <table class="table table1">
       <tbody>
         <tr>
-          <th  class="align-middle text-center roll_no" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_number  ?> <br> <?php echo $student->enrollment_no  ?></th>
+          <th  class="align-middle text-center roll_no" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_no  ?> <br> <?php echo $student->enrollment_no  ?></th>
           <th class="align-middle text-center ms_no" rowspan="<?php echo $rowspandata ?>">
             <?php  echo $student->marksheet_no  ?>
           </th>
@@ -704,7 +704,7 @@ table.last_table, .last_table td, .last_table th{
   </tr>
   
   <?php
-   $ddd = $this->Gradesheet_tr_model_pg->view_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+   $ddd = $this->Gradesheet_tr_model_pg->view_result($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
 //   echo $final_result;die;
    
 //    if($ddd['agpa']<4 && $student->promote!="D" && $student->new_exam_form !="D"){
@@ -722,12 +722,14 @@ table.last_table, .last_table td, .last_table th{
       $final_remark = "-"; 
     
   
-  $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id<'=>$student->old_class_id));
+  $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id<'=>$student->class_id));
   ?> <tr>
   <td class="align-middle text-center "  colspan="2"><strong>
   <?= 'Session'.'<br>'.'Sem/Year'.'<br>'.'Roll no'.'<br>'.'Marks'?></strong>
  
 </td> <?php
+$total_ob=0;
+$total_mar=0;
  foreach($old_result as $old){
   if($old->exam_result == "FAIL"){
  $final_fail++;
@@ -736,16 +738,9 @@ table.last_table, .last_table td, .last_table th{
  
   }
 
-  $total_ob = $total_marks_obt + $old->obtain_marks;
-  $total_mar =  $total_paper_marks + $old->total_marks;
-  $percent = round(($total_ob/$total_mar)*100,2);    
-    if($percent>=60){
-      $div = "First";
-    }elseif($percent<60 && $percent>=40){
-      $div  = "Second";
-    }else{
-      $div = "Third";
-    }
+  $total_ob +=  $old->obtain_marks;
+  $total_mar +=  $old->total_marks;
+ 
   ?> 
   
   
@@ -755,6 +750,7 @@ table.last_table, .last_table td, .last_table th{
  
 </td>  
  <?php }
+
  if($final_result == "FAIL" || $final_result == "RW" || $final_fail !=0 ){
   $total_ob = '-';
   $total_mar = '-';
@@ -764,15 +760,27 @@ table.last_table, .last_table td, .last_table th{
     $final_result ='RWPM';
     $final_remark ="RWPM";
   }
+ }else{
+    $total_ob += $total_marks_obt;
+    $total_mar += $total_paper_marks;
+    $percent = round(($total_ob/$total_mar)*100,2);    
+    if($percent>=60){
+    $div = "First";
+    }elseif($percent<60 && $percent>=40){
+    $div  = "Second";
+    }else{
+    $div = "Third";
+    }
  }
+ 
  
  ?>
   
 <td class="align-middle text-center " ><strong>Result</strong><br><?= $final_result?></td>
-<td class="align-middle text-center "  colspan="2"><strong>Grand Total</strong><br><?= $total_ob.'/'.$total_mar?></td>
+<td class="align-middle text-center "  colspan="2"><strong>Grand Total</strong><br><?= $total_ob.'/'.$total_mar ?></td>
 <td class="align-middle text-center "  colspan="2"><strong>%</strong><br><?= $percent?></td>
 <td class="align-middle text-center "  colspan="2"><strong>Division</strong><br><?= $div?></td>
-<td class="align-middle text-center "  colspan="3"><strong>Degree No. And Date</strong><br>-</td>
+<td class="align-middle text-center "  colspan="2"><strong>Degree No. And Date</strong><br>-</td>
 <td class="align-middle text-center "  colspan="2"><strong>Remark</strong><br><?= $final_remark?></td>
   </tr>
   <?php
@@ -798,7 +806,7 @@ table.last_table, .last_table td, .last_table th{
   <tr class="">
 
     <td  class="align-middle text-left " colspan="<?=$BarCodecolspan ?>">
-          <?php  echo $generator->getBarcode($marksheetData[0]->bar_code_no.$student->roll_number, $generator::TYPE_CODE_128,2,25); ?>
+          <?php  echo $generator->getBarcode($marksheetData[0]->bar_code_no.$student->roll_no, $generator::TYPE_CODE_128,2,25); ?>
     </td>
   </tr>
  
