@@ -216,9 +216,9 @@ class Otherscript extends CI_Controller {
 				$this->db->query($update_marks);
 				shuffle($marks);
 			}
-			   $update_student = "update student set p_marks_sub='Y' where student_id='".$student['student_id']."' and class_id='".$cls_id."'";
+			   // $update_student = "update student set p_marks_sub='Y' where student_id='".$student['student_id']."' and class_id='".$cls_id."'";
 
-			  $this->db->query($update_student);
+			  // $this->db->query($update_student);
 		}
 	}
 
@@ -226,8 +226,8 @@ class Otherscript extends CI_Controller {
 	{
 		//$marks = array('166','168','170','165'); 
 		$marks = array('85','84','83','82'); 
-		$cls_id=215;
-		$sql = "select * from student where class_id='".$cls_id."' and exam_form='Y' and p_marks_sub='N' and  university_mode='REG' and exam_pattern= 'GRADE' and  roll_number!=0 order by roll_number  limit 100";
+		$cls_id=155;
+		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and  university_mode='REG' and exam_pattern= 'GRADE' and  roll_no!=0 order by roll_no  limit 100";
 		$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
 		$rs = $this->db->query($sql)->result_array();
 		$s_no=1;
