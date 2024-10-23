@@ -6136,4 +6136,19 @@ public function forward_complaint(){
 		}
 	}
 
+    public function deled_result(){
+            $this->db->select('s.roll_no,s.`enrollment_no`,`name`,e.paper_code,e.paper_type,e.theory_marks,int_marks,e.p_marks, p.paper_name');
+            $this->db->from('student as s');
+            $this->db->join('new_exam_form as e','s.`student_id`=e.student_id and s.class_id=e.class_id');
+            $this->db->join('paper_master as p', 'e.`paper_id`=p.`id`');
+            $this->db->where(array('s.new_exam_form'=>'Y','s.class_id'=>300));
+            $this->db->order_by('s.roll_no,e.paper_order');
+            $students =  $this->db->get()->result();
+            $data = array();
+            $data['title'] = "Deled Result Data";
+            $this->load->view('header',$data);
+            $this->load->view('admin/deled_result', array('students'=> $students));
+            $this->load->view('footer');
+    }
+
 }// class
