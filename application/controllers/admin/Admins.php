@@ -3123,7 +3123,7 @@ public function update_exam_datewise_permission(){
 		}
 		$where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y', 'roll_no!='=>'0' ,'university_mode'=> $mode ,'exam_pattern'=>$pattern);
 		//,'examcentercode'=>'MDE165'
-		//,'student_id'=>703847
+		//,'student_id'=>688872
 		$this->db->order_by('center_id','ASC');
 		$this->db->order_by('roll_no','ASC');
 
@@ -3865,7 +3865,7 @@ public function update_exam_datewise_permission(){
 		// $this->load->view('admin/generate_tr/header2',array('title' =>$title));
 
 		// if($class_id == '110' || $class_id == '119' || $class_id == '131')
-		$class_ids=array(110,119,125,128,131,111,126,129,132);
+		$class_ids=array(110,119,125,128,131,111,126,129,132,112,121,127,130,133);
 		if(in_array($class_id, $class_ids))		
 		{
 			$this->load->model('Gradesheet_tr_model');

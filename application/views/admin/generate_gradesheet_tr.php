@@ -456,7 +456,7 @@ table.last_table, .last_table td, .last_table th{
           $x =1;
           foreach($marks as $paper_master){ 
             $count = count($marks)-2;  
-            $paper_codes=array('1RBBA1','1RBBA2','1RBA1','1RBA2','1RBCOM1','1RBCOM2','1RBCOMCA1','1RBCOMCA2','1RBCOMT1','1RBCOMT2','1RBCA1','1RBCA2','1RBSCCBC1','1RBSCCBC2','1RBSCCS1','1RBSCCS2','1RBSCPCM1','1RBSCPCM2','1RBSW1','1RBSW2','2RBBA1','2RBBA2','2RBA1','2RBA2','2RBCOM1','2RBCOM2','2RBCOMCA1','2RBCOMCA2','2RBCOMT1','2RBCOMT2','2RBCA1','2RBCA2','2RBSCCBC1','2RBSCCBC2','2RBSCCS1','2RBSCCS2','2RBSCPCM1','2RBSCPCM2','2RBSW1','2RBSW2','3RBBA1','3RBBA2','3RBA1','3RBA2','3RBCOM1','3RBCOM2','3RBCOMCA1','3RBCOMCA2','3RBCOMT1','3RBCOMT2','3RBCA1','3RBCA2','3RBSCCBC1','3RBSCCBC2','3RBSCCS1','3RBSCCS2','3RBSCPCM1','3RBSCPCM2','3RBSW1','3RBSW2');
+            $paper_codes=array('1RCBBA1','1RCBBA2','1RBA1','1RBA2','1RBCOM1','1RBCOM2','1RBCOMCA1','1RBCOMCA2','1RBCOMT1','1RBCOMT2','1RBCA1','1RBCA2','1RBSCCBC1','1RBSCCBC2','1RBSCCS1','1RBSCCS2','1RBSCPCM1','1RBSCPCM2','1RBSW1','1RBSW2','2RBBA1','2RBBA2','2RBA1','2RBA2','2RBCOM1','2RBCOM2','2RBCOMCA1','2RBCOMCA2','2RBCOMT1','2RBCOMT2','2RBCA1','2RBCA2','2RBSCCBC1','2RBSCCBC2','2RBSCCS1','2RBSCCS2','2RBSCPCM1','2RBSCPCM2','2RBSW1','2RBSW2','3RBBA1','3RBBA2','3RBA1','3RBA2','3RBCOM1','3RBCOM2','3RBCOMCA1','3RBCOMCA2','3RBCOMT1','3RBCOMT2','3RBCA1','3RBCA2','3RBSCCBC1','3RBSCCBC2','3RBSCCS1','3RBSCCS2','3RBSCPCM1','3RBSCPCM2','3RBSW1','3RBSW2');
             if(in_array($paper_master->paper_code,$paper_codes))	
             {
             echo "<td colspan= '2' class='align-middle text-center practical_marks'>".'100/35'."</td>";
@@ -493,7 +493,7 @@ table.last_table, .last_table td, .last_table th{
 		foreach ($papers as $paper_master) {
       
       $credit += $paper_master['credit_point'];
-      $paper_codes=array('1RBBA1','1RBBA2','1RBA1','1RBA2','1RBCOM1','1RBCOM2','1RBCOMCA1','1RBCOMCA2','1RBCOMT1','1RBCOMT2','1RBCA1','1RBCA2','1RBSCCBC1','1RBSCCBC2','1RBSCCS1','1RBSCCS2','1RBSCPCM1','1RBSCPCM2','1RBSW1','1RBSW2','2RBBA1','2RBBA2','2RBA1','2RBA2','2RBCOM1','2RBCOM2','2RBCOMCA1','2RBCOMCA2','2RBCOMT1','2RBCOMT2','2RBCA1','2RBCA2','2RBSCCBC1','2RBSCCBC2','2RBSCCS1','2RBSCCS2','2RBSCPCM1','2RBSCPCM2','2RBSW1','2RBSW2','3RBBA1','3RBBA2','3RBA1','3RBA2','3RBCOM1','3RBCOM2','3RBCOMCA1','3RBCOMCA2','3RBCOMT1','3RBCOMT2','3RBCA1','3RBCA2','3RBSCCBC1','3RBSCCBC2','3RBSCCS1','3RBSCCS2','3RBSCPCM1','3RBSCPCM2','3RBSW1','3RBSW2');
+      $paper_codes=array('1RCBBA1','1RCBBA2','1RBA1','1RBA2','1RBCOM1','1RBCOM2','1RBCOMCA1','1RBCOMCA2','1RBCOMT1','1RBCOMT2','1RBCA1','1RBCA2','1RBSCCBC1','1RBSCCBC2','1RBSCCS1','1RBSCCS2','1RBSCPCM1','1RBSCPCM2','1RBSW1','1RBSW2','2RBBA1','2RBBA2','2RBA1','2RBA2','2RBCOM1','2RBCOM2','2RBCOMCA1','2RBCOMCA2','2RBCOMT1','2RBCOMT2','2RBCA1','2RBCA2','2RBSCCBC1','2RBSCCBC2','2RBSCCS1','2RBSCCS2','2RBSCPCM1','2RBSCPCM2','2RBSW1','2RBSW2','3RBBA1','3RBBA2','3RBA1','3RBA2','3RBCOM1','3RBCOM2','3RBCOMCA1','3RBCOMCA2','3RBCOMT1','3RBCOMT2','3RBCA1','3RBCA2','3RBSCCBC1','3RBSCCBC2','3RBSCCS1','3RBSCCS2','3RBSCPCM1','3RBSCPCM2','3RBSW1','3RBSW2');
 			// $paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4');
 				if(in_array($paper_master['paper_code'],$paper_codes) && $paper_master['sub_group_id'] == 1)	
 				{
@@ -507,7 +507,7 @@ table.last_table, .last_table td, .last_table th{
     foreach ($papers_list as $paper_master) {
     
       $credit += $paper_master['credit_point'];
-      $paper_codes=array('1RBBA1','1RBBA2','1RBA1','1RBA2','1RBCOM1','1RBCOM2','1RBCOMCA1','1RBCOMCA2','1RBCOMT1','1RBCOMT2','1RBCA1','1RBCA2','1RBSCCBC1','1RBSCCBC2','1RBSCCS1','1RBSCCS2','1RBSCPCM1','1RBSCPCM2','1RBSW1','1RBSW2','2RBBA1','2RBBA2','2RBA1','2RBA2','2RBCOM1','2RBCOM2','2RBCOMCA1','2RBCOMCA2','2RBCOMT1','2RBCOMT2','2RBCA1','2RBCA2','2RBSCCBC1','2RBSCCBC2','2RBSCCS1','2RBSCCS2','2RBSCPCM1','2RBSCPCM2','2RBSW1','2RBSW2','3RBBA1','3RBBA2','3RBA1','3RBA2','3RBCOM1','3RBCOM2','3RBCOMCA1','3RBCOMCA2','3RBCOMT1','3RBCOMT2','3RBCA1','3RBCA2','3RBSCCBC1','3RBSCCBC2','3RBSCCS1','3RBSCCS2','3RBSCPCM1','3RBSCPCM2','3RBSW1','3RBSW2');
+      $paper_codes=array('1RCBBA1','1RCBBA2','1RBA1','1RBA2','1RBCOM1','1RBCOM2','1RBCOMCA1','1RBCOMCA2','1RBCOMT1','1RBCOMT2','1RBCA1','1RBCA2','1RBSCCBC1','1RBSCCBC2','1RBSCCS1','1RBSCCS2','1RBSCPCM1','1RBSCPCM2','1RBSW1','1RBSW2','2RBBA1','2RBBA2','2RBA1','2RBA2','2RBCOM1','2RBCOM2','2RBCOMCA1','2RBCOMCA2','2RBCOMT1','2RBCOMT2','2RBCA1','2RBCA2','2RBSCCBC1','2RBSCCBC2','2RBSCCS1','2RBSCCS2','2RBSCPCM1','2RBSCPCM2','2RBSW1','2RBSW2','3RBBA1','3RBBA2','3RBA1','3RBA2','3RBCOM1','3RBCOM2','3RBCOMCA1','3RBCOMCA2','3RBCOMT1','3RBCOMT2','3RBCA1','3RBCA2','3RBSCCBC1','3RBSCCBC2','3RBSCCS1','3RBSCCS2','3RBSCPCM1','3RBSCPCM2','3RBSW1','3RBSW2');
 			// $paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4');
 				if(in_array($paper_master['paper_code'],$paper_codes))	
 				{
@@ -553,7 +553,7 @@ table.last_table, .last_table td, .last_table th{
       
      
       // $paper_codes=array('1RBBA1','1RBBA2','1RBA1','1RBA2','1RBCOM1','1RBCOM2','1RBCOMCA1','1RBCOMCA2','1RBCOMT1','1RBCOMT2','1RBCA1','1RBCA2','1RBSCCBC1','1RBSCCBC2','1RBSCCS1','1RBSCCS2','1RBSCPCM1','1RBSCPCM2','1RBSW1','1RBSW2');
-			 $paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4','2RBBA2','2RBBA4','2RBA2','2RBA4','2RBCOM2','2RBCOM4','2RBCOMCA2','2RBCOMCA4','2RBCOMT2','2RBCOMT4','2RBCA2','2RBCA4','2RBSCCBC2','2RBSCCBC4','2RBSCCS2','2RBSCCS4','2RBSCPCM2','2RBSCPCM4','2RBSW2','2RBSW4','3RBBA2','3RBBA4','3RBA2','3RBA4','3RBCOM2','3RBCOM4','3RBCOMCA2','3RBCOMCA4','3RBCOMT2','3RBCOMT4','3RBCA2','3RBCA4','3RBSCCBC2','3RBSCCBC4','3RBSCCS2','3RBSCCS4','3RBSCPCM2','3RBSCPCM4','3RBSW2','3RBSW4');
+			 $paper_codes=array('1RCBBA2','1RCBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4','2RBBA2','2RBBA4','2RBA2','2RBA4','2RBCOM2','2RBCOM4','2RBCOMCA2','2RBCOMCA4','2RBCOMT2','2RBCOMT4','2RBCA2','2RBCA4','2RBSCCBC2','2RBSCCBC4','2RBSCCS2','2RBSCCS4','2RBSCPCM2','2RBSCPCM4','2RBSW2','2RBSW4','3RBBA2','3RBBA4','3RBA2','3RBA4','3RBCOM2','3RBCOM4','3RBCOMCA2','3RBCOMCA4','3RBCOMT2','3RBCOMT4','3RBCA2','3RBCA4','3RBSCCBC2','3RBSCCBC4','3RBSCCS2','3RBSCCS4','3RBSCPCM2','3RBSCPCM4','3RBSW2','3RBSW4');
 				if(in_array($paper_master['paper_code'],$paper_codes) && $paper_master['sub_group_id'] == 1)	
 				{
 				?><td colspan= '2' class='text-center'><?=$paper_master['group_paper_name'] ?></td><?php
@@ -565,7 +565,7 @@ table.last_table, .last_table td, .last_table th{
     
      
       // $paper_codes=array('1RBBA1','1RBBA2','1RBA1','1RBA2','1RBCOM1','1RBCOM2','1RBCOMCA1','1RBCOMCA2','1RBCOMT1','1RBCOMT2','1RBCA1','1RBCA2','1RBSCCBC1','1RBSCCBC2','1RBSCCS1','1RBSCCS2','1RBSCPCM1','1RBSCPCM2','1RBSW1','1RBSW2');
-			 $paper_codes=array('1RBBA2','1RBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4','2RBBA2','2RBBA4','2RBA2','2RBA4','2RBCOM2','2RBCOM4','2RBCOMCA2','2RBCOMCA4','2RBCOMT2','2RBCOMT4','2RBCA2','2RBCA4','2RBSCCBC2','2RBSCCBC4','2RBSCCS2','2RBSCCS4','2RBSCPCM2','2RBSCPCM4','2RBSW2','2RBSW4','3RBBA2','3RBBA4','3RBA2','3RBA4','3RBCOM2','3RBCOM4','3RBCOMCA2','3RBCOMCA4','3RBCOMT2','3RBCOMT4','3RBCA2','3RBCA4','3RBSCCBC2','3RBSCCBC4','3RBSCCS2','3RBSCCS4','3RBSCPCM2','3RBSCPCM4','3RBSW2','3RBSW4');
+			 $paper_codes=array('1RCBBA2','1RCBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4','2RBBA2','2RBBA4','2RBA2','2RBA4','2RBCOM2','2RBCOM4','2RBCOMCA2','2RBCOMCA4','2RBCOMT2','2RBCOMT4','2RBCA2','2RBCA4','2RBSCCBC2','2RBSCCBC4','2RBSCCS2','2RBSCCS4','2RBSCPCM2','2RBSCPCM4','2RBSW2','2RBSW4','3RBBA2','3RBBA4','3RBA2','3RBA4','3RBCOM2','3RBCOM4','3RBCOMCA2','3RBCOMCA4','3RBCOMT2','3RBCOMT4','3RBCA2','3RBCA4','3RBSCCBC2','3RBSCCBC4','3RBSCCS2','3RBSCCS4','3RBSCPCM2','3RBSCPCM4','3RBSW2','3RBSW4');
 				if(in_array($paper_master['paper_code'],$paper_codes))	
 				{
 				?><td colspan= '2' class='text-center'><?=$paper_master['group_paper_name'] ?></td><?php
@@ -580,7 +580,7 @@ table.last_table, .last_table td, .last_table th{
                   echo $total_marks_obt .'/'. $total_paper_marks;
           ?></td>
           <td  class="align-middle text-center result" rowspan="<?php echo $rowspandata ?>"><?php echo $gradesheetData['result']; //$final_result?></td>
-          <td  class="align-middle text-center result" rowspan="<?php echo $rowspandata ?>"><?php  echo ($gradesheetData['result'] == 'FAIL' || $gradesheetData['result'] == 'SUPP')?'0.00':number_format((float)$gradesheetData['agpa'], 2, '.', ''); ?></td>
+          <td  class="align-middle text-center result" rowspan="<?php echo $rowspandata ?>"><?php if($gradesheetData['result'] == 'RW'){ echo '';}else{  echo ($gradesheetData['result'] == 'FAIL' || $gradesheetData['result'] == 'SUPP')?'0.00':number_format((float)$gradesheetData['agpa'], 2, '.', ''); }?></td>
           <td  class="align-middle text-cente remarks"  rowspan="<?php echo $rowspandata ?>"><?php 
          
           if($check_grace_marks){
@@ -798,6 +798,14 @@ table.last_table, .last_table td, .last_table th{
   <?= 'Session'.'<br>'.'Sem/Year'.'<br>'.'Roll no'.'<br>'.'Marks'?></strong>
  
 </td> <?php
+$classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$course_group_id,'mode'=>$classData->mode,'id!='=>$class_id
+));
+$total_ob =0;
+$total_mar=0;
+foreach($classes as $cls){
+    $this->db->order_by('id','desc');
+    $this->db->limit(1);
+    $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id'=>$cls->id));
  foreach($old_result as $old){
   if($old->exam_result == "FAIL"){
  $final_fail++;
@@ -805,26 +813,15 @@ table.last_table, .last_table td, .last_table th{
  $old->total_marks = '-';
  
   }
-
-  $total_ob = $total_marks_obt + $old->obtain_marks;
-  $total_mar =  $total_paper_marks + $old->total_marks;
-  $percent = round(($total_ob/$total_mar)*100,2);    
-    if($percent>=60){
-      $div = "First";
-    }elseif($percent<60 && $percent>=40){
-      $div  = "Second";
-    }else{
-      $div = "Third";
-    }
-  ?> 
-  
-  
- 
+  $total_ob += $old->obtain_marks;
+  $total_mar += $old->total_marks;
+?>  
 <td class="align-middle text-center "  colspan="2">
   <?= $old->exam_year.'<br>'.$this->Common_model->getClassNameByClassId($old->class_id).'<br>'.$old->roll_no.'<br>'.$old->obtain_marks.'/'.$old->total_marks?>
  
 </td>  
  <?php }
+  }
  if($final_result == "FAIL" || $final_result == "RW" || $final_fail !=0 ){
   $total_ob = '-';
   $total_mar = '-';
@@ -834,6 +831,17 @@ table.last_table, .last_table td, .last_table th{
     $final_result ='RWPM';
     $final_remark ="RWPM";
   }
+ }else{
+    $total_ob += $total_marks_obt;
+    $total_mar += $total_paper_marks;
+    $percent = round(($total_ob/$total_mar)*100,2);    
+    if($percent>=60){
+    $div = "First";
+    }elseif($percent<60 && $percent>=40){
+    $div  = "Second";
+    }else{
+    $div = "Third";
+    }
  }
  
  ?>
@@ -843,7 +851,7 @@ table.last_table, .last_table td, .last_table th{
 <td class="align-middle text-center "  colspan="2"><strong>%</strong><br><?= $percent?></td>
 <td class="align-middle text-center "  colspan="2"><strong>Division</strong><br><?= $div?></td>
 <td class="align-middle text-center "  colspan="3"><strong>Degree No. And Date</strong><br>-</td>
-<td class="align-middle text-center "  colspan="2"><strong>Remark</strong><br><?= $final_remark?></td>
+<td class="align-middle text-center "  colspan="4"><strong>Remark</strong><br><?= $final_remark?></td>
   </tr>
   <?php
  
