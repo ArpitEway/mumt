@@ -2548,23 +2548,23 @@ public function marksheet_admin($student_id="")
  public function grade_marksheet_pg($student_id=""){
 	
 	$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
-	   $student = $this->Common_model->getRecordByWhere($this->result_table,array($this->exam_form_result=>'Y','old_result_show'=>'Y','student_id'=>$student_id));
+	   $student = $this->Common_model->getRecordByWhere($this->result_table,array($this->exam_form_result=>'Y','result_show'=>'Y','student_id'=>$student_id));
 	   // print_r($student);die;
 	   if (count($student)==0) {
 		   redirect(base_url());
 	   }
 	   $data['student']=$student[0];
-	   $classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
+	   $classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
 	   $data['practical_internal_marks']=$classData->practical_internal_marks;
 	   $this->db->select('*');
 	   $this->db->from($this->exam_form_table.' as new_exam_form');
 	   $this->db->where('new_exam_form.student_id',$data['student']->student_id);
-	   $this->db->where('new_exam_form.class_id',$data['student']->old_class_id);
+	   $this->db->where('new_exam_form.class_id',$data['student']->class_id);
 	   $this->db->order_by('new_exam_form.paper_order','new_exam_form.paper_id');
 	   $new_exam_form = $this->db->get()->result();
 	   $data['new_exam_form']  = $new_exam_form;
 	   $data['classData']  = $classData;
-	   $data['exam_session']  = 'January 2024';
+	   $data['exam_session']  = 'June 2024';
 	   $this->load->model('Gradesheet_model_pg');
 	   $title = array('title' => 'Result - '.$data['student']->enrollment_no);
 	//    $title ="";
