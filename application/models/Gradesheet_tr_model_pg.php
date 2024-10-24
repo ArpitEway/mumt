@@ -55,6 +55,8 @@ class Gradesheet_tr_model_pg extends CI_Model
 		$this->fail_obt_marks = 0;
 		$this->check_grace_marks = false;
 		$this->withheld = false;
+        $this->withheld_practical = false;
+        $this->withheld_internal = false;
 		foreach ($papers as $paper) {
 			$this->paper = $paper;
            
@@ -204,8 +206,11 @@ class Gradesheet_tr_model_pg extends CI_Model
        
 		if ($this->paper["type"]=='theory') {
 			if($this->mode=='REG'){
-				if ($this->paper['theory_marks']=='' || ($this->paper["int_marks"]=='' || $this->paper["int_marks"]=='N')) {
-					$this->withheld = true;
+				if ($this->paper['theory_marks']==''){
+                    $this->withheld = true;
+                }elseif($this->paper["int_marks"]=='' || $this->paper["int_marks"]=='N') {
+					// 
+                    $this->withheld_internal = true;
 				}
 				$check_fail_marks = $this->paper["theory_marks"] ;
 				$check_fail_min_marks = $this->paper["min_theory_marks"] ;
@@ -225,12 +230,13 @@ class Gradesheet_tr_model_pg extends CI_Model
 				$min_marks = $this->paper["private_min_theory_marks"];
 			}
 		}else{
-			if ($this->paper['p_marks']==''){
-				$this->withheld = true;
+			if ($this->paper['p_marks']=='' || $this->paper['p_marks']=='N'){
+				$this->withheld_practical = true;
 			}
             if($this->paper['int_marks']=='N'&& $mode != 'PVT' && $this->paper['max_internal_marks'] !=0 && $this->classData->practical_internal_marks == 'Y'){
                 // $rwas_count++;
-                $this->withheld = true;
+                // $this->withheld = true;
+                $this->withheld_internal = true;
               }
 			$check_fail_marks = $this->paper["p_marks"];
 				$check_fail_min_marks = $this->paper["min_theory_marks"] ;
@@ -293,7 +299,11 @@ class Gradesheet_tr_model_pg extends CI_Model
 		
 		if ($this->withheld==true) {
 			return $this->result = 'RW';
-		}
+		}elseif($this->withheld_internal == true){
+            return $this->result = 'RWAS';
+        }elseif($this->withheld_practical == true){
+            return $this->result = 'RWPR';
+        }
        
 		if ($this->fail_count!=0 && $this->agpa>=4) {
 			if ($this->check_grace_marks) {
