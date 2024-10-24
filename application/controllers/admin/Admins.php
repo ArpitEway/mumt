@@ -3123,7 +3123,7 @@ public function update_exam_datewise_permission(){
 		}
 		$where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y', 'roll_no!='=>'0' ,'university_mode'=> $mode ,'exam_pattern'=>$pattern);
 		//,'examcentercode'=>'MDE165'
-		//,'student_id'=>703847
+		//,'student_id'=>688872
 		$this->db->order_by('center_id','ASC');
 		$this->db->order_by('roll_no','ASC');
 
@@ -3138,7 +3138,7 @@ public function update_exam_datewise_permission(){
 		$title = "TR ".$this->Common_model->getCourseNameByCourseId($course_group_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
 		$data['title'] .= $title;//echo $this->db->last_query(); die;
-		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
+		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136);
 		// $class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280);
         $class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302,278,282,250,252,216,232,236,238,240,246,248,254,218,305);
 		if((in_array($class_id, $class_ids))  && $pattern!="MARKS")	//&& $mode=='REG'
@@ -3865,7 +3865,7 @@ public function update_exam_datewise_permission(){
 		// $this->load->view('admin/generate_tr/header2',array('title' =>$title));
 
 		// if($class_id == '110' || $class_id == '119' || $class_id == '131')
-		$class_ids=array(110,119,125,128,131,111,126,129,132);
+		$class_ids=array(110,119,125,128,131,111,126,129,132,112,121,127,130,133);
 		if(in_array($class_id, $class_ids))		
 		{
 			$this->load->model('Gradesheet_tr_model');
