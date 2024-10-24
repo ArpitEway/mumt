@@ -3123,7 +3123,7 @@ public function update_exam_datewise_permission(){
 		}
 		$where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y', 'roll_no!='=>'0' ,'university_mode'=> $mode ,'exam_pattern'=>$pattern);
 		//,'examcentercode'=>'MDE165'
-		//,'student_id'=>702823
+		//,'student_id'=>703847
 		$this->db->order_by('center_id','ASC');
 		$this->db->order_by('roll_no','ASC');
 
@@ -3140,7 +3140,7 @@ public function update_exam_datewise_permission(){
 		$data['title'] .= $title;//echo $this->db->last_query(); die;
 		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
 		// $class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280);
-        $class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302,278,282);
+        $class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302,278,282,250,252);
 		if((in_array($class_id, $class_ids))  && $pattern!="MARKS")	//&& $mode=='REG'
 		{
 			$this->load->model('Gradesheet_tr_model');
@@ -6135,5 +6135,20 @@ public function forward_complaint(){
 
 		}
 	}
+
+    public function deled_result(){
+            $this->db->select('s.roll_no,s.`enrollment_no`,`name`,e.paper_code,e.paper_type,e.theory_marks,int_marks,e.p_marks, p.paper_name');
+            $this->db->from('student as s');
+            $this->db->join('new_exam_form as e','s.`student_id`=e.student_id and s.class_id=e.class_id');
+            $this->db->join('paper_master as p', 'e.`paper_id`=p.`id`');
+            $this->db->where(array('s.new_exam_form'=>'Y','s.class_id'=>300));
+            $this->db->order_by('s.roll_no,e.paper_order');
+            $students =  $this->db->get()->result();
+            $data = array();
+            $data['title'] = "Deled Result Data";
+            $this->load->view('header',$data);
+            $this->load->view('admin/deled_result', array('students'=> $students));
+            $this->load->view('footer');
+    }
 
 }// class

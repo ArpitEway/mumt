@@ -718,18 +718,22 @@ table.last_table, .last_table td, .last_table th{
   if($final_class && $isFinalClass == false){
     $final_rw = 0;
     $final_fail =0;
-    
-      $final_remark = "-"; 
-    
+    $final_remark = "-"; 
   
-  $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id<'=>$student->class_id));
   ?> <tr>
   <td class="align-middle text-center "  colspan="2"><strong>
   <?= 'Session'.'<br>'.'Sem/Year'.'<br>'.'Roll no'.'<br>'.'Marks'?></strong>
  
 </td> <?php
+ $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$course_group_id,'mode'=>$classData->mode,'id!='=>$class_id
+));
 $total_ob=0;
 $total_mar=0;
+foreach($classes as $cls){
+    $this->db->order_by('id','desc');
+    $this->db->limit(1);
+    $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id'=>$cls->id));
+
  foreach($old_result as $old){
   if($old->exam_result == "FAIL"){
  $final_fail++;
@@ -745,12 +749,12 @@ $total_mar=0;
   
   
  
-<td class="align-middle text-center "  colspan="2">
+<td class="align-middle text-center "  colspan="<?= ($classData->practical_internal_marks!='N')?'1':'2'?>">
   <?= $old->exam_year.'<br>'.$this->Common_model->getClassNameByClassId($old->class_id).'<br>'.$old->roll_no.'<br>'.$old->obtain_marks.'/'.$old->total_marks?>
  
 </td>  
  <?php }
-
+  }
  if($final_result == "FAIL" || $final_result == "RW" || $final_fail !=0 ){
   $total_ob = '-';
   $total_mar = '-';
@@ -777,11 +781,11 @@ $total_mar=0;
  ?>
   
 <td class="align-middle text-center " ><strong>Result</strong><br><?= $final_result?></td>
-<td class="align-middle text-center "  colspan="2"><strong>Grand Total</strong><br><?= $total_ob.'/'.$total_mar ?></td>
+<td class="align-middle text-center "  colspan="<?= ($classData->practical_internal_marks!='N')?'2':'1'?>"><strong>Grand Total</strong><br><?= $total_ob.'/'.$total_mar ?></td>
 <td class="align-middle text-center "  colspan="2"><strong>%</strong><br><?= $percent?></td>
 <td class="align-middle text-center "  colspan="2"><strong>Division</strong><br><?= $div?></td>
 <td class="align-middle text-center "  colspan="2"><strong>Degree No. And Date</strong><br>-</td>
-<td class="align-middle text-center "  colspan="2"><strong>Remark</strong><br><?= $final_remark?></td>
+<td class="align-middle text-center "  colspan="<?= (count($marks) > 7)?'5':'2'?>"><strong>Remark</strong><br><?= $final_remark?></td>
   </tr>
   <?php
  
@@ -863,3 +867,4 @@ $total_mar=0;
  </table>
  <hr>
 </div>
+
