@@ -171,6 +171,7 @@ table.last_table, .last_table td, .last_table th{
     $rw_count = 0;
     $rwpr_count = 0;
     $rwas_count =0;
+    $rwpr_count = 0;
     $theory_abs_count = 0;
     $atkt_paper_codes_array = array(); 
     $int_abs_count = 0;
@@ -289,7 +290,8 @@ table.last_table, .last_table td, .last_table th{
       }
 
       if($new_exam_form->p_marks=='' || $new_exam_form->p_marks=='N'){
-        $rw_count++;
+        // $rw_count++;
+        $rwpr_count++;
       }
       if($new_exam_form->p_marks=='ABS'){
         $p_abs_count++;
@@ -308,7 +310,7 @@ table.last_table, .last_table td, .last_table th{
    
   
     // echo $fail_count.'rw'.$rw_count.'tabs'.$theory_abs_count.'pabs'.$p_fail_count.'intabs'.$int_fail_count;
-    if ($fail_count==0 && $rw_count==0 && $p_fail_count==0 && $int_fail_count==0 && $theory_abs_count==0 && $p_abs_count==0 && $rwas_count==0) {
+    if ($fail_count==0 && $rw_count==0 && $p_fail_count==0 && $int_fail_count==0 && $theory_abs_count==0 && $p_abs_count==0 && $rwas_count==0 && $rwpr_count==0) {
        $final_result = "PASS";
     }else{
       
@@ -316,15 +318,16 @@ table.last_table, .last_table td, .last_table th{
       $require_grace_marks = $require_tot_marks-$fail_tot_marks;
       // tot 3 grace marks in 1 subjects
      
-      if ($fail_count<2 && $require_grace_marks<4 && $int_fail_count==0 && $p_fail_count==0 && $rw_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0 && $rwas_count==0) {
+      if ($fail_count<2 && $require_grace_marks<4 && $int_fail_count==0 && $p_fail_count==0 && $rw_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0 && $rwas_count==0 && $rwpr_count==0) {
         $check_grace_marks = true;
         $final_result = "PASS BY GRACE";
       }elseif($rw_count>0){
         $final_result = "RW";
       }elseif($rwas_count>0){
         $final_result = "RWAS";
-      }
-      else{
+      }elseif($rwpr_count >0){
+        $final_result = "RWPR";
+      }else{
         $final_result = "FAIL";
       }
     }
@@ -489,14 +492,14 @@ table.last_table, .last_table td, .last_table th{
                   echo $total_marks_obt .'/'. $total_paper_marks;
           ?></td>
           <td  class="align-middle text-center result" rowspan="<?php echo $rowspandata ?>"><?php echo $gradesheetData['result']; //$final_result?></td>
-          <td  class="align-middle text-center result" rowspan="<?php echo $rowspandata ?>"><?php  if($gradesheetData['result'] == 'RW'){echo '';}else{ echo ($gradesheetData['result'] == 'FAIL' || $gradesheetData['result'] == 'SUPP')?'0.00':number_format((float)$gradesheetData['agpa'], 2, '.', '');} ?></td>
+          <td  class="align-middle text-center result" rowspan="<?php echo $rowspandata ?>"><?php  if($gradesheetData['result'] == 'RW' || $gradesheetData['result'] == 'RWPR' || $gradesheetData['result'] == 'RWAS'){echo '';}else{ echo ($gradesheetData['result'] == 'FAIL' || $gradesheetData['result'] == 'SUPP')?'0.00':number_format((float)$gradesheetData['agpa'], 2, '.', '');} ?></td>
           <td  class="align-middle text-cente remarks"  rowspan="<?php echo $rowspandata ?>"><?php 
          
           if($check_grace_marks){
             echo "-";
           }else{
             
-            if($final_result == "RW"){
+            if($final_result == "RW" || $final_result == "RWPR" || $final_result == "RWAS"){
               echo "";
             }
             elseif($int_abs_count>0 &&  $theory_abs_count>0 && $p_abs_count>0){
@@ -755,7 +758,7 @@ foreach($classes as $cls){
 </td>  
  <?php }
   }
- if($final_result == "FAIL" || $final_result == "RW" || $final_fail !=0 ){
+ if($final_result == "FAIL" || $final_result == "RW" || $final_fail !=0 || $final_result == "RWPR" || $final_result == "RWAS"){
   $total_ob = '-';
   $total_mar = '-';
   $percent = '-';
@@ -782,10 +785,10 @@ foreach($classes as $cls){
   
 <td class="align-middle text-center " ><strong>Result</strong><br><?= $final_result?></td>
 <td class="align-middle text-center "  colspan="<?= ($classData->practical_internal_marks!='N')?'2':'1'?>"><strong>Grand Total</strong><br><?= $total_ob.'/'.$total_mar ?></td>
-<td class="align-middle text-center "  colspan="2"><strong>%</strong><br><?= $percent?></td>
-<td class="align-middle text-center "  colspan="2"><strong>Division</strong><br><?= $div?></td>
+<td class="align-middle text-center "  colspan="<?= (count($marks) < 7)?'1':'2'?>"><strong>%</strong><br><?= $percent?></td>
+<td class="align-middle text-center "  colspan="<?= (count($marks) < 7)?'1':'2'?>"><strong>Division</strong><br><?= $div?></td>
 <td class="align-middle text-center "  colspan="2"><strong>Degree No. And Date</strong><br>-</td>
-<td class="align-middle text-center "  colspan="<?= (count($marks) > 7)?'5':'2'?>"><strong>Remark</strong><br><?= $final_remark?></td>
+<td class="align-middle text-center "  colspan="<?= (count($marks) > 7 || in_array($student->class_id , array(240,248,252)))?'5':'2'?>"><strong>Remark</strong><br><?= $final_remark?></td>
   </tr>
   <?php
  
