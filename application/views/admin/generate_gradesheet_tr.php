@@ -706,7 +706,8 @@ table.last_table, .last_table td, .last_table th{
         if($new_exam_form->p_marks < $new_exam_form->min_theory_marks && $new_exam_form->p_marks!=''){
           echo  $new_exam_form->p_marks .' F';
         }elseif($new_exam_form->p_marks ==''){
-          echo "RWPR";
+          //echo "RWPR";
+          echo "";
         }
         else{
           echo  $new_exam_form->p_marks;
