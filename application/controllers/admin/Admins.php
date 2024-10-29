@@ -3258,12 +3258,12 @@ public function update_exam_datewise_permission(){
 		
 		// $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and old_class_id in ( 193,197,201,203,205,209,211,213,215,217,221,223,225,227,231,235,237,239,245,247,249,251,253,275,277,279,281,302) )  ";
 		
-        $where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y' and class_id in ( 155,175,200,234,284,290,296,298,273,274,168,182,242,288,292,294,171) )  ";
+        $where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y'  )  ";
         // and class_id in ( 155,175,200,234,284,290,296,298,273,274,168,182,242,288,292,294,171) 
 		// and old_class_id in (267,269,263,261,255,257,172,259,193,195,229,199,233,205,239,302,207,241,209,243,211,245,213,215,223,225,227,253,299)
 		// and old_result_show='Y'
 		// new_exam_form = 'Y' or student_result_aug_22
-				
+		//and class_id in ( 155,175,200,234,284,290,296,298,273,274,168,182,242,288,292,294,171	)	
 		$data['courses'] = $this->Common_model->get_record('course_group','*',$where);
 		$this->load->view('header',array('title' => 'Class List'));
 		$this->load->view('admin/tr_class_list',$data);
