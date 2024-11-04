@@ -725,26 +725,34 @@ table.last_table, .last_table td, .last_table th{
   
   ?> <tr>
   <td class="align-middle text-center "  colspan="2"><strong>
-  <?= 'Session'.'<br>'.'Sem/Year'.'<br>'.'Roll no'.'<br>'.'Marks'?></strong>
+  <?= 'Session'.'<br>'.'Sem/Year'.'<br>'.'Roll no'.'<br>'.'Marks'.'<br>'.'Credit Earned / Points '.'<br>'.'SGPA'?></strong>
  
 </td> <?php
  $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$course_group_id,'mode'=>$classData->mode,'id!='=>$class_id
 ));
 $total_ob=0;
 $total_mar=0;
+$total_grade_point = 0;
+$total_course_credit = 0;
 foreach($classes as $cls){
     $this->db->order_by('id','desc');
     $this->db->limit(1);
     $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id'=>$cls->id));
 
  foreach($old_result as $old){
+   $old_grade_data =  $this->GradeSheet_old_model_pg->view_old_results($student->student_id,$student->course_group_id,$old->class_id,$student->university_mode,$old->id);
   if($old->exam_result == "FAIL"){
  $final_fail++;
  $old->obtain_marks ='-';
  $old->total_marks = '-';
- 
+ $old_grade_data['obt_credit'] ='-';
+ $old_grade_data['agpa'] ='-';
+//  $cgpa = '-';
+  }else{
+    $old_grade_data['agpa'] = number_format((float)$old_grade_data['agpa'], 2, '.', '');
   }
-
+$total_grade_point += number_format((float)$old_grade_data['agpa'], 2, '.', '') * $old_grade_data['obt_credit']; 
+$total_course_credit +=$old_grade_data['tot_credit'];
   $total_ob +=  $old->obtain_marks;
   $total_mar +=  $old->total_marks;
  
@@ -753,7 +761,7 @@ foreach($classes as $cls){
   
  
 <td class="align-middle text-center "  colspan="<?= ($classData->practical_internal_marks!='N')?'1':'2'?>">
-  <?= $old->exam_year.'<br>'.$this->Common_model->getClassNameByClassId($old->class_id).'<br>'.$old->roll_no.'<br>'.$old->obtain_marks.'/'.$old->total_marks?>
+  <?= $old->exam_year.'<br>'.$this->Common_model->getClassNameByClassId($old->class_id).'<br>'.$old->roll_no.'<br>'.$old->obtain_marks.'/'.$old->total_marks.'<br>'.$old_grade_data['obt_credit'].' / '.($old_grade_data['obt_credit'] * number_format((float)$old_grade_data['agpa'], 2, '.', '')).'<br>'.number_format((float)$old_grade_data['agpa'], 2, '.', '');?>
  
 </td>  
  <?php }
@@ -763,28 +771,43 @@ foreach($classes as $cls){
   $total_mar = '-';
   $percent = '-';
   $div = '-';
+  $cgpa = '-';
   if($final_fail !=0){
     $final_result ='RWPM';
     $final_remark ="RWPM";
   }
- }else{
+ }else{ 
     $total_ob += $total_marks_obt;
     $total_mar += $total_paper_marks;
-    $percent = round(($total_ob/$total_mar)*100,2);    
-    if($percent>=60){
-    $div = "First";
-    }elseif($percent<60 && $percent>=40){
-    $div  = "Second";
-    }else{
-    $div = "Third";
-    }
+    $total_grade_point += number_format((float)$gradesheetData['agpa'], 2, '.', '') * $gradesheetData['obt_credit']; 
+    $total_course_credit +=$gradesheetData['tot_credit'];
+    $cgpa = number_format((float)($total_grade_point/$total_course_credit), 2, '.', '');
+    $percent = $cgpa * 10;
+    // $percent = round(($total_ob/$total_mar)*100,2);   
+    // if($percent>=60){
+    // $div = "First";
+    // }elseif($percent<60 && $percent>=40){
+    // $div  = "Second";
+    // }else{
+    // $div = "Third";
+    // }
+
+    if($cgpa>=8.0){
+        $div = "First Division with Distinction";
+        }elseif($cgpa<8.0 && $cgpa>=6.50){
+        $div  = "First Division";
+        }elseif($cgpa<6.50 && $cgpa>=5.00){
+        $div  = "Second Division";
+        }else{
+        $div = "Third Division";
+        }
  }
  
  
  ?>
   
 <td class="align-middle text-center " ><strong>Result</strong><br><?= $final_result?></td>
-<td class="align-middle text-center "  colspan="<?= ($classData->practical_internal_marks!='N')?'2':'1'?>"><strong>Grand Total</strong><br><?= $total_ob.'/'.$total_mar ?></td>
+<td class="align-middle text-center "  colspan="<?= ($classData->practical_internal_marks!='N')?'2':'1'?>"><strong>Grand Total</strong><br><?= $total_ob.'/'.$total_mar ?><br><br><strong>CGPA</strong><br><?= $cgpa?></td>
 <td class="align-middle text-center "  colspan="<?= (count($marks) < 7)?'1':'2'?>"><strong>%</strong><br><?= $percent?></td>
 <td class="align-middle text-center "  colspan="<?= (count($marks) < 7)?'1':'2'?>"><strong>Division</strong><br><?= $div?></td>
 <td class="align-middle text-center "  colspan="2"><strong>Degree No. And Date</strong><br>-</td>
