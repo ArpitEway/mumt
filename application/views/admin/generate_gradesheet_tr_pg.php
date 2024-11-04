@@ -725,7 +725,7 @@ table.last_table, .last_table td, .last_table th{
   
   ?> <tr>
   <td class="align-middle text-center "  colspan="2"><strong>
-  <?= 'Session'.'<br>'.'Sem/Year'.'<br>'.'Roll no'.'<br>'.'Marks'.'<br>'.'Credits / SGPA'?></strong>
+  <?= 'Session'.'<br>'.'Sem/Year'.'<br>'.'Roll no'.'<br>'.'Marks'.'<br>'.'Credit Earned / Points '.'<br>'.'SGPA'?></strong>
  
 </td> <?php
  $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$course_group_id,'mode'=>$classData->mode,'id!='=>$class_id
@@ -748,8 +748,10 @@ foreach($classes as $cls){
  $old_grade_data['obt_credit'] ='-';
  $old_grade_data['agpa'] ='-';
 //  $cgpa = '-';
+  }else{
+    $old_grade_data['agpa'] = number_format((float)$old_grade_data['agpa'], 2, '.', '');
   }
-$total_grade_point += $old_grade_data['agpa'] * $old_grade_data['obt_credit']; 
+$total_grade_point += number_format((float)$old_grade_data['agpa'], 2, '.', '') * $old_grade_data['obt_credit']; 
 $total_course_credit +=$old_grade_data['tot_credit'];
   $total_ob +=  $old->obtain_marks;
   $total_mar +=  $old->total_marks;
@@ -759,7 +761,7 @@ $total_course_credit +=$old_grade_data['tot_credit'];
   
  
 <td class="align-middle text-center "  colspan="<?= ($classData->practical_internal_marks!='N')?'1':'2'?>">
-  <?= $old->exam_year.'<br>'.$this->Common_model->getClassNameByClassId($old->class_id).'<br>'.$old->roll_no.'<br>'.$old->obtain_marks.'/'.$old->total_marks.'<br>'.$old_grade_data['obt_credit'].' / '.number_format((float)$old_grade_data['agpa'], 2, '.', '')?>
+  <?= $old->exam_year.'<br>'.$this->Common_model->getClassNameByClassId($old->class_id).'<br>'.$old->roll_no.'<br>'.$old->obtain_marks.'/'.$old->total_marks.'<br>'.$old_grade_data['obt_credit'].' / '.($old_grade_data['obt_credit'] * number_format((float)$old_grade_data['agpa'], 2, '.', '')).'<br>'.number_format((float)$old_grade_data['agpa'], 2, '.', '');?>
  
 </td>  
  <?php }
@@ -777,7 +779,7 @@ $total_course_credit +=$old_grade_data['tot_credit'];
  }else{ 
     $total_ob += $total_marks_obt;
     $total_mar += $total_paper_marks;
-    $total_grade_point += $gradesheetData['agpa'] * $gradesheetData['obt_credit']; 
+    $total_grade_point += number_format((float)$gradesheetData['agpa'], 2, '.', '') * $gradesheetData['obt_credit']; 
     $total_course_credit +=$gradesheetData['tot_credit'];
     $cgpa = number_format((float)($total_grade_point/$total_course_credit), 2, '.', '');
     $percent = $cgpa * 10;
@@ -791,7 +793,7 @@ $total_course_credit +=$old_grade_data['tot_credit'];
     // }
 
     if($cgpa>=8.0){
-        $div = "First Division with distinction";
+        $div = "First Division with Distinction";
         }elseif($cgpa<8.0 && $cgpa>=6.50){
         $div  = "First Division";
         }elseif($cgpa<6.50 && $cgpa>=5.00){
