@@ -395,6 +395,7 @@ class Gradesheet_tr_model extends CI_Model
 	{
 		return $data = array(
 				'tot_credit' => $this->tot_credit,
+                'obt_credit'=>$this->obt_tot_credit,
 				'tot_credit_point' => $this->tot_credit_point,
 				'agpa' => $this->agpa,
 				'result' => $this->result
