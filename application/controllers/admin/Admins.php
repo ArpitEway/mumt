@@ -3144,6 +3144,7 @@ public function update_exam_datewise_permission(){
 		if((in_array($class_id, $class_ids))  && $pattern!="MARKS")	//&& $mode=='REG'
 		{
 			$this->load->model('Gradesheet_tr_model');
+            $this->load->model('Gradesheet_model');
 			$this->load->view('admin/generate_gradesheet_tr',$data);
 		}else if((in_array($class_id, $class_cbcs)) && $mode=='REG' && $pattern!="MARKS"){
 			$this->load->model('Gradesheet_tr_model_pg');
@@ -3871,6 +3872,7 @@ public function update_exam_datewise_permission(){
 		if(in_array($class_id, $class_ids))		
 		{
 			$this->load->model('Gradesheet_tr_model');
+            $this->load->model('Gradesheet_model');
 			$this->load->view('admin/generate_tr/practical_internal_tr',$data);
 		}else{
 			$this->load->view('admin/generate_tr/bed_tr',$data);
