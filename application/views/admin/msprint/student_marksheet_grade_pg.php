@@ -188,9 +188,23 @@
                          $gradeData   = $this->GradeSheet_old_model_pg->view_old_results($student->student_id,$student->course_group_id,$cls->id,$student->university_mode,$old[0]->id);
                       if($cls->id <= $exam_data->class_id)  
                       {
-                     ?>
-                     
-                      <tr align="center"><th><?=$sno?></th><td><?= ($gradeData['tot_credit'] == 0)?'':$gradeData['tot_credit']?></td><td><?php if($gradeData['obt_credit'] == 0 && $gradeData['tot_credit'] !=0) { echo '0'; }elseif($gradeData['obt_credit'] == 0){ echo '';}else{ echo $gradeData['obt_credit'];}?></td><td><?php if ($gradeData['credit_point'] == 0 && $gradeData['tot_credit'] !=0){ echo '0';}elseif($gradeData['credit_point'] == 0){ echo ''; }else { echo $gradeData['credit_point']; }?></td><td>
+                        if($cls->id == $exam_data->class_id &&  $gradesheetData['result'] == 'FAIL'){
+                            ?>
+                             <tr align="center"><th><?=$sno?></th><td><?= ($gradesheetData['tot_credit'] == 0)?'':$gradesheetData['tot_credit']?></td><td><?php if($gradesheetData['obt_credit'] == 0 && $gradesheetData['tot_credit'] !=0) { echo '0'; }elseif($gradesheetData['obt_credit'] == 0){ echo '';}else{ echo $gradesheetData['obt_credit'];}?></td><td><?php if ($gradesheetData['credit_point'] == 0 && $gradesheetData['tot_credit'] !=0){ echo '0';}elseif($gradesheetData['credit_point'] == 0){ echo ''; }else { echo $gradesheetData['credit_point']; }?></td><td>
+                        <?php if(is_nan($gradesheetData['agpa'])){
+                            echo '';
+                        }else{
+                           echo  '0.00';
+                           
+                        }
+                        ?>
+                        </td>
+                     </tr>
+                            
+                            <?php
+                        }else{
+                            ?>
+                             <tr align="center"><th><?=$sno?></th><td><?= ($gradeData['tot_credit'] == 0)?'':$gradeData['tot_credit']?></td><td><?php if($gradeData['obt_credit'] == 0 && $gradeData['tot_credit'] !=0) { echo '0'; }elseif($gradeData['obt_credit'] == 0){ echo '';}else{ echo $gradeData['obt_credit'];}?></td><td><?php if ($gradeData['credit_point'] == 0 && $gradeData['tot_credit'] !=0){ echo '0';}elseif($gradeData['credit_point'] == 0){ echo ''; }else { echo $gradeData['credit_point']; }?></td><td>
                         <?php if(is_nan($gradeData['agpa'])){
                             echo '';
                         }else{
@@ -200,6 +214,11 @@
                         ?>
                         </td>
                      </tr>
+                            <?php
+                        }
+                     ?>
+                     
+                     
                      <?php
                       }else{
                         ?>
