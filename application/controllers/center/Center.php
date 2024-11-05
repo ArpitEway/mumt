@@ -2566,6 +2566,7 @@ public function marksheet_admin($student_id="")
 	   $data['classData']  = $classData;
 	   $data['exam_session']  = 'June 2024';
 	   $this->load->model('Gradesheet_model_pg');
+       $this->load->model('GradeSheet_old_model_pg');
 	   $title = array('title' => 'Result - '.$data['student']->enrollment_no);
 	//    $title ="";
 	   $this->load->view('admin/generate_tr/header2',$title);
