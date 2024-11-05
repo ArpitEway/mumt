@@ -164,13 +164,23 @@
                   </div>
                   <h4 style="text-align:center;margin:10px;">Result Semester Wise</h4>
                   <table border='1' cellpadding="2"  width="103%">
-                  <tr align="center"><th width='12.5%'>Semester</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>SGPA</th></tr>
+                  <tr align="center"><th width='12.5%'>Semester</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>SGPA</th><th width='12.5%'>Attempt</th></tr>
                     <?php
                      $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$student->course_group_id,'mode'=>'Semester'));
                     
                     $count = 0;
                     $total_grade_point = 0;
                     $total_course_credit = 0;
+                    $romanNumerals = [
+                        1 => 'I',
+                        2 => 'II',
+                        3 => 'III',
+                        4 => 'IV',
+                        5 => 'V',
+                        6 => 'VI',
+                        7 => 'VII',
+                        8 => 'VIII'
+                    ];
                      foreach($classes as $cls){
                         $count++;
                         if($count == 1){ $sno = 'First';}elseif($count == 2){ $sno = 'Second';}elseif($count == 3){ $sno = 'Third';}elseif($count == 4){
@@ -179,7 +189,7 @@
                         $this->db->order_by('id', 'desc');
                         $this->db->limit(1);
                         $old = $this->Common_model->getRecordByWhere('old_exam_data', array('student_id'=>$student->student_id,'class_id'=>$cls->id,'course_group_id'=>$student->course_group_id,'university_mode'=>$student->university_mode));
-                       
+                        $old_count = $this->Common_model->getRecordByWhere('old_exam_data', array('student_id'=>$student->student_id,'class_id'=>$cls->id,'course_group_id'=>$student->course_group_id,'university_mode'=>$student->university_mode));
                          $gradeData   = $this->GradeSheet_old_model_pg->view_old_results($student->student_id,$student->course_group_id,$cls->id,$student->university_mode,$old[0]->id);
                        
                             $total_grade_point += number_format((float)$gradeData['agpa'], 2, '.', '') * $gradeData['obt_credit']; 
@@ -194,6 +204,7 @@
                         }
                         ?>
                         </td>
+                        <td><?= $romanNumerals[count($old_count)]?></td>
                      </tr>
                            
                      <?php
@@ -227,7 +238,7 @@
                         <tr>
                             <th width="9.2%">Total Credits</th>
                             <th width="9.2%">CGPA</th>
-                            <th width="9.2%">Equivalent Percentage</th>
+                            <th width="18.4%">Equivalent Percentage</th>
                             <th width="18.4%">Division</th>
                         </tr>
                         <tr>
