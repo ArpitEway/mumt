@@ -799,7 +799,7 @@ $total_course_credit +=$old_grade_data['tot_credit'];
         }elseif($cgpa<6.50 && $cgpa>=5.00){
         $div  = "Second Division";
         }else{
-        $div = "Third Division";
+        $div = "Pass";
         }
  }
  
