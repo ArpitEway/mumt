@@ -91,12 +91,74 @@ th.border.border-dark {
       </tbody>
     </table>
     <?php if($gradesheetData['result'] != ''){ 
-      
-      ?>
-    
-      
-      
-    * Grade In Repeat Examination.<br><br>
+       if($classData->last_class == 'L'){
+        ?>
+         * Grade In Repeat Examination.<br><br>
+        <table class="border border-dark m-auto w-100" >
+        <tr>
+          <td style="vertical-align: middle; text-align: center">SEMESTER</td>
+          <td style="vertical-align: middle; text-align: center">TOTAL CREDIT</td>
+          <td style="vertical-align: middle; text-align: center">OBTAINED CREDIT</td>
+          <td style="vertical-align: middle; text-align: center">SGPA</td>
+          <td style="vertical-align: middle; text-align: center">CGPA</td>
+          <td style="vertical-align: middle; text-align: center">ATTEMPT</td>
+          <td style="vertical-align: middle; text-align: center">RESULT</td>
+         
+        </tr>
+        <?php
+        $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$student->course_group_id,'mode'=>$classData->mode,'id!='=>$student->class_id));
+        $total_grade_point = 0;
+        $total_course_credit = 0;
+        $final_fail=0;
+        $romanNumerals = [1 => 'I',2 => 'II',3 => 'III',4 => 'IV',5 => 'V',6 => 'VI',7 => 'VII',8 => 'VIII'
+        ];
+        foreach($classes as $cls){
+            $this->db->order_by('id','desc');
+            $this->db->limit(1);
+            $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id'=>$cls->id));
+
+            foreach($old_result as $old){
+                $old_grade_data =  $this->GradeSheet_old_model_pg->view_old_results($student->student_id,$student->course_group_id,$old->class_id,$student->university_mode,$old->id);
+                if($old->exam_result == "FAIL"){
+                    $final_fail++;
+                }
+                $total_grade_point += number_format((float)$old_grade_data['agpa'], 2, '.', '') * $old_grade_data['obt_credit']; 
+                $total_course_credit +=$old_grade_data['tot_credit'];
+            }
+        }
+        if($gradesheetData['result'] == 'Fail'){
+            $final_fail++;
+        }
+        $total_grade_point += number_format((float)$gradesheetData['agpa'], 2, '.', '') * $gradesheetData['obt_credit']; 
+        $total_course_credit +=$gradesheetData['tot_credit'];
+        if($final_fail > 0){
+            $cgpa = ' - ';
+        }else{
+            $cgpa = number_format((float)($total_grade_point/$total_course_credit), 2, '.', '');
+        }
+        ?>
+        
+   
+        <tr>
+            <?php
+            $class_name = explode(' ', $this->Common_model->getClassNameByClassId($student->class_id));
+            $attemp_count = $this->Common_model->getRecordByWhere('old_exam_data', array('student_id'=>$student->student_id,'class_id'=>$student->class_id,'exam_status'=>'B'));
+            ?>
+          <!-- <td>TOTAL CREDIT</td> -->
+          <td class="text-center" style="vertical-align: middle;"><?= $class_name[0]?></td>
+          <td class="text-center" style="vertical-align: middle;"><?=$gradesheetData['tot_credit'] ?></td>
+          <td class="text-center" style="vertical-align: middle;"><?=$gradesheetData['obt_credit'] ?></td>
+          <td class="text-center" style="vertical-align: middle;"><?= number_format((float)$gradesheetData['agpa'], 2, '.', '') ?></td>
+          <td class="text-center" style="vertical-align: middle;"><?= $cgpa ?></td>
+          <td class="text-center" style="vertical-align: middle;"><?= $romanNumerals[1]?></td>
+          <td class="text-center" style="vertical-align: middle;"><?=$gradesheetData['result'] ?></td>
+        </tr>
+       
+    </table><br>
+        <?php
+       }else{
+        ?>
+         * Grade In Repeat Examination.<br><br>
     <table class="border border-dark m-auto w-100" >
         <tr>
           <td style="vertical-align: middle; text-align: center">SEMESTER</td>
@@ -143,7 +205,9 @@ th.border.border-dark {
           <td class="text-center" style="vertical-align: middle;"><?=$gradesheetData['result'] ?></td>
         </tr> -->
     </table><br>
-    <?php
+        
+        <?php
+       }
     }
     else{
       ?>
