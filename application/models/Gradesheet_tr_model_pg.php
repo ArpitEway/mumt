@@ -110,13 +110,17 @@ class Gradesheet_tr_model_pg extends CI_Model
 		$this->fail_obt_marks = 0;
 		$this->check_grace_marks = false;
 		$this->withheld = false;
+        $this->withheld_practical = false;
+        $this->withheld_internal = false;
 		foreach ($papers as $paper) {
 			$this->paper = $paper;
 			$this->_row();
 		}
 	
-		
+       
 		$this->notification_agpa();
+       
+        return $this->result();
 		
 	}
 
@@ -667,8 +671,7 @@ class Gradesheet_tr_model_pg extends CI_Model
 		
 		$this->agpa = $this->tot_credit_point/$this->tot_credit;
 		$this->set_result();
-		
-		 if($this->result == 'RW'){$agpa = ''; }else{$agpa =($this->result == 'FAIL')?'0.00':number_format((float)$this->agpa, 2, '.', '');}
+		 if($this->result == 'RW' || $this->result == 'RWAS' || $this->result == 'RWPR'){$agpa = ''; }else{$agpa =($this->result == 'FAIL')?'0.00':number_format((float)$this->agpa, 2, '.', '');}
 		echo '<td class="text-center" style="padding:0px" align="center">'.$agpa.'</td>';
 		
 	}
