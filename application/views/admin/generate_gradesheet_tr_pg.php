@@ -799,7 +799,7 @@ $total_course_credit +=$old_grade_data['tot_credit'];
         }elseif($cgpa<6.50 && $cgpa>=5.00){
         $div  = "Second Division";
         }else{
-        $div = "Third Division";
+        $div = "Pass";
         }
  }
  
@@ -807,7 +807,7 @@ $total_course_credit +=$old_grade_data['tot_credit'];
  ?>
   
 <td class="align-middle text-center " ><strong>Result</strong><br><?= $final_result?></td>
-<td class="align-middle text-center "  colspan="<?= ($classData->practical_internal_marks!='N')?'2':'1'?>"><strong>Grand Total</strong><br><?= $total_ob.'/'.$total_mar ?><br><br><strong>CGPA</strong><br><?= $cgpa?></td>
+<td class="align-middle text-center "  colspan="<?= ($classData->practical_internal_marks!='N')?'2':'1'?>"><strong>Grand Total</strong><br><?= $total_ob.'/'.$total_mar ?><br><br><strong>Total Credit</strong><br><?=$total_course_credit?><br><br><strong>CGPA</strong><br><?= $cgpa?></td>
 <td class="align-middle text-center "  colspan="<?= (count($marks) < 7)?'1':'2'?>"><strong>%</strong><br><?= $percent?></td>
 <td class="align-middle text-center "  colspan="<?= (count($marks) < 7)?'1':'2'?>"><strong>Division</strong><br><?= $div?></td>
 <td class="align-middle text-center "  colspan="2"><strong>Degree No. And Date</strong><br>-</td>

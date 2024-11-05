@@ -42,7 +42,7 @@ class Upload_old_data_pg extends CI_Model
     public function update_old_data($student)
 	{
 		// $table = $this->Common_model->getMaster('exam_form_table');
-		$std  = $this->Common_model->getRecordByWhere('exam_form',array('class_id'=> $student->class_id,'student_id'=>$student->student_id));
+		$std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $student->class_id,'student_id'=>$student->student_id));
         // print_r($std);die;
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$student->class_id);
 		$papers = $this->Common_model->get_all_papers($student->student_id,$student->class_id);
@@ -313,7 +313,7 @@ class Upload_old_data_pg extends CI_Model
             'enrollment_no' => $this->student->enrollment_no,
             'roll_no' => $this->student->roll_number,
             'name' => $this->student->name,
-            'exam_year' => 'January 2024',
+            'exam_year' => 'June 2024',
             'f_h_name' => $this->student->f_h_name,
             'mother_name' => $this->student->mother_name,
             'marksheet_no' =>$this->student->marksheet_no,

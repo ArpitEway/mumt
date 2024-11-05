@@ -3438,16 +3438,16 @@ public function update_exam_datewise_permission(){
 		
 
 		if($class->last_class == 'L'){
-			$this->db->order_by('center_id,roll_number','ASC');
-			$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','course_complete'=>'Y','university_mode'=>$mode,'old_result_show'=>'Y','exam_pattern'=>'GRADE' ));
+			$this->db->order_by('center_id,roll_no','ASC');
+			$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'new_exam_form'=>'Y','roll_no!='=>'0','course_complete'=>'Y','university_mode'=>$mode,'result_show'=>'Y','exam_pattern'=>'GRADE' ));
 		}else{
-			$this->db->order_by('center_id,roll_number','ASC');
+			$this->db->order_by('center_id,roll_no','ASC');
 			// $this->db->limit(1);
 		  //$this->db->where('student_id = "721511"');
-		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode,'old_result_show'=>'Y','exam_pattern'=>'GRADE'));
+		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'new_exam_form'=>'Y','roll_no!='=>'0','university_mode'=>$mode,'result_show'=>'Y','exam_pattern'=>'GRADE'));
 		}
 	 	// if($class->internal=="Y" && $mode!="PVT"){
-			$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302);
+			$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302,278,282,250,252,216,232,236,238,240,246,248,254,218,305,210);
 			if(in_array($class_id , $class_cbcs))
 			{
                 $this->load->model('GradeSheet_old_model_pg');
