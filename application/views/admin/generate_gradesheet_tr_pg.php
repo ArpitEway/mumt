@@ -747,9 +747,12 @@ foreach($classes as $cls){
  $old->total_marks = '-';
  $old_grade_data['obt_credit'] ='-';
  $old_grade_data['agpa'] ='-';
-//  $cgpa = '-';
+ $sgpa = '-';
+ $credit_points = '-';
   }else{
     $old_grade_data['agpa'] = number_format((float)$old_grade_data['agpa'], 2, '.', '');
+    $sgpa = number_format((float)$old_grade_data['agpa'], 2, '.', '');
+    $credit_points = ($old_grade_data['obt_credit'] * number_format((float)$old_grade_data['agpa'], 2, '.', ''));
   }
 $total_grade_point += number_format((float)$old_grade_data['agpa'], 2, '.', '') * $old_grade_data['obt_credit']; 
 $total_course_credit +=$old_grade_data['tot_credit'];
@@ -761,7 +764,7 @@ $total_course_credit +=$old_grade_data['tot_credit'];
   
  
 <td class="align-middle text-center "  colspan="<?= ($classData->practical_internal_marks!='N')?'1':'2'?>">
-  <?= $old->exam_year.'<br>'.$this->Common_model->getClassNameByClassId($old->class_id).'<br>'.$old->roll_no.'<br>'.$old->obtain_marks.'/'.$old->total_marks.'<br>'.$old_grade_data['obt_credit'].' / '.($old_grade_data['obt_credit'] * number_format((float)$old_grade_data['agpa'], 2, '.', '')).'<br>'.number_format((float)$old_grade_data['agpa'], 2, '.', '');?>
+  <?= $old->exam_year.'<br>'.$this->Common_model->getClassNameByClassId($old->class_id).'<br>'.$old->roll_no.'<br>'.$old->obtain_marks.'/'.$old->total_marks.'<br>'.$old_grade_data['obt_credit'].' / '.$credit_points.'<br>'.$sgpa;?>
  
 </td>  
  <?php }
@@ -807,7 +810,7 @@ $total_course_credit +=$old_grade_data['tot_credit'];
  ?>
   
 <td class="align-middle text-center " ><strong>Result</strong><br><?= $final_result?></td>
-<td class="align-middle text-center "  colspan="<?= ($classData->practical_internal_marks!='N')?'2':'1'?>"><strong>Grand Total</strong><br><?= $total_ob.'/'.$total_mar ?><br><br><strong>Total Credit</strong><br><?=$total_course_credit?><br><br><strong>CGPA</strong><br><?= $cgpa?></td>
+<td class="align-middle text-center "  colspan="<?= ($classData->practical_internal_marks!='N')?'2':'1'?>"><strong>Grand Total</strong><br><?= $total_ob.'/'.$total_mar ?><br><strong>Total Credit</strong><br><?=$total_course_credit?><br><strong>CGPA</strong><br><?= $cgpa?></td>
 <td class="align-middle text-center "  colspan="<?= (count($marks) < 7)?'1':'2'?>"><strong>%</strong><br><?= $percent?></td>
 <td class="align-middle text-center "  colspan="<?= (count($marks) < 7)?'1':'2'?>"><strong>Division</strong><br><?= $div?></td>
 <td class="align-middle text-center "  colspan="2"><strong>Degree No. And Date</strong><br>-</td>
