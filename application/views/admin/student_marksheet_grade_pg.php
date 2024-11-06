@@ -171,16 +171,8 @@
                     $count = 0;
                     $total_grade_point = 0;
                     $total_course_credit = 0;
-                    $romanNumerals = [
-                        1 => 'I',
-                        2 => 'II',
-                        3 => 'III',
-                        4 => 'IV',
-                        5 => 'V',
-                        6 => 'VI',
-                        7 => 'VII',
-                        8 => 'VIII'
-                    ];
+                    $wordNumerals = [1 => 'One',2 => 'Two',3 => 'Three',4 => 'Four',5 => 'Five',6 => 'Six',7 => 'Seven',8 => 'Eight'
+                ];
                      foreach($classes as $cls){
                         $count++;
                         if($count == 1){ $sno = 'First';}elseif($count == 2){ $sno = 'Second';}elseif($count == 3){ $sno = 'Third';}elseif($count == 4){
@@ -204,7 +196,7 @@
                         }
                         ?>
                         </td>
-                        <td><?= $romanNumerals[count($old_count)]?></td>
+                        <td><?= $wordNumerals[count($old_count)]?></td>
                      </tr>
                            
                      <?php

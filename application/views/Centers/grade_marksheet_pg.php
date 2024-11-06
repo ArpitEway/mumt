@@ -110,6 +110,8 @@ th.border.border-dark {
         $final_fail=0;
         $romanNumerals = [1 => 'I',2 => 'II',3 => 'III',4 => 'IV',5 => 'V',6 => 'VI',7 => 'VII',8 => 'VIII'
         ];
+        $wordNumerals = [1 => 'One',2 => 'Two',3 => 'Three',4 => 'Four',5 => 'Five',6 => 'Six',7 => 'Seven',8 => 'Eight'
+        ];
         foreach($classes as $cls){
             $this->db->order_by('id','desc');
             $this->db->limit(1);
@@ -125,7 +127,7 @@ th.border.border-dark {
           <td class="text-center" style="vertical-align: middle;"><?=$gradeData['tot_credit'] ?></td>
           <td class="text-center" style="vertical-align: middle;"><?=$gradeData['obt_credit'] ?></td>
           <td class="text-center" style="vertical-align: middle;"><?= number_format((float)$gradeData['agpa'], 2, '.', '') ?></td>
-          <td class="text-center" style="vertical-align: middle;"><?= $romanNumerals[count($old_count)]?></td>
+          <td class="text-center" style="vertical-align: middle;"><?= $wordNumerals[count($old_count)]?></td>
           
         </tr>
             
@@ -165,7 +167,7 @@ th.border.border-dark {
           <td class="text-center" style="vertical-align: middle;"><?=$gradesheetData['tot_credit'] ?></td>
           <td class="text-center" style="vertical-align: middle;"><?=$gradesheetData['obt_credit'] ?></td>
           <td class="text-center" style="vertical-align: middle;"><?= number_format((float)$gradesheetData['agpa'], 2, '.', '') ?></td>
-          <td class="text-center" style="vertical-align: middle;"><?= $romanNumerals[1]?></td>
+          <td class="text-center" style="vertical-align: middle;"><?= $wordNumerals[1]?></td>
         </tr>
        
     </table><br>
