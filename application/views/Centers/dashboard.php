@@ -272,12 +272,12 @@
 								<span class="nav-text">Result(June 2024)</span>
 							</div>
 						</a>
-						 <!-- <a class="border-0 custom-menu-item" href="<?=base_url('backlog_result');?>">
+						 <a class="border-0 custom-menu-item" href="<?=base_url('backlog_result');?>">
 							<div>
-								<span class="nav-text">Backlog Result (January 2024)</span>
+								<span class="nav-text">Backlog Result (June 2024)</span>
 							</div>
 						</a> 
-						 -->
+						
 						<?php endif ?>
 
 						<!-- <a class="border-0 custom-menu-item" href="<?=base_url('support_system_complaint');?>">
