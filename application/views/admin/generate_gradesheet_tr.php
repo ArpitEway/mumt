@@ -786,7 +786,8 @@ table.last_table, .last_table td, .last_table th{
   
  
   <?php  
-  if($final_class && $isFinalClass == false){
+  $dept_ids = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30);
+  if($final_class && $isFinalClass == false && !in_array($student->center_id,$dept_ids)){
     $final_rw = 0;
     $final_fail =0;
     
@@ -817,8 +818,12 @@ foreach($classes as $cls){
  $old->total_marks = '-';
  $old_grade_data['obt_credit'] ='-';
  $old_grade_data['agpa'] ='-';
+ $sgpa = '-';
+ $grade_point = '-';
   }else{
     $old_grade_data['agpa'] = number_format((float)$old_grade_data['agpa'], 2, '.', '');
+    $sgpa = number_format((float)$old_grade_data['agpa'], 2, '.', '');
+    $grade_point = ($old_grade_data['obt_credit'] * number_format((float)$old_grade_data['agpa'], 2, '.', ''));
   }
   $total_grade_point += number_format((float)$old_grade_data['agpa'], 2, '.', '') * $old_grade_data['obt_credit']; 
   $total_course_credit +=$old_grade_data['tot_credit'];
@@ -826,7 +831,7 @@ foreach($classes as $cls){
   $total_mar += $old->total_marks;
 ?>  
 <td class="align-middle text-center "  colspan="2">
-  <?= $old->exam_year.'<br>'.$this->Common_model->getClassNameByClassId($old->class_id).'<br>'.$old->roll_no.'<br>'.$old->obtain_marks.'/'.$old->total_marks.'<br>'.$old_grade_data['obt_credit'].' / '.($old_grade_data['obt_credit'] * number_format((float)$old_grade_data['agpa'], 2, '.', '')).'<br>'.number_format((float)$old_grade_data['agpa'], 2, '.', '');?>
+  <?= $old->exam_year.'<br>'.$this->Common_model->getClassNameByClassId($old->class_id).'<br>'.$old->roll_no.'<br>'.$old->obtain_marks.'/'.$old->total_marks.'<br>'.$old_grade_data['obt_credit'].' / '.$grade_point.'<br>'.$sgpa;?>
  
 </td>  
  <?php }
@@ -837,6 +842,7 @@ foreach($classes as $cls){
   $percent = '-';
   $div = '-';
   $cgpa = '-';
+  $total_course_credit +=$gradesheetData['tot_credit'];
   if($final_fail !=0){
     $final_result ='RWPM';
     $final_remark ="RWPM";
@@ -864,14 +870,14 @@ foreach($classes as $cls){
         }elseif($cgpa<6.50 && $cgpa>=5.00){
         $div  = "Second Division";
         }else{
-        $div = "Third Division";
+        $div = "Pass";
         }
  }
  
  ?>
   
 <td class="align-middle text-center " ><strong>Result</strong><br><?= $final_result?></td>
-<td class="align-middle text-center "  colspan="2"><strong>Grand Total</strong><br><?= $total_ob.'/'.$total_mar?><br><br><strong>CGPA</strong><br><?= $cgpa?></td>
+<td class="align-middle text-center "  colspan="2"><strong>Grand Total</strong><br><?= $total_ob.'/'.$total_mar?><br><strong>Total Credit</strong><br><?= $total_course_credit?><br><strong>CGPA</strong><br><?= $cgpa?></td>
 <td class="align-middle text-center "  colspan="2"><strong>%</strong><br><?= $percent?></td>
 <td class="align-middle text-center "  colspan="2"><strong>Division</strong><br><?= $div?></td>
 <td class="align-middle text-center "  colspan="3"><strong>Degree No. And Date</strong><br>-</td>
