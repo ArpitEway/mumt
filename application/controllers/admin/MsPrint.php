@@ -488,18 +488,18 @@ class MsPrint extends CI_Controller {
 		{
 			if($text_val !='' && $radio_val == 'enrollment_no')
 			{
-				$where = array('exam_form'=>'Y','enrollment_no'=>$text_val,'old_result_show'=>'Y');
+				$where = array('new_exam_form'=>'Y','enrollment_no'=>$text_val,'result_show'=>'Y');
 				//,'result_show'=>'Y'
 
 			}else if($text_val !='' && $radio_val == 'roll_no')
 			{
-				$where = array('exam_form'=>'Y','roll_number'=>$text_val ,'old_result_show'=>'Y');
+				$where = array('new_exam_form'=>'Y','roll_no'=>$text_val ,'result_show'=>'Y');
 			//,'result_show'=>'Y'
 			}
 
 			
 				$student = $this->Common_model->getRecordByWhere($this->result_table,$where);
-				//print_r($student); die;
+				// print_r($student); die;
 				$msg="";
 				if (count($student)==0) {
 					
@@ -510,12 +510,12 @@ class MsPrint extends CI_Controller {
 					
 				}else{
 			
-					if($student[0]->old_result_show =="N"){
+					if($student[0]->result_show =="N"){
 						
 							$msg="<p style='text-align: center;' id='result_msg'><b>Student result not declared!</b></p>"; 
 					}
 						$data['student']=$student[0];
-						$data['exam_session']  = 'January 2024';
+						$data['exam_session']  = 'June 2024';
 						/**********************/
 						if($data['student']->provisional_remark!="N" && $data['student']->provisional_remark!="")
 						{
@@ -527,25 +527,27 @@ class MsPrint extends CI_Controller {
 						}
 						/************************/
 						
-						$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
+						$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
 						$data['practical_internal_marks']=$classData->practical_internal_marks;
 						$this->db->select('*');
 						$this->db->from($this->exam_form_table);
 						$this->db->where(''.$this->exam_form_table.'.student_id',$data['student']->student_id);
-						$this->db->where(''.$this->exam_form_table.'.class_id',$data['student']->old_class_id);
+						$this->db->where(''.$this->exam_form_table.'.class_id',$data['student']->class_id);
 						$new_exam_form = $this->db->get()->result();
 						$data['classData']  = $classData;
 						$data['new_exam_form']  = $new_exam_form;
 						// if(($data['student']->old_class_id == '104' || $data['student']->old_class_id == '107' || $data['student']->old_class_id == '101' || $data['student']->old_class_id == '134' || $data['student']->old_class_id == '116' || $data['student']->old_class_id == '110'|| $data['student']->old_class_id == '119' || $data['student']->old_class_id == '131') && $data['student']->university_mode == 'REG')
 						
-						$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
-						$class_cbcs =array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302);
+						$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136);
+						$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302,278,282,250,252,216,232,236,238,240,246,248,254,218,305,210);
+						
 						if((in_array($data['student']->class_id, $class_ids))  && $data['student']->exam_pattern=='GRADE')	//&& $data['student']->university_mode=='REG'
 						{
 							$this->load->model('Gradesheet_model');
 							$dt = $provisional_remark_details.$msg.$this->load->view('Centers/grade_marksheet',$data,true);
 						}else if((in_array($data['student']->old_class_id, $class_cbcs)) && $data['student']->university_mode=='REG' && $data['student']->exam_pattern=='GRADE'){
 							$this->load->model('Gradesheet_model_pg');
+                            $this->load->model('GradeSheet_old_model_pg');
 							$dt = $provisional_remark_details.$msg.$this->load->view('Centers/grade_marksheet_pg',$data,true);
 						}else{
 							
