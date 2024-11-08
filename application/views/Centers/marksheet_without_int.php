@@ -131,7 +131,7 @@ if ($withheld ) { //||  in_array($student->examcentercode ,array('MDE052','MDE08
     <h3 class="text-center">WH</h3>
   </div>
   <?php
-}else  if ($old_fail) {
+}else  if ($old_fail &&  $fail_count==0) {
   ?>
   <div class="text-center text-primary border-right border-left border-bottom border-dark py-3">
     <h1 class=" text-center mb-0">Statement Of Marks</h1>
