@@ -50,7 +50,7 @@ foreach($new_exam_form as $marks){
       $fail_count++;
     }
     if($marks->theory_marks=='00'){
-         $zero_count++;
+          $zero_count++;
     }
     if($marks->int_marks=='ABS'){
       $abs_count++;
@@ -86,6 +86,9 @@ foreach($new_exam_form as $marks){
       $abs_count++;
       $result = "Fail";
       $fail_count++;
+    }
+    if($marks->theory_marks=='00'){
+         $zero_count++;
     }
 
   }

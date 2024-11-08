@@ -80,7 +80,9 @@ foreach($new_exam_form as $marks){
         $result = "Fail";
         $fail_count++;
       }
-     
+      if($marks->theory_marks=='00'){
+        $zero_count++;
+       }
     }
     
   }else{
@@ -114,6 +116,7 @@ if($fail_count<2 && $require_grace_marks<4 && $abs_count==0 && $fail_count!=0){
 
 // if ($fail_count>0 && !$check_grace_marks) {
 //if ($fail_count>0 && !$check_grace_marks && $marks->student_id!=684208 && $classData->final_result_permission!='Y' ) {  
+ 
   if ($theory_count== $zero_count && !$check_grace_marks && $marks->student_id!=684208 && $classData->final_result_permission!='Y') { 
     ?>
   <div class="text-center text-primary border-right border-left border-bottom border-dark py-3">
