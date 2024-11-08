@@ -2401,8 +2401,9 @@ class Center extends CI_Controller {
 		$this->load->view('admin/generate_tr/header2',$title);	
 		//$this->load->view('Centers/marksheet',$data);
 		$this->load->view('Centers/marksheet_top',$data);
-		//if ($student[0]->course_group_id==36 || $student[0]->course_group_id==37 || $student[0]->course_group_id==33) {
-		if($classData->internal=='N'){
+		//if (student$[0]->course_group_id==36 || $student[0]->course_group_id==37 || $student[0]->course_group_id==33) {
+		if($classData->internal=='N' ){
+			//|| ($student[0]->class_id==106 && $student[0]->exam_pattern=='MARKS' )
 			$this->load->view('Centers/marksheet_without_int',$data);
 		}else{
 			if($student[0]->class_id=='168'){
