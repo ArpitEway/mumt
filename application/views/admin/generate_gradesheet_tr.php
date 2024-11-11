@@ -283,11 +283,12 @@ table.last_table, .last_table td, .last_table th{
               $count_int++;
             }
         }else{
-            if($new_exam_form->theory_marks<$new_exam_form->private_min_theory_marks  && $new_exam_form->theory_marks!=''){
+            if($new_exam_form->theory_marks< $new_exam_form->min_theory_marks + $new_exam_form->min_internal_marks  && $new_exam_form->theory_marks!=''){
               array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
               $fail_count++;
               $fail_tot_marks += $new_exam_form->theory_marks;
-              $require_tot_marks += $new_exam_form->private_min_theory_marks;
+            //   $require_tot_marks += $new_exam_form->private_min_theory_marks;
+              $require_tot_marks += $new_exam_form->min_theory_marks + $new_exam_form->min_internal_marks;
             }
 
         }
@@ -649,7 +650,7 @@ table.last_table, .last_table td, .last_table th{
             }else{
               if($new_exam_form->theory_marks==''){
                 echo '-';
-              }elseif($new_exam_form->theory_marks>=$new_exam_form->private_min_theory_marks && $new_exam_form->theory_marks!="ABS"){
+              }elseif($new_exam_form->theory_marks>=$new_exam_form->min_theory_marks+$new_exam_form->min_internal_marks && $new_exam_form->theory_marks!="ABS"){
                 echo $new_exam_form->theory_marks;
               }else{
                 echo $new_exam_form->theory_marks;
@@ -749,7 +750,7 @@ table.last_table, .last_table td, .last_table th{
     }else{
       if($check_grace_marks==true){
         echo $paper_master->theory_marks;
-      } elseif(($paper_master->theory_marks<$paper_master->private_min_theory_marks) ||  $paper_master->theory_marks=='ABS'){
+      } elseif(($paper_master->theory_marks< $paper_master->min_theory_marks+$paper_master->min_internal_marks) ||  $paper_master->theory_marks=='ABS'){
 
         if($paper_master->theory_marks==''){
           echo "-";

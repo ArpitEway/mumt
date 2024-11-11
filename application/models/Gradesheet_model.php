@@ -538,11 +538,13 @@ class Gradesheet_model extends CI_Model
 					$this->withheld = true;
 				}
 				$check_fail_marks = $this->paper["theory_marks"];
-				$check_fail_min_marks = $this->paper["private_min_theory_marks"];
+				// $check_fail_min_marks = $this->paper["private_min_theory_marks"];
+                $check_fail_min_marks = $this->paper["min_theory_marks"]+$this->paper["min_internal_marks"];
 				$check_fail_tot_marks = $this->paper["private_max_theory_marks"];
 				$tot_obt_marks = $this->paper["theory_marks"];
 				$tot_marks = $this->paper["private_max_theory_marks"];
-				$min_marks = $this->paper["private_min_theory_marks"];
+				// $min_marks = $this->paper["private_min_theory_marks"];
+                $min_marks = $this->paper["min_theory_marks"] + $this->paper["min_internal_marks"];
 			}
 		}else{
 			$this->obt_marks += $this->paper["p_marks"]+$this->paper["int_marks"];
@@ -688,7 +690,7 @@ class Gradesheet_model extends CI_Model
 		if ($this->mode=='PVT') {
 			$this->result_array[$this->paper['paper_code']]['max_marks'] = $this->paper['private_max_theory_marks'];
 			if ($this->paper['type']=='theory') {
-				$this->result_array[$this->paper['paper_code']]['min_marks'] = $this->paper['private_min_theory_marks'];
+				$this->result_array[$this->paper['paper_code']]['min_marks'] = $this->paper['min_theory_marks'] +$this->paper['min_internal_marks'];
 				$this->result_array[$this->paper['paper_code']]['obt_marks']= $this->paper['theory_marks'];
 			}else{
 				$this->result_array[$this->paper['paper_code']]['min_marks'] = $this->paper['min_theory_marks'];
