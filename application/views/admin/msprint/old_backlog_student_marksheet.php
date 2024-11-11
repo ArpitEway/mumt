@@ -110,12 +110,16 @@
                       <td class="Normaltext" align="left" width="29%"><div align="left">Father's / Husband's Name</div></td>
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo strtoupper( $student->f_h_name); ?></span></div></td>
                     </tr>
-                    <?php if ($exam_data->course_group_id==76 || $exam_data->course_group_id==75){ ?>
-                    <?php if ($exam_data->center_id==10 || $exam_data->center_id==12){ ?>
+                    <?php if ($exam_data->course_group_id==76 || $exam_data->course_group_id==75){ 
+                      $center_ids = array(10,13,21,22,23,24,25,26,27,28,29);
+                      if ((in_array($exam_data->center_id, $center_ids)) || $exam_data->center_id==12){ ?>
                     <tr>
                       <td class="Normaltext" align="left" width="29%"><div align="left">Department</div></td>
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;">
-                        <?php if ($exam_data->center_id==10) {
+                        <?php 
+                        
+                        if(in_array($exam_data->center_id, $center_ids)){
+                        //if ($exam_data->center_id==10) {
                           echo "University Teaching Department Karaundi";
                         }else if ($exam_data->center_id==12) {
                           echo "Shiksha Vibhag, Lamti Jabalpur";

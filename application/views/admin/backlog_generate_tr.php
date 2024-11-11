@@ -578,15 +578,16 @@ table.last_table, .last_table td, .last_table th{
       $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$course_group_id,'mode'=>$classData->mode,'id!='=>$class_id
 					));
           // $this->Common_model->last_query();
-   foreach($classes as $cls){
-  $this->db->order_by('id','desc');
-  $this->db->limit(1);
-  $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id'=>$cls->id));
-  ?> <tr>
+          ?> <tr>
   <td class="align-middle text-center "  colspan="2"><strong>
   <?= 'Session'.'<br>'.'Sem/Year'.'<br>'.'Roll no'.'<br>'.'Marks'?></strong>
  
 </td> <?php
+   foreach($classes as $cls){
+  $this->db->order_by('id','desc');
+  $this->db->limit(1);
+  $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id'=>$cls->id));
+  
  foreach($old_result as $old){
   if($old->exam_result == "FAIL"){
  $final_fail++;

@@ -392,7 +392,7 @@ class Postexam extends CI_Controller {
     
          $this->db->select('course_name,class_id, COUNT(student_id) as cnt');
          
-         $this->db->where('exam_year', 'January 2024');
+         $this->db->where('exam_year', 'June 2024');
          $this->db->where('exam_result', 'FAIL');
          $this->db->where('exam_status', 'B');
          $this->db->where_in('class_id',$class_id );
@@ -411,7 +411,7 @@ class Postexam extends CI_Controller {
     public function backlog_marks_move_scripts($class_id='')
         {
            // $this->db->where('id>', '36941');
-            $studentall = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$class_id,'exam_result'=>'Fail','exam_year'=>'January 2024','exam_status'=>'B'));
+            $studentall = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$class_id,'exam_result'=>'Fail','exam_year'=>'June 2024','exam_status'=>'B'));
             foreach($studentall as $key=>$students){
               //  print_r($students); die;
             $whereResult = array("class_id"=>$students->class_id ,"student_id"=>$students->student_id, 'exam_data_id' => $students->id);
@@ -485,7 +485,7 @@ class Postexam extends CI_Controller {
        if($classes){
 
            $this->db->select('course_name,class_id, COUNT(student_id) as cnt');
-          // $this->db->where('exam_year', 'January 2024');
+          // $this->db->where('exam_year', 'June 2024');
           $this->db->where('exam_year', 'July 2023');
            $this->db->where('exam_result', 'FAIL');
            $this->db->where('exam_status', 'R');
@@ -507,7 +507,7 @@ class Postexam extends CI_Controller {
         $this->load->view('header',array('title' => 'Backlog Students'));
         $this->db->select('*');
         $this->db->from('old_exam_data');
-       // $this->db->where('exam_year', 'January 2024');
+       // $this->db->where('exam_year', 'June 2024');
        $this->db->where('exam_year', 'July 2023');
         $this->db->where('exam_result', 'FAIL');
         $this->db->where('exam_status', 'R');
@@ -535,7 +535,7 @@ class Postexam extends CI_Controller {
     {
          $this->db->where('exam_year', 'July 2023');
         $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$class_id,'student_id'=>$student_id));
-        //,'exam_year'=>'January 2024'
+        //,'exam_year'=>'June 2024'
         $whereResult = array("class_id"=>$students[0]->class_id ,"student_id"=>$students[0]->student_id, 'exam_data_id' => $students[0]->id);
         $old_result_datas = $this->Common_model->getRecordByWhere("old_result_data",$whereResult );
             $data = array(
@@ -1074,7 +1074,7 @@ public function upload_old_backlog_grade_data_script($class_id="",$mode){
     $this->db->select('backlog_student.*,student.name,student.f_h_name,student.course_name,student.mother_name,student.photo');
     $this->db->from('backlog_student');
     $this->db->join('student','student.student_id=backlog_student.student_id');
-    $this->db->where(array("backlog_student.class_id"=>$class_id, "backlog_student.exam_form"=>'Y', "backlog_student.upload_result"=>'N','backlog_student.mode'=>$mode,'backlog_student.exam_year'=>'Dec 2023','backlog_student.result_show'=>'Y' ));
+    $this->db->where(array("backlog_student.class_id"=>$class_id, "backlog_student.exam_form"=>'Y', "backlog_student.upload_result"=>'N','backlog_student.mode'=>$mode,'backlog_student.exam_year'=>'June 2024','backlog_student.result_show'=>'Y' ));
     $this->db->limit(500);
     $students = $this->db->get()->result();
     $this->load->model('Upload_old_data_backlog');
@@ -1095,7 +1095,7 @@ public function upload_old_grade_data_script_pg($class_id="",$mode){
     $this->db->limit(500);
     // $this->db->where_in('student_id',array(188516,188517,188518,188519,188520,188522,685336,685337,685340,685342,685343,685344,685346,685347,685348,685349,685350,685351,685352,685353,685362,685364,685366,685368,685369,685370,685372,685373,685374,685381,685383,685386,685441,685443,685444,685446,685447,685449,685453,685456,685473,685474,685487,685489,685490,685491,685493,685494,685496,686004,686022,700042,700150,700155,702602,702648,702653,702654,702655,702657,702658,702660,702669,702671,702674,702676,702678,702823,702829,702830,702831,702838,702839,702847,702851,702981,702986,702989,703155,703163,703228,703278,703394,703395));
     //  $this->db->where('student_id',702308);
-    $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'N','university_mode'=>$mode ,'exam_pattern'=>'GRADE' ));
+    $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "new_exam_form"=>'Y', "upload_result"=>'N','university_mode'=>$mode ,'exam_pattern'=>'GRADE' ));
     
     //, "marksheet_dispatch"=>'Y'
     // $this->Common_model->last_query();
@@ -1151,7 +1151,7 @@ public function upload_old_backlog_marks()
   //   $this->db->where('class_master.mode', 'Semester');
      $this->db->where('exam_form', 'Y');
      $this->db->where('upload_result', 'N');
-     $this->db->where('exam_year','Dec 2023');
+     $this->db->where('exam_year','June 2024');
      $this->db->where('result_show', 'Y');
      $this->db->where('class_master.backlog_result_permission', 'Y');
      $this->db->where('class_master.final_result_permission', 'Y');
@@ -1169,7 +1169,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
     $this->db->select('backlog_student.*,student.name,student.f_h_name,student.course_name,student.mother_name,student.photo');
     $this->db->from('backlog_student');
     $this->db->join('student','student.student_id=backlog_student.student_id');
-    $this->db->where(array("backlog_student.class_id"=>$class_id, "backlog_student.exam_form"=>'Y', "backlog_student.upload_result"=>'N','backlog_student.mode'=>$mode,'backlog_student.exam_year'=>'Dec 2023','backlog_student.result_show'=>'Y' ,'student.exam_pattern'=>'MARKS' ));
+    $this->db->where(array("backlog_student.class_id"=>$class_id, "backlog_student.exam_form"=>'Y', "backlog_student.upload_result"=>'N','backlog_student.mode'=>$mode,'backlog_student.exam_year'=>'June 2024','backlog_student.result_show'=>'Y' ,'student.exam_pattern'=>'MARKS' ));
     $this->db->limit(500);
     $students = $this->db->get()->result();
     
@@ -1201,7 +1201,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
             'enrollment_no' => $student->enrollment_no,
             'roll_no' => $student->roll_no,
             'name' => $student->name,
-            'exam_year' => 'January 2024',
+            'exam_year' => 'June 2024',
             'f_h_name' => $student->f_h_name,
             'mother_name' => $student->mother_name,
             'marksheet_no' =>$student->back_marksheet_no,
@@ -1381,7 +1381,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
 }
 
     function backlog_student_course_complete(){
-        $exam_year="Dec 2023";
+        $exam_year="June 2024";
         $class_id = 'backlog_student.class_id';
           $this->db->select('DISTINCT(backlog_student.course_group_id),'.$class_id.'');
           $this->db->from('backlog_student');
@@ -1403,7 +1403,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
       }
       public function backlog_student_course_complete_script()
     { //
-            $exam_year="Dec 2023";    
+            $exam_year="June 2024";    
             $course_group_id =$_POST['course_group_id'];
             $class_id= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course_group_id,'last_class'=>'L'));
             
@@ -1446,7 +1446,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
         $this->db->select('backlog_student.*,student.name,student.f_h_name,student.course_name,student.mother_name,student.photo');
         $this->db->from('backlog_student');
         $this->db->join('student','student.student_id=backlog_student.student_id');
-        $this->db->where(array("backlog_student.class_id"=>$class_id, "backlog_student.exam_form"=>'Y', "backlog_student.upload_result"=>'N','backlog_student.mode'=>$mode,'backlog_student.exam_year'=>'Dec 2023','backlog_student.result_show'=>'Y' , 'student.exam_pattern'=>'GRADE'));
+        $this->db->where(array("backlog_student.class_id"=>$class_id, "backlog_student.exam_form"=>'Y', "backlog_student.upload_result"=>'N','backlog_student.mode'=>$mode,'backlog_student.exam_year'=>'June 2024','backlog_student.result_show'=>'Y' , 'student.exam_pattern'=>'GRADE'));
         $this->db->limit(500);
         $students = $this->db->get()->result();
         // print_r($students);die;
