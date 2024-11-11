@@ -28,8 +28,8 @@
         <tr>
         <td></td>
 		<?php 
-		$class_ids=array(101,104,107,110,116,119,125,128,131,134);
-		$cbcs = (in_array($class->id, $class_ids))?' (CBCS)':'';?>
+		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136);
+		$cbcs = ($class->cbcs == 'Y' || in_array($class->id, $class_ids))?' (CBCS)':'';?>
 			<td><?= $class->class_name.$cbcs ?></td>
 			<td><?php 
 			$flag=($class->regular_class == 'Y' && $class->private_class == 'Y')? '/': '';
@@ -52,18 +52,24 @@
 					 
 					 
 					 if($class->regular_class=='Y') { ?>    
-					 <a href="<?php echo base_url("admin/admins/backlog_generate_tr_bed")."/REG/".$course['id']."/".$class->id; ?>">Regular Tr</a>
-					 <?php } if($class->private_class=='Y') { echo $flag; ?>
-					 <a href="<?php echo base_url("admin/admins/backlog_generate_tr_bed")."/PVT/".$course['id']."/".$class->id; ?>">Private Tr</a>
+					 <a href="<?php echo base_url("admin/admins/backlog_generate_tr_bed")."/REG/M/".$course['id']."/".$class->id; ?>">Regular Tr</a>
+					 <?php }   if(!empty($cbcs) ){ ?>
+                        / <a href="<?php echo base_url("admin/admins/backlog_generate_tr_bed")."/REG/G/".$course['id']."/".$class->id; ?>">Grade Tr</a>
+                        <?php } 
+                     
+                     if($class->private_class=='Y') { echo $flag; ?>
+					 <a href="<?php echo base_url("admin/admins/backlog_generate_tr_bed")."/PVT/M/".$course['id']."/".$class->id; ?>">Private Tr</a>
 					  <?php }  
 				
 
 					 }else{ 
 				
 				if($class->regular_class=='Y') { ?>    
-					 <a href="<?php echo base_url("admin/admins/backlog_generate_tr")."/REG/".$course['id']."/".$class->id; ?>">Regular Tr</a>
-					 <?php } if($class->private_class=='Y') { echo $flag; ?>
-					 <a href="<?php echo base_url("admin/admins/backlog_generate_tr")."/PVT/".$course['id']."/".$class->id; ?>">Private Tr</a>
+					 <a href="<?php echo base_url("admin/admins/backlog_generate_tr")."/REG/M/".$course['id']."/".$class->id; ?>">Regular Tr</a>
+					 <?php }  if(!empty($cbcs) ){ ?>
+                        / <a href="<?php echo base_url("admin/admins/backlog_generate_tr")."/REG/G/".$course['id']."/".$class->id; ?>">Grade Tr</a>
+                        <?php } if($class->private_class=='Y') { echo $flag; ?>
+					 <a href="<?php echo base_url("admin/admins/backlog_generate_tr")."/PVT/M/".$course['id']."/".$class->id; ?>">Private Tr</a>
 					  <?php }  
 				 } ?>
 			</td>
