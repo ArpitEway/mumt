@@ -476,11 +476,12 @@ public function update_sub_group_id_in_new_exam_form_sub(){
 }
 
 public function update_sub_group_id_in_backlog_exam_form(){
-    $this->db->limit(300);
+    // $this->db->limit(300);
     $this->db->where_in('class_id',array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135));
     $students = $this->Common_model->getRecordByWhere('backlog_student',array('exam_year'=>'June 2024',
-    'exam_form'=>'Y','mode'=>'REG'));
+    'exam_form'=>'Y'));
     // $this->Common_model->last_query();
+    // ,'mode'=>'REG'
     echo count($students);
     foreach($students as $student){
      $papers =   $this->Common_model->getRecordByWhere('old_result_data',array('student_id'=>$student->student_id,'class_id'=>$student->class_id));
@@ -506,10 +507,11 @@ public function update_sub_group_id_in_backlog_exam_form(){
 }
 
 public function update_group_id_in_backlog_exam_form(){
-    $this->db->limit(300);
+    // $this->db->limit(300);
     $this->db->where_in('class_id',array(101,104,105));
     $students = $this->Common_model->getRecordByWhere('backlog_student',array('exam_year'=>'June 2024',
-    'exam_form'=>'Y','mode'=>'REG'));
+    'exam_form'=>'Y'));
+    // ,'mode'=>'REG'
     // $this->Common_model->last_query();
     echo count($students);
     foreach($students as $student){
