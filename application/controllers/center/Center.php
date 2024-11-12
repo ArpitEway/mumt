@@ -2295,7 +2295,7 @@ class Center extends CI_Controller {
 		// if($this->input->post('course_group_id') == 12 || $this->input->post('course_group_id') == 13){
 		// 	$where['university_mode'] = 'PVT';
 		// }
-		// $where['class_master.result_permission'] = 'Y';
+		 $where['class_master.backlog_result_permission'] = 'Y';
 		// Fetch member's records
 		
 		$column_order = array('backlog_student.student_id','backlog_student.enrollment_no','backlog_student.course_group_id','backlog_student.class_id','class_master.class_name',null);
