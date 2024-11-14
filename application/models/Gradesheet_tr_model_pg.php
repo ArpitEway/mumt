@@ -212,7 +212,12 @@ class Gradesheet_tr_model_pg extends CI_Model
 					// 
                     $this->withheld_internal = true;
 				}
-				$check_fail_marks = $this->paper["theory_marks"] ;
+                if($this->paper["int_marks"]=='ABS'){
+                    $check_fail_marks = 'ABS';
+                }else{
+                    $check_fail_marks = $this->paper["theory_marks"] ;
+                }
+				
 				$check_fail_min_marks = $this->paper["min_theory_marks"] ;
 				$check_fail_tot_marks = $this->paper["max_theory_marks"] ;
 				$tot_obt_marks = $this->paper["theory_marks"] + $this->paper["int_marks"];
@@ -305,7 +310,9 @@ class Gradesheet_tr_model_pg extends CI_Model
             return $this->result = 'RWPR';
         }
        
-		if ($this->fail_count!=0 && $this->agpa>=4) {
+       if(is_nan($this->agpa)){
+        return $this->result = 'FAIL';
+       }elseif ($this->fail_count!=0 && $this->agpa>=4) {
 			if ($this->check_grace_marks) {
 				return	$this->result = 'PASS BY GRACE';
 			}else{
