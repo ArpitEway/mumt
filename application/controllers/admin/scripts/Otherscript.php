@@ -1234,6 +1234,22 @@ public function update_roll_no_old_data(){
             echo $this->db->last_query() . '<br>';
         } 
     }
+
+    public function update_roll_no_in_old(){
+        $this->db->select('student_id, id, class_id');
+        $this->db->from('old_exam_data');
+        $this->db->where(array('exam_year'=>"June 2024", 'class_id'=>175));
+        $results =$this->db->get()->result();
+      
+    foreach($results as $res){
+        $response = $this->Common_model->getRecordByWhere('student', array('student_id'=>$res->student_id));
+        $this->Common_model->updateRecordByConditions('old_exam_data',array('exam_year'=>'june 2024','id'=>$res->id, 'class_id'=>$res->class_id,'student_id'=>$res->student_id,), array('roll_no'=>$response[0]->roll_no));
+        echo $this->db->last_query().'<br>';
+       
+    }
+   
+     
+    }
 		
 }
 
