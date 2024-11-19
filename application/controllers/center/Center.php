@@ -778,7 +778,12 @@ class Center extends CI_Controller {
 		
 		 
 		if($this->session->has_userdata('center_id')){
-		$center_id =  $this->session->center_id;
+			$center_id =  $this->session->center_id;
+			if( $this->session->center_id==100) {
+				$center_id =  $this->session->forCenter;
+			}
+			
+		
 		
 		$centerdata = $this->Common_model->getRecordById('center','id',$center_id);
 		$this->db->group_start();
@@ -4052,6 +4057,12 @@ public function practical_assignment_marks_edit(){
 					echo json_encode(array("status" => 'true'));
 					$this->session->set_flashdata('ajax_flash_message','Student Move Successfully !');
 		
+	}
+
+	public function setAdmissionForCenter(){
+		$forCenter = $this->input->post('forCenter');
+		$this->session->set_userdata(array('forCenter'=>$forCenter));
+	
 	}
 
 

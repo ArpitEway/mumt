@@ -575,3 +575,42 @@ function validation(step=""){
 	
 		
 }
+
+$("#forCenter").on('change', function(){
+	var forCenter = $(this).val();
+	
+	var csrfName = $('.csrfname').attr('name');
+	var csrfHash = $('.csrfname').val();
+	
+	$.ajax({
+		method: "POST",
+		url: BASE_URL+"center/center/setAdmissionForCenter",
+		data: {forCenter:forCenter,[csrfName]:csrfHash},
+	})
+	.done(function( msg ) {
+		$('#course_group_id').html("");
+		$('#course_group_id_admission').html("");
+		$('#class_id').html("");
+		//$("#eligibility").trigger("change");
+		centerChange();
+	});
+});
+
+function centerChange(){
+	var eligibility = $("#eligibility").val();
+	
+	var csrfName = $('.csrfname').attr('name');
+	var csrfHash = $('.csrfname').val();
+	var mode = $('#mode').val(); 
+	var session=$('#session').val();
+	$('input[name="qualifying_exam"]').val(eligibility); 
+	$.ajax({
+		method: "POST",
+		url: BASE_URL+"center/center/getCourseByEligibility",
+		data: {mode:mode,session:session,eligibility : eligibility,[csrfName]:csrfHash},
+	})
+	.done(function( msg ) {
+		$('#course_group_id').html(msg);
+		$('#course_group_id_admission').html(msg);
+	});
+}
