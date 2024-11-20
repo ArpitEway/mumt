@@ -779,9 +779,9 @@ class Center extends CI_Controller {
 		 
 		if($this->session->has_userdata('center_id')){
 			$center_id =  $this->session->center_id;
-			if( $this->session->center_id==100) {
-				$center_id =  $this->session->forCenter;
-			}
+			// if( $this->session->center_id==100) {
+			// 	$center_id =  $this->session->forCenter;
+			// }
 			
 		
 		
@@ -4059,11 +4059,11 @@ public function practical_assignment_marks_edit(){
 		
 	}
 
-	public function setAdmissionForCenter(){
-		$forCenter = $this->input->post('forCenter');
-		$this->session->set_userdata(array('forCenter'=>$forCenter));
+	// public function setAdmissionForCenter(){
+	// 	$forCenter = $this->input->post('forCenter');
+	// 	$this->session->set_userdata(array('forCenter'=>$forCenter));
 	
-	}
+	// }
 
 
 }//class

@@ -6,6 +6,7 @@
 </style>
 <form class="p-5">
 	<h4 class="my-5 font-weight-bold text-dark">Educational Details</h4>
+	<input type="hidden" id="center_id"  name="center_id" value="<?=$this->session->center_id?>">
 <?php if( $this->session->center_id==100) { ?>
 	<div class="row">
 	<div class="form-group col-md-9">
@@ -23,6 +24,7 @@
 				} 
 				?> 
 			</select>
+			<div class="fv-plugins-message-container"></div>
 		</div>
 	</div>
 	<?php } ?>
