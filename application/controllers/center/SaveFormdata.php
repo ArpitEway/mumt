@@ -42,6 +42,10 @@ class saveFormdata extends CI_Controller {
 		};
 		$data['university_mode'] =$mode ;
 		$data['class_id'] = $class_id;
+		//Center Admission in University
+		if($this->session->center_id==100){
+			$data['for_center'] =html_escape($this->input->post('forCenter'));
+		}
 		$data['medium'] = html_escape($this->input->post('medium'));
 		$data['category'] = html_escape($this->input->post('category'));
 		$data['gender'] = html_escape($this->input->post('gender'));
