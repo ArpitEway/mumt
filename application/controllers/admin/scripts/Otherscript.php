@@ -1250,10 +1250,68 @@ public function update_roll_no_old_data(){
    
      
     }
+    public function final_class_merit_list(){
+   
+        $year = 'Aug 2022';
+        $this->db->select('cm.id,cm.class_name, cm.course_group_id,cg.course_name');
+        $this->db->from('class_master as cm');
+        $this->db->join('course_group as cg','cg.id =cm.course_group_id');
+        $this->db->join('old_exam_data as od','cm.id =od.class_id');
+        $this->db->where(array('cm.last_class'=>'L','od.exam_year'=>$year,'od.university_mode'=>'REG'));
+        $this->db->group_by('cg.course_name');
+        $data['classes'] = $this->db->get()->result();
+      
+        $this->load->view('header');
+		$this->load->view('admin/final_class_course_list',$data);
+		$this->load->view('footer');
+       
+    }
+
+    public function view_final_class_merit_list($mode,$id){
+      
+        // $dept_ids = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30);
+        // $class_cbcs = array(216,232,236,238,240,246,248,250,252,254,218,278,282);
+        // $class_ids=array(103,106,109,112,118,121,127,130,133,136);
+        // $data['classData'] = $this->Common_model->getRecordById('class_master','id',$id);
+        // if(in_array($id, $class_cbcs) && $mode == 'REG'){
+          
+        //     $this->load->model('GradeSheet_old_model_pg');
+        //     $this->load->model('Gradesheet_tr_model_pg');
+        //     // $this->db->where('enrollment_no', 'AI/22210332');
+        //     $data['students'] = $this->Common_model->getRecordByWhere('student',array('exam_pattern'=>'GRADE', 'class_id'=>$id,'new_exam_form'=>'Y','result_show'=>'Y'));
+        //     $this->load->view('header',array('title'=>$data['students'][0]->course_name));
+        //     $this->load->view('admin/final_class_merit_list_pg',$data);
+        //     $this->load->view('footer');
+        // }else if(in_array($id, $class_ids) && $mode == 'REG'){
+            
+        //     $this->load->model('Gradesheet_model');
+        //     $this->db->where_not_in('center_id',$dept_ids);
+        //     // $this->db->where('enrollment_no', "AG/21207398");
+        //     $data['students'] = $this->Common_model->getRecordByWhere('student',array('exam_pattern'=>'GRADE', 'class_id'=>$id,'new_exam_form'=>'Y','result_show'=>'Y'));
+        //     $this->load->view('header',array('title'=>$data['students'][0]->course_name));
+        //     $this->load->view('admin/final_class_merit_list_ug',$data);
+        //     $this->load->view('footer');
+        // }else{
+            $year = 'Aug 2022';
+            $data['classData'] = $this->Common_model->getRecordById('class_master','id',$id);
+          $this->db->select('s.*,sd.p_mobile_no');
+          $this->db->from('student as s');
+          $this->db->join('old_exam_data as od', 'od.student_id=s.student_id and od.class_id=s.class_id');
+          $this->db->join('student_data as sd', 'sd.student_id=s.student_id');
+          $this->db->where(array('od.exam_year'=>$year,'s.class_id'=>$id,'exam_pattern'=>'MARKS','course_complete'=>'Y','od.university_mode'=>'REG'));
+          $data['students'] = $this->db->get()->result();
+        //   $this->Common_model->last_query();
+            // $data['students'] = $this->Common_model->getRecordByWhere('student',array('exam_pattern'=>'MARKS', 'class_id'=>$id,'new_exam_form'=>'Y','result_show'=>'Y'));
+          
+            $this->load->view('header',array('title'=>$data['students'][0]->course_name.' - '.$year));
+            $this->load->view('admin/final_class_merit_non_grade',$data);
+            $this->load->view('footer');
+        // }
+    }
 		
 }
 
-
+   
 
 
 ?>
