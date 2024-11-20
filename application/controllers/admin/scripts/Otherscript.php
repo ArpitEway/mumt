@@ -1252,12 +1252,12 @@ public function update_roll_no_old_data(){
     }
     public function final_class_merit_list(){
    
-        $year = 'Aug 2022';
+        $year = 'January 2024';
         $this->db->select('cm.id,cm.class_name, cm.course_group_id,cg.course_name');
         $this->db->from('class_master as cm');
         $this->db->join('course_group as cg','cg.id =cm.course_group_id');
         $this->db->join('old_exam_data as od','cm.id =od.class_id');
-        $this->db->where(array('cm.last_class'=>'L','od.exam_year'=>$year,'od.university_mode'=>'REG'));
+        $this->db->where(array('cm.last_class'=>'L','od.exam_year'=>$year,'od.university_mode'=>'REG','od.exam_status'=>'R'));
         $this->db->group_by('cg.course_name');
         $data['classes'] = $this->db->get()->result();
       
@@ -1292,13 +1292,13 @@ public function update_roll_no_old_data(){
         //     $this->load->view('admin/final_class_merit_list_ug',$data);
         //     $this->load->view('footer');
         // }else{
-            $year = 'Aug 2022';
+            $year = 'January 2024';
             $data['classData'] = $this->Common_model->getRecordById('class_master','id',$id);
           $this->db->select('s.*,sd.p_mobile_no');
           $this->db->from('student as s');
           $this->db->join('old_exam_data as od', 'od.student_id=s.student_id and od.class_id=s.class_id');
           $this->db->join('student_data as sd', 'sd.student_id=s.student_id');
-          $this->db->where(array('od.exam_year'=>$year,'s.class_id'=>$id,'exam_pattern'=>'MARKS','course_complete'=>'Y','od.university_mode'=>'REG'));
+          $this->db->where(array('od.exam_year'=>$year,'s.class_id'=>$id,'exam_pattern'=>'MARKS','course_complete'=>'Y','od.university_mode'=>'REG','od.exam_status'=>'R'));
           $data['students'] = $this->db->get()->result();
         //   $this->Common_model->last_query();
             // $data['students'] = $this->Common_model->getRecordByWhere('student',array('exam_pattern'=>'MARKS', 'class_id'=>$id,'new_exam_form'=>'Y','result_show'=>'Y'));
