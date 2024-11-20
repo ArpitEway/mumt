@@ -289,7 +289,6 @@ function validation(step=""){
 	var f_h_mobile_no = $('input[name="f_h_mobile_no"]').val();
 	
 	var p_email = $('input[name="p_email"]').val();
-
 	var dob = $('input[name="dob"]').val();
 	var adhar_no = $('input[name="adhar_no"]').val();
 	var c_address = $('input[name="c_address"]').val();
@@ -309,6 +308,21 @@ function validation(step=""){
 	var nationality = $('select[name="nationality"]').val();
 	var religion = $('select[name="religion"]').val();
 	var ph = document.getElementById("photo");
+
+	var current_center_id = $('input[name="center_id"]').val();
+	if(current_center_id==100){
+		var forCenter = $('select[name="forCenter"]').val();
+		if(forCenter==""){
+			$('select[name="forCenter"]').next('div').text('Admission for which Center is Required');
+			document.getElementById('forCenter').focus();
+		// submit = false
+		
+		return false;
+		}
+		else{
+			$('select[name="forCenter"]').next('div').text('');
+		}
+	}
 	if(session==''){
 		$('select[name="session"]').next('div').text('Session is Required');
 		document.getElementById('session').focus();
@@ -575,3 +589,42 @@ function validation(step=""){
 	
 		
 }
+
+// $("#forCenter").on('change', function(){
+// 	var forCenter = $(this).val();
+	
+// 	var csrfName = $('.csrfname').attr('name');
+// 	var csrfHash = $('.csrfname').val();
+	
+// 	$.ajax({
+// 		method: "POST",
+// 		url: BASE_URL+"center/center/setAdmissionForCenter",
+// 		data: {forCenter:forCenter,[csrfName]:csrfHash},
+// 	})
+// 	.done(function( msg ) {
+// 		$('#course_group_id').html("");
+// 		$('#course_group_id_admission').html("");
+// 		$('#class_id').html("");
+// 		//$("#eligibility").trigger("change");
+// 		centerChange();
+// 	});
+// });
+
+// function centerChange(){
+// 	var eligibility = $("#eligibility").val();
+	
+// 	var csrfName = $('.csrfname').attr('name');
+// 	var csrfHash = $('.csrfname').val();
+// 	var mode = $('#mode').val(); 
+// 	var session=$('#session').val();
+// 	$('input[name="qualifying_exam"]').val(eligibility); 
+// 	$.ajax({
+// 		method: "POST",
+// 		url: BASE_URL+"center/center/getCourseByEligibility",
+// 		data: {mode:mode,session:session,eligibility : eligibility,[csrfName]:csrfHash},
+// 	})
+// 	.done(function( msg ) {
+// 		$('#course_group_id').html(msg);
+// 		$('#course_group_id_admission').html(msg);
+// 	});
+// }
