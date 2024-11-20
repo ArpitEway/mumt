@@ -22,8 +22,8 @@
                     <td><?php echo $course->course_name; ?></td>
                     <td><?php echo $course->class_name; ?></td>
                     
-                    <td><a target="_blank" href="<?=base_url('admin/scripts/Otherscript/view_final_class_merit_list/REG/'.$course->id)?>">View Merit List REG</a> /
-                    <a target="_blank" href="<?=base_url('admin/scripts/Otherscript/view_final_class_merit_list/PVT/'.$course->id)?>">PVT</a>
+                    <td><a target="_blank" href="<?=base_url('admin/scripts/Otherscript/view_final_class_merit_list/REG/'.$course->id)?>">View Merit List REG</a> 
+                    <!-- <a target="_blank" href="<?php //echo base_url('admin/scripts/Otherscript/view_final_class_merit_list/PVT/'.$course->id)?>">PVT</a> -->
                 </td>
                 </tr>
             
