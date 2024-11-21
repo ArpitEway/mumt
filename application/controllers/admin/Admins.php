@@ -3282,7 +3282,8 @@ public function update_exam_datewise_permission(){
 		
 		// $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and old_class_id in ( 193,197,201,203,205,209,211,213,215,217,221,223,225,227,231,235,237,239,245,247,249,251,253,275,277,279,281,302) )  ";
 		
-        $where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y')  ";
+        $where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y' and class_id in (103,109,118,130,155,169,170,173,184,186,188,192,218,230,234,236,240,242,246,252,254,273,274,278,282,294))  ";
+		////$this->db->where_in('id',array(103,109,118,130,155,169,170,173,184,186,188,192,218,230,234,236,240,242,246,252,254,273,274,278,282,294));
         // and class_id in ( 106,109,112,118,218,236,204,238,240,210,244,212,246,222,254) 
 		// and class_id in (218,236,204,238,240,210,244,212,246,222,254)
 		// and class_id in (155,175,200,234,278,282,284,290,296,298,273,274,250,252,168,182,242,288,292,294,171,103,121,109,112,118,218,236,204,238,240,244,212,246,222,254)
