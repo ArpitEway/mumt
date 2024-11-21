@@ -590,8 +590,8 @@ class Upload_old_data extends CI_Model
 					$ResultData['min_int_marks'] = $result['int_min_marks'];
 					$ResultData['int_marks'] = $result['int_obt_marks'];
 				}
-				$ResultData['max_theory_marks'] = $result['max_marks'];
-				$ResultData['min_theory_marks'] = $result['min_marks'];
+				$ResultData['max_p_marks'] = $result['max_marks'];
+				$ResultData['min_p_marks'] = $result['min_marks'];
 				$ResultData['p_marks'] = $result['obt_marks'];
 				$ResultData['result'] = $result_this;
 			}
