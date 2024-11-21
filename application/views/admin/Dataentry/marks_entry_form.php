@@ -123,7 +123,7 @@ p.pagination-new.text-center strong, p.pagination-new.text-center a {
 		$(document).ready(function(){	
 			var max_marks = <?php echo $max_marks ?>;
 			if ($('#int_marks1').length>0) {
-				var max_int_marks = <?php echo $max_int_marks; ?>;
+				var max_int_marks = '<?php echo $max_int_marks; ?>';
 			} 
 		
 			$("#submit").on('click',function (){
