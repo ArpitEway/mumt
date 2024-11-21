@@ -34,7 +34,7 @@
                  $this->db->where_in('exam_result',array('FAIL'));
                  $this->db->order_by('id', 'desc');
                  $this->db->limit(1);
-                 $results = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id<'=>$student->old_class_id));
+                 $results = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id<'=>$student->class_id));
                 //  $this->db->where_in('exam_result',array('PASS', 'PASS BY GRACE'));
                 //  $results2 = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id<'=>$student->old_class_id));
                 //  $this->Common_model->last_query();
@@ -52,11 +52,11 @@
                  }
                 ?>
             <tr>
-                <input type="hidden" name ="class_id" value = "<?php echo  $student->old_class_id  ?>">
+                <input type="hidden" name ="class_id" value = "<?php echo  $student->class_id  ?>">
                 <input type="hidden" name ="course_group_id" value = "<?php echo  $student->course_group_id  ?>">
                 <td><?= $i++ ?></td>
                 <td><?= $student->center_code ?></td>
-                <td><?= $student->roll_number ?></td>
+                <td><?= $student->roll_no ?></td>
                 <td><?= $student->enrollment_no ?></td>
                 <td><?= $student->name ?></td>
                 <td><?= $student->course_name ?></td>

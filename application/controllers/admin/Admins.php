@@ -6087,12 +6087,12 @@ public function forward_complaint(){
 		}
 		if($_POST['not_permitted']){
 			$student_ids = (implode(',',$_POST['not_permitted']));
-			$data = array('old_result_show' => 'Y');
+			$data = array('result_show' => 'Y');
 			$where = 'student_id in ('.$student_ids.')';
 			$update =$this->Common_model->updateRecordByConditions('student',$where,$data);
 		}else{
 			$student_ids = (implode(',',$_POST['permitted']));
-			$data = array('old_result_show' => 'N');
+			$data = array('result_show' => 'N');
 			$where ='student_id in ('.$student_ids.')';
 			$update = 	$this->Common_model->updateRecordByConditions('student',$where,$data);
 		}  
@@ -6107,10 +6107,10 @@ public function forward_complaint(){
 		$course_id = $this->Common_model->encrypt_decrypt($course_id,'decrypt');
 		$class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
 		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
-		$this->db->order_by('roll_number','ASC');
+		$this->db->order_by('roll_no','ASC');
 		$data['mode']= $mode;
 		
-		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y' ,'roll_number!='=>'0', 'university_mode'=>$mode,'old_result_show'=>'Y'));//'result_show'=>'Y'
+		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'new_exam_form'=>'Y' ,'roll_no!='=>'0', 'university_mode'=>$mode,'result_show'=>'Y'));//'result_show'=>'Y'
         //  $this->Common_model->last_query();
 		$data['title'] = "Remaining Marksheet ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		
