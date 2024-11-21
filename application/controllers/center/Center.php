@@ -455,7 +455,7 @@ class Center extends CI_Controller {
 		$course_type=$this->input->post('course_type');
 		$late_privte_admission_fees=$this->input->post('late_privte_admission_fees');
 		$data = $row = array();
-		$center_ids_dep = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,1975,2098,2115);
+		$center_ids_dep = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,100,1975,2098,2115);
 		$centerData_unpaid =$this->Common_model->getRecordByWhere('center',array('id'=>$this->session->center_id));
 		$centerData_unpaid=$centerData_unpaid[0];
 		$where = 'online_payment_transaction.payment!="Y"';
@@ -2968,9 +2968,9 @@ public function practical_assignment_marks_edit(){
 				'student_id'=> $student_id
 			);
 			$update = $this->Common_model->updateRecordByConditions('online_payment_transaction',$where,$updateData);
-			$response = $this->Common_model->updateRecordByConditions('student',array('student_id'=> $student_id),array('payment_status'=>'Y','document_uploaded'=>'Y','approved'=>'Y'));
+			//$response = $this->Common_model->updateRecordByConditions('student',array('student_id'=> $student_id),array('payment_status'=>'Y','document_uploaded'=>'Y','approved'=>'Y'));
 
-			if($response){
+			if($update){
 			echo json_encode(array("status" => 'true'));
 			}
 		}
