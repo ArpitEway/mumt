@@ -1157,7 +1157,7 @@ public function upload_old_backlog_marks()
      $this->db->where('exam_year','June 2024');
      $this->db->where('result_show', 'Y');
      $this->db->where('class_master.backlog_result_permission', 'Y');
-     $this->db->where('class_master.final_result_permission', 'Y');
+    //  $this->db->where('class_master.final_result_permission', 'Y');
      // $this->db->where('marksheet_dispatch', 'Y');
     // $this->db->where('university_mode','REG');
      $this->db->group_by('class_id,mode');          
@@ -1169,6 +1169,7 @@ public function upload_old_backlog_marks()
 
 public function upload_old_backlog_data_script($class_id="",$mode){
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+    $date =$this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
     $this->db->select('backlog_student.*,student.name,student.f_h_name,student.course_name,student.mother_name,student.photo');
     $this->db->from('backlog_student');
     $this->db->join('student','student.student_id=backlog_student.student_id');
@@ -1191,7 +1192,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
         $final_result = '';
         $p_fail_count = 0;
         $paper_count = 0;
-
+        $marksheetDate = ($student->mode == 'REG')?$date->backlog_result_date:$date->backlog_pvt_result_date;
         $examData = array(
             'student_id' => $student->student_id,
             'session' => $student->session,
@@ -1208,6 +1209,8 @@ public function upload_old_backlog_data_script($class_id="",$mode){
             'f_h_name' => $student->f_h_name,
             'mother_name' => $student->mother_name,
             'marksheet_no' =>$student->back_marksheet_no,
+            'marksheet_date'=>$marksheetDate,
+            'marks_pattern' => 'MARKS',
         );
         $this->db->order_by("id", "asc");
         $new_exam_form = $this->Common_model->getRecordByWhere('backlog_exam_form',array('student_id' => $student->student_id,'class_id'=>$class_id,'backlog_student_id'=>$student->id));
