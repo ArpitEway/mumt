@@ -31,7 +31,7 @@ color:red;
                 <?php 
                 $this->db->order_by('mode','desc');
                 $this->db->order_by('class_name','ASC');
-                $this->db->where_in('id',array(103,109,118,130,155,169,170,173,184,186,188,192,218,230,234,236,240,242,246,252,254,273,274,278,282,294));
+                //$this->db->where_in('id',array(103,109,118,130,155,169,170,173,184,186,188,192,218,230,234,236,240,242,246,252,254,273,274,278,282,294));
                 $class_master = $this->db->get_where('class_master', array('course_group_id' => $course_detail['course_group_id'] ,'exam_form_permission' => 'Y'))->result_array();
                 //exam_form_permission ,'' => 'Y'
              
