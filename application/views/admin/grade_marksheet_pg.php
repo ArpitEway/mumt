@@ -67,7 +67,7 @@ th.border.border-dark {
           <td style="vertical-align: middle; text-align: center">TOTAL CREDIT</td>
           <td style="vertical-align: middle; text-align: center">OBTAINED CREDIT</td>
           <td style="vertical-align: middle; text-align: center">ADDITIONAL CREDIT</td>
-          <td style="vertical-align: middle; text-align: center">AGPA</td>
+          <td style="vertical-align: middle; text-align: center">SGPA</td>
           <td style="vertical-align: middle; text-align: center">ATTEMPT</td>
           <td style="vertical-align: middle; text-align: center">RESULT</td>
          
