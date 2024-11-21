@@ -202,8 +202,8 @@ table.last_table, .last_table td, .last_table th{
 
       
     }else{
-      $rowspanhead = "3";
-      $rowspandata = "4";
+      $rowspanhead = "4";
+      $rowspandata = "8";
     }
     foreach($marks as $new_exam_form)
     {
@@ -302,7 +302,7 @@ table.last_table, .last_table td, .last_table th{
       }
 
     }
-    if($new_exam_form->type!='theory' && $student->mode != 'PVT'){
+    if($new_exam_form->type!='theory'){
       // echo $new_exam_form->p_marks;die;
       $total_paper_marks += (int) $new_exam_form->max_theory_marks ;
       $total_marks_obt += (int) $new_exam_form->p_marks ;
@@ -601,7 +601,7 @@ table.last_table, .last_table td, .last_table th{
                 echo 'Year Break';
               }elseif($int_abs_count == $count_int){
                 echo ' Absent In Internal'; 
-              }elseif($p_abs_count == $count_practical){
+              }elseif($p_abs_count == $count_practical && $count_practical !=0){
                 echo ' Absent In Practical';
               }
             }else{
