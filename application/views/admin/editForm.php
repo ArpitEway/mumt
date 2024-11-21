@@ -1,5 +1,28 @@
 <form class="p-5">
 	<h4 class="my-5 font-weight-bold text-dark">Educational Details</h4>
+	<input type="hidden"  name="student_center_id" value="<?= $student_detail->center_id; ?>">   
+	<?php if( $student_detail->center_id==100) { ?>
+	<div class="row">
+	<div class="form-group col-md-9">
+			<label for="center_id">Center</label>
+			<select name="forCenter" id="forCenter" class="form-control "  required >
+				<option value="">Select Center</option>
+				<?php 
+				$centers = $this->db->get_where('center', array())->result_array();
+				foreach($centers as $center)
+				{
+					$centerSelected = ($center['id']==$student_detail->for_center) ? 'selected' : '';
+					?>
+					<option <?=$centerSelected ?> value="<?php echo $center['id']; ?>"><?php echo $center['center_code'] ." - ". $center['center_name']; ?></option>
+
+					<?php
+				} 
+				?> 
+			</select>
+			<div class="fv-plugins-message-container"></div>
+		</div>
+	</div>
+	<?php } ?>
 	<div class="row">
 		<div class="col-md-9">
 			<div class="row">

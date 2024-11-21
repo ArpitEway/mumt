@@ -55,6 +55,10 @@ class updateFormdata extends CI_Controller {
 		$course_group_id = html_escape($this->input->post('course_group_id'));
 		$class_id = html_escape($this->input->post('class_id'));
 		$session = html_escape($this->input->post('session'));
+		$student_center_id=html_escape($this->input->post('student_center_id'));
+		if($student_center_id==100){
+			$data['for_center'] =html_escape($this->input->post('forCenter'));
+		}
 
 		$data['session'] = $session;
 		$data['course_group_id'] = $course_group_id;
