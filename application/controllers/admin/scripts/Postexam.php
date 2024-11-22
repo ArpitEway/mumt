@@ -54,7 +54,8 @@ class Postexam extends CI_Controller {
 
        public function upload_old_marks()
        {
-            
+        
+        
             $this->db->select('course_name,student.class_name,class_id, COUNT(student_id) as cnt,student.university_mode,student.exam_pattern');
             $this->db->join('class_master', 'student.class_id = class_master.id');
             // $this->db->where('cbcs', 'Y');
@@ -64,10 +65,11 @@ class Postexam extends CI_Controller {
             $this->db->where('upload_result', 'N');
             // $this->db->where('student_id',702308);
             $this->db->where('result_show', 'Y');
-            // $this->db->where('result_permission', 'Y');
+             $this->db->where('result_permission', 'Y');
             //  $this->db->where('final_result_permission', 'Y');
             // $this->db->where('marksheet_dispatch', 'Y');
             // $this->db->where('university_mode','REG');
+            $this->db->where_in('class_id',array(155,234,278,282,273,274,103,118,218,236,246,230,130,184,186,169,170,173,188));
             $this->db->group_by('class_id,university_mode');          
             $data['courses'] = $this->db->get('student')->result();
             $this->load->view('header',array('title' => ''));
@@ -79,7 +81,7 @@ class Postexam extends CI_Controller {
         $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
         $date =$this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
         $this->db->limit(500);
-        $this->db->where_not_in('student_id',array(711707,708907));
+       // $this->db->where_not_in('student_id',array(711707,708907));
         $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "new_exam_form"=>'Y', "upload_result"=>'N','university_mode'=>$mode ,'result_show'=>'Y','exam_pattern'=>'MARKS')); //, "marksheet_dispatch"=>'Y'
          // $this->db->where_in('course_group.course_type',array('Diploma','PGDiploma'));
         // $course_type = $this->Common_model->getRecordByWhere("course_group",array('id'=> $students[0]->course_group_id));
@@ -1047,7 +1049,7 @@ class Postexam extends CI_Controller {
 public function upload_old_grade_data_script($class_id="",$mode){
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
     $this->db->limit(500);
-    $this->db->where_not_in('student_id',array(711707,708907));
+   // $this->db->where_not_in('student_id',array(711707,708907));
    // $this->db->where_in('student_id',array(702981,700979));
     // $this->db->where('student_id',758798);
     $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "new_exam_form"=>'Y', "upload_result"=>'N','university_mode'=>$mode ,'exam_pattern'=>'GRADE'));
