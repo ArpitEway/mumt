@@ -118,7 +118,7 @@
 					 / <a href="<?php echo base_url("admin/admins/student_notification_list")."/REG/G/".$course_id."/".$class_id; ?>"> Grade</a>
                      
 					 <?php 
-                     if(in_array($class->id, $class_ids)){
+                     if(in_array($class->id, $class_ids) && $class->last_class == 'L'){
                         ?>
                         / <a href="<?php echo base_url("admin/admins/student_notification_list")."/REG/G/".$course_id."/".$class_id."/Department"; ?>"> Department</a>
                         <?php
@@ -146,7 +146,7 @@
                 <?php if(!empty($cbcs) ){ ?>
 					 / <a href="<?php echo base_url("admin/admins/student_marksheet_grade")."/REG/".$course['id']."/".$class->id; ?>"> Grade</a>
                      <?php
-                     if(in_array($class->id, $class_ids)){
+                     if(in_array($class->id, $class_ids) && $class->last_class == 'L'){
                         ?>
                         / <a href="<?php echo base_url("admin/admins/student_marksheet_grade")."/REG/".$course['id']."/".$class->id."/Department"; ?>"> Department</a>
                         <?php
