@@ -514,7 +514,7 @@
 
 		<?php	
          $dept_ids = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30);
-		if((in_array($student->class_id, $class_ids)) && $student->exam_pattern=='GRADE' && !in_array($student->center_id,$dept_ids)){//&& $mode=='REG'
+		if((in_array($student->class_id, $class_ids)) && $student->exam_pattern=='GRADE'){//&& $mode=='REG'
 		
 			//if($final_result != 'FAIL' && $final_result!="RW"){
 				if($final_result == 'RWPM'){
@@ -574,7 +574,7 @@
         
                 }
 			}else{
-                if($isFinalClass && $student->exam_pattern == 'GRADE' && !in_array($student->center_id,$dept_ids)){
+                if($isFinalClass && $student->exam_pattern == 'GRADE'){
                     ?>
                     <td  class="text-center" style="padding:0px" align="center"></td>
                     <td  class="text-center" style="padding:0px" align="center"></td>

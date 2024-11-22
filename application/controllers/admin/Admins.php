@@ -3040,7 +3040,7 @@ public function update_exam_datewise_permission(){
 			$this->db->limit(10000,$start);
 			$pagetitle=$startlimit;
 		}
-        $class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136);
+        $class_ids=array(103,106,109,112,118,121,127,130,133,136);
         $dept_ids = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30);
         // echo $department.'ss';die;
         if($department !=""){
@@ -3951,7 +3951,7 @@ public function update_exam_datewise_permission(){
 		$class_id=$this->Common_model->encrypt_decrypt($class_id,'decrypt');
 		$this->db->order_by('roll_no','ASC');
 		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
-        $class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136);
+        $class_ids=array(103,106,109,112,118,121,127,130,133,136);
         $dept_ids = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30);
         // echo $department.'ss';die;
         if($department !=""){
