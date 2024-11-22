@@ -3452,7 +3452,7 @@ public function update_exam_datewise_permission(){
 		}
 	}
 
-	public function student_marksheet_grade($mode="",$course_id="",$class_id="",$startlimit=0)
+	public function student_marksheet_grade($mode="",$course_id="",$class_id="",$department="",$startlimit=0)
 	{
 		$data = array('class_id' => $class_id,'course_group_id' =>$course_id );
 				$start=0;
@@ -3462,7 +3462,8 @@ public function update_exam_datewise_permission(){
 		$title = "Marksheet ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		
 		$class = $this->Common_model->getRecordByID('class_master','id',$class_id);
-
+        $dept_ids = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30);
+        $class_ids=array(103,106,109,112,118,121,127,130,133,136);
 		if($startlimit!=0){
 			$start=($startlimit-1)*1000;
 			$this->db->limit(1000,$start);
@@ -3478,13 +3479,21 @@ public function update_exam_datewise_permission(){
 		// $this->load->model('Gradesheet_model');
 		
 
-		if($class->last_class == 'L'){
-			$this->db->order_by('center_id,roll_no','ASC');
+		if($class->last_class == 'L' && $department ==""){
+          
+            if((in_array($class_id, $class_ids))){
+                $this->db->where_not_in('center_id',$dept_ids);
+            }
+			$this->db->order_by('center_id,roll_no','ASC'); 
 			$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'new_exam_form'=>'Y','roll_no!='=>'0','course_complete'=>'Y','university_mode'=>$mode,'result_show'=>'Y','exam_pattern'=>'GRADE' ));
 		}else{
 			$this->db->order_by('center_id,roll_no','ASC');
 			// $this->db->limit(1);
 		  //$this->db->where('student_id = "721511"');
+         
+          if((in_array($class_id, $class_ids))){
+              $this->db->where_in('center_id',$dept_ids);
+          }
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'new_exam_form'=>'Y','roll_no!='=>'0','university_mode'=>$mode,'result_show'=>'Y','exam_pattern'=>'GRADE'));
 		}
 	 	// if($class->internal=="Y" && $mode!="PVT"){
@@ -3496,7 +3505,12 @@ public function update_exam_datewise_permission(){
                 $this->load->view('admin/student_marksheet_grade_pg',$data);
 			}else{
 				$this->load->model('Gradesheet_model');
-				$this->load->view('admin/student_marksheet_grade1',$data);
+                if($department !=""){
+                    $this->load->view('admin/student_marksheet_grade_dept',$data);
+                }else{
+                    $this->load->view('admin/student_marksheet_grade1',$data);
+                }
+				
 			}
 			
 
