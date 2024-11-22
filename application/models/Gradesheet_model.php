@@ -304,7 +304,7 @@ class Gradesheet_model extends CI_Model
 			$papers = $this->Common_model->get_all_old_papers($student_id,$class_id,$id);
             // print_r($papers);
 		}
-		if($this->classData->class_group == 'Y'){
+		if($this->classData->class_group == 'Y' || $class_id=101){
 		$papers_list = $this->Common_model->get_all_old_group_papers($student_id,$class_id,$id);
 		}
 	
