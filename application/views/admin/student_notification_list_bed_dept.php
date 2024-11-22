@@ -398,7 +398,7 @@ $abs_count = 0 ;
 							<th scope="row" class="text-center"  width="12%">Result</span></th>
 							<?php if((!in_array($student->class_id, $class_ids)) || $mode=='PVT'){ ?>
 								<th class="text-center" style="padding:0px" align="center" class="text-center" scope="row"  width="20%" colspan='<?php echo ($isFinalClass && !$isOneClass)?"2":"1";?>'><?php
-								if($isFinalClass && $student->exam_pattern == "MARKS"){ ?>
+								if($isFinalClass){ ?>
 						<table width="100%" border="1" class="m-0">
 							<tr>
 							<td class="text-center">Marks Obtd</td>
@@ -431,14 +431,7 @@ $abs_count = 0 ;
 
 							}
 					?>
-									<?php	if ($isFinalClass) {
-                                          if($student->exam_pattern == "GRADE"){
-                                            ?>
-                                            <th class="text-center" scope="row"  width="10%"><span class="style5">CGPA</span></th>
-                                            <?php
-                                        }
-                                        
-                                        ?>
+									<?php	if ($isFinalClass && $student->exam_pattern == "MARKS") {	?>
 								<th class="text-center" scope="row"  width="10%"><span class="style5">Division</span></th>
 							<?php	}	?>
 							<th scope="row" class="text-center" width="20%"><span class="style5">Remark</span></th>
@@ -472,7 +465,7 @@ $abs_count = 0 ;
 				}elseif($WithheldAS){
                     echo $final_result = "RWAS";
                 }else{
-					if($isFinalClass && $isOneClass == false){
+					if($isFinalClass && $isOneClass == false && $student->exam_pattern == "MARKS"){
 						$final_fail =0;
 						$classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$course_group_id,'mode'=>$classData->mode,'id!='=>$class_id
 					));
@@ -553,7 +546,7 @@ $abs_count = 0 ;
 							</td>-->
 							<?php //} -->
 							
-							if($isFinalClass && $student->exam_pattern=="MARKS"){
+							if($isFinalClass && $student->exam_pattern == "MARKS"){
 								
 								if($final_result == "RWPM"){
 				?>
@@ -581,68 +574,14 @@ $abs_count = 0 ;
 						<?php
 							if((in_array($student->class_id, $class_ids)) && $mode=='REG'){
 								if($final_result != 'FAIL'){
-                                    if($final_result == 'RWPM'){
-                                        ?>
-                                        <td class="text-center" style="padding:0px" align="center"></td>
-                                        <?php
-                                    }else{
-                                        $gradesheetData = $this->Gradesheet_tr_model->view_notification($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
-                                    }
-                            if($isFinalClass && $student->exam_pattern == 'GRADE'){
-                                $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$course_group_id,'mode'=>$classData->mode,'id!='=>$student->class_id));
-                                $total_grade_point = 0;
-                                $total_course_credit = 0;
-                                foreach($classes as $cls){
-                                    $this->db->order_by('id','desc');
-                                    $this->db->limit(1);
-                                    $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id'=>$cls->id));
-                                
-                                 foreach($old_result as $old){
-                                   $old_grade_data = $this->Gradesheet_model->view_old_results($student->student_id,$student->course_group_id,$old->class_id,$student->university_mode, $old->id, $old->exam_status);
-                                   if($old->exam_result == "FAIL"){
-                                  
-                                    $old_grade_data['obt_credit'] ='-';
-                                    $old_grade_data['agpa'] ='-';
-                                 
-                                     }else{
-                                       $old_grade_data['agpa'] = number_format((float)$old_grade_data['agpa'], 2, '.', '');
-                                     }
-                                     $total_grade_point += number_format((float)$old_grade_data['agpa'], 2, '.', '') * $old_grade_data['obt_credit']; 
-                                    $total_course_credit +=$old_grade_data['tot_credit'];
-                                 }
-                                }
-                                $total_grade_point += number_format((float)$gradesheetData['agpa'], 2, '.', '') * $gradesheetData['obt_credit']; 
-                                    $total_course_credit +=$gradesheetData['tot_credit'];
-                                    $cgpa = number_format((float)($total_grade_point/$total_course_credit), 2, '.', '');
-                                    if($cgpa>=8.0){
-                                        $div = "First Division with Distinction";
-                                        }elseif($cgpa<8.0 && $cgpa>=6.50){
-                                        $div  = "First Division";
-                                        }elseif($cgpa<6.50 && $cgpa>=5.00){
-                                        $div  = "Second Division";
-                                        }else{
-                                        $div = "Pass";
-                                        }
-                                        if($final_result == "RWPM" || $final_result == "RW"){
-                                            ?>
-                                             <td class="text-center" style="padding:0px" align="center"></td>
-                                             <td class="text-center" style="padding:0px" align="center"></td>
-                                            <?php
-                                        } else{
-                                            ?>
-                                                <td class="text-center" style="padding:0px" align="center"><?= $cgpa?></td>
-                                                <td class="text-center" style="padding:0px" align="center"><?= $div?></td>
-                                            <?php
-                                        }       
-                    
-                            }
+							$gradesheetData = $this->Gradesheet_tr_model->view_notification($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
 								}else{
 									?>
 									<td  class="text-center" style="padding:0px" align="center"></td>
 									<?php
 								}
 							}
-							if ($isFinalClass && $student->exam_pattern == 'MARKS') {	?>
+							if ($isFinalClass && $student->exam_pattern == "MARKS") {	?>
 									<td  class="text-center" style="padding:0px" align="center"><?php
 										if(!$isOneClass){
 											$percentage = round(($grand_obtain/$grand_total)*100,2);  

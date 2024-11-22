@@ -108,7 +108,7 @@
 			$grand_total =0;
 		$paper_marks = $this->Common_model->notification_marks_details_($student->student_id,$student->class_id);
 		// $class_ids=array(101,104,107,110,116,119,125,128,131,134);
-        $class_ids = array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
+        $class_ids = array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136);
 		foreach($paper_marks as  $marks){
 			if((in_array($student->class_id, $class_ids)) && $student->exam_pattern=="GRADE" )	// && $mode=='REG'
 			{
@@ -399,7 +399,15 @@
 				<th class="text-center" scope="row" width="10%"><span class="style5">
 					<?php if($classData->mode=="Annual") echo 'AGPA'; else echo 'SGPA'; ?></span></th>
 				<?php } ?>
-				<?php	if ($isFinalClass) {	?>
+				<?php	if ($isFinalClass) {
+                    
+                      if($student->exam_pattern == "GRADE"){
+                        ?>
+                        <th class="text-center" scope="row"  width="10%"><span class="style5">CGPA</span></th>
+                        <?php
+                    }
+                    
+                    ?>
 					<th class="text-center" scope="row"  width="10%"><span class="style5">Division</span></th>
 				<?php	}	?>
 				<th class="text-center" scope="row" width="20%"><span class="style5">Remark</span></th>
@@ -480,7 +488,7 @@
 				?>
 			</td>
 			<?php
-			if($isFinalClass){
+			if($isFinalClass && $student->exam_pattern=="MARKS"){
 				
 				if($final_result == "RWPM" ){
 ?>
@@ -505,20 +513,86 @@
 		</td>
 
 		<?php	
-		if((in_array($student->class_id, $class_ids)) && $student->exam_pattern=='GRADE'){//&& $mode=='REG'
+         $dept_ids = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30);
+		if((in_array($student->class_id, $class_ids)) && $student->exam_pattern=='GRADE' && !in_array($student->center_id,$dept_ids)){//&& $mode=='REG'
 		
 			//if($final_result != 'FAIL' && $final_result!="RW"){
+				if($final_result == 'RWPM'){
+                    ?>
+                    <td class="text-center" style="padding:0px" align="center"></td>
+                    <?php
+                }else{
+                    $gradesheetData = $this->Gradesheet_tr_model->view_notification($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
+                }
 				
-				$gradesheetData = $this->Gradesheet_tr_model->view_notification($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
+                if($isFinalClass && $student->exam_pattern == 'GRADE'){
+                    $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$course_group_id,'mode'=>$classData->mode,'id!='=>$student->class_id));
+                    $total_grade_point = 0;
+                    $total_course_credit = 0;
+                    foreach($classes as $cls){
+                        $this->db->order_by('id','desc');
+                        $this->db->limit(1);
+                        $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id'=>$cls->id));
+                    
+                     foreach($old_result as $old){
+                       $old_grade_data = $this->Gradesheet_model->view_old_results($student->student_id,$student->course_group_id,$old->class_id,$student->university_mode, $old->id, $old->exam_status);
+                       if($old->exam_result == "FAIL"){
+                      
+                        $old_grade_data['obt_credit'] ='-';
+                        $old_grade_data['agpa'] ='-';
+                     
+                         }else{
+                           $old_grade_data['agpa'] = number_format((float)$old_grade_data['agpa'], 2, '.', '');
+                         }
+                         $total_grade_point += number_format((float)$old_grade_data['agpa'], 2, '.', '') * $old_grade_data['obt_credit']; 
+                        $total_course_credit +=$old_grade_data['tot_credit'];
+                     }
+                    }
+                    $total_grade_point += number_format((float)$gradesheetData['agpa'], 2, '.', '') * $gradesheetData['obt_credit']; 
+                        $total_course_credit +=$gradesheetData['tot_credit'];
+                        $cgpa = number_format((float)($total_grade_point/$total_course_credit), 2, '.', '');
+                        if($cgpa>=8.0){
+                            $div = "First Division with Distinction";
+                            }elseif($cgpa<8.0 && $cgpa>=6.50){
+                            $div  = "First Division";
+                            }elseif($cgpa<6.50 && $cgpa>=5.00){
+                            $div  = "Second Division";
+                            }else{
+                            $div = "Pass";
+                            }
+                            if($final_result == "RWPM" || $final_result == "RW"){
+                                ?>
+                                 <td class="text-center" style="padding:0px" align="center"></td>
+                                 <td class="text-center" style="padding:0px" align="center"></td>
+                                <?php
+                            } else{
+                                ?>
+                                    <td class="text-center" style="padding:0px" align="center"><?= $cgpa?></td>
+                                    <td class="text-center" style="padding:0px" align="center"><?= $div?></td>
+                                <?php
+                            }       
+        
+                }
+			}else{
+                if($isFinalClass && $student->exam_pattern == 'GRADE' && !in_array($student->center_id,$dept_ids)){
+                    ?>
+                    <td  class="text-center" style="padding:0px" align="center"></td>
+                    <td  class="text-center" style="padding:0px" align="center"></td>
+                    <?php
+                }
+				?>
+				<!-- <td  class="text-center" style="padding:0px" align="center"></td> -->
+				<?php
+			}
 		/*	}else{
 				?>
 				<td  class="text-center" style="padding:0px" align="center"></td>
 				<?php
 			}*/
-		}
+		
 	
 		
-		if ($isFinalClass) {	?>
+		if ($isFinalClass && $student->exam_pattern=='MARKS') {	?>
 		<td  class="text-center" style="padding:0px" align="center"><?php
 			if(!$isOneClass){
 				$percentage = round(($grand_obtain/$grand_total)*100,2);  

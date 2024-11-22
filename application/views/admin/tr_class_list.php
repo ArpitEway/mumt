@@ -100,7 +100,13 @@
 				<a target="_blank" href="<?php echo  base_url('admin/admins/student_notification_list_bed/'."/REG/M/".$course_id.'/'.$class_id)  ?>">Notification Regular</a>
                 <?php if(!empty($cbcs) ){ ?>
 					 / <a href="<?php echo base_url("admin/admins/student_notification_list_bed")."/REG/G/".$course_id."/".$class_id; ?>">Grade</a>
-					 <?php } 
+					 <?php 
+                     if(in_array($class->id, $class_ids)){
+                        ?>
+                        / <a href="<?php echo base_url("admin/admins/student_notification_list_bed")."/REG/G/".$course_id."/".$class_id."/Department"; ?>"> Department</a>
+                        <?php
+                     }  
+                    } 
 					 }if($class->private_class=='Y') { echo $flag;  ?>
 				<a target="_blank" href="<?php echo  base_url('admin/admins/student_notification_list_bed/'."/PVT/M/".$course_id.'/'.$class_id)  ?>"><?= $notification?>Private</a>
 				<?php
@@ -110,7 +116,14 @@
 					 <a href="<?php echo base_url("admin/admins/student_notification_list")."/REG/M/".$course_id."/".$class_id; ?>">Notification Regular</a>
                      <?php if(!empty($cbcs) ){ ?>
 					 / <a href="<?php echo base_url("admin/admins/student_notification_list")."/REG/G/".$course_id."/".$class_id; ?>"> Grade</a>
-					 <?php } 
+                     
+					 <?php 
+                     if(in_array($class->id, $class_ids)){
+                        ?>
+                        / <a href="<?php echo base_url("admin/admins/student_notification_list")."/REG/G/".$course_id."/".$class_id."/Department"; ?>"> Department</a>
+                        <?php
+                     } 
+                    } 
 					  } if($class->private_class=='Y') { echo $flag; ?>
 					 <a href="<?php echo base_url("admin/admins/student_notification_list")."/PVT/M/".$course_id."/".$class_id; ?>"><?= $notification?>Private</a>
 					  <?php }  
