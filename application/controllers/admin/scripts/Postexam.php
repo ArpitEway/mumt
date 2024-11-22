@@ -120,7 +120,7 @@ class Postexam extends CI_Controller {
                 'f_h_name' => $student->f_h_name,
                 'mother_name' => $student->mother_name,
                 'marksheet_no' =>$student->marksheet_no,
-                'marksheet_date'=>$marksheetDate,
+                'marksheet_date'=>DateTime::createFromFormat('d/m/Y', $marksheetDate)->format('Y-m-d'),
                 'marks_pattern'=>$student->exam_pattern,
             );
             $new_exam_form = $this->Common_model->getRecordByWhere('new_exam_form',array('student_id' => $student->student_id,'class_id'=>$class_id));
@@ -1211,7 +1211,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
             'f_h_name' => $student->f_h_name,
             'mother_name' => $student->mother_name,
             'marksheet_no' =>$student->back_marksheet_no,
-            'marksheet_date'=>$marksheetDate,
+            'marksheet_date'=>DateTime::createFromFormat('d/m/Y', $marksheetDate)->format('Y-m-d'),
             'marks_pattern' => 'MARKS',
         );
         $this->db->order_by("id", "asc");

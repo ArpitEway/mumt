@@ -491,7 +491,7 @@ class Upload_old_data extends CI_Model
             'f_h_name' => $this->student->f_h_name,
             'mother_name' => $this->student->mother_name,
             'marksheet_no' =>$this->student->marksheet_no,
-            'marksheet_date'=>$this->marksheetDate,
+            'marksheet_date'=> DateTime::createFromFormat('d/m/Y', $this->marksheetDate)->format('Y-m-d'),
             'university_mode'=>$this->student->university_mode,
             'photo'=>$this->student->photo,
             'total_marks'=>$this->total_marks,

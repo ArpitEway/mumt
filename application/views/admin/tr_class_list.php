@@ -92,12 +92,21 @@
                 ?>
 			</td>
 			<td>
-				<?php if ($class->practical_internal_marks=='Y' && $class->id !=205 && $class->id !=206){ 
+				<?php 
+                 $class_pg= array(205,206,239,240,248,278,282,252);
+                  if ($class->practical_internal_marks=='Y' && (!in_array($class->id, $class_pg))){ 
+                // if ($class->practical_internal_marks=='Y' && $class->id !=205 && $class->id !=206){ 
 					if($class->regular_class=='Y') {?>
 				<a target="_blank" href="<?php echo  base_url('admin/admins/student_notification_list_bed/'."/REG/M/".$course_id.'/'.$class_id)  ?>">Notification Regular</a>
                 <?php if(!empty($cbcs) ){ ?>
 					 / <a href="<?php echo base_url("admin/admins/student_notification_list_bed")."/REG/G/".$course_id."/".$class_id; ?>">Grade</a>
-					 <?php } 
+					 <?php 
+                     if(in_array($class->id, $class_ids)){
+                        ?>
+                        / <a href="<?php echo base_url("admin/admins/student_notification_list_bed")."/REG/G/".$course_id."/".$class_id."/Department"; ?>"> Department</a>
+                        <?php
+                     }  
+                    } 
 					 }if($class->private_class=='Y') { echo $flag;  ?>
 				<a target="_blank" href="<?php echo  base_url('admin/admins/student_notification_list_bed/'."/PVT/M/".$course_id.'/'.$class_id)  ?>"><?= $notification?>Private</a>
 				<?php
@@ -107,7 +116,14 @@
 					 <a href="<?php echo base_url("admin/admins/student_notification_list")."/REG/M/".$course_id."/".$class_id; ?>">Notification Regular</a>
                      <?php if(!empty($cbcs) ){ ?>
 					 / <a href="<?php echo base_url("admin/admins/student_notification_list")."/REG/G/".$course_id."/".$class_id; ?>"> Grade</a>
-					 <?php } 
+                     
+					 <?php 
+                     if(in_array($class->id, $class_ids)){
+                        ?>
+                        / <a href="<?php echo base_url("admin/admins/student_notification_list")."/REG/G/".$course_id."/".$class_id."/Department"; ?>"> Department</a>
+                        <?php
+                     } 
+                    } 
 					  } if($class->private_class=='Y') { echo $flag; ?>
 					 <a href="<?php echo base_url("admin/admins/student_notification_list")."/PVT/M/".$course_id."/".$class_id; ?>"><?= $notification?>Private</a>
 					  <?php }  
