@@ -21,6 +21,7 @@ class Upload_old_data_backlog_pg extends CI_Model
 	protected $classCount = 0;
 	protected $allclass;
 	protected $classData;
+    protected $marksheetDate;
     // protected $result_this_fc1;
     // protected $result_this_fc2;
 	protected $obt_tot_credit;
@@ -49,7 +50,7 @@ class Upload_old_data_backlog_pg extends CI_Model
 		
 		// if($std[0]->sub_group_id == 1){
 			$papers = $this->Common_model->get_all_backlog_papers($student->student_id,$student->class_id,$student->id);
-		
+            $date =$this->Common_model->getRecordById('marksheet_variables','class_id',$student->class_id);
 		// get_all_group_papers
         // echo '<pre>';
 		// print_r($papers_list);die;
@@ -71,6 +72,7 @@ class Upload_old_data_backlog_pg extends CI_Model
 		$this->fail_obt_marks = 0;
 		$this->obt_marks = 0;
 		$this->total_marks=0;
+        $this->marksheetDate = ($student->mode == 'REG')?$date->backlog_result_date:$date->backlog_pvt_result_date;
         // $this->result_this_fc1 = '';
         // $this->result_this_fc2 = '';
 		$this->check_grace_marks = false;
@@ -188,9 +190,12 @@ class Upload_old_data_backlog_pg extends CI_Model
 			$this->obt_marks += $this->paper["p_marks"]+$this->paper["int_marks"];
 		 $this->total_marks += $this->paper["max_theory_marks"]+  $this->paper["max_internal_marks"];
 		
-			if ($this->paper['p_marks']==''){
+			if ($this->paper['p_marks']=='' || $this->paper['p_marks']=='N'){
 				$this->withheld = true;
 			}
+            if($this->paper['int_marks']=='N'&& $this->mode != 'PVT' && $this->paper['max_internal_marks'] !=0 && $this->classData->practical_internal_marks == 'Y'){
+                $this->withheld = true;
+              }
 			$check_fail_marks = $this->paper["p_marks"]+$this->paper["int_marks"];
 				$check_fail_min_marks = $this->paper["min_theory_marks"]+$this->paper["min_internal_marks"];
 				$check_fail_tot_marks = $this->paper["max_theory_marks"]+ $this->paper["max_internal_marks"];
@@ -341,6 +346,7 @@ class Upload_old_data_backlog_pg extends CI_Model
             'f_h_name' => $this->student->f_h_name,
             'mother_name' => $this->student->mother_name,
             'marksheet_no' =>$this->student->back_marksheet_no,
+            'marksheet_date'=>$this->marksheetDate,
             'university_mode'=>$this->student->mode,
             'photo'=>$this->student->photo,
             'total_marks'=>$this->total_marks,
