@@ -499,7 +499,7 @@ class Upload_old_data_backlog extends CI_Model
             'f_h_name' => $this->student->f_h_name,
             'mother_name' => $this->student->mother_name,
             'marksheet_no' =>$this->student->back_marksheet_no,
-            'marksheet_date'=>$this->marksheetDate,
+            'marksheet_date'=>DateTime::createFromFormat('d/m/Y', $this->marksheetDate)->format('Y-m-d'),
             'university_mode'=>$this->student->mode,
             'photo'=>$this->student->photo,
             'total_marks'=>$this->total_marks,
