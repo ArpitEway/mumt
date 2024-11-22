@@ -533,6 +533,81 @@
 		}
 	}
 
+    public function payment_verification(){
+			
+		if($this->session->has_userdata('adminData')){
+			$where = array("status" => "Pending");
+			//$centers = $this->Common_model->get_record_group_by_where('payment_complaint','center_id',$where);
+			$centers = $this->Common_model->getRecordByWhere('center',array('payment_gateway_permission'=>'N'));
+			$data = array('name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+				'centers' =>$centers
+			);
+		//	print_r($centers);
+			$this->load->view('header',array('title' => 'Payment Verification'));
+			$this->load->view('admin/account_section/payment_verification',$data);
+			$this->load->view('footer');
+		}
+		else
+		{
+			redirect(base_url('admin/login'));
+		}
+	}
+
+    public function get_payment_verification_student_list()
+	{
+		if ($this->input->method() == "post") 
+		{
+			$course_group_id = 0;
+			$data = array();
+			$dt   = array();
+				
+			$center_id  = $this->input->post("center_id");
+			$centerData = $this->Common_model->getRecordById('center','id',$center_id);
+			$wherecenter = 'center_id='.$center_id.' and status="Pending"';
+			
+            // $this->db->limit(1);
+			$this->db->select('s.student_id as student_id,s.name as name,s.f_h_name as fathername,s.course_name as course_name,s.class_name as class_name,p.amount as amount,p.payment_date,p.txnId,p.payment_mode,p.receipt_number');
+			$this->db->from('`student` as s');
+			$this->db->join('online_payment_transaction as p', 'p.student_id=s.student_id');
+			$this->db->where('p.payment','Y');
+			$this->db->where('s.payment_status','N');
+            $this->db->where('p.fees_head','Admission Fees');
+			$this->db->where('p.center_id',$center_id); 
+			
+			$complaints = $this->db->get()->result();
+			
+			$data = array('complaints' => $complaints ,'name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+				'centerData' => $centerData,
+			);
+
+			
+				$dt =  $this->load->view('admin/account_section/getPaymentVerificationStudentList',$data,true);
+				$status = true;
+			
+			echo json_encode(array(
+			"status" => $status,
+			"data" => $dt
+			));
+		}
+	}
+
+    public function update_student_payment_status(){
+        if ($this->input->method() == "post") 
+		{  
+
+			$student_id  = $this->input->post("student_id");
+	      	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+			
+			$response = $this->Common_model->updateRecordByConditions('student',array('student_id'=> $student_id),array('payment_status'=>'Y'));
+
+			if($response){
+			echo json_encode(array("status" => 'true'));
+			}
+		}
+    }
+    
 	public function get_unpaid_student()
 	{
 		if ($this->input->method() == "post") 

@@ -168,7 +168,7 @@ class Otherscript extends CI_Controller {
 		//$marks = array('18','17','16','18','17','16','15','15');
 		// $marks = array('09','08','07','09','08','07','06','06');
 		   $marks = array('27','26','25','27','26','25','24','24','23'); 
-		$cls_id=109;
+		$cls_id=127;
 		
 		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and int_marks_sub='N' and roll_no!=0 and university_mode='REG' limit 100";
 		$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
@@ -195,11 +195,11 @@ class Otherscript extends CI_Controller {
 
 	public function update_practical_marks($cls_id =0)
 	{
-		$marks = array('43','42','41','40'); 
+		//$marks = array('43','42','41','40'); 
 		// $marks = array('85','84','83','82'); 
 		// $marks = array('68','67','66','65');
-		 // $marks = array('60','59','58','57');
-		$cls_id=182;
+		  $marks = array('60','59','58','57');
+		$cls_id=127;
 		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and roll_no!=0 and university_mode='REG' order by roll_no limit 100";
 		$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
 		$rs = $this->db->query($sql)->result_array();
@@ -226,7 +226,7 @@ class Otherscript extends CI_Controller {
 	{
 		//$marks = array('166','168','170','165'); 
 		$marks = array('85','84','83','82'); 
-		$cls_id=109;
+		$cls_id=127;
 		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and  university_mode='REG'  and  roll_no!=0 order by roll_no  limit 100";
 		// and exam_pattern= 'GRADE'
 		$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
@@ -476,11 +476,12 @@ public function update_sub_group_id_in_new_exam_form_sub(){
 }
 
 public function update_sub_group_id_in_backlog_exam_form(){
-    $this->db->limit(300);
+    // $this->db->limit(300);
     $this->db->where_in('class_id',array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135));
-    $students = $this->Common_model->getRecordByWhere('backlog_student',array('exam_year'=>'June 2023',
-    'exam_form'=>'Y','mode'=>'REG'));
+    $students = $this->Common_model->getRecordByWhere('backlog_student',array('exam_year'=>'June 2024',
+    'exam_form'=>'Y'));
     // $this->Common_model->last_query();
+    // ,'mode'=>'REG'
     echo count($students);
     foreach($students as $student){
      $papers =   $this->Common_model->getRecordByWhere('old_result_data',array('student_id'=>$student->student_id,'class_id'=>$student->class_id));
@@ -506,10 +507,11 @@ public function update_sub_group_id_in_backlog_exam_form(){
 }
 
 public function update_group_id_in_backlog_exam_form(){
-    $this->db->limit(300);
-    $this->db->where_in('class_id',array(101,104));
-    $students = $this->Common_model->getRecordByWhere('backlog_student',array('exam_year'=>'June 2023',
-    'exam_form'=>'Y','mode'=>'REG'));
+    // $this->db->limit(300);
+    $this->db->where_in('class_id',array(101,104,105));
+    $students = $this->Common_model->getRecordByWhere('backlog_student',array('exam_year'=>'June 2024',
+    'exam_form'=>'Y'));
+    // ,'mode'=>'REG'
     // $this->Common_model->last_query();
     echo count($students);
     foreach($students as $student){
@@ -1232,10 +1234,84 @@ public function update_roll_no_old_data(){
             echo $this->db->last_query() . '<br>';
         } 
     }
+
+    public function update_roll_no_in_old(){
+        $this->db->select('student_id, id, class_id');
+        $this->db->from('old_exam_data');
+        $this->db->where(array('exam_year'=>"June 2024", 'class_id'=>175));
+        $results =$this->db->get()->result();
+      
+    foreach($results as $res){
+        $response = $this->Common_model->getRecordByWhere('student', array('student_id'=>$res->student_id));
+        $this->Common_model->updateRecordByConditions('old_exam_data',array('exam_year'=>'june 2024','id'=>$res->id, 'class_id'=>$res->class_id,'student_id'=>$res->student_id,), array('roll_no'=>$response[0]->roll_no));
+        echo $this->db->last_query().'<br>';
+       
+    }
+   
+     
+    }
+    public function final_class_merit_list(){
+   
+        $year = 'January 2024';
+        $this->db->select('cm.id,cm.class_name, cm.course_group_id,cg.course_name');
+        $this->db->from('class_master as cm');
+        $this->db->join('course_group as cg','cg.id =cm.course_group_id');
+        $this->db->join('old_exam_data as od','cm.id =od.class_id');
+        $this->db->where(array('cm.last_class'=>'L','od.exam_year'=>$year,'od.university_mode'=>'REG','od.exam_status'=>'R'));
+        $this->db->group_by('cg.course_name');
+        $data['classes'] = $this->db->get()->result();
+      
+        $this->load->view('header');
+		$this->load->view('admin/final_class_course_list',$data);
+		$this->load->view('footer');
+       
+    }
+
+    public function view_final_class_merit_list($mode,$id){
+      
+        // $dept_ids = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30);
+        // $class_cbcs = array(216,232,236,238,240,246,248,250,252,254,218,278,282);
+        // $class_ids=array(103,106,109,112,118,121,127,130,133,136);
+        // $data['classData'] = $this->Common_model->getRecordById('class_master','id',$id);
+        // if(in_array($id, $class_cbcs) && $mode == 'REG'){
+          
+        //     $this->load->model('GradeSheet_old_model_pg');
+        //     $this->load->model('Gradesheet_tr_model_pg');
+        //     // $this->db->where('enrollment_no', 'AI/22210332');
+        //     $data['students'] = $this->Common_model->getRecordByWhere('student',array('exam_pattern'=>'GRADE', 'class_id'=>$id,'new_exam_form'=>'Y','result_show'=>'Y'));
+        //     $this->load->view('header',array('title'=>$data['students'][0]->course_name));
+        //     $this->load->view('admin/final_class_merit_list_pg',$data);
+        //     $this->load->view('footer');
+        // }else if(in_array($id, $class_ids) && $mode == 'REG'){
+            
+        //     $this->load->model('Gradesheet_model');
+        //     $this->db->where_not_in('center_id',$dept_ids);
+        //     // $this->db->where('enrollment_no', "AG/21207398");
+        //     $data['students'] = $this->Common_model->getRecordByWhere('student',array('exam_pattern'=>'GRADE', 'class_id'=>$id,'new_exam_form'=>'Y','result_show'=>'Y'));
+        //     $this->load->view('header',array('title'=>$data['students'][0]->course_name));
+        //     $this->load->view('admin/final_class_merit_list_ug',$data);
+        //     $this->load->view('footer');
+        // }else{
+            $year = 'January 2024';
+            $data['classData'] = $this->Common_model->getRecordById('class_master','id',$id);
+          $this->db->select('s.*,sd.p_mobile_no');
+          $this->db->from('student as s');
+          $this->db->join('old_exam_data as od', 'od.student_id=s.student_id and od.class_id=s.class_id');
+          $this->db->join('student_data as sd', 'sd.student_id=s.student_id');
+          $this->db->where(array('od.exam_year'=>$year,'s.class_id'=>$id,'exam_pattern'=>'MARKS','course_complete'=>'Y','od.university_mode'=>'REG','od.exam_status'=>'R'));
+          $data['students'] = $this->db->get()->result();
+        //   $this->Common_model->last_query();
+            // $data['students'] = $this->Common_model->getRecordByWhere('student',array('exam_pattern'=>'MARKS', 'class_id'=>$id,'new_exam_form'=>'Y','result_show'=>'Y'));
+          
+            $this->load->view('header',array('title'=>$data['students'][0]->course_name.' - '.$year));
+            $this->load->view('admin/final_class_merit_non_grade',$data);
+            $this->load->view('footer');
+        // }
+    }
 		
 }
 
-
+   
 
 
 ?>

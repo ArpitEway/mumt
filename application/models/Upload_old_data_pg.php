@@ -22,6 +22,7 @@ class Upload_old_data_pg extends CI_Model
 	protected $classCount = 0;
 	protected $allclass;
 	protected $classData;
+    protected $marksheetDate;
     // protected $result_this_fc1;
     // protected $result_this_fc2;
 	protected $obt_tot_credit;
@@ -43,10 +44,10 @@ class Upload_old_data_pg extends CI_Model
 	{
 		// $table = $this->Common_model->getMaster('exam_form_table');
 		$std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $student->class_id,'student_id'=>$student->student_id));
-        // print_r($std);die;
+        //  print_r($std);die;
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$student->class_id);
 		$papers = $this->Common_model->get_all_papers($student->student_id,$student->class_id);
-	
+        $date =$this->Common_model->getRecordById('marksheet_variables','class_id',$student->class_id);
 		// get_all_group_papers
 		// print_r($papers);die;
 		
@@ -67,6 +68,7 @@ class Upload_old_data_pg extends CI_Model
 		$this->fail_obt_marks = 0;
 		$this->obt_marks = 0;
 		$this->total_marks=0;
+        $this->marksheetDate = ($student->university_mode == 'REG')?$date->result_date:$date->pvt_result_date;
         // $this->result_this_fc1 = '';
         // $this->result_this_fc2 = '';
 		$this->check_grace_marks = false;
@@ -165,9 +167,12 @@ class Upload_old_data_pg extends CI_Model
 			$this->obt_marks += $this->paper["p_marks"]+$this->paper["int_marks"];
 		 $this->total_marks += $this->paper["max_theory_marks"]+  $this->paper["max_internal_marks"];
 		
-			if ($this->paper['p_marks']==''){
+			if ($this->paper['p_marks']=='' || $this->paper['p_marks']=='N'){
 				$this->withheld = true;
 			}
+            if($this->paper['int_marks']=='N'&& $this->mode != 'PVT' && $this->paper['max_internal_marks'] !=0 && $this->classData->practical_internal_marks == 'Y'){
+                $this->withheld = true;
+              }
 			$check_fail_marks = $this->paper["p_marks"];
 				$check_fail_min_marks = $this->paper["min_theory_marks"];
 				$check_fail_tot_marks = $this->paper["max_theory_marks"];
@@ -311,12 +316,13 @@ class Upload_old_data_pg extends CI_Model
             'course_name' => $this->student->course_name,
             'class_id' => $this->student->class_id,
             'enrollment_no' => $this->student->enrollment_no,
-            'roll_no' => $this->student->roll_number,
+            'roll_no' => $this->student->roll_no,
             'name' => $this->student->name,
             'exam_year' => 'June 2024',
             'f_h_name' => $this->student->f_h_name,
             'mother_name' => $this->student->mother_name,
             'marksheet_no' =>$this->student->marksheet_no,
+            'marksheet_date'=>$this->marksheetDate,
             'university_mode'=>$this->student->university_mode,
             'photo'=>$this->student->photo,
             'total_marks'=>$this->total_marks,

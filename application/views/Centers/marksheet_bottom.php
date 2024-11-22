@@ -50,7 +50,7 @@ foreach($new_exam_form as $marks){
       $fail_count++;
     }
     if($marks->theory_marks=='00'){
-         $zero_count++;
+          $zero_count++;
     }
     if($marks->int_marks=='ABS'){
       $abs_count++;
@@ -86,6 +86,9 @@ foreach($new_exam_form as $marks){
       $abs_count++;
       $result = "Fail";
       $fail_count++;
+    }
+    if($marks->theory_marks=='00'){
+         $zero_count++;
     }
 
   }
@@ -149,7 +152,7 @@ if ($withheld ) {
     <h3 class="text-center">WH</h3>
   </div>
   <?php
-}else if ($old_fail) {
+}else if ($old_fail && $fail_count==0 ) {
   ?>
   <div class="text-center text-primary border-right border-left border-bottom border-dark py-3">
     <h1 class=" text-center mb-0">Statement Of Marks</h1>

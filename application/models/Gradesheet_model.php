@@ -33,7 +33,7 @@ class Gradesheet_model extends CI_Model
 		
 	}
 
-	public function view_result($student_id,$course_group_id,$class_id,$mode,$work_table='')
+	public function view_result($student_id,$center_id,$course_group_id,$class_id,$mode,$work_table='')
 	{
 		if($work_table != ''){
 			$std  = $this->Common_model->getRecordByWhere($work_table,array('class_id'=> $class_id,'student_id'=>$student_id));
@@ -53,7 +53,7 @@ class Gradesheet_model extends CI_Model
 		$std  = $this->Common_model->getRecordByWhere($table,array('class_id'=> $class_id,'student_id'=>$student_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
-		
+        
 		if($std[0]->sub_group_id == 1){
 			$papers = $this->Common_model->get_all_papers($student_id,$class_id);
 		}
@@ -61,6 +61,28 @@ class Gradesheet_model extends CI_Model
 		$papers_list = $this->Common_model->get_all_group_papers($student_id,$class_id,$course_group_id);
 		}
 		}
+        $dept_ids = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30);
+    
+        if($this->classData->last_class == 'L' && !in_array($center_id,$dept_ids)){
+           
+            $classes = $this->Common_model->getRecordByWhere('class_master',array('id !='=>$class_id,'course_group_id'=>$course_group_id,'mode' => $this->classData->mode));
+            foreach($classes as $cls){
+                $this->db->order_by('id','desc');
+                $this->db->limit(1);
+                $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student_id,'class_id'=>$cls->id,'exam_result'=>'FAIL'));
+                if(count($old_result) > 0){
+                echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
+                    '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
+                    '<h3 class="text-center">'.'RWPM'.'</h3>'.
+                    '</div>';
+				return $this->result();
+			
+				die;
+                }
+            }
+           
+        
+        }
 		// get_all_group_papers
 		//  print_r($papers);die;
 		
@@ -73,6 +95,8 @@ class Gradesheet_model extends CI_Model
 		$this->tot_credit = 0;
 		$this->mode = $mode;
 		$this->fail_count=0;
+        $this->zero_count=0;
+        $this->theory_count=0;
 		$this->obt_tot_credit=0;
 		$this->fail_tot_marks = 0;
 		$this->fail_min_marks = 0;
@@ -132,9 +156,19 @@ class Gradesheet_model extends CI_Model
 		   
 			//    die;
 			// }
+
 			$this->_row();
 		}
-		
+	
+        if($this->theory_count != 0 && ($this->theory_count == $this->zero_count) &&                        $this->classData->final_result_permission !='Y'){
+            echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
+        '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
+        '<h3 class="text-center">'.'WH'.'</h3>'.
+        '</div>';
+        return $this->result();
+    
+        die; 
+    }
 		// var_dump($this->result_array);
 		$this->echo_result(); 
 		$this->total();
@@ -363,6 +397,10 @@ class Gradesheet_model extends CI_Model
 		
 		// print_r($this->foundation_paper[$this->paper['sub_group_id']]);die;
 		if($this->paper['sub_group_id']=='1'){
+            $this->theory_count++;
+            if ($this->paper['theory_marks']=='00' || $this->paper['theory_marks']=='0') {
+                $this->zero_count++;
+            }
 			 $this->obt_marks += $this->paper["theory_marks"];
 		 	 $this->total_marks += $this->paper["max_theory_marks"];
 			//  echo " OBT ". $this->obt_marks." TOTAL ".$this->total_marks;
@@ -471,7 +509,7 @@ class Gradesheet_model extends CI_Model
 	private function grade()
 	{
 		if ($this->paper["type"]=='theory') {
-			
+			$this->theory_count++;
 			if($this->mode=='REG'){
 				$this->obt_marks += $this->paper["theory_marks"] + $this->paper["int_marks"];
 		 		$this->total_marks += $this->paper["max_theory_marks"]+ $this->paper["max_internal_marks"];
@@ -479,6 +517,9 @@ class Gradesheet_model extends CI_Model
 				if ($this->paper['theory_marks']=='' || ($this->paper["int_marks"]=='' || $this->paper["int_marks"]=='N')) {
 					$this->withheld = true;
 				}
+                if ($this->paper['theory_marks'] =='00'|| $this->paper['theory_marks'] =='0'){
+                    $this->zero_count++;
+                }
 				$check_fail_marks = $this->paper["theory_marks"] + $this->paper["int_marks"];
 				$check_fail_min_marks = $this->paper["min_theory_marks"]+$this->paper["min_internal_marks"];
 				$check_fail_tot_marks = $this->paper["max_theory_marks"]+ $this->paper["max_internal_marks"];
@@ -486,6 +527,9 @@ class Gradesheet_model extends CI_Model
 				 $tot_marks = $this->paper["max_theory_marks"] + $this->paper["max_internal_marks"];
 				$min_marks = $this->paper["min_theory_marks"] + $this->paper["min_internal_marks"];
 			}else{
+                if ($this->paper['theory_marks'] =='00'|| $this->paper['theory_marks'] =='0'){
+                    $this->zero_count++;
+                }
 				$this->obt_marks += $this->paper["theory_marks"] ;//+ $this->paper["int_marks"];
 			
 		 	    $this->total_marks += $this->paper["private_max_theory_marks"];//+ $this->paper["max_internal_marks"];
@@ -494,11 +538,13 @@ class Gradesheet_model extends CI_Model
 					$this->withheld = true;
 				}
 				$check_fail_marks = $this->paper["theory_marks"];
-				$check_fail_min_marks = $this->paper["private_min_theory_marks"];
+				// $check_fail_min_marks = $this->paper["private_min_theory_marks"];
+                $check_fail_min_marks = $this->paper["min_theory_marks"]+$this->paper["min_internal_marks"];
 				$check_fail_tot_marks = $this->paper["private_max_theory_marks"];
 				$tot_obt_marks = $this->paper["theory_marks"];
 				$tot_marks = $this->paper["private_max_theory_marks"];
-				$min_marks = $this->paper["private_min_theory_marks"];
+				// $min_marks = $this->paper["private_min_theory_marks"];
+                $min_marks = $this->paper["min_theory_marks"] + $this->paper["min_internal_marks"];
 			}
 		}else{
 			$this->obt_marks += $this->paper["p_marks"]+$this->paper["int_marks"];
@@ -644,7 +690,7 @@ class Gradesheet_model extends CI_Model
 		if ($this->mode=='PVT') {
 			$this->result_array[$this->paper['paper_code']]['max_marks'] = $this->paper['private_max_theory_marks'];
 			if ($this->paper['type']=='theory') {
-				$this->result_array[$this->paper['paper_code']]['min_marks'] = $this->paper['private_min_theory_marks'];
+				$this->result_array[$this->paper['paper_code']]['min_marks'] = $this->paper['min_theory_marks'] +$this->paper['min_internal_marks'];
 				$this->result_array[$this->paper['paper_code']]['obt_marks']= $this->paper['theory_marks'];
 			}else{
 				$this->result_array[$this->paper['paper_code']]['min_marks'] = $this->paper['min_theory_marks'];
