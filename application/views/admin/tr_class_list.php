@@ -145,7 +145,13 @@
 				<a target="_blank" href="<?php echo  base_url('admin/admins/student_marksheet'."/REG/".$course['id'].'/'.$class->id)  ?>">Marksheet Regular</a>
                 <?php if(!empty($cbcs) ){ ?>
 					 / <a href="<?php echo base_url("admin/admins/student_marksheet_grade")."/REG/".$course['id']."/".$class->id; ?>"> Grade</a>
-					 <?php } 
+                     <?php
+                     if(in_array($class->id, $class_ids)){
+                        ?>
+                        / <a href="<?php echo base_url("admin/admins/student_marksheet_grade")."/REG/".$course['id']."/".$class->id."/Department"; ?>"> Department</a>
+                        <?php
+                     } 
+					  } 
 				 } if($class->private_class=='Y') { echo $flag; ?>
 					 <a href="<?php echo base_url("admin/admins/student_marksheet")."/PVT/".$course['id']."/".$class->id; ?>"><?= $marksheet?>Private</a>
 					  <?php }  ?>

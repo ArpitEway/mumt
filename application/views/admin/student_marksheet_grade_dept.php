@@ -169,15 +169,13 @@
                         <?php 
        
                           $gradesheetData = $this->Gradesheet_model->view_result_grade($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
-                          $total_grade_point = 0;
-                          $total_course_credit = 0;
-                          $wordNumerals = [1 => 'One',2 => 'Two',3 => 'Three',4 => 'Four',5 => 'Five',6 => 'Six',7 => 'Seven',8 => 'Eight'];
+                          
                             ?>
                     </tbody></table>
                   </div>
                   <h4 style="text-align:center;margin:10px;">Result Year Wise</h4>
                   <table border='1' cellpadding="2"  width="103%">
-                  <tr align="center"><th width='12.5%'>Year</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>AGPA</th><th width='12.5%'>Attempt</th></tr>
+                  <tr align="center"><th width='12.5%'>Year</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>AGPA</th></tr>
                     <?php
                      $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$student->course_group_id));
                     
@@ -188,10 +186,7 @@
                         $this->db->order_by('id', 'desc');
                         $this->db->limit(1);
                         $old = $this->Common_model->getRecordByWhere('old_exam_data',array('class_id'=>$cls->id,'student_id'=>$student->student_id));
-                        $old_count = $this->Common_model->getRecordByWhere('old_exam_data', array('student_id'=>$student->student_id,'class_id'=>$cls->id,'course_group_id'=>$student->course_group_id,'university_mode'=>$student->university_mode));
                          $gradeData   = $this->Gradesheet_model->view_old_results($student->student_id,$student->course_group_id,$cls->id,$student->university_mode, $old[0]->id, $old[0]->exam_status);
-                         $total_grade_point += number_format((float)$gradeData['agpa'], 2, '.', '') * $gradeData['obt_credit']; 
-                         $total_course_credit +=$gradeData['tot_credit'];
                         
                      ?>
                       <tr align="center"><th><?=$sno?></th><td><?= ($gradeData['tot_credit'] == 0)?'':$gradeData['tot_credit']?></td><td><?= ($gradeData['obt_credit'] == 0)?'':$gradeData['obt_credit']?></td><td><?= ($gradeData['credit_point'] == 0)?'':$gradeData['credit_point']?></td><td>
@@ -203,7 +198,6 @@
                         }
                         ?>
                         </td>
-                        <td><?= $wordNumerals[count($old_count)]?></td>
                      </tr>
                      <?php
                      }
@@ -211,45 +205,15 @@
                    
                    </tbody>
                  </table>
-                 <?php
-              if($classData->last_class == 'L')
-                     {
-
-                        $cgpa = number_format((float)($total_grade_point/$total_course_credit), 2, '.', '');
-                        $percent = $cgpa * 10;
-                        if($cgpa>=8.0){
-                            $div = "First Division with Distinction";
-                            }elseif($cgpa<8.0 && $cgpa>=6.50){
-                            $div  = "First Division";
-                            }elseif($cgpa<6.50 && $cgpa>=5.00){
-                            $div  = "Second Division";
-                            }else{
-                            $div = "Pass";
-                            }
-                    ?>
-                    <table width="103%" cellpadding="2" style="margin-top:10px;" border="1" align="center">
-                        <tr>
-                            <td colspan="4" align="center">
-                                Final Result - <strong><?=$gradesheetData['result']?></strong>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th width="9.2%">Total Credits</th>
-                            <th width="9.2%">CGPA</th>
-                            <th width="18.4%">Equivalent Percentage</th>
-                            <th width="18.4%">Division</th>
-                        </tr>
-                        <tr>
-                            <td align="center"><?= $total_course_credit?></td>
-                            <td align="center"><?=$cgpa?></td>
-                            <td align="center"><?=$percent.'%'?></td>
-                            <td align="center"><?=$div?></td>
-                        </tr>
-                    </table>
-                     <?php
-                     }
-              ?>
-
+                  <!-- <table border='1' cellpadding="2"  width="103%">
+                    <tbody>
+                     <tr align="center"><th width='12.5%'>Year</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>AGPA</th></tr>
+                     <tr align="center"><th>First</th><td><?= $gradesheetData['tot_credit']?></td><td><?= $gradesheetData['obt_credit']?></td><td><?= $gradesheetData['credit_point']?></td><td><?= ($gradesheetData['result']== 'FAIL' || $gradesheetData['result']== 'SUPP')?'0.00':number_format((float)$gradesheetData['agpa'], 2, '.', '')?></td></tr>
+                     <tr align="center"><th>Second</th><td></td><td></td><td></td><td></td></tr>
+                     <tr align="center"><th>Third</th><td></td><td></td><td></td><td></td></tr>
+                   
+                    </tbody>
+                 </table> -->
               </fieldset>
               <!-- if starts -->
               <tr>
