@@ -165,6 +165,7 @@ $abs_count = 0 ;
 								}
 								if($new_exam_form->theory_marks==''){
 									$rw_count++;
+                                    $Withheld =true;
 								}
 								if($new_exam_form->theory_marks+$new_exam_form->int_marks<$new_exam_form->min_theory_marks+$new_exam_form->min_internal_marks && $new_exam_form->theory_marks!=''){
 									array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
@@ -174,6 +175,7 @@ $abs_count = 0 ;
 								}
 								if($new_exam_form->int_marks=='N'){
 									$rwas_count++;
+                                    $WithheldAS=true;
 								}
 								if($new_exam_form->int_marks<$new_exam_form->min_internal_marks){
 									$int_fail_count++;
@@ -203,6 +205,7 @@ $abs_count = 0 ;
 							if($new_exam_form->type!='Project'){
 							if($new_exam_form->int_marks=='N'){
 								$rwas_count++;
+                                $WithheldPR=true;
 							}
 						}
 
@@ -581,7 +584,7 @@ $abs_count = 0 ;
 						<?php
 							if((in_array($student->class_id, $class_ids)) && $mode=='REG'){
 								if($final_result != 'FAIL'){
-                                    if($final_result == 'RWPM'){
+                                    if($final_result == 'RWPM' || $final_result =="RW"){
                                         ?>
                                         <td class="text-center" style="padding:0px" align="center"></td>
                                         <?php
@@ -640,6 +643,12 @@ $abs_count = 0 ;
 									?>
 									<td  class="text-center" style="padding:0px" align="center"></td>
 									<?php
+                                     if($isFinalClass && $student->exam_pattern == 'GRADE'){
+                                        ?>
+                                        <td  class="text-center" style="padding:0px" align="center"></td>
+                                        <td  class="text-center" style="padding:0px" align="center"></td>
+                                        <?php
+                                     }
 								}
 							}
 							if ($isFinalClass && $student->exam_pattern == 'MARKS') {	?>
