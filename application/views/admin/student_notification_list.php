@@ -516,8 +516,8 @@
          $dept_ids = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30);
 		if((in_array($student->class_id, $class_ids)) && $student->exam_pattern=='GRADE'){//&& $mode=='REG'
 		
-			//if($final_result != 'FAIL' && $final_result!="RW"){
-				if($final_result == 'RWPM'){
+			if($final_result != 'FAIL' ){
+				if($final_result == 'RWPM' || $final_result == 'RW' ){
                     ?>
                     <td class="text-center" style="padding:0px" align="center"></td>
                     <?php
@@ -573,24 +573,21 @@
                             }       
         
                 }
-			}else{
-                if($isFinalClass && $student->exam_pattern == 'GRADE'){
-                    ?>
-                    <td  class="text-center" style="padding:0px" align="center"></td>
-                    <td  class="text-center" style="padding:0px" align="center"></td>
-                    <?php
-                }
-				?>
-				<!-- <td  class="text-center" style="padding:0px" align="center"></td> -->
-				<?php
-			}
-		/*	}else{
+            }
+			
+			else{
 				?>
 				<td  class="text-center" style="padding:0px" align="center"></td>
 				<?php
-			}*/
+                 if($isFinalClass && $student->exam_pattern == 'GRADE'){
+                           ?>
+                            <td  class="text-center" style="padding:0px" align="center"></td>
+                             <td  class="text-center" style="padding:0px" align="center"></td>
+                            <?php
+                        }
+			}
 		
-	
+        }
 		
 		if ($isFinalClass && $student->exam_pattern=='MARKS') {	?>
 		<td  class="text-center" style="padding:0px" align="center"><?php
