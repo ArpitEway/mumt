@@ -10,7 +10,7 @@
 		<?php $i=1; ?>
 		<?php foreach ($courses as $course){
 			$this->db->order_by('id');
-			// $this->db->where_in('id',array(103,118,130,155,169,170,173,184,186,188,218,230,234,236,246,273,274,278,282));
+			$this->db->where_in('id',array(102,110,120,135,141,165,299,180,202,206,303,226,228));
        
         $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id'] , 'exam_form_permission' => 'Y' ));
 	
