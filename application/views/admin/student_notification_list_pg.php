@@ -318,7 +318,7 @@
 							
 							
 						}
-				  if($previos_fail > 0){
+				  if($previos_fail > 0 && $final_result !='FAIL'){
                     $final_result = 'RWPM';
                   }
 				   echo $final_result;

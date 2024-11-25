@@ -637,7 +637,7 @@
   $grandTotal_mar = '-';
   $percent = '-';
   $div = '-';
-  if($final_fail !=0){
+  if($final_fail !=0 && $final_result != "FAIL"){
     $final_result ='RWPM';
     $final_remark ="RWPM";
   }

@@ -518,7 +518,12 @@ $abs_count = 0 ;
 							
 							
 						}
-				  
+                        if($final_result == 'RWPM'){
+                            if($fail_count>0 || $abs_count>0){
+                                $final_result = ($check_grace_marks) ? 'PASS BY GRACE' : 'FAIL';
+
+                            }
+                        }
 				   echo $final_result;
 					$grand_obtain = $grand_obt + $total_marks_obt;
 						$grand_total = $grand_tot+$total_paper_marks;

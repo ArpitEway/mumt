@@ -436,7 +436,7 @@ class Gradesheet_tr_model_pg extends CI_Model
 			// }
 			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory'&& !$this->withheld && !$this->withheld_practical && !$this->withheld_internal) {
 				
-				$this->obt_tot_credit +=$result['credit'];
+				// $this->obt_tot_credit +=$result['credit'];
 				
 				$this->check_grace_marks = true;
 				$req_marks = $result['min_marks']-$result['obt_marks'];
@@ -492,7 +492,7 @@ class Gradesheet_tr_model_pg extends CI_Model
 			
 			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory' && !$this->withheld && !$this->withheld_practical && !$this->withheld_internal) {
 				$this->check_grace_marks = true;
-				$this->obt_tot_credit += $result['credit'];
+				// $this->obt_tot_credit += $result['credit'];
 				$req_marks = $result['min_marks']-$result['obt_marks'];
 				$obt_marks = $result['obt_marks']+$req_marks;
 				 $tot_obt_grace = $result['obt_marks']+$result['int_obt_marks'];

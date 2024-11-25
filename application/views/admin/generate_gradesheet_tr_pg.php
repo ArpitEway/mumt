@@ -775,7 +775,7 @@ $total_course_credit +=$old_grade_data['tot_credit'];
   $percent = '-';
   $div = '-';
   $cgpa = '-';
-  if($final_fail !=0){
+  if($final_fail !=0 && $final_result != "FAIL"){
     $final_result ='RWPM';
     $final_remark ="RWPM";
   }
@@ -786,6 +786,8 @@ $total_course_credit +=$old_grade_data['tot_credit'];
     $total_course_credit +=$gradesheetData['tot_credit'];
     $cgpa = number_format((float)($total_grade_point/$total_course_credit), 2, '.', '');
     $percent = $cgpa * 10;
+    echo number_format((float)$gradesheetData['agpa'], 2, '.', '').'ddd'.$gradesheetData['obt_credit'].'<br>';
+    echo $total_grade_point.'sss'.$total_course_credit;
     // $percent = round(($total_ob/$total_mar)*100,2);   
     // if($percent>=60){
     // $div = "First";
