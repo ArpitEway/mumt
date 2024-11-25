@@ -290,10 +290,13 @@
 					));
 					// echo '<pre>';
 					// print_r($classes);die;
-					
+					$previos_fail = 0;
 						foreach($classes as $cls){
 							$this->db->where_in('exam_result',array('PASS','PASS BY GRACE'));
 							$results = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id='=>$cls->id));
+                            // echo '<pre>';
+                            // print_r($results);
+                            // echo '<br>';
 							// $this->Common_model->last_query();
 							// echo count($results);die;
 							if(count($results)>0){
@@ -309,12 +312,15 @@
 									$final_result = 'PASS';
 								}
 							}else{
-								$final_result = 'RWPM';
+                                $previos_fail++;
+								// $final_result = 'RWPM';
 							}
 							
 							
 						}
-				  
+				  if($previos_fail > 0){
+                    $final_result = 'RWPM';
+                  }
 				   echo $final_result;
 					$grand_obtain = $grand_obt + $total_obtained_marks;
 						$grand_total = $grand_tot+$total_max_marks;
