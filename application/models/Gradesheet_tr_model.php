@@ -131,6 +131,7 @@ class Gradesheet_tr_model extends CI_Model
 		}
 		
 		$this->notification_agpa();
+        return $this->result();
 		
 	}
 
@@ -470,7 +471,7 @@ class Gradesheet_tr_model extends CI_Model
 	//if($i==1){echo "<pre> ".$i;	print_r($result);echo "</pre>";$i++;}
 			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				$this->check_grace_marks = true;
-				$this->obt_tot_credit += $result['credit'];
+				// $this->obt_tot_credit += $result['credit'];
 				$req_marks = $result['min_marks']-$result['obt_marks'];
 				$obt_marks = $result['obt_marks']+$req_marks;
 				if(($result['f_abs'] == 'ABS' && $result['obt_marks'] != '0' )){
@@ -594,7 +595,7 @@ class Gradesheet_tr_model extends CI_Model
 			
 			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				$this->check_grace_marks = true;
-				$this->obt_tot_credit += $result['credit'];
+				// $this->obt_tot_credit += $result['credit'];
 				$req_marks = $result['min_marks']-$result['obt_marks'];
 				$obt_marks = $result['obt_marks']+$req_marks;
 				$credit_point = $result['credit']*4;
