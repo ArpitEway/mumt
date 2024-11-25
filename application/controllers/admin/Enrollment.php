@@ -11,6 +11,15 @@
 			$this->load->model('admin/Account_model');
 			$this->load->model('Common_model');
 			$this->load->model('Datatable_join_model');
+			$this->master = $this->Common_model->getSingleRow('master');
+			$this->exam_table = $this->master->student_exam_table;
+			$this->exam_form = $this->master->exam_form_col;
+			$this->exam_form_result = $this->master->exam_form_col_result;
+			$this->roll_no = $this->master->roll_number_col;
+			$this->result_table = $this->master->student_result_table;
+			$this->old_result_table = $this->master->old_student_result_table;
+			$this->exam_form_table = $this->master->exam_form_table;
+			$this->old_exam_form_table = $this->master->old_exam_form_table;
 			if($this->session->account_type!='Enrollment'){
 				redirect(base_url('admin/logout')); 
 			}
@@ -1707,4 +1716,133 @@ public function getStudentData()
 		
 		$this->load->view('admin/generate_tr/footer2');
 	}
+
+	public function search_student_marksheet(){
+		
+		$segment = $this->uri->segment(2);
+		
+		$this->load->view('header',array('title' => 'Search Students Result'));
+
+		$data = array(
+			'name_csrf' => $this->security->get_csrf_token_name(),
+			'hash_csrf' => $this->security->get_csrf_hash(),
+			'segment' => $segment
+		);
+
+		$this->load->view('admin/enrollment/search_student_marksheet',$data);
+		$this->load->view('footer');
+	}
+
+	public function getStudentMarksheetData()
+	{
+		// if(!$this->session->has_userdata('adminData')){
+		// 	redirect(base_url());
+		// 	exit;
+		// }
+
+		$text_val =$this->input->post('text_val');
+		$radio_val = $this->input->post('radio_val');
+
+
+		if($text_val !='')
+		{
+			if($text_val !='' && $radio_val == 'enrollment_no')
+			{
+				$where = array('new_exam_form'=>'Y','enrollment_no'=>$text_val);
+				//,'result_show'=>'Y'
+
+			}else if($text_val !='' && $radio_val == 'roll_no')
+			{
+				$where = array('new_exam_form'=>'Y','roll_no'=>$text_val );
+			//,'result_show'=>'Y'
+			}
+
+			
+				$student = $this->Common_model->getRecordByWhere($this->result_table,$where);
+				//print_r($student); die;
+				//echo $this->db->last_query(); die;
+				$msg="";
+				if (count($student)==0) {
+					
+					echo json_encode(array(
+						"status" => false,
+						"data" => "<p style='text-align: center;'><b>No data found!</b></p>"
+					));
+					
+				}else{
+			
+					if($student[0]->result_show =="N"){
+						
+							$msg="<p style='text-align: center;' id='result_msg'><b>Student result not declared!</b></p>"; 
+					}
+						$data['student']=$student[0];
+						$data['exam_session']  = 'June 2024';
+						/**********************/
+						if($data['student']->provisional_remark!="N" && $data['student']->provisional_remark!="")
+						{
+							$this->db->select('provisional_remarks');
+							$this->db->from('provisional_remark_details');
+							$this->db->where('document_category_id',$data['student']->provisional_remark);
+							$remark = $this->db->get()->row();
+							$provisional_remark_details ="<p style='text-align: center;' id='pro_remark'><b>".$remark->provisional_remarks." are not recieved at university</b></p>";
+						}
+						/************************/
+						
+						$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
+						$data['practical_internal_marks']=$classData->practical_internal_marks;
+						$this->db->select('*');
+						$this->db->from($this->exam_form_table);
+						$this->db->where(''.$this->exam_form_table.'.student_id',$data['student']->student_id);
+						$this->db->where(''.$this->exam_form_table.'.class_id',$data['student']->class_id);
+						$this->db->order_by(''.$this->exam_form_table.'.paper_order',''.$this->exam_form_table.'.paper_id');
+						$new_exam_form = $this->db->get()->result();
+						$data['classData']  = $classData;
+						$data['new_exam_form']  = $new_exam_form;
+						// if(($data['student']->old_class_id == '104' || $data['student']->old_class_id == '107' || $data['student']->old_class_id == '101' || $data['student']->old_class_id == '134' || $data['student']->old_class_id == '116' || $data['student']->old_class_id == '110'|| $data['student']->old_class_id == '119' || $data['student']->old_class_id == '131') && $data['student']->university_mode == 'REG')
+						
+						$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136);
+						$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302,303,304,305,278,282,250,252,216,232,236,238,240,246,248,254,218,305,210);
+						if((in_array($data['student']->class_id, $class_ids))  && $data['student']->exam_pattern=='GRADE')	//&& $data['student']->university_mode=='REG'
+						{
+							$this->load->model('Gradesheet_model');
+							$dt = $provisional_remark_details.$msg.$this->load->view('Centers/grade_marksheet',$data,true);
+						}else if((in_array($data['student']->old_class_id, $class_cbcs)) && $data['student']->university_mode=='REG' && $data['student']->exam_pattern=='GRADE'){
+							$this->load->model('Gradesheet_model_pg');
+                            $this->load->model('GradeSheet_old_model_pg');
+							$dt = $provisional_remark_details.$msg.$this->load->view('Centers/grade_marksheet_pg',$data,true);
+						}else{
+							
+							$title = array('title' => 'Result - '.$data['student']->enrollment_no);
+							
+							$marksheet_top =  $this->load->view('Centers/marksheet_top',$data,true);
+							// if ($student[0]->course_group_id==36 || $student[0]->course_group_id==37) {
+								
+							// 	$marksheet_bottom=  $this->load->view('Centers/marksheet_without_int',$data,true);
+							// }else{
+								
+							// 	$marksheet_bottom=  $this->load->view('Centers/marksheet_bottom',$data,true);
+							// }
+							if($classData->internal=='N'){
+								$marksheet_bottom = $this->load->view('Centers/marksheet_without_int',$data,true);
+							}else{
+								if($student[0]->class_id=='168'){
+									$marksheet_bottom  = $this->load->view('Centers/marksheet_mom',$data,true);
+								}else{
+									$marksheet_bottom = $this->load->view('Centers/marksheet_bottom',$data,true);
+								}
+							// $dt =  $marksheet_top.$marksheet_bottom;
+							}
+						
+						
+							$dt =$provisional_remark_details. $msg. $marksheet_top.$marksheet_bottom;
+						
+						}
+						echo json_encode(array(
+							"status" => true,
+							"data" => $dt
+						));
+					 }
+		
+	  }
+	}//fun
 }
