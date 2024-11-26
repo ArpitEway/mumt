@@ -2,6 +2,8 @@
 $withheld = false;
 $check_grace_marks = false;
 $fail_count = 0;
+$zero_count = 0;
+$theory_fail_count = 0;
 $fali_tot_marks = 0;
 $require_tot_marks = 0;
 $tot_marks = 0;
@@ -23,6 +25,7 @@ $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('stude
 }
 }
 foreach($backlog_exam_form as $marks){
+
   $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code,"class_id"=>$marks->class_id));
 
   if($marks->paper_type=='theory'){
@@ -33,6 +36,15 @@ foreach($backlog_exam_form as $marks){
     }
     if($marks->theory_marks==''){
       $withheld = true;
+    }
+    if($marks->theory_marks<$paper_master[0]->min_theory_marks && $marks->status == 'B'){
+        $theory_fail_count++;
+    }
+    if(($marks->theory_marks=='00' || $marks->theory_marks=='0') && $marks->status == 'B'){
+        $zero_count++;
+    }
+    if($marks->theory_marks=='ABS'&& $marks->status == 'B' ){
+        $theory_fail_count++;
     }
     if($marks->theory_marks<$paper_master[0]->min_theory_marks){
       $result = "Fail";
@@ -61,6 +73,15 @@ foreach($backlog_exam_form as $marks){
       }
       if($marks->theory_marks==''){
         $withheld = true;
+      }
+      if($marks->theory_marks<$paper_master[0]->private_min_theory_marks && $marks->status == 'B'){
+        $theory_fail_count++;
+      }
+      if($marks->theory_marks=='ABS'&& $marks->status == 'B' ){
+        $theory_fail_count++;
+      }
+      if(($marks->theory_marks=='00' || $marks->theory_marks=='0') && $marks->status == 'B'){
+        $zero_count++;
       }
       if($marks->theory_marks<$paper_master[0]->private_min_theory_marks){
         $result = "Fail";
@@ -105,8 +126,8 @@ foreach($backlog_exam_form as $marks){
 //       $check_grace_marks = true;
 // }
 
-// if ($fail_count>0 && !$check_grace_marks) {
-if ($fail_count>0  && $marks->student_id!=684208 && $classData->final_result_permission!='Y' ) {  
+// if ($fail_count>0 && !$check_grace_marks)$fail_count>0  && $marks->student_id!=684208 {
+if ( $zero_count == $theory_fail_count && $classData->final_result_permission!='Y' && $theory_fail_count!=0) {  
     ?>
   <div class="text-center text-primary border-right border-left border-bottom border-dark py-3">
     <h1 class=" text-center mb-0">Statement Of Marks</h1>
@@ -115,15 +136,16 @@ if ($fail_count>0  && $marks->student_id!=684208 && $classData->final_result_per
   <?php
 }else{
 ?>
-<?php /*
-if ($withheld ||  in_array($student->exam_center_code  ,array('MDE052','MDE081','MDE156') )) { 
+<?php 
+//||  in_array($student->exam_center_code  ,array('MDE052','MDE081','MDE156') )
+if ($withheld) { 
   ?>
   <div class="text-center text-primary border-right border-left border-bottom border-dark py-3">
     <h1 class=" text-center mb-0">Statement Of Marks</h1>
     <h3 class="text-center">WH</h3>
   </div>
   <?php
-}else */
+}else 
 if ($old_fail) {
   ?>
   <div class="text-center text-primary border-right border-left border-bottom border-dark py-3">
