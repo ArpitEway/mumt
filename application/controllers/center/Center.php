@@ -2616,7 +2616,7 @@ public function backlog_grade_marksheet($student_id=""){
 public function backlog_grade_marksheet_pg($student_id=""){
 	
 	$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
-    $student = $this->Common_model->getRecordByWhere('backlog_student',array('exam_form'=>'Y','result_show'=>'Y','id'=>$student_id,'exam_year'=>"Dec 2023"));
+    $student = $this->Common_model->getRecordByWhere('backlog_student',array('exam_form'=>'Y','result_show'=>'Y','id'=>$student_id,'exam_year'=>"June 2024"));
 	   // print_r($student);die;
 	   if (count($student)==0) {
 		   redirect(base_url());
