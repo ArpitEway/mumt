@@ -84,10 +84,12 @@ class Gradesheet_model extends CI_Model
 		$this->fail_obt_marks = 0;
 		$this->check_grace_marks = false;
 		$this->withheld = false;
+        $this->withheld_practical = false;
+        $this->withheld_internal = false;
 		foreach ($papers as $paper) {
 			$this->paper = $paper;
-			
-			if($this->withheld){
+			$this->_row();
+            if($this->withheld){
 				
 				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
 				 '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
@@ -97,6 +99,27 @@ class Gradesheet_model extends CI_Model
 			
 				die;
 			}
+            if($this->withheld_internal){
+				
+				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
+				 '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
+				  '<h3 class="text-center">'.'RWAS'.'</h3>'.
+				'</div>';
+				return $this->result();
+			
+				die;
+			}
+            if($this->withheld_practical){
+				
+				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
+				 '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
+				  '<h3 class="text-center">'.'RWPR'.'</h3>'.
+				'</div>';
+				return $this->result();
+			
+				die;
+			}
+			
 			// if ($this->fail_count>0 && !$this->check_grace_marks && $this->classData->final_result_permission!='Y' ) {  
 			// 	echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
 			// 	'<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
@@ -107,7 +130,7 @@ class Gradesheet_model extends CI_Model
 			//    die;
 			// }
 		
-			$this->_row();
+			
 			
 		}
 		foreach ($papers_list as $paper) {
@@ -118,7 +141,8 @@ class Gradesheet_model extends CI_Model
 				 $this->paper['group_name_array']=$group_name;
 			
 			 }
-			if($this->withheld){
+             $this->_row();
+             if($this->withheld){
 				
 				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
 				 '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
@@ -128,6 +152,27 @@ class Gradesheet_model extends CI_Model
 			
 				die;
 			}
+             if($this->withheld_internal){
+				
+				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
+				 '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
+				  '<h3 class="text-center">'.'RWAS'.'</h3>'.
+				'</div>';
+				return $this->result();
+			
+				die;
+			}
+            if($this->withheld_practical){
+				
+				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
+				 '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
+				  '<h3 class="text-center">'.'RWPR'.'</h3>'.
+				'</div>';
+				return $this->result();
+			
+				die;
+			}
+			
 			// if ($this->fail_count>0 && !$this->check_grace_marks && $this->classData->final_result_permission!='Y' ) {  
 			// 	echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
 			// 	'<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
@@ -138,7 +183,7 @@ class Gradesheet_model extends CI_Model
 			//    die;
 			// }
 
-			$this->_row();
+			
 		}
 	
         if($this->theory_count != 0 && ($this->theory_count == $this->zero_count) &&                        $this->classData->final_result_permission !='Y'){
@@ -529,9 +574,12 @@ class Gradesheet_model extends CI_Model
 				$this->obt_marks += $this->paper["theory_marks"] + $this->paper["int_marks"];
 		 		$this->total_marks += $this->paper["max_theory_marks"]+ $this->paper["max_internal_marks"];
 		
-				if ($this->paper['theory_marks']=='' || ($this->paper["int_marks"]=='' || $this->paper["int_marks"]=='N')) {
+				if ($this->paper['theory_marks']=='') {
 					$this->withheld = true;
 				}
+                if($this->paper["int_marks"]=='' || $this->paper["int_marks"]=='N'){
+                    $this->withheld_internal = true;
+                }
                 if ($this->paper['theory_marks'] =='00'|| $this->paper['theory_marks'] =='0'){
                     $this->zero_count++;
                 }
@@ -564,10 +612,15 @@ class Gradesheet_model extends CI_Model
 		}else{
 			$this->obt_marks += $this->paper["p_marks"]+$this->paper["int_marks"];
 		 $this->total_marks += $this->paper["max_theory_marks"]+  $this->paper["max_internal_marks"];
-		
-			if ($this->paper['p_marks']==''){
-				$this->withheld = true;
-			}
+		 if ($this->paper['p_marks']=='' || $this->paper['p_marks']=='N'){
+            $this->withheld_practical = true;
+        }
+        
+        if($this->paper['int_marks']=='N'&& $mode != 'PVT' && $this->paper['max_internal_marks'] !=0 && $this->classData->practical_internal_marks == 'Y'){
+            // $rwas_count++;
+            // $this->withheld = true;
+            $this->withheld_internal = true;
+          }
 			$check_fail_marks = $this->paper["p_marks"]+$this->paper["int_marks"];
 				$check_fail_min_marks = $this->paper["min_theory_marks"]+$this->paper["min_internal_marks"];
 				$check_fail_tot_marks = $this->paper["max_theory_marks"]+ $this->paper["max_internal_marks"];
@@ -671,8 +724,12 @@ class Gradesheet_model extends CI_Model
 	{
 		// var_dump($this->withheld);die;
 		if ($this->withheld==true) {
-			$this->result = 'WITHHELD';
-		}
+			return $this->result = 'RW';
+		}elseif($this->withheld_internal == true){
+            return $this->result = 'RWAS';
+        }elseif($this->withheld_practical == true){
+            return $this->result = 'RWPR';
+        }
 		else if ($this->fail_count!=0 && $this->agpa>=4) {
 			if ($this->check_grace_marks) {
 				$this->result = 'PASS BY GRACE';
@@ -764,7 +821,7 @@ class Gradesheet_model extends CI_Model
 				}else{
 				echo "<td><table style='border:0px solid black'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='100px' style='border:0px solid black'><strong>".$paper[0]."</strong></td><td style='border:0px solid black'></td><td style='border:0px solid black'><strong>".$paper[1]."</strong></td></tr></table></td>";
 				}
-			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory'&& !$this->withheld && !$this->withheld_practical && !$this->withheld_internal) {
 				$this->check_grace_marks = true;
 				
 				$req_marks = $result['min_marks']-$result['obt_marks'];
