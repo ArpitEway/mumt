@@ -127,7 +127,7 @@ $abs_count = 0 ;
 								if($new_exam_form->group_paper_name == 'FC1' ){
 									if($new_exam_form->theory_marks==''){
 										$rw_count++;
-							
+                                        $Withheld =true;
 									}
 									if($new_exam_form->theory_marks=='ABS'){
 										$fc1_abs .= $new_exam_form->theory_marks;
@@ -139,7 +139,7 @@ $abs_count = 0 ;
 						 		}else{
 									if($new_exam_form->theory_marks==''){
 									$rw_count++;
-									
+                                    $Withheld =true;
 									}
 									if($new_exam_form->theory_marks=='ABS'){
 										$fc2_abs .= $new_exam_form->theory_marks;

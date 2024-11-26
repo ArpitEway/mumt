@@ -63,26 +63,7 @@ class Gradesheet_model extends CI_Model
 		}
         $dept_ids = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30);
     
-        if($this->classData->last_class == 'L' && !in_array($center_id,$dept_ids)){
-           
-            $classes = $this->Common_model->getRecordByWhere('class_master',array('id !='=>$class_id,'course_group_id'=>$course_group_id,'mode' => $this->classData->mode));
-            foreach($classes as $cls){
-                $this->db->order_by('id','desc');
-                $this->db->limit(1);
-                $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student_id,'class_id'=>$cls->id,'exam_result'=>'FAIL'));
-                if(count($old_result) > 0){
-                echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
-                    '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
-                    '<h3 class="text-center">'.'RWPM'.'</h3>'.
-                    '</div>';
-				return $this->result();
-			
-				die;
-                }
-            }
-           
-        
-        }
+       
 		// get_all_group_papers
 		//  print_r($papers);die;
 		
@@ -168,6 +149,40 @@ class Gradesheet_model extends CI_Model
         return $this->result();
     
         die; 
+    }
+    if($this->classData->last_class == 'L' && !in_array($center_id,$dept_ids)){
+        $this->fail_count;
+		if ($this->fail_count>0) {
+			 $require_grace_marks = $this->fail_min_marks-$this->fail_obt_marks;
+		}
+        foreach ($this->result_array as $key => $result) {
+            if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+				$this->check_grace_marks = true;
+            }
+        }
+        $this->agpa = $this->tot_credit_point/$this->tot_credit;
+        $this->set_result();
+        if($this->result !="FAIL"){
+            $classes = $this->Common_model->getRecordByWhere('class_master',array('id !='=>$class_id,'course_group_id'=>$course_group_id,'mode' => $this->classData->mode));
+            foreach($classes as $cls){
+                $this->db->order_by('id','desc');
+                $this->db->limit(1);
+                $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student_id,'class_id'=>$cls->id,'exam_result'=>'FAIL'));
+                if(count($old_result) > 0){
+                echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
+                    '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
+                    '<h3 class="text-center">'.'RWPM'.'</h3>'.
+                    '</div>';
+                    $this->result ='';
+                return $this->result();
+            
+                die;
+                }
+            }
+        }
+      
+       
+    
     }
 		// var_dump($this->result_array);
 		$this->echo_result(); 
