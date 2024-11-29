@@ -283,11 +283,13 @@ class Gradesheet_backlog_tr_model extends CI_Model
 					$this->withheld = true;
 				}
 				$check_fail_marks = $this->paper["theory_marks"];
-				$check_fail_min_marks = $this->paper["private_min_theory_marks"];
+				// $check_fail_min_marks = $this->paper["private_min_theory_marks"];
+                $check_fail_min_marks = $this->paper["min_theory_marks"] + $this->paper["min_internal_marks"];
 				$check_fail_tot_marks = $this->paper["private_max_theory_marks"];
 				$tot_obt_marks = $this->paper["theory_marks"];
 				$tot_marks = $this->paper["private_max_theory_marks"];
-				$min_marks = $this->paper["private_min_theory_marks"];
+				// $min_marks = $this->paper["private_min_theory_marks"];
+                $min_marks = $this->paper["min_theory_marks"] + $this->paper["min_internal_marks"];
 			}
 		}else{
 			if ($this->paper['p_marks']==''){
