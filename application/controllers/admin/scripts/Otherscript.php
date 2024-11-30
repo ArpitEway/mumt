@@ -1262,6 +1262,7 @@ public function update_roll_no_old_data(){
         $this->db->from('class_master as cm');
         $this->db->join('course_group as cg','cg.id =cm.course_group_id');
         $this->db->join('old_exam_data as od','cm.id =od.class_id');
+        $this->db->where_in('od.exam_result', array('PASS', 'PASS BY GRACE'));
         $this->db->where(array('cm.last_class'=>'L','od.exam_year'=>$year,'od.university_mode'=>'REG','od.exam_status'=>'R'));
         $this->db->group_by('cg.course_name');
         $data['classes'] = $this->db->get()->result();
@@ -1303,6 +1304,7 @@ public function update_roll_no_old_data(){
           $this->db->from('student as s');
           $this->db->join('old_exam_data as od', 'od.student_id=s.student_id and od.class_id=s.class_id');
           $this->db->join('student_data as sd', 'sd.student_id=s.student_id');
+          $this->db->where_in('od.exam_result', array('PASS', 'PASS BY GRACE'));
           $this->db->where(array('od.exam_year'=>$year,'s.class_id'=>$id,'exam_pattern'=>'MARKS','course_complete'=>'Y','od.university_mode'=>'REG','od.exam_status'=>'R'));
           $data['students'] = $this->db->get()->result();
         //   $this->Common_model->last_query();
