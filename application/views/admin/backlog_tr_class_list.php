@@ -104,7 +104,7 @@
 			<td>
 				<?php
 			if($class->regular_class=='Y') { 
-				$class_ids=array(101,104,107,110,116,119,125,128,131,134);
+				$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136);
                 $class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280);
 				if(in_array($class->id , $class_ids) || in_array($class->id , $class_cbcs)){
 					$std_marksheet = 'backlog_student_marksheet_grade';

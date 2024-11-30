@@ -107,7 +107,7 @@
 		   $grand_obt=0;
 		   $grand_tot =0;
 		$paper_marks = $this->Common_model->backlog_notification_marks_details_($student->student_id,$student->class_id,$student->id);
-		$class_ids=array(101,104,107,110,116,119,125,128,131,134);
+		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136);
 		foreach($paper_marks as  $marks){
 			if((in_array($student->class_id, $class_ids)) && $pattern=='GRADE')	
 			{
@@ -221,14 +221,25 @@
 					$abs_count++;
 					array_push( $ATKT_paper_codes,$marks->paper_code );
 				}
-				
-				if($marks->theory_marks<$marks->min_theory_marks){
+	
+                if($mode == "REG"){
+                    if($marks->theory_marks<$marks->min_theory_marks){
 					
-					$fail_count++;
-					$get_tot_marks += $marks->theory_marks;
-					$require_tot_marks += $marks->min_theory_marks;
-					array_push( $ATKT_paper_codes,$marks->paper_code );
-				}
+                        $fail_count++;
+                        $get_tot_marks += $marks->theory_marks;
+                        $require_tot_marks += $marks->min_theory_marks;
+                        array_push( $ATKT_paper_codes,$marks->paper_code );
+                    }
+                }else{
+                    if($marks->theory_marks<$marks->private_min_theory_marks){
+					
+                        $fail_count++;
+                        $get_tot_marks += $marks->theory_marks;
+                        $require_tot_marks += $marks->private_min_theory_marks;
+                        array_push( $ATKT_paper_codes,$marks->paper_code );
+                    }
+                }
+				
 				if($classData->internal!="N" && $mode == "REG"){
 					if($marks->int_marks<$marks->min_internal_marks){
 						$int_fail_count++;
