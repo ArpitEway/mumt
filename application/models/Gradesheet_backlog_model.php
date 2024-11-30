@@ -179,6 +179,8 @@ class Gradesheet_backlog_model extends CI_Model
 		$this->tot_credit = 0;
 		$this->mode = $mode;
 		$this->fail_count=0;
+        $this->zero_count = 0;
+        $this->theory_fail_count = 0;
 		$this->obt_tot_credit=0;
 		$this->fail_tot_marks = 0;
 		$this->fail_min_marks = 0;
@@ -227,6 +229,15 @@ class Gradesheet_backlog_model extends CI_Model
 		
 			$this->_row();
 		}
+        if($this->theory_fail_count!=0 && ($this->zero_count == $this->theory_fail_count)){
+            echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
+                    '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
+                    '<h3 class="text-center">'.'WH'.'</h3>'.
+                    '</div>';
+                    return $this->result();
+                
+                    die;
+        }
 		
 		// var_dump($this->result_array);
 		
@@ -526,7 +537,9 @@ class Gradesheet_backlog_model extends CI_Model
 		// var_dump($this->withheld);die;
 		if ($this->withheld==true) {
 			$this->result = 'WITHHELD';
-		}
+		}elseif($this->theory_fail_count!=0 && ($this->zero_count == $this->theory_fail_count)){
+            $this->result = 'WITHHELD';
+        }
 		else if ($this->fail_count!=0 && $this->agpa>=4) {
 			if ($this->check_grace_marks) {
 				$this->result = 'PASS BY GRACE';
