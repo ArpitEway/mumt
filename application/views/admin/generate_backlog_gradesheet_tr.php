@@ -588,15 +588,14 @@ table.last_table, .last_table td, .last_table th{
           if($check_grace_marks){
             echo "-";
           }else{
-            
-            if($final_result == "RW"){
+           
+            if($final_result == "RW" || $gradesheetData['result'] == 'RW'){
               echo "";
             }
             elseif($int_abs_count>0 &&  $theory_abs_count>0 && $p_abs_count>0){
               echo 'Year Break';
             }
-            elseif($int_abs_count == $count_int ||  $theory_abs_count == ($count_theory - 2) || ($p_abs_count == $count_practical)){
-             
+            elseif(($int_abs_count == $count_int && $count_int!=0) ||  ($theory_abs_count == ($count_theory - 2) && ($count_theory - 2)!=0) || ($p_abs_count == $count_practical && $count_practical!=0)){
               if($theory_abs_count == ($count_theory-2)){
                 echo 'Year Break';
               }elseif($int_abs_count == $count_int){

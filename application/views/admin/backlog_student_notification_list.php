@@ -107,9 +107,9 @@
 		   $grand_obt=0;
 		   $grand_tot =0;
 		$paper_marks = $this->Common_model->backlog_notification_marks_details_($student->student_id,$student->class_id,$student->id);
-		$class_ids=array(101,104,107,110,116,119,125,128,131,134);
+		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136);
 		foreach($paper_marks as  $marks){
-			if((in_array($student->class_id, $class_ids)) && $mode=='REG')	
+			if((in_array($student->class_id, $class_ids)) && $pattern=='GRADE')	
 			{
 			if($marks->type=="theory" ){
 				$theory_paper_count++;
@@ -120,6 +120,9 @@
 						$rw_count++;
 					 
 					  }
+                      if($marks->theory_marks==''){
+						$Withheld = true;
+					    }
 					  if($marks->theory_marks=='ABS'){
 						$fc1_abs .= $marks->theory_marks;
 					 
@@ -132,6 +135,9 @@
 						$rw_count++;
 					   
 					  }
+                      if($marks->theory_marks==''){
+						$Withheld = true;
+					    }
 					  if($marks->theory_marks=='ABS'){
 						$fc2_abs .= $marks->theory_marks;
 					 
@@ -215,14 +221,25 @@
 					$abs_count++;
 					array_push( $ATKT_paper_codes,$marks->paper_code );
 				}
-				
-				if($marks->theory_marks<$marks->min_theory_marks){
+	
+                if($mode == "REG"){
+                    if($marks->theory_marks<$marks->min_theory_marks){
 					
-					$fail_count++;
-					$get_tot_marks += $marks->theory_marks;
-					$require_tot_marks += $marks->min_theory_marks;
-					array_push( $ATKT_paper_codes,$marks->paper_code );
-				}
+                        $fail_count++;
+                        $get_tot_marks += $marks->theory_marks;
+                        $require_tot_marks += $marks->min_theory_marks;
+                        array_push( $ATKT_paper_codes,$marks->paper_code );
+                    }
+                }else{
+                    if($marks->theory_marks<$marks->private_min_theory_marks){
+					
+                        $fail_count++;
+                        $get_tot_marks += $marks->theory_marks;
+                        $require_tot_marks += $marks->private_min_theory_marks;
+                        array_push( $ATKT_paper_codes,$marks->paper_code );
+                    }
+                }
+				
 				if($classData->internal!="N" && $mode == "REG"){
 					if($marks->int_marks<$marks->min_internal_marks){
 						$int_fail_count++;
@@ -298,7 +315,7 @@
 		  $require_tot_marks += $fc2_min;
 	
 		}
-		if((in_array($student->class_id, $class_ids)) && $mode=='REG')	
+		if((in_array($student->class_id, $class_ids)) && $pattern=='GRADE')	
 			{
 				
 			 $require_grace_marks = $require_tot_marks-$get_tot_marks.'<br>';
@@ -365,7 +382,7 @@
 				<th  class="text-center" style="text-align:left" scope="row"  width="35%" ><span class="style5" style="padding-left: 10px;" >Name of the Candidate and F/H Name</span></th>
 				<th class="text-center" scope="row"  width="10%" >Result</span></th>
 				
-				<?php if((!in_array($student->class_id, $class_ids)) || $mode=='PVT'){ ?>	<th class="text-center" style="padding:0px" align="center" class="text-center" scope="row"  width="20%" colspan='<?php echo ($isFinalClass && !$isOneClass)?"2":"1";?>'><?php if($isFinalClass){
+				<?php if((!in_array($student->class_id, $class_ids)) || $pattern=='MARKS'){ ?>	<th class="text-center" style="padding:0px" align="center" class="text-center" scope="row"  width="20%" colspan='<?php echo ($isFinalClass && !$isOneClass)?"2":"1";?>'><?php if($isFinalClass){
 						?>
 						<table width="100%" border="1" class="m-0">
 							<tr>
@@ -389,7 +406,7 @@
 				?></th><?php } ?>
 				
 				
-				<?php if((in_array($student->class_id, $class_ids)) && $mode=='REG')	
+				<?php if((in_array($student->class_id, $class_ids)) && $pattern=='GRADE')	
 			{ ?>
 				<th class="text-center" scope="row" width="10%"><span class="style5">
 					<?php if($classData->mode=="Annual") echo 'AGPA'; else echo 'SGPA'; ?></span></th>
@@ -462,7 +479,7 @@
 							 $final_result = 'PASS';
 							
 						}
-						if((in_array($student->class_id, $class_ids)) && $mode=='REG'){
+						if((in_array($student->class_id, $class_ids)) && $pattern=='GRADE'){
 						$this->Gradesheet_backlog_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->class_id,$student->mode, $student->id);
 						}else{
 							echo $final_result;
@@ -487,7 +504,7 @@
 <td class="text-center" style="padding:0px" align="center"><?php if(!in_array($final_result, array("FAIL","RW") )){ echo  $grand_obtain .' / '. $grand_total;} ?></td>
 <?php
 			}			}
-			}else if((!in_array($student->class_id, $class_ids)) || $mode=='PVT'){ 
+			}else if((!in_array($student->class_id, $class_ids)) || $pattern=='MARKS'){ 
 				?>
 			<td  class="text-center" style="padding:0px" align="center"><?php
 			if(!in_array($final_result, array("FAIL","RW") )){
@@ -498,9 +515,9 @@
 		</td>
 
 		<?php	
-		if((in_array($student->class_id, $class_ids)) && $mode=='REG'){
+		if((in_array($student->class_id, $class_ids)) && $pattern=='GRADE'){
 			
-			if($final_result != 'FAIL'){
+			if($final_result != 'FAIL' && !$Withheld){
 				
 				$gradesheetData = $this->Gradesheet_backlog_tr_model->view_notification($student->student_id,$student->course_group_id,$student->class_id,$student->mode,$student->id);
 			}else{
@@ -552,13 +569,21 @@
 			}elseif($theory_paper_count==$theory_abs_count){
 				echo 'ABSENT';
 			}else{
-				
-				// if($fail_count == $theory_paper_count){
+				if((in_array($student->class_id, $class_ids)) && $pattern=='GRADE'){
+                    if($gradesheetData['result'] == 'RW'){
+                        echo '';
+                    } 
+                }else{
+                    // if($fail_count == $theory_paper_count){
 				// 	echo 'Year Break';
 				// }else{
 					if($abs_count!=0  || $fail_count!=0){
-
-						$remark= ($check_grace_marks) ? 'FAIL' : 'ATKT IN ';
+                        if($pattern == 'GRADE'){
+                            $remark= ($check_grace_marks) ? 'FAIL' : 'SUPP IN ';
+                        }else{
+                            $remark= ($check_grace_marks) ? 'FAIL' : 'ATKT IN ';
+                        }
+						
 						echo $remark;
 	
 						foreach($ATKT_paper_codes as $paper_code){
@@ -566,6 +591,8 @@
 						} 
 					}
 				// }
+                }
+				
 				
 			}
 		}			
