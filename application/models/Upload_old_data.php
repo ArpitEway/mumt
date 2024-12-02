@@ -419,12 +419,14 @@ class Upload_old_data extends CI_Model
 	{
        
 		if ($this->mode=='PVT') {
-			$this->result_array[$this->paper['paper_code']]['max_marks'] = $this->paper['private_max_theory_marks'];
+			$this->result_array[$this->paper['paper_code']]['max_marks'] = $this->paper['max_theory_marks']+$this->paper['max_internal_marks'];
 			if ($this->paper['type']=='theory') {
-				$this->result_array[$this->paper['paper_code']]['min_marks'] = $this->paper['private_min_theory_marks'];
+				// $this->result_array[$this->paper['paper_code']]['min_marks'] = $this->paper['private_min_theory_marks'];
+                $this->result_array[$this->paper['paper_code']]['min_marks'] = $this->paper['min_theory_marks']+$this->paper['min_internal_marks'];
 				$this->result_array[$this->paper['paper_code']]['obt_marks']= $this->paper['theory_marks'];
 			}else{
-				$this->result_array[$this->paper['paper_code']]['min_marks'] = $this->paper['min_theory_marks'];
+				// $this->result_array[$this->paper['paper_code']]['min_marks'] = $this->paper['min_theory_marks'];
+                $this->result_array[$this->paper['paper_code']]['min_marks'] = $this->paper['min_theory_marks']+$this->paper['min_internal_marks'];
 				$this->result_array[$this->paper['paper_code']]['obt_marks'] = $this->paper['p_marks'];
 			}
 		}else{
