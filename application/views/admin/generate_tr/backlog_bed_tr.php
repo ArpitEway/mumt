@@ -171,6 +171,7 @@
     $int_fail_count = 0;
     $p_abs_count = 0;
     $p_fail_count = 0;
+    $count_theory = 0;
     $fail_count = 0;
     $fail_tot_marks = 0;
     $final_result = '';
@@ -189,7 +190,9 @@
         $total_paper_marks += $new_exam_form->max_theory_marks + $new_exam_form->max_internal_marks;
         $tot_std_marks += $new_exam_form->theory_marks;
         $tot_marks += $new_exam_form->max_theory_marks;
-
+        if($new_exam_form->status == 'B'){
+          $count_theory++;
+          }
         if($new_exam_form->theory_marks=='ABS'){
           array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
           $theory_abs_count++;
@@ -418,6 +421,11 @@
             elseif( $p_abs_count==$p_paper_count){
               echo 'Absent In Practical';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
     }
+      // echo 'Absent In';
+      if($theory_abs_count == $count_theory){
+        echo 'ABSENT';
+      }
+      
               elseif(sizeof($atkt_paper_codes_array) > 0){
                 echo "ATKT in";
                 $atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
