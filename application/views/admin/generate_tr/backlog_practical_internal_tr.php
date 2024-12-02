@@ -208,7 +208,9 @@ table.last_table, .last_table td, .last_table th{
       
       if($new_exam_form->type=='theory'){
         if($new_exam_form->sub_group_id == 1){
-          $count_theory++;
+          if($new_exam_form->status == 'B'){
+            $count_theory++;
+            }
           if($new_exam_form->group_paper_name == 'FC1' ){
             if($new_exam_form->theory_marks==''){
               $rw_count++;
@@ -608,7 +610,11 @@ table.last_table, .last_table td, .last_table th{
             }else{
               if($fail_count == ($count_theory-2)){
                 echo 'Year Break';
-              }else{
+              }
+              elseif($theory_abs_count == $count_theory){
+                echo 'ABSENT';
+              }
+              else{
               if(sizeof($atkt_paper_codes_array)>0){
                 echo "SUPP In";
               }
