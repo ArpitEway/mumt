@@ -255,6 +255,9 @@ class Gradesheet_backlog_model_pg extends CI_Model
                 if(($this->paper['theory_marks']=='00' || $this->paper['theory_marks']=='0') && $this->paper['status'] =='B'){
                     $this->zero_count++;
                 }
+                if ($this->paper["status"]=='B') {
+                    $this->theory_fail_count++;
+                }
 				$check_fail_marks = $this->paper["theory_marks"] ;
 				$check_fail_min_marks = $this->paper["min_theory_marks"];
 				$check_fail_tot_marks = $this->paper["max_theory_marks"];
@@ -267,6 +270,9 @@ class Gradesheet_backlog_model_pg extends CI_Model
 				}
                 if(($this->paper['theory_marks']=='00' || $this->paper['theory_marks']=='0') && $this->paper['status'] =='B'){
                     $this->zero_count++;
+                }
+                if ($this->paper["status"]=='B') {
+                    $this->theory_fail_count++;
                 }
 				$check_fail_marks = $this->paper["theory_marks"];
 				$check_fail_min_marks = $this->paper["private_min_theory_marks"];
@@ -302,9 +308,7 @@ class Gradesheet_backlog_model_pg extends CI_Model
 		$where = 'min_marks <= '.$persent.' and  max_marks >= '.$persent.'';
 		$gradeData = $this->Common_model->getRecordByWhere('letter_grade_pg',$where);
 		if ('F'==$gradeData[0]->letter_grade || 'ABS' ==$gradeData[0]->letter_grade) {
-            if ($this->paper["type"]=='theory') {
-                $this->theory_fail_count++;
-            }
+           
 			$this->fail_count++;
 			$this->fail_obt_marks += $check_fail_marks;
 			$this->fail_tot_marks += $check_fail_tot_marks;
