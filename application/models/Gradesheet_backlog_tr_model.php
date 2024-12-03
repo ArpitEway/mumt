@@ -56,8 +56,8 @@ class Gradesheet_backlog_tr_model extends CI_Model
 		$this->tot_credit = 0;
 		$this->mode = $mode;
 		$this->fail_count=0;
-        $this->zero_count = 0;
-        $this->theory_fail_count = 0;
+        // $this->zero_count = 0;
+        // $this->theory_fail_count = 0;
 		$this->obt_tot_credit = 0;
 		$this->grade_tot_point=0;
 		$this->fail_tot_marks = 0;
@@ -118,8 +118,8 @@ class Gradesheet_backlog_tr_model extends CI_Model
 		$this->tot_credit = 0;
 		$this->mode = $mode;
 		$this->fail_count=0;
-        $this->zero_count = 0;
-        $this->theory_fail_count = 0;
+        // $this->zero_count = 0;
+        // $this->theory_fail_count = 0;
 		$this->obt_tot_credit = 0;
 		$this->grade_tot_point=0;
 		$this->fail_tot_marks = 0;
@@ -137,7 +137,7 @@ class Gradesheet_backlog_tr_model extends CI_Model
 		}
 		
 		$this->notification_agpa();
-		
+		// return $this->result();
 	}
 
 	public function view_notification_result($student_id,$course_group_id,$class_id,$mode, $exam_id)
@@ -165,8 +165,8 @@ class Gradesheet_backlog_tr_model extends CI_Model
 		$this->tot_credit = 0;
 		$this->mode = $mode;
 		$this->fail_count=0;
-        $this->zero_count = 0;
-        $this->theory_fail_count = 0;
+        // $this->zero_count = 0;
+        // $this->theory_fail_count = 0;
 		$this->obt_tot_credit = 0;
 		$this->grade_tot_point=0;
 		$this->fail_tot_marks = 0;

@@ -118,7 +118,10 @@ $abs_count = 0 ;
 					{
 						
 						if($new_exam_form->type=='theory'){
-							$theory_paper_count++;
+                            if($new_exam_form->status =='B'){
+                                $theory_paper_count++;
+                            }
+							
 
 							
 							if($new_exam_form->sub_group_id == 1){
@@ -218,7 +221,9 @@ $abs_count = 0 ;
 
 					}else{
 						if($new_exam_form->type=='theory'){
-							$theory_paper_count++;
+                            if($new_exam_form->status =='B'){
+                                $theory_paper_count++;
+                            }
 							$total_theory_marks_obt += $new_exam_form->theory_marks;
 							$total_int_marks_obt += $new_exam_form->int_marks;
 							$total_marks_obt  += $new_exam_form->theory_marks+ $new_exam_form->int_marks;
@@ -603,27 +608,27 @@ $abs_count = 0 ;
 								
 								if((in_array($student->class_id, $class_ids)) && $mode=='REG')	
 								{
-									
-									if($Withheld){
+									echo $gradesheetData['result'];
+									if($Withheld || $gradesheetData['result'] == 'RW'){
 										echo " ";
-									}elseif( $theory_abs_count== ($theory_paper_count-2) && $p_abs_count==$p_paper_count){
-										echo 'Year Break';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
-									  }elseif( $theory_abs_count== ($theory_paper_count -2)){
-										echo 'Year Break';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
+									}
+                                   // elseif( $theory_abs_count== ($theory_paper_count-2) && $p_abs_count==$p_paper_count){
+										//echo 'Year Break';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
+									//   }else
+                                      elseif( $theory_abs_count== $theory_paper_count){
+										echo 'ABSENT';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
 									  }
 									 elseif( $p_abs_count==$p_paper_count){
 										echo 'Absent In Practical';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
 									  }
 									elseif(sizeof($atkt_paper_codes_array)>0){
-										if($fail_count == ($theory_paper_count -2 )){
-											echo 'Year Break';
-										}else{
+										
 											echo "SUPP in ";
 										$atkt_paper_codes_array =  array_unique($atkt_paper_codes_array);
 										foreach($atkt_paper_codes_array as $paper_code){
 											echo  "<br>". $paper_code;
 										}
-										}
+										
 										
 									}else{
 										echo '';

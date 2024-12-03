@@ -561,18 +561,32 @@
 			}else{
 			if(count($ATKT_paper_codes)==0 || $Withheld) {
 				$remark='';
-			}elseif($theory_paper_count==$theory_abs_count && ($practical_paper_count == $practical_abs_count && $count_practical!=0)){
-				echo 'Year Break';
-			}
+			// }elseif($theory_paper_count==$theory_abs_count && ($practical_paper_count == $practical_abs_count && $count_practical!=0)){
+			// 	echo 'Year Break';
+			 }
 			elseif(($p_abs_count == $count_practical && $count_practical!=0)){
 				echo 'Absent In Practical';
 			}elseif($theory_paper_count==$theory_abs_count){
 				echo 'ABSENT';
 			}else{
+               
 				if((in_array($student->class_id, $class_ids)) && $pattern=='GRADE'){
                     if($gradesheetData['result'] == 'RW'){
                         echo '';
                     } 
+                    if($abs_count!=0  || $fail_count!=0){
+                        if($pattern == 'GRADE'){
+                            $remark= ($check_grace_marks) ? 'FAIL' : 'SUPP IN ';
+                        }else{
+                            $remark= ($check_grace_marks) ? 'FAIL' : 'ATKT IN ';
+                        }
+						
+						echo $remark;
+	
+						foreach($ATKT_paper_codes as $paper_code){
+							echo  "". $paper_code.' ' ;
+						} 
+					}
                 }else{
                     // if($fail_count == $theory_paper_count){
 				// 	echo 'Year Break';
