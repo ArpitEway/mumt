@@ -42,7 +42,7 @@ class Gradesheet_backlog_tr_model extends CI_Model
 			$papers = $this->Common_model->get_all_backlog_papers($student_id,$class_id,$exam_id);
 		}
 
-		if($this->classData->id == 101){
+		if($this->classData->id == 101 || $this->classData->class_group == 'Y'){
 			$papers_list = $this->Common_model->get_all_backlog_group_papers($student_id,$class_id,$exam_id);
 		}
 	
@@ -104,7 +104,7 @@ class Gradesheet_backlog_tr_model extends CI_Model
             
 		}
 
-		if($this->classData->id == 101){
+		if($this->classData->id == 101 || $this->classData->class_group == 'Y'){
 			$papers_list = $this->Common_model->get_all_backlog_group_papers($student_id,$class_id,$exam_id);
 		}
 	
@@ -151,7 +151,7 @@ class Gradesheet_backlog_tr_model extends CI_Model
 			$papers = $this->Common_model->get_all_backlog_papers($student_id,$class_id,$exam_id);
 		}
 
-		if($this->classData->id == 101){
+		if($this->classData->id == 101 || $this->classData->class_group == 'Y'){
 			$papers_list = $this->Common_model->get_all_backlog_group_papers($student_id,$class_id,$exam_id);
 		}
 	

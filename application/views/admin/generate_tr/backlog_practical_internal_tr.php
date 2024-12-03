@@ -587,31 +587,33 @@ table.last_table, .last_table td, .last_table th{
           ?></td>
           <td  class="align-middle text-center result" rowspan="<?php echo $rowspandata ?>"><?php echo $gradesheetData['result']; //$final_result; ?></td>
           <td  class="align-middle text-center result" rowspan="<?php echo $rowspandata ?>"><?php   if($gradesheetData['result'] == 'RW'){ echo '';}else{ echo ($gradesheetData['result'] == 'FAIL' || $gradesheetData['result'] == 'SUPP')?'0.00':number_format((float)$gradesheetData['agpa'], 2, '.', '');} ?></td>
-          <td  class="align-middle text-cente remarks"  rowspan="<?php echo $rowspandata ?>"><?php 
+          <td  class="align-middle text-cente remarks"  rowspan="<?php echo $rowspandata ?>"><?php
           if($check_grace_marks){
             echo "-";
           }else{
            
-            if($final_result == "RW"){
+            if($final_result == "RW" || $gradesheetData['result'] == 'RW'){
               echo "";
             }
-            elseif($int_abs_count>0 &&  $theory_abs_count>0 && $p_abs_count>0){
-              echo 'Year Break';
-            } 
-            elseif($int_abs_count == $count_int ||  $theory_abs_count == ($count_theory-2) || ($p_abs_count == $count_practical)){
+            // elseif($int_abs_count>0 &&  $theory_abs_count>0 && $p_abs_count>0){
+            //   echo 'Year Break';
+            // } 
+            elseif($int_abs_count == $count_int ||  ($theory_abs_count == ($count_theory-2) && $theory_abs_count !=0) || ($p_abs_count == $count_practical)){
              
-              if($theory_abs_count == ($count_theory -2)){
-                echo 'Year Break';
-              }elseif($int_abs_count == $count_int){
+            //   if($theory_abs_count == ($count_theory -2) && $theory_abs_count !=0){
+            //     echo 'Year Break';
+            //   }else
+              if($int_abs_count == $count_int){
                 echo ' Absent In Internal'; 
               }elseif($p_abs_count == $count_practical){
                 echo ' Absent In Practical';
               }
             }else{
-              if($fail_count == ($count_theory-2)){
-                echo 'Year Break';
-              }
-              elseif($theory_abs_count == $count_theory){
+            //   if($fail_count == ($count_theory-2)){
+            //     echo 'Year Break';
+            //   }
+            //   else
+              if($theory_abs_count == $count_theory){
                 echo 'ABSENT';
               }
               else{
