@@ -2821,7 +2821,10 @@ public function getStudentData()
 
 	public function getEditStudentMarksData()
 	{
-		$roll_no = $this->input->post('roll_no');
+	    
+		if($this->input->post('roll_no')!=0){
+			$roll_no = $this->input->post('roll_no');
+		}
 		$studentData = $this->Common_model->getRecordByWhere('student',array('roll_no'=>$roll_no,'new_exam_form'=>'Y'));
 		
 		$studentPaper = $this->Common_model->get_student_papers($studentData[0]->student_id,$studentData[0]->class_id);
