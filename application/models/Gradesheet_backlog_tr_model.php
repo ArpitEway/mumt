@@ -81,10 +81,11 @@ class Gradesheet_backlog_tr_model extends CI_Model
 			$this->set_result();
 			$this->AGPA();
 		}else{
-			$this->result_head_pvt();
+			$this->result_head();
 			$this->set_result();
-			$this->AGPA_pvt();
+			$this->AGPA();
 		}
+       
 		return $this->result();
 		// echo "<pre>";
 		// print_r($this->foundation_paper);
@@ -421,10 +422,11 @@ class Gradesheet_backlog_tr_model extends CI_Model
 
 	public function set_result()
 	{
+       
 		if ($this->withheld==true) {
 			return $this->result = 'RW';
-		}elseif($this->theory_fail_count!=0 && ($this->zero_count == $this->theory_fail_count)){
-          return  $this->result = 'RW';
+		// }elseif($this->theory_fail_count!=0 && ($this->zero_count == $this->theory_fail_count)){
+        //   return  $this->result = 'RW';
         }elseif ($this->fail_count!=0 && $this->agpa>=4) {
 			if ($this->check_grace_marks) {
 				return	$this->result = 'PASS BY GRACE';

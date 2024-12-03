@@ -72,7 +72,7 @@ class Gradesheet_backlog_tr_model_pg extends CI_Model
 			$this->set_result();
 			
 		}else{
-			$this->result_head_pvt();
+		
 			$this->set_result();
 			$this->AGPA_pvt();
 		}
@@ -318,14 +318,16 @@ class Gradesheet_backlog_tr_model_pg extends CI_Model
 
 	public function set_result()
 	{
-		
+       
 		if ($this->withheld==true) {
 			return $this->result = 'RW';
-		} elseif($this->theory_fail_count!=0 && ($this->zero_count == $this->theory_fail_count)){
-            return $this->result = 'RW';
-        }
-       
-		if ($this->fail_count!=0 && $this->agpa>=4) {
+		} 
+        
+        // elseif($this->theory_fail_count!=0 && ($this->zero_count == $this->theory_fail_count)){
+        //     return $this->result = 'RW';
+        // }
+      
+		elseif ($this->fail_count!=0 && $this->agpa>=4) {
 			// if ($this->check_grace_marks) {
 			// 	return	$this->result = 'PASS BY GRACE';
 			// }else{
