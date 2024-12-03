@@ -229,15 +229,15 @@ class Gradesheet_backlog_model extends CI_Model
 		
 			$this->_row();
 		}
-        if($this->theory_fail_count!=0 && ($this->zero_count == $this->theory_fail_count)){
-            echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
-                    '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
-                    '<h3 class="text-center">'.'WH'.'</h3>'.
-                    '</div>';
-                    return $this->result();
+        // if($this->theory_fail_count!=0 && ($this->zero_count == $this->theory_fail_count)){
+        //     echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
+        //             '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
+        //             '<h3 class="text-center">'.'WH'.'</h3>'.
+        //             '</div>';
+        //             return $this->result();
                 
-                    die;
-        }
+        //             die;
+        // }
 		
 		// var_dump($this->result_array);
 		
