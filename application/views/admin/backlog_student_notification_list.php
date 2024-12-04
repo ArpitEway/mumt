@@ -208,7 +208,12 @@
 					$total_max_marks +=$marks->max_theory_marks+$marks->max_internal_marks;
 				}else{
 					$total_obtained_marks +=$marks->theory_marks;
-					$total_max_marks +=$marks->max_theory_marks;
+                    if($pattern="MARKS" && $mode == "PVT"){
+                        $total_max_marks +=$marks->private_max_theory_marks;
+                    }else{
+                        $total_max_marks +=$marks->max_theory_marks;
+                    }
+					
 				}
 				if($marks->theory_marks==''){
 					$Withheld = true;
@@ -592,13 +597,8 @@
 				// 	echo 'Year Break';
 				// }else{
 					if($abs_count!=0  || $fail_count!=0){
-                        if($pattern == 'GRADE'){
-                            $remark= ($check_grace_marks) ? 'FAIL' : 'SUPP IN ';
-                        }else{
-                            $remark= ($check_grace_marks) ? 'FAIL' : 'ATKT IN ';
-                        }
-						
-						echo $remark;
+                     $remark= ($check_grace_marks) ? 'FAIL' : 'ATKT IN ';
+                    	echo $remark;
 	
 						foreach($ATKT_paper_codes as $paper_code){
 							echo  "". $paper_code.' ' ;

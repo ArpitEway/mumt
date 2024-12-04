@@ -181,7 +181,7 @@
                         $this->db->order_by('id', 'desc');
                         $this->db->limit(1);
                         $old = $this->Common_model->getRecordByWhere('old_exam_data', array('student_id'=>$student->student_id,'class_id'=>$cls->id,'course_group_id'=>$student->course_group_id,'university_mode'=>$student->mode));
-                        $gradeData   = $this->Gradesheet_model->view_old_results($student->student_id,$student->course_group_id,$cls->id,$student->university_mode, $old[0]->id, $old[0]->exam_status);
+                        $gradeData   = $this->Gradesheet_model->view_old_results($student->student_id,$student->course_group_id,$cls->id,$student->mode, $old[0]->id, $old[0]->exam_status);
                         ?>
                         <tr align="center"><th><?=$sno?></th><td><?= ($gradeData['tot_credit'] == 0)?'':$gradeData['tot_credit']?></td><td><?php if($gradeData['obt_credit'] == 0 && $gradeData['tot_credit'] !=0) { echo '0'; }elseif($gradeData['obt_credit'] == 0){ echo '';}else{ echo $gradeData['obt_credit'];}?></td><td><?php if ($gradeData['credit_point'] == 0 && $gradeData['tot_credit'] !=0){ echo '0';}elseif($gradeData['credit_point'] == 0){ echo ''; }else { echo $gradeData['credit_point']; }?></td><td>
                         <?php if(is_nan($gradeData['agpa'])){

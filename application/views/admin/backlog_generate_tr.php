@@ -583,6 +583,8 @@ table.last_table, .last_table td, .last_table th{
   <?= 'Session'.'<br>'.'Sem/Year'.'<br>'.'Roll no'.'<br>'.'Marks'?></strong>
  
 </td> <?php
+ $total_ob=0;
+ $total_mar=0;
    foreach($classes as $cls){
   $this->db->order_by('id','desc');
   $this->db->limit(1);
@@ -596,16 +598,9 @@ table.last_table, .last_table td, .last_table th{
  
   }
 
-  $total_ob = $total_marks_obt + $old->obtain_marks;
-  $total_mar =  $total_paper_marks + $old->total_marks;
-  $percent = round(($total_ob/$total_mar)*100,2);    
-    if($percent>=60){
-      $div = "First";
-    }elseif($percent<60 && $percent>=40){
-      $div  = "Second";
-    }else{
-      $div = "Third";
-    }
+  $total_ob += $old->obtain_marks;
+  $total_mar +=  $old->total_marks;
+  
   ?> 
   
   
@@ -625,6 +620,17 @@ table.last_table, .last_table td, .last_table th{
     $final_result ='RWPM';
     $final_remark ="RWPM";
   }
+ }else{
+    $total_ob += $total_marks_obt ;
+    $total_mar +=  $total_paper_marks;
+    $percent = round(($total_ob/$total_mar)*100,2);    
+    if($percent>=60){
+      $div = "First";
+    }elseif($percent<60 && $percent>=40){
+      $div  = "Second";
+    }else{
+      $div = "Third";
+    }
  }
  
  ?>
