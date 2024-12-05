@@ -110,7 +110,7 @@ $abs_count = 0 ;
 					$fc2_min =0;
 					$grand_obt=0;
 					$grand_tot =0;
-					$class_ids=array(101,104,107,110,116,119,125,128,131,134);
+					$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136);
 					$paper_marks = $this->Common_model->backlog_student_info_for_BEd_result($student->student_id,$student->class_id,$student->id);
 					// $this->Common_model->last_query();
 					foreach($paper_marks as  $new_exam_form){
@@ -569,7 +569,7 @@ $abs_count = 0 ;
 						</td>
 						<?php
 							if((in_array($student->class_id, $class_ids)) && $mode=='REG'){
-								if($final_result != 'FAIL'){
+								if($final_result != 'FAIL' && !$Withheld){
 							$gradesheetData = $this->Gradesheet_backlog_tr_model->view_notification($student->student_id,$student->course_group_id,$student->class_id,$student->mode, $student->id);
 								}else{
 									?>

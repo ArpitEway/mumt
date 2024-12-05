@@ -48,7 +48,7 @@
 			<td>
 				<?php
 				
-				if ($class->practical_internal_marks=='Y' && $class->id !=205 && $class->id !=206){ 
+				if ($class->practical_internal_marks=='Y' && $class->id !=205 && $class->id !=206 && $class->id !=252){ //class->id 252 for non cbcs students remove next year
 					 
 					 
 					 if($class->regular_class=='Y') { ?>    
@@ -74,9 +74,9 @@
 				 } ?>
 			</td>
 			<td>
-				<?php if ($class->practical_internal_marks=='Y' && $class->id !=205 && $class->id !=206){ 
+				<?php if ($class->practical_internal_marks=='Y' && $class->id !=205 && $class->id !=206 && $class->id !=252){//class->id 252 for non cbcs students remove next year  
 					if($class->regular_class=='Y') {?>
-				<a target="_blank" href="<?php echo  base_url('admin/admins/backlog_student_notification_list_bed/'."/REG/G/".$course_id.'/'.$class_id)  ?>">Notification Regular</a>
+				<a target="_blank" href="<?php echo  base_url('admin/admins/backlog_student_notification_list_bed/'."/REG/M/".$course_id.'/'.$class_id)  ?>">Notification Regular</a>
                 
 					<?php }
                     if(!empty($cbcs) ){ ?>
