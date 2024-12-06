@@ -3,6 +3,7 @@ $withheld = false;
 $check_grace_marks = false;
 $fail_count = 0;
 $theory_count = 0;
+$abs_thoery_count=0;
 $zero_count = 0;
 $sessional_fail_count = 0;
 $fali_tot_marks = 0;
@@ -46,6 +47,7 @@ foreach($new_exam_form as $marks){
     }
     if($marks->theory_marks=='ABS'){
       $abs_count++;
+      $abs_thoery_count++;
       $result = "Fail";
       $fail_count++;
     }
@@ -325,6 +327,8 @@ if ($old_fail) {
      
             if($check_grace_marks){
               echo "PASS BY GRACE";
+            }elseif($abs_thoery_count == $theory_count){
+                echo "FAIL";
             }elseif($fail_count>0 || $sessional_fail_count >0){
               echo "ATKT";
             }else{
