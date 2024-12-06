@@ -690,7 +690,7 @@ $abs_count = 0 ;
 									
 									if($check_grace_marks){
 										echo " ";
-									}elseif($Withheld){
+									}elseif($Withheld || $gradesheetData['result'] == 'RW'|| $gradesheetData['result'] == 'RWAS' || $gradesheetData['result'] == 'RWPR'){
                                         echo " ";
                                     }elseif( $theory_abs_count== ($theory_paper_count-2) && $p_abs_count==$p_paper_count){
 										echo 'Year Break';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 

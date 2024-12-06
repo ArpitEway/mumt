@@ -152,6 +152,8 @@ class Gradesheet_tr_model_pg extends CI_Model
 		$this->fail_obt_marks = 0;
 		$this->check_grace_marks = false;
 		$this->withheld = false;
+        $this->withheld_practical = false;
+        $this->withheld_internal = false;
 		foreach ($papers as $paper) {
 			$this->paper = $paper;
 			$this->_row();
@@ -212,7 +214,8 @@ class Gradesheet_tr_model_pg extends CI_Model
 			if($this->mode=='REG'){
 				if ($this->paper['theory_marks']==''){
                     $this->withheld = true;
-                }elseif($this->paper["int_marks"]=='' || $this->paper["int_marks"]=='N') {
+                }
+                if($this->paper["int_marks"]=='' || $this->paper["int_marks"]=='N') {
 					// 
                     $this->withheld_internal = true;
 				}
@@ -650,7 +653,7 @@ class Gradesheet_tr_model_pg extends CI_Model
 	  
 	   foreach ($this->result_array as $key => $result) {
 		  
-		   if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+		   if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory'&& !$this->withheld && !$this->withheld_practical && !$this->withheld_internal) {
 			   
 			   $this->obt_tot_credit +=$result['credit'];
 			   
@@ -690,7 +693,7 @@ class Gradesheet_tr_model_pg extends CI_Model
 	  
 	   foreach ($this->result_array as $key => $result) {
 		  
-		   if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+		   if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory'&& !$this->withheld && !$this->withheld_practical && !$this->withheld_internal) {
 			   
 			   $this->obt_tot_credit +=$result['credit'];
 			   

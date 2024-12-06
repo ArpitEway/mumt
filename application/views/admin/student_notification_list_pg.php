@@ -281,7 +281,7 @@
 			</td>
 			<td class="text-center" align="center" >
 				<?php
-				if($Withheld){
+				if($Withheld && $student->exam_pattern == "MARKS"){
 					// echo 'RW';
 					echo $final_result = "RW";
 				}else{

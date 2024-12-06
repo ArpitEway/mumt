@@ -64,6 +64,8 @@ class Gradesheet_model_pg extends CI_Model
 		$this->fail_obt_marks = 0;
 		$this->check_grace_marks = false;
 		$this->withheld = false;
+        $this->withheld_practical = false;
+        $this->withheld_internal = false;
 		foreach ($papers as $paper) {
 			$this->paper = $paper;
 			// || in_array($student->examcentercode ,array('MDE052','MDE081','MDE156') )
@@ -72,6 +74,27 @@ class Gradesheet_model_pg extends CI_Model
 				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
 				 '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
 				  '<h3 class="text-center">'.'WH'.'</h3>'.
+				'</div>';
+				return $this->result();
+			
+				die;
+			}
+
+            if($this->withheld_internal){
+				
+				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
+				 '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
+				  '<h3 class="text-center">'.'RWAS'.'</h3>'.
+				'</div>';
+				return $this->result();
+			
+				die;
+			}
+            if($this->withheld_practical){
+				
+				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
+				 '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
+				  '<h3 class="text-center">'.'RWPR'.'</h3>'.
 				'</div>';
 				return $this->result();
 			
@@ -299,8 +322,12 @@ class Gradesheet_model_pg extends CI_Model
 		 	$this->total_marks += $this->paper["max_theory_marks"]+ $this->paper["max_internal_marks"];
 		
 			if($this->mode=='REG'){
-				if ($this->paper['theory_marks']=='' || ($this->paper["int_marks"]=='' || $this->paper["int_marks"]=='N')) {
-					$this->withheld = true;
+                if ($this->paper['theory_marks']==''){
+                    $this->withheld = true;
+                }
+                if($this->paper["int_marks"]=='' || $this->paper["int_marks"]=='N') {
+					// 
+                    $this->withheld_internal = true;
 				}
                 if($this->paper['theory_marks']=='00' || $this->paper['theory_marks']=='0'){
                     $this->zero_count++;
@@ -326,14 +353,14 @@ class Gradesheet_model_pg extends CI_Model
 			$this->obt_marks += $this->paper["p_marks"]+$this->paper["int_marks"];
 		 $this->total_marks += $this->paper["max_theory_marks"]+  $this->paper["max_internal_marks"];
 		
-			if ($this->paper['p_marks']==''){
-				$this->withheld = true;
-			}
-            if($this->paper['int_marks']=='N'&& $mode != 'PVT' && $this->paper['max_internal_marks'] !=0 && $this->classData->practical_internal_marks == 'Y'){
-                // $rwas_count++;
-                $this->withheld = true;
-                
-              }
+         if ($this->paper['p_marks']=='' || $this->paper['p_marks']=='N'){
+            $this->withheld_practical = true;
+        }
+        if($this->paper['int_marks']=='N'&& $mode != 'PVT' && $this->paper['max_internal_marks'] !=0 && $this->classData->practical_internal_marks == 'Y'){
+            // $rwas_count++;
+            // $this->withheld = true;
+            $this->withheld_internal = true;
+          }
 			$check_fail_marks = $this->paper["p_marks"];
 				$check_fail_min_marks = $this->paper["min_theory_marks"];
 				$check_fail_tot_marks = $this->paper["max_theory_marks"];
@@ -389,8 +416,12 @@ class Gradesheet_model_pg extends CI_Model
 	{
 		// var_dump($this->withheld);die;
 		if ($this->withheld==true) {
-			$this->result = 'RW';
-		}
+			return $this->result = 'RW';
+		}elseif($this->withheld_internal == true){
+            return $this->result = 'RWAS';
+        }elseif($this->withheld_practical == true){
+            return $this->result = 'RWPR';
+        }
 		else if ($this->fail_count!=0 && $this->agpa>=4) {
 			if ($this->check_grace_marks) {
 				$this->result = 'PASS BY GRACE';
@@ -459,7 +490,7 @@ class Gradesheet_model_pg extends CI_Model
 			echo "<tr>";
 			echo "<th>".$key."</th>";
 			echo "<th>".$result['paper_name']."</th>";
-			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory'&& !$this->withheld && !$this->withheld_practical && !$this->withheld_internal) {
 				$this->check_grace_marks = true;
 				$this->obt_tot_credit += $result['credit'];
 				$req_marks = $result['min_marks']-$result['obt_marks'];
