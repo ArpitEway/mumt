@@ -3,6 +3,7 @@ $withheld = false;
 $check_grace_marks = false;
 $fail_count = 0;
 $theory_count = 0;
+$abs_thoery_count = 0;
 $zero_count = 0;
 $fali_tot_marks = 0;
 $require_tot_marks = 0;
@@ -46,6 +47,7 @@ foreach($new_exam_form as $marks){
     }
     if($marks->theory_marks=='ABS'){
       $abs_count++;
+      $abs_thoery_count++;
       $result = "Fail";
       $fail_count++;
     }
@@ -77,6 +79,7 @@ foreach($new_exam_form as $marks){
       }
       if($marks->theory_marks=='ABS'){
         $abs_count++;
+        $abs_thoery_count++;
         $result = "Fail";
         $fail_count++;
       }
@@ -249,6 +252,8 @@ if ($withheld ) { //||  in_array($student->examcentercode ,array('MDE052','MDE08
       <?php 
             if($check_grace_marks){
               echo "PASS BY GRACE";
+            }elseif($theory_count == $abs_thoery_count){
+                echo "FAIL";
             }elseif($fail_count>0){
               echo "ATKT";
             }else{
