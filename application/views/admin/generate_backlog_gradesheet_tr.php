@@ -598,17 +598,18 @@ table.last_table, .last_table td, .last_table th{
             //   echo 'Year Break';
             // }
             elseif(($int_abs_count == $count_int && $count_int!=0) ||  ($theory_abs_count == ($count_theory - 2) && ($count_theory - 2)!=0) || ($p_abs_count == $count_practical && $count_practical!=0)){
-              if($theory_abs_count == ($count_theory-2)){
-                echo 'Year Break';
-              }elseif($int_abs_count == $count_int){
+            //   if($theory_abs_count == ($count_theory-2)){
+            //     echo 'Year Break';
+            //   }else
+              if($int_abs_count == $count_int){
                 echo ' Absent In Internal'; 
               }elseif($p_abs_count == $count_practical && $count_practical !=0){
                 echo ' Absent In Practical';
               }
             }else{
-              if($fail_count == ($count_theory - 2)){
-                echo 'Year Break';
-              }else{
+            //   if($fail_count == ($count_theory - 2)){
+            //     echo 'Year Break';
+            //   }else{
               if(sizeof($atkt_paper_codes_array)>0){
                 echo "SUPP in";
               }
@@ -616,7 +617,7 @@ table.last_table, .last_table td, .last_table th{
               foreach($atkt_paper_codes_array as $paper_code){
                 echo  "<br>". $paper_code;
               }
-            }
+            // }
             }
           }
           ?>
