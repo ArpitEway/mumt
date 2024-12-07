@@ -428,11 +428,8 @@ class Gradesheet_backlog_tr_model extends CI_Model
 		// }elseif($this->theory_fail_count!=0 && ($this->zero_count == $this->theory_fail_count)){
         //   return  $this->result = 'RW';
         }elseif ($this->fail_count!=0 && $this->agpa>=4) {
-			if ($this->check_grace_marks) {
-				return	$this->result = 'PASS BY GRACE';
-			}else{
-				return 	$this->result = 'FAIL';
-			}
+			return 	$this->result = 'FAIL';
+			
 		}else if($this->agpa<4){
 			
 			return $this->result = 'FAIL';
