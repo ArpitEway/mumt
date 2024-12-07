@@ -545,11 +545,8 @@ class Gradesheet_backlog_model extends CI_Model
 		if ($this->withheld==true) {
 			$this->result = 'WITHHELD';
 		}else if ($this->fail_count!=0 && $this->agpa>=4) {
-			if ($this->check_grace_marks) {
-				$this->result = 'PASS BY GRACE';
-			}else{
-				$this->result = 'FAIL';
-			}
+		    $this->result = 'FAIL';
+		
 		}else if($this->agpa<4){
 			$this->result = 'FAIL';
 		}else{
