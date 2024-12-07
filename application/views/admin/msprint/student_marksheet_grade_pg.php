@@ -205,13 +205,8 @@
                         }
                         ?>
                         </td>
-                        <?php
-                        if($classData->last_class == 'L'){
-                            ?>
-                            <td><?= $wordNumerals[count($old_count)]?></td>
-                            <?php
-                        }
-                        ?>
+                      <td><?= $wordNumerals[count($old_count)]?></td>
+                          
                      </tr>
                                 <?php
                             }else{
