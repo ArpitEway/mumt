@@ -171,7 +171,8 @@
                     </tbody>
                  </table> -->
                  <table border='1' cellpadding="2"  width="103%">
-                  <tr align="center"><th width='12.5%'>Semester</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>SGPA</th><th width='12.5%'>Attempt</th></tr>
+                  <tr align="center"><th width='12.5%'>Semester</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>SGPA</th>
+                  <?php  if($classData->last_class == 'L'){ ?><th width='12.5%'>Attempt</th><?php }?></tr>
                     <?php
                      $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$student->course_group_id,'mode'=>'Semester'));
                      $count = 0;
@@ -193,6 +194,45 @@
                        
                             $total_grade_point += number_format((float)$gradeData['agpa'], 2, '.', '') * $gradeData['obt_credit']; 
                             $total_course_credit +=$gradeData['tot_credit'];
+                            if($classData->last_class == 'L'){
+                                ?>
+                                <tr align="center"><th><?=$sno?></th><td><?= ($gradeData['tot_credit'] == 0)?'':$gradeData['tot_credit']?></td><td><?php if($gradeData['obt_credit'] == 0 && $gradeData['tot_credit'] !=0) { echo '0'; }elseif($gradeData['obt_credit'] == 0){ echo '';}else{ echo $gradeData['obt_credit'];}?></td><td><?php if ($gradeData['credit_point'] == 0 && $gradeData['tot_credit'] !=0){ echo '0';}elseif($gradeData['credit_point'] == 0){ echo ''; }else { echo $gradeData['credit_point']; }?></td><td>
+                        <?php if(is_nan($gradeData['agpa'])){
+                            echo '';
+                        }else{
+                           echo  ($gradeData['result']== 'FAIL' || $gradeData['result']== 'SUPP')?'0.00':number_format((float)$gradeData['agpa'], 2, '.', '');
+                           
+                        }
+                        ?>
+                        </td>
+                        <?php
+                        if($classData->last_class == 'L'){
+                            ?>
+                            <td><?= $wordNumerals[count($old_count)]?></td>
+                            <?php
+                        }
+                        ?>
+                     </tr>
+                                <?php
+                            }else{
+                                
+                                if($cls->id <= $exam_data->class_id)  
+                      {
+                        if($cls->id == $exam_data->class_id &&  $gradesheetData['result'] == 'FAIL'){
+                            ?>
+                             <tr align="center"><th><?=$sno?></th><td><?= ($gradesheetData['tot_credit'] == 0)?'':$gradesheetData['tot_credit']?></td><td><?php if($gradesheetData['obt_credit'] == 0 && $gradesheetData['tot_credit'] !=0) { echo '0'; }elseif($gradesheetData['obt_credit'] == 0){ echo '';}else{ echo $gradesheetData['obt_credit'];}?></td><td><?php if ($gradesheetData['credit_point'] == 0 && $gradesheetData['tot_credit'] !=0){ echo '0';}elseif($gradesheetData['credit_point'] == 0){ echo ''; }else { echo $gradesheetData['credit_point']; }?></td><td>
+                        <?php if(is_nan($gradesheetData['agpa'])){
+                            echo '';
+                        }else{
+                           echo  '0.00';
+                           
+                        }
+                        ?>
+                        </td>
+                     </tr>
+                            
+                            <?php
+                        }else{
                             ?>
                              <tr align="center"><th><?=$sno?></th><td><?= ($gradeData['tot_credit'] == 0)?'':$gradeData['tot_credit']?></td><td><?php if($gradeData['obt_credit'] == 0 && $gradeData['tot_credit'] !=0) { echo '0'; }elseif($gradeData['obt_credit'] == 0){ echo '';}else{ echo $gradeData['obt_credit'];}?></td><td><?php if ($gradeData['credit_point'] == 0 && $gradeData['tot_credit'] !=0){ echo '0';}elseif($gradeData['credit_point'] == 0){ echo ''; }else { echo $gradeData['credit_point']; }?></td><td>
                         <?php if(is_nan($gradeData['agpa'])){
@@ -203,8 +243,24 @@
                         }
                         ?>
                         </td>
-                        <td><?= $wordNumerals[count($old_count)]?></td>
                      </tr>
+                            <?php
+                        }
+                     ?>
+                     
+                     
+                     <?php
+                      }else{
+                        ?>
+                        <tr>
+                        <th><?=$sno?></th><td></td><td></td><td></td><td></td>
+                        </tr>
+                        <?php
+                      }
+                               
+                            }
+                            ?>
+                             
                            
                      <?php
                      }
@@ -213,8 +269,8 @@
                    </tbody>
                  </table>
                  <?php
-                 $dept_ids = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30);
-              if($classData->last_class == 'L' && !in_array($exam_data->center_id, $dept_ids))
+                
+              if($classData->last_class == 'L')
                      {
 
                         $cgpa = number_format((float)($total_grade_point/$total_course_credit), 2, '.', '');

@@ -140,6 +140,7 @@ class MsPrint extends CI_Controller {
 		else{ // Main 
 			if($data['exam_data']->marks_pattern == "GRADE" && in_array($data['class_id'] , $class_ids)){
 				$this->load->model('Gradesheet_old_model');
+                $this->load->model('Gradesheet_model');
 				  $this->load->view('admin/msprint/student_marksheet_grade',$data);
 			}elseif ($data['exam_data']->marks_pattern=='GRADE' && $data['exam_data']->university_mode == "REG" &&  $class->cbcs=='Y') {
                 $this->load->model('GradeSheet_old_model_pg');

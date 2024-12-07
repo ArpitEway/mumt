@@ -50,6 +50,7 @@
     $marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$exam_data->class_id);
     $classData = $this->Common_model->getRecordById('class_master','id',$exam_data->class_id);
     $isOneClass = $this->Common_model->hasOneClass($exam_data->course_group_id);
+    $dept_ids = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30);
     // var_dump($isOneClass);
     // foreach($students as $student)
     // {
@@ -177,50 +178,116 @@
                   <h4 style="text-align:center;margin:10px;">Result Year Wise</h4>
                   <table border='1' cellpadding="2"  width="103%">
                     <tbody>
-                     <tr align="center"><th width='12.5%'>Year</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>AGPA</th></tr>
+                     <tr align="center"><th width='12.5%'>Year</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>AGPA</th><?php if($classData->last_class == 'L' && !in_array($exam_data->center_id, $dept_ids)){ ?><th width='12.5%'>Attempt</th><?php }?></tr>
                      <?php
+                       $total_grade_point = 0;
+                       $total_course_credit = 0;
+                       $wordNumerals = [1 => 'One',2 => 'Two',3 => 'Three',4 => 'Four',5 => 'Five',6 => 'Six',7 => 'Seven',8 => 'Eight'];
                      $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$exam_data->course_group_id));
-                    
-                    $count = 0;
                     $count = 0;
                     foreach($classes as $cls){
-                       $count++;
-                       if($count == 1){ $sno = 'First';}elseif($count == 2){ $sno = 'Second';}elseif($count == 3){ $sno = 'Third';}
-                        if($exam_data->class_id>=$cls->id){
-                            $this->db->order_by('id', 'desc');
-                          //  $this->db->limit(1);
-                            $old = $this->Common_model->getRecordByWhere('old_exam_data',array('class_id'=>$cls->id,'student_id'=>$exam_data->student_id));
-                            if( $cls->id==$exam_data->class_id){
-                              $gradeData=$gradesheetData;
-                            }
-                            else{
-                              $gradeData = $this->Gradesheet_old_model->view_old_results($exam_data->student_id,$exam_data->course_group_id,$cls->id,$exam_data->university_mode,  $old[0]->id,$old[0]->exam_status);
-                            } 
-                          ?>
-                          <tr align="center"><th><?=$sno?></th><td><?= ($gradeData['tot_credit'] == 0)?'':$gradeData['tot_credit']?></td><td><?= ($gradeData['obt_credit'] == 0)?'':$gradeData['obt_credit']?></td><td><?= $gradeData['credit_point']?></td><td>
-                          <?php //($gradesheetData['credit_point'] == 0)?'':$gradeData['credit_point']?>
-                            <?php if(is_nan($gradeData['agpa'])){
-                                echo '';
-                            }else{
-                                echo  ($gradeData['result']== 'FAIL' || $gradeData['result']== 'SUPP')?'0.00':number_format((float)$gradeData['agpa'], 2, '.', '');
-                                
-                            }
+                        $count++;
+                        if($count == 1){ $sno = 'First';}elseif($count == 2){ $sno = 'Second';}elseif($count == 3){ $sno = 'Third';}
+                        $this->db->order_by('id', 'desc');
+                        $this->db->limit(1);
+                        $old = $this->Common_model->getRecordByWhere('old_exam_data',array('class_id'=>$cls->id,'student_id'=>$exam_data->student_id));
+                        $old_count = $this->Common_model->getRecordByWhere('old_exam_data', array('student_id'=>$exam_data->student_id,'class_id'=>$cls->id,'course_group_id'=>$exam_data->course_group_id,'university_mode'=>$exam_data->university_mode));
+                         $gradeData   = $this->Gradesheet_model->view_old_results($exam_data->student_id,$exam_data->course_group_id,$cls->id,$exam_data->university_mode, $old[0]->id, $old[0]->exam_status);
+                         $total_grade_point += number_format((float)$gradeData['agpa'], 2, '.', '') * $gradeData['obt_credit']; 
+                         $total_course_credit +=$gradeData['tot_credit'];
+                         if($classData->last_class == 'L' && !in_array($exam_data->center_id, $dept_ids)){
                             ?>
-                            </td>
-                          </tr>
-                          <?php
-                            }
-                       else{
-                         ?>
-                         <tr align="center"><th><?=$sno?></th><td></td><td></td><td></td><td></tr>
-                         <?php
-                       }
-                    }
-                   ?>
+                              <tr align="center"><th><?=$sno?></th><td><?= ($gradeData['tot_credit'] == 0)?'':$gradeData['tot_credit']?></td><td><?= ($gradeData['obt_credit'] == 0)?'':$gradeData['obt_credit']?></td><td><?= ($gradeData['credit_point'] == 0)?'':$gradeData['credit_point']?></td><td>
+                        <?php if(is_nan($gradeData['agpa'])){
+                            echo '';
+                        }else{
+                           echo  ($gradeData['result']== 'FAIL' || $gradeData['result']== 'SUPP')?'0.00':number_format((float)$gradeData['agpa'], 2, '.', '');
+                           
+                        }
+                        ?>
+                        </td>
+                       <td><?= $wordNumerals[count($old_count)]?></td>
+                          
+                     </tr>
+                            <?php
+                         }else{
+                           
+                            
+                            if($exam_data->class_id>=$cls->id){
+                                $this->db->order_by('id', 'desc');
+                              //  $this->db->limit(1);
+                                $old = $this->Common_model->getRecordByWhere('old_exam_data',array('class_id'=>$cls->id,'student_id'=>$exam_data->student_id));
+                                if( $cls->id==$exam_data->class_id){
+                                  $gradeData=$gradesheetData;
+                                }
+                                else{
+                                  $gradeData = $this->Gradesheet_old_model->view_old_results($exam_data->student_id,$exam_data->course_group_id,$cls->id,$exam_data->university_mode,  $old[0]->id,$old[0]->exam_status);
+                                } 
+                              ?>
+                              <tr align="center"><th><?=$sno?></th><td><?= ($gradeData['tot_credit'] == 0)?'':$gradeData['tot_credit']?></td><td><?= ($gradeData['obt_credit'] == 0)?'':$gradeData['obt_credit']?></td><td><?= $gradeData['credit_point']?></td><td>
+                              <?php //($gradesheetData['credit_point'] == 0)?'':$gradeData['credit_point']?>
+                                <?php if(is_nan($gradeData['agpa'])){
+                                    echo '';
+                                }else{
+                                    echo  ($gradeData['result']== 'FAIL' || $gradeData['result']== 'SUPP')?'0.00':number_format((float)$gradeData['agpa'], 2, '.', '');
+                                    
+                                }
+                                ?>
+                                </td>
+                              </tr>
+                              <?php
+                                }
+                           else{
+                             ?>
+                             <tr align="center"><th><?=$sno?></th><td></td><td></td><td></td><td></tr>
+                             <?php
+                           }
+                        }  
+                         } 
+    
+                    ?>
                      
                    
                     </tbody>
                  </table>
+                 <?php
+              if($classData->last_class == 'L' && !in_array($exam_data->center_id, $dept_ids))
+                     {
+
+                        $cgpa = number_format((float)($total_grade_point/$total_course_credit), 2, '.', '');
+                        $percent = $cgpa * 10;
+                        if($cgpa>=8.0){
+                            $div = "First Division with Distinction";
+                            }elseif($cgpa<8.0 && $cgpa>=6.50){
+                            $div  = "First Division";
+                            }elseif($cgpa<6.50 && $cgpa>=5.00){
+                            $div  = "Second Division";
+                            }else{
+                            $div = "Pass";
+                            }
+                    ?>
+                    <table width="103%" cellpadding="2" style="margin-top:10px;" border="1" align="center">
+                        <tr>
+                            <td colspan="4" align="center">
+                                Final Result - <strong><?=$gradesheetData['result']?></strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width="9.2%">Total Credits</th>
+                            <th width="9.2%">CGPA</th>
+                            <th width="18.4%">Equivalent Percentage</th>
+                            <th width="18.4%">Division</th>
+                        </tr>
+                        <tr>
+                            <td align="center"><?= $total_course_credit?></td>
+                            <td align="center"><?=$cgpa?></td>
+                            <td align="center"><?=$percent.'%'?></td>
+                            <td align="center"><?=$div?></td>
+                        </tr>
+                    </table>
+                     <?php
+                     }
+              ?>
               </fieldset>
               <!-- if starts -->
               <tr>

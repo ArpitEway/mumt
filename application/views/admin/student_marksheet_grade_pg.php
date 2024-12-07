@@ -164,7 +164,8 @@
                   </div>
                   <h4 style="text-align:center;margin:10px;">Result Semester Wise</h4>
                   <table border='1' cellpadding="2"  width="103%">
-                  <tr align="center"><th width='12.5%'>Semester</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>SGPA</th><th width='12.5%'>Attempt</th></tr>
+                  <tr align="center"><th width='12.5%'>Semester</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>SGPA</th>
+                  <?php if($classData->last_class == 'L'){ ?> <th width='12.5%'>Attempt</th> <?php }?></tr>
                     <?php
                      $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$student->course_group_id,'mode'=>'Semester'));
                     
@@ -196,7 +197,13 @@
                         }
                         ?>
                         </td>
-                        <td><?= $wordNumerals[count($old_count)]?></td>
+                        <?php
+                        if($classData->last_class == 'L'){
+                            ?>
+                            <td><?= $wordNumerals[count($old_count)]?></td>
+                            <?php
+                        }
+                        ?>
                      </tr>
                            
                      <?php
