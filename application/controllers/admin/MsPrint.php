@@ -118,16 +118,16 @@ class MsPrint extends CI_Controller {
 		$data['exam_data_id']=$exam_data_id;
 		$data['student'] = $this->Common_model->getRecordById('student','student_id', $data['exam_data']->student_id);
 		// $course_id !=36 && $course_id !=37
-		$class = $this->Common_model->getRecordByID('class_master','id', $data['exam_data']->class_id);
-
-		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135);
+		$class = $this->Common_model->getRecordById('class_master','id', $data['exam_data']->class_id);
+        $data['classData']=$class;
+		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136);
 		if ($data['exam_data']->exam_status == "B") { //Backlog
 			if($data['exam_data']->marks_pattern == "GRADE" && in_array($data['class_id'] , $class_ids)){
 				$this->load->model('Gradesheet_old_model');
 				  $this->load->view('admin/msprint/backlog_student_marksheet_grade',$data);// student_marksheet_grade
 			}elseif ($data['exam_data']->marks_pattern=='GRADE' && $data['exam_data']->university_mode == "REG" &&  $class->cbcs=='Y') {
                 $this->load->model('GradeSheet_old_model_pg');
-                // $this->load->model('Gradesheet_backlog_model_pg');
+                 $this->load->model('Gradesheet_backlog_model_pg');
                 $this->load->view('admin/msprint/backlog_student_marksheet_grade_pg',$data);
 				
 			}
@@ -141,10 +141,10 @@ class MsPrint extends CI_Controller {
 		else{ // Main 
 			if($data['exam_data']->marks_pattern == "GRADE" && in_array($data['class_id'] , $class_ids)){
 				$this->load->model('Gradesheet_old_model');
+                $this->load->model('Gradesheet_model');
 				  $this->load->view('admin/msprint/student_marksheet_grade',$data);
 			}elseif ($data['exam_data']->marks_pattern=='GRADE' && $data['exam_data']->university_mode == "REG" &&  $class->cbcs=='Y') {
                 $this->load->model('GradeSheet_old_model_pg');
-				$this->load->model('GradeSheet_old_model_pg');
 				 $this->load->view('admin/msprint/student_marksheet_grade_pg',$data);
 			}else if($class->internal=="Y" && $data['exam_data']->university_mode!="PVT" ){ 
 				$this->load->view('admin/msprint/old_student_marksheet',$data);

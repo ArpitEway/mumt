@@ -23,14 +23,14 @@
 
 		<tr id="row_<?=$complaint->student_id ?>">
 
-			
+        
 			<td><?php echo $complaint->student_id; ?></td>
 			<td><?php echo $complaint->name; ?></td>
 			<td><?php echo $complaint->fathername; ?></td>
 			<td><?php echo $complaint->course_name; ?></td>
 			<td><?php echo $complaint->class_name; ?></td>
 			<td><?php echo $complaint->amount; ?></td>
-			<td><?php echo '<a href="#" data-pdate="'.$complaint->payment_date.'" data-txnId="'.$complaint->txnId.'" data-paymentMode="'.$complaint->payment_mode.'"  data-receipt_number="'.$complaint->receipt_number.'" data-student_name = "'.$complaint->name.'"  data-idstudent="'.$complaint->student_id.'" data-student_id="'.$this->Common_model->encrypt_decrypt($complaint->student_id).'" class="btn btn-primary btn-sm font-weight-bold pay1" data-toggle="modal" data-target="#kt_datepicker_modal" "  data-amount= "'.$complaint->amount.'">Receive</a>';?></td>
+			<td><?php echo '<a href="#" data-pid="'.$complaint->payment_id.'" data-pdate="'.DateTime::createFromFormat('Y-m-d', $complaint->payment_date)->format('d-m-Y').'" data-txnId="'.$complaint->txnId.'" data-paymentMode="'.$complaint->payment_mode.'"  data-receipt_number="'.$complaint->receipt_number.'" data-student_name = "'.$complaint->name.'"  data-idstudent="'.$complaint->student_id.'" data-student_id="'.$this->Common_model->encrypt_decrypt($complaint->student_id).'" class="btn btn-primary btn-sm font-weight-bold pay1" data-toggle="modal" data-target="#kt_datepicker_modal" "  data-amount= "'.$complaint->amount.'">Receive</a>';?></td>
 		</tr>
 		<?php	
 		}?>
@@ -59,6 +59,7 @@
     <label for="example-date-input" class="col-form-label"><span id="student_name"></span></label>
     <input type="hidden" value="" name="student_id" id="student_id">
     <input type="hidden" value="" name="idstudent" id="idstudent">
+    <input type="hidden" value="" name="payment_id" id="payment_id">
 	</div>
 	
    </div>
@@ -87,7 +88,8 @@
    <div class="row justify-content-center">
   
  
-     <button type="reset" class="btn btn-success mr-2" id="payment_submit">Verify</button>
+     <button type="reset" class="btn btn-success mr-4" id="payment_submit">Verify</button>
+     <button type="reset" class="btn btn-danger mr-2" id="payment_pending">Non-Verify</button>
      
    
    </div>
@@ -115,12 +117,14 @@
 		var payment_date = $(this).attr('data-pdate');
         var amount = $(this).attr('data-amount');
         var receipt_number = $(this).attr('data-receipt_number');
+        var payment_id = $(this).attr('data-pid');
 		$('#student_id').val(student_id);
 		$('#idstudent').val(idstudent);
 		$('#student_name').html(student_name);
 		$('#amount').html(amount);
         $('#payment_date').html(payment_date);
         $('#receipt_number').html(receipt_number);
+        $('#payment_id').val(payment_id);
 		
 	});
 	
@@ -130,7 +134,6 @@
 		
         var student_id = $('#student_id').val();
 		var idstudent = $('#idstudent').val();
-		
 		
 		
 		$.ajax({
@@ -158,6 +161,54 @@
 			
 		
 			toastr.success("Verified");
+			
+		}else{
+			toastr.error("Something wrong");
+		}
+			},
+			complete: function()
+              {
+                console.log('loading...over');
+                $("#myLoader").hide();
+               },
+		});	
+	
+});	
+
+$("#payment_pending").on('click',function (e){
+	var formimage = $('#ajaxForm');
+	var frm = new FormData(formimage[0]);
+		
+        var student_id = $('#student_id').val();
+		var idstudent = $('#idstudent').val();
+		let payment_id = $('#payment_id').val();
+		
+		
+		$.ajax({
+		url: '<?php echo site_url('admin/account/update_student_online_payment_status'); ?>',
+		type: 'POST',
+		dataType : 'json',
+		data: frm,
+		cache:false,
+		contentType: false,
+		processData: false,
+		beforsend: function()
+              {
+                console.log('loading..');
+                $("#myLoader").show();
+               },
+		success: function (data) {
+		if(data){
+			console.log(data);
+			$('#kt_datepicker_modal').modal('toggle');
+			//$('#student_tr_'+student_id).remove();
+			var rowid="#row_"+idstudent;
+			console.log("rowid "+rowid);
+			$(rowid).remove();
+			//location.reload();
+			
+		
+			toastr.success("Non Verified");
 			
 		}else{
 			toastr.error("Something wrong");
