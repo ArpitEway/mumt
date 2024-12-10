@@ -544,22 +544,22 @@ class Gradesheet_backlog_tr_model extends CI_Model
 			// 	echo "<td>".$result['int_max_marks']."</td>";
 			// 	echo "<td>".$result['int_min_marks']."</td>";
 			// }
-			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+			// if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				
-				$this->obt_tot_credit +=$result['credit'];
+			// 	$this->obt_tot_credit +=$result['credit'];
 				
-				$this->check_grace_marks = true;
-				$req_marks = $result['min_marks']-$result['obt_marks'];
-				$obt_marks = $result['obt_marks']+$req_marks;
-				$credit_point = $result['credit']*4;
-				$this->result_array[$key]['credit_point']=$credit_point;
+			// 	$this->check_grace_marks = true;
+			// 	$req_marks = $result['min_marks']-$result['obt_marks'];
+			// 	$obt_marks = $result['obt_marks']+$req_marks;
+			// 	$credit_point = $result['credit']*4;
+			// 	$this->result_array[$key]['credit_point']=$credit_point;
 				
-				$this->tot_credit_point += $credit_point;
-				$this->grade_tot_point += 4;
-				$result['grade_point'] =4;
-			}else{
+			// 	$this->tot_credit_point += $credit_point;
+			// 	$this->grade_tot_point += 4;
+			// 	$result['grade_point'] =4;
+			// }else{
 				$result['grade_point'] =$result['grade_point'];
-			}
+			// }
 				
 			// 	// echo "<td>".$obt_marks." G </td>";
 			// 	// if ($this->mode=='reg') {
@@ -598,27 +598,27 @@ class Gradesheet_backlog_tr_model extends CI_Model
 		echo '<td class="align-middle text-right">'.'Credit Points'.'</td>';
 		foreach ($this->result_array as $key => $result) {
 			
-			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
-				$this->check_grace_marks = true;
-				$this->obt_tot_credit += $result['credit'];
-				$req_marks = $result['min_marks']-$result['obt_marks'];
-				$obt_marks = $result['obt_marks']+$req_marks;
-				$credit_point = $result['credit']*4;
-				$this->result_array[$key]['credit_point']=$credit_point;
-				$this->tot_credit_point += $credit_point;
+			// if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+			// 	$this->check_grace_marks = true;
+			// 	$this->obt_tot_credit += $result['credit'];
+			// 	$req_marks = $result['min_marks']-$result['obt_marks'];
+			// 	$obt_marks = $result['obt_marks']+$req_marks;
+			// 	$credit_point = $result['credit']*4;
+			// 	$this->result_array[$key]['credit_point']=$credit_point;
+			// 	$this->tot_credit_point += $credit_point;
 				
 				
-				$paper_codes=array('1RBBA2','1RBBA4','1RCBBA2','1RCBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4','2RBBA2','2RBBA4','2RBA2','2RBA4','2RBCOM2','2RBCOM4','2RBCOMCA2','2RBCOMCA4','2RBCOMT2','2RBCOMT4','2RBCA2','2RBCA4','2RBSCCBC2','2RBSCCBC4','2RBSCCS2','2RBSCCS4','2RBSCPCM2','2RBSCPCM4','2RBSW2','2RBSW4','3RBBA2','3RBBA4','3RBA2','3RBA4','3RBCOM2','3RBCOM4','3RBCOMCA2','3RBCOMCA4','3RBCOMT2','3RBCOMT4','3RBCA2','3RBCA4','3RBSCCBC2','3RBSCCBC4','3RBSCCS2','3RBSCCS4','3RBSCPCM2','3RBSCPCM4','3RBSW2','3RBSW4');
-				if(in_array($key,$paper_codes))	
-				{
-				echo "<td colspan= '2' class='text-center'>".$credit_point."</td>";
-				}else{
+			// 	$paper_codes=array('1RBBA2','1RBBA4','1RCBBA2','1RCBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4','2RBBA2','2RBBA4','2RBA2','2RBA4','2RBCOM2','2RBCOM4','2RBCOMCA2','2RBCOMCA4','2RBCOMT2','2RBCOMT4','2RBCA2','2RBCA4','2RBSCCBC2','2RBSCCBC4','2RBSCCS2','2RBSCCS4','2RBSCPCM2','2RBSCPCM4','2RBSW2','2RBSW4','3RBBA2','3RBBA4','3RBA2','3RBA4','3RBCOM2','3RBCOM4','3RBCOMCA2','3RBCOMCA4','3RBCOMT2','3RBCOMT4','3RBCA2','3RBCA4','3RBSCCBC2','3RBSCCBC4','3RBSCCS2','3RBSCCS4','3RBSCPCM2','3RBSCPCM4','3RBSW2','3RBSW4');
+			// 	if(in_array($key,$paper_codes))	
+			// 	{
+			// 	echo "<td colspan= '2' class='text-center'>".$credit_point."</td>";
+			// 	}else{
 					
-					echo "<td class='text-center'>".$credit_point."</td>";
-				}
+			// 		echo "<td class='text-center'>".$credit_point."</td>";
+			// 	}
 				
 				
-			}else{
+			// }else{
 				if($result['obt_marks'] === 'ABS'){
 					$result['letter_grade'] = 'ABS';
 				}
@@ -632,7 +632,7 @@ class Gradesheet_backlog_tr_model extends CI_Model
 				}
 				
 				
-			}
+			// }
 			
 		}
 		echo '<td class="text-center">'.$this->tot_credit_point.'</td>';
@@ -657,10 +657,11 @@ class Gradesheet_backlog_tr_model extends CI_Model
 			){
 					$result['letter_grade'] = 'ABS';
 			}
-			elseif ($this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
-			// echo $require_grace_marks;
-				$result['letter_grade'] = 'P-G';
-			}else{
+			// elseif ($this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+			// // echo $require_grace_marks;
+			// 	$result['letter_grade'] = 'P-G';
+			// }
+            else{
 				$result['letter_grade'] = $result['letter_grade'];
 			}
 
@@ -777,23 +778,23 @@ class Gradesheet_backlog_tr_model extends CI_Model
 	  
 	   foreach ($this->result_array as $key => $result) {
 		  
-		   if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+		//    if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 			   
           
-			   $this->obt_tot_credit +=$result['credit'];
+		// 	   $this->obt_tot_credit +=$result['credit'];
 			   
-			   $this->check_grace_marks = true;
-			   $req_marks = $result['min_marks']-$result['obt_marks'];
-			   $obt_marks = $result['obt_marks']+$req_marks;
-			   $credit_point = $result['credit']*4;
-			   $this->result_array[$key]['credit_point']=$credit_point;
+		// 	   $this->check_grace_marks = true;
+		// 	   $req_marks = $result['min_marks']-$result['obt_marks'];
+		// 	   $obt_marks = $result['obt_marks']+$req_marks;
+		// 	   $credit_point = $result['credit']*4;
+		// 	   $this->result_array[$key]['credit_point']=$credit_point;
 			   
-			   $this->tot_credit_point += $credit_point;
-			   $this->grade_tot_point += 4;
-			   $result['grade_point'] =4;
-		   }else{
+		// 	   $this->tot_credit_point += $credit_point;
+		// 	   $this->grade_tot_point += 4;
+		// 	   $result['grade_point'] =4;
+		//    }else{
 			   $result['grade_point'] =$result['grade_point'];
-		   }
+		 //  }
 		}
 		// echo $this->tot_credit_point.'dd'.$this->tot_credit;
 		
@@ -812,22 +813,22 @@ class Gradesheet_backlog_tr_model extends CI_Model
 	  
 	   foreach ($this->result_array as $key => $result) {
 		  
-		   if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+		//    if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 			   
-			   $this->obt_tot_credit +=$result['credit'];
+		// 	   $this->obt_tot_credit +=$result['credit'];
 			   
-			   $this->check_grace_marks = true;
-			   $req_marks = $result['min_marks']-$result['obt_marks'];
-			   $obt_marks = $result['obt_marks']+$req_marks;
-			   $credit_point = $result['credit']*4;
-			   $this->result_array[$key]['credit_point']=$credit_point;
+		// 	   $this->check_grace_marks = true;
+		// 	   $req_marks = $result['min_marks']-$result['obt_marks'];
+		// 	   $obt_marks = $result['obt_marks']+$req_marks;
+		// 	   $credit_point = $result['credit']*4;
+		// 	   $this->result_array[$key]['credit_point']=$credit_point;
 			   
-			   $this->tot_credit_point += $credit_point;
-			   $this->grade_tot_point += 4;
-			   $result['grade_point'] =4;
-		   }else{
+		// 	   $this->tot_credit_point += $credit_point;
+		// 	   $this->grade_tot_point += 4;
+		// 	   $result['grade_point'] =4;
+		//    }else{
 			   $result['grade_point'] =$result['grade_point'];
-		   }
+		   //}
 		}
 		// echo $this->tot_credit_point.'dd'.$this->tot_credit;
 		

@@ -702,28 +702,28 @@ class Gradesheet_backlog_tr_model_pg extends CI_Model
 	  
 	   foreach ($this->result_array as $key => $result) {
 		  
-		   if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
+		//    if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 			   
-			   $this->obt_tot_credit +=$result['credit'];
+		// 	   $this->obt_tot_credit +=$result['credit'];
 			   
-			   $this->check_grace_marks = true;
-			   $req_marks = $result['min_marks']-$result['obt_marks'];
-			   $obt_marks = $result['obt_marks']+$req_marks;
-			   $tot_obt_grace = $result['obt_marks']+$result['int_obt_marks'];
-			   $tot_marks_grace = $result['max_marks']+$result['int_max_marks'];
-			  $persent = $tot_obt_grace*100/$tot_marks_grace;
-				  $where = 'min_marks <= '.$persent.' and  max_marks >= '.$persent.'';
-				  $gradeData = $this->Common_model->getRecordByWhere('letter_grade_pg',$where);
-				   $result['grade_point'] = $gradeData[0]->grade_point;
-			   $credit_point = $result['credit']*$result['grade_point'];
-			   $this->result_array[$key]['credit_point']=$credit_point;
+		// 	   $this->check_grace_marks = true;
+		// 	   $req_marks = $result['min_marks']-$result['obt_marks'];
+		// 	   $obt_marks = $result['obt_marks']+$req_marks;
+		// 	   $tot_obt_grace = $result['obt_marks']+$result['int_obt_marks'];
+		// 	   $tot_marks_grace = $result['max_marks']+$result['int_max_marks'];
+		// 	  $persent = $tot_obt_grace*100/$tot_marks_grace;
+		// 		  $where = 'min_marks <= '.$persent.' and  max_marks >= '.$persent.'';
+		// 		  $gradeData = $this->Common_model->getRecordByWhere('letter_grade_pg',$where);
+		// 		   $result['grade_point'] = $gradeData[0]->grade_point;
+		// 	   $credit_point = $result['credit']*$result['grade_point'];
+		// 	   $this->result_array[$key]['credit_point']=$credit_point;
 			   
-			   $this->tot_credit_point += $credit_point;
-			   $this->grade_tot_point += $result['grade_point'];
+		// 	   $this->tot_credit_point += $credit_point;
+		// 	   $this->grade_tot_point += $result['grade_point'];
 			  
-		   }else{
+		//    }else{
 			   $result['grade_point'] =$result['grade_point'];
-		   }
+		//    }
 		}
 		// echo $this->tot_credit_point.'dd'.$this->tot_credit;
 		

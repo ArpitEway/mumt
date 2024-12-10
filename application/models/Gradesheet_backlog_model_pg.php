@@ -700,24 +700,24 @@ class Gradesheet_backlog_model_pg extends CI_Model
 			echo "<tr>";
 			echo "<td class='text-center'>".$key."</td>";
 			echo "<td>".$result['paper_name']."</td>";
-			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F') {
-				$this->check_grace_marks = true;
-				$this->obt_tot_credit += $result['credit'];
-				$req_marks = $result['min_marks']-$result['obt_marks'];
-				$obt_marks = $result['obt_marks']+$req_marks;
-				$credit_point = $result['credit']*4;
-				echo "<td class='text-center'>".$result['credit']."</td>";
-				echo "<td class='text-center'>".$result['obt_credit']."</td>";
-				echo "<td class='text-center'>P-G</td>";
-				echo "<td class='text-center'>4</td>";
-				echo "<td class='text-center'>".$credit_point."</td>";
-			}else{
+			// if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F') {
+			// 	$this->check_grace_marks = true;
+			// 	$this->obt_tot_credit += $result['credit'];
+			// 	$req_marks = $result['min_marks']-$result['obt_marks'];
+			// 	$obt_marks = $result['obt_marks']+$req_marks;
+			// 	$credit_point = $result['credit']*4;
+			// 	echo "<td class='text-center'>".$result['credit']."</td>";
+			// 	echo "<td class='text-center'>".$result['obt_credit']."</td>";
+			// 	echo "<td class='text-center'>P-G</td>";
+			// 	echo "<td class='text-center'>4</td>";
+			// 	echo "<td class='text-center'>".$credit_point."</td>";
+			// }else{
 				echo "<td class='text-center'>".$result['credit']."</td>";
 				echo "<td class='text-center'>".$result['obt_credit']."</td>";
 				echo "<td class='text-center'>".$result['letter_grade']."</td>";				
 				echo "<td class='text-center'>".$result['grade_point']."</td>";
 				echo "<td class='text-center'>".$result['credit_point']."</td>";
-			}
+			// }
 			echo "</tr>";
 		}
 	}
