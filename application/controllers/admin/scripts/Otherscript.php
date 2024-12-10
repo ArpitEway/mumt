@@ -1322,7 +1322,6 @@ public function update_roll_no_old_data(){
     public function copy_student_image(){
         $this->db->where_in('course_group_id', array(76,77,80));
         $this->db->order_by('session','course_group_id','class_id','name');
-        $this->db->limit(1);
         $students = $this->Common_model->getRecordByWhere('student', array('enrolled'=>'Y', 'enrollment_no !='=>'-', 'center_id'=>12,'student_id !='=>188079));
 
     foreach($students as $student){
