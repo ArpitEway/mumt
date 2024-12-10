@@ -567,7 +567,7 @@
 			$wherecenter = 'center_id='.$center_id.' and status="Pending"';
 			
             // $this->db->limit(1);
-			$this->db->select('s.student_id as student_id,s.name as name,s.f_h_name as fathername,s.course_name as course_name,s.class_name as class_name,p.amount as amount,p.payment_date,p.txnId,p.payment_mode,p.receipt_number');
+			$this->db->select('s.student_id as student_id,s.name as name,s.f_h_name as fathername,s.course_name as course_name,s.class_name as class_name,p.amount as amount,p.payment_date,p.txnId,p.payment_mode,p.receipt_number,p.id as payment_id');
 			$this->db->from('`student` as s');
 			$this->db->join('online_payment_transaction as p', 'p.student_id=s.student_id');
 			$this->db->where('p.payment','Y');
@@ -607,6 +607,23 @@
 			}
 		}
     }
+
+    public function update_student_online_payment_status(){
+        if ($this->input->method() == "post") 
+		{  
+
+			$student_id  = $this->input->post("student_id");
+            $payment_id =$this->input->post("payment_id");
+	      	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+			
+			$response = $this->Common_model->updateRecordByConditions('online_payment_transaction',array('student_id'=> $student_id, 'id'=>$payment_id),array('payment'=>'N'));
+
+			if($response){
+			echo json_encode(array("status" => 'true'));
+			}
+		}
+    }
+    
     
 	public function get_unpaid_student()
 	{

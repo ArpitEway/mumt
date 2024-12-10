@@ -36,7 +36,7 @@ class Gradesheet_model extends CI_Model
 	public function view_result($student_id,$center_id,$course_group_id,$class_id,$mode,$work_table='')
 	{
 
-        if(in_array($student_id, array('755705','758538'))){
+        if(in_array($student_id, array('755705','758538','719005'))){
             echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
             '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
              '<h3 class="text-center">'.'RWUFM'.'</h3>'.
