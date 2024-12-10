@@ -434,14 +434,9 @@ table.last_table, .last_table td, .last_table th{
     <?php
     $credit = 0;
     $std  = $this->Common_model->getRecordByWhere('backlog_exam_form',array('class_id'=> $student->class_id,'student_id'=>$student->student_id,'backlog_student_id'=>$student->id));
-		$this->classData = $this->Common_model->getRecordById('class_master','id',$student->class_id);
-   
-   
-			$papers = $this->Common_model->get_all_backlog_papers($student->student_id,$student->class_id,$student->id);
-     
-		
-		
-		foreach ($papers as $paper_master) {
+	$this->classData = $this->Common_model->getRecordById('class_master','id',$student->class_id);
+    $papers = $this->Common_model->get_all_backlog_papers($student->student_id,$student->class_id,$student->id);
+     foreach ($papers as $paper_master) {
       
       $credit += $paper_master['credit_point'];
     
@@ -505,22 +500,17 @@ table.last_table, .last_table td, .last_table th{
             if($final_result == "RW"){
               echo "";
             }
-            elseif($int_abs_count>0 &&  $theory_abs_count>0 && $p_abs_count>0){
-              echo 'Year Break';
-            }
+
             elseif($int_abs_count == $count_int ||  $theory_abs_count == $count_theory || ($p_abs_count == $count_practical && $count_practical!=0)){
              
-              if($theory_abs_count == $count_theory){
+              if($theory_abs_count == $count_theory && $theory_abs_count!=0){
                 echo 'ABSENT';
-              }elseif($int_abs_count == $count_int){
+              }elseif($int_abs_count == $count_int && $int_abs_count!=0){
                 echo ' Absent In Internal'; 
               }elseif($p_abs_count == $count_practical && $count_practical!=0){
                 echo ' Absent In Practical';
               }
             }else{
-            //   if($fail_count == $count_theory){
-            //     echo 'Year Break';
-            //   }else{
               if(sizeof($atkt_paper_codes_array)>0){
                 echo "ATKT in";
               }
@@ -528,7 +518,6 @@ table.last_table, .last_table td, .last_table th{
               foreach($atkt_paper_codes_array as $paper_code){
                 echo  "<br>". $paper_code;
               }
-            // }
             }
           }
           ?>
@@ -687,9 +676,6 @@ table.last_table, .last_table td, .last_table th{
         echo (int) $paper_master->theory_marks+ (int) $paper_master->int_marks.$status;
       }
     }else{
-    //   if($check_grace_marks==true){
-    //     echo $paper_master->theory_marks;
-    //   } else
       if(($paper_master->theory_marks<$paper_master->private_min_theory_marks) ||  $paper_master->theory_marks=='ABS'){
 
         if($paper_master->theory_marks==''){
