@@ -1318,6 +1318,64 @@ public function update_roll_no_old_data(){
             $this->load->view('footer');
         // }
     }
+
+    public function copy_student_image(){
+        $this->db->where_in('course_group_id', array(76,77,80));
+        $this->db->order_by('session','course_group_id','class_id','name');
+        $this->db->limit(1);
+        $students = $this->Common_model->getRecordByWhere('student', array('enrolled'=>'Y', 'enrollment_no !='=>'-', 'center_id'=>12,'student_id !='=>188079));
+
+    foreach($students as $student){
+        $filename="assets/student_image/".$student->session."/".$student->photo;
+          
+
+        if (file_exists($filename)) {
+    
+            //session
+        
+            $session_name=ucfirst(strtolower(str_replace(" ","_",$student->session)));
+            $folder_name="assets/student_image/copy_image/";
+            $check_dir=$folder_name.$session_name;
+            if(!is_dir($check_dir)) {
+                mkdir($folder_name.$session_name,0777,true);
+                chmod($folder_name.$session_name,0777);
+            }
+            // course
+            $dir_name=ucfirst(strtolower(str_replace(" ","_",$student->course_name)));
+            $folder_name="assets/student_image/copy_image/".$session_name.'/';
+            $check_dir=$folder_name.$dir_name;
+            if(!is_dir($check_dir)) {
+                mkdir($folder_name.$dir_name,0777,true);
+                chmod($folder_name.$dir_name,0777);
+            }
+            $class_name=$student->class_name;
+            $folder_name="assets/student_image/copy_image/".$session_name.'/'.$dir_name.'/';
+            $check_dir=$folder_name.$class_name;
+            if(!is_dir($check_dir)) {
+                mkdir($folder_name.$class_name,0777,true);
+                chmod($folder_name.$class_name,0777);
+            }  
+            $i++;
+        
+            $ext=explode(".",$student->photo);	
+        
+            $new_name=$student->name.".".$ext[1];
+            $newFilePath = $check_dir."/".$new_name;
+
+            if(file_exists($newFilePath)){
+                $new_name =	$student->name.' '.$student->f_h_name.".".$ext[1];
+                $newFilePath = $check_dir.'/'.$new_name;
+            }
+            if(copy($filename, $newFilePath)){
+                echo 'Success! '; 
+            }  
+        
+        }
+            
+    }
+       
+            echo "<hr>";  
+    }
 		
 }
 
