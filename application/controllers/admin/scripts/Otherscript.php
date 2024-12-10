@@ -56,17 +56,19 @@ class Otherscript extends CI_Controller {
 	
 	public function update_extra_papers_in_new_exam()
 	{
+		// add_paper
 		//$where = " paper_code in ('2RMAEDU5', '2RMAGEO6', '2RMAGEO7', '2RMAGEO8', '2RMAPSY5', '2RMSCC7', '2RMSCC8', '2RMSCM7', '2RMSW7')";
 		// $where = " paper_code in ('2RBED6')";
 		//$where = " paper_code in ('1RMLIS10','1RMLIS11')";
 		//$where="`paper_code` in ('1RCMSCCH7','1RCMSCCH8','1RCMSCCH9','1RCMSCBT7','1RCMSCBT8','1RCMSCC7','1RCMSCM7','3RMSCC6','3RMSCC7')";
-		$where="`id` in (382,392,292)";
+		$where="`id` in (1802,1803)";
 		//in (947,1799,985,1800,1054,1801)";
 		// $where="`id` = 292";
 		$papers = $this->Common_model->get_record('paper_master','*',$where);
 
 		foreach ($papers as $paper) {
-			$where = ' class_id = "'.$paper['class_id'].'" and temp_exam_form="Y" and  exam_pattern="GRADE"  and university_mode="PVT" ';
+			$where = ' class_id = "'.$paper['class_id'].'" and temp_exam_form="Y"   and  exam_pattern="GRADE" ';
+			// and university_mode="PVT"
 			
 			//student_id not in (703394,703395,683403,685044,685047,686312,689208,702853,723869,724934)
 			$students = $this->Common_model->get_record('student','*',$where);

@@ -150,7 +150,7 @@ table.last_table, .last_table td, .last_table th{
   //$page_no = 0;
   $page_no=$pagenumber;
   $previous_center=$current_center="";
-  $GLOBALS['foundation_1'] =0;
+  
   foreach($students as $student)
   {
     
@@ -190,6 +190,8 @@ table.last_table, .last_table td, .last_table th{
     $fc1_min =0;
     $fc2_min =0;
     $final_result = '';
+    $this->foundation1 = 0;
+  $this->foundation2 = 0;
 
      if($student->university_mode == 'REG'){
       $rowspanhead = ($classData->project!='N' || $classData->practical!='N') ? "6" : "3";
@@ -337,18 +339,20 @@ table.last_table, .last_table td, .last_table th{
    if($fc2_abs === 'ABSABS'){
     $theory_abs_count++;
    }
+  
     if($fc1 < $fc1_min ){
       array_push( $atkt_paper_codes_array ,'FC1' );
           $fail_count++;
-          $GLOBALS['foundation_1']++;
+          $this->foundation1++;
           $fail_tot_marks += $fc1;
           $require_tot_marks += $fc1_min;
 
     }
+    
     if($fc2 < $fc2_min){
       array_push( $atkt_paper_codes_array ,'FC2' );
       $fail_count++;
-      $GLOBALS['foundation_1']++;
+      $this->foundation2++;
       $fail_tot_marks += $fc2;
       $require_tot_marks += $fc2_min;
 
@@ -582,7 +586,7 @@ table.last_table, .last_table td, .last_table th{
                   echo $total_marks_obt .'/'. $total_paper_marks;
           ?></td>
           <td  class="align-middle text-center result" rowspan="<?php echo $rowspandata ?>"><?php echo $gradesheetData['result']; //$final_result?></td>
-          <td  class="align-middle text-center result" rowspan="<?php echo $rowspandata ?>"><?php if($gradesheetData['result'] == 'RW'){ echo '';}else{  echo ($gradesheetData['result'] == 'FAIL' || $gradesheetData['result'] == 'SUPP')?'0.00':number_format((float)$gradesheetData['agpa'], 2, '.', ''); }?></td>
+          <td  class="align-middle text-center result" rowspan="<?php echo $rowspandata ?>"><?php if($gradesheetData['result'] == 'RW' || $gradesheetData['result'] == 'RWPR' || $gradesheetData['result'] == 'RWAS'){ echo '';}else{  echo ($gradesheetData['result'] == 'FAIL' || $gradesheetData['result'] == 'SUPP')?'0.00':number_format((float)$gradesheetData['agpa'], 2, '.', ''); }?></td>
           <td  class="align-middle text-cente remarks"  rowspan="<?php echo $rowspandata ?>"><?php 
          
           if($check_grace_marks){
@@ -639,9 +643,13 @@ table.last_table, .last_table td, .last_table th{
               }elseif($new_exam_form->theory_marks+$new_exam_form->int_marks>=$new_exam_form->min_theory_marks+$new_exam_form->min_internal_marks && $new_exam_form->theory_marks!="ABS"){
                 echo $new_exam_form->theory_marks;
               }else{
-                echo $new_exam_form->theory_marks;
+                 echo $new_exam_form->theory_marks;
                 if($new_exam_form->sub_group_id == 1){
-                  if($GLOBALS['foundation_1']>0){
+                   
+                  if($this->foundation1>0 && $new_exam_form->group_paper_name =='FC1'){
+                     echo ($check_grace_marks) ? ' G' : ' F';
+                  }
+                  if($this->foundation2>0 && $new_exam_form->group_paper_name =='FC2'){
                     echo ($check_grace_marks) ? ' G' : ' F';
                   }
                 }else{
@@ -737,7 +745,12 @@ table.last_table, .last_table td, .last_table th{
           
          
           if($paper_master->sub_group_id == 1){
-            if($GLOBALS['foundation_1']>0){
+            if($this->foundation1>0 && $paper_master->group_paper_name =='FC1'){
+              echo ($paper_master->theory_marks=='ABS') ? 'ABS F' :(int) $paper_master->theory_marks ." F";
+            }else{
+              echo (int) $paper_master->theory_marks+ (int) $paper_master->int_marks;
+            }
+             if($this->foundation2>0 && $paper_master->group_paper_name =='FC2'){
               echo ($paper_master->theory_marks=='ABS') ? 'ABS F' :(int) $paper_master->theory_marks ." F";
             }else{
               echo (int) $paper_master->theory_marks+ (int) $paper_master->int_marks;

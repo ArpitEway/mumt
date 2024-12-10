@@ -210,7 +210,7 @@ table.last_table, .last_table td, .last_table th{
       
       if($new_exam_form->type=='theory'){
         if($new_exam_form->sub_group_id == 1){
-          $count_theory++;
+        //   $count_theory++;
           if($new_exam_form->group_paper_name == 'FC1' ){
             if($new_exam_form->theory_marks==''){
               $rw_count++;
@@ -588,25 +588,29 @@ table.last_table, .last_table td, .last_table th{
           if($check_grace_marks){
             echo "-";
           }else{
-           
+          
             if($final_result == "RW" || $gradesheetData['result'] == 'RW'){
               echo "";
             }
-            elseif($int_abs_count>0 &&  $theory_abs_count>0 && $p_abs_count>0){
-              echo 'Year Break';
+            elseif( $theory_abs_count == $count_theory && $theory_abs_count!==0){
+                echo 'ABSENT';
             }
+            // elseif($int_abs_count>0 &&  $theory_abs_count>0 && $p_abs_count>0){
+            //   echo 'Year Break';
+            // }
             elseif(($int_abs_count == $count_int && $count_int!=0) ||  ($theory_abs_count == ($count_theory - 2) && ($count_theory - 2)!=0) || ($p_abs_count == $count_practical && $count_practical!=0)){
-              if($theory_abs_count == ($count_theory-2)){
-                echo 'Year Break';
-              }elseif($int_abs_count == $count_int){
+            //   if($theory_abs_count == ($count_theory-2)){
+            //     echo 'Year Break';
+            //   }else
+              if($int_abs_count == $count_int){
                 echo ' Absent In Internal'; 
               }elseif($p_abs_count == $count_practical && $count_practical !=0){
                 echo ' Absent In Practical';
               }
             }else{
-              if($fail_count == ($count_theory - 2)){
-                echo 'Year Break';
-              }else{
+            //   if($fail_count == ($count_theory - 2)){
+            //     echo 'Year Break';
+            //   }else{
               if(sizeof($atkt_paper_codes_array)>0){
                 echo "SUPP in";
               }
@@ -614,7 +618,7 @@ table.last_table, .last_table td, .last_table th{
               foreach($atkt_paper_codes_array as $paper_code){
                 echo  "<br>". $paper_code;
               }
-            }
+            // }
             }
           }
           ?>
