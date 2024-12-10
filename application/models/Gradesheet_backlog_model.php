@@ -21,17 +21,12 @@ class Gradesheet_backlog_model extends CI_Model
 	protected $allclass;
 	protected $classData;
 	protected $obt_tot_credit;
-	protected $check_grace_marks = false;
 	protected $withheld = false;
 	protected $fail_tot_marks;
 	protected $fail_obt_marks;
 	protected $fail_min_marks;
 	protected $result_array = array();
 
-	function __construct()
-	{
-		
-	}
 
 	public function view_result($student_id,$course_group_id,$class_id,$mode,$exam_id)
 	{
@@ -45,14 +40,8 @@ class Gradesheet_backlog_model extends CI_Model
 		}
 		if($this->classData->id == 101 || $this->classData->class_group == 'Y'){
 		$papers_list = $this->Common_model->get_all_backlog_group_papers($student_id,$class_id,$exam_id,$course_group_id);
-		// echo '<pre>';
-		// print_r($papers_list);
 		}
 	
-		// get_all_group_papers
-		//  print_r($papers);die;
-		
-		// print_r($this->allclass);die;
 		$this->classCount = count($this->allclass);
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		$this->foundation_paper = array();
@@ -67,7 +56,6 @@ class Gradesheet_backlog_model extends CI_Model
 		$this->fail_tot_marks = 0;
 		$this->fail_min_marks = 0;
 		$this->fail_obt_marks = 0;
-		$this->check_grace_marks = false;
 		$this->withheld = false;
 		foreach ($papers as $paper) {
 			$this->paper = $paper;
@@ -82,16 +70,7 @@ class Gradesheet_backlog_model extends CI_Model
 			
 				die;
 			}
-			// if ($this->fail_count>0 && !$this->check_grace_marks && $this->classData->final_result_permission!='Y' ) {  
-			// 	echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
-			// 	'<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
-			// 	 '<h3 class="text-center">'.'WH'.'</h3>'.
-			//    '</div>';
-			//    return $this->result();
-		   
-			//    die;
-			// }
-		
+			
 			$this->_row();
 			
 		}
@@ -113,15 +92,6 @@ class Gradesheet_backlog_model extends CI_Model
 			
 				die;
 			}
-			// if ($this->fail_count>0 && !$this->check_grace_marks && $this->classData->final_result_permission!='Y' ) {  
-			// 	echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
-			// 	'<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
-			// 	 '<h3 class="text-center">'.'WH'.'</h3>'.
-			//    '</div>';
-			//    return $this->result();
-		   
-			//    die;
-			// }
 			$this->_row();
 		}
 		
@@ -134,23 +104,13 @@ class Gradesheet_backlog_model extends CI_Model
                 
                     die;
         }
-		// var_dump($this->result_array);
 		$this->echo_result();
 		//$this->echo_result_grade(); 
 		$this->total();
 		$this->agpa = $this->tot_credit_point/$this->tot_credit;
-		if($this->mode=='REG'){
-			// $this->result_head();
-			$this->set_result();
-			// $this->AGPA();
-		}else{
-			// $this->result_head_pvt();
-			$this->set_result();
-			// $this->AGPA_pvt();
-		}
+		$this->set_result();
 		return $this->result();
-		// echo "<pre>";
-		// print_r($this->foundation_paper);
+		
 	}
 
 	public function view_result_grade($student_id,$course_group_id,$class_id,$mode,$exam_id)
@@ -166,11 +126,6 @@ class Gradesheet_backlog_model extends CI_Model
 		if($this->classData->id == 101 || $this->classData->class_group == 'Y'){
 		$papers_list = $this->Common_model->get_all_backlog_group_papers($student_id,$class_id,$exam_id,$course_group_id);
 		}
-		// get_all_group_papers
-		// print_r($papers);die;
-		
-		// print_r($this->allclass);die;
-		// $this->classCount = count($this->allclass);
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		$this->foundation_paper = array();
 		$this->result_array = array();
@@ -187,7 +142,6 @@ class Gradesheet_backlog_model extends CI_Model
 		$this->fail_obt_marks = 0;
 		$this->obt_marks = 0;
 		$this->total_marks=0;
-		$this->check_grace_marks = false;
 		$this->withheld = false;
 		foreach ($papers as $paper) {
 			$this->paper = $paper;
@@ -229,18 +183,7 @@ class Gradesheet_backlog_model extends CI_Model
 		
 			$this->_row();
 		}
-        // if($this->theory_fail_count!=0 && ($this->zero_count == $this->theory_fail_count)){
-        //     echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
-        //             '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
-        //             '<h3 class="text-center">'.'WH'.'</h3>'.
-        //             '</div>';
-        //             return $this->result();
-                
-        //             die;
-        // }
-		
-		// var_dump($this->result_array);
-		
+     
 		$this->echo_result_grade(); 
 		
 		 $this->agpa = $this->tot_credit_point/$this->tot_credit;
@@ -248,14 +191,11 @@ class Gradesheet_backlog_model extends CI_Model
 		$this->total_grade();
 		
 		return $this->result();
-		// echo "<pre>";
-		// print_r($this->foundation_paper);
 	}
 
 	public function _row()
 	{
 		
-		// print_r($this->foundation_paper[$this->paper['sub_group_id']]);die;
 		if($this->paper['sub_group_id']=='1'){
 			 $this->obt_marks += $this->paper["theory_marks"];
 		 	 $this->total_marks += $this->paper["max_theory_marks"];
@@ -442,11 +382,6 @@ class Gradesheet_backlog_model extends CI_Model
 				$this->result_array[$this->paper['paper_code']]["obt_credit"] = $this->paper["credit_point"];
 			}
 		}
-		// var_dump($this->check_grace_marks);
-		// echo $student_id;
-		// echo $this->classData->final_result_permission;
-		// echo $this->fail_count;die;
-		
 		$this->grade_point = $gradeData[0]->grade_point;
 		$this->result_array[$this->paper['paper_code']]['letter_grade'] = $gradeData[0]->letter_grade;
 	}
@@ -487,7 +422,6 @@ class Gradesheet_backlog_model extends CI_Model
 		
 		else
 		$data = '['.$this->paper["group_paper_name"].']#'.$this->foundation_paper[$sub_group_id]["paper_name"].'<br><br>'.'B) '.$this->paper["paper_name"];
-		// print_r($this->paper["paper_name"]);
         $this->result_array[$this->paper['paper_code']]['sub_group'] = $this->foundation_paper[$sub_group_id]['sub_group'];
         $this->result_array[$this->paper['paper_code']]['group'] = $this->foundation_paper[$sub_group_id]['group'];
 		$this->result_array[$this->paper['paper_code']]['paper_name'] = $data;
@@ -630,20 +564,6 @@ class Gradesheet_backlog_model extends CI_Model
 				}else{
 				echo "<td><table style='border:0px solid black'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='100px' style='border:0px solid black'><strong>".$paper[0]."</strong></td><td style='border:0px solid black'></td><td style='border:0px solid black'><strong>".$paper[1]."</strong></td></tr></table></td>";
 				}
-			//echo "<td><table style='border:0px solid black'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='100px' style='border:0px solid black'><strong>".$paper[0]."</strong></td><td style='border:0px solid black'></td><td style='border:0px solid black'><strong>".$paper[1]."</strong></td></tr></table></td>";
-			// if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
-			// 	$this->check_grace_marks = true;
-			// 	$this->obt_tot_credit += $result['credit'];
-			// 	$req_marks = $result['min_marks']-$result['obt_marks'];
-			// 	$obt_marks = $result['obt_marks']+$req_marks;
-			// 	$credit_point = $result['credit']*4;
-			// 	$this->result_array[$key]['credit_point']=$credit_point;
-			// 	$this->tot_credit_point += $credit_point;
-			// 	echo "<th class='text-center'>".$result['credit']."</th>";
-			// 	echo "<th class='text-center'>P-G</th>";
-			// 	echo "<th class='text-center'>4</th>";
-			// 	echo "<th class='text-center'>".$credit_point."</th>";
-			// }else{
 				if($result['obt_marks'] === 'ABS' || ($result['f_abs'] === 'ABS' && $result['obt_marks'] == '0')
 			){
 					$result['letter_grade'] = 'ABS';
@@ -660,7 +580,6 @@ class Gradesheet_backlog_model extends CI_Model
 				echo "<th class='text-center'>".$result['letter_grade']."</th>";				
 				echo "<th class='text-center'>".$result['grade_point']."</th>";
 				echo "<th class='text-center'>".$result['credit_point']."</th>";
-			// }
 			echo "</tr>";
 		}
 	}
@@ -668,9 +587,6 @@ class Gradesheet_backlog_model extends CI_Model
 	public function echo_result_grade()
 	{
 		$this->fail_count;
-		if ($this->fail_count>0) {
-			 $require_grace_marks = $this->fail_min_marks-$this->fail_obt_marks;
-		}
 		foreach ($this->result_array as $key => $result) {
            
 			$paper = explode('#',$result['paper_name']);
@@ -683,21 +599,7 @@ class Gradesheet_backlog_model extends CI_Model
 				}else{
 				echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='50px'><strong>".$paper[0]."</strong></td><td></td><td><strong>".$paper[1]."</strong></td></tr></table></td>";
 				}
-			// if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
-			// 	$this->check_grace_marks = true;
-			// 	$this->obt_tot_credit += $result['credit'];
-			// 	$req_marks = $result['min_marks']-$result['obt_marks'];
-			// 	$obt_marks = $result['obt_marks']+$req_marks;
-			// 	$credit_point = $result['credit']*4;
-			// 	$this->result_array[$key]['credit_point']=$credit_point;
-			// 	$this->tot_credit_point += $credit_point;
-			// 	echo "<td align='center' colspan='3'><span class='style4'>".$result['credit']."</span></td>";
-			// 	echo "<td align='center' colspan='3'><span class='style4'>".$result['credit']."</span></td>";
-			// 	echo "<td align='center' colspan='2'><span class='style4'>4</span></td>";
-			// 	echo "<td align='center' colspan='2''><span class='style4'>".$credit_point."</span></td>";
-			// 	echo "<td align='center' colspan='2'><span class='style4'>".'P-G'."</span></td>";
-				
-			// }else{
+			
 				if($result['obt_marks'] === 'ABS' || ($result['f_abs'] === 'ABS' && $result['obt_marks'] == '0')
 			){
 					$result['letter_grade'] = 'ABS';
@@ -720,7 +622,6 @@ class Gradesheet_backlog_model extends CI_Model
 				echo "<td align='center' colspan='2'><span class='style4'>".$result['grade_point']."</span></td>";
 				echo "<td align='center' colspan='2'><span class='style4'>".$result['credit_point']."</span></td>";
 				echo "<td align='center' colspan='2'><span class='style4'>".$result['letter_grade']."</span></td>";
-			// }
 			echo "</tr>";
 		}
 	}
@@ -738,8 +639,7 @@ class Gradesheet_backlog_model extends CI_Model
 	}
 	private function total_grade()
 	{
-		
-		
+	
 		$this->agpa = $this->tot_credit_point/$this->tot_credit;
 		$agpa = ($this->result == 'FAIL')?'0.00':number_format((float)$this->agpa, 2, '.', '');
 		echo '<tr  style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="middle">';
@@ -818,7 +718,6 @@ class Gradesheet_backlog_model extends CI_Model
 
 	private function AGPA()
 	{
-		// echo  $this->tot_credit_point.' ppp'.$this->tot_credit;
 		$this->agpa = $this->tot_credit_point/$this->tot_credit;
 		echo '<tr>';
 		echo '<td></td>';
@@ -856,7 +755,6 @@ class Gradesheet_backlog_model extends CI_Model
 		$this->fail_tot_marks = 0;
 		$this->fail_min_marks = 0;
 		$this->fail_obt_marks = 0;
-		$this->check_grace_marks = false;
 		$this->withheld = false;
 		foreach ($papers as $paper) {
 			$this->paper = $paper;
@@ -865,11 +763,7 @@ class Gradesheet_backlog_model extends CI_Model
 		$result_data = $this->student_result_data(); 
 		// $this->total();
 		$this->agpa = $this->tot_credit_point/$this->tot_credit;
-		if($this->mode=='REG'){
-			$this->set_result();
-		}else{
-			$this->set_result();
-		}
+		$this->set_result();
 		$returndata['paper_details'] = $result_data;
 		$returndata['final_result'] = $this->result();
 		return $returndata;
@@ -879,24 +773,13 @@ class Gradesheet_backlog_model extends CI_Model
 	public function student_result_data()
 	{
 		$this->fail_count;
-		if ($this->fail_count>0) {
-			$require_grace_marks = $this->fail_min_marks-$this->fail_obt_marks;
-		}
 		$result_data = array();
 		$key  = 0;
 		foreach ($this->result_array as $result) {
 			$result_data[$key] = array();
 			$result_data[$key]['paper_name'] = $result['paper_name'];
-			// if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F') {
-			// 	$this->check_grace_marks = true;
-			// 	$this->obt_tot_credit += $result['credit'];
-			// 	$result_data[$key]['credit'] = $result['credit'];
-			// 	$result_data[$key]['letter_grade'] = "P-G";
-			// }else{
-				$result_data[$key]['credit'] = ($result['letter_grade']=='F' || $result['letter_grade']=='ABS') ? 0 : $result['credit'];
-				$result_data[$key]['letter_grade'] = $result['letter_grade'];		
-				
-			//}
+			$result_data[$key]['credit'] = ($result['letter_grade']=='F' || $result['letter_grade']=='ABS') ? 0 : $result['credit'];
+	        $result_data[$key]['letter_grade'] = $result['letter_grade'];		
 			$key++;
 		}
 		return $result_data;
@@ -912,24 +795,11 @@ class Gradesheet_backlog_model extends CI_Model
 			echo "<tr>";
 			echo "<td class='text-center'>".$key."</td>";
 			echo "<td>".$result['paper_name']."</td>";
-			// if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F') {
-			// 	$this->check_grace_marks = true;
-			// 	$this->obt_tot_credit += $result['credit'];
-			// 	$req_marks = $result['min_marks']-$result['obt_marks'];
-			// 	$obt_marks = $result['obt_marks']+$req_marks;
-			// 	$credit_point = $result['credit']*4;
-			// 	echo "<td class='text-center'>".$result['credit']."</td>";
-			// 	echo "<td class='text-center'>".$result['obt_credit']."</td>";
-			// 	echo "<td class='text-center'>P-G</td>";
-			// 	echo "<td class='text-center'>4</td>";
-			// 	echo "<td class='text-center'>".$credit_point."</td>";
-			// }else{
-				echo "<td class='text-center'>".$result['credit']."</td>";
-				echo "<td class='text-center'>".$result['obt_credit']."</td>";
-				echo "<td class='text-center'>".$result['letter_grade']."</td>";				
-				echo "<td class='text-center'>".$result['grade_point']."</td>";
-				echo "<td class='text-center'>".$result['credit_point']."</td>";
-			// }
+			echo "<td class='text-center'>".$result['credit']."</td>";
+			echo "<td class='text-center'>".$result['obt_credit']."</td>";
+			echo "<td class='text-center'>".$result['letter_grade']."</td>";				
+			echo "<td class='text-center'>".$result['grade_point']."</td>";
+			echo "<td class='text-center'>".$result['credit_point']."</td>";
 			echo "</tr>";
 		}
 	}
@@ -963,38 +833,15 @@ class Gradesheet_backlog_model extends CI_Model
 		$this->fail_tot_marks = 0;
 		$this->fail_min_marks = 0;
 		$this->fail_obt_marks = 0;
-		$this->check_grace_marks = false;
 		$this->withheld = false;
 		foreach ($papers as $paper) {
 			$this->paper = $paper;
 			$this->_row();
 		}
-		// var_dump($this->result_array);
 		$this->echo_result_marksheet(); 
 		$this->total_marksheet();
 		$this->agpa = $this->tot_credit_point/$this->tot_credit;
-		if($this->mode=='REG'){
-			// $this->result_head();
-			$this->set_result();
-			// $this->AGPA();
-		}else{
-			// $this->result_head_pvt();
-			$this->set_result();
-			// $this->AGPA_pvt();
-		}
+		$this->set_result();
 		return $this->result();
-		// echo "<pre>";
-		// print_r($this->foundation_paper);
 	}
 }
-// echo $this->fail_count;die;
-// 			if ($this->fail_count>0 && !$this->check_grace_marks && $student_id!=684208 && $this->classData->final_result_permission!='Y' ) {  
-// 				echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
-// 				'<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
-// 				 '<h3 class="text-center">'.'WH'.'</h3>'.
-// 			   '</div>';
-// 			   return $this->result();
-		   
-// 			   die;
-// 			}else{
-// 			}
