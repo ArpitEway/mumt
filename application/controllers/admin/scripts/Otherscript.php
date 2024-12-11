@@ -1375,7 +1375,16 @@ public function update_roll_no_old_data(){
        
             echo "<hr>";  
     }
-		
+
+    public function update_credit_point_in_old_result_data(){
+        $datas = $this->db->query('SELECT DISTINCT(p.paper_code),p.sub_group_id,p.credit_point FROM `old_result_data` as r join paper_master as p on p.paper_code=r.paper_code join old_exam_data as o on o.id=r.exam_data_id and o.marks_pattern ="GRADE" WHERE p.credit_point!=0 and p.sub_group_id!=1 and r.class_id not in (215,101,102,103,104,105) and r.credit_point=0 limit 10')->result_array();
+
+            foreach($datas as $data){
+                $this->db->query('UPDATE `old_result_data` SET credit_point ='.$data["credit_point"].' WHERE paper_code="'.$data['paper_code'].'" AND sub_group_id='.$data['sub_group_id'].' AND exam_data_id in (SELECT id FROM `old_exam_data` WHERE marks_pattern ="GRADE") ');
+                echo $this->db->last_query().'<br>';
+               
+            }
+    }
 }
 
    

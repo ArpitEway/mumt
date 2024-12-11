@@ -1209,7 +1209,7 @@ class Common_Model extends CI_Model{
 			'old_result_data.class_id' => $class_id,
 			
 			);
-		$this->db->select('old_result_data.*,paper_master.credit_point,paper_master.paper_name,paper_master.paper_code,paper_master.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks');
+		$this->db->select('old_result_data.*,paper_master.paper_name,paper_master.paper_code,paper_master.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks');
 		$this->db->from('paper_master');
 		$this->db->order_by('paper_no','asc');
 		$this->db->join('old_result_data','old_result_data.paper_code = paper_master.paper_code');
@@ -1236,11 +1236,11 @@ class Common_Model extends CI_Model{
 			);
 
 			if($course_group_id != '' && $course_group_id == 12){
-				$this->db->select('o.*,group_paper.credit_point,paper_master.paper_name,paper_master.paper_code,group_paper.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks,o.sub_group_id,o.group_id,o.p_order,g.group_name');
+				$this->db->select('o.*,paper_master.paper_name,paper_master.paper_code,group_paper.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks,o.sub_group_id,o.group_id,o.p_order,g.group_name');
 				
 	
 			}else{	
-		$this->db->select('o.*,group_paper.credit_point,paper_master.paper_name,paper_master.paper_code,group_paper.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks');}
+		$this->db->select('o.*,paper_master.paper_name,paper_master.paper_code,group_paper.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks');}
 		$this->db->from('paper_master');
 		$this->db->order_by('group_paper.sub_group_id,paper_no','asc');
 		$this->db->join('old_result_data as o','o.paper_code = paper_master.paper_code','left');
