@@ -747,6 +747,8 @@ table.last_table, .last_table td, .last_table th{
           if($paper_master->sub_group_id == 1){
             if($this->foundation1>0 && $paper_master->group_paper_name =='FC1'){
               echo ($paper_master->theory_marks=='ABS') ? 'ABS F' :(int) $paper_master->theory_marks ." F";
+            }else{
+                echo ($paper_master->theory_marks !='ABS')?$paper_master->theory_marks:'';  
             }
              if($this->foundation2>0 && $paper_master->group_paper_name =='FC2'){
               echo ($paper_master->theory_marks=='ABS') ? 'ABS F' :(int) $paper_master->theory_marks ." F";

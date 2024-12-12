@@ -192,9 +192,11 @@
                          $gradeData   = $this->Gradesheet_model->view_old_results($student->student_id,$student->course_group_id,$cls->id,$student->university_mode, $old[0]->id, $old[0]->exam_status);
                          $total_grade_point += number_format((float)$gradeData['agpa'], 2, '.', '') * $gradeData['obt_credit']; 
                          $total_course_credit +=$gradeData['tot_credit'];
-                        
+                        $blank_total_credit = ($cls->id <=$student->class_id)?'0':'';
+                        $blank_obtain_credit = ($cls->id <=$student->class_id)?'0':'';
+                        $blank_credit_point = ($cls->id <=$student->class_id)?'0':'';
                      ?>
-                      <tr align="center"><th><?=$sno?></th><td><?= ($gradeData['tot_credit'] == 0)?'':$gradeData['tot_credit']?></td><td><?= ($gradeData['obt_credit'] == 0)?'':$gradeData['obt_credit']?></td><td><?= ($gradeData['credit_point'] == 0)?'':$gradeData['credit_point']?></td><td>
+                      <tr align="center"><th><?=$sno?></th><td><?= ($gradeData['tot_credit'] == 0)?$blank_total_credit:$gradeData['tot_credit']?></td><td><?= ($gradeData['obt_credit'] == 0)?$blank_obtain_credit:$gradeData['obt_credit']?></td><td><?= ($gradeData['credit_point'] == 0)?$blank_credit_point:$gradeData['credit_point']?></td><td>
                         <?php if(is_nan($gradeData['agpa'])){
                             echo '';
                         }else{
