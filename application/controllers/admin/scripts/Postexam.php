@@ -68,9 +68,10 @@ class Postexam extends CI_Controller {
              $this->db->where('result_permission', 'Y');
             //  $this->db->where('final_result_permission', 'Y');
             // $this->db->where('marksheet_dispatch', 'Y');
-            $this->db->where('university_mode','REG');
-             // 155,234,278,282,273,274,103,118,218,236,246,230,130,184,186,169,170,173,188,
-            $this->db->where_in('class_id',array(101,107,108,109,110,117,128,135,136,161,165,171,174,177,180,194,200,202,204,238,206,208,210,244,216,303,276,280,222,248,224,250,228));
+             $this->db->where('university_mode','REG');
+            // 155,234,278,282,273,274,103,118,218,236,246,230,130,184,186,169,170,173,188,
+             $this->db->where_in('class_id',array(101,107,108,109,110,117,128,135,136,161,165,171,174,177,180,194,200,202,204,238,206,208,210,244,216,303,276,280,222,248,224,250,228));
+            
             $this->db->group_by('class_id,university_mode');          
             $data['courses'] = $this->db->get('student')->result();
             $this->load->view('header',array('title' => ''));
