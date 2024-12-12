@@ -410,8 +410,10 @@ table.last_table, .last_table td, .last_table th{
               echo 'Absent In All';
             } elseif($int_abs_count == $count_int &&  $theory_abs_count == $count_theory){
               echo 'Absent In All';
+            }elseif($count_theory ==$theory_abs_count && ($count_practical == $p_abs_count && $p_abs_count!=0)){
+                echo 'Absent in All';
             }
-            elseif($int_abs_count == $count_int ||  $theory_abs_count == $count_theory || ($p_abs_count == $count_practical && $count_practical!=0)){
+            elseif($int_abs_count == $count_int ||  $theory_abs_count == $count_theory || ($p_abs_count == $count_practical && $p_abs_count!=0)){
               echo 'Absent In';
               if($theory_abs_count == $count_theory){
                 echo ' Theory';
