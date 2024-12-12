@@ -660,7 +660,7 @@ class Postexam extends CI_Controller {
      {
           $this->db->select('course_name,student.class_name,student.course_group_id,class_id, COUNT(student_id) as cnt');
           $this->db->join('class_master', 'student.class_id = class_master.id');
-          $this->db->where_in('student.class_id',array(103,118,130,155,169,170,173,184,186,188,218,230,234,236,246,278,282,273,274));
+          $this->db->where_in('student.class_id',array(101,107,108,109,117,128,135,136,161,165,171,174,177,180,194,200,202,204,238,206,208,210,244,216,303,276,280,222,248,224,250,228));
           $this->db->where('last_class', 'L');
           $this->db->where('new_exam_form', 'Y');
           // $this->db->where('result_permission', 'Y');
