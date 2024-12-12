@@ -69,7 +69,7 @@ class Postexam extends CI_Controller {
             //  $this->db->where('final_result_permission', 'Y');
             // $this->db->where('marksheet_dispatch', 'Y');
             // $this->db->where('university_mode','REG');155,234,278,282,273,274,103,118,218,236,246,230,130,184,186,169,170,173,188,
-            $this->db->where_in('class_id',array(155,234,278,282,273,274,103,118,218,236,246,230,130,184,186,169,170,173,188));
+            // $this->db->where_in('class_id',array(155,234,278,282,273,274,103,118,218,236,246,230,130,184,186,169,170,173,188));
             $this->db->group_by('class_id,university_mode');          
             $data['courses'] = $this->db->get('student')->result();
             $this->load->view('header',array('title' => ''));
@@ -1092,10 +1092,11 @@ public function upload_old_backlog_grade_data_script($class_id="",$mode){
     $x=1;
     foreach($students as $student)
     {
-       
+      
        echo $x.'<br>';
         // $this->upload_old_data->update_old_data($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
         $this->Upload_old_data_backlog->update_old_data($student);
+        echo $this->db->last_query();
      $x++;  
     }
  
