@@ -63,15 +63,15 @@ class Postexam extends CI_Controller {
             //$this->db->where('mode', 'Semester');
             $this->db->where('new_exam_form', 'Y');
             $this->db->where('upload_result', 'N');
-            $this->db->where('student_id',776680);
+            // $this->db->where('student_id',776680);
             $this->db->where('result_show', 'Y');
              $this->db->where('result_permission', 'Y');
             //  $this->db->where('final_result_permission', 'Y');
             // $this->db->where('marksheet_dispatch', 'Y');
-             // $this->db->where('university_mode','PVT');
+             $this->db->where('university_mode','PVT');
             // 155,234,278,282,273,274,103,118,218,236,246,230,130,184,186,169,170,173,188,
              // 101,107,108,109,110,117,128,135,136,161,165,171,174,177,180,194,200,202,204,238,206,208,210,244,216,303,276,280,222,248,224,250,228
-             // $this->db->where_in('class_id',array(109,171,283,286,288,294,296));
+             $this->db->where_in('class_id',array(109,171,283,286,288,294,296));
             
             $this->db->group_by('class_id,university_mode');           
             $data['courses'] = $this->db->get('student')->result();
@@ -85,7 +85,7 @@ class Postexam extends CI_Controller {
         $date =$this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
         $this->db->limit(500);
        // $this->db->where_not_in('student_id',array(711707,708907));
-        $this->db->where('student_id',776680);
+        // $this->db->where('student_id',776680);
         $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "new_exam_form"=>'Y', "upload_result"=>'N','university_mode'=>$mode ,'result_show'=>'Y','exam_pattern'=>'MARKS')); //, "marksheet_dispatch"=>'Y'
          // $this->db->where_in('course_group.course_type',array('Diploma','PGDiploma'));
         // $course_type = $this->Common_model->getRecordByWhere("course_group",array('id'=> $students[0]->course_group_id));
