@@ -3299,7 +3299,9 @@ public function update_exam_datewise_permission(){
 		
 		// $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and old_class_id in ( 193,197,201,203,205,209,211,213,215,217,221,223,225,227,231,235,237,239,245,247,249,251,253,275,277,279,281,302) )  ";
 		
-        $where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y' and class_id in (109,171,283,286,288,294,296) )";
+		$where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y' )";
+
+        // $where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y' and class_id in (109,171,283,286,288,294,296) )";
 
         //and class_id in (101,107,108,109,117,128,135,136,161,165,171,174,177,180,194,200,202,204,238,206,208,210,244,216,303,276,280,222,248,224,250,228)
 		// and class_id in (102,110,120,135,141,165,299,180,202,206,226,228)
