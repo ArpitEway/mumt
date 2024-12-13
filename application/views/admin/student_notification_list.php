@@ -629,7 +629,10 @@
 			}else{
 			if(count($ATKT_paper_codes)==0 || $Withheld) {
 				$remark='';
-			}elseif($theory_paper_count ==$theory_abs_count && $practical_paper_count == $practical_abs_count){
+			}elseif($theory_abs_count == ($theory_paper_count-2) ){
+                echo 'Year Break';
+              }
+            elseif($theory_paper_count ==$theory_abs_count && $practical_paper_count == $practical_abs_count){
 				echo 'Year Break';
 			}
 			
