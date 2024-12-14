@@ -5344,6 +5344,7 @@ public function update_exam_datewise_permission(){
 				$this->db->from('new_exam_form as e' );
 				$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.class_id');
 				$this->db->where('student.new_exam_form','Y');
+				$this->db->where('student.result_show','Y');
 				// if($mode != 'All'){
 				// 	$this->db->where_in('new_exam_form.class_id',$set);
 				// }
