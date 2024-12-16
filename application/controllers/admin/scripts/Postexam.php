@@ -63,7 +63,7 @@ class Postexam extends CI_Controller {
             //$this->db->where('mode', 'Semester');
             $this->db->where('new_exam_form', 'Y');
             $this->db->where('upload_result', 'N');
-            // $this->db->where('student_id',776680);
+            $this->db->where('student_id',692746);
             $this->db->where('result_show', 'Y');
              $this->db->where('result_permission', 'Y');
             //  $this->db->where('final_result_permission', 'Y');
@@ -86,7 +86,7 @@ class Postexam extends CI_Controller {
         $date =$this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
         $this->db->limit(500);
        // $this->db->where_not_in('student_id',array(711707,708907));
-        // $this->db->where('student_id',776680);
+        $this->db->where('student_id',692746);
         $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "new_exam_form"=>'Y', "upload_result"=>'N','university_mode'=>$mode ,'result_show'=>'Y','exam_pattern'=>'MARKS')); //, "marksheet_dispatch"=>'Y'
          // $this->db->where_in('course_group.course_type',array('Diploma','PGDiploma'));
         // $course_type = $this->Common_model->getRecordByWhere("course_group",array('id'=> $students[0]->course_group_id));
