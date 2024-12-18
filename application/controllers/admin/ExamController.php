@@ -3583,4 +3583,21 @@ public function getStudentData()
 		$this->load->view('footer');
 		}
 	}	
+
+    public function student_final_year_exam_detail(){
+        $data = array();
+		$data['exam_session'] = "June 2024";
+        $this->db->select('cm.id,cm.class_name, cm.course_group_id,cg.course_name');
+        $this->db->from('class_master as cm');
+        $this->db->join('course_group as cg','cg.id =cm.course_group_id');
+        $this->db->join('old_exam_data as od','cm.id =od.class_id');
+        // $this->db->where_in('od.exam_result', array('PASS', 'PASS BY GRACE'));
+        $this->db->where(array('cm.last_class'=>'L','od.exam_year'=>$data['exam_session'],'od.university_mode'=>'REG','od.exam_status'=>'R', 'od.marks_pattern'=>'MARKS'));
+        $this->db->group_by('cg.course_name');
+        $data['courses'] = $this->db->get()->result();
+
+        $this->load->view('header',array('title'=>'Student Final Year Exam Detail'));
+		$this->load->view('admin/student_final_year_exam_detail', $data);
+		$this->load->view('footer');
+    }
 }// class
