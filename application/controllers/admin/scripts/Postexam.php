@@ -63,7 +63,7 @@ class Postexam extends CI_Controller {
             //$this->db->where('mode', 'Semester');
             $this->db->where('new_exam_form', 'Y');
             $this->db->where('upload_result', 'N');
-            $this->db->where('student_id',692746);
+            $this->db->where('student_id',709296);
             $this->db->where('result_show', 'Y');
              $this->db->where('result_permission', 'Y');
             //  $this->db->where('final_result_permission', 'Y');
