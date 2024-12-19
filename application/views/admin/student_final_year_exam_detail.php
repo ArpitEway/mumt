@@ -34,79 +34,56 @@
     <tbody>
         <?php
         $i = 1;
+       
             foreach($courses as $course){
+                $awarded= 0;
+                $awarded_male= 0;
+                $awarded_female= 0;
                 $this->db->select("COUNT(CASE WHEN gender != '' THEN od.student_id END) as std_total,COUNT(CASE WHEN gender = 'Male' THEN od.student_id END) AS male,
             COUNT(CASE WHEN gender = 'Female' THEN od.student_id END) AS female");
             $this->db->from('old_exam_data as od');
             $this->db->join('student as st','od.student_id = st.student_id and od.class_id = st.class_id');
-            $this->db->where(array('st.enrolled'=>'Y', 'od.class_id'=>$course->id,'od.exam_year'=>$exam_session,'od.university_mode'=>'REG','od.exam_status'=>'R', 'od.marks_pattern'=>'MARKS'));
+            $this->db->where(array('st.enrolled'=>'Y', 'od.class_id'=>$course->id,'od.exam_year'=>$exam_session,'od.university_mode'=>$mode,'od.exam_status'=>'R', 'od.marks_pattern'=>$pattern));
             $total = $this->db->get()->result();
             // $this->Common_model->last_query();
             $this->db->select("COUNT(CASE WHEN gender != '' THEN od.student_id END) as std_total,COUNT(CASE WHEN gender = 'Male' THEN od.student_id END) AS male,
             COUNT(CASE WHEN gender = 'Female' THEN od.student_id END) AS female");
             $this->db->from('old_exam_data as od');
             $this->db->join('student as st','od.student_id = st.student_id and od.class_id = st.class_id');
-            $this->db->where(array('st.enrolled'=>'Y', 'od.class_id'=>$course->id,'od.exam_year'=>$exam_session,'od.university_mode'=>'REG','od.exam_status'=>'R', 'od.marks_pattern'=>'MARKS'));
+            $this->db->where(array('st.enrolled'=>'Y', 'od.class_id'=>$course->id,'od.exam_year'=>$exam_session,'od.university_mode'=>$mode,'od.exam_status'=>'R', 'od.marks_pattern'=>$pattern));
             $this->db->where_in('exam_result', array('PASS', 'PASS BY GRACE'));
             $total_passed = $this->db->get()->result();
             
-                //  $this->db->select(" COUNT(CASE  (SUM(obtain_marks) / SUM(total_marks)) * 100 AS percentage  WHEN percentage > 60 THEN od.student_id END) as  std_total");
+            foreach($students as $student){
+                $this->db->select('sum(obtain_marks) as obtain, sum(total_marks) as total')->from('old_exam_data as od')
+                ->join('student as st', 'od.student_id = st.student_id', 'inner')
+                ->where(array(
+                    'st.enrolled' => 'Y',
+                    'od.student_id' => $student->student_id,
+                    'st.course_complete' => 'Y',
+                    'od.course_group_id' => $course->course_group_id,
+                    'od.university_mode' => $mode,
+                   //  'od.exam_status' => 'R',
+                    'od.marks_pattern' => $pattern
+                ))
+                ->where_in('od.exam_result', array('PASS', 'PASS BY GRACE'));
+                $query = $this->db->get();
+                $total_first = $query->row();
+                $percentage = ($total_first->obtain / $total_first->total) *100;
+                if($percentage >= 60){
+                    $awarded++;
+                }
+                if($percentage >= 60 && $student->gender == 'Male'){
+                    $awarded_male++;
+                }
+                if($percentage >= 60 && $student->gender == 'Female'){
+                    $awarded_female++;
+                }
                
-                // $this->db->from('old_exam_data as od');
-                // $this->db->join('student as st','od.student_id = st.student_id and od.class_id = st.class_id');
-                // $this->db->where(array('st.enrolled'=>'Y', 'od.course_group_id'=>$course->course_group_id,'od.exam_year'=>$exam_session,'od.university_mode'=>'REG','od.exam_status'=>'R', 'od.marks_pattern'=>'MARKS'));
-                // $this->db->where_in('exam_result', array('PASS', 'PASS BY GRACE'));
-                // $total_first = $this->db->get()->result();
-                //ss
-//                 $this->db->select("COUNT(od.student_id) AS std_total", false)
-//          ->from('old_exam_data as od')
-//          ->join('student as st', 'od.student_id = st.student_id AND od.class_id = st.class_id', 'inner')
-//          ->where(array(
-//              'st.enrolled' => 'Y',
-//              'od.course_group_id' => $course->course_group_id,
-//              'od.exam_year' => $exam_session,
-//              'od.university_mode' => 'REG',
-//              'od.exam_status' => 'R',
-//              'od.marks_pattern' => 'MARKS'
-//          ))
-//          ->where_in('od.exam_result', array('PASS', 'PASS BY GRACE'))
-//          ->group_start()
-//          ->having('(SUM(od.obtain_marks) / SUM(od.total_marks)) * 100 >', 60)
-//          ->group_end();
+            }
+              
+              
 
-// $query = $this->db->get();
-// $total_first = $query->row()->std_total;
-// //ss
-// echo "Total students above 60%: " . $total_first;
-
-                // $this->Common_model->last_query();
-                 // $this->db->query("SELECT COUNT(*) AS total_above_60 FROM (SELECT student_id,(SUM(obtain_marks) / (total_marks)) * 100 AS percentage FROM old_exam_data GROUP BY student_id HAVING percentage > 60) AS percentage_data");
-//         $this->db->select('COUNT(*) AS total_above_60', false)
-//          ->from("(SELECT 
-//                      student_id, 
-//                      class_id, 
-//                      (SUM(obtain_marks) / SUM(total_marks)) * 100 AS percentage 
-//                   FROM old_exam_data 
-//                   WHERE course_group_id = {$course->course_group_id}
-//                     AND exam_year = '{$exam_session}'
-//                     AND university_mode = 'REG'
-//                     AND exam_status = 'R'
-//                     AND marks_pattern = 'MARKS'
-//                     AND exam_result IN ('PASS', 'PASS BY GRACE')
-//                   GROUP BY student_id, class_id
-//                   HAVING percentage > 60) AS percentage_data", false);
-
-// $this->db->join('student as st', 'percentage_data.student_id = st.student_id AND percentage_data.class_id = st.class_id', 'inner');
-// $this->db->where(array('st.enrolled' => 'Y'));
-
-// $query = $this->db->get();
-// $total_first = $query->row()->total_above_60;
-
-// echo "Total students above 60%: " . $total_first;
-
-// echo "Total students above 60%: " . $total_first;
-
-                // $this->Common_model->last_query();
                 ?>
                 <tr>
                     <td><?= $i++?></td>
@@ -120,16 +97,22 @@
                     <td><?=$total_passed[0]->female?></td>
                     <td><?=$total_passed[0]->male?></td>
                    
-                    <td>Total </td>
-                    <td>Girls</td>
-                    <td>Boys</td>
-                    <td>Appeared</td>
-                    <td>Passed</td>
-                    <td>60% or Above</td>
+                    <td><?= $awarded;?></td>
+                    <td><?= $awarded_female;?></td>
+                    <td><?= $awarded_male;?></td>
+                    <td>
+			            <a href="<?php echo base_url().'ExamController/student_exam_appeared_details/'.$course->course_group_id.'/'.$course->id.'/'.$mode; ?>" target="_blank"><strong>All</strong></a>
+		            </td>
+                    <td>
+                    <a href="<?php echo base_url().'ExamController/pass_student_details/'.$course->course_group_id.'/'.$course->id.'/'.$mode; ?>" target="_blank"><strong>PASS</strong></a>
+		            </td>
+                    <td>
+			            <a href="<?php echo base_url().'ExamController/student_above_sixty_percent_details/'.$course->course_group_id.'/'.$course->id.'/'.$mode; ?>" target="_blank"><strong>VIEW</strong></a>
+		            </td>
+		
                 </tr>
                 
                 <?php
-                // echo $course->course_name.'<br>';
             }
         ?>
 
