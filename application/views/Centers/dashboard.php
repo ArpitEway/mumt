@@ -243,12 +243,12 @@
                 if ($center->exam_form_permission=='Y' ): ?>
 				 <a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
 							<div>
-								<span class="nav-text">Exam Form June 2024</span>
+								<span class="nav-text">Exam Form January 2025</span>
 							</div>
 					</a> 
 					<a class="border-0 custom-menu-item" href="<?=base_url('backlog_exam_form_students');?>">
 							<div>
-								<span class="nav-text">Backlog Exam Form June 2024</span>
+								<span class="nav-text">Backlog Exam Form January 2025</span>
 							</div>
 					</a>  
 					<?php endif ?>
