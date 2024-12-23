@@ -47,7 +47,7 @@
             if(in_array($course->id, $class_ids)){
                 $this->db->where_not_in('od.center_id',$dept_ids);
             }
-            $this->db->where(array('st.enrolled'=>'Y', 'od.class_id'=>$course->id,'od.exam_year'=>$exam_session,'od.university_mode'=>$mode,'od.exam_status'=>'R', 'od.marks_pattern'=>$pattern));
+            $this->db->where(array('st.enrolled'=>'Y', 'od.class_id'=>$course->id,'od.exam_year'=>$exam_session,'od.university_mode'=>$mode, 'od.marks_pattern'=>$pattern));//,'od.exam_status'=>'R'
             $total = $this->db->get()->result();
 
             $this->db->select("COUNT(CASE WHEN gender != '' THEN od.student_id END) as std_total,COUNT(CASE WHEN gender = 'Male' THEN od.student_id END) AS male,
@@ -57,7 +57,7 @@
             if(in_array($course->id, $class_ids)){
                 $this->db->where_not_in('od.center_id',$dept_ids);
             }
-            $this->db->where(array('st.enrolled'=>'Y', 'od.class_id'=>$course->id,'od.exam_year'=>$exam_session,'od.university_mode'=>$mode,'od.exam_status'=>'R', 'od.marks_pattern'=>$pattern));
+            $this->db->where(array('st.enrolled'=>'Y', 'od.class_id'=>$course->id,'od.exam_year'=>$exam_session,'od.university_mode'=>$mode,'st.course_complete'=>'Y', 'od.marks_pattern'=>$pattern));///'od.exam_status'=>'R'
             $this->db->where_in('exam_result', array('PASS', 'PASS BY GRACE'));
             $total_passed = $this->db->get()->result();
             
