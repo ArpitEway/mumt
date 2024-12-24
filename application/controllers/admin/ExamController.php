@@ -2030,7 +2030,7 @@ class ExamController extends CI_Controller {
 			#total
 			$this->db->select('count(*) as num');
 			$this->db->from('new_exam_form');
-			$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.old_class_id');
 			$this->db->where('student.'.$this->exam_form.'','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
 			$count = $this->db->get()->result();
@@ -2038,7 +2038,7 @@ class ExamController extends CI_Controller {
 			#Absent
 			$this->db->select('count(*) as num');
 			$this->db->from('new_exam_form');
-			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.class_id');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.old_class_id');
 			$this->db->where('student.'.$this->exam_form.'','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
 			$this->db->where('new_exam_form.theory_marks','ABS');
@@ -2047,7 +2047,7 @@ class ExamController extends CI_Controller {
 			#uploaded
 			$this->db->select('count(*) as num');
 			$this->db->from('new_exam_form');
-			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.class_id');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.old_class_id');
 			$this->db->where('student.'.$this->exam_form.'','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
 			$this->db->where_not_in('theory_marks',array('ABS','')); // 'ABS',
