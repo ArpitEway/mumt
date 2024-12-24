@@ -28,7 +28,7 @@ $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('stude
 }
 }
 foreach($new_exam_form as $marks){
-  $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code,"class_id"=>$marks->old_class_id));
+  $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code,"class_id"=>$marks->class_id));
 
   if($marks->paper_type=='theory'){
     $theory_count++;
@@ -180,7 +180,7 @@ if ($old_fail) {
     $total_obtained_marks = 0;    
     foreach($new_exam_form as  $marks){
       $result_1_paper = '';
-      $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code,'class_id'=>$marks->old_class_id));
+      $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code,'class_id'=>$marks->class_id));
     ?>
     <tr>
       <th><?php echo $paper_master[0]->paper_name; ?></th>
