@@ -12,7 +12,7 @@ $abs_count = 0;
 $old_fail = false;
 $isFinalClass = $this->Common_model->hasOneClass($student->course_group_id);
 if($classData->last_class == 'L' && $isFinalClass == false){
-  $classes = $this->Common_model->getRecordByWhere('class_master',array('id !='=>$student->class_id,'course_group_id'=>$student->course_group_id,'mode'=>$classData->mode));
+  $classes = $this->Common_model->getRecordByWhere('class_master',array('id !='=>$student->old_class_id,'course_group_id'=>$student->course_group_id,'mode'=>$classData->mode));
   foreach($classes as $old){
  $this->db->where_in('exam_result',array('PASS','PASS BY GRACE'));
 $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id'=>$old->id));
@@ -27,7 +27,7 @@ $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('stude
 }
 }
 foreach($new_exam_form as $marks){
-  $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code,"class_id"=>$marks->class_id));
+  $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code,"class_id"=>$marks->old_class_id));
 
   if($marks->paper_type=='theory'){
     $theory_count++;
@@ -170,7 +170,7 @@ if ($withheld ) { //||  in_array($student->examcentercode ,array('MDE052','MDE08
     $total_obtained_marks = 0;    
     foreach($new_exam_form as  $marks){
       $result_1_paper = '';
-      $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code,"class_id"=>$marks->class_id));
+      $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code,"class_id"=>$marks->old_class_id));
     ?>
     <tr>
       <th><?php echo $paper_master[0]->paper_name; ?></th>

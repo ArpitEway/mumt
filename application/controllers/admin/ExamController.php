@@ -2825,17 +2825,17 @@ public function getStudentData()
 		if($this->input->post('roll_no')!=0){
 			$roll_no = $this->input->post('roll_no');
 		}
-		$studentData = $this->Common_model->getRecordByWhere('student',array('roll_no'=>$roll_no,'new_exam_form'=>'Y'));
+		$studentData = $this->Common_model->getRecordByWhere('student',array('roll_number'=>$roll_no,'exam_form'=>'Y'));
 		
-		$studentPaper = $this->Common_model->get_student_papers($studentData[0]->student_id,$studentData[0]->class_id);
+		$studentPaper = $this->Common_model->get_student_papers($studentData[0]->student_id,$studentData[0]->old_class_id);
 		$this->db->where('new_exam_form.theory_marks','');
-		$studentPaperWithHeld = $this->Common_model->get_student_papers($studentData[0]->student_id,$studentData[0]->class_id,'withheld');
+		$studentPaperWithHeld = $this->Common_model->get_student_papers($studentData[0]->student_id,$studentData[0]->old_class_id,'withheld');
 		//print_r($studentPaperWithHeld);
 	//	echo  $this->Common_model->last_query();
 		$data['student'] = $studentData;
 		if($studentData){
 		$data['studentPaper'] = $studentPaper;
-		if ($studentData[0]->result_show=='Y' && (count($studentPaperWithHeld)==0) ) {
+		if ($studentData[0]->old_result_show=='Y' && (count($studentPaperWithHeld)==0) ) {
 			$result['data'] = $this->load->view('admin/Dataentry/show_student_marks',$data,true);
 		}else{
 			$result['data'] = $this->load->view('admin/Dataentry/edit_student_marks',$data,true);
@@ -2931,12 +2931,12 @@ public function getStudentData()
 		{
 			if($text_val !='' && $radio_val == 'enrollment_no')
 			{
-				$where = array('new_exam_form'=>'Y','enrollment_no'=>$text_val);
+				$where = array('exam_form'=>'Y','enrollment_no'=>$text_val);
 				//,'result_show'=>'Y'
 
 			}else if($text_val !='' && $radio_val == 'roll_no')
 			{
-				$where = array('new_exam_form'=>'Y','roll_no'=>$text_val );
+				$where = array('exam_form'=>'Y','roll_number'=>$text_val );
 			//,'result_show'=>'Y'
 			}
 
@@ -2953,7 +2953,7 @@ public function getStudentData()
 					
 				}else{
 			
-					if($student[0]->result_show =="N"){
+					if($student[0]->old_result_show =="N"){
 						
 							$msg="<p style='text-align: center;' id='result_msg'><b>Student result not declared!</b></p>"; 
 					}
@@ -2970,12 +2970,12 @@ public function getStudentData()
 						}
 						/************************/
 						
-						$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
+						$classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
 						$data['practical_internal_marks']=$classData->practical_internal_marks;
 						$this->db->select('*');
 						$this->db->from($this->exam_form_table);
 						$this->db->where(''.$this->exam_form_table.'.student_id',$data['student']->student_id);
-						$this->db->where(''.$this->exam_form_table.'.class_id',$data['student']->class_id);
+						$this->db->where(''.$this->exam_form_table.'.class_id',$data['student']->old_class_id);
 						$this->db->order_by(''.$this->exam_form_table.'.paper_order',''.$this->exam_form_table.'.paper_id');
 						$new_exam_form = $this->db->get()->result();
 						$data['classData']  = $classData;
@@ -2984,7 +2984,7 @@ public function getStudentData()
 						
 						$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136);
 						$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302,303,304,305,278,282,250,252,216,232,236,238,240,246,248,254,218,305,210);
-						if((in_array($data['student']->class_id, $class_ids))  && $data['student']->exam_pattern=='GRADE')	//&& $data['student']->university_mode=='REG'
+						if((in_array($data['student']->old_class_id, $class_ids))  && $data['student']->exam_pattern=='GRADE')	//&& $data['student']->university_mode=='REG'
 						{
 							$this->load->model('Gradesheet_model');
 							$dt = $provisional_remark_details.$msg.$this->load->view('Centers/grade_marksheet',$data,true);
