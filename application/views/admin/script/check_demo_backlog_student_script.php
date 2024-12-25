@@ -13,7 +13,9 @@
       <tbody>
         <?php
         $i=1;
+        $dept_ids = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30);
         foreach($students as $row){ 
+            $className = $this->Common_model->getClassNameByClassId($row->class_id);
          $paper_details = $this->Common_model->getRecordByWhere('old_result_data',array('student_id' => $row->student_id,'class_id'=>$row->class_id,'exam_data_id'=>$row->id,'type'=>'theory'));
          $paperCount = $this->Common_model->getCountByWhere('old_result_data',array('student_id' => $row->student_id,'class_id'=>$row->class_id,'exam_data_id'=>$row->id,'type'=>'theory'));
          $absCount = $this->Common_model->getCountByWhere('old_result_data',array('student_id' => $row->student_id,'class_id'=>$row->class_id,'exam_data_id'=>$row->id,'type'=>'theory','theory_marks'=>'ABS'));
@@ -26,9 +28,14 @@
           <td><?php echo $row->name; ?></td>
           <td><?php echo $row->course_name ; ?></td>
           <td> <?php  if($paperCount==$absCount || ( $row->agpa_sgpa<4 && $row->marks_pattern=="GRADE")  ){?> 
-            <a class="text-danger" href="<?=base_url('admin/scripts/Postexam/set_demo/'.$row->student_id.'/'.$row->class_id)?>" target="_blank">Set Demo</a> <?php 
+            <a class="text-danger" href="<?=base_url('admin/scripts/Postexam/set_demo/'.$row->student_id.'/'.$row->class_id.'/'.$row->center_id)?>" target="_blank">Set Demo</a> <?php 
               $where = array('student_id'=>$row->student_id,'new_exam_form'=>'D');
-              $data = array('demo'=>'Y','new_exam_form'=>'N');
+              if(!in_array($row->center_id,$dept_ids) && $className=='I SEM'){
+                $data = array('demo'=>'Y','new_exam_form_permission'=>'Y');
+              }else{
+                $data = array('demo'=>'Y','new_exam_form'=>'N');
+              }
+             
              // $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
              $student_demo_details = $this->Common_model->getRecordByWhere('student',array('student_id' => $row->student_id));
              echo " <br> Promote Data ".$student_demo_details[0]->promote."<br>";
@@ -49,7 +56,7 @@
                 'roll_no' => 0,
                 'session' => $students[0]->session,
                 'mode'=>$students[0]->university_mode,
-                'exam_year'=>'June 2024',
+                'exam_year'=>'Dec 2024',
                 'exam_form' => 'N',
                 'enrollment_no' => $students[0]->enrollment_no,
                 'center_id' => $students[0]->center_id,
@@ -61,7 +68,7 @@
                 'upload_result' =>  'N',
                 'result_permission' => 'N',
                 );
-                $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students[0]->student_id,'class_id'=>$students[0]->class_id,'exam_year'=>'June 2024'));
+                $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students[0]->student_id,'class_id'=>$students[0]->class_id,'exam_year'=>'Dec 2024'));
                 if( $duplicate == Array ( )){
                 $backlog_student_id = $this->Common_model->insertAll('backlog_student',$data);
 
