@@ -36,14 +36,14 @@
                 $data = array('demo'=>'Y','new_exam_form'=>'N');
               }
              
-             // $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+             $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
              $student_demo_details = $this->Common_model->getRecordByWhere('student',array('student_id' => $row->student_id));
              echo " <br> Promote Data ".$student_demo_details[0]->promote."<br>";
             } else{ ?>
              <a class="text-info" href="<?=base_url('admin/scripts/Postexam/backlog_marks_update_scripts/'.$row->student_id.'/'.$row->class_id)?>" target="_blank">Set Backlog</a> <?php 
 
              //  ####### Add Backlog Script For Main Exam End #######
-/*
+
                  $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$row->class_id,'student_id'=>$row->student_id,'exam_year'=>'January 2024'));
 
                  $whereResult = array("class_id"=>$students[0]->class_id ,"student_id"=>$students[0]->student_id, 'exam_data_id' => $students[0]->id);
@@ -96,7 +96,7 @@
               
                 }
                 } 
-*/
+
              //  ####### Add Backlog Script End #######
 
             } ?>  
