@@ -158,7 +158,7 @@ table.last_table, .last_table td, .last_table th{
  
     $current_center=$student->center_id;
     $page_break_count++;
-    $marks = $this->Common_model->student_info_for_result($student->student_id,$student->class_id);
+    $marks = $this->Common_model->student_info_for_result($student->student_id,$student->old_class_id);
     $BarCodecolspan = 10 + count($marks); 
     $total_theory_marks_obt = 0;
     $total_int_marks_obt = 0;
@@ -481,16 +481,16 @@ table.last_table, .last_table td, .last_table th{
 		<td class="align-middle text-right">Course Credit</td>
     <?php
     $credit = 0;
-    $std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $student->class_id,'student_id'=>$student->student_id));
-		$this->classData = $this->Common_model->getRecordById('class_master','id',$student->class_id);
+    $std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $student->old_class_id,'student_id'=>$student->student_id));
+		$this->classData = $this->Common_model->getRecordById('class_master','id',$student->old_class_id);
    
     if($std[0]->sub_group_id == 1){
-			$papers = $this->Common_model->get_all_papers($student->student_id,$student->class_id);
+			$papers = $this->Common_model->get_all_papers($student->student_id,$student->old_class_id);
      
 		}
 
 		if($this->classData->class_group == 'Y'){
-			$papers_list = $this->Common_model->get_all_group_papers($student->student_id,$student->class_id);
+			$papers_list = $this->Common_model->get_all_group_papers($student->student_id,$student->old_class_id);
 		}
 		
 		foreach ($papers as $paper_master) {
@@ -538,14 +538,14 @@ table.last_table, .last_table td, .last_table th{
     
 <span style="display:none;">
 <?php
-   $gradesheetData = $this->Gradesheet_tr_model->view_result($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
+   $gradesheetData = $this->Gradesheet_tr_model->view_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
   
   ?>
 </span>
     <table class="table table1">
       <tbody>
         <tr>
-          <th  class="align-middle text-center roll_no" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_no  ?> <br> <?php echo $student->enrollment_no  ?></th>
+          <th  class="align-middle text-center roll_no" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_number  ?> <br> <?php echo $student->enrollment_no  ?></th>
           <th class="align-middle text-center ms_no" rowspan="<?php echo $rowspandata ?>">
             <?php  echo $student->marksheet_no  ?>
           </th>
@@ -796,7 +796,7 @@ table.last_table, .last_table td, .last_table th{
   </tr>
   
   <?php
-   $this->Gradesheet_tr_model->view_result($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
+   $this->Gradesheet_tr_model->view_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
   
   ?>
   
@@ -922,7 +922,7 @@ foreach($classes as $cls){
   <tr class="">
 
     <td  class="align-middle text-left " colspan="<?=$BarCodecolspan ?>">
-          <?php  echo $generator->getBarcode($marksheetData[0]->bar_code_no.$student->roll_no, $generator::TYPE_CODE_128,2,25); ?>
+          <?php  echo $generator->getBarcode($marksheetData[0]->bar_code_no.$student->roll_number, $generator::TYPE_CODE_128,2,25); ?>
     </td>
   </tr>
  

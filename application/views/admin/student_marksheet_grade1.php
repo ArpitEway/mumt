@@ -64,7 +64,7 @@
               <td height="110" colspan="2" valign='bottom'>
                 <center>
                 <?php  $course_name = explode('(',$student->course_name);?>
-                  <strong style="font-size: 18px;"><?php echo  ($isOneClass) ? $course_name[0] .' '."(One Year Course)" :$course_name[0] .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
+                  <strong style="font-size: 18px;"><?php echo  ($isOneClass) ? $course_name[0] .' '."(One Year Course)" :$course_name[0] .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->old_class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
                 </center>
               </td>
             </tr>
@@ -86,7 +86,7 @@
                       <td width="35%" class="Normaltext" align="left"><div align="left">Roll No</div></td>
                       <td width="53%" class="resultText">
                         <div align="left">
-                          <span id="lblSemesterGrading" style="color:Black;"><?php echo $student->roll_no; ?></span>
+                          <span id="lblSemesterGrading" style="color:Black;"><?php echo $student->roll_number; ?></span>
                           <!-- <div style="float:right"> &nbsp;&nbsp;&nbsp; Mode - Distance Education </div> -->
                         </div>
                       </td>
@@ -168,7 +168,7 @@
                        
                         <?php 
        
-                          $gradesheetData = $this->Gradesheet_model->view_result_grade($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
+                          $gradesheetData = $this->Gradesheet_model->view_result_grade($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
                           $total_grade_point = 0;
                           $total_course_credit = 0;
                           $wordNumerals = [1 => 'One',2 => 'Two',3 => 'Three',4 => 'Four',5 => 'Five',6 => 'Six',7 => 'Seven',8 => 'Eight'];
@@ -192,9 +192,9 @@
                          $gradeData   = $this->Gradesheet_model->view_old_results($student->student_id,$student->course_group_id,$cls->id,$student->university_mode, $old[0]->id, $old[0]->exam_status);
                          $total_grade_point += number_format((float)$gradeData['agpa'], 2, '.', '') * $gradeData['obt_credit']; 
                          $total_course_credit +=$gradeData['tot_credit'];
-                        $blank_total_credit = ($cls->id <=$student->class_id)?'0':'';
-                        $blank_obtain_credit = ($cls->id <=$student->class_id)?'0':'';
-                        $blank_credit_point = ($cls->id <=$student->class_id)?'0':'';
+                        $blank_total_credit = ($cls->id <=$student->old_class_id)?'0':'';
+                        $blank_obtain_credit = ($cls->id <=$student->old_class_id)?'0':'';
+                        $blank_credit_point = ($cls->id <=$student->old_class_id)?'0':'';
                      ?>
                       <tr align="center"><th><?=$sno?></th><td><?= ($gradeData['tot_credit'] == 0)?$blank_total_credit:$gradeData['tot_credit']?></td><td><?= ($gradeData['obt_credit'] == 0)?$blank_obtain_credit:$gradeData['obt_credit']?></td><td><?= ($gradeData['credit_point'] == 0)?$blank_credit_point:$gradeData['credit_point']?></td><td>
                         <?php if(is_nan($gradeData['agpa'])){
@@ -275,7 +275,7 @@
              
                   <tr class="" >
                     <td colspan="" style="padding:2px;border:none">
-                      <?php  echo $generator->getBarcode($marksheet_variables->bar_code_no.$student->roll_no, $generator::TYPE_CODE_128,2,25); ?>
+                      <?php  echo $generator->getBarcode($marksheet_variables->bar_code_no.$student->roll_number, $generator::TYPE_CODE_128,2,25); ?>
                     </td>
                   </tr>
                  

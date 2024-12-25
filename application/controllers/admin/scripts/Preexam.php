@@ -18,7 +18,7 @@ class Preexam extends CI_Controller {
 		$this->load->view('admin/script/header',array('title' => 'Upload Exam Paper'));
 		/* class which dose not have elective papers */
 		
-		$classes = $this->Common_model->get_record('class_master','GROUP_CONCAT(id) as class_id',array('class_group' => 'N'));
+		$classes = $this->Common_model->get_record('class_master','GROUP_CONCAT(id) as class_id',array('class_group' => 'N','mode'=>'Semester'));
 		//,'exam_form_permission' => 'Y','exam_form_permission' => 'Y','admission_permission' => 'Y'
 		$class_ids = $classes[0]['class_id'];
 		

@@ -243,18 +243,19 @@
                 if ($center->exam_form_permission=='Y' ): ?>
 				 <a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
 							<div>
-								<span class="nav-text">Exam Form June 2024</span>
+								<span class="nav-text">Exam Form January 2025</span>
 							</div>
 					</a> 
 					<a class="border-0 custom-menu-item" href="<?=base_url('backlog_exam_form_students');?>">
 							<div>
-								<span class="nav-text">Backlog Exam Form June 2024</span>
+								<span class="nav-text">Backlog Exam Form January 2025</span>
 							</div>
 					</a>  
 					<?php endif ?>
 					
 					<?php 
                    // if($this->session->center_id==12 || $this->session->center_id==28){ ?>
+                   	<!--
 					 <a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
 						<div>
 							<span class="nav-text">Practical Marks Submission </span>
@@ -266,6 +267,7 @@
 						</div>
 					</a>  
 					<?php // } ?>
+				-->
 					<?php if ($center->result_permission=='Y'): ?>
 						<a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
 							<div>
