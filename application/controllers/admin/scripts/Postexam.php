@@ -1105,10 +1105,11 @@ public function upload_old_backlog_grade_data_script($class_id="",$mode){
     $x=1;
     foreach($students as $student)
     {
-       
+      
        echo $x.'<br>';
         // $this->upload_old_data->update_old_data($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
         $this->Upload_old_data_backlog->update_old_data($student);
+        echo $this->db->last_query();
      $x++;  
     }
  

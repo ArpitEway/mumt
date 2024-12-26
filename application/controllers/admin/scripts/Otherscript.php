@@ -1375,7 +1375,35 @@ public function update_roll_no_old_data(){
        
             echo "<hr>";  
     }
-		
+
+    public function update_credit_point_in_old_result_data(){
+        $datas = $this->db->query('SELECT DISTINCT(p.paper_code),p.sub_group_id,p.credit_point FROM `old_result_data` as r join paper_master as p on p.paper_code=r.paper_code join old_exam_data as o on o.id=r.exam_data_id and o.marks_pattern ="GRADE" WHERE p.credit_point!=0 and p.sub_group_id!=1 and r.class_id not in (215,101,102,103,104,105) and r.credit_point=0 limit 100')->result_array();
+
+            foreach($datas as $data){
+                $this->db->query('UPDATE `old_result_data` SET credit_point ='.$data["credit_point"].' WHERE paper_code="'.$data['paper_code'].'" AND sub_group_id='.$data['sub_group_id'].' AND exam_data_id in (SELECT id FROM `old_exam_data` WHERE marks_pattern ="GRADE") ');
+                echo $this->db->last_query().'<br>';
+               
+            }
+    }
+
+    public function update_credit_point_in_old_result_data_for_group(){
+       $this->db->select('gp.credit_point,gp.paper_code,gp.sub_group_id, gp.group_id,od.class_id,od.student_id,od.id');
+       $this->db->from('group_paper as gp');
+       $this->db->join('old_result_data as od','od.paper_code=gp.paper_code and od.sub_group_id=gp.sub_group_id and od.group_id=gp.group_id');
+       $this->db->where('gp.sub_group_id !=',1);
+       $this->db->where('od.credit_point',0);
+       $this->db->where_in('od.class_id',array(215,101,102,103,104,105));
+       $this->db->limit(25000);
+       $papers = $this->db->get()->result();
+       // $this->Common_model->last_query();
+       foreach ($papers as $paper) {
+        $data  = array('credit_point'=> $paper->credit_point);
+        $where = array('student_id'=>$paper->student_id,'id'=> $paper->id, 'paper_code'=>$paper->paper_code,'sub_group_id'=>$paper->sub_group_id,'group_id'=>$paper->group_id,'class_id'=>$paper->class_id);
+        
+        $update =$this->Common_model->updateRecordByConditions('old_result_data',$where,$data);
+       }
+      echo  $this->db->last_query().'<br>';
+    }
 }
 
    

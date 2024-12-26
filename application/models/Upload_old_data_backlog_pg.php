@@ -311,6 +311,7 @@ class Upload_old_data_backlog_pg extends CI_Model
 				$this->result_array[$this->paper['paper_code']]['int_obt_marks'] = $this->paper['int_marks'];
 			}
 		}
+        $this->result_array[$this->paper['paper_code']]['credit_upload'] = $this->paper['credit_point'];
 	}
 
 	
@@ -387,6 +388,7 @@ class Upload_old_data_backlog_pg extends CI_Model
                 'type'=> $result['type'] ,
                  'sub_group_id'=>$result['sub_group'] ,
                  'group_id'=>$result['group'] ,
+                 'credit_point'=>$result['credit_upload'],
                  'carry_theory'=>$status,
                  'carry_int'=>'C',
                  'status'=>'B',
