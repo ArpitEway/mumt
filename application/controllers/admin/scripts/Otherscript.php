@@ -1392,7 +1392,7 @@ public function update_roll_no_old_data(){
        $this->db->join('old_result_data as od','od.paper_code=gp.paper_code and od.sub_group_id=gp.sub_group_id and od.group_id=gp.group_id');
        $this->db->where('gp.sub_group_id !=',1);
        $this->db->where('od.credit_point',0);
-       $this->db->where_in('od.class_id',array(215,101,102,103,104,105));
+       $this->db->where_in('od.class_id',array(215,101,102,103,104,105,106));
        $this->db->limit(25000);
        $papers = $this->db->get()->result();
        // $this->Common_model->last_query();
