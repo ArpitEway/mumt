@@ -1160,10 +1160,11 @@ public function update_roll_no_old_data(){
         // $this->db->where_in('student_id',array(718293,718689,721416));
 		$this->db->limit(1000);
 		$student_list = $this->db->get()->result();
-        if($cbcs == "Y"){
+        if($cbcs == "Y" && $class_id!=101){
 			$this->load->model('GradeSheet_old_model_pg');
 		}
 		else{
+			echo 'sdfsdf';
 			$this->load->model('Gradesheet_old_model');
 		}
 		
