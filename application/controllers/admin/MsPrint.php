@@ -174,11 +174,10 @@ class MsPrint extends CI_Controller {
 			$this->db->select('*');
 			$this->db->from('center');
 			$this->db->where_in('id',$ids);
-            $this->db->limit(200);
+            $this->db->limit(200,201);
 			$this->db->order_by('center_code', "ASC");
 			$data['centers'] = $this->db->get()->result();
-            // $this->Common_model->last_query();
-			
+        	
 			$this->load->view('admin/examController/center_wise_marksheet_dispatch',$data);
 			$this->load->view('footer');
 		}
@@ -198,7 +197,7 @@ class MsPrint extends CI_Controller {
 			$this->db->where( array('id'=>$center));
 		else
 			$this->db->where_in('id',$ids);
-            $this->db->limit(200);
+            $this->db->limit(200,201);
 		$this->db->order_by('center_code', "asc");
 		$data['centers'] = $this->db->get()->result();
 		$data['examTitle'] = "June 2024";
