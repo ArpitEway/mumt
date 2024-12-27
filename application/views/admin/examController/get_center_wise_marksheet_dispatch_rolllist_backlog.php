@@ -14,7 +14,7 @@ foreach($centers as $center)  {
 	$this->db->from('backlog_student');
 	$this->db->order_by("roll_no", "asc");
 	$this->db->join('course_group', 'backlog_student.course_group_id = course_group.id');
-	$where = array('center_id'=>$center->id, 'roll_no!=' => 0 ,'exam_form'=>'Y','exam_year'=>'Dec 2023');
+	$where = array('center_id'=>$center->id, 'roll_no!=' => 0 ,'exam_form'=>'Y','exam_year'=>'June 2024');
 	//, 'marksheet_dispatch' =>'N'
 	$this->db->where($where);	
 	$center_students = $this->db->get()->result();
