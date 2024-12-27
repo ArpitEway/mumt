@@ -1170,7 +1170,7 @@ public function update_roll_no_old_data(){
 		
 		foreach($student_list as $student){
 		echo "<br>". $student->student_id;
-		if($cbcs == 'Y'){
+		if($cbcs == 'Y' && $class_id!=101){
 
 			$gradeData = $this->GradeSheet_old_model_pg->view_old_results($student->student_id,$student->course_group_id,$class_id,$student->university_mode);
 		}else{
