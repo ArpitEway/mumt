@@ -1321,9 +1321,13 @@ public function update_roll_no_old_data(){
     }
 
     public function copy_student_image(){
-        $this->db->where_in('course_group_id', array(76,77,80));
+        // $this->db->where_in('course_group_id', array(76,77,80));
+        // $this->db->order_by('session','course_group_id','class_id','name');
+        // $students = $this->Common_model->getRecordByWhere('student', array('enrolled'=>'Y', 'enrollment_no !='=>'-', 'center_id'=>12,'student_id !='=>188079));
+        $this->db->where_in('course_group_id', array(67));
+        $this->db->where_in('session', array('July 2022','July 2021'));
         $this->db->order_by('session','course_group_id','class_id','name');
-        $students = $this->Common_model->getRecordByWhere('student', array('enrolled'=>'Y', 'enrollment_no !='=>'-', 'center_id'=>12,'student_id !='=>188079));
+        $students = $this->Common_model->getRecordByWhere('student', array('enrolled'=>'Y', 'enrollment_no !='=>'-'));
 
     foreach($students as $student){
         $filename="assets/student_image/".$student->session."/".$student->photo;
