@@ -1321,13 +1321,9 @@ public function update_roll_no_old_data(){
     }
 
     public function copy_student_image(){
-        // $this->db->where_in('course_group_id', array(76,77,80));
-        // $this->db->order_by('session','course_group_id','class_id','name');
-        // $students = $this->Common_model->getRecordByWhere('student', array('enrolled'=>'Y', 'enrollment_no !='=>'-', 'center_id'=>12,'student_id !='=>188079));
-        $this->db->where_in('course_group_id', array(67));
-        $this->db->where_in('session', array('July 2022','July 2021'));
+        $this->db->where_in('course_group_id', array(76,77,80));
         $this->db->order_by('session','course_group_id','class_id','name');
-        $students = $this->Common_model->getRecordByWhere('student', array('enrolled'=>'Y', 'enrollment_no !='=>'-'));
+        $students = $this->Common_model->getRecordByWhere('student', array('enrolled'=>'Y', 'enrollment_no !='=>'-', 'center_id'=>12,'student_id !='=>188079));
 
     foreach($students as $student){
         $filename="assets/student_image/".$student->session."/".$student->photo;
@@ -1363,15 +1359,13 @@ public function update_roll_no_old_data(){
         
             $ext=explode(".",$student->photo);	
         
-            // $new_name=$student->name.".".$ext[1];
-            // $newFilePath = $check_dir."/".$new_name;
-            $new_name=$student->student_id.".".$ext[1];
+            $new_name=$student->name.".".$ext[1];
             $newFilePath = $check_dir."/".$new_name;
 
-            // if(file_exists($newFilePath)){
-            //     $new_name =	$student->name.' '.$student->f_h_name.".".$ext[1];
-            //     $newFilePath = $check_dir.'/'.$new_name;
-            // }
+            if(file_exists($newFilePath)){
+                $new_name =	$student->name.' '.$student->f_h_name.".".$ext[1];
+                $newFilePath = $check_dir.'/'.$new_name;
+            }
             if(copy($filename, $newFilePath)){
                 echo 'Success! '; 
             }  
