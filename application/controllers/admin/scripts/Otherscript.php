@@ -1363,13 +1363,15 @@ public function update_roll_no_old_data(){
         
             $ext=explode(".",$student->photo);	
         
-            $new_name=$student->name.".".$ext[1];
+            // $new_name=$student->name.".".$ext[1];
+            // $newFilePath = $check_dir."/".$new_name;
+            $new_name=$student->student_id.".".$ext[1];
             $newFilePath = $check_dir."/".$new_name;
 
-            if(file_exists($newFilePath)){
-                $new_name =	$student->name.' '.$student->f_h_name.".".$ext[1];
-                $newFilePath = $check_dir.'/'.$new_name;
-            }
+            // if(file_exists($newFilePath)){
+            //     $new_name =	$student->name.' '.$student->f_h_name.".".$ext[1];
+            //     $newFilePath = $check_dir.'/'.$new_name;
+            // }
             if(copy($filename, $newFilePath)){
                 echo 'Success! '; 
             }  
