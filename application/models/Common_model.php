@@ -1204,12 +1204,16 @@ class Common_Model extends CI_Model{
 
 	public function get_all_old_papers($id,$class_id,$exam_id=''){
 		$class_check = $this->Common_model->getRecordById('class_master','id',$class_id);
+        if($exam_id !=""){
+           $old_data =  $this->Common_model->getRecordById('old_exam_data','id',$exam_id); 
+           $exam_year = explode(' ',$old_data->exam_year);
+        }
 		$where = array(
 			'student_id' => $id,
 			'old_result_data.class_id' => $class_id,
 			
 			);
-		$this->db->select('old_result_data.*,paper_master.credit_point,paper_master.paper_name,paper_master.paper_code,paper_master.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks');
+		$this->db->select('old_result_data.*,paper_master.paper_name,paper_master.paper_code,paper_master.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks');
 		$this->db->from('paper_master');
 		$this->db->order_by('paper_no','asc');
 		$this->db->join('old_result_data','old_result_data.paper_code = paper_master.paper_code');
@@ -1218,7 +1222,7 @@ class Common_Model extends CI_Model{
         }
 		// $this->db->join('group_paper','paper_master.id=group_paper.paper_id');
 		$this->db->where($where); 
-		if($class_check->class_group == 'Y' &&  $class_check->mode!='Semester'){
+		if($class_check->class_group == 'Y' &&  $class_check->mode!='Semester' || ($exam_id !='' && $exam_year[1] < '2024' && $class_id == 101)){
 		$this->db->where('old_result_data.sub_group_id',1);
 		}
 		$query = $this->db->get();
@@ -1236,11 +1240,11 @@ class Common_Model extends CI_Model{
 			);
 
 			if($course_group_id != '' && $course_group_id == 12){
-				$this->db->select('o.*,group_paper.credit_point,paper_master.paper_name,paper_master.paper_code,group_paper.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks,o.sub_group_id,o.group_id,o.p_order,g.group_name');
+				$this->db->select('o.*,paper_master.paper_name,paper_master.paper_code,group_paper.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks,o.sub_group_id,o.group_id,o.p_order,g.group_name');
 				
 	
 			}else{	
-		$this->db->select('o.*,group_paper.credit_point,paper_master.paper_name,paper_master.paper_code,group_paper.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks');}
+		$this->db->select('o.*,paper_master.paper_name,paper_master.paper_code,group_paper.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks');}
 		$this->db->from('paper_master');
 		$this->db->order_by('group_paper.sub_group_id,paper_no','asc');
 		$this->db->join('old_result_data as o','o.paper_code = paper_master.paper_code','left');

@@ -1140,7 +1140,7 @@ public function update_roll_no_old_data(){
 		
 		$this->db->select('count(class_id) as total, class_id');
 		$this->db->from('old_exam_data');
-		$this->db->where('exam_year ="March 2023" and marks_pattern ="GRADE"  and exam_status = "R" and agpa_sgpa=""');  
+		$this->db->where('exam_year ="August 2022" and marks_pattern ="GRADE"  and exam_status = "R" and agpa_sgpa=""');  
 		$this->db->group_by('class_id');
 		$class_list = $this->db->get()->result();
 	
@@ -1155,21 +1155,22 @@ public function update_roll_no_old_data(){
 	public function update_AGPA_CGPA($class_id,$cbcs){
 		$this->db->select('*');
 		$this->db->from('old_exam_data');
-		$this->db->where('exam_year ="March 2023" and exam_status="R" and marks_pattern ="GRADE" and class_id="'.$class_id.'" and agpa_sgpa=""');  
+		$this->db->where('exam_year ="August 2022" and exam_status="R" and marks_pattern ="GRADE" and class_id="'.$class_id.'" and agpa_sgpa=""');  
 		// $this->db->where('student_id',380243);
         // $this->db->where_in('student_id',array(718293,718689,721416));
 		$this->db->limit(1000);
 		$student_list = $this->db->get()->result();
-        if($cbcs == "Y"){
+        if($cbcs == "Y" && $class_id!=101){
 			$this->load->model('GradeSheet_old_model_pg');
 		}
 		else{
+			echo 'sdfsdf';
 			$this->load->model('Gradesheet_old_model');
 		}
 		
 		foreach($student_list as $student){
 		echo "<br>". $student->student_id;
-		if($cbcs == 'Y'){
+		if($cbcs == 'Y' && $class_id!=101){
 
 			$gradeData = $this->GradeSheet_old_model_pg->view_old_results($student->student_id,$student->course_group_id,$class_id,$student->university_mode);
 		}else{
@@ -1375,7 +1376,35 @@ public function update_roll_no_old_data(){
        
             echo "<hr>";  
     }
-		
+
+    public function update_credit_point_in_old_result_data(){
+        $datas = $this->db->query('SELECT DISTINCT(p.paper_code),p.sub_group_id,p.credit_point FROM `old_result_data` as r join paper_master as p on p.paper_code=r.paper_code join old_exam_data as o on o.id=r.exam_data_id and o.marks_pattern ="GRADE" WHERE p.credit_point!=0 and p.sub_group_id!=1 and r.class_id not in (215,101,102,103,104,105) and r.credit_point=0 limit 100')->result_array();
+
+            foreach($datas as $data){
+                $this->db->query('UPDATE `old_result_data` SET credit_point ='.$data["credit_point"].' WHERE paper_code="'.$data['paper_code'].'" AND sub_group_id='.$data['sub_group_id'].' AND exam_data_id in (SELECT id FROM `old_exam_data` WHERE marks_pattern ="GRADE") ');
+                echo $this->db->last_query().'<br>';
+               
+            }
+    }
+
+    public function update_credit_point_in_old_result_data_for_group(){
+       $this->db->select('gp.credit_point,gp.paper_code,gp.sub_group_id, gp.group_id,od.class_id,od.student_id,od.id');
+       $this->db->from('group_paper as gp');
+       $this->db->join('old_result_data as od','od.paper_code=gp.paper_code and od.sub_group_id=gp.sub_group_id and od.group_id=gp.group_id');
+       $this->db->where('gp.sub_group_id !=',1);
+       $this->db->where('od.credit_point',0);
+       $this->db->where_in('od.class_id',array(215,101,102,103,104,105,106));
+       $this->db->limit(25000);
+       $papers = $this->db->get()->result();
+       // $this->Common_model->last_query();
+       foreach ($papers as $paper) {
+        $data  = array('credit_point'=> $paper->credit_point);
+        $where = array('student_id'=>$paper->student_id,'id'=> $paper->id, 'paper_code'=>$paper->paper_code,'sub_group_id'=>$paper->sub_group_id,'group_id'=>$paper->group_id,'class_id'=>$paper->class_id);
+        
+        $update =$this->Common_model->updateRecordByConditions('old_result_data',$where,$data);
+       }
+      echo  $this->db->last_query().'<br>';
+    }
 }
 
    

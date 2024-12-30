@@ -445,6 +445,7 @@ class Upload_old_data extends CI_Model
 				$this->result_array[$this->paper['paper_code']]['int_obt_marks'] = $this->paper['int_marks'];
 			}
 		}
+        $this->result_array[$this->paper['paper_code']]['credit_upload'] = $this->paper['credit_point'];
 	}
 
 	public function foudation_min_max_no($sub_group_id)
@@ -533,6 +534,7 @@ class Upload_old_data extends CI_Model
                 'type'=> $result['type'] ,
                  'sub_group_id'=>$result['sub_group'] ,
                  'group_id'=>$result['group'] ,
+                 'credit_point'=>$result['credit_upload'],
                 // 'max_theory_marks'=> $max_theory_marks,
                 // 'max_int_marks'=> $max_int_marks,
                 // 'min_theory_marks'=> $min_theory_marks,
@@ -644,6 +646,7 @@ class Upload_old_data extends CI_Model
 					'type'=> $paper['type'] ,
 					'sub_group_id'=>$paper['sub_group_id'] ,
 					'group_id'=>$paper['group_id'] ,
+                    'credit_point'=>2,
 					'max_theory_marks'=> $paper['max_theory_marks'],
 					'max_int_marks'=> $paper['max_int_marks'],
 					'min_theory_marks'=> $paper['min_theory_marks'],

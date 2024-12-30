@@ -26,7 +26,7 @@ foreach($centers as $center)  {
 			$studentCount++;
 			if($sno==0) { ?>
 			<p class="break" style="font-size: 16px;"> </p>
-			<p align="center" style="margin-top:10px;line-height:15px;font-size:15px;"><b>Maharishi Mahesh Yogi Vedic Vishvavidyalaya , Jabalpur</b></p>
+			<p align="center" style="margin-top:10px;line-height:15px;font-size:15px;"><b>Maharishi Mahesh Yogi Vedic Vishvavidyalaya</b></p>
 			<p align="center" style="line-height:12px;font-size:14px;"><b>Regular List of Roll No. Exam <?=$examTitle?></b></p>
 			<p align="center" style="line-height:12px;font-size:12px;"> <b><i> Center : <?php echo $center->center_code;?> </i></b> </p>
 			<p align="right">Page No :<?php echo $pageno++; ?></p>

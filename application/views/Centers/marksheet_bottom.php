@@ -13,7 +13,7 @@ $int_fail_count = 0;
 $old_fail = false;
 $isFinalClass = $this->Common_model->hasOneClass($student->course_group_id);
 if($classData->last_class == 'L' && $isFinalClass == false){
-  $classes = $this->Common_model->getRecordByWhere('class_master',array('id !='=>$student->class_id,'course_group_id'=>$student->course_group_id,'mode' => $classData->mode));
+  $classes = $this->Common_model->getRecordByWhere('class_master',array('id !='=>$student->old_class_id,'course_group_id'=>$student->course_group_id,'mode' => $classData->mode));
   foreach($classes as $old){
  $this->db->where_in('exam_result',array('PASS','PASS BY GRACE'));
 $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id'=>$old->id));

@@ -239,22 +239,23 @@
 				
 				<?php 
               //  $count = $this->Common_model->getCountByWhere('student',array('center_id'=>$center->id,'new_exam_form !='=>'D'));
-                //&& $count>0
+                //&& $count>0href="<?=base_url('exam_form_students');"
                 if ($center->exam_form_permission=='Y' ): ?>
-				 <a class="border-0 custom-menu-item" href="<?=base_url('exam_form_students');?>">
+				 <a class="border-0 custom-menu-item" id="main-exam" >
 							<div>
-								<span class="nav-text">Exam Form June 2024</span>
+								<span class="nav-text">Exam Form January 2025</span>
 							</div>
 					</a> 
 					<a class="border-0 custom-menu-item" href="<?=base_url('backlog_exam_form_students');?>">
 							<div>
-								<span class="nav-text">Backlog Exam Form June 2024</span>
+								<span class="nav-text">Backlog Exam Form January 2025</span>
 							</div>
 					</a>  
 					<?php endif ?>
 					
 					<?php 
                    // if($this->session->center_id==12 || $this->session->center_id==28){ ?>
+                   	<!--
 					 <a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
 						<div>
 							<span class="nav-text">Practical Marks Submission </span>
@@ -266,6 +267,7 @@
 						</div>
 					</a>  
 					<?php // } ?>
+				-->
 					<?php if ($center->result_permission=='Y'): ?>
 						<a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
 							<div>
@@ -455,6 +457,25 @@ Swal.fire({
       }
 })
 
+});
+
+$("#main-exam").click(function (e) {
+    Swal.fire({
+        html: `<b> आवश्यक सुचना :- </b>सर्व संबंधितों को सूचित किया जाता है कि विश्वविद्यालय द्वारा संचालित नियमित पाठ्यक्रमों - एम.ए., एम.कॉम, एम.एस.डब्लू , एम.एससी, एम.बी.ए., (प्रथम / तृतीय सेमेस्टर), पी.जी.डी.सी.ए. एवं डी.सी.ए (प्रथम सेमेस्टर) के छात्रों की मुख्य / पूरक परीक्षा जनवरी २०२५ में मुख्यालय करौंदी में आयोजित होगी| परीक्षा फॉर्म भरने की अंतिम तिथि 7 जनवरी 2025 निर्धारित की गई है| अनुरोध है कि उक्त दिनांक के पूर्व परीक्षा फॉर्म भरने की प्रक्रिया पूर्ण करे| इसके पश्चात् किसी भी आवेदन पर विचार नहीं किया जावेगा|`,
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonText: "I Agree",
+        didOpen: () => {
+            // Adjust the width after the modal has opened
+            $('.swal2-popup').css('width', '38%');
+        },
+    }).then((result) => {
+        // Handle confirmation result
+        if (result.isConfirmed) {
+            window.location.href =  "<?=base_url('exam_form_students');?>";
+           // console.log("User agreed.");
+        }
+    });
 });
 
 

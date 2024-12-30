@@ -1748,12 +1748,12 @@ public function getStudentData()
 		{
 			if($text_val !='' && $radio_val == 'enrollment_no')
 			{
-				$where = array('new_exam_form'=>'Y','enrollment_no'=>$text_val);
+				$where = array('exam_form'=>'Y','enrollment_no'=>$text_val);
 				//,'result_show'=>'Y'
 
 			}else if($text_val !='' && $radio_val == 'roll_no')
 			{
-				$where = array('new_exam_form'=>'Y','roll_no'=>$text_val );
+				$where = array('exam_form'=>'Y','roll_no'=>$text_val );
 			//,'result_show'=>'Y'
 			}
 

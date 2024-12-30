@@ -238,7 +238,9 @@
                       $flag=true;
                        if($this->session->account_type == 'MsPrint' && $student->exam_pattern=='GRADE'){
                         $flag= $this->Common_model->checkGradePreviousResult($student->student_id,$res->class_id);
-                        
+                        // if($student->course_group_id=='11'){
+                        //     $flag=false;
+                        // }
                        }
                       ?>
                       <div class="col-md-1">

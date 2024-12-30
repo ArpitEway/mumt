@@ -64,7 +64,7 @@
               <td height="110" colspan="2" valign='bottom'>
                 <center>
                 <?php  $course_name = explode('(',$student->course_name);?>
-                  <strong style="font-size: 18px;"><?php echo  ($isOneClass) ? $course_name[0] .' '."(One Year Course)" :$course_name[0] .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
+                  <strong style="font-size: 18px;"><?php echo  ($isOneClass) ? $course_name[0] .' '."(One Year Course)" :$course_name[0] .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($student->old_class_id)); ?> <?=$marksheet_variables->exam_session ?></strong>
                 </center>
               </td>
             </tr>
@@ -86,7 +86,7 @@
                       <td width="35%" class="Normaltext" align="left"><div align="left">Roll No</div></td>
                       <td width="53%" class="resultText">
                         <div align="left">
-                          <span id="lblSemesterGrading" style="color:Black;"><?php echo $student->roll_no; ?></span>
+                          <span id="lblSemesterGrading" style="color:Black;"><?php echo $student->roll_number; ?></span>
                           <!-- <div style="float:right"> &nbsp;&nbsp;&nbsp; Mode - Distance Education </div> -->
                         </div>
                       </td>
@@ -168,7 +168,7 @@
                        
                         <?php 
        
-                          $gradesheetData = $this->Gradesheet_model->view_result_grade($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
+                          $gradesheetData = $this->Gradesheet_model->view_result_grade($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
                           
                             ?>
                     </tbody></table>
@@ -231,7 +231,7 @@
              
                   <tr class="" >
                     <td colspan="" style="padding:2px;border:none">
-                      <?php  echo $generator->getBarcode($marksheet_variables->bar_code_no.$student->roll_no, $generator::TYPE_CODE_128,2,25); ?>
+                      <?php  echo $generator->getBarcode($marksheet_variables->bar_code_no.$student->roll_number, $generator::TYPE_CODE_128,2,25); ?>
                     </td>
                   </tr>
                  
