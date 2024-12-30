@@ -603,7 +603,7 @@ class Payment extends CI_Controller {
 				"txnId" => $txnid,
 				"admission_type" =>$udf2,
 			);
-		$student = $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$student_id,'class_id'=>$class_id,'exam_year'=>'June 2024'));
+		$student = $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$student_id,'class_id'=>$class_id,'exam_year'=>'Dec 2024'));
        $student_name =  $this->Common_model->getSinglefield('student','name',array('student_id'=>$student_id));
 			$where = 'student_id='.$student_id.' and fees_head="'.$productinfo.'" and class_id='.$class_id.' and exam_session= "'.$udf3.'"';
 			$txnData = $this->Common_model->get_record('online_payment_transaction','*',$where);
@@ -627,7 +627,7 @@ class Payment extends CI_Controller {
 				$status = 'exam_form';
 			}
 			if($payment=='Y'){
-				$where = array('student_id'=>$student_id,'class_id'=>$class_id,'exam_year'=>'June 2024');
+				$where = array('student_id'=>$student_id,'class_id'=>$class_id,'exam_year'=>'Dec 2024');
 				$student = array($status=>'Y');
 				$this->Common_model->updateRecordByConditions('backlog_student',$where,$student);
 			}
