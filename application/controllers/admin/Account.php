@@ -442,7 +442,7 @@
 		if($Fess_head == 'Admission Fees'){
 	     $session = $student_details[0]->session;
 		}else{
-			$session = 'June 2024';
+			$session = 'Dec 2024';
 		}
 		$class_id = $student_details[0]->class_id;
 		$name = $this->Common_model->getStudentNameById($student_details[0]->student_id);
