@@ -215,8 +215,16 @@
 			$updateDataStd = array('new_exam_form'=> 'Y'); 
 		}elseif ($txnDetails->fees_head=='Admission Fees') {
 			$updateDataStd = array('payment_status'=> 'Y'); 
-		}
-		$result = $this->Common_model->updateRecordByConditions('student',$whereStudent,$updateDataStd);
+		}elseif($txnDetails->fees_head=='Backlog Exam Fees'){
+            $updateDataStd = array('exam_form'=> 'Y'); 
+        }
+
+        if($txnDetails->fees_head=='Backlog Exam Fees'){
+            $result = $this->Common_model->updateRecordByConditions('backlog_student',$whereStudent,$updateDataStd);
+        }else{
+            $result = $this->Common_model->updateRecordByConditions('student',$whereStudent,$updateDataStd);
+        }
+		
 		if($result){
 			$paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student_id));
 			$data = array('paymentDetails' => $paymentDetails);

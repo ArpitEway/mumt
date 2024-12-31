@@ -2138,9 +2138,18 @@ public function getStudentData()
 			$updateData = array('new_exam_form'=> 'Y'); 
 		}elseif ($txnDetails->fees_head=='Admission Fees') {
 			$updateData = array('payment_status'=> 'Y'); 
-		}
-		$whereStudent = array('student_id'=> $student_id);
-		$result = $this->Common_model->updateRecordByConditions('student',$whereStudent,$updateData);
+		}elseif($txnDetails->fees_head=='Backlog Exam Fees'){
+            $updateData = array('exam_form'=> 'Y'); 
+        }
+
+        if($txnDetails->fees_head=='Backlog Exam Fees'){
+            $whereStudent = array('student_id'=> $student_id);
+		    $result = $this->Common_model->updateRecordByConditions('backlog_student',$whereStudent,$updateData);
+        }else{
+            $whereStudent = array('student_id'=> $student_id);
+		    $result = $this->Common_model->updateRecordByConditions('student',$whereStudent,$updateData);
+        }
+		
 		if($result){
 			$paymentDetails = $this->Common_model->getRecordByWhere('online_payment_transaction',array('student_id' => $student_id));
 			$data = array('paymentDetails' => $paymentDetails);
