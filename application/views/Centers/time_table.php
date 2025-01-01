@@ -4,14 +4,17 @@
     
     <!-- <p style="text-align:center;font-size:12px;">(Regular/Private)</p> -->
     <!-- <p style="text-align:center;font-size:12px;"><strong>Early Morning Shift Time 07:00 AM To 10:00 AM </strong></p> -->
-    <?php if($paper_list[0]['course_group_id']==45){ ?> 
-        <p style="text-align:center;font-size:12px;"><strong>Programme for Annual/Semester - Main/Backlog Examination August 2024 </strong></p>
+    <p style="text-align:center;font-size:12px;"><strong> Morning Shift Time 10:00 AM To 01:00 PM </strong></p>
+    
+    <?php /*if($paper_list[0]['course_group_id']==45){ ?> 
+        <p style="text-align:center;font-size:12px;"><strong>Programme for Annual/Semester - Main/Backlog Examination January 2025 </strong></p>
         <p style="text-align:center;font-size:12px;"><strong> Morning Shift Time 10:00 AM To 01:00 PM </strong></p>
     <?php }else{  ?> 
-        <p style="text-align:center;font-size:12px;"><strong>Programme for Annual/Semester - Main/Backlog Examination June 2024 </strong></p>
+        <p style="text-align:center;font-size:12px;"><strong>Programme for Annual/Semester - Main/Backlog Examination January 2025 </strong></p>
     <p style="text-align:center;font-size:12px;"><strong> Morning Shift Time 11:00 AM To 02:00 PM </strong></p>
-    <?php } if($paper_list[0]['course_group_id']!=75 && $paper_list[0]['course_group_id']!=76 && $paper_list[0]['course_group_id']!=77){  ?>
-    <p style="text-align:center;font-size:12px;"><strong> Afternoon Shift Time 03:00 PM To 06:00 PM </strong></p>
+    <?php }
+   */  if($paper_list[0]['class_id']==154 || $paper_list[0]['class_id']==181 ){  ?>
+    <p style="text-align:center;font-size:12px;"><strong> Afternoon Shift Time 02:00 PM To 05:00 PM </strong></p>
     <?php }else{  ?>
     <p style="text-align:center;font-size:12px;"><strong> Afternoon Shift Time 12:00 PM To 03:00 PM </strong></p> <?php } ?>
     <table align="center" cellpadding="5">
