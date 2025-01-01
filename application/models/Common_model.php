@@ -666,7 +666,7 @@ class Common_Model extends CI_Model{
 		$this->db->join('backlog_exam_form','backlog_exam_form.paper_code = paper_master.paper_code');
 		// $this->db->join('group_paper','paper_master.id=group_paper.paper_id');
 		$this->db->where($where); 
-		if($class_check->class_group == 'Y'){
+		if($class_check->class_group == 'Y' || $class_id == 101){
 		$this->db->where('backlog_exam_form.sub_group_id',1);
 		}
 		$query = $this->db->get();

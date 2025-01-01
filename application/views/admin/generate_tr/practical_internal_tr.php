@@ -189,6 +189,8 @@ table.last_table, .last_table td, .last_table th{
     $fc1_min =0;
     $fc2_min =0;
     $final_result = '';
+    $this->foundation1 =0;
+    $this->foundation2=0;
     if($student->university_mode == 'REG'){
       $rowspanhead = ($classData->project!='N' || $classData->practical!='N') ? "7" : "3";
       // $rowspandata = (($classData->project!='N' || $classData->practical!='N') && $classData->internal!='N')? "5" : "4";
@@ -337,6 +339,7 @@ table.last_table, .last_table td, .last_table th{
     if($fc1 < $fc1_min){
       array_push( $atkt_paper_codes_array ,'FC1' );
           $fail_count++;
+          $this->foundation1++;
           $fail_tot_marks += $fc1;
           $require_tot_marks += $fc1_min;
 
@@ -344,6 +347,7 @@ table.last_table, .last_table td, .last_table th{
     if($fc2 < $fc2_min){
       array_push( $atkt_paper_codes_array ,'FC2' );
       $fail_count++;
+      $this->foundation2++;
       $fail_tot_marks += $fc2;
       $require_tot_marks += $fc2_min;
 
@@ -638,7 +642,18 @@ table.last_table, .last_table td, .last_table th{
                 echo $new_exam_form->theory_marks;
               }else{
                 echo $new_exam_form->theory_marks;
-                echo ($check_grace_marks) ? ' G' : ' F';
+                if($new_exam_form->sub_group_id == 1){
+                   
+                    if($this->foundation1>0 && $new_exam_form->group_paper_name =='FC1'){
+                       echo ($check_grace_marks) ? ' G' : ' F';
+                    }
+                    if($this->foundation2>0 && $new_exam_form->group_paper_name =='FC2'){
+                      echo ($check_grace_marks) ? ' G' : ' F';
+                    }
+                  }else{
+                    echo ($check_grace_marks) ? ' G' : ' F';
+                  }
+                //echo ($check_grace_marks) ? ' G' : ' F';
               }
             }else{
               if($new_exam_form->theory_marks==''){
@@ -755,12 +770,24 @@ table.last_table, .last_table td, .last_table th{
         if($paper_master->theory_marks==''){
           echo "-";
         }else{
+            if($paper_master->sub_group_id == 1){
+                if($this->foundation1>0 && $paper_master->group_paper_name =='FC1'){
+                  echo ($paper_master->theory_marks=='ABS') ? 'ABS F' :(int) $paper_master->theory_marks ." F";
+                }elseif($this->foundation2>0 && $paper_master->group_paper_name =='FC2'){
+                    echo ($paper_master->theory_marks=='ABS') ? 'ABS F' :(int) $paper_master->theory_marks ." F";
+                  }else{
+                    echo ($paper_master->theory_marks !='ABS')?$paper_master->theory_marks:'';  
+                }
+                 
+              }else{
+                echo ($paper_master->theory_marks=='ABS' && $paper_master->int_marks=='ABS') ? 'ABS F' : (int) $paper_master->theory_marks + (int) $paper_master->int_marks." F";
+              }
           // echo (int) $paper_master->theory_marks + (int) $paper_master->int_marks." F";
-          if($paper_master->sub_group_id == 1 && $paper_master->theory_marks=='ABS'){
-            echo 'ABS F';
-          }else{
-            echo ($paper_master->theory_marks=='ABS' && $paper_master->int_marks=='ABS') ? 'ABS F' : $paper_master->theory_marks+ $paper_master->int_marks." F";
-          }
+        //   if($paper_master->sub_group_id == 1 && $paper_master->theory_marks=='ABS'){
+        //     echo 'ABS F';
+        //   }else{
+        //     echo ($paper_master->theory_marks=='ABS' && $paper_master->int_marks=='ABS') ? 'ABS F' : $paper_master->theory_marks+ $paper_master->int_marks." F";
+        //   }
         
         }
       }else{

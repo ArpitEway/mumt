@@ -51,7 +51,7 @@ class Upload_old_data_backlog extends CI_Model
 		if($std[0]->sub_group_id == 1){
 			$papers = $this->Common_model->get_all_backlog_papers($student->student_id,$student->class_id,$student->id);
 		}
-		if($this->classData->class_group == 'Y'){
+		if($this->classData->class_group == 'Y' || $student->class_id == 101){
 		$papers_list = $this->Common_model->get_all_backlog_group_papers($student->student_id,$student->class_id,$student->id);
 		}
         $date =$this->Common_model->getRecordById('marksheet_variables','class_id',$student->class_id);
