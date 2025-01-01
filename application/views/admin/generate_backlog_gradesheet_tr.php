@@ -488,7 +488,7 @@ table.last_table, .last_table td, .last_table th{
      
 		}
 
-		if($this->classData->class_group == 'Y'){
+		if($this->classData->class_group == 'Y' || $student->class_id == 101){
 			$papers_list = $this->Common_model->get_all_backlog_group_papers($student->student_id,$student->class_id,$student->id);
 		}
 		
