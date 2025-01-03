@@ -395,9 +395,10 @@ class Postexam extends CI_Controller {
       $this->db->select('DISTINCT(id)');
       $this->db->from('class_master');
      // $this->db->where('backlog_exam_form_permission','Y');
-        $this->db->where_in('class_name',array('I SEM','III SEM'));
+        // $this->db->where_in('class_name',array('I SEM','III SEM'));
      // $this->db->where_not_in('id',array('154','172','181'));
-        $this->db->where_in('id',array('154','181'));
+        // $this->db->where_in('id',array('154','181'));
+      $this->db->where_in('id',array('155','299','182'));
      // $this->db->where('old_exam_form_permission','N');
       $classes = $this->db->get()->result();
      $class_id = array_column($classes,'id');
@@ -488,11 +489,11 @@ class Postexam extends CI_Controller {
         $this->db->select('DISTINCT(id)');
         $this->db->from('class_master');
         // $this->db->where('class_name','I Year');
-        // $this->db->where_in('class_name',array('I SEM','III SEM'));
+        $this->db->where_in('class_name',array('I SEM','III SEM'));
       //  $this->db->where('backlog_exam_form_permission','Y');
       // $this->db->where_in('class_name',array('II Year','I Year'));
         $this->db->where_not_in('id',array('154','172','181'));
-         $this->db->where_in('id',array('155','299','182'));
+         // $this->db->where_in('id',array('155','299','182'));
        // $this->db->where('old_exam_form_permission','Y');
        // $this->db->where('exam_form_permission','Y');
         $classes = $this->db->get()->result();
