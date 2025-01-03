@@ -488,10 +488,11 @@ class Postexam extends CI_Controller {
         $this->db->select('DISTINCT(id)');
         $this->db->from('class_master');
         // $this->db->where('class_name','I Year');
-        $this->db->where_in('class_name',array('I SEM','III SEM'));
+        // $this->db->where_in('class_name',array('I SEM','III SEM'));
       //  $this->db->where('backlog_exam_form_permission','Y');
       // $this->db->where_in('class_name',array('II Year','I Year'));
         $this->db->where_not_in('id',array('154','172','181'));
+         $this->db->where_in('id',array('155','299','182'));
        // $this->db->where('old_exam_form_permission','Y');
        // $this->db->where('exam_form_permission','Y');
         $classes = $this->db->get()->result();
@@ -499,8 +500,8 @@ class Postexam extends CI_Controller {
        if($classes){
 
            $this->db->select('course_name,class_id, COUNT(student_id) as cnt');
-          // $this->db->where('exam_year', 'June 2024');
-          $this->db->where('exam_year', 'January 2024');
+           $this->db->where('exam_year', 'June 2024');
+          // $this->db->where('exam_year', 'January 2024');
            $this->db->where('exam_result', 'FAIL');
            $this->db->where('exam_status', 'R');
            $this->db->where_in('class_id',$class_id );
@@ -521,8 +522,8 @@ class Postexam extends CI_Controller {
         $this->load->view('header',array('title' => 'Backlog Students'));
         $this->db->select('*');
         $this->db->from('old_exam_data');
-       // $this->db->where('exam_year', 'June 2024');
-       $this->db->where('exam_year', 'January 2024');
+       $this->db->where('exam_year', 'June 2024');
+       // $this->db->where('exam_year', 'January 2024');
         $this->db->where('exam_result', 'FAIL');
         $this->db->where('exam_status', 'R');
         //$this->db->where('id>', '52355');

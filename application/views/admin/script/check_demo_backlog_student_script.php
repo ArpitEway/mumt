@@ -30,10 +30,15 @@
           <td> <?php  if($paperCount==$absCount || ( $row->agpa_sgpa<4 && $row->marks_pattern=="GRADE")  ){?> 
             <a class="text-danger" href="<?=base_url('admin/scripts/Postexam/set_demo/'.$row->student_id.'/'.$row->class_id.'/'.$row->center_id)?>" target="_blank">Set Demo</a> <?php 
               $where = array('student_id'=>$row->student_id,'new_exam_form'=>'D');
-              if(!in_array($row->center_id,$dept_ids) && $className=='I SEM'){
-                $data = array('demo'=>'Y','new_exam_form_permission'=>'Y');
-              }else{
-                $data = array('demo'=>'Y','new_exam_form'=>'N');
+              // if(!in_array($row->center_id,$dept_ids) && $className=='I SEM'){
+              //   $data = array('demo'=>'Y','new_exam_form_permission'=>'Y');
+              // }else{
+              //   $data = array('demo'=>'Y','new_exam_form'=>'N');
+              // }
+
+              if($className=='II SEM') // '155','299','182' exam Permission June 2025
+              {
+                 $data = array('demo'=>'Y','new_exam_form_permission'=>'Y');
               }
              
              $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
@@ -44,7 +49,7 @@
 
              //  ####### Add Backlog Script For Main Exam End #######
 
-                 $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$row->class_id,'student_id'=>$row->student_id,'exam_year'=>'January 2024'));
+                 $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$row->class_id,'student_id'=>$row->student_id,'exam_year'=>'June  2024'));
 
                  $whereResult = array("class_id"=>$students[0]->class_id ,"student_id"=>$students[0]->student_id, 'exam_data_id' => $students[0]->id);
                 $old_result_datas = $this->Common_model->getRecordByWhere("old_result_data",$whereResult );
