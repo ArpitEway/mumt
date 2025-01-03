@@ -13,7 +13,7 @@
         <p style="text-align:center;font-size:12px;"><strong>Programme for Annual/Semester - Main/Backlog Examination January 2025 </strong></p>
     <p style="text-align:center;font-size:12px;"><strong> Morning Shift Time 11:00 AM To 02:00 PM </strong></p>
     <?php }
-   */  if($paper_list[0]['class_id']==154 || $paper_list[0]['class_id']==181 ){  ?>
+   */  if($paper_list[0]['class_id']==154 || $paper_list[0]['class_id']==172 || $paper_list[0]['class_id']==181 ){  ?>
     <p style="text-align:center;font-size:12px;"><strong> Afternoon Shift Time 02:00 PM To 05:00 PM </strong></p>
     <?php }else{  ?>
     <p style="text-align:center;font-size:12px;"><strong> Afternoon Shift Time 12:00 PM To 03:00 PM </strong></p> <?php } ?>
