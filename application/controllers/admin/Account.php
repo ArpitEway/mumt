@@ -608,7 +608,7 @@
 			$student_id  = $this->input->post("student_id");
 	      	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 			
-			$response = $this->Common_model->updateRecordByConditions('student',array('student_id'=> $student_id),array('payment_status'=>'Y'));
+			$response = $this->Common_model->updateRecordByConditions('student',array('student_id'=> $student_id),array('payment_status'=>'Y','document_uploaded'=>'Y'));
 
 			if($response){
 			echo json_encode(array("status" => 'true'));
