@@ -232,9 +232,9 @@ $studentData = $this->Common_model->getRecordById('student','student_id',$this->
 				
 <div class="notification"> 
 	<ul>
-		  <!-- <li>January 2025 परीक्षा कार्यक्रम - <strong> <a href="#" id="getTimeTable">Click Here</a>	 
+		   <li>January 2025 परीक्षा कार्यक्रम - <strong> <a href="#" id="getTimeTable">Click Here</a>	 
 			</strong>
-		</li>  -->
+		</li> 
         <li class="mt-5">Model Paper  - <strong><a href="<?=base_url('student_model_paper') ?>">Click Here</a></strong>
         </li>
 	</ul>
@@ -271,7 +271,7 @@ $("#getTimeTable").on('click', function(){
             });
         });   
 function PrintDiv() {
-    var title="Time Table 2022";
+    var title="Time Table 2025";
     var contents = document.getElementById('ss').innerHTML;
     var frame1 = document.createElement('iframe');
     frame1.name = "frame1";
