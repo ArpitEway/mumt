@@ -676,14 +676,14 @@ class Postexam extends CI_Controller {
      public function course_complete_status()
      {
           $this->db->select('course_name,student.class_name,student.course_group_id,class_id, COUNT(student_id) as cnt');
-          $this->db->join('class_master', 'student.class_id = class_master.id');
+          $this->db->join('class_master', 'student.old_class_id = class_master.id');
           // $this->db->where_in('student.class_id',array(101,107,108,109,117,128,135,136,161,165,171,174,177,180,194,200,202,204,238,206,208,210,244,216,303,276,280,222,248,224,250,228));
           $this->db->where('last_class', 'L');
-          $this->db->where('new_exam_form', 'Y');
+          $this->db->where('exam_form', 'Y');
           // $this->db->where('result_permission', 'Y');
           $this->db->where('course_complete', 'N');
           $this->db->where('upload_result', 'Y');
-          $this->db->group_by('class_id');          
+          $this->db->group_by('old_class_id');          
           $data['courses'] = $this->db->get('student')->result();
           $this->load->view('header',array('title' => ''));
           $this->load->view('admin/script/course_complete_status',$data);
@@ -697,7 +697,7 @@ class Postexam extends CI_Controller {
             if((in_array($class_id, $class_ids))){
                 $this->db->where_not_in('center_id',$dept_ids);
             }
-            $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "new_exam_form"=>'Y', "upload_result"=>'Y','course_complete'=>'N'));
+            $students = $this->Common_model->getRecordByWhere("student",array("old_class_id"=>$class_id, "new_exam_form"=>'Y', "upload_result"=>'Y','course_complete'=>'N'));
             $courseClassData = $this->Common_model->getRecordByWhere("class_master",array("course_group_id"=>$course_group_id,"mode"=>$classData->mode));
           
             $i=1;
