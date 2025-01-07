@@ -3052,7 +3052,7 @@ public function update_exam_datewise_permission(){
         $class_ids=array(103,106,109,112,118,121,127,130,133,136);
         $dept_ids = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30);
         // echo $department.'ss';die;
-        if($department !=""){
+        if($department !="dept"){
             $this->db->where_in('center_id', $dept_ids);
         }elseif(in_array($class_id, $class_ids)&& $pattern=="GRADE"){
             $this->db->where_not_in('center_id', $dept_ids);
@@ -3072,7 +3072,7 @@ public function update_exam_datewise_permission(){
            $this->load->view('admin/student_notification_list_pg',$data);
 			
 		}else{
-            if($department !=""){
+            if($department !="dept"){
                 $this->load->view('admin/student_notification_list_dept',$data);
             }else{
 			$this->load->view('admin/student_notification_list',$data);	
