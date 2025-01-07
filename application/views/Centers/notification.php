@@ -16,6 +16,10 @@
 				<a  href="<?=base_url('assets/images/center/')?>Time-Table-PGDG&C-2025.pdf" download> Time Table PGDG&C I Sem. 2025 - Click Here </a>
 				</b>
 				</li><br>
+				<li><b><img src="<?=base_url('assets/images/center/new.gif')?>" alt="">
+				<a  href="<?=base_url('assets/images/center/')?>Time-Table-MBA-2025.pdf" download> Time Table MBA I Sem. 2025 - Click Here </a>
+				</b>
+				</li><br>
 				<li style="color:red"><img src="<?=base_url('assets/images/center/new.gif')?>" alt=""> <b>
 				आवश्यक सुचना :-
 सर्व संबंधितों को सूचित किया जाता है कि विश्वविद्यालय द्वारा संचालित नियमित पाठ्यक्रमों   -  एम.ए.,  एम.कॉम,  एम.एस.डब्लू , एम.एससी,  एम.बी.ए., (प्रथम / तृतीय सेमेस्टर), पी.जी.डी.सी.ए. एवं  डी.सी.ए  (प्रथम सेमेस्टर)  के छात्रों की मुख्य / पूरक  परीक्षा जनवरी २०२५ में मुख्यालय करौंदी में आयोजित होगी| परीक्षा फॉर्म भरने की अंतिम तिथि 7 जनवरी 2025 निर्धारित की गई है| अनुरोध है कि उक्त दिनांक के पूर्व परीक्षा फॉर्म भरने की प्रक्रिया पूर्ण करे| इसके पश्चात् किसी भी आवेदन पर विचार नहीं किया जावेगा|  </a>
