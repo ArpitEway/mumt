@@ -3045,8 +3045,8 @@ public function update_exam_datewise_permission(){
 		//$this->db->where('roll_number','210410110');
 		$start=0;
 		if($startlimit==!0){
-			$start=($startlimit-1)*10000;
-			$this->db->limit(10000,$start);
+			$start=($startlimit-1)*6000;
+			$this->db->limit(6000,$start);
 			$pagetitle=$startlimit;
 		}
         $class_ids=array(103,106,109,112,118,121,127,130,133,136);
