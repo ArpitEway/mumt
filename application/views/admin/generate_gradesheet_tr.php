@@ -392,7 +392,7 @@ table.last_table, .last_table td, .last_table th{
       <p align="center" class="line-height">Tabulation Register for <strong><?php echo $student->course_name; echo '&nbsp'. $course_duration; ?></strong> <?php echo $marksheetData[0]->exam_session.' (CBCS)';?>
       </p>
       <div>
-        <div style="float: left;">DATE: <?php if($date_mode != 'PVT')  echo $marksheetData[0]->result_date;else $marksheetData[0]->pvt_result_date;?></div>
+        <div style="float: left;">DATE: <?php if($date_mode != 'PVT')  echo $marksheetData[0]->result_date;else  echo $marksheetData[0]->pvt_result_date;?></div>
         <div style="float: right;">Page : <?php  echo $page_no; ?></div>
       </div>
       <table class="table table1 mb-0">
