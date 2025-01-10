@@ -181,13 +181,10 @@ class Upload_old_data_pg extends CI_Model
 			$min_marks = $this->paper["min_theory_marks"]+$this->paper["min_internal_marks"];
 		}
 		// $persent = $tot_obt_marks*100/$tot_marks;
-		//  echo $tot_obt_marks.'tot'.$tot_marks.'<br>';
-		//  $tot_marks ;die;
 		$persent =$check_fail_marks*100/$check_fail_tot_marks;
 		$where = 'min_marks <= '.$persent.' and  max_marks >= '.$persent.'';
 		$gradeData = $this->Common_model->getRecordByWhere('letter_grade_pg',$where);
 	
-        // echo $gradeData[0]->letter_grade.$this->result_array[$this->paper['paper_code']]["paper_name"].'<br>';
 		if ('F'==$gradeData[0]->letter_grade || 'ABS' ==$gradeData[0]->letter_grade) {
 			$this->fail_count++;
 			$this->fail_obt_marks += $check_fail_marks;
@@ -205,12 +202,6 @@ class Upload_old_data_pg extends CI_Model
 			$this->grade_point = $gradeData[0]->grade_point;
 			$this->result_array[$this->paper['paper_code']]['letter_grade'] = $gradeData[0]->letter_grade;
 		}
-		
-		// var_dump($this->check_grace_marks);
-		// echo $student_id;
-		// echo $this->classData->final_result_permission;
-		// echo $this->fail_count;die;
-		
 	}
 
 	private function grade_point()
@@ -221,7 +212,6 @@ class Upload_old_data_pg extends CI_Model
 	private function credit_point()
 
 	{
-		// echo $this->grade_point.'ff'.$this->credit_point.'<br>';
 		$this->tot_credit_point += $this->grade_point*$this->credit_point;
 		$this->result_array[$this->paper['paper_code']]['credit_point'] = $this->grade_point*$this->credit_point;
 	}
@@ -231,8 +221,6 @@ class Upload_old_data_pg extends CI_Model
 
 	public function set_result()
 	{
-		// var_dump($this->withheld);die;
-        // echo $this->agpa.'dd'.$this->fail_count;
 		if ($this->withheld==true) {
 			$this->result = 'WITHHELD';
 		}
@@ -297,7 +285,6 @@ class Upload_old_data_pg extends CI_Model
 
     protected function upload_exam_data()
 	{
-        // echo $this->result;die;
 		if($this->result=='WITHHELD'){
 			return false;
 		}elseif ($this->result=='FAIL') {
@@ -336,9 +323,8 @@ class Upload_old_data_pg extends CI_Model
             'exam_result'=>$result
            
         );
-		// print_r($examData);
-       		 $exam_data_id = $this->Common_model->insertAll('old_exam_data',$examData);
-		  echo $this->db->last_query().'<br>';
+       	$exam_data_id = $this->Common_model->insertAll('old_exam_data',$examData);
+		echo $this->db->last_query().'<br>';
 		 $this->upload_old_result_data($exam_data_id);
 	}
 
@@ -375,20 +361,6 @@ class Upload_old_data_pg extends CI_Model
                 // 'result' => $result ,
                 'p_order'=> $result['paper_order'] 
             );
-			// $oldreultdata = array(
-			// 	'exam_data_id' => $old_exam_data_id,
-			// 	'student_id' => $this->student->student_id,
-			// 	'course_group_id' => $this->student->course_group_id,
-			// 	'class_id' => $this->student->old_class_id,
-			// 	'institute_id' => $this->student->institute_id,
-			// 	'paper_code' => $key,
-			// 	'type' => $result['type'],
-			// 	'paper_id' => $result['paper_id'],
-			// 	'paper_name' => $result['paper_name'],
-			// 	'p_order' => $result['paper_order'],
-			// 	'obtain_credit' => $result['obt_credit'],
-			// 	'credit' => $result['credit'],
-			// );
 			if ($result['type']=='theory') {
 				$ResultData['max_theory_marks'] = $result['max_marks'];
 				$ResultData['min_theory_marks'] = $result['min_marks'];
@@ -439,10 +411,7 @@ class Upload_old_data_pg extends CI_Model
 
 			 $this->Common_model->insertAll('old_result_data',$ResultData);
 			 echo $this->db->last_query().'<br>';
-			// var_dump($oldreultdata);
-            // echo '<pre>';
-            // print_r($ResultData);
-		
+			
         $x++;
         
     }

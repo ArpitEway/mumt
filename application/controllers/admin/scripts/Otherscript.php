@@ -1405,9 +1405,38 @@ public function update_roll_no_old_data(){
        }
       echo  $this->db->last_query().'<br>';
     }
+
+    public function check_student_course_duration(){
+        $students = $this->Common_model->getRecordByWhere('student',array('new_exam_form !='=>'D'));
+        $current_exam_month ='12';
+        $current_exam_year ='2024';
+        $student_data = [];
+        foreach($students as $student){
+            $course_d = $this->Common_model->getRecordById('course','course_name',$student->course_name);
+            $due = explode(" ",$student->session);
+             if($due[0]=="July"){
+              $month = "6";
+              $year = $due[1]+$course_d->max_duration;
+             }else{
+              $month = "12";
+              $year = $due[1]+$course_d->max_duration-1;
+             }
+             $course_d->max_duration." Years".'('.$month." ".$year.')';
+
+            if($year == $current_exam_year && $month < $current_exam_month){
+                array_push($student_data,$student);
+            }elseif($year < $current_exam_year){
+              array_push($student_data,$student);
+            }else{
+                continue;
+            }
+          
+        }
+
+        $data['students'] = $student_data;
+        $this->load->view('header',array('title'=>'Student Course Duration'));
+        $this->load->view('admin/check_student_course_duration',$data);
+        $this->load->view('footer');
+    }
 }
-
-   
-
-
 ?>
