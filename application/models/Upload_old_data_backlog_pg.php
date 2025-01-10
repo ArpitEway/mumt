@@ -51,11 +51,7 @@ class Upload_old_data_backlog_pg extends CI_Model
 		// if($std[0]->sub_group_id == 1){
 			$papers = $this->Common_model->get_all_backlog_papers($student->student_id,$student->class_id,$student->id);
             $date =$this->Common_model->getRecordById('marksheet_variables','class_id',$student->class_id);
-		// get_all_group_papers
-        // echo '<pre>';
-		// print_r($papers_list);die;
-		
-		// print_r($this->allclass);die;
+	
 		$this->classCount = count($this->allclass);
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$student->class_id);
 		$this->foundation_paper = array();
@@ -79,48 +75,13 @@ class Upload_old_data_backlog_pg extends CI_Model
 		$this->withheld = false;
 		foreach ($papers as $paper) {
 			$this->paper = $paper;
-			// print_r($this->paper );die;
-			
-			// if($this->withheld){
-				
-			// 	echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
-			// 	 '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
-			// 	  '<h3 class="text-center">'.'WH'.'</h3>'.
-			// 	'</div>';
-			// 	return $this->result();
-			
-			// 	die;
-			// }
-			// if ($this->fail_count>0 && !$this->check_grace_marks && $this->classData->final_result_permission!='Y' ) {  
-			// 	echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
-			// 	'<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
-			// 	 '<h3 class="text-center">'.'WH'.'</h3>'.
-			//    '</div>';
-			//    return $this->result();
-		   
-			//    die;
-			// }
-		
 			$this->_row();
 			
 		}
-		        //  $this->tot_credit_point.'ddd'.$this->tot_credit.'<br>';
-		
 		$this->set_result();
          echo  $this->agpa = $this->tot_credit_point/$this->tot_credit;
 		$this->upload_exam_data();
 		echo "<hr>";
-		// var_dump($this->result_array);
-		
-		// $this->echo_result_grade(); 
-		
-		//  $this->agpa = $this->tot_credit_point/$this->tot_credit;
-		//  $this->set_result();
-		// $this->total_grade();
-		
-		// return $this->result();
-		// echo "<pre>";
-		// print_r($this->foundation_paper);
 	}
 
 	
@@ -204,11 +165,8 @@ class Upload_old_data_backlog_pg extends CI_Model
 			$min_marks = $this->paper["min_theory_marks"]+$this->paper["min_internal_marks"];
 		}
 		$persent = $tot_obt_marks*100/$tot_marks;
-		// echo $tot_obt_marks.'tot'.$tot_marks.'<br>';
-		//  $tot_marks ;die;
 		$where = 'min_marks <= '.$persent.' and  max_marks >= '.$persent.'';
-		$gradeData = $this->Common_model->getRecordByWhere('letter_grade',$where);
-        // echo $gradeData[0]->letter_grade.$this->result_array[$this->paper['paper_code']]["paper_name"].'<br>';
+		$gradeData = $this->Common_model->getRecordByWhere('letter_grade_pg',$where);
 		if ('F'==$gradeData[0]->letter_grade || 'ABS' ==$gradeData[0]->letter_grade) {
 			$this->fail_count++;
 			$this->fail_obt_marks += $check_fail_marks;
@@ -222,12 +180,6 @@ class Upload_old_data_backlog_pg extends CI_Model
 
         
         $this->result_array[$this->paper['paper_code']]["status"] = ($this->paper["status"] == "C")?"C":"";
-      
-		// var_dump($this->check_grace_marks);
-		// echo $student_id;
-		// echo $this->classData->final_result_permission;
-		// echo $this->fail_count;die;
-		
 		$this->grade_point = $gradeData[0]->grade_point;
 		$this->result_array[$this->paper['paper_code']]['letter_grade'] = $gradeData[0]->letter_grade;
 	}
@@ -248,11 +200,7 @@ class Upload_old_data_backlog_pg extends CI_Model
 	
 	public function set_result()
 	{
-		// var_dump($this->withheld);die;
-        // echo $this->agpa.'dd'.$this->fail_count;
-        // echo '<pre>';
-        
-      
+	
       $this->agpa = $this->tot_credit_point/$this->tot_credit;
         
 		if ($this->withheld==true) {
@@ -392,31 +340,12 @@ class Upload_old_data_backlog_pg extends CI_Model
                  'carry_theory'=>$status,
                  'carry_int'=>'C',
                  'status'=>'B',
-                // 'max_theory_marks'=> $max_theory_marks,
-                // 'max_int_marks'=> $max_int_marks,
-                // 'min_theory_marks'=> $min_theory_marks,
-                // 'min_int_marks'=> $min_int_marks,
-                // 'theory_marks'=> $marks->theory_marks,
-                // 'p_marks'=> $marks->p_marks,
-                // 'int_marks'=> $marks->int_marks,
+              
                 'paper_name'=>  $paper_name[1],
                 // 'result' => $result ,
                 'p_order'=> $result['paper_order'] 
             );
-			// $oldreultdata = array(
-			// 	'exam_data_id' => $old_exam_data_id,
-			// 	'student_id' => $this->student->student_id,
-			// 	'course_group_id' => $this->student->course_group_id,
-			// 	'class_id' => $this->student->old_class_id,
-			// 	'institute_id' => $this->student->institute_id,
-			// 	'paper_code' => $key,
-			// 	'type' => $result['type'],
-			// 	'paper_id' => $result['paper_id'],
-			// 	'paper_name' => $result['paper_name'],
-			// 	'p_order' => $result['paper_order'],
-			// 	'obtain_credit' => $result['obt_credit'],
-			// 	'credit' => $result['credit'],
-			// );
+			
 			if ($result['type']=='theory') {
 				$ResultData['max_theory_marks'] = $result['max_marks'];
 				$ResultData['min_theory_marks'] = $result['min_marks'];
@@ -458,16 +387,9 @@ class Upload_old_data_backlog_pg extends CI_Model
 				$ResultData['p_marks'] = $result['obt_marks'];
 				$ResultData['result'] = $result_this;
 			}
-            // echo '<pre>';
-            // print_r($ResultData);
+          
 			 $this->Common_model->insertAll('old_result_data',$ResultData);
-			 echo $this->db->last_query().'<br>';
-			// var_dump($oldreultdata);
-            // echo '<pre>';
-            // print_r($ResultData);
-		
-       
-       
+			 echo $this->db->last_query().'<br>';    
         
     }
      $this->update_old_exam_result($old_exam_data_id);	
@@ -478,8 +400,6 @@ class Upload_old_data_backlog_pg extends CI_Model
         $studentData = array('upload_result'=>'Y');
         $this->Common_model->updateRecordByConditions('backlog_student',array('student_id'=>$this->student->student_id,'id'=>$this->student->id),$studentData);    
          	echo $this->db->last_query().'<br>';      
-    
-	
-	}
+    }
 	
 }

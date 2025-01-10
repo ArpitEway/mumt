@@ -371,8 +371,6 @@ class Upload_old_data extends CI_Model
 
 	public function set_result()
 	{
-		// var_dump($this->withheld);die;
-        // echo $this->agpa.'dd'.$this->fail_count;
         foreach ($this->result_array  as $key => $result) {
             if($result['sub_group'] == 1){
                 if(($result['f_abs'] === 'ABS' && $result['obt_marks'] != '0')){
@@ -546,20 +544,7 @@ class Upload_old_data extends CI_Model
                 // 'result' => $result ,
                 'p_order'=> $result['paper_order'] 
             );
-			// $oldreultdata = array(
-			// 	'exam_data_id' => $old_exam_data_id,
-			// 	'student_id' => $this->student->student_id,
-			// 	'course_group_id' => $this->student->course_group_id,
-			// 	'class_id' => $this->student->old_class_id,
-			// 	'institute_id' => $this->student->institute_id,
-			// 	'paper_code' => $key,
-			// 	'type' => $result['type'],
-			// 	'paper_id' => $result['paper_id'],
-			// 	'paper_name' => $result['paper_name'],
-			// 	'p_order' => $result['paper_order'],
-			// 	'obtain_credit' => $result['obt_credit'],
-			// 	'credit' => $result['credit'],
-			// );
+		
 			if ($result['type']=='theory') {
 				$ResultData['max_theory_marks'] = $result['max_marks'];
 				$ResultData['min_theory_marks'] = $result['min_marks'];
@@ -604,9 +589,6 @@ class Upload_old_data extends CI_Model
 
 			 $this->Common_model->insertAll('old_result_data',$ResultData);
 			 echo $this->db->last_query().'<br>';
-			// var_dump($oldreultdata);
-            // echo '<pre>';
-            // print_r($ResultData);
 		}else{
              $pap = explode(']',$result['paper_name']);
             // echo $pap[0];

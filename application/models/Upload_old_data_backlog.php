@@ -55,11 +55,7 @@ class Upload_old_data_backlog extends CI_Model
 		$papers_list = $this->Common_model->get_all_backlog_group_papers($student->student_id,$student->class_id,$student->id);
 		}
         $date =$this->Common_model->getRecordById('marksheet_variables','class_id',$student->class_id);
-		// get_all_group_papers
-        // echo '<pre>';
-		// print_r($papers_list);die;
-		
-		// print_r($this->allclass);die;
+	
 		$this->classCount = count($this->allclass);
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$student->class_id);
 		$this->foundation_paper = array();
@@ -83,52 +79,11 @@ class Upload_old_data_backlog extends CI_Model
 		$this->withheld = false;
 		foreach ($papers as $paper) {
 			$this->paper = $paper;
-			// print_r($this->paper );die;
-			
-			// if($this->withheld){
-				
-			// 	echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
-			// 	 '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
-			// 	  '<h3 class="text-center">'.'WH'.'</h3>'.
-			// 	'</div>';
-			// 	return $this->result();
-			
-			// 	die;
-			// }
-			// if ($this->fail_count>0 && !$this->check_grace_marks && $this->classData->final_result_permission!='Y' ) {  
-			// 	echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
-			// 	'<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
-			// 	 '<h3 class="text-center">'.'WH'.'</h3>'.
-			//    '</div>';
-			//    return $this->result();
-		   
-			//    die;
-			// }
-		
 			$this->_row();
 			
 		}
 		foreach ($papers_list as $paper) {
 			$this->paper = $paper;
-			// if($this->withheld){
-				
-			// 	echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
-			// 	 '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
-			// 	  '<h3 class="text-center">'.'WH'.'</h3>'.
-			// 	'</div>';
-			// 	return $this->result();
-			
-			// 	die;
-			// }
-			// if ($this->fail_count>0 && !$this->check_grace_marks && $this->classData->final_result_permission!='Y' ) {  
-			// 	echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
-			// 	'<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
-			// 	 '<h3 class="text-center">'.'WH'.'</h3>'.
-			//    '</div>';
-			//    return $this->result();
-		   
-			//    die;
-			// }
 			$this->_row();
 		}
         //  $this->tot_credit_point.'ddd'.$this->tot_credit.'<br>';
@@ -146,8 +101,6 @@ class Upload_old_data_backlog extends CI_Model
 		// $this->total_grade();
 		
 		// return $this->result();
-		// echo "<pre>";
-		// print_r($this->foundation_paper);
 	}
 
 	public function _row()
@@ -307,12 +260,6 @@ class Upload_old_data_backlog extends CI_Model
 
         
         $this->result_array[$this->paper['paper_code']]["status"] = ($this->paper["status"] == "C")?"C":"";
-      
-		// var_dump($this->check_grace_marks);
-		// echo $student_id;
-		// echo $this->classData->final_result_permission;
-		// echo $this->fail_count;die;
-		
 		$this->grade_point = $gradeData[0]->grade_point;
 		$this->result_array[$this->paper['paper_code']]['letter_grade'] = $gradeData[0]->letter_grade;
 	}
@@ -325,7 +272,6 @@ class Upload_old_data_backlog extends CI_Model
 	private function credit_point()
 
 	{
-		// echo $this->grade_point.'ss'.$this->credit_point,'dd';
 		$this->tot_credit_point += $this->grade_point*$this->credit_point;
 		$this->result_array[$this->paper['paper_code']]['credit_point'] = $this->grade_point*$this->credit_point;
 	}
@@ -339,7 +285,6 @@ class Upload_old_data_backlog extends CI_Model
 
 	private function paper_name_foudation($sub_group_id){
 		$data = '['.$this->paper["group_paper_name"].']'.$this->foundation_paper[$sub_group_id]["paper_name"].'<br><br>'.'B) '.$this->paper["paper_name"];
-		// print_r($this->paper["paper_name"]);
 		$this->result_array[$this->paper['paper_code']]['paper_name'] = $data;
         $this->result_array[$this->paper['paper_code']]['paper_order'] = $this->foundation_paper[$sub_group_id]["paper_order"];
 		$this->result_array[$this->paper['paper_code']]['type'] = $this->foundation_paper[$sub_group_id]["type"];
@@ -377,10 +322,6 @@ class Upload_old_data_backlog extends CI_Model
 
 	public function set_result()
 	{
-		// var_dump($this->withheld);die;
-        // echo $this->agpa.'dd'.$this->fail_count;
-        // echo '<pre>';
-        
         foreach ($this->result_array  as $key => $result) {
                 if($result['sub_group'] == 1){
                     if(($result['f_abs'] === 'ABS' && $result['obt_marks'] != '0')){
