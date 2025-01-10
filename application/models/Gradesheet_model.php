@@ -222,8 +222,9 @@ class Gradesheet_model extends CI_Model
             foreach($classes as $cls){
                 $this->db->order_by('id','desc');
                 $this->db->limit(1);
-                $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student_id,'class_id'=>$cls->id,'exam_result'=>'FAIL'));
-                if(count($old_result) > 0){
+                $this->db->where_in('exam_result',array('PASS','PASS BY GRACE'));
+                $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student_id,'class_id'=>$cls->id));
+                if(count($old_result) ==  0){
                 echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
                     '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
                     '<h3 class="text-center">'.'RWPM'.'</h3>'.
