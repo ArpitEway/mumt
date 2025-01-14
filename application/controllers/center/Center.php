@@ -1579,7 +1579,7 @@ class Center extends CI_Controller {
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
-		$titleData = array('title' => 'Admit Card List 2024' );
+		$titleData = array('title' => 'Admit Card List 2025' );
 		$this->load->view('Centers/header',$titleData);
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
@@ -1611,7 +1611,7 @@ class Center extends CI_Controller {
 			redirect(base_url());
 		}
 		$class_id=$this->Common_model->encrypt_decrypt($class_id,'decrypt');
-		$titleData = array('title' => 'Admit Card Student List 2024' );
+		$titleData = array('title' => 'Admit Card Student List 2025' );
 		$this->load->view('Centers/header',$titleData);
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
@@ -1635,7 +1635,7 @@ class Center extends CI_Controller {
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
-		$titleData = array('title' => 'Admit Card Backlog Student List 2024' );
+		$titleData = array('title' => 'Admit Card Backlog Student List 2025' );
 		$this->load->view('Centers/header',$titleData);
 		//$center_id =  $this->session->center_id;
 		if ($this->session->center_id!=13) {
@@ -1647,7 +1647,7 @@ class Center extends CI_Controller {
 			//'center_id' => $center_id,
 			'roll_no!=' => 0,
 			'exam_form' => 'Y',
-			'exam_year' => 'June 2024'
+			'exam_year' => 'Dec 2024'
 		);
 		$this->db->order_by('course_group_id,class_id');
         // $this->db->where_not_in('student_id', array(188428,686377,375381));
@@ -1663,7 +1663,7 @@ class Center extends CI_Controller {
 		}
 		$en_student_id = $student_id;
 		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
-		$titleData = array('title' => 'Admit Card 2024' );
+		$titleData = array('title' => 'Admit Card 2025' );
 		$this->load->view('Centers/header',$titleData);
 		//$center_id =  $this->session->center_id;
 		if ($this->session->center_id!=13) {
@@ -1707,7 +1707,7 @@ class Center extends CI_Controller {
 		}
 		// $en_student_id = $student_id;
 		$backlog_student_id=$this->Common_model->encrypt_decrypt($backlog_student_id,'decrypt');
-		$titleData = array('title' => 'Backlog Admit Card 2024' );
+		$titleData = array('title' => 'Backlog Admit Card 2025' );
 		$this->load->view('Centers/header',$titleData);
 		//$center_id =  $this->session->center_id;
 		if ($this->session->center_id!=13) {
@@ -1721,7 +1721,7 @@ class Center extends CI_Controller {
 			'backlog_student.roll_no !=' => 0,
 			//'backlog_student.center_id' => $center_id,
 			'backlog_student.exam_form' => 'Y',
-			'backlog_student.exam_year'=>'June 2024'
+			'backlog_student.exam_year'=>'Dec 2024'
 		);
         // $this->db->where_not_in('backlog_student.student_id', array(188428,686377,375381));
 		$this->db->select('backlog_student.*,student.name,student.f_h_name,student.session,student.photo');
@@ -3217,9 +3217,9 @@ public function practical_assignment_marks_edit(){
 		if ($this->input->post("id"))
 		{
 			$status = ($status=='skipped') ? 'S' : 'N';
-			$data = $this->Common_model->updateRecordByConditions("backlog_student",array("student_id" => $id ,"class_id"=>$class_id,'exam_year'=>'June 2024'),array("exam_form" => $status ));
+			$data = $this->Common_model->updateRecordByConditions("backlog_student",array("student_id" => $id ,"class_id"=>$class_id,'exam_year'=>'Dec 2024'),array("exam_form" => $status ));
 
-			$dt = $this->db->get_where("backlog_student",array("student_id" => $id,"class_id"=>$class_id,'exam_year'=>'June 2024' ))->result_array();
+			$dt = $this->db->get_where("backlog_student",array("student_id" => $id,"class_id"=>$class_id,'exam_year'=>'Dec 2024' ))->result_array();
 
 			if($dt[0]['exam_form'] == 'N')
 			{

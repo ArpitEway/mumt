@@ -236,6 +236,19 @@
 			</div> 
 			<div class="tab-pane fade" id="exam" role="tabpanel" aria-labelledby="exam-tab">
 				<div class="row">
+
+				<?php if ($center->admit_card_permission=='Y'): ?>
+						<a class="border-0 custom-menu-item" href="<?=base_url('admit_card_list');?>">
+						<div>
+							<span class="nav-text">Admit Card</span>
+						</div>
+					</a>
+					 <a class="border-0 custom-menu-item" href="<?=base_url('admit_card_backlog_student_list');?>">
+						<div>
+							<span class="nav-text">Backlog Admit Card</span>
+						</div>
+					</a>  
+					<?php endif  ?>	
 				
 				<?php 
               //  $count = $this->Common_model->getCountByWhere('student',array('center_id'=>$center->id,'new_exam_form !='=>'D'));
@@ -302,18 +315,7 @@
 						</div>
 					</a> -->
 					
-					<?php if ($center->admit_card_permission=='Y'): ?>
-						<a class="border-0 custom-menu-item" href="<?=base_url('admit_card_list');?>">
-						<div>
-							<span class="nav-text">Admit Card</span>
-						</div>
-					</a>
-					 <a class="border-0 custom-menu-item" href="<?=base_url('admit_card_backlog_student_list');?>">
-						<div>
-							<span class="nav-text">Backlog Admit Card</span>
-						</div>
-					</a>  
-					<?php endif  ?>
+					
 
 				</div>
 			</div> 

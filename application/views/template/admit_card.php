@@ -42,8 +42,9 @@
 			<div class="BoxC border- padding mar-bot">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Schedule of Exam for Annual/Semester Examination of
+						<h5>Schedule of Exam for Annual/Semester Examination of January 2025
 								<?php
+								/*
 								if($student[0]->course_group_id==75 || $student[0]->course_group_id==76 || $student[0]->course_group_id==77)
 								{
 									if($student[0]->class_id==256 || $student[0]->class_id==258 ||  $student[0]->class_id==260 || $student[0]->class_id==262 )
@@ -57,7 +58,7 @@
 								else{
 									echo 'June 2024';
 								} 
-								
+								*/
 								
 							?> 
 							
@@ -85,12 +86,14 @@
 							  //$this->Common_model->getExamCenterNameById($student[0]->exam_center_id); ?></td>
 							</tr>
 							<?php }  
-							/*$st=array(768558,771451,771494,771507,772866,772882);
+							/*
+							$st=array(768558,771451,771494,771507,772866,772882);
 							if(in_array($student[0]->student_id,$st)){ ?>
 							<tr>
 							  <td colspan="4"><b>Exam Center: </b>Maharishi Mahesh Yogi Vedic Vishwavidyalaya, C/O Maharishi Shiksha Sansthan Lamti, Jabalpur, Madhya Pradesh</td>
 							</tr>
-							<?php }  */ ?>
+							<?php }  
+							*/ ?>
 								<!-- <tr>
 							  <td colspan="4"><b>College: </b><?=$student[0]->center_name; ?></td>
 							    </tr> -->
@@ -154,26 +157,28 @@
 					
 					<?php //endif ?> -->
 					<td><?php
-					
-					if($paper->exam_shift=='Afternoon' && ($student[0]->class_id==259 || $student[0]->class_id==261 || $student[0]->class_id==263 || $student[0]->class_id==255 || $student[0]->class_id==257 || $student[0]->class_id==268 || $student[0]->class_id==264 || $student[0]->class_id==270) ){
+					$class_ids=array(154,172,181,213);
+							
+					if($paper->exam_shift=='Afternoon' && in_array($student[0]->class_id,$class_ids)){
+						echo '2:00 PM To 5:00 PM';		
+					}
+					elseif($paper->exam_shift=='Afternoon'){
 						echo '12:00 PM To 3:00 PM';
 					}
-					elseif($paper->exam_shift=='Afternoon' && ($student[0]->class_id==262 || $student[0]->class_id==256 || $student[0]->class_id==258 || $student[0]->class_id==260 || $student[0]->class_id==300|| $student[0]->class_id==301) ){
-						echo '2:00 PM To 5:00 PM';
-					}
-					elseif($paper->exam_shift=='Morning' && ($student[0]->course_group_id==45 )){
-						echo '10:00 AM To 1:00 PM';
-					}
 					elseif($paper->exam_shift=='Morning' ){
-						echo '11:00 AM To 2:00 PM';
+							echo '10:00 AM To 1:00 PM';
 					}
-					
-					elseif($paper->exam_shift=='Afternoon'){
-						echo '03:00 PM To 6:00 PM';
-					//	echo '12:00 PM To 3:00 PM';
-					}elseif($paper->exam_shift=="Early Morning"){
-						echo '07:00 To 10:00 AM';
-					}
+					// elseif($paper->exam_shift=='Morning' && ($student[0]->course_group_id==45 )){
+					// 	echo '10:00 AM To 1:00 PM';
+					// echo '11:00 AM To 2:00 PM';
+					// }
+					// elseif($paper->exam_shift=='Afternoon'){
+					// 	echo '03:00 PM To 6:00 PM';
+					// //	echo '12:00 PM To 3:00 PM';
+					// }
+					// elseif($paper->exam_shift=="Early Morning"){
+					// 	echo '07:00 To 10:00 AM';
+					// }
 					?></td>
 			</tr>
 			<?php 
