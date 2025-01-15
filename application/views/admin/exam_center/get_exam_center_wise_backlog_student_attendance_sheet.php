@@ -29,7 +29,7 @@
  <?php 
  foreach($exam_center_students as $student)  {
  	
- 	$wherePaper = array('student_id' => $student->student_id,'paper_master.class_id' => $student->class_id,'paper_master.course_group_id'=> $student->course_group_id,'paper_master.type'=>'theory','exam_date!='=>'0000-00-00','exam_date!='=>'',status=>'B',	'backlog_student_id'=>$student->id);
+ 	$wherePaper = array('student_id' => $student->student_id,'paper_master.class_id' => $student->class_id,'paper_master.course_group_id'=> $student->course_group_id,'paper_master.type'=>'theory','exam_date!='=>'0000-00-00',status=>'B',	'backlog_student_id'=>$student->id);
 	 
      $this->db->select('*');
      $this->db->from('paper_master');
@@ -44,7 +44,7 @@
 	 if($paper_count){
 
 		  // $newstring = date('y')."1".substr($student->center_code, -4); 
-		  $newstring = "241".substr($student->center_code, -4); 
+		  $newstring = "242".substr($student->center_code, -4); 
 		 //echo "test"; print_r($student);  die;
      ?>   
 <section class="break" style="font-size: 16px;">
@@ -63,19 +63,8 @@
 			<div class="BoxC border- padding">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>ATTENDANCE SHEET OF EXAM FOR ANNUAL/SEMESTER EXAMINATION OF
-							<!-- Attendance Sheet Examination  -->
-							<?php
-							if($student->course_group_id==75 || $student->course_group_id==76 || $student->course_group_id==77){
-								if($student->class_id==256 || $student->class_id==258 ||  $student->class_id==260 || $student->class_id==262 )
-									echo ' July 2024';
-									else
-									echo ' 2024';
-							}
-							else{
-								echo ' June 2024';
-							}
-							?>
+						<h5>ATTENDANCE SHEET OF EXAM FOR ANNUAL/SEMESTER EXAMINATION OF JANUARY 2025							<!-- Attendance Sheet Examination  -->
+							
 						</h5>
 						
 					</div>
@@ -175,21 +164,18 @@
 				<tr>
 					<td><?php echo $i ; ?></td>
 					<td><?php echo date("d-m-Y", strtotime($paper->exam_date)); ?></td>
-					<td><?php 
-					
-					if($paper->exam_shift=='Afternoon' && ($student->class_id==267 || $student->class_id==269 || $student->class_id==197 || $student->class_id==223 || $student->class_id==207 || $student->class_id==213) ){
-						echo '12:00 PM To 3:00 PM';
-					}elseif($paper->exam_shift=='Afternoon' && ($student->class_id==256 || $student->class_id==258 || $student->class_id==260 || $student->class_id==262) ){
-						echo '02:00 PM To 5:00 PM';
-					}elseif($paper->exam_shift=='Early Morning'){
-						echo '07:00 To 10:00 AM';
-					}elseif($paper->exam_shift=='Morning'){
-						echo '11:00 AM To 2:00 PM';
-					}elseif($paper->exam_shift=='Afternoon' ){ 
-						echo '03:00 PM To 6:00 PM';
-						//echo '12:00 PM To 3:00 PM';
-					} 
-					 ?></td>
+					<td><?php
+						$class_ids=array(154,172,181,213);
+							
+							if($paper->exam_shift=='Afternoon' && in_array($student->class_id,$class_ids)){
+								echo '2:00 PM To 5:00 PM';		
+							}
+							elseif($paper->exam_shift=='Afternoon'){
+								echo '12:00 PM To 3:00 PM';
+							}
+							elseif($paper->exam_shift=='Morning' ){
+									echo '10:00 AM To 1:00 PM';
+							}?></td>
 					<td style="text-align:left;"><?php echo $paper->paper_name; ?></td>
 					<td ></td>
 					<td ></td>
