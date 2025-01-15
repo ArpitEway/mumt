@@ -3025,7 +3025,7 @@ public function update_exam_datewise_permission(){
 	}
 	
 
-	public function student_notification_list($mode = "",$exam_pattern="M",$course_id="",$class_id="",$department="",$startlimit=0,$pagenumber=0){
+	public function student_notification_list($mode = "",$exam_pattern="M",$course_id="",$class_id="",$startlimit=0,$pagenumber=0,$department=""){
 		$this->load->model('Gradesheet_tr_model');
         $this->load->model('Gradesheet_model');
         if($exam_pattern=="M"){

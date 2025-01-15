@@ -1643,12 +1643,15 @@ class Center extends CI_Controller {
 		}else{
 			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
 		}
+		$classes = $this->Common_model->getRecordByWhere('class_master',array('admit_card_permission'=>'Y'));
+		$ids = array_column($classes, 'id');
 		$where = array(	
 			//'center_id' => $center_id,
 			'roll_no!=' => 0,
 			'exam_form' => 'Y',
 			'exam_year' => 'Dec 2024'
 		);
+		$this->db->where_in('class_id',$ids);
 		$this->db->order_by('course_group_id,class_id');
         // $this->db->where_not_in('student_id', array(188428,686377,375381));
 		$data['students'] = $this->Common_model->getRecordByWhere('backlog_student',$where);
