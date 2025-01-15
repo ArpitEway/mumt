@@ -1636,6 +1636,8 @@ class Center extends CI_Controller {
 			redirect(base_url());
 		}
 		$titleData = array('title' => 'Admit Card Backlog Student List 2025' );
+		$classes = $this->Common_model->getRecordByWhere('class_master',array('admit_card_permission'=>'Y'));
+		$ids = array_column($classes, 'id');
 		$this->load->view('Centers/header',$titleData);
 		//$center_id =  $this->session->center_id;
 		if ($this->session->center_id!=13) {
@@ -1643,8 +1645,7 @@ class Center extends CI_Controller {
 		}else{
 			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
 		}
-		$classes = $this->Common_model->getRecordByWhere('class_master',array('admit_card_permission'=>'Y'));
-		$ids = array_column($classes, 'id');
+		
 		$where = array(	
 			//'center_id' => $center_id,
 			'roll_no!=' => 0,
