@@ -37,7 +37,7 @@
 					 
 					 //'exam_form_permission' => 'Y'
 					// $this->db->where_not_in('id',array(268,264,270));
-					//$this->db->where_in('id',array(104));
+					$this->db->where_in('id',array(154,172,181));
 					$classData = $this->Common_model->getRecordByWhere('class_master',$whereclass);
 					$j=0;
 					foreach ($classData as $class) {
