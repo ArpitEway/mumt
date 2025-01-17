@@ -79,7 +79,7 @@
 						$query_reg = $this->db->query($sql_reg);
 						$count_reg = $query_reg->result_array();
 
-						$sql_back_reg="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."' AND exam_year='Dec 2024'  AND exam_form!='D' AND `e`.`status`='B' and mode='REG'";    
+						$sql_back_reg="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` AND `s`.`id` = `e`.`backlog_student_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."' AND exam_year='Dec 2024'  AND exam_form!='D' AND `e`.`status`='B' and mode='REG'";    
 						$query_back_reg = $this->db->query($sql_back_reg);
 						$count_back_reg = $query_back_reg->result_array();
 						
@@ -100,7 +100,7 @@
 						// $sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` WHERE `e`.`paper_code` = '".$data->paper_code."' AND `s`.`class_id` = '".$data->class_id."' and university_mode='PVT' AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2023' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2024' AND `s`.`class_name` = 'I SEM' ));";    
 						// $query = $this->db->query($sql);
 						// $count = $query->result_array();
-						// $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."' AND exam_year='June 2024'  AND exam_form!='D' AND `e`.`status`='B' and mode='PVT'";    
+						// $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` AND `s`.`id` = `e`.`backlog_student_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."' AND exam_year='June 2024'  AND exam_form!='D' AND `e`.`status`='B' and mode='PVT'";    
 						// $query_back = $this->db->query($sql_back);
 						// $count_back = $query_back->result_array();
 
@@ -163,7 +163,7 @@
 					$query_reg = $this->db->query($sql_reg);
 					$count_reg = $query_reg->result_array();
 
-					 $sql_back_reg="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."'  AND exam_year='Dec 2024' AND exam_form!='D'  AND `e`.`status`='B' and mode='REG'";    
+					 $sql_back_reg="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` AND `s`.`id` = `e`.`backlog_student_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."'  AND exam_year='Dec 2024' AND exam_form!='D'  AND `e`.`status`='B' and mode='REG'";    
 					 $query_back_reg = $this->db->query($sql_back_reg);
 					 $count_backlog_reg = $query_back_reg->result_array();
 				
@@ -179,7 +179,7 @@
 					// $sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."' and university_mode='PVT'  AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2023' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2024' AND `s`.`class_name` = 'I SEM' ));";    
 					// $query = $this->db->query($sql);
 					// $count = $query->result_array();
-					//  $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."'  AND exam_year='Dec 2024' AND exam_form!='D'  AND `e`.`status`='B' and mode='PVT'";    
+					//  $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` AND `s`.`id` = `e`.`backlog_student_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."'  AND exam_year='Dec 2024' AND exam_form!='D'  AND `e`.`status`='B' and mode='PVT'";    
 					//  $query_back = $this->db->query($sql_back);
 					//  $count_backlog = $query_back->result_array();
 					// //I Year
