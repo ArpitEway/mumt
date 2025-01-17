@@ -107,7 +107,7 @@ foreach($elist as $row)
                     // if($paperData[0]["exam_shift"]=='Afternoon'){echo "03:00 PM To 06:00 PM"; }
                     if($paperData[0]["exam_shift"]=='Afternoon' && in_array($paperData[0]['class_id'],$class_ids))
                         { echo "02:00 PM To 05:00 PM"; }  
-                    else
+                    elseif($paperData[0]["exam_shift"]=='Afternoon') 
                         { echo "12:00 PM To 03:00 PM"; } 
 
                       ?> 
