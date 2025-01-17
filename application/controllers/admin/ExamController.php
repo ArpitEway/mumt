@@ -1414,7 +1414,7 @@ class ExamController extends CI_Controller {
 	public function getEnvelope(){
 		$test_id = $this->input->post('test_id');
 		$multiple = $this->input->post('multiple');
-		$data['examSession'] = 'June 2024';
+		$data['examSession'] = 'January 2025';
 		$this->db->select('*');
 		$this->db->from('exam_center');
 		//$this->db->where('examcentercode','MDE034');
