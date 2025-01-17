@@ -3567,12 +3567,13 @@ public function getStudentData()
 		}else
 		{
 		$data = array();
-		$data['title'] = "Exam Center Wise Max Student count June 2024";
+		$data['title'] = "Exam Center Wise Max Student count Jan 2025";
 		$csrf = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
 		);
 		$this->db->order_by('examcentercode');
+		$this->db->where_in('id',array(167,169));
 		$data['examCenters'] = $this->db->get_where('exam_center', array())->result_array();
 		$this->load->view('header',$data);
 		$this->load->view('admin/exam_center/exam_center_billing_report',$csrf);
