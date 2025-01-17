@@ -40,13 +40,14 @@ class Gradesheet_old_model extends CI_Model
         $this->db->order_by('sub_group_id');
 		$std  = $this->Common_model->getRecordByWhere('old_result_data',array('class_id'=> $class_id,'student_id'=>$student_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
-		
+		$student = $this->Common_model->getRecordById('student','student_id',$student_id);
+		$exam_year = explode(' ',$student->session);
 		// echo $std[0]->sub_group_id;die;
 		if($std[0]->sub_group_id == 1){
 			$papers = $this->Common_model->get_all_old_papers($student_id,$class_id,$exam_data_id);
             // print_r($papers);
 		}
-		if($this->classData->class_group == 'Y' || $class_id ==101){
+		if($this->classData->class_group == 'Y' || (in_array($exam_year[1],array(2021,2022)) && $class_id == 101)){
 		$papers_list = $this->Common_model->get_all_old_group_papers($student_id,$class_id,$exam_data_id,$course_group_id);
 		}
 		// get_all_group_papers
@@ -147,12 +148,14 @@ class Gradesheet_old_model extends CI_Model
 		$this->db->order_by('sub_group_id');
 		$std  = $this->Common_model->getRecordByWhere('old_result_data',array('class_id'=> $class_id,'student_id'=>$student_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
-		
+		$student = $this->Common_model->getRecordById('student','student_id',$student_id);
+		$exam_year = explode(' ',$student->session);
 		
 		if($std[0]->sub_group_id == 1){
 			$papers = $this->Common_model->get_all_old_papers($student_id,$class_id,$exam_data_id);
 		}
-		if($this->classData->class_group == 'Y' || $class_id ==101){
+		// echo count($papers);die;
+		if($this->classData->class_group == 'Y' || (in_array($exam_year[1],array(2021,2022)) && $class_id == 101)){
 		$papers_list = $this->Common_model->get_all_old_group_papers($student_id,$class_id,$exam_data_id,$course_group_id);
 		}
 		// get_all_group_papers
@@ -1178,14 +1181,15 @@ class Gradesheet_old_model extends CI_Model
         $this->db->order_by('sub_group_id');
 		$std  = $this->Common_model->getRecordByWhere('old_result_data',array('class_id'=> $class_id,'student_id'=>$student_id, 'exam_data_id'=>$id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
-		
+		$student = $this->Common_model->getRecordById('student','student_id',$student_id);
+		$exam_year = explode(' ',$student->session);
 		// echo $std[0]->sub_group_id;die;
         // echo $this->classData->class_group;die;
 		if($std[0]->sub_group_id == 1){
 			$papers = $this->Common_model->get_all_old_papers($student_id,$class_id,$id);
             // print_r($papers);
 		}
-		if($this->classData->class_group == 'Y' || $class_id == 101){
+		if($this->classData->class_group == 'Y' || (in_array($exam_year[1],array(2021,2022)) && $class_id == 101)){
 		$papers_list = $this->Common_model->get_all_old_group_papers($student_id,$class_id,$id);
 		}
 	
@@ -1307,12 +1311,13 @@ class Gradesheet_old_model extends CI_Model
 		$this->db->order_by('sub_group_id');
 		$std  = $this->Common_model->getRecordByWhere('old_result_data',array('class_id'=> $class_id,'student_id'=>$student_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
-		
+		$student = $this->Common_model->getRecordById('student','student_id',$student_id);
+		$exam_year = explode(' ',$student->session);
 	
 		if($std[0]->sub_group_id == 1){
 			$papers = $this->Common_model->get_all_old_papers($student_id,$class_id,$exam_data_id);
 		}
-		if($this->classData->class_group == 'Y' || $class_id ==101){
+		if($this->classData->class_group == 'Y' || (in_array($exam_year[1],array(2021,2022)) && $class_id == 101)){
 		$papers_list = $this->Common_model->get_all_old_group_papers($student_id,$class_id,$exam_data_id,$course_group_id);
 		}
 		// get_all_group_papers
