@@ -25,19 +25,23 @@ $page_break = 'break';
 foreach($elist as $row)
 {
      
-      $sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`examcentercode`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paperData[0]['paper_code']."' AND `s`.`class_id` = '".$paperData[0]['class_id']."' AND   `s`.`exam_center_id` = '".$row->id."'   AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2023' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2024' AND `s`.`class_name` = 'I SEM' )) AND `s`.payment_status='Y'";    
+      $sql="SELECT count(*) as cnt FROM `new_exam_form_test` as `e` JOIN `student_test` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`examcentercode`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paperData[0]['paper_code']."' AND `s`.`class_id` = '".$paperData[0]['class_id']."' AND   `s`.`exam_center_id` = '".$row->id."'   AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2024' AND `s`.`class_name` = 'I SEM' )) ";    
+
+      // ( `s`.`session` = 'July 2023' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2024' AND `s`.`class_name` = 'I SEM' )
+      // AND `s`.payment_status='Y'
     //   AND s.class_id not in (163,175,153,155,182,299,161,216,214,159,154,158,181,172,160,152)
     $query = $this->db->query($sql);
     $count = $query->result_array();
 
     //back 
-    $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id`  AND s.id=e.backlog_student_id WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paperData[0]['paper_code']."' AND `s`.`class_id` = '".$paperData[0]['class_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form!='D' AND `e`.`status`='B'  AND s.exam_year='June 2024'";    
+    $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form_test` as `e` JOIN `backlog_student_test` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id`  AND s.id=e.backlog_student_id WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paperData[0]['paper_code']."' AND `s`.`class_id` = '".$paperData[0]['class_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form!='D' AND `e`.`status`='B'  AND s.exam_year='Dec 2024'";    
     // AND s.class_id not in (163,175,153,155,182,299,161,216,214,159,154,158,181,172,160,152)
     $query_back = $this->db->query($sql_back);
     $count_backlog = $query_back->result_array();
     
    
-        $qu="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paperData[0]['paper_code']."' AND `p`.`class_id` = '".$paperData[0]['class_id']."' AND `s`.`examcentercode`='".$row->examcentercode."' AND   `s`.`exam_center_id` = '".$row->id."'  AND temp_exam_form='N'  AND `s`.payment_status='Y'";
+        $qu="SELECT count(*) as num FROM `student_test` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paperData[0]['paper_code']."' AND `p`.`class_id` = '".$paperData[0]['class_id']."' AND `s`.`examcentercode`='".$row->examcentercode."' AND   `s`.`exam_center_id` = '".$row->id."'  AND temp_exam_form='N' ";
+        //  AND `s`.payment_status='Y'
         //and `session` = 'July 2022' AND `s` .`class_name` = 'I Year' 
         // AND s.class_id not in (163,175,153,155,182,299,161,216,214,159,154,158,181,172,160,152)
     $query = $this->db->query($qu);
@@ -97,9 +101,16 @@ foreach($elist as $row)
             <td><?= $paperData[0]['exam_shift'] ?></td>
             <td><strong>Time</strong></td>
             <td><?php  
+                     $class_ids=array(154,172,181,213);
                     if($paperData[0]["exam_shift"]=='Early Morning'){echo "07:00 AM To 10:00 AM";} 
-                    if($paperData[0]["exam_shift"]=='Morning'){echo "11:00 AM To 02:00 PM";}
-                    if($paperData[0]["exam_shift"]=='Afternoon'){echo "03:00 PM To 06:00 PM"; }  ?> 
+                    if($paperData[0]["exam_shift"]=='Morning'){echo "10:00 AM To 01:00 PM";}
+                    // if($paperData[0]["exam_shift"]=='Afternoon'){echo "03:00 PM To 06:00 PM"; }
+                    if($paperData[0]["exam_shift"]=='Afternoon' && in_array($paperData[0]['class_id'],$class_ids))
+                        { echo "02:00 PM To 05:00 PM"; }  
+                    else
+                        { echo "12:00 PM To 03:00 PM"; } 
+
+                      ?> 
             </td> </tr> <tr>
             <td><strong>Paper Used</strong></td>
             <td colspan="3">&nbsp;</td>
