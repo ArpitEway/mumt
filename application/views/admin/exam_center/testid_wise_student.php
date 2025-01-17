@@ -78,6 +78,7 @@
 						// ( `s`.`session` = 'July 2023' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2024' AND `s`.`class_name` = 'I SEM' )
 						$query_reg = $this->db->query($sql_reg);
 						$count_reg = $query_reg->result_array();
+
 						$sql_back_reg="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."' AND exam_year='Dec 2024'  AND exam_form!='D' AND `e`.`status`='B' and mode='REG'";    
 						$query_back_reg = $this->db->query($sql_back_reg);
 						$count_back_reg = $query_back_reg->result_array();
@@ -136,11 +137,13 @@
 						<td><?php echo $allcounter_reg; ?></td>
 						<td><?php echo $counter_reg+$allcounter_reg+$back_counter_reg; ?></td>
 						<!-- *********** Regular End **************** -->
+
 						<td><?php echo $paper_code_count; ?></td>
                 	    <td><?php echo $counter; ?></td>
 						<td><?php echo $back_counter; ?></td>
 						<td><?php echo $allcounter; ?></td>
 						<td><?php echo $counter+$allcounter+$back_counter; ?></td>
+
 					</tr>
 				
 			
@@ -150,46 +153,16 @@
 				else{
 					//$data=$row;
 					$class=$this->Common_model->getRecordByWhere('class_master',array("id"=>$row->class_id));
-                
-// 					$where= array(
-// 					   'e.paper_code'=>$row->paper_code,
-// 						//'s.pattern'=>'NEW' ,
-// 						's.new_exam_form!='=>'D' ,
-// 						's.class_id'=>$row->class_id,
-						
-// 					);
-// 					$tag='count(*) as cnt';
-// 					$table="new_exam_form  as e";
-// 					$join_table='student as s';
-// 					$join_on='e.student_id = s.student_id AND s.class_id = e.class_id';
-// 					$count= $this->Common_model->get_count_join_table($tag,$table,$where,$join_table,$join_on);
-					
-					// $this->db->select('count(*) as cnt');	
-					// $this->db->from('new_exam_form  as e'); 
-					// $this->db->join('student as s', 'e.student_id = s.student_id AND s.class_id = e.class_id');
-					// $this->db->where('e.paper_code',$row->paper_code);
-					// $this->db->where('s.class_id',$row->class_id);
-					
-					// $this->db->group_start();
-					// $this->db->or_where('s.session=',"July 2021");
-					// $this->db->where("s.class_name=","I Year");
-					// $this->db->group_end();
-					
-					// $this->db->group_start();
-					// $this->db->or_where('s.session=',"Jan 2022");
-					// $this->db->where("s.class_name=","I SEM");
-					// $this->db->group_end();
-					// //$this->db->or_where('s.session=',"July 2021");
-					// //$this->db->or_where('s.session=',"Jan 2022");
-					// //$this->db->or_where('s.class_name=',"I Year");
-					// $count = $this->db->get()->result_array();
-
+ 
 					/*********** Regular Start ****************/
 
 					$sql_reg="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."' and university_mode='REG'  AND (new_exam_form!='D' OR  ( `s`.`session` = 'July 2024' AND `s`.`class_name` = 'I SEM' ))";
+
 					// ( `s`.`session` = 'July 2023' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2024' AND `s`.`class_name` = 'I SEM' )    
+					
 					$query_reg = $this->db->query($sql_reg);
 					$count_reg = $query_reg->result_array();
+
 					 $sql_back_reg="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."'  AND exam_year='Dec 2024' AND exam_form!='D'  AND `e`.`status`='B' and mode='REG'";    
 					 $query_back_reg = $this->db->query($sql_back_reg);
 					 $count_backlog_reg = $query_back_reg->result_array();
