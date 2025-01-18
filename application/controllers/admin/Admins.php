@@ -5998,7 +5998,7 @@ public function forward_complaint(){
 		}
 		$this->db->select('count(*) as cnt ,student.name,backlog_student.roll_no,student.course_name,backlog_student.class_id  , backlog_student.center_code,backlog_student.course_group_id,backlog_student.student_id');
 		$this->db->from('backlog_exam_form');
-		$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id');
+		$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id and backlog_exam_form.backlog_student_id=backlog_student.id');
 		$this->db->join('student', 'student.student_id = backlog_student.student_id');
 		$this->db->where('backlog_student.exam_form','Y'); 
 		$this->db->where('backlog_student.exam_year','June 2024'); 
