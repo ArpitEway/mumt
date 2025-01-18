@@ -1405,7 +1405,7 @@ class ExamController extends CI_Controller {
 			$this->db->order_by("test_id", "asc");
 			$data['list'] = $this->db->get()->result();
 			$data['multiple']=true;
-			$titleData = array('title' => 'Envelope Cover Page Mutiple Testid'); 
+			$titleData = array('title' => 'Envelope Cover Page Multiple Testid'); 
 			$this->load->view('header',$titleData);
 			$this->load->view('admin/exam_center/envelope_cover_page',$data);
 			$this->load->view('footer');
