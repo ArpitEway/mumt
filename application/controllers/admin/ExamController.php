@@ -1393,6 +1393,7 @@ class ExamController extends CI_Controller {
 			$this->db->where('type','Theory');
 			// $this->db->where_not_in('class_id',array(264,268,270));
 			$this->db->where_in('class_id',array(155,182,193,195,197,199,201,203,205,207,209,211,213,302,275,279,221,223,225,227));
+			$this->db->where_in('class_id',array(213));
 			//$this->db->where_in('class_id',array(154,155,181,182));
 			$this->db->where('test_id!=','');
 			$this->db->where('exam_date!=','0000-00-00');
