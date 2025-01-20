@@ -34,7 +34,8 @@
 							'exam_year'=>'Dec 2024'
 							
 						);
-						$this->db->where_in('class_id',array(154,172,181,155,182,193,195,197,199,201,203,205,207,209,211,213,302,275,279,221,223,225,227));						
+						// $this->db->where_in('class_id',array(154,172,181,155,182,193,195,197,199,201,203,205,207,209,211,213,302,275,279,221,223,225,227));		
+						$this->db->where_in('class_id',array(217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253));				
 						$students = $this->Common_model->getRecordByWhereByOrder('backlog_student',$where,'center_id,center_code,class_id,course_group_id','ASC');
 						$whereRollNo = "exam_form = 'Y' and roll_no !='0' and exam_year = 'Dec 2024'";
 						$countData = $this->db->query("Select max(substr(`roll_no`, 3, 6)) as afterRemove from backlog_student WHERE $whereRollNo")->row();
