@@ -18,7 +18,7 @@
         ?>
 		<tr>
 			<th><?=$i++?></th>
-			<th colspan="6"><?=$course['course_name']?></th>
+			<th colspan="7"><?=$course['course_name']?></th>
            
 		</tr>
         <?php foreach($classes as $class) { 
@@ -121,7 +121,7 @@
                 if($class->private_class=='Y') { echo $flag; ?>
 					 <a href="<?php echo base_url("admin/admins/backlog_student_marksheet")."/PVT/".$course['id']."/".$class->id; ?>"><?= $marksheet?>Private</a>
 					  <?php 
-                        if(in_array($class->id , [104,107,134])){
+                        if(in_array($class->id , [104,107,134,105,108,135])){
                             ?>
                              /<a href="<?php echo base_url("admin/admins/backlog_student_marksheet_grade")."/PVT/".$course['id']."/".$class->id; ?>"><?= $marksheet?>Private Grade</a>
                             <?php
@@ -129,6 +129,20 @@
                     }  ?>
 			</td>
 			<td ><a target="_blank" href="<?php echo  base_url('admin/admins/withheld_backlog_student_list/'.$course['id'].'/'.$class->id)  ?>">Withheld Result (WH)</a></td>
+			<td>
+			<?php
+			if($class->regular_class=='Y') { ?>
+			
+				<a target="_blank" href="<?php echo  base_url('admin/admins/backlog_student_previous_fail/REG/'.$course_id.'/'.$class_id)  ?>">Previous Fail REG</a>
+				<?php }
+			if($class->private_class=='Y') { echo $flag;
+				?>
+				<a target="_blank" href="<?php echo  base_url('admin/admins/backlog_student_previous_fail/PVT/'.$course_id.'/'.$class_id)  ?>">Previous Fail PVT</a>
+				<?php
+			}
+				?>
+		</td>
+			
 		</tr>
         <?php } ; }  ?>
 	</tbody>
