@@ -1367,7 +1367,9 @@ class ExamController extends CI_Controller {
 			// $this->db->where_not_in('class_id',array(264,268,270));
 			// $this->db->where_in('class_id',array(155,182,193,195,197,199,201,203,205,207,209,211,213,302,275,279,221,223,225,227));
 			$this->db->where_in('class_id',array(217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253));
-				// $this->db->where_in('class_id',array(213));
+			$this->db->where_in('class_id',array(243,215,231,239,237,235,253,277,251,233,245));
+			
+			// $this->db->where_in('class_id',array(213));
 			// $this->db->where_in('test_id',array(5001,6395));
 			$this->db->where('exam_date!=','0000-00-00');
 			// $this->db->where('exam_date!=','');
@@ -1395,7 +1397,9 @@ class ExamController extends CI_Controller {
 			$this->db->where('type','Theory');
 			// $this->db->where_not_in('class_id',array(264,268,270));
 			// $this->db->where_in('class_id',array(155,182,193,195,197,199,201,203,205,207,209,211,213,302,275,279,221,223,225,227));
-			$this->db->where_in('class_id',array(217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253));
+			// $this->db->where_in('class_id',array(217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253));
+			$this->db->where_in('class_id',array(243,215,231,239,237,235,253,277,251,233,245));
+			
 			// $this->db->where_in('class_id',array(213));
 			//$this->db->where_in('class_id',array(154,155,181,182));
 			$this->db->where('test_id!=','');
