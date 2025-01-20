@@ -3569,6 +3569,7 @@ public function update_exam_datewise_permission(){
             $this->db->join('student as st','st.student_id=bs.student_id');
             $this->db->where(array("bs.course_group_id"=>$course_id ,'bs.class_id' => $class_id,'bs.exam_form'=>'Y','bs.roll_no!='=>'0','mode'=>$mode,'bs.result_show'=>'Y','st.exam_pattern'=>"GRADE",'bs.exam_year'=>'June 2024' ));
             $data['students']=  $this->db->get()->result();
+			
 			// $this->db->limit(1);
 			//  $this->db->where('student_id = "721275"');
 		// $data['students']= $this->Common_model->getRecordByWhere('backlog_student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'exam_form'=>'Y','roll_no!='=>'0','mode'=>$mode));
@@ -6203,7 +6204,7 @@ public function forward_complaint(){
 		$this->db->order_by('roll_number','ASC');
 		$data['mode']= $mode;
 		
-		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y' ,'roll_number!='=>'0', 'university_mode'=>$mode,'old_result_show'=>'Y'));//'result_show'=>'Y'
+		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y' ,'roll_number!='=>'0', 'university_mode'=>$mode,'old_result_show'=>'Y', 'exam_pattern'=>'GRADE'));//'result_show'=>'Y'
         //  $this->Common_model->last_query();
 		$data['title'] = "Remaining Marksheet ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		
@@ -6214,6 +6215,55 @@ public function forward_complaint(){
         $this->load->view('admin/student_previous_fail', $data);
         $this->load->view('footer');
 		
+	}
+
+	public function backlog_student_previous_fail($mode = "",$course_id="",$class_id=""){
+		
+		$course_id = $this->Common_model->encrypt_decrypt($course_id,'decrypt');
+		$class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
+		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
+		$this->db->order_by('roll_no','ASC');
+		$data['mode']= $mode;
+
+		$this->db->select('bs.*, st.course_name, st.exam_pattern');
+		$this->db->from('backlog_student as bs');
+		$this->db->join('student as st', 'st.student_id = bs.student_id');
+		$this->db->where(array('st.exam_pattern'=>'GRADE',"bs.course_group_id"=>$course_id ,'bs.class_id' => $class_id,'bs.exam_form'=>'Y' ,'bs.roll_no!='=>'0', 'bs.mode'=>$mode,'bs.result_show'=>'Y','bs.exam_year'=>'June 2024'));
+		$data['students']=  $this->db->get()->result();
+		
+		//'result_show'=>'Y'
+        //  $this->Common_model->last_query();
+		$data['title'] = "Remaining Marksheet ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
+		
+        $data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();
+
+		$this->load->view('header',$data);
+        $this->load->view('admin/backlog_student_previous_fail', $data);
+        $this->load->view('footer');
+		
+	}
+
+	public function remove_backlog_student_result_permission_previous(){
+		
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}
+		if($_POST['not_permitted']){
+			$student_ids = (implode(',',$_POST['not_permitted']));
+			$data = array('result_show' => 'Y');
+			$where = 'student_id in ('.$student_ids.')';
+			$update =$this->Common_model->updateRecordByConditions('backlog_student',$where,$data);
+		}else{
+			$student_ids = (implode(',',$_POST['permitted']));
+			$data = array('result_show' => 'N');
+			$where ='student_id in ('.$student_ids.')';
+			$update = 	$this->Common_model->updateRecordByConditions('backlog_student',$where,$data);
+		}  
+		if($update){
+			redirect(base_url().'admin/Admins/backlog_student_previous_fail/'.$_POST['mode'].'/'. $this->Common_model->encrypt_decrypt($_POST['course_group_id']).'/'. $this->Common_model->encrypt_decrypt($_POST['class_id']));
+		}
 	}
 
 	public function update_late_exam_fees()

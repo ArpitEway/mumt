@@ -112,9 +112,9 @@
 			if((in_array($student->class_id, $class_ids)) && $pattern=='GRADE')	
 			{
 			if($marks->type=="theory" ){
-				$theory_paper_count++;
+				
 				if($marks->sub_group_id == 1){
-					
+				
 					if($marks->group_paper_name == 'FC1' ){
 					  if($marks->theory_marks==''){
 						$rw_count++;
@@ -123,7 +123,7 @@
                       if($marks->theory_marks==''){
 						$Withheld = true;
 					    }
-					  if($marks->theory_marks=='ABS'){
+					  if($marks->theory_marks=='ABS' && $marks->status == 'B'){
 						$fc1_abs .= $marks->theory_marks;
 					 
 					  }
@@ -138,7 +138,7 @@
                       if($marks->theory_marks==''){
 						$Withheld = true;
 					    }
-					  if($marks->theory_marks=='ABS'){
+					  if($marks->theory_marks=='ABS' && $marks->status == 'B'){
 						$fc2_abs .= $marks->theory_marks;
 					 
 					  }
@@ -148,6 +148,9 @@
 					}
 					
 				  }else{
+					if($marks->status == 'B'){
+						$theory_paper_count++;
+						}
 					if($classData->internal!="N"){
 						$total_obtained_marks +=$marks->theory_marks+$marks->int_marks;
 						$total_max_marks +=$marks->max_theory_marks+$marks->max_internal_marks;
@@ -159,7 +162,7 @@
 						$Withheld = true;
 					}
 					
-					if($marks->theory_marks=="ABS" ){
+					if($marks->theory_marks=="ABS" && $marks->status == 'B'){
 						$theory_abs_count++;
 						$abs_count++;
 						array_push( $ATKT_paper_codes,$marks->paper_code );
@@ -301,9 +304,11 @@
 		// $count_theory +=  $fc1+$fc2;
 		if($fc1_abs === 'ABSABS'){
 			$theory_abs_count++;
+			$theory_paper_count++;
 		   }
 		   if($fc2_abs === 'ABSABS'){
 			$theory_abs_count++;
+			$theory_paper_count++;
 		   }
 	   
 		if($fc1 < $fc1_min ){
