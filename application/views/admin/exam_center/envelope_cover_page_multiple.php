@@ -42,7 +42,7 @@ foreach($elist as $row)
         //  echo "<br>1 ".$count[0]->cnt;
          // echo $this->db->last_query();
 
-          $sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`examcentercode`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paper['paper_code']."' AND `s`.`class_id` = '".$paper['class_id']."' AND s.course_group_id= '".$paper['course_group_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND new_exam_form='Y' ) ";  
+          $sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`examcentercode`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paper['paper_code']."' AND `s`.`class_id` = '".$paper['class_id']."' AND s.course_group_id= '".$paper['course_group_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND new_exam_form='Y'";  
 
           // $sql="SELECT count(*) as cnt FROM `new_exam_form_report` as `e` JOIN `student_report` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`examcentercode`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paper['paper_code']."' AND `s`.`class_id` = '".$paper['class_id']."' AND s.course_group_id= '".$paper['course_group_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2024' AND `s`.`class_name` = 'I SEM' )) ";   
 
