@@ -3327,9 +3327,10 @@ public function update_exam_datewise_permission(){
 	}
 
 	public function backlog_tr_class_list(){
-		$where = "id in (select distinct(course_group_id) from backlog_student where exam_form = 'Y' and exam_year='June 2024' and class_id in (104,105,107,108,134,135,137,171,183,283,285,286,287,288,289,291,292,293,294,295,296,297,298) )";
+		$where = "id in (select distinct(course_group_id) from backlog_student where exam_form = 'Y' and exam_year='June 2024'  )";
 		// new_exam_form = 'Y' or student_result_aug_22
 		// and class_id in (101,104,105,108,110,119,125,126,128,131,137,154,155,168,175,177,181,182,191,198,204,206,208,246,214,276,224,250,226,252,228,262,273) 
+		// and class_id in (104,105,107,108,134,135,137,171,183,283,285,286,287,288,289,291,292,293,294,295,296,297,298)
 		
 		$data['courses'] = $this->Common_model->get_record('course_group','*',$where);
 		$this->load->view('header',array('title' => 'Backlog Class List'));
