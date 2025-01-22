@@ -6192,7 +6192,7 @@ public function forward_complaint(){
 			$update = 	$this->Common_model->updateRecordByConditions('student',$where,$data);
 		}  
 		if($update){
-			redirect(base_url().'admin/Admins/student_previous_fail/REG/'. $this->Common_model->encrypt_decrypt($_POST['course_group_id']).'/'. $this->Common_model->encrypt_decrypt($_POST['class_id']));
+			redirect(base_url().'admin/Admins/student_previous_fail/'.$_POST['mode'].'/'. $this->Common_model->encrypt_decrypt($_POST['course_group_id']).'/'. $this->Common_model->encrypt_decrypt($_POST['class_id']));
 		}
 	}
 
