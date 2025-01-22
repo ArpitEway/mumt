@@ -160,7 +160,7 @@
             <td><a target="_blank" href="<?php echo  base_url('admin/admins/student_previous_fail/REG/'.$course_id.'/'.$class_id)  ?>">Previous Fail REG</a>
 					<?php
 					if($class->private_class=='Y') { echo $flag; ?>
-						<a href="<?php echo base_url("admin/admins/student_previous_fail")."/PVT/".$course_id."/".$class->id; ?>"><?= $previous_fail?> Private</a>
+						<a href="<?php echo base_url("admin/admins/student_previous_fail")."/PVT/".$course_id."/".$class_id; ?>"><?= $previous_fail?> Private</a>
 						 <?php } 
 					?>
 		</td>
