@@ -641,7 +641,10 @@
 			}elseif(($theory_paper_count-2)==$theory_abs_count){
 				echo 'Year Break';
 			}else{
-				if($fail_count == $theory_paper_count){
+				$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136);
+				if(in_array($student->old_class_id,$class_ids) && $fail_count == ($theory_paper_count -2)){
+					echo 'Year Break';
+				}elseif($fail_count == $theory_paper_count){
 					echo 'Year Break';
 				}else{
 					if($require_grace_marks>=4 || $abs_count!=0 ){
