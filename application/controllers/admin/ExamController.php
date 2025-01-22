@@ -1550,7 +1550,7 @@ class ExamController extends CI_Controller {
 
 		$where="";
 		if($exam_center!='All')
-			$where.=" AND `student_report`.`exam_center_id` = '".$exam_center."' ";
+			$where.=" AND `student`.`exam_center_id` = '".$exam_center."' ";
 		if($exam_date!='All')	{
 			$edate=date("Y-m-d", strtotime($exam_date));
 			$where.=" AND paper_master.exam_date = '".$edate."' ";
