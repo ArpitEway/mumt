@@ -1425,8 +1425,8 @@ class ExamController extends CI_Controller {
 		$data['examSession'] = 'January 2025';
 		$this->db->select('*');
 		$this->db->from('exam_center');
-		$this->db->where('examcentercode','MDE165');
-		// $this->db->where_in('examcentercode',array('MDE163','MDE165'));
+		//$this->db->where('examcentercode','MDE165');
+		 $this->db->where_in('examcentercode',array('MDE163','MDE165'));
 		$this->db->order_by("exam_center.examcentercode", "asc");
 		$data['elist'] = $this->db->get()->result();//echo $this->db->last_query(); die;
 		if($multiple){
@@ -1495,8 +1495,8 @@ class ExamController extends CI_Controller {
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('*');
 			$this->db->from('exam_center');
-			// $this->db->where_in('examcentercode',array('MDE163','MDE165'));
-			$this->db->where('examcentercode','MDE165');
+			$this->db->where_in('examcentercode',array('MDE163','MDE165'));
+			//$this->db->where('examcentercode','MDE165');
 			$this->db->order_by('examcentercode', "asc");
 			$data['exam_centers'] = $this->db->get()->result();
 			$this->db->select('*');
