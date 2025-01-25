@@ -1891,9 +1891,9 @@ class ExamController extends CI_Controller {
 			$this->db->where('new_exam_form.class_id',$_POST['class_id']);
 			$this->db->where('student.exam_center_id!=',0);
 			//$this->db->where('student.'.$this->exam_form.'','Y');
+			//$this->db->where('student.'.$this->roll_no.'!=',0);
 			$this->db->where('student.new_exam_form','Y');
 			$this->db->where('student.roll_no!=',0);
-			//$this->db->where('student.'.$this->roll_no.'!=',0);
 			$this->db->where('student.university_mode',$_POST['university_mode']);
 			$this->db->order_by('student.examcentercode');
 			$data['examcenters'] = $this->db->get()->result();
@@ -1960,11 +1960,13 @@ class ExamController extends CI_Controller {
 				$this->db->where('new_exam_form.course_group_id',$_POST['course_group_id']);
 				$this->db->where('new_exam_form.class_id',$_POST['class_id']);
 				$this->db->where('student.exam_center_id',$exam_center_id);
+				$this->db->where('student.university_mode',$_POST['university_mode']);
+
 			//	$this->db->where('student.'.$this->roll_no.'!=',0);
 			//	$this->db->where('student.'.$this->exam_form.'','Y');
 				$this->db->where('student.roll_no!=',0);
 				$this->db->where('student.new_exam_form','Y');
-				$this->db->where('student.university_mode',$_POST['university_mode']);
+				
 			//	$this->db->order_by('student.'.$this->roll_no.'');
 				$this->db->order_by('student.roll_no');
 				$dataArray['students'][$exam_center_id] = $this->db->get()->result();
