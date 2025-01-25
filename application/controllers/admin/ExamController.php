@@ -1876,7 +1876,7 @@ class ExamController extends CI_Controller {
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();	
 		$this->db->order_by('course_group_id');
-		$data['courses'] = $this->Common_model->get_record('backlog_student','DISTINCT (course_group_id)','exam_form="Y" and exam_year="June 2024"');
+		$data['courses'] = $this->Common_model->get_record('backlog_student','DISTINCT (course_group_id)','exam_form="Y" and exam_year="Dec 2024"');
 		$this->load->view('admin/examController/backlog_exam_center_folio',$data);
 		$this->load->view('footer');
 	} 
@@ -1925,7 +1925,7 @@ class ExamController extends CI_Controller {
 			$this->db->where('backlog_exam_form.status','B');
 			$this->db->where('backlog_student.exam_center_id!=',0);
 			$this->db->where('backlog_student.exam_form','Y');
-			$this->db->where('backlog_student.exam_year','June 2024');
+			$this->db->where('backlog_student.exam_year','Dec 2024');
 			$this->db->where('backlog_student.mode',$_POST['university_mode']);
 			$this->db->where('backlog_student.roll_no!=',0);
 			$this->db->order_by('backlog_student.exam_center_code');
@@ -1982,7 +1982,7 @@ class ExamController extends CI_Controller {
 			$this->db->where('exam_date!=',"0000-00-00");	
 			$dataArray['paper']= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'] , 'paper_code'=>$_POST['paper_code']));
 			$dataArray['title'] = 'COUNTERFOIL';
-			$dataArray['examSession']="June 2024";
+			$dataArray['examSession']="January 2025";
 			$this->load->view('admin/examController/show_examcenter_folio',$dataArray);
 		}
 	}
@@ -2003,7 +2003,7 @@ class ExamController extends CI_Controller {
 				$this->db->where('backlog_student.exam_center_id',$exam_center_id);
 				$this->db->where('backlog_student.roll_no!=',0);
 				$this->db->where('backlog_student.exam_form','Y');
-				$this->db->where('backlog_student.exam_year','June 2024');
+				$this->db->where('backlog_student.exam_year','Dec 2024');
 				$this->db->where('backlog_student.mode',$_POST['university_mode']);
 				$this->db->order_by('backlog_student.roll_no');
 				$dataArray['students'][$exam_center_id] = $this->db->get()->result();
@@ -2022,7 +2022,7 @@ class ExamController extends CI_Controller {
 			$this->db->where('exam_date!=',"0000-00-00");	
 			$dataArray['paper']= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'] , 'paper_code'=>$_POST['paper_code']));
 			$dataArray['title'] = 'COUNTERFOIL';
-			$dataArray['examSession']="June 2024";
+			$dataArray['examSession']="January 2025";
 			$this->load->view('admin/examController/backlog_show_examcenter_folio',$dataArray);
 		}
 	}
