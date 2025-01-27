@@ -37,7 +37,7 @@
 					 
 					 //'exam_form_permission' => 'Y'
 					// $this->db->where_not_in('id',array(268,264,270));
-					$this->db->where_in('id',array(154,172,181,155,182,193,195,197,199,201,203,205,207,209,211,213,302,275,279,221,223,225,227));
+					// $this->db->where_in('id',array(154,172,181,155,182,193,195,197,199,201,203,205,207,209,211,213,302,275,279,221,223,225,227));
 					// $this->db->where_in('id',array(217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253));
 					$classData = $this->Common_model->getRecordByWhere('class_master',$whereclass);
 					$j=0;
