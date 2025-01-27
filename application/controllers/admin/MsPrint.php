@@ -73,7 +73,7 @@ class MsPrint extends CI_Controller {
 					$student = $this->Common_model->getRecordById('student','student_id',$text_val);
 				}  
                 // $this->db->where_not_in('class_id', array(127,120,132));
-				$this->db->where_not_in('exam_year',array('June 2024'));
+				//$this->db->where_not_in('exam_year',array('June 2024'));
 				$result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id' =>$student->student_id));
 				$data = array(
 					'result' => $result,
@@ -124,6 +124,7 @@ class MsPrint extends CI_Controller {
 		if ($data['exam_data']->exam_status == "B") { //Backlog
 			if($data['exam_data']->marks_pattern == "GRADE" && in_array($data['class_id'] , $class_ids)){
 				$this->load->model('Gradesheet_old_model');
+				$this->load->model('Gradesheet_model');
 				  $this->load->view('admin/msprint/backlog_student_marksheet_grade',$data);// student_marksheet_grade
 			}elseif ($data['exam_data']->marks_pattern=='GRADE' && $data['exam_data']->university_mode == "REG" &&  $class->cbcs=='Y') {
                 $this->load->model('GradeSheet_old_model_pg');
