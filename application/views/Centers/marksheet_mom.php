@@ -184,8 +184,8 @@ if ($old_fail) {
     ?>
     <tr>
       <th><?php echo $paper_master[0]->paper_name; ?></th>
-      <th class="text-center"><?php  if($marks->paper_type=='Sessional'){ echo $paper_master[0]->max_internal_marks;}else{
-        echo $paper_master[0]->max_theory_marks;
+      <th class="text-center"><?php  if($marks->paper_type !='Sessional'){ echo $paper_master[0]->max_theory_marks;}else{
+        echo '-';
       } ?></th>
       <th class="text-center">
         <?php
@@ -206,18 +206,7 @@ if ($old_fail) {
               $result_1_paper = 'PASS';
             }
           }else if($marks->paper_type=='Sessional'){
-            $total_max_marks +=  $paper_master[0]->max_internal_marks;
-            $total_obtained_marks += $marks->int_marks;
-            if($marks->int_marks<$paper_master[0]->min_internal_marks || $marks->int_marks=="ABS"){
-                echo $marks->int_marks;
-                echo '<span style="color:red">*</span>';
-                $result_1_paper = 'FAIL';
-           
-            }else{
-              echo $marks->int_marks;
-              $result_1_paper = 'PASS';
-            }
-
+            echo ' - ';
           }
           else{
             $total_obtained_marks += $marks->p_marks;
@@ -243,7 +232,10 @@ if ($old_fail) {
       <?php if($marks->course_group_id!=36 && $marks->course_group_id!=37 ){ ?>
       <th class="text-center">
         <?php  
-          if( $marks->paper_type !='theory' && $practical_internal_marks=='N'){
+        if ($marks->paper_type =='Sessional') {
+          echo $paper_master[0]->max_internal_marks;
+
+          }elseif( $marks->paper_type !='theory' && $practical_internal_marks=='N'){
             echo '-';
           }else if($marks->paper_type !='theory' && $practical_internal_marks=='Y'){
             echo $paper_master[0]->max_internal_marks;
@@ -252,7 +244,20 @@ if ($old_fail) {
           } ?>
         </th>
       <th class="text-center"><?php
-        if( $marks->paper_type !='theory' && $practical_internal_marks=='N'){
+        if($marks->paper_type =='Sessional'){
+          $total_max_marks +=  $paper_master[0]->max_internal_marks;
+          $total_obtained_marks += $marks->int_marks;
+          if($marks->int_marks<$paper_master[0]->min_internal_marks || $marks->int_marks=="ABS"){
+              echo $marks->int_marks;
+              echo '<span style="color:red">*</span>';
+              $result_1_paper = 'FAIL';
+         
+          }else{
+            echo $marks->int_marks;
+            $result_1_paper = 'PASS';
+          }
+
+        }elseif( $marks->paper_type !='theory' && $practical_internal_marks=='N'){
           echo '-';
         }elseif($marks->paper_type !='theory' && $practical_internal_marks=='Y') {
           if($marks->int_marks<$paper_master[0]->min_internal_marks || $marks->int_marks=='ABS'){

@@ -53,6 +53,7 @@
                 ?>
             <tr>
                 <input type="hidden" name ="class_id" value = "<?php echo  $student->old_class_id  ?>">
+                <input type="hidden" name ="mode" value = "<?php echo  $student->university_mode  ?>">
                 <input type="hidden" name ="course_group_id" value = "<?php echo  $student->course_group_id  ?>">
                 <td><?= $i++ ?></td>
                 <td><?= $student->center_code ?></td>

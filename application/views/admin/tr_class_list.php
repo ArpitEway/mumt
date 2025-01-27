@@ -41,7 +41,7 @@
 			$notification =($class->regular_class == 'N' && $class->private_class == 'Y')? 'Notification ': '';
 			$marksheet =($class->regular_class == 'N' && $class->private_class == 'Y')? 'Marksheet ': '';
 			$result_permission =($class->regular_class == 'N' && $class->private_class == 'Y')? 'Result permission ': '';
-			
+			$previous_fail =($class->regular_class == 'N' && $class->private_class == 'Y')? 'Previous Fail ': '';
 			if($class->regular_class=='Y') { 
 				
 				?> 
@@ -157,7 +157,13 @@
 					  <?php }  ?>
 			</td>
 			<td><a target="_blank" href="<?php echo  base_url('admin/admins/withheld_student_list/'.$course['id'].'/'.$class->id)  ?>">Withheld Result (WH)</a></td>
-            <td><a target="_blank" href="<?php echo  base_url('admin/admins/student_previous_fail/REG/'.$course_id.'/'.$class_id)  ?>">Previous Fail</a></td>
+            <td><a target="_blank" href="<?php echo  base_url('admin/admins/student_previous_fail/REG/'.$course_id.'/'.$class_id)  ?>">Previous Fail REG</a>
+					<?php
+					if($class->private_class=='Y') { echo $flag; ?>
+						<a href="<?php echo base_url("admin/admins/student_previous_fail")."/PVT/".$course_id."/".$class_id; ?>"><?= $previous_fail?> Private</a>
+						 <?php } 
+					?>
+		</td>
 		</tr>
         <?php } ; }  ?>
 	</tbody>
