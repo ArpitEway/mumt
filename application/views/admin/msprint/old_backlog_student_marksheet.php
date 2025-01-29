@@ -338,7 +338,7 @@
 
                               ?>
                             </span></td>
-                            <td align="left" class="style4"><span class="style2 tdFont" style="padding-left:10px;">
+                            <td align="left"><span class="style4 tdFont" style="padding-left:10px;">
                             <?php
                               if($paper->type=='Sessional'){
                                echo  $paper->int_marks.$status;
