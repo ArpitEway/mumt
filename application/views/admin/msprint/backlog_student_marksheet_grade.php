@@ -183,27 +183,26 @@
                      $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$exam_data->course_group_id));
                     
                     $count = 0;
-                    $count = 0;
                     foreach($classes as $cls){
                        $count++;
                        if($count == 1){ $sno = 'First';}elseif($count == 2){ $sno = 'Second';}elseif($count == 3){ $sno = 'Third';}
-                        if($exam_data->class_id>=$cls->id){
+                        if($cls->id <= $exam_data->class_id){
                             $this->db->order_by('id', 'desc');
-                          //  $this->db->limit(1);
-                            $old = $this->Common_model->getRecordByWhere('old_exam_data',array('class_id'=>$cls->id,'student_id'=>$exam_data->student_id));
-                            
+                            $this->db->limit(1);
+                            $old = $this->Common_model->getRecordByWhere('old_exam_data',array('class_id'=>$cls->id,'student_id'=>$exam_data->student_id,'course_group_id'=>$exam_data->course_group_id,'university_mode'=>$exam_data->university_mode));
+                            $gradeData   = $this->Gradesheet_model->view_old_results($exam_data->student_id,$exam_data->course_group_id,$cls->id,$exam_data->university_mode, $old[0]->id, $old[0]->exam_status);
                               
                           ?>
-                          <tr align="center"><th><?=$sno?></th><td><?= ($gradeData['tot_credit'] == 0)?'':$gradeData['tot_credit']?></td><td><?= ($gradeData['obt_credit'] == 0)?'':$gradeData['obt_credit']?></td><td><?= ($gradeData['credit_point'] == 0)?'':$gradeData['credit_point']?></td><td>
-                            <?php if(is_nan($gradeData['agpa'])){
-                                echo '';
-                            }else{
-                                echo  ($gradeData['result']== 'FAIL' || $gradeData['result']== 'SUPP')?'0.00':number_format((float)$gradeData['agpa'], 2, '.', '');
-                                
-                            }
-                            ?>
-                            </td>
-                          </tr>
+                          <tr align="center"><th><?=$sno?></th><td><?= ($gradeData['tot_credit'] == 0)?'':$gradeData['tot_credit']?></td><td><?php if($gradeData['obt_credit'] == 0 && $gradeData['tot_credit'] !=0) { echo '0'; }elseif($gradeData['obt_credit'] == 0){ echo '';}else{ echo $gradeData['obt_credit'];}?></td><td><?php if ($gradeData['credit_point'] == 0 && $gradeData['tot_credit'] !=0){ echo '0';}elseif($gradeData['credit_point'] == 0){ echo ''; }else { echo $gradeData['credit_point']; }?></td><td>
+                        <?php if(is_nan($gradeData['agpa'])){
+                            echo '';
+                        }else{
+                           echo  ($gradeData['result']== 'FAIL' || $gradeData['result']== 'SUPP')?'0.00':number_format((float)$gradeData['agpa'], 2, '.', '');
+                           
+                        }
+                        ?>
+                        </td>
+                     </tr>
                           <?php
                             }
                        else{
