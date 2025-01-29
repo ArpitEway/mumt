@@ -43,8 +43,8 @@
                 <td><?= $students->st_female?></td>
                 <td><?= $students->st_male?></td>
                 <td><?= $students->std_total?></td>
-                <td><?= $students->male?></td>
                 <td><?= $students->female?></td>
+                <td><?= $students->male?></td>
             </tr>
             <tr>
                 <td>PWD(out of Total)</td>
@@ -61,8 +61,8 @@
                 <td><?= $students->handicapped_st_female?></td>
                 <td><?= $students->handicapped_st_male?></td>
                 <td><?= $students->handicapped_total?></td>
-                <td><?= $students->handicapped_male?></td>
                 <td><?= $students->handicapped_female?></td>
+                <td><?= $students->handicapped_male?></td>
             </tr>
             <tr>
                 <td>Muslim Minority(out of Total)</td>
@@ -79,8 +79,8 @@
                 <td><?= $students->minority_st_female?></td>
                 <td><?= $students->minority_st_male?></td>
                 <td><?= $students->minority_total?></td>
-                <td><?= $students->minority_male?></td>
                 <td><?= $students->minority_female?></td>
+                <td><?= $students->minority_male?></td>
             </tr>
             <tr>
                 <td>Other Minority(out of Total)</td>
@@ -97,8 +97,8 @@
                 <td><?= $students->other_minority_st_female?></td>
                 <td><?= $students->other_minority_st_male?></td>
                 <td><?= $students->other_minority_total?></td>
-                <td><?= $students->other_minority_male?></td>
                 <td><?= $students->other_minority_female?></td>
+                <td><?= $students->other_minority_male?></td>
             </tr>
            
            
