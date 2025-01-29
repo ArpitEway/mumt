@@ -169,7 +169,7 @@
                   <h4 style="text-align:center;margin:10px;">Result Semester  Wise</h4>
                   <table border='1' cellpadding="2"  width="103%">
                     <tbody>
-                     <tr align="center"><th width='12.5%'>Semester </th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>AGPA</th></tr>
+                     <tr align="center"><th width='12.5%'>Semester </th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>SGPA</th></tr>
                      <?php
                      $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$exam_data->course_group_id,'mode'=>'Semester'));
                     
