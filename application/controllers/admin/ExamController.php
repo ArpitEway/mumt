@@ -3624,6 +3624,34 @@ public function getStudentData()
 		$this->load->view('footer');
     }
 
+	public function student_final_year_exam_detail_pvt(){
+        $data = array();
+		$data['exam_session'] = "June 2024";
+        $data['mode'] = "PVT";
+        $data['pattern'] = "MARKS";
+        $this->db->select('cm.id,cm.class_name, cm.course_group_id,cg.course_name');
+        $this->db->from('class_master as cm');
+        $this->db->join('course_group as cg','cg.id =cm.course_group_id');
+        $this->db->join('old_exam_data as od','cm.id =od.class_id');
+        $this->db->where(array('cm.last_class'=>'L','od.exam_year'=>$data['exam_session'],'od.university_mode'=>$data['mode'], 'od.marks_pattern'=>$data['pattern']));//'od.exam_status'=>'R',
+        $this->db->group_by('cg.course_name');
+        $data['courses'] = $this->db->get()->result();
+
+        $this->db->select('od.student_id, st.gender');
+        $this->db->from('class_master as cm');
+        $this->db->join('old_exam_data as od','cm.id =od.class_id');
+        $this->db->join('student as st','st.student_id =od.student_id');
+        $this->db->where_in('od.exam_result', array('PASS', 'PASS BY GRACE'));
+        $this->db->where(array('cm.last_class'=>'L','od.exam_year'=>$data['exam_session'],'od.university_mode'=>$data['mode'], 'od.marks_pattern'=>$data['pattern']));//'od.exam_status'=>'R',
+        $students = $this->db->get()->result();
+        $data['students'] = $students;
+        $title = ($data['mode'] == 'REG')?'Regular':'Private';
+        $this->load->view('header',array('title'=> $title.' Student AISHE Data '.$data['exam_session']));
+		$this->load->view('admin/student_final_year_exam_detail', $data);
+		$this->load->view('footer');
+    }
+
+
     public function student_exam_appeared_details($course_group_id, $class_id, $mode){
         $data = array();
 		$data['exam_session'] = "June 2024";
