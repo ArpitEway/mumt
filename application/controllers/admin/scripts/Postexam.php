@@ -489,11 +489,11 @@ class Postexam extends CI_Controller {
         $this->db->select('DISTINCT(id)');
         $this->db->from('class_master');
         // $this->db->where('class_name','I Year');
-        $this->db->where_in('class_name',array('I SEM','III SEM'));
+        // $this->db->where_in('class_name',array('I SEM','III SEM'));
       //  $this->db->where('backlog_exam_form_permission','Y');
-      // $this->db->where_in('class_name',array('II Year','I Year'));
-        $this->db->where_not_in('id',array('154','172','181'));
-         // $this->db->where_in('id',array('155','299','182'));
+      $this->db->where_in('class_name',array('II Year','I Year'));
+        // $this->db->where_not_in('id',array('154','172','181'));
+         $this->db->where_in('id',array('300','301'));
        // $this->db->where('old_exam_form_permission','Y');
        // $this->db->where('exam_form_permission','Y');
         $classes = $this->db->get()->result();
@@ -546,7 +546,7 @@ class Postexam extends CI_Controller {
             $data = array('demo'=>'Y','new_exam_form'=>'N');
           }
        
-        $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+        // $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
         $this->Common_model->last_query();
         // if($update){
         // redirect(base_url('admin/scripts/Postexam/check_demo_backlog_student_script/'.$class_id));
@@ -556,7 +556,7 @@ class Postexam extends CI_Controller {
 
     public function backlog_marks_update_scripts($student_id,$class_id='')
     {
-         $this->db->where('exam_year', 'January 2024');
+         $this->db->where('exam_year', 'June 2024');
         $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$class_id,'student_id'=>$student_id));
         //,'exam_year'=>'June 2024'
         $whereResult = array("class_id"=>$students[0]->class_id ,"student_id"=>$students[0]->student_id, 'exam_data_id' => $students[0]->id);
