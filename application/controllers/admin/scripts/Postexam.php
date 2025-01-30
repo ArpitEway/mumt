@@ -119,7 +119,7 @@ class Postexam extends CI_Controller {
                 'course_name' => $student->course_name,
                 'class_id' => $student->class_id,
                 'enrollment_no' => $student->enrollment_no,
-                'roll_no' => $student->roll_no,
+                'roll_no' => $student->roll_number,
                 'name' => $student->name,
                 'exam_year' => 'June 2024',
                 'f_h_name' => $student->f_h_name,
