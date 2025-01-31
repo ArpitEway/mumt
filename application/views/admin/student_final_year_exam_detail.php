@@ -1,7 +1,7 @@
 <div id="content" align="center">
 
 <table align="center" cellpadding="10"  border="1" >
- 	<thead>
+ 	<thead style="font-weight: bold;">
         <tr >
         <td>&nbsp;</td>
         <td><?php echo $exam_session; ?></td>  <td>&nbsp;</td><td>&nbsp;</td>
