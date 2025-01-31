@@ -140,7 +140,12 @@
 				<tr>
 					<td><?php echo $i ; ?></td>
 					<td><?php echo date("d-m-Y", strtotime($paper->exam_date)); ?></td>
-					<td style="text-align:left;"><?php echo $paper->paper_name; ?></td>
+					
+					<td style="text-align:left;"><?php 
+					$st_arr=array(776229,776268,776212);
+					if($paper->paper_code=='1RBPED2' && in_array($student[0]->student_id,$st_arr)){
+						echo 'History, Principles and Foundation of Physical Education';
+					}else {echo $paper->paper_name; } ?></td>
 					<!-- <?php //if ($i==1): ?>
 						
 					<td rowspan="<?=$paper_count?>" style="vertical-align: middle;"><?php echo  $this->Common_model->viewDate($paper->exam_start_date); ?></td>

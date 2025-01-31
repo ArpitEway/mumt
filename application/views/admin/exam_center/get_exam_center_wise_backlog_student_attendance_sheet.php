@@ -176,7 +176,12 @@
 							elseif($paper->exam_shift=='Morning' ){
 									echo '10:00 AM To 1:00 PM';
 							}?></td>
-					<td style="text-align:left;"><?php echo $paper->paper_name; ?></td>
+					<td style="text-align:left;"><?php 
+					$st_arr=array(776229,776268,776212);
+					if($paper->paper_code=='1RBPED2' && in_array($student->student_id,$st_arr)){
+						echo 'History, Principles and Foundation of Physical Education';
+					}else {echo $paper->paper_name; } 
+					 ?></td>
 					<td ></td>
 					<td ></td>
 					<td ></td>
