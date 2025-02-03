@@ -3503,7 +3503,7 @@ public function update_exam_datewise_permission(){
 		}else{
 			$this->db->order_by('center_id,roll_number','ASC');
 			// $this->db->limit(1);
-		  $this->db->where('student_id = "699903"');
+		  $this->db->where('student_id = "691745"');
          
           if((in_array($class_id, $class_ids))){
               $this->db->where_in('center_id',$dept_ids);
