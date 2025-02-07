@@ -63,7 +63,7 @@
 			<div class="BoxC border- padding">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>ATTENDANCE SHEET OF EXAM FOR ANNUAL/SEMESTER EXAMINATION OF <?php echo (in_array($student->class_id, array(300,301)))?'February':'January'?> 2025							<!-- Attendance Sheet Examination  -->
+						<h5>ATTENDANCE SHEET OF EXAM FOR ANNUAL/SEMESTER EXAMINATION OF <?php echo (in_array($student->class_id, array(300,301,255,257,259)))?'February':'January'?> 2025							<!-- Attendance Sheet Examination  -->
 							
 						</h5>
 						

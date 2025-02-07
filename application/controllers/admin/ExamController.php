@@ -3599,7 +3599,7 @@ public function getStudentData()
 
     public function student_final_year_exam_detail(){
         $data = array();
-		$data['exam_session'] = "June 2024";
+		$data['exam_session'] = "July 2023";
         $data['mode'] = "REG";
         $data['pattern'] = "MARKS";
         $this->db->select('cm.id,cm.class_name, cm.course_group_id,cg.course_name');
