@@ -33,6 +33,7 @@
                 <option value="all">Select Center</option>
                 <?php  
                 $this->db->order_by('id','asc');
+                $this->db->where_in('id',array(167,169));
                 $exam_centers= $this->Common_model->getRecordByWhere('exam_center',array());
                 foreach($exam_centers as $exam_center){
                  ?>

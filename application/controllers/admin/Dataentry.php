@@ -48,6 +48,7 @@ class Dataentry extends CI_Controller {
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();	
 		$data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id), course_name ',''.$this->exam_form.'="Y"');
+
 		$this->load->view('admin/Dataentry/mark_entry_course',$data);
 		$this->load->view('footer');
 	} 
@@ -142,7 +143,7 @@ class Dataentry extends CI_Controller {
 		$papersArr = $this->Common_model->getRecordByWhere('paper_master',$where);
 		$data['papers'] =$papersArr[0];
 		$data['class_id']=$class_id;
-		$data['examSession']="Dec 2024";
+		$data['examSession']="January 2025";
 		$data['university_mode'] = $mode;
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
@@ -206,7 +207,7 @@ class Dataentry extends CI_Controller {
 		$papersArr = $this->Common_model->getRecordByWhere('paper_master',$where);
 		$data['papers'] =$papersArr[0];
 		$data['class_id']=$class_id;
-		$data['examSession']="Dec 2024";
+		$data['examSession']="January 2025";
 		$data['university_mode'] = $mode;
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
