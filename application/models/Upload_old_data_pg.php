@@ -286,7 +286,8 @@ class Upload_old_data_pg extends CI_Model
     protected function upload_exam_data()
 	{
 		if($this->result=='WITHHELD'){
-			return false;
+			// return false; for withheld result
+			$result = 'FAIL';
 		}elseif ($this->result=='FAIL') {
 			$result = 'FAIL';
 		}else{
