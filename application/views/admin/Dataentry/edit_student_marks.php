@@ -11,7 +11,7 @@
 	<div class="row   mb-4">
 		<div class="col-md-4">
 			<strong for="">Roll Number :</strong>
-			<?=$student[0]->roll_number ?>
+			<?=$student[0]->roll_no ?>
 		</div>
 		<div class="col-md-4">
 			<strong for="">Enrollment Number :</strong>
@@ -29,7 +29,7 @@
 	</div>  
 	<div class="col-md-4">
 		<strong for="">Class Name :</strong>
-			<?= $this->Common_model->getClassNameByClassId($student[0]->old_class_id) ?>
+			<?= $this->Common_model->getClassNameByClassId($student[0]->class_id) ?>
 	</div>
     <div class="col-md-4">
 		<strong for="">IC Code :</strong>
@@ -42,7 +42,7 @@
 <div>
 	<form class="mt-4 shadow">
 		<input type="hidden" name="student_id" value="<?=$student[0]->student_id?>">
-		<input type="hidden" name="class_id" value="<?=$student[0]->old_class_id?>">
+		<input type="hidden" name="class_id" value="<?=$student[0]->class_id?>">
 		
 	<table class="table border">
 		<thead>
