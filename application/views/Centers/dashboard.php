@@ -236,7 +236,22 @@
 			</div> 
 			<div class="tab-pane fade" id="exam" role="tabpanel" aria-labelledby="exam-tab">
 				<div class="row">
-
+				  	
+					<?php 
+                   // if($this->session->center_id==12 || $this->session->center_id==28){ ?>
+                   	
+					 <a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
+						<div>
+							<span class="nav-text">Practical Marks Submission </span>
+						</div>
+					</a>
+					<a class="border-0 custom-menu-item" href="<?=base_url('internal_marks_list');?>">
+						<div>
+							<span class="nav-text">Internal Marks Submission (Regular)</span>
+						</div>
+					</a>  
+					<?php  //} ?>
+					
 				<?php if ($center->admit_card_permission=='Y'): ?>
 						<a class="border-0 custom-menu-item" href="<?=base_url('admit_card_list');?>">
 						<div>
@@ -265,21 +280,7 @@
 							</div>
 					</a>  
 					<?php endif ?>
-					
-					<?php 
-                   // if($this->session->center_id==12 || $this->session->center_id==28){ ?>
-                   	
-					 <a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
-						<div>
-							<span class="nav-text">Practical Marks Submission </span>
-						</div>
-					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('internal_marks_list');?>">
-						<div>
-							<span class="nav-text">Internal Marks Submission (Regular)</span>
-						</div>
-					</a>  
-					<?php  //} ?>
+				
 				
 					<?php if ($center->result_permission=='Y'): ?>
 						<a class="border-0 custom-menu-item" href="<?=base_url('result');?>">
