@@ -27,6 +27,7 @@ class Gradesheet_model extends CI_Model
 	protected $fail_obt_marks;
 	protected $fail_min_marks;
 	protected $result_array = array();
+	protected $paper_array = array();
 
 	function __construct()
 	{
@@ -278,6 +279,7 @@ class Gradesheet_model extends CI_Model
 		$this->classCount = count($this->allclass);
 	//	$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		$this->foundation_paper = array();
+		$this->paper_array = array();
 		$this->result_array = array();
 		$this->tot_credit_point = 0;
 		$this->percent = 0;
@@ -646,6 +648,7 @@ class Gradesheet_model extends CI_Model
 		$where = 'min_marks <= '.$persent.' and  max_marks >= '.$persent.'';
 		$gradeData = $this->Common_model->getRecordByWhere('letter_grade',$where);
 		if ('F'==$gradeData[0]->letter_grade || 'ABS' ==$gradeData[0]->letter_grade) {
+			array_push($this->paper_array, $this->paper["paper_code"]);
 			$this->fail_count++;
 			$this->fail_obt_marks += $check_fail_marks;
 			$this->fail_tot_marks += $check_fail_tot_marks;
@@ -719,6 +722,7 @@ class Gradesheet_model extends CI_Model
 		$where = 'min_marks <= '.$persent.' and  max_marks >= '.$persent.'';
 		$gradeData = $this->Common_model->getRecordByWhere('letter_grade',$where);
 		if ('F'==$gradeData[0]->letter_grade || 'ABS' ==$gradeData[0]->letter_grade) {
+			array_push($this->paper_array, $sub_group_id);
 			$this->fail_count++;
 			$this->fail_obt_marks += $tot_obt_marks;
 			$this->fail_tot_marks += $tot_marks;
@@ -1006,9 +1010,10 @@ class Gradesheet_model extends CI_Model
 	private function total_grade()
 	{
 		
-		
+		$papers = implode(', ',$this->paper_array);
 		$this->agpa = $this->tot_credit_point/$this->tot_credit;
 		$agpa = ($this->result == 'FAIL')?'0.00':number_format((float)$this->agpa, 2, '.', '');
+		$result = ($this->result == 'FAIL' && $this->agpa>=4 )?'SUPP IN '. $papers: $this->result;
 		echo '<tr  style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="middle">';
 		
 		
@@ -1022,7 +1027,7 @@ class Gradesheet_model extends CI_Model
 			
 		echo '</tr>';
 		echo '<tr  style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="middle">';
-		echo '<th colspan="14" style="font-size:13px;" >Result - '.$this->result.'</th>';
+		echo '<th colspan="14" style="font-size:13px;" >Result - '.$result.'</th>';
 		echo '</tr>';
 	}
 
