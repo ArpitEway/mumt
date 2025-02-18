@@ -444,7 +444,7 @@ class Gradesheet_model extends CI_Model
             if($result['sub_group'] == 1){ 
                 if(($result['f_abs'] === 'ABS' && $result['obt_marks'] != '0')){
                         $result['obt_credit'] = 2;
-                        $this->obt_tot_credit -=2; 
+                        $this->obt_tot_credit +=2; 
                         $credit_point = $result['obt_credit']*$result['grade_point'];
                         $result['credit_point']=$credit_point;
                         $this->tot_credit_point -= $credit_point;
@@ -655,8 +655,7 @@ class Gradesheet_model extends CI_Model
 			$this->fail_min_marks += $check_fail_min_marks;
 			$this->result_array[$this->paper['paper_code']]['obt_credit'] = 0;
 		}else{
-			
-			 $this->obt_tot_credit += $this->paper['credit_point'];
+			$this->obt_tot_credit += $this->paper['credit_point'];
 			$this->result_array[$this->paper['paper_code']]['obt_credit'] = $this->paper['credit_point'];
 		}
 		// var_dump($this->check_grace_marks);
@@ -921,6 +920,7 @@ class Gradesheet_model extends CI_Model
 					$this->obt_tot_credit += $result['credit'];
 					$credit_point = $result['credit']*4;
 					$obt_credit=$result['credit'];
+					
 					$this->result_array[$key]['credit_point']=$credit_point;
 					$this->tot_credit_point += $credit_point;
 				}
@@ -937,7 +937,8 @@ class Gradesheet_model extends CI_Model
 			}
 			if(($result['f_abs'] == 'ABS' && $result['obt_marks'] != '0')){
 				$result['obt_credit'] = 2;
-				$this->obt_tot_credit -=2; 
+				//$this->obt_tot_credit -=2;
+				$this->obt_tot_credit += $result['obt_credit']; 
 				$credit_point = $result['obt_credit']*$result['grade_point'];
 				$result['credit_point']=$credit_point;
 				$this->tot_credit_point -= $credit_point;
