@@ -438,14 +438,13 @@ class Gradesheet_model extends CI_Model
         if($exam_status !="B"){
             $this->check_grace_for_old();
         }
-        // echo '<pre>';
-        // print_r($this->result_array);
+    	  
         foreach ($this->result_array  as $key => $result) {
             if($result['sub_group'] == 1){ 
-                if(($result['f_abs'] === 'ABS' && $result['obt_marks'] != '0')){
+				if(($result['f_abs'] == 'ABS' && $result['obt_marks'] != '0'  && $result['sub_group'] == 1 && $this->fail_count == 0) || ($result['f_abs'] == 'ABS' && $result['obt_marks'] >= '35'  && $result['sub_group'] == 1 && $this->fail_count > 0) || ($result['f_abs'] == 'ABS' && $result['obt_marks'] != '0'  && $result['sub_group'] == 1 && $this->fail_count == 1 && $this->check_grace_marks == true && $exam_status !="B")){
                         $result['obt_credit'] = 2;
-                        $this->obt_tot_credit +=2; 
-                        $credit_point = $result['obt_credit']*$result['grade_point'];
+						$this->obt_tot_credit -=2; 
+						$credit_point = $result['obt_credit']*$result['grade_point'];
                         $result['credit_point']=$credit_point;
                         $this->tot_credit_point -= $credit_point;
 			        }
@@ -935,10 +934,10 @@ class Gradesheet_model extends CI_Model
 			){
 					$result['letter_grade'] = 'ABS';
 			}
-			if(($result['f_abs'] == 'ABS' && $result['obt_marks'] != '0')){
+				if(($result['f_abs'] == 'ABS' && $result['obt_marks'] != '0'  && $result['sub_group'] == 1 && $this->fail_count == 0) || ($result['f_abs'] == 'ABS' && $result['obt_marks'] >= '35'  && $result['sub_group'] == 1 && $this->fail_count > 0) ){
+				
 				$result['obt_credit'] = 2;
-				//$this->obt_tot_credit -=2;
-				$this->obt_tot_credit += $result['obt_credit']; 
+				$this->obt_tot_credit -= $result['obt_credit'];
 				$credit_point = $result['obt_credit']*$result['grade_point'];
 				$result['credit_point']=$credit_point;
 				$this->tot_credit_point -= $credit_point;
