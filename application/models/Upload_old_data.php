@@ -373,7 +373,7 @@ class Upload_old_data extends CI_Model
 	{
         foreach ($this->result_array  as $key => $result) {
             if($result['sub_group'] == 1){
-                if(($result['f_abs'] === 'ABS' && $result['obt_marks'] != '0')){
+				if(($result['f_abs'] == 'ABS' && $result['obt_marks'] != '0'  && $result['sub_group'] == 1 && $this->fail_count == 0) || ($result['f_abs'] == 'ABS' && $result['obt_marks'] >= '35'  && $result['sub_group'] == 1 && $this->fail_count > 0) ){
                         $result['obt_credit'] = 2;
                         $this->obt_tot_credit -=2; 
                         $credit_point = $result['obt_credit']*$result['grade_point'];
