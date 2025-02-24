@@ -3606,7 +3606,8 @@ public function getStudentData()
         $this->db->from('class_master as cm');
         $this->db->join('course_group as cg','cg.id =cm.course_group_id');
         $this->db->join('old_exam_data as od','cm.id =od.class_id');
-		$this->db->where_not_in('od.class_id', array(155,182));
+		$this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
+		// $this->db->where_not_in('od.class_id', array(155,182));
         $this->db->where(array('cm.last_class'=>'L','od.exam_year'=>$data['exam_session'],'od.university_mode'=>$data['mode'], 'od.marks_pattern'=>$data['pattern']));//'od.exam_status'=>'R',
         $this->db->group_by('cg.course_name');
         $data['courses'] = $this->db->get()->result();
@@ -3615,7 +3616,8 @@ public function getStudentData()
         $this->db->from('class_master as cm');
         $this->db->join('old_exam_data as od','cm.id =od.class_id');
         $this->db->join('student as st','st.student_id =od.student_id');
-		$this->db->where_not_in('od.class_id', array(155,182));
+		$this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
+		// $this->db->where_not_in('od.class_id', array(155,182));
         $this->db->where_in('od.exam_result', array('PASS', 'PASS BY GRACE'));
         $this->db->where(array('cm.last_class'=>'L','od.exam_year'=>$data['exam_session'],'od.university_mode'=>$data['mode'], 'od.marks_pattern'=>$data['pattern']));//'od.exam_status'=>'R',
         $students = $this->db->get()->result();
@@ -3635,7 +3637,8 @@ public function getStudentData()
         $this->db->from('class_master as cm');
         $this->db->join('course_group as cg','cg.id =cm.course_group_id');
         $this->db->join('old_exam_data as od','cm.id =od.class_id');
-		 $this->db->where_in('od.class_id',array(286));
+		$this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
+		//  $this->db->where_in('od.class_id',array(286));
         $this->db->where(array('cm.last_class'=>'L','od.exam_year'=>$data['exam_session'],'od.university_mode'=>$data['mode'], 'od.marks_pattern'=>$data['pattern']));//'od.exam_status'=>'R',
         $this->db->group_by('cg.course_name');
         $data['courses'] = $this->db->get()->result();
@@ -3644,7 +3647,8 @@ public function getStudentData()
         $this->db->from('class_master as cm');
         $this->db->join('old_exam_data as od','cm.id =od.class_id');
         $this->db->join('student as st','st.student_id =od.student_id');
-		$this->db->where_in('od.class_id',array(286));
+		$this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
+		// $this->db->where_in('od.class_id',array(286));
         $this->db->where_in('od.exam_result', array('PASS', 'PASS BY GRACE'));
         $this->db->where(array('cm.last_class'=>'L','od.exam_year'=>$data['exam_session'],'od.university_mode'=>$data['mode'], 'od.marks_pattern'=>$data['pattern']));//'od.exam_status'=>'R',
         $students = $this->db->get()->result();
@@ -3666,6 +3670,7 @@ public function getStudentData()
         $this->db->join('student as st','od.student_id = st.student_id and od.class_id = st.class_id');
         $this->db->join('student_data as std','std.student_id = st.student_id and od.class_id = st.class_id');
         $this->db->where(array('st.enrolled'=>'Y', 'od.class_id'=>$course_group_id,'od.exam_year'=>$data['exam_session'],'od.university_mode'=>$mode, 'od.marks_pattern'=>$data['pattern'], 'od.class_id'=>$class_id));//,'od.exam_status'=>'R'
+		$this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
         $data['students'] = $this->db->get()->row();
         $title = ($mode == 'REG')?'Regular':'Private';
         $this->load->view('header',array('title'=>'Total Number of '.$title.' Students Appeared in Exam'));
@@ -3684,6 +3689,7 @@ public function getStudentData()
         $this->db->join('student_data as std','std.student_id = st.student_id and od.class_id = st.class_id');
         $this->db->where(array('st.enrolled'=>'Y', 'od.class_id'=>$class_id,'od.exam_year'=>$data['exam_session'],'od.university_mode'=>$mode,'st.course_complete'=>'Y', 'od.marks_pattern'=>$data['pattern'],'od.course_group_id'=>$course_group_id));//,'od.exam_status'=>'R'
         $this->db->where_in('exam_result', array('PASS', 'PASS BY GRACE'));
+		$this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
         $data['students'] = $this->db->get()->row();
         $title = ($mode == 'REG')?'Regular':'Private';
         $this->load->view('header',array('title'=>'Total Number of '.$title.' Students Passed/Awarded Degree'));
@@ -3698,6 +3704,7 @@ public function getStudentData()
         $this->db->from('old_exam_data as od');
         $this->db->join('student as st','st.student_id =od.student_id');
         $this->db->where_in('od.exam_result', array('PASS', 'PASS BY GRACE'));
+		$this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
         $this->db->where(array('od.class_id'=>$class_id,'od.course_group_id'=>$course_group_id,'od.exam_year'=>$data['exam_session'],'od.university_mode'=>$mode, 'od.marks_pattern'=>$data['pattern']));//,'od.exam_status'=>'R'
         $students = $this->db->get()->result();
        

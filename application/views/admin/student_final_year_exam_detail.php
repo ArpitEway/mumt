@@ -42,13 +42,16 @@
                 $this->db->select("COUNT(CASE WHEN gender != '' THEN od.student_id END) as std_total,COUNT(CASE WHEN gender = 'Male' THEN od.student_id END) AS male,
             COUNT(CASE WHEN gender = 'Female' THEN od.student_id END) AS female");
             $this->db->from('old_exam_data as od');
+            
             $this->db->join('student as st','od.student_id = st.student_id and od.class_id = st.class_id');
+            $this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
             $this->db->where(array('st.enrolled'=>'Y', 'od.class_id'=>$course->id,'od.exam_year'=>$exam_session,'od.university_mode'=>$mode, 'od.marks_pattern'=>$pattern));
             $total = $this->db->get()->result();
             // $this->Common_model->last_query();,'od.exam_status'=>'R'
             $this->db->select("COUNT(CASE WHEN gender != '' THEN od.student_id END) as std_total,COUNT(CASE WHEN gender = 'Male' THEN od.student_id END) AS male,
             COUNT(CASE WHEN gender = 'Female' THEN od.student_id END) AS female");
             $this->db->from('old_exam_data as od');
+            $this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
             $this->db->join('student as st','od.student_id = st.student_id and od.class_id = st.class_id');
             $this->db->where(array('st.enrolled'=>'Y', 'od.class_id'=>$course->id,'od.exam_year'=>$exam_session,'od.university_mode'=>$mode, 'od.marks_pattern'=>$pattern,'st.course_complete' => 'Y'));//,'od.exam_status'=>'R'
             $this->db->where_in('exam_result', array('PASS', 'PASS BY GRACE'));
