@@ -10,9 +10,9 @@
 		<?php $i=1; ?>
 		<?php foreach ($courses as $course){
 			$this->db->order_by('id');
-			$this->db->where_in('id',array(102,104,105,107,108,110,111,120,125,126,128,129,131,132,134,135,198,214,224,226,276,280));
+			//$this->db->where_in('id',array(102,104,105,107,108,110,111,120,125,126,128,129,131,132,134,135,198,214,224,226,276,280));
        
-        $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id'] , 'old_exam_form_permission' => 'Y' ));
+        $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id'] , 'exam_form_permission' => 'Y' ));
 	
 		//, 'result_permission' => 'Y'
         // , 'exam_form_permission' => 'Y'
