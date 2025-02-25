@@ -2124,6 +2124,7 @@ class ExamController extends CI_Controller {
             $course_groupids = array_column($course_group, 'id');
  			$this->db->where_in('course_group_id',$course_groupids);
 			$this->db->order_by('course_name', "asc");
+			$this->db->where_in('class_id',array(193,217,197,231,203,237,211,275,277,279,281,221,247,223,249,225,251,263));
             $course_group = $this->Common_model->get_record('student','DISTINCT(course_group_id) as  course_group_id,course_name' ,array($this->exam_form=>'Y'));
 
 			$data = array('course_group' => $course_group,

@@ -3310,7 +3310,7 @@ public function update_exam_datewise_permission(){
 		
 		// $where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y' )";
 
-        $where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y' )";
+        $where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y' and class_id in (193,217,197,231,203,237,211,275,277,279,281,221,247,223,249,225,251,263))";
 
         // and old_class_id in (102,110,111,112,119,120,121,125,126,127,129,131,132,133,135,136,149,150,163,168,299,175,182,191,192,198,232,240,242,212,214,226,252,254,258)
 		// and class_id in (109,171,283,286,288,294,296)
@@ -3724,7 +3724,7 @@ public function update_exam_datewise_permission(){
 		
         	//$this->db->Where('result_show','Y');
 		$this->db->where_in('new_exam_form.int_marks',array('ABS','N'));
-		// $this->db->where_in('student.class_id',array(107,126,129,132));
+		 $this->db->where_in('student.class_id',array(193,217,197,231,203,237,211,275,277,279,281,221,247,223,249,225,251,263));
 		$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
 		$data['students'] = $this->db->get()->result();//echo $this->db->last_query(); die;
 		$this->load->view('admin/student_int_marks_no_list',$data);
@@ -3854,7 +3854,7 @@ public function update_exam_datewise_permission(){
 		$this->db->where('university_mode','REG');
 		// $this->db->where_in('student.class_id',array(107,126,129,132));
 		$this->db->Where('(project="Y" or practical = "Y")');
-	//	$this->db->where_in('student.class_id',array(236,204,238,240,210,244,212,246,222,254));
+		$this->db->where_in('student.class_id',array(193,217,197,231,203,237,211,275,277,279,281,221,247,223,249,225,251,263));
 		//$this->db->where_in('student.old_class_id',array(193,195,229,197,231,199,233,201,235,203,237,205,239,302,207,241,209,243,211,245,213,215,221,247,275,277,279,281,223,225,227,253,299));
 		$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
 		$data['students'] = $this->db->get()->result();
