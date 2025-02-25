@@ -166,6 +166,8 @@ table.last_table, .last_table td, .last_table th{
     $total_ob=0;
     $total_mar=0;
     $rw_count = 0;
+    $rwas_count =0;
+    $rwpr_count =0;
     $theory_abs_count = 0;
     $atkt_paper_codes_array = array(); 
     $int_abs_count = 0;
@@ -224,7 +226,7 @@ table.last_table, .last_table td, .last_table th{
         }
 
         if($new_exam_form->int_marks=='N' && $classData->internal=="Y" && $student->university_mode != 'PVT' && $new_exam_form->max_internal_marks !=0){
-          $rw_count++;
+          $rwas_count++;
         }
         if($student->university_mode != 'PVT'){
         if($new_exam_form->theory_marks<$new_exam_form->min_theory_marks  && $new_exam_form->theory_marks!=''){
@@ -265,7 +267,7 @@ table.last_table, .last_table td, .last_table th{
         $count_practical++;
 
         if($new_exam_form->p_marks=='' || $new_exam_form->p_marks=='N'){
-          $rw_count++;
+          $rwpr_count++;
         }
         if($new_exam_form->p_marks=='ABS'){
           $p_abs_count++;
@@ -277,16 +279,20 @@ table.last_table, .last_table td, .last_table th{
       }
     }
 
-    if ($fail_count==0 && $rw_count==0 && $p_fail_count==0 && $int_fail_count==0 && $theory_abs_count==0) {
+    if ($fail_count==0 && $rw_count==0 && $p_fail_count==0 && $int_fail_count==0 && $theory_abs_count==0 && $rwas_count==0 && $rwpr_count==0 ) {
        $final_result = "PASS";
     }else{
       $require_grace_marks = $require_tot_marks-$fail_tot_marks;
       // tot 3 grace marks in 1 subjects
-      if ($fail_count<2 && $require_grace_marks<4 && $int_fail_count==0 && $p_fail_count==0 && $rw_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0) {
+      if ($fail_count<2 && $require_grace_marks<4 && $int_fail_count==0 && $p_fail_count==0 && $rw_count==0 && $theory_abs_count==0 && $p_abs_count==0 &&  $int_abs_count==0 && $rwas_count==0 && $rwpr_count==0) {
         $check_grace_marks = true;
         $final_result = "PASS BY GRACE";
       }elseif($rw_count>0){
         $final_result = "RW";
+      }elseif($rwas_count>0){
+        $final_result = "RWAS";
+      }elseif($rwpr_count> 0){
+        $final_result = "RWPR";
       }else{
         $final_result = "FAIL";
       }
@@ -403,7 +409,7 @@ table.last_table, .last_table td, .last_table th{
           if($check_grace_marks){
             echo "-";
           }else{
-            if($final_result == "RW"){
+            if($final_result == "RW" || $final_result == "RWAS" || $final_result == "RWPR"){
               echo "";
             }
             elseif($int_abs_count>0 &&  $theory_abs_count>0 && $p_abs_count>0){
@@ -617,7 +623,7 @@ table.last_table, .last_table td, .last_table th{
 </td>  
  <?php }
   }
- if($final_result == "FAIL" || $final_result == "RW" || $final_fail !=0 ){
+ if($final_result == "FAIL" || $final_result == "RW" || $final_fail !=0  || $final_result == "RWAS" || $final_result == "RWPR"){
   $total_ob = '-';
   $total_mar = '-';
   $percent = '-';
