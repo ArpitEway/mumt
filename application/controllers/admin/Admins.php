@@ -3310,9 +3310,9 @@ public function update_exam_datewise_permission(){
 		
 		// $where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y' )";
 
-        $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y'  )";
+        $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and class_id in (245,199,233,201,235,241,227,253,154,181) )";
 		// 193,217,197,231,203,237,211,275,277,279,281,221,247,223,249,225,251,263 
-		// and class_id in (245,199,233,201,235,241,227,253,154,181)
+		// 
     
 		$data['courses'] = $this->Common_model->get_record('course_group','*',$where);
 		$this->load->view('header',array('title' => 'Class List'));
