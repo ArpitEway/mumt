@@ -5931,9 +5931,9 @@ public function forward_complaint(){
 			redirect(base_url());
 			exit;
 		}
-		$data['not_permited_students']= $this->Common_model->getRecordByWhere('backlog_student',array("course_group_id"=>$course_id ,'class_id' => $class_id , 'result_show'=>'N' , 'exam_form'=>'Y' ,'mode'=>$mode,'exam_year'=>'June 2024'));
+		$data['not_permited_students']= $this->Common_model->getRecordByWhere('backlog_student',array("course_group_id"=>$course_id ,'class_id' => $class_id , 'result_show'=>'N' , 'exam_form'=>'Y' ,'mode'=>$mode,'exam_year'=>'Dec 2024'));
 
-		$data['permited_students']= $this->Common_model->getRecordByWhere('backlog_student',array("course_group_id"=>$course_id ,'class_id' => $class_id , 'result_show'=>'Y' , 'exam_form'=>'Y' ,'mode'=>$mode,'exam_year'=>'June 2024'));
+		$data['permited_students']= $this->Common_model->getRecordByWhere('backlog_student',array("course_group_id"=>$course_id ,'class_id' => $class_id , 'result_show'=>'Y' , 'exam_form'=>'Y' ,'mode'=>$mode,'exam_year'=>'Dec 2024'));
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
 		$data['mode']=$mode;
@@ -5950,12 +5950,12 @@ public function forward_complaint(){
 		if($_POST['not_permitted']){
 			$student_ids = (implode(',',$_POST['not_permitted']));
 			$data = array('result_show' => 'Y');
-			$where = " student_id in (".$student_ids.") and exam_year = 'June 2024' and class_id=".$_POST['class_id']."";//provisional_remark in ('','N') &&
+			$where = " student_id in (".$student_ids.") and exam_year = 'Dec 2024' and class_id=".$_POST['class_id']."";//provisional_remark in ('','N') &&
 			$update =$this->Common_model->updateRecordByConditions('backlog_student',$where,$data);
 		}else{
 			$student_ids = (implode(',',$_POST['permitted']));
 			$data = array('result_show' => 'N');
-			$where ='student_id in ('.$student_ids.') and exam_year = "June 2024" and class_id='.$_POST["class_id"].'';
+			$where ='student_id in ('.$student_ids.') and exam_year = "Dec 2024" and class_id='.$_POST["class_id"].'';
 			$update = 	$this->Common_model->updateRecordByConditions('backlog_student',$where,$data);
 		}  
 		if($update){
