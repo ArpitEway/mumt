@@ -130,7 +130,7 @@ table.last_table, .last_table td, .last_table th{
 <?php
 
   $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
-  $marksheetData = $this->Common_model->getRecordByWhere('marksheet_variables_june_2024',array('class_id'=>$class_id));
+  $marksheetData = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id'=>$class_id));
   $classData= $this->Common_model->getRecordById('class_master','id', $class_id);
   $isFinalClass = $this->Common_model->hasOneClass($course_group_id);
   // $final_class = $this->Common_model->hasFinalClass($course_group_id);

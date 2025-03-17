@@ -3055,9 +3055,8 @@ public function update_exam_datewise_permission(){
         if($department !=""){
             $this->db->where_in('center_id', $dept_ids);
         }elseif(in_array($class_id, $class_ids)&& $pattern=="GRADE"){
-            // $this->db->where_not_in('center_id', $dept_ids);
-			$this->db->where_in('center_id', array(11,12));
-        }
+        	 $this->db->where_not_in('center_id', $dept_ids);
+		}
 		//$this->db->where_in('roll_number', array(210710017,210712137));
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y' ,'roll_number!='=>'0', 'university_mode'=>$mode,'exam_pattern'=>$pattern));//'result_show'=>'Y','old_result_show'=>'Y',
          // $this->Common_model->last_query();
@@ -3148,11 +3147,11 @@ public function update_exam_datewise_permission(){
 		else{
 			$pattern="GRADE";
 		}
-		$where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'exam_form'=>'Y', 'roll_number!='=>'0' ,'university_mode'=> $mode ,'exam_pattern'=>$pattern);
+		$where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'exam_form'=>'Y', 'roll_no!='=>'0' ,'university_mode'=> $mode ,'exam_pattern'=>$pattern);
 		//,'examcentercode'=>'MDE165'
 		//, 'student_id'=>705250
 		$this->db->order_by('center_id','ASC');
-		$this->db->order_by('roll_number','ASC');
+		$this->db->order_by('roll_no','ASC');
 
 		//$this->db->where_in('roll_number',array(210412125,210413275,210417990,210412133,210420009,210420534));
 		// $data['students'] = $this->Common_model->getRecordByWhere('student_result_aug_22',$where);
@@ -3312,8 +3311,7 @@ public function update_exam_datewise_permission(){
 		
 		// $where = "id in (select distinct(course_group_id) from student where new_exam_form = 'Y' )";
 
-        $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and class_id in (103,106,109,112,127,133) )";
-		//193,217,197,231,203,237,211,275,277,279,281,221,247,223,249,225,251,263,155,182,205,239,213,302,304,245,199,233,201,235,241,227,253,154,181,215,209,243
+        $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and class_id in (193,217,197,231,203,237,211,275,277,279,281,221,247,223,249,225,251,263,155,182,205,239,213,302,304,245,199,233,201,235,241,227,253,154,181,215,209,243) )";
 		// 193,217,197,231,203,237,211,275,277,279,281,221,247,223,249,225,251,263 
 		// 245,199,233,201,235,241,227,253,154,181
 		// 155,182,205,239,213,302,304
@@ -3521,11 +3519,11 @@ public function update_exam_datewise_permission(){
                 $this->load->view('admin/student_marksheet_grade_pg',$data);
 			}else{
 				$this->load->model('Gradesheet_model');
-                // if($department !=""){
-                //     $this->load->view('admin/student_marksheet_grade_dept',$data);
-                // }else{
+                if($department !=""){
+                    $this->load->view('admin/student_marksheet_grade_dept',$data);
+                }else{
                     $this->load->view('admin/student_marksheet_grade1',$data);
-                // }
+                 }
 				
 			}
 			
@@ -3929,11 +3927,10 @@ public function update_exam_datewise_permission(){
 			$pattern="GRADE";
 		}
 
-		$this->db->order_by('center_id,roll_number','ASC');
+		$this->db->order_by('center_id,roll_no','ASC');
 		
 		// $data['students'] = $this->Common_model->getRecordByWhere('student',array("university_mode"=>$mode,"course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y','roll_no!='=>'0' ,'exam_pattern'=> $pattern));
-		$this->db->where_in('center_id', array(11,12));
-		 $data['students'] = $this->Common_model->getRecordByWhere('student',array("university_mode"=>$mode,"course_group_id"=>$course_group_id ,'class_id' => $class_id ,'exam_form'=>'Y','roll_number!='=>'0' ,'exam_pattern'=> $pattern));
+		 $data['students'] = $this->Common_model->getRecordByWhere('student',array("university_mode"=>$mode,"course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y','roll_no!='=>'0' ,'exam_pattern'=> $pattern));
 
 		//'result_show' => 'N' ,'student_id'=>'685381'
 		$data['class_id'] = $class_id;
@@ -3976,7 +3973,7 @@ public function update_exam_datewise_permission(){
         if($department !=""){
             $this->db->where_in('center_id', $dept_ids);
         }elseif(in_array($class_id, $class_ids)&& $pattern=="GRADE"){
-            $this->db->where_in('center_id', array(11,12));
+            $this->db->where_not_in('center_id', $dept_ids);
         }
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id, 'old_class_id' => $class_id, 'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode ,'exam_pattern'=>$pattern));
 		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
