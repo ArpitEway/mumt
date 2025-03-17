@@ -608,7 +608,7 @@ class Common_Model extends CI_Model{
 		$this->db->select('e.*,paper_master.credit_point,paper_master.paper_name,paper_master.paper_code,paper_master.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks,e.sub_group_id,e.group_id,e.paper_order');
 		$this->db->from('paper_master');
 		$this->db->order_by('sub_group_id,paper_no','asc');
-		$this->db->join('exam_form as e','e.paper_id = paper_master.id');
+		$this->db->join('new_exam_form as e','e.paper_id = paper_master.id');
 		// $this->db->join('group_paper','paper_master.id=group_paper.paper_id');
 		$this->db->where($where); 
 		if($class_check->class_group == 'Y' &&  $class_check->mode!='Semester'){
@@ -638,7 +638,7 @@ class Common_Model extends CI_Model{
 		
 		$this->db->from('paper_master');
 		$this->db->order_by('group_paper.sub_group_id,paper_no','asc');
-		$this->db->join('exam_form as e','e.paper_id = paper_master.id','left');
+		$this->db->join('new_exam_form as e','e.paper_id = paper_master.id','left');
 		$this->db->join('group_paper','paper_master.id=group_paper.paper_id and group_paper.group_id=e.group_id','left');
 		if($course_group_id != '' && $course_group_id == 12){
 			
@@ -1016,7 +1016,7 @@ class Common_Model extends CI_Model{
 		$this->db->select('*');
         $this->db->from('paper_master');
         $this->db->order_by('e.sub_group_id,paper_order,paper_no','ASC');
-        $this->db->join('exam_form as e', 'paper_master.id = e.paper_id');
+        $this->db->join('new_exam_form as e', 'paper_master.id = e.paper_id');
         if($course_group_id != '' && $course_group_id == 12){
             $this->db->join('group', 'e.group_id = group.id');
         }
@@ -1030,7 +1030,7 @@ class Common_Model extends CI_Model{
 		$this->db->select('*');
         $this->db->from('paper_master');
         $this->db->order_by('e.sub_group_id,paper_order,paper_no','ASC');
-        $this->db->join('exam_form as e', 'paper_master.id = e.paper_id');
+        $this->db->join('new_exam_form as e', 'paper_master.id = e.paper_id');
         $this->db->where('e.student_id',$student_id);
         $this->db->where('e.class_id',$class_id);
 		return $this->db->get()->result();
