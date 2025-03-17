@@ -692,7 +692,7 @@ class Postexam extends CI_Controller {
      public function update_course_complete_status($course_group_id="",$class_id=""){
             $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
            // $this->db->limit(1000);
-            $dept_ids = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30);
+            $dept_ids = array(10,13,20,21,22,23,24,25,26,27,28,29,30);
             $class_ids=array(103,106,109,112,118,121,127,130,133,136);
             if((in_array($class_id, $class_ids))){
                 $this->db->where_not_in('center_id',$dept_ids);

@@ -59,7 +59,7 @@
 	<br>
 	<?php
 	$isFinalClass = false;
-	$notification_no = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id' => $class_id));
+	$notification_no = $this->Common_model->getRecordByWhere('marksheet_variables_june_2024',array('class_id' => $class_id));
 	$classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 	$isOneClass = $this->Common_model->hasOneClass($course_group_id);
 	if($classData->last_class == 'L'){

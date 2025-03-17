@@ -130,7 +130,7 @@ table.last_table, .last_table td, .last_table th{
 <?php
 
   $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
-  $marksheetData = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id'=>$class_id));
+  $marksheetData = $this->Common_model->getRecordByWhere('marksheet_variables_june_2024',array('class_id'=>$class_id));
   $classData= $this->Common_model->getRecordById('class_master','id', $class_id);
   $isFinalClass = $this->Common_model->hasOneClass($course_group_id);
   // $final_class = $this->Common_model->hasFinalClass($course_group_id);
@@ -823,7 +823,7 @@ table.last_table, .last_table td, .last_table th{
   
  
   <?php  
-  $dept_ids = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30);
+  $dept_ids = array(10,13,20,21,22,23,24,25,26,27,28,29,30);
   if($final_class && $isFinalClass == false && !in_array($student->center_id,$dept_ids)){
     $final_rw = 0;
     $final_fail =0;

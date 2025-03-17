@@ -47,7 +47,7 @@
     <?php 
 
     $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
-    $marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
+    $marksheet_variables = $this->Common_model->getRecordById('marksheet_variables_june_2024','class_id',$class_id);
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
     $isOneClass = $this->Common_model->hasOneClass($course_group_id);
     // var_dump($isOneClass);
