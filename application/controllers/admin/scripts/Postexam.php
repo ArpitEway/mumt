@@ -1183,7 +1183,7 @@ public function upload_old_backlog_marks()
      $this->db->where('upload_result', 'N');
      $this->db->where('exam_year','June 2024');
      $this->db->where('result_show', 'Y');
-     $this->db->where('class_master.backlog_result_permission', 'Y');
+     //$this->db->where('class_master.backlog_result_permission', 'Y');
     //  $this->db->where('class_master.final_result_permission', 'Y');
      // $this->db->where('marksheet_dispatch', 'Y');
     // $this->db->where('university_mode','REG');
@@ -1196,7 +1196,7 @@ public function upload_old_backlog_marks()
 
 public function upload_old_backlog_data_script($class_id="",$mode){
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
-    $date =$this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
+    $date =$this->Common_model->getRecordById('marksheet_variables_june_2024','class_id',$class_id);
     $this->db->select('backlog_student.*,student.name,student.f_h_name,student.course_name,student.mother_name,student.photo');
     $this->db->from('backlog_student');
     $this->db->join('student','student.student_id=backlog_student.student_id');
@@ -1319,7 +1319,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
         if($whCount!=0   ) {
             // $final_result=='FAIL' || 
              //  && count($course_type)==0 && $student->course_group_id!=76 && $student->course_group_id!=77
-           continue;
+        //    continue;
         }
         $examData['university_mode'] = $student->mode;
         $examData['photo'] = $student->photo;
