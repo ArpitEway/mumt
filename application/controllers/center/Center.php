@@ -1791,7 +1791,7 @@ class Center extends CI_Controller {
 			}
 		$data['student_id']=$student_data[0]->student_id;
 		$data['center_id']=$student_data[0]->center_id;
-		$data['exam_session'] = "Dec 2024";
+		$data['exam_session'] = "June 2025";
 		$data['course_group_id']=$student_data[0]->course_group_id;
 		$data['class_id']=$student_data[0]->class_id;
 		$data['amount'] = $total_fees;
@@ -3167,7 +3167,7 @@ public function practical_assignment_marks_edit(){
 		if($center_permission[0]['temp_exam_form']=='N'){
 			$this->db->where_in('class_id',$class_ids);
 		}
-		$this->db->where('exam_year' ,'Dec 2024');
+		$this->db->where('exam_year' ,'June 2025');
 		//Start
 		
 		if(!empty($master->remove_class_from_center) && $center_permission[0]['temp_exam_form'] =='N'){
@@ -3201,7 +3201,7 @@ public function practical_assignment_marks_edit(){
     	$this->db->where('backlog_student.student_id',$student_id); 
     	$this->db->where('backlog_student.class_id',$class_id);
 		$this->db->where('backlog_exam_form.class_id',$class_id);
-		$this->db->where('backlog_student.exam_year','Dec 2024');
+		$this->db->where('backlog_student.exam_year','June 2025');
     	$this->db->where('status','B');
 		$this->db->order_by('paper_order', 'asc');
     	$data['papers'] = $this->db->get()->result();
@@ -3799,7 +3799,7 @@ public function practical_assignment_marks_edit(){
 		$fees = $this->Common_model->getCountByWhere('backlog_exam_form',$where);
 		$data['student_id']=$student_data[0]->student_id;
 		$data['center_id']=$student_data[0]->center_id;
-		$data['exam_session'] = "Dec 2024";
+		$data['exam_session'] = "June 2025";
 		$data['course_group_id']=$student_data[0]->course_group_id;
 		$data['class_id']=$student_data[0]->class_id;
 		$data['amount'] = $fees*100;
