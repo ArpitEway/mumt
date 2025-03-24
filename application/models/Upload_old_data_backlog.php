@@ -54,7 +54,7 @@ class Upload_old_data_backlog extends CI_Model
 		if($this->classData->class_group == 'Y' || $student->class_id == 101){
 		$papers_list = $this->Common_model->get_all_backlog_group_papers($student->student_id,$student->class_id,$student->id);
 		}
-        $date =$this->Common_model->getRecordById('marksheet_variables','class_id',$student->class_id);
+        $date =$this->Common_model->getRecordById('marksheet_variables_june_2024','class_id',$student->class_id);
 	
 		$this->classCount = count($this->allclass);
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$student->class_id);
@@ -419,8 +419,8 @@ class Upload_old_data_backlog extends CI_Model
 	{
         // echo $this->result;die;
 		if($this->result=='WITHHELD'){
-			return false;
-			// $result = 'FAIL';
+			// return false;
+			$result = 'FAIL';
 		}elseif ($this->result=='FAIL') {
 			$result = 'FAIL';
 		}else{
