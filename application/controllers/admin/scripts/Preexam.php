@@ -498,7 +498,7 @@ class Preexam extends CI_Controller {
 		$where = array('class_id' => $class_id,
 					//'payment_status' => 'Y',
 					'temp_exam_form' => "N",
-					//'new_exam_form'=>"N" ,
+					'new_exam_form'=>"N" ,
 					'demo'=>"N",
 					'group_id!='=>"",
 		);
