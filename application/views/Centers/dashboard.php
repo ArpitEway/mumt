@@ -124,11 +124,11 @@
 						</div>
 					</a> -->
 					
-					<a class="border-0 custom-menu-item" href="<?=base_url('paper_missing_list/private');?>">
+					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('paper_missing_list/private');?>">
 						<div>
 							<span class="nav-text">Paper Missing List</span>
 						</div>
-					</a>
+					</a> -->
 					<a class="border-0 custom-menu-item" href="<?=base_url('photo_missing_list/PVT');?>">
 						<div>
 							<span class="nav-text">Photo Missing List</span>
@@ -208,11 +208,11 @@
 						</div>
 					</a>
 					
-					<a class="border-0 custom-menu-item" href="<?=base_url('paper_missing_list/regular');?>">
+					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('paper_missing_list/regular');?>">
 						<div>
 							<span class="nav-text">Paper Missing List</span>
 						</div>
-					</a>
+					</a> -->
 					<a class="border-0 custom-menu-item" href="<?=base_url('photo_missing_list/REG');?>">
 						<div>
 							<span class="nav-text">Photo Missing List</span>
