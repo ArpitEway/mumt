@@ -289,7 +289,7 @@ class Upload_old_data_backlog_pg extends CI_Model
             'enrollment_no' => $this->student->enrollment_no,
             'roll_no' => $this->student->roll_no,
             'name' => $this->student->name,
-            'exam_year' => 'June 2024',
+            'exam_year' => 'January 2025',
             'marks_pattern' => 'GRADE',
             'agpa_sgpa'=>number_format((float)$this->agpa, 2, '.', ''),
             'f_h_name' => $this->student->f_h_name,

@@ -286,7 +286,7 @@ class Upload_old_data_pg extends CI_Model
     protected function upload_exam_data()
 	{
 		if($this->result=='WITHHELD'){
-			// return false; for withheld result
+			 return false; //for withheld result
 			$result = 'FAIL';
 		}elseif ($this->result=='FAIL') {
 			$result = 'FAIL';
@@ -307,7 +307,7 @@ class Upload_old_data_pg extends CI_Model
             'enrollment_no' => $this->student->enrollment_no,
             'roll_no' => $this->student->roll_no,
             'name' => $this->student->name,
-            'exam_year' => 'June 2024',
+            'exam_year' => 'January 2025',
             'f_h_name' => $this->student->f_h_name,
             'mother_name' => $this->student->mother_name,
             'marksheet_no' =>$this->student->marksheet_no,
