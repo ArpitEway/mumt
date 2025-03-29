@@ -355,7 +355,8 @@ class Postexam extends CI_Controller {
             'hash_csrf' => $this->security->get_csrf_hash(),
         );//'result_show'=>'Y'
         $this->db->limit(1000);
-          $data['students']= $this->Common_model->getRecordByWhere('student',array('class_id' => $class_id, 'exam_form'=>'Y' , 'promote'=>'N' ,'course_complete'=>'N' ));
+          // $data['students']= $this->Common_model->getRecordByWhere('student',array('class_id' => $class_id, 'exam_form'=>'Y' , 'promote'=>'N' ,'course_complete'=>'N' ));
+          $data['students']= $this->Common_model->getRecordByWhere('student_result_june_2024',array('class_id' => $class_id, 'exam_form'=>'Y' , 'promote'=>'N' ,'course_complete'=>'N' ));
           $data['course_name']= $this->Common_model->getCourseNameByCourseId($course_group_id);
           $data['class_name']= $this->Common_model->getClassNameByClassId($class_id);
           $data['class_id'] =$class_id ;
