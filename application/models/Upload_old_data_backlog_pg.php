@@ -277,7 +277,7 @@ class Upload_old_data_backlog_pg extends CI_Model
 		}
 		$per = $this->obt_marks*100/$this->total_marks;
 		$percentage = round($per, 2);
-		$marksheetDate=DateTime::createFromFormat('d/m/Y', $this->marksheetDate)->format('Y-m-d');
+	//	$marksheetDate=DateTime::createFromFormat('d/m/Y', $this->marksheetDate)->format('Y-m-d');
 		$marksheetDate="";
         $examData = array(
             'student_id' => $this->student->student_id,
