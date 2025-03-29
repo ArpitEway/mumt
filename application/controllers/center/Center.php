@@ -1806,9 +1806,9 @@ class Center extends CI_Controller {
         $data['remark'] = $this->input->post('remark');
 		$insert = $this->Common_model->insertAll('online_payment_transaction',$data);
 		$student_data = array('new_exam_form' => 'Y');
-		$update = $this->Common_model->updateRecordByConditions('student','student_id='.$student_id,$student_data);
+		//$update = $this->Common_model->updateRecordByConditions('student','student_id='.$student_id,$student_data);
        
-		if($update){
+		if($insert){
             echo json_encode(array(
                 "status" => 'success',
                 "data" => 'exam_form_students'
