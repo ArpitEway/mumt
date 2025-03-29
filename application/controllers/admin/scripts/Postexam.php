@@ -332,11 +332,11 @@ class Postexam extends CI_Controller {
     public function promote_student_list(){
         $this->db->select('count(*) as cnt ,student.course_name ,student.class_id, student.course_group_id, student.class_name');
         // $this->db->from('student as student');
-       $this->db->from('student_june_2024 as student');
+       $this->db->from('student_result_june_2024 as student');
         $this->db->join('class_master', 'class_master.id = student.class_id');
         $this->db->group_by('student.class_id');
-        $this->db->where('student.new_exam_form','Y');
-         $this->db->where('student.result_show','Y');
+        $this->db->where('student.exam_form','Y');
+         $this->db->where('student.old_result_show','Y');
         $this->db->where('student.promote','N');
         $this->db->where('class_master.mode','Annual');
         // $this->db->where('class_master.mode','Semester');
@@ -355,7 +355,7 @@ class Postexam extends CI_Controller {
             'hash_csrf' => $this->security->get_csrf_hash(),
         );//'result_show'=>'Y'
         $this->db->limit(1000);
-          $data['students']= $this->Common_model->getRecordByWhere('student',array('class_id' => $class_id, 'new_exam_form'=>'Y' , 'promote'=>'N' ,'course_complete'=>'N' ));
+          $data['students']= $this->Common_model->getRecordByWhere('student',array('class_id' => $class_id, 'exam_form'=>'Y' , 'promote'=>'N' ,'course_complete'=>'N' ));
           $data['course_name']= $this->Common_model->getCourseNameByCourseId($course_group_id);
           $data['class_name']= $this->Common_model->getClassNameByClassId($class_id);
           $data['class_id'] =$class_id ;
@@ -382,7 +382,7 @@ class Postexam extends CI_Controller {
             $where = array('student_id'=>$student_id,'new_exam_form'=>'D');
             $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
             $data_result = array( 'promote' => 'Y');
-            $update_result =$this->Common_model->updateRecordByConditions('student_june_2024',$where,$data_result);
+            $update_result =$this->Common_model->updateRecordByConditions('student_result_june_2024',$where,$data_result);
         }
         if($update){
             redirect(base_url('admin/scripts/Postexam/promote_student_list'));
