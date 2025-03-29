@@ -108,7 +108,8 @@ class Postexam extends CI_Controller {
             $p_fail_count = 0;
              $paper_count = 0;
              $marksheetDate = ($student->university_mode == 'REG')?$date->result_date:$date->pvt_result_date;
-
+             //$marksheetDate=DateTime::createFromFormat('d/m/Y', $marksheetDate)->format('Y-m-d');
+             $marksheetDate="";
             $examData = array(
                 'student_id' => $student->student_id,
                 'session' => $student->session,
@@ -125,7 +126,7 @@ class Postexam extends CI_Controller {
                 'f_h_name' => $student->f_h_name,
                 'mother_name' => $student->mother_name,
                 'marksheet_no' =>$student->marksheet_no,
-                'marksheet_date'=>DateTime::createFromFormat('d/m/Y', $marksheetDate)->format('Y-m-d'),
+                'marksheet_date'=>$marksheetDate,
                 'marks_pattern'=>$student->exam_pattern,
             );
             $new_exam_form = $this->Common_model->getRecordByWhere('new_exam_form',array('student_id' => $student->student_id,'class_id'=>$class_id));
@@ -1220,6 +1221,8 @@ public function upload_old_backlog_data_script($class_id="",$mode){
         $p_fail_count = 0;
         $paper_count = 0;
         $marksheetDate = ($student->mode == 'REG')?$date->backlog_result_date:$date->backlog_pvt_result_date;
+        //$marksheetDate=DateTime::createFromFormat('d/m/Y', $marksheetDate)->format('Y-m-d');
+        $marksheetDate="";
         $examData = array(
             'student_id' => $student->student_id,
             'session' => $student->session,
@@ -1236,7 +1239,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
             'f_h_name' => $student->f_h_name,
             'mother_name' => $student->mother_name,
             'marksheet_no' =>$student->back_marksheet_no,
-            'marksheet_date'=>DateTime::createFromFormat('d/m/Y', $marksheetDate)->format('Y-m-d'),
+            'marksheet_date'=>$marksheetDate,
             'marks_pattern' => 'MARKS',
         );
         $this->db->order_by("id", "asc");
