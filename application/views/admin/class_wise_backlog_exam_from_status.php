@@ -25,22 +25,22 @@
 					<td><?php echo $this->Common_model->getClassNameByClassId($count['class_id']); ?></td>
 					<td><?php echo $count['cnt']; ?></td>
 					<?php 
-					$where = array('exam_form'  =>'Y','class_id'=>$count['class_id'],'exam_year'=>'Dec 2024');
+					$where = array('exam_form'  =>'Y','class_id'=>$count['class_id'],'exam_year'=>'June 2025');
 					$Permitted = $this->Common_model->getCountByWhere('backlog_student',$where);
-					$where_reg = array('exam_form'  =>'Y','mode'  =>'REG','class_id'=>$count['class_id'],'exam_year'=>'Dec 2024');
+					$where_reg = array('exam_form'  =>'Y','mode'  =>'REG','class_id'=>$count['class_id'],'exam_year'=>'June 2025');
 					$Permitted_reg = $this->Common_model->getCountByWhere('backlog_student',$where_reg);
-					$where_pvt = array('exam_form'  =>'Y','mode'  =>'PVT','class_id'=>$count['class_id'],'exam_year'=>'Dec 2024');
+					$where_pvt = array('exam_form'  =>'Y','mode'  =>'PVT','class_id'=>$count['class_id'],'exam_year'=>'June 2025');
 					$Permitted_pvt = $this->Common_model->getCountByWhere('backlog_student',$where_pvt);
 					
 					$this->db->select('count(*) num');
 					$this->db->from('backlog_student s');
-					$this->db->where(array('s.class_id' => $count['class_id'], 'exam_form' => 'Y','mode'  =>'PVT','paper_type'=> 'theory','ef.status'=> 'B','s.exam_year'=>'Dec 2024'));
+					$this->db->where(array('s.class_id' => $count['class_id'], 'exam_form' => 'Y','mode'  =>'PVT','paper_type'=> 'theory','ef.status'=> 'B','s.exam_year'=>'June 2025'));
 					$this->db->join('backlog_exam_form ef','s.student_id=ef.student_id and s.class_id=ef.class_id');
 					$pvt_paper_count = $this->db->get()->result()[0]->num;
 
 					$this->db->select('count(*) num');
 					$this->db->from('backlog_student s');
-					$this->db->where(array('s.class_id' => $count['class_id'], 'exam_form' => 'Y','mode'  =>'REG','paper_type'=> 'theory','ef.status'=> 'B','s.exam_year'=>'Dec 2024'));
+					$this->db->where(array('s.class_id' => $count['class_id'], 'exam_form' => 'Y','mode'  =>'REG','paper_type'=> 'theory','ef.status'=> 'B','s.exam_year'=>'June 2025'));
 					$this->db->join('backlog_exam_form ef','s.student_id=ef.student_id and s.class_id=ef.class_id');
 					
 					$reg_paper_count = $this->db->get()->result()[0]->num;
