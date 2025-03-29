@@ -67,7 +67,7 @@ class Preexam extends CI_Controller {
 					'university_mode'=>$university_mode,
 		);
 	
-		
+		$this->db->limit(1000);
 		$students = $this->Common_model->get_record('student','*',$where);
 		$classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
