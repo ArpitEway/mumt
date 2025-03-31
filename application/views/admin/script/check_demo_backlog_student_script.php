@@ -30,12 +30,13 @@
           <td> <?php  if($paperCount==$absCount || ( $row->agpa_sgpa<4 && $row->marks_pattern=="GRADE")  ){?> 
             <a class="text-danger" href="<?=base_url('admin/scripts/Postexam/set_demo/'.$row->student_id.'/'.$row->class_id.'/'.$row->center_id)?>" target="_blank">Set Demo</a> <?php 
               $where = array('student_id'=>$row->student_id,'new_exam_form'=>'D');
-              if(!in_array($row->center_id,$dept_ids) && $className=='I SEM'){
+              if(!in_array($row->center_id,$dept_ids) && $className=='II SEM'){
                 $data = array('demo'=>'Y','new_exam_form_permission'=>'Y');
               }else{
                 $data = array('demo'=>'Y','new_exam_form'=>'N');
               }
 
+              // if($className=='I SEM') // exam Permission Dec 224
               // if($className=='II SEM') // '155','299','182' exam Permission June 2025
               // {
               //    $data = array('demo'=>'Y','new_exam_form_permission'=>'Y');
@@ -47,7 +48,7 @@
             } else{ ?>
              <a class="text-info" href="<?=base_url('admin/scripts/Postexam/backlog_marks_update_scripts/'.$row->student_id.'/'.$row->class_id)?>" target="_blank">Set Backlog</a> <?php 
 
-             //  ####### Add Backlog Script For Main Exam End #######
+              ####### Add Backlog Script For Main Exam End #######
 
                 //  $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$row->class_id,'student_id'=>$row->student_id,'exam_year'=>'June 2024'));
 
@@ -61,7 +62,7 @@
                 // 'roll_no' => 0,
                 // 'session' => $students[0]->session,
                 // 'mode'=>$students[0]->university_mode,
-                // 'exam_year'=>'Dec 2024',
+                // 'exam_year'=>'June 2025',
                 // 'exam_form' => 'N',
                 // 'enrollment_no' => $students[0]->enrollment_no,
                 // 'center_id' => $students[0]->center_id,
@@ -73,7 +74,7 @@
                 // 'upload_result' =>  'N',
                 // 'result_permission' => 'N',
                 // );
-                // $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students[0]->student_id,'class_id'=>$students[0]->class_id,'exam_year'=>'Dec 2024'));
+                // $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students[0]->student_id,'class_id'=>$students[0]->class_id,'exam_year'=>'June 2025'));
                 // if( $duplicate == Array ( )){
                 // $backlog_student_id = $this->Common_model->insertAll('backlog_student',$data);
 
@@ -102,7 +103,7 @@
                 // }
                 // } 
 
-             //  ####### Add Backlog Script End #######
+              ####### Add Backlog Script End #######
 
             } ?>  
            </td>   
