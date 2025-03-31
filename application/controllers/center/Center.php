@@ -2983,7 +2983,7 @@ public function practical_assignment_marks_edit(){
 			
 		if ($this->input->method() == "post") 
 		{  
-		    $exam_session='June 2024';
+		    $exam_session='June 2025';
 			 $date = $this->input->post('payment_date');
 			 $date = str_replace('/', '-', $date);
 			 $payment_date = date('Y-m-d', strtotime($date));
@@ -3221,9 +3221,9 @@ public function practical_assignment_marks_edit(){
 		if ($this->input->post("id"))
 		{
 			$status = ($status=='skipped') ? 'S' : 'N';
-			$data = $this->Common_model->updateRecordByConditions("backlog_student",array("student_id" => $id ,"class_id"=>$class_id,'exam_year'=>'Dec 2024'),array("exam_form" => $status ));
+			$data = $this->Common_model->updateRecordByConditions("backlog_student",array("student_id" => $id ,"class_id"=>$class_id,'exam_year'=>'June 2025'),array("exam_form" => $status ));
 
-			$dt = $this->db->get_where("backlog_student",array("student_id" => $id,"class_id"=>$class_id,'exam_year'=>'Dec 2024' ))->result_array();
+			$dt = $this->db->get_where("backlog_student",array("student_id" => $id,"class_id"=>$class_id,'exam_year'=>'June 2025' ))->result_array();
 
 			if($dt[0]['exam_form'] == 'N')
 			{
