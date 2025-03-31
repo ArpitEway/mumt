@@ -396,12 +396,12 @@ class Postexam extends CI_Controller {
     {
       $this->db->select('DISTINCT(id)');
       $this->db->from('class_master');
-     // $this->db->where('backlog_exam_form_permission','Y');
+        // $this->db->where('backlog_exam_form_permission','Y');
         // $this->db->where_in('class_name',array('I SEM','III SEM'));
-     // $this->db->where_not_in('id',array('154','172','181'));
+        // $this->db->where_not_in('id',array('154','172','181'));
         // $this->db->where_in('id',array('154','181'));
-      $this->db->where_in('id',array('155','299','182'));
-     // $this->db->where('old_exam_form_permission','N');
+        // $this->db->where_in('id',array('155','299','182'));
+      $this->db->where('exam_form_permission','N');
       $classes = $this->db->get()->result();
      $class_id = array_column($classes,'id');
      if($classes){
@@ -439,7 +439,7 @@ class Postexam extends CI_Controller {
                     'roll_no' => 0,
                     'session' => $students->session,
                     'mode'=>$students->university_mode,
-                    'exam_year'=>'Dec 2024',
+                    'exam_year'=>'June 2025',
                     'exam_form' => 'N',
                     'enrollment_no' => $students->enrollment_no,
                     'center_id' => $students->center_id,
@@ -451,7 +451,7 @@ class Postexam extends CI_Controller {
                     'upload_result' =>  'N',
                     'result_permission' => 'N',
                    );
-                  $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students->student_id,'class_id'=>$students->class_id,'exam_year'=>'Dec 2024'));
+                  $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students->student_id,'class_id'=>$students->class_id,'exam_year'=>'June 2025'));
                 if( $duplicate !== Array ( )){
                     echo "Already Exist";
                   }else{
@@ -551,7 +551,7 @@ class Postexam extends CI_Controller {
        
         // $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
         $this->Common_model->last_query();
-        
+
         // if($update){
         // redirect(base_url('admin/scripts/Postexam/check_demo_backlog_student_script/'.$class_id));
         // $this->session->set_flashdata('ajax_flash_message','Your Query Submited Successfully'); 
