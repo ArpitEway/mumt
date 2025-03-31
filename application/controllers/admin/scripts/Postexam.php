@@ -401,7 +401,7 @@ class Postexam extends CI_Controller {
      // $this->db->where_not_in('id',array('154','172','181'));
      // $this->db->where_in('id',array('154','181'));
       $this->db->where_not_in('id',array('155','299','182'));
-      $this->db->where('exam_form_permission','N');
+      $this->db->where('exam_form_permission','Y');
       $classes = $this->db->get()->result();
      $class_id = array_column($classes,'id');
      if($classes){
