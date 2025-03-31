@@ -42,7 +42,8 @@
               //    $data = array('demo'=>'Y','new_exam_form_permission'=>'Y');
               // }
              
-             // $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+             $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+             
              $student_demo_details = $this->Common_model->getRecordByWhere('student',array('student_id' => $row->student_id));
              echo " <br> Promote Data ".$student_demo_details[0]->promote."<br>";
             } else{ ?>
@@ -50,58 +51,58 @@
 
               ####### Add Backlog Script For Main Exam End #######
 
-                //  $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$row->class_id,'student_id'=>$row->student_id,'exam_year'=>'June 2024'));
+                 $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$row->class_id,'student_id'=>$row->student_id,'exam_year'=>'June 2024'));
 
-                //  $whereResult = array("class_id"=>$students[0]->class_id ,"student_id"=>$students[0]->student_id, 'exam_data_id' => $students[0]->id);
-                // $old_result_datas = $this->Common_model->getRecordByWhere("old_result_data",$whereResult );
+                 $whereResult = array("class_id"=>$students[0]->class_id ,"student_id"=>$students[0]->student_id, 'exam_data_id' => $students[0]->id);
+                $old_result_datas = $this->Common_model->getRecordByWhere("old_result_data",$whereResult );
 
-                // $data = array(
-                // 'student_id' => $students[0]->student_id,
-                // 'course_group_id' =>$students[0]->course_group_id,
-                // 'class_id' => $students[0]->class_id,
-                // 'roll_no' => 0,
-                // 'session' => $students[0]->session,
-                // 'mode'=>$students[0]->university_mode,
-                // 'exam_year'=>'June 2025',
-                // 'exam_form' => 'N',
-                // 'enrollment_no' => $students[0]->enrollment_no,
-                // 'center_id' => $students[0]->center_id,
-                // 'center_code' => $students[0]->center_code,
-                // 'attempt_no' => 1,
-                // 'exam_center_id' => 0,
-                // 'exam_center_code'=>'',
-                // 'back_marksheet_no' => '',
-                // 'upload_result' =>  'N',
-                // 'result_permission' => 'N',
-                // );
-                // $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students[0]->student_id,'class_id'=>$students[0]->class_id,'exam_year'=>'June 2025'));
-                // if( $duplicate == Array ( )){
-                // $backlog_student_id = $this->Common_model->insertAll('backlog_student',$data);
+                $data = array(
+                'student_id' => $students[0]->student_id,
+                'course_group_id' =>$students[0]->course_group_id,
+                'class_id' => $students[0]->class_id,
+                'roll_no' => 0,
+                'session' => $students[0]->session,
+                'mode'=>$students[0]->university_mode,
+                'exam_year'=>'June 2025',
+                'exam_form' => 'N',
+                'enrollment_no' => $students[0]->enrollment_no,
+                'center_id' => $students[0]->center_id,
+                'center_code' => $students[0]->center_code,
+                'attempt_no' => 1,
+                'exam_center_id' => 0,
+                'exam_center_code'=>'',
+                'back_marksheet_no' => '',
+                'upload_result' =>  'N',
+                'result_permission' => 'N',
+                );
+                $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students[0]->student_id,'class_id'=>$students[0]->class_id,'exam_year'=>'June 2025'));
+                if( $duplicate == Array ( )){
+                $backlog_student_id = $this->Common_model->insertAll('backlog_student',$data);
 
-                // foreach($old_result_datas as $old_result_data)
-                // {
-                // $examData = array(
-                // 'student_id' => $old_result_data->student_id ,
-                // 'backlog_student_id' => $backlog_student_id,
-                // 'course_group_id' =>$old_result_data->course_group_id,
-                // 'class_id' => $old_result_data->class_id,
-                // 'paper_code' => $old_result_data->paper_code,
-                // 'paper_type' => $old_result_data->type,
-                // 'group_id' => '',
-                // 'paper_order' => $old_result_data->p_order,
-                // 'theory_marks' =>$old_result_data->theory_marks,
-                // 'int_marks' =>$old_result_data->int_marks,
-                // 'p_marks' => $old_result_data->p_marks,
-                // 'status' => 'C',
-                // );
-                // if ($old_result_data->result=='FAIL'){
-                // $examData['status'] = 'B';
-                // $examData['theory_marks'] = '';
-                // }
-                // $backlog_exam_form_june = $this->Common_model->insertAll('backlog_exam_form',$examData);
+                foreach($old_result_datas as $old_result_data)
+                {
+                $examData = array(
+                'student_id' => $old_result_data->student_id ,
+                'backlog_student_id' => $backlog_student_id,
+                'course_group_id' =>$old_result_data->course_group_id,
+                'class_id' => $old_result_data->class_id,
+                'paper_code' => $old_result_data->paper_code,
+                'paper_type' => $old_result_data->type,
+                'group_id' => '',
+                'paper_order' => $old_result_data->p_order,
+                'theory_marks' =>$old_result_data->theory_marks,
+                'int_marks' =>$old_result_data->int_marks,
+                'p_marks' => $old_result_data->p_marks,
+                'status' => 'C',
+                );
+                if ($old_result_data->result=='FAIL'){
+                $examData['status'] = 'B';
+                $examData['theory_marks'] = '';
+                }
+                $backlog_exam_form_june = $this->Common_model->insertAll('backlog_exam_form',$examData);
               
-                // }
-                // } 
+                }
+                } 
 
               ####### Add Backlog Script End #######
 

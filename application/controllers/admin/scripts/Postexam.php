@@ -549,8 +549,9 @@ class Postexam extends CI_Controller {
             $data = array('demo'=>'Y','new_exam_form'=>'N');
           }
        
-        // $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+        $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
         $this->Common_model->last_query();
+        
         // if($update){
         // redirect(base_url('admin/scripts/Postexam/check_demo_backlog_student_script/'.$class_id));
         // $this->session->set_flashdata('ajax_flash_message','Your Query Submited Successfully'); 
