@@ -722,7 +722,7 @@
 
 				// ( ( $student[0]->session=='July 2023' && $student[0]->class_name=="I Year") || ( $student[0]->session=='Jan 2024' &&  $student[0]->class_name=="I SEM") ) 
 
-				 if($exam_form_permission[0]->exam_form_permission=='Y' && $session[0]->exam_form_permission=="Y" && $student[0]->session=='July 2024' && $student[0]->class_name=="I SEM" )
+				 if($exam_form_permission[0]->exam_form_permission=='Y' && $session[0]->exam_form_permission=="Y" && $student[0]->session=='July 2024' && $student[0]->class_name=="I Year" )
 				 {
 				 	$data['new_exam_form'] ='N';
 				 } 
