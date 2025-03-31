@@ -363,7 +363,7 @@ class Preexam extends CI_Controller {
 		$classes = $this->Common_model->get_record('class_master','GROUP_CONCAT(id) as class_id',array('class_group' => 'Y','admission_permission' => 'N'));
 		//,'exam_form_permission' => 'Y','admission_permission' => 'Y'
 		// $class_ids = $classes[0]['class_id'];
-		$class_ids =106; //105,106,216;
+		$class_ids =216; //105,106,216;
 		$this->db->select('count(class_id) as num,course_name,class_name,class_id');
 		$this->db->where('class_id in ('.$class_ids.') and temp_exam_form="N" and demo="N" and group_id!="" and new_exam_form="N"');
 		// and payment_status="Y" // and new_exam_form="N"
