@@ -543,7 +543,7 @@ class Postexam extends CI_Controller {
         $dept_ids = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30);
         $className = $this->Common_model->getClassNameByClassId($class_id);
         $where = array('student_id'=>$student_id,'new_exam_form'=>'D');
-        if(!in_array($center_id,$dept_ids) && $className=='I SEM'){
+        if(!in_array($center_id,$dept_ids) && $className=='II SEM'){
             $data = array('demo'=>'Y','new_exam_form_permission'=>'Y');
           }else{
             $data = array('demo'=>'Y','new_exam_form'=>'N');
