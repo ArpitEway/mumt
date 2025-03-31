@@ -476,7 +476,7 @@ class Center extends CI_Controller {
 				 $where .= "  and online_payment_transaction.center_id!=".$this->session->center_id;	
 			}
 		
-			$where .= " and online_payment_transaction.fees_head='Admission Fees' and   student.payment_status='N'  and ( "; //and student.class_name not like '%SEM%'
+			$where .= " and online_payment_transaction.fees_head='Admission Fees' and   student.payment_status='N' and student.class_name not like '%SEM%' and ( "; //and student.class_name not like '%SEM%'
 			
 			foreach($permission_session as $key=>$row){
 			
