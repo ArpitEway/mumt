@@ -1408,8 +1408,8 @@ public function update_roll_no_old_data(){
 
     public function check_student_course_duration(){
         $students = $this->Common_model->getRecordByWhere('student',array('new_exam_form !='=>'D'));
-        $current_exam_month ='12';
-        $current_exam_year ='2024';
+        $current_exam_month ='6';
+        $current_exam_year ='2025';
         $student_data = [];
         foreach($students as $student){
             $course_d = $this->Common_model->getRecordById('course','course_name',$student->course_name);
