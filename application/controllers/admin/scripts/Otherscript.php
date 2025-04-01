@@ -1438,5 +1438,39 @@ public function update_roll_no_old_data(){
         $this->load->view('admin/check_student_course_duration',$data);
         $this->load->view('footer');
     }
+
+	public function check_backlog_student_course_duration(){
+        $students = $this->Common_model->getRecordByWhere('backlog_student',array('exam_form !='=>'D','exam_year'=>'June 2025' ));
+        $current_exam_month ='6';
+        $current_exam_year ='2025';
+        $student_data = [];
+        foreach($students as $student){
+			$course_d = $this->Common_model->getRecordById('course','course_group_id',$student->course_group_id);
+			$student_d = $this->Common_model->getRecordById('student','student_id',$student->student_id);
+            $due = explode(" ",$student_d->session);
+             if($due[0]=="July"){
+              $month = "6";
+              $year = $due[1]+$course_d->max_duration;
+             }else{
+              $month = "12";
+              $year = $due[1]+$course_d->max_duration-1;
+             }
+             $course_d->max_duration." Years".'('.$month." ".$year.')';
+
+            if($year == $current_exam_year && $month < $current_exam_month){
+                array_push($student_data,$student);
+            }elseif($year < $current_exam_year){
+              array_push($student_data,$student);
+            }else{
+                continue;
+            }
+          
+        }
+
+        $data['students'] = $student_data;
+        $this->load->view('header',array('title'=>'Backlog Student Course Duration'));
+        $this->load->view('admin/check_backlog_student_course_duration',$data);
+        $this->load->view('footer');
+    }
 }
 ?>
