@@ -7,24 +7,29 @@
 			<div>
 				<ul>
 
-				<li><b><img src="<?=base_url('assets/images/center/new.gif')?>" alt="">
+				<li style="color:red"><img src="<?=base_url('assets/images/center/new.gif')?>" alt=""> <b>
+				आवश्यक सुचना :-
+				सूचित किया जाता है कि मई - जून 2025 में आयोजित होने वाली  परीक्षाओं के लिये  परीक्षा आवेदन पत्र भरने की अंतिम तिथि 30 अप्रैल 2025 एवं  विलम्ब शुल्क 200 रुपये सहित परीक्षा आवेदन पत्र भरने की अंतिम तिथि 08 मई 2025 निर्धारित की गयी है। निर्धारित तिथि तक परीक्षा आवेदन पत्र भरने की प्रक्रिया पूर्ण करे|  </a>
+				</b>
+				</li><br>
+				<!-- <li><b>
 				<a  href="<?=base_url('assets/images/center/')?>Time-Table-PGDCA-DCA-2025.pdf" download> Time Table PGDCA & DCA 2025 - Click Here </a>
 				</b>
 				</li><br>
 
-				<li><b><img src="<?=base_url('assets/images/center/new.gif')?>" alt="">
+				<li><b>
 				<a  href="<?=base_url('assets/images/center/')?>Time-Table-PGDG&C-2025.pdf" download> Time Table PGDG&C I Sem. 2025 - Click Here </a>
 				</b>
 				</li><br>
-				<li><b><img src="<?=base_url('assets/images/center/new.gif')?>" alt="">
+				<li><b>
 				<a  href="<?=base_url('assets/images/center/')?>Time-Table-MBA-2025.pdf" download> Time Table MBA I Sem. 2025 - Click Here </a>
 				</b>
-				</li><br>
-				<li style="color:red"><img src="<?=base_url('assets/images/center/new.gif')?>" alt=""> <b>
+				</li><br> -->
+				<!-- <li style="color:red"> <b>
 				आवश्यक सुचना :-
 सर्व संबंधितों को सूचित किया जाता है कि विश्वविद्यालय द्वारा संचालित नियमित पाठ्यक्रमों   -  एम.ए.,  एम.कॉम,  एम.एस.डब्लू , एम.एससी,  एम.बी.ए., (प्रथम / तृतीय सेमेस्टर), पी.जी.डी.सी.ए. एवं  डी.सी.ए  (प्रथम एवं द्वितीय सेमेस्टर)  के छात्रों की मुख्य / पूरक  परीक्षा जनवरी २०२५ में मुख्यालय करौंदी में आयोजित होगी| परीक्षा फॉर्म भरने की अंतिम तिथि 7 जनवरी 2025 निर्धारित की गई है| अनुरोध है कि उक्त दिनांक के पूर्व परीक्षा फॉर्म भरने की प्रक्रिया पूर्ण करे| इसके पश्चात् किसी भी आवेदन पर विचार नहीं किया जावेगा|  </a>
 				</b>
-				</li><br>	
+				</li><br>	 -->
                 <li style="color:red"><img src="<?=base_url('assets/images/center/new.gif')?>" alt=""> <b>
 				महत्त्वपूर्ण सूचना 
 सत्र 2024-25 में विश्वविद्यालय के स्वाध्यायी (प्राइवेट) पाठ्यक्रमों में पंजीयन के इच्छुक विद्यार्थियों को सूचित किया जाता है कि, उनकी परीक्षाएं विश्वविद्यालय के मुख्यालय करौंदी जिला कटनी में आयोजित की जाएगी| इस सम्बन्ध में अधिक जानकारी के लिए मोबा नं 9755590031 और 9752042834 पर संपर्क कर सकते है| </a>

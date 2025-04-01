@@ -1265,6 +1265,8 @@ class Center extends CI_Controller {
 				//$this->db->where_in('class_id',array(175));
 				$this->db->order_by("class_id", "DESC");
 				$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
+				// echo $this->Common_model->last_query();
+				// die;
 			}
 		}else if($exam_form1=="skipped"){
 			$where = array(
