@@ -1412,7 +1412,7 @@ public function update_roll_no_old_data(){
         $current_exam_year ='2025';
         $student_data = [];
         foreach($students as $student){
-            $course_d = $this->Common_model->getRecordById('course','course_name',$student->course_name);
+            $course_d = $this->Common_model->getRecordById('course','course_group_id',$student->course_group_id);
             $due = explode(" ",$student->session);
              if($due[0]=="July"){
               $month = "6";
