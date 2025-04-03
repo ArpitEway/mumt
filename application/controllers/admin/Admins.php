@@ -2143,7 +2143,7 @@ public function getStudentData()
         }
 
         if($txnDetails->fees_head=='Backlog Exam Fees'){
-            $whereStudent = array('student_id'=> $student_id);
+            $whereStudent = array('student_id'=> $student_id ,'exam_year'=>'June 2025');
 		    $result = $this->Common_model->updateRecordByConditions('backlog_student',$whereStudent,$updateData);
         }else{
             $whereStudent = array('student_id'=> $student_id);
@@ -2768,11 +2768,13 @@ public function update_exam_datewise_permission(){
 		$Fess_head = $this->input->post('fees_head');
 		$dateTime = $this->input->post('dateTime');
 		$student_id = $this->input->post('student_id');
-		$where = array('student_id'=>$student_id);
+		
         if($Fess_head == "Backlog Exam Fees"){
             $this->db->order_by("id",'desc');
+			$where = array('student_id'=>$student_id,'exam_year'=>'June 2025');
             $student_details =  $this->Common_model->getRecordByWhere('backlog_student',$where);
         }else{
+			$where = array('student_id'=>$student_id);
             $student_details =  $this->Common_model->getRecordByWhere('student',$where);
         }
 		
@@ -2783,7 +2785,7 @@ public function update_exam_datewise_permission(){
 		if($Fess_head == 'Admission Fees'){
 	     $session = $student_details[0]->session;
 		}else{
-			$session = 'Dec 2024';
+			$session = 'June 2025';
 		}	
 		$class_id = $student_details[0]->class_id;
 		$name = $this->Common_model->getStudentNameById($student_details[0]->student_id);

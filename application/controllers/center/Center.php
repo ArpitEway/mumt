@@ -3628,7 +3628,7 @@ public function practical_assignment_marks_edit(){
 	}
 
 	public function support_system_complaint($param = ""){
-		redirect(base_url());
+		//redirect(base_url());
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}else{
@@ -3748,7 +3748,7 @@ public function practical_assignment_marks_edit(){
 	public function getsupportComplaint()
 	{
 		$data = $row = array();
-		$where = 'support_complaint.center_id='.$this->session->center_id;
+		$where = 'support_complaint.center_id='.$this->session->center_id .' and `support_complaint`.`date`>"2025-04-01"';
 		$column_order = array(null,'student.student_id','student.enrollment_no','name','course_name','class_name','details','date','status','support_complaint.remark');
 		$column_search = array('student.student_id','student.enrollment_no','name','course_name','class_name','details','date','support_complaint.status','support_complaint.remark','support_complaint.reply_text','support_complaint.department');
 		$DataTableArray = array(
