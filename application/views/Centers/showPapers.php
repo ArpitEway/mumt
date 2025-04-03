@@ -251,7 +251,8 @@
 			$remove_class_from_center =explode(',', $master->remove_class_from_center);
 			$class_permission = $this->Common_model->get_record('class_master','exam_form_permission',array('id'=>$student['class_id']));
 			
-			if(($center_permission[0]['exam_form_permission']=='Y' && $student['new_exam_form']=='N' && $student['temp_exam_form']=='Y' )  && ($class_permission[0]['exam_form_permission']=='Y' || $center_permission[0]['temp_exam_form']=='Y') ){ 
+			if(($center_permission[0]['exam_form_permission']=='Y' && $student['new_exam_form']=='N' && 
+			$student['temp_exam_form']=='Y' )  && ($class_permission[0]['exam_form_permission']=='Y' || $center_permission[0]['temp_exam_form']=='Y') ){ 
 				$center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29,1975,2098,2115 );
 				if(in_array($this->session->center_id, $center_ids) ){
                     $where = array('session' =>$student['session'],
@@ -274,6 +275,11 @@
 				}
 				
 			}
+
+			$where=array('center_id'=>$student['center_id'],'exam_session'=>'June 2025','fees_head'=>'Exam Fees','payment'=>'Y','student_id'=>$student['student_id']);
+			$paid= $this->Common_model->getRecordByWhere('online_payment_transaction',$where);
+			if(!$paid){
+			
 						?> 
 							<div class="row d-flex justify-content-center p-3">
 								<!-- <a class="btn btn-success" data-fees='<?=$fees[0]->program_fees+$fees[0]->exam_fees;?>'  href="<?= base_url('paid_by_university/'.$student_id) ?>">Paid By University</a> -->
@@ -281,7 +287,7 @@
 							</div> 
 						
 						<?php
-
+				}
 				}else if((!in_array($student['class_id'],$remove_class_from_center)) || ( $center_permission[0]['temp_exam_form']  !='N')) 
 						{
 						?> 
