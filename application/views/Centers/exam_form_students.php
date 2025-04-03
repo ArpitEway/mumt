@@ -49,11 +49,13 @@
                 continue;
             }
             $center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29,1975,2098,2115 );
+            $pending="";
 				if(in_array($this->session->center_id, $center_ids) ){
                      $where=array('center_id'=>$student->center_id,'exam_session'=>'June 2025','fees_head'=>'Exam Fees','payment'=>'Y','student_id'=>$student->student_id);
                    $paid= $this->Common_model->getRecordByWhere('online_payment_transaction',$where);
                    if($paid){
-                    continue;
+                    //continue;
+                    $pending="Verfication Pending";
                    }
                 }
             $where = array(
@@ -100,9 +102,11 @@
                <td>
                 <?php if ($student->temp_exam_form=='N'){ ?>
                     <a class="btn btn-primary" href="<?=base_url('select_papers/'.$student_id)?>">Select Papers</a>
-                <?php }else if ($student->temp_exam_form=='Y') { ?>
+                <?php }else if ($student->temp_exam_form=='Y' && $pending=="") { ?>
                     <a class="btn btn-primary" href="<?=base_url('showPapers/'.$student_id)?>">Fill Form</a>
-                <?php } ?>
+                <?php } else{ ?>
+                    <a class="btn btn-primary" href="#"><?=$pending?></a>
+                <?php } ?>    
             </td>
              <td>
                    <input type="button" data-id = "<?=$student->student_id;?> " class="btn btn-danger check_skipped" value="skipped">
