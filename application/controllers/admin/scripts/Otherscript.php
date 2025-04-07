@@ -1472,5 +1472,30 @@ public function update_roll_no_old_data(){
         $this->load->view('admin/check_backlog_student_course_duration',$data);
         $this->load->view('footer');
     }
+
+	public function set_abc_in_student($start){
+		$this->db->select('*');
+       	$this->db->from('abc');
+          
+        $this->db->where('status ="N" ');   
+        $start=0;
+		$this->db->limit(1000,$start);
+		$rows=$this->db->get()->result();
+		$i=1;
+		foreach($rows as $row){
+			echo "<pre>";
+			print_r($row);
+			//echo $row->enrollment_id;
+			$data['abc_id']=$row->abc_id;
+			$where = array('enrollment_no'=>$row->enrollment_id,'abc_id'=>0);
+			$update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+
+			$abcdata['status']='Y';
+			$where = array('enrollment_id'=>$row->enrollment_id);
+			$abcupdate =$this->Common_model->updateRecordByConditions('abc',$where,$abcdata);
+		}
+
+
+	}
 }
 ?>
