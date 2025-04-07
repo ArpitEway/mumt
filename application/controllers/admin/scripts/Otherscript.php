@@ -1473,7 +1473,7 @@ public function update_roll_no_old_data(){
         $this->load->view('footer');
     }
 
-	public function set_abc_in_student($start){
+	public function set_abc_in_student(){
 		$this->db->select('*');
        	$this->db->from('abc');
           
