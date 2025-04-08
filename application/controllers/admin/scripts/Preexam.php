@@ -382,7 +382,7 @@ class Preexam extends CI_Controller {
 		$this->load->view('admin/script/footer');
 	}
 
-	public function upload_group_exam_paper_sub($class_id)
+	/*public function upload_group_exam_paper_sub($class_id)
 	{
 		$where = array('class_id' => $class_id,
 					//'payment_status' => 'Y',
@@ -492,7 +492,7 @@ class Preexam extends CI_Controller {
 			
 		}
 	}
-
+*/
 	public function group_upload_group_exam_paper_sub($class_id)
 	{
 		$where = array('class_id' => $class_id,
