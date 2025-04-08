@@ -4,6 +4,9 @@
 	$groups = $this->Common_model->getRecordByWhere('group',$whereGroup);
 	$sub_groups = $this->Common_model->getRecordByWhere('sub_group',array('id !=' => 1));
 	$where = array('class_id' => $param1);
+	if($param1==103){
+		$where['id >'] = '1700';
+	}
 	$where['ce !='] = 'compulsory';
 	$this->db->order_by('id');
 	$papers = $this->Common_model->getRecordByWhere('paper_master',$where);
