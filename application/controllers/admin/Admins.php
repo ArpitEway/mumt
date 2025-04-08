@@ -2315,8 +2315,8 @@ public function getStudentData()
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
 		);
-		//,'mode'=>'PVT'
-		$where = array('exam_form !=' =>'D','exam_year'=>'June 2025');
+		//
+		$where = array('exam_form !=' =>'D','exam_year'=>'June 2025','mode'=>'PVT');
 		$data['counts']=$this->Common_model->backlog_exam_form_permission_status($where);
 		$this->load->view('admin/class_wise_backlog_exam_from_status',$data);
 		$this->load->view('footer');
