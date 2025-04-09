@@ -1499,5 +1499,26 @@ public function update_roll_no_old_data(){
 
 
 	}
+
+
+	public function dg_locker_data_pg(){
+		//and enrollment_no in ('AG/21204765','AG/21204615')
+		$this->load->view('header',array('title' => 'Student Data For DIGI LOCKER'));
+		// $this->db->where_in('enrollment_no',array('AI/22207463'));
+		$sql="SELECT * FROM `old_exam_data` WHERE class_id in (193,197,201,203,205,209,211,213,221,223,225,227,302,275,
+        279) and exam_year in ('January 2024') and center_id in (21,22,23,24,25,26,27,28) and exam_result !='FAIL' and marks_pattern='GRADE'  and university_mode='REG'";
+        //and enrollment_no='AI/22206868'
+		//$this->db->limit(1);
+		$rs = $this->db->query($sql)->result_array();
+        // $this->Common_model->last_query();
+        // print_r(count($rs));die;
+		$i=1;
+		
+		$this->load->model('Gradesheet_old_model_pg');
+		$data['rs']=$rs;
+		
+		$this->load->view('admin/digi_locker_pg',$data);
+		$this->load->view('footer');
+	}
 }
 ?>
