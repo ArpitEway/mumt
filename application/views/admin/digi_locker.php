@@ -1,7 +1,7 @@
 <div id="" class="dt-responsive">
 	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	
-    <table id="kt_datatable_scroll" class="table table-striped">
+    <table id="kt_datatable_scroll" class="table table-striped" border="1">
 	<thead>
     	<tr>
     		<th>ORG_NAME</th>
@@ -103,6 +103,18 @@
 			<th>SUB11_CREDIT</th>
 			<th>SUB11_GRADE_POINTS</th>
 			<th>SUB11_CREDIT_POINTS</th>
+			<th>SUB12NM</th>
+			<th>SUB12</th>
+			<th>SUB12_GRADE</th>
+			<th>SUB12_CREDIT</th>
+			<th>SUB12_GRADE_POINTS</th>
+			<th>SUB12_CREDIT_POINTS</th>
+			<th>SUB13NM</th>
+			<th>SUB13</th>
+			<th>SUB13_GRADE</th>
+			<th>SUB13_CREDIT</th>
+			<th>SUB13_GRADE_POINTS</th>
+			<th>SUB13_CREDIT_POINTS</th>
 			<th>ADMISSION_YEAR</th>
 			<th>TGPA</th>
 			<th>GRAND_TOT_CREDITS</th>
@@ -115,7 +127,7 @@
                 $studentDetail = $this->Common_model->getRecordById('student','student_id',$student['student_id']);
 				$course_detail = $this->Common_model->getRecordById('course','course_group_id',$student['course_group_id']);
 				$class_detail = $this->Common_model->getRecordById('class_master','id',$student['class_id']);
-                $gradesheetData = $this->Gradesheet_old_model->view_result_grade_for_dg_locker($student['student_id'],$student['course_group_id'],$student['class_id'],$student['university_mode']);
+                $gradesheetData = $this->Gradesheet_old_model->view_result_grade_for_dg_locker($student['student_id'],$student['course_group_id'],$student['class_id'],$student['university_mode'],$student['id']);
                 $exam_arr=explode(" ",$student['exam_year']);
 				$session=$exam_arr[1]-1;
 				$session_data=$session.'-'.$exam_arr[1];
@@ -144,11 +156,16 @@
                 echo " <td>".$studentDetail->center_name."  </td> ";
                 echo $gradesheetData['html'];
 				$td_count=0;
-				$td_count=($gradesheetData['papercount']-2)*6;
+			//	echo $gradesheetData['papercount'];
+				 $td_count=($gradesheetData['papercount']-2)*6;
+				
+				$add_extra=114;
+				//$add_extra=108;
 			
-				 $loop_td_count=102-36-$td_count;
+				  $loop_td_count=$add_extra-36-$td_count;
 				for($c=1;$c<=$loop_td_count;$c++){
 					echo "<td> </td>";
+					
 				}
 				$sess_arr=explode(" ",$student['session']);
 				echo "<td>".$sess_arr[1]."</td>";
