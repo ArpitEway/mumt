@@ -1013,22 +1013,24 @@ class Gradesheet_old_model extends CI_Model
 		// print_r($this->foundation_paper);
 	}
 //DG Locker
-	public function view_result_grade_for_dg_locker($student_id,$course_group_id,$class_id,$mode)
+	public function view_result_grade_for_dg_locker($student_id,$course_group_id,$class_id,$mode,$id)
 	{
 		// $table = $this->Common_model->getMaster('exam_form_table');
 		$this->db->order_by('sub_group_id');
-		$std  = $this->Common_model->getRecordByWhere('old_result_data',array('class_id'=> $class_id,'student_id'=>$student_id));
+		$std  = $this->Common_model->getRecordByWhere('old_result_data',array('class_id'=> $class_id,'student_id'=>$student_id,'exam_data_id'=>$id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
 		
 		if($std[0]->sub_group_id == 1){
-			$papers = $this->Common_model->get_all_old_papers($student_id,$class_id);
+			$papers = $this->Common_model->get_all_old_papers($student_id,$class_id ,$id);
 		}
 		if($this->classData->class_group == 'Y'){
-		$papers_list = $this->Common_model->get_all_old_group_papers($student_id,$class_id);
+		$papers_list = $this->Common_model->get_all_old_group_papers($student_id,$class_id,$id);
 		}
 		// get_all_group_papers
-		// print_r($papers);die;
+		// echo count($papers);
+		// echo "<br><pre>";
+		//  print_r($papers);die;
 		
 		// print_r($this->allclass);die;
 		$this->classCount = count($this->allclass);
@@ -1180,7 +1182,7 @@ class Gradesheet_old_model extends CI_Model
 		}
 	}
 
-	public function view_old_results($student_id,$course_group_id,$class_id,$mode,$id, $exam_status)
+	public function view_old_results($student_id,$course_group_id,$class_id,$mode,$id="", $exam_status="")
 	{
         // $papers = $this->Common_model->get_all_old_papers($student_id,$class_id);
         $this->db->order_by('sub_group_id');
@@ -1197,7 +1199,7 @@ class Gradesheet_old_model extends CI_Model
 		if($this->classData->class_group == 'Y' || (in_array($session[1],array(2021,2022)) && $class_id == 101)){
 		$papers_list = $this->Common_model->get_all_old_group_papers($student_id,$class_id,$id);
 		}
-	
+		
 	
 		// get_all_group_papers
 		//  print_r($papers);die;
