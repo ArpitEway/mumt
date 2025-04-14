@@ -1483,7 +1483,7 @@ public function update_roll_no_old_data(){
         $this->db->where('status ="N"');   
         $this->db->where('enrollment_id !="-"');   
 		$start=0;
-		$this->db->limit(1000,$start);
+		$this->db->limit(10,$start);
 		$rows=$this->db->get()->result();
 		$i=1;
 		foreach($rows as $row){
@@ -1494,6 +1494,9 @@ public function update_roll_no_old_data(){
 			$data['abc_id']=$row->abc_id;
 			$where = array('enrollment_no'=>$row->enrollment_id,'abc_id'=>0);
 			$update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+			$where_abc = array('EnrollmentNo'=>$row->enrollment_id,'abc_id'=>0);
+			$update =$this->Common_model->updateRecordByConditions('student_abc_id',$where_abc,$data);
+
 
 			$abcdata['status']='Y';
 			$where = array('enrollment_id'=>$row->enrollment_id);

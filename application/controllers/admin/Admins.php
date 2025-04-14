@@ -3180,11 +3180,11 @@ public function update_exam_datewise_permission(){
             $this->load->model('GradeSheet_old_model_pg');
 			$this->load->view('admin/generate_gradesheet_tr_pg',$data);
 		}
-		else if ($class_id!=168 && $class_id!=256) {
+		else if ($class_id!=168 && $class_id!=256 && $class_id!=257) {
 			
 			$this->load->view('admin/generate_tr',$data);
 		}
-		else if( $class_id==256) {
+		else if( $class_id==256 || $class_id==257 ) {
 			
 			$this->load->view('admin/generate_tr_sessional',$data);
 		}
