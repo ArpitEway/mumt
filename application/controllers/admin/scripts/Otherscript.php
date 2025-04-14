@@ -1129,7 +1129,7 @@ public function update_roll_no_old_data(){
 		//$sql="SELECT * FROM `old_exam_data` WHERE class_id in (131,125,119,116,110,101,134,107,104) and exam_year in ('August 2022','Aug 2022') and center_id in (21,22,23,24,25,26,27,28)   and university_mode='REG'";
 		$exam_year="June 2024";
 		$class_ids='101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136';
-		 $sql="SELECT * FROM `old_exam_data` WHERE class_id in ($class_ids) and exam_year in ('".$exam_year."') and exam_result !='FAIL'  and  university_mode='REG' AND marks_pattern='GRADE' and  exam_status='R' ";
+		 $sql="SELECT * FROM `old_exam_data` WHERE class_id in ($class_ids) and exam_year in ('".$exam_year."') and exam_result !='FAIL' and marks_pattern='GRADE' and  exam_status='R' ";
 		$rs = $this->db->query($sql)->result_array();
 		$i=1;
 		$this->load->model('Gradesheet_old_model');
