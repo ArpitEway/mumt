@@ -1509,7 +1509,7 @@ public function update_roll_no_old_data(){
 
 	public function dg_locker_data_pg(){
 		//and enrollment_no in ('AG/21204765','AG/21204615')
-		$exam_year='January 2024';
+		$exam_year='June 2024';
 		$this->load->view('header',array('title' => 'Student Data For DIGI LOCKER '.$exam_year));
 		// $this->db->where_in('enrollment_no',array('AI/22207463'));
 		$class_cbcs = '193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302,303,304,305,278,282,250,252,216,232,236,238,240,246,248,254,218,305,210,243';
@@ -1530,5 +1530,35 @@ public function update_roll_no_old_data(){
 		$this->load->view('footer');
 	}
 
-	}
+	public function check_agpa_sgpa($startlimit =0){
+		$start=0;
+		if($startlimit==!0){
+			$start=($startlimit-1)*5000;
+			$this->db->limit(5000,$start);
+			$pagetitle=$startlimit;
+		}
+       
+		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,111,117,120,126,129,132,103,106,109,112,118,121,127,130,133,136);
+       
+		$this->load->model('Gradesheet_old_model');
+		$this->db->where_in('class_id', $class_ids);
+        $old_datas = $this->Common_model->getRecordByWhere('old_exam_data', array('exam_year'=>'June 2024', 'exam_status'=>'R','marks_pattern'=>'GRADE','university_mode'=>'PVT'));
+       $student = [];
+        foreach($old_datas as $data){
+           
+          $gradeData = $this->Gradesheet_old_model->check_agpa($data->student_id,$data->course_group_id,$data->class_id,$data->university_mode, $data->id);
+		
+		  if($gradeData['agpa'] != $data->agpa_sgpa ){
+			$student [] =  $data->id;	
+			}
+				
+        }
+
+		foreach($student as $std){
+			echo $std.',';
+		}
+       
+         echo 'Count :' .count($student);
+    }
+}
 ?>
