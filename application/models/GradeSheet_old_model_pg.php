@@ -298,7 +298,7 @@ class GradeSheet_old_model_pg extends CI_Model
 		//$this->echo_result_grade(); 
 		$this->echo_result_digi();
 		 $this->agpa = $this->tot_credit_point/$this->tot_credit;
-		// $this->set_result();
+		$this->set_result();
 		//$this->total_grade();
 		
 		return $this->result('y');

@@ -4,6 +4,7 @@
     <table id="kt_datatable_scroll" class="table table-striped"  >
 	<thead>
     	<tr>
+		<th>S.No.</th>
     		<th>ORG_NAME</th>
 			<th>ACADEMIC_COURSE_ID</th>
 			<th>COURSE_NAME</th>
@@ -123,12 +124,13 @@
 	<tbody>
 		
 			<?php 
+				$sno=1;
             foreach ($rs as $student) {
                 $studentDetail = $this->Common_model->getRecordById('student','student_id',$student['student_id']);
 				$course_detail = $this->Common_model->getRecordById('course','course_group_id',$student['course_group_id']);
 				$class_detail = $this->Common_model->getRecordById('class_master','id',$student['class_id']);
                 $gradesheetData = $this->Gradesheet_old_model_pg->view_result_grade_for_dg_locker($student['student_id'],$student['course_group_id'],$student['class_id'],$student['university_mode'],$student['id']);
-
+			
                 //previous data
                 
                 $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$student['course_group_id'],'mode'=>'Semester'));
@@ -165,7 +167,7 @@
 				elseif($studentDetail->gender=='Female'){
 					$gender='F';
 				}
-                echo "<tr><td>".$studentDetail->center_name."  </td> <td>".$course_detail->course_code."</td><td>".$studentDetail->course_name."  </td> <td></td> ";
+                echo "<tr><td>".$sno++."</td><td>".$studentDetail->center_name."  </td> <td>".$course_detail->course_code."</td><td>".$studentDetail->course_name."  </td> <td></td> ";
                 //<td>".$student['student_id']." </td>
                 echo "<td>".$session_data." </td><td>".$student['enrollment_no']." </td><td>".$student['roll_no']." </td><td>".$student['name']." </td>"."<td>".$gender." </td>"." <td>".$studentDetail->dob." </td><td>".$student['f_h_name']." </td><td>".$student['mother_name']." </td><td>".$gradesheetData['result']." </td><td>".$exam_arr[1]." </td><td>".$exam_arr[0]." </td><td>".$class_detail->class_name."</td><td>".$gradesheetData['tot_credit']." </td><td>". $gradesheetData['credit_point']." </td><td>".$gradesheetData['total_grade_point']."</td><td>".($gradesheetData['total_grade_point'] + $prev_tot_grade)."</td><td>".($gradesheetData['tot_credit'] +$prev_tot_crdit)."</td>";
                 ?>

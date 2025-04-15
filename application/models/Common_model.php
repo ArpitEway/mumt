@@ -535,6 +535,14 @@ class Common_Model extends CI_Model{
 		return $result->$field;
 	}
 
+	public function getRecordsWithLimit($table, $where = [], $limit = 1000, $offset = 0)
+{
+    $this->db->where($where);
+    $query = $this->db->get($table, $limit, $offset);
+    return $query->result();
+}
+
+
 	public function getMaster($field){
 		$this->db->select($field);
 		$qry= $this->db->get('master');
