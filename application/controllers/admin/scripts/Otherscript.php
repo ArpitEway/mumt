@@ -1523,11 +1523,12 @@ public function update_roll_no_old_data(){
         // print_r(count($rs));die;
 		$i=1;
 		
-		$this->load->model('Gradesheet_old_model_pg');
+		$this->load->model('GradeSheet_old_model_pg');
 		$data['rs']=$rs;
 		
 		$this->load->view('admin/digi_locker_pg',$data);
 		$this->load->view('footer');
 	}
-}
+
+	}
 ?>
