@@ -1267,6 +1267,7 @@ class Gradesheet_old_model extends CI_Model
 		if ($this->fail_count>0) {
 			 $require_grace_marks = $this->fail_min_marks-$this->fail_obt_marks;
 		}
+		
 		foreach ($this->result_array as $key => $result) {
 			$paper = explode('#',$result['paper_name']);
 			//print_r($result);
@@ -1284,6 +1285,7 @@ class Gradesheet_old_model extends CI_Model
 				$credit_point = $result['credit']*4;
 				$this->result_array[$key]['credit_point']=$credit_point;
 				$this->tot_credit_point += $credit_point;
+				$result['grade_point']=4;
 			//	echo "<td align='center' colspan='3'><span class='style4'>".$result['credit']."</span></td>";
 			//	echo "<td align='center' colspan='3'><span class='style4'>".$result['credit']."</span></td>";
 			//	echo "<td align='center' colspan='2'><span class='style4'>4</span></td>";
@@ -1318,8 +1320,9 @@ class Gradesheet_old_model extends CI_Model
 				$this->html.= "<td >".$result['obt_credit']."</td>";
 				$this->html.= "<td >".$result['credit_point']."</td>";
 				$this->html.= "<td >".$result['grade_point']."</td>";
-				$this->total_grade_point+=$result['grade_point'];
+				
 			}
+			$this->total_grade_point+=$result['grade_point']; 
 			//echo "</tr>";
 		}
 	}
