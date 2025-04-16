@@ -539,13 +539,16 @@ class Center extends CI_Controller {
 		
 			if(in_array($this->session->center_id, $center_ids_dep)){
 				$modal ='<a href="#"  data-student_name = "'.$result->name.'"  data-student_id="'.$this->Common_model->encrypt_decrypt($result->student_id).'" class="btn btn-primary btn-sm font-weight-bold pay1" data-toggle="modal" data-target="#kt_datepicker_modal" "  data-amount= "'.$result->amount.'">Receive</a>';
+				
 			}else{
 				
 			 $modal = '<a href="#" data-student_id="'.$this->Common_model->encrypt_decrypt($result->student_id).'" data-id="'.$this->Common_model->encrypt_decrypt($result->id).'" class="btn btn-info btn-sm pay" >Pay</a>';
 				//  if($late_privte_admission_fees=='Y'){
-				 	$deleteBtn = '<a href="#" data-student_id="'.$result->student_id.'" data-id="'.$this->Common_model->encrypt_decrypt($result->id).'" class="btn btn-info btn-danger deleteForm " >Delete</a>';
+				 
 				//  }
 			}
+			
+			$deleteBtn = '<a href="#" data-student_id="'.$result->student_id.'" data-id="'.$this->Common_model->encrypt_decrypt($result->id).'" class="btn btn-info btn-danger deleteForm " >Delete</a>';
 			
 			$i++;
 			// if($late_privte_admission_fees=='Y'){
