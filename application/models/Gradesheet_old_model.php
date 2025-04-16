@@ -28,7 +28,7 @@ class Gradesheet_old_model extends CI_Model
 	protected $fail_min_marks;
 	protected $result_array = array();
 	protected $paper_array = array();
-
+	protected $total_grade_point;
 	function __construct()
 	{
 		

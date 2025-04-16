@@ -140,7 +140,8 @@
 				$grand_tot_credit=0;
 				$prev_tot_credit_point=0;
 				$class_order = 1;
-			
+				$prev_tot_grade_point=0;
+				$tot_grade_point=0;
 				 foreach($classes as $cls){
 					$count++;
 					if($cls->id < $student['class_id']){
@@ -152,10 +153,10 @@
 					$old_data = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student['student_id'],'class_id'=>$cls->id));
 					 $gradeData   = $this->Gradesheet_old_model->view_old_results($student['student_id'],$student['course_group_id'],$cls->id,$student['university_mode'],$old_data[0]->id);
 					
-					 $prev_tot_credit += $gradeData['obt_credit'];
-					 $prev_tot_credit_point += $gradeData['credit_point'];
-					  $prev_tot_grade_point += $gradeData['total_grade_point'];
-					  $prev_total_credit += $gradeData['tot_credit'];
+					 $prev_tot_credit += (int)$gradeData['obt_credit'];
+					 $prev_tot_credit_point += (int) $gradeData['credit_point'];
+					  $prev_tot_grade_point += (int) $gradeData['total_grade_point'];
+					  $prev_total_credit += (int) $gradeData['tot_credit'];
 					
 				   }
 				 
@@ -182,10 +183,11 @@
                 <td><?=number_format((float)$gradesheetData['agpa'], 2, '.', '')?></td>
 				<td><?= $studentDetail->abc_id;?></td>
                 <?php
+				$tot_grade_point=((int)$gradesheetData['total_grade_point'] + (int)$prev_tot_grade_point);
                	echo "<td>".$class_detail->class_name."</td>";
-                echo "<td>".((int)$gradesheetData['total_grade_point'] + (int)$prev_tot_grade_point)."</td>";
+                echo "<td>".$tot_grade_point."</td>";
                 echo "<td>".$cgpa."</td>";
-                echo "<td>".((int)$gradesheetData['total_grade_point'] + (int)$prev_tot_grade_point)."</td>";
+                echo "<td>".$tot_grade_point."</td>";
                 echo " <td>".$studentDetail->center_name."  </td> ";
                 echo $gradesheetData['html'];
 				$td_count=0;
