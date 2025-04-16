@@ -640,6 +640,9 @@ class Gradesheet_old_model extends CI_Model
 
 				
 			);
+			if($forDG == 'old_data'){
+				$data['total_grade_point']=$this->total_grade_point;
+			}
 			if(!empty($forDG)){
 				$data['html']=$this->html;
 				$data['papercount']=$this->papercount;
@@ -1326,6 +1329,8 @@ class Gradesheet_old_model extends CI_Model
         // $papers = $this->Common_model->get_all_old_papers($student_id,$class_id);
         $this->db->order_by('sub_group_id');
 		$std  = $this->Common_model->getRecordByWhere('old_result_data',array('class_id'=> $class_id,'student_id'=>$student_id, 'exam_data_id'=>$id));
+		
+
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		$student = $this->Common_model->getRecordById('student','student_id',$student_id);
 		$session = explode(' ',$student->session);
@@ -1353,6 +1358,7 @@ class Gradesheet_old_model extends CI_Model
 		$this->mode = $mode;
 		$this->fail_count=0;
 		$this->obt_tot_credit=0;
+		$this->total_grade_point=0;
 		$this->fail_tot_marks = 0;
 		$this->fail_min_marks = 0;
 		$this->fail_obt_marks = 0;
@@ -1398,6 +1404,7 @@ class Gradesheet_old_model extends CI_Model
         // echo '<pre>';
         // print_r($this->result_array);
         foreach ($this->result_array  as $key => $result) {
+			$this->total_grade_point+=$result['grade_point'];
             if($result['sub_group'] == 1){ 
                 if(($result['f_abs'] === 'ABS' && $result['obt_marks'] != '0')){
                         $result['obt_credit'] = 2;
@@ -1419,7 +1426,7 @@ class Gradesheet_old_model extends CI_Model
 			$this->set_result();
 			// $this->AGPA_pvt();
 		}
-		return $this->result();
+		return $this->result('old_data');
 
     }
 	public function check_grace_for_old(){
