@@ -274,6 +274,11 @@
 								<span class="nav-text">Exam Form June 2025</span>
 							</div>
 					</a> 
+					<a class="border-0 custom-menu-item" id="karaundi-exam" >
+							<div>
+								<span class="nav-text">Exam Form Karaundi June 2025</span>
+							</div>
+					</a> 
 					<a class="border-0 custom-menu-item" href="<?=base_url('backlog_exam_form_students');?>">
 							<div>
 								<span class="nav-text">Backlog Exam Form June 2025</span>
@@ -476,7 +481,26 @@ $("#main-exam").click(function (e) {
     }).then((result) => {
         // Handle confirmation result
         if (result.isConfirmed) {
-            window.location.href =  "<?=base_url('exam_form_students');?>";
+            window.location.href =  "<?=base_url('exam_form_students/notSubmitted/center');?>";
+           // console.log("User agreed.");
+        }
+    });
+});
+
+$("#karaundi-exam").click(function (e) {
+    Swal.fire({
+        html: `<b> आवश्यक सुचना :- </b>सूचित किया जाता है कि मई - जून 2025 में आयोजित होने वाली  परीक्षाओं के लिये  परीक्षा आवेदन पत्र भरने की अंतिम तिथि 30 अप्रैल 2025 एवं  विलम्ब शुल्क 200 रुपये सहित परीक्षा आवेदन पत्र भरने की अंतिम तिथि 08 मई 2025 निर्धारित की गयी है। निर्धारित तिथि तक परीक्षा आवेदन पत्र भरने की प्रक्रिया पूर्ण करे|`,
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonText: "I Agree",
+        didOpen: () => {
+            // Adjust the width after the modal has opened
+            $('.swal2-popup').css('width', '38%');
+        },
+    }).then((result) => {
+        // Handle confirmation result
+        if (result.isConfirmed) {
+            window.location.href =  "<?=base_url('exam_form_students/notSubmitted/karaundi');?>";
            // console.log("User agreed.");
         }
     });

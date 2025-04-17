@@ -1,8 +1,8 @@
 <div class=" mt-5" >
     <div class="row justify-content-around mb-10">
-        <a href="<?=base_url('exam_form_students/notSubmitted')?>" class="btn btn-primary">Not Submitted</a>
-        <a href="<?=base_url('exam_form_students/submitted')?>" class="btn btn-success">Submitted</a>
-        <a href="<?=base_url('exam_form_students/skipped')?>" class="btn btn-warning">Skipped</a>
+        <a href="<?=base_url('exam_form_students/notSubmitted/'.$center)?>" class="btn btn-primary">Not Submitted</a>
+        <a href="<?=base_url('exam_form_students/submitted/'.$center)?>" class="btn btn-success">Submitted</a>
+        <a href="<?=base_url('exam_form_students/skipped/'.$center)?>" class="btn btn-warning">Skipped</a>
     </div>
 <div class="container-fluid text-center mb-10">
     <?php if ($exam_form_button=="notSubmitted"): ?>
@@ -44,8 +44,8 @@
             //     continue;
             // }
            
-             //June 2025
-            if($student->university_mode=="REG" && $student->regular_exam_form_permission=='N' && $student->class_name== 'II Year' && in_array($student->course_group_id,$exam_course_not )  ){
+             //June 2025 //&& $student->regular_exam_form_permission=='N'
+            if($student->university_mode=="REG"  && $student->class_name== 'II Year' && in_array($student->course_group_id,$exam_course_not )  ){
                 continue;
             }
             $center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29,1975,2098,2115 );

@@ -1217,7 +1217,7 @@ class Center extends CI_Controller {
 		}
 	}
 
-	public function exam_form_students($exam_form1 = 'notSubmitted'){
+	public function exam_form_students($exam_form1 = 'notSubmitted',$center=""){
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
@@ -1235,7 +1235,11 @@ class Center extends CI_Controller {
 		}
 		//stop admission of class
 		
-		
+		if($center =="center"){
+			$this->db->where('student.regular_exam_form_permission', 'N');
+		}else{
+			$this->db->where('student.regular_exam_form_permission', 'Y');
+		}
 		
 		if($exam_form1=='submitted' ){
 			if ($this->session->center_id!=13) {
@@ -1285,6 +1289,7 @@ class Center extends CI_Controller {
 		}
 		$data['exam_form_button'] = $exam_form1;
 		$data['master'] = $master;
+		$data['center'] = $center;
 		
 		//$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
 		$this->load->view('Centers/header');
