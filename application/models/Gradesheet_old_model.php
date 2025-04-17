@@ -1404,8 +1404,7 @@ class Gradesheet_old_model extends CI_Model
         if($exam_status !="B"){
             $this->check_grace_for_old();
         }
-        // echo '<pre>';
-        // print_r($this->result_array);
+
         foreach ($this->result_array  as $key => $result) {
 			$this->total_grade_point+=$result['grade_point'];
             if($result['sub_group'] == 1){ 
@@ -1444,7 +1443,6 @@ class Gradesheet_old_model extends CI_Model
 				
 				 $req_marks = $result['min_marks']-$result['obt_marks'];
 				 $obt_marks = $result['obt_marks']+$req_marks;
-				
 				if($result['sub_group']==1 && $result['f_abs']=='ABS'){
 					 $obt_credit=$result['credit']/2;
 					 $this->obt_tot_credit += $result['credit'];
@@ -1456,6 +1454,7 @@ class Gradesheet_old_model extends CI_Model
 				}
 				$this->result_array[$key]['credit_point']=$credit_point;
 				$this->tot_credit_point += $credit_point; 
+				$this->result_array[$key]['grade_point']= 4;
             }
         }
     }
