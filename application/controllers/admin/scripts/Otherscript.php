@@ -1147,6 +1147,8 @@ public function update_roll_no_old_data(){
 		$this->load->view('admin/digi_locker',$data);
 		$this->load->view('footer');
 	}
+
+	
 	
 	public function update_AGPA_CGPA_class_list(){
 		
