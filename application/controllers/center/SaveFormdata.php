@@ -55,6 +55,7 @@ class saveFormdata extends CI_Controller {
 		$data['mother_name'] = html_escape(strtoupper($this->input->post('mother_name')));
 		$data['dob'] = html_escape(date("Y-m-d", strtotime($this->input->post('dob'))));
 		$data['adhar_no'] = html_escape($this->input->post('adhar_no'));
+		$data['regular_exam_form_permission'] = 'Y';
 
 		$studentData['eligibility'] = html_escape($this->input->post('eligibility'));
 		$studentData['p_mobile_no'] = html_escape($this->input->post('p_mobile_no'));

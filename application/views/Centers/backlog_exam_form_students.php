@@ -1,8 +1,8 @@
 <div class=" mt-5" >
     <div class="row justify-content-around mb-10">
-        <a href="<?=base_url('backlog_exam_form_students/notSubmitted')?>" class="btn btn-primary">Not Submitted</a>
-        <a href="<?=base_url('backlog_exam_form_students/submitted')?>" class="btn btn-success">Submitted</a>
-        <a href="<?=base_url('backlog_exam_form_students/skipped')?>" class="btn btn-warning">Skipped</a>
+        <a href="<?=base_url('backlog_exam_form_students/notSubmitted/'.$center)?>" class="btn btn-primary">Not Submitted</a>
+        <a href="<?=base_url('backlog_exam_form_students/submitted/'.$center)?>" class="btn btn-success">Submitted</a>
+        <a href="<?=base_url('backlog_exam_form_students/skipped/'.$center)?>" class="btn btn-warning">Skipped</a>
     </div>
 <div class="container-fluid text-center mb-10">
     <?php if ($exam_form_button=="notSubmitted"): ?>
@@ -70,7 +70,7 @@
                 <?php } ?>    
              <?php if($exam_form_button=="notSubmitted"){ ?>
                <td>     
-            <a class="btn btn-primary" href="<?=base_url('backlog_showPapers/'.$student_id .'/'. $class_id)?>">View Paper</a>     
+            <a class="btn btn-primary" id="karaundi-exam" data-student = "<?=$student_id;?>" data-class="<?=$class_id?>">View Paper</a>     
             </td>
              <td>
                 <input type="button" data-id = "<?=$student->student_id;?> " class="btn btn-danger check_skipped" data-class= "<?=$student->class_id;?>" value="skipped">
@@ -120,3 +120,35 @@
     }
 });
 </script>
+<?php if($center =='karaundi') { ?>
+    <script>
+        
+$("#karaundi-exam").click(function (e) {
+   
+    Swal.fire({
+        html: `<b> आवश्यक सुचना :- </b>सूचित किया जाता है कि मई - जून 2025 में आयोजित होने वाली परीक्षाएं विश्वविद्यालय के मुख्यालय करौंदी जिला कटनी में आयोजित की जाएगी |`,
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonText: "I Agree",
+        didOpen: () => {
+            // Adjust the width after the modal has opened
+            $('.swal2-popup').css('width', '38%');
+        },
+    }).then((result) => {
+        // Handle confirmation result
+        if (result.isConfirmed) {
+            
+            window.location.href =  "<?=base_url('backlog_showPapers/');?>"+ $(this).data('student')+'/'+$(this).data('class');
+           // console.log("User agreed.");
+        }
+    });
+});
+    </script>
+    <?php }else{?>
+    <script>
+        $("#karaundi-exam").click(function (e) {
+            window.location.href =  "<?=base_url('backlog_showPapers/');?>"+ $(this).data('student')+'/'+$(this).data('class');
+        });    
+        </script>
+    <?php }?>
+  

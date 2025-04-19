@@ -110,6 +110,11 @@
 <div id="printThisDivIdOnButtonClick" class="mt-10">
 	<div id="printablediv">
 		<div class="mt-5">
+		<?php if($papers[0]->karaundi_center =='Y'){ ?>
+				<div class="alert" role="alert" style="color: #771d17;font-weight: bolder;font-size: 15px;background-color: #fcbe4b">
+				<strong>आवश्यक सूचना :</strong> सूचित किया जाता है कि मई - जून 2025 में आयोजित होने वाली परीक्षाएं विश्वविद्यालय के मुख्यालय करौंदी जिला कटनी में आयोजित की जाएगी।
+				</div>
+			<?php }?>
 			<label class="label_form label_heading "><b>Student Details</b></label>
 			<div class="form-block row text-center">
 				<div class="row col-md-10 m-auto">

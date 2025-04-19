@@ -3148,7 +3148,7 @@ public function practical_assignment_marks_edit(){
 		echo $this->load->view('Centers/time_table_old',$data,true);
 	}
 
-	public function backlog_exam_form_students($exam_form1 = 'notSubmitted'){
+	public function backlog_exam_form_students($exam_form1 = 'notSubmitted',$center=""){
 		// redirect(base_url('dashboard'));
 		$data = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
@@ -3186,7 +3186,10 @@ public function practical_assignment_marks_edit(){
 		
 		}
 		//END
+		$exam_center= ($center == 'karaundi')?"Y":"N";
+		$this->db->where('karaundi_center',$exam_center);
 		$data['documents'] = $this->Common_model->getRecordByWhere('backlog_student',$where);
+		$data['center'] = $center;
 		if($center_permission[0]['exam_form_permission']!='Y' && $exam_form1 =="notSubmitted"){
 			$data['documents'] ="";
 		} 

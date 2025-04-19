@@ -103,7 +103,7 @@
                 <?php if ($student->temp_exam_form=='N'){ ?>
                     <a class="btn btn-primary" href="<?=base_url('select_papers/'.$student_id)?>">Select Papers</a>
                 <?php }else if ($student->temp_exam_form=='Y' && $pending=="") { ?>
-                    <a class="btn btn-primary" id="karaundi-exam" data-student = "<?=$student_id;?> " >Fill Form</a>
+                    <a class="btn btn-primary" id="karaundi-exam" data-student = "<?=$student_id;?>" >Fill Form</a>
                 <?php } else{ ?>
                     <a class="btn btn-primary" href="#"><?=$pending?></a>
                 <?php } ?>    
