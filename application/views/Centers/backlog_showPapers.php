@@ -340,6 +340,7 @@ $(document).on('click','.pay1',function(){
     $("#payment_submit").on('click',function (e){
         
     //    e.preventDefault();
+	let center = "<?= ($papers[0]->karaundi_center =='Y')?'karaundi':'center';?>";
 	var formimage = $('#ajaxForm');
 	var frm = new FormData(formimage[0]);
 		
@@ -392,7 +393,7 @@ $(document).on('click','.pay1',function(){
 			$('#kt_datepicker_modal').modal('toggle');
 			//$('#student_tr_'+student_id).remove();
             // if(head1 == 'fees'){
-             window.location.href = "<?php echo base_url('backlog_exam_form_students'); ?>";
+             window.location.href = "<?php echo base_url('backlog_exam_form_students/notSubmitted/'); ?>"+center;
             //     window.location.href
             //     window.location.assign("<?php// echo base_url('exam_form_students'); ?>")
             // }else{
