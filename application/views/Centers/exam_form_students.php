@@ -36,7 +36,7 @@
          <?php
          $i = 1;
          
-         $exam_course_not=array(11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,71,72,73,74,75,76,77,78,79,80,69,70,68);
+         //$exam_course_not=array(11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,71,72,73,74,75,76,77,78,79,80,69,70,68);
          foreach($documents as $student){
            // echo "test".$student->class_id;  $student->session=="July 2023" &&
            //June 2024
@@ -45,9 +45,9 @@
             // }
            
              //June 2025 //&& $student->regular_exam_form_permission=='N'
-            if($student->university_mode=="REG"  && $student->class_name== 'II Year' && in_array($student->course_group_id,$exam_course_not )  ){
-                continue;
-            }
+            // if($student->university_mode=="REG"  && $student->class_name== 'II Year' && in_array($student->course_group_id,$exam_course_not )  ){
+            //     continue;
+            // }
             $center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29,1975,2098,2115 );
             $pending="";
 				if(in_array($this->session->center_id, $center_ids) ){
