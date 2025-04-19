@@ -279,11 +279,11 @@
 								<span class="nav-text">Backlog Exam Form June 2025</span>
 							</div>
 					</a>  
-					<!-- <a class="border-0 custom-menu-item" id="karaundi-exam" >
+					<a class="border-0 custom-menu-item" id="karaundi-exam" >
 							<div>
 								<span class="nav-text">Exam Form Karaundi June 2025</span>
 							</div>
-					</a>  -->
+					</a> 
 					<?php endif ?>
 				
 				
