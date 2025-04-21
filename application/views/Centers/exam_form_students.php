@@ -103,7 +103,7 @@
                 <?php if ($student->temp_exam_form=='N'){ ?>
                     <a class="btn btn-primary" href="<?=base_url('select_papers/'.$student_id)?>">Select Papers</a>
                 <?php }else if ($student->temp_exam_form=='Y' && $pending=="") { ?>
-                    <a class="btn btn-primary" id="karaundi-exam" data-student = "<?=$student_id;?>" >Fill Form</a>
+                    <a class="btn btn-primary karaundi-exam"  data-student = "<?=$student_id;?>" >Fill Form</a>
                 <?php } else{ ?>
                     <a class="btn btn-primary" href="#"><?=$pending?></a>
                 <?php } ?>    
@@ -165,7 +165,7 @@
 <?php if($center =='karaundi') { ?>
     <script>
         
-$("#karaundi-exam").click(function (e) {
+$(".karaundi-exam").click(function (e) {
    
     Swal.fire({
         html: '<b> आवश्यक सुचना :- </b>सूचित किया जाता है कि मई - जून 2025 में आयोजित होने वाली परीक्षाएं विश्वविद्यालय के मुख्यालय करौंदी जिला कटनी में आयोजित की जाएगी |',
@@ -187,7 +187,7 @@ $("#karaundi-exam").click(function (e) {
     </script>
     <?php }else{?>
     <script>
-        $("#karaundi-exam").click(function (e) {
+        $(".karaundi-exam").click(function (e) {
             window.location.href =  "<?=base_url('showPapers/');?>"+ $(this).data('student');
         });    
         </script>
