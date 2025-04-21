@@ -230,9 +230,9 @@
 					<!-- <a class="btn btn-success" href="<?= base_url('paid_by_university/'.$student_id) ?>">Paid By University</a> -->
                     <a href="#"  data-student_name = "<?=$student['name']?>"  data-idstudent="<?=$student['student_id']?>" data-student_id="<?= $student_id?>" class="btn btn-primary btn-sm font-weight-bold pay1" data-toggle="modal" data-target="#kt_datepicker_modal" data-amount= "1500" data-url="<?php echo site_url('center/center/update_unpaid_student'); ?>" data-head='addmission'>Paid By University</a>
 				</div> 
-                <?php
-            }else{
-            
+                
+			<?php
+			}else{
             ?>
             
 			<div class="row d-flex justify-content-center p-3">
@@ -252,7 +252,7 @@
 		<?php
 			$student_id = $this->Common_model->encrypt_decrypt($student['student_id']);
 			$center_id =  $this->session->center_id;
-			$center_permission = $this->Common_model->get_record('center','exam_form_permission,temp_exam_form,temp_admission_payment',array('id'=>$center_id));
+			$center_permission = $this->Common_model->get_record('center','exam_form_permission,temp_exam_form,temp_admission_payment,payment_gateway_permission,balance',array('id'=>$center_id));
 			$master = $this->Common_model->getSingleRow('master');
 			$remove_class_from_center =explode(',', $master->remove_class_from_center);
 			$class_permission = $this->Common_model->get_record('class_master','exam_form_permission',array('id'=>$student['class_id']));
@@ -260,7 +260,7 @@
 			if(($center_permission[0]['exam_form_permission']=='Y' && $student['new_exam_form']=='N' && 
 			$student['temp_exam_form']=='Y' )  && ($class_permission[0]['exam_form_permission']=='Y' || $center_permission[0]['temp_exam_form']=='Y') ){ 
 				$center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29,1975,2098,2115 );
-				if(in_array($this->session->center_id, $center_ids) ){
+				if(in_array($this->session->center_id, $center_ids) || $center_permission[0]['payment_gateway_permission'] == 'N'){
                     $where = array('session' =>$student['session'],
 			'course_group_id' => $student['course_group_id'],
 		);
@@ -285,7 +285,7 @@
 			$where=array('center_id'=>$student['center_id'],'exam_session'=>'June 2025','fees_head'=>'Exam Fees','payment'=>'Y','student_id'=>$student['student_id']);
 			$paid= $this->Common_model->getRecordByWhere('online_payment_transaction',$where);
 			if(!$paid){
-			
+						if(in_array($this->session->center_id, $center_ids)){
 						?> 
 							<div class="row d-flex justify-content-center p-3">
 								<!-- <a class="btn btn-success" data-fees='<?=$fees[0]->program_fees+$fees[0]->exam_fees;?>'  href="<?= base_url('paid_by_university/'.$student_id) ?>">Paid By University</a> -->
@@ -293,6 +293,19 @@
 							</div> 
 						
 						<?php
+						}else if($center_permission[0]['payment_gateway_permission'] == 'N' && $center_permission[0]['balance'] > $total_fees){
+							?>
+							<div class="row d-flex justify-content-center p-3">
+                                <a href="#"   class="btn btn-primary btn-sm font-weight-bold pay2" data-toggle="modal" data-target="#left-modal" data-amount= "<?=$total_fees;?>"  data-url="<?=base_url('paid_by_center/'.$student_id)?>" data-head='fees'>Paid By Center</a>
+							</div> 
+							<?php
+						}else{
+							?>
+							<div class="row d-flex justify-content-center p-3">
+								<a class="btn btn-success" href="<?= base_url('Payment/exam_form/'.$student_id) ?>">Process To Payment</a>
+							</div> 
+							<?php
+						}
 				}
 				}else if((!in_array($student['class_id'],$remove_class_from_center)) || ( $center_permission[0]['temp_exam_form']  !='N')) 
 						{
@@ -307,6 +320,85 @@
 			}
 
 		?>
+</div>
+
+<div id="left-modal" class="modal fade" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-md modal-right">
+    <div class="modal-content modal_height">
+      <div class="modal-header border-1">
+        <h4 class="modal-title">Student Payment</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <div class="modal-body" style="overflow-x:scroll;">
+	  <div class=" col-sm-12 m-auto">
+	<div class="row border border-primary bg-primary text-custom p-2">
+		Billing Details
+	</div>
+	<div class="row py-3 border">
+		<div class="col-sm-4 border-right">Session
+		</div>
+		<div class="col-sm-8"><?=$student['session']?>
+		</div>
+	</div>
+	<div class="row py-3 border">
+		<div class="col-sm-4 border-right">Form No
+		</div>
+		<div class="col-sm-8"><?=$student['student_id']?>
+		</div>
+	</div>
+	<div class="row py-3 border">
+		<div class="col-sm-4 border-right">Name
+		</div>
+		<div class="col-sm-8"><?=$student['name']?>
+		</div>
+	</div>
+	<div class="row py-3 border">
+		<div class="col-sm-4 border-right">Father / Husband Name
+		</div>
+		<div class="col-sm-8"><?=$student['f_h_name']?>
+		</div>
+	</div>
+	
+	<div class="row py-3 border">
+		<div class="col-sm-4 border-right">Course / Class
+		</div>
+		<div class="col-sm-8"><?=$student['course_name']?> / <?=$student['class_name']?>
+		</div>
+	</div>
+	<div class="row py-3 border">
+		<div class="col-sm-4 border-right">Mobile
+		</div>
+		<div class="col-sm-8"><?=$student['p_mobile_no']?>
+		</div>
+	</div>
+	<div class="row py-3 border">
+		<div class="col-sm-4 border-right">Email
+		</div>
+		<div class="col-sm-8"><?=$student['p_email']?>
+		</div>
+	</div>
+	<div class="row border border-primary bg-primary text-custom p-2">
+		<div class="col-sm-4 border-right">Payment Details
+		</div>
+		<div class="col-sm-8">Amount
+		</div>
+	</div>
+	<div class="row py-3 border">
+		<div class="col-sm-4 border-right">
+		Exam Fees 
+		</div>
+		<div class="col-sm-8" id="amount-center">
+	</div>
+		
+	</div>
+	<div class="row py-3 border justify-content-center">
+	
+	<a class="btn btn-default text-dark font-weight-bold" id="pay-center">Pay Now</a>
+</div>
+</div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div>
 <div class="modal fade" id="kt_datepicker_modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-md" role="document">
@@ -387,7 +479,17 @@
 </div>
 
 <script>
-
+$(document).on('click','.pay2',function(){
+	    // var name_csrf = $(this).attr('data-name_csrf');
+	    // var hash_csrf = $(this).attr('data-hash_csrf');
+	  
+		var url = $(this).attr('data-url');
+		const amount = $(this).attr('data-amount');
+		
+		$('#pay-center').attr('href',url);
+		$('#amount-center').html(amount);
+		
+	});
 $(document).on('click','.pay1',function(){
 	    var name_csrf = $(this).attr('data-name_csrf');
 	    var hash_csrf = $(this).attr('data-hash_csrf');

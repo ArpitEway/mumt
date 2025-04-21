@@ -1827,6 +1827,62 @@ class Center extends CI_Controller {
 		}
 	}
 
+	public function paid_by_center($student_id){
+		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		$student_data = $this->Common_model->getRecordByWhere('student',array('student_id'=>$student_id));
+		// echo $this->db->last_query(); die;
+		$where = array('session' =>$student_data[0]->session,
+			'course_group_id' => $student_data[0]->course_group_id,
+		);
+
+        $fees = $this->Common_model->getRecordByWhere('course',$where);
+			if( $student_data[0]->university_mode=="REG"){
+				if($student_data[0]->demo=='Y'){
+					$total_fees = $fees[0]->exam_fees;
+				}else{
+					$total_fees = $fees[0]->program_fees+$fees[0]->exam_fees;
+				}
+			}
+			else{
+				if($student_data[0]->demo=='Y'){
+					$total_fees = $fees[0]->p_exam_fees;
+				}else{
+					$total_fees = $fees[0]->p_program_fees+$fees[0]->p_exam_fees;
+				}
+				
+			}
+		$data['student_id']=$student_data[0]->student_id;
+		$data['center_id']=$student_data[0]->center_id;
+		$data['exam_session'] = "June 2025";
+		$data['course_group_id']=$student_data[0]->course_group_id;
+		$data['class_id']=$student_data[0]->class_id;
+		$data['amount'] = $total_fees;
+		$data['fees_head']='Exam Fees';
+		$data['student_name']=$student_data[0]->name;
+		$data['payment']='Y';
+		$data['payment_status']='Paid By Center';
+		$data['payment_date']= date("Y-m-d");
+		$data['receipt_number']= $this->input->post('receipt_number');
+		$data['admission_type']= ($student_data[0]->university_mode=="REG")?'Regular':'Private';
+		$data['payment_time']=date("h:i:s");
+        $data['remark'] = "Paid By Center";
+		 $insert = $this->Common_model->insertAll('online_payment_transaction',$data);
+		$balance = $this->Common_model->getRecordById('center','id',$student_data[0]->center_id)->balance;
+		$remainig_balance = $balance - $total_fees;
+	
+		$this->Common_model->updateRecordByConditions('center','id='.$student_data[0]->center_id, array('balance'=>$remainig_balance));
+		$student_data = array('new_exam_form' => 'Y');
+		$update = $this->Common_model->updateRecordByConditions('student','student_id='.$student_id,$student_data);
+       
+		if($insert){
+        
+			$this->session->set_flashdata('ajax_flash_message','Paid By Center Successfully');
+			 
+		}else{
+			$this->session->set_flashdata('ajax_flash_message','Something Went Wrong');
+		}
+		// redirect(base_url('exam_form_students'));
+	}
 
 	public function remaining_exam_answersheet_admin(){
 		if(!$this->session->has_userdata('centerdata')){
