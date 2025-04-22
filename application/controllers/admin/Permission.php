@@ -407,4 +407,16 @@ class Permission extends CI_Controller {
 			echo json_encode(array('error'=>false));
 		}
 	}
+
+	public function update_center_payment_permission_checks()
+	{	
+            $id    = $this->input->post("id");
+			$payment_gateway_permission = $this->input->post("update_payment_by_center_permission");	
+			$data = $this->Common_model->updateRecordByConditions("center",array("id" => $id ),array("payment_gateway_permission" =>$payment_gateway_permission ));
+				 $status = true;
+				echo json_encode(array(
+					 "status" => $status,
+					"data" => $data
+				));	 
+	}
 }// class

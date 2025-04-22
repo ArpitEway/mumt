@@ -22,6 +22,7 @@
 						<th>Contact Person</th>
 						<th>Mobile No</th>
 						<th>Options</th>
+						<th>Paid By Center Permission</th>
 						<th>Temp Exam Form</th>
 						<th>Temp Admission Payment</th>
 						<th>Exam Form</th>
@@ -86,6 +87,27 @@ buttons: [
 ], 
 });
 
+		$(document).on('click', '.center_payment_permission_checks', function() {
+			var csrfName = $('.csrfname').attr('name');
+			var csrfHash = $('.csrfname').val(); 
+			var val = $(this).val();
+			var status = (val=='Yes') ? 'N' : 'Y';
+			var data = {
+				id: $(this).attr('data-id'),
+				update_payment_by_center_permission: status,
+				[csrfName]:csrfHash,
+			}; 	
+			var url = BASE_URL + "admin/Permission/update_center_payment_permission_checks";
+			$.ajax({
+				url: url,
+				type: 'POST',
+				data: data,
+				success: function (data) {
+				 $('#memListTable').DataTable().draw();
+				},
+			});		
+		});
+
 		$(document).on('click', '.permission_checks', function() {
 			var csrfName = $('.csrfname').attr('name');
 			var csrfHash = $('.csrfname').val(); 
@@ -106,6 +128,7 @@ buttons: [
 				},
 			});		
 		});
+
 		$(document).on('click', '.exam_form_permission_checks', function() {
 			var csrfName = $('.csrfname').attr('name');
 			var csrfHash = $('.csrfname').val(); 

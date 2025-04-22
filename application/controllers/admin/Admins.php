@@ -1884,6 +1884,13 @@ public function getStudentData()
 			//$btn ='<a class="btn btn-primary"  href="'.'https://center.mmyvvonline.com/center/loginAs/'.$center_code.'" target="_blank" >Log As</a>' ;
 			$centerURL=str_replace("admin","center",base_url());
 			$btn ='<a class="btn btn-primary"  href="'.$centerURL.'/center/loginAs/'.$center_code.'" target="_blank" >Log As</a>' ;
+			$payment_by_center_permission = $result->payment_gateway_permission;	
+			if($payment_by_center_permission == 'Y')
+			{
+			$center_payment_permission_btn = '<input type="button" name="update_payment_by_center_permission" data-id='.$result->id.' class="btn btn-success center_payment_permission_checks" value="Yes">';
+			}else{
+			$center_payment_permission_btn = '<input type="button" name="update_payment_by_center_permission" data-id='.$result->id.' class="btn btn-danger center_payment_permission_checks" value="No">';
+			}
             $status = $result->old_session_permission;	
 				if($status == 'Y')
 				{
@@ -1913,7 +1920,8 @@ public function getStudentData()
 			$temp_admission_payment_btn = '<input type="button" name="update_temp_admission_payment" data-id='.$result->id.' class="btn btn-danger temp_admission_payment_checks" value="No">';
 			}	
 			$i++;
-			$data[] = array($i,$result->id, $result->center_code, $result->center_name, $result->city, $result->contactpersonname,$result->mobile_no_1,$btn,$temp_exam_form_permission_btn,$temp_admission_payment_btn,$exam_form_permission_btn,$permission_btn);
+			$center_name=$result->center_name."<br>(Balance -<b>Rs.".$result->balance."</b>)";
+			$data[] = array($i,$result->id, $result->center_code, $center_name, $result->city, $result->contactpersonname,$result->mobile_no_1,$btn,$center_payment_permission_btn,$temp_exam_form_permission_btn,$temp_admission_payment_btn,$exam_form_permission_btn,$permission_btn);
 	     	}
 		  $output = array(
 			"draw" => $_POST['draw'],
