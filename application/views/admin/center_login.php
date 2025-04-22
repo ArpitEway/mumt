@@ -22,7 +22,7 @@
 						<th>Contact Person</th>
 						<th>Mobile No</th>
 						<th>Options</th>
-						<th>Paid By Center Permission</th>
+						<th>Payment Gateway Permission</th>
 						<th>Temp Exam Form</th>
 						<th>Temp Admission Payment</th>
 						<th>Exam Form</th>

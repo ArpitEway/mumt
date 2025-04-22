@@ -22,7 +22,7 @@
 						<th>City</th>
 						<th>Contact Person</th>
 						<th>Mobile No</th>
-						<th>Paid By Center Permission</th>
+						<th>Payment Gateway Permission</th>
 						
 						
 					</tr>
