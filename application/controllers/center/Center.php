@@ -1876,7 +1876,7 @@ class Center extends CI_Controller {
        
 		if($insert){
         
-			$this->session->set_flashdata('success','Paid By Center Successfully');
+			$this->session->set_flashdata('success','Payment Successfully');
 			 
 		}else{
 			$this->session->set_flashdata('error','Something Went Wrong');
