@@ -1871,17 +1871,18 @@ class Center extends CI_Controller {
 		$remainig_balance = $balance - $total_fees;
 	
 		$this->Common_model->updateRecordByConditions('center','id='.$student_data[0]->center_id, array('balance'=>$remainig_balance));
-		$student_data = array('new_exam_form' => 'Y');
-		$update = $this->Common_model->updateRecordByConditions('student','student_id='.$student_id,$student_data);
+		$studentData = array('new_exam_form' => 'Y');
+		$update = $this->Common_model->updateRecordByConditions('student','student_id='.$student_id,$studentData);
        
 		if($insert){
         
-			$this->session->set_flashdata('ajax_flash_message','Paid By Center Successfully');
+			$this->session->set_flashdata('success','Paid By Center Successfully');
 			 
 		}else{
-			$this->session->set_flashdata('ajax_flash_message','Something Went Wrong');
+			$this->session->set_flashdata('error','Something Went Wrong');
 		}
-		// redirect(base_url('exam_form_students'));
+		$param = $student_data[0]->regular_exam_form_permission == 'Y'	? 'karaundi' : 'center';
+		 redirect(base_url('exam_form_students/notSubmitted/'.$param));
 	}
 
 	public function remaining_exam_answersheet_admin(){
