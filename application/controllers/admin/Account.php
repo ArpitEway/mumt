@@ -10,6 +10,7 @@
 			parent::__construct();
 			$this->load->model('admin/admin_model');
 			$this->load->model('Common_model');
+			$this->load->model('Datatable_join_model');
 			$this->load->model('admin/Account_model');
 			if($this->session->account_type!='Account'){
 				redirect(base_url('admin/logout'));
@@ -961,4 +962,70 @@
 			   );
 	   echo json_encode($response);
 	}
+	public function center_payment_balance_list(){
+			
+		if($this->session->has_userdata('adminData')){
+			//$where = array("status" => "Pending");
+			//$centers = $this->Common_model->get_record_group_by_where('payment_complaint','center_id',$where);
+			//'payment_gateway_permission'=>'N'
+			$centers = $this->Common_model->getRecordByWhere('center',array());
+			$data = array('name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+				'centers' =>$centers
+			);
+		//	print_r($centers);
+			$this->load->view('header',array('title' => 'Center Payment Balance List'));
+			$this->load->view('admin/account_section/center_payment_balance_list',$data);
+			$this->load->view('footer');
+		}
+		else
+		{
+			redirect(base_url('admin/login'));
+		}
+	}
+
+	public function getCenterBalanceList()
+	{
+		$data = $row = array();
+		$where = "status=   'Y' ";
+		$column_order = array(null,'center_code','center_name','city','contactpersonname','mobile_no_1','balance');
+		$column_search = array('center_code','center_name','city','contactpersonname','mobile_no_1','balance');
+		$DataTableArray = array(
+			'column_order' => $column_order,
+			'column_search' => $column_search,
+			'where' => $where,
+			'table' => 'center'
+		);
+		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
+		$i = $_POST['start'];
+		foreach($tableData as $result){
+			$center_code = $this->Common_model->encrypt_decrypt($result->center_code,'encrypt');
+			
+			$centerURL=str_replace("admin","center",base_url());
+			
+			$payment_by_center_permission = $result->payment_gateway_permission;	
+			if($payment_by_center_permission == 'Y')
+			{
+			$center_payment_permission_btn = '<input type="button" name="update_payment_by_center_permission" data-id='.$result->id.' class="btn btn-success center_payment_permission_checks" value="Yes">';
+			}else{
+			$center_payment_permission_btn = '<input type="button" name="update_payment_by_center_permission" data-id='.$result->id.' class="btn btn-danger center_payment_permission_checks" value="No">';
+			}
+            	
+			$i++;
+			
+			$center_name=$result->center_name;
+			
+			$data[] = array($i, $result->center_code, $center_name,$result->balance, $result->city, $result->contactpersonname,$result->mobile_no_1,$center_payment_permission_btn);
+		
+	     	}
+		  $output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->Datatable_join_model->countAll('center',$where),
+			"recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
+			"data" => $data,
+		);
+		// Output to JSON format
+		echo json_encode($output);	
+	}
+
 }
