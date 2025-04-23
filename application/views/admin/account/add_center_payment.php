@@ -26,7 +26,9 @@ $center_codes = $this->Common_model->get_record('center','center_code');
 				<option>Wallets</option>
 				<option>UPI</option>
 				<option>NEFT/RTGS</option>
-				<option>SabPaisa Payment by Link</option>
+				<option>DD/Cheque</option>
+				<option>Cash</option>
+				<option>Payment Gateway Adjustment</option>
 			</select>
 			<small class="text-danger"></small>
 		</fieldset>
@@ -66,7 +68,9 @@ $center_codes = $this->Common_model->get_record('center','center_code');
 			<small class="text-danger"></small>
 		</fieldset>
 	</div>
-	<button type="submit" id="submit" class="btn btn-primary">Submit</button>
+	<div class="row justify-content-center">
+		<button type="submit" id="submit" class="btn btn-primary">Submit</button>
+	</div>
 </form>
 <script type="text/javascript">
     $("#submit").click(function(e) {
