@@ -1920,6 +1920,7 @@ public function getStudentData()
 			$temp_admission_payment_btn = '<input type="button" name="update_temp_admission_payment" data-id='.$result->id.' class="btn btn-danger temp_admission_payment_checks" value="No">';
 			}	
 			$i++;
+			
 			$center_name=$result->center_name."<br>(Balance -<b>Rs.".$result->balance."</b>)";
 			$data[] = array($i,$result->id, $result->center_code, $center_name, $result->city, $result->contactpersonname,$result->mobile_no_1,$btn,$center_payment_permission_btn,$temp_exam_form_permission_btn,$temp_admission_payment_btn,$exam_form_permission_btn,$permission_btn);
 	     	}
@@ -4578,7 +4579,8 @@ public function update_exam_datewise_permission(){
 		// $papers = $this->Common_model->getRecordByWhere('paper_master',$where);
 
 
-		$query = $this->db->query("SELECT p.* FROM `paper_master` as p join class_master as c on c.id=p.class_id WHERE  type='Theory' and `exam_date`!='0000-00-00' and ( c.exam_form_permission='Y' or c.backlog_exam_form_permission='Y')  order by p.course_group_id,class_id,cbcs_paper,paper_no asc");
+		$query = $this->db->query("SELECT p.* FROM `paper_master` as p join class_master as c on c.id=p.class_id WHERE  type='Theory'  and ( c.exam_form_permission='Y' or c.backlog_exam_form_permission='Y')  order by p.course_group_id,class_id,cbcs_paper,paper_no asc");
+		//and `exam_date`!='0000-00-00'
 //cbcs_paper=cbcs and 
 		//`class_id` in (195,197,199,201,203,205,209,211,213,221,223,225,227,275,279) and  `exam_date`='0000-00-00' and old_exam_date!='0000-00-00'
 
