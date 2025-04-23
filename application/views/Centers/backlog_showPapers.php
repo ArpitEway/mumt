@@ -219,28 +219,48 @@
 		 $center_id =  $this->session->center_id;
 		 $master = $this->Common_model->getSingleRow('master');
 		 $remove_class_from_center =explode(',', $master->remove_class_from_center);
-		 $center_permission = $this->Common_model->get_record('center','exam_form_permission,temp_exam_form,temp_admission_payment',array('id'=>$center_id));
+		 $center_permission = $this->Common_model->get_record('center','exam_form_permission,temp_exam_form,temp_admission_payment,payment_gateway_permission,balance',array('id'=>$center_id));
 		$class_permission = $this->Common_model->get_record('class_master','backlog_exam_form_permission',array('id'=>$papers[0]->class_id));
 	    ?>
 			<div class="row justify-content-center mt-10">
 			<?php 
+				 $where = array(
+					'course_group_id' => $papers[0]->course_group_id,
+					'backlog_student_id' => $papers[0]->backlog_student_id,
+					'status' => 'B'
+				);
+				$fees = $this->Common_model->getCountByWhere('backlog_exam_form',$where);
+				if( $fees < 8){
+					$exam_fees =$fees * 100;
+				 }else{
+					$exam_fees = 750; 
+				 }
+
 			if(($center_permission[0]['exam_form_permission']=='Y' && $papers[0]->exam_form=='N' ) &&  ($class_permission[0]['backlog_exam_form_permission']=='Y' || $center_permission[0]['temp_exam_form']=='Y') ){ 
 
                 $center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29,1975,2098,2115 );
                 if(in_array($this->session->center_id, $center_ids)){
-                    $where = array(
-                        'course_group_id' => $papers[0]->course_group_id,
-                        'backlog_student_id' => $papers[0]->backlog_student_id,
-                        'status' => 'B'
-                    );
-            $fees = $this->Common_model->getCountByWhere('backlog_exam_form',$where);
-           
+            //         $where = array(
+            //             'course_group_id' => $papers[0]->course_group_id,
+            //             'backlog_student_id' => $papers[0]->backlog_student_id,
+            //             'status' => 'B'
+            //         );
+            // $fees = $this->Common_model->getCountByWhere('backlog_exam_form',$where);
 			?>
        <!-- <a class="btn btn-success" href="<?= base_url('paid_by_university_backlog/'.$backlog_student_id) ?>">Paid By University</a> -->
       
        <a href="#"  data-student_name = "<?=$student['name']?>"  data-idstudent="<?=$papers[0]->student_id?>" data-student_id="<?= $backlog_student_id?>" class="btn btn-primary btn-sm font-weight-bold pay1" data-toggle="modal" data-target="#kt_datepicker_modal" data-amount= "<?= $fees*100 ?>"  data-url="<?=base_url('paid_by_university_backlog/'.$backlog_student_id)?>" data-head='fees'>Paid By University</a>
 			<?php
-			}else if((!in_array($papers[0]->class_id,$remove_class_from_center)) || ( $center_permission[0]['temp_exam_form']  !='N')) 
+			}
+			else if($center_permission[0]['payment_gateway_permission'] == 'N' && $center_permission[0]['balance'] > $exam_fees){
+				?>
+				<div class="row d-flex justify-content-center p-3">
+					<a href="#"   class="btn btn-primary btn-sm font-weight-bold pay2" data-toggle="modal" data-target="#left-modal" data-amount= "<?=$exam_fees;?>"  data-url="<?=base_url('backlog_paid_by_center/'.$papers[0]->backlog_student_id)?>" data-head='fees'>Paid By Balance</a>
+				</div> 
+				<?php
+			}
+
+			else if((!in_array($papers[0]->class_id,$remove_class_from_center)) || ( $center_permission[0]['temp_exam_form']  !='N') || ($center_permission[0]['payment_gateway_permission'] == 'N')) 
 			{	?>	
 				<a class="btn btn-success" href="<?= base_url('center/Payment/backlog_exam_form/'.$student_id .'/'. $class_id.'/'.$papers[0]->backlog_student_id.'/BACKLOG') ?>">Process To Payment</a>
 			<?php } 
@@ -248,6 +268,86 @@
 	  </div>
     <?php endif ?>
 </div>
+<!---------------------->
+<div id="left-modal" class="modal fade" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-md modal-right">
+    <div class="modal-content modal_height">
+      <div class="modal-header border-1">
+        <h4 class="modal-title">Student Payment</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <div class="modal-body" style="overflow-x:scroll;">
+	  <div class=" col-sm-12 m-auto">
+	<div class="row border border-primary bg-primary text-custom p-2">
+		Billing Details
+	</div>
+	<div class="row py-3 border">
+		<div class="col-sm-4 border-right">Session
+		</div>
+		<div class="col-sm-8"><?=$student['session']?>
+		</div>
+	</div>
+	<div class="row py-3 border">
+		<div class="col-sm-4 border-right">Form No
+		</div>
+		<div class="col-sm-8"><?=$student['student_id']?>
+		</div>
+	</div>
+	<div class="row py-3 border">
+		<div class="col-sm-4 border-right">Name
+		</div>
+		<div class="col-sm-8"><?=$student['name']?>
+		</div>
+	</div>
+	<div class="row py-3 border">
+		<div class="col-sm-4 border-right">Father / Husband Name
+		</div>
+		<div class="col-sm-8"><?=$student['f_h_name']?>
+		</div>
+	</div>
+	
+	<div class="row py-3 border">
+		<div class="col-sm-4 border-right">Course / Class
+		</div>
+		<div class="col-sm-8"><?=$student['course_name']?> / <?=$this->Common_model->getClassNameByClassId($papers[0]->class_id)?>
+		</div>
+	</div>
+	<div class="row py-3 border">
+		<div class="col-sm-4 border-right">Mobile
+		</div>
+		<div class="col-sm-8"><?=$student['p_mobile_no']?>
+		</div>
+	</div>
+	<div class="row py-3 border">
+		<div class="col-sm-4 border-right">Email
+		</div>
+		<div class="col-sm-8"><?=$student['p_email']?>
+		</div>
+	</div>
+	<div class="row border border-primary bg-primary text-custom p-2">
+		<div class="col-sm-4 border-right">Payment Details
+		</div>
+		<div class="col-sm-8">Amount
+		</div>
+	</div>
+	<div class="row py-3 border">
+		<div class="col-sm-4 border-right">
+		Exam Fees 
+		</div>
+		<div class="col-sm-8" id="amount-center">
+	</div>
+		
+	</div>
+	<div class="row py-3 border justify-content-center">
+	
+	<a class="btn btn-default text-dark font-weight-bold" id="pay-center">Pay Now</a>
+</div>
+</div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+<!------------------------->
 <div class="modal fade" id="kt_datepicker_modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-md" role="document">
 		<div class="modal-content">
@@ -318,7 +418,17 @@
 	</div>
 </div>
 <script>
-
+$(document).on('click','.pay2',function(){
+	    // var name_csrf = $(this).attr('data-name_csrf');
+	    // var hash_csrf = $(this).attr('data-hash_csrf');
+	  
+		var url = $(this).attr('data-url');
+		const amount = $(this).attr('data-amount');
+		
+		$('#pay-center').attr('href',url);
+		$('#amount-center').html(amount);
+		
+	});
 $(document).on('click','.pay1',function(){
 	    var name_csrf = $(this).attr('data-name_csrf');
 	    var hash_csrf = $(this).attr('data-hash_csrf');
