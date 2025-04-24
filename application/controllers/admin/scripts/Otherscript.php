@@ -1148,8 +1148,6 @@ public function update_roll_no_old_data(){
 		$this->load->view('footer');
 	}
 
-	
-	
 	public function update_AGPA_CGPA_class_list(){
 		
 		$this->db->select('count(class_id) as total, class_id');
