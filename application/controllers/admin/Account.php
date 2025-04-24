@@ -885,6 +885,83 @@
 		}
 	}
 
+	public function center_payment()
+	{
+		$data = array('name_csrf' => $this->security->get_csrf_token_name(),
+				'hash_csrf' => $this->security->get_csrf_hash(),
+			);
+		$titleData = array('title' => 'Center Payment', );
+		$this->load->view('header',$titleData);
+		$this->load->view('admin/account_section/center_payment',$data);
+		$this->load->view('footer');
+	}
+
+	public function getCenterPayment(){
+
+		$data = $row = array();
+
+			$where = '';
+
+			$column_order = array(null,'center_id','type','payment_date','amount','transection_num','bank','remark','enter_date','receipt_number','receipt_date');
+			$column_search = array('center_code','type','payment_date','amount','transection_num','bank','remark','enter_date','receipt_number','receipt_date');
+			
+			$DataTableArray = array(
+				'column_order' => $column_order,
+				'column_search' => $column_search,
+				'where' => $where,
+				'table' => 'center_payment',
+			);
+			$this->load->model('Datatable_join_model');
+			$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
+
+			
+			
+			$i = $_POST['start'];
+			foreach($tableData as $result){
+
+				$i++;
+
+				$data[] = array($i, $result->center_code, $result->type,$this->Common_model->viewDate($result->payment_date), $result->amount, $result->transection_num,$result->bank,$result->remark,$this->Common_model->viewDate($result->enter_date),$result->receipt_number,$this->Common_model->viewDate($result->receipt_date));
+			}
+			
+			$output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->Datatable_join_model->countAll('center_payment',$where),
+            "recordsFiltered" => $this->Datatable_join_model->countFiltered($_POST,$DataTableArray),
+            "data" => $data,
+			);
+			
+			// Output to JSON format
+			echo json_encode($output);
+	}
+
+	
+	public function insertCenterPayment(){
+
+		$receipt_date = ($this->input->post('receipt_date')!='') ? $this->Common_model->DB_Date($this->input->post('receipt_date')) : '';
+		$wherecenter = 'center_code = "'.$this->input->post('center_code').'"';
+		$centerData = $this->Common_model->getRecordByWhere('center',$wherecenter);
+		$amount =trim($this->input->post('amount'));
+	   $data = array(
+		   'center_id' => $centerData[0]->id,
+		   'center_code' => trim($this->input->post('center_code')),
+		   'type' => trim($this->input->post('type')),
+		   'payment_date' => $this->Common_model->DB_Date($this->input->post('payment_date')),
+		   'amount' => $amount,
+		   'remark' => trim($this->input->post('remark')),
+		   'transection_num' => trim($this->input->post('txnid')),
+		   'bank' => trim($this->input->post('bank')),
+		   'receipt_number' => trim($this->input->post('receipt_number')),
+		   'receipt_date' => $receipt_date,
+	   );
+	   $this->Common_model->insertAll('center_payment',$data);
+	 $update = array('balance'=> $centerData[0]->balance+$amount);
+	   $this->Common_model->updateRecordByConditions('center',$wherecenter,$update);
+	   $response = array('status' => 'success',
+				   'notification' => 'Payment Added successfully'
+			   );
+	   echo json_encode($response);
+	}
 	public function center_payment_balance_list(){
 			
 		if($this->session->has_userdata('adminData')){

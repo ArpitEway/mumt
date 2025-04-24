@@ -152,14 +152,18 @@ function callTheCallBackFunction() {
     toastr.success('<?php echo $this->session->flashdata("success");?>');
   </script>
 
-<?php endif;?>
+<?php 
+$this->session->set_flashdata('success','');
+endif;?>
 
 <?php if ($this->session->flashdata('error') != ""):?>
 
   <script type="text/javascript">
     toastr.error('<?php echo $this->session->flashdata("error");?>');
   </script>
-<?php endif;?>
+<?php 
+$this->session->set_flashdata('error','');
+endif;?>
 <?php if ($this->session->flashdata('warning') != ""):?>
 
   <script type="text/javascript">

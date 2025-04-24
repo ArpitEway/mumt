@@ -1,0 +1,162 @@
+<?php
+$center_codes = $this->Common_model->get_record('center','center_code');
+?>
+<form action="<?=site_url('admin/account/insertCenterPayment')?>" class="ajaxForm" method="POST">
+	<div class="row">
+    <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+		<fieldset class="form-group col-md-4">
+			<label for="center_code">Center Code</label>
+			<select class="form-control" id="center_code" name="center_code">
+				<option value="">Select Center Code</option>
+					<?php foreach ($center_codes as $center) {
+						echo "<option>".$center['center_code']."</option>";
+					} ?>
+			</select>
+			<small class="text-danger"></small>
+
+		</fieldset>
+		<fieldset class="form-group col-md-4">
+			<label for="type">Payment Type</label>
+			<select class="form-control" id="type" name="type">
+				<option value="">Select Type</option>
+				<option>Credit Card</option>
+				<option>Debit Card</option>
+				<option>Net Banking</option>
+				<option>IMPS</option>
+				<option>Wallets</option>
+				<option>UPI</option>
+				<option>NEFT/RTGS</option>
+				<option>DD/Cheque</option>
+				<option>Cash</option>
+				<option>Payment Gateway Adjustment</option>
+			</select>
+			<small class="text-danger"></small>
+		</fieldset>
+		<fieldset class="form-group col-md-4">
+			<label for="date">Payment Date</label>
+			<input type="date" class="form-control" id="payment_date" placeholder="" name="payment_date">
+			<small class="text-danger"></small>
+		</fieldset>
+		<fieldset class="form-group col-md-4">
+			<label for="amount">Amount</label>
+			<input type="number" class="form-control" id="amount" name="amount" placeholder="Amount">
+			<small class="text-danger"></small>
+		</fieldset>
+		<fieldset class="form-group col-md-4">
+			<label for="txnid">Txn Id</label>
+			<input type="text" class="form-control" id="txnid" name="txnid"/>
+			<small class="text-danger"></small>
+		</fieldset>
+		<fieldset class="form-group col-md-4">
+			<label for="bank">Bank</label>
+			<input type="text" class="form-control" id="bank" name="bank">
+			<small class="text-danger"></small>
+		</fieldset>
+		<fieldset class="form-group col-md-4">
+			<label for="bank">Receipt Number</label>
+			<input type="text" class="form-control" id="receipt_number" name="receipt_number">
+			<small class="text-danger"></small>
+		</fieldset>
+		<fieldset class="form-group col-md-4">
+			<label for="bank">Receipt Date</label>
+			<input type="date" class="form-control" id="receipt_date" name="receipt_date">
+			<small class="text-danger"></small>
+		</fieldset>
+		<fieldset class="form-group col-md-4">
+			<label for="bank">Remark</label>
+			<textarea class="form-control" id="remark" name="remark"></textarea>
+			<small class="text-danger"></small>
+		</fieldset>
+	</div>
+	<div class="row justify-content-center">
+		<button type="submit" id="submit" class="btn btn-primary">Submit</button>
+	</div>
+</form>
+<script type="text/javascript">
+    $("#submit").click(function(e) {
+    	e.preventDefault();
+    	var center_code = $('#center_code').val();
+    	var type = $('#type').val();
+    	var payment_date = $('#payment_date').val();
+    	var amount = $('#amount').val();
+    	var txnid = $('#txnid').val();
+    	var bank = $('#bank').val();
+    	var submit = true;
+
+    	if(center_code==''){
+    		$('#center_code').next().text('Please Select Center Code');
+    		submit = false;
+    	}else{
+    		$('#center_code').next().text('');
+    	}
+    	if(type==''){
+    		$('#type').next().text('Please Enter type');
+    		submit = false;
+    	}else{
+    		$('#type').next().text('');
+    	}
+    	if(payment_date==''){
+    		$('#payment_date').next().text('Please Select Payment Date');
+    		submit = false;
+    	}else{
+    		$('#payment_date').next().text('');
+    	}
+    	if(amount==''){
+    		$('#amount').next().text('Please Enter amount');
+    		submit = false;
+    	}else{
+    		$('#amount').next().text('');
+    	}
+    	if(txnid==''){
+    		$('#txnid').next().text('Please Enter Txnid');
+    		submit = false;
+    	}else{
+    		$('#txnid').next().text('');
+    	}
+    	if(bank==''){
+    		$('#bank').next().text('Please Enter Bank Name');
+    		submit = false;
+    	}else{
+    		$('#bank').next().text('');
+    	}
+    	if(!submit){
+    	return submit;
+    	}
+        var form = $('.ajaxForm');
+        ajaxSubmit(e, form, drow_table);
+    });
+
+	function ajaxSubmit(e, form, callBackFunction) {
+    //if(form.valid()) {
+       
+        e.preventDefault();
+        var action = form.attr('action');
+        var form2  = e.target;
+        var data   = new FormData(form[0]);
+        $.ajax({
+            type: "POST",
+            url: action,
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            data: data,
+            success: function(response)
+            {
+                if (response.status) {
+                    toastr.success(response.notification);
+                    if(form.attr('class') === 'ajaxDeleteForm'){
+                        $('#alert-modal').modal('toggle');
+                    }else{
+                        $('#right-modal').modal('hide');
+                    }
+                    callBackFunction();
+                }else{
+                    toastr.error(response.notification);
+                }
+            }
+        });
+    // }else {
+    //     toastr.error('Please make sure to fill all the necessary fields');
+    // }
+}
+</script>
