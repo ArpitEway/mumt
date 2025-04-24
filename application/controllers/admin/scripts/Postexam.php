@@ -330,20 +330,29 @@ class Postexam extends CI_Controller {
     }
 
     public function promote_student_list(){
-        $this->db->select('count(*) as cnt ,student.course_name ,student.class_id, student.course_group_id, student.class_name');
-        // $this->db->from('student as student');
-       $this->db->from('student_result_june_2024 as student');
+       
+        $this->db->select('COUNT(*) as cnt, student.course_name, student.class_id, student.course_group_id, student.class_name');
+        $this->db->from('student_result_june_2024 as student');
         $this->db->join('class_master', 'class_master.id = student.class_id');
+        $this->db->where('student.exam_form', 'Y');
+        $this->db->where('student.old_result_show', 'Y');
+        $this->db->where('student.promote', 'N');
+        $this->db->where('class_master.mode', 'Annual');
+        $this->db->where('student.course_complete', 'N');
+
+        // Grouping the complex OR conditions
+        $this->db->group_start();
+            $this->db->where('class_master.last_class IS NULL');
+            $this->db->or_group_start();
+                $this->db->where('class_master.class_name', 'III Year');
+                $this->db->where_in('class_master.id', [103,106,109,112,118,121,127,130,133,136]);
+                $this->db->where_in('student.center_id', [10,13,20,21,22,23,24,25,26,27,28,29,30]);
+            $this->db->group_end();
+        $this->db->group_end();
         $this->db->group_by('student.class_id');
-        $this->db->where('student.exam_form','Y');
-         $this->db->where('student.old_result_show','Y');
-        $this->db->where('student.promote','N');
-        $this->db->where('class_master.mode','Annual');
-        // $this->db->where('class_master.mode','Semester');
-        $this->db->where('student.course_complete','N');
-        $this->db->where('class_master.last_class is NULL');
+
         $data['courses'] = $this->db->get()->result();
-      //  echo $this->db->last_query();
+        // echo $this->db->last_query();
         $this->load->view('header',array('title' => 'Promote Students'));
         $this->load->view('admin/script/class_wise_student_count_for_promote_student',$data);
         $this->load->view('footer');
@@ -688,7 +697,7 @@ class Postexam extends CI_Controller {
           $this->db->where('course_complete', 'N');
           $this->db->where('upload_result', 'Y');
           $this->db->group_by('old_class_id');          
-          $data['courses'] = $this->db->get('student')->result();
+          $data['courses'] = $this->db->get('student_result_june_2024 as student')->result();
           $this->load->view('header',array('title' => ''));
           $this->load->view('admin/script/course_complete_status',$data);
           $this->load->view('footer');
@@ -699,9 +708,12 @@ class Postexam extends CI_Controller {
             $dept_ids = array(10,13,20,21,22,23,24,25,26,27,28,29,30);
             $class_ids=array(103,106,109,112,118,121,127,130,133,136);
             if((in_array($class_id, $class_ids))){
-                $this->db->where_not_in('center_id',$dept_ids);
+                // $this->db->where_not_in('center_id',$dept_ids);
+                $this->db->where_in('center_id',$dept_ids);
             }
-            $students = $this->Common_model->getRecordByWhere("student",array("old_class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'Y','course_complete'=>'N'));
+            $students = $this->Common_model->getRecordByWhere("student_result_june_2024",array("old_class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'Y','course_complete'=>'N','promote!='=>"Y"));
+            // $this->Common_model->last_query();
+            $this->db->where_not_in('id',[322,323,324,325,326,327,328,329,330,331]);
             $courseClassData = $this->Common_model->getRecordByWhere("class_master",array("course_group_id"=>$course_group_id,"mode"=>$classData->mode));
           
             $i=1;
@@ -721,7 +733,7 @@ class Postexam extends CI_Controller {
                     );
                     $where = array('student_id'=>$student->student_id);
                     $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
-                    // $update =$this->Common_model->updateRecordByConditions('student_report',$where,$data);
+                    $update =$this->Common_model->updateRecordByConditions('student_result_june_2024',$where,$data);
                         echo "<br>&nbsp;&nbsp;".$i++."  &nbsp;&nbsp;&nbsp;  ".$student->student_id. "   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   ".$student->enrollment_no;
                 }
                
