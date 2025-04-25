@@ -252,7 +252,7 @@
        <a href="#"  data-student_name = "<?=$student['name']?>"  data-idstudent="<?=$papers[0]->student_id?>" data-student_id="<?= $backlog_student_id?>" class="btn btn-primary btn-sm font-weight-bold pay1" data-toggle="modal" data-target="#kt_datepicker_modal" data-amount= "<?= $fees*100 ?>"  data-url="<?=base_url('paid_by_university_backlog/'.$backlog_student_id)?>" data-head='fees'>Paid By University</a>
 			<?php
 			}
-			else if($center_permission[0]['payment_gateway_permission'] == 'N' && $center_permission[0]['balance'] > $exam_fees){
+			else if($center_permission[0]['payment_gateway_permission'] == 'N' && $center_permission[0]['balance'] >= $exam_fees){
 				?>
 				<div class="row d-flex justify-content-center p-3">
 					<a href="#"   class="btn btn-primary btn-sm font-weight-bold pay2" data-toggle="modal" data-target="#left-modal" data-amount= "<?=$exam_fees;?>"  data-url="<?=base_url('backlog_paid_by_center/'.$papers[0]->backlog_student_id)?>" data-head='fees'>Paid By Balance</a>
