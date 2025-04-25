@@ -293,7 +293,7 @@
 							</div> 
 						
 						<?php
-						}else if($center_permission[0]['payment_gateway_permission'] == 'N' && $center_permission[0]['balance'] > $total_fees){
+						}else if($center_permission[0]['payment_gateway_permission'] == 'N' && $center_permission[0]['balance'] >= $total_fees){
 							?>
 							<div class="row d-flex justify-content-center p-3">
                                 <a href="#"   class="btn btn-primary btn-sm font-weight-bold pay2" data-toggle="modal" data-target="#left-modal" data-amount= "<?=$total_fees;?>"  data-url="<?=base_url('paid_by_center/'.$student_id)?>" data-head='fees'>Paid By Balance</a>
