@@ -338,7 +338,7 @@ class Postexam extends CI_Controller {
         $this->db->where('student.exam_form', 'Y');
         $this->db->where('student.old_result_show', 'Y');
         $this->db->where('student.promote', 'N');
-        $this->db->where('class_master.mode', 'Annual');
+       // $this->db->where('class_master.mode', 'Annual');
         $this->db->where('student.course_complete', 'N');
 
         // Grouping the complex OR conditions
