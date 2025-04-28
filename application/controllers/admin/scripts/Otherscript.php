@@ -569,7 +569,7 @@ public function update_group_id_in_backlog_exam_form(){
 
 public function update_roll_no_old_data(){
 	
-	$sql = "SELECT o.*,s.roll_no FROM `old_exam_data` as o join student as s on s.student_id=o.student_id WHERE `exam_year`='January 2025' and s.old_class_id=o.class_id and s.roll_no!=o.roll_no  limit 500";
+	$sql = "SELECT o.*,s.roll_no FROM `old_exam_data` as o join student as s on s.student_id=o.student_id WHERE `exam_year`='January 2025' and s.old_class_id=o.class_id and exam_status='R' and s.roll_no!=o.roll_no  limit 500";
 	$students = $this->db->query($sql)->result_array();
 	
 	foreach($students as $student){
