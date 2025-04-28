@@ -569,11 +569,11 @@ public function update_group_id_in_backlog_exam_form(){
 
 public function update_roll_no_old_data(){
 	
-	$sql = "SELECT o.*,s.roll_no FROM `old_exam_data` as o join student as s on s.student_id=o.student_id WHERE `exam_year`='June 2024' and s.class_id=o.class_id and s.roll_no!=o.roll_no  limit 500";
+	$sql = "SELECT o.*,s.roll_no FROM `old_exam_data` as o join student as s on s.student_id=o.student_id WHERE `exam_year`='January 2025' and s.old_class_id=o.class_id and s.roll_no!=o.roll_no  limit 500";
 	$students = $this->db->query($sql)->result_array();
 	
 	foreach($students as $student){
-		$where = array('student_id'=>$student['student_id'],'exam_year'=>'June 2024','id'=>$student['id'],'roll_no'=>'0');
+		$where = array('student_id'=>$student['student_id'],'exam_year'=>'January 2025','id'=>$student['id'],'roll_no'=>'0');
 		$data = array ('roll_no'=>$student['roll_no']);
 		$this->Common_model->updateRecordByConditions('old_exam_data',$where,$data);
 		echo $this->db->last_query().'<br>';
