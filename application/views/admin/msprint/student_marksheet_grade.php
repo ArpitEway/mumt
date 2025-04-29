@@ -183,11 +183,14 @@
                        $total_grade_point = 0;
                        $total_course_credit = 0;
                        $wordNumerals = [1 => 'One',2 => 'Two',3 => 'Three',4 => 'Four',5 => 'Five',6 => 'Six',7 => 'Seven',8 => 'Eight'];
+                       $this->db->where_not_in('id',array(322,323,324,325,326,327,328,329,330,331));
                      $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$exam_data->course_group_id));
                     $count = 0;
                     foreach($classes as $cls){
                         $count++;
-                        if($count == 1){ $sno = 'First';}elseif($count == 2){ $sno = 'Second';}elseif($count == 3){ $sno = 'Third';}
+                        if($count == 1){ $sno = 'First';}elseif($count == 2){ $sno = 'Second';}elseif($count == 3){ $sno = 'Third';}elseif($count == 4){
+                          $sno= 'Fourth';
+                      }
                         $this->db->order_by('id', 'desc');
                         $this->db->limit(1);
                         $old = $this->Common_model->getRecordByWhere('old_exam_data',array('class_id'=>$cls->id,'student_id'=>$exam_data->student_id));

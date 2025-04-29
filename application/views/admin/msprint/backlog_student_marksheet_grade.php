@@ -180,12 +180,14 @@
                     <tbody>
                      <tr align="center"><th width='12.5%'>Year</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>AGPA</th></tr>
                      <?php
+                     $this->db->where_not_in('id',array(322,323,324,325,326,327,328,329,330,331));
                      $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$exam_data->course_group_id));
                     
                     $count = 0;
                     foreach($classes as $cls){
                        $count++;
-                       if($count == 1){ $sno = 'First';}elseif($count == 2){ $sno = 'Second';}elseif($count == 3){ $sno = 'Third';}
+                       if($count == 1){ $sno = 'First';}elseif($count == 2){ $sno = 'Second';}elseif($count == 3){ $sno = 'Third';}elseif($count == 4){
+                        $sno= 'Fourth';}
                         if($cls->id <= $exam_data->class_id){
                             $this->db->order_by('id', 'desc');
                             $this->db->limit(1);
