@@ -171,14 +171,14 @@
                         <?php 
        
                           $gradesheetData = $this->Gradesheet_old_model->view_result_grade($exam_data->student_id,$exam_data->course_group_id,$exam_data->class_id,$exam_data->university_mode,$exam_data_id);
-                         
+                        
                             ?>
                     </tbody></table>
                   </div>
                   <h4 style="text-align:center;margin:10px;">Result Year Wise</h4>
                   <table border='1' cellpadding="2"  width="103%">
                     <tbody>
-                     <tr align="center"><th width='12.5%'>Year</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>AGPA</th><?php if($classData->last_class == 'L' && !in_array($exam_data->center_id, $dept_ids)){ ?><th width='12.5%'>Attempt</th><?php }?></tr>
+                     <tr align="center"><th width='12.5%'>Year</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>AGPA</th><?php if($classData->last_class == 'L' && $student->course_complete == 'Y'){ ?><th width='12.5%'>Attempt</th><?php }?></tr>
                      <?php
                        $total_grade_point = 0;
                        $total_course_credit = 0;
@@ -198,7 +198,7 @@
                          $gradeData   = $this->Gradesheet_model->view_old_results($exam_data->student_id,$exam_data->course_group_id,$cls->id,$exam_data->university_mode, $old[0]->id, $old[0]->exam_status);
                          $total_grade_point += number_format((float)$gradeData['agpa'], 2, '.', '') * $gradeData['obt_credit']; 
                          $total_course_credit +=$gradeData['tot_credit'];
-                         if($classData->last_class == 'L' && !in_array($exam_data->center_id, $dept_ids)){
+                         if($classData->last_class == 'L' && $student->course_complete == 'Y'){
                             ?>
                               <tr align="center"><th><?=$sno?></th><td><?= ($gradeData['tot_credit'] == 0)?'':$gradeData['tot_credit']?></td><td><?= ($gradeData['obt_credit'] == 0)?'':$gradeData['obt_credit']?></td><td><?= ($gradeData['credit_point'] == 0)?'':$gradeData['credit_point']?></td><td>
                         <?php if(is_nan($gradeData['agpa'])){
@@ -253,8 +253,8 @@
                    
                     </tbody>
                  </table>
-                 <?php
-              if($classData->last_class == 'L' && !in_array($exam_data->center_id, $dept_ids))
+                 <?php //!in_array($exam_data->center_id, $dept_ids)
+              if($classData->last_class == 'L' && $student->course_complete == 'Y')
                      {
 
                         $cgpa = number_format((float)($total_grade_point/$total_course_credit), 2, '.', '');
