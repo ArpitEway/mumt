@@ -410,7 +410,8 @@ class Postexam extends CI_Controller {
      // $this->db->where_in('class_name',array('I SEM','III SEM'));
      // $this->db->where_not_in('id',array('154','172','181'));
      // $this->db->where_in('id',array('154','181'));
-      $this->db->where_not_in('id',array('155','299','182'));
+      //$this->db->where_not_in('id',array('155','299','182'));
+      $this->db->where_in('id',array('155','182'));
       $this->db->where('exam_form_permission','Y');
       $classes = $this->db->get()->result();
      $class_id = array_column($classes,'id');
@@ -418,7 +419,7 @@ class Postexam extends CI_Controller {
     
          $this->db->select('course_name,class_id, COUNT(student_id) as cnt');
          
-         $this->db->where('exam_year', 'June 2024');
+         $this->db->where('exam_year', 'January 2025');
          $this->db->where('exam_result', 'FAIL');
          $this->db->where('exam_status', 'B');
          $this->db->where_in('class_id',$class_id );
@@ -437,7 +438,7 @@ class Postexam extends CI_Controller {
     public function backlog_marks_move_scripts($class_id='')
         {
            // $this->db->where('id>', '36941');
-            $studentall = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$class_id,'exam_result'=>'Fail','exam_year'=>'June 2024','exam_status'=>'B'));
+            $studentall = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$class_id,'exam_result'=>'Fail','exam_year'=>'January 2025','exam_status'=>'B'));
             foreach($studentall as $key=>$students){
               //  print_r($students); die;
             $whereResult = array("class_id"=>$students->class_id ,"student_id"=>$students->student_id, 'exam_data_id' => $students->id);
