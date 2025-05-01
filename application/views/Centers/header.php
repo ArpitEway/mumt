@@ -96,7 +96,8 @@
 						<h3 class="text-primary"><?php echo (isset($title)) ? $title : ''; ?></h3>
 						<?php if($this->session->has_userdata('centerdata')){ 
 							$balance = $this->Common_model->getRecordById('center','id',$this->session->center_id);
-							if($balance->payment_gateway_permission == 'N' && $balance->balance > 0){
+							// $balance->payment_gateway_permission == 'N' &&
+							if($balance->balance > 0){
 							?>
 						<h4 >Balance: <i class="fas fa-rupee-sign text-primary"></i> <label id="balance"> <?= $balance->balance ?></label>/-</h4>
 					<?php
