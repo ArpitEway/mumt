@@ -12,7 +12,8 @@
 			$this->db->order_by('id');
 			// $this->db->where_in('id',array(104,105,107,108,134,135,137,171,183,283,285,286,287,288,289,291,292,293,294,295,296,297,298));
 			
-        $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id'],"backlog_exam_form_permission"=>'Y'));
+        $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id']));
+		// ,"backlog_exam_form_permission"=>'Y'
 		// backlog_result_permission, "backlog_exam_form_permission"=>'Y'
 		
         ?>
@@ -105,7 +106,7 @@
 				<?php
 			if($class->regular_class=='Y') { 
 				$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136);
-                $class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280);
+                $class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302,303,304,305,278,282,250,252,216,232,236,238,240,246,248,254,218,305,210,243);
 				if(in_array($class->id , $class_ids) || in_array($class->id , $class_cbcs)){
 					$std_marksheet = 'backlog_student_marksheet_grade';
 				}else{

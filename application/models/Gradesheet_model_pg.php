@@ -23,6 +23,8 @@ class Gradesheet_model_pg extends CI_Model
 	protected $obt_tot_credit;
 	protected $check_grace_marks = false;
 	protected $withheld = false;
+	protected $withheld_practical = false;
+	protected $withheld_internal = false;
 	protected $fail_tot_marks;
 	protected $fail_obt_marks;
 	protected $fail_min_marks;
@@ -234,6 +236,8 @@ class Gradesheet_model_pg extends CI_Model
 		$this->total_marks=0;
 		$this->check_grace_marks = false;
 		$this->withheld = false;
+		$this->withheld_practical = false;
+        $this->withheld_internal = false;
 		foreach ($papers as $paper) {
 			$this->paper = $paper;
 			if($this->withheld){

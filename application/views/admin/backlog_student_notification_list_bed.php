@@ -245,6 +245,9 @@ $abs_count = 0 ;
 								$fail_tot_marks += $new_exam_form->theory_marks;
 								$require_tot_marks += $new_exam_form->min_theory_marks;
 							}
+							if($new_exam_form->theory_marks == "ABS" && $new_exam_form->status == "B"){
+								$abs_count++;
+							}
 							if($new_exam_form->int_marks=='N'){
 								$rw_count++;
 								$Withheld;
@@ -509,12 +512,12 @@ $abs_count = 0 ;
 					$grand_obtain = $grand_obt + $total_marks_obt;
 						$grand_total = $grand_tot+$total_paper_marks;
 					}else{
-						
+	
 						if($p_fail_count>0 || $p_abs_count>0){
 							$final_result = 'FAIL';
 						}
 						else if($fail_count>0 || $abs_count>0){
-							 $final_result = ($check_grace_marks) ? 'PASS BY GRACE' : 'FAIL';
+							 $final_result =  'FAIL';
 
 						}else{
 							 $final_result = 'PASS';
@@ -635,9 +638,9 @@ $abs_count = 0 ;
 									}
 								}else{
 									
-									if($check_grace_marks){
-										echo " ";
-									}
+									if($theory_abs_count == $theory_paper_count){
+										echo 'ABSENT';
+									  }
 									elseif( $theory_abs_count==$theory_paper_count && $p_abs_count==$p_paper_count && $student->course_group_id == 76){
 										echo 'Absent In ALL';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
 									  }
