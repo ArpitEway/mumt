@@ -55,8 +55,12 @@ th.border.border-dark {
       </tbody>
     </table>
     <?php if($gradesheetData['result'] != ''){ 
-       $dept_ids = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30);
-       if($class->last_class == 'L' && !in_array($exam_data->center_id,$dept_ids)){
+      //  $dept_ids = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30);&& !in_array($exam_data->center_id,$dept_ids)
+       if($class->last_class == 'L' ){
+       $class_fourth=array(322,323,324,325,326,327,328,329,330,331);
+       if(!in_array($exam_data->class_id,$class_fourth)){
+        $this->db->where_not_in('id',array(322,323,324,325,326,327,328,329,330,331));
+       }
         $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$exam_data->course_group_id,'mode'=>$class->mode,'id!='=>$exam_data->class_id));
         $total_grade_point = 0;
         $total_course_credit = 0;

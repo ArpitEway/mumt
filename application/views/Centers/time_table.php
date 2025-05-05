@@ -4,13 +4,13 @@
     
     <!-- <p style="text-align:center;font-size:12px;">(Regular/Private)</p> -->
     <!-- <p style="text-align:center;font-size:12px;"><strong>Early Morning Shift Time 07:00 AM To 10:00 AM </strong></p> -->
-    <p style="text-align:center;font-size:12px;"><strong>Programme for Annual/Semester - Main/Backlog Examination January 2025 </strong></p>
+    <p style="text-align:center;font-size:12px;"><strong>Programme for Annual/Semester - Main/Backlog Examination June 2025 </strong></p>
     <p style="text-align:center;font-size:12px;"><strong> Morning Shift Time 10:00 AM To 01:00 PM </strong></p>
         <?php /*if($paper_list[0]['course_group_id']==45){ ?> 
-        <p style="text-align:center;font-size:12px;"><strong>Programme for Annual/Semester - Main/Backlog Examination January 2025 </strong></p>
+        <p style="text-align:center;font-size:12px;"><strong>Programme for Annual/Semester - Main/Backlog Examination June 2025 </strong></p>
         <p style="text-align:center;font-size:12px;"><strong> Morning Shift Time 10:00 AM To 01:00 PM </strong></p>
     <?php }else{  ?> 
-        <p style="text-align:center;font-size:12px;"><strong>Programme for Annual/Semester - Main/Backlog Examination January 2025 </strong></p>
+        <p style="text-align:center;font-size:12px;"><strong>Programme for Annual/Semester - Main/Backlog Examination June 2025 </strong></p>
     <p style="text-align:center;font-size:12px;"><strong> Morning Shift Time 11:00 AM To 02:00 PM </strong></p>
     <?php }
    */  

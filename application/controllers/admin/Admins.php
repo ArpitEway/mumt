@@ -3178,7 +3178,7 @@ public function update_exam_datewise_permission(){
 		$data['title'] .= $title;//echo $this->db->last_query(); die;
 		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136);
 		// $class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280);
-        $class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302,303,304,305,278,282,250,252,216,232,236,238,240,246,248,254,218,305,210,243);
+        $class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302,303,304,305,278,282,250,252,216,232,236,238,240,246,248,254,218,305,210,243,267);
 		if((in_array($class_id, $class_ids))  && $pattern!="MARKS")	//&& $mode=='REG'
 		{
 			$this->load->model('Gradesheet_tr_model');
@@ -3521,8 +3521,9 @@ public function update_exam_datewise_permission(){
 		  
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode,'old_result_show'=>'Y','exam_pattern'=>'GRADE'));
 		}
+		// $this->Common_model->last_query();
 	 	// if($class->internal=="Y" && $mode!="PVT"){
-			$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,243,245,215,247,249,251,253,277,281,209,302,303,304,305,278,282,250,252,216,232,236,238,240,246,248,254,218,305,210);
+			$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,243,245,215,247,249,251,253,277,281,209,302,303,304,305,278,282,250,252,216,232,236,238,240,246,248,254,218,305,210,267);
 			if(in_array($class_id , $class_cbcs))
 			{
                 $this->load->model('GradeSheet_old_model_pg');
@@ -3991,7 +3992,7 @@ public function update_exam_datewise_permission(){
 		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$data['mode'] = $mode;
         // $class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280);
-        $class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302,303,304,305);
+        $class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302,303,304,305,267);
         
         if((in_array($class_id, $class_cbcs)) && $pattern=="GRADE"){
 			$this->load->model('Gradesheet_tr_model_pg');
@@ -4580,11 +4581,12 @@ public function update_exam_datewise_permission(){
 		// $papers = $this->Common_model->getRecordByWhere('paper_master',$where);
 
 
-		// $query = $this->db->query("SELECT p.* FROM `paper_master` as p join class_master as c on c.id=p.class_id WHERE  type='Theory'  and ( c.exam_form_permission='Y' or c.backlog_exam_form_permission='Y')  order by p.course_group_id,class_id,cbcs_paper,paper_no asc");
-		$query = $this->db->query("SELECT p.* FROM `paper_master` as p join class_master as c on c.id=p.class_id WHERE  type='Theory'   and cbcs_paper=cbcs and (old_exam_date!='0000-00-00' or ( c.exam_form_permission='Y' or c.backlog_exam_form_permission='Y'))  order by p.course_group_id,class_id,cbcs_paper,paper_no asc");
+		$query = $this->db->query("SELECT p.* FROM `paper_master` as p join class_master as c on c.id=p.class_id WHERE  type='Theory' and (exam_date!='0000-00-00' and ( c.exam_form_permission='Y' or c.backlog_exam_form_permission='Y')) order by p.course_group_id,class_id,cbcs_paper,paper_no asc");
 
-		//and `exam_date`!='0000-00-00'
-     	//cbcs_paper=cbcs and 
+		// and `exam_date`!='0000-00-00' and cbcs_paper=cbcs 
+
+		// $query = $this->db->query("SELECT p.* FROM `paper_master` as p join class_master as c on c.id=p.class_id WHERE  type='Theory'   and cbcs_paper=cbcs and (exam_date!='0000-00-00' or ( c.exam_form_permission='Y' or c.backlog_exam_form_permission='Y'))  order by p.course_group_id,class_id,cbcs_paper,paper_no asc");
+
 		//`class_id` in (195,197,199,201,203,205,209,211,213,221,223,225,227,275,279) and  `exam_date`='0000-00-00' and old_exam_date!='0000-00-00'
 
 		// $query = $this->db->query("SELECT p.* FROM `paper_master` as p join class_master as c on c.id=p.class_id WHERE type='Theory' and `class_id` in (101,154,172,181,194,198,202,204,206,212,214,216,218,222,224,226,228,232,236,238,240,246,248,250,252,254,300)  order by p.course_group_id,class_id,cbcs_paper,paper_no asc");

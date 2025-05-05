@@ -313,11 +313,11 @@
 							</div>
 						</a> 
  -->
-						 <a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
+						 <!-- <a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
 					 		<div>
 								<span class="nav-text">Time Table January 2025</span>
 					 		</div>
-						</a>   
+						</a>    -->
 					
 					
 
