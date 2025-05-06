@@ -427,7 +427,7 @@
 			</td>
 			<td class="text-center" align="center" >
 				<?php
-				if($Withheld && !in_array($student->old_class_id, $class_ids) && $student->exam_pattern=='GRADE' ){
+				if($Withheld && !in_array($student->old_class_id, $class_ids) && $student->exam_pattern=='GRADE' || ($student->exam_pattern=='MARKS' && $Withheld)){
 					// echo 'RW';
 					echo $final_result = "RW";
 				}else{
