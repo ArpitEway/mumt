@@ -25,9 +25,9 @@
     .barcode img{
       height: 25px;
     }
-    .student_image{
+    /* .student_image{
       image-orientation: none;
-    }
+    } */
     @media print {
       /*.margin-top-marksheet{
         margin-top: -20px;
