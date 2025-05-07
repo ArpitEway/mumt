@@ -3318,9 +3318,9 @@ public function update_exam_datewise_permission(){
 
 	public function tr_class_list(){
 		
-		// $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and old_class_id in ( 193,197,201,203,205,209,211,213,215,217,221,223,225,227,231,235,237,239,245,247,249,251,253,275,277,279,281,302) )  ";
+		$where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and old_class_id in (154,155,181,182,193,217,195,197,231,199,233,201,235,203,237,205,239,241,209,243,211,245,213,215,302,304,275,277,279,281,221,247,223,249,225,251,227,253) )  ";
 		
-		$where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' )";
+		// $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' )";
 
         // $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and class_id in (193,217,197,231,203,237,211,275,277,279,281,221,247,223,249,225,251,263,155,182,205,239,213,302,304,245,199,233,201,235,241,227,253,154,181,215,209,243) )";
 		// 193,217,197,231,203,237,211,275,277,279,281,221,247,223,249,225,251,263 
