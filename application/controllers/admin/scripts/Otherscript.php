@@ -1569,5 +1569,27 @@ public function update_roll_no_old_data(){
        
          echo 'Count :' .count($student);
     }
+
+	public function dg_locker_data_non_grading(){
+		//and enrollment_no in ('AG/21204765','AG/21204615')
+		$exam_year='June 2024';
+		$this->load->view('header',array('title' => 'Student Data For DIGI LOCKER '.$exam_year));
+		// $this->db->where_in('enrollment_no',array('AI/22207463'));
+	
+		
+		$sql="SELECT * FROM `old_exam_data` WHERE exam_year in ('".$exam_year."')  and exam_result !='FAIL' and marks_pattern='MARKS'  and  exam_status='R' and university_mode='REG' order by course_name,class_id,roll_no";
+        //and enrollment_no='AI/22206868'and center_id in (21,22,23,24,25,26,27,28)
+		// $this->db->limit(1);
+		$rs = $this->db->query($sql)->result_array();
+        //  $this->Common_model->last_query();
+        // print_r(count($rs));die;
+		$i=1;
+		
+	
+		$data['rs']=$rs;
+		
+		$this->load->view('admin/digi_locker_data_non_grading',$data);
+		$this->load->view('footer');
+	}
 }
 ?>
