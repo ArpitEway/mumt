@@ -25,7 +25,6 @@
             <th>GRADE</th>
             <th>PERCENT</th>
             <th>DOI</th>
-			
 			<th>SEM</th>
 			<th>EXAM_TYPE</th>
 			<th>TOT</th>
@@ -131,9 +130,9 @@
                 foreach($old_papers as $old_paper){
                     if($class_detail->internal == 'Y' && $old_paper['type'] == 'theory' || ($old_paper['type'] == 'theory' && $old_paper['int_marks'] !="N") ){
                         $sub_total = $old_paper['theory_marks']+$old_paper['int_marks'];
-                    }elseif($class_detail->$practical_internal_marks == 'Y' && $old_paper['type'] == 'Practical'){
+                    }elseif($class_detail->practical_internal_marks == 'Y' && $old_paper['type'] == 'Practical'){
                         $sub_total = $old_paper['p_marks']+$old_paper['int_marks'];
-                    }elseif($old_paper['type'] == 'Practical'){
+                    }elseif($old_paper['type'] == 'Practical' || $old_paper['type'] == 'Project'){
                         $sub_total = $old_paper['p_marks'];
                     }elseif($old_paper['type'] == 'Sessional'){
                         $sub_total = $old_paper['int_marks'];
