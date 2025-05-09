@@ -107,6 +107,7 @@
 				$session=$exam_arr[1]-1;
 				$session_data=$session.'-'.$exam_arr[1];
 				$class_name = explode(" ",$class_detail->class_name);
+                $mode=($student['university_mode'] == "REG")?'REGULAR':'PRIVATE';
 				if($studentDetail->gender=='Male')
 				{
 					$gender='M';
@@ -116,7 +117,7 @@
 				}
                 echo "<tr><td>".$sno++."</td><td>".$studentDetail->center_name."  </td> <td>".$course_detail->course_code."</td><td>".$studentDetail->course_name."  </td> <td></td> <td></td>";
                 //<td>".$student['student_id']." </td>
-                echo "<td>".$session_data." </td><td>".$student['enrollment_no']." </td><td>".$student['roll_no']." </td><td>".$student['name']." </td>"."<td>".$gender." </td>"." <td>".$studentDetail->dob." </td><td>".$student['f_h_name']." </td><td>".$student['mother_name']." </td><td>".$old_data->exam_result." </td><td>".$exam_arr[1]." </td><td>".$exam_arr[0]." </td><td></td><td></td><td></td><td></td><td>".$class_name[0]."</td><td>".$student['university_mode']."</td><td>".$old_data->total_marks."</td><td>".$old_data->obtain_marks."</td><td></td><td></td>";
+                echo "<td>".$session_data." </td><td>".$student['enrollment_no']." </td><td>".$student['roll_no']." </td><td>".$student['name']." </td>"."<td>".$gender." </td>"." <td>".$studentDetail->dob." </td><td>".$student['f_h_name']." </td><td>".$student['mother_name']." </td><td>".$old_data->exam_result." </td><td>".$exam_arr[1]." </td><td>".$exam_arr[0]." </td><td></td><td></td><td></td><td></td><td>".$class_name[0]."</td><td>".$mode."</td><td>".$old_data->total_marks."</td><td>".$old_data->obtain_marks."</td><td></td><td></td>";
                 ?>
                 
                 <td></td>
@@ -143,11 +144,13 @@
                     echo "<td>".$old_paper['paper_name']."</td>";
                     echo "<td>".$old_paper['paper_code']."</td>";
                     echo "<td>".$old_paper['max_theory_marks']."</td>";
-                    echo "<td>".$old_paper['max_p_marks']."</td>";
-                    echo "<td>".$old_paper['max_int_marks']."</td>";
-                    echo "<td>".$old_paper['theory_marks']."</td>";
-                    echo "<td>".$old_paper['p_marks']."</td>";
-                    echo "<td>".$old_paper['int_marks']."</td>";
+                    ?>
+                    <td><?= ($old_paper['max_p_marks'] == 0 || $old_paper['max_p_marks'] == 'N')?"":$old_paper['max_p_marks']?></td>
+                    <td><?= ($old_paper['max_int_marks'] == 0 || $old_paper['max_int_marks'] == 'N')?"":$old_paper['max_int_marks']?></td>
+                    <td><?= ( $old_paper['theory_marks'] == 'N')?"":$old_paper['theory_marks']?></td>
+                    <td><?= ($old_paper['p_marks'] == 'N')?"":$old_paper['p_marks']?></td>
+                    <td><?= ($old_paper['int_marks'] == 'N')?"":$old_paper['int_marks']?></td>
+                    <?php
                     echo "<td>".$sub_total."</td>";
                 }
                
