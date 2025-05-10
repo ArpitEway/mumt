@@ -215,7 +215,7 @@
                  </div> 
                  <div class="col-md-2">
                     <label class="text-heading mt-3"><?= $res->exam_result;?></label>
-                    <?php if($res->exam_result == 'FAIL' && $this->session->account_type == 'Admins' && (($res->agpa_sgpa>=4 && $res->agpa_sgpa>=0 ) || $res->agpa_sgpa=='' )){?>
+                    <?php if($res->exam_result == 'FAIL' && $this->session->account_type == 'Admins' && (($res->agpa_sgpa<4 && $res->agpa_sgpa>=0 ) || $res->agpa_sgpa=='' )){?>
                         <label class="text-heading mt-3"><a href="<?= base_url( 'admin/scripts/Postexam/backlog_marks_add_scripts/'.$student->student_id.'/'.$res->class_id.'/'.$res->exam_year.'/'.$res->id.'')?>" target="_blank"><i class="fa fa-plus"></i></a></label>
                         <?php } ?>    
                  </div> 
