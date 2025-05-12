@@ -1551,7 +1551,7 @@ public function update_roll_no_old_data(){
        
 		$this->load->model('Gradesheet_old_model');
 		$this->db->where_in('class_id', $class_ids);
-        $old_datas = $this->Common_model->getRecordByWhere('old_exam_data', array('exam_year'=>'June 2024', 'exam_status'=>'R','marks_pattern'=>'GRADE','university_mode'=>'PVT'));
+        $old_datas = $this->Common_model->getRecordByWhere('old_exam_data', array('exam_year'=>'June 2024', 'exam_status'=>'R','marks_pattern'=>'GRADE','university_mode'=>'REG'));
        $student = [];
         foreach($old_datas as $data){
            
@@ -1572,7 +1572,7 @@ public function update_roll_no_old_data(){
 
 	public function dg_locker_data_non_grading(){
 		//and enrollment_no in ('AG/21204765','AG/21204615')
-		$exam_year='June 2024';
+		$exam_year='January 2024';
 		$this->load->view('header',array('title' => 'Student Data For DIGI LOCKER '.$exam_year));
 		// $this->db->where_in('enrollment_no',array('AI/22207463'));
 	
