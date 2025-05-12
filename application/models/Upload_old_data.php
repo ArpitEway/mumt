@@ -12,6 +12,7 @@ class Upload_old_data extends CI_Model
 	protected $credit_point;
 	protected $obt_marks;
 	protected $total_marks;
+	protected $grace_agpa;
 	protected $agpa;
 	protected $result;
 	protected $fail_count = 0;
@@ -553,6 +554,8 @@ class Upload_old_data extends CI_Model
 					// $oldreResultDataultdata['result'] = 'PASS BY GRACE';
                     $result_this =  'PASS BY GRACE';
                     $ResultData['result'] = $result_this;
+					$this->tot_credit_point += 16;
+						$this->grace_agpa = $this->tot_credit_point/$this->tot_credit;
 					// $oldreultdata['credit'] = $result['credit'];
 					$this->check_grace_marks = true;
 				}else{
@@ -662,7 +665,7 @@ class Upload_old_data extends CI_Model
     public function update_old_exam_result($old_exam_data_id)
 	{
 		if ($this->check_grace_marks) {
-			$this->Common_model->updateRecordByConditions('old_exam_data',array('id' => $old_exam_data_id), array('exam_result' =>'PASS BY GRACE'));
+			$this->Common_model->updateRecordByConditions('old_exam_data',array('id' => $old_exam_data_id), array('exam_result' =>'PASS BY GRACE','agpa_sgpa'=>number_format((float)$this->grace_agpa, 2, '.', '')));
 			echo $this->db->last_query().'<br>';
 		}
         $studentData = array('upload_result'=>'Y');

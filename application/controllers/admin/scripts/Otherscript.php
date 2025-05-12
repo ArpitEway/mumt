@@ -1539,7 +1539,7 @@ public function update_roll_no_old_data(){
 		$this->load->view('footer');
 	}
 
-	public function check_agpa_sgpa($startlimit =0){
+	public function check_agpa_sgpa($startlimit = 0){
 		$start=0;
 		if($startlimit==!0){
 			$start=($startlimit-1)*5000;
@@ -1552,6 +1552,7 @@ public function update_roll_no_old_data(){
 		$this->load->model('Gradesheet_old_model');
 		$this->db->where_in('class_id', $class_ids);
         $old_datas = $this->Common_model->getRecordByWhere('old_exam_data', array('exam_year'=>'June 2024', 'exam_status'=>'R','marks_pattern'=>'GRADE','university_mode'=>'REG'));
+		
        $student = [];
         foreach($old_datas as $data){
            
@@ -1570,26 +1571,48 @@ public function update_roll_no_old_data(){
          echo 'Count :' .count($student);
     }
 
-	public function dg_locker_data_non_grading(){
+	public function dg_locker_data_non_grading($startlimit =0){
 		//and enrollment_no in ('AG/21204765','AG/21204615')
-		$exam_year='January 2024';
-		$this->load->view('header',array('title' => 'Student Data For DIGI LOCKER '.$exam_year));
-		// $this->db->where_in('enrollment_no',array('AI/22207463'));
-	
-		
-		$sql="SELECT * FROM `old_exam_data` WHERE exam_year in ('".$exam_year."')  and exam_result !='FAIL' and marks_pattern='MARKS'  and  exam_status='R' and university_mode='REG' order by course_name,class_id,roll_no";
-        //and enrollment_no='AI/22206868'and center_id in (21,22,23,24,25,26,27,28)
-		// $this->db->limit(1);
-		$rs = $this->db->query($sql)->result_array();
-        //  $this->Common_model->last_query();
-        // print_r(count($rs));die;
-		$i=1;
-		
-	
-		$data['rs']=$rs;
-		
-		$this->load->view('admin/digi_locker_data_non_grading',$data);
-		$this->load->view('footer');
-	}
+	// Initialize the starting point for pagination
+		$start = 0;
+
+		// Check if $startlimit is set and not zero
+		if ($startlimit==!0) {
+			$start = ($startlimit - 1) * 4000;
+			$pagetitle = $startlimit;
+		}
+
+		// Define the examination year
+		$exam_year = 'June 2024';
+
+		// Load the header view with the appropriate title
+		$this->load->view('header', ['title' => 'Student Data For DIGI LOCKER ' . $exam_year]);
+
+		// Build the query using CodeIgniter's Query Builder
+		$this->db->select('*');
+		$this->db->from('old_exam_data');
+		$this->db->where('exam_year', $exam_year);
+		$this->db->where('exam_result !=', 'FAIL');
+		$this->db->where('marks_pattern', 'MARKS');
+		$this->db->where('exam_status', 'R');
+		$this->db->where('university_mode', 'PVT');
+		$this->db->order_by('course_name');
+		$this->db->order_by('class_id');
+		$this->db->order_by('roll_no');
+
+		// Apply limit and offset for pagination
+		$this->db->limit(4000, $start);
+
+		// Execute the query and retrieve the results
+		$rs = $this->db->get()->result_array();
+				// print_r(count($rs));die;
+				$i=1;
+				
+			
+				$data['rs']=$rs;
+				
+				$this->load->view('admin/digi_locker_data_non_grading',$data);
+				$this->load->view('footer');
+			}
 }
 ?>
