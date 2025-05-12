@@ -1573,22 +1573,18 @@ public function update_roll_no_old_data(){
 
 	public function dg_locker_data_non_grading($startlimit =0){
 		//and enrollment_no in ('AG/21204765','AG/21204615')
-	// Initialize the starting point for pagination
+
 		$start = 0;
 
-		// Check if $startlimit is set and not zero
 		if ($startlimit==!0) {
 			$start = ($startlimit - 1) * 4000;
 			$pagetitle = $startlimit;
+			$this->db->limit(4000, $start);
 		}
 
-		// Define the examination year
 		$exam_year = 'June 2024';
-
-		// Load the header view with the appropriate title
 		$this->load->view('header', ['title' => 'Student Data For DIGI LOCKER ' . $exam_year]);
 
-		// Build the query using CodeIgniter's Query Builder
 		$this->db->select('*');
 		$this->db->from('old_exam_data');
 		$this->db->where('exam_year', $exam_year);
@@ -1599,20 +1595,10 @@ public function update_roll_no_old_data(){
 		$this->db->order_by('course_name');
 		$this->db->order_by('class_id');
 		$this->db->order_by('roll_no');
+		$data['rs'] = $this->db->get()->result_array();
 
-		// Apply limit and offset for pagination
-		$this->db->limit(4000, $start);
-
-		// Execute the query and retrieve the results
-		$rs = $this->db->get()->result_array();
-				// print_r(count($rs));die;
-				$i=1;
-				
-			
-				$data['rs']=$rs;
-				
-				$this->load->view('admin/digi_locker_data_non_grading',$data);
-				$this->load->view('footer');
-			}
+		$this->load->view('admin/digi_locker_data_non_grading',$data);
+		$this->load->view('footer');
+	}
 }
 ?>
