@@ -6,6 +6,11 @@
 		<div class="content-head row mb-3 mt-5">
 			<div>
 				<ul>
+					<li style="color:red"><img src="<?=base_url('assets/images/center/new.gif')?>" alt=""> <b>
+				आवश्यक सुचना :-
+					करौंदी परीक्षा में सम्मिलित होने वाले छात्रों को सूचित किया जाता है कि अवास एवं भोजन सुविधा हेतु प्रतिदिन प्रति छात्र राशि 300 /- रूपये देय होगी I अधिक जानकारी हेतु छात्रावास प्रभारी डॉ सूरज पाण्डेय मोबाईल नंबर 9569737057 पर संपर्क कर सकते है I </a>
+				</b>
+				</li><br>
 
 				<li style="color:red"><img src="<?=base_url('assets/images/center/new.gif')?>" alt=""> <b>
 				आवश्यक सुचना :-
