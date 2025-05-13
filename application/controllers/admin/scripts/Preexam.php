@@ -156,17 +156,15 @@ class Preexam extends CI_Controller {
         $rows=$this->db->get()->result();
        // echo $this->db->last_query();
         $i=1;
-		$class_ids=array(101,104,107,110,113,116,119,125,128,131,134,137,140,143,146,149,183,185,187,189,191,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,221,222,223,224,225,226,227,228,255,256,261,262,267,268,273,274,275,276,279,280,283,285,287,289,291,293,295,297,302,303,310);
 		$center_ids=array(11,12,20);
          foreach($rows as $row){
 			 
-			$data  = array();
-			 if($row->session=="July 2023"  && $row->university_mode=="REG" && in_array($row->class_id, $class_ids) && (!in_array($row->center_id, $center_ids))){
-
+			$data  = array();//$row->session=="July 2023"  && $row->university_mode=="REG" && in_array($row->class_id, $class_ids)
+			 if( $row->regular_exam_form_permission == 'Y' && (!in_array($row->center_id, $center_ids))){
 				$data  = array('exam_center_id'=>169 ,'examcentercode'=>'MDE165' );
 				$where = array('student_id'=>$row->student_id);
-			 $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
-			 echo $i." ".$row->	center_code." ".$row->student_id." ".$row->name." Exam Code =>".$allottment[0]->examcentercode." <br>";
+				$update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+				echo $i." ".$row->	center_code." ".$row->student_id." ".$row->name." Exam Code =>MDE165<br>";
                
 			 }
 			 else{
@@ -178,11 +176,9 @@ class Preexam extends CI_Controller {
 				
 					$data  = array('exam_center_id'=>$allottment[0]->exam_center_id ,'examcentercode'=>$allottment[0]->examcentercode );
 					$where = array('student_id'=>$row->student_id);
-			 $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
-			 $update_report =$this->Common_model->updateRecordByConditions('student_report',$where,$data);
-			 echo $i." ".$row->	center_code." ".$row->student_id." ".$row->name." Exam Code =>".$allottment[0]->examcentercode." <br>";
-					
-				
+					$update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+					$update_report =$this->Common_model->updateRecordByConditions('student_report',$where,$data);
+					echo $i." ".$row->	center_code." ".$row->student_id." ".$row->name." Exam Code =>".$allottment[0]->examcentercode." <br>";
 				}
 			 }
             
@@ -193,7 +189,7 @@ class Preexam extends CI_Controller {
 
 	// backlog
 	public function update_backlog_stdent_allottment_exam_center($startlimit=1){
-		$exam_year='June 2024';
+		$exam_year='June 2025';
         echo "update_stdent_allottment_exam_center<br>";
         $this->db->select('*');
         $this->db->from('backlog_student');
@@ -206,24 +202,31 @@ class Preexam extends CI_Controller {
         $rows=$this->db->get()->result();
         //echo $this->db->last_query();
         $i=1;
-         foreach($rows as $row){
-            $this->db->select('*');
-            $this->db->from('allot_exam_center');
-            $this->db->where('center_id',$row->center_id);
-            $allottment=$this->db->get()->result();
+			$center_ids=array(11,12,20);
+        foreach($rows as $row){
+			if( $row->karaundi_center == 'Y' && (!in_array($row->center_id, $center_ids))){
+				$data  = array('exam_center_id'=>169 ,'exam_center_code'=>'MDE165' );
+				$where = array('student_id'=>$row->student_id,'exam_year'=>$exam_year);
+				$update =$this->Common_model->updateRecordByConditions('backlog_student',$where,$data);
+				echo $i." ".$row->	center_code." ".$row->student_id." ".$row->name." Exam Code =>MDE165 <br>";
+			}else{
+
+				$this->db->select('*');
+				$this->db->from('allot_exam_center');
+				$this->db->where('center_id',$row->center_id);
+				$allottment=$this->db->get()->result();
             
             
-            if(!empty($allottment)){
-             
-                $data  = array('exam_center_id'=>$allottment[0]->exam_center_id ,'exam_center_code'=>$allottment[0]->examcentercode );
-                $where = array('student_id'=>$row->student_id,'exam_year'=>$exam_year);
-                $update =$this->Common_model->updateRecordByConditions('backlog_student',$where,$data);
-                echo $i." ".$row->	center_code." ".$row->student_id." ".$row->name." Exam Code =>".$allottment[0]->examcentercode." <br>";
-               $i++;
-            }
-           
-           
-         }
+				if(!empty($allottment)){
+				
+					$data  = array('exam_center_id'=>$allottment[0]->exam_center_id ,'exam_center_code'=>$allottment[0]->examcentercode );
+					$where = array('student_id'=>$row->student_id,'exam_year'=>$exam_year);
+					$update =$this->Common_model->updateRecordByConditions('backlog_student',$where,$data);
+					echo $i." ".$row->	center_code." ".$row->student_id." ".$row->name." Exam Code =>".$allottment[0]->examcentercode." <br>";
+					$i++;
+				}
+			}  
+        }
     }
 	
 	
