@@ -1464,7 +1464,7 @@ class ExamController extends CI_Controller {
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('*');
 			$this->db->from('exam_center');
-			$this->db->where_in('examcentercode',array('MDE163','MDE165'));
+			// $this->db->where_in('examcentercode',array('MDE163','MDE165'));
 			$this->db->order_by('examcentercode', "asc");
 			$data['exam_centers'] = $this->db->get()->result();
 
@@ -3585,7 +3585,7 @@ public function getStudentData()
 		}else
 		{
 		$data = array();
-		$data['title'] = "Exam Center Wise Max Student count Jan 2025";
+		$data['title'] = "Exam Center Wise Max Student count June 2025";
 		$csrf = array(
 			'name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash()
