@@ -217,6 +217,7 @@
                             <?php }?>
 							<option  value="Exam Fees">Exam fees</option>
                             <option  value="Backlog Exam Fees">Backlog Exam fees</option>
+							<option  value="Late Exam Fees">Late Exam fees</option>
 						</select>
 					</fieldset>
 					<fieldset class="form-group col-md-6">

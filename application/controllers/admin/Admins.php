@@ -2777,6 +2777,7 @@ public function update_exam_datewise_permission(){
 		$Fess_head = $this->input->post('fees_head');
 		$dateTime = $this->input->post('dateTime');
 		$student_id = $this->input->post('student_id');
+		$master =  $this->Common_model->getRecordByWhere('master')[0];
 		
         if($Fess_head == "Backlog Exam Fees"){
             $this->db->order_by("id",'desc');
@@ -2809,23 +2810,29 @@ public function update_exam_datewise_permission(){
 
         }elseif($student_details[0]->university_mode=='REG'){
             if($Fess_head!=''){
-                if($student_details[0]->demo == 'Y'){
+				if($Fess_head == 'Late Exam Fees' && $master->late_exam_fee_status == 'Y'){
+					$exam_fees = $course_details[0]->exam_fees + $master->p_late_fees;
+					$remark = ($student_details[0]->demo == 'Y')?'Late Demo Exam Fees':'Late Exam Fees';
+				}else if($student_details[0]->demo == 'Y'){
                     $exam_fees = ($Fess_head== 'Exam Fees') ? $course_details[0]->exam_fees : $course_details[0]->form_fees+$course_details[0]->admission_fees;
                 }else{
-                    
                     $exam_fees = ($Fess_head== 'Exam Fees') ? $course_details[0]->exam_fees+$course_details[0]->program_fees : $course_details[0]->form_fees+$course_details[0]->admission_fees;
                 }
                 
             } 
 	    }else{
            if($Fess_head!=''){
-                if($student_details[0]->demo == 'Y'){
+				if($Fess_head == 'Late Exam Fees' && $master->late_exam_fee_status == 'Y'){
+					$exam_fees = $course_details[0]->p_exam_fees + $master->p_late_fees;
+					$remark = ($student_details[0]->demo == 'Y')?'Late Demo Exam Fees':'Late Exam Fees';
+				}else if($student_details[0]->demo == 'Y'){
                 $exam_fees = ($Fess_head== 'Exam Fees') ? $course_details[0]->p_exam_fees : $course_details[0]->p_form_fees+$course_details[0]->p_admission_fees;
                 }else{
                     $exam_fees = ($Fess_head== 'Exam Fees') ? $course_details[0]->p_exam_fees+$course_details[0]->p_program_fees : $course_details[0]->p_form_fees+$course_details[0]->p_admission_fees;
                 }
 		    } 
 	    }
+		$Fess_head = ($Fess_head == 'Late Exam Fees')?'Exam Fees':$Fess_head;
 		$dateTime = explode(' ',$dateTime);
         $admission_type = ($Fess_head == "Backlog Exam Fees")?$student_details[0]->mode:$student_details[0]->university_mode;
         $admission_mode = ($admission_type =="REG")?'Regular':'Private';
