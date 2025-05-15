@@ -2811,7 +2811,7 @@ public function update_exam_datewise_permission(){
         }elseif($student_details[0]->university_mode=='REG'){
             if($Fess_head!=''){
 				if($Fess_head == 'Late Exam Fees' && $master->late_exam_fee_status == 'Y'){
-					$exam_fees = $course_details[0]->exam_fees + $master->p_late_fees;
+					$exam_fees = ($student_details[0]->demo == 'Y')?$course_details[0]->exam_fees + $master->p_late_fees:$course_details[0]->exam_fees + $master->p_late_fees+$course_details[0]->program_fees;
 					$remark = ($student_details[0]->demo == 'Y')?'Late Demo Exam Fees':'Late Exam Fees';
 				}else if($student_details[0]->demo == 'Y'){
                     $exam_fees = ($Fess_head== 'Exam Fees') ? $course_details[0]->exam_fees : $course_details[0]->form_fees+$course_details[0]->admission_fees;
@@ -2823,7 +2823,7 @@ public function update_exam_datewise_permission(){
 	    }else{
            if($Fess_head!=''){
 				if($Fess_head == 'Late Exam Fees' && $master->late_exam_fee_status == 'Y'){
-					$exam_fees = $course_details[0]->p_exam_fees + $master->p_late_fees;
+					$exam_fees = ($student_details[0]->demo == 'Y')?$course_details[0]->p_exam_fees + $master->p_late_fees:$course_details[0]->p_exam_fees + $master->p_late_fees+$course_details[0]->p_program_fees;
 					$remark = ($student_details[0]->demo == 'Y')?'Late Demo Exam Fees':'Late Exam Fees';
 				}else if($student_details[0]->demo == 'Y'){
                 $exam_fees = ($Fess_head== 'Exam Fees') ? $course_details[0]->p_exam_fees : $course_details[0]->p_form_fees+$course_details[0]->p_admission_fees;
