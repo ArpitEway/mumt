@@ -124,6 +124,9 @@
 				<td><?=$studentDetail->abc_id?></td>
                 <?php
                $old_papers = $this->Common_model->get_all_old_papers($student['student_id'],$student['class_id'],$old_data->id);
+               	if($class_detail->class_group == 'Y'){
+		            $papers_list = $this->Common_model->get_all_old_group_papers($student['student_id'],$student['class_id'],$old_data->id);
+		        }
                 echo "<td>SEMESTER</td>";
                
                 echo " <td></td> ";
@@ -140,22 +143,54 @@
                     }else{
                         $sub_total = $old_paper['theory_marks'];
                     }
-                 
-                    echo "<td>".$old_paper['paper_name']."</td>";
-                    echo "<td>".$old_paper['paper_code']."</td>";
-                    echo "<td>".$old_paper['max_theory_marks']."</td>";
                     ?>
+                    
+                    <td><?=$old_paper['paper_name']?></td>
+                    <td><?=$old_paper['paper_code']?></td>
+                    <td><?= ($student['university_mode'] == "REG")?$old_paper['max_theory_marks']:$old_paper['private_max_theory_marks']?></td>
                     <td><?= ($old_paper['max_p_marks'] == 0 || $old_paper['max_p_marks'] == 'N')?"":$old_paper['max_p_marks']?></td>
                     <td><?= ($old_paper['max_int_marks'] == 0 || $old_paper['max_int_marks'] == 'N')?"":$old_paper['max_int_marks']?></td>
                     <td><?= ( $old_paper['theory_marks'] == 'N')?"":$old_paper['theory_marks']?></td>
                     <td><?= ($old_paper['p_marks'] == 'N')?"":$old_paper['p_marks']?></td>
                     <td><?= ($old_paper['int_marks'] == 'N')?"":$old_paper['int_marks']?></td>
+                    <td><?= $sub_total ?></td>
                     <?php
-                    echo "<td>".$sub_total."</td>";
+                }
+
+                if($class_detail->class_group == 'Y'){
+                     foreach($papers_list as $old_paper){
+                    if($class_detail->internal == 'Y' && $old_paper['type'] == 'theory' || ($old_paper['type'] == 'theory' && $old_paper['int_marks'] !="N") ){
+                        $sub_total = $old_paper['theory_marks']+$old_paper['int_marks'];
+                    }elseif($class_detail->practical_internal_marks == 'Y' && $old_paper['type'] == 'Practical'){
+                        $sub_total = $old_paper['p_marks']+$old_paper['int_marks'];
+                    }elseif($old_paper['type'] == 'Practical' || $old_paper['type'] == 'Project'){
+                        $sub_total = $old_paper['p_marks'];
+                    }elseif($old_paper['type'] == 'Sessional'){
+                        $sub_total = $old_paper['int_marks'];
+                    }else{
+                        $sub_total = $old_paper['theory_marks'];
+                    }
+                    ?>
+                    <td><?=$old_paper['paper_name']?></td>
+                    <td><?=$old_paper['paper_code']?></td>
+                    <td><?= ($student['university_mode'] == "REG")?$old_paper['max_theory_marks']:$old_paper['private_max_theory_marks']?></td>
+                    <td><?= ($old_paper['max_p_marks'] == 0 || $old_paper['max_p_marks'] == 'N')?"":$old_paper['max_p_marks']?></td>
+                    <td><?= ($old_paper['max_int_marks'] == 0 || $old_paper['max_int_marks'] == 'N')?"":$old_paper['max_int_marks']?></td>
+                    <td><?= ( $old_paper['theory_marks'] == 'N')?"":$old_paper['theory_marks']?></td>
+                    <td><?= ($old_paper['p_marks'] == 'N')?"":$old_paper['p_marks']?></td>
+                    <td><?= ($old_paper['int_marks'] == 'N')?"":$old_paper['int_marks']?></td>
+                    <td><?= $sub_total ?></td>
+                    <?php   
+                }
                 }
                
 				$td_count=0;
-				$td_count=count($old_papers)*9;
+                if($class_detail->class_group == 'Y'){
+                    $td_count= (count($old_papers) + count($papers_list))*9;
+                }else{
+                    $td_count=count($old_papers)*9;
+                }
+				
 			
 				 $loop_td_count=108-$td_count;
 				for($c=1;$c<=$loop_td_count;$c++){
@@ -172,3 +207,8 @@
 		</tbody>
 	</table>
 </div>
+<script>
+  $(document).ready(function() {
+    $("#headerTitle").html("<?= $title ?>");
+  });
+</script>

@@ -1220,6 +1220,7 @@ class Common_Model extends CI_Model{
 		$where = array(
 			'student_id' => $id,
 			'old_result_data.class_id' => $class_id,
+			'paper_master.class_id' => $class_id,
 			
 			);
 		$this->db->select('old_result_data.*,paper_master.paper_name,paper_master.paper_code,paper_master.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks');
@@ -1244,7 +1245,7 @@ class Common_Model extends CI_Model{
 			'student_id' => $id,
 			'o.class_id' => $class_id,
 			'o.sub_group_id !='=>1,
-			 
+			 'paper_master.class_id' => $class_id,
 			
 			);
 

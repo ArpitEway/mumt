@@ -1367,7 +1367,7 @@ class ExamController extends CI_Controller {
 			$this->db->where('test_id!=','');
 			// $this->db->where_not_in('class_id',array(264,268,270));
 			// $this->db->where_in('class_id',array(155,182,193,195,197,199,201,203,205,207,209,211,213,302,275,279,221,223,225,227));
-			$this->db->where_in('class_id',array(217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253));
+			// $this->db->where_in('class_id',array(217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253));
 			// $this->db->where_in('class_id',array(243,215,231,239,237,235,253,277,251,233,245));
 			
 			// $this->db->where_in('class_id',array(213));
@@ -1398,7 +1398,7 @@ class ExamController extends CI_Controller {
 			$this->db->where('type','Theory');
 			// $this->db->where_not_in('class_id',array(264,268,270));
 			// $this->db->where_in('class_id',array(155,182,193,195,197,199,201,203,205,207,209,211,213,302,275,279,221,223,225,227));
-			$this->db->where_in('class_id',array(217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253));
+			// $this->db->where_in('class_id',array(217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253));
 			// $this->db->where_in('class_id',array(243,215,231,239,237,235,253,277,251,233,245));
 			
 			// $this->db->where_in('class_id',array(213));
@@ -1423,11 +1423,11 @@ class ExamController extends CI_Controller {
 	public function getEnvelope(){
 		$test_id = $this->input->post('test_id');
 		$multiple = $this->input->post('multiple');
-		$data['examSession'] = 'January 2025';
+		$data['examSession'] = 'June 2025';
 		$this->db->select('*');
 		$this->db->from('exam_center');
 		//$this->db->where('examcentercode','MDE165');
-		 $this->db->where_in('examcentercode',array('MDE163','MDE165'));
+		//  $this->db->where_in('examcentercode',array('MDE163','MDE165'));
 		$this->db->order_by("exam_center.examcentercode", "asc");
 		$data['elist'] = $this->db->get()->result();//echo $this->db->last_query(); die;
 		if($multiple){
