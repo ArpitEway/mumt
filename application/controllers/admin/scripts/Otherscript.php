@@ -1602,7 +1602,7 @@ public function update_roll_no_old_data(){
 			$pagetitle = $startlimit;
 			$this->db->limit(4000, $start);
 		}
-
+		$this->db->limit(100, 0);
 		$exam_year = 'June 2024';
 		$this->load->view('header', ['title' => 'Student Data For DIGI LOCKER ' . $exam_year]);
 
