@@ -3216,7 +3216,9 @@ public function practical_assignment_marks_edit(){
                 $this->db->where('paper_master.type','theory'); 
 				$this->db->where('class_master.course_group_id',$course); 
 			 	if($mode == 'PVT'){
-					$this->db->where('class_master.mode','Annual');
+					$this->db->where_in('class_master.id',array(283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,310,311));
+				}else{
+					$this->db->where_not_in('class_master.id',array(283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,310,311));
 				}
                 $this->db->group_by('class_master.class_name');
 				$this->db->order_by('class_master.class_name', 'Asc');
