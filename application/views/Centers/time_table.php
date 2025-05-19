@@ -22,10 +22,6 @@
         <tbody>
             <tr bgcolor="#FFCC99">
                 <th align="center">S.No.</th>
-                <?php if(in_array($paper_list[0]['class_id'],[104,107,134])){ ?>
-                <th align="center">Mode</th>
-                    <?php
-                        } ?>
                 <th align="center">Exam Date</th>
                 <th align="center">Exam Day</th>
                 <th align="center">Shift</th>
@@ -39,41 +35,16 @@
             <?php $i=1; foreach($paper_list as $rows){  ?>
                 <tr bgcolor="#E8F6FF">
                     <td align="center"><?=$i?></td>
-                    <?php if(in_array($paper_list[0]['class_id'],[104,107,134])){ ?>
-                    <td align="center">Regular</td>
-                        <?php   } ?>
-                    <td align="center"><?php echo date("d-m-Y", strtotime($rows['exam_date'])); ?></td>
-                    <td align="center"><?=$rows['exam_day']?></td>
-                    <td align="center"><?=$rows['exam_shift']?></td>
+                    <td align="center"><?php echo date("d-m-Y", strtotime(($mode =="PVT" && in_array($rows['class_id'],[104,107,134]))?$rows['pvt_exam_date']:$rows['exam_date'])); ?></td>
+                    <td align="center"><?= ($mode =="PVT" && in_array($rows['class_id'],[104,107,134]))?$rows['pvt_exam_day']:$rows['exam_day']?></td>
+                    <td align="center"><?= ($mode =="PVT" && in_array($rows['class_id'],[104,107,134]))?$rows['pvt_exam_shift']:$rows['exam_shift']?></td>
                     <td align="center"><?=$rows['course_name']?></td>
                     <td align="center"><?=$rows['paper_no_for_time_table']?></td>
                     <td align="center"><?=$rows['paper_code']?></td>
                     <td align="center"><?=$class[0]['class_name']?></td>
                     <td><?=$rows['paper_name']?></td>
                 </tr>
-            <?php $i++; } 
-             if(in_array($paper_list[0]['class_id'],[104,107,134])){
-                
-                foreach($paper_list as $rows){  ?>
-                <tr bgcolor="#E8F6FF">
-                    <td align="center"><?=$i?></td>
-                   
-                    <td align="center">Private</td>
-                      
-                    <td align="center"><?php echo date("d-m-Y", strtotime($rows['pvt_exam_date'])); ?></td>
-                    <td align="center"><?=$rows['pvt_exam_day']?></td>
-                    <td align="center"><?=$rows['pvt_exam_shift']?></td>
-                    <td align="center"><?=$rows['course_name']?></td>
-                    <td align="center"><?=$rows['paper_no_for_time_table']?></td>
-                    <td align="center"><?=$rows['paper_code']?></td>
-                    <td align="center"><?=$class[0]['class_name']?></td>
-                    <td><?=$rows['paper_name']?></td>
-                </tr>
-                
-                <?php
-                $i++; 
-                }
-            }
+            <?php $i++; }  
             ?>
         </tbody>
     </table>

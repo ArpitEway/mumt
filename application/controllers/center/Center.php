@@ -299,6 +299,25 @@ class Center extends CI_Controller {
 		echo $this->load->view('template/getclass',$data,true);
 	}
 
+	public function getCourseByMode(){
+		
+		$mode = $this->input->post('mode');
+		$this->db->select('course_group.*');
+		$this->db->from('course_group');
+		$this->db->join('paper_master', 'paper_master.course_group_id = course_group.id');
+		// $this->db->where('paper_master.exam_date!=','');
+		// $this->db->where('paper_master.exam_date!=','0000-00-00');  
+		$this->db->where('paper_master.type','theory'); 
+	   if($mode=='PVT'){
+			$this->db->where('course_group.admission_permission_pvt','Y');
+	   }
+		$this->db->group_by('paper_master.course_group_id');
+		$this->db->order_by('course_group.course_name', 'Asc');
+		$dt['courses']= $this->db->get()->result_array();
+		// $this->Common_model->last_query();
+		echo $this->load->view('template/getCourseForTimeTable',$dt,true);
+	}
+
 	private function getNotification(){
 		$center_id = $this->session->center_id;
 		if($center_id!=''){
@@ -3187,6 +3206,7 @@ public function practical_assignment_marks_edit(){
 	//For Both private & regular 
 	public function getClassByCourseForBoth(){
 		$course = $this->input->post('course');
+		$mode = $this->input->post('mode');
 	
 		$this->db->select('class_master.id,class_master.class_name');
                 $this->db->from('class_master');
@@ -3195,7 +3215,9 @@ public function practical_assignment_marks_edit(){
 				$this->db->where('paper_master.exam_date!=','0000-00-00'); 
                 $this->db->where('paper_master.type','theory'); 
 				$this->db->where('class_master.course_group_id',$course); 
-			 
+			 	if($mode == 'PVT'){
+					$this->db->where('class_master.mode','Annual');
+				}
                 $this->db->group_by('class_master.class_name');
 				$this->db->order_by('class_master.class_name', 'Asc');
                 $class_list= $this->db->get()->result_array();
@@ -3232,12 +3254,13 @@ public function practical_assignment_marks_edit(){
 	public function getExamTimeTable(){
 		$course = $this->input->post('course');
 		$class_id = $this->input->post('class_id');
+		$data['mode'] = $this->input->post('mode');
 		$data['class'] = $this->Common_model->get_record('class_master','*',array("course_group_id"=>$course,"id"=>$class_id));
 		$this->db->order_by('exam_date', 'Asc');
 		$this->db->order_by('exam_shift', 'Desc');
 		$this->db->order_by('paper_no', 'Asc');
 		$cbcs = $data['class'][0]['cbcs'];
-		$data['paper_list'] = $this->Common_model->get_record('paper_master','*',array("course_group_id"=>$course,"class_id"=>$class_id,"type"=>'theory','paper_master.exam_date!='=>'','paper_master.exam_date!='=>'0000-00-00','cbcs_paper'=>$cbcs));
+		$data['paper_list'] = $this->Common_model->get_record('paper_master','*',array("course_group_id"=>$course,"class_id"=>$class_id,'paper_master.exam_date!='=>'','paper_master.exam_date!='=>'0000-00-00',"type"=>'theory','cbcs_paper'=>$cbcs));
 	
 	//	echo $this->db->last_query();																				  
 		echo $this->load->view('Centers/time_table',$data,true);

@@ -338,6 +338,24 @@ class Preexam extends CI_Controller {
 			$i++;
 		}
 	}
+
+		public function update_exam_fields_from_paper_master_sub_table_pvt(){
+		echo "Update Private Exam Data in Paper Master";
+		$this->db->select('*');
+       		$this->db->from('paper_master_sub');
+		$rows=$this->db->get()->result();
+		$i=1;
+		foreach($rows as $row){
+
+			echo "<br> ".$i." ".$row->papersname ." ". $row->papercode ." ". $row->new_test_id;
+			$data  = array('pvt_exam_date'=>$row->new_exam_date , 'pvt_exam_day'=>$row->new_exam_day, 'pvt_exam_shift'=>$row->new_exam_shift);
+            $where = array('pvt_test_id'=>$row->new_test_id,'paper_code'=> $row->papercode ,'pvt_exam_date'=>'0000-00-00');
+            //,'exam_date'=>'0000-00-00'
+            $update =$this->Common_model->updateRecordByConditions('paper_master',$where,$data);
+		//	echo  $this->db->last_query(); die;
+			$i++;
+		}
+	}
 	//Update exam center code in allot_exam_center table
 	public function update_exam_center_code_in_allot(){
 		$this->db->select('*');

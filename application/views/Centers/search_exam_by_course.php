@@ -2,7 +2,13 @@
 	
     <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 	<div class="row mx-auto">	
-        <div class="form-group col-md-2 "></div>
+        <div class="form-group col-md-4 ">
+            <label for="mode">Mode</label>
+            <select name="mode" id="mode" class="form-control" data-target="#course_group_id_both" required >
+                <option value="REG" selected>Regular</option>
+                <option value="PVT">Private</option>
+            </select>
+        </div>
         <div class="form-group col-md-4 ">
 			<label for="course">Course</label>
 			<select name="course_group_id" id="course_group_id_both" class="form-control course_group_id" data-target="#class_id" required >
@@ -45,9 +51,30 @@
 	</div>
 </div>
 <script>
+     $("#mode").on('change', function(){
+            var mode = $(this).val();
+            var csrfName = $('.csrfname').attr('name');
+            var csrfHash = $('.csrfname').val(); 
+             $('#course_group_id_both').html("");
+              $('#class_id').html("");
+               $("#myLoader").show();
+            $.ajax({
+                method: "POST",
+                url: '<?php echo site_url('center/center/getCourseByMode'); ?>',
+               
+                data: {mode : mode,[csrfName]:csrfHash },
+            })
+            .done(function( msg ) {
+                $('#course_group_id_both').html(msg);
+                $('#myLoader').hide();
+                $('#dt').html("");
+            });
+        
+        })
 	
     $("#course_group_id_both").on('change', function(){
             var course = $(this).val();
+            let mode = $("#mode").val();
        
             var csrfName = $('.csrfname').attr('name');
             var csrfHash = $('.csrfname').val(); 
@@ -57,7 +84,7 @@
                 method: "POST",
                 url: '<?php echo site_url('center/center/getClassByCourseForBoth'); ?>',
                
-                data: {course : course,[csrfName]:csrfHash },
+                data: {course : course,mode : mode,[csrfName]:csrfHash },
             })
             .done(function( msg ) {
                 $('#class_id').html(msg);
@@ -67,6 +94,7 @@
         });
         $("#class_id").on('change', function(){
             var course = $("#course_group_id_both").val();
+            let mode = $("#mode").val();
             var class_id = $(this).val();
        
             var csrfName = $('.csrfname').attr('name');
@@ -76,7 +104,7 @@
                 method: "POST",
                 url: '<?php echo site_url('center/center/getExamTimeTable'); ?>',
                
-                data: {class_id : class_id,course : course,[csrfName]:csrfHash },
+                data: {class_id : class_id, mode : mode ,course : course,[csrfName]:csrfHash },
             })
             .done(function( msg ) {
                 $('#myLoader').hide();
