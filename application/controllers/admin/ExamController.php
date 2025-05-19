@@ -2972,7 +2972,7 @@ public function getStudentData()
 							$msg="<p style='text-align: center;' id='result_msg'><b>Student result not declared!</b></p>"; 
 					}
 						$data['student']=$student[0];
-						$data['exam_session']  = 'June 2024';
+						$data['exam_session']  = 'January 2025';
 						/**********************/
 						if($data['student']->provisional_remark!="N" && $data['student']->provisional_remark!="")
 						{
@@ -2992,6 +2992,7 @@ public function getStudentData()
 						$this->db->where(''.$this->exam_form_table.'.class_id',$data['student']->old_class_id);
 						$this->db->order_by(''.$this->exam_form_table.'.paper_order',''.$this->exam_form_table.'.paper_id');
 						$new_exam_form = $this->db->get()->result();
+						// $this->Common_model->last_query();
 						$data['classData']  = $classData;
 						$data['new_exam_form']  = $new_exam_form;
 						// if(($data['student']->old_class_id == '104' || $data['student']->old_class_id == '107' || $data['student']->old_class_id == '101' || $data['student']->old_class_id == '134' || $data['student']->old_class_id == '116' || $data['student']->old_class_id == '110'|| $data['student']->old_class_id == '119' || $data['student']->old_class_id == '131') && $data['student']->university_mode == 'REG')
