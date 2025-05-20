@@ -44,17 +44,17 @@ foreach($elist as $row)
 
         //   $sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`examcentercode`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paper['paper_code']."' AND `s`.`class_id` = '".$paper['class_id']."' AND s.course_group_id= '".$paper['course_group_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND new_exam_form='Y'";  
 
-          $sql="SELECT count(*) as cnt FROM `new_exam_form_report` as `e` JOIN `student_report` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`examcentercode`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paper['paper_code']."' AND `s`.`class_id` = '".$paper['class_id']."' AND s.course_group_id= '".$paper['course_group_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2024' AND `s`.`class_name` = 'I Year' )) ";   
+          $sql="SELECT count(*) as cnt FROM `new_exam_form_report` as `e` JOIN `student_report` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`examcentercode`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paper['paper_code']."' AND `s`.`class_id` = '".$paper['class_id']."' AND s.course_group_id= '".$paper['course_group_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND s.class_id not in (101,104,107,110,113,116,119,125,128,131,134,137,140,143,146,149,162,163,164,165,168,169,170,171,173,174,175,176,177,178,179,180,183,185,187,189,191,273,274,283,285,287,289,291,293,295,297,300,310)  AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2024' AND `s`.`class_name` = 'I Year' )) ";   
 
           // ( `s`.`session` = 'July 2023' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2024' AND `s`.`class_name` = 'I SEM' )
-        //   AND s.class_id not in (163,175,153,155,182,299,161,216,214,159,154,158,181,172,160,152)  AND `s`.payment_status='Y'
+        //  AND s.class_id not in (101,104,107,110,113,116,119,125,128,131,134,137,140,143,146,149,162,163,164,165,168,169,170,171,173,174,175,176,177,178,179,180,183,185,187,189,191,273,274,283,285,287,289,291,293,295,297,300,310) AND `s`.payment_status='Y'
          $query = $this->db->query($sql);
          $count = $query->result_array();
         
-        $qu="SELECT count(*) as num FROM `student_report` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paper['paper_code']."' AND `p`.`class_id` = '".$paper['class_id']."'  AND s.course_group_id= '".$paper['course_group_id']."'  AND `s`.`examcentercode`='".$row->examcentercode."' AND   `s`.`exam_center_id` = '".$row->id."'  AND temp_exam_form='N' ";
+        $qu="SELECT count(*) as num FROM `student_report` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paper['paper_code']."' AND `p`.`class_id` = '".$paper['class_id']."'  AND s.course_group_id= '".$paper['course_group_id']."'  AND `s`.`examcentercode`='".$row->examcentercode."' AND   `s`.`exam_center_id` = '".$row->id."'  AND temp_exam_form='N'  AND s.class_id not in (101,104,107,110,113,116,119,125,128,131,134,137,140,143,146,149,162,163,164,165,168,169,170,171,173,174,175,176,177,178,179,180,183,185,187,189,191,273,274,283,285,287,289,291,293,295,297,300,310)";
 
         //        // and `session` = 'July 2022' AND `s`.`class_name` = 'I Year' AND `s`.payment_status='Y'
-        //     //    AND s.class_id not in (163,175,153,155,182,299,161,216,214,159,154,158,181,172,160,152)
+   
 
         $query = $this->db->query($qu);
         $all = $query->result_array();
@@ -62,11 +62,10 @@ foreach($elist as $row)
         $allElective= $all[0]['num'];
         //  $allElective= 0;
 
-         $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form_report` as `e` JOIN `backlog_student_report` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id`  AND s.id=e.backlog_student_id WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paper['paper_code']."' AND `s`.`class_id` = '".$paper['class_id']."' AND s.course_group_id= '".$paper['course_group_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form!='D' AND `e`.`status`='B'  AND s.exam_year='June 2025'"; 
+         $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form_report` as `e` JOIN `backlog_student_report` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id`  AND s.id=e.backlog_student_id WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paper['paper_code']."' AND `s`.`class_id` = '".$paper['class_id']."' AND s.course_group_id= '".$paper['course_group_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form!='D' AND `e`.`status`='B'  AND s.exam_year='June 2025'  AND s.class_id not in (101,104,107,110,113,116,119,125,128,131,134,137,140,143,146,149,162,163,164,165,168,169,170,171,173,174,175,176,177,178,179,180,183,185,187,189,191,273,274,283,285,287,289,291,293,295,297,300,310)"; 
 
         //  $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id`  AND s.id=e.backlog_student_id WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paper['paper_code']."' AND `s`.`class_id` = '".$paper['class_id']."' AND s.course_group_id= '".$paper['course_group_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form='Y' AND `e`.`status`='B'  AND s.exam_year='June 2025'";   
 
-        //  AND s.class_id not in (163,175,153,155,182,299,161,216,214,159,154,158,181,172,160,152) 
          $query_backlog = $this->db->query($sql_back);
          $count_backlog = $query_backlog->result_array();
 
@@ -149,13 +148,17 @@ foreach($elist as $row)
                 <td><?=$examShift?></td>
                 <td><strong>Time</strong></td>
                 <td colspan="3"><?php  
-                    $class_ids=array(154,172,181,213);
+                
+                    // $class_ids=array(154,172,181,213);
+
                     if($examShift=='Early Morning'){echo "07:00 AM To 10:00 AM";} 
                     if($examShift=='Morning'){echo "10:00 AM To 01:00 PM";}
-                    if($examShift=='Afternoon' && in_array($paper['class_id'],$class_ids))
-                        { echo "02:00 PM To 05:00 PM"; }  
-                     elseif($examShift=='Afternoon') 
-                        { echo "12:00 PM To 03:00 PM"; } 
+                    if($examShift=='Morning'){echo "02:00 PM To 05:00 PM"; }
+
+                    // if($examShift=='Afternoon' && in_array($paper['class_id'],$class_ids))
+                    //     { echo "02:00 PM To 05:00 PM"; }  
+                    //  elseif($examShift=='Afternoon') 
+                    //     { echo "12:00 PM To 03:00 PM"; } 
 
                 ?></td> </tr>
                      
