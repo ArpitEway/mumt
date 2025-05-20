@@ -153,7 +153,7 @@ foreach($elist as $row)
 
                     if($examShift=='Early Morning'){echo "07:00 AM To 10:00 AM";} 
                     if($examShift=='Morning'){echo "10:00 AM To 01:00 PM";}
-                    if($examShift=='Morning'){echo "02:00 PM To 05:00 PM"; }
+                    if($examShift=='Afternoon'){echo "02:00 PM To 05:00 PM"; }
 
                     // if($examShift=='Afternoon' && in_array($paper['class_id'],$class_ids))
                     //     { echo "02:00 PM To 05:00 PM"; }  
