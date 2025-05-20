@@ -305,8 +305,8 @@ class Center extends CI_Controller {
 		$this->db->select('course_group.*');
 		$this->db->from('course_group');
 		$this->db->join('paper_master', 'paper_master.course_group_id = course_group.id');
-		// $this->db->where('paper_master.exam_date!=','');
-		// $this->db->where('paper_master.exam_date!=','0000-00-00');  
+		$this->db->where('paper_master.exam_date!=','');
+		$this->db->where('paper_master.exam_date!=','0000-00-00');  
 		$this->db->where('paper_master.type','theory'); 
 	   if($mode=='PVT'){
 			$this->db->where('course_group.admission_permission_pvt','Y');
@@ -3216,7 +3216,7 @@ public function practical_assignment_marks_edit(){
                 $this->db->where('paper_master.type','theory'); 
 				$this->db->where('class_master.course_group_id',$course); 
 			 	if($mode == 'PVT'){
-					$this->db->where_in('class_master.id',array(283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,310,311));
+					$this->db->where_in('class_master.id',array(104,105,106,323,107,108,109,324,134,135,136,331,137,138,139,140,141,142,143,144,145,146,147,148,169,170,171,183,184,185,186,187,188,189,190,283,284,285,286,287,288,289,290,291,292,293,294,310,311,295,296,297,298));
 				}else{
 					$this->db->where_not_in('class_master.id',array(283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,310,311));
 				}
@@ -3262,8 +3262,7 @@ public function practical_assignment_marks_edit(){
 		$this->db->order_by('exam_shift', 'Desc');
 		$this->db->order_by('paper_no', 'Asc');
 		$cbcs = $data['class'][0]['cbcs'];
-		$data['paper_list'] = $this->Common_model->get_record('paper_master','*',array("course_group_id"=>$course,"class_id"=>$class_id,'paper_master.exam_date!='=>'','paper_master.exam_date!='=>'0000-00-00',"type"=>'theory','cbcs_paper'=>$cbcs));
-	
+		$data['paper_list'] = $this->Common_model->get_record('paper_master','*',array("course_group_id"=>$course,'paper_master.exam_date!='=>'','paper_master.exam_date!='=>'0000-00-00',"class_id"=>$class_id,"type"=>'theory','cbcs_paper'=>$cbcs));
 	//	echo $this->db->last_query();																				  
 		echo $this->load->view('Centers/time_table',$data,true);
 	}
