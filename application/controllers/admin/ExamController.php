@@ -1493,8 +1493,8 @@ class ExamController extends CI_Controller {
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('*');
 			$this->db->from('exam_center');
-			$this->db->where_in('examcentercode',array('MDE163','MDE165'));
-			//$this->db->where('examcentercode','MDE165');
+			// $this->db->where_in('examcentercode',array('MDE163','MDE165'));
+			// $this->db->where('examcentercode','MDE165');
 			$this->db->order_by('examcentercode', "asc");
 			$data['exam_centers'] = $this->db->get()->result();
 			$this->db->select('*');
