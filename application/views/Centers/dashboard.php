@@ -96,11 +96,11 @@
 						</div>
 					</a>
 					<?php if($center->temp_admission_payment=='Y' ) { ?>
-					<a class="border-0 custom-menu-item" href="<?=base_url('unpaid_student_list');?>">
+					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('unpaid_student_list');?>">
 						<div>
 							<span class="nav-text">Old - Private Unpaid Student List</span>
 						</div>
-					</a>
+					</a> -->
 					<?php } ?>
 					<a class="border-0 custom-menu-item" href="<?=base_url('Document/index/PVT');?>">
 						<div>

@@ -1849,24 +1849,25 @@ class Center extends CI_Controller {
 	public function paid_by_center($student_id){
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		$student_data = $this->Common_model->getRecordByWhere('student',array('student_id'=>$student_id));
+		$master = $this->Common_model->getSingleRow('master');
 		// echo $this->db->last_query(); die;
 		$where = array('session' =>$student_data[0]->session,
 			'course_group_id' => $student_data[0]->course_group_id,
 		);
-
+		$late_fees = ($master->late_exam_fee_status =="Y")?$master->p_late_fees:0;
         $fees = $this->Common_model->getRecordByWhere('course',$where);
 			if( $student_data[0]->university_mode=="REG"){
 				if($student_data[0]->demo=='Y'){
-					$total_fees = $fees[0]->exam_fees;
+					$total_fees = $fees[0]->exam_fees + $late_fees;
 				}else{
-					$total_fees = $fees[0]->program_fees+$fees[0]->exam_fees;
+					$total_fees = $fees[0]->program_fees+$fees[0]->exam_fees + $late_fees;
 				}
 			}
 			else{
 				if($student_data[0]->demo=='Y'){
-					$total_fees = $fees[0]->p_exam_fees;
+					$total_fees = $fees[0]->p_exam_fees + $late_fees;
 				}else{
-					$total_fees = $fees[0]->p_program_fees+$fees[0]->p_exam_fees;
+					$total_fees = $fees[0]->p_program_fees+$fees[0]->p_exam_fees + $late_fees;
 				}
 				
 			}
