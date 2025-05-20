@@ -51,7 +51,7 @@ foreach($elist as $row)
          $query = $this->db->query($sql);
          $count = $query->result_array();
         
-        $qu="SELECT count(*) as num FROM `student_report` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paper['paper_code']."' AND `p`.`class_id` = '".$paper['class_id']."'  AND s.course_group_id= '".$paper['course_group_id']."'  AND `s`.`examcentercode`='".$row->examcentercode."' AND   `s`.`exam_center_id` = '".$row->id."'  AND temp_exam_form='N'  AND s.class_id not in (101,104,107,110,113,116,119,125,128,131,134,137,140,143,146,149,162,163,164,165,168,169,170,171,173,174,175,176,177,178,179,180,183,185,187,189,191,273,274,283,285,287,289,291,293,295,297,300,310)";
+        $qu="SELECT count(*) as num FROM `student_report` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paper['paper_code']."' AND `p`.`class_id` = '".$paper['class_id']."'  AND s.course_group_id= '".$paper['course_group_id']."'  AND `s`.`examcentercode`='".$row->examcentercode."' AND   `s`.`exam_center_id` = '".$row->id."'  AND temp_exam_form='N' AND s.class_id not in (101,104,107,110,113,116,119,125,128,131,134,137,140,143,146,149,162,163,164,165,168,169,170,171,173,174,175,176,177,178,179,180,183,185,187,189,191,273,274,283,285,287,289,291,293,295,297,300,310)";
 
         //        // and `session` = 'July 2022' AND `s`.`class_name` = 'I Year' AND `s`.payment_status='Y'
    

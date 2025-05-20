@@ -145,7 +145,7 @@ foreach($papers as $pap)
          $query_back = $this->db->query($sql_back);
          $count_backlog = $query_back->result_array();
 
-         $qu="SELECT count(*) as num FROM `student_report` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paper->paper_code."'  AND `p`.`class_id` = '".$paper->class_id."' AND `s`.`exam_center_id`='".$exam_center."'   AND temp_exam_form='N' and new_exam_form!='D' ";
+         $qu="SELECT count(*) as num FROM `student_report` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paper->paper_code."'  AND `p`.`class_id` = '".$paper->class_id."' AND `s`.`exam_center_id`='".$exam_center."'   AND temp_exam_form='N' ";
 
          //  AND `s`.payment_status='Y'
          //  and `session` = 'July 2022' AND `s`.`class_name` = 'I Year' 
