@@ -24,7 +24,7 @@ $class_ids = array(104,101,107,110,116,119,273,125,128,131,134,162,163,164,165,2
     <?php }
     ?>
    */  
-
+?>
 
     <table align="center" cellpadding="5">
         <tbody>
