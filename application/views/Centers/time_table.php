@@ -6,7 +6,15 @@
     <!-- <p style="text-align:center;font-size:12px;"><strong>Early Morning Shift Time 07:00 AM To 10:00 AM </strong></p> -->
     <p style="text-align:center;font-size:12px;"><strong>Programme for Annual/Semester - Main/Backlog Examination June 2025 </strong></p>
     <p style="text-align:center;font-size:12px;"><strong> Morning Shift Time 10:00 AM To 01:00 PM </strong></p>
-    <p style="text-align:center;font-size:12px;"><strong> Afternoon Shift Time 02:00 PM To 05:00 PM </strong></p>
+
+    <!-- <p style="text-align:center;font-size:12px;"><strong> Afternoon Shift Time 02:00 PM To 05:00 PM </strong></p> -->
+<?php
+$class_ids = array(104,101,107,110,116,119,273,125,128,131,134,162,163,164,165,283,285,287,289,310,291,293,295,274,297,168,169,170,171,214,106,103,109,112,118,121,127,130,133,136);
+     if(in_array($paper_list[0]['class_id'],$class_ids)){  ?>
+     <p style="text-align:center;font-size:12px;"><strong> Afternoon Shift Time 03:00 PM To 06:00 PM </strong></p>
+    <?php }else{  ?>
+     <p style="text-align:center;font-size:12px;"><strong> Afternoon Shift Time 02:00 PM To 05:00 PM </strong></p> <?php } ?>
+
         <?php /*if($paper_list[0]['course_group_id']==45){ ?> 
         <p style="text-align:center;font-size:12px;"><strong>Programme for Annual/Semester - Main/Backlog Examination June 2025 </strong></p>
         <p style="text-align:center;font-size:12px;"><strong> Morning Shift Time 10:00 AM To 01:00 PM </strong></p>
@@ -14,11 +22,10 @@
         <p style="text-align:center;font-size:12px;"><strong>Programme for Annual/Semester - Main/Backlog Examination June 2025 </strong></p>
     <p style="text-align:center;font-size:12px;"><strong> Morning Shift Time 11:00 AM To 02:00 PM </strong></p>
     <?php }
+    ?>
    */  
-    // if($paper_list[0]['class_id']==154 || $paper_list[0]['class_id']==172 || $paper_list[0]['class_id']==181 || $paper_list[0]['class_id']==213){  ?>
-     <!-- <p style="text-align:center;font-size:12px;"><strong> Afternoon Shift Time 02:00 PM To 05:00 PM </strong></p> -->
-    <?php// }else{  ?>
-     <!-- <p style="text-align:center;font-size:12px;"><strong> Afternoon Shift Time 12:00 PM To 03:00 PM </strong></p> <?php //} ?> -->
+
+
     <table align="center" cellpadding="5">
         <tbody>
             <tr bgcolor="#FFCC99">
