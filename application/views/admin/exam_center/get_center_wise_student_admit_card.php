@@ -149,6 +149,7 @@
 						  <?php
 						  $i = 1;
 						  $paper_count = count($papers);
+						  $class_ids = array(104,101,107,110,116,119,273,125,128,131,134,162,163,164,165,283,285,287,289,310,291,293,295,274,297,168,169,170,171,214,106,103,109,112,118,121,127,130,133,136);
 			foreach($papers as $paper){
 				?>
 				<tr>
@@ -163,14 +164,13 @@
 					<?php //endif ?> -->
 					<td><?php
 					
-					if($paper->exam_shift=='Afternoon' && ($student->class_id==259 || $student->class_id==261 || $student->class_id==263 || $student->class_id==255 || $student->class_id==257) ){
-						echo '12:00 PM To 3:00 PM';
+					if($paper->exam_shift=='Afternoon' && in_array($student->class_id,$class_ids)){
+						echo '3:00 PM To 6:00 PM';
 					}
 					elseif($paper->exam_shift=='Morning'){
-						echo '11:00 AM To 2:00 PM';
+						echo '10:00 AM To 1:00 PM';
 					}elseif($paper->exam_shift=='Afternoon'){
-					//	echo '03:00 PM To 6:00 PM';
-						echo '12:00 PM To 3:00 PM';
+						echo '2:00 PM To 5:00 PM';
 					}elseif($paper->exam_shift=="Early Morning"){
 						echo '07:00 To 10:00 AM';
 					}

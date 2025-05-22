@@ -162,7 +162,7 @@
 						  <tbody>
 						  <?php
 						  $i = 1;
-						
+					$class_ids = array(104,101,107,110,116,119,273,125,128,131,134,162,163,164,165,283,285,287,289,310,291,293,295,274,297,168,169,170,171,214,106,103,109,112,118,121,127,130,133,136);	
 			foreach($papers as $paper){
 				?>
 				<tr>
@@ -170,19 +170,15 @@
 					<td><?php echo date("d-m-Y", strtotime($paper->exam_date)); ?></td>
 					<td>
 					<?php 
-					if($paper->exam_shift=='Afternoon' && ($student['class_id']==259 || $student['class_id']==261 || $student['class_id']==263) ){
-						echo '12:00 PM To 3:00 PM';
-					}
-					elseif($paper->exam_shift=='Afternoon' && ($student['class_id']==256 || $student['class_id']==258 || $student['class_id']==260 || $student['class_id']==262 || $student['class_id']==300|| $student['class_id']==301) ){
-						echo '2:00 PM To 5:00 PM';
-					}
-					elseif($paper->exam_shift=='Early Morning'){
-						echo '7:00 AM To 10:00 AM';
-					}elseif($paper->exam_shift=='Morning'){
-						echo '11:00 AM To 02:00 PM';
-					}elseif($paper->exam_shift=='Afternoon'){
+					if($paper->exam_shift=='Afternoon' && in_array($student['class_id'],$class_ids) ){
 						echo '03:00 PM To 06:00 PM';
-					} ?>
+					}
+					elseif($paper->exam_shift=='Afternoon'){
+						echo '02:00 PM To 05:00 PM';
+					}
+					elseif($paper->exam_shift=='Morning'){
+						echo '10:00 AM To 01:00 PM';
+					}?>
 					</td>
 					<td style="text-align:left;"><?php echo $paper->paper_name; ?></td>
 					<td ></td>
