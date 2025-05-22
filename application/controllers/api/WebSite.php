@@ -222,7 +222,7 @@ class WebSite extends REST_Controller {
         $data['university_mode']='REG';
         $data['form_fees']='N';
         $data['admission_by']='web';
-        $data['session']='July 2024';
+        $data['session']='July 2025';
         $data['enrollment_no']='-';
         $data['abc_id']=$abcid;
         $data['center_code']=$center_code;
