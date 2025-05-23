@@ -130,17 +130,41 @@ foreach($exam_centers as $row)
             // echo "<br>";
             // echo $this->db->last_query(); 
             // echo "<br>";
+            // $this->db->select('count(*) as cnt');
+            // $this->db->from('student as s');
+            // $this->db->join('new_exam_form  as e', 'e.student_id = s.student_id AND s.class_id = e.class_id');
+            // $this->db->where('s.new_exam_form',"Y");
+            // // $this->db->where('s.notification_no',0);	
+            // $this->db->where('s.examcentercode',$row->examcentercode);	
+            // $this->db->where('s.exam_center_id',$row->id);	
+            // $this->db->where_in('paper_id', $papersid );
+
+
+            // $count = $this->db->get()->result();
+            $classIdsRegOnly = array(104, 107, 134);
+
             $this->db->select('count(*) as cnt');
             $this->db->from('student as s');
-            $this->db->join('new_exam_form  as e', 'e.student_id = s.student_id AND s.class_id = e.class_id');
-            $this->db->where('s.new_exam_form',"Y");
-            // $this->db->where('s.notification_no',0);	
-            $this->db->where('s.examcentercode',$row->examcentercode);	
-            $this->db->where('s.exam_center_id',$row->id);	
-            $this->db->where_in('paper_id', $papersid );
+            $this->db->join('new_exam_form as e', 'e.student_id = s.student_id AND s.class_id = e.class_id');
+            $this->db->where('s.new_exam_form', "Y");
+            // $this->db->where('s.notification_no', 0);
+            $this->db->where('s.examcentercode', $row->examcentercode);	
+            $this->db->where('s.exam_center_id', $row->id);	
+            $this->db->where_in('paper_id', $papersid);
 
+            // Apply conditional student_type filter
+            $this->db->group_start();
+            $this->db->where_in('s.class_id', $classIdsRegOnly);
+            $this->db->where('s.university_mode', 'REG');
+            $this->db->group_end();
+
+            $this->db->or_group_start();
+            $this->db->where_not_in('s.class_id', $classIdsRegOnly);
+            $this->db->where_in('s.university_mode', array('REG', 'PVT'));
+            $this->db->group_end();
 
             $count = $this->db->get()->result();
+
 
             $exam_date=$edate->exam_date;
 
@@ -149,7 +173,27 @@ foreach($exam_centers as $row)
             $paperscode = array_column($papers_all, 'paper_code');
             $paperscode=implode("','",$paperscode);
 
-             $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` and s.id=e.backlog_student_id WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form='Y' AND `e`.`status`='B'  AND `e`.`paper_code` in ('".$paperscode."') and s.exam_year='June 2024'  ";  
+            //  $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` and s.id=e.backlog_student_id WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form='Y' AND `e`.`status`='B'  AND `e`.`paper_code` in ('".$paperscode."') and s.exam_year='June 2025'  ";  
+            $sql_back = "
+    SELECT count(*) as cnt
+    FROM `backlog_exam_form` as `e`
+    JOIN `backlog_student` as `s` 
+        ON `e`.`student_id` = `s`.`student_id` 
+        AND `s`.`class_id` = `e`.`class_id` 
+        AND s.id = e.backlog_student_id
+    WHERE 
+        `s`.`exam_center_code` = '".$row->examcentercode."'
+        AND `s`.`exam_center_id` = '".$row->id."'
+        AND `exam_form` = 'Y'
+        AND `e`.`status` = 'B'
+        AND `e`.`paper_code` IN ('".$paperscode."')
+        AND s.exam_year = 'June 2025'
+        AND (
+            (s.class_id IN (104, 107, 134) AND s.mode = 'REG') OR
+            (s.class_id NOT IN (104, 107, 134) AND s.mode IN ('REG', 'PVT'))
+        )
+";
+
           
         
             $query_back = $this->db->query($sql_back);
@@ -214,7 +258,121 @@ foreach($exam_centers as $row)
                 <!--<td></td>
                     <td></td>-->
                 </tr>
-                <?php $i++; }} ?>
+                <?php $i++; }}
+                //pvt
+
+                foreach($pvtexamDate as $edate)
+        { 
+            $where = array('type' => 'theory','exam_date'=>$edate->pvt_exam_date,'exam_shift'=>$edate->pvt_exam_shift );
+            $this->db->where_not_in('paper_no_for_time_table', array('1B','2B'));
+            $papers_all = $this->Common_model->get_record('paper_master','*',$where);
+            $papersid = array_column($papers_all, 'id');
+            $this->db->select('count(*) as cnt');
+            $this->db->from('student as s');
+            $this->db->join('new_exam_form as e', 'e.student_id = s.student_id AND s.class_id = e.class_id');
+            $this->db->where('s.new_exam_form', "Y");
+            // $this->db->where('s.notification_no', 0);
+            $this->db->where('s.examcentercode', $row->examcentercode);	
+            $this->db->where('s.exam_center_id', $row->id);	
+            $this->db->where_in('paper_id', $papersid);
+
+            // Apply conditional student_type filter
+           
+            $this->db->where_in('s.class_id', [104,107,134]);
+            $this->db->where('s.university_mode', 'PVT');
+
+            $count = $this->db->get()->result();
+
+
+            $exam_date=$edate->pvt_exam_date;
+
+         
+            /************/
+            $paperscode = array_column($papers_all, 'paper_code');
+            $paperscode=implode("','",$paperscode);
+
+                        $sql_back = "
+    SELECT count(*) as cnt
+    FROM `backlog_exam_form` as `e`
+    JOIN `backlog_student` as `s` 
+        ON `e`.`student_id` = `s`.`student_id` 
+        AND `s`.`class_id` = `e`.`class_id` 
+        AND s.id = e.backlog_student_id
+    WHERE 
+        `s`.`exam_center_code` = '".$row->examcentercode."'
+        AND `s`.`exam_center_id` = '".$row->id."'
+        AND `exam_form` = 'Y'
+        AND `e`.`status` = 'B'
+        AND `e`.`paper_code` IN ('".$paperscode."')
+        AND s.exam_year = 'June 2025'
+        AND s.class_id IN (104, 107, 134) AND s.mode = 'PVT'";
+
+          
+        
+            $query_back = $this->db->query($sql_back);
+            $count_backlog = $query_back->result_array();
+           // echo $this->db->last_query();  die;
+            $allStudentCount= $count[0]->cnt+$count_backlog[0]['cnt'];
+            /***********/
+            array_push($max_count,$allStudentCount);
+            if($allStudentCount>0)
+            {
+                ?>
+                <tr>
+                    <td> <?=$i?> </td>
+                    <td><?=$edate->pvt_exam_shift?></td>
+                    <td><?=$edate->pvt_exam_date?></td>
+                    <td><?php   echo $count[0]->cnt ;  ?> </td>
+                    <td><?php   echo $count_backlog[0]['cnt'] ;  ?> </td>
+                    <td><?php   echo  $t= $allStudentCount; ?> </td>
+                    <td>500</td>
+                    <td>
+                        <?php
+                        $sahayak=0; 
+                if($t > 300) { $a=($t-300)/300; $b=ceil($a); $sahayak=$b*400; } //else { $sahayak=0; } 
+                echo $sahayak;?>
+            </td>
+            <td><?php $a=$t/25;  $b1=ceil($a); $vik=$b1*250; echo $vik; ?></td>
+            <td><?php echo $clerk=200; ?></td>
+            <td>
+                <?php echo $adesh=100; ?></td>
+                <td><?php echo $bhavan=10*$t ;?></td>
+                <td><?php echo $jal=20*($b+$b1+3) ;?></td>
+
+                <!--<td></td>-->
+
+                <td>
+                  <?php  $portal=0;
+
+                  $prevdate;
+                  $exam_date;
+                  if( $prevdate != $exam_date){
+
+                    if($t<81)
+                    {
+                        echo $portal=200;
+                    }
+                    else
+                    {
+                        echo $portal=ceil($t*2.5);
+                    }
+                }
+                $prevdate=$exam_date;
+                ?>
+            </td>
+
+
+            <td>	
+                <?php 
+                $tt=$kendra+$sahayak+$vik+$clerk+$adesh+$bhavan+$jal+$other+$portal; echo $tt;
+                $tot=$tot+$tt;
+            ?></td>
+
+                <!--<td></td>
+                    <td></td>-->
+                </tr>
+                <?php $i++; }}
+                ?>
             </tr>
             <tr>
                 <td colspan="5" align="right" ><!-- Max Student Count (in one shift) --> </td>

@@ -4680,13 +4680,26 @@ public function update_exam_datewise_permission(){
 		$this->db->select('*');
 			$this->db->from('paper_master');
 			$this->db->where('exam_date!=',"");
-			$this->db->where_not_in('class_id',array("264","268","270"));
+			// $this->db->where_not_in('class_id',array("264","268","270"));
 			$this->db->where('exam_date!=',"0000-00-00");	
 			//$this->db->where('exam_date',"2024-07-23");	
 			$this->db->group_by(array('exam_date','exam_shift'));
 			$this->db->order_by('exam_date', "asc");
 			$this->db->order_by('exam_shift', "desc");
 			$data['examDate'] = $this->db->get()->result();
+
+			//
+
+				$this->db->select('*');
+			$this->db->from('paper_master');
+			$this->db->where('pvt_exam_date!=',"");
+			$this->db->where_in('class_id',array("264","268","270"));
+			$this->db->where('pvt_exam_date!=',"0000-00-00");	
+			//$this->db->where('exam_date',"2024-07-23");	
+			$this->db->group_by(array('pvt_exam_date','pvt_exam_shift'));
+			$this->db->order_by('pvt_exam_date', "asc");
+			$this->db->order_by('pvt_exam_shift', "desc");
+			$data['pvtexamDate'] = $this->db->get()->result();
 		//	echo $this->db->last_query(); die;
 		echo $this->load->view('admin/exam_center/exam_center_wise_billing_show',$data, TRUE);
 	}
@@ -4706,6 +4719,7 @@ public function update_exam_datewise_permission(){
 			'hash_csrf' => $this->security->get_csrf_hash()
 		);
 		$this->db->order_by('examcentercode');
+		$this->db->where('examcentercode','MDE125');
 		$data['examCenters'] = $this->db->get_where('exam_center', array())->result_array();
 		$this->load->view('header',$data);
 		$this->load->view('admin/exam_center/exam_center_billing_report',$csrf);
