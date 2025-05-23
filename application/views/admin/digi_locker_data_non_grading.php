@@ -131,7 +131,9 @@
                
                 echo " <td></td> ";
                 $sub_total =0;
+                $grace ="";
                 foreach($old_papers as $old_paper){
+                    $grace= $old_paper['result'] == 'PASS BY GRACE' ? ' G':"";
                     if($class_detail->internal == 'Y' && $old_paper['type'] == 'theory' || ($old_paper['type'] == 'theory' && $old_paper['int_marks'] !="N") ){
                         $sub_total = $old_paper['theory_marks']+$old_paper['int_marks'];
                     }elseif($class_detail->practical_internal_marks == 'Y' && $old_paper['type'] == 'Practical'){
@@ -150,7 +152,7 @@
                     <td><?= ($student['university_mode'] == "REG")?$old_paper['max_theory_marks']:$old_paper['private_max_theory_marks']?></td>
                     <td><?= ($old_paper['max_p_marks'] == 0 || $old_paper['max_p_marks'] == 'N')?"":$old_paper['max_p_marks']?></td>
                     <td><?= ($old_paper['max_int_marks'] == 0 || $old_paper['max_int_marks'] == 'N')?"":$old_paper['max_int_marks']?></td>
-                    <td><?= ( $old_paper['theory_marks'] == 'N')?"":$old_paper['theory_marks']?></td>
+                    <td><?= ( $old_paper['theory_marks'] == 'N')?"":$old_paper['theory_marks'].$grace?></td>
                     <td><?= ($old_paper['p_marks'] == 'N')?"":$old_paper['p_marks']?></td>
                     <td><?= ($old_paper['int_marks'] == 'N')?"":$old_paper['int_marks']?></td>
                     <td><?= $sub_total ?></td>
@@ -159,6 +161,7 @@
 
                 if($class_detail->class_group == 'Y'){
                      foreach($papers_list as $old_paper){
+                    $grace= $old_paper['result'] == 'PASS BY GRACE' ? ' G':"";
                     if($class_detail->internal == 'Y' && $old_paper['type'] == 'theory' || ($old_paper['type'] == 'theory' && $old_paper['int_marks'] !="N") ){
                         $sub_total = $old_paper['theory_marks']+$old_paper['int_marks'];
                     }elseif($class_detail->practical_internal_marks == 'Y' && $old_paper['type'] == 'Practical'){
@@ -176,7 +179,7 @@
                     <td><?= ($student['university_mode'] == "REG")?$old_paper['max_theory_marks']:$old_paper['private_max_theory_marks']?></td>
                     <td><?= ($old_paper['max_p_marks'] == 0 || $old_paper['max_p_marks'] == 'N')?"":$old_paper['max_p_marks']?></td>
                     <td><?= ($old_paper['max_int_marks'] == 0 || $old_paper['max_int_marks'] == 'N')?"":$old_paper['max_int_marks']?></td>
-                    <td><?= ( $old_paper['theory_marks'] == 'N')?"":$old_paper['theory_marks']?></td>
+                    <td><?= ( $old_paper['theory_marks'] == 'N')?"":$old_paper['theory_marks'].$grace?></td>
                     <td><?= ($old_paper['p_marks'] == 'N')?"":$old_paper['p_marks']?></td>
                     <td><?= ($old_paper['int_marks'] == 'N')?"":$old_paper['int_marks']?></td>
                     <td><?= $sub_total ?></td>
