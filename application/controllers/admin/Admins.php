@@ -4589,7 +4589,8 @@ public function update_exam_datewise_permission(){
 		// $papers = $this->Common_model->getRecordByWhere('paper_master',$where);
 
 
-		$query = $this->db->query("SELECT p.* FROM `paper_master` as p join class_master as c on c.id=p.class_id WHERE  type='Theory' and ( ( c.exam_form_permission='Y' or c.backlog_exam_form_permission='Y')) order by p.course_group_id,class_id,cbcs_paper,paper_no asc");
+		$query = $this->db->query("SELECT p.* FROM `paper_master` as p join class_master as c on c.id=p.class_id WHERE  type='Theory' and class_id=244 and ( ( c.exam_form_permission='Y' or c.backlog_exam_form_permission='Y')) order by p.course_group_id,class_id,cbcs_paper,paper_no asc");
+		
 
 		// and `exam_date`!='0000-00-00' and cbcs_paper=cbcs exam_date!='0000-00-00' and 
 
