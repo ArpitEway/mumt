@@ -3594,7 +3594,8 @@ public function getStudentData()
 			'hash_csrf' => $this->security->get_csrf_hash()
 		);
 		$this->db->order_by('examcentercode');
-		$this->db->where_in('id',array(167,169));
+		// $this->db->where_in('id',array(167,169));
+		$this->db->where_in('examcentercode',array('MDE125'));
 		$data['examCenters'] = $this->db->get_where('exam_center', array())->result_array();
 		$this->load->view('header',$data);
 		$this->load->view('admin/exam_center/exam_center_billing_report',$csrf);
