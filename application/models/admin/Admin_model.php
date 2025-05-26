@@ -355,6 +355,7 @@ class Admin_model extends CI_Model {
 
         $data_group['course_name'] = html_escape($this->input->post('course_name'));
 		$data_group['eligibility'] = html_escape($this->input->post('eligibility'));
+		$data_group['eligibility_detail'] = html_escape($this->input->post('eligibility_detail'));
 		$data_group['mode'] = html_escape($this->input->post('mode'));
 		$data_group['university_mode'] = html_escape($this->input->post('university_mode'));
 
@@ -398,6 +399,7 @@ class Admin_model extends CI_Model {
 	    
 		$data_group['course_name'] = html_escape($this->input->post('course_name'));
 		$data_group['eligibility'] = html_escape($this->input->post('eligibility'));
+		$data_group['eligibility_detail'] = html_escape($this->input->post('eligibility_detail'));
 		$data_group['mode'] = html_escape($this->input->post('mode'));
 		$data_group['university_mode'] = html_escape($this->input->post('university_mode'));
 		$data_group['paper_code_pattern'] = html_escape($this->input->post('paper_code_pattern'));

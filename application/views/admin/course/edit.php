@@ -55,6 +55,11 @@ foreach($courses as $course): ?>
             <input type="text" class="form-control" value="<?php echo $course_group['eligibility']; ?>" id="eligibility" name="eligibility" required placeholder="Enter eligibility">
             <input type="hidden" name="group_id" value="<?php echo $course_group['id']; ?>">
         </div>
+         <div class="form-group col-md-12">
+            <label for="eligibility_detail">Eligibility Detail</label>
+            <textarea class="form-control" id="eligibility_detail" name="eligibility_detail" rows="3" placeholder="Enter Eligibility Details"><?php echo $course_group['eligibility_detail']; ?></textarea>
+        </div>
+		
 
 		<div class="form-group col-md-3">
             <label for="session">Mode</label>

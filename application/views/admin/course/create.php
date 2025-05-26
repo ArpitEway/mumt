@@ -10,7 +10,7 @@
                     foreach($sessions as $session)
                     {
                     ?>
-                        <option value="<?php echo $session['session']; ?>"><?php echo $session['session']; ?></option>
+                        <option value="<?php echo $session['session']; ?>" <?php echo ($session['session'] == "July 2025")?'selected':''; ?>><?php echo $session['session']; ?></option>
                     <?php
                     } 
                 ?>
@@ -37,7 +37,10 @@
             <label for="name">Eligibility</label>
             <input type="text" class="form-control" id="eligibility" name="eligibility" required placeholder="Enter eligibility">
         </div>
-		
+        <div class="form-group col-md-12">
+            <label for="eligibility_detail">Eligibility Detail</label>
+            <textarea class="form-control" id="eligibility_detail" name="eligibility_detail" rows="3" placeholder="Enter Eligibility Details"></textarea>
+        </div>
 		<div class="form-group col-md-3">
             <label for="session">Mode</label>
             <select name="mode" id="Mode" class="form-control" required>
