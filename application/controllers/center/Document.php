@@ -38,9 +38,9 @@
 			$where .="student.university_mode='".$course_type."' AND ";	
 		
 			$centerArray = [2134,2050,1873];
-			if(in_array($this->session->center_id, $centerArray)) { //IC1259, IC1339, IC1102
- 				$where.= "document_uploaded!='Y' and payment_status='Y' and center_id=".$this->session->center_id ."  and student.class_name not like '%SEM%' and student.session='July 2024'";
-			}else{
+			// if(in_array($this->session->center_id, $centerArray)) { //IC1259, IC1339, IC1102
+ 			// 	$where.= "document_uploaded!='Y' and payment_status='Y' and center_id=".$this->session->center_id ."  and student.class_name not like '%SEM%' and student.session='July 2024'";
+			// }else{
 						$permission_session= $this->Common_model->getRecordByWhere('session',array('document_permission'=>'Y' )); 
 						$where.= "document_uploaded!='Y' and payment_status='Y' and student.class_name not like '%SEM%'  and ( "; //and student.class_name not like '%SEM%'
 						foreach($permission_session as $key=>$row){
@@ -57,7 +57,7 @@
 		
 		
 		$where .= " ) "; 
-			}
+			// }
 	
 		
 		//START
