@@ -37,8 +37,8 @@
 		if(!empty($course_type))
 			$where .="student.university_mode='".$course_type."' AND ";	
 		
-		
-			if($this->session->center_id == 2134 || $this->session->center_id == 2050) { //IC1259, IC1339
+			$centerArray = [2134,2050,1873];
+			if(in_array($this->session->center_id, $centerArray)) { //IC1259, IC1339, IC1102
  				$where.= "document_uploaded!='Y' and payment_status='Y' and center_id=".$this->session->center_id ."  and student.class_name not like '%SEM%' and student.session='July 2024'";
 			}else{
 						$permission_session= $this->Common_model->getRecordByWhere('session',array('document_permission'=>'Y' )); 
