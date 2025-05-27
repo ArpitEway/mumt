@@ -5,7 +5,9 @@
         <a href="<?=base_url('exam_form_students/skipped/'.$center)?>" class="btn btn-warning">Skipped</a>
     </div>
 <div class="container-fluid text-center mb-10">
-    <?php if ($exam_form_button=="notSubmitted"): ?>
+    <?php 
+    $center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29,1975,2098,2115 );
+    if ($exam_form_button=="notSubmitted"): ?>
         <h3 class="text-primary">Exam Form Student List</h3>
     <?php elseif ($exam_form_button=="submitted"): ?>
         <h3 class="text-primary"> Submitted Exam Form</h3>
@@ -25,7 +27,7 @@
                <th>Student Name</th>
                <th>Course</th>
                <th>Class</th>
-               <th>Total Fees <?php if($master->late_exam_fee_status=='Y'){ echo ' + Late Fees';}?></th>
+               <th>Total Fees <?php if($master->late_exam_fee_status=='Y' && !in_array($this->session->center_id, $center_ids)){ echo ' + Late Fees';}?></th>
                <th>Action</th>
                 <?php if($exam_form_button=="notSubmitted"){ ?>
                     <th>Skip Exam Form</th>
@@ -71,7 +73,7 @@
                 $program_fees =  $fees[0]->p_program_fees;    
                 $exam_fees =  $fees[0]->p_exam_fees;    
               }
-               if($master->late_exam_fee_status=='Y'){ 
+               if($master->late_exam_fee_status=='Y' && !in_array($this->session->center_id, $center_ids)){ 
                 $exam_fees =$exam_fees + $master->p_late_fees;
               }
                 
