@@ -42,7 +42,8 @@
 			<div class="BoxC border- padding mar-bot">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Schedule of Exam for Annual/Semester Backlog Examination of <?php echo (in_array($student[0]->class_id, array(300,301,255,257,259)))?'February':'January'?> 2025
+						<h5>Schedule of Exam for Annual/Semester Backlog Examination of June 2025<?php 
+						// echo (in_array($student[0]->class_id, array(300,301,255,257,259)))?'February':'January'?> 
 								<?php
 								/*
 								if($student[0]->course_group_id==75 || $student[0]->course_group_id==76 || $student[0]->course_group_id==77)
@@ -135,11 +136,12 @@
 						  <?php
 						  $i = 1;
 						  $paper_count = count($papers);
+						  $pvtClasses = [104,107,134];
 			foreach($papers as $paper){
 				?>
 				<tr>
 					<td><?php echo $i ; ?></td>
-					<td><?php echo date("d-m-Y", strtotime($paper->exam_date)); ?></td>
+					<td><?php echo date("d-m-Y", strtotime(($student[0]->mode == 'PVT' && in_array($student[0]->class_id,$pvtClasses))?$paper->pvt_exam_date:$paper->exam_date)); ?></td>
 					
 					<td style="text-align:left;"><?php 
 					$st_arr=array(776229,776268,776212);
@@ -155,15 +157,27 @@
 					<!-- <td><?= ($paper->exam_shift=='मध्याह्न') ? '१२:०० से ०३:०० बजे तक' : ''; ?></td> -->
 					<td><?php
 					$class_ids = array(104,101,107,110,116,119,273,125,128,131,134,162,163,164,165,283,285,287,289,310,291,293,295,274,297,168,169,170,171,214,106,103,109,112,118,121,127,130,133,136);
-						if($paper->exam_shift=='Afternoon' && in_array($student[0]->class_id,$class_ids)){
+						if($student[0]->mode == 'PVT' && in_array($student[0]->class_id,$pvtClasses)){
+							if($paper->pvt_exam_shift=='Afternoon' && in_array($student[0]->class_id,$class_ids)){
+									echo '3:00 PM To 6:00 PM';		
+							}
+							elseif($paper->pvt_exam_shift=='Afternoon'){
+									echo '2:00 PM To 5:00 PM';
+							}
+							elseif($paper->pvt_exam_shift=='Morning' ){
+									echo '10:00 AM To 1:00 PM';
+							}
+						}else{
+							if($paper->exam_shift=='Afternoon' && in_array($student[0]->class_id,$class_ids)){
 								echo '3:00 PM To 6:00 PM';		
 							}
 							elseif($paper->exam_shift=='Afternoon'){
 								echo '2:00 PM To 5:00 PM';
 							}
 							elseif($paper->exam_shift=='Morning' ){
-									echo '10:00 AM To 1:00 PM';
+								 echo '10:00 AM To 1:00 PM';
 							}
+						}	
 	
 					?></td>
 			</tr>

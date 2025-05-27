@@ -1679,7 +1679,7 @@ class Center extends CI_Controller {
 			//'center_id' => $center_id,
 			'roll_no!=' => 0,
 			'exam_form' => 'Y',
-			'exam_year' => 'Dec 2024'
+			'exam_year' => 'June 2025'
 		);
 		$this->db->where_in('class_id',$ids);
 		$this->db->order_by('course_group_id,class_id');
@@ -1754,7 +1754,7 @@ class Center extends CI_Controller {
 			'backlog_student.roll_no !=' => 0,
 			//'backlog_student.center_id' => $center_id,
 			'backlog_student.exam_form' => 'Y',
-			'backlog_student.exam_year'=>'Dec 2024'
+			'backlog_student.exam_year'=>'June 2025'
 		);
         // $this->db->where_not_in('backlog_student.student_id', array(188428,686377,375381));
 		$this->db->select('backlog_student.*,student.name,student.f_h_name,student.session,student.photo');
