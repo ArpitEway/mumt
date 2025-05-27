@@ -38,23 +38,28 @@
 			$where .="student.university_mode='".$course_type."' AND ";	
 		
 		
-		
-		$permission_session= $this->Common_model->getRecordByWhere('session',array('document_permission'=>'Y' )); 
-		$where.= "document_uploaded!='Y' and payment_status='Y' and student.class_name not like '%SEM%'  and ( "; //and student.class_name not like '%SEM%'
-		foreach($permission_session as $key=>$row){
-			
-			if($row->semester_permission=='N' && $row->annual_permission=='Y' )
-			$where.=" (student.class_name not like '%SEM%' and student.session='".$row->session."') or ";
-			else if($row->annual_permission=='N' && $row->semester_permission=='Y')
-			$where.="  (student.class_name not like '%YEAR%' and student.session='".$row->session."') or ";
-			else if($row->annual_permission=='Y' && $row->semester_permission=='Y')
-			$where.="   session='".$row->session."'";
+			if($this->session->center_id == 2134) {
+ 				$where.= "document_uploaded!='Y' and payment_status='Y' and center_id=".$this->session->center_id ."  and student.class_name not like '%SEM%' and student.session='July 2024'";
+			}else{
+						$permission_session= $this->Common_model->getRecordByWhere('session',array('document_permission'=>'Y' )); 
+						$where.= "document_uploaded!='Y' and payment_status='Y' and student.class_name not like '%SEM%'  and ( "; //and student.class_name not like '%SEM%'
+						foreach($permission_session as $key=>$row){
+							
+							if($row->semester_permission=='N' && $row->annual_permission=='Y' )
+							$where.=" (student.class_name not like '%SEM%' and student.session='".$row->session."') or ";
+							else if($row->annual_permission=='N' && $row->semester_permission=='Y')
+							$where.="  (student.class_name not like '%YEAR%' and student.session='".$row->session."') or ";
+							else if($row->annual_permission=='Y' && $row->semester_permission=='Y')
+							$where.="   session='".$row->session."'";
+							else $where.="   session='".$row->session."'";
 			
 		}
 		
 		
 		$where .= " ) "; 
-		// $where.= "document_uploaded!='Y' and payment_status='Y' and center_id=".$this->session->center_id ."  and ( (student.class_name not like '%SEM%' and student.session='July 2021') or session!='July 2021')";
+			}
+	
+		
 		//START
 		$master = $this->Common_model->getSingleRow('master');
 		$centerData = $this->Common_model->getRecordById('center','id',$this->session->center_id);
