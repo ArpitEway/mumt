@@ -1505,10 +1505,10 @@ class ExamController extends CI_Controller {
 			// $this->db->where_in('class_id',array(217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253));
 
 			// $this->db->where('exam_date!=',"");
-			$this->db->where('exam_date!=',"0000-00-00");
+			$this->db->where('pvt_exam_date!=',"0000-00-00");
 			//$this->db->where('exam_date>=',"2023-07-31");		
-			$this->db->group_by('exam_date');
-			$this->db->order_by('exam_date', "asc");
+			$this->db->group_by('pvt_exam_date');
+			$this->db->order_by('pvt_exam_date', "asc");
 			$data['examDate'] = $this->db->get()->result();
 
 			$this->load->view('admin/exam_center/exam_center_wise_paper',$data);
@@ -1553,17 +1553,14 @@ class ExamController extends CI_Controller {
 			$where.=" AND `student`.`exam_center_id` = '".$exam_center."' ";
 		if($exam_date!='All')	{
 			$edate=date("Y-m-d", strtotime($exam_date));
-			$where.=" AND paper_master.exam_date = '".$edate."' ";
+			$where.=" AND paper_master.pvt_exam_date = '".$edate."' ";
 		}
 		if($shift!='All')
-		$where.="AND paper_master.exam_shift = '".$shift."'";
+		$where.="AND paper_master.pvt_exam_shift = '".$shift."'";
 
-		$where.="   GROUP BY `paper_master`.`exam_date`";
+		$where.="   GROUP BY `paper_master`.`pvt_exam_date`";
 
-		$sql="SELECT DISTINCT(paper_master.id), `exam_date`, `exam_shift`, `exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student` ON `student`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = 'theory'  AND paper_master.exam_date!='0000-00-00'  AND (
-            (student.class_id IN (104, 107, 134) AND student.university_mode = 'REG') OR
-            (student.class_id NOT IN (104, 107, 134) AND student.university_mode IN ('REG', 'PVT'))
-        ) ".$where; 
+		$sql="SELECT DISTINCT(paper_master.id), `pvt_exam_date`, `pvt_exam_shift`, `pvt_exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student` ON `student`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = 'theory'  AND paper_master.pvt_exam_date!='0000-00-00' and paper_master.class_id in (104,107,134) and student.university_mode='PVT' ".$where; 
 
 		//AND paper_master.exam_date>='2023-07-31' AND `paper_master`.`exam_date` != ''
 
