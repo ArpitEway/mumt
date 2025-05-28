@@ -1493,14 +1493,14 @@ class ExamController extends CI_Controller {
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('*');
 			$this->db->from('exam_center');
-			// $this->db->where_in('examcentercode',array('MDE163','MDE165'));
+			$this->db->where_in('examcentercode',array('MDE143','MDE163'));
 			// $this->db->where('examcentercode','MDE165');
 			$this->db->order_by('examcentercode', "asc");
 			$data['exam_centers'] = $this->db->get()->result();
 			$this->db->select('*');
 			$this->db->from('paper_master');
 
-			$this->db->where_not_in('class_id',array(101,104,107,110,113,116,119,125,128,131,134,137,140,143,146,149,162,163,164,165,168,169,170,171,173,174,175,176,177,178,179,180,183,185,187,189,191,273,274,283,285,287,289,291,293,295,297,300,310));
+			// $this->db->where_not_in('class_id',array(101,104,107,110,113,116,119,125,128,131,134,137,140,143,146,149,162,163,164,165,168,169,170,171,173,174,175,176,177,178,179,180,183,185,187,189,191,273,274,283,285,287,289,291,293,295,297,300,310));
 			
 			// $this->db->where_in('class_id',array(217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253));
 
@@ -1560,15 +1560,19 @@ class ExamController extends CI_Controller {
 
 		$where.="   GROUP BY `paper_master`.`exam_date`";
 
-		$sql="SELECT DISTINCT(paper_master.id), `exam_date`, `exam_shift`, `exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student` ON `student`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = 'theory' AND `paper_master`.`exam_date` != '' AND paper_master.exam_date!='0000-00-00'   ".$where; 
+		$sql="SELECT DISTINCT(paper_master.id), `exam_date`, `exam_shift`, `exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student` ON `student`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = 'theory'  AND paper_master.exam_date!='0000-00-00'  AND (
+            (student.class_id IN (104, 107, 134) AND student.university_mode = 'REG') OR
+            (student.class_id NOT IN (104, 107, 134) AND student.university_mode IN ('REG', 'PVT'))
+        ) ".$where; 
 
-		//AND paper_master.exam_date>='2023-07-31' 
+		//AND paper_master.exam_date>='2023-07-31' AND `paper_master`.`exam_date` != ''
 
-		$this->db->where_not_in('class_id',array(101,104,107,110,113,116,119,125,128,131,134,137,140,143,146,149,162,163,164,165,168,169,170,171,173,174,175,176,177,178,179,180,183,185,187,189,191,273,274,283,285,287,289,291,293,295,297,300,310));
+		// $this->db->where_not_in('class_id',array(101,104,107,110,113,116,119,125,128,131,134,137,140,143,146,149,162,163,164,165,168,169,170,171,173,174,175,176,177,178,179,180,183,185,187,189,191,273,274,283,285,287,289,291,293,295,297,300,310));
 
 		// $this->db->where_in('class_id',array(155,182,193,195,197,199,201,203,205,207,209,211,213,302,275,279,221,223,225,227));
 
 		$query = $this->db->query($sql);
+		// $this->Common_model->last_query();
         $data['papers'] = $query->result();
 		echo $this->load->view('admin/exam_center/exam_center_paper_count_show',$data, TRUE);
 	}
