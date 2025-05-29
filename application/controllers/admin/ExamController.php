@@ -1493,7 +1493,7 @@ class ExamController extends CI_Controller {
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('*');
 			$this->db->from('exam_center');
-			// $this->db->where_in('examcentercode',array('MDE143','MDE163'));
+			$this->db->where_in('examcentercode',array('MDE143','MDE163'));
 			// $this->db->where('examcentercode','MDE165');
 			$this->db->order_by('examcentercode', "asc");
 			$data['exam_centers'] = $this->db->get()->result();
@@ -1503,7 +1503,7 @@ class ExamController extends CI_Controller {
 			// $this->db->where_not_in('class_id',array(101,104,107,110,113,116,119,125,128,131,134,137,140,143,146,149,162,163,164,165,168,169,170,171,173,174,175,176,177,178,179,180,183,185,187,189,191,273,274,283,285,287,289,291,293,295,297,300,310));
 			
 			// $this->db->where_in('class_id',array(217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253));
-			 $this->db->where_in('class_id',array(102,105,108,111,117,120,126,129,132,135,284,286,288,290,292,294,296,298,311));
+			//  $this->db->where_in('class_id',array(102,105,108,111,117,120,126,129,132,135,284,286,288,290,292,294,296,298,311));
 
 			// $this->db->where('exam_date!=',"");
 			$this->db->where('exam_date!=',"0000-00-00");
@@ -1567,7 +1567,7 @@ class ExamController extends CI_Controller {
 
 		// $this->db->where_not_in('class_id',array(101,104,107,110,113,116,119,125,128,131,134,137,140,143,146,149,162,163,164,165,168,169,170,171,173,174,175,176,177,178,179,180,183,185,187,189,191,273,274,283,285,287,289,291,293,295,297,300,310));
 
-		 $this->db->where_in('class_id',array(102,105,108,111,117,120,126,129,132,135,284,286,288,290,292,294,296,298,311));
+		//  $this->db->where_in('class_id',array(102,105,108,111,117,120,126,129,132,135,284,286,288,290,292,294,296,298,311));
 
 		$query = $this->db->query($sql);
 		// $this->Common_model->last_query();
