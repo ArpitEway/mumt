@@ -1726,10 +1726,10 @@ class Center extends CI_Controller {
 		
 		$this->db->where($wherePaper);
 		$this->db->order_by("exam_date", "asc");
-		$this->db->order_by("paper_master.paper_no", "asc");
 		$this->db->order_by("exam_shift", "desc");
+		$this->db->order_by("paper_master.paper_no", "asc");
 		$data['papers'] = $this->db->get()->result();
-		//echo $this->db->last_query(); die;
+		// echo $this->db->last_query(); die;
 		$this->load->view('template/admit_card',$data);
 		$this->load->view('Centers/footer');
 	}
@@ -1772,8 +1772,8 @@ class Center extends CI_Controller {
 		
 		$this->db->where($wherePaper);
 		$this->db->order_by("exam_date", "asc");
-		$this->db->order_by("paper_master.paper_no", "asc");
 		$this->db->order_by("exam_shift", "desc");
+		$this->db->order_by("paper_master.paper_no", "asc");
 		$data['papers'] = $this->db->get()->result();
 		// echo $this->db->last_query(); die;
 		$this->load->view('template/backlog_admit_card',$data);
