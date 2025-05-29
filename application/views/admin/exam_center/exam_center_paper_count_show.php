@@ -124,45 +124,45 @@ foreach($papers as $pap)
 
         
          // New Query start 
-         //  $sql="SELECT count(*) as cnt FROM `new_exam_form_report` as `e` JOIN `student_report` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`exam_center_id`='".$exam_center."'   AND  `e`.`paper_code` = '".$paper->paper_code."' AND `s`.`class_id` = '".$paper->class_id."' AND   `s`.`exam_center_id` = '".$exam_center."'  AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2024' AND `s`.`class_name` = 'I Year' )) ";
+           $sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`exam_center_id`='".$exam_center."'   AND  `e`.`paper_code` = '".$paper->paper_code."' AND `s`.`class_id` = '".$paper->class_id."' AND   `s`.`exam_center_id` = '".$exam_center."'  AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2024' AND `s`.`class_name` = 'I Year' )) ";
          
          // ( `s`.`session` = 'July 2023' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2024' AND `s`.`class_name` = 'I SEM' )
 
           // AND `s`.payment_status='Y'
 
-          $sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`exam_center_id`='".$exam_center."'   AND  `e`.`paper_code` = '".$paper->paper_code."' AND `s`.`class_id` = '".$paper->class_id."' AND   `s`.`exam_center_id` = '".$exam_center."' AND new_exam_form ='Y' AND (
-             (s.class_id IN (104, 107, 134) AND s.university_mode = 'REG') OR
-             (s.class_id NOT IN (104, 107, 134) AND s.university_mode IN ('REG', 'PVT'))
-         )";
+         //  $sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`exam_center_id`='".$exam_center."'   AND  `e`.`paper_code` = '".$paper->paper_code."' AND `s`.`class_id` = '".$paper->class_id."' AND   `s`.`exam_center_id` = '".$exam_center."' AND new_exam_form ='Y' AND (
+         //     (s.class_id IN (104, 107, 134) AND s.university_mode = 'REG') OR
+         //     (s.class_id NOT IN (104, 107, 134) AND s.university_mode IN ('REG', 'PVT'))
+         // )";
 
         
          $query = $this->db->query($sql);
          $count = $query->result_array();
          // $this->Common_model->last_query();
-         //  $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form_report` as `e` JOIN `backlog_student_report` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND s.id=e.backlog_student_id WHERE  `s`.`exam_center_id`='".$exam_center."'   AND  `e`.`paper_code` = '".$paper->paper_code."' AND `s`.`class_id` = '".$paper->class_id."'  AND exam_form!='D' AND `e`.`status`='B'  AND s.exam_year='June 2025'";
+          $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND s.id=e.backlog_student_id WHERE  `s`.`exam_center_id`='".$exam_center."'   AND  `e`.`paper_code` = '".$paper->paper_code."' AND `s`.`class_id` = '".$paper->class_id."'  AND exam_form!='D' AND `e`.`status`='B'  AND s.exam_year='June 2025'";
             
          //AND   `s`.`exam_center_code` = '".$exam_center."'
          
-          $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND s.id=e.backlog_student_id WHERE  `s`.`exam_center_id`='".$exam_center."'   AND  `e`.`paper_code` = '".$paper->paper_code."' AND `s`.`class_id` = '".$paper->class_id."' AND   `s`.`exam_center_id` = '".$exam_center."' AND exam_form='Y' AND `e`.`status`='B'  AND s.exam_year='June 2025' AND (
-            (s.class_id IN (104, 107, 134) AND s.mode = 'REG') OR
-            (s.class_id NOT IN (104, 107, 134) AND s.mode IN ('REG', 'PVT'))
-        )";
+      //     $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND s.id=e.backlog_student_id WHERE  `s`.`exam_center_id`='".$exam_center."'   AND  `e`.`paper_code` = '".$paper->paper_code."' AND `s`.`class_id` = '".$paper->class_id."' AND   `s`.`exam_center_id` = '".$exam_center."' AND exam_form='Y' AND `e`.`status`='B'  AND s.exam_year='June 2025' AND (
+      //       (s.class_id IN (104, 107, 134) AND s.mode = 'REG') OR
+      //       (s.class_id NOT IN (104, 107, 134) AND s.mode IN ('REG', 'PVT'))
+      //   )";
 
          $query_back = $this->db->query($sql_back);
          $count_backlog = $query_back->result_array();
          // $this->Common_model->last_query();
-        // $qu="SELECT count(*) as num FROM `student_report` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paper->paper_code."'  AND `p`.`class_id` = '".$paper->class_id."' AND `s`.`exam_center_id`='".$exam_center."'   AND temp_exam_form='N' ";
+        $qu="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paper->paper_code."'  AND `p`.`class_id` = '".$paper->class_id."' AND `s`.`exam_center_id`='".$exam_center."'   AND temp_exam_form='N' ";
 
          //  AND `s`.payment_status='Y'
          //  and `session` = 'July 2022' AND `s`.`class_name` = 'I Year' 
          // new_exam_form in ('Y','N') AND `p`.`id` = '".$paper->id."' and new_exam_form!='D'
 
-        // $query = $this->db->query($qu);
-         //$all = $query->result_array();
+        $query = $this->db->query($qu);
+         $all = $query->result_array();
 
-         //$allElective= $all[0]['num'];
+         $allElective= $all[0]['num'];
          
-          $allElective=0;
+         //  $allElective=0;
 
          if($paper->class_id==104 && $paper->ce=='elective' && ( $allElective>0)){
             $allElective=round(($all[0]['num']*60)/100); 
