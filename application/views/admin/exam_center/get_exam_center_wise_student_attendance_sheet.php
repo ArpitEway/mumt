@@ -26,26 +26,44 @@
     	padding: 10px;
     }
 	</style>
- <?php 
+ <?php
+  $classIdsRegOnly = array(104, 107, 134);
  foreach($exam_center_students as $student)  {
- 	
- 	$wherePaper = array('student_id' => $student->student_id,'paper_master.class_id' => $student->class_id,'paper_master.course_group_id'=> $student->course_group_id,'paper_master.type'=>'theory');
-	 $wherePaperExamDate =array('exam_date!='=>'0000-00-00');
-	 $this->db->where($wherePaperExamDate);
-     $this->db->select('*');
-     $this->db->from('paper_master');
-     $this->db->join('new_exam_form', 'new_exam_form.paper_id = paper_master.id');
-     //$this->db->join('time_table', 'paper_master.class_id = time_table.class_id');
-     $this->db->where($wherePaper);
-     $this->db->order_by("exam_date", "asc");
-     $this->db->order_by("exam_shift", "desc");
-     $papers = $this->db->get()->result();
-	 $paper_count = count($papers);
+		$wherePaper = array('student_id' => $student->student_id,'paper_master.class_id' => $student->class_id,'paper_master.course_group_id'=> $student->course_group_id,'paper_master.type'=>'theory');
+
+ 	if($student->university_mode == "PVT" && in_array($student->class_id,$classIdsRegOnly)){
+		 $wherePaperExamDate =array('pvt_exam_date!='=>'0000-00-00');
+			$this->db->where($wherePaperExamDate);
+			$this->db->select('*');
+			$this->db->from('paper_master');
+			$this->db->join('new_exam_form', 'new_exam_form.paper_id = paper_master.id');
+			//$this->db->join('time_table', 'paper_master.class_id = time_table.class_id');
+			$this->db->where($wherePaper);
+			$this->db->order_by("pvt_exam_date", "asc");
+			$this->db->order_by("pvt_exam_shift", "desc");
+			$papers = $this->db->get()->result();
+			$paper_count = count($papers);
+	}else{
+		 $wherePaperExamDate =array('exam_date!='=>'0000-00-00');
+			$this->db->where($wherePaperExamDate);
+			$this->db->select('*');
+			$this->db->from('paper_master');
+			$this->db->join('new_exam_form', 'new_exam_form.paper_id = paper_master.id');
+			//$this->db->join('time_table', 'paper_master.class_id = time_table.class_id');
+			$this->db->where($wherePaper);
+			$this->db->order_by("exam_date", "asc");
+			$this->db->order_by("exam_shift", "desc");
+			$papers = $this->db->get()->result();
+			$paper_count = count($papers);
+	}
+
+ 
+	
 	// $this->Common_model->last_query(); die;
 	 if($paper_count){
 
 		  // $newstring = date('y')."1".substr($student->center_code, -4); 
-		  $newstring = "242".substr($student->center_code, -4); 
+		  $newstring = "251".substr($student->center_code, -4); 
      ?>   
 <section class="break" style="font-size: 16px;">
 		<div class="admit-card" style="width:1030px !important; ">
@@ -66,13 +84,7 @@
 						<!-- <h5>
 							ATTENDANCE SHEET OF CANCELLED EXAM FOR ANNUAL/SEMESTER EXAMINATION OF JANUARY 2024
 						</h5> -->
-						<h5>Attendance Sheet Examination 
-						<?php  if($student->class_id == 312){
-							echo 'March 2025';
-						}else{
-							echo (in_array($student->class_id, array(255,257,259,316)))?'February 2025':'January 2025';
-						}	
-						?>
+						<h5>Attendance Sheet Examination June 2025
 						</h5>
 					</div>
 				</div>
@@ -169,19 +181,30 @@
 				?>
 				<tr>
 					<td><?php echo $i ; ?></td>
-					<td><?php echo date("d-m-Y", strtotime($paper->exam_date)); ?></td>
+					<td><?php echo date("d-m-Y", strtotime(($student->university_mode == 'PVT' && in_array($student->class_id,$classIdsRegOnly))?$paper->pvt_exam_date:$paper->exam_date)); ?></td>
 					<td><?php 
 					$class_ids = array(104,101,107,110,116,119,273,125,128,131,134,162,163,164,165,283,285,287,289,310,291,293,295,274,297,168,169,170,171,214,106,103,109,112,118,121,127,130,133,136);
-							
-					if($paper->exam_shift=='Afternoon' && in_array($student->class_id,$class_ids)){
-						echo '3:00 PM To 6:00 PM';		
-					}
-					elseif($paper->exam_shift=='Afternoon'){
-						echo '2:00 PM To 5:00 PM';
-					}
-					elseif($paper->exam_shift=='Morning' ){
-							echo '10:00 AM To 1:00 PM';
-					}
+				if($student->university_mode == 'PVT' && in_array($student->class_id,$classIdsRegOnly)){
+							if($paper->pvt_exam_shift=='Afternoon' && in_array($student->class_id,$class_ids)){
+									echo '3:00 PM To 6:00 PM';		
+							}
+							elseif($paper->pvt_exam_shift=='Afternoon'){
+									echo '2:00 PM To 5:00 PM';
+							}
+							elseif($paper->pvt_exam_shift=='Morning' ){
+									echo '10:00 AM To 1:00 PM';
+							}
+						}else{
+							if($paper->exam_shift=='Afternoon' && in_array($student->class_id,$class_ids)){
+								echo '3:00 PM To 6:00 PM';		
+							}
+							elseif($paper->exam_shift=='Afternoon'){
+								echo '2:00 PM To 5:00 PM';
+							}
+							elseif($paper->exam_shift=='Morning' ){
+								 echo '10:00 AM To 1:00 PM';
+							}
+						}	
 					?></td>
 					<td style="text-align:left;"><?php echo $paper->paper_name; ?></td>
 					<td ></td>

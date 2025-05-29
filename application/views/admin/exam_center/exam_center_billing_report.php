@@ -35,7 +35,7 @@
 
 			
 			foreach($examCenters as $examCenter){
-				if($this->session->account_type =="ExamController"){ 
+				// if($this->session->account_type =="ExamController"){ 
 				// $this->db->select('count(*) as cnt');
 				// $this->db->from('student as s');
 				// $this->db->join('new_exam_form  as e', 'e.student_id = s.student_id AND s.class_id = e.class_id');
@@ -59,12 +59,14 @@
 				$this->db->join('paper_master as p', 's.class_id = p.class_id AND e.paper_code = p.paper_code');
 				// Apply conditional student_type filter
 				$this->db->group_start();
+				$this->db->group_start();
 				$this->db->where_in('s.class_id', $classIdsRegOnly);
 				$this->db->where('s.university_mode', 'REG');
 				$this->db->group_end();
 				$this->db->or_group_start();
 				$this->db->where_not_in('s.class_id', $classIdsRegOnly);
 				$this->db->where_in('s.university_mode', array('REG', 'PVT'));
+				$this->db->group_end();
 				$this->db->group_end();
 				$this->db->where('s.examcentercode', $examCenter['examcentercode']);
 				$this->db->where('s.exam_center_id', $examCenter['id']);
@@ -123,6 +125,7 @@
 				$this->db->join('paper_master as p', 's.class_id = p.class_id AND e.paper_code = p.paper_code');
 				// Conditional student_type filter
 				$this->db->group_start();
+				$this->db->group_start();
 				$this->db->where_in('s.class_id', $classIdsRegOnly);
 				$this->db->where('s.mode', 'REG');
 				$this->db->group_end();
@@ -130,6 +133,7 @@
 				$this->db->or_group_start();
 				$this->db->where_not_in('s.class_id', $classIdsRegOnly);
 				$this->db->where_in('s.mode', array('REG', 'PVT'));
+				$this->db->group_end();
 				$this->db->group_end();
 
 				$this->db->where('s.exam_center_code', $examCenter['examcentercode']);
@@ -166,9 +170,9 @@
 				$pvt_backlog_count = $this->db->get()->result();
 
 				$tot_max_count=$main_count[0]->cnt+$backlog_count[0]->cnt+$pvt_main_count[0]->cnt+$pvt_backlog_count[0]->cnt;
-				}else{
-					$tot_max_count=0;
-				}
+				// }else{
+				// 	$tot_max_count=0;
+				// }
                // echo $this->db->last_query();
 				?>
 				<tr>

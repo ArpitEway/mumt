@@ -4679,8 +4679,8 @@ public function update_exam_datewise_permission(){
 		$data['exam_centers'] = $this->db->get()->result();
 		$this->db->select('*');
 			$this->db->from('paper_master');
-			$this->db->where('exam_date!=',"");
-			// $this->db->where_not_in('class_id',array("264","268","270"));
+			// $this->db->where('exam_date!=',"");
+			// $this->db->where_not_in('class_id',array("104","107","134"));
 			$this->db->where('exam_date!=',"0000-00-00");	
 			//$this->db->where('exam_date',"2024-07-23");	
 			$this->db->group_by(array('exam_date','exam_shift'));
@@ -4692,7 +4692,7 @@ public function update_exam_datewise_permission(){
 
 				$this->db->select('*');
 			$this->db->from('paper_master');
-			$this->db->where('pvt_exam_date!=',"");
+			// $this->db->where('pvt_exam_date!=',"");
 			$this->db->where_in('class_id',array("104","107","134"));
 			$this->db->where('pvt_exam_date!=',"0000-00-00");	
 			//$this->db->where('exam_date',"2024-07-23");	

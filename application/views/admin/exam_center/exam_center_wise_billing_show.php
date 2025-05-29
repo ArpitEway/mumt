@@ -143,7 +143,7 @@ foreach($exam_centers as $row)
             // $count = $this->db->get()->result();
             $classIdsRegOnly = array(104, 107, 134);
 
-            $this->db->select('count(*) as cnt');
+          $this->db->select('count(*) as cnt');
             $this->db->from('student as s');
             $this->db->join('new_exam_form as e', 'e.student_id = s.student_id AND s.class_id = e.class_id');
             $this->db->where('s.new_exam_form', "Y");
@@ -152,20 +152,23 @@ foreach($exam_centers as $row)
             $this->db->where('s.exam_center_id', $row->id);	
             $this->db->where_in('paper_id', $papersid);
 
-            // Apply conditional student_type filter
+            // Wrap the conditional logic in a single group
             $this->db->group_start();
-            $this->db->where_in('s.class_id', $classIdsRegOnly);
-            $this->db->where('s.university_mode', 'REG');
-            $this->db->group_end();
+                $this->db->group_start();
+                    $this->db->where_in('s.class_id', $classIdsRegOnly);
+                    $this->db->where('s.university_mode', 'REG');
+                $this->db->group_end();
 
-            $this->db->or_group_start();
-            $this->db->where_not_in('s.class_id', $classIdsRegOnly);
-            $this->db->where_in('s.university_mode', array('REG', 'PVT'));
+                $this->db->or_group_start();
+                    $this->db->where_not_in('s.class_id', $classIdsRegOnly);
+                    $this->db->where_in('s.university_mode', array('REG', 'PVT'));
+                $this->db->group_end();
             $this->db->group_end();
 
             $count = $this->db->get()->result();
 
 
+            // $this->Common_model->last_query();
             $exam_date=$edate->exam_date;
 
          
@@ -263,7 +266,7 @@ foreach($exam_centers as $row)
 
                 foreach($pvtexamDate as $edate)
         { 
-            $where = array('type' => 'theory','exam_date'=>$edate->pvt_exam_date,'exam_shift'=>$edate->pvt_exam_shift );
+            $where = array('type' => 'theory','pvt_exam_date'=>$edate->pvt_exam_date,'pvt_exam_shift'=>$edate->pvt_exam_shift );
             $this->db->where_not_in('paper_no_for_time_table', array('1B','2B'));
             $papers_all = $this->Common_model->get_record('paper_master','*',$where);
             $papersid = array_column($papers_all, 'id');

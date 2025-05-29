@@ -27,24 +27,34 @@
     }
 	</style>
  <?php 
+ $classIdsRegOnly = array(104, 107, 134);
  foreach($exam_center_students as $student)  {
- 	
- 	$wherePaper = array('student_id' => $student->student_id,'paper_master.class_id' => $student->class_id,'paper_master.course_group_id'=> $student->course_group_id,'paper_master.type'=>'theory','exam_date!='=>'0000-00-00',status=>'B',	'backlog_student_id'=>$student->id);
-	 
-     $this->db->select('*');
+	   $this->db->select('*');
      $this->db->from('paper_master');
      $this->db->join('backlog_exam_form', 'backlog_exam_form.paper_code = paper_master.paper_code');
-	
-     $this->db->where($wherePaper);
-     $this->db->order_by("exam_date", "asc");
-     $this->db->order_by("exam_shift", "desc");
-     $papers = $this->db->get()->result();
+ 	if($student->mode == "PVT" && in_array($student->class_id,$classIdsRegOnly)){
+
+		$wherePaper = array('student_id' => $student->student_id,'paper_master.class_id' => $student->class_id,'paper_master.course_group_id'=> $student->course_group_id,'paper_master.type'=>'theory','pvt_exam_date!='=>'0000-00-00','status'=>'B',	'backlog_student_id'=>$student->id);
+	 
+		$this->db->where($wherePaper);
+		$this->db->order_by("pvt_exam_date", "asc");
+		$this->db->order_by("pvt_exam_shift", "desc");
+	}else{
+		$wherePaper = array('student_id' => $student->student_id,'paper_master.class_id' => $student->class_id,'paper_master.course_group_id'=> $student->course_group_id,'paper_master.type'=>'theory','exam_date!='=>'0000-00-00','status'=>'B',	'backlog_student_id'=>$student->id);
+	 
+		$this->db->where($wherePaper);
+		$this->db->order_by("exam_date", "asc");
+		$this->db->order_by("exam_shift", "desc");
+    
+	}
+
+ 	 $papers = $this->db->get()->result();
 	// print_r($this->db->last_query());    
 	 $paper_count = count($papers);
 	 if($paper_count){
 
 		  // $newstring = date('y')."1".substr($student->center_code, -4); 
-		  $newstring = "242".substr($student->center_code, -4); 
+		  $newstring = "251".substr($student->center_code, -4); 
 		 //echo "test"; print_r($student);  die;
      ?>   
 <section class="break" style="font-size: 16px;">
@@ -63,7 +73,7 @@
 			<div class="BoxC border- padding">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>ATTENDANCE SHEET OF EXAM FOR ANNUAL/SEMESTER EXAMINATION OF <?php echo (in_array($student->class_id, array(300,301,255,257,259)))?'February':'January'?> 2025							<!-- Attendance Sheet Examination  -->
+						<h5>ATTENDANCE SHEET OF EXAM FOR ANNUAL/SEMESTER EXAMINATION OF June 2025							<!-- Attendance Sheet Examination  -->
 							
 						</h5>
 						
@@ -163,10 +173,21 @@
 				?>
 				<tr>
 					<td><?php echo $i ; ?></td>
-					<td><?php echo date("d-m-Y", strtotime($paper->exam_date)); ?></td>
+						<td><?php echo date("d-m-Y", strtotime(($student->mode == 'PVT' && in_array($student->class_id,$classIdsRegOnly))?$paper->pvt_exam_date:$paper->exam_date)); ?></td>
+					
 					<td><?php
 						$class_ids = array(104,101,107,110,116,119,273,125,128,131,134,162,163,164,165,283,285,287,289,310,291,293,295,274,297,168,169,170,171,214,106,103,109,112,118,121,127,130,133,136);
-							
+						if($student->mode == 'PVT' && in_array($student->class_id,$classIdsRegOnly)){
+							if($paper->pvt_exam_shift=='Afternoon' && in_array($student->class_id,$class_ids)){
+									echo '3:00 PM To 6:00 PM';		
+							}
+							elseif($paper->pvt_exam_shift=='Afternoon'){
+									echo '2:00 PM To 5:00 PM';
+							}
+							elseif($paper->pvt_exam_shift=='Morning' ){
+									echo '10:00 AM To 1:00 PM';
+							}
+						}else{
 							if($paper->exam_shift=='Afternoon' && in_array($student->class_id,$class_ids)){
 								echo '3:00 PM To 6:00 PM';		
 							}
@@ -174,8 +195,9 @@
 								echo '2:00 PM To 5:00 PM';
 							}
 							elseif($paper->exam_shift=='Morning' ){
-									echo '10:00 AM To 1:00 PM';
-							}?></td>
+								 echo '10:00 AM To 1:00 PM';
+							}
+						}	?></td>
 					<td style="text-align:left;"><?php 
 					$st_arr=array(776229,776268,776212);
 					if($paper->paper_code=='1RBPED2' && in_array($student->student_id,$st_arr)){
