@@ -26,7 +26,7 @@ $total = 0;
         $query = $this->db->query($sql);
         $count = $query->result_array();
 
-        $sql_rem="SELECT count(*) as cnt FROM `paper_master` as p join `student` as s on s.class_id=p.class_id and s.`course_group_id`=p.`course_group_id` WHERE s.new_exam_form='exam_year' and s.temp_exam_form='N' and p.type='theory'  AND `s`.`exam_center_id` = '".$row->id."' AND   course_complete='N'";
+        $sql_rem="SELECT count(*) as cnt FROM `paper_master` as p join `student` as s on s.class_id=p.class_id and s.`course_group_id`=p.`course_group_id` WHERE s.new_exam_form='Y' and s.temp_exam_form='N' and p.type='theory'  AND `s`.`exam_center_id` = '".$row->id."' AND   course_complete='N'";
         $query_rem = $this->db->query($sql_rem);
         $count_rem = $query_rem->result_array();
 
