@@ -147,7 +147,7 @@ foreach($exam_centers as $row)
             $this->db->from('student as s');
             $this->db->join('new_exam_form as e', 'e.student_id = s.student_id AND s.class_id = e.class_id');
             $this->db->where('s.new_exam_form', "Y");
-            // $this->db->where('s.notification_no', 0);
+            $this->db->where('s.notification_no', 1);
             $this->db->where('s.examcentercode', $row->examcentercode);	
             $this->db->where('s.exam_center_id', $row->id);	
             $this->db->where_in('paper_id', $papersid);
@@ -188,6 +188,7 @@ foreach($exam_centers as $row)
         `s`.`exam_center_code` = '".$row->examcentercode."'
         AND `s`.`exam_center_id` = '".$row->id."'
         AND `exam_form` = 'Y'
+        AND `notification_no` = '1'
         AND `e`.`status` = 'B'
         AND `e`.`paper_code` IN ('".$paperscode."')
         AND s.exam_year = 'June 2025'
@@ -274,7 +275,7 @@ foreach($exam_centers as $row)
             $this->db->from('student as s');
             $this->db->join('new_exam_form as e', 'e.student_id = s.student_id AND s.class_id = e.class_id');
             $this->db->where('s.new_exam_form', "Y");
-            // $this->db->where('s.notification_no', 0);
+            $this->db->where('s.notification_no', 1);
             $this->db->where('s.examcentercode', $row->examcentercode);	
             $this->db->where('s.exam_center_id', $row->id);	
             $this->db->where_in('paper_id', $papersid);
@@ -305,6 +306,7 @@ foreach($exam_centers as $row)
         `s`.`exam_center_code` = '".$row->examcentercode."'
         AND `s`.`exam_center_id` = '".$row->id."'
         AND `exam_form` = 'Y'
+        AND `notification_no` = '1'
         AND `e`.`status` = 'B'
         AND `e`.`paper_code` IN ('".$paperscode."')
         AND s.exam_year = 'June 2025'
