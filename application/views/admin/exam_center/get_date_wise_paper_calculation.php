@@ -57,7 +57,7 @@ $page_break_count = 1;
        $edate=date("Y-m-d", strtotime($exam_date));
       
       $this->db->where('exam_date',$edate);
-      $this->db->where('exam_date!=',""); 
+      // $this->db->where('exam_date!=',""); 
       $this->db->where('exam_date!=',"0000-00-00");   
       $this->db->where('exam_shift',$shift); 
       if($category=='Uniqe'){
@@ -85,13 +85,20 @@ $page_break_count = 1;
        }
        
          // New Query start 
-          $sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND   `s`.`course_group_id` = `e`.`course_group_id`  join paper_master as p on s.class_id=p.class_id and s.course_group_id=p.course_group_id  and `e`.`paper_code` = p.paper_code WHERE   ".$where."  and new_exam_form in ('Y')";
+          $sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND   `s`.`course_group_id` = `e`.`course_group_id`  join paper_master as p on s.class_id=p.class_id and s.course_group_id=p.course_group_id  and `e`.`paper_code` = p.paper_code and e.paper_id=p.id WHERE   ".$where."  and new_exam_form in ('Y') AND (
+              (s.class_id IN (104, 107, 134) AND s.university_mode = 'REG') OR
+              (s.class_id NOT IN (104, 107, 134) AND s.university_mode IN ('REG', 'PVT'))
+          )";
          
         
          $query = $this->db->query($sql);
          $main_count = $query->result_array();
+         // $this->Common_model->last_query();
 
-         $sql_backlog="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND   `s`.`course_group_id` = `e`.`course_group_id`  join paper_master as p on s.class_id=p.class_id and s.course_group_id=p.course_group_id  and `e`.`paper_code` = p.paper_code WHERE   ".$where." and exam_year='June 2024' and exam_form in ('Y') and `e`.status= 'B'";
+         $sql_backlog="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND   `s`.`course_group_id` = `e`.`course_group_id`  join paper_master as p on s.class_id=p.class_id and s.course_group_id=p.course_group_id  and `e`.`paper_code` = p.paper_code WHERE   ".$where." and exam_year='June 2025' and exam_form in ('Y') and `e`.status= 'B' AND (
+              (s.class_id IN (104, 107, 134) AND s.mode = 'REG') OR
+              (s.class_id NOT IN (104, 107, 134) AND s.mode IN ('REG', 'PVT'))
+          )";
          
         
          $backlog_query = $this->db->query($sql_backlog);

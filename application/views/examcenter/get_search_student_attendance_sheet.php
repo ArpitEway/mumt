@@ -33,21 +33,33 @@
 	</style>
  <?php 
  foreach($exam_center_students as $student)  {
- 	
-     $wherePaper = array('student_id' => $student['student_id'],'paper_master.type'=>'theory','exam_date!='=>'0000-00-00','exam_date!='=>'' ,'paper_master.course_group_id'=> $student['course_group_id'],'paper_master.class_id'=> $student['class_id']);
+ 	$classIdsRegOnly = array(104, 107, 134);
+	if($student['university_mode'] =="PVT" && in_array($student['class_id'], $classIdsRegOnly)){
+		 $wherePaper = array('student_id' => $student['student_id'],'paper_master.type'=>'theory','pvt_exam_date!='=>'0000-00-00','paper_master.course_group_id'=> $student['course_group_id'],'paper_master.class_id'=> $student['class_id']);
 	 
+	}else{
+		 $wherePaper = array('student_id' => $student['student_id'],'paper_master.type'=>'theory','exam_date!='=>'0000-00-00' ,'paper_master.course_group_id'=> $student['course_group_id'],'paper_master.class_id'=> $student['class_id']);
+	 
+	}
+    
      $this->db->select('*');
      $this->db->from('paper_master');
      $this->db->join('new_exam_form', 'new_exam_form.paper_id = paper_master.id');
      //$this->db->join('time_table', 'paper_master.class_id = time_table.class_id');
      $this->db->where($wherePaper);
-     $this->db->order_by("exam_date", "asc");
-     $this->db->order_by("exam_shift", "desc");
+	 if($student['university_mode'] =="PVT" && in_array($student['class_id'], $classIdsRegOnly)){
+		 $this->db->order_by("pvt_exam_date", "asc");
+     	 $this->db->order_by("pvt_exam_shift", "desc");
+	 }else{
+		 $this->db->order_by("exam_date", "asc");
+     	 $this->db->order_by("exam_shift", "desc");
+	 }
+    
      $papers = $this->db->get()->result();
 	 $paper_count = count($papers);
 	 if($paper_count){
 
-		  $newstring = "241".substr($student['center_code'], -4); 
+		  $newstring = "251".substr($student['center_code'], -4); 
      ?>  
 <!-- <div id="ss">       -->
 <section class="break" style="font-size: 16px;" >
@@ -66,20 +78,20 @@
 			<div class="BoxC border- padding">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Attendance Sheet Examination 
+						<h5>Attendance Sheet Examination June 2025
 							<?php
-							if($student['course_group_id']==75 || $student['course_group_id']==76 ||$student['course_group_id']==77 ){
-								if($student['class_id']==256 || $student['class_id']==258 ||  $student['class_id']==260 || $student['class_id']==262 )
-									echo 'July 2024';
-									else
-									echo '2024';
-							}
-							elseif($student['course_group_id']==80) {
-								echo 'August 2024';
-							}
-							else{
-								echo 'June 2024';
-							}
+							// if($student['course_group_id']==75 || $student['course_group_id']==76 ||$student['course_group_id']==77 ){
+							// 	if($student['class_id']==256 || $student['class_id']==258 ||  $student['class_id']==260 || $student['class_id']==262 )
+							// 		echo 'July 2024';
+							// 		else
+							// 		echo '2024';
+							// }
+							// elseif($student['course_group_id']==80) {
+							// 	echo 'August 2024';
+							// }
+							// else{
+							// 	echo 'June 2024';
+							// }
 							
 							?>
 						</h5>
@@ -167,19 +179,40 @@
 				?>
 				<tr>
 					<td><?php echo $i ; ?></td>
-					<td><?php echo date("d-m-Y", strtotime($paper->exam_date)); ?></td>
+					<?php if($student['university_mode'] =="PVT" && in_array($student['class_id'], $classIdsRegOnly)){
+						?>
+						<td><?php echo date("d-m-Y", strtotime($paper->pvt_exam_date)); ?></td>
+					<td>
+					<?php 
+					if($paper->pvt_exam_shift=='Afternoon' && in_array($student['class_id'],$class_ids) ){
+						echo '3:00 PM To 6:00 PM';
+					}
+					elseif($paper->pvt_exam_shift=='Afternoon'){
+						echo '2:00 PM To 5:00 PM';
+					}
+					elseif($paper->pvt_exam_shift=='Morning'){
+						echo '10:00 AM To 1:00 PM';
+					}?>
+					</td>
+						<?php
+					}else{
+						?>
+						<td><?php echo date("d-m-Y", strtotime($paper->exam_date)); ?></td>
 					<td>
 					<?php 
 					if($paper->exam_shift=='Afternoon' && in_array($student['class_id'],$class_ids) ){
-						echo '03:00 PM To 06:00 PM';
+						echo '3:00 PM To 6:00 PM';
 					}
 					elseif($paper->exam_shift=='Afternoon'){
-						echo '02:00 PM To 05:00 PM';
+						echo '2:00 PM To 5:00 PM';
 					}
 					elseif($paper->exam_shift=='Morning'){
-						echo '10:00 AM To 01:00 PM';
+						echo '10:00 AM To 1:00 PM';
 					}?>
 					</td>
+						<?php
+					}
+					?>
 					<td style="text-align:left;"><?php echo $paper->paper_name; ?></td>
 					<td ></td>
 					<td ></td>

@@ -111,15 +111,42 @@ class Examcenter extends CI_Controller {
 			$this->db->select('*');
 			$this->db->from('exam_center');
 			$data['exam_centers'] = $this->db->get()->result();
-			$this->db->select('*');
+			// Load all unique regular exam dates
+			$this->db->select('exam_date');
 			$this->db->from('paper_master');
-			$this->db->where('exam_date!=',"");
-			$this->db->where('exam_date!=',"0000-00-00");
-			$this->db->where('exam_date>=',"2024-06-28");	
-			//$this->db->where_not_in('course_group_id',array('75','76','77'));
+			$this->db->where('exam_date !=', '0000-00-00');
 			$this->db->group_by('exam_date');
-			$this->db->order_by('exam_date', "asc");
-			$data['examDate'] = $this->db->get()->result();
+			$this->db->order_by('exam_date', 'asc');
+			$examDate = $this->db->get()->result_array();
+
+			// Load all unique private exam dates
+			$this->db->select('pvt_exam_date as exam_date');
+			$this->db->from('paper_master');
+			$this->db->where('pvt_exam_date !=', '0000-00-00');
+			$this->db->group_by('pvt_exam_date');
+			$this->db->order_by('pvt_exam_date', 'asc');
+			$pvtexamDate = $this->db->get()->result_array();
+
+				// Merge and sort all exam dates
+				$mergedDates = array_merge($examDate, $pvtexamDate);
+
+				// Remove duplicates and sort by date
+				$uniqueDates = array_map("unserialize", array_unique(array_map("serialize", $mergedDates)));
+				usort($uniqueDates, function($a, $b) {
+					return strtotime($a['exam_date']) - strtotime($b['exam_date']);
+				});
+
+				// Prepare the final array with formatted dates
+				$uniqueDates = array_map(function($date) {
+					return date("d-m-Y", strtotime($date['exam_date']));
+				}, $uniqueDates);
+
+				// Assign to data array
+
+			$data['examDate'] = $uniqueDates;
+
+			// echo '<pre>';
+			// print_r($data['examDate']);die;
 
 			$this->load->view('examcenter/exam_center_wise_paper_count_report',$data);
 			$this->load->view('examcenter/footer');
@@ -127,8 +154,12 @@ class Examcenter extends CI_Controller {
 	}
 
 	public function get_exam_center_wise_paper_count_report(){
+		$classIdsRegOnly = array(104, 107, 134);
+		$dates = array("19-06-2025","20-06-2025","21-06-2025","23-06-2025","24-06-2025");
+
 		$data['exam_center']=$exam_center = $this->input->post('exam_center');
 		$data['exam_date']=$exam_date = $this->input->post('exam_date');
+		// echo $exam_date;die;
 		$data['shift']=$shift = $this->input->post('shift');
 		$this->db->select('*');
 		$this->db->from('exam_center');
@@ -137,26 +168,59 @@ class Examcenter extends CI_Controller {
 		$data['exam_centers'] = $this->db->get()->result();
 
 
-		$this->db->select('DISTINCT(paper_master.id),exam_date,exam_shift,exam_day,paper_master.paper_code,paper_master.paper_name,paper_master.course_group_id,paper_master.class_id');
+		$this->db->select('DISTINCT(paper_master.id),exam_date,exam_shift,exam_day,pvt_exam_date,pvt_exam_shift,pvt_exam_day,paper_master.paper_code,paper_master.paper_name,paper_master.course_group_id,paper_master.class_id');
 		$this->db->from('paper_master');
 		$this->db->join('new_exam_form', 'new_exam_form.paper_id = paper_master.id');
 		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
 		$this->db->where('student.new_exam_form=','Y' );
-		$this->db->where('paper_master.exam_date!=',"");
+		if(in_array($exam_date, $dates)){
+			$this->db->where_in('student.class_id', $classIdsRegOnly);
+			$this->db->where('student.university_mode', 'PVT');
+		}else{
+			$this->db->group_start();
+			$this->db->group_start();
+			$this->db->where_in('student.class_id', $classIdsRegOnly);
+			$this->db->where('student.university_mode', 'REG');
+			$this->db->group_end();
+			$this->db->or_group_start();
+			$this->db->where_not_in('student.class_id', $classIdsRegOnly);
+			$this->db->where_in('student.university_mode', array('REG', 'PVT'));
+			$this->db->group_end();
+			$this->db->group_end();
+		}
+		
+		// $this->db->where('paper_master.exam_date!=',"");
 		if($exam_date!='All')	{
 			$edate=date("Y-m-d", strtotime($exam_date));
-			$this->db->where('paper_master.exam_date',$edate);
+			if(in_array($exam_date, $dates)){
+				$this->db->where('paper_master.pvt_exam_date',$edate);
+			}else{
+				$this->db->where('paper_master.exam_date',$edate);
+			}
+			
 		}
 			
-		if($shift)	
-			$this->db->where('paper_master.exam_shift',$shift);
-		$this->db->where('student.exam_center_id', $exam_center );
-		$this->db->group_by('paper_master.exam_date');
-
+		if($shift){
+			if(in_array($exam_date, $dates)){
+				$this->db->where('paper_master.pvt_exam_shift',$shift);
+			}else{
+				$this->db->where('paper_master.exam_shift',$shift);
+			}
+		}	
 		
-		$this->db->order_by('paper_master.exam_date');
+		$this->db->where('student.exam_center_id', $exam_center );
+		if(in_array($exam_date, $dates)){
+			$this->db->group_by('paper_master.pvt_exam_date');
+			$this->db->order_by('paper_master.pvt_exam_date');
+			$data['exam_type'] = 'PVT';
+		}else{
+			$this->db->group_by('paper_master.exam_date');
+			$this->db->order_by('paper_master.exam_date');
+			$data['exam_type'] = 'REG';
+		}
+		
 		$data['papers'] = $this->db->get()->result();
-	//	echo $this->db->last_query();die; 
+		// echo $this->db->last_query();die; 
 	/*	$where="";
 		if($exam_center!='All')
 			$where.="AND `student_report`.`exam_center_id` = '".$exam_center."'";
@@ -263,7 +327,7 @@ class Examcenter extends CI_Controller {
 				$this->db->from('backlog_student');
 				$this->db->join('student', 'backlog_student.student_id = student.student_id ' );
 				$this->db->order_by("roll_no", "asc");
-				$this->db->where('backlog_student.exam_year','June 2024');
+				$this->db->where('backlog_student.exam_year','June 2025');
 				$this->db->where($where);	
 				$data['exam_center_students'] = $this->db->get()->result();
 		   echo $this->load->view('examcenter/get_search_backlog_student_attendance_sheet',$data, TRUE);
