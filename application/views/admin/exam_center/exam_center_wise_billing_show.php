@@ -216,7 +216,7 @@ foreach($exam_centers as $row)
                     <td><?php   echo $count[0]->cnt ;  ?> </td>
                     <td><?php   echo $count_backlog[0]['cnt'] ;  ?> </td>
                     <td><?php   echo  $t= $allStudentCount; ?> </td>
-                    <td>500</td>
+                    <td><?php echo $kendra=500; ?></td>
                     <td>
                         <?php
                         $sahayak=0; 
@@ -330,7 +330,7 @@ foreach($exam_centers as $row)
                     <td><?php   echo $count[0]->cnt ;  ?> </td>
                     <td><?php   echo $count_backlog[0]['cnt'] ;  ?> </td>
                     <td><?php   echo  $t= $allStudentCount; ?> </td>
-                    <td>500</td>
+                    <td><?php echo $kendra=500; ?></td>
                     <td>
                         <?php
                         $sahayak=0; 
