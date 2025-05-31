@@ -57,13 +57,13 @@ foreach($papers as $pap)
             <th scope="row">
                <div align="left">Date </div>
             </th>
-            <td align="left"><?php  echo  date("d-m-Y", strtotime($pap->exam_date))  ?></td>
+            <td align="left"><?php  echo  date("d-m-Y", strtotime(($exam_type == 'PVT')?$pap->pvt_exam_date:$pap->exam_date))  ?></td>
          </tr>
          <tr>
             <th scope="row">
                <div align="left">Day</div>
             </th>
-            <td align="left"><?= $pap->exam_day?></td>
+            <td align="left"><?= ($exam_type == 'PVT')?$pap->pvt_exam_day:$pap->exam_day?></td>
          </tr>
       </tbody>
    </table>
@@ -101,12 +101,22 @@ foreach($papers as $pap)
       $this->db->select('*');
       $this->db->from('paper_master');
 	   //if($exam_date!='All')
-      $this->db->where('exam_date',$pap->exam_date);
-      $this->db->where('exam_date!=',"");	
-      $this->db->where('exam_date!=',"0000-00-00");	
-      $this->db->where('exam_shift',$pap->exam_shift);	
-      $this->db->order_by('exam_date','Asc');
-      $this->db->order_by('exam_shift','Desc');
+      if($exam_type == 'PVT'){
+           $this->db->where('pvt_exam_date',$pap->pvt_exam_date);
+         // $this->db->where('exam_date!=',"");	
+            $this->db->where('pvt_exam_date!=',"0000-00-00");	
+            $this->db->where('pvt_exam_shift',$pap->pvt_exam_shift);	
+            $this->db->order_by('pvt_exam_date','Asc');
+            $this->db->order_by('pvt_exam_shift','Desc');
+      }else{
+           $this->db->where('exam_date',$pap->exam_date);
+            // $this->db->where('exam_date!=',"");	
+            $this->db->where('exam_date!=',"0000-00-00");	
+            $this->db->where('exam_shift',$pap->exam_shift);	
+            $this->db->order_by('exam_date','Asc');
+            $this->db->order_by('exam_shift','Desc');
+      }
+    
 
       $paperData = $this->db->get()->result();
       //echo $this->db->last_query();die;
@@ -156,14 +166,14 @@ foreach($papers as $pap)
                      ?>
                   </div>
                </td>
-               <td><?= $paper->test_id?></td>
+               <td><?= ($exam_type == 'PVT')?$paper->pvt_test_id:$paper->test_id?></td>
                <td>
                   <div align="left"><?= $paper->paper_code?></div>
                </td>
                <td align="left">
                   <div align="left"><?= $paper->paper_name?></div>
                </td>
-               <td><div align="left"><?= $paper->exam_shift?></div></td>
+               <td><div align="left"><?= ($exam_type == 'PVT')?$paper->pvt_exam_shift:$paper->exam_shift?></div></td>
                <td style="text-align:center;"><?php echo $student_count; ?> </td>
             </tr>
             <?php 

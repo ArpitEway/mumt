@@ -1772,9 +1772,9 @@ class ExamController extends CI_Controller {
 			
 			$this->db->select('*');
 			$this->db->from('paper_master');
-			$this->db->where('exam_date!=',"");
+			// $this->db->where('exam_date!=',"");
 			$this->db->where('exam_date!=',"0000-00-00");	
-			$this->db->where('exam_date>=',"2024-06-28");	
+			// $this->db->where('exam_date>=',"2024-06-28");	
 			//$this->db->where_not_in('course_group_id',array('75','76','77'));
 			$this->db->group_by('exam_date');
 			$this->db->order_by('exam_date', "asc");
@@ -1829,11 +1829,15 @@ class ExamController extends CI_Controller {
 
 		$where.="   GROUP BY `paper_master`.`exam_date`";
 
-		 $sql="SELECT DISTINCT(paper_master.id), `exam_date`, `exam_shift`, `exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student` ON `student`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = 'theory' AND `paper_master`.`exam_date` != '' AND paper_master.exam_date!='0000-00-00'  ".$where; 
+		 $sql="SELECT DISTINCT(paper_master.id), `exam_date`, `exam_shift`, `exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student` ON `student`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = 'theory'  AND paper_master.exam_date!='0000-00-00'  AND (
+              (student.class_id IN (104, 107, 134) AND student.university_mode = 'REG') OR
+              (student.class_id NOT IN (104, 107, 134) AND student.university_mode IN ('REG', 'PVT'))
+          )".$where; 
 		
 		$query = $this->db->query($sql);
         $data['papers'] = $query->result();
-		//echo $this->db->last_query(); die;
+		// echo $this->db->last_query(); die;
+		// AND `paper_master`.`exam_date` != ''
 		echo $this->load->view('admin/exam_center/get_date_wise_paper_calculation',$data, TRUE);
 	}
 

@@ -29,21 +29,21 @@ else{  ?>
             ?>
         </select>
     </div>
-    <?php } ?>
+    <?php } 
+    ?>
     <div class="form-group col-md-3">
         <label for="course">Date Of Paper</label>
         <select  name="exam_date" readonly="readonly" id="exam_date" class="form-control course" required>
 
             <!-- <option value="All" selected="selected" >All</option> -->
             <?php 
-
             foreach($examDate as $edate)
-            {
-               
+            { 
                 ?>
-                <option value="<?php echo  date("d-m-Y", strtotime($edate->exam_date)); ?>"   ><?php echo  date("d-m-Y", strtotime($edate->exam_date)); ?></option>
+                <option value="<?php echo  date("d-m-Y", strtotime($edate)); ?>"   ><?php echo  date("d-m-Y", strtotime($edate)); ?></option>
                 <?php
             } 
+        
             ?>
         </select>
     </div>
