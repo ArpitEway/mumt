@@ -626,7 +626,7 @@ class Center extends CI_Controller {
 			$btn = '<a href="'.base_url('show_fees/'.$this->Common_model->encrypt_decrypt($result->id)).'" class="btn btn-primary btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>';
 			$i++;
 			$university_mode = ($result->university_mode=='REG') ? 'Regular' : 'Private';
-			$data[] = array($i,$university_mode, $result->student_id, $result->name, $result->f_h_name, $result->course_name,$result->class_name,$result->fees_head,$result->amount,$result->txnId,$btn);
+			$data[] = array($i,$university_mode, $result->student_id, $result->name, $result->f_h_name, $result->course_name,$this->Common_model->getClassNameByClassId($result->class_id),$result->fees_head,$result->amount,$result->txnId,$btn);
 		}
 		if ($this->session->center_id!=13) {
 			$this->db->where('online_payment_transaction.center_id',$this->session->center_id);
