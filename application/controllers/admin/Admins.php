@@ -4719,7 +4719,7 @@ public function update_exam_datewise_permission(){
 			'hash_csrf' => $this->security->get_csrf_hash()
 		);
 		$this->db->order_by('examcentercode');
-		$this->db->where('examcentercode','MDE125');
+		// $this->db->where('examcentercode','MDE125');
 		$data['examCenters'] = $this->db->get_where('exam_center', array())->result_array();
 		$this->load->view('header',$data);
 		$this->load->view('admin/exam_center/exam_center_billing_report',$csrf);

@@ -35,7 +35,7 @@
 
 			
 			foreach($examCenters as $examCenter){
-				// if($this->session->account_type =="ExamController"){ 
+				if($this->session->account_type =="ExamController"){ 
 				// $this->db->select('count(*) as cnt');
 				// $this->db->from('student as s');
 				// $this->db->join('new_exam_form  as e', 'e.student_id = s.student_id AND s.class_id = e.class_id');
@@ -170,9 +170,9 @@
 				$pvt_backlog_count = $this->db->get()->result();
 
 				$tot_max_count=$main_count[0]->cnt+$backlog_count[0]->cnt+$pvt_main_count[0]->cnt+$pvt_backlog_count[0]->cnt;
-				// }else{
-				// 	$tot_max_count=0;
-				// }
+				}else{
+					$tot_max_count=0;
+				}
                // echo $this->db->last_query();
 				?>
 				<tr>
