@@ -224,9 +224,14 @@ foreach($exam_centers as $row)
                 echo $sahayak;?>
             </td>
             <td><?php $a=$t/25;  $b1=ceil($a); $vik=$b1*100; echo $vik; ?></td>
-            <td><?php echo $clerk=90; ?></td>
+            <td><?php 
+               if( $prevdate != $exam_date){
+            echo $clerk=90;}else
+            { echo $clerk=0;} ?></td>
             <td>
-                <?php echo $adesh=50; ?></td>
+                <?php 
+                 if( $prevdate != $exam_date){
+                echo $adesh=50;}else{ echo $adesh=0;} ?></td>
                 <td><?php echo $bhavan=4*$t ;?></td>
                 <td><?php echo $jal=10*($b+$b1+3) ;?></td>
 
@@ -235,8 +240,8 @@ foreach($exam_centers as $row)
                 <td>
                   <?php  $portal=0;
 
-                  $prevdate;
-                  $exam_date;
+                //   $prevdate;
+                //   $exam_date;
                   if( $prevdate != $exam_date){
 
                     if($t<81)
@@ -264,8 +269,8 @@ foreach($exam_centers as $row)
                 </tr>
                 <?php $i++; }}
                 //pvt
-
-                foreach($pvtexamDate as $edate)
+$prevdate="";
+                foreach($pvtexamDate as $edate )
         { 
             $where = array('type' => 'theory','pvt_exam_date'=>$edate->pvt_exam_date,'pvt_exam_shift'=>$edate->pvt_exam_shift );
             $this->db->where_not_in('paper_no_for_time_table', array('1B','2B'));
@@ -338,9 +343,12 @@ foreach($exam_centers as $row)
                 echo $sahayak;?>
             </td>
             <td><?php $a=$t/25;  $b1=ceil($a); $vik=$b1*100; echo $vik; ?></td>
-            <td><?php echo $clerk=90; ?></td>
+            <td><?php if( $prevdate != $exam_date){
+            echo $clerk=90;}else
+            { echo $clerk=0;}?></td>
             <td>
-                <?php echo $adesh=50; ?></td>
+                <?php if( $prevdate != $exam_date){
+                echo $adesh=50;}else { echo $adesh=0;} ?></td>
                 <td><?php echo $bhavan=4*$t ;?></td>
                 <td><?php echo $jal=10*($b+$b1+3) ;?></td>
 
