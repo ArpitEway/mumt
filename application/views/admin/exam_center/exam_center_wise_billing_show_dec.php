@@ -216,19 +216,19 @@ foreach($exam_centers as $row)
                     <td><?php   echo $count[0]->cnt ;  ?> </td>
                     <td><?php   echo $count_backlog[0]['cnt'] ;  ?> </td>
                     <td><?php   echo  $t= $allStudentCount; ?> </td>
-                    <td><?php echo $kendra=200; ?></td>
+                    <td><?php echo $kendra=500; ?></td>
                     <td>
                         <?php
                         $sahayak=0; 
-                if($t > 300) { $a=($t-300)/300; $b=ceil($a); $sahayak=$b*150; } //else { $sahayak=0; } 
+                if($t > 300) { $a=($t-300)/300; $b=ceil($a); $sahayak=$b*400; } //else { $sahayak=0; } 
                 echo $sahayak;?>
             </td>
-            <td><?php $a=$t/25;  $b1=ceil($a); $vik=$b1*100; echo $vik; ?></td>
-            <td><?php echo $clerk=90; ?></td>
+            <td><?php $a=$t/25;  $b1=ceil($a); $vik=$b1*250; echo $vik; ?></td>
+            <td><?php echo $clerk=200; ?></td>
             <td>
-                <?php echo $adesh=50; ?></td>
-                <td><?php echo $bhavan=4*$t ;?></td>
-                <td><?php echo $jal=10*($b+$b1+3) ;?></td>
+                <?php echo $adesh=100; ?></td>
+                <td><?php echo $bhavan=10*$t ;?></td>
+                <td><?php echo $jal=20*($b+$b1+3) ;?></td>
 
                 <!--<td></td>-->
 
@@ -330,19 +330,19 @@ foreach($exam_centers as $row)
                     <td><?php   echo $count[0]->cnt ;  ?> </td>
                     <td><?php   echo $count_backlog[0]['cnt'] ;  ?> </td>
                     <td><?php   echo  $t= $allStudentCount; ?> </td>
-                    <td><?php echo $kendra=200; ?></td>
+                    <td><?php echo $kendra=500; ?></td>
                     <td>
                         <?php
                         $sahayak=0; 
-                if($t > 300) { $a=($t-300)/300; $b=ceil($a); $sahayak=$b*150; } //else { $sahayak=0; } 
+                if($t > 300) { $a=($t-300)/300; $b=ceil($a); $sahayak=$b*400; } //else { $sahayak=0; } 
                 echo $sahayak;?>
             </td>
-            <td><?php $a=$t/25;  $b1=ceil($a); $vik=$b1*100; echo $vik; ?></td>
-            <td><?php echo $clerk=90; ?></td>
+            <td><?php $a=$t/25;  $b1=ceil($a); $vik=$b1*250; echo $vik; ?></td>
+            <td><?php echo $clerk=200; ?></td>
             <td>
-                <?php echo $adesh=50; ?></td>
-                <td><?php echo $bhavan=4*$t ;?></td>
-                <td><?php echo $jal=10*($b+$b1+3) ;?></td>
+                <?php echo $adesh=100; ?></td>
+                <td><?php echo $bhavan=10*$t ;?></td>
+                <td><?php echo $jal=20*($b+$b1+3) ;?></td>
 
                 <!--<td></td>-->
 
