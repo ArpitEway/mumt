@@ -63,7 +63,7 @@
      ?>  
 <!-- <div id="ss">       -->
 <section class="break" style="font-size: 16px;" >
-		<div class="admit-card" style="width:1030px !important; ">
+		<div id="container_content" class="admit-card" style="width:1030px !important; ">
 			<div class="BoxA border- padding mar-bot"> 
 				<div class="row justify-content-center align-items-center">
 					<div class="col-3 txt-center">
@@ -245,3 +245,32 @@
 		</section>
     
  <?php }  }  ?>
+
+ <div class="text-center">
+    <input type="button" id="rep" value="Download" class="btn btn-primary btn_print mb-5">
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js" ></script>
+	<script>
+	$(document).ready(function($) 
+    { 
+
+        $(document).on('click', '.btn_print', function(event) 
+        {
+            event.preventDefault();
+            var element = document.getElementById('container_content'); 
+            var student_id = document.getElementById('student_id').value;
+            //more custom settings
+            var opt = 
+            {
+             
+              filename:     'attendance_sheet_'+student_id+'.pdf',
+              image:        { type: 'jpeg', quality: 0.98 },
+              html2canvas:  { scale: 2, width: 1150,height: 1600 },
+              jsPDF:        { unit: 'in', format: 'A4', orientation: 'portrait' }
+            };
+            // New Promise-based usage:
+            html2pdf().set(opt).from(element).save();  
+        });
+	});
+	</script>
