@@ -3897,5 +3897,85 @@ public function getStudentData()
 		$this->load->view('footer');
     }
 
+	 public function search_attendance_sheet(){
+		if($this->session->account_type!='ExamController'){
+				redirect(base_url('admin/logout')); 
+		}else
+		{
+			$titleData = array('title' => 'Search Attendance Sheet of student'); 
+			$this->load->view('examcenter/header',$titleData);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+		
+
+			$this->load->view('examcenter/search_attendance_sheet',$data);
+			$this->load->view('examcenter/footer');
+		}
+	}
+
+	public function get_search_student_attendance_sheet(){
+
+
+		 $text_val =$this->input->post('text_val');
+		 $radio_val = $this->input->post('radio_val');
+
+
+		if($text_val !='')
+		{
+			if($text_val !='' && $radio_val == 'enrollment_no')
+			{
+				$where = array('enrollment_no'=>$text_val,'new_exam_form'=>'Y');
+
+			}else if($text_val !='' && $radio_val == 'roll_no'){
+				$where = array('roll_no'=>$text_val);
+			}
+
+			$data['exam_center_students'] = $this->Common_model->student_data($where);
+			
+			echo $this->load->view('examcenter/get_search_student_attendance_sheet',$data, TRUE);
+			
+		}		
+	}
+
+	 public function search_backlog_attendance_sheet(){
+		if($this->session->account_type!='ExamController'){
+				redirect(base_url('admin/logout')); 
+		}else
+		{
+			$titleData = array('title' => 'Search Backlog Attendance Sheet of student'); 
+			$this->load->view('examcenter/header',$titleData);
+			$data['name_csrf'] = $this->security->get_csrf_token_name();
+			$data['hash_csrf'] = $this->security->get_csrf_hash();
+			
+
+			$this->load->view('examcenter/search_backlog_attendance_sheet',$data);
+			$this->load->view('examcenter/footer');
+		}
+	}
+
+	public function get_search_backlog_student_attendance_sheet(){
+		$text_val =$this->input->post('text_val');
+		$radio_val = $this->input->post('radio_val');
+	   if($text_val !='')
+	   {
+		   if($text_val !='' && $radio_val == 'enrollment_no')
+		   {
+			   $where = array('backlog_student.enrollment_no'=>$text_val,'backlog_student.exam_form'=>'Y');
+
+		   }else if($text_val !='' && $radio_val == 'roll_no'){
+			   $where = array('backlog_student.roll_no'=>$text_val);
+		   }
+		  		 
+				$this->db->select('backlog_student.*,student.name,student.f_h_name,student.course_name,student.photo');
+				$this->db->from('backlog_student');
+				$this->db->join('student', 'backlog_student.student_id = student.student_id ' );
+				$this->db->order_by("roll_no", "asc");
+				$this->db->where('backlog_student.exam_year','June 2025');
+				$this->db->where($where);	
+				$data['exam_center_students'] = $this->db->get()->result();
+		   echo $this->load->view('examcenter/get_search_backlog_student_attendance_sheet',$data, TRUE);
+		   
+	   }		
+   }
 
 }// class
