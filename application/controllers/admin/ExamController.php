@@ -1554,12 +1554,12 @@ class ExamController extends CI_Controller {
 			$where.=" AND `student`.`exam_center_id` = '".$exam_center."' ";
 		if($exam_date!='All')	{
 			$edate=date("Y-m-d", strtotime($exam_date));
-			$where.=" AND paper_master.exam_date = '".$edate."' ";
+			$where.=" AND paper_master.pvt_exam_date = '".$edate."' ";
 		}
 		if($shift!='All')
-		$where.="AND paper_master.exam_shift = '".$shift."'";
+		$where.="AND paper_master.pvt_exam_shift = '".$shift."'";
 
-		$where.="   GROUP BY `paper_master`.`exam_date`";
+		$where.="   GROUP BY `paper_master`.`pvt_exam_date`";
 
 		$sql="SELECT DISTINCT(paper_master.id), `pvt_exam_date`, `pvt_exam_shift`, `pvt_exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student` ON `student`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = 'theory'  AND paper_master.pvt_exam_date!='0000-00-00'".$where; 
 
