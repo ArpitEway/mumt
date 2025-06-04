@@ -3,7 +3,7 @@
       display: none;
    }
   .break{
-    page-break-before: always;
+    page-break-before: always; 
  }
  @page {
    size: auto;
