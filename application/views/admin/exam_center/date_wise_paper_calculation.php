@@ -11,7 +11,7 @@
             foreach($examDate as $edate)
             {
                 ?>
-                <option value="<?php echo  date("d-m-Y", strtotime($edate->exam_date)); ?>"   ><?php echo  date("d-m-Y", strtotime($edate->exam_date)); ?></option>
+                <option value="<?php echo  date("d-m-Y", strtotime($edate)); ?>"   ><?php echo  date("d-m-Y", strtotime($edate)); ?></option>
                 <?php
             } 
             ?>

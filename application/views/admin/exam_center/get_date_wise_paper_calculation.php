@@ -55,18 +55,33 @@ $page_break_count = 1;
       $this->db->from('paper_master');
      
        $edate=date("Y-m-d", strtotime($exam_date));
-      
-      $this->db->where('exam_date',$edate);
+      if($exam_type == 'PVT'){
+          $this->db->where('pvt_exam_date',$edate);
       // $this->db->where('exam_date!=',""); 
-      $this->db->where('exam_date!=',"0000-00-00");   
-      $this->db->where('exam_shift',$shift); 
-      if($category=='Uniqe'){
-        $this->db->group_by('test_id');
-      }
-      $this->db->order_by('exam_date','Asc');
-      $this->db->order_by('exam_shift','Desc');
+         $this->db->where('pvt_exam_date!=',"0000-00-00");   
+         $this->db->where('pvt_exam_shift',$shift); 
+         if($category=='Uniqe'){
+         $this->db->group_by('pvt_test_id');
+         }
+         $this->db->order_by('pvt_exam_date','Asc');
+         $this->db->order_by('pvt_exam_shift','Desc');
+      
+         $this->db->order_by('pvt_test_id','Asc');   
+     
+      }else{
+          $this->db->where('exam_date',$edate);
+         // $this->db->where('exam_date!=',""); 
+         $this->db->where('exam_date!=',"0000-00-00");   
+         $this->db->where('exam_shift',$shift); 
+         if($category=='Uniqe'){
+         $this->db->group_by('test_id');
+         }
+         $this->db->order_by('exam_date','Asc');
+         $this->db->order_by('exam_shift','Desc');
      
         $this->db->order_by('test_id','Asc');   
+     
+      }
      
       
 
@@ -85,21 +100,31 @@ $page_break_count = 1;
        }
        
          // New Query start 
-          $sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND   `s`.`course_group_id` = `e`.`course_group_id`  join paper_master as p on s.class_id=p.class_id and s.course_group_id=p.course_group_id  and `e`.`paper_code` = p.paper_code and e.paper_id=p.id WHERE   ".$where."  and new_exam_form in ('Y') AND (
+          if($exam_type == 'PVT'){
+              $sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND   `s`.`course_group_id` = `e`.`course_group_id`  join paper_master as p on s.class_id=p.class_id and s.course_group_id=p.course_group_id  and `e`.`paper_code` = p.paper_code and e.paper_id=p.id WHERE   ".$where."  and new_exam_form in ('Y') AND s.class_id IN (104, 107, 134) AND s.university_mode = 'PVT'";
+          }else{
+              $sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND   `s`.`course_group_id` = `e`.`course_group_id`  join paper_master as p on s.class_id=p.class_id and s.course_group_id=p.course_group_id  and `e`.`paper_code` = p.paper_code and e.paper_id=p.id WHERE   ".$where."  and new_exam_form in ('Y') AND (
               (s.class_id IN (104, 107, 134) AND s.university_mode = 'REG') OR
               (s.class_id NOT IN (104, 107, 134) AND s.university_mode IN ('REG', 'PVT'))
           )";
+          }
+        
          
         
          $query = $this->db->query($sql);
          $main_count = $query->result_array();
          // $this->Common_model->last_query();
-
-         $sql_backlog="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND   `s`.`course_group_id` = `e`.`course_group_id`  join paper_master as p on s.class_id=p.class_id and s.course_group_id=p.course_group_id  and `e`.`paper_code` = p.paper_code WHERE   ".$where." and exam_year='June 2025' and exam_form in ('Y') and `e`.status= 'B' AND (
+           if($exam_type == 'PVT'){
+             $sql_backlog="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND   `s`.`course_group_id` = `e`.`course_group_id`  join paper_master as p on s.class_id=p.class_id and s.course_group_id=p.course_group_id  and `e`.`paper_code` = p.paper_code WHERE   ".$where." and exam_year='June 2025' and exam_form in ('Y') and `e`.status= 'B' AND s.class_id IN (104, 107, 134) AND s.mode = 'PVT'";
+         
+           }else{
+             $sql_backlog="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND   `s`.`course_group_id` = `e`.`course_group_id`  join paper_master as p on s.class_id=p.class_id and s.course_group_id=p.course_group_id  and `e`.`paper_code` = p.paper_code WHERE   ".$where." and exam_year='June 2025' and exam_form in ('Y') and `e`.status= 'B' AND (
               (s.class_id IN (104, 107, 134) AND s.mode = 'REG') OR
               (s.class_id NOT IN (104, 107, 134) AND s.mode IN ('REG', 'PVT'))
           )";
          
+           }
+        
         
          $backlog_query = $this->db->query($sql_backlog);
          $backlog_count = $backlog_query->result_array();
@@ -127,16 +152,18 @@ $page_break_count = 1;
                      ?>
                   </div>
                </td>
-               <td><?= $paper->test_id?></td>
+               <td><?= ($exam_type == 'PVT')?$paper->pvt_test_id:$paper->test_id?></td>
                <td>
                   <div align="left"><?= $paper->paper_code?></div>
                </td>
                <td align="left">
                   <div align="left"><?= $paper->paper_name?></div>
                </td>
-               <td><div align="left"><?= $paper->exam_shift?></div></td>
-              <td> <?php //http://162.144.38.91/~mmyvvdde/main/examcenter/paper/1050.pdf
-              $pdf = 'http://162.144.38.91/~mmyvvdde/main/examcenter/paper/'.$paper->test_id.'.pdf';
+               <td><div align="left"><?= ($exam_type == 'PVT')?$paper->pvt_exam_shift:$paper->exam_shift?></div></td>
+              <td> <?php
+              $test_id = ($exam_type == 'PVT')?$paper->pvt_test_id:$paper->test_id;
+               //http://162.144.38.91/~mmyvvdde/main/examcenter/paper/1050.pdf
+              $pdf = 'http://162.144.38.91/~mmyvvdde/main/examcenter/paper/'.$test_id.'.pdf';
               
               
 
@@ -150,7 +177,7 @@ curl_close($ch);
 // Check the response code
 if($responseCode == 200){
     ?>
-     <a href="<?php echo 'http://162.144.38.91/~mmyvvdde/main/examcenter/paper/'.$paper->test_id.'.pdf'?>">Available</a>
+     <a href="<?php echo 'http://162.144.38.91/~mmyvvdde/main/examcenter/paper/'.$test_id.'.pdf'?>">Available</a>
      <?php
 }else{
     echo "Not Available";
