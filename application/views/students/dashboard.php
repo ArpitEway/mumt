@@ -229,6 +229,7 @@ $studentData = $this->Common_model->getRecordById('student','student_id',$this->
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
 <input type="hidden" name="course"  id="course_group_id_both" value="<?=$studentData->course_group_id ?>">
 <input type="hidden" name="class_id" id="class_id" value="<?=$studentData->class_id ?>">
+<input type="hidden" name="mode" id="mode" value="<?=$studentData->university_mode ?>">
 				
 <div class="notification"> 
 	<ul>
@@ -255,6 +256,7 @@ $studentData = $this->Common_model->getRecordById('student','student_id',$this->
 $("#getTimeTable").on('click', function(){
             var course = $("#course_group_id_both").val();
             var class_id = $("#class_id").val();
+            var mode = $("#mode").val();
        
             var csrfName = $('.csrfname').attr('name');
             var csrfHash = $('.csrfname').val(); 
@@ -263,7 +265,7 @@ $("#getTimeTable").on('click', function(){
                 method: "POST",
                 url: '<?php echo site_url('center/center/getExamTimeTable'); ?>',
                
-                data: {class_id : class_id,course : course,[csrfName]:csrfHash },
+                data: {class_id : class_id,course : course,mode:mode,[csrfName]:csrfHash },
             })
             .done(function( msg ) {
                 $('#myLoader').hide();
