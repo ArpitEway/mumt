@@ -1232,7 +1232,7 @@ class Common_Model extends CI_Model{
         }
 		// $this->db->join('group_paper','paper_master.id=group_paper.paper_id');
 		$this->db->where($where); 
-		if($class_check->class_group == 'Y' &&  $class_check->mode!='Semester'  || (in_array($session[1],array(2021,2022)) && $class_id == 101) ){
+		if($class_check->class_group == 'Y' &&  $class_check->mode!='Semester'  || (in_array($session[1],array(2021,2022)) && ($class_id == 101 || $class_id == 102)) ){
 		$this->db->where('old_result_data.sub_group_id',1);
 		}
 		$query = $this->db->get();
