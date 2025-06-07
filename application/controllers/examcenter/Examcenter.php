@@ -115,6 +115,7 @@ class Examcenter extends CI_Controller {
 			$this->db->select('exam_date');
 			$this->db->from('paper_master');
 			$this->db->where('exam_date !=', '0000-00-00');
+			$this->db->where('exam_date>=',"2025-06-07");	
 			$this->db->group_by('exam_date');
 			$this->db->order_by('exam_date', 'asc');
 			$examDate = $this->db->get()->result_array();
@@ -123,6 +124,7 @@ class Examcenter extends CI_Controller {
 			$this->db->select('pvt_exam_date as exam_date');
 			$this->db->from('paper_master');
 			$this->db->where('pvt_exam_date !=', '0000-00-00');
+			$this->db->where('pvt_exam_date>=',"2025-06-07");	
 			$this->db->group_by('pvt_exam_date');
 			$this->db->order_by('pvt_exam_date', 'asc');
 			$pvtexamDate = $this->db->get()->result_array();
