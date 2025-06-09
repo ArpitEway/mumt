@@ -94,7 +94,7 @@
                     [csrfName]:csrfHash
                 }
             $.ajax({
-                url:site_url+'<?= ($this->session->account_type == 'Admins')?'Examcenter':$this->session->account_type; ?>/get_search_backlog_student_attendance_sheet',
+                url:site_url+'<?= ($this->session->account_type == 'Admins')?$this->session->account_type:'Examcenter'; ?>/get_search_backlog_student_attendance_sheet',
                 type:'post',
                 
                 data: data,
