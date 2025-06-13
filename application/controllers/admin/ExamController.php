@@ -1493,8 +1493,11 @@ class ExamController extends CI_Controller {
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('*');
 			$this->db->from('exam_center');
-			$this->db->where_in('examcentercode',array('MDE143','MDE163','MDE165'));
+
+			// $this->db->where_in('examcentercode',array('MDE143','MDE163','MDE165'));
+
 			// $this->db->where('examcentercode','MDE165');
+
 			$this->db->order_by('examcentercode', "asc");
 			$data['exam_centers'] = $this->db->get()->result();
 			$this->db->select('*');
@@ -1505,7 +1508,9 @@ class ExamController extends CI_Controller {
 			// $this->db->where_not_in('class_id',array(216,218,230,232,234,236,238,240,242,244,246,248,250,252,254,278,282,305,102,105,108,111,117,120,126,129,132,135,284,286,288,290,292,294,296,298,311));
 			
 			// $this->db->where_in('class_id',array(217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253));
+
 			//  $this->db->where_in('class_id',array(102,105,108,111,117,120,126,129,132,135,284,286,288,290,292,294,296,298,311));
+
 			$this->db->where_in('class_id',array(103,106,109,112,118,121,127,130,133,136));
  
 			// $this->db->where('exam_date!=',"");
@@ -1573,6 +1578,7 @@ class ExamController extends CI_Controller {
 		// $this->db->where_not_in('class_id',array(216,218,230,232,234,236,238,240,242,244,246,248,250,252,254,278,282,305,102,105,108,111,117,120,126,129,132,135,284,286,288,290,292,294,296,298,311));
 
 		//  $this->db->where_in('class_id',array(102,105,108,111,117,120,126,129,132,135,284,286,288,290,292,294,296,298,311));
+
 		$this->db->where_in('class_id',array(103,106,109,112,118,121,127,130,133,136));
  
 		$query = $this->db->query($sql);
@@ -1766,133 +1772,134 @@ class ExamController extends CI_Controller {
 	}
 
 		//Date Wise Paper Count by All & Unique category
-	public function date_wise_paper_calculation(){
-		if(!$this->session->has_userdata('adminData')){
-			redirect(base_url());
-			exit;
-		}else
-		{
-			$titleData = array('title' => 'Paper Count By Date'); 
-			$this->load->view('header',$titleData);
-			$data['name_csrf'] = $this->security->get_csrf_token_name();
-			$data['hash_csrf'] = $this->security->get_csrf_hash();
-			
-			$this->db->select('exam_date');
-			$this->db->from('paper_master');
-			// $this->db->where('exam_date!=',"");
-			$this->db->where('exam_date!=',"0000-00-00");	
-			// $this->db->where('exam_date>=',"2024-06-28");	
-			//$this->db->where_not_in('course_group_id',array('75','76','77'));
-			$this->db->group_by('exam_date');
-			$this->db->order_by('exam_date', "asc");
-			$examDate = $this->db->get()->result_array();
-
-			$this->db->select('exam_date as exam_date');
-			$this->db->from('paper_master');
-			$this->db->where('exam_date !=', '0000-00-00');
-			$this->db->group_by('exam_date');
-			$this->db->order_by('exam_date', 'asc');
-			$pvtexamDate = $this->db->get()->result_array();
-			
-			// Merge and sort all exam dates
-				$mergedDates = array_merge($examDate, $pvtexamDate);
-		
-				// Remove duplicates and sort by date
-				$uniqueDates = array_map("unserialize", array_unique(array_map("serialize", $mergedDates)));
-				usort($uniqueDates, function($a, $b) {
-					return strtotime($a['exam_date']) - strtotime($b['exam_date']);
-				});
-					// print_r($uniqueDates); die;
-				// Prepare the final array with formatted dates
-				$uniqueDates = array_map(function($date) {
-					return date("d-m-Y", strtotime($date['exam_date']));
-				}, $uniqueDates);
-
-				// Assign to data array
-
-			$data['examDate'] = $uniqueDates;
-
-
-			$this->load->view('admin/exam_center/date_wise_paper_calculation',$data);
-			$this->load->view('footer');
-		}
-	}
-
-	public function get_date_wise_paper_calculation(){
-			$classIdsRegOnly = array(104, 107, 134);
-		$dates = array("19-06-2025","20-06-2025","21-06-2025","23-06-2025","24-06-2025");
-		$data['category']=$exam_center = $this->input->post('category');
-		$data['exam_date']=$exam_date = $this->input->post('exam_date');
-		$data['shift']=$shift = $this->input->post('shift');
-		$this->db->select('*');
-		$this->db->from('exam_center');
-		
-		$this->db->where('id',$exam_center);	
-		$data['exam_centers'] = $this->db->get()->result();
-
+	    public function date_wise_paper_calculation(){
+        if(!$this->session->has_userdata('adminData')){
+            redirect(base_url());
+            exit;
+        }else
+        {
+            $titleData = array('title' => 'Paper Count By Date');
+            $this->load->view('header',$titleData);
+            $data['name_csrf'] = $this->security->get_csrf_token_name();
+            $data['hash_csrf'] = $this->security->get_csrf_hash();
+           
+            $this->db->select('exam_date');
+            $this->db->from('paper_master');
+            // $this->db->where('exam_date!=',"");
+            $this->db->where('exam_date!=',"0000-00-00");  
+            // $this->db->where('exam_date>=',"2024-06-28");    
+            //$this->db->where_not_in('course_group_id',array('75','76','77'));
+            $this->db->group_by('exam_date');
+            $this->db->order_by('exam_date', "asc");
+            $examDate = $this->db->get()->result_array();
+ 
+            $this->db->select('pvt_exam_date as exam_date');
+            $this->db->from('paper_master');
+            $this->db->where('pvt_exam_date !=', '0000-00-00');
+            $this->db->group_by('pvt_exam_date');
+            $this->db->order_by('pvt_exam_date', 'asc');
+            $pvtexamDate = $this->db->get()->result_array();
+           
+            // Merge and sort all exam dates
+                $mergedDates = array_merge($examDate, $pvtexamDate);
+       
+                // Remove duplicates and sort by date
+                $uniqueDates = array_map("unserialize", array_unique(array_map("serialize", $mergedDates)));
+                usort($uniqueDates, function($a, $b) {
+                    return strtotime($a['exam_date']) - strtotime($b['exam_date']);
+                });
+                    // print_r($uniqueDates); die;
+                // Prepare the final array with formatted dates
+                $uniqueDates = array_map(function($date) {
+                    return date("d-m-Y", strtotime($date['exam_date']));
+                }, $uniqueDates);
+ 
+                // Assign to data array
+ 
+            $data['examDate'] = $uniqueDates;
+ 
+ 
+            $this->load->view('admin/exam_center/date_wise_paper_calculation',$data);
+            $this->load->view('footer');
+        }
+    }
+ 
+    public function get_date_wise_paper_calculation(){
+            $classIdsRegOnly = array(104, 107, 134);
+        $dates = array("19-06-2025","20-06-2025","21-06-2025","23-06-2025","24-06-2025");
+        $data['category']=$exam_center = $this->input->post('category');
+        $data['exam_date']=$exam_date = $this->input->post('exam_date');
+        $data['shift']=$shift = $this->input->post('shift');
+        $this->db->select('*');
+        $this->db->from('exam_center');
+       
+        $this->db->where('id',$exam_center);    
+        $data['exam_centers'] = $this->db->get()->result();
+ 
 /*
-		$this->db->select('DISTINCT(paper_master.id),exam_date,exam_shift,exam_day,paper_master.paper_code,paper_master.paper_name,paper_master.course_group_id,paper_master.class_id');
-		$this->db->from('paper_master');
-		$this->db->join('new_exam_form_report', 'new_exam_form_report.paper_id = paper_master.id');
-		$this->db->join('student_report', 'student_report.student_id = new_exam_form_report.student_id');
-		$this->db->where('student_report.new_exam_form!=','D' );
-		$this->db->where('paper_master.exam_date!=',"");
-		if($exam_date)	{
-			$edate=date("Y-m-d", strtotime($exam_date));
-			$this->db->where('paper_master.exam_date',$edate);
-		}
-			
-		if($shift)	
-			$this->db->where('paper_master.exam_shift',$shift);
-		$this->db->where('student_report.exam_center_id', $exam_center );
-		$this->db->group_by('paper_master.exam_date');
-
-		
-		//$this->db->order_by('paper_master.exam_date');
-		$data['papers'] = $this->db->get()->result();
-		echo $this->db->last_query();die; */
-
-		$where="";
-		//if($exam_center!='All')
-		//	$where.="AND `student`.`exam_center_id` = '".$exam_center."'";
-		if($exam_date!='All')	{
-			$edate=date("Y-m-d", strtotime($exam_date));
-			if(in_array($exam_date, $dates)){
-				$where.="AND paper_master.exam_date = '".$edate."'";	
-			}else{
-				$where.="AND paper_master.exam_date = '".$edate."'";
-			}
-			
-		}
-		if($shift!='All'){
-			if(in_array($exam_date, $dates)){
-				$where.="AND paper_master.exam_shift = '".$shift."'";
-				$where.="   GROUP BY `paper_master`.`exam_date`";
-				
-			}else{
-				$where.="AND paper_master.exam_shift = '".$shift."'";
-				$where.="   GROUP BY `paper_master`.`exam_date`";
-			}
-		}
-
-		
-		if(in_array($exam_date, $dates)){
-			$data['exam_type'] = 'PVT';
-		 $sql="SELECT DISTINCT(paper_master.id), `exam_date`, `exam_shift`, `exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student` ON `student`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = 'theory'  AND paper_master.exam_date!='0000-00-00'  AND student.class_id IN (104, 107, 134) AND student.university_mode = 'PVT'
-          ".$where; 
-		}else{
-			$data['exam_type'] = 'REG';
-			 $sql="SELECT DISTINCT(paper_master.id), `exam_date`, `exam_shift`, `exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student` ON `student`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = 'theory'  AND paper_master.exam_date!='0000-00-00'  AND (
+        $this->db->select('DISTINCT(paper_master.id),exam_date,exam_shift,exam_day,paper_master.paper_code,paper_master.paper_name,paper_master.course_group_id,paper_master.class_id');
+        $this->db->from('paper_master');
+        $this->db->join('new_exam_form_report', 'new_exam_form_report.paper_id = paper_master.id');
+        $this->db->join('student_report', 'student_report.student_id = new_exam_form_report.student_id');
+        $this->db->where('student_report.new_exam_form!=','D' );
+        $this->db->where('paper_master.exam_date!=',"");
+        if($exam_date)  {
+            $edate=date("Y-m-d", strtotime($exam_date));
+            $this->db->where('paper_master.exam_date',$edate);
+        }
+           
+        if($shift)  
+            $this->db->where('paper_master.exam_shift',$shift);
+        $this->db->where('student_report.exam_center_id', $exam_center );
+        $this->db->group_by('paper_master.exam_date');
+ 
+       
+        //$this->db->order_by('paper_master.exam_date');
+        $data['papers'] = $this->db->get()->result();
+        echo $this->db->last_query();die; */
+ 
+        $where="";
+        //if($exam_center!='All')
+        //  $where.="AND `student`.`exam_center_id` = '".$exam_center."'";
+        if($exam_date!='All')   {
+            $edate=date("Y-m-d", strtotime($exam_date));
+            if(in_array($exam_date, $dates)){
+                $where.="AND paper_master.pvt_exam_date = '".$edate."'";    
+            }else{
+                $where.="AND paper_master.exam_date = '".$edate."'";
+            }
+           
+        }
+        if($shift!='All'){
+            if(in_array($exam_date, $dates)){
+                $where.="AND paper_master.pvt_exam_shift = '".$shift."'";
+                $where.="   GROUP BY `paper_master`.`pvt_exam_date`";
+               
+            }else{
+                $where.="AND paper_master.exam_shift = '".$shift."'";
+                $where.="   GROUP BY `paper_master`.`exam_date`";
+            }
+        }
+ 
+       
+        if(in_array($exam_date, $dates)){
+            $data['exam_type'] = 'PVT';
+         $sql="SELECT DISTINCT(paper_master.id), `exam_date`, `exam_shift`, `exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student` ON `student`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = 'theory'  AND paper_master.exam_date!='0000-00-00'  AND student.class_id IN (104, 107, 134) AND student.university_mode = 'PVT'
+          ".$where;
+        }else{
+            $data['exam_type'] = 'REG';
+             $sql="SELECT DISTINCT(paper_master.id), `exam_date`, `exam_shift`, `exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student` ON `student`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = 'theory'  AND paper_master.exam_date!='0000-00-00'  AND (
               (student.class_id IN (104, 107, 134) AND student.university_mode = 'REG') OR
               (student.class_id NOT IN (104, 107, 134) AND student.university_mode IN ('REG', 'PVT'))
-          )".$where; 
-		}
-		$query = $this->db->query($sql);
+          )".$where;
+        }
+        $query = $this->db->query($sql);
         $data['papers'] = $query->result();
-		// echo $this->db->last_query(); die;
-		// AND `paper_master`.`exam_date` != ''
-		echo $this->load->view('admin/exam_center/get_date_wise_paper_calculation',$data, TRUE);
-	}
+        // echo $this->db->last_query(); die;
+        // AND `paper_master`.`exam_date` != ''
+        echo $this->load->view('admin/exam_center/get_date_wise_paper_calculation',$data, TRUE);
+    }
+ 
 
 	public function regular_exam_controller($method,$admin_id)
 	{
