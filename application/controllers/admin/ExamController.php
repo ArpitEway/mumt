@@ -1508,10 +1508,10 @@ class ExamController extends CI_Controller {
 			//  $this->db->where_in('class_id',array(102,105,108,111,117,120,126,129,132,135,284,286,288,290,292,294,296,298,311));
 
 			// $this->db->where('exam_date!=',"");
-			$this->db->where('pvt_exam_date!=',"0000-00-00");
+			$this->db->where('exam_date!=',"0000-00-00");
 			//$this->db->where('exam_date>=',"2023-07-31");		
-			$this->db->group_by('pvt_exam_date');
-			$this->db->order_by('pvt_exam_date', "asc");
+			$this->db->group_by('exam_date');
+			$this->db->order_by('exam_date', "asc");
 			$data['examDate'] = $this->db->get()->result();
 
 			$this->load->view('admin/exam_center/exam_center_wise_paper',$data);
@@ -1556,14 +1556,14 @@ class ExamController extends CI_Controller {
 			$where.=" AND `student`.`exam_center_id` = '".$exam_center."' ";
 		if($exam_date!='All')	{
 			$edate=date("Y-m-d", strtotime($exam_date));
-			$where.=" AND paper_master.pvt_exam_date = '".$edate."' ";
+			$where.=" AND paper_master.exam_date = '".$edate."' ";
 		}
 		if($shift!='All')
-		$where.="AND paper_master.pvt_exam_shift = '".$shift."'";
+		$where.="AND paper_master.exam_shift = '".$shift."'";
 
-		$where.="   GROUP BY `paper_master`.`pvt_exam_date`";
+		$where.="   GROUP BY `paper_master`.`exam_date`";
 
-		$sql="SELECT DISTINCT(paper_master.id), `pvt_exam_date`, `pvt_exam_shift`, `pvt_exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student` ON `student`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = 'theory'  AND paper_master.pvt_exam_date!='0000-00-00'".$where; 
+		$sql="SELECT DISTINCT(paper_master.id), `exam_date`, `exam_shift`, `exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student` ON `student`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = 'theory'  AND paper_master.exam_date!='0000-00-00'".$where; 
 
 		//AND paper_master.exam_date>='2023-07-31' AND `paper_master`.`exam_date` != ''
 
@@ -1785,11 +1785,11 @@ class ExamController extends CI_Controller {
 			$this->db->order_by('exam_date', "asc");
 			$examDate = $this->db->get()->result_array();
 
-			$this->db->select('pvt_exam_date as exam_date');
+			$this->db->select('exam_date as exam_date');
 			$this->db->from('paper_master');
-			$this->db->where('pvt_exam_date !=', '0000-00-00');
-			$this->db->group_by('pvt_exam_date');
-			$this->db->order_by('pvt_exam_date', 'asc');
+			$this->db->where('exam_date !=', '0000-00-00');
+			$this->db->group_by('exam_date');
+			$this->db->order_by('exam_date', 'asc');
 			$pvtexamDate = $this->db->get()->result_array();
 			
 			// Merge and sort all exam dates
@@ -1856,16 +1856,16 @@ class ExamController extends CI_Controller {
 		if($exam_date!='All')	{
 			$edate=date("Y-m-d", strtotime($exam_date));
 			if(in_array($exam_date, $dates)){
-				$where.="AND paper_master.pvt_exam_date = '".$edate."'";	
+				$where.="AND paper_master.exam_date = '".$edate."'";	
 			}else{
-				$where.="AND paper_master.pvt_exam_date = '".$edate."'";
+				$where.="AND paper_master.exam_date = '".$edate."'";
 			}
 			
 		}
 		if($shift!='All'){
 			if(in_array($exam_date, $dates)){
-				$where.="AND paper_master.pvt_exam_shift = '".$shift."'";
-				$where.="   GROUP BY `paper_master`.`pvt_exam_date`";
+				$where.="AND paper_master.exam_shift = '".$shift."'";
+				$where.="   GROUP BY `paper_master`.`exam_date`";
 				
 			}else{
 				$where.="AND paper_master.exam_shift = '".$shift."'";
