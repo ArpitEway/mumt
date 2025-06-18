@@ -468,8 +468,7 @@
                         <?php if ($classData->last_class=="L"){ ?>
                         <th style="text-align:left;">Percentage</th>
                         <th style="text-align:left;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo (!$isOneClass)? round(($gtot_obtain_marks/$gtot_total_marks)*100,2) :
-                           round(($tot_std_marks/$tot_marks)*100,2)
-                        ; ?>%</th>
+                           round(($tot_std_marks/$tot_marks)*100,2); ?>%</th>
                       <?php }else{ ?>
                         <td></td>
                         <td></td>
