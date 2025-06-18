@@ -552,7 +552,7 @@ class Gradesheet_model_pg extends CI_Model
 			
 			echo '<tr style="padding:4px;font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="center">';
 			if($this->classData->id==267){
-				echo '<td style="margin-top:2px;" align="center"><strong>'.$result['utd_paper_code'].'</strong></td>';
+				echo '<td style="margin-top:2px;" align="center"><strong>'.$result['paper_code_utd'].'</strong></td>';
 			}else{
 				echo '<td style="margin-top:2px;" align="center"><strong>'.$key.'</strong></td>';
 			}
