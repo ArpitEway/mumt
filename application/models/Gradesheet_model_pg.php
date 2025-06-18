@@ -302,15 +302,16 @@ class Gradesheet_model_pg extends CI_Model
 
 
 	private function paper_code()
-	{
-		$this->result_array[$this->paper['paper_code']] = array();
-		array_push($this->result_array[$this->paper['paper_code']], $this->paper["paper_code"]);
+	{ 
+			$this->result_array[$this->paper['paper_code']] = array();
+			array_push($this->result_array[$this->paper['paper_code']], $this->paper["paper_code"]);
 	}
 
 	private function paper_name()
 	{
 		$this->result_array[$this->paper['paper_code']]["type"] = $this->paper["type"];
 		$this->result_array[$this->paper['paper_code']]["paper_name"] = $this->paper["paper_name"];
+		$this->result_array[$this->paper['paper_code']]["paper_code_utd"] = $this->paper["paper_code_utd"];
 	}
 
 	private function credit()
@@ -382,7 +383,7 @@ class Gradesheet_model_pg extends CI_Model
 		$where = 'min_marks <= '.$persent.' and  max_marks >= '.$persent.'';
 		$gradeData = $this->Common_model->getRecordByWhere('letter_grade_pg',$where);
 		if ('F'==$gradeData[0]->letter_grade || 'ABS' ==$gradeData[0]->letter_grade) {
-			array_push($this->paper_array, $this->paper["paper_code"]);
+				array_push($this->paper_array, $this->paper["paper_code"]);
 			$this->fail_count++;
 			$this->fail_obt_marks += $check_fail_marks;
 			$this->fail_tot_marks += $check_fail_tot_marks;
@@ -547,9 +548,6 @@ class Gradesheet_model_pg extends CI_Model
 			 $require_grace_marks = $this->fail_min_marks-$this->fail_obt_marks;
 		}
 		foreach ($this->result_array as $key => $result) {
-			
-			
-			
 			echo '<tr style="padding:4px;font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="center">';
 			if($this->classData->id==267){
 				echo '<td style="margin-top:2px;" align="center"><strong>'.$result['paper_code_utd'].'</strong></td>';
