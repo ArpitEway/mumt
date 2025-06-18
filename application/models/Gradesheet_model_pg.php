@@ -551,7 +551,11 @@ class Gradesheet_model_pg extends CI_Model
 			
 			
 			echo '<tr style="padding:4px;font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="center">';
-			echo '<td style="margin-top:2px;" align="center"><strong>'.$key.'</strong></td>';
+			if($this->classData->id==267){
+				echo '<td style="margin-top:2px;" align="center"><strong>'.$result['utd_paper_code'].'</strong></td>';
+			}else{
+				echo '<td style="margin-top:2px;" align="center"><strong>'.$key.'</strong></td>';
+			}
 			echo "<td align='left'><strong>".$result['paper_name']."</strong></td>";
 			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				$this->check_grace_marks = true;

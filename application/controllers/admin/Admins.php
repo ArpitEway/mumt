@@ -3537,13 +3537,17 @@ public function update_exam_datewise_permission(){
 			{
                 $this->load->model('GradeSheet_old_model_pg');
                 $this->load->model('Gradesheet_model_pg');
-                $this->load->view('admin/student_marksheet_grade_pg',$data);
+				if($class_id==267){
+					$this->load->view('admin/student_marksheet_grade_bped',$data);
+				}else{
+					$this->load->view('admin/student_marksheet_grade_pg',$data);
+				}
 			}else{
 				$this->load->model('Gradesheet_model');
                 if($department !=""){
                     $this->load->view('admin/student_marksheet_grade_dept',$data);
                 }else{
-                    $this->load->view('admin/student_marksheet_grade1',$data);
+				$this->load->view('admin/student_marksheet_grade1',$data);
                  }
 				
 			}
