@@ -149,7 +149,7 @@
                     $class_order = $cls->class_order;
                    }
                   if($cls->id < $student['class_id']){
-                    $gradeData   = $this->GradeSheet_old_model_pg->view_old_results($student['student_id'],$student['course_group_id'],$cls->id,$student['university_mode']);
+                    $gradeData   = $this->GradeSheet_old_model_pg->view_old_results($student['student_id'],$student['course_group_id'],$cls->id,$student['university_mode'],$student['id']);
 					// print_r($gradeData);die;
                     $prev_tot_crdit += $gradeData['tot_credit'];
                     $prev_tot_grade += $gradeData['total_grade_point'];
