@@ -94,7 +94,9 @@ foreach($papers as $pap)
             </td>
          <!--<td>Date</td>
             <td>Day</td>-->
-            <td><span style="font-weight: bold">Student Count</span></td>
+            <td> <div align="center"><span style="font-weight: bold">Main</span></div></td>
+            <td> <div align="center"><span style="font-weight: bold">Backlog</span></div></td>
+            <td> <div align="center"><span style="font-weight: bold">Total</span></div></td>
          </tr>
          <?php
       $i=1;
@@ -145,7 +147,9 @@ foreach($papers as $pap)
         
          $backlog_query = $this->db->query($sql_backlog);
          $backlog_count = $backlog_query->result_array();
-         $student_count = $count[0]->cnt + $backlog_count[0]['cnt'];
+         $main_count = $count[0]->cnt;
+         $backlog_countt = $backlog_count[0]['cnt'];
+         $student_count = $main_count + $backlog_countt;
 
 
         
@@ -174,10 +178,12 @@ foreach($papers as $pap)
                   <div align="left"><?= $paper->paper_name?></div>
                </td>
                <td><div align="left"><?= ($exam_type == 'PVT')?$paper->pvt_exam_shift:$paper->exam_shift?></div></td>
+               <td style="text-align:center;"><?php echo $main_count; ?> </td>
+               <td style="text-align:center;"><?php echo $backlog_countt; ?> </td>
                <td style="text-align:center;"><?php echo $student_count; ?> </td>
             </tr>
             <?php 
-               $i++;  $total+= $student_count;
+            $i++;  $total+= $student_count;
                }  
          } ?>
       </tbody>
