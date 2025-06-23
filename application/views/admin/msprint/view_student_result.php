@@ -317,7 +317,8 @@
                 <div class="col-7 mt-3">
                     
                 <input type="checkbox" class="all_checked_permitt" name="remark_date" value='Duplicate'> Duplicate
-                <input type="checkbox" class="all_checked_permitt" name="remark_date" value='After Correction'> After Correction
+                <input type="checkbox" class="all_checked_permitt" name="remark_date" value='After Correction'> After Correction<br>
+                <input type="checkbox" class="all_checked_permitt" name="remark_date" value='Marks Change After Revaluation'> Marks Change After Revaluation
                 <div class="text-danger" id="date_error"></div>
                 <input type="hidden" value="" name="record_id" id="record_id">
               

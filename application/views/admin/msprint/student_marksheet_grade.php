@@ -67,6 +67,12 @@
                 <?php  $course_name = explode('(',$exam_data->course_name);?>
                   <strong style="font-size: 18px;"><?php echo  ($isOneClass) ? $course_name[0] .' '."(One Year Course)" :$course_name[0] .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)); ?> <?php echo ' Examination '.$exam_data->exam_year;
                   ?></strong>
+                   <?php if(isset($exam_data->remark_date) && $exam_data->remark_date == 'Marks Change After Revaluation'){
+                    ?>
+                    <br>
+                    <span>(Revised After Revaluation)</span>
+                    <?php
+                  } ?>
                 </center>
               </td>
             </tr>
@@ -317,7 +323,7 @@
                     </td>
                   </tr>
                   <tr><td><div align="left" class="margin-top-marksheet" style="padding-left:5px;"> MS No. <?php echo $exam_data->marksheet_no; ?> </div></td></tr>
-                  <tr><td> <?=$exam_data->remark_date?></td></tr>
+                  <tr><td> <?= ($exam_data->remark_date != '')?'*'.$exam_data->remark_date:''?></td></tr>
               </td>
             </tr>
           </tbody>

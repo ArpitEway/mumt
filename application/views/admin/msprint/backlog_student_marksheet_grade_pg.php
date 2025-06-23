@@ -62,6 +62,12 @@
                   <strong style="font-size: 18px;">
                   <?php echo  ($isOneClass) ? $exam_data->course_name .' '."(One Year Course)" :$exam_data->course_name .' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)); ?> <?= ' Backlog Examination '.$exam_data->exam_year ?>
                  </strong>
+                  <?php if(isset($exam_data->remark_date) && $exam_data->remark_date == 'Marks Change After Revaluation'){
+                    ?>
+                    <br>
+                    <span>(Revised After Revaluation)</span>
+                    <?php
+                  } ?>
                 </center>
               </td>
             </tr>
@@ -236,7 +242,7 @@
                     </td>
                   </tr>
                   <tr><td><div align="left" class="margin-top-marksheet" > MS No. <?php echo $exam_data->marksheet_no; ?> </div></td></tr>
-                  <tr><td> <?=$exam_data->remark_date?></td></tr>
+                  <tr><td> <?= ($exam_data->remark_date != '')?'*'.$exam_data->remark_date:''?></td></tr>
               </td>
             </tr>
           </tbody>
