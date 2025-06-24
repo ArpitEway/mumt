@@ -138,7 +138,7 @@
 				}
                 echo "<tr><td>".$sno++."</td><td>".$studentDetail->center_name."  </td> <td>".$course_detail->course_code."</td><td>".$studentDetail->course_name."  </td> <td></td><td></td> <td></td><td></td>";
                 //<td>".$student['student_id']." </td>
-                echo "<td>".$session_data." </td><td>".$student['enrollment_no']." </td><td>".$student['roll_no']." </td><td>".$student['name']." </td>"."<td>".$gender." </td>"." <td>".$studentDetail->dob." </td><td>".$student['f_h_name']." </td><td>".$student['mother_name']." </td><td></td><td></td><td>".$old_data->exam_result." </td><td>".$exam_arr[1]." </td><td>".$exam_arr[0]." </td><td></td><td></td><td></td><td></td><td>".$class_name[0]."</td><td>".$mode."</td><td>".$old_data->total_marks."</td><td>".$old_data->obtain_marks."</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>";
+                echo "<td>".$session_data." </td><td>".$student['enrollment_no']." </td><td>".$student['roll_no']." </td><td>".$student['name']." </td>"."<td>".$gender." </td>"." <td>".$studentDetail->dob." </td><td>".$student['f_h_name']." </td><td>".$student['mother_name']." </td><td></td><td>O</td><td>".$old_data->exam_result." </td><td>".$exam_arr[1]." </td><td>".$exam_arr[0]." </td><td></td><td></td><td></td><td></td><td>".$class_name[0]."</td><td>".$mode."</td><td>".$old_data->total_marks."</td><td>".$old_data->obtain_marks."</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>";
                 ?>
                 
                 <td></td>
