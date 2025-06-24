@@ -176,7 +176,7 @@
 						<td><?php echo date("d-m-Y", strtotime(($student->mode == 'PVT' && in_array($student->class_id,$classIdsRegOnly))?$paper->pvt_exam_date:$paper->exam_date)); ?></td>
 					
 					<td><?php
-						$class_ids = array(104,101,107,110,116,119,273,125,128,131,134,162,163,164,165,283,285,287,289,310,291,293,295,274,297,168,169,170,171,214,106,103,109,112,118,121,127,130,133,136);
+						$class_ids = array(104,101,107,110,116,119,273,125,128,131,134,162,163,164,165,283,285,287,289,310,291,293,295,274,297,168,169,170,171,214,106,103,109,112,118,121,127,130,133,136,264);
 						if($student->mode == 'PVT' && in_array($student->class_id,$classIdsRegOnly)){
 							if($paper->pvt_exam_shift=='Afternoon' && in_array($student->class_id,$class_ids)){
 									echo '3:00 PM To 6:00 PM';		
