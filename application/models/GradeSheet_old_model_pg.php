@@ -738,7 +738,7 @@ class GradeSheet_old_model_pg extends CI_Model
         foreach ($this->result_array as $key => $result) {
 
             if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
-				echo 'ss';die;
+				
 				$this->check_grace_marks = true;
 				$this->obt_tot_credit += $result['credit'];
 				$req_marks = $result['min_marks']-$result['obt_marks'];
