@@ -8,9 +8,10 @@
     		<th>ORG_NAME</th>
 			<th>ACADEMIC_COURSE_ID</th>
 			<th>COURSE_NAME</th>
+            <th>BATCH</th>
             <th>COURSE_NAME_L</th>
-			<th>STREAM_L</th>
             <th>STREAM</th>
+			<th>STREAM_L</th>
 			<th>SESSION</th>
 			<th>REGN_NO</th>
 			<th>RROLL</th>
@@ -42,10 +43,11 @@
             <th>CGPA</th>
 			<th>REMARKS</th>
             <th>SGPA</th>
+            <th>ABC_ACCOUNT_ID</th>
+            <th>TERM_TYPE</th>
+            <th>TOT_GRADE</th>
             <th>GRAND_TOT_GRADE</th>
-			<th>ABC_ACCOUNT_ID</th>
-			<th>TERM_TYPE</th>
-			<th>TOT_GRADE</th>
+			
 
 	<?php		
 		for($sub=1;$sub<=12;$sub++){
@@ -134,14 +136,14 @@
 				elseif($studentDetail->gender=='Female'){
 					$gender='F';
 				}
-                echo "<tr><td>".$sno++."</td><td>".$studentDetail->center_name."  </td> <td>".$course_detail->course_code."</td><td>".$studentDetail->course_name."  </td> <td></td> <td></td><td></td>";
+                echo "<tr><td>".$sno++."</td><td>".$studentDetail->center_name."  </td> <td>".$course_detail->course_code."</td><td>".$studentDetail->course_name."  </td> <td></td><td></td> <td></td><td></td>";
                 //<td>".$student['student_id']." </td>
                 echo "<td>".$session_data." </td><td>".$student['enrollment_no']." </td><td>".$student['roll_no']." </td><td>".$student['name']." </td>"."<td>".$gender." </td>"." <td>".$studentDetail->dob." </td><td>".$student['f_h_name']." </td><td>".$student['mother_name']." </td><td></td><td></td><td>".$old_data->exam_result." </td><td>".$exam_arr[1]." </td><td>".$exam_arr[0]." </td><td></td><td></td><td></td><td></td><td>".$class_name[0]."</td><td>".$mode."</td><td>".$old_data->total_marks."</td><td>".$old_data->obtain_marks."</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>";
                 ?>
                 
                 <td></td>
                 <td></td>
-                <td></td>
+                
 				<td><?=$studentDetail->abc_id?></td>
                 <?php
                $old_papers = $this->Common_model->get_all_old_papers($student['student_id'],$student['class_id'],$old_data->id);
@@ -151,7 +153,7 @@
 		        }
                 echo "<td>SEMESTER</td>";
                
-                echo " <td></td> ";
+                echo " <td></td> <td></td>";
                 $sub_total =0;
                 $grace ="";
                 foreach($old_papers as $old_paper){
