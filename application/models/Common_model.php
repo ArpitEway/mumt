@@ -1223,7 +1223,7 @@ class Common_Model extends CI_Model{
 			'paper_master.class_id' => $class_id,
 			
 			);
-		$this->db->select('old_result_data.*,paper_master.paper_name,paper_master.paper_code,paper_master.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks');
+		$this->db->select('old_result_data.*,paper_master.paper_code_utd,paper_master.paper_name,paper_master.paper_code,paper_master.group_paper_name,paper_master.type,paper_master.max_theory_marks,paper_master.min_theory_marks,paper_master.max_internal_marks,paper_master.min_internal_marks,paper_master.private_max_theory_marks,paper_master.private_min_theory_marks');
 		$this->db->from('paper_master');
 		$this->db->order_by('paper_no','asc');
 		$this->db->join('old_result_data','old_result_data.paper_code = paper_master.paper_code');

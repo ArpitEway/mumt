@@ -466,6 +466,7 @@ class GradeSheet_old_model_pg extends CI_Model
 	{
 		$this->result_array[$this->paper['paper_code']]["type"] = $this->paper["type"];
 		$this->result_array[$this->paper['paper_code']]["paper_name"] = $this->paper["paper_name"];
+		$this->result_array[$this->paper['paper_code']]["paper_code_utd"] = $this->paper["paper_code_utd"];
 	}
 
 	private function credit()
@@ -524,7 +525,7 @@ class GradeSheet_old_model_pg extends CI_Model
 		$where = 'min_marks <= '.$persent.' and  max_marks >= '.$persent.'';
 		$gradeData = $this->Common_model->getRecordByWhere('letter_grade_pg',$where);
 		if ('F'==$gradeData[0]->letter_grade || 'ABS' ==$gradeData[0]->letter_grade) {
-			array_push($this->paper_array, $this->paper["paper_code"]);
+			array_push($this->paper_array, ($this->classData->id==267)?$this->paper["paper_code_utd"]:$this->paper["paper_code"]);
 			$this->fail_count++;
 			$this->fail_obt_marks += $check_fail_marks;
 			$this->fail_tot_marks += $check_fail_tot_marks;
@@ -692,7 +693,11 @@ class GradeSheet_old_model_pg extends CI_Model
 			
 			
 			echo '<tr style="padding:4px;font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="center">';
-			echo '<td style="margin-top:2px;" align="center"><strong>'.$key.'</strong></td>';
+			if($this->classData->id==267){
+				echo '<td style="margin-top:2px;" align="center"><strong>'.$result['paper_code_utd'].'</strong></td>';
+			}else{
+				echo '<td style="margin-top:2px;" align="center"><strong>'.$key.'</strong></td>';
+			}
 			echo "<td align='left'><strong>".$result['paper_name']."</strong></td>";
 			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory' && $back =="") {
 				$this->check_grace_marks = true;

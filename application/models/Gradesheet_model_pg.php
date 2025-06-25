@@ -383,7 +383,11 @@ class Gradesheet_model_pg extends CI_Model
 		$where = 'min_marks <= '.$persent.' and  max_marks >= '.$persent.'';
 		$gradeData = $this->Common_model->getRecordByWhere('letter_grade_pg',$where);
 		if ('F'==$gradeData[0]->letter_grade || 'ABS' ==$gradeData[0]->letter_grade) {
+			if($this->classData->id == 267){
+				array_push($this->paper_array, $this->paper["paper_code_utd"]);
+			}else{
 				array_push($this->paper_array, $this->paper["paper_code"]);
+			}	
 			$this->fail_count++;
 			$this->fail_obt_marks += $check_fail_marks;
 			$this->fail_tot_marks += $check_fail_tot_marks;
@@ -496,7 +500,12 @@ class Gradesheet_model_pg extends CI_Model
 		foreach ($this->result_array as $key => $result) {
 			
 			echo "<tr>";
-			echo "<th>".$key."</th>";
+			if($this->classData->id==267){
+			echo 	"<th>".$result['paper_code_utd']."</th>";
+			}else{
+				echo "<th>".$key."</th>";
+			}
+			
 			echo "<th>".$result['paper_name']."</th>";
 			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory'&& !$this->withheld && !$this->withheld_practical && !$this->withheld_internal) {
 				$this->check_grace_marks = true;
