@@ -78,7 +78,7 @@
 			<div class="BoxC border- padding">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Attendance Sheet Examination June 2025
+						<h5>Attendance Sheet Examination <?= (in_array($student['class_id'],array(137,149,183,185,191,138,184,192,187,143,146,139,144,188,145,147,148,150,186,141,151,142,190)))?'July':'June'?> 2025
 							<?php
 							// if($student['course_group_id']==75 || $student['course_group_id']==76 ||$student['course_group_id']==77 ){
 							// 	if($student['class_id']==256 || $student['class_id']==258 ||  $student['class_id']==260 || $student['class_id']==262 )

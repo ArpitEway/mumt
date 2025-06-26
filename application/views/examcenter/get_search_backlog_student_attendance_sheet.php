@@ -77,7 +77,7 @@
 			<div class="BoxC border- padding">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>ATTENDANCE SHEET OF EXAM FOR ANNUAL/SEMESTER BACKLOG EXAMINATION OF June 2025</h5>
+						<h5>ATTENDANCE SHEET OF EXAM FOR ANNUAL/SEMESTER BACKLOG EXAMINATION OF <?= (in_array($student->class_id,array(137,149,183,185,191,138,184,192,187,143,146,139,144,188,145,147,148,150,186,141,151,142,190)))?'July':'June'?> 2025</h5>
 					</div>
 				</div>
 			</div>

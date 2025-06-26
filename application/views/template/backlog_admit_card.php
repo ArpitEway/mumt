@@ -42,7 +42,7 @@
 			<div class="BoxC border- padding mar-bot">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Schedule of Exam for Annual/Semester Backlog Examination of June 2025<?php 
+						<h5>Schedule of Exam for Annual/Semester Backlog Examination of <?= (in_array($student[0]->class_id,array(137,149,183,185,191,138,184,192,187,143,146,139,144,188,145,147,148,150,186,141,151,142,190)))?'July':'June'?> 2025<?php 
 						// echo (in_array($student[0]->class_id, array(300,301,255,257,259)))?'February':'January'?> 
 								<?php
 								/*

@@ -84,7 +84,7 @@
 						<!-- <h5>
 							ATTENDANCE SHEET OF CANCELLED EXAM FOR ANNUAL/SEMESTER EXAMINATION OF JANUARY 2024
 						</h5> -->
-						<h5>Attendance Sheet Examination June 2025
+						<h5>Attendance Sheet Examination <?= (in_array($student->class_id,array(137,149,183,185,191,138,184,192,187,143,146,139,144,188,145,147,148,150,186,141,151,142,190)))?'July':'June'?> 2025
 						</h5>
 					</div>
 				</div>
