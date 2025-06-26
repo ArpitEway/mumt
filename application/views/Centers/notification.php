@@ -6,7 +6,7 @@
 		<div class="content-head row mb-3 mt-5">
 			<div>
 				<ul>
-						<li style="color:red"><b>
+						<li style="color:red"><img src="<?=base_url('assets/images/center/new.gif')?>" alt=""><b>
 				<a  style="color:red" href="<?=base_url('assets/images/center/')?>Vedic Time Table-2025.pdf" download> शास्त्री-आचार्य टाइम टेबल - Click Here </a>
 				</b>
 				</li><br>
