@@ -1498,7 +1498,7 @@ class ExamController extends CI_Controller {
 
 			// $this->db->where('examcentercode','MDE165');
 
-			$this->db->where_in('examcentercode',array('MDE001','MDE004','MDE005','MDE006','MDE010','MDE015','MDE018','MDE022','MDE024','MDE028','MDE030','MDE031','MDE037','MDE038','MDE042','MDE043','MDE046','MDE047','MDE049','MDE054','MDE056','MDE075','MDE079','MDE085','MDE089','MDE090','MDE105','MDE113','MDE114','MDE119','MDE136','MDE137','MDE138','MDE140','MDE142','MDE143','MDE145','MDE153','MDE156','MDE160','MDE163','MDE165','MDE167'));
+			$this->db->where_not_in('examcentercode',array('MDE001','MDE004','MDE005','MDE006','MDE010','MDE015','MDE018','MDE022','MDE024','MDE028','MDE030','MDE031','MDE037','MDE038','MDE042','MDE043','MDE046','MDE047','MDE049','MDE054','MDE056','MDE075','MDE079','MDE085','MDE089','MDE090','MDE105','MDE113','MDE114','MDE119','MDE136','MDE137','MDE138','MDE140','MDE142','MDE143','MDE145','MDE153','MDE156','MDE160','MDE163','MDE165','MDE167'));
 
 			$this->db->order_by('examcentercode', "asc");
 			$data['exam_centers'] = $this->db->get()->result();
