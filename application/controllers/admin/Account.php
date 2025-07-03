@@ -1028,4 +1028,100 @@
 		echo json_encode($output);	
 	}
 
+	//Backlog Exam Fees Payment Verification
+    public function backlog_exam_form_payment_verification(){
+           
+        if($this->session->has_userdata('adminData')){
+            //$where = array("status" => "Pending");
+            //$centers = $this->Common_model->get_record_group_by_where('payment_complaint','center_id',$where);
+            $centers = $this->Common_model->getRecordByWhere('center',array('payment_gateway_permission'=>'N'));
+            $data = array('name_csrf' => $this->security->get_csrf_token_name(),
+                'hash_csrf' => $this->security->get_csrf_hash(),
+                'centers' =>$centers
+            );
+        //  print_r($centers);
+            $this->load->view('header',array('title' => 'Backlog Exam Form Payment Verification'));
+            $this->load->view('admin/account_section/backlog_exam_form_payment_verification',$data);
+            $this->load->view('footer');
+        }
+        else
+        {
+            redirect(base_url('admin/login'));
+        }
+    }
+ 
+    public function get_backlog_exam_form_payment_verification_student_list()
+    {
+        if ($this->input->method() == "post")
+        {
+            $course_group_id = 0;
+            $data = array();
+            $dt   = array();
+               
+            $center_id  = $this->input->post("center_id");
+            $centerData = $this->Common_model->getRecordById('center','id',$center_id);
+       
+           
+            // $this->db->limit(1);
+            $this->db->select('bs.student_id as student_id,s.name as name,s.f_h_name as fathername,s.course_name as course_name,bs.class_id,p.amount as amount,p.payment_date,p.txnId,p.payment_mode,p.receipt_number,p.id as payment_id');
+            $this->db->from('`backlog_student` as bs');
+            $this->db->join('`student` as s','s.student_id=bs.student_id');
+            $this->db->join('online_payment_transaction as p', 'p.student_id=bs.student_id and p.class_id=bs.class_id');
+            $this->db->where('p.payment','Y');
+            $this->db->where('bs.exam_form','N');
+            $this->db->where('p.fees_head','Backlog Exam Fees');
+            $this->db->where('bs.exam_year','June 2025');
+            $this->db->where('p.exam_session','June 2025');
+            $this->db->where('p.center_id',$center_id);
+           
+            $complaints = $this->db->get()->result();
+            // $this->Common_model->last_query();
+           
+            $data = array('complaints' => $complaints ,'name_csrf' => $this->security->get_csrf_token_name(),
+                'hash_csrf' => $this->security->get_csrf_hash(),
+                'centerData' => $centerData,
+            );
+ 
+           
+                $dt =  $this->load->view('admin/account_section/getBacklogExamFormPaymentVerificationStudentList',$data,true);
+                $status = true;
+           
+            echo json_encode(array(
+            "status" => $status,
+            "data" => $dt
+            ));
+        }
+    }
+
+    public function update_backlog_student_exam_form_payment_status(){
+        if ($this->input->method() == "post")
+        {  
+ 
+            $student_id  = $this->input->post("student_id");
+            $student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+           
+            $response = $this->Common_model->updateRecordByConditions('backlog_student',array('student_id'=> $student_id),array('exam_form'=>'Y'));
+ 
+            if($response){
+            echo json_encode(array("status" => 'true'));
+            }
+        }
+    }
+ 
+    public function update_backlog_student_online_payment_status(){
+        if ($this->input->method() == "post")
+        {  
+ 
+            $student_id  = $this->input->post("student_id");
+            $payment_id =$this->input->post("payment_id");
+            $student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+           
+            $response = $this->Common_model->updateRecordByConditions('online_payment_transaction',array('student_id'=> $student_id, 'id'=>$payment_id),array('payment'=>'N'));
+ 
+            if($response){
+            echo json_encode(array("status" => 'true'));
+            }
+        }
+    }
+
 }
