@@ -3941,6 +3941,7 @@ public function practical_assignment_marks_edit(){
 		$where = array(
 			'course_group_id' => $student_data[0]->course_group_id,
 			'backlog_student_id' => $backlog_student_id,
+			'paper_type' =>'Theory',
 			'status' => 'B'
 		);
 		$student = $this->Common_model->getRecordById('student','student_id',$student_data[0]->student_id);
@@ -3950,7 +3951,7 @@ public function practical_assignment_marks_edit(){
 		$data['exam_session'] = "June 2025";
 		$data['course_group_id']=$student_data[0]->course_group_id;
 		$data['class_id']=$student_data[0]->class_id;
-		$data['amount'] = $fees*100;
+		$data['amount'] = ( $fees < 8)?$fees*100:750;
 		$data['fees_head']='Backlog Exam Fees';
 		$data['student_name']=$student->name;
 		$data['payment']='Y';
@@ -3960,9 +3961,9 @@ public function practical_assignment_marks_edit(){
 		$data['admission_type']= ($student_data[0]->mode == "REG")?'Regular':'Private';
 		$data['payment_time']=date("h:i:s");
 		$insert = $this->Common_model->insertAll('online_payment_transaction',$data);
-		$student_data = array('exam_form' => 'Y');
-		$update = $this->Common_model->updateRecordByConditions('backlog_student','id='.$backlog_student_id,$student_data);
-		if($update){
+		//$student_data = array('exam_form' => 'Y');
+		//$update = $this->Common_model->updateRecordByConditions('backlog_student','id='.$backlog_student_id,$student_data);
+		if($insert){
 			//redirect(base_url('backlog_exam_form_students'));
             $response = array(
                 'status' => true,

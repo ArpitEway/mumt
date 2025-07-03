@@ -34,6 +34,7 @@
        </thead>
        <tbody>
          <?php
+         $center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29,1975,2098,2115 );
          $i = 1;
         // $exam_course_not=array(11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,71,72,73,74,75,76,77,78,79,69,70,68);
          foreach($documents as $student){
@@ -41,7 +42,15 @@
             // if($student->mode=="REG" && $class_name== 'I Year' && in_array($student->course_group_id,$exam_course_not) ){
             //     continue;
             // }
-
+               $pending="";
+				if(in_array($this->session->center_id, $center_ids) ){
+                     $where=array('center_id'=>$student->center_id,'exam_session'=>'June 2025','fees_head'=>'Backlog Exam Fees','payment'=>'Y','student_id'=>$student->student_id);
+                   $paid= $this->Common_model->getRecordByWhere('online_payment_transaction',$where);
+                   if($paid){
+                    //continue;
+                    $pending="Verfication Pending";
+                   }
+                }
          $failCount = $this->Common_model->getCountByWhere('backlog_exam_form',array('student_id' => $student->student_id,'class_id'=>$student->class_id,'paper_type'=>'Theory' ,'status'=>'B','backlog_student_id'=>$student->id));
          if( $failCount < 8){
             $exam_fees =$failCount * 100;
@@ -69,8 +78,13 @@
                     </td>
                 <?php } ?>    
              <?php if($exam_form_button=="notSubmitted"){ ?>
-               <td>     
+               <td> 
+                <?php if($pending ==""){ ?>    
             <a class="btn btn-primary karaundi-exam"  data-student = "<?=$student_id;?>" data-class="<?=$class_id?>">View Paper</a>     
+                <?php }else{ ?>
+                    <a class="btn btn-primary" href="#"><?=$pending?></a>
+                <?php } ?>
+               </td>
             </td>
              <td>
                 <input type="button" data-id = "<?=$student->student_id;?> " class="btn btn-danger check_skipped" data-class= "<?=$student->class_id;?>" value="skipped">
