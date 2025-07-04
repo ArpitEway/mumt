@@ -1368,7 +1368,9 @@ class ExamController extends CI_Controller {
 
 			// $this->db->where_not_in('class_id',array(101,104,107,110,113,116,119,125,128,131,134,137,140,143,146,149,162,163,164,165,168,169,170,171,173,174,175,176,177,178,179,180,183,185,187,189,191,273,274,283,285,287,289,291,293,295,297,300,310));
 
-			$this->db->where_in('class_id',array(103,106,109,112,118,121,127,130,133,136));
+			// $this->db->where_in('class_id',array(103,106,109,112,118,121,127,130,133,136));
+
+			$this->db->where_in('class_id',array(101,104,107,110,116,119,125,128,131,134));
 				
 			// $this->db->where_in('test_id',array(5001,6395));
 			$this->db->where('exam_date!=','0000-00-00');
@@ -1398,7 +1400,9 @@ class ExamController extends CI_Controller {
 
 			// $this->db->where_not_in('class_id',array(101,104,107,110,113,116,119,125,128,131,134,137,140,143,146,149,162,163,164,165,168,169,170,171,173,174,175,176,177,178,179,180,183,185,187,189,191,273,274,283,285,287,289,291,293,295,297,300,310));
 
-			$this->db->where_in('class_id',array(103,106,109,112,118,121,127,130,133,136));
+			// $this->db->where_in('class_id',array(103,106,109,112,118,121,127,130,133,136));
+
+			$this->db->where_in('class_id',array(101,104,107,110,116,119,125,128,131,134));
 
 			$this->db->where('test_id!=','');
 			$this->db->where('exam_date!=','0000-00-00');
@@ -1498,7 +1502,7 @@ class ExamController extends CI_Controller {
 
 			// $this->db->where('examcentercode','MDE165');
 
-			$this->db->where_not_in('examcentercode',array('MDE001','MDE004','MDE005','MDE006','MDE010','MDE015','MDE018','MDE022','MDE024','MDE028','MDE030','MDE031','MDE037','MDE038','MDE042','MDE043','MDE046','MDE047','MDE049','MDE054','MDE056','MDE075','MDE079','MDE085','MDE089','MDE090','MDE105','MDE113','MDE114','MDE119','MDE136','MDE137','MDE138','MDE140','MDE142','MDE143','MDE145','MDE153','MDE156','MDE160','MDE163','MDE165','MDE167'));
+			// $this->db->where_not_in('examcentercode',array('MDE001','MDE004','MDE005','MDE006','MDE010','MDE015','MDE018','MDE022','MDE024','MDE028','MDE030','MDE031','MDE037','MDE038','MDE042','MDE043','MDE046','MDE047','MDE049','MDE054','MDE056','MDE075','MDE079','MDE085','MDE089','MDE090','MDE105','MDE113','MDE114','MDE119','MDE136','MDE137','MDE138','MDE140','MDE142','MDE143','MDE145','MDE153','MDE156','MDE160','MDE163','MDE165','MDE167'));
 
 			$this->db->order_by('examcentercode', "asc");
 			$data['exam_centers'] = $this->db->get()->result();

@@ -42,9 +42,9 @@ foreach($elist as $row)
         //  echo "<br>1 ".$count[0]->cnt;
          // echo $this->db->last_query();
 
-        //   $sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`examcentercode`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paper['paper_code']."' AND `s`.`class_id` = '".$paper['class_id']."' AND s.course_group_id= '".$paper['course_group_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND new_exam_form='Y'";  
+          $sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`examcentercode`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paper['paper_code']."' AND `s`.`class_id` = '".$paper['class_id']."' AND s.course_group_id= '".$paper['course_group_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND new_exam_form='Y' and s.class_id in (101,104,107,110,116,119,125,128,131,134) and s.university_mode='REG'";  
 
-          $sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`examcentercode`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paper['paper_code']."' AND `s`.`class_id` = '".$paper['class_id']."' AND s.course_group_id= '".$paper['course_group_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND s.class_id in (103,106,109,112,118,121,127,130,133,136)  AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2024' AND `s`.`class_name` = 'I Year' )) ";   
+          // $sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`examcentercode`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paper['paper_code']."' AND `s`.`class_id` = '".$paper['class_id']."' AND s.course_group_id= '".$paper['course_group_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND s.class_id in (103,106,109,112,118,121,127,130,133,136)  AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2024' AND `s`.`class_name` = 'I Year' )) ";   
 
             // $sql="SELECT count(*) as cnt FROM `new_exam_form_report` as `e` JOIN `student_report` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` WHERE  `s`.`examcentercode`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paper['paper_code']."' AND `s`.`class_id` = '".$paper['class_id']."' AND s.course_group_id= '".$paper['course_group_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND s.class_id not in (101,104,107,110,113,116,119,125,128,131,134,137,140,143,146,149,162,163,164,165,168,169,170,171,173,174,175,176,177,178,179,180,183,185,187,189,191,273,274,283,285,287,289,291,293,295,297,300,310)  AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2024' AND `s`.`class_name` = 'I Year' )) ";   
 
@@ -53,24 +53,24 @@ foreach($elist as $row)
          $query = $this->db->query($sql);
          $count = $query->result_array();
         
-        $qu="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paper['paper_code']."' AND `p`.`class_id` = '".$paper['class_id']."'  AND s.course_group_id= '".$paper['course_group_id']."'  AND `s`.`examcentercode`='".$row->examcentercode."' AND   `s`.`exam_center_id` = '".$row->id."'  AND temp_exam_form='N' AND s.class_id in (103,106,109,112,118,121,127,130,133,136)";
+        // $qu="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paper['paper_code']."' AND `p`.`class_id` = '".$paper['class_id']."'  AND s.course_group_id= '".$paper['course_group_id']."'  AND `s`.`examcentercode`='".$row->examcentercode."' AND   `s`.`exam_center_id` = '".$row->id."'  AND temp_exam_form='N' AND s.class_id in (103,106,109,112,118,121,127,130,133,136)";
 
           // $qu="SELECT count(*) as num FROM `student_report` as s join paper_master as p on s.class_id=p.class_id WHERE  `p`.`paper_code` = '".$paper['paper_code']."' AND `p`.`class_id` = '".$paper['class_id']."'  AND s.course_group_id= '".$paper['course_group_id']."'  AND `s`.`examcentercode`='".$row->examcentercode."' AND   `s`.`exam_center_id` = '".$row->id."'  AND temp_exam_form='N' AND s.class_id not in (101,104,107,110,113,116,119,125,128,131,134,137,140,143,146,149,162,163,164,165,168,169,170,171,173,174,175,176,177,178,179,180,183,185,187,189,191,273,274,283,285,287,289,291,293,295,297,300,310)";
 
         //        // and `session` = 'July 2022' AND `s`.`class_name` = 'I Year' AND `s`.payment_status='Y'
    
 
-        $query = $this->db->query($qu);
-        $all = $query->result_array();
+        // $query = $this->db->query($qu);
+        // $all = $query->result_array();
         
-        $allElective= $all[0]['num'];
-        //  $allElective= 0;
+        // $allElective= $all[0]['num'];
+         $allElective= 0;
 
-         $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id`  AND s.id=e.backlog_student_id WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paper['paper_code']."' AND `s`.`class_id` = '".$paper['class_id']."' AND s.course_group_id= '".$paper['course_group_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form!='D' AND `e`.`status`='B'  AND s.exam_year='June 2025'  AND s.class_id in (103,106,109,112,118,121,127,130,133,136)"; 
+         // $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id`  AND s.id=e.backlog_student_id WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paper['paper_code']."' AND `s`.`class_id` = '".$paper['class_id']."' AND s.course_group_id= '".$paper['course_group_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form!='D' AND `e`.`status`='B'  AND s.exam_year='June 2025'  AND s.class_id in (103,106,109,112,118,121,127,130,133,136)"; 
 
          // $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form_report` as `e` JOIN `backlog_student_report` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id`  AND s.id=e.backlog_student_id WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paper['paper_code']."' AND `s`.`class_id` = '".$paper['class_id']."' AND s.course_group_id= '".$paper['course_group_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form!='D' AND `e`.`status`='B'  AND s.exam_year='June 2025'  AND s.class_id not in (101,104,107,110,113,116,119,125,128,131,134,137,140,143,146,149,162,163,164,165,168,169,170,171,173,174,175,176,177,178,179,180,183,185,187,189,191,273,274,283,285,287,289,291,293,295,297,300,310)"; 
 
-        //  $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id`  AND s.id=e.backlog_student_id WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paper['paper_code']."' AND `s`.`class_id` = '".$paper['class_id']."' AND s.course_group_id= '".$paper['course_group_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form='Y' AND `e`.`status`='B'  AND s.exam_year='June 2025'";   
+         $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id`  AND s.id=e.backlog_student_id WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND  `e`.`paper_code` = '".$paper['paper_code']."' AND `s`.`class_id` = '".$paper['class_id']."' AND s.course_group_id= '".$paper['course_group_id']."' AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form='Y' AND `e`.`status`='B'  AND s.exam_year='June 2025'  AND s.class_id in (101,104,107,110,116,119,125,128,131,134) and s.mode='REG'";   
 
          $query_backlog = $this->db->query($sql_back);
          $count_backlog = $query_backlog->result_array();
