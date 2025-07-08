@@ -1124,4 +1124,56 @@
         }
     }
 
+	public function transaction_verification(){
+		// echo 'ss';
+		 $data = array('name_csrf' => $this->security->get_csrf_token_name(),
+                'hash_csrf' => $this->security->get_csrf_hash(),
+            );
+		  $this->load->view('header',array('title' => 'Student Payment Transaction Verification'));
+            $this->load->view('admin/account_section/transaction_verification',$data);
+            $this->load->view('footer');
+	}
+
+	public function get_payment_transactions(){
+		if ($this->input->method() == "post") 
+		{
+			$course_group_id = 0;
+			$data = array();
+			$dt   = array();
+				
+			$startDate  = $this->input->post("startDate");
+			$endDate  = $this->input->post("endDate");
+
+			$this->db->select('s.name,s.university_mode as mode,s.course_name,s.session,cg.form_fees,cg.admission_fees,cg.program_fees,cg.exam_fees,cg.p_admission_fees,cg.p_program_fees,cg.p_exam_fees,p.*');
+			$this->db->from('`student` as s');
+			$this->db->join('online_payment_transaction as p', 'p.student_id=s.student_id');
+			$this->db->join('course as cg', 'cg.course_group_id=p.course_group_id and cg.session=s.session');
+			$this->db->where('p.payment','Y');
+			$this->db->where('p.payment_date >=', $startDate);
+			$this->db->where('p.payment_date <=', $endDate);
+			// $this->db->limit(2);
+			$this->db->order_by('s.student_id','asc');
+			$data['studentData'] = $this->db->get()->result();
+			
+			
+			// $data = array('complaints' => $complaints ,'name_csrf' => $this->security->get_csrf_token_name(),
+			// 	'hash_csrf' => $this->security->get_csrf_hash(),
+			// 	'centerData' => $centerData,
+			// );
+
+			if($data['studentData']){
+				$dt =  $this->load->view('admin/account_section/getPaymentTransaction',$data,true);
+				$status = true;
+			}else{
+				$dt = "<tr><td colspan='10' class='text-center'>No Records Found</td></tr>";
+				$status = false;
+			}
+			echo json_encode(array(
+			"status" => $status,
+			"data" => $dt
+			));
+		}
+	
+	}
+
 }
