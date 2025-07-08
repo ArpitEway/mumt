@@ -18,7 +18,7 @@
 					$allot_course = str_replace(' ', '', $center->allot_course_group_id);
 					$allot_course_group_id = explode(",", $allot_course);
 					foreach($courses as $course){
-						// if (in_array($course['id'], $allot_course_group_id)){
+						if (in_array($course['id'], $allot_course_group_id)){
 						?>
 						<tr>
 							<td><?=$i++;?></td>
@@ -27,7 +27,7 @@
 								<?php if (in_array($course['id'], $allot_course_group_id)){ ?> checked="checked" <?php } ?> ></td>
 							</tr>
 							<?php 
-						// }
+						}
 					 }
 					}
 					?>
