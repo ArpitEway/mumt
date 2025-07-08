@@ -1157,7 +1157,33 @@ class Admins extends CI_Controller {
 				"data" => $data
 			));
 		}
-		
+
+		public function alloted_course($param1 = '',$param2 = '')
+		{
+			if(!$this->session->has_userdata('adminData')){
+				redirect(base_url());
+				exit;
+				
+			}else{
+				if($param1 == 'allot'){
+					$response = $this->admin_model->allot_course($param2);
+					echo json_encode(array("status" => 'true'));
+				}
+				
+				if(!empty($param1) && $param1 != 'allot' ){
+					$data = array();
+					$data['courses'] = $this->db->get_where("course_group", array())->result_array();
+					$data['center_id'] = $param1;
+					$data['name_csrf'] = $this->security->get_csrf_token_name();
+					$data['hash_csrf'] = $this->security->get_csrf_hash();
+					$this->load->view('header');
+					$this->load->view('admin/alloted_course_to_centers',$data);
+					$this->load->view('footer');
+				}
+
+			}
+		}
+
 		public function allot_course($param1 = '',$param2 = '')
 		{
 			if(!$this->session->has_userdata('adminData')){
