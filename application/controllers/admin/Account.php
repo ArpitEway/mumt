@@ -1125,7 +1125,7 @@
     }
 
 	public function transaction_verification(){
-		// echo 'ss';
+		// echo $this->session->userdata('admin_id');die;
 		 $data = array('name_csrf' => $this->security->get_csrf_token_name(),
                 'hash_csrf' => $this->security->get_csrf_hash(),
             );
@@ -1149,19 +1149,22 @@
 			$this->db->join('online_payment_transaction as p', 'p.student_id=s.student_id');
 			$this->db->join('course as cg', 'cg.course_group_id=p.course_group_id and cg.session=s.session');
 			$this->db->where('p.payment','Y');
+			$this->db->where('p.verified',0);
 			$this->db->where('p.payment_date >=', $startDate);
 			$this->db->where('p.payment_date <=', $endDate);
 			// $this->db->limit(2);
 			$this->db->order_by('s.student_id','asc');
-			$data['studentData'] = $this->db->get()->result();
+			$studentData = $this->db->get()->result();
 			
-			
+			 $data = array('studentData'=> $studentData,'name_csrf' => $this->security->get_csrf_token_name(),
+                'hash_csrf' => $this->security->get_csrf_hash(),
+            );
 			// $data = array('complaints' => $complaints ,'name_csrf' => $this->security->get_csrf_token_name(),
 			// 	'hash_csrf' => $this->security->get_csrf_hash(),
 			// 	'centerData' => $centerData,
 			// );
 
-			if($data['studentData']){
+			if($studentData){
 				$dt =  $this->load->view('admin/account_section/getPaymentTransaction',$data,true);
 				$status = true;
 			}else{
@@ -1172,8 +1175,24 @@
 			"status" => $status,
 			"data" => $dt
 			));
-		}
+		}	
 	
 	}
+
+	public function verify_payment_transaction(){
+
+			$id = $this->input->post('id');
+			$user_id = $this->session->userdata('admin_id');
+			$verified_at = date('Y-m-d H:i:s');
+			
+        	$settle_date = $this->input->post('settle_date');
+			$update = $this->Common_model->updateRecordByConditions('online_payment_transaction',array('id'=>$id),array('settle_date'=> $settle_date,'verified_by'=>$user_id,'verified_at'=>$verified_at,'verified'=>1));
+
+			if($update){
+				echo json_encode(array('status' => 'success', 'message' => 'Transaction Verified Successfully'));
+			}else{
+				echo json_encode(array('status' => 'error', 'message' => 'Something went wrong, please try again later'));
+			}
+		}
 
 }

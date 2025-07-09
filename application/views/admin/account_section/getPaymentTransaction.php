@@ -1,6 +1,7 @@
 
 <div class="text-center">
-	<table id="kt_datatable" class="table table-striped dt-responsive" width="80%" >
+    <input type="hidden" class="csrfname" name="<?= $name_csrf ?>" value="<?= $hash_csrf ?>">
+	<table id="kt_datatable" class="table table-striped dt-responsive nowrap" width="100%" >
 		<thead>
 			<tr>
 				<th>#</th>
@@ -9,6 +10,7 @@
                 <th>Student Name</th>
                 <th>Course</th>
                 <th>Class</th>
+                <th>Transaction Id</th>
                 <th>Prospectus Fees</th>
                 <th>Registration Fees</th>
                 <th>Program Fees</th>
@@ -16,10 +18,11 @@
                 <th>Backlog Exam Fees</th>
                 <th>Late Fees</th>
                 <th>Total Fees</th>
-                <th>View Detail</th>
+                <th>Action</th>
 			</tr>
 		</thead>
 		<tbody>
+            
 			<?php 
 			
 			$i = 1;
@@ -71,7 +74,7 @@
                 }
                    
                 ?>
-                <tr>
+                <tr id="row_<?php echo $student->id; ?>">
 
                 <td><?php echo $i++; ?></td>
                 <td><?php echo $student->student_id; ?></td>
@@ -79,6 +82,7 @@
                 <td><?php echo $student->name; ?></td>
                 <td><?php echo $student->course_name; ?></td>
                 <td><?php echo $this->Common_model->getClassNameByClassId($student->class_id); ?></td>
+                <td><?php echo $student->txnId; ?></td>
                 <td><?= $prospectus?></td>
                 <td><?= $registration?></td>
                 <td><?=$program?></td>
@@ -86,7 +90,7 @@
                 <td><?= $backlog?></td>
                 <td><?=$late?></td>
                 <td><?= $student->amount?></td>
-                <td></td>
+                <td><button type="reset" class="btn btn-success mr-4"  data-toggle="modal" data-target="#kt_datepicker_modal"  onclick="verify(<?=$student->id?>)">Verify</button></td>
                 </tr>
                 <?php
             }
@@ -94,9 +98,47 @@
             ?>
 		</tbody>
 	</table>
+<div class="modal fade" id="kt_datepicker_modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-md" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Verify Transaction</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<i aria-hidden="true" class="ki ki-close"></i>
+				</button>
+			</div>
+			<div class="card card-custom">
 
+ <!--begin::Form-->
+<form method="POST" class="d-block" id="ajaxForm" action="">
+  <div class="card-body">
+<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+
+  
+   <div class="form-group row">
+    <label for="example-date-input" class="col-5 col-form-label">Settle Date</label>
+    <div class="col-7">
+        <input type="hidden" value="" name="uid" id="uid">
+    <input class="form-control" type="date"  id="example-date-input" name="settle_date" required>
+    </div>
+   </div>
+  
+   
+    
+  <div class="card-footer pb-0">
+   <div class="row justify-content-center">
+  
+ 
+     <button type="reset" class="btn btn-success mr-4" id="payment_submit">Submit</button>
+
+   </div>
+  </div>
+ </form>
+</div>
+		</div>
+	</div>
+</div>
 
 	<script>
-
-		
+       
 	</script>

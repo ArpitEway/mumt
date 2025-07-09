@@ -72,9 +72,50 @@ $(document).on("click","#submit_btn",function(){
                 $('#myLoader').hide();
               },
             })
+              $('#kt_datatable').DataTable().destroy();
 
 		KTDatatablesBasicBasic.init();
 		 
 });
+
+ function verify(id) {
+            $('#uid').val(id);
+        }  // alert(id);
+
+        $(document).on("click", "#payment_submit", function() {
+            var csrfName = $('.csrfname').attr('name');
+            var csrfHash = $('.csrfname').val();
+            var id = $('#uid').val();
+            var data = {
+                id: id,
+                settle_date: $('#example-date-input').val(),
+                [csrfName]: csrfHash
+            };
+
+            $.ajax({
+                url: BASE_URL + 'admin/Account/verify_payment_transaction',
+                type: 'post',
+                dataType: 'JSON',
+                data: data,
+                beforeSend: function() {
+                    $("#myLoader").show();
+                },
+                success: function(status) {
+                  
+                    if (status.status == 'success') {
+                        toastr.success(status.message);
+                        $("#row_" + id).next("tr").remove(); // extra detail row
+                         $("#row_" + id).remove(); // s
+                        // location.reload();
+                    } else {
+                        toastr.error(status.message);
+                    }
+                      $('#kt_datepicker_modal').modal('toggle');
+                    $("#myLoader").hide();
+                    
+                }
+            });
+        });
+	
 
 </script>
