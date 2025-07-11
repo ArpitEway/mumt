@@ -1157,7 +1157,33 @@ class Admins extends CI_Controller {
 				"data" => $data
 			));
 		}
-		
+
+		public function alloted_course($param1 = '',$param2 = '')
+		{
+			if(!$this->session->has_userdata('adminData')){
+				redirect(base_url());
+				exit;
+				
+			}else{
+				if($param1 == 'allot'){
+					$response = $this->admin_model->allot_course($param2);
+					echo json_encode(array("status" => 'true'));
+				}
+				
+				if(!empty($param1) && $param1 != 'allot' ){
+					$data = array();
+					$data['courses'] = $this->db->get_where("course_group", array())->result_array();
+					$data['center_id'] = $param1;
+					$data['name_csrf'] = $this->security->get_csrf_token_name();
+					$data['hash_csrf'] = $this->security->get_csrf_hash();
+					$this->load->view('header');
+					$this->load->view('admin/alloted_course_to_centers',$data);
+					$this->load->view('footer');
+				}
+
+			}
+		}
+
 		public function allot_course($param1 = '',$param2 = '')
 		{
 			if(!$this->session->has_userdata('adminData')){
@@ -4596,6 +4622,8 @@ public function update_exam_datewise_permission(){
 
 		$query = $this->db->query("SELECT p.* FROM `paper_master` as p join class_master as c on c.id=p.class_id WHERE  type='Theory' and cbcs_paper=cbcs and (exam_date!='0000-00-00' and ( c.exam_form_permission='Y' or c.backlog_exam_form_permission='Y')) order by p.course_group_id,class_id,cbcs_paper,paper_no asc");
 
+		 // and c.id in (137,149,183,185,191,138,184,192,187,143,146,139,144,188,145,147,148,150,186,141,151,142,190)
+		 
 		// and `exam_date`!='0000-00-00' and cbcs_paper=cbcs  
 
 		// Private Only 104,107,134 

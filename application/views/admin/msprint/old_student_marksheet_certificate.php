@@ -72,6 +72,12 @@
               <td height="155" colspan="2" valign="bottom">
                 <center>
                   <strong style="font-size: 18px;"><?php echo $exam_data->course_name.' ' .$course_duration.' Examination '.$exam_data->exam_year ?></strong>
+                 <?php if(isset($exam_data->remark_date) && $exam_data->remark_date == 'Marks Change After Revaluation'){
+                    ?>
+                    <br>
+                    <span>(Revised After Revaluation)</span>
+                    <?php
+                  } ?>
                 </center>
               </td>
             </tr>
@@ -518,7 +524,7 @@
                   </tr>
                   <tr>
                     <td>
-                    <?=$exam_data->remark_date?>
+                    <?= ($exam_data->remark_date != '')?'*'.$exam_data->remark_date:''?>
                   </td>
                 </tr>
               </td>

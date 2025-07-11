@@ -227,6 +227,7 @@
 				 $where = array(
 					'course_group_id' => $papers[0]->course_group_id,
 					'backlog_student_id' => $papers[0]->backlog_student_id,
+					'paper_type' =>'Theory',
 					'status' => 'B'
 				);
 				$fees = $this->Common_model->getCountByWhere('backlog_exam_form',$where);
@@ -249,7 +250,7 @@
 			?>
        <!-- <a class="btn btn-success" href="<?= base_url('paid_by_university_backlog/'.$backlog_student_id) ?>">Paid By University</a> -->
       
-       <a href="#"  data-student_name = "<?=$student['name']?>"  data-idstudent="<?=$papers[0]->student_id?>" data-student_id="<?= $backlog_student_id?>" class="btn btn-primary btn-sm font-weight-bold pay1" data-toggle="modal" data-target="#kt_datepicker_modal" data-amount= "<?= $fees*100 ?>"  data-url="<?=base_url('paid_by_university_backlog/'.$backlog_student_id)?>" data-head='fees'>Paid By University</a>
+       <a href="#"  data-student_name = "<?=$student['name']?>"  data-idstudent="<?=$papers[0]->student_id?>" data-student_id="<?= $backlog_student_id?>" class="btn btn-primary btn-sm font-weight-bold pay1" data-toggle="modal" data-target="#kt_datepicker_modal" data-amount= "<?= $exam_fees ?>"  data-url="<?=base_url('paid_by_university_backlog/'.$backlog_student_id)?>" data-head='fees'>Paid By University</a>
 			<?php
 			}
 			else if($center_permission[0]['payment_gateway_permission'] == 'N' && $center_permission[0]['balance'] >= $exam_fees){
@@ -403,6 +404,13 @@
      <input class="form-control" type="text" name="receipt_number" id="receipt_number" required />
 	</div>
    </div>
+     <div class="form-group row">
+    <label for="amount" class="col-5 col-form-label">Remark</label>
+    <div class="col-7">
+     
+     <textarea class="form-control" name="remark" id="remark"></textarea>
+	</div>
+   </div>
   <div class="card-footer pb-0">
    <div class="row justify-content-center">
   
@@ -459,6 +467,7 @@ $(document).on('click','.pay1',function(){
 		var payment_mode = $('#payment_mode').val();
 		var amount = $('#amount').val();
         var paid_amount = $('#paid_amount').val();
+		var remark = $('#remark').val();
         var transaction_number = $('#transaction_number').val();
 		var receipt_number = $('#receipt_number').val();
         var csrfName = $('.csrfname').attr('name');

@@ -48,7 +48,7 @@
     $papers = $old_result_data;
     ?>
       <fieldset id="printarea" class="breakhere" style="width:90%;border: 0px solid #22316C;"> 
-        <div align="left"> MS No. <?php echo $exam_data->marksheet_no; ?> </div>
+       
         <table align="center" border="0" width="100%">
           <tbody>
             <tr>
@@ -56,6 +56,12 @@
                 <center>
                 <?php $course = ($exam_data->course_group_id == 75)?'Bachelor of Arts and Bachelor of Education (B.A.B.Ed.)':$exam_data->course_name;?>
                   <strong><?php echo  ($isOneClass) ? $course .' '."(One Year Course)" :$course.' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)); ?> <?= ' Backlog Examination '.$exam_data->exam_year ?></strong>
+                   <?php if(isset($exam_data->remark_date) && $exam_data->remark_date == 'Marks Change After Revaluation'){
+                    ?>
+                    <br>
+                    <span>(Revised After Revaluation)</span>
+                    <?php
+                  } ?>
                 </center>
               </td>
             </tr>
@@ -557,8 +563,12 @@
                      echo $generator->getBarcode($barcode_no, $generator::TYPE_CODE_128,2,25); ?>
                     </td>
                   </tr>
+                  <tr><td>
+                     <div align="left"> MS No. <?php echo $exam_data->marksheet_no; ?> </div>
+                  </td></tr>
                   <tr>
                     <td>
+                        <?= ($exam_data->remark_date != '')?'*'.$exam_data->remark_date:''?>
                   </td>
                 </tr>
               </td>

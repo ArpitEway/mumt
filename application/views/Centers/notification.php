@@ -6,6 +6,10 @@
 		<div class="content-head row mb-3 mt-5">
 			<div>
 				<ul>
+						<li style="color:red"><img src="<?=base_url('assets/images/center/new.gif')?>" alt=""><b>
+				<a  style="color:red" href="<?=base_url('assets/images/center/')?>Vedic Time Table-2025.pdf" download> शास्त्री-आचार्य टाइम टेबल - Click Here </a>
+				</b>
+				</li><br>
 					<li style="color:red"><img src="<?=base_url('assets/images/center/new.gif')?>" alt=""> <b>
 				आवश्यक सुचना :- सूचित किया जाता है कि मई - जून 2025 में आयोजित होने वाली परीक्षाओं के लिये परीक्षा आवेदन पत्र भरने की अंतिम तिथि 10 मई 2025 एवं विलम्ब शुल्क 200 रुपये सहित परीक्षा आवेदन पत्र भरने की अंतिम तिथि 22 मई 2025 एवं विलंब शुल्क 500 रुपये सहित परीक्षा आवेदन पत्र भरने की अंतिम तिथि 26 मई 2025 निर्धारित की गयी है। निर्धारित तिथि तक परीक्षा आवेदन पत्र भरने की प्रक्रिया पूर्ण करे |
 				</b>

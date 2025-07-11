@@ -274,7 +274,7 @@ $abs_count = 0 ;
 								$p_fail_count++;
 								array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
 							}
-							if($new_exam_form->int_marks=='N'){
+							if($new_exam_form->int_marks=='N' && $new_exam_form->type!='Project'){
 								$rwas_count++;
 								$WithheldAS =true;
 							}

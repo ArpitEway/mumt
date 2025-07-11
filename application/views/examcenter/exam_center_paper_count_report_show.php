@@ -94,7 +94,9 @@ foreach($papers as $pap)
             </td>
          <!--<td>Date</td>
             <td>Day</td>-->
-            <td><span style="font-weight: bold">Student Count</span></td>
+            <td> <div align="center"><span style="font-weight: bold">Main</span></div></td>
+            <td> <div align="center"><span style="font-weight: bold">Backlog</span></div></td>
+            <td> <div align="center"><span style="font-weight: bold">Total</span></div></td>
          </tr>
          <?php
       $i=1;
@@ -140,12 +142,17 @@ foreach($papers as $pap)
 
 
          $where="`e`.`paper_code` = '".$paper->paper_code."' AND `s`.`class_id` = '".$paper->class_id."'  AND s.course_group_id='".$paper->course_group_id."'  AND s.exam_center_id='".$exam_center."' AND exam_year='June 2025'";
-         $sql_backlog="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND   `s`.`course_group_id` = `e`.`course_group_id`  join paper_master as p on s.class_id=p.class_id and s.course_group_id=p.course_group_id  and `e`.`paper_code` = p.paper_code WHERE   ".$where."  and exam_form in ('Y') and `e`.status= 'B'";
+         $sql_backlog="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND   `s`.`course_group_id` = `e`.`course_group_id`  join paper_master as p on s.class_id=p.class_id and s.course_group_id=p.course_group_id  and `e`.`paper_code` = p.paper_code WHERE   ".$where."  and exam_form in ('Y') and `e`.status= 'B' AND (
+            (s.class_id IN (104, 107, 134) AND s.mode = 'REG') OR
+            (s.class_id NOT IN (104, 107, 134) AND s.mode IN ('REG', 'PVT'))
+        )";
          
         
          $backlog_query = $this->db->query($sql_backlog);
          $backlog_count = $backlog_query->result_array();
-         $student_count = $count[0]->cnt + $backlog_count[0]['cnt'];
+         $main_count = $count[0]->cnt;
+         $backlog_countt = $backlog_count[0]['cnt'];
+         $student_count = $main_count + $backlog_countt;
 
 
         
@@ -174,10 +181,12 @@ foreach($papers as $pap)
                   <div align="left"><?= $paper->paper_name?></div>
                </td>
                <td><div align="left"><?= ($exam_type == 'PVT')?$paper->pvt_exam_shift:$paper->exam_shift?></div></td>
+               <td style="text-align:center;"><?php echo $main_count; ?> </td>
+               <td style="text-align:center;"><?php echo $backlog_countt; ?> </td>
                <td style="text-align:center;"><?php echo $student_count; ?> </td>
             </tr>
             <?php 
-               $i++;  $total+= $student_count;
+            $i++;  $total+= $student_count;
                }  
          } ?>
       </tbody>

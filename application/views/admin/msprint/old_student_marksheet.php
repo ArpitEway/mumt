@@ -58,6 +58,12 @@
                 <center>
                 <?php $course = ($exam_data->course_group_id == 75)?'Bachelor of Arts and Bachelor of Education (B.A.B.Ed.)':$exam_data->course_name;?>
                   <strong style="font-size: 18px;"><?php echo  ($isOneClass) ? $course .' '."(One Year Course)" :$course.' '.$this->Common_model->romanClassName($this->Common_model->getClassNameByClassId($exam_data->class_id)); ?> <?= ' Examination '.$exam_data->exam_year ?></strong>
+                   <?php if(isset($exam_data->remark_date) && $exam_data->remark_date == 'Marks Change After Revaluation'){
+                    ?>
+                    <br>
+                    <span>(Revised After Revaluation)</span>
+                    <?php
+                  } ?>
                 </center>
               </td>
             </tr>
@@ -560,7 +566,7 @@
                 </tr>
                   <tr>
                     <td>
-                    <?=$exam_data->remark_date?>
+                    <?= ($exam_data->remark_date != '')?'*'.$exam_data->remark_date:''?>
                   </td>
                 </tr>
               </td>

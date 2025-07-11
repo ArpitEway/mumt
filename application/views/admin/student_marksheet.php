@@ -374,8 +374,13 @@
                               if($paper->type=='Sessional'){
                                echo  $paper->int_marks;
                               }else{
-                             if($paper->type=='theory' || ($classData->practical_internal_marks=='Y' && $classData->id !=206)){
-                              echo ($paper->int_marks=='ABS') ? 'ABS F' : $paper->int_marks; 
+                             if($paper->type=='theory' || ($classData->practical_internal_marks=='Y' && $classData->id !=206 )){
+                              if($paper->type=='Project' && $classData->id ==316){
+                                echo '-';
+                              }else{
+                                 echo ($paper->int_marks=='ABS') ? 'ABS F' : $paper->int_marks; 
+                              }
+                             
                              }else{
                               echo '-';
                              }

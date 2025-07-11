@@ -125,6 +125,10 @@
                       <td class="Normaltext" align="left" width="29%"><div align="left">Father's / Husband's Name</div></td>
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo strtoupper( $student->f_h_name); ?></span></div></td>
                     </tr>
+                     <tr>
+                      <td class="Normaltext" align="left" width="29%"><div align="left">Mother's Name</div></td>
+                      <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo strtoupper( $student->mother_name); ?></span></div></td>
+                    </tr>
                     <?php if ($student->course_group_id==76): ?>
                     <tr>
                       <td class="Normaltext" align="left" width="29%"><div align="left">Department</div></td>
@@ -148,8 +152,8 @@
                     <table id="" style="width:103%;" border="1" cellspacing="0" cellpadding="5" align="center">
                       <tbody>
                         <tr style="font-family:Arial, Helvetica, sans-serif; font-size:11px;" align="center" >
-                          <td width="11%"  align="center" valign="center" style="font-size:11px;padding:2%;" scope="col"><span class="style7">Paper Code</span></td>
-                          <td width="42%" style="font-size:11px" scope="col" valign="center" align="center"><span class="style7">Paper Name</div></td>    
+                          <td width="11%"  align="center" valign="center" style="font-size:11px;padding:2%;" scope="col"><span class="style7">Course Code</span></td>
+                          <td width="42%" style="font-size:11px" scope="col" valign="center" align="center"><span class="style7">Course Name</div></td>    
                           <td  colspan="3" style="font-size:11px"><span class="style7"><u> Course Credit</u></span></td>        
                           <td  colspan="3" style="font-size:11px"><span class="style7"><u> Credit Earned</u></span></td>          
                           <td  colspan="2" scope="col" style="font-size:11px"><span class="style7"><u>Grade Point</u></span></td>
@@ -177,7 +181,7 @@
                     </tbody>
                  </table> -->
                  <table border='1' cellpadding="2"  width="103%">
-                  <tr align="center"><th width='12.5%'>Semester</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>SGPA</th>
+                  <tr align="center"><th width='12.5%'>Semester</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Total Credit Points</th><th width='12.5%'>SGPA</th>
                   <?php  if($classData->last_class == 'L'){ ?><th width='12.5%'>Attempt</th><?php }?></tr>
                     <?php
                      $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$student->course_group_id,'mode'=>'Semester'));

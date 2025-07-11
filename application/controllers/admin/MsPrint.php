@@ -144,9 +144,14 @@ class MsPrint extends CI_Controller {
 				$this->load->model('Gradesheet_old_model');
                 $this->load->model('Gradesheet_model');
 				  $this->load->view('admin/msprint/student_marksheet_grade',$data);
-			}elseif ($data['exam_data']->marks_pattern=='GRADE' && $data['exam_data']->university_mode == "REG" &&  $class->cbcs=='Y') {
+			}elseif ($data['exam_data']->marks_pattern=='GRADE' && $data['exam_data']->university_mode == "REG" &&  ($class->cbcs=='Y' || $class->id ==267)) {
                 $this->load->model('GradeSheet_old_model_pg');
-				 $this->load->view('admin/msprint/student_marksheet_grade_pg',$data);
+				if($class->id == 267){
+					$this->load->view('admin/msprint/student_marksheet_grade_bped',$data);
+				}else{
+					$this->load->view('admin/msprint/student_marksheet_grade_pg',$data);
+				}
+
 			}else if($class->internal=="Y" && $data['exam_data']->university_mode!="PVT" ){ 
 				$this->load->view('admin/msprint/old_student_marksheet',$data);
 			}else{

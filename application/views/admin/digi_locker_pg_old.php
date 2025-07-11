@@ -17,32 +17,27 @@
 			<th>DOB</th>
 			<th>FNAME</th>
 			<th>MNAME</th>
-			<th>PHOTO</th>
-            <th>MRKS_REC_STATUS</th>
+			<!-- <th>PHOTO</th> -->
 			<th>RESULT</th>
+			<!-- <th>MRKS_REC_STATUS</th> -->
 			<th>YEAR</th>
 			<th>MONTH</th>
-			<th>DOI</th>
-            <th>CERT_NO</th>
+			<!-- <th>DOI</th> -->
 			<th>SEM</th>
 			<th>TOT_CREDIT</th>
 			<th>TOT_CREDIT_POINTS</th>
 			<th>TOT_GRADE_POINTS</th>
 			<th>PREV_TOT_CREDIT</th>
-			<th>PREV_TOT_GRADE_POINTS</th>
 			<th>GRAND_TOT_CREDIT_POINTS</th>
+			<!-- <th>PREV_TOT_CREDIT</th>
+			<th>PREV_TOT_GRADE_POINTS</th> -->
 			<th>GRAND_TOT_CREDIT</th>
-            <th>CGPA</th>
-			<th>REMARKS</th>
 			<th>SGPA</th>
 			<th>ABC_ACCOUNT_ID</th>
 			<th>TERM_TYPE</th>
-            <th>TOT_GRADE</th>
-            <th>TOT_CGPA</th>
-            <th>GRAND_TOT_GRADE_POINTS</th>
-            <th>TOT_CREDIT_HOURS</th>
 			<th>DEPARTMENT</th>
-			<!-- 
+			<!-- <th>CGPA</th>
+			<th>REMARKS</th>
 			
 			
 			
@@ -53,12 +48,6 @@
 			?>
 			<th>SUB<?=$sub?>NM</th>
 			<th>SUB<?=$sub?></th>
-            <th>SUB<?=$sub?>_CREDIT_HOURS</th>
-            <th>SUB<?=$sub?>_CE1_MRKS</th>
-            <th>SUB<?=$sub?>_CE2_MRKS</th>
-            <th>SUB<?=$sub?>_TH_MRKS</th>
-            <th>SUB<?=$sub?>_PR_MRKS</th>
-            <th>SUB<?=$sub?>_TOT</th>
 			<th>SUB<?=$sub?>_GRADE</th>
 			
 			<th>SUB<?=$sub?>_GRADE_POINTS</th>
@@ -128,11 +117,9 @@
 			<th>SUB11_CREDIT</th>
 			<th>SUB11_GRADE_POINTS</th>
 			<th>SUB11_CREDIT_POINTS</th> -->
-            <th>GRAND_TOT_CREDIT_HOURS</th>
-            <th>GPA</th>
-			 <th>ADMISSION_YEAR</th>
+			<!-- <th>ADMISSION_YEAR</th>
 			<th>TGPA</th>
-			<th>GRAND_TOT_CREDITS</th>
+			<th>GRAND_TOT_CREDITS</th> -->
 		</tr>
     </thead>
 	<tbody>
@@ -141,8 +128,7 @@
 				$sno=1;
             foreach ($rs as $student) {
                 $studentDetail = $this->Common_model->getRecordById('student','student_id',$student['student_id']);
-				// $course_detail = $this->Common_model->getRecordById('course','course_group_id',$student['course_group_id']);
-				$course_detail = $this->Common_model->getRecordById('course_group','id',$student['course_group_id']);
+				$course_detail = $this->Common_model->getRecordById('course','course_group_id',$student['course_group_id']);
 				$class_detail = $this->Common_model->getRecordById('class_master','id',$student['class_id']);
                 $gradesheetData = $this->GradeSheet_old_model_pg->view_result_grade_for_dg_locker($student['student_id'],$student['course_group_id'],$student['class_id'],$student['university_mode'],$student['id']);
 			
@@ -156,7 +142,6 @@
                $grand_tot_credit=0;
 			   $prev_tot_credit_point=0;
                $class_order = 1;
-               $admission_year = explode(" ", $studentDetail->session);
                $cgpa = number_format((float)$gradesheetData['agpa'], 2, '.', '');
                 foreach($classes as $cls){
                    $count++;
@@ -187,37 +172,26 @@
 				elseif($studentDetail->gender=='Female'){
 					$gender='F';
 				}
-
-				$course_name_full = $studentDetail->course_name; // e.g., "Master of Arts (Economics)"
-
-				// Use regex to extract course name and stream
-				preg_match('/^(.*?)\s*\((.*?)\)$/', $course_name_full, $matches);
-				$course_name = $matches[1] ?? $course_name_full;
-				$stream = $matches[2] ?? '';
-
-                echo "<tr><td>".$sno++."</td><td>".$studentDetail->center_name."  </td> <td>".$course_detail->paper_code_pattern."</td><td>".$course_name."</td><td>".$stream."</td> ";
+                echo "<tr><td>".$sno++."</td><td>".$studentDetail->center_name."  </td> <td>".$course_detail->course_code."</td><td>".$studentDetail->course_name."  </td> <td></td> ";
                 //<td>".$student['student_id']." </td>
-                echo "<td>".$session_data." </td><td>".$student['enrollment_no']." </td><td>".$student['roll_no']." </td><td>".$student['name']." </td>"."<td>".$gender." </td>"." <td>".$studentDetail->dob." </td><td>".$student['f_h_name']." </td><td>".$student['mother_name']." </td><td></td><td>O</td><td>".$gradesheetData['result']." </td><td>".$exam_arr[1]." </td><td>".$exam_arr[0]." </td><td></td><td></td><td>".$class_name[0]."</td><td>".$gradesheetData['tot_credit']." </td><td>". $gradesheetData['credit_point']." </td><td>".$gradesheetData['total_grade_point']."</td><td>".$prev_tot_crdit."</td><td></td><td>".($gradesheetData['credit_point']+$prev_tot_credit_point)."</td><td>".($gradesheetData['tot_credit'] +$prev_tot_crdit)."</td>";
+                echo "<td>".$session_data." </td><td>".$student['enrollment_no']." </td><td>".$student['roll_no']." </td><td>".$student['name']." </td>"."<td>".$gender." </td>"." <td>".$studentDetail->dob." </td><td>".$student['f_h_name']." </td><td>".$student['mother_name']." </td><td>".$gradesheetData['result']." </td><td>".$exam_arr[1]." </td><td>".$exam_arr[0]." </td><td>".$class_name[0]."</td><td>".$gradesheetData['tot_credit']." </td><td>". $gradesheetData['credit_point']." </td><td>".$gradesheetData['total_grade_point']."</td><td>".$prev_tot_crdit."</td><td>".($gradesheetData['credit_point']+$prev_tot_credit_point)."</td><td>".($gradesheetData['tot_credit'] +$prev_tot_crdit)."</td>";
                 ?>
-                <td></td>
-                <td></td>
+                
                 <td><?=number_format((float)$gradesheetData['agpa'], 2, '.', '')?></td>
 				<td><?=$studentDetail->abc_id?></td>
                 <?php
                
                 echo "<td>SEMESTER</td>";
-               echo "<td></td><td></td><td></td><td></td>";
+               
                 echo " <td>".$studentDetail->center_name."  </td> ";
-                
                 echo $gradesheetData['html'];
 				$td_count=0;
-				$td_count=$gradesheetData['papercount']*13;
+				$td_count=$gradesheetData['papercount']*7;
 			
-				 $loop_td_count=143-$td_count;
+				 $loop_td_count=113-36-$td_count;
 				for($c=1;$c<=$loop_td_count;$c++){
 					echo "<td> </td>";
 				}
-                echo "<td></td><td></td><td>".$admission_year[1]."</td><td></td><td></td>";
 				// $sess_arr=explode(" ",$student['session']);
 				// echo "<td>".$sess_arr[1]."</td>";
 				// echo "<td></td>";

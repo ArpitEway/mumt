@@ -1,6 +1,12 @@
 <div class="mt-3"><a href="<?=BASE_URL('admin/Admins/centers')?>" class="btn btn-outline-primary float-right">centers</a></div>
 <form method="post" action="" class="mt-3 ajaxForm" >
 	<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
+	 <?php
+    $center = $this->db->get_where("center", array("id" => $center_id))->row();
+    if ($center):
+    ?>
+       <h4 class="mt-3 mb-3" style="color: #781e19 !important;">Center Name: <?= htmlspecialchars($center->center_name); ?></h4>
+    <?php endif; ?>
 	<div class="table-responsive">
 		<table class="table table-hover">
 			<thead>
@@ -13,7 +19,6 @@
 			<tbody>
 				<?php
 				$i=1;
-				$center = $this->db->get_where("center", array("id" => $center_id))->row();
 				if($center){
 					$allot_course = str_replace(' ', '', $center->allot_course_group_id);
 					$allot_course_group_id = explode(",", $allot_course);
