@@ -229,6 +229,7 @@ class Dataentry extends CI_Controller {
 			}
 			$studentData = array(
 				'theory_marks' => $data['marks'][$key],
+				'entry_by' => $this->session->admin_id,
 			);
 			$where =  array(
 				'student_id' =>$value,
@@ -260,6 +261,7 @@ class Dataentry extends CI_Controller {
 			}
 			$studentData = array(
 				'theory_marks' => $data['marks'][$key],
+				'entry_by' => $this->session->admin_id,
 			);
 			$where =  array(
 				'student_id' =>$value,
