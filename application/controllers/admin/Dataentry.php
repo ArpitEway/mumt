@@ -47,6 +47,7 @@ class Dataentry extends CI_Controller {
 		$this->load->view('header',$titleData);
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();	
+		$this->db->order_by('course_name');
 		$data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id), course_name ',''.$this->exam_form.'="Y"');
 
 		$this->load->view('admin/Dataentry/mark_entry_course',$data);
@@ -58,7 +59,7 @@ class Dataentry extends CI_Controller {
 		$titleData = array('title' => 'Backlog Marks Entry Section'); 
 		$this->load->view('header',$titleData);
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
-		$data['hash_csrf'] = $this->security->get_csrf_hash();	
+		$data['hash_csrf'] = $this->security->get_csrf_hash();
 		$data['courses'] = $this->Common_model->get_record('backlog_student','DISTINCT (course_group_id)','exam_form="Y" and exam_year ="June 2025"');
 		$this->db->select('DISTINCT(exam_center.id),exam_center.*');
 		$this->db->from('exam_center');
