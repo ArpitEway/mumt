@@ -3270,6 +3270,7 @@ public function practical_assignment_marks_edit(){
 		$class_id = $this->input->post('class_id');
 		$data['mode'] = $this->input->post('mode');
 		$data['class'] = $this->Common_model->get_record('class_master','*',array("course_group_id"=>$course,"id"=>$class_id));
+		$this->db->order_by('paper_pattern', 'Asc');
 		$this->db->order_by('exam_date', 'Asc');
 		$this->db->order_by('exam_shift', 'Desc');
 		$this->db->order_by('paper_no', 'Asc');
