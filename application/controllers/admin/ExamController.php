@@ -4068,4 +4068,31 @@ public function getStudentData()
 	   }		
    }
 
+   public function marks_entry_count(){
+		if($this->session->account_type!='ExamController'){
+
+				redirect(base_url('admin/logout'));
+			}
+		$this->db->select('COUNT(*) as total, am.name as name');
+		$this->db->from('new_exam_form as n');
+		$this->db->join('admin_master as am','am.id = n.entry_by');
+		$this->db->where('n.entry_by IS NOT NULL');
+		$this->db->group_by('n.entry_by');
+		$data['marks_entry_count'] = $this->db->get()->result();
+
+		$this->db->select('COUNT(*) as total, am.name as name');
+		$this->db->from('backlog_exam_form as n');
+		$this->db->join('admin_master as am','am.id = n.entry_by');
+		$this->db->where('n.entry_by IS NOT NULL');
+		$this->db->group_by('n.entry_by');
+		$data['backlog_marks_entry_count'] = $this->db->get()->result();
+
+
+		$titleData = array('title' => 'Marks Entry Count');
+		$this->load->view('header',$titleData);	
+		$this->load->view('admin/marks_entry_by_admin',$data);
+		$this->load->view('footer');
+
+		}
+
 }// class

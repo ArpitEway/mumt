@@ -517,6 +517,7 @@ class Dataentry extends CI_Controller {
 				$where =  array('adhar_no' => $text_val);
 			}
 
+			$this->db->where('student.new_exam_form','Y');
 			$data['students'] = $this->Common_model->student_data($where);
 
 
