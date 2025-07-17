@@ -4078,7 +4078,7 @@ public function getStudentData()
 		$this->db->join('admin_master as am','am.id = n.entry_by');
 		$this->db->where('n.entry_by IS NOT NULL');
 		$this->db->group_by('n.entry_by');
-		$this->db->order_by('total', 'DESC');
+		$this->db->order_by('entry_by');
 		$data['marks_entry_count'] = $this->db->get()->result();
 
 		$this->db->select('COUNT(*) as total, am.name as name');
@@ -4086,7 +4086,7 @@ public function getStudentData()
 		$this->db->join('admin_master as am','am.id = n.entry_by');
 		$this->db->where('n.entry_by IS NOT NULL');
 		$this->db->group_by('n.entry_by');
-		$this->db->order_by('total', 'DESC');
+		$this->db->order_by('entry_by');
 		$data['backlog_marks_entry_count'] = $this->db->get()->result();
 
 
