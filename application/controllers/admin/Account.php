@@ -1154,7 +1154,9 @@
 			$this->db->where('p.payment_date >=', $startDate);
 			$this->db->where('p.payment_date <=', $endDate);
 			// $this->db->limit(2);
-			$this->db->order_by('s.student_id','asc');
+			$this->db->order_by('p.payment_date','asc');
+			$this->db->order_by('p.payment_time','asc');
+			$this->db->order_by('s.name','asc');
 			$studentData = $this->db->get()->result();
 			
 			 $data = array('studentData'=> $studentData,'name_csrf' => $this->security->get_csrf_token_name(),
