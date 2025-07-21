@@ -132,6 +132,7 @@ function callTheCallBackFunction() {
 <script src="<?=base_url()?>assets/js/pages/crud/file-upload/image-input.js"></script>
 <script src="<?=base_url()?>assets/theme/admin.js?token=<?=date('dmyhis')?>"></script>
 <script src="<?=base_url()?>assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js"></script>
+<script src="<?=base_url()?>assets/js/pages/crud/forms/widgets/bootstrap-daterangepicker.js"></script>
 
 
 

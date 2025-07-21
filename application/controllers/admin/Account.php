@@ -1063,7 +1063,7 @@
        
            
             // $this->db->limit(1);
-            $this->db->select('bs.student_id as student_id,s.name as name,s.f_h_name as fathername,s.course_name as course_name,bs.class_id,p.amount as amount,p.payment_date,p.txnId,p.payment_mode,p.receipt_number,p.id as payment_id');
+            $this->db->select('bs.student_id as student_id,s.name as name,s.f_h_name as fathername,s.course_name as course_name,bs.class_id,p.amount as amount,p.payment_date,p.txnId,p.payment_mode,p.receipt_number,p.id as payment_id.p.payment_date,p.fees_head');
             $this->db->from('`backlog_student` as bs');
             $this->db->join('`student` as s','s.student_id=bs.student_id');
             $this->db->join('online_payment_transaction as p', 'p.student_id=bs.student_id and p.class_id=bs.class_id');
@@ -1123,5 +1123,77 @@
             }
         }
     }
+
+	public function transaction_verification(){
+		// echo $this->session->userdata('admin_id');die;
+		 $data = array('name_csrf' => $this->security->get_csrf_token_name(),
+                'hash_csrf' => $this->security->get_csrf_hash(),
+            );
+		  $this->load->view('header',array('title' => 'Student Payment Transaction Verification'));
+            $this->load->view('admin/account_section/transaction_verification',$data);
+            $this->load->view('footer');
+	}
+
+	public function get_payment_transactions(){
+		if ($this->input->method() == "post") 
+		{
+			$course_group_id = 0;
+			$data = array();
+			$dt   = array();
+				
+			$startDate  = $this->input->post("startDate");
+			$endDate  = $this->input->post("endDate");
+
+			$this->db->select('s.name,s.university_mode as mode,s.course_name,s.session,cg.form_fees,cg.admission_fees,cg.program_fees,cg.exam_fees,cg.p_admission_fees,cg.p_program_fees,cg.p_exam_fees,p.*');
+			$this->db->from('`student` as s');
+			$this->db->join('online_payment_transaction as p', 'p.student_id=s.student_id');
+			$this->db->join('course as cg', 'cg.course_group_id=p.course_group_id and cg.session=s.session');
+			$this->db->where('p.payment','Y');
+			$this->db->where('p.verified',0);
+			$this->db->where('p.payment_status','success');
+			$this->db->where('p.payment_date >=', $startDate);
+			$this->db->where('p.payment_date <=', $endDate);
+			// $this->db->limit(2);
+			$this->db->order_by('s.student_id','asc');
+			$studentData = $this->db->get()->result();
+			
+			 $data = array('studentData'=> $studentData,'name_csrf' => $this->security->get_csrf_token_name(),
+                'hash_csrf' => $this->security->get_csrf_hash(),
+            );
+			// $data = array('complaints' => $complaints ,'name_csrf' => $this->security->get_csrf_token_name(),
+			// 	'hash_csrf' => $this->security->get_csrf_hash(),
+			// 	'centerData' => $centerData,
+			// );
+
+			if($studentData){
+				$dt =  $this->load->view('admin/account_section/getPaymentTransaction',$data,true);
+				$status = true;
+			}else{
+				$dt = "<tr><td colspan='10' class='text-center'>No Records Found</td></tr>";
+				$status = false;
+			}
+			echo json_encode(array(
+			"status" => $status,
+			"data" => $dt
+			));
+		}	
+	
+	}
+
+	public function verify_payment_transaction(){
+
+			$id = $this->input->post('id');
+			$user_id = $this->session->userdata('admin_id');
+			$verified_at = date('Y-m-d H:i:s');
+			
+        	$settle_date = $this->input->post('settle_date');
+			$update = $this->Common_model->updateRecordByConditions('online_payment_transaction',array('id'=>$id),array('settle_date'=> $settle_date,'verified_by'=>$user_id,'verified_at'=>$verified_at,'verified'=>1));
+
+			if($update){
+				echo json_encode(array('status' => 'success', 'message' => 'Transaction Verified Successfully'));
+			}else{
+				echo json_encode(array('status' => 'error', 'message' => 'Something went wrong, please try again later'));
+			}
+		}
 
 }
