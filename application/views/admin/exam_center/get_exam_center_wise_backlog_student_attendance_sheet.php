@@ -73,7 +73,7 @@
 			<div class="BoxC border- padding">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>ATTENDANCE SHEET OF EXAM FOR ANNUAL/SEMESTER BACKLOG EXAMINATION OF <?= (in_array($student->class_id,array(137,149,183,185,191,138,184,192,187,143,146,139,144,188,145,147,148,150,186,141,151,142,190,264,140,189)))?'July':'June'?> 2025							<!-- Attendance Sheet Examination  -->
+						<h5>ATTENDANCE SHEET OF EXAM FOR ANNUAL/SEMESTER BACKLOG EXAMINATION OF <?= (in_array($student->class_id,array(137,149,183,185,191,138,184,192,187,143,146,139,144,188,145,147,148,150,186,141,151,142,190,264,140,189,262,268,270,256,258,260,317,173,174,175,177,180,300,301)))?'July':'June'?> 2025							<!-- Attendance Sheet Examination  -->
 							
 						</h5>
 						
@@ -176,7 +176,7 @@
 						<td><?php echo date("d-m-Y", strtotime(($student->mode == 'PVT' && in_array($student->class_id,$classIdsRegOnly))?$paper->pvt_exam_date:$paper->exam_date)); ?></td>
 					
 					<td><?php
-						$class_ids = array(104,101,107,110,116,119,273,125,128,131,134,162,163,164,165,283,285,287,289,310,291,293,295,274,297,168,169,170,171,214,106,103,109,112,118,121,127,130,133,136,264,137,149,183,185,191,138,184,192,187,143,146,139,144,188,145,147,148,150,186,141,151,142,190,140,189);
+						$class_ids = array(104,101,107,110,116,119,273,125,128,131,134,162,163,164,165,283,285,287,289,310,291,293,295,274,297,168,169,170,171,214,106,103,109,112,118,121,127,130,133,136,264,137,149,183,185,191,138,184,192,187,143,146,139,144,188,145,147,148,150,186,141,151,142,190,140,189,173,174,175,177,180);
 						if($student->mode == 'PVT' && in_array($student->class_id,$classIdsRegOnly)){
 							if($paper->pvt_exam_shift=='Afternoon' && in_array($student->class_id,$class_ids)){
 									echo '3:00 PM To 6:00 PM';		

@@ -142,7 +142,10 @@ foreach($papers as $pap)
 
 
          $where="`e`.`paper_code` = '".$paper->paper_code."' AND `s`.`class_id` = '".$paper->class_id."'  AND s.course_group_id='".$paper->course_group_id."'  AND s.exam_center_id='".$exam_center."' AND exam_year='June 2025'";
-         $sql_backlog="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND   `s`.`course_group_id` = `e`.`course_group_id`  join paper_master as p on s.class_id=p.class_id and s.course_group_id=p.course_group_id  and `e`.`paper_code` = p.paper_code WHERE   ".$where."  and exam_form in ('Y') and `e`.status= 'B'";
+         $sql_backlog="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` AND   `s`.`course_group_id` = `e`.`course_group_id`  join paper_master as p on s.class_id=p.class_id and s.course_group_id=p.course_group_id  and `e`.`paper_code` = p.paper_code WHERE   ".$where."  and exam_form in ('Y') and `e`.status= 'B' AND (
+            (s.class_id IN (104, 107, 134) AND s.mode = 'REG') OR
+            (s.class_id NOT IN (104, 107, 134) AND s.mode IN ('REG', 'PVT'))
+        )";
          
         
          $backlog_query = $this->db->query($sql_backlog);

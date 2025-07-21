@@ -32,7 +32,7 @@ color:red;
                 $this->db->order_by('mode','desc');
                 $this->db->order_by('class_name','ASC');
                 // $this->db->where_in('id',array(193,217,197,231,203,237,211,275,277,279,281,221,247,223,249,225,251,263));
-                $class_master = $this->db->get_where('class_master', array('course_group_id' => $course_detail['course_group_id'] ,'old_exam_form_permission' => 'Y'))->result_array();
+                $class_master = $this->db->get_where('class_master', array('course_group_id' => $course_detail['course_group_id'] ,'exam_form_permission' => 'Y'))->result_array();
                 //exam_form_permission ,'' => 'Y'
              
                 

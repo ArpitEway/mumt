@@ -1439,9 +1439,19 @@ class Center extends CI_Controller {
 		}
 		$this->db->order_by('id');
 		if($student['university_mode'] != "PVT"){
-		
+		if($student['session'] >='July 2024' && $student['class_id'] == 268){
+			$this->db->where('paper_pattern','NEW');
+		}elseif($student['class_id'] == 268){
+			$this->db->where('paper_pattern','OLD');
+		}
 		$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory" and cbcs_paper="'.$cbcs.'"');
-		$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id join paper_master as m on m.id=p.paper_id where g.class_id='.$student['class_id'].' and cbcs_paper="'.$cbcs.'"  Order by g.id,p.sub_group_id,p.id')->result();
+		$condition = '';
+		if($student['session'] >='July 2024' && $student['class_id'] == 268){
+			$condition = ' and group_pattern="NEW"';
+		}elseif($student['class_id'] ==268){
+			$condition = ' and group_pattern="OLD"';
+		}
+		$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id join paper_master as m on m.id=p.paper_id where g.class_id='.$student['class_id'].' and cbcs_paper="'.$cbcs.'" '.$condition.' Order by g.id,p.sub_group_id,p.id')->result();
 		//echo $this->Common_model->last_query();
 		}else{
 			$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory" and type="theory" and cbcs_paper="'.$cbcs.'"');
@@ -3260,6 +3270,7 @@ public function practical_assignment_marks_edit(){
 		$class_id = $this->input->post('class_id');
 		$data['mode'] = $this->input->post('mode');
 		$data['class'] = $this->Common_model->get_record('class_master','*',array("course_group_id"=>$course,"id"=>$class_id));
+		$this->db->order_by('paper_pattern', 'Asc');
 		$this->db->order_by('exam_date', 'Asc');
 		$this->db->order_by('exam_shift', 'Desc');
 		$this->db->order_by('paper_no', 'Asc');
