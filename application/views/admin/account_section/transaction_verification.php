@@ -78,9 +78,15 @@ $(document).on("click","#submit_btn",function(){
 		 
 });
 
- function verify(id) {
-            $('#uid').val(id);
-        }  // alert(id);
+ $(document).on("click", ".pay", function() {
+ 
+            $('#uid').val($(this).attr("data-id"));
+            $('#form_no').html($(this).attr("data-form"));
+            $('#student_name').html($(this).attr("data-student"));
+            $('#payment_date').html(moment($(this).attr("data-date")).format('DD-MM-YYYY'));
+            $('#total_amount').html($(this).attr("data-amount"));
+            $('#fees_head').html($(this).attr("data-head"));
+        });
 
         $(document).on("click", "#payment_submit", function() {
             var csrfName = $('.csrfname').attr('name');

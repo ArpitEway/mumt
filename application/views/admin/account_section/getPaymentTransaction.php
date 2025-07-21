@@ -90,7 +90,7 @@
                 <td><?= $backlog?></td>
                 <td><?=$late?></td>
                 <td><?= $student->amount?></td>
-                <td><button type="reset" class="btn btn-success mr-4"  data-toggle="modal" data-target="#kt_datepicker_modal"  onclick="verify(<?=$student->id?>)">Verify</button></td>
+                <td><button type="reset" class="btn btn-success mr-4 pay"  data-toggle="modal" data-id="<?=$student->id?>" data-head="<?= $student->fees_head?>" data-date="<?= $student->payment_date?>" data-amount="<?=$student->amount ?>" data-form="<?=$student->student_id?>" data-student="<?= $student->name?>" data-target="#kt_datepicker_modal" >Verify</button></td>
                 </tr>
                 <?php
             }
@@ -113,7 +113,36 @@
 <form method="POST" class="d-block" id="ajaxForm" action="">
   <div class="card-body">
 <input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-
+    <div class="form-group row">
+    <label for="example-date-input" class="col-5 col-form-label">Form No</label>
+    <div class="col-7 mt-2">
+       <p id="form_no"></p>
+    </div>
+   </div>
+    <div class="form-group row">
+     <label for="example-date-input" class="col-5 col-form-label">Student Name</label>
+     <div class="col-7 mt-2">
+         <p id="student_name"></p>
+     </div>
+    </div>
+     <div class="form-group row">
+    <label for="example-date-input" class="col-5 col-form-label">Fees Head</label>
+    <div class="col-7 mt-2">
+       <p id="fees_head"></p>
+    </div>
+   </div>
+    <div class="form-group row">
+    <label for="example-date-input" class="col-5 col-form-label">Total Amount</label>
+    <div class="col-7 mt-2">
+       <p id="total_amount"></p>
+    </div>
+   </div>
+    <div class="form-group row">
+    <label for="example-date-input" class="col-5 col-form-label">Payment Date</label>
+    <div class="col-7 mt-2">
+       <p id="payment_date"></p>
+    </div>
+   </div>
   
    <div class="form-group row">
     <label for="example-date-input" class="col-5 col-form-label">Settle Date</label>

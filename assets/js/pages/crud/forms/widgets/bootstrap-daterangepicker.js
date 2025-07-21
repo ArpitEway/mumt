@@ -4,6 +4,17 @@ var KTBootstrapDaterangepicker = function () {
 
     // Private functions
     var demos = function () {
+    var today = moment();
+    var currentYear = today.year();
+
+    // If today's date is before April 1st, financial year starts from April 1st of the *previous* year
+    var financialYearStart = today.isBefore(moment(currentYear + '-04-01', 'YYYY-MM-DD'))
+        ? moment((currentYear - 1) + '-04-01', 'YYYY-MM-DD')
+        : moment(currentYear + '-04-01', 'YYYY-MM-DD');
+
+    var minDate = financialYearStart;
+
+
         // minimum setup
         $('#kt_daterangepicker_1, #kt_daterangepicker_1_modal').daterangepicker({
             buttonClasses: ' btn',
@@ -13,9 +24,14 @@ var KTBootstrapDaterangepicker = function () {
 
         // input group and left alignment setup
         $('#kt_daterangepicker_2').daterangepicker({
+            minDate: minDate,
+            maxDate: today, // Set max date to one year from today
             buttonClasses: ' btn',
             applyClass: 'btn-primary',
             cancelClass: 'btn-secondary',
+            maxSpan: {
+              days: 30
+            },
             locale: {
             cancelLabel: 'Clear',
             format: 'YYYY-MM-DD' // 🔄 Set format here
