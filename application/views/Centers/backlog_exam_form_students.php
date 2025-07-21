@@ -44,7 +44,7 @@
             // }
                $pending="";
 				if(in_array($this->session->center_id, $center_ids) ){
-                     $where=array('center_id'=>$student->center_id,'exam_session'=>'June 2025','fees_head'=>'Backlog Exam Fees','payment'=>'Y','student_id'=>$student->student_id);
+                     $where=array('center_id'=>$student->center_id,'exam_session'=>'June 2025','fees_head'=>'Backlog Exam Fees','payment'=>'Y','student_id'=>$student->student_id,'class_id'=>$student->class_id);
                    $paid= $this->Common_model->getRecordByWhere('online_payment_transaction',$where);
                    if($paid){
                     //continue;
