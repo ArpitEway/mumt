@@ -148,7 +148,7 @@
     <label for="example-date-input" class="col-5 col-form-label">Settle Date</label>
     <div class="col-7">
         <input type="hidden" value="" name="uid" id="uid">
-    <input class="form-control" type="date"  id="example-date-input" name="settle_date" required>
+   <input class="form-control" type="date" id="example-date-input" name="settle_date" max="<?php echo date('Y-m-d'); ?>" required>
     </div>
    </div>
   
