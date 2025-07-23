@@ -215,9 +215,19 @@
                  </div> 
                  <div class="col-md-2">
                     <label class="text-heading mt-3"><?= $res->exam_result;?></label>
-                    <?php if($res->exam_result == 'FAIL' && $this->session->account_type == 'Admins' && (($res->agpa_sgpa>=4 && $res->agpa_sgpa>=0 ) || $res->agpa_sgpa=='' )){?>
+                    <?php 
+                     $fail_count =0;
+                      if($res->course_group_id == '76'){
+                            $fail_count = $this->Common_model->getCountByWhere('old_result_data',array('exam_data_id' =>$res->id,'result'=>'FAIL','type'=>"Theory"));
+                        }
+                    
+                    if(($res->exam_result == 'FAIL' && $this->session->account_type == 'Admins' && (($res->agpa_sgpa>=4 && $res->agpa_sgpa>=0 ) || $res->agpa_sgpa=='' ) && $res->course_group_id != '76') || ($res->exam_result == 'FAIL' && $this->session->account_type == 'Admins' && $res->course_group_id =='76' && $fail_count== 1)){
+                    
+                           ?>
+                       
                         <label class="text-heading mt-3"><a href="<?= base_url( 'admin/scripts/Postexam/backlog_marks_add_scripts/'.$student->student_id.'/'.$res->class_id.'/'.$res->exam_year.'/'.$res->id.'')?>" target="_blank"><i class="fa fa-plus"></i></a></label>
-                        <?php } ?>    
+                        <?php
+                      } ?>    
                  </div> 
               <div class="col-md-2 text-heading mt-3">
                     <?php 

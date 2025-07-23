@@ -19,6 +19,12 @@
          $paper_details = $this->Common_model->getRecordByWhere('old_result_data',array('student_id' => $row->student_id,'class_id'=>$row->class_id,'exam_data_id'=>$row->id,'type'=>'theory'));
          $paperCount = $this->Common_model->getCountByWhere('old_result_data',array('student_id' => $row->student_id,'class_id'=>$row->class_id,'exam_data_id'=>$row->id,'type'=>'theory'));
          $absCount = $this->Common_model->getCountByWhere('old_result_data',array('student_id' => $row->student_id,'class_id'=>$row->class_id,'exam_data_id'=>$row->id,'type'=>'theory','theory_marks'=>'ABS'));
+         $fail_count =0;
+          if($row->course_group_id == '76'){
+              $fail_count = $this->Common_model->getCountByWhere('old_result_data',array('exam_data_id' =>$row->id,'result'=>'FAIL','type'=>"Theory"));
+
+  
+          }
         // if($paperCount!=$absCount){
          ?>
          <tr>
@@ -27,7 +33,7 @@
           <td><?php echo $row->roll_no; ?></td>
           <td><?php echo $row->name; ?></td>
           <td><?php echo $row->course_name ; ?></td>
-          <td> <?php  if($paperCount==$absCount || ( $row->agpa_sgpa<4 && $row->marks_pattern=="GRADE")  ){?> 
+          <td> <?php  if($paperCount==$absCount || ( $row->agpa_sgpa<4 && $row->marks_pattern=="GRADE") || ($row->course_group_id =='76' && $fail_count >1) ){?> 
             <a class="text-danger" href="<?=base_url('admin/scripts/Postexam/set_demo/'.$row->student_id.'/'.$row->class_id.'/'.$row->center_id)?>" target="_blank">Set Demo</a> <?php 
               $where = array('student_id'=>$row->student_id,'new_exam_form'=>'D');
               if(!in_array($row->center_id,$dept_ids) && $className=='II SEM'){
@@ -52,6 +58,15 @@
               ####### Add Backlog Script For Main Exam End #######
 
                  $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$row->class_id,'student_id'=>$row->student_id,'exam_year'=>'June 2024'));
+
+                 $fail_count =0;
+                if($students[0]->course_group_id == '76'){
+                    $fail_count = $this->Common_model->getCountByWhere('old_result_data',array('exam_data_id' =>$students[0]->id,'result'=>'FAIL','type'=>"Theory"));
+
+                    if($fail_count > 1){
+                        continue; //for more than one fail in theory paper
+                    }
+                }
 
                  $whereResult = array("class_id"=>$students[0]->class_id ,"student_id"=>$students[0]->student_id, 'exam_data_id' => $students[0]->id);
                 $old_result_datas = $this->Common_model->getRecordByWhere("old_result_data",$whereResult );

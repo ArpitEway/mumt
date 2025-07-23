@@ -441,6 +441,15 @@ class Postexam extends CI_Controller {
             $studentall = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$class_id,'exam_result'=>'Fail','exam_year'=>'January 2025','exam_status'=>'B'));
             foreach($studentall as $key=>$students){
               //  print_r($students); die;
+                $fail_count =0;
+                if($students->course_group_id == '76'){
+                    $fail_count = $this->Common_model->getCountByWhere('old_result_data',array('exam_data_id' =>$students->id,'result'=>'FAIL','type'=>"Theory"));
+
+                    if($fail_count > 1){
+                        continue; //for more than one fail in theory paper
+                    }
+                }
+                       
             $whereResult = array("class_id"=>$students->class_id ,"student_id"=>$students->student_id, 'exam_data_id' => $students->id);
             $old_result_datas = $this->Common_model->getRecordByWhere("old_result_data",$whereResult );
                 $data = array(
@@ -516,7 +525,7 @@ class Postexam extends CI_Controller {
 
            $this->db->select('course_name,class_id, COUNT(student_id) as cnt');
            $this->db->where('exam_year', 'June 2024');
-          // $this->db->where('exam_year', 'January 2024');
+        //   $this->db->where('exam_year', 'January 2025');
            $this->db->where('exam_result', 'FAIL');
            $this->db->where('exam_status', 'R');
            $this->db->where_in('class_id',$class_id );
@@ -538,7 +547,7 @@ class Postexam extends CI_Controller {
         $this->db->select('*');
         $this->db->from('old_exam_data');
         $this->db->where('exam_year', 'June 2024');
-       // $this->db->where('exam_year', 'January 2024');
+    //    $this->db->where('exam_year', 'January 2025');
         $this->db->where('exam_result', 'FAIL');
         $this->db->where('exam_status', 'R');
         //$this->db->where('id>', '52355');
@@ -574,6 +583,15 @@ class Postexam extends CI_Controller {
          $this->db->where('exam_year', 'June 2024');
         $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$class_id,'student_id'=>$student_id));
         //,'exam_year'=>'June 2024'
+
+        $fail_count =0;
+        if($students[0]->course_group_id == '76'){
+            $fail_count = $this->Common_model->getCountByWhere('old_result_data',array('exam_data_id' =>$students[0]->id,'result'=>'FAIL','type'=>"Theory"));
+            if($fail_count > 1){
+              die;
+            }
+           
+        }
         $whereResult = array("class_id"=>$students[0]->class_id ,"student_id"=>$students[0]->student_id, 'exam_data_id' => $students[0]->id);
         $old_result_datas = $this->Common_model->getRecordByWhere("old_result_data",$whereResult );
             $data = array(
