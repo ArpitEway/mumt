@@ -68,7 +68,7 @@ class Otherscript extends CI_Controller {
 		$papers = $this->Common_model->get_record('paper_master','*',$where);
 
 		foreach ($papers as $paper) {
-			$where = ' old_class_id = "'.$paper['class_id'].'" and temp_exam_form="Y"  and university_mode="PVT"  and  exam_pattern="GRADE" and student_id in (312717	,
+			$where = ' class_id = "'.$paper['class_id'].'" and temp_exam_form="Y"  and university_mode="PVT"  and  exam_pattern="GRADE" and student_id in (312717	,
 367873	,
 370491	,
 371880	,
