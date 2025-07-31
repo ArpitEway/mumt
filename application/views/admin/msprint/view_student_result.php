@@ -354,6 +354,7 @@
 
 <script>
      $('.all_checked_permitt').on('change', function () {
+         $('.all_checked_permitt').not(this).prop('checked', false);
     let name_csrf = $('.csrfname').attr('name');
     let hash_csrf = $('.csrfname').attr('value');
 

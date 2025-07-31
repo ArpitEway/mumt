@@ -271,11 +271,9 @@ class MsPrint extends CI_Controller {
 			if($remark == 'Marks Change After Revaluation'){
 				if(count($this->input->post('paper_codes')) != 0){
 					$paper_codes = implode(',', $this->input->post('paper_codes'));
-				}else{
-					$paper_codes = '';
+					$remark = $remark.' in '.$paper_codes;
 				}
-				
-				$remark = $remark.' in '.$paper_codes;
+	
 			}
 			
 			$updateData = array(
