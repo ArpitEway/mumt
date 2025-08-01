@@ -717,8 +717,8 @@ class Postexam extends CI_Controller {
           $this->db->where('course_complete', 'N');
           $this->db->where('upload_result', 'Y');
           $this->db->group_by('old_class_id');          
-          $data['courses'] = $this->db->get('student')->result();
-          // $data['courses'] = $this->db->get('student_result_june_2024 as student')->result();
+          // $data['courses'] = $this->db->get('student')->result();
+          $data['courses'] = $this->db->get('student_result_june_2024 as student')->result();
           $this->load->view('header',array('title' => ''));
           $this->load->view('admin/script/course_complete_status',$data);
           $this->load->view('footer');
@@ -730,11 +730,11 @@ class Postexam extends CI_Controller {
             $dept_ids = array(10,13,20,21,22,23,24,25,26,27,28,29,30);
             $class_ids=array(103,106,109,112,118,121,127,130,133,136);
             if((in_array($class_id, $class_ids))){
-                $this->db->where_not_in('center_id',$dept_ids);
+                // $this->db->where_not_in('center_id',$dept_ids);
                 // $this->db->where_in('center_id',$dept_ids);
             }
-            $students = $this->Common_model->getRecordByWhere("student",array("old_class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'Y','course_complete'=>'N','promote!='=>"Y"));
-            // $students = $this->Common_model->getRecordByWhere("student_result_june_2024",array("old_class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'Y','course_complete'=>'N','promote!='=>"Y"));
+            // $students = $this->Common_model->getRecordByWhere("student",array("old_class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'Y','course_complete'=>'N','promote!='=>"Y"));
+            $students = $this->Common_model->getRecordByWhere("student_result_june_2024",array("old_class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'Y','course_complete'=>'N','promote!='=>"Y"));
             // $this->Common_model->last_query();
             $this->db->where_not_in('id',[322,323,324,325,326,327,328,329,330,331]);
             $courseClassData = $this->Common_model->getRecordByWhere("class_master",array("course_group_id"=>$course_group_id,"mode"=>$classData->mode,"class_name!="=>'IV Year'));
@@ -756,7 +756,7 @@ class Postexam extends CI_Controller {
                     );
                     $where = array('student_id'=>$student->student_id);
                     $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
-                    // $update =$this->Common_model->updateRecordByConditions('student_result_june_2024',$where,$data);
+                    $update =$this->Common_model->updateRecordByConditions('student_result_june_2024',$where,$data);
                         echo "<br>&nbsp;&nbsp;".$i++."  &nbsp;&nbsp;&nbsp;  ".$student->student_id. "   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   ".$student->enrollment_no;
                 }
                
