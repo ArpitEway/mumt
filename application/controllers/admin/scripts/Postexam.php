@@ -1488,7 +1488,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
           $this->db->where(array("course_complete"=>'N','backlog_student.upload_result' => 'Y','backlog_student.exam_form'=>'Y','backlog_student.exam_year'=>$exam_year,'backlog_student.class_id'=>$class_id)); 
           $students =$this->db->get()->result_array();
          
-        $classes= $this->Common_model->getRecordByWhere('class_master',array('course_group_id'=>$class->course_group_id,'mode'=>$class->mode,'class_name!'=>'IV Year'));
+        $classes= $this->Common_model->getRecordByWhere('class_master',array('course_group_id'=>$class->course_group_id,'mode'=>$class->mode,'class_name!='=>'IV Year'));
         $class_count = count($classes);  
         $sno =1; 
         foreach($students as $student){
