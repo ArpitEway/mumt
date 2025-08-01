@@ -718,7 +718,7 @@ class Postexam extends CI_Controller {
           $this->db->where('upload_result', 'Y');
           $this->db->group_by('old_class_id');          
           // $data['courses'] = $this->db->get('student')->result();
-          $data['courses'] = $this->db->get('student_result_june_2024')->result();
+          $data['courses'] = $this->db->get('student_result_june_2024 as student')->result();
           $this->load->view('header',array('title' => ''));
           $this->load->view('admin/script/course_complete_status',$data);
           $this->load->view('footer');
