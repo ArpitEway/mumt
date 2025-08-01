@@ -737,7 +737,7 @@ class Postexam extends CI_Controller {
             $students = $this->Common_model->getRecordByWhere("student_result_june_2024",array("old_class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'Y','course_complete'=>'N','promote!='=>"Y"));
             // $this->Common_model->last_query();
             $this->db->where_not_in('id',[322,323,324,325,326,327,328,329,330,331]);
-            $courseClassData = $this->Common_model->getRecordByWhere("class_master",array("course_group_id"=>$course_group_id,"mode"=>$classData->mode));
+            $courseClassData = $this->Common_model->getRecordByWhere("class_master",array("course_group_id"=>$course_group_id,"mode"=>$classData->mode,"class_name!="=>'IV Year'));
           
             $i=1;
             echo "<br>&nbsp;&nbsp; # &nbsp;&nbsp; Form Number  &nbsp;&nbsp; Enrollment Number";
