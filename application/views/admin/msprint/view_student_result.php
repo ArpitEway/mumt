@@ -3,7 +3,7 @@
         font-size: 15px;
      }
 </style>
- <div class="card card-custom my-10 details-bg" id="profile">	
+<div class="card card-custom my-10 details-bg" id="profile">	
  	<div class="container-fluid profile mt-5"> 
  		<h4 class="card-title">Student Details</h4>
  			<div class="row ">
@@ -334,6 +334,13 @@
               
                 </div>
             </div>
+              <div class="form-group row d-none" id="papers_div">
+                <label for="example-date-input" class="col-5 col-form-label">Paper Codes</label>
+                 <div class="col-7" id="code_div">
+    
+                    </div>
+              </div>
+           
            <div class="card-footer pb-0">
             <div class="row justify-content-center">
             
@@ -344,7 +351,47 @@
             </div>
             </form>
 </div>
+
 <script>
+     $('.all_checked_permitt').on('change', function () {
+         $('.all_checked_permitt').not(this).prop('checked', false);
+    let name_csrf = $('.csrfname').attr('name');
+    let hash_csrf = $('.csrfname').attr('value');
+
+    if ($(this).is(':checked')) {
+        if ($(this).val() === 'Marks Change After Revaluation') {
+            $('#papers_div').removeClass('d-none');
+
+            $.ajax({
+                url: site_url + 'admin/<?= $this->session->account_type; ?>/get_paper_code',
+                type: 'POST',
+                dataType: 'JSON',
+                data: {
+                    id: $('#record_id').val(),
+                    [name_csrf]: hash_csrf // CSRF token key-value
+                },
+                success: function (resp) {
+                    if (resp.data) {
+                        $('#code_div').html(resp.data);
+                    } else {
+                        $('#code_div').html('<div class="text-danger">No data found</div>');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error:', error);
+                    $('#code_div').html('<div class="text-danger">Something went wrong</div>');
+                }
+            });
+        } else {
+            $('#papers_div').addClass('d-none');
+            $('#code_div').html('');
+        }
+    } else {
+        $('#papers_div').addClass('d-none');
+        $('#code_div').html('');
+    }
+});
+
     $('#marksheet_date').mask('99/99/9999',{placeholder:"dd/mm/yyyy"});
     $(document).on('click','.marksheet_update',function(){
 	    var name_csrf = $(this).attr('data-name_csrf');
@@ -398,9 +445,10 @@
                },
 		success: function (data) {
 		if(data){
-			console.log(data);
 			$('#kt_datepicker_modal').modal('toggle');
 				toastr.success("Date Updated Successfully!");
+                $('#papers_div').addClass('d-none');
+                $('#code_div').html('');
 		}else{
 			toastr.error("Something wrong");
 		}
@@ -413,4 +461,9 @@
 		});	
 	
 });	
+$('#kt_datepicker_modal').on('hidden.bs.modal', function () {
+    $('#papers_div').addClass('d-none');
+    $('#code_div').html('');
+    $('#ajaxForm')[0].reset();
+});
 </script>    

@@ -1701,7 +1701,7 @@ class ExamController extends CI_Controller {
 			$data['hash_csrf'] = $this->security->get_csrf_hash();
 			$this->db->select('DISTINCT(exam_center_id) ');
 			$this->db->from('student');
-			$where = array('new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>29);
+			$where = array('new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>36);
 			$this->db->where($where);
 			$ecenters=$this->db->get()->result_array();
 			//print_r($this->db->last_query()); 
@@ -1735,7 +1735,7 @@ class ExamController extends CI_Controller {
 		$this->db->from('student');
 		$this->db->order_by("roll_no", "asc");
 		// if($exam_center!="All")
-		$where = array('exam_center_id'=>$exam_center,'new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>29);
+		$where = array('exam_center_id'=>$exam_center,'new_exam_form'=>'Y', 'roll_no!=' => 0 ,'notification_no'=>36);
 		$this->db->where($where);	
 		$data['exam_center_students'] = $this->db->get()->result();
 		echo $this->load->view('admin/exam_center/get_exam_center_wise_student_attendance_sheet',$data, TRUE);
@@ -1759,7 +1759,7 @@ class ExamController extends CI_Controller {
 			$this->db->where('exam_form','Y');
 			$this->db->where('exam_year','June 2025');
 			$this->db->where('roll_no!=',0);
-			$this->db->where('notification_no','29');
+			$this->db->where('notification_no','36');
 			$this->db->order_by('exam_center_code', "asc");
 			$data['exam_centers'] = $this->db->get()->result();
 
@@ -1775,7 +1775,7 @@ class ExamController extends CI_Controller {
 		$this->db->join('student', 'backlog_student.student_id = student.student_id ');
 		$this->db->order_by("roll_no", "asc");
 		
-		$where = array('backlog_student.exam_center_id'=>$exam_center,'backlog_student.exam_form'=>'Y', 'backlog_student.roll_no!=' => 0 ,'backlog_student.notification_no'=>29,'backlog_student.exam_year'=>'June 2025');
+		$where = array('backlog_student.exam_center_id'=>$exam_center,'backlog_student.exam_form'=>'Y', 'backlog_student.roll_no!=' => 0 ,'backlog_student.notification_no'=>36,'backlog_student.exam_year'=>'June 2025');
 		$this->db->where($where);	
 		$data['exam_center_students'] = $this->db->get()->result();
 		echo $this->load->view('admin/exam_center/get_exam_center_wise_backlog_student_attendance_sheet',$data, TRUE);
@@ -2502,7 +2502,7 @@ public function getStudentData()
 			$this->db->where_in('id',$ids);
 		$this->db->order_by('center_code', "asc");
 		$data['centers'] = $this->db->get()->result();
-		$data['examTitle'] = "July 2023";
+		$data['examTitle'] = "June 2024";
 		
 		echo $this->load->view('admin/examController/get_center_wise_marksheet_dispatchlist',$data, TRUE);
 	}
@@ -2548,7 +2548,7 @@ public function getStudentData()
 		$this->db->where_in('id',$ids);
 		$this->db->order_by('center_code', "asc");
 		$data['centers'] = $this->db->get()->result();
-		$data['examTitle'] = "July 2023";
+		$data['examTitle'] = "June 2024";
 
 		
 		echo $this->load->view('admin/examController/get_center_wise_marksheet_dispatchlist_backlog',$data, TRUE);
@@ -2598,7 +2598,7 @@ public function getStudentData()
 			$this->db->where_in('id',$ids);
 		$this->db->order_by('center_code', "asc");
 		$data['centers'] = $this->db->get()->result();
-		$data['examTitle'] = "July 2023";
+		$data['examTitle'] = "June 2024";
 		
 		echo $this->load->view('admin/examController/get_center_wise_marksheet_dispatch_rolllist',$data, TRUE);
 	}
@@ -2644,7 +2644,7 @@ public function getStudentData()
 			$this->db->where_in('id',$ids);
 		$this->db->order_by('center_code', "asc");
 		$data['centers'] = $this->db->get()->result();
-		$data['examTitle'] = "July 2023";
+		$data['examTitle'] = "June 2024";
 		echo $this->load->view('admin/examController/get_center_wise_marksheet_dispatch_rolllist_backlog',$data, TRUE);
 	}
 
@@ -3701,14 +3701,14 @@ public function getStudentData()
 
     public function student_final_year_exam_detail(){
         $data = array();
-		$data['exam_session'] = "July 2023";
+		$data['exam_session'] = "June 2024";
         $data['mode'] = "REG";
         $data['pattern'] = "MARKS";
         $this->db->select('cm.id,cm.class_name, cm.course_group_id,cg.course_name');
         $this->db->from('class_master as cm');
         $this->db->join('course_group as cg','cg.id =cm.course_group_id');
         $this->db->join('old_exam_data as od','cm.id =od.class_id');
-		$this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
+		// $this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
 		// $this->db->where_not_in('od.class_id', array(155,182));
         $this->db->where(array('cm.last_class'=>'L','od.exam_year'=>$data['exam_session'],'od.university_mode'=>$data['mode'], 'od.marks_pattern'=>$data['pattern']));//'od.exam_status'=>'R',
         $this->db->group_by('cg.course_name');
@@ -3718,12 +3718,13 @@ public function getStudentData()
         $this->db->from('class_master as cm');
         $this->db->join('old_exam_data as od','cm.id =od.class_id');
         $this->db->join('student as st','st.student_id =od.student_id');
-		$this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
+		// $this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
 		// $this->db->where_not_in('od.class_id', array(155,182));
         $this->db->where_in('od.exam_result', array('PASS', 'PASS BY GRACE'));
         $this->db->where(array('cm.last_class'=>'L','od.exam_year'=>$data['exam_session'],'od.university_mode'=>$data['mode'], 'od.marks_pattern'=>$data['pattern']));//'od.exam_status'=>'R',
         $students = $this->db->get()->result();
         $data['students'] = $students;
+		
         $title = ($data['mode'] == 'REG')?'Regular':'Private';
         $this->load->view('header',array('title'=> $title.' Student AISHE Data '.$data['exam_session']));
 		$this->load->view('admin/student_final_year_exam_detail', $data);
@@ -3732,15 +3733,15 @@ public function getStudentData()
 
 	public function student_final_year_exam_detail_pvt(){
         $data = array();
-		$data['exam_session'] = "July 2023";
+		$data['exam_session'] = "June 2024";
         $data['mode'] = "PVT";
         $data['pattern'] = "MARKS";
         $this->db->select('cm.id,cm.class_name, cm.course_group_id,cg.course_name');
         $this->db->from('class_master as cm');
         $this->db->join('course_group as cg','cg.id =cm.course_group_id');
         $this->db->join('old_exam_data as od','cm.id =od.class_id');
-		$this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
-		//  $this->db->where_in('od.class_id',array(286));
+		// $this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
+		$this->db->where_in('od.class_id',array(286)); //286 106 298
         $this->db->where(array('cm.last_class'=>'L','od.exam_year'=>$data['exam_session'],'od.university_mode'=>$data['mode'], 'od.marks_pattern'=>$data['pattern']));//'od.exam_status'=>'R',
         $this->db->group_by('cg.course_name');
         $data['courses'] = $this->db->get()->result();
@@ -3749,8 +3750,8 @@ public function getStudentData()
         $this->db->from('class_master as cm');
         $this->db->join('old_exam_data as od','cm.id =od.class_id');
         $this->db->join('student as st','st.student_id =od.student_id');
-		$this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
-		// $this->db->where_in('od.class_id',array(286));
+		// $this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
+		$this->db->where_in('od.class_id',array(286)); //286 106 298
         $this->db->where_in('od.exam_result', array('PASS', 'PASS BY GRACE'));
         $this->db->where(array('cm.last_class'=>'L','od.exam_year'=>$data['exam_session'],'od.university_mode'=>$data['mode'], 'od.marks_pattern'=>$data['pattern']));//'od.exam_status'=>'R',
         $students = $this->db->get()->result();
@@ -3764,7 +3765,7 @@ public function getStudentData()
 
     public function student_exam_appeared_details($course_group_id, $class_id, $mode){
         $data = array();
-		$data['exam_session'] = "July 2023";
+		$data['exam_session'] = "June 2024";
         $data['pattern'] = "MARKS";
         $this->db->select("COUNT(CASE WHEN gender != '' THEN od.student_id END) as std_total,COUNT(CASE WHEN gender = 'Male' THEN od.student_id END) AS male,
         COUNT(CASE WHEN gender = 'Female' THEN od.student_id END) AS female, COUNT(CASE WHEN category='General' THEN od.student_id END) as std_general, COUNT(CASE WHEN category='General' AND gender='Male' THEN od.student_id END ) as general_male,COUNT(CASE WHEN category='General' AND gender='Female' THEN od.student_id END ) as general_female, COUNT(CASE WHEN category='OBC' THEN od.student_id END) as std_obc, COUNT(CASE WHEN category='OBC' AND gender='Male' THEN od.student_id END ) as obc_male,COUNT(CASE WHEN category='OBC' AND gender='Female' THEN od.student_id END ) as obc_female, COUNT(CASE WHEN category='SC' THEN od.student_id END) as std_sc, COUNT(CASE WHEN category='SC' AND gender='Male' THEN od.student_id END ) as sc_male,COUNT(CASE WHEN category='SC' AND gender='Female' THEN od.student_id END ) as sc_female, COUNT(CASE WHEN category='ST' THEN od.student_id END) as std_st, COUNT(CASE WHEN category='ST' AND gender='Male' THEN od.student_id END ) as st_male,COUNT(CASE WHEN category='ST' AND gender='Female' THEN od.student_id END ) as st_female,st.course_name,st.class_name,COUNT(CASE WHEN gender != '' AND handicapped='Y' THEN od.student_id END) as handicapped_total,COUNT(CASE WHEN gender = 'Male' AND handicapped='Y' THEN od.student_id END) AS handicapped_male,COUNT(CASE WHEN gender = 'Female' AND handicapped='Y' THEN od.student_id END) AS handicapped_female, COUNT(CASE WHEN category='General' AND handicapped='Y' THEN od.student_id END) as handicapped_general, COUNT(CASE WHEN category='General' AND gender='Male' AND handicapped='Y' THEN od.student_id END ) as handicapped_general_male,COUNT(CASE WHEN category='General' AND gender='Female' AND handicapped='Y' THEN od.student_id END ) as handicapped_general_female, COUNT(CASE WHEN category='OBC' AND handicapped='Y' THEN od.student_id END) as handicapped_obc, COUNT(CASE WHEN category='OBC' AND gender='Male' AND handicapped='Y' THEN od.student_id END ) as handicapped_obc_male,COUNT(CASE WHEN category='OBC' AND gender='Female' AND handicapped='Y' THEN od.student_id END ) as handicapped_obc_female, COUNT(CASE WHEN category='SC' AND handicapped='Y' THEN od.student_id END) as handicapped_sc, COUNT(CASE WHEN category='SC' AND gender='Male' AND handicapped='Y' THEN od.student_id END ) as handicapped_sc_male,COUNT(CASE WHEN category='SC' AND gender='Female' AND handicapped='Y' THEN od.student_id END ) as handicapped_sc_female, COUNT(CASE WHEN category='ST' AND handicapped='Y' THEN od.student_id END) as handicapped_st, COUNT(CASE WHEN category='ST' AND gender='Male' AND handicapped='Y' THEN od.student_id END ) as handicapped_st_male,COUNT(CASE WHEN category='ST' AND gender='Female' AND handicapped='Y' THEN od.student_id END ) as handicapped_st_female,COUNT(CASE WHEN gender != '' AND religion='Muslim' THEN od.student_id END) as minority_total,COUNT(CASE WHEN gender = 'Male' AND religion='Muslim' THEN od.student_id END) AS minority_male,COUNT(CASE WHEN gender = 'Female' AND religion='Muslim' THEN od.student_id END) AS minority_female, COUNT(CASE WHEN category='General' AND religion='Muslim' THEN od.student_id END) as minority_general, COUNT(CASE WHEN category='General' AND gender='Male' AND religion='Muslim' THEN od.student_id END ) as minority_general_male,COUNT(CASE WHEN category='General' AND gender='Female' AND religion='Muslim' THEN od.student_id END ) as minority_general_female, COUNT(CASE WHEN category='OBC' AND religion='Muslim' THEN od.student_id END) as minority_obc, COUNT(CASE WHEN category='OBC' AND gender='Male' AND religion='Muslim' THEN od.student_id END ) as minority_obc_male,COUNT(CASE WHEN category='OBC' AND gender='Female' AND religion='Muslim' THEN od.student_id END ) as minority_obc_female, COUNT(CASE WHEN category='SC' AND religion='Muslim' THEN od.student_id END) as minority_sc, COUNT(CASE WHEN category='SC' AND gender='Male' AND religion='Muslim' THEN od.student_id END ) as minority_sc_male,COUNT(CASE WHEN category='SC' AND gender='Female' AND religion='Muslim' THEN od.student_id END ) as minority_sc_female, COUNT(CASE WHEN category='ST' AND religion='Muslim' THEN od.student_id END) as minority_st, COUNT(CASE WHEN category='ST' AND gender='Male' AND religion='Muslim' THEN od.student_id END ) as minority_st_male,COUNT(CASE WHEN category='ST' AND gender='Female' AND religion='Muslim' THEN od.student_id END ) as minority_st_female,COUNT(CASE WHEN gender != '' AND religion !='Muslim' THEN od.student_id END) as other_minority_total,COUNT(CASE WHEN gender = 'Male' AND religion !='Muslim' THEN od.student_id END) AS other_minority_male,COUNT(CASE WHEN gender = 'Female' AND religion !='Muslim' THEN od.student_id END) AS other_minority_female, COUNT(CASE WHEN category='General' AND religion !='Muslim' THEN od.student_id END) as other_minority_general, COUNT(CASE WHEN category='General' AND gender='Male' AND religion !='Muslim' THEN od.student_id END ) as other_minority_general_male,COUNT(CASE WHEN category='General' AND gender='Female' AND religion !='Muslim' THEN od.student_id END ) as other_minority_general_female, COUNT(CASE WHEN category='OBC' AND religion !='Muslim' THEN od.student_id END) as other_minority_obc, COUNT(CASE WHEN category='OBC' AND gender='Male' AND religion !='Muslim' THEN od.student_id END ) as other_minority_obc_male,COUNT(CASE WHEN category='OBC' AND gender='Female' AND religion !='Muslim' THEN od.student_id END ) as other_minority_obc_female, COUNT(CASE WHEN category='SC' AND religion !='Muslim' THEN od.student_id END) as other_minority_sc, COUNT(CASE WHEN category='SC' AND gender='Male' AND religion !='Muslim' THEN od.student_id END ) as other_minority_sc_male,COUNT(CASE WHEN category='SC' AND gender='Female' AND religion !='Muslim' THEN od.student_id END ) as other_minority_sc_female, COUNT(CASE WHEN category='ST' AND religion !='Muslim' THEN od.student_id END) as other_minority_st, COUNT(CASE WHEN category='ST' AND gender='Male' AND religion !='Muslim' THEN od.student_id END ) as other_minority_st_male,COUNT(CASE WHEN category='ST' AND gender='Female' AND religion !='Muslim' THEN od.student_id END ) as other_minority_st_female");
@@ -3772,7 +3773,7 @@ public function getStudentData()
         $this->db->join('student as st','od.student_id = st.student_id and od.class_id = st.class_id');
         $this->db->join('student_data as std','std.student_id = st.student_id and od.class_id = st.class_id');
         $this->db->where(array('st.enrolled'=>'Y', 'od.class_id'=>$course_group_id,'od.exam_year'=>$data['exam_session'],'od.university_mode'=>$mode, 'od.marks_pattern'=>$data['pattern'], 'od.class_id'=>$class_id));//,'od.exam_status'=>'R'
-		$this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
+		// $this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
         $data['students'] = $this->db->get()->row();
         $title = ($mode == 'REG')?'Regular':'Private';
         $this->load->view('header',array('title'=>'Total Number of '.$title.' Students Appeared in Exam'));
@@ -3782,7 +3783,7 @@ public function getStudentData()
 
     public function pass_student_details($course_group_id, $class_id, $mode){
         $data = array();
-		$data['exam_session'] = "July 2023";
+		$data['exam_session'] = "June 2024";
         $data['pattern'] = "MARKS";
         $this->db->select("COUNT(CASE WHEN gender != '' THEN od.student_id END) as std_total,COUNT(CASE WHEN gender = 'Male' THEN od.student_id END) AS male,
         COUNT(CASE WHEN gender = 'Female' THEN od.student_id END) AS female, COUNT(CASE WHEN category='General' THEN od.student_id END) as std_general, COUNT(CASE WHEN category='General' AND gender='Male' THEN od.student_id END ) as general_male,COUNT(CASE WHEN category='General' AND gender='Female' THEN od.student_id END ) as general_female, COUNT(CASE WHEN category='OBC' THEN od.student_id END) as std_obc, COUNT(CASE WHEN category='OBC' AND gender='Male' THEN od.student_id END ) as obc_male,COUNT(CASE WHEN category='OBC' AND gender='Female' THEN od.student_id END ) as obc_female, COUNT(CASE WHEN category='SC' THEN od.student_id END) as std_sc, COUNT(CASE WHEN category='SC' AND gender='Male' THEN od.student_id END ) as sc_male,COUNT(CASE WHEN category='SC' AND gender='Female' THEN od.student_id END ) as sc_female, COUNT(CASE WHEN category='ST' THEN od.student_id END) as std_st, COUNT(CASE WHEN category='ST' AND gender='Male' THEN od.student_id END ) as st_male,COUNT(CASE WHEN category='ST' AND gender='Female' THEN od.student_id END ) as st_female,st.course_name,st.class_name,COUNT(CASE WHEN gender != '' AND handicapped='Y' THEN od.student_id END) as handicapped_total,COUNT(CASE WHEN gender = 'Male' AND handicapped='Y' THEN od.student_id END) AS handicapped_male,COUNT(CASE WHEN gender = 'Female' AND handicapped='Y' THEN od.student_id END) AS handicapped_female, COUNT(CASE WHEN category='General' AND handicapped='Y' THEN od.student_id END) as handicapped_general, COUNT(CASE WHEN category='General' AND gender='Male' AND handicapped='Y' THEN od.student_id END ) as handicapped_general_male,COUNT(CASE WHEN category='General' AND gender='Female' AND handicapped='Y' THEN od.student_id END ) as handicapped_general_female, COUNT(CASE WHEN category='OBC' AND handicapped='Y' THEN od.student_id END) as handicapped_obc, COUNT(CASE WHEN category='OBC' AND gender='Male' AND handicapped='Y' THEN od.student_id END ) as handicapped_obc_male,COUNT(CASE WHEN category='OBC' AND gender='Female' AND handicapped='Y' THEN od.student_id END ) as handicapped_obc_female, COUNT(CASE WHEN category='SC' AND handicapped='Y' THEN od.student_id END) as handicapped_sc, COUNT(CASE WHEN category='SC' AND gender='Male' AND handicapped='Y' THEN od.student_id END ) as handicapped_sc_male,COUNT(CASE WHEN category='SC' AND gender='Female' AND handicapped='Y' THEN od.student_id END ) as handicapped_sc_female, COUNT(CASE WHEN category='ST' AND handicapped='Y' THEN od.student_id END) as handicapped_st, COUNT(CASE WHEN category='ST' AND gender='Male' AND handicapped='Y' THEN od.student_id END ) as handicapped_st_male,COUNT(CASE WHEN category='ST' AND gender='Female' AND handicapped='Y' THEN od.student_id END ) as handicapped_st_female,COUNT(CASE WHEN gender != '' AND religion='Muslim' THEN od.student_id END) as minority_total,COUNT(CASE WHEN gender = 'Male' AND religion='Muslim' THEN od.student_id END) AS minority_male,COUNT(CASE WHEN gender = 'Female' AND religion='Muslim' THEN od.student_id END) AS minority_female, COUNT(CASE WHEN category='General' AND religion='Muslim' THEN od.student_id END) as minority_general, COUNT(CASE WHEN category='General' AND gender='Male' AND religion='Muslim' THEN od.student_id END ) as minority_general_male,COUNT(CASE WHEN category='General' AND gender='Female' AND religion='Muslim' THEN od.student_id END ) as minority_general_female, COUNT(CASE WHEN category='OBC' AND religion='Muslim' THEN od.student_id END) as minority_obc, COUNT(CASE WHEN category='OBC' AND gender='Male' AND religion='Muslim' THEN od.student_id END ) as minority_obc_male,COUNT(CASE WHEN category='OBC' AND gender='Female' AND religion='Muslim' THEN od.student_id END ) as minority_obc_female, COUNT(CASE WHEN category='SC' AND religion='Muslim' THEN od.student_id END) as minority_sc, COUNT(CASE WHEN category='SC' AND gender='Male' AND religion='Muslim' THEN od.student_id END ) as minority_sc_male,COUNT(CASE WHEN category='SC' AND gender='Female' AND religion='Muslim' THEN od.student_id END ) as minority_sc_female, COUNT(CASE WHEN category='ST' AND religion='Muslim' THEN od.student_id END) as minority_st, COUNT(CASE WHEN category='ST' AND gender='Male' AND religion='Muslim' THEN od.student_id END ) as minority_st_male,COUNT(CASE WHEN category='ST' AND gender='Female' AND religion='Muslim' THEN od.student_id END ) as minority_st_female,COUNT(CASE WHEN gender != '' AND religion !='Muslim' THEN od.student_id END) as other_minority_total,COUNT(CASE WHEN gender = 'Male' AND religion !='Muslim' THEN od.student_id END) AS other_minority_male,COUNT(CASE WHEN gender = 'Female' AND religion !='Muslim' THEN od.student_id END) AS other_minority_female, COUNT(CASE WHEN category='General' AND religion !='Muslim' THEN od.student_id END) as other_minority_general, COUNT(CASE WHEN category='General' AND gender='Male' AND religion !='Muslim' THEN od.student_id END ) as other_minority_general_male,COUNT(CASE WHEN category='General' AND gender='Female' AND religion !='Muslim' THEN od.student_id END ) as other_minority_general_female, COUNT(CASE WHEN category='OBC' AND religion !='Muslim' THEN od.student_id END) as other_minority_obc, COUNT(CASE WHEN category='OBC' AND gender='Male' AND religion !='Muslim' THEN od.student_id END ) as other_minority_obc_male,COUNT(CASE WHEN category='OBC' AND gender='Female' AND religion !='Muslim' THEN od.student_id END ) as other_minority_obc_female, COUNT(CASE WHEN category='SC' AND religion !='Muslim' THEN od.student_id END) as other_minority_sc, COUNT(CASE WHEN category='SC' AND gender='Male' AND religion !='Muslim' THEN od.student_id END ) as other_minority_sc_male,COUNT(CASE WHEN category='SC' AND gender='Female' AND religion !='Muslim' THEN od.student_id END ) as other_minority_sc_female, COUNT(CASE WHEN category='ST' AND religion !='Muslim' THEN od.student_id END) as other_minority_st, COUNT(CASE WHEN category='ST' AND gender='Male' AND religion !='Muslim' THEN od.student_id END ) as other_minority_st_male,COUNT(CASE WHEN category='ST' AND gender='Female' AND religion !='Muslim' THEN od.student_id END ) as other_minority_st_female");
@@ -3791,7 +3792,7 @@ public function getStudentData()
         $this->db->join('student_data as std','std.student_id = st.student_id and od.class_id = st.class_id');
         $this->db->where(array('st.enrolled'=>'Y', 'od.class_id'=>$class_id,'od.exam_year'=>$data['exam_session'],'od.university_mode'=>$mode,'st.course_complete'=>'Y', 'od.marks_pattern'=>$data['pattern'],'od.course_group_id'=>$course_group_id));//,'od.exam_status'=>'R'
         $this->db->where_in('exam_result', array('PASS', 'PASS BY GRACE'));
-		$this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
+		// $this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
         $data['students'] = $this->db->get()->row();
         $title = ($mode == 'REG')?'Regular':'Private';
         $this->load->view('header',array('title'=>'Total Number of '.$title.' Students Passed/Awarded Degree'));
@@ -3800,13 +3801,13 @@ public function getStudentData()
     }
     public function student_above_sixty_percent_details($course_group_id, $class_id, $mode){
         $data = array();
-		$data['exam_session'] = "July 2023";
+		$data['exam_session'] = "June 2024";
         $data['pattern'] = "MARKS";
         $this->db->select('od.student_id, st.gender');
         $this->db->from('old_exam_data as od');
         $this->db->join('student as st','st.student_id =od.student_id');
         $this->db->where_in('od.exam_result', array('PASS', 'PASS BY GRACE'));
-		$this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
+		// $this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
         $this->db->where(array('od.class_id'=>$class_id,'od.course_group_id'=>$course_group_id,'od.exam_year'=>$data['exam_session'],'od.university_mode'=>$mode, 'od.marks_pattern'=>$data['pattern']));//,'od.exam_status'=>'R'
         $students = $this->db->get()->result();
        
@@ -3855,13 +3856,13 @@ public function getStudentData()
         $this->db->from('class_master as cm');
         $this->db->join('course_group as cg','cg.id =cm.course_group_id');
         $this->db->join('old_exam_data as od','cm.id =od.class_id');
-        $this->db->group_start();
-        $this->db->where_in('class_id',$data['class_ids']);
-        $this->db->where_not_in('center_id',$data['dept_ids']);
-        $this->db->group_end();
-        $this->db->or_group_start();
-        $this->db->where_not_in('od.class_id',$data['class_ids']);
-        $this->db->group_end();
+        // $this->db->group_start();
+        // $this->db->where_in('class_id',$data['class_ids']);
+        // $this->db->where_not_in('center_id',$data['dept_ids']);
+        // $this->db->group_end();
+        // $this->db->or_group_start();
+        // $this->db->where_not_in('od.class_id',$data['class_ids']);
+        // $this->db->group_end();
         $this->db->where(array('cm.last_class'=>'L','od.exam_year'=>$data['exam_session'],'od.university_mode'=>$data['mode'], 'od.marks_pattern'=>$data['pattern']));
         $this->db->group_by('cg.course_name');
         $data['courses'] = $this->db->get()->result();
@@ -3872,13 +3873,13 @@ public function getStudentData()
         $this->db->from('class_master as cm');
         $this->db->join('old_exam_data as od','cm.id =od.class_id');
         $this->db->join('student as st','st.student_id =od.student_id');
-        $this->db->group_start();
-        $this->db->where_in('od.class_id',$data['class_ids']);
-        $this->db->where_not_in('od.center_id',$data['dept_ids']);
-        $this->db->group_end();
-        $this->db->or_group_start();
-        $this->db->where_not_in('od.class_id',$data['class_ids']);
-        $this->db->group_end();
+        // $this->db->group_start();
+        // $this->db->where_in('od.class_id',$data['class_ids']);
+        // $this->db->where_not_in('od.center_id',$data['dept_ids']);
+        // $this->db->group_end();
+        // $this->db->or_group_start();
+        // $this->db->where_not_in('od.class_id',$data['class_ids']);
+        // $this->db->group_end();
         $this->db->where_in('od.exam_result', array('PASS', 'PASS BY GRACE'));
         $this->db->where(array('cm.last_class'=>'L','od.exam_year'=>$data['exam_session'],'od.university_mode'=>$data['mode'], 'od.marks_pattern'=>$data['pattern']));//'od.exam_status'=>'R',
         $students = $this->db->get()->result();
@@ -3900,9 +3901,9 @@ public function getStudentData()
         $this->db->from('old_exam_data as od');
         $this->db->join('student as st','od.student_id = st.student_id and od.class_id = st.class_id');
         $this->db->join('student_data as std','std.student_id = st.student_id and od.class_id = st.class_id');
-        if(in_array($class_id, $data['class_ids'])){
-            $this->db->where_not_in('od.center_id',$data['dept_ids']);
-        }
+        // if(in_array($class_id, $data['class_ids'])){
+        //     $this->db->where_not_in('od.center_id',$data['dept_ids']);
+        // }
         $this->db->where(array('st.enrolled'=>'Y', 'od.class_id'=>$course_group_id,'od.exam_year'=>$data['exam_session'],'od.university_mode'=>$mode, 'od.marks_pattern'=>$data['pattern'], 'od.class_id'=>$class_id));//,'od.exam_status'=>'R'
         $data['students'] = $this->db->get()->row();
         $title = ($mode == 'REG')?'Regular':'Private';
@@ -3922,9 +3923,9 @@ public function getStudentData()
         $this->db->from('old_exam_data as od');
         $this->db->join('student as st','od.student_id = st.student_id and od.class_id = st.class_id');
         $this->db->join('student_data as std','std.student_id = st.student_id and od.class_id = st.class_id');
-        if(in_array($class_id, $data['class_ids'])){
-            $this->db->where_not_in('od.center_id',$data['dept_ids']);
-        }
+        // if(in_array($class_id, $data['class_ids'])){
+        //     $this->db->where_not_in('od.center_id',$data['dept_ids']);
+        // }
         $this->db->where(array('st.enrolled'=>'Y', 'od.class_id'=>$class_id,'od.exam_year'=>$data['exam_session'],'od.university_mode'=>$mode,'st.course_complete'=>'Y', 'od.marks_pattern'=>$data['pattern'],'od.course_group_id'=>$course_group_id));//'od.exam_status'=>'R'
         $this->db->where_in('exam_result', array('PASS', 'PASS BY GRACE'));
         $data['students'] = $this->db->get()->row();
@@ -3942,9 +3943,9 @@ public function getStudentData()
         $this->db->select('od.student_id, st.gender');
         $this->db->from('old_exam_data as od');
         $this->db->join('student as st','st.student_id =od.student_id');
-        if(in_array($class_id, $data['class_ids'])){
-            $this->db->where_not_in('od.center_id',$data['dept_ids']);
-        }
+        // if(in_array($class_id, $data['class_ids'])){
+        //     $this->db->where_not_in('od.center_id',$data['dept_ids']);
+        // }
         $this->db->where_in('od.exam_result', array('PASS', 'PASS BY GRACE'));
         $this->db->where(array('od.class_id'=>$class_id,'od.course_group_id'=>$course_group_id,'od.exam_year'=>$data['exam_session'],'od.university_mode'=>$mode, 'od.marks_pattern'=>$data['pattern']));//,'od.exam_status'=>'R'
         $students = $this->db->get()->result();

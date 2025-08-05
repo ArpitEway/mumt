@@ -268,6 +268,13 @@ class MsPrint extends CI_Controller {
 			$marksheet_date = date('Y-m-d', strtotime($date));
 			$record_id  = $this->input->post("record_id");
 	      	$record_id = $this->Common_model->encrypt_decrypt($record_id,'decrypt');
+			if($remark == 'Marks Change After Revaluation'){
+				if(count($this->input->post('paper_codes')) != 0){
+					$paper_codes = implode(',', $this->input->post('paper_codes'));
+					$remark = $remark.' in '.$paper_codes;
+				}
+	
+			}
 			
 			$updateData = array(
 				'marksheet_date' => $marksheet_date ,
@@ -704,5 +711,19 @@ class MsPrint extends CI_Controller {
 			$this->load->view('template/degree',$data);
 			$this->load->view('footer');
 		}
+	}
+
+	public function get_paper_code(){
+		$exam_id = $this->Common_model->encrypt_decrypt($this->input->post('id'),'decrypt');
+		$this->db->select('paper_code');
+		$this->db->from('old_result_data');
+		$this->db->where('exam_data_id',$exam_id);
+		$this->db->order_by('p_order','ASC');
+		$data['exam_data'] = $this->db->get()->result();
+		$dt = $this->load->view('admin/msprint/get_paper_code',$data, TRUE);
+		echo json_encode(array(
+			"status" => true,
+			"data" => $dt
+		));
 	}
 }
