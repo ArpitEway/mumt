@@ -238,19 +238,19 @@
 				<div class="row">
 				  	
 					<?php 
-                   // if($this->session->center_id==12 || $this->session->center_id==28){ ?>
+                    if($this->session->center_id==11 || $this->session->center_id==12){ ?>
                    	
-					 <!-- <a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
+					  <a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
 						<div>
 							<span class="nav-text">Practical Marks Submission </span>
 						</div>
-					</a> -->
-					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('internal_marks_list');?>">
+					</a> 
+					 <a class="border-0 custom-menu-item" href="<?=base_url('internal_marks_list');?>">
 						<div>
 							<span class="nav-text">Internal Marks Submission (Regular)</span>
 						</div>
-					</a>   -->
-					<?php  //} ?>
+					</a> 
+					<?php  } ?>
 					
 				<?php if ($center->admit_card_permission=='Y'): ?>
 						<a class="border-0 custom-menu-item" href="<?=base_url('admit_card_list');?>">
