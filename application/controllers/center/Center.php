@@ -2087,9 +2087,9 @@ class Center extends CI_Controller {
 		}
 	 }
 	public function internal_marks_list(){
-		//  if($this->session->center_id!=12 && $this->session->center_id!=28){
-	 	 	//  redirect(base_url());
-		// }
+		 if($this->session->center_id >= 100){
+	 	 	 redirect(base_url());
+		}
 	 	if(!$this->session->has_userdata('centerdata')){
 	 		redirect(base_url());
 	 	}
@@ -2877,9 +2877,9 @@ public function backlog_grade_marksheet_pg($student_id=""){
 	}
 
 	public function practical_marks_list(){
-		//  if($this->session->center_id!=12 && $this->session->center_id!=28){
-		  //redirect(base_url());
-		// }
+		 if($this->session->center_id >= 100){
+		  redirect(base_url());
+		}
 		//  $master = $this->Common_model->getSingleRow('master');
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());

@@ -238,7 +238,7 @@
 				<div class="row">
 				  	
 					<?php 
-                    if($this->session->center_id==11 || $this->session->center_id==12){ ?>
+                    if($this->session->center_id < 100){ ?>
                    	
 					  <a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
 						<div>
