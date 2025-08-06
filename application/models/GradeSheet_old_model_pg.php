@@ -647,7 +647,11 @@ class GradeSheet_old_model_pg extends CI_Model
 		foreach ($this->result_array as $key => $result) {
 			
 			echo "<tr>";
+			if($this->classData->id==267){
+				echo "<th>".$result['paper_code_utd']."</th>";
+			}else{
 			echo "<th>".$key."</th>";
+			}
 			echo "<th>".$result['paper_name']."</th>";
 			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				$this->check_grace_marks = true;
