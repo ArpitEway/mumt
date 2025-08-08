@@ -43,7 +43,7 @@
 	<form class="mt-4 shadow">
 		<input type="hidden" name="student_id" value="<?=$student[0]->student_id?>">
 		<input type="hidden" name="class_id" value="<?=$student[0]->class_id?>">
-		<input type="hidden" name="backlog_student_id" value="<?=$student[0]->backlog_student_id?>">
+		<input type="hidden" name="backlog_student_id" value="<?=$student[0]->id?>">
 		
 	<table class="table border">
 		<thead>
