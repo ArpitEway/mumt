@@ -35,7 +35,7 @@ class Postexam extends CI_Controller {
             foreach($data['students']  as $key =>  $student){
                 $f_l_center_code = substr($student->center_code, 0, 1);
                 $l_l_center_code =  substr($student->center_code,-4);           
-                $marksheet_no = $f_l_center_code.$starting_no.'242'.$l_l_center_code ;
+                $marksheet_no = $f_l_center_code.$starting_no.'251'.$l_l_center_code ;
                 
                 // $data['students'][$key]->marksheet_no = $marksheet_no;
                 $updateData  = array('marksheet_no'=>$marksheet_no);
@@ -1189,7 +1189,7 @@ public function upload_old_grade_data_script_pg($class_id="",$mode){
     public function generate_backlog_marksheet_no(){
           
             $this->db->limit(100,0);
-            $data['students'] = $this->Common_model->getRecordByWhere('backlog_student', array('exam_form'=>'Y' ,'exam_year'=>"Dec 2024",'roll_no!='=>0 ,'back_marksheet_no'=>''));
+            $data['students'] = $this->Common_model->getRecordByWhere('backlog_student', array('exam_form'=>'Y' ,'exam_year'=>"June 2025",'roll_no!='=>0 ,'back_marksheet_no'=>''));
             
           
             foreach($data['students']  as $key =>  $student){
