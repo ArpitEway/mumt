@@ -2660,7 +2660,7 @@ public function getStudentData()
 			if($remaining=="theory"){
 				$this->db->select('DISTINCT(examcentercode)');
 				$this->db->from('new_exam_form as e');
-				$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.old_class_id');
+				$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.class_id');
 				$this->db->where('student.'.$this->exam_form.'','Y');
 				if($courseType!="ALL")
 					$this->db->where('student.university_mode',$courseType);
@@ -2674,7 +2674,7 @@ public function getStudentData()
 			if($remaining=="internal"){
 				$this->db->select('DISTINCT(examcentercode)');
 				$this->db->from('new_exam_form as e');
-				$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.old_class_id');
+				$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.class_id');
 				$this->db->where('student.'.$this->exam_form.'','Y');
 				$this->db->where('student.university_mode','REG');
 				$this->db->where('e.course_group_id',$course_group_id);
@@ -2689,7 +2689,7 @@ public function getStudentData()
 			if($remaining=="practical"){
 				$this->db->select('DISTINCT(examcentercode)');
 				$this->db->from('new_exam_form as e');
-				$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.old_class_id');
+				$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.class_id');
 				$this->db->where('student.'.$this->exam_form.'','Y');
 				$this->db->where('student.university_mode','REG');
 				$this->db->where('e.course_group_id',$course_group_id);
@@ -3498,7 +3498,7 @@ public function getStudentData()
 				if($remaining=="theory"){
 					$this->db->select('*');
 					$this->db->from('new_exam_form as e');
-					$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.old_class_id');
+					$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.class_id');
 					$this->db->where('student.'.$this->exam_form.'','Y');
 					if($courseType!="ALL")
 						$this->db->where('student.university_mode',$courseType);
@@ -3514,7 +3514,7 @@ public function getStudentData()
 				if($remaining=="internal"){
 					$this->db->select('*');
 					$this->db->from('new_exam_form as e');
-					$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.old_class_id');
+					$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.class_id');
 					$this->db->where('student.'.$this->exam_form.'','Y');
 					$this->db->where('student.university_mode','REG');
 					$this->db->where('e.course_group_id',$course_group_id);
@@ -3531,7 +3531,7 @@ public function getStudentData()
 				if($remaining=="practical"){
 					$this->db->select('*');
 					$this->db->from('new_exam_form as e');
-					$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.old_class_id');
+					$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.class_id');
 					$this->db->where('student.'.$this->exam_form.'','Y');
 					$this->db->where('student.university_mode','REG');
 					$this->db->where('e.course_group_id',$course_group_id);
