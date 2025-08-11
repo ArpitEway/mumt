@@ -54,6 +54,7 @@
 			$this->db->where($wherePaper);
 			$this->db->order_by("exam_date", "asc");
 			$this->db->order_by("exam_shift", "desc");
+			$this->db->order_by('paper_no', 'Asc');
 			$papers = $this->db->get()->result();
 			$paper_count = count($papers);
 	}
