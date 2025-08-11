@@ -317,7 +317,7 @@ $abs_count = 0 ;
 		  $require_tot_marks += $fc2_min;
 	
 		}
-					if ($fail_count==0 && $rw_count==0 && $p_fail_count==0 && $int_fail_count==0 && $theory_abs_count==0 && $p_abs_count==0 && $rwpr_count==0 && $rwas_count == 0) {
+					if ($fail_count==0 && $rw_count==0 && $p_fail_count==0 && $int_fail_count==0 && $theory_abs_count==0 && $p_abs_count==0 && $rwpr_count==0 && $rwas_count == 0) { 
 						$final_result = "PASS";
 					}else{
 						if((in_array($student->old_class_id, $class_ids)) && $mode=='REG')	
@@ -503,7 +503,7 @@ $abs_count = 0 ;
 									$grand_obt += $row->obtain_marks;
 									$grand_tot += $row->total_marks;
 								}
-								if($fail_count>0 || $theory_abs_count>0){
+								if($fail_count>0 || $theory_abs_count>0 || $p_fail_count>0 || $p_abs_count>0 ){
 									$final_result = ($check_grace_marks) ? 'PASS BY GRACE' : 'FAIL';
 
 								}elseif($final_fail !=0){
