@@ -219,7 +219,7 @@ class Gradesheet_model extends CI_Model
         $this->agpa = $this->tot_credit_point/$this->tot_credit;
         $this->set_result();
         if($this->result !="FAIL"){
-            $classes = $this->Common_model->getRecordByWhere('class_master',array('id !='=>$class_id,'course_group_id'=>$course_group_id,'mode' => $this->classData->mode));
+		$classes = $this->Common_model->getRecordByWhere('class_master',array('id !='=>$class_id,'course_group_id'=>$course_group_id,'mode' => $this->classData->mode,'class_name !='=>'IV Year'));
             foreach($classes as $cls){
                 $this->db->order_by('id','desc');
                 $this->db->limit(1);
