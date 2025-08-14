@@ -21,23 +21,23 @@
 				?>
 				   <tr>
 					<td><?php echo $i ; ?></td>
-					<td><?php echo $student->roll_no; ?></td>
+					<td><?php echo $student->roll_number; ?></td>
 					<td><?php echo $student->enrollment_no; ?></td>
 					<td><?php echo $student->name; ?></td>
 					<td><?php echo $student->course_name; ?></td>
-					<td><?php echo $this->Common_model->getClassNameByClassId($student->class_id); ?></td>
+					<td><?php echo $this->Common_model->getClassNameByClassId($student->old_class_id); ?></td>
                     <td><?php echo $student->center_code; ?></td>
 					<td class="col-md-2">
 					<?php
 					if($student->int_marks_sub=='N'){
 						?>
-							<button  class="btn btn-primary btn-sm font-weight-bold student" id="<?="roll_{$student->student_id}"; ?>" data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$student->student_id;?>" onclick="mark_submission(<?=$student->student_id;?>,<?=$student->class_id; ?>)">Submission </button>
-							<button style="display: none" class="btn btn-info btn-sm font-weight-bold view" id="<?="roll_num{$student->student_id}"; ?>" data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$student->student_id;?>" onclick="view_mark(<?=$student->student_id;?>,<?=$student->class_id; ?>)">view</button>
+							<button  class="btn btn-primary btn-sm font-weight-bold student" id="<?="roll_{$student->student_id}"; ?>" data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$student->student_id;?>" onclick="mark_submission(<?=$student->student_id;?>,<?=$student->old_class_id; ?>)">Submission </button>
+							<button style="display: none" class="btn btn-info btn-sm font-weight-bold view" id="<?="roll_num{$student->student_id}"; ?>" data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$student->student_id;?>" onclick="view_mark(<?=$student->student_id;?>,<?=$student->old_class_id; ?>)">view</button>
 						<?php }
 						else{
 							?>
-							<button  class="btn btn-info btn-sm font-weight-bold view" id="<?="roll_num_{$student->student_id}"; ?>" data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$student->student_id;?>" onclick="view_mark(<?=$student->student_id;?>,<?=$student->class_id; ?>)">view</button>
-								<button  class="btn btn-primary btn-sm font-weight-bold student" id="<?="roll_{$student->student_id}"; ?>" data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$student->student_id;?>" onclick="mark_submission(<?=$student->student_id;?>,<?=$student->class_id; ?>)">Edit</button>
+							<button  class="btn btn-info btn-sm font-weight-bold view" id="<?="roll_num_{$student->student_id}"; ?>" data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$student->student_id;?>" onclick="view_mark(<?=$student->student_id;?>,<?=$student->old_class_id; ?>)">view</button>
+								<button  class="btn btn-primary btn-sm font-weight-bold student" id="<?="roll_{$student->student_id}"; ?>" data-toggle="modal" data-target="#kt_datepicker_modal"  data-id="<?=$student->student_id;?>" onclick="mark_submission(<?=$student->student_id;?>,<?=$student->old_class_id; ?>)">Edit</button>
 						<?php }	?></td>
 
 				</tr>
