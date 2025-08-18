@@ -42,7 +42,15 @@
 			<div class="BoxC border- padding mar-bot">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Schedule of Exam for Annual/Semester Examination of <?= (in_array($student[0]->class_id,array(137,149,183,185,191,138,184,192,187,143,146,139,144,188,145,147,148,150,186,141,151,142,190,264,140,189,262,268,270,256,258,260,317,173,174,175,177,180,300,301,325)))?'July':'June'?> 2025<?php 
+						<h5>Schedule of Exam for Annual/Semester Examination of <?php echo in_array($paper_list[0]['class_id'], array(328, 329)) 
+    ? 'August' 
+    : (in_array($paper_list[0]['class_id'], array(
+        137,149,183,185,191,138,184,192,187,143,146,139,144,188,145,147,148,
+        150,186,141,151,142,190,264,140,189,262,268,270,256,258,260,317,
+        173,174,175,177,180,300,301,325
+    )) 
+        ? 'July' 
+        : 'June');?> 2025<?php 
 						//  if($student[0]->class_id == 312){
 						// 	echo 'March 2025';
 						// }else{
