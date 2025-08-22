@@ -4,7 +4,7 @@
     
     <!-- <p style="text-align:center;font-size:12px;">(Regular/Private)</p> -->
     <!-- <p style="text-align:center;font-size:12px;"><strong>Early Morning Shift Time 07:00 AM To 10:00 AM </strong></p> -->
-    <p style="text-align:center;font-size:12px;"><strong>Programme for Annual/Semester - Main/Backlog Examination <?php echo in_array($paper_list[0]['class_id'], array(328, 329)) 
+    <p style="text-align:center;font-size:12px;"><strong>Programme for Annual/Semester - Main/Backlog Examination <?php echo in_array($paper_list[0]['class_id'], array(328, 329,313)) 
     ? 'August' 
     : (in_array($paper_list[0]['class_id'], array(
         137,149,183,185,191,138,184,192,187,143,146,139,144,188,145,147,148,
