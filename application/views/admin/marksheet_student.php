@@ -84,7 +84,12 @@ $abs_count = 0;
             if($marks->p_marks < $paper_master[0]->min_theory_marks || $marks->p_marks=="ABS"){
               echo $marks->p_marks."<span style='color:red'>"."*"."</span>";
             }else{
-              echo $marks->p_marks;
+               if($marks->carry_theory==""){
+                echo $marks->p_marks;
+               }else{
+                echo $marks->p_marks.$marks->carry_theory;
+               }
+             
             }
             }?>
       </th>
@@ -109,7 +114,11 @@ $abs_count = 0;
             $result_1_paper = 'FAIL';
             ?><span style="color:red">*</span> <?php
           }else{
+            if($marks->carry_int==""){
             echo $marks->int_marks;
+          }else{
+            echo $marks->int_marks.$marks->carry_int;
+          }
           }
         }else{
         
@@ -121,7 +130,12 @@ $abs_count = 0;
             $result_1_paper = 'FAIL';
             ?><span style="color:red">*</span> <?php
           }else{
+            // echo $marks->int_marks;
+             if($marks->carry_int==""){
             echo $marks->int_marks;
+          }else{
+            echo $marks->int_marks.$marks->carry_int;
+          }
           }
         }else{
           if($marks->carry_int==""){
