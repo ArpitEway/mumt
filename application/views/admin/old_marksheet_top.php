@@ -43,7 +43,7 @@ $exam = $this->Common_model->getRecordByWhere("old_exam_data",array('id'=>$old_r
       <!-- <img src="<?=base_url()?>assets/images/maskgroup/MaskGroup1.png"  width="100px;" /> -->
       <h1 class="text-center p-5" style="font-size:34px; color: #781e19;">Maharishi Mahesh Yogi Vedic Vishwavidyalaya</h1>
     <!-- <img src="<?=base_url()?>assets/images/maskgroup/Group1.png" class="img2" alt=""> -->
-    <h4 class="text-primary text-center mb-0">Examination Held In <?= $exam[0]->exam_year?></h4>
+    <h4 class="text-primary text-center mb-0"><?= ($exam[0]->exam_status == 'B')?'Backlog ':''?>Examination Held In <?= $exam[0]->exam_year?></h4>
   </div>
 </div>
 <table class="table mb-0">
