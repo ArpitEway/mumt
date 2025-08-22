@@ -86,9 +86,9 @@
 						<!-- <h5>
 							ATTENDANCE SHEET OF CANCELLED EXAM FOR ANNUAL/SEMESTER EXAMINATION OF JANUARY 2024
 						</h5> -->
-						<h5>Attendance Sheet Examination <?php echo in_array($paper_list[0]['class_id'], array(328, 329,313)) 
+						<h5>Attendance Sheet Examination <?php echo in_array($student->class_id, array(328, 329,313)) 
     ? 'August' 
-    : (in_array($paper_list[0]['class_id'], array(
+    : (in_array($student->class_id, array(
         137,149,183,185,191,138,184,192,187,143,146,139,144,188,145,147,148,
         150,186,141,151,142,190,264,140,189,262,268,270,256,258,260,317,
         173,174,175,177,180,300,301,325
