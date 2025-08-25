@@ -192,13 +192,16 @@ if ($old_fail) {
           if($marks->paper_type=='theory'){
             $total_max_marks += $paper_master[0]->max_theory_marks+ $paper_master[0]->max_internal_marks;
             $total_obtained_marks += $marks->theory_marks+$marks->int_marks;
-            if($marks->theory_marks<$paper_master[0]->min_theory_marks || $marks->theory_marks=="ABS"){
+            if($marks->theory_marks<$paper_master[0]->min_theory_marks || $marks->theory_marks=="ABS" || $marks->int_marks=="ABS" || $marks->int_marks<$paper_master[0]->min_internal_marks){
               echo $marks->theory_marks;
               if($check_grace_marks){
                 echo ' G';
                 $result_1_paper = 'PASS BY GRACE';
               }else{
-                echo '<span style="color:red">*</span>';
+                 if($marks->theory_marks<$paper_master[0]->min_theory_marks || $marks->theory_marks=="ABS"){
+                  echo '<span style="color:red">*</span>';
+                 }
+      
                 $result_1_paper = 'FAIL';
               }  
             }else{
@@ -269,6 +272,9 @@ if ($old_fail) {
           }
         }else{
           echo $marks->int_marks;
+           if($marks->int_marks=="ABS" || $marks->int_marks<$paper_master[0]->min_internal_marks){
+             echo '<span style="color:red">*</span>';
+          }
         }
         ?>
       </th>
