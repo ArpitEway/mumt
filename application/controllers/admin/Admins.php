@@ -3280,6 +3280,7 @@ public function update_exam_datewise_permission(){
 			$this->load->view('admin/generate_backlog_gradesheet_tr',$data);
 		}else if((in_array($class_id, $class_cbcs)) && $mode=='REG' && $pattern!="MARKS"){
 			$this->load->model('Gradesheet_backlog_tr_model_pg');
+			$this->load->model('GradeSheet_old_model_pg');
 			$this->load->view('admin/generate_backlog_gradesheet_tr_pg',$data);
 		}
 		else if ($class_id!=168) {
@@ -3326,6 +3327,7 @@ public function update_exam_datewise_permission(){
 		if(in_array($class_id, $class_ids) && $pattern !="MARKS")		
 		{
 			$this->load->model('Gradesheet_backlog_tr_model');
+			$this->load->model('Gradesheet_model');
 			$this->load->view('admin/generate_tr/backlog_practical_internal_tr',$data);
 		}else{
 			$this->load->view('admin/generate_tr/backlog_bed_tr',$data);
@@ -3356,7 +3358,7 @@ public function update_exam_datewise_permission(){
 		
 		// $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' )";
 
-        $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and class_id in (103,194,196,198,200,202,204,206,210,212,214,303,276,280,222,224,226,228))";
+        $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and class_id in (103,194,196,198,200,202,204,206,210,212,214,303,276,280,222,224,226,228,285,291))";
 
 
         // and class_id in (155,168,182,283,287,289,293,310,295,297,264)
@@ -3373,8 +3375,7 @@ public function update_exam_datewise_permission(){
 	}
 
 	public function backlog_tr_class_list(){
-		$where = "id in (select distinct(course_group_id) from backlog_student where exam_form = 'Y' and exam_year='June 2025'  )";
-		// and class_id in (154,155,181,182,217,229,197,231,205,209,213,215,302,279,281,247,223,249,225,251,227,253)
+		$where = "id in (select distinct(course_group_id) from backlog_student where exam_form = 'Y' and exam_year='June 2025' and class_id in (121,198,240,276,280,282,224,264,273,300,301))";
 		// new_exam_form = 'Y' or student_result_aug_22
 		// and class_id in (101,104,105,108,110,119,125,126,128,131,137,154,155,168,175,177,181,182,191,198,204,206,208,246,214,276,224,250,226,252,228,262,273) 
 		// 

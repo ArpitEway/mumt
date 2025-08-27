@@ -898,14 +898,7 @@ foreach($classes as $cls){
     $total_course_credit +=$gradesheetData['tot_credit'];
     $cgpa = number_format((float)($total_grade_point/$total_course_credit), 2, '.', '');
     $percent = $cgpa * 10;
-    // $percent = round(($total_ob/$total_mar)*100,2);    
-    // if($percent>=60){
-    // $div = "First";
-    // }elseif($percent<60 && $percent>=40){
-    // $div  = "Second";
-    // }else{
-    // $div = "Third";
-    // }
+
         if($cgpa>=8.0){
             $div = "First Division with Distinction";
         }elseif($cgpa<8.0 && $cgpa>=6.50){
