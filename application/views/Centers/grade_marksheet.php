@@ -93,7 +93,7 @@ th.border.border-dark {
     * Grade In Repeat Examination.<br><br>
     <?php if($gradesheetData['result'] != ''){ 
         $dept_ids = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30);
-      if($classData->last_class == 'L' && !in_array($student->center_id,$dept_ids)){
+      if($classData->last_class == 'L' && (!in_array($student->center_id,$dept_ids) || $student->old_class_id ==103)){
         
          $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$student->course_group_id,'mode'=>$classData->mode,'id!='=>$student->class_id,'class_name !='=>'IV Year'));
         $total_grade_point = 0;

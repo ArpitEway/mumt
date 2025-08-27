@@ -824,7 +824,7 @@ table.last_table, .last_table td, .last_table th{
  
   <?php  
   $dept_ids = array(10,13,20,21,22,23,24,25,26,27,28,29,30);
-  if($final_class && $isFinalClass == false && !in_array($student->center_id,$dept_ids)){
+  if($final_class && $isFinalClass == false && (!in_array($student->center_id,$dept_ids) ||  $student->old_class_id ==103)){
     $final_rw = 0;
     $final_fail =0;
     

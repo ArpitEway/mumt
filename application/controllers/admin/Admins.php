@@ -3252,7 +3252,7 @@ public function update_exam_datewise_permission(){
 			$pattern="GRADE";
 		}
 		
-		$where =array("bs.course_group_id"=>$course_group_id ,'bs.class_id' => $class_id ,'bs.exam_form'=>'Y', 'bs.roll_no!='=>'0' ,'bs.mode'=> $mode,'bs.exam_year'=>'Dec 2024', 's.exam_pattern'=>$pattern);
+		$where =array("bs.course_group_id"=>$course_group_id ,'bs.class_id' => $class_id ,'bs.exam_form'=>'Y', 'bs.roll_no!='=>'0' ,'bs.mode'=> $mode,'bs.exam_year'=>'June 2025', 's.exam_pattern'=>$pattern);
 		//,'bs.student_id'=>734487
 		$this->db->order_by('bs.center_id','ASC');
 		$this->db->order_by('bs.roll_no','ASC');
@@ -3303,7 +3303,7 @@ public function update_exam_datewise_permission(){
 		else{
 			$pattern="GRADE";
 		}
-        $where =array("bs.course_group_id"=>$course_group_id ,'bs.class_id' => $class_id ,'bs.exam_form'=>'Y', 'bs.roll_no!='=>'0' ,'bs.mode'=> $mode,'bs.exam_year'=>'Dec 2024','exam_pattern'=>$pattern);
+        $where =array("bs.course_group_id"=>$course_group_id ,'bs.class_id' => $class_id ,'bs.exam_form'=>'Y', 'bs.roll_no!='=>'0' ,'bs.mode'=> $mode,'bs.exam_year'=>'June 2025','exam_pattern'=>$pattern);
 		//,'student_id'=>702823
 		$this->db->order_by('bs.center_id','ASC');
 		$this->db->order_by('bs.roll_no','ASC');
@@ -3373,7 +3373,7 @@ public function update_exam_datewise_permission(){
 	}
 
 	public function backlog_tr_class_list(){
-		$where = "id in (select distinct(course_group_id) from backlog_student where exam_form = 'Y' and exam_year='Dec 2024'  )";
+		$where = "id in (select distinct(course_group_id) from backlog_student where exam_form = 'Y' and exam_year='June 2025'  )";
 		// and class_id in (154,155,181,182,217,229,197,231,205,209,213,215,302,279,281,247,223,249,225,251,227,253)
 		// new_exam_form = 'Y' or student_result_aug_22
 		// and class_id in (101,104,105,108,110,119,125,126,128,131,137,154,155,168,175,177,181,182,191,198,204,206,208,246,214,276,224,250,226,252,228,262,273) 
