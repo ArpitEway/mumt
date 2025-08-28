@@ -1060,7 +1060,7 @@ class Common_Model extends CI_Model{
 	{
 		$this->db->select('*');
         $this->db->from('paper_master');
-        $this->db->order_by('backlog_exam_form.sub_group_id,paper_no,paper_order','ASC');
+        $this->db->order_by('paper_order,backlog_exam_form.sub_group_id,paper_no','ASC');
         $this->db->join('backlog_exam_form', 'paper_master.paper_code = backlog_exam_form.paper_code and paper_master.class_id = backlog_exam_form.class_id');
         $this->db->where('backlog_exam_form.student_id',$student_id);
         $this->db->where('backlog_exam_form.class_id',$class_id);

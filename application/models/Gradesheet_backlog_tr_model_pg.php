@@ -283,6 +283,7 @@ class Gradesheet_backlog_tr_model_pg extends CI_Model
 		return $data = array(
 				'tot_credit' => $this->tot_credit,
 				'tot_credit_point' => $this->tot_credit_point,
+				 'obt_credit'=>$this->obt_tot_credit,
 				'agpa' => $this->agpa,
 				'result' => $this->result
 			);

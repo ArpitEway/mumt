@@ -760,10 +760,8 @@ $total_course_credit +=$old_grade_data['tot_credit'];
   $total_mar +=  $old->total_marks;
  
   ?> 
-  
-  
  
-<td class="align-middle text-center "  colspan="<?= ($classData->practical_internal_marks!='N')?'1':'2'?>">
+  <td class="align-middle text-center "  colspan="<?= ($classData->practical_internal_marks!='N')?'1':'2'?>">
   <?= $old->exam_year.'<br>'.$this->Common_model->getClassNameByClassId($old->class_id).'<br>'.$old->roll_no.'<br>'.$old->obtain_marks.'/'.$old->total_marks.'<br>'.$old_grade_data['obt_credit'].' / '.$credit_points.'<br>'.$sgpa;?>
  
 </td>  
