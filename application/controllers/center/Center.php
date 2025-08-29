@@ -2263,7 +2263,7 @@ class Center extends CI_Controller {
 		//$this->db->where('center_id', $center_id);
 		$this->db->where('result_show','Y');
 		$this->db->where('exam_form','Y');
-		$this->db->where('exam_year','Dec 2024');
+		$this->db->where('exam_year','June 2025');
 		//$this->db->where('`student.class_id` in (154,181,193,199,201,209,221,223,225,197,203,211,213)');
 		$data['courses'] = $this->db->get()->result();
 		//  echo $this->db->last_query(); die;
@@ -2429,7 +2429,7 @@ class Center extends CI_Controller {
 		$data = $row = array();
 		// $where1 ='';
 	
-		$where = array('exam_form'=>'Y','result_show'=>'Y','exam_year'=>'Dec 2024');
+		$where = array('exam_form'=>'Y','result_show'=>'Y','exam_year'=>'June 2025');
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{
@@ -2584,7 +2584,7 @@ public function backlog_marksheet($student_id="")
 		$this->db->select('backlog_student.*,student.name,student.f_h_name,student.course_name,student.photo,student.session');
 				$this->db->from('backlog_student');
 				$this->db->join('student','backlog_student.student_id=student.student_id');
-				$this->db->where(array('backlog_student.exam_form'=>'Y','backlog_student.result_show'=>'Y','backlog_student.id'=>$student_id,'exam_year'=>'Dec 2024'));
+				$this->db->where(array('backlog_student.exam_form'=>'Y','backlog_student.result_show'=>'Y','backlog_student.id'=>$student_id,'exam_year'=>'June 2025'));
 				$student = $this->db->get()->result();
 		if ((count($student)==0)  ) {
 			redirect(base_url());
@@ -2768,7 +2768,7 @@ public function backlog_grade_marksheet($student_id=""){
 public function backlog_grade_marksheet_pg($student_id=""){
 	
 	$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
-    $student = $this->Common_model->getRecordByWhere('backlog_student',array('exam_form'=>'Y','result_show'=>'Y','id'=>$student_id,'exam_year'=>"Dec 2024"));
+    $student = $this->Common_model->getRecordByWhere('backlog_student',array('exam_form'=>'Y','result_show'=>'Y','id'=>$student_id,'exam_year'=>"June 2025"));
 	   // print_r($student);die;
 	   if (count($student)==0) {
 		   redirect(base_url());
