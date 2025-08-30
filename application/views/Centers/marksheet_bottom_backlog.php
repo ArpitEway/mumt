@@ -10,6 +10,7 @@ $tot_marks = 0;
 $abs_count = 0;
 $int_fail_count = 0;
 $old_fail = false;
+$old_fail_count =0;
 $isFinalClass = $this->Common_model->hasOneClass($student->course_group_id);
 if($classData->last_class == 'L' && $isFinalClass == false){
   $classes = $this->Common_model->getRecordByWhere('class_master',array('id !='=>$student->class_id,'course_group_id'=>$student->course_group_id));
@@ -21,6 +22,7 @@ $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('stude
     $old_fail = false;
   
   }else{
+    $old_fail_count++;
     $old_fail = true;
   }
 }
@@ -158,7 +160,7 @@ if ($withheld) {
   </div>
   <?php
 }
-else if ($old_fail) {
+else if ($old_fail_count>0) {
   ?>
   <div class="text-center text-primary border-right border-left border-bottom border-dark py-3">
     <h1 class=" text-center mb-0">Statement Of Marks</h1>

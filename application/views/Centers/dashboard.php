@@ -299,11 +299,11 @@
 							</div>
 						</a>
 						
-						 <!-- <a class="border-0 custom-menu-item" href="<?=base_url('backlog_result');?>">
+						 <a class="border-0 custom-menu-item" href="<?=base_url('backlog_result');?>">
 							<div>
-								<span class="nav-text">Backlog Result (January 2025)</span>
+								<span class="nav-text">Backlog Result (June 2025)</span>
 							</div>
-						</a>  -->
+						</a> 
 					
 						<?php endif ?>
 
