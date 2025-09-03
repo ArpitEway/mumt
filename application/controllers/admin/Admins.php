@@ -3375,7 +3375,8 @@ public function update_exam_datewise_permission(){
 	}
 
 	public function backlog_tr_class_list(){
-		$where = "id in (select distinct(course_group_id) from backlog_student where exam_form = 'Y' and exam_year='June 2025' and class_id in (121,198,240,276,280,282,224,264,273,300,301,206))";
+		$where = "id in (select distinct(course_group_id) from backlog_student where exam_form = 'Y' and exam_year='June 2025')";
+		//and class_id in (121,198,240,276,280,282,224,264,273,300,301,206)
 		// new_exam_form = 'Y' or student_result_aug_22
 		// and class_id in (101,104,105,108,110,119,125,126,128,131,137,154,155,168,175,177,181,182,191,198,204,206,208,246,214,276,224,250,226,252,228,262,273) 
 		// 
@@ -3617,7 +3618,7 @@ public function update_exam_datewise_permission(){
 			$this->db->select('bs.*, st.photo,st.session,st.course_name');
             $this->db->from('backlog_student as bs');
             $this->db->join('student as st','st.student_id=bs.student_id');
-            $this->db->where(array("bs.course_group_id"=>$course_id ,'bs.class_id' => $class_id,'bs.exam_form'=>'Y','bs.roll_no!='=>'0','mode'=>$mode,'st.course_complete'=>'Y','st.exam_pattern'=>"GRADE",'bs.exam_year'=>'Dec 2024' ));
+            $this->db->where(array("bs.course_group_id"=>$course_id ,'bs.class_id' => $class_id,'bs.exam_form'=>'Y','bs.roll_no!='=>'0','mode'=>$mode,'st.course_complete'=>'Y','st.exam_pattern'=>"GRADE",'bs.exam_year'=>'June 2025' ));
             $data['students']=  $this->db->get()->result();
             // $this->Common_model->getRecordByWhere('backlog_student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'exam_form'=>'Y','roll_no!='=>'0','mode'=>$mode ));
 		}else{
@@ -3625,7 +3626,7 @@ public function update_exam_datewise_permission(){
             $this->db->select('bs.*, st.photo,st.session,st.course_name,st.name,st.f_h_name');
             $this->db->from('backlog_student as bs');
             $this->db->join('student as st','st.student_id=bs.student_id');
-            $this->db->where(array("bs.course_group_id"=>$course_id ,'bs.class_id' => $class_id,'bs.exam_form'=>'Y','bs.roll_no!='=>'0','mode'=>$mode,'bs.result_show'=>'Y','st.exam_pattern'=>"GRADE",'bs.exam_year'=>'Dec 2024' ));
+            $this->db->where(array("bs.course_group_id"=>$course_id ,'bs.class_id' => $class_id,'bs.exam_form'=>'Y','bs.roll_no!='=>'0','mode'=>$mode,'bs.result_show'=>'Y','st.exam_pattern'=>"GRADE",'bs.exam_year'=>'June 2025' ));
             $data['students']=  $this->db->get()->result();
 			
 			// $this->db->limit(1);
@@ -6059,7 +6060,7 @@ public function forward_complaint(){
         $this->db->select('bs.*,s.exam_pattern');
         $this->db->from('backlog_student as bs');
         $this->db->join('student as s', 's.student_id = bs.student_id');
-        $this->db->where(array("bs.course_group_id"=>$course_id ,'bs.class_id' => $class_id,'bs.exam_form'=>'Y' ,'bs.roll_no!='=>'0', 'bs.mode'=>$mode,'bs.exam_year'=>"Dec 2024", 's.exam_pattern'=>$pattern));
+        $this->db->where(array("bs.course_group_id"=>$course_id ,'bs.class_id' => $class_id,'bs.exam_form'=>'Y' ,'bs.roll_no!='=>'0', 'bs.mode'=>$mode,'bs.exam_year'=>"June 2025", 's.exam_pattern'=>$pattern));
         $data['students']= $this->db->get()->result();
         $data['pattern'] = $pattern;
 		// $data['students']= $this->Common_model->getRecordByWhere('backlog_student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'exam_form'=>'Y' ,'roll_no!='=>'0', 'mode'=>$mode,'exam_year'=>"June 2024"));//'result_show'=>'Y'

@@ -519,8 +519,8 @@ public function update_sub_group_id_in_backlog_exam_form(){
 
 public function update_group_id_in_backlog_exam_form(){
     // $this->db->limit(300);
-    $this->db->where_in('class_id',array(101,104,105));
-    $students = $this->Common_model->getRecordByWhere('backlog_student',array('exam_year'=>'June 2024',
+    $this->db->where_in('class_id',array(102));
+    $students = $this->Common_model->getRecordByWhere('backlog_student',array('exam_year'=>'June 2025',
     'exam_form'=>'Y'));
     // ,'mode'=>'REG'
     // $this->Common_model->last_query();
