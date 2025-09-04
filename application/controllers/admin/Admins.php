@@ -3358,9 +3358,10 @@ public function update_exam_datewise_permission(){
 		
 		// $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' )";
 
-        $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and class_id in (103,194,196,198,200,202,204,206,210,212,214,303,276,280,222,224,226,228,285,291,121,296,284,311))";
+        $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' )";
 
 
+        // and class_id in (103,194,196,198,200,202,204,206,210,212,214,303,276,280,222,224,226,228,285,291,121,296,284,311)
         // and class_id in (155,168,182,283,287,289,293,310,295,297,264)
         // 155,182,264,168,289,287,310,293,283,297,295
         // 218,232,234,236,238,240,242,244,246,216,305,278,282,248,250,252,254
