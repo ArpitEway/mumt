@@ -6151,7 +6151,7 @@ public function forward_complaint(){
 			 $this->db->select('backlog_student.*,student.name,student.f_h_name,student.session,student.photo,student.course_name');
 			 $this->db->from('backlog_student');
 			$this->db->join('student','student.student_id = backlog_student.student_id');
-			$this->db->where(array("backlog_student.course_group_id"=>$course_id ,'backlog_student.class_id' => $class_id,'backlog_student.exam_form'=>'Y','backlog_student.roll_no!='=>'0','student.course_complete'=>'Y','backlog_student.mode'=>$mode,'backlog_student.result_show'=>'Y','backlog_student.exam_year'=>'Dec 2024','student.exam_pattern'=>'MARKS'));
+			$this->db->where(array("backlog_student.course_group_id"=>$course_id ,'backlog_student.class_id' => $class_id,'backlog_student.exam_form'=>'Y','backlog_student.roll_no!='=>'0','student.course_complete'=>'Y','backlog_student.mode'=>$mode,'backlog_student.result_show'=>'Y','backlog_student.exam_year'=>'June 2025','student.exam_pattern'=>'MARKS'));
 			$this->db->order_by('backlog_student.center_id,backlog_student.roll_no','ASC');
 			$data['students']=$this->db->get()->result();
 			// $this->Common_model->last_query();
@@ -6159,7 +6159,7 @@ public function forward_complaint(){
 			$this->db->select('backlog_student.*,student.name,student.f_h_name,student.session,student.photo,student.course_name');
 			$this->db->from('backlog_student');
 			$this->db->join('student','student.student_id = backlog_student.student_id');
-			$this->db->where(array("backlog_student.course_group_id"=>$course_id ,'backlog_student.class_id' => $class_id,'backlog_student.exam_form'=>'Y','backlog_student.roll_no!='=>'0','backlog_student.mode'=>$mode,'backlog_student.result_show'=>'Y' ,'backlog_student.exam_year'=>'Dec 2024','student.exam_pattern'=>'MARKS'));
+			$this->db->where(array("backlog_student.course_group_id"=>$course_id ,'backlog_student.class_id' => $class_id,'backlog_student.exam_form'=>'Y','backlog_student.roll_no!='=>'0','backlog_student.mode'=>$mode,'backlog_student.result_show'=>'Y' ,'backlog_student.exam_year'=>'June 2025','student.exam_pattern'=>'MARKS'));
 			//,'backlog_student.enrollment_no'=>'AH/22101159'
 			$this->db->order_by('backlog_student.center_id,backlog_student.roll_no','ASC');
 			$data['students']=$this->db->get()->result();
