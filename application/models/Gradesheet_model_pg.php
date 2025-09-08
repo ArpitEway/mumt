@@ -381,7 +381,12 @@ class Gradesheet_model_pg extends CI_Model
 		
         $persent =$check_fail_marks*100/$check_fail_tot_marks;
 		$where = 'min_marks <= '.$persent.' and  max_marks >= '.$persent.'';
-		$gradeData = $this->Common_model->getRecordByWhere('letter_grade_pg',$where);
+		if($this->classData->id == 325){
+			$gradeData = $this->Common_model->getRecordByWhere('letter_grade',$where);
+		}else{
+			$gradeData = $this->Common_model->getRecordByWhere('letter_grade_pg',$where);
+		}
+		
 		if ('F'==$gradeData[0]->letter_grade || 'ABS' ==$gradeData[0]->letter_grade) {
 			if($this->classData->id == 267){
 				array_push($this->paper_array, $this->paper["paper_code_utd"]);

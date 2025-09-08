@@ -2723,6 +2723,7 @@ public function marksheet_admin($student_id="")
 	   $data['new_exam_form']  = $new_exam_form;
 	   $data['classData']  = $classData;
 	   $data['exam_session']  = 'June 2025';
+	   $this->load->model('Gradesheet_model');
 	   $this->load->model('Gradesheet_model_pg');
        $this->load->model('GradeSheet_old_model_pg');
 	   $title = array('title' => 'Result - '.$data['student']->enrollment_no);
