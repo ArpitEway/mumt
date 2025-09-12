@@ -3910,7 +3910,8 @@ public function update_exam_datewise_permission(){
 		$where = array('paper_type!='=>'theory','exam_form'=>'Y','p_marks_sub'=>'N');
 		$this->db->Where($where);
 		$this->db->where_in('new_exam_form.p_marks',array('ABS','N'));
-		$this->db->where('university_mode','REG');
+		// $this->db->where('university_mode','REG');
+		$this->db->where('university_mode','PVT');
 		$this->db->where_in('student.old_class_id',[103,194,196,198,200,202,204,206,210,212,214,303,276,280,222,224,226,228,121,112,136]);
 		$this->db->Where('(project="Y" or practical = "Y")');
 		$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
