@@ -3201,6 +3201,7 @@ public function update_exam_datewise_permission(){
 
 		//$this->db->where_in('roll_number',array(210412125,210413275,210417990,210412133,210420009,210420534));
 		// $data['students'] = $this->Common_model->getRecordByWhere('student_result_aug_22',$where);
+		$this->db->where('student_id',723380);
 		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
 		// $this->Common_model->last_query();
 		$data['class_id'] = $class_id;
