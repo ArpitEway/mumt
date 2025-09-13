@@ -3199,7 +3199,7 @@ public function update_exam_datewise_permission(){
 		$this->db->order_by('center_id','ASC');
 		$this->db->order_by('roll_number','ASC');
 
-		//$this->db->where_in('roll_number',array(210412125,210413275,210417990,210412133,210420009,210420534));
+		$this->db->where_in('student_id',array(754811,754502));
 		// $data['students'] = $this->Common_model->getRecordByWhere('student_result_aug_22',$where);
 		// $this->db->where('student_id',723380);
 		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
@@ -3359,9 +3359,9 @@ public function update_exam_datewise_permission(){
 		
 		// $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' )";
 
-        $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and class_id in (298,112,136,256,258,260,317) )";
+        $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y'  )";
 
-
+		// and class_id in (298,112,136,256,258,260,317)
         // and class_id in (103,194,196,198,200,202,204,206,210,212,214,303,276,280,222,224,226,228,285,291,121,296,284,311)
         // and class_id in (155,168,182,283,287,289,293,310,295,297,264)
         // 155,182,264,168,289,287,310,293,283,297,295
