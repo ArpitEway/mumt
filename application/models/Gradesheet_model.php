@@ -206,7 +206,7 @@ class Gradesheet_model extends CI_Model
     
         die; 
     }
-    if($this->classData->last_class == 'L' && !in_array($center_id,$dept_ids)){
+    if($this->classData->last_class == 'L' && (!in_array($center_id,$dept_ids) || $class_id == 112)){
         $this->fail_count;
 		if ($this->fail_count>0) {
 			 $require_grace_marks = $this->fail_min_marks-$this->fail_obt_marks;
