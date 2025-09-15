@@ -182,7 +182,7 @@ class Otherscript extends CI_Controller {
 		$s_no=1;
 		foreach ($rs as $student) {
 			
-			$new_exam_sql = "select * from new_exam_form where student_id='".$student['student_id']."' and int_marks in ('N') and class_id='".$cls_id."' and paper_code not in ('1RBA1','1RBA2','1RBA3','1RBA4','1RMOM1') and sub_group_id!='1' ORDER by rand()";
+			$new_exam_sql = "select * from new_exam_form where student_id='".$student['student_id']."' and int_marks in ('N') and class_id='".$cls_id."' and paper_code not in ('1RBA1','1RBA2','1RBA3','1RBA4','1RMOM1') and sub_group_id!='1' and paper_type='Theory' ORDER by rand()";
 
 			// and paper_type='Theory'
 
@@ -240,7 +240,7 @@ class Otherscript extends CI_Controller {
 		//$marks = array('166','168','170','165'); 
 		$marks = array('85','84','83','82'); 
 		$cls_id=109;
-		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and  university_mode='REG'  and  roll_no!=0 order by roll_no  limit 100";
+		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and  university_mode='PVT' and exam_pattern= 'GRADE'  and  roll_no!=0 order by roll_no  limit 100";
 		// and exam_pattern= 'GRADE'
 		$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
 		$rs = $this->db->query($sql)->result_array();
