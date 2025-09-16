@@ -96,10 +96,10 @@ th.border.border-dark {
          * Grade In Repeat Examination.<br><br>
         <table class="border border-dark m-auto w-100" >
         <tr>
-          <td style="vertical-align: middle; text-align: center"><?=($classData->id== 325) ?'YEAR/SEMESTER':'SEMESTER'?></td>
+          <td style="vertical-align: middle; text-align: center">SEMESTER</td>
           <td style="vertical-align: middle; text-align: center">TOTAL CREDIT</td>
           <td style="vertical-align: middle; text-align: center">OBTAINED CREDIT</td>
-          <td style="vertical-align: middle; text-align: center"><?=($classData->id== 325) ?'AGPA':'SGPA'?></td>
+          <td style="vertical-align: middle; text-align: center">SGPA</td>
           <td style="vertical-align: middle; text-align: center">ATTEMPT</td>
          
         </tr>
