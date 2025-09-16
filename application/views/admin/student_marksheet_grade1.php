@@ -184,7 +184,7 @@
                     $count = 0;
                      foreach($classes as $cls){
                         $count++;
-                        if($count == 1){ $sno = 'First';}elseif($count == 2){ $sno = 'Second';}elseif($count == 3){ $sno = 'Third';}
+                        if($count == 1){ $sno = 'First';}elseif($count == 2){ $sno = 'Second';}elseif($count == 3){ $sno = 'Third';}elseif($count == 4){ $sno = 'Fourth';}
                         $this->db->order_by('id', 'desc');
                         $this->db->limit(1);
                         $old = $this->Common_model->getRecordByWhere('old_exam_data',array('class_id'=>$cls->id,'student_id'=>$student->student_id));

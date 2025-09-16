@@ -98,7 +98,7 @@ class Gradesheet_tr_model extends CI_Model
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
 		
-		if($std[0]->sub_group_id == 1){
+		if($std[0]->sub_group_id == 1 || $class_id ==325){
 			$papers = $this->Common_model->get_all_papers($student_id,$class_id);
 		}
 

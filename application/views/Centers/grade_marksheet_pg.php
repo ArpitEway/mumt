@@ -117,12 +117,8 @@ th.border.border-dark {
             $this->db->limit(1);
             $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id'=>$cls->id));
             $old_count = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id'=>$cls->id));
-            if($cls->course_group_id==14){
-               $gradeData   = $this->Gradesheet_model->view_old_results($student->student_id,$student->course_group_id,$cls->id,$student->university_mode,$old_result[0]->id, $old_result[0]->exam_status);
-            }else{
-               $gradeData   = $this->GradeSheet_old_model_pg->view_old_results($student->student_id,$student->course_group_id,$cls->id,$student->university_mode,$old_result[0]->id);
-            }
-           
+            $gradeData   = $this->GradeSheet_old_model_pg->view_old_results($student->student_id,$student->course_group_id,$cls->id,$student->university_mode,$old_result[0]->id);
+    
             $total_grade_point += number_format((float)$gradeData['agpa'], 2, '.', '') * $gradeData['obt_credit']; 
             $total_course_credit +=$gradeData['tot_credit'];
             ?>
