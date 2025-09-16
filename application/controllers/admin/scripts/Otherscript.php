@@ -182,12 +182,12 @@ class Otherscript extends CI_Controller {
 		$s_no=1;
 		foreach ($rs as $student) {
 			
-			// $new_exam_sql = "select * from new_exam_form where student_id='".$student['student_id']."' and int_marks in ('N') and class_id='".$cls_id."' and paper_code not in ('1RBA1','1RBA2','1RBA3','1RBA4','1RMOM1') and sub_group_id!='1' and paper_type='Theory' ORDER by rand()";
+			$new_exam_sql = "select * from new_exam_form where student_id='".$student['student_id']."' and int_marks in ('N') and class_id='".$cls_id."' and paper_code not in ('1RBA1','1RBA2','1RBA3','1RBA4','1RMOM1') and sub_group_id!='1' and paper_type='Theory' ORDER by rand()";
 
 			// and paper_type='Theory'
 
 			// Practical with internal	
-			$new_exam_sql = "select * from new_exam_form where student_id='".$student['student_id']."' and paper_type!='Project' and int_marks in ('N') and class_id='".$cls_id."' and paper_code not in ('1RBA1','1RBA2','1RBA3','1RBA4','1RMOM1') and sub_group_id!='1' ORDER by rand()";
+			// $new_exam_sql = "select * from new_exam_form where student_id='".$student['student_id']."' and paper_type!='Project' and int_marks in ('N') and class_id='".$cls_id."' and paper_code not in ('1RBA1','1RBA2','1RBA3','1RBA4','1RMOM1') and sub_group_id!='1' ORDER by rand()";
 			// Practical with internal	
 
 			$new_exam_rs =	$this->db->query($new_exam_sql)->result_array();
@@ -229,9 +229,9 @@ class Otherscript extends CI_Controller {
 				$this->db->query($update_marks);
 				shuffle($marks);
 			}
-			   $update_student = "update student set p_marks_sub='Y' where student_id='".$student['student_id']."' and class_id='".$cls_id."'";
+			   // $update_student = "update student set p_marks_sub='Y' where student_id='".$student['student_id']."' and class_id='".$cls_id."'";
 
-			  $this->db->query($update_student);
+			  // $this->db->query($update_student);
 		}
 	}
 
