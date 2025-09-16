@@ -3199,8 +3199,9 @@ public function update_exam_datewise_permission(){
 		$this->db->order_by('center_id','ASC');
 		$this->db->order_by('roll_number','ASC');
 
-		//$this->db->where_in('roll_number',array(210412125,210413275,210417990,210412133,210420009,210420534));
+		// $this->db->where_in('student_id',array(754811));
 		// $data['students'] = $this->Common_model->getRecordByWhere('student_result_aug_22',$where);
+		// $this->db->where('student_id',723380);
 		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
 		// $this->Common_model->last_query();
 		$data['class_id'] = $class_id;
@@ -3359,14 +3360,19 @@ public function update_exam_datewise_permission(){
 	}
 
 	public function tr_class_list(){
+
+		if(!$this->session->has_userdata('adminData')){
+			redirect(base_url());
+			exit;
+		}
 		
 		// $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and old_class_id in (154,155,181,182,193,217,195,197,231,199,233,201,235,203,237,205,239,241,209,243,211,245,213,215,302,304,275,277,279,281,221,247,223,249,225,251,227,253) )  ";
 		
 		// $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' )";
 
-        $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' )";
+        $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y'  )";
 
-
+		// and class_id in (298,112,136,256,258,260,317)
         // and class_id in (103,194,196,198,200,202,204,206,210,212,214,303,276,280,222,224,226,228,285,291,121,296,284,311)
         // and class_id in (155,168,182,283,287,289,293,310,295,297,264)
         // 155,182,264,168,289,287,310,293,283,297,295
@@ -3788,7 +3794,7 @@ public function update_exam_datewise_permission(){
         	//$this->db->Where('result_show','Y');
 		
 		$this->db->where_in('new_exam_form.int_marks',array('ABS','N'));
-		 $this->db->where_in('student.old_class_id',array(103,194,196,198,200,202,204,206,210,212,214,303,276,280,222,224,226,228,121));
+		 $this->db->where_in('student.old_class_id',array(103,194,196,198,200,202,204,206,210,212,214,303,276,280,222,224,226,228,121,112,136,109,127,130,133));
 		$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
 		$data['students'] = $this->db->get()->result();//echo $this->db->last_query(); die;
 		$this->load->view('admin/student_int_marks_no_list',$data);
@@ -3916,7 +3922,8 @@ public function update_exam_datewise_permission(){
 		$this->db->Where($where);
 		$this->db->where_in('new_exam_form.p_marks',array('ABS','N'));
 		$this->db->where('university_mode','REG');
-		$this->db->where_in('student.old_class_id',[103,194,196,198,200,202,204,206,210,212,214,303,276,280,222,224,226,228,121]);
+		// $this->db->where('university_mode','PVT');
+		$this->db->where_in('student.old_class_id',[103,194,196,198,200,202,204,206,210,212,214,303,276,280,222,224,226,228,121,112,136,109,127,130,133]);
 		$this->db->Where('(project="Y" or practical = "Y")');
 		$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
 		$data['students'] = $this->db->get()->result();
