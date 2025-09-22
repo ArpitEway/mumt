@@ -3183,7 +3183,7 @@ public function getStudentData()
 
 			
 				// $student = $this->Common_model->getRecordByWhere('backlog_student',$where);
-				$this->db->select('backlog_student.*,student.name,student.f_h_name,student.course_name,student.photo,student.session');
+				$this->db->select('backlog_student.*,student.name,student.f_h_name,student.course_name,student.photo,student.session,student.exam_pattern,student.university_mode');
 				$this->db->from('backlog_student');
 				$this->db->join('student','backlog_student.student_id=student.student_id');
 				$this->db->where('backlog_student.exam_year','June 2025');
@@ -3229,12 +3229,17 @@ public function getStudentData()
 						$data['new_exam_form']  = $new_exam_form;
 						// if(($data['student']->old_class_id == '104' || $data['student']->old_class_id == '107' || $data['student']->old_class_id == '101' || $data['student']->old_class_id == '134' || $data['student']->old_class_id == '116' || $data['student']->old_class_id == '110'|| $data['student']->old_class_id == '119' || $data['student']->old_class_id == '131') && $data['student']->university_mode == 'REG')
 						$class_ids=array(101,104,107,110,116,119,125,128,131,134);
-						
+						$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302,303,304,305,278,282,250,252,216,232,236,238,240,246,248,254,218,305,210,325);
 						if((in_array($data['student']->class_id, $class_ids)) && $data['student']->university_mode=='REG')	
 						{
 							$this->load->model('Gradesheet_model');
 							$dt = $provisional_remark_details.$msg.$this->load->view('Centers/grade_marksheet',$data,true);
-						}else{
+						}else if((in_array($data['student']->class_id, $class_cbcs)) && $data['student']->university_mode=='REG' && $data['student']->exam_pattern=='GRADE'){
+							  $this->load->model('Gradesheet_backlog_model_pg');
+	   							$this->load->model('GradeSheet_old_model_pg');
+							$dt = $provisional_remark_details.$msg.$this->load->view('Centers/backlog_grade_marksheet_pg',$data,true);
+						}
+						else{
 							
 							$title = array('title' => 'Backlog Result - '.$data['student']->enrollment_no);
 							
