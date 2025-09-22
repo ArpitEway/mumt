@@ -171,9 +171,9 @@
                           <td width="6%" scope="col"><strong><u>Min</u></strong></td>
                          
                         </tr>
-                        <tr>
+                        <!-- <tr>
                           <td colspan="9">&nbsp;</td>
-                        </tr>
+                        </tr> -->
                         <?php
                         $check_grace_marks = false;
                         $fail_count = 0;
@@ -598,7 +598,7 @@
               <!-- if starts -->
               <tr>
                 <td align="left" colspan="2">
-                  <table width="100%" style="margin-top:40px">
+                  <table width="100%" style="margin-top:30px">
                     <tr>
                     </tr>
                   </table>    
