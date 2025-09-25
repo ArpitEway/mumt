@@ -3199,7 +3199,7 @@ public function update_exam_datewise_permission(){
 		$this->db->order_by('center_id','ASC');
 		$this->db->order_by('roll_number','ASC');
 
-		// $this->db->where_in('student_id',array(754811));
+		$this->db->where_in('student_id',array(718901));
 		// $data['students'] = $this->Common_model->getRecordByWhere('student_result_aug_22',$where);
 		// $this->db->where('student_id',725141);
 		$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
