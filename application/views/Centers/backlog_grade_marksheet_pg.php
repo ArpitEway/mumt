@@ -49,21 +49,24 @@ th.border.border-dark {
 <table class="table mb-0">
     <tbody>
         <tr>
+          <?php 
+          $base_img = ($student_info->session)?base_url('assets/student_image/').$student_info->session.'/'.$student_info->photo:base_url('assets/student_image/').$student->session.'/'.$student->photo;
+          ?>
             <th class="border-top-0 text-primary pl-3">Enrollment No.</th>
             <th class="border-top-0"><?php  echo $student->enrollment_no ?></th>
             <th class="border-top-0 text-primary pl-3">Roll No.</th>
             <th class="border-top-0"><?php echo  $student->roll_no; ?></th>
-            <th rowspan="4" class="border-top-0 text-center" width="170px" height="180px"><img class="img img-thumbnail" src="<?=base_url('assets/student_image/').$student_info->session.'/'.$student_info->photo?>" ></th>
+            <th rowspan="4" class="border-top-0 text-center" width="170px" height="180px"><img class="img img-thumbnail" src="<?= $base_img?>" ></th>
         </tr>
         <tr>
             <th class="border-top-0 text-primary pl-3">Name</th>
-            <th class="border-top-0"><?php  echo $student_info->name ?></th>
+            <th class="border-top-0"><?php  echo ($student_info->name)?$student_info->name:$student->name; ?></th>
             <th class="border-top-0 text-primary pl-3">F/H Name</th>
-            <th class="border-top-0"><?php  echo $student_info->f_h_name ?></th>
+            <th class="border-top-0"><?php  echo ($student_info->f_h_name)?$student_info->f_h_name:$student->f_h_name; ?></th>
         </tr>
         <tr>
             <th class="border-top-0 text-primary pl-3">Course</th>
-            <th class="border-top-0"><?php  echo $student_info->course_name ?></th>
+            <th class="border-top-0"><?php  echo($student_info->course_name)?$student_info->course_name:$student->course_name; ?></th>
             <th class="border-top-0 text-primary pl-3">Class</th>
             <th class="border-top-0"><?php  echo $this->Common_model->getClassNameByClassId($student->class_id); ?></th>
         </tr>

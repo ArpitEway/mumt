@@ -96,10 +96,10 @@ th.border.border-dark {
          * Grade In Repeat Examination.<br><br>
         <table class="border border-dark m-auto w-100" >
         <tr>
-          <td style="vertical-align: middle; text-align: center">SEMESTER</td>
+          <td style="vertical-align: middle; text-align: center"><?=($classData->id== 325) ?'YEAR/SEMESTER':'SEMESTER'?></td>
           <td style="vertical-align: middle; text-align: center">TOTAL CREDIT</td>
           <td style="vertical-align: middle; text-align: center">OBTAINED CREDIT</td>
-          <td style="vertical-align: middle; text-align: center">SGPA</td>
+          <td style="vertical-align: middle; text-align: center"><?=($classData->id== 325) ?'AGPA':'SGPA'?></td>
           <td style="vertical-align: middle; text-align: center">ATTEMPT</td>
          
         </tr>
@@ -117,7 +117,12 @@ th.border.border-dark {
             $this->db->limit(1);
             $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id'=>$cls->id));
             $old_count = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id'=>$cls->id));
-            $gradeData   = $this->GradeSheet_old_model_pg->view_old_results($student->student_id,$student->course_group_id,$cls->id,$student->university_mode,$old_result[0]->id);
+            if($cls->course_group_id==14){
+               $gradeData   = $this->Gradesheet_model->view_old_results($student->student_id,$student->course_group_id,$cls->id,$student->university_mode,$old_result[0]->id, $old_result[0]->exam_status);
+            }else{
+               $gradeData   = $this->GradeSheet_old_model_pg->view_old_results($student->student_id,$student->course_group_id,$cls->id,$student->university_mode,$old_result[0]->id);
+            }
+           
             $total_grade_point += number_format((float)$gradeData['agpa'], 2, '.', '') * $gradeData['obt_credit']; 
             $total_course_credit +=$gradeData['tot_credit'];
             ?>

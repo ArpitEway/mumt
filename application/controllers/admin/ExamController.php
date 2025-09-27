@@ -1898,10 +1898,10 @@ class ExamController extends CI_Controller {
           ".$where;
         }else{
             $data['exam_type'] = 'REG';
-             $sql="SELECT DISTINCT(paper_master.id), `exam_date`, `exam_shift`, `exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student` ON `student`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = 'theory'  AND paper_master.exam_date!='0000-00-00'  AND (
-              (student.class_id IN (104, 107, 134) AND student.university_mode = 'REG') OR
-              (student.class_id NOT IN (104, 107, 134) AND student.university_mode IN ('REG', 'PVT'))
-          )".$where;
+             $sql='SELECT DISTINCT(paper_master.id), `exam_date`, `exam_shift`, `exam_day`, `paper_master`.`paper_code`, `paper_master`.`paper_name`, `paper_master`.`course_group_id`, `paper_master`.`class_id` FROM `paper_master` JOIN `student` ON `student`.`class_id` = `paper_master`.`class_id` WHERE `paper_master`.`type` = "theory"  AND paper_master.exam_date!="0000-00-00"  AND (
+              (student.class_id IN (104, 107, 134) AND student.university_mode = "REG") OR
+              (student.class_id NOT IN (104, 107, 134) AND student.university_mode IN ("REG", "PVT"))
+          )'.$where;
         }
         $query = $this->db->query($sql);
         $data['papers'] = $query->result();
@@ -3183,7 +3183,7 @@ public function getStudentData()
 
 			
 				// $student = $this->Common_model->getRecordByWhere('backlog_student',$where);
-				$this->db->select('backlog_student.*,student.name,student.f_h_name,student.course_name,student.photo,student.session');
+				$this->db->select('backlog_student.*,student.name,student.f_h_name,student.course_name,student.photo,student.session,student.exam_pattern,student.university_mode');
 				$this->db->from('backlog_student');
 				$this->db->join('student','backlog_student.student_id=student.student_id');
 				$this->db->where('backlog_student.exam_year','June 2025');
@@ -3224,17 +3224,24 @@ public function getStudentData()
 						$this->db->where('backlog_exam_form.backlog_student_id',$data['student']->id);
 						$this->db->where('backlog_exam_form.student_id',$data['student']->student_id);
 						$this->db->where('backlog_exam_form.class_id',$data['student']->class_id);
+						$this->db->order_by('backlog_exam_form.paper_order');
 						$new_exam_form = $this->db->get()->result();
 						$data['classData']  = $classData;
-						$data['new_exam_form']  = $new_exam_form;
+						$data['backlog_exam_form']  = $new_exam_form;
 						// if(($data['student']->old_class_id == '104' || $data['student']->old_class_id == '107' || $data['student']->old_class_id == '101' || $data['student']->old_class_id == '134' || $data['student']->old_class_id == '116' || $data['student']->old_class_id == '110'|| $data['student']->old_class_id == '119' || $data['student']->old_class_id == '131') && $data['student']->university_mode == 'REG')
-						$class_ids=array(101,104,107,110,116,119,125,128,131,134);
-						
+						$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136,267,325);
+						$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302,303,304,305,278,282,250,252,216,232,236,238,240,246,248,254,218,305,210);
 						if((in_array($data['student']->class_id, $class_ids)) && $data['student']->university_mode=='REG')	
 						{
-							$this->load->model('Gradesheet_model');
-							$dt = $provisional_remark_details.$msg.$this->load->view('Centers/grade_marksheet',$data,true);
-						}else{
+							 $this->load->model('Gradesheet_backlog_model');
+	    					 $this->load->model('Gradesheet_model');
+							$dt = $provisional_remark_details.$msg.$this->load->view('Centers/backlog_grade_marksheet',$data,true);
+						}else if((in_array($data['student']->class_id, $class_cbcs)) && $data['student']->university_mode=='REG' && $data['student']->exam_pattern=='GRADE'){
+							  $this->load->model('Gradesheet_backlog_model_pg');
+	   							$this->load->model('GradeSheet_old_model_pg');
+							$dt = $provisional_remark_details.$msg.$this->load->view('Centers/backlog_grade_marksheet_pg',$data,true);
+						}
+						else{
 							
 							$title = array('title' => 'Backlog Result - '.$data['student']->enrollment_no);
 							
@@ -3247,11 +3254,12 @@ public function getStudentData()
 							// 	$marksheet_bottom=  $this->load->view('Centers/marksheet_bottom',$data,true);
 							// }
 							if($classData->internal=='N'){
-								$marksheet_bottom = $this->load->view('Centers/marksheet_without_int',$data,true);
+								$marksheet_bottom = $this->load->view('Centers/marksheet_without_int_backlog',$data,true);
 							}else{
 								if($student[0]->class_id=='168'){
-									$marksheet_bottom  = $this->load->view('Centers/marksheet_mom',$data,true);
+									$marksheet_bottom  = $this->load->view('Centers/marksheet_mom_backlog',$data,true);
 								}else{
+									
 									$marksheet_bottom = $this->load->view('Centers/marksheet_bottom_backlog',$data,true);
 								}
 							// $dt =  $marksheet_top.$marksheet_bottom;

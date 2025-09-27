@@ -147,7 +147,7 @@
             <tr>
               <td height="72" colspan="2">
                 <fieldset style="border: 0px solid #22316C;">       
-                  <div style="min-height:450px;margin-top: 40px;">
+                  <div style="min-height:450px;margin-top: 40px; margin-bottom: 15px;">
                     <table id="" style="width:100%;" border="0" cellspacing="0" cellpadding="0" align="center">
                       <tbody>
                         <tr style="font-family:Arial, Helvetica, sans-serif; font-size:11px" align="center">
@@ -171,9 +171,9 @@
                           <td width="6%" scope="col"><strong><u>Min</u></strong></td>
                          
                         </tr>
-                        <tr>
+                        <!-- <tr>
                           <td colspan="9">&nbsp;</td>
-                        </tr>
+                        </tr> -->
                         <?php
                         $check_grace_marks = false;
                         $fail_count = 0;
@@ -251,9 +251,17 @@
 //                           $check_grace_marks = true;
 //                           $result = "PASS BY GRACE";
 //                         }
+                        $flag = 1;
+                        $tflag = 1;
+                         $sub_count = 1;
+                         $foundation_count = 0;
+                         $foundation_count_show = 0;
+                         $group = explode('(', $papers[0]->group_name);
+                         $group_name = explode(',',$group[1]);
                         foreach($papers as $paper)
                         {
                           $paper_name=$paper->paper_name;
+                          
                           if($paper->class_id=="168"){
                               if($paper->paper_code=="1RMOM3(A)")
                               {
@@ -288,6 +296,62 @@
                           <tr>
                             <td colspan="9">&nbsp;</td>
                           </tr>
+                          <?php 
+                           $paper_name = explode(' - ',$paper->paper_name);
+                          if($class_id == 169 && $check_mode->mode == "REG"){
+                          if($tflag == 1) { echo '<tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.
+                        '<td style="margin-top:2px;" align="left">'.'</td>'.
+                            '<td colspan="8" align="left">'.'<strong>'.
+                          '<u>'.'Theory'.'</u>' .':'.'</strong>'.'</td>'.
+                          '</tr>'.'<tr>'
+                          .'<td colspan="9">'.'&nbsp;'.'</td>'.
+                        '</tr>';}elseif
+                          ($paper_name[0] == 'Moukhiki' && $flag == 1){ echo ' <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.'<td style="margin-top:2px;" align="left">'.'</td>'.
+                          '<td colspan="8" align="left">'.'<strong>'.
+                        '<u>'.'Viva-Voce'.'</u>'.':'.'</strong>'.'</td>'.'</tr>'.'<tr>'
+                        .'<td colspan="9">'.'&nbsp;'.'</td>'.
+                      '</tr>';}else{ echo'';};
+                          }else if($classData->course_group_id == 12 ){
+                            $sub_group = $this->Common_model->getRecordById('sub_group', 'id', $paper->sub_group_id);
+                            $foundation_count++;
+                            if($sub_group->id == 1 && ($foundation_count == 1 ||  $foundation_count == 3 ) ){
+                              //$foundation_count=2;
+                              $foundation_count_show++;
+                              echo ' <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.'<td style="margin-top:2px;" align="left">'.'</td>'.
+                              '<td colspan="8" align="left">'.'<strong>'.
+                            '<u>'.$sub_group->sub_group_name.' - '.$foundation_count_show.'</u>'.'</strong>'.'</td>'.'</tr>'.'<tr>'
+                            .'<td colspan="9">'.'&nbsp;'.'</td>'.
+                          '</tr>';
+                          }
+                           else if($sub_group->id == 2 && $sub_count == 1){
+                                $sub_count=2;
+                                echo ' <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.'<td style="margin-top:2px;" align="left">'.'</td>'.
+                                '<td colspan="8" align="left">'.'<strong>'.
+                              '<u>'.$sub_group->sub_group_name.' - '.$group_name[0].'</u>'.'</strong>'.'</td>'.'</tr>'.'<tr>'
+                              .'<td colspan="9">'.'&nbsp;'.'</td>'.
+                            '</tr>';
+                            }elseif($sub_group->id == 3){
+                                echo ' <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.'<td style="margin-top:2px;" align="left">'.'</td>'.
+                                '<td colspan="8" align="left">'.'<strong>'.
+                              '<u>'.$sub_group->sub_group_name.' - '.$group_name[1].'</u>'.'</strong>'.'</td>'.'</tr>'.'<tr>'
+                              .'<td colspan="9">'.'&nbsp;'.'</td>'.
+                            '</tr>';
+                            }elseif($sub_group->id == 4){
+                                echo ' <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.'<td style="margin-top:2px;" align="left">'.'</td>'.
+                                '<td colspan="8" align="left">'.'<strong>'.
+                              '<u>'.$sub_group->sub_group_name.' - '.substr($group_name[2], 0, -1).'</u>'.'</strong>'.'</td>'.'</tr>'.'<tr>'
+                              .'<td colspan="9">'.'&nbsp;'.'</td>'.
+                            '</tr>';
+                            }elseif($sub_group->id == 5 || $sub_group->id == 6){
+                                echo ' <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" valign="middle" align="center">'.'<td style="margin-top:2px;" align="left">'.'</td>'.
+                                '<td colspan="8" align="left">'.'<strong>'.
+                              '<u>'.$sub_group->sub_group_name.'</u>'.'</strong>'.'</td>'.'</tr>'.'<tr>'
+                              .'<td colspan="9">'.'&nbsp;'.'</td>'.
+                            '</tr>';
+                            }
+                           
+                          }
+                          ?>
                           <tr style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="middle">
                             <td style="margin-top:2px;" align="left"><strong class="tdFont"><?php echo  $paper->paper_code; ?></strong></td>
                             <td align="left"><strong class="tdFont"><?php if($paper_name[0] == 'Moukhiki'){ 
@@ -389,7 +453,11 @@
                             ?></span>
                           </td>
                         </tr>
-                      <?php } ?>
+                      <?php
+                    if($paper_name[0] == 'Moukhiki') {
+                          $flag =0;}
+                          $tflag =0;
+                    } ?>
                     </tbody></table>
                   </div>
                   <table border="0" cellpadding="0" height="112" width="100%">
@@ -530,7 +598,7 @@
               <!-- if starts -->
               <tr>
                 <td align="left" colspan="2">
-                  <table width="100%" style="margin-top:40px">
+                  <table width="100%" style="margin-top:30px">
                     <tr>
                     </tr>
                   </table>    
