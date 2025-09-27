@@ -10,8 +10,8 @@
 		<?php $i=1; ?>
 		<?php foreach ($courses as $course){
 			$this->db->order_by('id');
-		 $this->db->where_in('id',array(121,198,240,276,280,282,224,264,273,300,301,206,294));
-			
+		 $this->db->where_in('id',array(109,112,127,130,133,134,135,136,180,287,288,246,292,262));
+		//121,198,240,276,280,282,224,264,273,300,301,206,294	
         $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id'],"backlog_exam_form_permission"=>'Y'));
 		// ,"backlog_exam_form_permission"=>'Y'
 		// backlog_result_permission, "backlog_exam_form_permission"=>'Y'
