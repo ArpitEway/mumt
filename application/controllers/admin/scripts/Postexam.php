@@ -63,7 +63,7 @@ class Postexam extends CI_Controller {
             //  $this->db->where('mode', 'Semester');
             $this->db->where('exam_form', 'Y');
             $this->db->where('upload_result', 'N');
-            // $this->db->where('student_id',709296);
+            // $this->db->where('student_id',718196);
             $this->db->where('old_result_show', 'Y');
             $this->db->where('result_permission', 'Y');
             // $this->db->where('final_result_permission', 'Y');
@@ -1114,7 +1114,7 @@ public function upload_old_grade_data_script($class_id="",$mode){
     $this->db->limit(500);
    //s $this->db->where_not_in('student_id',array(711707,708907));
    // $this->db->where_in('student_id',array(702981,700979));
-    // $this->db->where('student_id',758798);
+    $this->db->where('student_id',718196);
     $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'N','university_mode'=>$mode ,'exam_pattern'=>'GRADE' ,'old_result_show'=>'Y' ));
     //, "marksheet_dispatch"=>'Y'
     // $this->Common_model->last_query();

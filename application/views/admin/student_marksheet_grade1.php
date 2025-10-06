@@ -179,7 +179,7 @@
                   <table border='1' cellpadding="2"  width="103%">
                   <tr align="center"><th width='12.5%'>Year</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>AGPA</th><?php if($classData->last_class == 'L'){ ?><th width='12.5%'>Attempt</th><?php }?></tr>
                     <?php
-                     $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$student->course_group_id));
+                     $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$student->course_group_id,'class_name!='=>'IV Year'));
                     
                     $count = 0;
                      foreach($classes as $cls){

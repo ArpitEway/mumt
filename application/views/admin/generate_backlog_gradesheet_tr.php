@@ -158,6 +158,7 @@ table.last_table, .last_table td, .last_table th{
     $current_center=$student->center_id;
     $page_break_count++;
     $marks = $this->Common_model->student_info_for_backlog_result($student->student_id,$student->class_id,$student->id);
+    // $this->Common_model->last_query();
     $BarCodecolspan = 10 + count($marks); 
     $total_theory_marks_obt = 0;
     $total_int_marks_obt = 0;
@@ -204,8 +205,8 @@ table.last_table, .last_table td, .last_table th{
 
       
     }else{
-      $rowspanhead = "4";
-      $rowspandata = "8";
+      $rowspanhead = "5";
+      $rowspandata = "9";
     }
     foreach($marks as $new_exam_form)
     {
@@ -285,11 +286,11 @@ table.last_table, .last_table td, .last_table th{
               $count_int++;
             }
         }else{
-            if($new_exam_form->theory_marks<$new_exam_form->private_min_theory_marks  && $new_exam_form->theory_marks!=''){
+            if($new_exam_form->theory_marks<($new_exam_form->min_theory_marks + $new_exam_form->min_internal_marks)  && $new_exam_form->theory_marks!=''){
               array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
               $fail_count++;
               $fail_tot_marks += $new_exam_form->theory_marks;
-              $require_tot_marks += $new_exam_form->private_min_theory_marks;
+              $require_tot_marks += $new_exam_form->min_theory_marks + $new_exam_form->min_internal_marks;
             }
 
         }
@@ -442,7 +443,7 @@ table.last_table, .last_table td, .last_table th{
         </tr>
         <?php 
         }
-        if(($classData->project!='N' || $classData->practical!='N') && $student->mode != 'PVT'){
+        if(($classData->project!='N' || $classData->practical!='N')){
           // echo $student->mode;die;
         ?>
         <tr>
@@ -489,10 +490,11 @@ table.last_table, .last_table td, .last_table th{
    
         if($std[0]->sub_group_id == 1){
 			$papers = $this->Common_model->get_all_backlog_papers($student->student_id,$student->class_id,$student->id);
+      // $this->Common_model->last_query();
      
 		}
-
-		if($this->classData->class_group == 'Y' || $student->class_id == 101){
+ $session = explode(' ',$student->session);
+		if($this->classData->class_group == 'Y' || (in_array($session[1],array(2021,2022)) && ($class_id == 101 || $class_id == 102))){
 			$papers_list = $this->Common_model->get_all_backlog_group_papers($student->student_id,$student->class_id,$student->id);
 		}
 		
@@ -658,7 +660,7 @@ table.last_table, .last_table td, .last_table th{
             }else{
               if($new_exam_form->theory_marks==''){
                 echo '-';
-              }elseif($new_exam_form->theory_marks>=$new_exam_form->private_min_theory_marks && $new_exam_form->theory_marks!="ABS"){
+              }elseif($new_exam_form->theory_marks>=($new_exam_form->min_theory_marks + $new_exam_form->min_internal_marks) && $new_exam_form->theory_marks!="ABS"){
                 echo $new_exam_form->theory_marks.$status;
               }else{
                 echo $new_exam_form->theory_marks;
@@ -707,7 +709,7 @@ table.last_table, .last_table td, .last_table th{
         <?php } ?>
         <td class="align-middle text-center result"><?php echo $total_int_marks_obt;  ?></td>
     </tr> <?php } ?>
-  <?php if( ($classData->project!='N' || $classData->practical!='N') && $student->mode != 'PVT'){ ?>
+  <?php if( ($classData->project!='N' || $classData->practical!='N')){ ?>
   <tr>
     <td class="align-middle text-right paper">Practical Marks.</td>
     <?php
@@ -774,7 +776,7 @@ table.last_table, .last_table td, .last_table th{
     }else{
       if($check_grace_marks==true){
         echo $paper_master->theory_marks;
-      } elseif(($paper_master->theory_marks<$paper_master->private_min_theory_marks) ||  $paper_master->theory_marks=='ABS'){
+      } elseif(($paper_master->theory_marks<($paper_master->min_theory_marks + $new_exam_form->min_internal_marks)) ||  $paper_master->theory_marks=='ABS'){
 
         if($paper_master->theory_marks==''){
           echo "-";
@@ -829,51 +831,87 @@ table.last_table, .last_table td, .last_table th{
   $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id<'=>$student->class_id));
   ?> <tr>
   <td class="align-middle text-center "  colspan="2"><strong>
-  <?= 'Session'.'<br>'.'Sem/Year'.'<br>'.'Roll no'.'<br>'.'Marks'?></strong>
+  <?= 'Session'.'<br>'.'Sem/Year'.'<br>'.'Roll no'.'<br>'.'Marks'.'<br>'.'Credit Earned / Points '.'<br>'.'AGPA'?></strong>
  
 </td> <?php
+$classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$student->course_group_id,'mode'=>$classData->mode,'id!='=>$class_id
+,'class_name!='=>'IV Year'));
+$total_ob =0;
+$total_mar=0;
+$total_grade_point = 0;
+$total_course_credit = 0;
+ foreach($classes as $cls){
+    $this->db->order_by('id','desc');
+    $this->db->limit(1);
+    $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id'=>$cls->id));
  foreach($old_result as $old){
+    $old_grade_data   = $this->Gradesheet_model->view_old_results($student->student_id,$student->course_group_id,$old->class_id,$student->mode, $old->id, $old->exam_status);
   if($old->exam_result == "FAIL"){
  $final_fail++;
  $old->obtain_marks ='-';
  $old->total_marks = '-';
- 
+ $old_grade_data['obt_credit'] ='-';
+ $old_grade_data['agpa'] ='-';
+ $sgpa = '-';
+ $grade_point = '-';
+  }else{
+    $old_grade_data['agpa'] = number_format((float)$old_grade_data['agpa'], 2, '.', '');
+    $sgpa = number_format((float)$old_grade_data['agpa'], 2, '.', '');
+    $grade_point = ($old_grade_data['obt_credit'] * number_format((float)$old_grade_data['agpa'], 2, '.', ''));
   }
-
-  $total_ob = $total_marks_obt + $old->obtain_marks;
-  $total_mar =  $total_paper_marks + $old->total_marks;
-  $percent = round(($total_ob/$total_mar)*100,2);    
-    if($percent>=60){
-      $div = "First";
-    }elseif($percent<60 && $percent>=40){
-      $div  = "Second";
-    }else{
-      $div = "Third";
-    }
-  ?> 
-  
-  
- 
+  $total_grade_point += number_format((float)$old_grade_data['agpa'], 2, '.', '') * $old_grade_data['obt_credit']; 
+  $total_course_credit +=$old_grade_data['tot_credit'];
+  $total_ob += $old->obtain_marks;
+  $total_mar += $old->total_marks;
+?>  
 <td class="align-middle text-center "  colspan="2">
-  <?= $old->exam_year.'<br>'.$this->Common_model->getClassNameByClassId($old->class_id).'<br>'.$old->roll_no.'<br>'.$old->obtain_marks.'/'.$old->total_marks?>
+  <?= $old->exam_year.'<br>'.$this->Common_model->getClassNameByClassId($old->class_id).'<br>'.$old->roll_no.'<br>'.$old->obtain_marks.'/'.$old->total_marks.'<br>'.$old_grade_data['obt_credit'].' / '.$grade_point.'<br>'.$sgpa;?>
  
 </td>  
  <?php }
- if($final_result == "FAIL" || $final_result == "RW" || $final_fail !=0 ){
+  }
+  if($final_result == "FAIL" || $final_result == "RW" || $final_fail !=0 ){
   $total_ob = '-';
   $total_mar = '-';
   $percent = '-';
   $div = '-';
-  if($final_fail !=0){
+  $cgpa = '-';
+  $total_course_credit +=$gradesheetData['tot_credit'];
+  if($final_fail !=0 && $final_result != "FAIL"){
     $final_result ='RWPM';
     $final_remark ="RWPM";
   }
+ }else{
+    $total_ob += $total_marks_obt;
+    $total_mar += $total_paper_marks;
+    $total_grade_point += number_format((float)$gradesheetData['agpa'], 2, '.', '') * $gradesheetData['obt_credit']; 
+    $total_course_credit +=$gradesheetData['tot_credit'];
+    $cgpa = number_format((float)($total_grade_point/$total_course_credit), 2, '.', '');
+    $percent = $cgpa * 10;
+    // $percent = round(($total_ob/$total_mar)*100,2);    
+    // if($percent>=60){
+    // $div = "First";
+    // }elseif($percent<60 && $percent>=40){
+    // $div  = "Second";
+    // }else{
+    // $div = "Third";
+    // }
+
+    if($cgpa>=8.0){
+        $div = "First Division with Distinction";
+        }elseif($cgpa<8.0 && $cgpa>=6.50){
+        $div  = "First Division";
+        }elseif($cgpa<6.50 && $cgpa>=5.00){
+        $div  = "Second Division";
+        }else{
+        $div = "Pass";
+        }
  }
  
  ?>
   
 <td class="align-middle text-center " ><strong>Result</strong><br><?= $final_result?></td>
-<td class="align-middle text-center "  colspan="2"><strong>Grand Total</strong><br><?= $total_ob.'/'.$total_mar?></td>
+<td class="align-middle text-center "  colspan="2"><strong>Grand Total</strong><br><?= $total_ob.'/'.$total_mar?><br><strong>Total Credit</strong><br><?= $total_course_credit?><br><strong>CGPA</strong><br><?= $cgpa?></td>
 <td class="align-middle text-center "  colspan="2"><strong>%</strong><br><?= $percent?></td>
 <td class="align-middle text-center "  colspan="2"><strong>Division</strong><br><?= $div?></td>
 <td class="align-middle text-center "  colspan="3"><strong>Degree No. And Date</strong><br>-</td>

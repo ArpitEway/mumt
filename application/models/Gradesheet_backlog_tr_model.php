@@ -35,13 +35,14 @@ class Gradesheet_backlog_tr_model extends CI_Model
 		$this->db->order_by('sub_group_id');
 		$std  = $this->Common_model->getRecordByWhere('backlog_exam_form',array('class_id'=> $class_id,'student_id'=>$student_id,'backlog_student_id'=>$exam_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
-		
+		$student =  $this->Common_model->getRecordById('student','student_id',$student_id);
+        $session = explode(' ',$student->session);
 		
 		if($std[0]->sub_group_id == 1){
 			$papers = $this->Common_model->get_all_backlog_papers($student_id,$class_id,$exam_id);
 		}
 
-		if($this->classData->id == 101 || $this->classData->class_group == 'Y'){
+		if((in_array($session[1],array(2021,2022)) && ($this->classData->id == 101 || $this->classData->id == 102))|| $this->classData->class_group == 'Y'){
 			$papers_list = $this->Common_model->get_all_backlog_group_papers($student_id,$class_id,$exam_id);
 		}
 	
@@ -85,14 +86,15 @@ class Gradesheet_backlog_tr_model extends CI_Model
 		$std  = $this->Common_model->getRecordByWhere('backlog_exam_form',array('class_id'=> $class_id,'student_id'=>$student_id,'backlog_student_id'=>$exam_id));
         
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
-		
+		$student =  $this->Common_model->getRecordById('student','student_id',$student_id);
+        $session = explode(' ',$student->session);
 		
 		if($std[0]->sub_group_id == 1){
 			$papers = $this->Common_model->get_all_backlog_papers($student_id,$class_id,$exam_id);
             
 		}
 
-		if($this->classData->id == 101 || $this->classData->class_group == 'Y'){
+		if((in_array($session[1],array(2021,2022)) && ($this->classData->id == 101 || $this->classData->id == 102))|| $this->classData->class_group == 'Y'){
 			$papers_list = $this->Common_model->get_all_backlog_group_papers($student_id,$class_id,$exam_id);
 		}
 	
@@ -129,13 +131,14 @@ class Gradesheet_backlog_tr_model extends CI_Model
 		$this->db->order_by('sub_group_id');
 		$std  = $this->Common_model->getRecordByWhere('backlog_exam_form',array('class_id'=> $class_id,'student_id'=>$student_id,'backlog_student_id'=>$exam_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
-		
+		$student =  $this->Common_model->getRecordById('student','student_id',$student_id);
+        $session = explode(' ',$student->session);
 		
 		if($std[0]->sub_group_id == 1){
 			$papers = $this->Common_model->get_all_backlog_papers($student_id,$class_id,$exam_id);
 		}
 
-		if($this->classData->id == 101 || $this->classData->class_group == 'Y'){
+		if((in_array($session[1],array(2021,2022)) && ($this->classData->id == 101 || $this->classData->id == 102))|| $this->classData->class_group == 'Y'){
 			$papers_list = $this->Common_model->get_all_backlog_group_papers($student_id,$class_id,$exam_id);
 		}
 	

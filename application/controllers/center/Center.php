@@ -2610,7 +2610,8 @@ public function backlog_marksheet($student_id="")
 		//$this->load->view('Centers/marksheet',$data);
 		$this->load->view('Centers/marksheet_top_backlog',$data);
 		//if ($student[0]->course_group_id==36 || $student[0]->course_group_id==37 || $student[0]->course_group_id==33) {
-		if($classData->internal=='N'){
+		// echo $data['student_info']->university_mode;die;
+		if($classData->internal=='N' || $data['student_info']->university_mode=='PVT'){
 			$this->load->view('Centers/marksheet_without_int_backlog',$data);
 		}else{
 			if($student[0]->class_id=='168'){

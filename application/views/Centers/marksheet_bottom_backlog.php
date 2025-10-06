@@ -13,7 +13,7 @@ $old_fail = false;
 $old_fail_count =0;
 $isFinalClass = $this->Common_model->hasOneClass($student->course_group_id);
 if($classData->last_class == 'L' && $isFinalClass == false){
-  $classes = $this->Common_model->getRecordByWhere('class_master',array('id !='=>$student->class_id,'course_group_id'=>$student->course_group_id));
+  $classes = $this->Common_model->getRecordByWhere('class_master',array('id !='=>$student->class_id,'course_group_id'=>$student->course_group_id,'class_name !='=>'IV Year','mode'=>$classData->mode));
   foreach($classes as $old){
  $this->db->where_in('exam_result',array('PASS','PASS BY GRACE'));
 $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student->student_id,'class_id'=>$old->id));
@@ -29,7 +29,6 @@ $old_result = $this->Common_model->getRecordByWhere('old_exam_data',array('stude
 }
 foreach($backlog_exam_form as $marks){
   $paper_master = $this->Common_model->getRecordByWhere('paper_master',array('paper_code'=>$marks->paper_code,"class_id"=>$marks->class_id));
-
   if($marks->paper_type=='theory'){
      if($student->mode != 'PVT'){
     $tot_marks +=  $paper_master[0]->max_theory_marks;
@@ -314,7 +313,7 @@ else if ($old_fail_count>0) {
             echo '-';
           }
           else{
-            echo $marks->int_marks;
+            echo $marks->int_marks.' C';
           }
         }else{
           if(($marks->int_marks<$paper_master[0]->min_internal_marks || $marks->int_marks=='ABS') && $paper_master[0]->max_internal_marks != 0){

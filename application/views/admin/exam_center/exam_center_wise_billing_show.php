@@ -147,7 +147,7 @@ foreach($exam_centers as $row)
             $this->db->from('student as s');
             $this->db->join('new_exam_form as e', 'e.student_id = s.student_id AND s.class_id = e.class_id');
             $this->db->where('s.new_exam_form', "Y");
-            $this->db->where('s.notification_no', 1);
+            // $this->db->where('s.notification_no', 1);
             $this->db->where('s.examcentercode', $row->examcentercode);	
             $this->db->where('s.exam_center_id', $row->id);	
             $this->db->where_in('paper_id', $papersid);
@@ -177,6 +177,8 @@ foreach($exam_centers as $row)
             $paperscode=implode("','",$paperscode);
 
             //  $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND   `s`.`class_id` = `e`.`class_id` and s.id=e.backlog_student_id WHERE  `s`.`exam_center_code`='".$row->examcentercode."'   AND   `s`.`exam_center_id` = '".$row->id."'  AND exam_form='Y' AND `e`.`status`='B'  AND `e`.`paper_code` in ('".$paperscode."') and s.exam_year='June 2025'  ";  
+
+            // AND `notification_no` = '1'
             $sql_back = "
     SELECT count(*) as cnt
     FROM `backlog_exam_form` as `e`
@@ -188,7 +190,6 @@ foreach($exam_centers as $row)
         `s`.`exam_center_code` = '".$row->examcentercode."'
         AND `s`.`exam_center_id` = '".$row->id."'
         AND `exam_form` = 'Y'
-        AND `notification_no` = '1'
         AND `e`.`status` = 'B'
         AND `e`.`paper_code` IN ('".$paperscode."')
         AND s.exam_year = 'June 2025'
@@ -280,7 +281,7 @@ $prevdate="";
             $this->db->from('student as s');
             $this->db->join('new_exam_form as e', 'e.student_id = s.student_id AND s.class_id = e.class_id');
             $this->db->where('s.new_exam_form', "Y");
-            $this->db->where('s.notification_no', 1);
+            // $this->db->where('s.notification_no', 1);
             $this->db->where('s.examcentercode', $row->examcentercode);	
             $this->db->where('s.exam_center_id', $row->id);	
             $this->db->where_in('paper_id', $papersid);
@@ -299,6 +300,7 @@ $prevdate="";
             /************/
             $paperscode = array_column($papers_all, 'paper_code');
             $paperscode=implode("','",$paperscode);
+            // AND `notification_no` = '1'
 
                         $sql_back = "
     SELECT count(*) as cnt
@@ -311,7 +313,6 @@ $prevdate="";
         `s`.`exam_center_code` = '".$row->examcentercode."'
         AND `s`.`exam_center_id` = '".$row->id."'
         AND `exam_form` = 'Y'
-        AND `notification_no` = '1'
         AND `e`.`status` = 'B'
         AND `e`.`paper_code` IN ('".$paperscode."')
         AND s.exam_year = 'June 2025'

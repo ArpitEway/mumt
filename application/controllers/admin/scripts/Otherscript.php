@@ -62,6 +62,7 @@ class Otherscript extends CI_Controller {
 		//$where = " paper_code in ('1RMLIS10','1RMLIS11')";
 		//$where="`paper_code` in ('1RCMSCCH7','1RCMSCCH8','1RCMSCCH9','1RCMSCBT7','1RCMSCBT8','1RCMSCC7','1RCMSCM7','3RMSCC6','3RMSCC7')";
 		$where="`id` in (0)";
+		// 1968,1969,1970,1971,1972,1973
 		// 1491,1501,1579 // 1945,1946
 		// 1829,1830,1831 // 382,392,292 // 947,985,1054
 		//in (947,1799,985,1800,1054,1801) (1818,1819,1820,1821)";
@@ -174,7 +175,7 @@ class Otherscript extends CI_Controller {
 		//$marks = array('18','17','16','18','17','16','15','15');
 		// $marks = array('09','08','07','09','08','07','06','06');
 		   $marks = array('27','26','25','27','26','25','24','24','23'); 
-		$cls_id=133;
+		$cls_id=106;
 		
 		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and int_marks_sub='N' and roll_no!=0 and university_mode='REG' limit 100";
 		$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
@@ -212,7 +213,7 @@ class Otherscript extends CI_Controller {
 		// $marks = array('85','84','83','82'); 
 		// $marks = array('68','67','66','65');
 		  $marks = array('60','59','58','57');
-		$cls_id=127;
+		$cls_id=106;
 		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and roll_no!=0 and university_mode='REG' order by roll_no limit 100";
 		$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
 		$rs = $this->db->query($sql)->result_array();
@@ -239,8 +240,8 @@ class Otherscript extends CI_Controller {
 	{
 		//$marks = array('166','168','170','165'); 
 		$marks = array('85','84','83','82'); 
-		$cls_id=133;
-		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and  university_mode='REG' and  roll_no!=0 order by roll_no  limit 100";
+		$cls_id=106;
+		$sql = "select * from student where class_id='".$cls_id."' and new_exam_form='Y' and p_marks_sub='N' and  university_mode='PVT' and exam_pattern= 'GRADE' and  roll_no!=0 order by roll_no  limit 500";
 		// and exam_pattern= 'GRADE'
 		$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
 		$rs = $this->db->query($sql)->result_array();
@@ -490,7 +491,7 @@ public function update_sub_group_id_in_new_exam_form_sub(){
 
 public function update_sub_group_id_in_backlog_exam_form(){
     // $this->db->limit(300);
-    $this->db->where_in('class_id',array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,121));
+    $this->db->where_in('class_id',array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136));
     $students = $this->Common_model->getRecordByWhere('backlog_student',array('exam_year'=>'June 2025',
     'exam_form'=>'Y'));
     // $this->Common_model->last_query();
@@ -521,8 +522,8 @@ public function update_sub_group_id_in_backlog_exam_form(){
 
 public function update_group_id_in_backlog_exam_form(){
     // $this->db->limit(300);
-    $this->db->where_in('class_id',array(101,104,105));
-    $students = $this->Common_model->getRecordByWhere('backlog_student',array('exam_year'=>'June 2024',
+    // $this->db->where_in('class_id',array(102));
+    $students = $this->Common_model->getRecordByWhere('backlog_student',array('exam_year'=>'June 2025',
     'exam_form'=>'Y'));
     // ,'mode'=>'REG'
     // $this->Common_model->last_query();
