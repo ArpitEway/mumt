@@ -50,8 +50,7 @@ class Gradesheet_model extends CI_Model
 			$std  = $this->Common_model->getRecordByWhere($work_table,array('class_id'=> $class_id,'student_id'=>$student_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
-		
-		if($std[0]->sub_group_id == 1){
+		if($std[0]->sub_group_id == 1 || $class_id ==325){
 			$papers = $this->Common_model->get_all_papers_admin($student_id,$class_id);
 		}
 		if($this->classData->class_group == 'Y'){
@@ -65,7 +64,7 @@ class Gradesheet_model extends CI_Model
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
         
-		if($std[0]->sub_group_id == 1){
+		if($std[0]->sub_group_id == 1 || $class_id ==325){
 			$papers = $this->Common_model->get_all_papers($student_id,$class_id);
 		}
 		if($this->classData->class_group == 'Y'){
@@ -267,7 +266,7 @@ class Gradesheet_model extends CI_Model
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
 		
-		if($std[0]->sub_group_id == 1){
+		if($std[0]->sub_group_id == 1 || $class_id ==325){
 			$papers = $this->Common_model->get_all_papers($student_id,$class_id);
 		}
 		if($this->classData->class_group == 'Y'){
@@ -834,7 +833,12 @@ class Gradesheet_model extends CI_Model
 				echo "<td><table style='border:0px solid black'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='100%' style='border:0px solid black'><strong>".$paper[0]."</strong><br><strong>".$paper[1]."</strong></td></tr></table></td>
 				";
 				}else{
-				echo "<td><table style='border:0px solid black'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='100px' style='border:0px solid black'><strong>".$paper[0]."</strong></td><td style='border:0px solid black'></td><td style='border:0px solid black'><strong>".$paper[1]."</strong></td></tr></table></td>";
+					if($this->classData->id == 325){
+						echo "<td><table style='border:0px solid black'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td style='border:0px solid black'><strong>".$paper[1]."</strong></td></tr></table></td>";
+					}else{
+							echo "<td><table style='border:0px solid black'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='100px' style='border:0px solid black'><strong>".$paper[0]."</strong></td><td style='border:0px solid black'></td><td style='border:0px solid black'><strong>".$paper[1]."</strong></td></tr></table></td>";
+					}
+			
 				}
 			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory'&& !$this->withheld && !$this->withheld_practical && !$this->withheld_internal) {
 				$this->check_grace_marks = true;
@@ -900,7 +904,13 @@ class Gradesheet_model extends CI_Model
 			if($this->paper["course_group_id"]==12){
 			echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td ><strong>".$paper[0]."</strong><br><br><strong>".$paper[1]."</strong></td></tr></table></td>";
 			}else{
-			echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='50px'><strong>".$paper[0]."</strong></td><td></td><td><strong>".$paper[1]."</strong></td></tr></table></td>";
+				
+				if($this->classData->id == 325){
+					echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td><strong>".$paper[1]."</strong></td></tr></table></td>";
+				}else{
+					echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='50px'><strong>".$paper[0]."</strong></td><td></td><td><strong>".$paper[1]."</strong></td></tr></table></td>";
+				}
+			
 			}
 			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				$this->check_grace_marks = true;
