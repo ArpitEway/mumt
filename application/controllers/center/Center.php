@@ -1546,8 +1546,8 @@ class Center extends CI_Controller {
 		$i = 1;
 		$this->db->where_in('paper_code',$paper_code);
 		$this->db->where('class_id',$class_id);
-		$paper_data = $this->Common_model->get_record('paper_master','*',array('type' => "theory",'cbcs_paper'=>$cbcs));
-		
+		$paper_data = $this->Common_model->get_record('paper_master','*',array('cbcs_paper'=>$cbcs));
+		//'type' => "theory",
 		foreach($paper_data as $paper){
 			$data['course_group_id']=$paper['course_group_id'];
 			$data['class_id']=$paper['class_id'];

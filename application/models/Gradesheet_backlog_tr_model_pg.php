@@ -87,12 +87,12 @@ class Gradesheet_backlog_tr_model_pg extends CI_Model
 	
 		
 		$this->notification_agpa();
+		 return $this->result();
 		
 	}
 
 	public function view_notification_result($student_id,$course_group_id,$class_id,$mode,$exam_id)
 	{
-		
 		$std  = $this->Common_model->getRecordByWhere('backlog_exam_form',array('class_id'=> $class_id,'student_id'=>$student_id,'backlog_student_id'=>$exam_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		$papers = $this->Common_model->get_all_backlog_papers($student_id,$class_id,$exam_id );
@@ -161,12 +161,12 @@ class Gradesheet_backlog_tr_model_pg extends CI_Model
 
 	private function grade()
 	{
-
-       
 		if ($this->paper["type"]=='theory') {
 			if($this->mode=='REG'){
+				
 				if ($this->paper['theory_marks']=='' || ($this->paper["int_marks"]=='' || $this->paper["int_marks"]=='N')) {
 					$this->withheld = true;
+					
 				}
                 if(($this->paper['theory_marks']=='00' || $this->paper['theory_marks']=='0') && $this->paper['status'] =='B'){
                     $this->zero_count++;
@@ -407,9 +407,7 @@ class Gradesheet_backlog_tr_model_pg extends CI_Model
 	}
 
 	private function notification_result(){
-		if ($this->fail_count>0) {
-			$require_grace_marks = $this->fail_min_marks-$this->fail_obt_marks;
-	   }
+		
 	  
 	   foreach ($this->result_array as $key => $result) {
 	      $result['grade_point'] =$result['grade_point'];

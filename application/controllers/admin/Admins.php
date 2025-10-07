@@ -3372,8 +3372,7 @@ public function update_exam_datewise_permission(){
 		
 		// $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' )";
 
-        $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y'  )";
-        // and class_id in (101,102,104,119,120,125,126,128,129,131,132,134,121,262,301,256,258,317)
+        $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and class_id in (216,218,232,234,236,238,240,242,244,246,248,250,252,254,278,282,305,155,182,194,196,198,200,202,204,206,210,212,214,222,224,226,228,276,280,303) )";
         	
 		// and class_id in (298,112,136,256,258,260,317)
         // and class_id in (103,194,196,198,200,202,204,206,210,212,214,303,276,280,222,224,226,228,285,291,121,296,284,311)
@@ -6084,6 +6083,7 @@ public function forward_complaint(){
         $class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302,303,304,305,278,282,250,252,216,232,236,238,240,246,248,254,218,305,210,243);
         if((in_array($class_id, $class_cbcs)) && $pattern=="GRADE"){
 			$this->load->model('Gradesheet_backlog_tr_model_pg');
+			$this->load->model('GradeSheet_old_model_pg');
 			$this->load->view('admin/backlog_student_notification_list_pg',$data);
 		}else{
 		    $this->load->view('admin/backlog_student_notification_list',$data);
