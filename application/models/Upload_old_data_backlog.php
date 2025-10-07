@@ -22,6 +22,7 @@ class Upload_old_data_backlog extends CI_Model
 	protected $allclass;
 	protected $classData;
     protected $marksheetDate;
+	protected $exam_year;
     // protected $result_this_fc1;
     // protected $result_this_fc2;
 	protected $obt_tot_credit;
@@ -54,7 +55,7 @@ class Upload_old_data_backlog extends CI_Model
 		if($this->classData->class_group == 'Y' || $student->class_id == 101){
 		$papers_list = $this->Common_model->get_all_backlog_group_papers($student->student_id,$student->class_id,$student->id);
 		}
-        $date =$this->Common_model->getRecordById('marksheet_variables_june_2024','class_id',$student->class_id);
+        $date =$this->Common_model->getRecordById('marksheet_variables','class_id',$student->class_id);
 	
 		$this->classCount = count($this->allclass);
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$student->class_id);
@@ -73,6 +74,7 @@ class Upload_old_data_backlog extends CI_Model
 		$this->obt_marks = 0;
 		$this->total_marks=0;
         $this->marksheetDate = ($student->mode == 'REG')?$date->backlog_result_date:$date->backlog_pvt_result_date;
+		$this->exam_year = trim(preg_replace('/\s+/', ' ',str_replace('Examination', "", $date->exam_session)));
         // $this->result_this_fc1 = '';
         // $this->result_this_fc2 = '';
 		$this->check_grace_marks = false;
@@ -441,12 +443,12 @@ class Upload_old_data_backlog extends CI_Model
             'roll_no' => $this->student->roll_no,
             'name' => $this->student->name,
             'agpa_sgpa'=>number_format((float)$this->agpa, 2, '.', ''),
-            'exam_year' => 'June 2024',
+            'exam_year' => $this->exam_year,
             'marks_pattern' => 'GRADE',
             'f_h_name' => $this->student->f_h_name,
             'mother_name' => $this->student->mother_name,
             'marksheet_no' =>$this->student->back_marksheet_no,
-            'marksheet_date'=>DateTime::createFromFormat('d/m/Y', $this->marksheetDate)->format('Y-m-d'),
+            'marksheet_date'=>($this->marksheetDate == "")?"":DateTime::createFromFormat('d/m/Y', $this->marksheetDate)->format('Y-m-d'),
             'university_mode'=>$this->student->mode,
             'photo'=>$this->student->photo,
             'total_marks'=>$this->total_marks,
