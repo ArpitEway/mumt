@@ -22,6 +22,7 @@ class Upload_old_data_backlog_pg extends CI_Model
 	protected $allclass;
 	protected $classData;
     protected $marksheetDate;
+	protected $exam_year;
     // protected $result_this_fc1;
     // protected $result_this_fc2;
 	protected $obt_tot_credit;
@@ -69,6 +70,7 @@ class Upload_old_data_backlog_pg extends CI_Model
 		$this->obt_marks = 0;
 		$this->total_marks=0;
         $this->marksheetDate = ($student->mode == 'REG')?$date->backlog_result_date:$date->backlog_pvt_result_date;
+		$this->exam_year = trim(preg_replace('/\s+/', ' ',str_replace('Examination', "", $date->exam_session)));
         // $this->result_this_fc1 = '';
         // $this->result_this_fc2 = '';
 		$this->check_grace_marks = false;
@@ -277,8 +279,8 @@ class Upload_old_data_backlog_pg extends CI_Model
 		}
 		$per = $this->obt_marks*100/$this->total_marks;
 		$percentage = round($per, 2);
-	//	$marksheetDate=DateTime::createFromFormat('d/m/Y', $this->marksheetDate)->format('Y-m-d');
-		$marksheetDate="";
+		// /$marksheetDate=DateTime::createFromFormat('d/m/Y', $this->marksheetDate)->format('Y-m-d');
+		// $marksheetDate="";
         $examData = array(
             'student_id' => $this->student->student_id,
             'session' => $this->student->session,
@@ -291,13 +293,13 @@ class Upload_old_data_backlog_pg extends CI_Model
             'enrollment_no' => $this->student->enrollment_no,
             'roll_no' => $this->student->roll_no,
             'name' => $this->student->name,
-            'exam_year' => 'January 2025',
+            'exam_year' => $this->exam_year,
             'marks_pattern' => 'GRADE',
             'agpa_sgpa'=>number_format((float)$this->agpa, 2, '.', ''),
             'f_h_name' => $this->student->f_h_name,
             'mother_name' => $this->student->mother_name,
             'marksheet_no' =>$this->student->back_marksheet_no,
-            'marksheet_date'=>$marksheetDate,
+            'marksheet_date'=>($this->marksheetDate == "")?"":DateTime::createFromFormat('d/m/Y', $this->marksheetDate)->format('Y-m-d'),
             'university_mode'=>$this->student->mode,
             'photo'=>$this->student->photo,
             'total_marks'=>$this->total_marks,

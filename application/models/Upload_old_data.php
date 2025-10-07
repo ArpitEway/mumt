@@ -23,6 +23,7 @@ class Upload_old_data extends CI_Model
 	protected $allclass;
 	protected $classData;
     protected $marksheetDate;
+	protected $exam_year;
     // protected $result_this_fc1;
     // protected $result_this_fc2;
 	protected $obt_tot_credit;
@@ -43,24 +44,24 @@ class Upload_old_data extends CI_Model
     public function update_old_data($student)
 	{
 		// $table = $this->Common_model->getMaster('exam_form_table');
-		$std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $student->class_id,'student_id'=>$student->student_id));
+		$std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $student->old_class_id,'student_id'=>$student->student_id));
         // print_r($std);die;
-		$this->classData = $this->Common_model->getRecordById('class_master','id',$student->class_id);
+		$this->classData = $this->Common_model->getRecordById('class_master','id',$student->old_class_id);
 		
 		
 		if($std[0]->sub_group_id == 1){
-			$papers = $this->Common_model->get_all_papers($student->student_id,$student->class_id);
+			$papers = $this->Common_model->get_all_papers($student->student_id,$student->old_class_id);
 		}
 		if($this->classData->class_group == 'Y'){
-		$papers_list = $this->Common_model->get_all_group_papers($student->student_id,$student->class_id);
+		$papers_list = $this->Common_model->get_all_group_papers($student->student_id,$student->old_class_id);
 		}
-        $date =$this->Common_model->getRecordById('marksheet_variables','class_id',$student->class_id);
+        $date =$this->Common_model->getRecordById('marksheet_variables','class_id',$student->old_class_id);
 		// get_all_group_papers
 		// print_r($papers);die;
 		
 		// print_r($this->allclass);die;
 		$this->classCount = count($this->allclass);
-		$this->classData = $this->Common_model->getRecordById('class_master','id',$student->class_id);
+		$this->classData = $this->Common_model->getRecordById('class_master','id',$student->old_class_id);
 		$this->foundation_paper = array();
 		$this->result_array = array();
 		$this->tot_credit_point = 0;
@@ -76,6 +77,7 @@ class Upload_old_data extends CI_Model
 		$this->obt_marks = 0;
 		$this->total_marks=0;
         $this->marksheetDate = ($student->university_mode == 'REG')?$date->result_date:$date->pvt_result_date;
+		$this->exam_year =  trim(preg_replace('/\s+/', ' ',str_replace('Examination', "", $date->exam_session)));
         // $this->result_this_fc1 = '';
         // $this->result_this_fc2 = '';
 		$this->check_grace_marks = false;
@@ -486,16 +488,16 @@ class Upload_old_data extends CI_Model
             'center_code' => $this->student->center_code,
             'course_group_id' =>$this->student->course_group_id,
             'course_name' => $this->student->course_name,
-            'class_id' => $this->student->class_id,
+            'class_id' => $this->student->old_class_id,
             'enrollment_no' => $this->student->enrollment_no,
             'roll_no' => $this->student->roll_no,
             'name' => $this->student->name,
-            'exam_year' => 'June 2025',
+            'exam_year' => $this->exam_year,
             'marks_pattern' => 'GRADE',
             'f_h_name' => $this->student->f_h_name,
             'mother_name' => $this->student->mother_name,
             'marksheet_no' =>$this->student->marksheet_no,
-            'marksheet_date'=> DateTime::createFromFormat('d/m/Y', $this->marksheetDate)->format('Y-m-d'),
+            'marksheet_date'=>($this->marksheetDate == "")?"": DateTime::createFromFormat('d/m/Y', $this->marksheetDate)->format('Y-m-d'),
             'university_mode'=>$this->student->university_mode,
             'photo'=>$this->student->photo,
             'total_marks'=>$this->total_marks,
@@ -528,7 +530,7 @@ class Upload_old_data extends CI_Model
                 'exam_data_id' =>  $old_exam_data_id ,
                 'student_id' =>  $this->student->student_id ,
                 'course_group_id' => $this->student->course_group_id ,
-                'class_id' =>  $this->student->class_id ,
+                'class_id' =>  $this->student->old_class_id ,
                 'paper_code'=> $key ,
                 'type'=> $result['type'] ,
                  'sub_group_id'=>$result['sub_group'] ,
@@ -617,7 +619,7 @@ class Upload_old_data extends CI_Model
             
              if($x == 1){
                
-            $papers = $this->Common_model->get_all_papers($this->student->student_id,$this->student->class_id);
+            $papers = $this->Common_model->get_all_papers($this->student->student_id,$this->student->old_class_id);
           
            
         foreach($papers as $paper){
@@ -626,7 +628,7 @@ class Upload_old_data extends CI_Model
 					'exam_data_id' =>  $old_exam_data_id ,
 					'student_id' =>  $this->student->student_id ,
 					'course_group_id' => $this->student->course_group_id ,
-					'class_id' =>  $this->student->class_id ,
+					'class_id' =>  $this->student->old_class_id ,
 					'paper_code'=> $paper['paper_code'] ,
 					'type'=> $paper['type'] ,
 					'sub_group_id'=>$paper['sub_group_id'] ,
