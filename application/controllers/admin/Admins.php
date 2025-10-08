@@ -6101,7 +6101,7 @@ public function forward_complaint(){
 		$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id and backlog_exam_form.backlog_student_id=backlog_student.id');
 		$this->db->join('student', 'student.student_id = backlog_student.student_id');
 		$this->db->where('backlog_student.exam_form','Y'); 
-		$this->db->where('backlog_student.exam_year','Dec 2024'); 
+		$this->db->where('backlog_student.exam_year','June 2025'); 
 		$this->db->where('backlog_student.result_show','Y'); 
 		$this->db->where('backlog_exam_form.paper_type','theory'); 
 		$this->db->where('backlog_exam_form.theory_marks',''); 
@@ -6130,12 +6130,12 @@ public function forward_complaint(){
 		if($_POST['not_permitted']){
 			$student_ids = (implode(',',$_POST['not_permitted']));
 			$data = array('result_show' => 'Y');
-			$where = 'student_id in ('.$student_ids.') and exam_year = "Dec 2024"';
+			$where = 'student_id in ('.$student_ids.') and exam_year = "June 2025"';
 			$update =$this->Common_model->updateRecordByConditions('backlog_student',$where,$data);
 		}else{
 			$student_ids = (implode(',',$_POST['permitted']));
 			$data = array('result_show' => 'N');
-			$where ='student_id in ('.$student_ids.') and exam_year = "Dec 2024"';
+			$where ='student_id in ('.$student_ids.') and exam_year = "June 2025"';
 			$update = 	$this->Common_model->updateRecordByConditions('backlog_student',$where,$data);
 		}  
 		if($update){
@@ -6327,7 +6327,7 @@ public function forward_complaint(){
 		$this->db->select('bs.*, st.course_name, st.exam_pattern,st.name');
 		$this->db->from('backlog_student as bs');
 		$this->db->join('student as st', 'st.student_id = bs.student_id');
-		$this->db->where(array('st.exam_pattern'=>'GRADE',"bs.course_group_id"=>$course_id ,'bs.class_id' => $class_id,'bs.exam_form'=>'Y' ,'bs.roll_no!='=>'0', 'bs.mode'=>$mode,'bs.result_show'=>'Y','bs.exam_year'=>'Dec 2024'));
+		$this->db->where(array('st.exam_pattern'=>'GRADE',"bs.course_group_id"=>$course_id ,'bs.class_id' => $class_id,'bs.exam_form'=>'Y' ,'bs.roll_no!='=>'0', 'bs.mode'=>$mode,'bs.result_show'=>'Y','bs.exam_year'=>'June 2025'));
 		$data['students']=  $this->db->get()->result();
 		
 		//'result_show'=>'Y'
@@ -6352,12 +6352,12 @@ public function forward_complaint(){
 		if($_POST['not_permitted']){
 			$student_ids = (implode(',',$_POST['not_permitted']));
 			$data = array('result_show' => 'Y');
-			$where = 'student_id in ('.$student_ids.') and exam_year = "Dec 2024"';//provisional_remark in ('','N') &&
+			$where = 'student_id in ('.$student_ids.') and exam_year = "June 2025"';//provisional_remark in ('','N') &&
 			$update =$this->Common_model->updateRecordByConditions('backlog_student',$where,$data);
 		}else{
 			$student_ids = (implode(',',$_POST['permitted']));
 			$data = array('result_show' => 'N');
-			$where ='student_id in ('.$student_ids.') and exam_year = "Dec 2024"';
+			$where ='student_id in ('.$student_ids.') and exam_year = "June 2025"';
 			$update = 	$this->Common_model->updateRecordByConditions('backlog_student',$where,$data);
 		}  
 		if($update){

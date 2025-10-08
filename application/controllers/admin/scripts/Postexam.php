@@ -60,13 +60,13 @@ class Postexam extends CI_Controller {
             $this->db->join('class_master', 'student.class_id = class_master.id');
             // $this->db->where('cbcs', 'Y');
             //  $this->db->where('last_class', 'L');
-            //  $this->db->where('mode', 'Semester');
+             $this->db->where('mode', 'Semester');
             $this->db->where('exam_form', 'Y');
             $this->db->where('upload_result', 'N');
             // $this->db->where('student_id',718196);
             $this->db->where('old_result_show', 'Y');
             $this->db->where('result_permission', 'Y');
-            // $this->db->where('final_result_permission', 'Y');
+            $this->db->where('final_result_permission', 'Y');
             // $this->db->where('marksheet_dispatch', 'Y');
              // $this->db->where('university_mode','PVT');
             // 155,234,278,282,273,274,103,118,218,236,246,230,130,184,186,169,170,173,188,
@@ -1221,7 +1221,7 @@ public function upload_old_backlog_marks()
      $this->db->join('class_master', 'backlog_student.class_id = class_master.id');
      // $this->db->where('cbcs', 'Y');
     // $this->db->where('last_class', 'L');
-  //   $this->db->where('class_master.mode', 'Semester');
+    $this->db->where('class_master.mode', 'Semester');
      $this->db->where('exam_form', 'Y');
      $this->db->where('upload_result', 'N');
      $this->db->where('exam_year','June 2025');

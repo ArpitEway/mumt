@@ -471,8 +471,9 @@ class Upload_old_data extends CI_Model
 	{
         // echo $this->result;die;
 		if($this->result=='WITHHELD'){
-			// return false;  for withheld result
-			 $result = 'FAIL';
+			 return false;  
+
+			//  $result = 'FAIL';
 		}elseif ($this->result=='FAIL') {
 			$result = 'FAIL';
 		}else{
