@@ -260,6 +260,7 @@ table.last_table, .last_table td, .last_table th{
       if($new_exam_form->paper_type == "Sessional"){
        $total_paper_marks += (int) $new_exam_form->max_internal_marks;
         $total_marks_obt += (int) $new_exam_form->int_marks;
+        $total_int_marks_obt += (int) $new_exam_form->int_marks;
       }else if($new_exam_form->type!='theory' && $student->mode != 'PVT'){
         $total_paper_marks += (int) $new_exam_form->max_theory_marks;
         $total_marks_obt += (int) $new_exam_form->p_marks;
