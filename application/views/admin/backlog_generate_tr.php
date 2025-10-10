@@ -257,7 +257,10 @@ table.last_table, .last_table td, .last_table th{
         }
       }
 
-      if($new_exam_form->type!='theory' && $student->mode != 'PVT'){
+      if($new_exam_form->paper_type == "Sessional"){
+       $total_paper_marks += (int) $new_exam_form->max_internal_marks;
+        $total_marks_obt += (int) $new_exam_form->int_marks;
+      }else if($new_exam_form->type!='theory' && $student->mode != 'PVT'){
         $total_paper_marks += (int) $new_exam_form->max_theory_marks;
         $total_marks_obt += (int) $new_exam_form->p_marks;
         $count_practical++;
@@ -350,7 +353,7 @@ table.last_table, .last_table td, .last_table th{
           <td class="align-middle text-right paper">Internal Marks Max/Min -></td>
           <?php  foreach($marks as $paper_master){     ?>
             <td  class="align-middle text-center internal_mark">
-              <?php if($paper_master->paper_type=="theory"){ if($paper_master->max_internal_marks !=0){echo  $paper_master->max_internal_marks .'/'. $paper_master->min_internal_marks;}else{ echo '';}};  ?></td>
+              <?php if($paper_master->paper_type=="theory" || $paper_master->paper_type=='Sessional'){ if($paper_master->max_internal_marks !=0){echo  $paper_master->max_internal_marks .'/'. $paper_master->min_internal_marks;}else{ echo '';}};  ?></td>
           <?php }  ?>
           <td class="align-middle text-center"></td>
         </tr>
@@ -471,7 +474,7 @@ table.last_table, .last_table td, .last_table th{
           <?php foreach($marks as $paper_master){ ?>
         <td  class="align-middle text-center">
           <?php
-          if($paper_master->paper_type=="theory")
+          if($paper_master->paper_type=="theory" || $paper_master->paper_type=='Sessional')
           {
           if($paper_master->int_marks=='N'){
             echo '-';
@@ -555,7 +558,19 @@ table.last_table, .last_table td, .last_table th{
       }
 
     }
-    }else{ 
+    }else if($paper_master->paper_type=="Sessional"){
+      if(($paper_master->int_marks<$paper_master->min_internal_marks) || $paper_master->int_marks=='ABS'){
+
+        if($paper_master->int_marks==''){
+          echo "-";
+        }else{
+          echo (int) $paper_master->int_marks." F";
+        }
+      }else{
+        echo  (int) $paper_master->int_marks.$status;
+      }
+    }
+    else{ 
       if($paper_master->p_marks=='ABS'){
         echo '0 F';
       }elseif($paper_master->p_marks<$paper_master->min_theory_marks){
