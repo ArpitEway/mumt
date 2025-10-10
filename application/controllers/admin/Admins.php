@@ -3268,6 +3268,7 @@ public function update_exam_datewise_permission(){
         $this->db->select('bs.*');
         $this->db->from('backlog_student as bs');
         $this->db->join('student as s', 's.student_id=bs.student_id');
+		// $this->db->where_not_in('bs.session', array('July 2021','July 2022'));
         $this->db->where($where);
         $data['students'] = $this->db->get()->result();
         // $this->Common_model->getRecordByWhere('backlog_student',$where);
@@ -3332,7 +3333,7 @@ public function update_exam_datewise_permission(){
 		// $this->load->view('admin/generate_tr/header2',array('title' =>$title));
 
 		// if($class_id == '110' || $class_id == '119' || $class_id == '131')
-		$class_ids=array(110,119,125,128,131,111,126,129,132,112,121,127,130,133);
+		$class_ids=array(110,119,125,128,131,111,126,129,132,112,121,127,130,133,120);
 		if(in_array($class_id, $class_ids) && $pattern !="MARKS")		
 		{
 			$this->load->model('Gradesheet_backlog_tr_model');
@@ -3372,7 +3373,7 @@ public function update_exam_datewise_permission(){
 		
 		// $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' )";
 
-        $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and class_id in (216,218,232,234,236,238,240,242,244,246,248,250,254,278,282,305,155,182,194,196,198,200,202,204,206,210,212,214,222,224,226,228,276,280,303,135) )";
+        $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' )";
         	
 		// and class_id in (298,112,136,256,258,260,317)
         // and class_id in (103,194,196,198,200,202,204,206,210,212,214,303,276,280,222,224,226,228,285,291,121,296,284,311)
