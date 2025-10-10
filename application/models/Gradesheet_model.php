@@ -374,7 +374,7 @@ class Gradesheet_model extends CI_Model
 		$session = explode(' ',$student->session);
 		// echo $std[0]->sub_group_id;die;
         // echo $this->classData->class_group;die;
-		if($std[0]->sub_group_id == 1){
+		if($std[0]->sub_group_id == 1 || $class_id ==325){
 			$papers = $this->Common_model->get_all_old_papers($student_id,$class_id,$id);
             // print_r($papers);
 		}
