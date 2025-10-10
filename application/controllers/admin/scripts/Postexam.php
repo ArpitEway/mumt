@@ -1115,7 +1115,7 @@ class Postexam extends CI_Controller {
 
 public function upload_old_grade_data_script($class_id="",$mode){
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
-    $this->db->limit(500);
+    $this->db->limit(1000);
    //s $this->db->where_not_in('student_id',array(711707,708907));
    // $this->db->where_in('student_id',array(702981,700979));
     // $this->db->where('student_id',718196);
