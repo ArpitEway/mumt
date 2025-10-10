@@ -206,7 +206,7 @@ table.last_table, .last_table td, .last_table th{
       
     }else{
       $rowspanhead = "5";
-      $rowspandata = "9";
+      $rowspandata = "8";
     }
     foreach($marks as $new_exam_form)
     {
