@@ -73,7 +73,7 @@ class MsPrint extends CI_Controller {
 					$student = $this->Common_model->getRecordById('student','student_id',$text_val);
 				}  
                 // $this->db->where_not_in('class_id', array(127,120,132));
-				//$this->db->where_not_in('exam_year',array('June 2024'));
+				$this->db->where_not_in('exam_year',array('June 2025','July 2025','Aug 2025'));
 				$result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id' =>$student->student_id));
 				$data = array(
 					'result' => $result,
