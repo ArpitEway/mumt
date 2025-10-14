@@ -255,7 +255,7 @@ table.last_table, .last_table td, .last_table th{
       }
     }
 
-    if ($fail_count==0 && $rw_count==0 && $p_fail_count==0 && $int_fail_count==0 && $theory_abs_count==0) {
+    if ($fail_count==0 && $rw_count==0 && $p_fail_count==0 && $int_fail_count==0 && $theory_abs_count==0&& $p_abs_count==0 &&  $int_abs_count==0) {
        $final_result = "PASS";
     }else{
       $require_grace_marks = $require_tot_marks-$fail_tot_marks;
@@ -397,9 +397,12 @@ table.last_table, .last_table td, .last_table th{
               echo 'ABS In';
               if($theory_abs_count == $count_theory){
                 echo ' Theory';
+              }elseif($int_abs_count == $count_int && $p_abs_count == $count_practical && $count_practical!=0){
+                echo ' Internal and Practical'; 
               }elseif($int_abs_count == $count_int){
                 echo ' Internal'; 
-              }elseif($p_abs_count == $count_practical && $count_practical!=0){
+              }
+              elseif($p_abs_count == $count_practical && $count_practical!=0){
                 echo ' Practical';
               }
             }else{
@@ -499,7 +502,7 @@ table.last_table, .last_table td, .last_table th{
       <td  class="align-middle text-center"><?php 
         if ($new_exam_form->type=='Sessional') {
           
-        if($new_exam_form->int_marks < $new_exam_form->min_internal_marks && $new_exam_form->int_marks!=''){
+        if($new_exam_form->int_marks < $new_exam_form->min_internal_marks && $new_exam_form->int_marks!='' || $new_exam_form->int_marks=='ABS'){
           echo  $new_exam_form->int_marks .' F';
         }elseif($new_exam_form->int_marks ==''){
           echo "RWPR";
