@@ -78,6 +78,7 @@
 	foreach($students as $student){
 		$total_theory_abs_count=0;
 		$total_int_abs_count=0;
+		$int_abs_count=0;
 		$theory_paper_count=0;
 		$practical_paper_count =0;
 		$practical_abs_count = 0;
@@ -94,6 +95,7 @@
 		$int_fail_count=0;
 		$total_obtained_marks=0;
 		$total_max_marks=0;
+		$count_int=0;
 		$fc1 =0;
     	$fc2=0;
 		$fc1_abs ='';
@@ -172,6 +174,7 @@
 						}
 						if($marks->int_marks=="ABS"){
 							$abs_count++;
+							$int_abs_count++;
 						}
 					}
 				}
@@ -232,6 +235,9 @@
                     }  
                 }
 				if($classData->internal!="N" && $mode == "REG"){
+					
+          $count_int++;
+    
 					if($marks->int_marks<$marks->min_internal_marks){
 						$int_fail_count++;
 						array_push($ATKT_paper_codes ,$marks->paper_code );
@@ -241,9 +247,11 @@
 					}
 					if($marks->int_marks=="ABS"){
 						$abs_count++;
+						$int_abs_count++;
 					}
 				}
 			}else if($marks->type=="Sessional"){
+				  $count_int++;
 				$total_obtained_marks +=$marks->int_marks;
 				$total_max_marks +=$marks->max_internal_marks;
 				if($classData->internal!="N" && $mode == "REG"){
@@ -256,6 +264,7 @@
 					}
 					if($marks->int_marks=="ABS"){
 						$abs_count++;
+						$int_abs_count++;
 					}
 				}
 			}else{
@@ -666,9 +675,17 @@
 			echo 'RWPM';
 		}else{
 		if(count($ATKT_paper_codes)==0 || $Withheld) {
+			if($practical_paper_count == $practical_abs_count && $practical_paper_count!=0 && $count_int == $int_abs_count && $student->old_class_id==168){
+				echo 'ABS In Internal and Practical';
+			}elseif($count_int == $int_abs_count && $student->old_class_id==168){
+				echo 'ABS In Internal';
+			}elseif($practical_paper_count == $practical_abs_count && $practical_paper_count!=0 && $student->old_class_id==168){
+				echo 'ABS In Practical';
+			}
+			
 			$remark='';
 		}elseif($theory_paper_count ==$theory_abs_count && ($practical_paper_count == $practical_abs_count && $practical_paper_count!=0)){
-			echo 'Absent in All';
+			echo ($student->old_class_id == 168)?'ABS In ALL':'Absent in All';
 		}
 		elseif($practical_paper_count == $practical_abs_count && $practical_paper_count!=0){
 			echo 'Absent In Practical';
