@@ -38,7 +38,7 @@ class Gradesheet_backlog_model extends CI_Model
 		if($std[0]->sub_group_id == 1){
 			$papers = $this->Common_model->get_all_backlog_papers($student_id,$class_id,$exam_id);
 		}
-		if($this->classData->id == 101 || $this->classData->class_group == 'Y'){
+		if($this->classData->id == 101 || $this->classData->id == 102 || $this->classData->class_group == 'Y'){
 		$papers_list = $this->Common_model->get_all_backlog_group_papers($student_id,$class_id,$exam_id,$course_group_id);
 		}
 	
