@@ -167,7 +167,7 @@ th.border.border-dark {
         <tr>
             <?php
             $attemp_count = $this->Common_model->getRecordByWhere('old_exam_data', array('student_id'=>$student->student_id,'class_id'=>$student->class_id,'exam_status'=>'B'));
-            $attemp_count = count($attemp_count) + 2;
+            $attemp_count = (count($attemp_count) == 0)?count($attemp_count) + 2:count($attemp_count) + 1;
             ?>
           <!-- <td>TOTAL CREDIT</td> -->
           <td class="text-center" style="vertical-align: middle;"><?= $romanNumerals[$classData->class_order]?></td>
