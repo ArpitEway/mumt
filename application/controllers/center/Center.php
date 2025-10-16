@@ -136,7 +136,7 @@ class Center extends CI_Controller {
 
 	public function logout()
 	{
-		$center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29 );
+		$center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29,30,31,32,33);
 		if(in_array($this->session->center_id, $center_ids)){
 			$this->session->sess_destroy();
 			redirect(base_url());
@@ -155,7 +155,7 @@ class Center extends CI_Controller {
 		$center_id =  $this->session->center_id;
 		$center_data = $this->Common_model->getRecordByWhere('center',array('id'=>$center_id));
 		$center_session_permission = $center_data[0]->old_session_permission;
-		$center_ids_dep = array(21,22,23,24,25,26,27,28,29);
+		$center_ids_dep = array(21,22,23,24,25,26,27,28,29,30,31,32,33);
 		$whereSession = array();
 		if (in_array($center_id, $center_ids_dep)){
 			$passing_exam_year = '2024';
@@ -193,7 +193,7 @@ class Center extends CI_Controller {
 		$check = $this->Common_model->getRecordByWhere("center",$where);
 		
 		$center_id =  $this->session->center_id;
-		$center_ids_dep = array(10,11,12,21,22,23,24,25,26,27,28,29,13);
+		$center_ids_dep = array(10,11,12,21,22,23,24,25,26,27,28,29,30,31,32,33,13);
 
 		// if(($mode=='regular' && $check[0]->admission_permission!='Y' && !in_array($center_id, $center_ids_dep)) || ($mode=='private' && $check[0]->admission_permission_private!='Y')){
 		// 	redirect(base_url('dashboard'));
@@ -391,12 +391,12 @@ class Center extends CI_Controller {
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
         $this->db->where('course_complete',"N");
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
-		$center_ids_dep = array( 21,22,23,24,25,26,27,28,29);
+		$center_ids_dep = array( 21,22,23,24,25,26,27,28,29,30,31,32,33);
 		foreach($tableData as $result){
 			// $btn = ($result->document_uploaded=='Y' || in_array($this->session->center_id, $center_ids_dep)) ?
 			// '<a href="'.base_url('show_form/'.$this->Common_model->encrypt_decrypt($result->student_id)).'" class="btn btn-info btn-sm" target="_blank" ><i class="fa fa-eye text-white"></i></a>' : '';
@@ -416,14 +416,14 @@ class Center extends CI_Controller {
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
         $this->db->where('course_complete',"N");
 		$recordsTotal = $this->Datatable_join_model->countAll('student',$where);
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
         $this->db->where('course_complete',"N");
 		$recordsFiltered = $this->Datatable_join_model->countFiltered($_POST,$DataTableArray);
@@ -474,7 +474,7 @@ class Center extends CI_Controller {
 		$course_type=$this->input->post('course_type');
 		$late_privte_admission_fees=$this->input->post('late_privte_admission_fees');
 		$data = $row = array();
-		$center_ids_dep = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,100,1975,2098,2115);
+		$center_ids_dep = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30,31,32,33,100,1975,2098,2115);
 		$centerData_unpaid =$this->Common_model->getRecordByWhere('center',array('id'=>$this->session->center_id));
 		$centerData_unpaid=$centerData_unpaid[0];
 		$where = 'online_payment_transaction.payment!="Y"';
@@ -539,7 +539,7 @@ class Center extends CI_Controller {
 		 if ($this->session->center_id!=13) {
 			$this->db->where('online_payment_transaction.center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
@@ -547,7 +547,7 @@ class Center extends CI_Controller {
 		if ($this->session->center_id!=13) {
 			$this->db->where('online_payment_transaction.center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
         if($course_type == "REG" && $param1=='Admission' && !in_array($this->session->center_id, $center_ids_dep) ){
             $this->db->where_not_in('student.course_group_id',$course_ids);
@@ -581,7 +581,7 @@ class Center extends CI_Controller {
 		if ($this->session->center_id!=13) {
 			$this->db->where('online_payment_transaction.center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
         if($course_type == "REG" && $param1=='Admission' && !in_array($this->session->center_id, $center_ids_dep)){
             $this->db->where_not_in('student.course_group_id',$course_ids);
@@ -618,7 +618,7 @@ class Center extends CI_Controller {
 		if ($this->session->center_id!=13) {
 			$this->db->where('online_payment_transaction.center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
@@ -631,13 +631,13 @@ class Center extends CI_Controller {
 		if ($this->session->center_id!=13) {
 			$this->db->where('online_payment_transaction.center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		$recordsTotal = $this->Datatable_join_model->countAll('online_payment_transaction',$where);
 		if ($this->session->center_id!=13) {
 			$this->db->where('online_payment_transaction.center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		$recordsFiltered = $this->Datatable_join_model->countFiltered($_POST,$DataTableArray);
 		$output = array(
@@ -957,7 +957,7 @@ class Center extends CI_Controller {
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		$course_group_list = $this->Common_model->get_record('student','distinct(course_group_id) as id,course_name',$where);
 		$data = array(
@@ -1012,7 +1012,7 @@ class Center extends CI_Controller {
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		$student_list = $this->Common_model->get_record('student','student_id as id,name',$where);
 		$data = array('student_list' => $student_list,);
@@ -1026,7 +1026,7 @@ class Center extends CI_Controller {
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		$check_record = $this->Common_model->get_record('request','*',array('student_id' => $student_id,'status'=>'Pending'));
 		$id =  $this->session->center_id;
@@ -1063,7 +1063,7 @@ class Center extends CI_Controller {
 		if ($this->session->center_id!=13) {
 			$this->db->where('payment_complaint.center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('payment_complaint.center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('payment_complaint.center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
@@ -1076,13 +1076,13 @@ class Center extends CI_Controller {
 		if ($this->session->center_id!=13) {
 			$this->db->where('payment_complaint.center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('payment_complaint.center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('payment_complaint.center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		$recordsTotal = $this->Datatable_join_model->countAll('payment_complaint',$where);
 		if ($this->session->center_id!=13) {
 			$this->db->where('payment_complaint.center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('payment_complaint.center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('payment_complaint.center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		$recordsFiltered = $this->Datatable_join_model->countFiltered($_POST,$DataTableArray);
 		$output = array(
@@ -1117,7 +1117,7 @@ class Center extends CI_Controller {
 		if ($this->session->center_id!=13) {
 			$this->db->where('request.center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('request.center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('request.center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
@@ -1130,13 +1130,13 @@ class Center extends CI_Controller {
 		if ($this->session->center_id!=13) {
 			$this->db->where('request.center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('request.center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('request.center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		$recordsTotal = $this->Datatable_join_model->countAll('request',$where);
 		if ($this->session->center_id!=13) {
 			$this->db->where('request.center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('request.center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('request.center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		$recordsFiltered = $this->Datatable_join_model->countFiltered($_POST,$DataTableArray);
 		$output = array(
@@ -1189,7 +1189,7 @@ class Center extends CI_Controller {
 		if ($this->session->center_id!=13) {
 			$sql="SELECT * FROM `student`  WHERE approved = 'N' AND center_id = '".$center_id."' AND university_mode='".$course_type."'  ".$where; 
 		}else{
-			$sql="SELECT * FROM `student`  WHERE approved = 'N' AND center_id in (21,22,23,24,25,26,27,28) AND university_mode='".$course_type."'  ".$where; 
+			$sql="SELECT * FROM `student`  WHERE approved = 'N' AND center_id in (21,22,23,24,25,26,27,28,29,30,31,32,33) AND university_mode='".$course_type."'  ".$where; 
 		}
 		
 		$query = $this->db->query($sql);
@@ -1264,7 +1264,7 @@ class Center extends CI_Controller {
 			if ($this->session->center_id!=13) {
 				$this->db->where('center_id',$this->session->center_id);
 			}else{
-				$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+				$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 			}
 			$where = array('new_exam_form' =>'Y');
 			$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
@@ -1278,7 +1278,7 @@ class Center extends CI_Controller {
 				if ($this->session->center_id!=13) {
 					$this->db->where('center_id',$this->session->center_id);
 				}else{
-					$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+					$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 				}
 				
 		
@@ -1302,7 +1302,7 @@ class Center extends CI_Controller {
 			if ($this->session->center_id!=13) {
 				$this->db->where('center_id',$this->session->center_id);
 			}else{
-				$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+				$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 			}
 			$data['documents'] = $this->Common_model->getRecordByWhere('student',$where);
 		}
@@ -1410,7 +1410,7 @@ class Center extends CI_Controller {
     	if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		$this->db->where_not_in('class_id',array( 102,103,105,106,216));
     	$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
@@ -1623,7 +1623,7 @@ class Center extends CI_Controller {
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		//'center_id'=>$this->session->center_id , 
 		$where = array('admit_card_permission' =>'Y',"student.roll_no!="=>0);
@@ -1655,7 +1655,7 @@ class Center extends CI_Controller {
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		//$center_id =  $this->session->center_id;
 		$where = array(
@@ -1682,7 +1682,7 @@ class Center extends CI_Controller {
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		
 		$where = array(	
@@ -1712,7 +1712,7 @@ class Center extends CI_Controller {
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		$where = array(
 			'student_id' => $student_id,
@@ -1756,7 +1756,7 @@ class Center extends CI_Controller {
 		if ($this->session->center_id!=13) {
 			$this->db->where('backlog_student.center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('backlog_student.center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('backlog_student.center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 
 		$where = array(
@@ -2213,7 +2213,7 @@ class Center extends CI_Controller {
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 
 		$data = array('name_csrf' => $this->security->get_csrf_token_name(),
@@ -2246,7 +2246,7 @@ class Center extends CI_Controller {
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		$data = array('name_csrf' => $this->security->get_csrf_token_name(),
 			'hash_csrf' => $this->security->get_csrf_hash(),
@@ -2320,7 +2320,7 @@ class Center extends CI_Controller {
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 
 		if($_POST['course_group_id']!='All' and $_POST['course_group_id']!=''){
@@ -2401,14 +2401,14 @@ class Center extends CI_Controller {
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		$recordsTotal =$this->Datatable_join_model->joincountAll($_POST,$DataTableArray);
 
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		$recordsFiltered = $this->Datatable_join_model->countFiltered($_POST,$DataTableArray);
 		/*******************************************/		
@@ -2433,7 +2433,7 @@ class Center extends CI_Controller {
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 
 		if($_POST['course_group_id']!='All' and $_POST['course_group_id']!=''){
@@ -2507,14 +2507,14 @@ class Center extends CI_Controller {
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		$recordsTotal =$this->Datatable_join_model->joincountAll($_POST,$DataTableArray);
 
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		$recordsFiltered = $this->Datatable_join_model->countFiltered($_POST,$DataTableArray);
 		/*******************************************/		
@@ -3668,7 +3668,7 @@ public function practical_assignment_marks_edit(){
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		$check_record = $this->Common_model->get_record('request_mode_change','*',array('student_id' => $student_id));
 		//print_r($this->db->last_query());    
@@ -3707,7 +3707,7 @@ public function practical_assignment_marks_edit(){
 		if ($this->session->center_id!=13) {
 			$this->db->where('request_mode_change.center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('request_mode_change.center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('request_mode_change.center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
@@ -3720,14 +3720,14 @@ public function practical_assignment_marks_edit(){
 		if ($this->session->center_id!=13) {
 			$this->db->where('request_mode_change.center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('request_mode_change.center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('request_mode_change.center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		$recordsTotal = $this->Datatable_join_model->countAll('request_mode_change',$where);
 		
 		if ($this->session->center_id!=13) {
 			$this->db->where('request_mode_change.center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('request_mode_change.center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('request_mode_change.center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		$recordsFiltered = $this->Datatable_join_model->countFiltered($_POST,$DataTableArray);
 
@@ -4159,7 +4159,7 @@ public function practical_assignment_marks_edit(){
 		 if ($this->session->center_id!=13) {
 			$this->db->where('online_payment_transaction.center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
 		$tableData = $this->Datatable_join_model->getRows($_POST,$DataTableArray);
 		$i = $_POST['start'];
@@ -4167,7 +4167,7 @@ public function practical_assignment_marks_edit(){
 		if ($this->session->center_id!=13) {
 			$this->db->where('online_payment_transaction.center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
         if($course_type == "REG" && $param1=='Admission'){
             $this->db->where_not_in('student.course_group_id',$course_ids);
@@ -4175,7 +4175,7 @@ public function practical_assignment_marks_edit(){
 		$counttableData = $this->Datatable_join_model->joincountAll($_POST,$DataTableArray);
 				  
 		foreach($tableData as $result){
-			$center_ids_dep = array( 10,11,12,13,20,21,22,23,24,25,26,27,28,29,1975,2098,2115);
+			$center_ids_dep = array( 10,11,12,13,20,21,22,23,24,25,26,27,28,29,30,31,32,33,1975,2098,2115);
 			
 				
 			 $modal = '<a href="#" id="'.$this->Common_model->encrypt_decrypt($result->student_id).'" data-student_id="'.$this->Common_model->encrypt_decrypt($result->student_id).'" data-id="'.$this->Common_model->encrypt_decrypt($result->id).'" class="btn btn-info btn-sm pay" >Move</a>';
@@ -4191,7 +4191,7 @@ public function practical_assignment_marks_edit(){
 		if ($this->session->center_id!=13) {
 			$this->db->where('online_payment_transaction.center_id',$this->session->center_id);
 		}else{
-			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28));
+			$this->db->where_in('online_payment_transaction.center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33));
 		}
         if($course_type == "REG" && $param1=='Admission'){
             $this->db->where_not_in('student.course_group_id',$course_ids);

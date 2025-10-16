@@ -138,7 +138,7 @@ class saveFormdata extends CI_Controller {
 			$amount = $amount[0]->form_fees+$amount[0]->admission_fees;
 			$admission_type = 'regular';
 		}else{
-			$center_ids_dep = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,1975,2098,2115);
+			$center_ids_dep = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30,31,32,33,1975,2098,2115);
 			$late = $this->Common_model->getRecordByWhere('master',array('p_late_fee_status'=> 'Y'));
 			if($late  && !in_array($this->session->center_id, $center_ids_dep)){
 				$late_fees=$late[0]->p_late_fees;
