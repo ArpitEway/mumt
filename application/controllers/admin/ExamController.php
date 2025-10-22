@@ -3732,7 +3732,7 @@ public function getStudentData()
         $this->db->join('student as st','st.student_id =od.student_id');
         // ,'July 2023'
 		$this->db->where_in('od.exam_year',array('June 2025','July 2025'));
-		$this->db->where_in('st.session',array('July 2021','Jan 2022'));
+		$this->db->where_in('st.session',array('July 2022','Jan 2023'));
 		$this->db->where('st.enrollment_no!=','-');
 		// $this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
 		// $this->db->where_not_in('od.class_id', array(155,182));
@@ -3894,7 +3894,7 @@ public function getStudentData()
         $this->db->from('class_master as cm');
         $this->db->join('old_exam_data as od','cm.id =od.class_id');
         $this->db->join('student as st','st.student_id =od.student_id');
-		 $this->db->where_in('st.session',array('July 2021','Jan 2022'));
+		$this->db->where_in('st.session',array('July 2022','Jan 2023'));
 		$this->db->where('st.enrollment_no!=','-');
         // $this->db->group_start();
         // $this->db->where_in('od.class_id',$data['class_ids']);
