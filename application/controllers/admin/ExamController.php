@@ -3709,7 +3709,7 @@ public function getStudentData()
 
     public function student_final_year_exam_detail(){
         $data = array();
-		$data['exam_session'] = "June 2024";
+		$data['exam_session'] = "June 2025";
         $data['mode'] = "REG";
         $data['pattern'] = "MARKS";
         $this->db->select('cm.id,cm.class_name, cm.course_group_id,cg.course_name');
@@ -3860,7 +3860,7 @@ public function getStudentData()
 
     public function student_final_year_exam_detail_grade(){
         $data = array();
-		$data['exam_session'] = "June 2024";
+		$data['exam_session'] = "June 2025";
         $data['mode'] = "REG";
         $data['pattern'] = "GRADE";
         $data['dept_ids'] = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30);
