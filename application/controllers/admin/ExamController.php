@@ -3709,14 +3709,14 @@ public function getStudentData()
 
     public function student_final_year_exam_detail(){
         $data = array();
-		$data['exam_session'] = "June 2025";
+		$data['exam_session'] = "June 2023";
         $data['mode'] = "REG";
         $data['pattern'] = "MARKS";
         $this->db->select('cm.id,cm.class_name, cm.course_group_id,cg.course_name');
         $this->db->from('class_master as cm');
         $this->db->join('course_group as cg','cg.id =cm.course_group_id');
         $this->db->join('old_exam_data as od','cm.id =od.class_id');
-		$this->db->where('cg.course_type','UG');
+		$this->db->where('cg.course_type','PG');
 		// $this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
 		// $this->db->where_not_in('od.class_id', array(155,182));
         $this->db->where(array('cm.last_class'=>'L','od.exam_year'=>$data['exam_session'],'od.university_mode'=>$data['mode'], 'od.marks_pattern'=>$data['pattern']));//'od.exam_status'=>'R',
@@ -3860,7 +3860,7 @@ public function getStudentData()
 
     public function student_final_year_exam_detail_grade(){
         $data = array();
-		$data['exam_session'] = "June 2025";
+		$data['exam_session'] = "June 2023";
         $data['mode'] = "REG";
         $data['pattern'] = "GRADE";
         $data['dept_ids'] = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30);
@@ -3869,7 +3869,7 @@ public function getStudentData()
         $this->db->from('class_master as cm');
         $this->db->join('course_group as cg','cg.id =cm.course_group_id');
         $this->db->join('old_exam_data as od','cm.id =od.class_id');
-		$this->db->where('cg.course_type','UG');
+		$this->db->where('cg.course_type','PG');
         // $this->db->group_start();
         // $this->db->where_in('class_id',$data['class_ids']);
         // $this->db->where_not_in('center_id',$data['dept_ids']);
