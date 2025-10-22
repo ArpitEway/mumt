@@ -3716,7 +3716,7 @@ public function getStudentData()
         $this->db->from('class_master as cm');
         $this->db->join('course_group as cg','cg.id =cm.course_group_id');
         $this->db->join('old_exam_data as od','cm.id =od.class_id');
-		$this->db->where('cg.course_type','UG');
+		$this->db->where('cg.course_type','PG');
 		// $this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
 		// $this->db->where_not_in('od.class_id', array(155,182));
 		// $this->db->where(array('cm.last_class'=>'L','od.exam_year'=>$data['exam_session'],'od.university_mode'=>$data['mode'], 'od.marks_pattern'=>$data['pattern']));
@@ -3874,7 +3874,7 @@ public function getStudentData()
         $this->db->from('class_master as cm');
         $this->db->join('course_group as cg','cg.id =cm.course_group_id');
         $this->db->join('old_exam_data as od','cm.id =od.class_id');
-		$this->db->where('cg.course_type','UG');
+		$this->db->where('cg.course_type','PG');
         // $this->db->group_start();
         // $this->db->where_in('class_id',$data['class_ids']);
         // $this->db->where_not_in('center_id',$data['dept_ids']);
