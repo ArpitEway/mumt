@@ -3722,7 +3722,7 @@ public function getStudentData()
 		// $this->db->where(array('cm.last_class'=>'L','od.exam_year'=>$data['exam_session'],'od.university_mode'=>$data['mode'], 'od.marks_pattern'=>$data['pattern']));
 		//'od.exam_status'=>'R',
 		$this->db->where(array('cm.last_class'=>'L','od.university_mode'=>$data['mode'], 'od.marks_pattern'=>$data['pattern']));//
-        $this->db->where_in('od.exam_year',array('July 2023','August 2023','October 2023'));
+       $this->db->where_in('od.exam_year',array('June 2024'));
         $this->db->group_by('cg.course_name');
         $data['courses'] = $this->db->get()->result();
 
@@ -3731,7 +3731,7 @@ public function getStudentData()
         $this->db->join('old_exam_data as od','cm.id =od.class_id');
         $this->db->join('student as st','st.student_id =od.student_id');
         // ,'July 2023'
-		$this->db->where_in('od.exam_year',array('July 2023','August 2023','October 2023'));
+		$this->db->where_in('od.exam_year',array('June 2024'));
 		$this->db->where_in('st.session',array('July 2021','Jan 2022'));
 		$this->db->where('st.enrollment_no!=','-');
 		// $this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
@@ -3882,7 +3882,7 @@ public function getStudentData()
         // $this->db->or_group_start();
         // $this->db->where_not_in('od.class_id',$data['class_ids']);
         // $this->db->group_end();
-        $this->db->where_in('od.exam_year',array('July 2023','August 2023','October 2023'));
+       $this->db->where_in('od.exam_year',array('June 2024'));
         $this->db->where(array('cm.last_class'=>'L','od.university_mode'=>$data['mode'], 'od.marks_pattern'=>$data['pattern']));
         // ,'od.exam_year'=>$data['exam_session']
         $this->db->group_by('cg.course_name');
@@ -3903,7 +3903,7 @@ public function getStudentData()
         // $this->db->or_group_start();
         // $this->db->where_not_in('od.class_id',$data['class_ids']);
         // $this->db->group_end();
-        $this->db->where_in('od.exam_year',array('July 2023','August 2023','October 2023'));
+        $this->db->where_in('od.exam_year',array('June 2024'));
         $this->db->where_in('od.exam_result', array('PASS', 'PASS BY GRACE'));
         $this->db->where(array('cm.last_class'=>'L','od.university_mode'=>$data['mode'], 'od.marks_pattern'=>$data['pattern']));
         //'od.exam_status'=>'R', ,'od.exam_year'=>$data['exam_session']

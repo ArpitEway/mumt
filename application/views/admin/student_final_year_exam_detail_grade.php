@@ -48,7 +48,7 @@
             //     $this->db->where_not_in('od.center_id',$dept_ids);
             // }
               $this->db->where_in('st.session',array('July 2021','Jan 2022'));
-              $this->db->where_in('od.exam_year',array('July 2023','August 2023','October 2023'));
+             $this->db->where_in('od.exam_year',array('June 2024'));
 		    $this->db->where('st.enrollment_no!=','-');
             $this->db->where(array('st.enrolled'=>'Y', 'od.class_id'=>$course->id,'od.university_mode'=>$mode, 'od.marks_pattern'=>$pattern));//,'od.exam_status'=>'R' ,'od.exam_year'=>$exam_session
             $total = $this->db->get()->result();
@@ -65,7 +65,7 @@
             $this->db->where(array('st.enrolled'=>'Y', 'od.class_id'=>$course->id,'od.university_mode'=>$mode,'st.course_complete'=>'Y', 'od.marks_pattern'=>$pattern));
             $this->db->where_in('exam_result', array('PASS', 'PASS BY GRACE'));
             $this->db->where_in('st.session',array('July 2021','Jan 2022'));
-            $this->db->where_in('od.exam_year',array('July 2023','August 2023','October 2023'));
+            $this->db->where_in('od.exam_year',array('June 2024'));
 		    $this->db->where('st.enrollment_no!=','-');
             $total_passed = $this->db->get()->result();
             
