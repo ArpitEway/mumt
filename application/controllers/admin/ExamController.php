@@ -3709,7 +3709,7 @@ public function getStudentData()
 
     public function student_final_year_exam_detail(){
         $data = array();
-		$data['exam_session'] = "June 2024";
+		$data['exam_session'] = "June 2025";
         $data['mode'] = "REG";
         $data['pattern'] = "MARKS";
         $this->db->select('cm.id,cm.class_name, cm.course_group_id,cg.course_name');
@@ -3727,7 +3727,8 @@ public function getStudentData()
         $this->db->from('class_master as cm');
         $this->db->join('old_exam_data as od','cm.id =od.class_id');
         $this->db->join('student as st','st.student_id =od.student_id');
-		$this->db->where_in('st.session',array('Jan 2022','July 2022','Jan 2023','July 2023'));
+        // ,'July 2023'
+		$this->db->where_in('st.session',array('Jan 2022','July 2022','Jan 2023'));
 		$this->db->where('st.enrollment_no!=','-');
 		// $this->db->where_in('od.center_id',array(10,13,21,22,23,24,25,26,27,28,29,30));
 		// $this->db->where_not_in('od.class_id', array(155,182));
@@ -3859,7 +3860,7 @@ public function getStudentData()
 
     public function student_final_year_exam_detail_grade(){
         $data = array();
-		$data['exam_session'] = "June 2024";
+		$data['exam_session'] = "June 2025";
         $data['mode'] = "REG";
         $data['pattern'] = "GRADE";
         $data['dept_ids'] = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30);
@@ -3886,7 +3887,7 @@ public function getStudentData()
         $this->db->from('class_master as cm');
         $this->db->join('old_exam_data as od','cm.id =od.class_id');
         $this->db->join('student as st','st.student_id =od.student_id');
-		 $this->db->where_in('st.session',array('Jan 2022','July 2022','Jan 2023','July 2023'));
+		 $this->db->where_in('st.session',array('Jan 2022','July 2022','Jan 2023'));
 		$this->db->where('st.enrollment_no!=','-');
         // $this->db->group_start();
         // $this->db->where_in('od.class_id',$data['class_ids']);

@@ -47,7 +47,7 @@
             // if(in_array($course->id, $class_ids)){
             //     $this->db->where_not_in('od.center_id',$dept_ids);
             // }
-              $this->db->where_in('st.session',array('Jan 2022','July 2022','Jan 2023','July 2023'));
+              $this->db->where_in('st.session',array('Jan 2022','July 2022','Jan 2023'));
 		    $this->db->where('st.enrollment_no!=','-');
             $this->db->where(array('st.enrolled'=>'Y', 'od.class_id'=>$course->id,'od.exam_year'=>$exam_session,'od.university_mode'=>$mode, 'od.marks_pattern'=>$pattern));//,'od.exam_status'=>'R'
             $total = $this->db->get()->result();
@@ -61,7 +61,7 @@
             // }
             $this->db->where(array('st.enrolled'=>'Y', 'od.class_id'=>$course->id,'od.exam_year'=>$exam_session,'od.university_mode'=>$mode,'st.course_complete'=>'Y', 'od.marks_pattern'=>$pattern));///'od.exam_status'=>'R'
             $this->db->where_in('exam_result', array('PASS', 'PASS BY GRACE'));
-            $this->db->where_in('st.session',array('Jan 2022','July 2022','Jan 2023','July 2023'));
+            $this->db->where_in('st.session',array('Jan 2022','July 2022','Jan 2023'));
 		    $this->db->where('st.enrollment_no!=','-');
             $total_passed = $this->db->get()->result();
             
@@ -83,7 +83,7 @@
                     'od.marks_pattern' => $pattern
                 ))
                 ->where_in('od.exam_result', array('PASS', 'PASS BY GRACE'))
-                 ->where_in('st.session',array('Jan 2022','July 2022','Jan 2023','July 2023'))
+                 ->where_in('st.session',array('Jan 2022','July 2022','Jan 2023'))
 		        ->where('st.enrollment_no!=','-');
                 $query = $this->db->get();
                 $total_first = $query->row();
