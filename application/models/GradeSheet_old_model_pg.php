@@ -1078,6 +1078,7 @@ class GradeSheet_old_model_pg extends CI_Model
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		$this->foundation_paper = array();
 		$this->result_array = array();
+		$this->paper_array = array();
 		$this->tot_credit_point = 0;
 		$this->percent = 0;
 		$this->tot_credit = 0;
