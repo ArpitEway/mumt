@@ -123,7 +123,7 @@ class Gradesheet_backlog_tr_model extends CI_Model
 		}
 		
 		$this->notification_agpa();
-		// return $this->result();
+		return $this->result();
 	}
 
 	public function view_notification_result($student_id,$course_group_id,$class_id,$mode, $exam_id)

@@ -169,6 +169,7 @@
                      <tr align="center"><th width='12.5%'>Year</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>AGPA</th></tr>
 
                      <?php
+                     
                      $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$student->course_group_id));
                    
                     $count = 0;
@@ -214,6 +215,44 @@
                    
                     </tbody>
                  </table>
+                 <?php
+              if($classData->last_class == 'L')
+                     {
+
+                        $cgpa = number_format((float)($total_grade_point/$total_course_credit), 2, '.', '');
+                        $percent = $cgpa * 10;
+                        if($cgpa>=8.0){
+                            $div = "First Division with Distinction";
+                            }elseif($cgpa<8.0 && $cgpa>=6.50){
+                            $div  = "First Division";
+                            }elseif($cgpa<6.50 && $cgpa>=5.00){
+                            $div  = "Second Division";
+                            }else{
+                            $div = "Pass";
+                            }
+                    ?>
+                    <table width="103%" cellpadding="2" style="margin-top:10px;" border="1" align="center">
+                        <tr>
+                            <td colspan="4" align="center">
+                                Final Result - <strong><?=$gradesheetData['result']?></strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width="9.2%">Total Credits</th>
+                            <th width="9.2%">CGPA</th>
+                            <th width="18.4%">Equivalent Percentage</th>
+                            <th width="18.4%">Division</th>
+                        </tr>
+                        <tr>
+                            <td align="center"><?= $total_course_credit?></td>
+                            <td align="center"><?=$cgpa?></td>
+                            <td align="center"><?=$percent.'%'?></td>
+                            <td align="center"><?=$div?></td>
+                        </tr>
+                    </table>
+                     <?php
+                     }
+              ?>
               </fieldset>
               <!-- if starts -->
               <tr>

@@ -1509,17 +1509,17 @@ public function update_roll_no_old_data(){
 			$pagetitle=$startlimit;
 		}
 
-		$exam_year="January 2025";
+		$exam_year="July 2023";
 		//and enrollment_no in ('AG/21204765','AG/21204615')
 		$this->load->view('header',array('title' => 'Student Data For DIGI LOCKER '.$exam_year));
 		//$this->db->where_in('enrollment_no',array('AG/21204765','AG/21204615'));
 		//$sql="SELECT * FROM `old_exam_data` WHERE class_id in (131,125,119,116,110,101,134,107,104) and exam_year in ('August 2022','Aug 2022') and center_id in (21,22,23,24,25,26,27,28)   and university_mode='REG'";
 		
 		$class_ids='101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136';
-		 $sql="SELECT * FROM `old_exam_data` WHERE class_id in ($class_ids) and exam_year in ('".$exam_year."') and exam_result !='FAIL' and marks_pattern='GRADE' and  exam_status='R' and university_mode='PVT' order by course_name,class_id,roll_no limit ".$start.",5000 ";
+		 $sql="SELECT * FROM `old_exam_data` WHERE class_id in ($class_ids) and exam_year in ('July 2023' ,'August 2023', 'October 2023') and exam_result !='FAIL' and marks_pattern='GRADE' and  exam_status='R' and university_mode='REG' order by course_name,class_id,roll_no limit ".$start.",5000 ";
 		$rs = $this->db->query($sql)->result_array();
 		$i=1;
-		//$this->Common_model->last_query();
+		// $this->Common_model->last_query();
 		$this->load->model('Gradesheet_old_model');
 		$data['rs']=$rs;
 		
@@ -1529,13 +1529,13 @@ public function update_roll_no_old_data(){
 
 	public function dg_locker_data_pg(){
 		//and enrollment_no in ('AG/21204765','AG/21204615')
-		$exam_year='January 2025';
+		$exam_year='July 2023';
 		$this->load->view('header',array('title' => 'Student Data For DIGI LOCKER '.$exam_year));
 		// $this->db->where_in('enrollment_no',array('AI/22207463'));
 		$class_cbcs = '193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302,303,304,305,278,282,250,252,216,232,236,238,240,246,248,254,218,305,210,243,267';
 		//193,197,201,203,205,209,211,213,221,223,225,227,302,275,279
 		
-		$sql="SELECT * FROM `old_exam_data` WHERE class_id in (".$class_cbcs.") and exam_year in ('".$exam_year."')  and exam_result !='FAIL' and marks_pattern='GRADE'  and  exam_status='R' and university_mode='REG' order by course_name,class_id,roll_no";
+		$sql="SELECT * FROM `old_exam_data` WHERE class_id in (".$class_cbcs.") and exam_year in ('July 2023' ,'August 2023', 'October 2023')  and exam_result !='FAIL' and marks_pattern='GRADE'  and  exam_status='R' and university_mode='REG' order by course_name,class_id,roll_no";
         //and enrollment_no='AI/22206868'and center_id in (21,22,23,24,25,26,27,28)
 		//$this->db->limit(1);
 		$rs = $this->db->query($sql)->result_array();

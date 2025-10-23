@@ -49,7 +49,7 @@
 			<th>TOT_GRADE</th>
 			<th>TOT_CGPA</th> -->
 	<?php		
-		for($sub=1;$sub<=11;$sub++){
+		for($sub=1;$sub<=13;$sub++){
 			?>
 			<th>SUB<?=$sub?>NM</th>
 			<th>SUB<?=$sub?></th>
@@ -213,7 +213,7 @@
 				$td_count=0;
 				$td_count=$gradesheetData['papercount']*13;
 			
-				 $loop_td_count=143-$td_count;
+				 $loop_td_count=169-$td_count;
 				for($c=1;$c<=$loop_td_count;$c++){
 					echo "<td> </td>";
 				}
