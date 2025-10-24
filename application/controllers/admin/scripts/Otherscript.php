@@ -1537,7 +1537,7 @@ public function update_roll_no_old_data(){
 		
 		$sql="SELECT * FROM `old_exam_data` WHERE class_id in (".$class_cbcs.") and exam_year in ('July 2023' ,'August 2023', 'October 2023')  and exam_result !='FAIL' and marks_pattern='GRADE'  and  exam_status='R' and university_mode='REG' order by course_name,class_id,roll_no";
         //and enrollment_no='AI/22206868'and center_id in (21,22,23,24,25,26,27,28)
-		//$this->db->limit(1);
+		// $this->db->limit(1);
 		$rs = $this->db->query($sql)->result_array();
         //  $this->Common_model->last_query();
         // print_r(count($rs));die;

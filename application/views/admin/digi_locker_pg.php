@@ -19,18 +19,18 @@
 			<th>MNAME</th>
 			<th>PHOTO</th>
             <th>MRKS_REC_STATUS</th>
-			<th>RESULT</th>
+			<!-- <th>RESULT</th> -->
 			<th>YEAR</th>
 			<th>MONTH</th>
 			<th>DOI</th>
-            <th>CERT_NO</th>
+            <!-- <th>CERT_NO</th> -->
 			<th>SEM</th>
 			<th>TOT_CREDIT</th>
 			<th>TOT_CREDIT_POINTS</th>
 			<th>TOT_GRADE_POINTS</th>
 			<th>PREV_TOT_CREDIT</th>
 			<th>PREV_TOT_GRADE_POINTS</th>
-			<th>GRAND_TOT_CREDIT_POINTS</th>
+			<!-- <th>GRAND_TOT_CREDIT_POINTS</th> -->
 			<th>GRAND_TOT_CREDIT</th>
             <th>CGPA</th>
 			<th>REMARKS</th>
@@ -40,7 +40,7 @@
             <th>TOT_GRADE</th>
             <th>TOT_CGPA</th>
             <th>GRAND_TOT_GRADE_POINTS</th>
-            <th>TOT_CREDIT_HOURS</th>
+            <!-- <th>TOT_CREDIT_HOURS</th> -->
 			<th>DEPARTMENT</th>
 			<!-- 
 			
@@ -53,18 +53,17 @@
 			?>
 			<th>SUB<?=$sub?>NM</th>
 			<th>SUB<?=$sub?></th>
-            <th>SUB<?=$sub?>_CREDIT_HOURS</th>
-            <th>SUB<?=$sub?>_CE1_MRKS</th>
-            <th>SUB<?=$sub?>_CE2_MRKS</th>
-            <th>SUB<?=$sub?>_TH_MRKS</th>
-            <th>SUB<?=$sub?>_PR_MRKS</th>
-            <th>SUB<?=$sub?>_TOT</th>
+            <!-- <th>SUB<?php // echo $sub?>_CREDIT_HOURS</th> -->
+            <!-- <th>SUB<? //echo $sub?>_CE1_MRKS</th> -->
+            <!-- <th>SUB<? //echo $sub?>_CE2_MRKS</th> -->
+            <!-- <th>SUB<? //echo $sub?>_TH_MRKS</th> -->
+            <!-- <th>SUB<? //echo $sub?>_PR_MRKS</th> -->
+            <!-- <th>SUB<?php //echo $sub?>_TOT</th> -->
 			<th>SUB<?=$sub?>_GRADE</th>
-			
-			<th>SUB<?=$sub?>_GRADE_POINTS</th>
 			<th>SUB<?=$sub?>_CREDIT</th>
 			<th>SUB<?=$sub?>_CREDIT_POINTS</th>
-			<th>SUB<?=$sub?>_REMARKS</th>
+			<th>SUB<?=$sub?>_GRADE_POINTS</th>
+			<!-- <th>SUB<? //echo $sub?>_REMARKS</th> -->
 		<?php }	?>
 			
 
@@ -128,8 +127,8 @@
 			<th>SUB11_CREDIT</th>
 			<th>SUB11_GRADE_POINTS</th>
 			<th>SUB11_CREDIT_POINTS</th> -->
-            <th>GRAND_TOT_CREDIT_HOURS</th>
-            <th>GPA</th>
+            <!-- <th>GRAND_TOT_CREDIT_HOURS</th>
+            <th>GPA</th> -->
 			 <th>ADMISSION_YEAR</th>
 			<th>TGPA</th>
 			<th>GRAND_TOT_CREDITS</th>
@@ -195,10 +194,40 @@
 				$course_name = $matches[1] ?? $course_name_full;
 				$stream = $matches[2] ?? '';
 
-                echo "<tr><td>".$sno++."</td><td>".$studentDetail->center_name."  </td> <td>".$course_detail->paper_code_pattern."</td><td>".$course_name."</td><td>".$stream."</td> ";
-                //<td>".$student['student_id']." </td>
-                echo "<td>".$session_data." </td><td>".$student['enrollment_no']." </td><td>".$student['roll_no']." </td><td>".$student['name']." </td>"."<td>".$gender." </td>"." <td>".$studentDetail->dob." </td><td>".$student['f_h_name']." </td><td>".$student['mother_name']." </td><td></td><td>O</td><td>".$gradesheetData['result']." </td><td>".$exam_arr[1]." </td><td>".$exam_arr[0]." </td><td></td><td></td><td>".$class_name[0]."</td><td>".$gradesheetData['tot_credit']." </td><td>". $gradesheetData['credit_point']." </td><td>".$gradesheetData['total_grade_point']."</td><td>".$prev_tot_crdit."</td><td></td><td>".($gradesheetData['credit_point']+$prev_tot_credit_point)."</td><td>".($gradesheetData['tot_credit'] +$prev_tot_crdit)."</td>";
-                ?>
+                // echo "<tr><td>".$sno++."</td><td>".$studentDetail->center_name."  </td> <td>".$course_detail->paper_code_pattern."</td><td>".$course_name."</td><td>".$stream."</td> ";
+                // //<td>".$student['student_id']." </td>
+                // echo "<td>".$session_data." </td><td>".$student['enrollment_no']." </td><td>".$student['roll_no']." </td><td>".$student['name']." </td>"."<td>".$gender." </td>"." <td>".$studentDetail->dob." </td><td>".$student['f_h_name']." </td><td>".$student['mother_name']." </td><td></td><td>O</td><td>".$gradesheetData['result']." </td><td>".$exam_arr[1]." </td><td>".$exam_arr[0]." </td><td></td><td></td><td>".$class_name[0]."</td><td>".$gradesheetData['tot_credit']." </td><td>". $gradesheetData['credit_point']." </td><td>".$gradesheetData['total_grade_point']."</td><td>".$prev_tot_crdit."</td><td></td><td>".($gradesheetData['credit_point']+$prev_tot_credit_point)."</td><td>".($gradesheetData['tot_credit'] +$prev_tot_crdit)."</td>";
+				echo "<tr>";
+				echo "<td>".$sno++."</td>";
+				echo "<td>".$studentDetail->center_name."</td>";
+				echo "<td>".$course_detail->paper_code_pattern."</td>";
+				echo "<td>".$course_name."</td>";
+				echo "<td>".$stream."</td>";
+				echo "<td>".$session_data."</td>";
+				echo "<td>".$student['enrollment_no']."</td>";
+				echo "<td>".$student['roll_no']."</td>";
+				echo "<td>".$student['name']."</td>";
+				echo "<td>".$gender."</td>";
+				echo "<td>".$studentDetail->dob."</td>";
+				echo "<td>".$student['f_h_name']."</td>";
+				echo "<td>".$student['mother_name']."</td>";
+				echo "<td></td>";
+				echo "<td>O</td>";
+				// echo "<td>".$gradesheetData['result']."</td>";
+				echo "<td>".$exam_arr[1]."</td>";
+				echo "<td>".$exam_arr[0]."</td>";
+				echo "<td></td>";
+				// echo "<td></td>";
+				echo "<td>".$class_name[0]."</td>";
+				echo "<td>".$gradesheetData['tot_credit']."</td>";
+				echo "<td>".$gradesheetData['credit_point']."</td>";
+				echo "<td>".$gradesheetData['total_grade_point']."</td>";
+				echo "<td>".$prev_tot_crdit."</td>";
+				echo "<td></td>";
+				// echo "<td>".($gradesheetData['credit_point'] + $prev_tot_credit_point)."</td>";
+				echo "<td>".($gradesheetData['tot_credit'] + $prev_tot_crdit)."</td>";
+
+				?>
                 <td></td>
                 <td></td>
                 <td><?=number_format((float)$gradesheetData['agpa'], 2, '.', '')?></td>
@@ -206,18 +235,19 @@
                 <?php
                
                 echo "<td>SEMESTER</td>";
-               echo "<td></td><td></td><td></td><td></td>";
+               echo "<td></td><td></td><td></td>";//<td></td>
                 echo " <td>".$studentDetail->center_name."  </td> ";
                 
                 echo $gradesheetData['html'];
 				$td_count=0;
-				$td_count=$gradesheetData['papercount']*13;
+				$td_count=$gradesheetData['papercount']*6;
 			
-				 $loop_td_count=169-$td_count;
+				 $loop_td_count=78-$td_count;
 				for($c=1;$c<=$loop_td_count;$c++){
 					echo "<td> </td>";
 				}
-                echo "<td></td><td></td><td>".$admission_year[1]."</td><td></td><td></td>";
+				//<td></td><td></td>
+                echo "<td>".$admission_year[1]."</td><td></td><td></td>";
 				// $sess_arr=explode(" ",$student['session']);
 				// echo "<td>".$sess_arr[1]."</td>";
 				// echo "<td></td>";

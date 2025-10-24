@@ -400,10 +400,10 @@ class GradeSheet_old_model_pg extends CI_Model
            
             $this->html.= "<td>".$result['paper_name']."</td>";
 			$this->html.= "<td>".$key."</td>";
-			$this->html.="<td></td><td></td><td></td>";
-			$this->html.= "<td></td>";//($result['type'] == 'theory')?$result['obt_marks']."</td>":"<td></td>";
-			$this->html.= "<td></td>";//($result['type'] != 'theory')?$result['obt_marks']."</td>":"<td>
-			$this->html.= "<td></td>";//((int)$result['obt_marks']+(int)$result['int_obt_marks'])
+			// $this->html.="<td></td><td></td><td></td>";
+			// $this->html.= "<td></td>";//($result['type'] == 'theory')?$result['obt_marks']."</td>":"<td></td>";
+			// $this->html.= "<td></td>";//($result['type'] != 'theory')?$result['obt_marks']."</td>":"<td>
+			// $this->html.= "<td></td>";//((int)$result['obt_marks']+(int)$result['int_obt_marks'])
             if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
                 $this->check_grace_marks = true;
                 $this->obt_tot_credit += $result['credit'];
@@ -423,7 +423,7 @@ class GradeSheet_old_model_pg extends CI_Model
                 $this->html.= "<td>".$result['credit']."</td>";
                 
                 $this->html.= "<td>".$credit_point."</td>";
-				$this->html.= "<td></td>";
+				// $this->html.= "<td></td>";
             }else{
 				if($result['obt_marks'] === 'ABS' || ($result['f_abs'] === 'ABS' && $result['obt_marks'] == '0')
 				){
@@ -434,7 +434,7 @@ class GradeSheet_old_model_pg extends CI_Model
                 $this->html.= "<td>".$result['credit']."</td>";			
                 
                 $this->html.= "<td>".$result['credit_point']."</td>";
-				$this->html.= "<td></td>";
+				// $this->html.= "<td></td>";
             }
             $this->total_grade_point+=$result['grade_point'];
 
