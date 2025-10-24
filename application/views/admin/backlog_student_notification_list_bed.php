@@ -141,7 +141,7 @@ $abs_count = 0 ;
 						 		}else{
 									if($new_exam_form->theory_marks==''){
 									$rw_count++;
-									
+									 $Withheld =true;
 									}
 									if($new_exam_form->theory_marks=='ABS'){
 										$fc2_abs .= $new_exam_form->theory_marks;
@@ -611,7 +611,7 @@ $abs_count = 0 ;
 								
 								if((in_array($student->class_id, $class_ids)) && $mode=='REG')	
 								{
-									echo $gradesheetData['result'];
+									// echo $gradesheetData['result'];
 									if($Withheld || $gradesheetData['result'] == 'RW'){
 										echo " ";
 									}

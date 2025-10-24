@@ -159,6 +159,8 @@
                         <?php 
     
                           $gradesheetData = $this->Gradesheet_backlog_model->view_result_grade($student->student_id,$student->course_group_id,$student->class_id,$student->mode,$student->id);
+                           $total_grade_point = 0;
+                          $total_course_credit = 0;
                           
                             ?>
                     </tbody></table>
@@ -169,8 +171,13 @@
                      <tr align="center"><th width='12.5%'>Year</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>AGPA</th></tr>
 
                      <?php
-                     
-                     $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$student->course_group_id));
+                     if(in_array($student->class_id, array(322,323,324,325,326,327,328,329,330,331))){
+                       $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$student->course_group_id));
+                     }else{
+                      $this->db->where('class_name!=','IV Year');
+                       $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$student->course_group_id));
+                     }
+                    
                    
                     $count = 0;
                      foreach($classes as $cls){
@@ -183,6 +190,8 @@
                         $this->db->limit(1);
                         $old = $this->Common_model->getRecordByWhere('old_exam_data', array('student_id'=>$student->student_id,'class_id'=>$cls->id,'course_group_id'=>$student->course_group_id,'university_mode'=>$student->mode));
                         $gradeData   = $this->Gradesheet_model->view_old_results($student->student_id,$student->course_group_id,$cls->id,$student->mode, $old[0]->id, $old[0]->exam_status);
+                         $total_grade_point += number_format((float)$gradeData['agpa'], 2, '.', '') * $gradeData['obt_credit']; 
+                         $total_course_credit +=$gradeData['tot_credit'];
                         ?>
                         <tr align="center"><th><?=$sno?></th><td><?= ($gradeData['tot_credit'] == 0)?'':$gradeData['tot_credit']?></td><td><?php if($gradeData['obt_credit'] == 0 && $gradeData['tot_credit'] !=0) { echo '0'; }elseif($gradeData['obt_credit'] == 0){ echo '';}else{ echo $gradeData['obt_credit'];}?></td><td><?php if ($gradeData['credit_point'] == 0 && $gradeData['tot_credit'] !=0){ echo '0';}elseif($gradeData['credit_point'] == 0){ echo ''; }else { echo $gradeData['credit_point']; }?></td><td>
                         <?php if(is_nan($gradeData['agpa'])){

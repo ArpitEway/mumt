@@ -89,6 +89,7 @@ class Gradesheet_backlog_model_pg extends CI_Model
 		// $table = $this->Common_model->getMaster('exam_form_table');
         $this->db->order_by('sub_group_id');
 		$std  = $this->Common_model->getRecordByWhere('backlog_exam_form',array('class_id'=> $class_id,'student_id'=>$student_id,'backlog_student_id'=>$exam_id));
+		// $this->Common_model->last_query();
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		$papers = $this->Common_model->get_all_backlog_papers($student_id,$class_id,$exam_id);
 		$this->classCount = count($this->allclass);
