@@ -1619,10 +1619,11 @@ public function update_roll_no_old_data(){
 
 	public function dg_locker_data_non_grading_class_list(){
 
-		$exam_year = 'January 2025';
+		$exam_year = 'July 2023';
 		$this->db->select('course_name,course_group_id, COUNT(DISTINCT(student_id)) as total_students');
 		$this->db->from('old_exam_data');
-		$this->db->where('exam_year', $exam_year);
+		// $this->db->where('exam_year', $exam_year);
+		$this->db->where_in('exam_year', array('July 2023' ,'August 2023', 'October 2023'));
 		$this->db->where('exam_result !=', 'FAIL');
 		$this->db->where('marks_pattern', 'MARKS');
 		$this->db->where('exam_status', 'R');
@@ -1649,12 +1650,13 @@ public function update_roll_no_old_data(){
 			$this->db->limit(4000, $start);
 		}
 		// $this->db->limit(1, 0);
-		$exam_year = 'January 2025';
+		$exam_year = 'July 2023';
 		$this->load->view('header', ['title' => 'Student Data For DIGI LOCKER' . $exam_year]);
 
 		$this->db->select('*');
 		$this->db->from('old_exam_data');
-		$this->db->where('exam_year', $exam_year);
+		// $this->db->where('exam_year', $exam_year);
+		$this->db->where_in('exam_year', array('July 2023' ,'August 2023', 'October 2023'));
 		$this->db->where('exam_result !=', 'FAIL');
 		$this->db->where('marks_pattern', 'MARKS');
 		$this->db->where('exam_status', 'R');
