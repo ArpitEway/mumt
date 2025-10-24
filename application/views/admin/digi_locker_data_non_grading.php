@@ -8,10 +8,10 @@
     		<th>ORG_NAME</th>
 			<th>ACADEMIC_COURSE_ID</th>
 			<th>COURSE_NAME</th>
-            <th>BATCH</th>
+            <!-- <th>BATCH</th> -->
             <th>COURSE_NAME_L</th>
             <th>STREAM</th>
-			<th>STREAM_L</th>
+			<!-- <th>STREAM_L</th> -->
 			<th>SESSION</th>
 			<th>REGN_NO</th>
 			<th>RROLL</th>
@@ -20,8 +20,8 @@
 			<th>DOB</th>
 			<th>FNAME</th>
 			<th>MNAME</th>
-            <th>PHOTO</th>
-            <th>MRKS_REC_STATUS</th>
+            <!-- <th>PHOTO</th> -->
+            <!-- <th>MRKS_REC_STATUS</th> -->
 			<th>RESULT</th>
 			<th>YEAR</th>
 			<th>MONTH</th>
@@ -33,20 +33,20 @@
 			<th>EXAM_TYPE</th>
 			<th>TOT</th>
 			<th>TOT_MRKS</th>
-            <th>TOT_CREDIT</th>
-            <th>TOT_CREDIT_POINTS</th>
-            <th>TOT_GRADE_POINTS</th>
+            <!-- <th>TOT_CREDIT</th> -->
+            <!-- <th>TOT_CREDIT_POINTS</th> -->
+            <!-- <th>TOT_GRADE_POINTS</th> -->
 			<th>GRAND_TOT_MAX</th>
 			<th>GRAND_TOT_MRKS</th>
-            <th>GRAND_TOT_CREDIT_POINTS</th>
-            <th>GRAND_TOT_CREDIT</th>
-            <th>CGPA</th>
+            <!-- <th>GRAND_TOT_CREDIT_POINTS</th> -->
+            <!-- <th>GRAND_TOT_CREDIT</th> -->
+            <!-- <th>CGPA</th> -->
 			<th>REMARKS</th>
-            <th>SGPA</th>
+            <!-- <th>SGPA</th> -->
             <th>ABC_ACCOUNT_ID</th>
             <th>TERM_TYPE</th>
             <th>TOT_GRADE</th>
-            <th>GRAND_TOT_GRADE</th>
+            <!-- <th>GRAND_TOT_GRADE</th> -->
 			
 
 	<?php		
@@ -61,13 +61,13 @@
 			<th>SUB<?=$sub?>_PR_MRKS</th>
             <th>SUB<?=$sub?>_CE_MRKS</th>
             <th>SUB<?=$sub?>_TOT</th>
-            <th>SUB<?=$sub?>_GRADE</th>
-            <th>SUB<?=$sub?>_GRADE_POINTS</th>
-            <th>SUB<?=$sub?>_CREDIT</th>
-            <th>SUB<?=$sub?>_CREDIT_POINTS</th>
-            <th>SUB<?=$sub?>_REMARKS</th>
-            <th>SUB<?=$sub?>_TOT_WRDS</th>
-            <th>SUB<?=$sub?>_CREDIT_ELIGIBILITY</th>
+            <!-- <th>SUB<?php //echo $sub?>_GRADE</th> -->
+            <!-- <th>SUB<?php //echo $sub?>_GRADE_POINTS</th> -->
+            <!-- <th>SUB<?php //echo $sub?>_CREDIT</th> -->
+            <!-- <th>SUB<?php //echo $sub?>_CREDIT_POINTS</th> -->
+            <!-- <th>SUB<?php //echo $sub?>_REMARKS</th> -->
+            <!-- <th>SUB<?php //echo $sub?>_TOT_WRDS</th> -->
+            <!-- <th>SUB<?php //echo $sub?>_CREDIT_ELIGIBILITY</th> -->
 		<?php }	?>
             <th>AADHAAR_NAME</th>
             <th>ADMISSION_YEAR</th>
@@ -136,9 +136,9 @@
 				elseif($studentDetail->gender=='Female'){
 					$gender='F';
 				}
-                echo "<tr><td>".$sno++."</td><td>".$studentDetail->center_name."  </td> <td>".$course_detail->course_code."</td><td>".$studentDetail->course_name."  </td> <td></td><td></td> <td></td><td></td>";
-                //<td>".$student['student_id']." </td>
-                echo "<td>".$session_data." </td><td>".$student['enrollment_no']." </td><td>".$student['roll_no']." </td><td>".$student['name']." </td>"."<td>".$gender." </td>"." <td>".$studentDetail->dob." </td><td>".$student['f_h_name']." </td><td>".$student['mother_name']." </td><td></td><td>O</td><td>".$old_data->exam_result." </td><td>".$exam_arr[1]." </td><td>".$exam_arr[0]." </td><td></td><td></td><td></td><td></td><td>".$class_name[0]."</td><td>".$mode."</td><td>".$old_data->total_marks."</td><td>".$old_data->obtain_marks."</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>";
+                echo "<tr><td>".$sno++."</td><td>".$studentDetail->center_name."  </td> <td>".$course_detail->course_code."</td><td>".$studentDetail->course_name."  </td>  <td></td><td></td>";
+                //<td></td><td></td><td>".$student['student_id']." </td><td></td><td>O</td>
+                echo "<td>".$session_data." </td><td>".$student['enrollment_no']." </td><td>".$student['roll_no']." </td><td>".$student['name']." </td>"."<td>".$gender." </td>"." <td>".$studentDetail->dob." </td><td>".$student['f_h_name']." </td><td>".$student['mother_name']." </td><td>".$old_data->exam_result." </td><td>".$exam_arr[1]." </td><td>".$exam_arr[0]." </td><td></td><td></td><td></td><td></td><td>".$class_name[0]."</td><td>".$mode."</td><td>".$old_data->total_marks."</td><td>".$old_data->obtain_marks."</td><td></td>";//<td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                 ?>
                 
                 <td></td>
@@ -153,7 +153,7 @@
 		        }
                 echo "<td>SEMESTER</td>";
                
-                echo " <td></td> <td></td>";
+                echo " <td></td>";// <td></td>
                 $sub_total =0;
                 $grace ="";
                 foreach($old_papers as $old_paper){
@@ -180,13 +180,13 @@
                     <td><?= ($old_paper['p_marks'] == 'N')?"":$old_paper['p_marks']?></td>
                     <td><?= ($old_paper['int_marks'] == 'N')?"":$old_paper['int_marks']?></td>
                     <td><?= $sub_total ?></td>
+                    <!-- <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
-                    <td></td>
+                    <td></td> -->
                     <?php
                 }
 
@@ -214,13 +214,13 @@
                     <td><?= ($old_paper['p_marks'] == 'N')?"":$old_paper['p_marks']?></td>
                     <td><?= ($old_paper['int_marks'] == 'N')?"":$old_paper['int_marks']?></td>
                     <td><?= $sub_total ?></td>
+                    <!-- <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
-                    <td></td>
+                    <td></td> -->
                     <?php   
                 }
                 }
@@ -228,11 +228,11 @@
                 if($class_detail->class_group == 'Y'){
                     $td_count= (count($old_papers) + count($papers_list))*16;
                 }else{
-                    $td_count=count($old_papers)*16;
+                    $td_count=count($old_papers)*9;
                 }
 				
 			
-				 $loop_td_count=192-$td_count;
+				 $loop_td_count=108-$td_count;
 				for($c=1;$c<=$loop_td_count;$c++){
 					echo "<td> </td>";
 				}
