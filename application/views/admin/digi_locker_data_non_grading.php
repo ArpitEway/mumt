@@ -77,7 +77,7 @@
 		
 			<?php 
 				$sno=1;
-                $classes = array(101,102,103,104,105,106);
+                $classes_group = array(101,102,103,104,105,106);
             foreach ($rs as $student) {
                 $studentDetail = $this->Common_model->getRecordById('student','student_id',$student['student_id']);
 				$course_detail = $this->Common_model->getRecordById('course','course_group_id',$student['course_group_id']);
@@ -147,7 +147,7 @@
 				<td><?=$studentDetail->abc_id?></td>
                 <?php
                $old_papers = $this->Common_model->get_all_old_papers($student['student_id'],$student['class_id'],$old_data->id);
-               	if($class_detail->class_group == 'Y' && in_array($class_detail->id, $classes)){
+               	if($class_detail->class_group == 'Y' && in_array($class_detail->id, $classes_group)){
                     $papers_list = $this->Common_model->get_all_old_group_papers($student['student_id'],$student['class_id'],$old_data->id);
 		            $papers_list = $this->Common_model->get_all_old_group_papers($student['student_id'],$student['class_id'],$old_data->id);
 		        }
@@ -190,7 +190,7 @@
                     <?php
                 }
 
-                if($class_detail->class_group == 'Y' && in_array($class_detail->id, $classes)){
+                if($class_detail->class_group == 'Y' && in_array($class_detail->id, $classes_group)){
                      foreach($papers_list as $old_paper){
                     $grace= $old_paper['result'] == 'PASS BY GRACE' ? ' G':"";
                     if($class_detail->internal == 'Y' && $old_paper['type'] == 'theory' || ($old_paper['type'] == 'theory' && $old_paper['int_marks'] !="N") ){
@@ -225,7 +225,7 @@
                 }
                 }
             	$td_count=0;
-                if($class_detail->class_group == 'Y'){
+                if($class_detail->class_group == 'Y' && in_array($class_detail->id, $classes)){
                     $td_count= (count($old_papers) + count($papers_list))*16;
                 }else{
                     $td_count=count($old_papers)*9;
