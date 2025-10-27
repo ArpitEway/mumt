@@ -1627,7 +1627,7 @@ public function update_roll_no_old_data(){
 		$this->db->where('exam_result !=', 'FAIL');
 		$this->db->where('marks_pattern', 'MARKS');
 		$this->db->where('exam_status', 'R');
-		$this->db->where('university_mode', 'REG');
+		$this->db->where('university_mode', 'PVT');
 		// $this->db->where('university_mode', 'PVT');
 		$this->db->group_by('course_group_id');
 		$this->db->order_by('class_id');
@@ -1660,13 +1660,14 @@ public function update_roll_no_old_data(){
 		$this->db->where('exam_result !=', 'FAIL');
 		$this->db->where('marks_pattern', 'MARKS');
 		$this->db->where('exam_status', 'R');
-		$this->db->where('university_mode', 'REG');
+		$this->db->where('university_mode', 'PVT');
 		// $this->db->where('university_mode', 'PVT');
 		$this->db->where('course_group_id', $course_group_id);
 		// $this->db->where('enrollment_no', 'PA/21209363');
 		$this->db->order_by('course_name');
 		$this->db->order_by('class_id');
 		$this->db->order_by('roll_no');
+		$this->db->limit(1);
 		$data['rs'] = $this->db->get()->result_array();
 		$data['title'] = "DIGI LOCKER DATA Of ".$this->Common_model->getCourseNameByCourseId($course_group_id)." ".$exam_year;
 

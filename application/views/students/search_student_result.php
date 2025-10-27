@@ -94,8 +94,39 @@
                                 <input data-inputmask="'alias': 'dd-mm-yyyy'" class="form-control  placeholder-dark-75 col-9" type="text" placeholder="dd-mm-yyyy" name="dob" id="dob" />
                                 </div>
                             </div> <!-- from-group row -->
-                        
+                             
                         </div>
+                        <div class="row"><div class="col-lg-6 m-auto">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label" >Search By : </label>
+                                <div class="col-9 col-form-label">
+                                    <div class="radio-inline">
+                                    
+                                        <label class="radio radio-success">
+                                            <input type = "radio"
+                                            name = "radio_stduent_search"
+                                            id = "radio_main"
+                                            value = "main" 
+                                            checked
+                                            />
+                                            <span></span>
+                                            Main Exam : 
+                                        </label>
+                                        <label class="radio radio-success">
+                                            <input type = "radio"
+                                            name = "radio_stduent_search"
+                                            id = "radio_backlog"
+                                            value = "backlog" />
+                                            <span></span>
+                                            Backlog Exam.
+                                        </label>
+
+                                    
+                                    </div>
+                                </div>
+                            </div>
+                        </div> </div>
+                        
                          <div class="row d-flex justify-content-center">
                         <div class="form-group row">
                                 <button type="button" class="btn btn-primary btn-sm m-auto" onclick="search_student_data()">Submit</button>
@@ -127,8 +158,9 @@
         var csrfHash = $('.csrfname').val();
         var roll_no = $('#roll_no').val();
         var dob = $('#dob').val();
+        var radio_val = $('input[name="radio_stduent_search"]:checked').val();
       
-       
+      
         if(roll_no =='')
         { 
             alert('Roll Number is required !');
@@ -144,6 +176,7 @@
             let data = {
                     'roll_no':roll_no.trim(),
                     'dob':dob,
+                    'radio_val':radio_val,
                     [csrfName]:csrfHash
                 }
             $.ajax({

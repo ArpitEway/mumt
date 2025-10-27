@@ -50,7 +50,7 @@
 			
 
 	<?php		
-		for($sub=1;$sub<=15;$sub++){
+		for($sub=1;$sub<=12;$sub++){
 			?>
 			<th>SUB<?=$sub?>NM</th>
 			<th>SUB<?=$sub?></th>
@@ -232,7 +232,7 @@
                 }
 				
 			
-				 $loop_td_count=135-$td_count;
+				 $loop_td_count=108-$td_count;
 				for($c=1;$c<=$loop_td_count;$c++){
 					echo "<td> </td>";
 				}
