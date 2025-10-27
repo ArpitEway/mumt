@@ -173,6 +173,8 @@
             })//ajax
         }
     }
+    	$("#dob").inputmask();
+			
 </script>
 
                     <!-- footer -->
