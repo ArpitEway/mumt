@@ -225,8 +225,8 @@
                 }
                 }
             	$td_count=0;
-                if($class_detail->class_group == 'Y' && in_array($class_detail->id, $classes)){
-                    $td_count= (count($old_papers) + count($papers_list))*16;
+                if($class_detail->class_group == 'Y' && in_array($class_detail->id, $classes_group)){
+                    $td_count= (count($old_papers) + count($papers_list))*9;
                 }else{
                     $td_count=count($old_papers)*9;
                 }
