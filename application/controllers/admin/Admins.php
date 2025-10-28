@@ -3800,7 +3800,7 @@ public function update_exam_datewise_permission(){
         	//$this->db->Where('result_show','Y');
 		
 		$this->db->where_in('new_exam_form.int_marks',array('ABS','N'));
-		 $this->db->where_in('student.old_class_id',array(101,102,103,194,196,198,200,202,204,206,210,212,214,303,276,280,222,224,226,228,121,112,136,109,127,130,133,106,104,107,110,111,104,119,120,125,126,128,129,131,132,134,108,105,105,141,145,147,151,268));
+		 $this->db->where_in('student.old_class_id',array(101,102,103,194,196,198,200,202,204,206,210,212,214,303,276,280,222,224,226,228,121,112,136,109,127,130,133,106,104,107,110,111,104,119,120,125,126,128,129,131,132,134,108,105,105,141,145,147,151,268,183,139,145,148,149,151,184,192,147,185));
 		$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
 		$data['students'] = $this->db->get()->result();//echo $this->db->last_query(); die;
 		$this->load->view('admin/student_int_marks_no_list',$data);
@@ -3929,7 +3929,7 @@ public function update_exam_datewise_permission(){
 		$this->db->where_in('new_exam_form.p_marks',array('ABS','N'));
 		$this->db->where('university_mode','REG');
 		// $this->db->where('university_mode','PVT');
-		$this->db->where_in('student.old_class_id',[101,102,103,194,196,198,200,202,204,206,210,212,214,303,276,280,222,224,226,228,121,112,136,109,127,130,133,106,104,107,110,111,104,119,120,125,126,128,129,131,132,134,108,105,105,141,145,147,151,268]);
+		$this->db->where_in('student.old_class_id',[101,102,103,194,196,198,200,202,204,206,210,212,214,303,276,280,222,224,226,228,121,112,136,109,127,130,133,106,104,107,110,111,104,119,120,125,126,128,129,131,132,134,108,105,105,141,145,147,151,268,183,139,145,148,149,151,184,192,147,185]);
 		$this->db->Where('(project="Y" or practical = "Y")');
 		$this->db->where_not_in('center_id',array(20,21,22,23,24,25,26,27,28,29));
 		$data['students'] = $this->db->get()->result();
