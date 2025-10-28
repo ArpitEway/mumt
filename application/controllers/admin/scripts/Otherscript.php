@@ -1660,7 +1660,7 @@ public function update_roll_no_old_data(){
 		$this->db->where('exam_result !=', 'FAIL');
 		$this->db->where('marks_pattern', 'MARKS');
 		$this->db->where('exam_status', 'R');
-		$this->db->where('university_mode', 'PVT');
+		$this->db->where('university_mode', 'REG');
 		// $this->db->where('university_mode', 'PVT');
 		$this->db->where('course_group_id', $course_group_id);
 		// $this->db->where('enrollment_no', 'PA/21209363');
