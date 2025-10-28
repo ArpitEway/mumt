@@ -110,7 +110,7 @@
                                             checked
                                             />
                                             <span></span>
-                                            Main Exam : 
+                                            Main Exam 
                                         </label>
                                         <label class="radio radio-success">
                                             <input type = "radio"
@@ -118,7 +118,7 @@
                                             id = "radio_backlog"
                                             value = "backlog" />
                                             <span></span>
-                                            Backlog Exam.
+                                            Backlog Exam
                                         </label>
 
                                     
