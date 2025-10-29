@@ -14,10 +14,18 @@ class saveFormdata extends CI_Controller {
 	}
 
 	public function index(){
+		
 		$course_group_id = html_escape($this->input->post('course_group_id'));
 		
 		$class_id = html_escape($this->input->post('class_id'));
 		$session = html_escape($this->input->post('session'));
+		if($this->input->post('additional_course_group_id') != ''){
+			$additional_course_group_id = html_escape($this->input->post('additional_course_group_id')); 
+			$additional_class_id = html_escape($this->input->post('additional_class_id')); 
+		}else{
+			$additional_course_group_id = null;
+			$additional_class_id = null;
+		}
 		$data['session'] = $session;
 		$data['course_group_id'] = $course_group_id;
 		$data['course_name'] = $this->Common_model->getCourseNameByCourseId($course_group_id);
@@ -115,6 +123,48 @@ class saveFormdata extends CI_Controller {
 		$this->db->trans_start();
 
 		$student_id = $this->Common_model->insertAll('student',$data);
+
+		// if($additional_course_group_id != null && $additional_class_id != null){
+		// 	$data['course_group_id'] = $additional_course_group_id;
+		// 	$data['class_id'] = $additional_class_id;
+		// $data['course_name'] = $this->Common_model->getCourseNameByCourseId($additional_course_group_id);
+		// $data['class_name'] = $this->Common_model->getClassNameByClassId($additional_class_id);
+		// 	$student_id_additional = $this->Common_model->insertAll('student',$data);
+		// 	$max_id = $this->db->query("SELECT MAX(user_id) AS user_id FROM user_enquiry")->row()->user_id;
+		// 	if(!$max_id){
+		// 		$max_id=0;
+		// 	}
+		// 	$userdata = array(
+		// 		'user_id' => $max_id + 1,
+		// 		'student_id' => $student_id_additional,
+		// 	);
+		// 	$user_id = $this->Common_model->insertAll('user_enquiry',$userdata);
+		// }
+
+		if (!empty($additional_course_group_id) && !empty($additional_class_id)) {
+
+    // Prepare additional student data
+    $data['course_group_id'] = $additional_course_group_id;
+    $data['class_id']        = $additional_class_id;
+    $data['course_name']     = $this->Common_model->getCourseNameByCourseId($additional_course_group_id);
+    $data['class_name']      = $this->Common_model->getClassNameByClassId($additional_class_id);
+	$data['exam_pattern'] ="MARKS";
+    // Insert additional student
+    $student_id_additional = $this->Common_model->insertAll('student', $data);
+
+    // Get next user_id (one time)
+    $max_id_row = $this->db->select_max('user_id')->get('user_enquiry')->row();
+    $next_user_id = ($max_id_row && $max_id_row->user_id) ? $max_id_row->user_id + 1 : 1;
+
+    // Insert two entries into user_enquiry (main + additional)
+    $user_entries = [
+        ['user_id' => $next_user_id, 'student_id' => $student_id],
+        ['user_id' => $next_user_id, 'student_id' => $student_id_additional],
+    ];
+
+    $this->db->insert_batch('user_enquiry', $user_entries);
+	
+}
         
 	
 		$path = './assets/student_image/'.$session;
@@ -129,6 +179,14 @@ class saveFormdata extends CI_Controller {
 		$this->Common_model->updateRecordByConditions('student',$where,$PhotoData);
 		$studentData['student_id'] = $student_id;
 		$this->Common_model->insertAll('student_data',$studentData);
+		if (!empty($additional_course_group_id) && !empty($additional_class_id)) {
+			$where = array('student_id'=>$student_id);
+		$this->Common_model->updateRecordByConditions('student',$where,array('user_id'=>$next_user_id));
+		$where = array('student_id'=>$student_id_additional);
+		$this->Common_model->updateRecordByConditions('student',$where,array('user_id'=>$next_user_id,'additional_course'=>'Y'));
+		$studentData['student_id'] = $student_id_additional;
+		$this->Common_model->insertAll('student_data',$studentData);
+		}
 		$amount = $this->Common_model->getRecordByWhere('course',array('course_group_id'=> $course_group_id));
 	
 	    $mode = $this->input->post('mode');
@@ -203,9 +261,31 @@ class saveFormdata extends CI_Controller {
 				'sub_group_id'=>$paper->sub_group_id
 			);
 	       $this->Common_model->insertAll('new_exam_form',$data);
+		  
 
 		 $this->Common_model->updateRecordByConditions('student',array('student_id'=>$student_id),array('temp_exam_form' => 'Y'));
 		}
+
+		 if(!empty($additional_course_group_id) && !empty($additional_class_id)) {
+			$paperWhere=array('class_id'=>$additional_class_id,'cbcs_paper'=>$cbcs);
+			$papers = $this->Common_model->getRecordByWhere('paper_master',$paperWhere);
+				foreach($papers as $paper){
+				$data_additional = array(
+				'student_id'=>$student_id_additional ,
+				'course_group_id'=>$paper->course_group_id,
+				'class_id'=>$paper->class_id,
+				'paper_id'=>$paper->id,
+				'paper_code'=>$paper->paper_code,
+				'paper_type'=>$paper->type,
+				'book_code'=>$paper->book_code,
+				'paper_order'=>$paper->paper_no,
+				'sub_group_id'=>$paper->sub_group_id
+			);
+				 $this->Common_model->insertAll('new_exam_form',$data_additional);
+
+		}
+				  $this->Common_model->updateRecordByConditions('student',array('student_id'=>$student_id_additional),array('temp_exam_form' => 'Y'));
+		   }
 	
 		}
 		$student_id = $this->Common_model->encrypt_decrypt($student_id);

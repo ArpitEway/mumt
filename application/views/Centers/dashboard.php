@@ -186,6 +186,11 @@
 							<span class="nav-text">Unpaid Student</span>
 						</div>
 					</a>
+					<a class="border-0 custom-menu-item" href="<?=base_url('additional_course_student_list');?>">
+						<div>
+							<span class="nav-text">Additional Course Student List</span>
+						</div>
+					</a>
 					<a class="border-0 custom-menu-item" href="<?=base_url('Document/index/REG');?>">
 						<div>
 							<span class="nav-text">Upload Admission Document</span>
