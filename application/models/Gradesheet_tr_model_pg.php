@@ -263,12 +263,7 @@ class Gradesheet_tr_model_pg extends CI_Model
 			
 			$persent =$check_fail_marks*100/$check_fail_tot_marks;
 		$where = 'min_marks <= '.$persent.' and  max_marks >= '.$persent.'';
-		// $gradeData = $this->Common_model->getRecordByWhere('letter_grade_pg',$where);
-		if($this->classData->id=='268'){
-				$gradeData = $this->Common_model->getRecordByWhere('letter_grade',$where);
-			}else{
-				$gradeData = $this->Common_model->getRecordByWhere('letter_grade_pg',$where);
-			}
+		$gradeData = $this->Common_model->getRecordByWhere('letter_grade_pg',$where);
 		// echo $this->db->last_query().'<br>';
         // echo $gradeData[0]->letter_grade ;
 		if ('F'==$gradeData[0]->letter_grade || 'ABS' ==$gradeData[0]->letter_grade) {
@@ -403,11 +398,7 @@ class Gradesheet_tr_model_pg extends CI_Model
 				$tot_marks_grace = $result['max_marks']+$result['int_max_marks'];
 				$persent = $tot_obt_grace*100/$tot_marks_grace;
 			$where = 'min_marks <= '.$persent.' and  max_marks >= '.$persent.'';
-			if($this->classData->id=='268'){
-				$gradeData = $this->Common_model->getRecordByWhere('letter_grade',$where);
-			}else{
-				$gradeData = $this->Common_model->getRecordByWhere('letter_grade_pg',$where);
-			}
+			$gradeData = $this->Common_model->getRecordByWhere('letter_grade_pg',$where);
 				$result['grade_point'] = $gradeData[0]->grade_point;
 				$this->check_grace_marks = true;
 				$this->obt_tot_credit += $result['credit'];
