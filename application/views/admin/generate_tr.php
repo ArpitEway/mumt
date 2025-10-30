@@ -363,7 +363,7 @@ table.last_table, .last_table td, .last_table th{
         </tr>
         <?php 
         }
-        if(($classData->project!='N' || $classData->practical!='N') && $student->university_mode != 'PVT'){
+        if(($classData->project!='N' || $classData->practical!='N') && ($student->university_mode != 'PVT' || $student->old_class_id=='185')){
           // echo $student->university_mode;die;
         ?>
         <tr>
@@ -495,7 +495,7 @@ table.last_table, .last_table td, .last_table th{
         <?php } ?>
         <td class="align-middle text-center result"><?php echo $total_int_marks_obt;  ?></td>
     </tr> <?php } ?>
-  <?php if( ($classData->project!='N' || $classData->practical!='N') && $student->university_mode != 'PVT'){ ?>
+  <?php if(($classData->project!='N' || $classData->practical!='N') && ($student->university_mode != 'PVT' || $student->old_class_id=='185' )){ ?>
   <tr>
     <td class="align-middle text-right paper">Practical Marks.</td>
     <?php
