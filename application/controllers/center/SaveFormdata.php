@@ -129,7 +129,7 @@ class saveFormdata extends CI_Controller {
 		$this->Common_model->updateRecordByConditions('student',$where,$PhotoData);
 		$studentData['student_id'] = $student_id;
 		$this->Common_model->insertAll('student_data',$studentData);
-		$amount = $this->Common_model->getRecordByWhere('course',array('course_group_id'=> $course_group_id));
+		$amount = $this->Common_model->getRecordByWhere('course',array('course_group_id'=> $course_group_id,'session'=> $session));
 	
 	    $mode = $this->input->post('mode');
 		$late_fees=0;
