@@ -193,8 +193,8 @@ table.last_table, .last_table td, .last_table th{
 
       
     }else{
-      $rowspanhead = "2";
-      $rowspandata = "3";
+      $rowspanhead =($classData->id == 185)?'3': "2";
+      $rowspandata = ($classData->id == 185)?'4': "3";
     }
     foreach($marks as $new_exam_form)
     {
