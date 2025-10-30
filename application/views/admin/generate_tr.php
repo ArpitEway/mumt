@@ -261,7 +261,7 @@ table.last_table, .last_table td, .last_table th{
         }
       }
 
-      if($new_exam_form->type!='theory' && $student->university_mode != 'PVT'){
+      if($new_exam_form->type!='theory' && ($student->university_mode != 'PVT' || $student->old_class_id== '185')){
         $total_paper_marks += (int) $new_exam_form->max_theory_marks;
         $total_marks_obt += (int) $new_exam_form->p_marks;
         $count_practical++;
