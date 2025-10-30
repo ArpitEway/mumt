@@ -15,9 +15,7 @@
 				<th>Father Name</th>
 				<th>Course</th>
 				<th>Class</th>
-			
                 <th>Action</th>
-				<?php //if($course_type=='PVT'&& $late_privte_admission_fees=='Y'){ echo '<th>Action</th>';}?>
 			</tr>
 		</thead>
 		<tbody>
@@ -33,7 +31,7 @@
                     <td><?= $student->class_name; ?></td>
                     
                     <td>
-                       <a href="#" id="<?= $this->Common_model->encrypt_decrypt($student->student_id)?>" data-student_id="<?= $this->Common_model->encrypt_decrypt($student->student_id)?>" data-session="<?= $student->session?>" data-eligibility=<?= $student->eligibility?> data-name="<?= $student->name?>" class="btn btn-info btn-sm pay" >Add</a>
+                       <a href="#" id="<?= $student->student_id?>" data-student_id="<?= $this->Common_model->encrypt_decrypt($student->student_id)?>" data-session="<?= $student->session?>" data-eligibility=<?= $student->eligibility?> data-name="<?= $student->name?>" class="btn btn-info btn-sm pay" >Add</a>
                     </td>
                 </tr>
                 <?php
@@ -65,6 +63,14 @@
 	
    </div> -->
     <div class="form-group row">
+    <label for="example-date-input" class="col-4 col-form-label">Form No.</label>
+    <div class="col-7">
+    <label for="example-date-input" class="col-form-label"><span id="std_id"></span></label>
+    
+	</div>
+	
+   </div>
+    <div class="form-group row">
     <label for="example-date-input" class="col-4 col-form-label">Student Name</label>
     <div class="col-7">
     <label for="example-date-input" class="col-form-label"><span id="student_name"></span></label>
@@ -75,22 +81,19 @@
     <div class="form-group row">
     <label for="example-date-input" class="col-4 col-form-label">Course<span class="text-danger">*</span></label>
     <div class="col-7">
-                                    
-        <select name="additional_course_group_id" id="additional_course_group_id" class="form-control " >
+        <select name="additional_course_group_id" id="additional_course_group_id" class="form-control "  required>
         <option value="">Select Course</option>
-        </select>
-        <div class="fv-plugins-message-container"></div>
-                            
+        </select>                      
 	</div>
         </div>
         <div class="form-group row">
              <label for="example-date-input" class="col-4 col-form-label">Class<span class="text-danger">*</span></label>
         <div class="col-7 ">
            
-            <select name="additional_class_id" id="additional_class_id" class="form-control ">
+            <select name="additional_class_id" id="additional_class_id" class="form-control " required>
                 <option value="">Select Class</option>
             </select>
-            <div class="fv-plugins-message-container"></div>
+          
         
         </div>
     
@@ -115,14 +118,15 @@
         $('.pay').on('click',function(){
             var student_id = $(this).attr('data-student_id');
             $('#student_id').val(student_id);
+            $('#std_id').html($(this).attr('id'));
             // $('#student_id_show').html(student_id);
             $('#student_name').html($(this).attr('data-name'));
            
             $('#kt_datepicker_modal').modal('show');
-             var csrfName = $('.csrfname').attr('name');
-	var csrfHash = $('.csrfname').val();
-	let session = $(this).attr('data-session');
-	let eligibility = $(this).attr('data-eligibility');
+            var csrfName = $('.csrfname').attr('name');
+            var csrfHash = $('.csrfname').val();
+            let session = $(this).attr('data-session');
+            let eligibility = $(this).attr('data-eligibility');
 	
 	$.ajax({
 		method: "POST",

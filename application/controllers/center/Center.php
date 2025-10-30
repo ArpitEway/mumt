@@ -861,6 +861,7 @@ class Center extends CI_Controller {
 		$this->db->where('course.session',$session);
 		$this->db->where('admission_permission_regular','Y');
 		$query = $this->db->get();
+		// $this->Common_model->last_query();
 	
 		$course_group_list= $query->result_array();
 		
@@ -4089,8 +4090,8 @@ public function practical_assignment_marks_edit(){
 		//Image
 		$wherecenter=array("student_id"=>$student_id ,'center_id'=>$this->session->center_id);
 		$studentData = $this->Common_model->get_record('student','*', $wherecenter);
-	     $session=$studentData[0]['session'];
-	     unlink('assets/student_image/'.$session.'/'.$studentData[0]['photo']);
+	     $session=$student_data[0]['session'];
+	     unlink('assets/student_image/'.$session.'/'.$student_data[0]['photo']);
 		 //Payment
 		 $response = $this->Common_model->deleteByWhere('online_payment_transaction',$wherecenter);
 		 //Student Data
@@ -4253,8 +4254,8 @@ public function practical_assignment_marks_edit(){
 	// 	$this->session->set_userdata(array('forCenter'=>$forCenter));
 	
 	// }
-	public function additional_course_student_list(){
-		$titleData = array('title' => 'Additional Course Student List');	
+	public function additional_course_eligible_students(){
+		$titleData = array('title' => 'Additional Course Eligible Students');	
 		$this->db->select('s.*,cg.eligibility');
 		$this->db->from('student as s');
 		$this->db->join('course_group as cg','cg.id=s.course_group_id');
@@ -4262,8 +4263,8 @@ public function practical_assignment_marks_edit(){
 		$this->db->where('s.additional_course','N');
 		$this->db->where_in('cg.course_type',array('UG','PG'));
 		$this->db->where('user_id',0);
-		$this->db->where('new_exam_form!=','Y');
-		$this->db->where_in('class_name',array('I Year','I Sem'));
+		$this->db->where('session','July 2025');
+		$this->db->order_by('s.course_name,s.class_name,s.name','ASC');
 		$data['students'] = $this->db->get()->result();
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
@@ -4277,7 +4278,7 @@ public function practical_assignment_marks_edit(){
 		$student_id = $this->Common_model->encrypt_decrypt($this->input->post('student_id'),'decrypt');
 		$student = $this->Common_model->getRecordById('student','student_id',$student_id);
 		$studentData = $this->Common_model->getRecordById('student_data','student_id',$student_id);
-
+		$student_data = array();
 		$course_group_id = html_escape($this->input->post('additional_course_group_id'));
 		
 		$class_id = html_escape($this->input->post('additional_class_id'));
@@ -4310,6 +4311,7 @@ public function practical_assignment_marks_edit(){
 			$data['for_center'] = $student->for_center;
 		}
 		$data['medium'] = $student->medium;
+		$data['enrollment_no'] = $student->enrollment_no;
 		$data['category'] = $student->category;
 		$data['gender'] = $student->gender;
 		$data['name'] = $student->name;
@@ -4321,36 +4323,36 @@ public function practical_assignment_marks_edit(){
 		$data['adhar_no'] = $student->adhar_no;
 		$data['regular_exam_form_permission'] = 'Y';
 
-		$studentData['eligibility'] = $studentData->eligibility;
-		$studentData['p_mobile_no'] = $studentData->p_mobile_no;
-		$studentData['religion'] = $studentData->religion;
-		$studentData['p_email'] = $studentData->p_email;
+		$student_data['eligibility'] = $studentData->eligibility;
+		$student_data['p_mobile_no'] = $studentData->p_mobile_no;
+		$student_data['religion'] = $studentData->religion;
+		$student_data['p_email'] = $studentData->p_email;
 
-		$studentData['handicapped'] = $studentData->handicapped;
-		$studentData['marital_status'] = $studentData->marital_status;
-		$studentData['p_address'] = $studentData->p_address;
-		$studentData['p_city'] = $studentData->p_city;
+		$student_data['handicapped'] = $studentData->handicapped;
+		$student_data['marital_status'] = $studentData->marital_status;
+		$student_data['p_address'] = $studentData->p_address;
+		$student_data['p_city'] = $studentData->p_city;
 		$p_state_id = $studentData->p_state;
-		$studentData['p_state'] = $p_state_id;
+		$student_data['p_state'] = $p_state_id;
 		$p_district_id = $studentData->p_district;
-		$studentData['p_district'] = $p_district_id;
-		$studentData['p_pin_code'] = $studentData->p_pin_code;
-		$studentData['c_address'] = $studentData->c_address;
-		$studentData['c_city'] = $studentData->c_city;
+		$student_data['p_district'] = $p_district_id;
+		$student_data['p_pin_code'] = $studentData->p_pin_code;
+		$student_data['c_address'] = $studentData->c_address;
+		$student_data['c_city'] = $studentData->c_city;
 		$c_state_id = $studentData->c_state;
-		$c_district_id = $studentData->c_distric;
-		$studentData['c_state'] = $c_state_id;
-		$studentData['c_district'] = $c_district_id;
-		$studentData['c_pin_code'] = $studentData->c_pin_code;
+		$c_district_id = $studentData->c_district;
+		$student_data['c_state'] = $c_state_id;
+		$student_data['c_district'] = $c_district_id;
+		$student_data['c_pin_code'] = $studentData->c_pin_code;
 
-		$studentData['marks'] = $studentData->marks;
-		$studentData['total_marks'] = $studentData->total_marks;
+		$student_data['marks'] = $studentData->marks;
+		$student_data['total_marks'] = $studentData->total_marks;
 
-		$studentData['passing_year'] = $studentData->passing_year;
+		$student_data['passing_year'] = $studentData->passing_year;
 
-		$studentData['board'] = $studentData->board;
-		$studentData['nationality'] = $studentData->nationality;
-		$studentData['minority'] = $studentData->minority;
+		$student_data['board'] = $studentData->board;
+		$student_data['nationality'] = $studentData->nationality;
+		$student_data['minority'] = $studentData->minority;
 		
 		$class_ids=array(101,104,107,110,116,119,125,128,131,134);
 		$class = $this->Common_model->getRecordByWhere('class_master',array('id' =>$class_id));
@@ -4358,53 +4360,9 @@ public function practical_assignment_marks_edit(){
 		{
 			$data['exam_pattern'] ="GRADE";
 		}
-		// transaction start from here 
+		
 	
-		
-		// Department center by default set status & approved
 
-		// $center_ids_uni = array( 10,11,12,13);
-		// if(in_array($this->session->center_id, $center_ids_uni)){
-		// 	$data['payment_status']='Y';
-		// 	$data['document_uploaded']='Y';
-		// 	$data['approved']='Y';
-			
-		// }
-		// $center_ids_dep = array( 21,22,23,24,25,26,27,28,29);
-		
-		// if(in_array($this->session->center_id, $center_ids_dep)){
-		// 	$data['payment_status']='Y';
-		// }
-
-		$this->db->trans_start();
-
-		$student_id = $this->Common_model->insertAll('student',$data);
-
-		// if($additional_course_group_id != null && $additional_class_id != null){
-		// 	$data['course_group_id'] = $additional_course_group_id;
-		// 	$data['class_id'] = $additional_class_id;
-		// $data['course_name'] = $this->Common_model->getCourseNameByCourseId($additional_course_group_id);
-		// $data['class_name'] = $this->Common_model->getClassNameByClassId($additional_class_id);
-		// 	$student_id_additional = $this->Common_model->insertAll('student',$data);
-		// 	$max_id = $this->db->query("SELECT MAX(user_id) AS user_id FROM user_enquiry")->row()->user_id;
-		// 	if(!$max_id){
-		// 		$max_id=0;
-		// 	}
-		// 	$userdata = array(
-		// 		'user_id' => $max_id + 1,
-		// 		'student_id' => $student_id_additional,
-		// 	);
-		// 	$user_id = $this->Common_model->insertAll('user_enquiry',$userdata);
-		// }
-
-		if (!empty($additional_course_group_id) && !empty($additional_class_id)) {
-
-    // Prepare additional student data
-    $data['course_group_id'] = $additional_course_group_id;
-    $data['class_id']        = $additional_class_id;
-    $data['course_name']     = $this->Common_model->getCourseNameByCourseId($additional_course_group_id);
-    $data['class_name']      = $this->Common_model->getClassNameByClassId($additional_class_id);
-	$data['exam_pattern'] ="MARKS";
     // Insert additional student
     $student_id_additional = $this->Common_model->insertAll('student', $data);
 
@@ -4418,81 +4376,42 @@ public function practical_assignment_marks_edit(){
         ['user_id' => $next_user_id, 'student_id' => $student_id_additional],
     ];
 
-    $this->db->insert_batch('user_enquiry', $user_entries);
+    	$this->db->insert_batch('user_enquiry', $user_entries);
 	
-}
-        
-	
-		$path = './assets/student_image/'.$session;
-		if(!file_exists($path)){
-			mkdir($path);
-		}
-
-		$upload = $this->do_upload('photo',$path,$student_id);
 		
-		$PhotoData = array('photo' => $upload['file_name']);
-		$where = array('student_id'=>$student_id);
+		$extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+
+    $found_file = null;
+
+    // Loop through possible extensions
+    foreach ($extensions as $ext) {
+        // $file_path = $folder_path . $filename_without_ext . '.' . $ext;
+		$path = './assets/student_image/'.$session.'/'.$student_id.'.'.$ext;
+
+        if (file_exists($path)) {
+            $found_file = $path;
+            break;
+        }
+    }
+	// var_dump($found_file); die;
+	if ($found_file) {
+		$new_path = './assets/student_image/'.$session.'/'.$student_id_additional.'.'.pathinfo($found_file, PATHINFO_EXTENSION);
+		copy($found_file, $new_path);
+	}
+	
+		$PhotoData = array('photo' => $student_id_additional.'.'.pathinfo($found_file, PATHINFO_EXTENSION));
+		$where = array('student_id'=>$student_id_additional);
 		$this->Common_model->updateRecordByConditions('student',$where,$PhotoData);
-		$studentData['student_id'] = $student_id;
-		$this->Common_model->insertAll('student_data',$studentData);
-		if (!empty($additional_course_group_id) && !empty($additional_class_id)) {
+		$student_data['student_id'] = $student_id_additional;
+		$this->Common_model->insertAll('student_data',$student_data);
+		
 			$where = array('student_id'=>$student_id);
 		$this->Common_model->updateRecordByConditions('student',$where,array('user_id'=>$next_user_id));
 		$where = array('student_id'=>$student_id_additional);
 		$this->Common_model->updateRecordByConditions('student',$where,array('user_id'=>$next_user_id,'additional_course'=>'Y'));
-		$studentData['student_id'] = $student_id_additional;
-		$this->Common_model->insertAll('student_data',$studentData);
-		}
-		$amount = $this->Common_model->getRecordByWhere('course',array('course_group_id'=> $course_group_id));
 	
-	    $mode = $this->input->post('mode');
-		$late_fees=0;
-		$remark="";
-		if($mode=='regular'){
-			$amount = $amount[0]->form_fees+$amount[0]->admission_fees;
-			$admission_type = 'regular';
-		}else{
-			$center_ids_dep = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30,31,32,33,1975,2098,2115);
-			$late = $this->Common_model->getRecordByWhere('master',array('p_late_fee_status'=> 'Y'));
-			if($late  && !in_array($this->session->center_id, $center_ids_dep)){
-				$late_fees=$late[0]->p_late_fees;
-				$remark="With Late Fees";
-			}
-			
-			$amount = $amount[0]->p_form_fees+ $amount[0]->p_admission_fees+$late_fees;
-			$admission_type = 'private';
-		}
-	    
-		$OnlinePayTxnData = array('student_id' => $student_id,'center_id' => $data['center_id'] ,'fees_head' => 'Admission Fees','amount' => $amount,'payment_status'=>'pending','course_group_id' => $course_group_id,'class_id' => $class_id,'student_name' => $data['name'],'admission_type'=>$admission_type,'remark'=>$remark);
-
-		// Department center by default set status & approved
-
-	    // || in_array($this->session->center_id, $center_ids_dep)
-		// if(in_array($this->session->center_id, $center_ids_uni))
-		// {
-		// 	$OnlinePayTxnData['payment_status']	= 'Paid By University';
-		// 	$OnlinePayTxnData['payment'] =	'Y';
-		// 	$OnlinePayTxnData['payment_date'] =	date('Y-m-d');
-		// 	$OnlinePayTxnData['payment_time'] =	date('h:i:s');
-			
-		// }
-		$OnlinePayTxn = $this->Common_model->insertAll('online_payment_transaction',$OnlinePayTxnData);
-
-		// transaction Complete 
 		
-		if ($this->db->trans_status() === FALSE)
-		{
-			$this->db->trans_rollback();
-		}
-		else
-		{ 
-			$this->db->trans_complete();
-		}
 		
-			//	paper add code 
-		
-       
-		// if($class[0]->exam_form_permission =='Y' && $class[0]->class_group=="N"){
 			$cbcs = ($class[0]->cbcs == 'Y')?'Y':'N';
 			if($class[0]->class_group=="N"){
 			$this->db->order_by('id');
@@ -4506,7 +4425,7 @@ public function practical_assignment_marks_edit(){
 		foreach($papers as $paper){
 		
 			$data = array(
-				'student_id'=>$student_id ,
+				'student_id'=>$student_id_additional ,
 				'course_group_id'=>$paper->course_group_id,
 				'class_id'=>$paper->class_id,
 				'paper_id'=>$paper->id,
@@ -4519,34 +4438,12 @@ public function practical_assignment_marks_edit(){
 	       $this->Common_model->insertAll('new_exam_form',$data);
 		  
 
-		 $this->Common_model->updateRecordByConditions('student',array('student_id'=>$student_id),array('temp_exam_form' => 'Y'));
+		 $this->Common_model->updateRecordByConditions('student',array('student_id'=>$student_id_additional),array('temp_exam_form' => 'Y'));
 		}
-
-		 if(!empty($additional_course_group_id) && !empty($additional_class_id)) {
-			$paperWhere=array('class_id'=>$additional_class_id,'cbcs_paper'=>$cbcs);
-			$papers = $this->Common_model->getRecordByWhere('paper_master',$paperWhere);
-				foreach($papers as $paper){
-				$data_additional = array(
-				'student_id'=>$student_id_additional ,
-				'course_group_id'=>$paper->course_group_id,
-				'class_id'=>$paper->class_id,
-				'paper_id'=>$paper->id,
-				'paper_code'=>$paper->paper_code,
-				'paper_type'=>$paper->type,
-				'book_code'=>$paper->book_code,
-				'paper_order'=>$paper->paper_no,
-				'sub_group_id'=>$paper->sub_group_id
-			);
-				 $this->Common_model->insertAll('new_exam_form',$data_additional);
-
-		}
-				  $this->Common_model->updateRecordByConditions('student',array('student_id'=>$student_id_additional),array('temp_exam_form' => 'Y'));
-		   }
 	
 		}
-		$student_id = $this->Common_model->encrypt_decrypt($student_id);
-		$result = array('student_id'=>$student_id);
-		echo json_encode($result);
+		$student_id = $this->Common_model->encrypt_decrypt($student_id_additional);
+		return redirect(base_url('showPapers/'.$student_id));
 
 	}
 

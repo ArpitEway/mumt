@@ -2,8 +2,19 @@
 $("#course_group_id").on('change', function(){
 	var course = $(this).val();
     var mode = document.getElementById('mode').value;
-	let ug_courses = ['11','12','13','14','15','16','17','18','19','20']; // add all ug course ids here
-	let pg_courses = ['56','57','58','59','60','61','62','63','64','65','66']; // add all pg course ids here
+	let ug_courses = [
+  "11","12","13","14","15","16","17","18","19","20","21",
+  "76","77","78","81","82","83","84","85","86","87","88",
+  "89","90","91","92","93","94","95"
+];
+
+let pg_courses = [
+  "57","58","59","60","61","62","63","64","65","66","67",
+  "71","72","73","74","79","69","70","68","105","106","107",
+  "108","109","110","111","112","113","114","115","116","117",
+  "118","119","120","121","122","123"
+];
+
 	
 	if(ug_courses.includes(course) || pg_courses.includes(course)){
 		$('#additional_course_div').removeClass('d-none');
@@ -60,6 +71,9 @@ $('#additional_course_group_id').on('change', function() {
 
 
 $("#eligibility").on('change', function(){
+	$('#additional_course_div').addClass('d-none');
+	 $('#additional_course_details').removeClass('d-flex').addClass('d-none');
+	$('#additional_course').prop('checked', false);
 	var eligibility = $(this).val();
 	
 	var csrfName = $('.csrfname').attr('name');

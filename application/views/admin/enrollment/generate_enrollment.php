@@ -42,6 +42,7 @@
 				'session' => $session,
 				'approved' =>'Y',
 				'enrolled' =>'N',
+				'additional_course'=>'N',
 				'enrollment_no'=>'-',
 				'payment_status' =>'Y',
 			);
@@ -53,6 +54,7 @@
 			$whereEnrollmentNoCount = array(
 				'enrollment_no!=' => '-',
 				'session' => $session,
+				'additional_course'=>'N',
 			);
 			//$this->Common_model->getCountByWhere('student',$whereEnrollmentNoCount);
 			if ($session=='July 2021') {

@@ -182,8 +182,16 @@ class saveFormdata extends CI_Controller {
 		if (!empty($additional_course_group_id) && !empty($additional_class_id)) {
 			$where = array('student_id'=>$student_id);
 		$this->Common_model->updateRecordByConditions('student',$where,array('user_id'=>$next_user_id));
+		
+		$path_add = './assets/student_image/'.$session;
+		if(!file_exists($path_add)){
+			mkdir($path_add);
+		}
+
+		$upload_add = $this->do_upload('photo',$path_add,$student_id_additional);
+		
 		$where = array('student_id'=>$student_id_additional);
-		$this->Common_model->updateRecordByConditions('student',$where,array('user_id'=>$next_user_id,'additional_course'=>'Y'));
+		$this->Common_model->updateRecordByConditions('student',$where,array('user_id'=>$next_user_id,'additional_course'=>'Y','photo' => $upload_add['file_name']));
 		$studentData['student_id'] = $student_id_additional;
 		$this->Common_model->insertAll('student_data',$studentData);
 		}
