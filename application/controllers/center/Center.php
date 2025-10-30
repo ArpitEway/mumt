@@ -495,7 +495,7 @@ class Center extends CI_Controller {
 				 $where .= "  and online_payment_transaction.center_id!=".$this->session->center_id;	
 			}
 		
-			$where .= " and online_payment_transaction.fees_head='Admission Fees' and   student.payment_status='N' and student.class_name not like '%SEM%' and ( "; //and student.class_name not like '%SEM%'
+			$where .= " and online_payment_transaction.fees_head='Admission Fees' and   student.payment_status='N'  and ( "; //and student.class_name not like '%SEM%'and additional_course='N'
 			
 			foreach($permission_session as $key=>$row){
 			
@@ -4321,6 +4321,7 @@ public function practical_assignment_marks_edit(){
 	
 		$data['dob'] = $student->dob;
 		$data['adhar_no'] = $student->adhar_no;
+		$data['payment_status'] = $student->payment_status;
 		$data['regular_exam_form_permission'] = 'Y';
 
 		$student_data['eligibility'] = $studentData->eligibility;
