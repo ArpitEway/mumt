@@ -384,7 +384,7 @@ class Gradesheet_model_pg extends CI_Model
 		$gradeData = $this->Common_model->getRecordByWhere('letter_grade_pg',$where);
 		
 		if ('F'==$gradeData[0]->letter_grade || 'ABS' ==$gradeData[0]->letter_grade) {
-			if($this->classData->id == 267){
+			if($this->classData->id==267 || $this->classData->id == 268){
 				array_push($this->paper_array, $this->paper["paper_code_utd"]);
 			}else{
 				array_push($this->paper_array, $this->paper["paper_code"]);
@@ -501,7 +501,7 @@ class Gradesheet_model_pg extends CI_Model
 		foreach ($this->result_array as $key => $result) {
 			
 			echo "<tr>";
-			if($this->classData->id==267){
+			if($this->classData->id==267 || $this->classData->id == 268){
 			echo 	"<th>".$result['paper_code_utd']."</th>";
 			}else{
 				echo "<th>".$key."</th>";
@@ -559,7 +559,7 @@ class Gradesheet_model_pg extends CI_Model
 		}
 		foreach ($this->result_array as $key => $result) {
 			echo '<tr style="padding:4px;font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="center">';
-			if($this->classData->id==267){
+			if($this->classData->id==267 || $this->classData->id == 268){
 				echo '<td style="margin-top:2px;" align="center"><strong>'.$result['paper_code_utd'].'</strong></td>';
 			}else{
 				echo '<td style="margin-top:2px;" align="center"><strong>'.$key.'</strong></td>';

@@ -195,7 +195,7 @@ class saveFormdata extends CI_Controller {
 		$studentData['student_id'] = $student_id_additional;
 		$this->Common_model->insertAll('student_data',$studentData);
 		}
-		$amount = $this->Common_model->getRecordByWhere('course',array('course_group_id'=> $course_group_id));
+		$amount = $this->Common_model->getRecordByWhere('course',array('course_group_id'=> $course_group_id,'session'=> $session));
 	
 	    $mode = $this->input->post('mode');
 		$late_fees=0;

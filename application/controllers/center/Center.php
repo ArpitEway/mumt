@@ -593,7 +593,7 @@ class Center extends CI_Controller {
 			"recordsFiltered" => $recordsFiltered,
 			"data" => $data,
 		);
-		//echo $this->db->last_query(); die;
+		// echo $this->db->last_query(); die;
         // Output to JSON format
 		echo json_encode($output);
 	}
