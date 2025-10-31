@@ -11,7 +11,7 @@
 		<?php foreach ($courses as $course){
 			$this->db->order_by('id');
 			
-      	// $this->db->where_in('id', array(183,139,145,148,149,151,184,192,147,185,300));
+      	$this->db->where_in('id', array(162,174,165,170,186,187,188));
         $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id'] , 'exam_form_permission' => 'Y' ));
 	
 		//, 'result_permission' => 'Y'
@@ -93,7 +93,7 @@
 			</td>
 			<td>
 				<?php 
-                 $class_pg= array(162,174,165,170,186,187,188);
+                 $class_pg= array(205,206,239,240,248,278,282,252);
                   if ($class->practical_internal_marks=='Y' && (!in_array($class->id, $class_pg))){ 
                 // if ($class->practical_internal_marks=='Y' && $class->id !=205 && $class->id !=206){ 
 					if($class->regular_class=='Y') {?>
