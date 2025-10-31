@@ -93,7 +93,7 @@
 			</td>
 			<td>
 				<?php 
-                 $class_pg= array(205,206,239,240,248,278,282,252);
+                 $class_pg= array(162,174,165,170,186,187,188);
                   if ($class->practical_internal_marks=='Y' && (!in_array($class->id, $class_pg))){ 
                 // if ($class->practical_internal_marks=='Y' && $class->id !=205 && $class->id !=206){ 
 					if($class->regular_class=='Y') {?>
