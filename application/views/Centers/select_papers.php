@@ -244,7 +244,6 @@
 									echo '</div>';
 								}
 								?>  
-						</div>
 						<div class="<?=($paper['sub_group_id']!=0)?'col-5':'col-8'?>"><input  name='paper_id[]<?php echo $paper->group_id ?>' class="paper" value="<?=$paper->paper_id; ?>" type="radio"  checked> <span class="ml-3"><?=$paper->paper_name; ?></span></div>
 
 						</div>
