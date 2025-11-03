@@ -189,9 +189,9 @@
 			<div class="row border border-primary bg-primary text-white p-2">
 				<div class="col-2"><strong>#</strong></div>
 				<div class="col-3"><strong>Paper code</strong></div>
-				<div class="col-2"> <?php if ($compulsoryPapers[0]['sub_group_id']!=0): ?>
-					<strong>Sub Group</strong>
-				<?php endif ?></div>
+				 <?php if ($compulsoryPapers[0]['sub_group_id']!=0): ?>
+					<div class="col-2"><strong>Sub Group</strong></div>
+				<?php endif ?>
 				<div class="col-5"><strong>Subjects Name</strong></div>
 			</div>
 			<?php
@@ -205,13 +205,15 @@
 				<div class="row border border-default p-2">
 					<div class="col-2"><?=++$i; ?></div>
 					<div class="col-3"><?=$paper['paper_code']; ?></div>
-					<div class="col-2">
+					
                 	<?php
                 	if ($paper['sub_group_id']!=0) {
+                		echo '<div class="col-2">';
                 		echo $this->Common_model->getSubGroupNameById($paper['sub_group_id']); 
+                		echo '</div>';
                 	}
             		?>  
-            	</div>
+            	
 					<div class="col-5"> <span class="ml-5"><?=$paper['paper_name']?></span></div>					
 					<input type="hidden"  name="compulsary_paper_id[]<?php echo  $paper['id'] ;?>" id="" value="<?php echo $paper['id'];  ?>">
 
