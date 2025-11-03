@@ -2,6 +2,24 @@
 $("#course_group_id").on('change', function(){
 	var course = $(this).val();
     var mode = document.getElementById('mode').value;
+	let ug_courses = [
+  "11","12","13","14","15","16","17","18","19","20","21",
+  "76","77","78","81","82","83","84","85","86","87","88",
+  "89","90","91","92","93","94","95"
+];
+
+let pg_courses = [
+  "57","58","59","60","61","62","63","64","65","66","67",
+  "71","72","73","74","79","69","70","68","105","106","107",
+  "108","109","110","111","112","113","114","115","116","117",
+  "118","119","120","121","122","123"
+];
+
+	
+	if(ug_courses.includes(course) || pg_courses.includes(course)){
+		$('#additional_course_div').removeClass('d-none');
+		
+	}
 	
 	var csrfName = $('.csrfname').attr('name');
 	var csrfHash = $('.csrfname').val(); 
@@ -16,7 +34,46 @@ $("#course_group_id").on('change', function(){
 	});
 });
 
+$('#additional_course').on('change', function() {
+  if ($(this).is(':checked')) {
+   $('#additional_course_details').removeClass('d-none').addClass('d-flex');
+   var csrfName = $('.csrfname').attr('name');
+	var csrfHash = $('.csrfname').val();
+	let session = $("#session").val();
+	let eligibility = $("#eligibility").val();
+	
+	$.ajax({
+		method: "POST",
+		url: BASE_URL+"center/center/getAdditionalCourse",
+		data: {session : session,eligibility:eligibility,[csrfName]:csrfHash},
+	}).done(function( msg ) {
+		$('#additional_course_group_id').html(msg);
+	});
+  } else {
+  $('#additional_course_details').removeClass('d-flex').addClass('d-none');
+  }
+});
+
+$('#additional_course_group_id').on('change', function() {
+	let course = $(this).val();
+    let mode = document.getElementById('mode').value;
+	let csrfName = $('.csrfname').attr('name');
+	let csrfHash = $('.csrfname').val(); 
+	$.ajax({
+		method: "POST",
+		url: BASE_URL+"center/center/getClassByCourse",
+		data: {course : course,[csrfName]:csrfHash , mode : mode},
+	})
+	.done(function( msg ) {
+		$('#additional_class_id').html(msg);
+	});
+});
+
+
 $("#eligibility").on('change', function(){
+	$('#additional_course_div').addClass('d-none');
+	 $('#additional_course_details').removeClass('d-flex').addClass('d-none');
+	$('#additional_course').prop('checked', false);
 	var eligibility = $(this).val();
 	
 	var csrfName = $('.csrfname').attr('name');
@@ -309,6 +366,15 @@ function validation(step=""){
 	var religion = $('select[name="religion"]').val();
 	var ph = document.getElementById("photo");
 
+	 if (!$('#additional_course').is(':checked')) {
+        $('select[name="additional_course_group_id"]').val('');
+        $('select[name="additional_class_id"]').val('');
+    }
+	let additional_course = $('#additional_course').is(":checked");
+
+	var	additional_course_group_id = $('select[name="additional_course_group_id"]').val();
+	var	additional_class_id = $('select[name="additional_class_id"]').val(); 
+	
 	var current_center_id = $('input[name="center_id"]').val();
 	if(current_center_id==100){
 		var forCenter = $('select[name="forCenter"]').val();
@@ -354,6 +420,25 @@ function validation(step=""){
 		return false;
 	}else{
 		$('select[name="class_id"]').next('div').text('');
+	}
+	if(additional_course){
+		
+		if(additional_course_group_id==''){
+			$('select[name="additional_course_group_id"]').next('div').text('Additional Course is Required');
+			document.getElementById('additional_course_group_id').focus();
+
+			return false;
+		}else{
+			$('select[name="additional_course_group_id"]').next('div').text('');
+		}
+		if(additional_class_id=='' || additional_class_id == 'ALL'){
+			$('select[name="additional_class_id"]').next('div').text('Additional Class is Required');
+			document.getElementById('additional_class_id').focus();
+
+			return false;
+		}else{
+			$('select[name="additional_class_id"]').next('div').text('');
+		}
 	}
 	if(!$('input[name="student_id"]').length>0){
 		if(photo==''){

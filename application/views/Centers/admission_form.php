@@ -83,8 +83,35 @@
 						<div class="fv-plugins-message-container"></div>
 					</div>
 				</div>
+				<div class="col-md-6 d-none" id="additional_course_div">
+					<h6 class="my-5 text-dark"><input type="checkbox" id="additional_course"> &nbsp;Additional Course</h6>
+				</div>
+				<div id="additional_course_details" class="w-100 d-none ">
+					<div class="col-md-6">
+					<div class="form-group">
+						<label>Course</label><span class="text-danger">*</span>
+							<input type="hidden" id="additional_mode" value="<?php echo $mode ;  ?>">
+						<select name="additional_course_group_id" id="additional_course_group_id" class="form-control " >
+							<option value="">--Select--</option>
+						</select>
+						<div class="fv-plugins-message-container"></div>
+					</div>
+					<!--end::Input-->
+				</div>
+				<div class="col-md-6">
+					<!--begin::Input-->
+					<div class="form-group ">
+						<label>Class</label><span class="text-danger"> *</span>
+						<select name="additional_class_id" id="additional_class_id" class="form-control ">
+							<option value="">Select Class</option>
+						</select>
+						<div class="fv-plugins-message-container"></div>
+					</div>
+				</div>
+				</div>
 			</div>
 		</div>
+		
 		<div class="col-xl-3 text-center">
 			<div class="image-input image-input-outline" id="kt_image_1">
 				<div class="image-input-wrapper" style="background-image: url(<?=base_url('assets/images/center/student.bmp')?>)"></div>

@@ -674,6 +674,10 @@
 	      	$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
 			
 			$response = $this->Common_model->updateRecordByConditions('student',array('student_id'=> $student_id),array('payment_status'=>'Y','document_uploaded'=>'Y','approved'=>'Y','approved_by'=>4));
+			$student = $this->Common_model->getRecordById('student','student_id',$student_id);
+			if($student->user_id !=0){
+				$this->Common_model->updateRecordByConditions('student',array('user_id'=> $student->user_id, 'additional_course'=>'Y'),array('payment_status'=>'Y','document_uploaded'=>'Y','approved'=>'Y','approved_by'=>4));
+			}
 
 			if($response){
 			echo json_encode(array("status" => 'true'));
