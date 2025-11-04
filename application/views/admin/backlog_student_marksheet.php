@@ -383,7 +383,7 @@
                                   }elseif($paper->p_marks=="ABS" || $paper->int_marks=="ABS"){
                                     echo ($paper->int_marks=='ABS') ? 'ABS F' : $paper->int_marks.' F';
                                   }else{
-                                    echo $paper->p_marks + $paper->int_marks.$satus ;
+                                    echo $paper->p_marks + $paper->int_marks.$status ;
                                   } 
                                 }else{
                                   if($paper->p_marks<$paper->min_theory_marks && $check_grace_marks==false){
