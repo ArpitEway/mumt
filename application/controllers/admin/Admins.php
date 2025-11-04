@@ -3553,8 +3553,12 @@ public function update_exam_datewise_permission(){
 			$this->db->limit(1000,$start);
 			$pagetitle=$startlimit;
 		}	
-	//	$this->db->where_in('roll_number',array(210414167,210414296,210416271,210416325,210417759,210420469,210412133,210420009,210420534,210412125,210413275,210417990));
+
+		// $this->db->where_in('roll_number',array(210414167,210414296,210416271,210416325,210417759,210420469,210412133,210420009,210420534,210412125,210413275,210417990));
+		
 		//$this->db->where_in('roll_number',array(210412125,210413275,210417990,210412133,210420009,210420534));
+
+		$this->db->where_in('roll_number',array(210613706));
 		// $this->db->limit(1);
 		
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
