@@ -224,11 +224,14 @@
 	   	<?php if($student['payment_status'] == 'N'  && $hide == ""){ 
             $center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29,1975,2098,2115 );
             $student_id = $this->Common_model->encrypt_decrypt($student['student_id']);
+			$admission_amount = $this->Common_model->getRecordByWhere('course',array('course_group_id' =>$student['course_group_id'],'session'=>$student['session']));
+			$admission_amount = $admission_amount[0];
+			$total_amount = $admission_amount->admission_fees+ $admission_amount->form_fees;
             if(in_array($this->session->center_id, $center_ids) ){
                 ?>
                 <div class="row d-flex justify-content-center p-3">
 					<!-- <a class="btn btn-success" href="<?= base_url('paid_by_university/'.$student_id) ?>">Paid By University</a> -->
-                    <a href="#"  data-student_name = "<?=$student['name']?>"  data-idstudent="<?=$student['student_id']?>" data-student_id="<?= $student_id?>" class="btn btn-primary btn-sm font-weight-bold pay1" data-toggle="modal" data-target="#kt_datepicker_modal" data-amount= "2000" data-url="<?php echo site_url('center/center/update_unpaid_student'); ?>" data-head='addmission'>Paid By University</a>
+                    <a href="#"  data-student_name = "<?=$student['name']?>"  data-idstudent="<?=$student['student_id']?>" data-student_id="<?= $student_id?>" class="btn btn-primary btn-sm font-weight-bold pay1" data-toggle="modal" data-target="#kt_datepicker_modal" data-amount= "<?=$total_amount?>" data-url="<?php echo site_url('center/center/update_unpaid_student'); ?>" data-head='addmission'>Paid By University</a>
 				</div> 
                 
 			<?php

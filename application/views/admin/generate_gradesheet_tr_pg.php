@@ -191,7 +191,7 @@ table.last_table, .last_table td, .last_table th{
       if($classData->practical_internal_marks!='N'){
         $rowspanhead = "6";
       }else{
-        $rowspanhead = ($classData->project!='N' || $classData->practical!='N') ? "5" : "4";
+        $rowspanhead = ($classData->project!='N' || $classData->practical!='N' || $classData->id == 143) ? "5" : "4";
       }
      
       // $rowspandata = (($classData->project!='N' || $classData->practical!='N') && $classData->internal!='N')? "5" : "4";
@@ -200,7 +200,7 @@ table.last_table, .last_table td, .last_table th{
       }else if($classData->project!='N' || $classData->practical!='N' && $classData->internal =='Y'){
         $rowspandata = "4";
       }else if($classData->project =='N' &&  $classData->practical=='N' && $classData->internal=='N'){
-        $rowspandata = "3";
+        $rowspandata = ($classData->id ==143)?"7":"3";
       }
 
       
