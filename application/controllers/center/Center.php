@@ -155,7 +155,7 @@ class Center extends CI_Controller {
 		$center_id =  $this->session->center_id;
 		$center_data = $this->Common_model->getRecordByWhere('center',array('id'=>$center_id));
 		$center_session_permission = $center_data[0]->old_session_permission;
-		$center_ids_dep = array(21,22,23,24,25,26,27,28,29,30,31,32,33,34,35);
+		$center_ids_dep = array(10,11,12,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,13);
 		$whereSession = array();
 		if (in_array($center_id, $center_ids_dep)){
 			$passing_exam_year = '2025';
