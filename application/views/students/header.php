@@ -105,11 +105,11 @@
                           </a>
                         </li>
                        
-                        <li class="menu-item <?= ($page_slug=='student_model_paper') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
-                          <a href="<?=base_url('student_model_paper')?>" class="menu-link">
+                        <!-- <li class="menu-item <?= ($page_slug=='student_model_paper') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
+                          <a href="<?php //echo base_url('student_model_paper')?>" class="menu-link">
                             <span class="menu-text">Model Paper</span>
                           </a>
-                        </li>
+                        </li> -->
                         
                         <?php 
                         

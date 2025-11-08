@@ -236,8 +236,8 @@ $studentData = $this->Common_model->getRecordById('student','student_id',$this->
 		   <li>June 2025 परीक्षा कार्यक्रम - <strong> <a href="#" id="getTimeTable">Click Here</a>	 
 			</strong>
 		</li> 
-        <li class="mt-5">Model Paper  - <strong><a href="<?=base_url('student_model_paper') ?>">Click Here</a></strong>
-        </li>
+        <!-- <li class="mt-5">Model Paper  - <strong><a href="<?php //echo base_url('student_model_paper') ?>">Click Here</a></strong>
+        </li> -->
 	</ul>
 	<div id="timeTable" class="mx-auto"> </div>
 	<!-- <ul>
