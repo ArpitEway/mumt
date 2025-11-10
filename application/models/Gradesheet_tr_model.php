@@ -183,6 +183,7 @@ class Gradesheet_tr_model extends CI_Model
 		}
 		
 		$this->notification_result();
+		return $this->set_result();
 		
 	}
 

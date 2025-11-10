@@ -441,8 +441,15 @@
 					echo $final_result = "RW";
 				}else{
 					if($isFinalClass && $isOneClass == false){
-						$classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$course_group_id,'mode'=>$classData->mode,'id!='=>$class_id
+						if($student->class_name == 'IV Year' && $student->exam_pattern=='GRADE'){
+							$classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$course_group_id,'mode'=>$classData->mode,'id!='=>$class_id
 					));
+						}else{
+							$this->db->where('class_name !=','IV Year');
+							$classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$course_group_id,'mode'=>$classData->mode,'id!='=>$class_id
+					));
+						}
+						
 					// echo '<pre>';
 					// print_r($classes);die;
 					
@@ -473,12 +480,17 @@
 						}
 				  
                         if($final_result == 'RWPM'){
-                            if($fail_count>0 || $abs_count>0){
-                                $final_result = ($check_grace_marks) ? 'PASS BY GRACE' : 'FAIL';
+                            if(($fail_count>0 || $abs_count>0) && !$check_grace_marks){
+                                $final_result =  'FAIL';
 
                             }
                         }
-				   echo $final_result;
+				//    echo $final_result;
+				if((in_array($student->old_class_id, $class_ids)) && $student->exam_pattern=='GRADE' ){//&& $mode=='REG'
+						 $final_result = $this->Gradesheet_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+						}else{
+							echo $final_result;
+						}
 					    $grand_obtain +=  $total_obtained_marks;
 						$grand_total += $total_max_marks;
 					}else{
@@ -493,7 +505,7 @@
 							
 						}
 						if((in_array($student->old_class_id, $class_ids)) && $student->exam_pattern=='GRADE' ){//&& $mode=='REG'
-						echo $this->Gradesheet_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+						 $this->Gradesheet_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
 						}else{
 							echo $final_result;
 						}
@@ -503,6 +515,7 @@
 				?>
 			</td>
 			<?php
+			
 			if($isFinalClass && $student->exam_pattern=="MARKS"){
 				
 				if($final_result == "RWPM" ){
@@ -512,9 +525,9 @@
 <?php
 				}else{
 ?>
-<td class="text-center" style="padding:0px" width='10%' align="center"><?php  if(!in_array($final_result, array("FAIL","RW") )){ echo $total_obtained_marks .' / '. $total_max_marks ;}?></td>
+<td class="text-center" style="padding:0px" width='10%' align="center"><?php  if(!in_array($final_result, array("FAIL","RW","RWPR") )){ echo $total_obtained_marks .' / '. $total_max_marks ;}?></td>
 <?php if(!$isOneClass) { ?>
-<td class="text-center" style="padding:0px" align="center"><?php if(!in_array($final_result, array("FAIL","RW") )){ echo  $grand_obtain .' / '. $grand_total;} ?></td>
+<td class="text-center" style="padding:0px" align="center"><?php if(!in_array($final_result, array("FAIL","RW","RWPR") )){ echo  $grand_obtain .' / '. $grand_total;} ?></td>
 <?php
 			}			}
 			}else if((!in_array($student->old_class_id, $class_ids)) || $student->exam_pattern=="MARKS"){ //$mode=='PVT'
@@ -532,7 +545,7 @@
 		if((in_array($student->old_class_id, $class_ids)) && $student->exam_pattern=='GRADE'){//&& $mode=='REG'
 		
 			if($final_result != 'FAIL' ){
-				if($final_result == 'RWPM' || $final_result == 'RW' ){
+				if($final_result == 'RWPM' || $final_result == 'RW' || $final_result == 'RWE' || $final_result == 'RWPR' || $final_result == 'RWAS' || $final_result == 'RWPJ' || $final_result == 'UFM'){
                     ?>
                     <td class="text-center" style="padding:0px" align="center"></td>
                     <?php
@@ -575,7 +588,8 @@
                             }else{
                             $div = "Pass";
                             }
-                            if($final_result == "RWPM" || $final_result == "RW"){
+							
+                            if($final_result == "RWPM" || $final_result == "RW" || $final_result == "RWE" || $final_result == "RWPR" || $final_result == "RWAS" || $final_result == "RWPJ" || $final_result == "UFM"){
                                 ?>
                                  <td class="text-center" style="padding:0px" align="center"></td>
                                  <td class="text-center" style="padding:0px" align="center"></td>
