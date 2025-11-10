@@ -3101,7 +3101,7 @@ public function update_exam_datewise_permission(){
         if($department !=""){
             $this->db->where_in('center_id', $dept_ids);
         }elseif(in_array($class_id, $class_ids)&& $pattern=="GRADE"){
-        	 $this->db->where_not_in('center_id', $dept_ids);
+        	 // $this->db->where_not_in('center_id', $dept_ids);
 		}
 		//$this->db->where_in('roll_number', array(210710017,210712137));
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y' ,'roll_number!='=>'0', 'university_mode'=>$mode,'exam_pattern'=>$pattern));//'result_show'=>'Y','old_result_show'=>'Y',
