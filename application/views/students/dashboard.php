@@ -135,7 +135,157 @@ if($this->session->admission_by=='web'){
 
 <br><br><br>
 <br>
-<?php } ?>
+<?php }else{
+?>
+
+     <?php
+     $st=$this->Common_model->encrypt_decrypt($this->session->student_id,'encrypt');
+    $step1=$step2=$step3=$step4=$step5=$step6="";
+    $step1Url= $step2Url=$step3Url=$step4Url="#";
+  
+     $verification="Verification";
+  
+  if( $studentData->payment_status=='N'  && $studentData->document_uploaded!='Y' && $studentData->approved==''){ 
+     
+        $step1=$step2="active";
+        $step1Url= $step2Url= $step3Url="#";
+       
+        $step1Url= base_url('profile');
+        $step2Url=base_url('showPapers').'/'.$st;
+        $recipt= $this->Common_model->getAllRow("online_payment_transaction", "", array(
+          "student_id" => $this->session->student_id,"fees_head"=>"Admission Fees","class_id"=>$studentData->class_id));
+        // $step3Url=base_url('show_fees/'.$this->Common_model->encrypt_decrypt($recipt[0]['id'],'encrypt'));
+        $step3Url=base_url('Payment/admission').'/'.$st;
+        
+        
+    }
+    elseif( $studentData->payment_status=='Y'  && $studentData->document_uploaded!='Y' && $studentData->approved==''){ 
+     
+    
+      $step1=$step2=$step3="active";
+      $step1Url= $step2Url= $step3Url= $step4Url="#";
+      $step1Url= base_url('profile');
+      $step2Url=base_url('showPapers').'/'.$st;
+      $recipt= $this->Common_model->getAllRow("online_payment_transaction", "", array(
+        "student_id" => $this->session->student_id,"fees_head"=>"Admission Fees","class_id"=>$studentData->class_id));
+      $step3Url=base_url('show_fees/'.$this->Common_model->encrypt_decrypt($recipt[0]['id'],'encrypt'));
+      $step4Url=base_url('document_upload').'/'.$st;
+     $verification="Verification Pending";
+      
+      
+      
+  }
+    elseif( $studentData->payment_status=='Y' && $studentData->document_uploaded=='Y' && $studentData->approved==''){ 
+        $step1=$step2=$step3=$step4="active";
+        $step1Url= $step2Url= $step3Url=$step4Url="#";
+        $step1Url= base_url('profile');
+        $step2Url=base_url('showPapers').'/'.$st;
+        $recipt= $this->Common_model->getAllRow("online_payment_transaction", "", array(
+          "student_id" => $this->session->student_id,"fees_head"=>"Admission Fees","class_id"=>$studentData->class_id));
+         
+        $step3Url=base_url('show_fees/'.$this->Common_model->encrypt_decrypt($recipt[0]['id'],'encrypt'));
+        $step4Url=base_url('document_upload').'/'.$st;
+        $step5Url="#";
+        $verification="Verification Pending";
+       
+    } elseif( $studentData->payment_status=='Y'  && $studentData->document_uploaded=='Y' && $studentData->approved=='N'){ 
+      
+      
+      $docData = $this->Common_model->getRecordByWhere('admission_document',array('student_id'=>$studentData->student_id,'status'=>'N'));
+		 // $docData_remain = $docData[0]->status;
+     
+     if( $docData[0]->status=='N'){
+      $step1=$step2=$step3=$step4=$step5="active";
+      $step1Url= $step2Url= $step3Url="#";
+      $step1Url= base_url('profile');
+      $step2Url=base_url('showPapers').'/'.$st;
+      $recipt= $this->Common_model->getAllRow("online_payment_transaction", "", array(
+        "student_id" => $this->session->student_id,"fees_head"=>"Admission Fees","class_id"=>$studentData->class_id));
+      $step3Url=base_url('show_fees/'.$this->Common_model->encrypt_decrypt($recipt[0]['id'],'encrypt'));
+      $step4Url=base_url('document_upload').'/'.$st;;
+       $verification="Verification Pending";
+     }else{
+      $step1=$step2=$step3=$step4="active";
+      $step1Url= $step2Url= $step3Url="#";
+      $step1Url= base_url('profile');
+      $step2Url=base_url('showPapers').'/'.$st;
+      $recipt= $this->Common_model->getAllRow("online_payment_transaction", "", array(
+        "student_id" => $this->session->student_id,"fees_head"=>"Admission Fees","class_id"=>$studentData->class_id));
+      $step3Url=base_url('show_fees/'.$this->Common_model->encrypt_decrypt($recipt[0]['id'],'encrypt'));
+      $step4Url=base_url('remaining_documents').'/'.$st;
+      $verification="Verification Failed";
+     }
+      
+      
+      
+  }
+    elseif($studentData->approved=='Y' && $studentData->payment_status=='Y' && $studentData->new_exam_form=='D'){
+        $step1=$step2=$step3=$step4="active";
+        $step1Url= $step2Url= $step3Url=$step4Url=$step5Url="#";
+        $step1Url= base_url('profile');
+        $step2Url=base_url('showPapers').'/'.$st;
+        $recipt= $this->Common_model->getAllRow("online_payment_transaction", "", array(
+          "student_id" => $this->session->student_id,"fees_head"=>"Admission Fees","class_id"=>$studentData->class_id));
+        $step3Url=base_url('show_fees/'.$this->Common_model->encrypt_decrypt($recipt[0]['id'],'encrypt'));
+        $step4Url=base_url('showDocuments/'.$st);
+        $verification="Document Verified";
+       
+    }elseif($studentData->approved=='Y' && $studentData->new_exam_form=='N'){
+      
+      $step1=$step2=$step3=$step4=$step5=$step6="active";
+      $step1Url= $step2Url= $step3Url=$step4Url=$step5Url="#";
+      $step1Url= base_url('profile');
+      $step2Url=base_url('showPapers').'/'.$st;
+      $recipt= $this->Common_model->getAllRow("online_payment_transaction", "", array(
+        "student_id" => $this->session->student_id,"fees_head"=>"Admission Fees","class_id"=>$studentData->class_id));
+      $step3Url=base_url('show_fees/'.$this->Common_model->encrypt_decrypt($recipt[0]['id'],'encrypt'));
+      $step4Url=base_url('showDocuments/'.$st);
+      $verification="Document Verified";
+      $step6Url='#';
+    }
+?>
+<div>
+        <div class="container">
+        <section class="step-indicator">
+           
+        
+            <div class="step step1 <?=$step1?>">
+                <div class="step-icon">1</div>
+            <p><a href="<?=$step2Url?>">Paper </a></p>
+            </div>
+            <div class="indicator-line <?=$step2?> "></div>
+            <div class="step step2 <?=$step2?>">
+                <div class="step-icon">2</div>
+            <p style="bottom: -59px;"><a href="<?=$step3Url?>">Admmission Fees</a></p>
+            </div>
+            <div class="indicator-line <?=$step3?>"></div>
+            <div class="step step3 <?=$step3?>">
+                <div class="step-icon">3</div>
+            <p><a href="<?=$step4Url?>">Document</a></p>
+            </div>
+            <div class="indicator-line <?=$step4?>"></div>
+            <div class="step step4 <?=$step4?>">
+                <div class="step-icon">4</div>
+            <p <?php if($verification!="Verification"){ echo 'style="bottom: -59px;"';}  ?>><a href="<?=$step5Url?>"><?=$verification?></a></p>
+            </div>
+            <div class="indicator-line <?=$step5?>"></div>
+            <div class="step step5 <?=$step5?>">
+                <div class="step-icon">5</div>
+            <p style="bottom: -59px;"><a href="<?=$step6Url?>">Exam Fees</a></p>
+            </div>
+        </section>
+        </div>
+ </div> 
+
+<br><br><br>
+<br>
+
+<!-- </div> -->
+
+
+<?php
+
+} ?>
  <style>
     .container {
   max-width: 1200px;

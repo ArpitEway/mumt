@@ -81,8 +81,8 @@
                           </a>
                         </li>
                         <?php } ?>
-                        <?php if($this->session->admission_by=='web' && $studentData->form_fees=='Y'  && $studentData->approved!='Y'){  
-                          //&& $studentData->document_uploaded== 'N'
+                        <?php if( $studentData->form_fees=='Y'  && $studentData->approved!='Y'){  
+                          //&& $studentData->document_uploaded== 'N'$this->session->admission_by=='web' &&
                            $st=$this->Common_model->encrypt_decrypt($this->session->student_id,'encrypt');
                           ?>
                         <li class="menu-item <?= ($page_slug=='documents') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
@@ -92,7 +92,9 @@
                         </li>
                         <?php } ?>
 
-                        <?php if(($this->session->admission_by=='web')  && ($studentData->mother_name!='')){  ?>
+                        <?php if( ($studentData->mother_name!='')){
+                          //($this->session->admission_by=='web')  &&
+                          ?>
                         <li class="menu-item <?= ($page_slug=='transactions') ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
                           <a href="<?=base_url('transactions')?>" class="menu-link">
                             <span class="menu-text">Transactions</span>
