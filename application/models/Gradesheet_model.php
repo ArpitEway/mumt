@@ -50,7 +50,7 @@ class Gradesheet_model extends CI_Model
 			$std  = $this->Common_model->getRecordByWhere($work_table,array('class_id'=> $class_id,'student_id'=>$student_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
-		if($std[0]->sub_group_id == 1 || $class_id ==325){
+		if($std[0]->sub_group_id == 1 || in_array($class_id, [325,328,329])){
 			$papers = $this->Common_model->get_all_papers_admin($student_id,$class_id);
 		}
 		if($this->classData->class_group == 'Y'){
@@ -64,7 +64,7 @@ class Gradesheet_model extends CI_Model
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
         
-		if($std[0]->sub_group_id == 1 || $class_id ==325){
+		if($std[0]->sub_group_id == 1 || in_array($class_id, [325,328,329])){
 			$papers = $this->Common_model->get_all_papers($student_id,$class_id);
 		}
 		if($this->classData->class_group == 'Y'){
@@ -266,7 +266,7 @@ class Gradesheet_model extends CI_Model
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
 		
-		if($std[0]->sub_group_id == 1 || $class_id ==325){
+		if($std[0]->sub_group_id == 1 || in_array($class_id, [325,328,329])){
 			$papers = $this->Common_model->get_all_papers($student_id,$class_id);
 		}
 		if($this->classData->class_group == 'Y'){
@@ -374,7 +374,7 @@ class Gradesheet_model extends CI_Model
 		$session = explode(' ',$student->session);
 		// echo $std[0]->sub_group_id;die;
         // echo $this->classData->class_group;die;
-		if($std[0]->sub_group_id == 1 || $class_id ==325){
+		if($std[0]->sub_group_id == 1 || in_array($class_id, [325,328,329])){
 			$papers = $this->Common_model->get_all_old_papers($student_id,$class_id,$id);
             // print_r($papers);
 		}

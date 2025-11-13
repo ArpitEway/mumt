@@ -3376,7 +3376,7 @@ public function update_exam_datewise_permission(){
 		
 		// $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' )";
 
-        $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and class_id in (288,136,110,311,296,294,286,135,300))";
+        $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and class_id in (288,136,110,311,296,294,286,135,300,328,329,325))";
 
         // and class_id in (162,174,165,170,186,187,188,268)
         	 	
@@ -4020,11 +4020,17 @@ public function update_exam_datewise_permission(){
 
 		// if($class_id == '110' || $class_id == '119' || $class_id == '131')
 		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136);
+		$fourth_year = array(328,329);
 		if(in_array($class_id, $class_ids))		
 		{
 			$this->load->model('Gradesheet_tr_model');
             $this->load->model('Gradesheet_model');
 			$this->load->view('admin/generate_tr/practical_internal_tr',$data);
+		}elseif (in_array($class_id, $fourth_year) && $mode=='REG' && $pattern!="MARKS") {
+			$this->load->model('Gradesheet_tr_model');
+            $this->load->model('Gradesheet_model');
+			$this->load->view('admin/generate_gradesheet_tr_fourth_year',$data);
+			# code...
 		}else{
 			$this->load->view('admin/generate_tr/bed_tr',$data);
 		}
