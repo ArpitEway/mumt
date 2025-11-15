@@ -1450,7 +1450,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
 
         }
         $studentData = array('upload_result'=>'Y');
-         $this->Common_model->updateRecordByConditions('backlog_student',array('student_id'=>$student->student_id,"class_id"=>$student->class_id ),$studentData);          
+         $this->Common_model->updateRecordByConditions('backlog_student',array('id'=>$student->id),$studentData);          
         if($insert){
             echo $old_exam_data_id;
              echo '<hr style="margin:20px; 0px;">';

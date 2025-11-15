@@ -640,7 +640,7 @@ class Upload_old_data_backlog extends CI_Model
 	{
 		
         $studentData = array('upload_result'=>'Y');
-        $this->Common_model->updateRecordByConditions('backlog_student',array('student_id'=>$this->student->student_id),$studentData);    
+        $this->Common_model->updateRecordByConditions('backlog_student',array('id'=>$this->student->id),$studentData);    
          	echo $this->db->last_query().'<br>';      
     
 	
