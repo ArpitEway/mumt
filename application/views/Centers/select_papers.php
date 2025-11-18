@@ -204,7 +204,8 @@
 				?>
 				<div class="row border border-default p-2">
 					<div class="col-2"><?=++$i; ?></div>
-					<div class="col-3"><?=$paper['paper_code']; ?></div>
+					
+					 <div class="col-3"><?=(in_array($paper['class_id'],[273]))?$paper['paper_code_utd']:$paper['paper_code']; ?></div>
 					
                 	<?php
                 	if ($paper['sub_group_id']!=0) {
@@ -235,7 +236,7 @@
 					<?php }  ?>
 					<div class="row border border-default p-2">
 						<div class="col-2"><?=++$i; ?></div>
-						<div class="col-3"><?=$paper->paper_code; ?></div>
+						<div class="col-3"><?= (in_array($student['class_id'],[273]))?$paper->paper_code_utd:$paper->paper_code; ?></div>
 						
 								<?php
 								if ($paper->sub_group_id!=0) {

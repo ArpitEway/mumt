@@ -4883,12 +4883,24 @@ public function update_exam_datewise_permission(){
 		//$cbcs = ($classData->cbcs == 'Y')?'Y':'N';
 		$cbcs = ($classData->cbcs == 'Y' && $student['exam_pattern']=="GRADE")?'Y':'N';
 		$this->db->order_by('id');
+		if($student['university_mode'] != "PVT"){
+		if($student['session'] >='July 2024' && in_array($student['class_id'] , [268,273])){
+			$this->db->where('paper_pattern','NEW');
+		}elseif($student['class_id'] == 268){
+			$this->db->where('paper_pattern','OLD');
+		}
+		}
 		$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory" and cbcs_paper="'.$cbcs.'"');
 		if($student['university_mode'] == "REG"){
-			$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id join paper_master as m on m.id=p.paper_id where g.class_id='.$student['class_id'].'  and cbcs_paper="'.$cbcs.'" Order by g.id,sub_group_id,p.id')->result();
+			if($student['session'] >='July 2024' && in_array($student['class_id'] , [268,273])){
+			$condition = ' and group_pattern="NEW"';
+		}elseif($student['class_id'] ==268){
+			$condition = ' and group_pattern="OLD"';
+		}
+			$groupPaper = $this->db->query('select p.*,g.group_name,m.paper_code_utd from `group` as g join group_paper as p  on g.id=p.group_id join paper_master as m on m.id=p.paper_id where g.class_id='.$student['class_id'].'  and cbcs_paper="'.$cbcs.'" '.$condition.' Order by g.id,sub_group_id,p.id')->result();
 
 		}else{
-			$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id join paper_master as m on p.paper_id=m.id  where g.class_id='.$student['class_id'].'   and m.type="theory" Order by g.id,sub_group_id,p.id')->result();
+			$groupPaper = $this->db->query('select p.*,g.group_name,m.paper_code_utd from `group` as g join group_paper as p  on g.id=p.group_id join paper_master as m on p.paper_id=m.id  where g.class_id='.$student['class_id'].'   and m.type="theory" Order by g.id,sub_group_id,p.id')->result();
 		}
 		
 		$data['compulsoryPapers'] = $compulsoryPapers;

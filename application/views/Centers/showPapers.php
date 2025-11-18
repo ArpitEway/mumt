@@ -207,7 +207,7 @@
             ?>
             <tr>
             <td><?php echo $i; ?></td>
-            <td><?php echo $paper->paper_code; ?></td>
+            <td><?php echo (in_array($student['class_id'], [273]))?$paper->paper_code_utd:$paper->paper_code; ?></td>
             <?php if ($paper->sub_group!=0): ?>
             <td><?php echo $this->Common_model->getSubGroupNameById($paper->sub_group); ?></td>
             <?php endif ?>
