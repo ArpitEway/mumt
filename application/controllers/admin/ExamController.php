@@ -2238,6 +2238,7 @@ class ExamController extends CI_Controller {
             $course_groupids = array_column($course_group, 'id');
  			$this->db->where_in('course_group_id',$course_groupids);
 			$this->db->order_by('course_group_id', "asc");
+			$this->db->where_in('class_id',array(101,102,104,105,106,107,108,109,110,111,112,120,121,125,126,127,128,129,131,132,133,134,135,136,137,138,143,147,150,155,171,174,180,182,191,198,208,214,216,218,224,226,228,232,236,240,242,246,248,250,252,254,256,262,264,268,273,276,280,282,283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,300,301,310));
 			$course_group = $this->Common_model->get_record('backlog_student','DISTINCT(class_id) as  class_id, course_group_id' ,array('exam_form'=>'Y','exam_year'=>'June 2025'));
 			
 			$data = array('course_group' => $course_group,
