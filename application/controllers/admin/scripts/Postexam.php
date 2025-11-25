@@ -1541,4 +1541,53 @@ public function upload_old_backlog_data_script($class_id="",$mode){
          $x++;  
         }
     }
+
+        public function course_complete_status_old()
+     {
+          $this->db->select('course_name,student.class_name,student.course_group_id,class_id, COUNT(student_id) as cnt');
+          $this->db->join('class_master', 'student.old_class_id = class_master.id');
+        
+          $this->db->where('last_class', 'L');
+          $this->db->where('university_mode', 'REG');
+          $this->db->where('course_complete', 'N');
+          $this->db->group_by('class_id');          
+          $data['courses'] = $this->db->get('student')->result();
+      
+          $this->load->view('header',array('title' => ''));
+          $this->load->view('admin/script/course_complete_status',$data);
+          $this->load->view('footer');
+     }
+
+     public function update_course_complete_status_old($course_group_id="",$class_id=""){
+            $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+            
+            $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id,'course_complete'=>'N', 'university_mode'=>'REG'));
+        
+            $courseClassData = $this->Common_model->getRecordByWhere("class_master",array("course_group_id"=>$course_group_id,"mode"=>$classData->mode,"class_name!="=>'IV Year'));
+        //   echo $this->Common_model->last_query();
+            $i=1;
+            echo "<br>&nbsp;&nbsp; # &nbsp;&nbsp; Form Number  &nbsp;&nbsp; Enrollment Number";
+            foreach($students as $student)
+            {
+                $passCounter=0;
+                foreach($courseClassData as $courseClass)
+                 {
+                    $courseCompleteStudentData = $this->Common_model->getRecordByWhere("old_exam_data",array("student_id"=>$student->student_id,"exam_result!="=>"FAIL","class_id"=>$courseClass->id));
+                    if($courseCompleteStudentData) $passCounter++;
+                }
+            //   echo count($courseClassData).'----'.$passCounter.'<br>';
+                 if(count($courseClassData)==$passCounter){
+                    $data = array(
+                        'course_complete' => 'Y',
+                        // 'new_admission_permission'=>'Y',
+                    );
+                    $where = array('student_id'=>$student->student_id);
+                    $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+              
+                        echo "<br>&nbsp;&nbsp;".$i++."  &nbsp;&nbsp;&nbsp;  ".$student->student_id. "   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   ".$student->enrollment_no;
+                }
+               
+            }
+        }     
+     
 }

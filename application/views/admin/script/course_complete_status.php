@@ -23,7 +23,7 @@
                     <td><?php echo $course->course_name; ?></td>
                     <td><?php echo $course->class_name; ?></td>
                     <td><?php echo $course->cnt; ?></td>
-                    <td><a target="_blank" href="<?=base_url('admin/scripts/Postexam/update_course_complete_status/'.$course->course_group_id."/".$course->class_id)?>">Complete</a></td>
+                    <td><a target="_blank" href="<?=base_url('admin/scripts/Postexam/update_course_complete_status_old/'.$course->course_group_id."/".$course->class_id)?>">Complete</a></td>
                 </tr>
             
         
