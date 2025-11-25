@@ -1550,7 +1550,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
           $this->db->where('last_class', 'L');
           $this->db->where('university_mode', 'REG');
           $this->db->where('course_complete', 'N');
-          $this->db->where('class_name!=', 'IV Year');
+          $this->db->where('student.class_name!=', 'IV Year');
           $this->db->group_by('class_id');          
           $data['courses'] = $this->db->get('student')->result();
       
