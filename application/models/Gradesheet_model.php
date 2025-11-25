@@ -833,7 +833,7 @@ class Gradesheet_model extends CI_Model
 				echo "<td><table style='border:0px solid black'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='100%' style='border:0px solid black'><strong>".$paper[0]."</strong><br><strong>".$paper[1]."</strong></td></tr></table></td>
 				";
 				}else{
-					if($this->classData->id == 325){
+					if(in_array($this->classData->id,[325,328,329])){
 						echo "<td><table style='border:0px solid black'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td style='border:0px solid black'><strong>".$paper[1]."</strong></td></tr></table></td>";
 					}else{
 							echo "<td><table style='border:0px solid black'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='100px' style='border:0px solid black'><strong>".$paper[0]."</strong></td><td style='border:0px solid black'></td><td style='border:0px solid black'><strong>".$paper[1]."</strong></td></tr></table></td>";
