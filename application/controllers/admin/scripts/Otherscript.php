@@ -1674,5 +1674,7 @@ public function update_roll_no_old_data(){
 		$this->load->view('admin/digi_locker_data_non_grading',$data);
 		$this->load->view('footer');
 	}
+
+	// SELECT s.student_id,s.enrollment_no,s.session,s.center_code,s.name,c.course_type,s.course_name,s.gender,d.religion,s.`category`,d.handicapped,d.p_mobile_no, SUBSTRING_INDEX(s.session, ' ', 1) AS month, SUBSTRING_INDEX(s.session, ' ', -1) AS session_year, CASE WHEN SUBSTRING_INDEX(s.session, ' ', 1) = 'July' THEN 'June' ELSE 'Dec' END AS calc_month, CASE WHEN SUBSTRING_INDEX(s.session, ' ', 1) = 'July' THEN (CAST(SUBSTRING_INDEX(s.session, ' ', -1) AS UNSIGNED) + co.max_duration) ELSE (CAST(SUBSTRING_INDEX(s.session, ' ', -1) AS UNSIGNED) + co.max_duration - 1) END AS calc_year FROM student AS s JOIN course_group AS c ON c.id = s.course_group_id JOIN course AS co ON co.course_group_id = s.course_group_id and s.session=co.session JOIN student_data as d on s.student_id=d.student_id WHERE c.course_type IN ('UG', 'PG') AND s.university_mode='REG' and course_complete !="Y" and enrolled='Y' HAVING calc_month = 'June' AND calc_year = 2025  order by course_name,class_name
 }
 ?>
