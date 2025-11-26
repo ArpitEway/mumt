@@ -124,11 +124,11 @@
 						</div>
 					</a> -->
 					
-					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('paper_missing_list/private');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('paper_missing_list/private');?>">
 						<div>
 							<span class="nav-text">Paper Missing List</span>
 						</div>
-					</a> -->
+					</a>
 					<a class="border-0 custom-menu-item" href="<?=base_url('photo_missing_list/PVT');?>">
 						<div>
 							<span class="nav-text">Photo Missing List</span>
@@ -214,11 +214,11 @@
 						</div>
 					</a>
 					
-					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('paper_missing_list/regular');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('paper_missing_list/regular');?>">
 						<div>
 							<span class="nav-text">Paper Missing List</span>
 						</div>
-					</a> -->
+					</a>
 					<a class="border-0 custom-menu-item" href="<?=base_url('photo_missing_list/REG');?>">
 						<div>
 							<span class="nav-text">Photo Missing List</span>
@@ -259,7 +259,7 @@
 					<?php  } ?>
 					
 				<?php if ($center->admit_card_permission=='Y'): ?>
-						<a class="border-0 custom-menu-item" href="<?=base_url('admit_card_list');?>">
+						<!-- <a class="border-0 custom-menu-item" href="<?=base_url('admit_card_list');?>">
 						<div>
 							<span class="nav-text">Admit Card</span>
 						</div>
@@ -268,7 +268,7 @@
 						<div>
 							<span class="nav-text">Backlog Admit Card</span>
 						</div>
-					</a>  
+					</a>   -->
 					<?php endif  ?>	
 				
 				<?php 
@@ -319,11 +319,11 @@
 							</div>
 						</a> 
  -->
-						 <a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
+						 <!-- <a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
 					 		<div>
 								<span class="nav-text">Time Table June 2025</span>
 					 		</div>
-						</a>   
+						</a>    -->
 					
 					
 

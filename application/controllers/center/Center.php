@@ -1417,6 +1417,7 @@ class Center extends CI_Controller {
     			'temp_exam_form' =>'N',
     			'university_mode'=>'REG',
 				'class_name!='=>'II Year',
+				'session >='=>'July 2025',
     		);
     	}else{
     		$titleData = array('title' => 'Paper Missing List (Private)' );
@@ -1424,6 +1425,7 @@ class Center extends CI_Controller {
     			'temp_exam_form' =>'N',
     			'university_mode'=>'PVT',
 				'class_name!='=>'II Year',
+				'session >='=>'July 2025',
     		);
     	}
     	$this->load->view('Centers/header',$titleData);
@@ -1432,7 +1434,7 @@ class Center extends CI_Controller {
 		}else{
 			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33,34,35));
 		}
-		$this->db->where_not_in('class_id',array( 102,103,105,106,216));
+		// $this->db->where_not_in('class_id',array( 102,103,105,106,216));
     	$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
     	$this->load->view('Centers/paper_missing_list',$data);
     	$this->load->view('Centers/footer');
