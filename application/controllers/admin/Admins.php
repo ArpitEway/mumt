@@ -4113,6 +4113,7 @@ public function update_exam_datewise_permission(){
 			$this->load->model('GradeSheet_old_model_pg');
 			$this->load->view('admin/backlog_student_notification_list_pg',$data);
 		}else{
+			$this->load->model('Gradesheet_model');
             $this->load->view('admin/backlog_student_notification_list_bed',$data);
         }
 		
