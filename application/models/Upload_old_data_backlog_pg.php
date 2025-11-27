@@ -132,9 +132,9 @@ class Upload_old_data_backlog_pg extends CI_Model
 				if ($this->paper['theory_marks']=='' || ($this->paper["int_marks"]=='' || $this->paper["int_marks"]=='N')) {
 					$this->withheld = true;
 				}
-				$check_fail_marks = $this->paper["theory_marks"] + $this->paper["int_marks"];
-				$check_fail_min_marks = $this->paper["min_theory_marks"]+$this->paper["min_internal_marks"];
-				$check_fail_tot_marks = $this->paper["max_theory_marks"]+ $this->paper["max_internal_marks"];
+				$check_fail_marks = $this->paper["theory_marks"];
+				$check_fail_min_marks = $this->paper["min_theory_marks"];
+				$check_fail_tot_marks = $this->paper["max_theory_marks"];
 				$tot_obt_marks = $this->paper["theory_marks"] + $this->paper["int_marks"];
 				 $tot_marks = $this->paper["max_theory_marks"] + $this->paper["max_internal_marks"];
 				$min_marks = $this->paper["min_theory_marks"] + $this->paper["min_internal_marks"];
@@ -159,9 +159,9 @@ class Upload_old_data_backlog_pg extends CI_Model
             if($this->paper['int_marks']=='N'&& $this->mode != 'PVT' && $this->paper['max_internal_marks'] !=0 && $this->classData->practical_internal_marks == 'Y'){
                 $this->withheld = true;
               }
-			$check_fail_marks = $this->paper["p_marks"]+$this->paper["int_marks"];
-				$check_fail_min_marks = $this->paper["min_theory_marks"]+$this->paper["min_internal_marks"];
-				$check_fail_tot_marks = $this->paper["max_theory_marks"]+ $this->paper["max_internal_marks"];
+			$check_fail_marks = $this->paper["p_marks"];
+				$check_fail_min_marks = $this->paper["min_theory_marks"];
+				$check_fail_tot_marks = $this->paper["max_theory_marks"];
 			$tot_obt_marks = $this->paper["p_marks"]+$this->paper["int_marks"];
 			$tot_marks = $this->paper["max_theory_marks"]+$this->paper["max_internal_marks"];
 			$min_marks = $this->paper["min_theory_marks"]+$this->paper["min_internal_marks"];
