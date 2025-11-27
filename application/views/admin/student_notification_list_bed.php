@@ -631,7 +631,7 @@ $abs_count = 0 ;
                                         }else{
                                         $div = "Pass";
                                         }
-                                        if($final_result == "RWPM" || $final_result == "RW"){
+                                        if($final_result == "RWPM" || $final_result == "RW" || $final_result == "FAIL"){
                                             ?>
                                              <td class="text-center" style="padding:0px" align="center"></td>
                                              <td class="text-center" style="padding:0px" align="center"></td>

@@ -38,8 +38,9 @@ class Gradesheet_tr_model extends CI_Model
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
 		
-		if($std[0]->sub_group_id == 1 || in_array($class_id, [325,328,329])){
+		if($std[0]->sub_group_id == 1 || in_array($class_id, [325,328,329,143])){
 			$papers = $this->Common_model->get_all_papers($student_id,$class_id);
+			// $this->Common_model->last_query();
 		}
 		
 		if($this->classData->class_group == 'Y'){

@@ -200,13 +200,13 @@ table.last_table, .last_table td, .last_table th{
       }else if($classData->project!='N' || $classData->practical!='N' && $classData->internal =='Y'){
         $rowspandata = "4";
       }else if($classData->project =='N' &&  $classData->practical=='N' && $classData->internal=='N'){
-        $rowspandata = "3";
+        $rowspandata = ($classData->id==143)?"7":"3";
       }
 
       
     }else{
       $rowspanhead = "4";
-      $rowspandata = "3";
+      $rowspandata = ($classData->id==143)?"7":"3";
     }
     foreach($marks as $new_exam_form)
     {
