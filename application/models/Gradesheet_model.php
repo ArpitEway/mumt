@@ -75,7 +75,6 @@ class Gradesheet_model extends CI_Model
     
        
 		// get_all_group_papers
-		//  print_r($papers);die;
 		
 		// print_r($this->allclass);die;
 		$this->classCount = count($this->allclass);
@@ -774,7 +773,7 @@ class Gradesheet_model extends CI_Model
 	public function min_max_no()
 	{
 		if ($this->mode=='PVT') {
-			$this->result_array[$this->paper['paper_code']]['max_marks'] = $this->paper['private_max_theory_marks'];
+			$this->result_array[$this->paper['paper_code']]['max_marks'] = $this->paper['max_theory_marks'] + $this->paper['max_internal_marks'];
 			if ($this->paper['type']=='theory') {
 				$this->result_array[$this->paper['paper_code']]['min_marks'] = $this->paper['min_theory_marks'] +$this->paper['min_internal_marks'];
 				$this->result_array[$this->paper['paper_code']]['obt_marks']= $this->paper['theory_marks'];
@@ -840,6 +839,16 @@ class Gradesheet_model extends CI_Model
 					}
 			
 				}
+				if($this->session->account_type == 'ExamController'){
+				if ($this->mode=='PVT') {
+					echo "<th class='text-center'>".$result['max_marks']."/".$result['min_marks']."</th>";
+					echo "<th class='text-center'>".$result['obt_marks']."</th>";
+				}else{
+							echo "<th class='text-center'>".$result['max_marks']."/".$result['min_marks']."</th>";
+							echo "<th class='text-center'>".$result['int_max_marks']."/".$result['int_min_marks']."</th>";
+				echo "<th class='text-center'>".$result['obt_marks']."/".$result['int_obt_marks']."</th>";
+				}
+			}
 			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory'&& !$this->withheld && !$this->withheld_practical && !$this->withheld_internal) {
 				$this->check_grace_marks = true;
 				
@@ -1012,6 +1021,12 @@ class Gradesheet_model extends CI_Model
 		echo '<tr>';
 			echo '<td></td>';
 			echo '<td class="text-right font-weight-bold" style="padding-right: 3rem!important;">Total</td>';
+			if($this->session->account_type == 'ExamController'){
+				echo '<td></td>';
+			echo '<td></td>';
+			if($this->mode == "REG") echo '<td></td>';
+			}
+			
 			echo '<td class="text-center font-weight-bold">'.$this->obt_tot_credit.'</td>';
 			echo '<td></td>';
 			echo '<td></td>';
