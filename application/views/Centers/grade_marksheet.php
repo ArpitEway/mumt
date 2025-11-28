@@ -82,14 +82,14 @@ th.border.border-dark {
           if($this->session->account_type == 'ExamController'){
           if($student->university_mode == "PVT" ){
             ?>
-             <td style="border-bottom: 1px solid;border-left: 1px solid;border-top: 1px solid; text-align: center ;vertical-align: middle">Max/Min</td>
-          <td style="border-bottom: 1px solid;border-left: 1px solid;border-top: 1px solid; text-align: center ;vertical-align: middle">Obtain</td>
+               <td style="border-bottom: 1px solid;border-left: 1px solid;border-top: 1px solid; text-align: center ;vertical-align: middle">Th/Pr/Pj Max/Min</td>
+      <td style="border-bottom: 1px solid;border-left: 1px solid;border-top: 1px solid; text-align: center ;vertical-align: middle">Th/Pr/Pj Obtain</td>
             <?php
           }else{
             ?>
-             <td style="border-bottom: 1px solid;border-left: 1px solid;border-top: 1px solid; text-align: center ;vertical-align: middle">Max/Min Theory</td>
-              <td style="border-bottom: 1px solid;border-left: 1px solid;border-top: 1px solid; text-align: center ;vertical-align: middle">Max/Min Internal</td>
-          <td style="border-bottom: 1px solid;border-left: 1px solid;border-top: 1px solid; text-align: center ;vertical-align: middle">Obtain T/I</td>
+              <td style="border-bottom: 1px solid;border-left: 1px solid;border-top: 1px solid; text-align: center ;vertical-align: middle">Th/Pr/Pj Max/Min</td>
+              <td style="border-bottom: 1px solid;border-left: 1px solid;border-top: 1px solid; text-align: center ;vertical-align: middle">Internal Max/Min</td>
+          <td style="border-bottom: 1px solid;border-left: 1px solid;border-top: 1px solid; text-align: center ;vertical-align: middle">(Th/Pr/Pj)/Int Obtain</td>
           <?php  
           }
         }
