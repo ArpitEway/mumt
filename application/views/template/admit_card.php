@@ -51,8 +51,9 @@
     //     173,174,175,177,180,300,301,325
     // )) 
     //     ? 'July' 
-    //     : 'June');?>
-						//  if($student[0]->class_id == 312){
+    //     : 'June');
+	// 
+	//  if($student[0]->class_id == 312){
 						// 	echo 'March 2025';
 						// }else{
 						// 	echo (in_array($student[0]->class_id, array(255,257,259,316)))?'February 2025':'January 2025';
@@ -73,9 +74,8 @@
 									echo 'June 2024';
 								} 
 								*/
-								
-							
-							?>
+	
+	?>
 						</h5>
 					</div>
 				</div>
