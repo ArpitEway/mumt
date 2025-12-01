@@ -56,6 +56,7 @@
       
 			foreach($list as $row){
 				if($multiple){
+					$this->db->where_in('class_id',array(106,109,136,148));
 					$datas=$this->Common_model->getRecordByWhere('paper_master',array("test_id"=>$row->test_id));
 					$allcounter_reg=$counter_reg=$back_counter_reg=$allcounter=$counter=$back_counter=0;$paper_code_count=$paper_code_count_reg=$course_name=$class_name=$paper_code=$paper_name=$ce="";
 					foreach($datas as $data){
