@@ -259,7 +259,7 @@
 					<?php  } ?>
 					
 				<?php if ($center->admit_card_permission=='Y'): ?>
-						<!-- <a class="border-0 custom-menu-item" href="<?=base_url('admit_card_list');?>">
+						<a class="border-0 custom-menu-item" href="<?=base_url('admit_card_list');?>">
 						<div>
 							<span class="nav-text">Admit Card</span>
 						</div>
@@ -268,7 +268,7 @@
 						<div>
 							<span class="nav-text">Backlog Admit Card</span>
 						</div>
-					</a>   -->
+					</a>  
 					<?php endif  ?>	
 				
 				<?php 
