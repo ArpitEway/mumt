@@ -1655,7 +1655,7 @@ class Center extends CI_Controller {
 		$this->db->from('student');
 		$this->db->Where($where);
 		$this->db->where_in('student.old_class_id',[106,109,136,148]);
-		$this->db->where('student.examcentercode','MDE028');
+		$this->db->where('student.examcentercode','MDE172');
 		$this->db->join('class_master', 'class_master.id = student.class_id');
 		$this->db->order_by("student.course_name,student.class_id");
 		$data['students'] = $this->db->get()->result();
@@ -1687,7 +1687,7 @@ class Center extends CI_Controller {
 			//'center_id' => $center_id,
 			'roll_no!=' => 0,
 			'new_exam_form' => 'Y',
-			'examcentercode'=>'MDE028',
+			'examcentercode'=>'MDE172',
 			'university_mode'=>'PVT'
 		);
         // $this->db->where_not_in('student_id', array(374292,374779,379155,379652,380605,380673,381026,382024,385894,685803,686581,686621,687158,687165,687390,687395,687622,722149));
@@ -1717,7 +1717,7 @@ class Center extends CI_Controller {
 			'exam_form' => 'Y',
 			'exam_year' => 'June 2025',
 			'mode'=>'PVT',
-			'exam_center_code'=>'MDE028'
+			'exam_center_code'=>'MDE172'
 		);
 		// $this->db->where_in('class_id',$ids);
 		$this->db->where_in('class_id',[106,109,136,148]);
