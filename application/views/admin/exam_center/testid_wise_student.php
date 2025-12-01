@@ -74,38 +74,47 @@
 
 						/*********** Regular Start ****************/
 
-						$sql_reg="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` WHERE `e`.`paper_code` = '".$data->paper_code."' AND `s`.`class_id` = '".$data->class_id."' and university_mode='REG' AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2024' AND `s`.`class_name` = 'I Year' ));";    
-						// ( `s`.`session` = 'July 2023' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2024' AND `s`.`class_name` = 'I SEM' )
-						$query_reg = $this->db->query($sql_reg);
-						$count_reg = $query_reg->result_array();
+						// $sql_reg="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` WHERE `e`.`paper_code` = '".$data->paper_code."' AND `s`.`class_id` = '".$data->class_id."' and university_mode='REG' AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2024' AND `s`.`class_name` = 'I Year' ));";    
+						// // ( `s`.`session` = 'July 2023' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2024' AND `s`.`class_name` = 'I SEM' )
+						// $query_reg = $this->db->query($sql_reg);
+						// $count_reg = $query_reg->result_array();
 
-						$sql_back_reg="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` AND `s`.`id` = `e`.`backlog_student_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."' AND exam_year='June 2025'  AND exam_form!='D' AND `e`.`status`='B' and mode='REG'";    
-						$query_back_reg = $this->db->query($sql_back_reg);
-						$count_back_reg = $query_back_reg->result_array();
+						// $sql_back_reg="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` AND `s`.`id` = `e`.`backlog_student_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."' AND exam_year='June 2025'  AND exam_form!='D' AND `e`.`status`='B' and mode='REG'";    
+						// $query_back_reg = $this->db->query($sql_back_reg);
+						// $count_back_reg = $query_back_reg->result_array();
 						
-						$qu_reg="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE s.class_id ='".$data->class_id."' AND `p`.`paper_code` = '".$data->paper_code."'  AND temp_exam_form='N' and new_exam_form!='D' and university_mode='REG'";
-						$query_reg = $this->db->query($qu_reg);
-						$all_reg = $query_reg->result_array();
+						// $qu_reg="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE s.class_id ='".$data->class_id."' AND `p`.`paper_code` = '".$data->paper_code."'  AND temp_exam_form='N' and new_exam_form!='D' and university_mode='REG'";
+						// $query_reg = $this->db->query($qu_reg);
+						// $all_reg = $query_reg->result_array();
 
-						$allcounter_reg+=$all_reg[0]['num'];	
-						$counter_reg+=$count_reg[0]['cnt'];
-						$back_counter_reg += $count_back_reg[0]['cnt']; //0;
-						$paper_code_count_reg.=" <br>".'( ALL - '.$all_reg[0]['num'].')'.' ('.$count_reg[0]['cnt'].')';
+						// $allcounter_reg+=$all_reg[0]['num'];	
+						// $counter_reg+=$count_reg[0]['cnt'];
+						// $back_counter_reg += $count_back_reg[0]['cnt']; //0;
+						// $paper_code_count_reg.=" <br>".'( ALL - '.$all_reg[0]['num'].')'.' ('.$count_reg[0]['cnt'].')';
 
 						/*********** Regular End ****************/
 
 
 						/*********** Private Start ****************/
 
-						$sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` WHERE `e`.`paper_code` = '".$data->paper_code."' AND `s`.`class_id` = '".$data->class_id."' and university_mode='PVT' AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2024' AND `s`.`class_name` = 'I Year' ) );";   
+						$sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` WHERE `e`.`paper_code` = '".$data->paper_code."' AND `s`.`class_id` = '".$data->class_id."' and university_mode='PVT' AND new_exam_form='Y' and  `examcentercode`='MDE028'";
+
+						// $sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` WHERE `e`.`paper_code` = '".$data->paper_code."' AND `s`.`class_id` = '".$data->class_id."' and university_mode='PVT' AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2024' AND `s`.`class_name` = 'I Year' ) );";   
 						//OR ( `s`.`session` = 'Jan 2024' AND `s`.`class_name` = 'I SEM' ) 
 						$query = $this->db->query($sql);
 						$count = $query->result_array();
-						$sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` AND `s`.`id` = `e`.`backlog_student_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."' AND exam_year='June 2025'  AND exam_form!='D' AND `e`.`status`='B' and mode='PVT'";    
+
+						$sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` AND `s`.`id` = `e`.`backlog_student_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."' AND exam_year='June 2025'  AND exam_form='Y' AND `e`.`status`='B' and mode='PVT' and `exam_center_code`='MDE028'";  
+
+						// $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` AND `s`.`id` = `e`.`backlog_student_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."' AND exam_year='June 2025'  AND exam_form!='D' AND `e`.`status`='B' and mode='PVT'";    
+
 						$query_back = $this->db->query($sql_back);
 						$count_back = $query_back->result_array();
 
-						$qu="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE s.class_id ='".$data->class_id."' AND `p`.`paper_code` = '".$data->paper_code."'  AND temp_exam_form='N' and new_exam_form!='D' and university_mode='PVT'";
+						// $qu="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE s.class_id ='".$data->class_id."' AND `p`.`paper_code` = '".$data->paper_code."'  AND temp_exam_form='N' and new_exam_form!='D' and university_mode='PVT'";
+
+						$qu="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE s.class_id ='".$data->class_id."' AND `p`.`paper_code` = '".$data->paper_code."'  AND temp_exam_form='N' and new_exam_form='Y' and university_mode='PVT' and `examcentercode`='MDE028'";
+
 						//`session` = 'July 2022'";
 						$query = $this->db->query($qu);
 						$all = $query->result_array();
@@ -157,37 +166,47 @@
  
 					/*********** Regular Start ****************/
 
-					$sql_reg="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."' and university_mode='REG'  AND (new_exam_form!='D' OR  ( `s`.`session` = 'July 2024' AND `s`.`class_name` = 'I Year' ))";
+					// $sql_reg="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."' and university_mode='REG'  AND (new_exam_form!='D' OR  ( `s`.`session` = 'July 2024' AND `s`.`class_name` = 'I Year' ))";
 
-					// ( `s`.`session` = 'July 2023' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2024' AND `s`.`class_name` = 'I SEM' )    
+					// // ( `s`.`session` = 'July 2023' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2024' AND `s`.`class_name` = 'I SEM' )    
 					
-					$query_reg = $this->db->query($sql_reg);
-					$count_reg = $query_reg->result_array();
+					// $query_reg = $this->db->query($sql_reg);
+					// $count_reg = $query_reg->result_array();
 
-					 $sql_back_reg="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` AND `s`.`id` = `e`.`backlog_student_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."'  AND exam_year='June 2025' AND exam_form!='D'  AND `e`.`status`='B' and mode='REG'";    
-					 $query_back_reg = $this->db->query($sql_back_reg);
-					 $count_backlog_reg = $query_back_reg->result_array();
+					//  $sql_back_reg="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` AND `s`.`id` = `e`.`backlog_student_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."'  AND exam_year='June 2025' AND exam_form!='D'  AND `e`.`status`='B' and mode='REG'";    
+					//  $query_back_reg = $this->db->query($sql_back_reg);
+					//  $count_backlog_reg = $query_back_reg->result_array();
 				
-					$qun_reg="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE s.class_id ='".$row->class_id."' AND `p`.`paper_code` = '".$row->paper_code."'  AND temp_exam_form='N'   and new_exam_form!='D' and university_mode='REG'";
+					// $qun_reg="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE s.class_id ='".$row->class_id."' AND `p`.`paper_code` = '".$row->paper_code."'  AND temp_exam_form='N'   and new_exam_form!='D' and university_mode='REG'";
 					
-					$queryn_reg = $this->db->query($qun_reg);
-					$all_reg = $queryn_reg->result_array();
+					// $queryn_reg = $this->db->query($qun_reg);
+					// $all_reg = $queryn_reg->result_array();
 				
 					/*********** Regular End ****************/
 
 
 					/*********** Private Start ****************/
-					$sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."' and university_mode='PVT'  AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2024' AND `s`.`class_name` = 'I Year' ) );";    //OR ( `s`.`session` = 'Jan 2024' AND `s`.`class_name` = 'I SEM' )
+					// $sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."' and university_mode='PVT'  AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2024' AND `s`.`class_name` = 'I Year' ) );";    //OR ( `s`.`session` = 'Jan 2024' AND `s`.`class_name` = 'I SEM' )
+
+					$sql="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."' and university_mode='PVT'  AND new_exam_form='Y' and `examcentercode`='MDE028' ";    
 					$query = $this->db->query($sql);
 					$count = $query->result_array();
-					 $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` AND `s`.`id` = `e`.`backlog_student_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."'  AND exam_year='June 2025' AND exam_form!='D'  AND `e`.`status`='B' and mode='PVT'";    
+
+					 // $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` AND `s`.`id` = `e`.`backlog_student_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."'  AND exam_year='June 2025' AND exam_form!='D'  AND `e`.`status`='B' and mode='PVT'";    
+
+					 $sql_back="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` AND `s`.`id` = `e`.`backlog_student_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."'  AND exam_year='June 2025' AND exam_form='Y'  AND `e`.`status`='B' and mode='PVT' and `exam_center_code`='MDE028'";   
+
 					 $query_back = $this->db->query($sql_back);
 					 $count_backlog = $query_back->result_array();
 					//I Year
 					//$qu="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE s.class_id ='".$row->class_id."' AND `p`.`paper_code` = '".$row->paper_code."'  AND temp_exam_form='N' and `session` = 'July 2022' and s.class_name='I Year'";
 					//II Year
-					$qun="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE s.class_id ='".$row->class_id."' AND `p`.`paper_code` = '".$row->paper_code."'  AND temp_exam_form='N'   and new_exam_form!='D' and university_mode='PVT'";
+
+					// $qun="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE s.class_id ='".$row->class_id."' AND `p`.`paper_code` = '".$row->paper_code."'  AND temp_exam_form='N'   and new_exam_form!='D' and university_mode='PVT'";
 					//and `session` = 'July 2022' and s.class_name='II Year'
+
+					$qun="SELECT count(*) as num FROM `student` as s join paper_master as p on s.class_id=p.class_id WHERE s.class_id ='".$row->class_id."' AND `p`.`paper_code` = '".$row->paper_code."'  AND temp_exam_form='N'   and new_exam_form='Y' and university_mode='PVT' and `examcentercode`='MDE028'";
+
 					$queryn = $this->db->query($qun);
 					$all = $queryn->result_array();
 				//	echo $this->db->last_query();
