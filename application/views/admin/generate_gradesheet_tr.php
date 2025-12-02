@@ -642,6 +642,15 @@ table.last_table, .last_table td, .last_table th{
                 echo '-';
               }elseif($new_exam_form->theory_marks+$new_exam_form->int_marks>=$new_exam_form->min_theory_marks+$new_exam_form->min_internal_marks && $new_exam_form->theory_marks!="ABS"){
                 echo $new_exam_form->theory_marks;
+                  if($new_exam_form->sub_group_id == 1){
+                  
+                    if($this->foundation1>0 && $new_exam_form->group_paper_name =='FC1'){
+                       echo ($check_grace_marks) ? ' G' : '';
+                    }
+                    if($this->foundation2>0 && $new_exam_form->group_paper_name =='FC2'){
+                      echo ($check_grace_marks) ? ' G' : '';
+                    }
+                  }
               }else{
                  echo $new_exam_form->theory_marks;
                 if($new_exam_form->sub_group_id == 1){
