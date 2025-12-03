@@ -1548,7 +1548,7 @@ public function upload_old_backlog_data_script($class_id="",$mode){
           $this->db->join('class_master', 'student.old_class_id = class_master.id');
         
           $this->db->where('last_class', 'L');
-          $this->db->where('university_mode', 'REG');
+          // $this->db->where('university_mode', 'REG');
           $this->db->where('course_complete', 'N');
           $this->db->where('student.class_name!=', 'IV Year');
           $this->db->group_by('class_id');          
@@ -1562,8 +1562,8 @@ public function upload_old_backlog_data_script($class_id="",$mode){
      public function update_course_complete_status_old($course_group_id="",$class_id=""){
             $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
             
-            $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id,'course_complete'=>'N', 'university_mode'=>'REG','class_name!='=>'IV Year'));
-        
+            $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id,'course_complete'=>'N','class_name!='=>'IV Year'));
+        //  ,'university_mode'=>'REG'
             $courseClassData = $this->Common_model->getRecordByWhere("class_master",array("course_group_id"=>$course_group_id,"mode"=>$classData->mode,"class_name!="=>'IV Year'));
         //   echo $this->Common_model->last_query();
             $i=1;
