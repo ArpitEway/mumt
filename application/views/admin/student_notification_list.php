@@ -629,7 +629,13 @@
 			if($percentage>=60){
 			  $division = "First";
 			}elseif($percentage<60 && $percentage>=40){
-			  $division  = "Second";
+			    $final_obtain_check = (!$isOneClass)?($grand_obtain+1):($total_obtained_marks+1);	
+				$final_div_check= (!$isOneClass)?round(($final_obtain_check/$grand_total)*100,2):round(($final_obtain_check/$total_max_marks)*100,2);
+				if($final_div_check>=60){
+					$division = "First By VCG";
+				}else{
+					$division  = "Second";
+				}
 			}else{
 			  $division = "Third";
 			}
