@@ -115,7 +115,7 @@
 						  <?php 
 							  // 169 MDE165 MMYVV UTD KAROUNDI
 							  // 178 MDE172 Nachiketa Collage of computer science commerce & Advanced Technology
-							  if($student->course_group_id==75 || $student->course_group_id==76 || $student->course_group_id==77 || $student->exam_center_id==169 || $student->exam_center_id==167){ ?>
+							  if($student->course_group_id==75 || $student->course_group_id==76 || $student->course_group_id==77 || $student->exam_center_id==169 || $student->exam_center_id==167 || $student->exam_center_id==178){ ?>
 							<tr>
 							  <td colspan="4"><b>Exam Center: </b>
 							  <?php echo $exam[0]->schoolcollegename.', '.$exam[0]->examcenteraddress;
@@ -138,7 +138,8 @@
 							</tr>
 							<tr>
 							  <td><b>Course: </b> <?=$student->course_name;?> <?php if($student->class_id!=163 && $student->class_id!=175 ) echo  '('.$student->class_name.')';?> </td>
-							  <td colspan="2"><b>EC Code: </b> <?=$exam[0]->exam_center_user;?></td>
+							  <!-- <td colspan="2"><b>EC Code: </b> <?php //echo $exam[0]->exam_center_user;?></td> -->
+							   <td colspan="2"><b>Mode: </b> N/C</td>
 							</tr>
 							<tr>
 							  <td colspan="3"><b>Student Name: </b> <?=$student->name;?></td>
