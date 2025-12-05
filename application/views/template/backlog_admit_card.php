@@ -43,7 +43,7 @@
 				<div class="row">
 					<div class="col-12 text-center">
 						<!-- <h5>Schedule of Exam for Annual/Semester Backlog Examination of December 2025</h5> -->
-						<h5>Schedule of Exam for Annual Backlog Examination (Session June 2025)</h5>
+						<h5>Schedule of Exam for Annual Backlog Examination (Session - June 2025)</h5>
 
 							<?php 
 

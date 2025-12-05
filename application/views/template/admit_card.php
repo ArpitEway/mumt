@@ -43,7 +43,7 @@
 				<div class="row">
 					<div class="col-12 text-center">
 						<!-- <h5>Schedule of Exam for Annual/Semester Examination of December 2025	</h5> -->
-						<h5>Schedule of Exam for Annual Examination (Session June 2025)</h5>
+						<h5>Schedule of Exam for Annual Examination (Session - June 2025)</h5>
 
 							<?php 
 	// 					<?php echo in_array($student[0]->class_id, array(328, 329,313)) 
