@@ -92,10 +92,10 @@
 							  <?php 
 							  // 169 MDE165 MMYVV UTD KAROUNDI
 							  // 167 MDE163 Nachiketa Collage of computer science commerce & Advanced Technology
-							  if($student[0]->course_group_id==75 || $student[0]->course_group_id==76 || $student[0]->course_group_id==77 || $student[0]->exam_center_id==169  || $student[0]->exam_center_id==167 ){ ?>
+							  if($student[0]->course_group_id==75 || $student[0]->course_group_id==76 || $student[0]->course_group_id==77 || $student[0]->exam_center_id==169  || $student[0]->exam_center_id==167 || $student[0]->exam_center_id==178 ){ ?>
 							<tr>
 							  <td colspan="4"><b>Exam Center: </b>
-							  <?php echo $exam[0]->schoolcollegename.', '.$exam[0]->examcenteraddress;
+							  <?php echo $exam[0]->exam_center_user.','.$exam[0]->schoolcollegename.', '.$exam[0]->examcenteraddress;
 							  //.', '.$exam[0]->city;
 							  //$this->Common_model->getExamCenterNameById($student[0]->exam_center_id); ?></td>
 							</tr>
@@ -118,7 +118,8 @@
 							</tr>
 							<tr>
 							  <td><b>Course: </b> <?=$student[0]->course_name;?>  <?php if($student[0]->class_id!=163 && $student[0]->class_id!=175 ) echo '('.$student[0]->class_name.')';?> </td>
-							  <td colspan="2"><b>EC Code: </b><?=$exam[0]->exam_center_user;?></td>
+							  <!-- <td colspan="2"><b>EC Code: </b><?php //echo $exam[0]->exam_center_user;?></td> -->
+							    <td colspan="2"><b>Mode: </b>N/C</td>
 							</tr>
 							<tr>
 							  <td colspan="3"><b>Student Name: </b> <?=$student[0]->name;?></td>
