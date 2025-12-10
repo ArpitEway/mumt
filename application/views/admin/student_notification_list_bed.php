@@ -540,7 +540,7 @@ $abs_count = 0 ;
 							
 						}
 						if((in_array($student->old_class_id, $class_ids)) && $mode=='REG'){
-						echo $this->Gradesheet_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+						 $this->Gradesheet_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
 						}else{
 							echo $final_result;
 						}

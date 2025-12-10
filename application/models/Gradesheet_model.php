@@ -296,6 +296,8 @@ class Gradesheet_model extends CI_Model
 		$this->total_marks=0;
 		$this->check_grace_marks = false;
 		$this->withheld = false;
+		$this->withheld_practical = false;
+        $this->withheld_internal = false;
 		foreach ($papers as $paper) {
 			$this->paper = $paper;
 			
