@@ -48,11 +48,12 @@ class Upload_old_data extends CI_Model
         // print_r($std);die;
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$student->old_class_id);
 		
-		
+		$session = explode(' ',$student->session);
 		if($std[0]->sub_group_id == 1 || $student->old_class_id == 325){
 			$papers = $this->Common_model->get_all_papers($student->student_id,$student->old_class_id);
 		}
-		if($this->classData->class_group == 'Y'){
+		if($this->classData->class_group == 'Y' || (in_array($session[1],array(2021,2022)) && ($student->old_class_id == 101 || $student->old_class_id == 102))){
+			// echo 'ssss';
 		$papers_list = $this->Common_model->get_all_group_papers($student->student_id,$student->old_class_id);
 		}
         $date =$this->Common_model->getRecordById('marksheet_variables','class_id',$student->old_class_id);

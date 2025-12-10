@@ -36,7 +36,6 @@ class Gradesheet_model extends CI_Model
 
 	public function view_result($student_id,$center_id,$course_group_id,$class_id,$mode,$work_table='')
 	{
-
         if(in_array($student_id, array('755705','758538','719005'))){
             echo '<div class="text-center text-primary border-right border-left border-bottom border-dark py-3">'.
             '<h1 class=" text-center mb-0">'.'Statement Of Marks'.'</h1>'.
@@ -46,6 +45,8 @@ class Gradesheet_model extends CI_Model
        
            die;
         }
+			$student = $this->Common_model->getRecordById('student','student_id',$student_id);
+			$session= explode(' ',$student->session);
 		if($work_table != ''){
 			$std  = $this->Common_model->getRecordByWhere($work_table,array('class_id'=> $class_id,'student_id'=>$student_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
@@ -53,7 +54,7 @@ class Gradesheet_model extends CI_Model
 		if($std[0]->sub_group_id == 1 || in_array($class_id, [325,328,329])){
 			$papers = $this->Common_model->get_all_papers_admin($student_id,$class_id);
 		}
-		if($this->classData->class_group == 'Y'){
+		if($this->classData->class_group == 'Y' || (in_array($session[1],array(2021,2022)) && ($class_id == 101 || $class_id == 102))){
 		$papers_list = $this->Common_model->get_all_group_papers_admin($student_id,$class_id,$course_group_id);
 		// echo '<pre>';
 		// print_r($papers_list);
@@ -67,7 +68,7 @@ class Gradesheet_model extends CI_Model
 		if($std[0]->sub_group_id == 1 || in_array($class_id, [325,328,329])){
 			$papers = $this->Common_model->get_all_papers($student_id,$class_id);
 		}
-		if($this->classData->class_group == 'Y'){
+		if($this->classData->class_group == 'Y' || (in_array($session[1],array(2021,2022)) && ($class_id == 101 || $class_id == 102))){
 		$papers_list = $this->Common_model->get_all_group_papers($student_id,$class_id,$course_group_id);
 		}
 		}
@@ -262,13 +263,15 @@ class Gradesheet_model extends CI_Model
 	{
 		$table = $this->Common_model->getMaster('exam_form_table');
 		$std  = $this->Common_model->getRecordByWhere($table,array('class_id'=> $class_id,'student_id'=>$student_id));
+		$student = $this->Common_model->getRecordById('student','student_id',$student_id);
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
-		
+		$session= explode(' ',$student->session);
+		// print_r($student);die;
 		
 		if($std[0]->sub_group_id == 1 || in_array($class_id, [325,328,329])){
 			$papers = $this->Common_model->get_all_papers($student_id,$class_id);
 		}
-		if($this->classData->class_group == 'Y'){
+		if($this->classData->class_group == 'Y' || (in_array($session[1],array(2021,2022)) && ($class_id == 101 || $class_id == 102))){
 		$papers_list = $this->Common_model->get_all_group_papers($student_id,$class_id,$course_group_id);
 		}
 		// get_all_group_papers
@@ -365,6 +368,7 @@ class Gradesheet_model extends CI_Model
 
     public function view_old_results($student_id,$course_group_id,$class_id,$mode,$id, $exam_status)
 	{
+		
         // $papers = $this->Common_model->get_all_old_papers($student_id,$class_id);
         $this->db->order_by('sub_group_id');
 		$std  = $this->Common_model->getRecordByWhere('old_result_data',array('class_id'=> $class_id,'student_id'=>$student_id, 'exam_data_id'=>$id));
@@ -407,7 +411,6 @@ class Gradesheet_model extends CI_Model
 		}
 
         foreach ($papers_list as $paper) {
-			//echo "<pre>".print_r( $paper)." </pre>";
 			$this->paper = $paper;
 			if($this->withheld){
 				

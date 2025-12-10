@@ -156,7 +156,7 @@ table.last_table, .last_table td, .last_table th{
     
    
     
- 
+    $papers_list = array();
     $current_center=$student->center_id;
     $page_break_count++;
     $marks = $this->Common_model->student_info_for_result($student->student_id,$student->old_class_id);
@@ -484,7 +484,7 @@ table.last_table, .last_table td, .last_table th{
     <?php
     $credit = 0;
     $std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $student->old_class_id,'student_id'=>$student->student_id));
-    
+    $session = explode(' ',$student->session);
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$student->old_class_id);
    
     if($std[0]->sub_group_id == 1){
@@ -492,7 +492,7 @@ table.last_table, .last_table td, .last_table th{
      
 		}
 
-		if($this->classData->class_group == 'Y' && count($std) !=0){
+		if(($this->classData->class_group == 'Y' || (in_array($session[1],array(2021,2022)) && ($student->old_class_id == 101 || $student->old_class_id == 102))) && count($std) !=0 ){
 			$papers_list = $this->Common_model->get_all_group_papers($student->student_id,$student->old_class_id);
 		}
         

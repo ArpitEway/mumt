@@ -608,6 +608,8 @@ class Common_Model extends CI_Model{
 
 	public function get_all_papers($id,$class_id){
 		$class_check = $this->Common_model->getRecordById('class_master','id',$class_id);
+		$student =  $this->Common_model->getRecordById('student','student_id',$id);
+		   $session = explode(' ',$student->session);	
 		$where = array(
 			'student_id' => $id,
 			'e.class_id' => $class_id,
@@ -619,7 +621,7 @@ class Common_Model extends CI_Model{
 		$this->db->join('new_exam_form as e','e.paper_id = paper_master.id');
 		// $this->db->join('group_paper','paper_master.id=group_paper.paper_id');
 		$this->db->where($where); 
-		if($class_check->class_group == 'Y' &&  $class_check->mode!='Semester'){
+		if(($class_check->class_group == 'Y' || (in_array($session[1],array(2021,2022)) && ($class_id == 101 || $class_id == 102))) &&  $class_check->mode!='Semester'){
 		$this->db->where('e.sub_group_id',1);
 		}
 		$query = $this->db->get();
