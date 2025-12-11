@@ -3588,7 +3588,7 @@ public function update_exam_datewise_permission(){
               $this->db->where_in('center_id',$dept_ids);
           }
 		  
-		  
+		  $this->db->where('student_id !=',809613);
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode,'old_result_show'=>'Y','exam_pattern'=>'GRADE'));
 		}
 		// $this->Common_model->last_query();
