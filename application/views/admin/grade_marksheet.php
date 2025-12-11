@@ -41,7 +41,7 @@ th.border.border-dark {
       <tbody>
         <tr  id="tr_code"> 
           <td style="border-bottom: 1px solid; border-left: 1px solid; border-top: 1px solid; text-align: center"> Paper Code</td>
-          <td style="border-bottom: 1px solid;border-left: 1px solid;border-top: 1px solid; vertical-align: middle;"> <span class="ml-3">SUBJECT</span></td>
+          <td style="border-bottom: 1px solid;border-left: 1px solid;border-top: 1px solid; vertical-align: middle;"> <span class="ml-3">SUBJECTss</span></td>
           <td style="border-bottom: 1px solid;border-left: 1px solid;border-top: 1px solid; text-align: center ;vertical-align: middle">Credit</td>
           <td style="border-bottom: 1px solid;border-left: 1px solid;border-top: 1px solid; text-align: center ;vertical-align: middle">Grade</td>
           <td style="border-bottom: 1px solid;border-right: 1px solid;border-top: 1px solid;border-left: 1px solid; text-align: center ;vertical-align: middle">Grade Point</td>
@@ -90,13 +90,14 @@ th.border.border-dark {
             
             $total_grade_point += number_format((float)$gradeData['agpa'], 2, '.', '') * $gradeData['obt_credit']; 
             $total_course_credit +=$gradeData['tot_credit'];
+            $result = ($gradeData['result'] == 'FAIL')?'('.$gradeData['result'].')' :'';
             ?>
              <tr>
           <!-- <td>TOTAL CREDIT</td> -->
           <td class="text-center" style="vertical-align: middle;"><?=$romanNumerals[$cls->class_order] ?></td>
           <td class="text-center" style="vertical-align: middle;"><?=$gradeData['tot_credit'] ?></td>
           <td class="text-center" style="vertical-align: middle;"><?=$gradeData['obt_credit'] ?></td>
-          <td class="text-center" style="vertical-align: middle;"><?= number_format((float)$gradeData['agpa'], 2, '.', '') ?></td>
+          <td class="text-center" style="vertical-align: middle;"><?= number_format((float)$gradeData['agpa'], 2, '.', ''). $result?></td>
           <td class="text-center" style="vertical-align: middle;"><?= $wordNumerals[count($old_count)]?></td>
           
         </tr>
@@ -136,6 +137,9 @@ th.border.border-dark {
           <td class="text-center" style="vertical-align: middle;"><?= $wordNumerals[1]?></td>
         </tr>
         </table><br>
+        <?php 
+        $student = $this->Common_model->getRecordByWhere("student",array('student_id'=>$exam_data->student_id));
+        if($student[0]->course_complete == "Y"){ ?>
         <table class="border border-dark m-auto w-100" >
         <tr>
             <td colspan="4" align="center">
@@ -156,6 +160,7 @@ th.border.border-dark {
         </tr>
     </table>
         <?php
+        }
        }else{
         ?>
         
