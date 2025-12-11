@@ -156,7 +156,7 @@ table.last_table, .last_table td, .last_table th{
     
    
     
-    $papers_list = array();
+    // $papers_list = array();
     $current_center=$student->center_id;
     $page_break_count++;
     $marks = $this->Common_model->student_info_for_result($student->student_id,$student->old_class_id);
