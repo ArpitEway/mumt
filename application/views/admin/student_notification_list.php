@@ -478,7 +478,6 @@
 							
 							
 						}
-				  
                         if($final_result == 'RWPM'){
                             if(($fail_count>0 || $abs_count>0) && !$check_grace_marks){
                                 $final_result =  'FAIL';
@@ -486,7 +485,7 @@
                             }
                         }
 				//    echo $final_result;
-				if((in_array($student->old_class_id, $class_ids)) && $student->exam_pattern=='GRADE' ){//&& $mode=='REG'
+				if((in_array($student->old_class_id, $class_ids)) && $student->exam_pattern=='GRADE' && $final_result != 'RWPM'){//&& $mode=='REG'
 						 $final_result = $this->Gradesheet_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
 						}else{
 							echo $final_result;
