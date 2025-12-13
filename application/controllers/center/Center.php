@@ -1648,7 +1648,7 @@ class Center extends CI_Controller {
 			$this->db->where_in('center_id',array( 21,22,23,24,25,26,27,28,29,30,31,32,33,34,35));
 		}
 		//'center_id'=>$this->session->center_id , 
-		$where = array('admit_card_permission' =>'Y',"student.roll_no!="=>0,'university_mode'=>'PVT','new_exam_form'=>'Y');
+		$where = array('admit_card_permission' =>'Y',"student.roll_no!="=>0,'university_mode'=>'PVT','exam_form'=>'Y');
         // $this->db->where_not_in('student_id', array(374292,374779,379155,379652,380605,380673,381026,382024,385894,685803,686581,686621,687158,687165,687390,687395,687622,722149));
         $this->db->select('DISTINCT(student.class_id) as
 			class_id,course_name,student.class_name,class_id');
@@ -1686,7 +1686,7 @@ class Center extends CI_Controller {
 			'class_id' =>$class_id,
 			//'center_id' => $center_id,
 			'roll_no!=' => 0,
-			'new_exam_form' => 'Y',
+			'exam_form' => 'Y',
 			'examcentercode'=>'MDE172',
 			'university_mode'=>'PVT'
 		);
