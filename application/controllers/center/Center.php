@@ -2643,7 +2643,7 @@ public function backlog_marksheet($student_id="")
 		if($classData->internal=='N' || $data['student_info']->university_mode=='PVT'){
 			$this->load->view('Centers/marksheet_without_int_backlog',$data);
 		}else{
-			if($student[0]->class_id=='168'){
+			if($student[0]->class_id=='168' || $student[0]->class_id=='256' || $student[0]->class_id=='257'){
 				$this->load->view('Centers/marksheet_mom_backlog',$data);
 			}else{
 				$this->load->view('Centers/marksheet_bottom_backlog',$data);
