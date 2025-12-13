@@ -1747,7 +1747,7 @@ class Center extends CI_Controller {
 			'student_id' => $student_id,
 			'roll_no !=' => 0,
 			//'center_id' => $center_id,
-			'new_exam_form' => 'Y',
+			'exam_form' => 'Y',
 		);
 
 		$this->db->select('*');
