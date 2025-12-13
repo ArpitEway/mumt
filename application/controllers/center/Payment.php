@@ -430,7 +430,7 @@ class Payment extends CI_Controller {
 			$posted['zipcode'] = $student['p_pin_code'];
 			$posted['udf1'] = $student_id;
 			$posted['udf2'] = $mode ;
-			$posted['udf3'] = "June 2025";
+			$posted['udf3'] = "Dec 2025";
 			$posted['udf4'] = $student["center_id"].' / '.$student['class_id'];
 			$posted['udf5'] = $student["name"]."/".$student["f_h_name"];
 			$hash = '';

@@ -52,7 +52,7 @@ th.border.border-dark {
             <th class="border-top-0 text-primary pl-3">Enrollment No.</th>
             <th class="border-top-0"><?php  echo $student->enrollment_no ?></th>
             <th class="border-top-0 text-primary pl-3">Roll No.</th>
-            <th class="border-top-0"><?php echo  $student->roll_no; ?></th>
+            <th class="border-top-0"><?php echo  $student->roll_number; ?></th>
             <th rowspan="4" class="border-top-0 text-center" width="170px" height="180px"><img class="img img-thumbnail" src="<?=base_url('assets/student_image/').$student->session.'/'.$student->photo?>" ></th>
         </tr>
         <tr>
@@ -65,7 +65,7 @@ th.border.border-dark {
             <th class="border-top-0 text-primary pl-3">Course</th>
             <th class="border-top-0"><?php  echo $student->course_name ?></th>
             <th class="border-top-0 text-primary pl-3">Class</th>
-            <th class="border-top-0"><?php  echo $this->Common_model->getClassNameByClassId($student->class_id); ?></th>
+            <th class="border-top-0"><?php  echo $this->Common_model->getClassNameByClassId($student->old_class_id); ?></th>
         </tr>
         <!-- <tr>
             <th class="border-top-0 text-primary pl-3">College</th>
@@ -102,7 +102,7 @@ th.border.border-dark {
         </tr>
         <?php 
        
-        $gradesheetData = $this->Gradesheet_model->view_result($student->student_id,$student->center_id,$student->course_group_id,$student->class_id,$student->university_mode);
+        $gradesheetData = $this->Gradesheet_model->view_result($student->student_id,$student->center_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
        
          ?>
       </tbody>
@@ -112,7 +112,7 @@ th.border.border-dark {
         $dept_ids = array(10,11,12,13,20,21,22,23,24,25,26,27,28,29,30);
       if($classData->last_class == 'L'){
         //&& (!in_array($student->center_id,$dept_ids) || in_array($student->old_class_id ,[103,121,112]))
-         $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$student->course_group_id,'mode'=>$classData->mode,'id!='=>$student->class_id,'class_name !='=>'IV Year'));
+         $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$student->course_group_id,'mode'=>$classData->mode,'id!='=>$student->old_class_id,'class_name !='=>'IV Year'));
         $total_grade_point = 0;
         $total_course_credit = 0;
         $final_fail=0;
@@ -176,7 +176,7 @@ th.border.border-dark {
         ?>
         <tr>
             <?php
-            $attemp_count = $this->Common_model->getRecordByWhere('old_exam_data', array('student_id'=>$student->student_id,'class_id'=>$student->class_id,'exam_status'=>'B'));
+            $attemp_count = $this->Common_model->getRecordByWhere('old_exam_data', array('student_id'=>$student->student_id,'class_id'=>$student->old_class_id,'exam_status'=>'B'));
             ?>
           <!-- <td>TOTAL CREDIT</td> -->
           <td class="text-center" style="vertical-align: middle;"><?= $romanNumerals[$classData->class_order]?></td>
@@ -221,10 +221,10 @@ th.border.border-dark {
         </tr>
         <tr>
         <?php
-            $class_name = explode(' ', $this->Common_model->getClassNameByClassId($student->class_id));
+            $class_name = explode(' ', $this->Common_model->getClassNameByClassId($student->old_class_id));
             $wordNumerals = [1 => 'One',2 => 'Two',3 => 'Three',4 => 'Four',5 => 'Five',6 => 'Six',7 => 'Seven',8 => 'Eight'
         ];
-            $attemp_count = $this->Common_model->getRecordByWhere('old_exam_data', array('student_id'=>$student->student_id,'class_id'=>$student->class_id));
+            $attemp_count = $this->Common_model->getRecordByWhere('old_exam_data', array('student_id'=>$student->student_id,'class_id'=>$student->old_class_id));
             ?>
           <!-- <td>TOTAL CREDIT</td> -->
           <td class="text-center" style="vertical-align: middle;"><?= $class_name[0]?></td>

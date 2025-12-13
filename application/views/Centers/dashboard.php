@@ -287,7 +287,7 @@
 					</a>  
 					<a class="border-0 custom-menu-item karaundi-exam" data-id="main" >
 							<div>
-								<span class="nav-text">Exam Form Karaundi June 2025</span>
+								<span class="nav-text">Exam Form Karaundi Dec 2025</span>
 							</div>
 					</a> 
 					<a class="border-0 custom-menu-item karaundi-exam" data-id="backlog">
