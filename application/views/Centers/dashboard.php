@@ -274,7 +274,7 @@
               //  $count = $this->Common_model->getCountByWhere('student',array('center_id'=>$center->id,'new_exam_form !='=>'D'));
                 //&& $count>0href="<?=base_url('exam_form_students');"
                 if ($center->exam_form_permission=='Y' ): ?>
-				 <a class="border-0 custom-menu-item" id="main-exam" >
+				<!--  <a class="border-0 custom-menu-item" id="main-exam" >
 							<div>
 								<span class="nav-text">Exam Form Dec 2025</span>
 							</div>
@@ -283,17 +283,17 @@
 							<div>
 								<span class="nav-text">Backlog Exam Form Dec 2025</span>
 							</div>
-					</a>  
+					</a>   -->
 					<a class="border-0 custom-menu-item karaundi-exam" data-id="main" >
 							<div>
 								<span class="nav-text">Exam Form Karaundi Dec 2025</span>
 							</div>
 					</a> 
-					<a class="border-0 custom-menu-item karaundi-exam" data-id="backlog">
+					<!-- <a class="border-0 custom-menu-item karaundi-exam" data-id="backlog">
 							<div>
 								<span class="nav-text">Backlog Exam Form Karaundi Dec 2025</span>
 							</div>
-					</a>  
+					</a>   -->
 					<?php endif ?>
 				
 				
