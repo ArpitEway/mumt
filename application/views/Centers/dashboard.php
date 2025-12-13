@@ -243,10 +243,9 @@
 			<div class="tab-pane fade" id="exam" role="tabpanel" aria-labelledby="exam-tab">
 				<div class="row">
 				  	
-					<?php 
-                    if($this->session->center_id < 100){ ?>
+					<?php // if($this->session->center_id < 100 && $this->session->center_id > 100){ ?>
                    	
-					  <a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
+					 <!--  <a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
 						<div>
 							<span class="nav-text">Practical Marks Submission </span>
 						</div>
@@ -255,8 +254,8 @@
 						<div>
 							<span class="nav-text">Internal Marks Submission (Regular)</span>
 						</div>
-					</a> 
-					<?php  } ?>
+					</a>  -->
+					<?php //  }  ?>
 					
 				<?php if ($center->admit_card_permission=='Y'): ?>
 						<a class="border-0 custom-menu-item" href="<?=base_url('admit_card_list');?>">
@@ -277,12 +276,12 @@
                 if ($center->exam_form_permission=='Y' ): ?>
 				 <a class="border-0 custom-menu-item" id="main-exam" >
 							<div>
-								<span class="nav-text">Exam Form June 2025</span>
+								<span class="nav-text">Exam Form Dec 2025</span>
 							</div>
 					</a> 
 					<a class="border-0 custom-menu-item" href="<?=base_url('backlog_exam_form_students/notSubmitted/center');?>">
 							<div>
-								<span class="nav-text">Backlog Exam Form June 2025</span>
+								<span class="nav-text">Backlog Exam Form Dec 2025</span>
 							</div>
 					</a>  
 					<a class="border-0 custom-menu-item karaundi-exam" data-id="main" >
@@ -292,7 +291,7 @@
 					</a> 
 					<a class="border-0 custom-menu-item karaundi-exam" data-id="backlog">
 							<div>
-								<span class="nav-text">Backlog Exam Form Karaundi June 2025</span>
+								<span class="nav-text">Backlog Exam Form Karaundi Dec 2025</span>
 							</div>
 					</a>  
 					<?php endif ?>
