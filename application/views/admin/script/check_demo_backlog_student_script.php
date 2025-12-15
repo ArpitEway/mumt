@@ -57,7 +57,7 @@
 
               ####### Add Backlog Script For Main Exam End #######
 
-                 $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$row->class_id,'student_id'=>$row->student_id,'exam_year'=>'June 2024'));
+                 $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$row->class_id,'student_id'=>$row->student_id,'exam_year'=>'June 2025'));
 
                  $fail_count =0;
                 if($students[0]->course_group_id == '76'){
