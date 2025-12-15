@@ -1961,6 +1961,7 @@ class ExamController extends CI_Controller {
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();	
 		$this->db->order_by('course_group_id');
+		$this->db->where('exam_center_code','MDE172');
 		$data['courses'] = $this->Common_model->get_record('backlog_student','DISTINCT (course_group_id)','exam_form="Y" and exam_year="June 2025"');
 		$this->load->view('admin/examController/backlog_exam_center_folio',$data);
 		$this->load->view('footer');
@@ -2013,6 +2014,7 @@ class ExamController extends CI_Controller {
 			$this->db->where('backlog_student.exam_year','June 2025');
 			$this->db->where('backlog_student.mode',$_POST['university_mode']);
 			$this->db->where('backlog_student.roll_no!=',0);
+			$this->db->where('exam_center_code','MDE172');
 			$this->db->order_by('backlog_student.exam_center_code');
 			$data['examcenters'] = $this->db->get()->result();
 			$data['university_mode'] = $_POST['university_mode'];
