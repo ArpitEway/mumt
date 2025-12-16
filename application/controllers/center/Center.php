@@ -3359,7 +3359,7 @@ public function practical_assignment_marks_edit(){
 		if($center_permission[0]['temp_exam_form']=='N'){
 			$this->db->where_in('class_id',$class_ids);
 		}
-		$this->db->where('exam_year' ,'June 2025');
+		$this->db->where('exam_year' ,'Dec 2025');
 		//Start
 		
 		if(!empty($master->remove_class_from_center) && $center_permission[0]['temp_exam_form'] =='N'){
