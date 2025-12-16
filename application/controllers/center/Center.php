@@ -1636,7 +1636,7 @@ class Center extends CI_Controller {
 	}
 
 	public function admit_card_list(){
-		//redirect(base_url());
+		redirect(base_url());
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
@@ -1669,7 +1669,7 @@ class Center extends CI_Controller {
 
 
 	public function admit_card_student_list($class_id){
-		//redirect(base_url());
+		redirect(base_url());
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
@@ -1697,9 +1697,9 @@ class Center extends CI_Controller {
 	}
 
 	public function admit_card_backlog_student_list(){
-		if(!$this->session->has_userdata('centerdata')){
+		// if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
-		}
+		// }
 		$titleData = array('title' => 'Admit Card Backlog Student List 2025' );
 		$classes = $this->Common_model->getRecordByWhere('class_master',array('admit_card_permission'=>'Y'));
 		$ids = array_column($classes, 'id');
@@ -1729,7 +1729,7 @@ class Center extends CI_Controller {
 	}
 
 	public function admit_card($student_id){
-	//	redirect(base_url());
+		redirect(base_url());
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
@@ -1774,9 +1774,9 @@ class Center extends CI_Controller {
 	}
 
 	public function backlog_admit_card($backlog_student_id){
-		if(!$this->session->has_userdata('centerdata')){
+		// if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
-		}
+		// }
 		// $en_student_id = $student_id;
 		$backlog_student_id=$this->Common_model->encrypt_decrypt($backlog_student_id,'decrypt');
 		$titleData = array('title' => 'Backlog Admit Card 2025' );
