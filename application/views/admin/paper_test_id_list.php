@@ -16,6 +16,9 @@
 			<th>Exam Shift</th>
 			<th>Exam Time</th>
 			<th>Exam Day</th>
+			<th>Exam Day</th>
+			<th>Exam Day</th>
+			<th>Exam Day</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -25,7 +28,7 @@
 		$exam_time ="";
 		foreach ($papers as $paper): 
 			$old_paper_master ="";
-			//$old_paper_master = $this->Common_model->getRecordByWhere('paper_master_july_24',array('id'=>$paper->id));
+			$old_paper_master = $this->Common_model->getRecordByWhere('paper_master_june_25',array('id'=>$paper->id));
 			if($paper->exam_shift=='Afternoon' && in_array($paper->class_id,$class_ids)){
 				$exam_time = '3:00 PM To 6:00 PM';		
 			}
@@ -56,9 +59,9 @@
 				<td><?=$paper->pvt_exam_shift ?></td> -->
 				<td><?=$exam_time ?></td>
 				<td><?=$paper->exam_day ?></td>	
-				<!--<td><?php if(!empty($old_paper_master[0]->exam_date)) echo $old_paper_master[0]->exam_date; ?></td>
+				<td><?php if(!empty($old_paper_master[0]->exam_date)) echo $old_paper_master[0]->exam_date; ?></td>
 				<td><?php if(!empty($old_paper_master[0]->exam_shift)) echo $old_paper_master[0]->exam_shift ?></td>
-				<td><?php if(!empty($old_paper_master[0]->exam_day))  echo $old_paper_master[0]->exam_day ?></td> 	 -->
+				<td><?php if(!empty($old_paper_master[0]->exam_day))  echo $old_paper_master[0]->exam_day ?></td> 	 
 			</tr>
 		<?php endforeach ?>
 	</tbody>
