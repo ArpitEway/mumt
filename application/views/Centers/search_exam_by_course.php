@@ -5,8 +5,8 @@
         <div class="form-group col-md-4 ">
             <label for="mode">Mode</label>
             <select name="mode" id="mode" class="form-control" data-target="#course_group_id_both" required >
-                <!-- <option value="REG" selected>Regular</option> -->
-                <option value="PVT">Private</option>
+                <option value="REG" selected>Regular</option>
+                <!-- <option value="PVT">Private</option> -->
             </select>
         </div>
         <div class="form-group col-md-4 ">
