@@ -1965,7 +1965,7 @@ class Center extends CI_Controller {
 		 }
 		$data['student_id']=$student_data[0]->student_id;
 		$data['center_id']=$student_data[0]->center_id;
-		$data['exam_session'] = "June 2025";
+		$data['exam_session'] = "Dec 2025";
 		$data['course_group_id']=$student_data[0]->course_group_id;
 		$data['class_id']=$student_data[0]->class_id;
 		$data['amount'] = $total_fees;
@@ -3995,7 +3995,7 @@ public function practical_assignment_marks_edit(){
 		$fees = $this->Common_model->getCountByWhere('backlog_exam_form',$where);
 		$data['student_id']=$student_data[0]->student_id;
 		$data['center_id']=$student_data[0]->center_id;
-		$data['exam_session'] = "June 2025";
+		$data['exam_session'] = "Dec 2025";
 		$data['course_group_id']=$student_data[0]->course_group_id;
 		$data['class_id']=$student_data[0]->class_id;
 		$data['amount'] = ( $fees < 8)?$fees*100:750;
