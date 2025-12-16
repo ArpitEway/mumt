@@ -11,8 +11,8 @@
 		<?php foreach ($courses as $course){
 			$this->db->order_by('id');
 			
-      	$this->db->where_in('id', array(102,106,111,120,126,328,129,329,132,137,149,150,151,162,165,170,299,174,192));
-        $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id'] , 'exam_form_permission' => 'Y' ));
+      	$this->db->where_in('id', array(103,112,118,109,121,127,130,133,252));
+        $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id'] , 'old_exam_form_permission' => 'Y' ));
 	
 		//, 'result_permission' => 'Y'
         // , 'exam_form_permission' => 'Y'
