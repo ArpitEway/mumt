@@ -285,7 +285,7 @@
 				
 			}
 
-			$where=array('center_id'=>$student['center_id'],'exam_session'=>'June 2025','fees_head'=>'Exam Fees','payment'=>'Y','student_id'=>$student['student_id']);
+			$where=array('center_id'=>$student['center_id'],'exam_session'=>'Dec 2025','fees_head'=>'Exam Fees','payment'=>'Y','student_id'=>$student['student_id']);
 			$paid= $this->Common_model->getRecordByWhere('online_payment_transaction',$where);
 			if(!$paid){
 						if(in_array($this->session->center_id, $center_ids)){

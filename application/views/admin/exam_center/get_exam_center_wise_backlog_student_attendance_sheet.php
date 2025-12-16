@@ -119,10 +119,10 @@
 								 <td rowspan="4" class="text-center"><img src="<?=$img_url;?>"  width="115px" height="166px" /></td> 
 							</tr>
 							<tr>
-							  <td><b>Course: </b> <?=$student->course_name;?> (<?= $this->Common_model->getClassNameByClassId($student->class_id);?>) </td>
+							  <td colspan="4"><b>Course: </b> <?=$student->course_name;?> (<?= $this->Common_model->getClassNameByClassId($student->class_id);?>) </td>
 							  <!-- <td colspan="2"><b>EC Code: </b> <?php //echo $exam[0]->exam_center_user;?></td>
 							    -->
-							  <td colspan="2"><b>Mode: </b> N/C</td>
+							  <td colspan="2"><b> </b></td>
 							</tr>
 							<tr>
 							  <td colspan="3"><b>Student Name: </b> <?=$student->name;?></td>
