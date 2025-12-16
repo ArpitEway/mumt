@@ -4665,7 +4665,9 @@ public function update_exam_datewise_permission(){
 
 		// $query = $this->db->query("SELECT p.* FROM `paper_master_feb_23` as p join class_master as c on c.id=p.class_id WHERE  type='Theory' and cbcs_paper=cbcs and exam_date!='0000-00-00' order by p.course_group_id,class_id,cbcs_paper,paper_no asc");
 
-		$query = $this->db->query("SELECT p.* FROM `paper_master` as p join class_master as c on c.id=p.class_id WHERE  type='Theory' and cbcs_paper=cbcs and class_id in (106,109,136,148) and (exam_date!='0000-00-00' and ( c.exam_form_permission='Y' or c.backlog_exam_form_permission='Y')) order by p.course_group_id,class_id,cbcs_paper,paper_no asc");
+		$query = $this->db->query("SELECT p.* FROM `paper_master` as p join class_master as c on c.id=p.class_id WHERE  type='Theory' and cbcs_paper=cbcs and class_id in (106,109,112,118,121,127,130,133,103) order by p.course_group_id,class_id,cbcs_paper,paper_no asc");
+
+		// $query = $this->db->query("SELECT p.* FROM `paper_master` as p join class_master as c on c.id=p.class_id WHERE  type='Theory' and cbcs_paper=cbcs and class_id in (106,109,136,148) and (exam_date!='0000-00-00' and ( c.exam_form_permission='Y' or c.backlog_exam_form_permission='Y')) order by p.course_group_id,class_id,cbcs_paper,paper_no asc");
 
 		 // and c.id in (137,149,183,185,191,138,184,192,187,143,146,139,144,188,145,147,148,150,186,141,151,142,190)
 		 
