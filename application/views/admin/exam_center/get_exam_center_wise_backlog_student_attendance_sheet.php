@@ -49,7 +49,7 @@
 	}
 
  	 $papers = $this->db->get()->result();
-	// print_r($this->db->last_query());    
+	print_r($this->db->last_query());    
 	 $paper_count = count($papers);
 	 if($paper_count){
 

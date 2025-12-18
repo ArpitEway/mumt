@@ -1783,7 +1783,7 @@ class ExamController extends CI_Controller {
 		$where = array('backlog_student.exam_center_id'=>$exam_center,'backlog_student.exam_form'=>'Y', 'backlog_student.roll_no!=' => 0 ,'backlog_student.notification_no'=>43,'backlog_student.exam_year'=>'June 2025');
 		$this->db->where($where);	
 		$data['exam_center_students'] = $this->db->get()->result();
-		echo $this->db->last_query();die;
+		// echo $this->db->last_query();die;
 		echo $this->load->view('admin/exam_center/get_exam_center_wise_backlog_student_attendance_sheet',$data, TRUE);
 	}
 
