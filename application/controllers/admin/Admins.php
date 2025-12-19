@@ -4065,9 +4065,10 @@ public function update_exam_datewise_permission(){
         // echo $department.'ss';die;
         if($department !=""){
             $this->db->where_in('center_id', $dept_ids);
-        }elseif(in_array($class_id, $class_ids)&& $pattern=="GRADE"){
-            $this->db->where_not_in('center_id', $dept_ids);
         }
+		// elseif(in_array($class_id, $class_ids)&& $pattern=="GRADE"){
+        //     $this->db->where_not_in('center_id', $dept_ids);
+        // }
 		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id, 'old_class_id' => $class_id, 'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode ,'exam_pattern'=>$pattern));
 		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$data['mode'] = $mode;
