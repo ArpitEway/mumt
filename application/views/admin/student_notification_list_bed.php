@@ -693,8 +693,9 @@ $abs_count = 0 ;
 								
 								if((in_array($student->old_class_id, $class_ids)) && $mode=='REG')	
 								{
-									
-									if($check_grace_marks){
+									if($final_result == 'RWPM'){
+										echo 'RWPM';
+									}elseif($check_grace_marks){
 										echo " ";
 									}elseif($Withheld || $gradesheetData['result'] == 'RW'|| $gradesheetData['result'] == 'RWAS' || $gradesheetData['result'] == 'RWPR'){
                                         echo " ";
@@ -722,7 +723,9 @@ $abs_count = 0 ;
 									}
 								}else{
 									
-									if($check_grace_marks){
+									if($final_result == 'RWPM'){
+										echo 'RWPM';
+									}elseif($check_grace_marks){
 										echo " ";
 									}elseif($Withheld){
                                         echo " ";
