@@ -1244,6 +1244,10 @@
 		}
 		$this->db->where('student_id', $param);
 		$this->db->update('student', $data);	
+	
+		if($student->user_id != '0'){
+			$this->Common_model->updateRecordByConditions('student',array('user_id'=>$student->user_id,'additional_course' =>"Y"),array('enrollment_no'=>$student->enrollment_no));
+		}
 		$this->session->set_flashdata('ajax_flash_message','approved');
 		echo json_encode(array(
 		"status" => 'true',
