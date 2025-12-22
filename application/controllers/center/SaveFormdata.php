@@ -35,7 +35,8 @@ class saveFormdata extends CI_Controller {
 			$data['center_code'] = $this->session->centerdata;
 			$data['center_name'] = $this->Common_model->getSinglefield('center','center_name','id='.$this->session->center_id);
 		}else{
-			$this->db->like('allot_course_group_id',$course_group_id);
+			// $this->db->like('allot_course_group_id',$course_group_id);
+			$this->db->where("FIND_IN_SET('".$course_group_id."', allot_course_group_id) !=", 0);
 			$this->db->where_in('id',array(21, 22, 23, 24, 25, 26, 27, 28));
 			$this->db->from('center');
 			$centerData = $this->db->get()->row();
@@ -149,6 +150,23 @@ class saveFormdata extends CI_Controller {
     $data['course_name']     = $this->Common_model->getCourseNameByCourseId($additional_course_group_id);
     $data['class_name']      = $this->Common_model->getClassNameByClassId($additional_class_id);
 	$data['exam_pattern'] ="MARKS";
+
+			// $this->db->like('allot_course_group_id',$additional_course_group_id);
+			$this->db->where("FIND_IN_SET('".$additional_course_group_id."', allot_course_group_id) !=", 0);
+			$this->db->where('id',$data['center_id']);
+			$this->db->from('center');
+			$centerDataAdditional = $this->db->get()->row();
+
+			if(!$centerDataAdditional){
+				$this->db->where("FIND_IN_SET('".$additional_course_group_id."', allot_course_group_id) !=", 0);
+				$this->db->where_in('id', [21,22,23,24,25,26,27,28,29,31,32,33,34,35]);
+				$this->db->from('center');
+				$centerData = $this->db->get()->row();
+				$data['center_id'] = $centerData->id;
+				$data['center_code'] = $centerData->center_code;
+				$data['center_name'] = $centerData->center_name;
+			}
+	// 
     // Insert additional student
     $student_id_additional = $this->Common_model->insertAll('student', $data);
 
