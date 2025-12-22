@@ -708,10 +708,10 @@
 			$this->load->view('admin/enrollment/set_enrollment_permission',$data);
 			$this->load->view('footer');
 		}else if($_POST['action']=='setPermission'){
-			$enrollment_nos = $this->input->post('enrollment_no');
+			$student_ids = $this->input->post('student_id');
 			
-			foreach($enrollment_nos as $en){
-				$student = $this->Common_model->getRecordByWhere('student',array('enrollment_no'=>$en));
+			foreach($student_ids as $en){
+				$student = $this->Common_model->getRecordByWhere('student',array('student_id'=>$en));
 
 				$exam_form_permission = $this->Common_model->getRecordByWhere('class_master',array('id'=>$student[0]->class_id));
 
