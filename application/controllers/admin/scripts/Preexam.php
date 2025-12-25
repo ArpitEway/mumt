@@ -24,9 +24,9 @@ class Preexam extends CI_Controller {
 		$class_ids = $classes[0]['class_id'];
 		
 		$this->db->select('count(class_id) as num,course_name,class_name,class_id');
-		$this->db->where(' temp_exam_form="N" and new_exam_form="N" and class_id not in ('.$class_ids.')');
+		$this->db->where(' temp_exam_form="N" and class_id not in ('.$class_ids.')');
 
-		// and payment_status="Y" and
+		// and payment_status="Y" and  and new_exam_form="N"
 		$this->db->where_not_in('class_id',[269]);
 
 		// $this->db->where('class_id',325);
@@ -89,7 +89,7 @@ class Preexam extends CI_Controller {
 					$paperWhere=array('class_id'=>$class_id,'type'=>'theory', 'cbcs_paper'=> $cbcs);
 			else			
 					$paperWhere=array('class_id'=>$class_id,'cbcs_paper'=> $cbcs);
-				
+
 					$this->db->where('paper_pattern','NEW');
 
 			$papers = $this->Common_model->get_record('paper_master','*',$paperWhere);
