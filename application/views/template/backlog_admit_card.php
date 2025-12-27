@@ -103,8 +103,8 @@
 							</tr>
 							<tr>
 							  <td><b>Course: </b> <?= $this->Common_model->getCourseNameByCourseId($student[0]->course_group_id);?> ( <?= $this->Common_model->getClassNameByClassId($student[0]->class_id);?> )</td>
-							  <!-- <td colspan="2"><b>EC Code: </b><?php //echo $exam[0]->exam_center_user;?></td> -->
-							   <td colspan="2"><b>Mode: </b>N/C</td>
+							  <td colspan="2"><b>EC Code: </b><?php echo $exam[0]->exam_center_user;?></td>
+							   <!-- <td colspan="2"><b>Mode: </b>N/C</td> -->
 							</tr>
 							<tr>
 							  <td colspan="3"><b>Student Name: </b> <?=$student[0]->name;?></td>

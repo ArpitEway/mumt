@@ -121,8 +121,8 @@
 							</tr>
 							<tr>
 							  <td><b>Course: </b> <?=$student[0]->course_name;?>  <?php if($student[0]->class_id!=163 && $student[0]->class_id!=175 ) echo '('.$student[0]->class_name.')';?> </td>
-							  <!-- <td colspan="2"><b>EC Code: </b><?php //echo $exam[0]->exam_center_user;?></td> -->
-							    <td colspan="2"><b>Mode: </b>N/C</td>
+							  <td colspan="2"><b>EC Code: </b><?php echo $exam[0]->exam_center_user;?></td>
+							    <!-- <td colspan="2"><b>Mode: </b>N/C</td> -->
 							</tr>
 							<tr>
 							  <td colspan="3"><b>Student Name: </b> <?=$student[0]->name;?></td>
