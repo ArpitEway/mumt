@@ -3370,10 +3370,10 @@ public function practical_assignment_marks_edit(){
 		//END
 		$exam_center= ($center == 'karaundi')?"Y":"N";
 		$this->db->where('karaundi_center',$exam_center);
-		if($center_id >100)
-		{
-			$this->db->where_in('student_id',[724247,721257,716719,711338,706161]);
-		}	
+		// if($center_id >100)
+		// {
+		// 	$this->db->where_in('student_id',[724247,721257,716719,711338,706161]);
+		// }	
 		$data['documents'] = $this->Common_model->getRecordByWhere('backlog_student',$where);
 		$data['center'] = $center;
 		if($center_permission[0]['exam_form_permission']!='Y' && $exam_form1 =="notSubmitted"){
