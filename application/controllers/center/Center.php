@@ -1775,7 +1775,7 @@ class Center extends CI_Controller {
 
 	public function backlog_admit_card($backlog_student_id){
 		// if(!$this->session->has_userdata('centerdata')){
-			redirect(base_url());
+			// redirect(base_url());
 		// }
 		// $en_student_id = $student_id;
 		$backlog_student_id=$this->Common_model->encrypt_decrypt($backlog_student_id,'decrypt');
