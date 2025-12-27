@@ -54,7 +54,7 @@
 	 if($paper_count){
 
 		  // $newstring = date('y')."1".substr($student->center_code, -4); 
-		  $newstring = "251".substr($student->center_code, -4); 
+		  $newstring = "252".substr($student->center_code, -4); 
 		 //echo "test"; print_r($student);  die;
      ?>   
 <section class="break" style="font-size: 16px;">
@@ -120,7 +120,7 @@
 							</tr>
 							<tr>
 							  <td colspan=""><b>Course: </b> <?=$student->course_name;?> (<?= $this->Common_model->getClassNameByClassId($student->class_id);?>) </td>
-							  <td colspan=""><b>EC Code: </b> <?php //echo $exam[0]->exam_center_user;?></td>
+							  <td colspan=""><b>EC Code: </b> <?php echo $exam[0]->exam_center_user;?></td>
 							   
 							  <td colspan="2"><b> </b></td>
 							</tr>

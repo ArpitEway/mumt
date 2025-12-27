@@ -65,7 +65,7 @@
 	 if($paper_count){
 
 		  // $newstring = date('y')."1".substr($student->center_code, -4); 
-		  $newstring = "251".substr($student->center_code, -4); 
+		  $newstring = "252".substr($student->center_code, -4); 
      ?>   
 <section class="break" style="font-size: 16px;">
 		<div class="admit-card" style="width:1030px !important; ">
@@ -137,8 +137,8 @@
 								 <td rowspan="4" class="text-center"><img src="<?=$img_url;?>"  width="115px" height="166px" /></td> 
 							</tr>
 							<tr>
-							  <td colspan="4"><b>Course: </b> <?=$student->course_name;?> <?php if($student->class_id!=163 && $student->class_id!=175 ) echo  '('.$student->class_name.')';?> </td>
-							  <!-- <td colspan="2"><b>EC Code: </b> <?php //echo $exam[0]->exam_center_user;?></td> -->
+							  <td colspan=""><b>Course: </b> <?=$student->course_name;?> <?php if($student->class_id!=163 && $student->class_id!=175 ) echo  '('.$student->class_name.')';?> </td>
+							  <td colspan=""><b>EC Code: </b> <?php echo $exam[0]->exam_center_user;?></td>
 							   <!-- <td colspan="2"><b> </b></td> -->
 							</tr>
 							<tr>
