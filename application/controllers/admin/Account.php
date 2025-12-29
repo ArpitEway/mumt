@@ -643,7 +643,7 @@
 			$this->db->where('p.payment','Y');
 			$this->db->where('s.new_exam_form','N');
             $this->db->where('p.fees_head','Exam Fees');
-			$this->db->where('p.exam_session','June 2025');
+			$this->db->where('p.exam_session','Dec 2025');
 			$this->db->where('p.center_id',$center_id); 
 			
 			$complaints = $this->db->get()->result();
