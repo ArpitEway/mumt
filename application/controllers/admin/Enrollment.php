@@ -833,8 +833,8 @@
 			$data['tot_enrolled'] = $this->Common_model->getCountByWhere('student',$where);
 
 			// not enrolled
-			$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july,'new_admission_permission'=>'N');
-			if($mode!=""){ 	$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
+			$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july,'new_admission_permission'=>'N','approved'=>'Y');
+			if($mode!=""){ 	$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N','approved'=>'Y'); 	}
 			$data['tot_not_enrolled'] = $this->Common_model->getCountByWhere('student',$where);
 
 			
