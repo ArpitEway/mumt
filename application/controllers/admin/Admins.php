@@ -4667,7 +4667,7 @@ public function update_exam_datewise_permission(){
 
 		// $query = $this->db->query("SELECT p.* FROM `paper_master_feb_23` as p join class_master as c on c.id=p.class_id WHERE  type='Theory' and cbcs_paper=cbcs and exam_date!='0000-00-00' order by p.course_group_id,class_id,cbcs_paper,paper_no asc");
 
-		$query = $this->db->query("SELECT p.* FROM `paper_master` as p join class_master as c on c.id=p.class_id WHERE  cbcs_paper=cbcs and class_id in (172,181,193,195,197,199,201,203,205,207,209,211,213,215,217,221,223,225,227,229,231,233,235,237,239,241,243,245,247,249,251,253,275,277,279,281,302,304,404,406,408,410,412,414,416,418,420,422,424,426,428,430,432,434,436,438,440,442,444,446,448,450,452,454,456,458,460,462,464,466,468,470,472,474,476,478,480,482,484,486,488,490,492,497,502,504,506,508,510,512) order by p.course_group_id,class_id,cbcs_paper,paper_no asc");
+		$query = $this->db->query("SELECT p.* FROM `paper_master` as p join class_master as c on c.id=p.class_id WHERE  cbcs_paper=cbcs and class_id in (172,181,193,195,197,199,201,203,205,207,209,211,213,215,217,221,223,225,227,229,231,233,235,237,239,241,243,245,247,249,251,253,275,277,279,281,302,304,404,406,408,410,412,414,416,418,420,422,424,426,428,430,432,434,436,438,440,442,444,446,448,450,452,454,456,458,460,462,464,466,468,470,472,474,476,478,480,482,484,486,488,490,492,497,502,504,506,508,510,512) order by p.course_group_id,class_id,cbcs_paper,paper_pattern,paper_no asc");
 		//  type='Theory' and
 
 		// $query = $this->db->query("SELECT p.* FROM `paper_master` as p join class_master as c on c.id=p.class_id WHERE  type='Theory' and cbcs_paper=cbcs and class_id in (106,109,112,118,121,127,130,133,103) order by p.course_group_id,class_id,cbcs_paper,paper_no asc");
