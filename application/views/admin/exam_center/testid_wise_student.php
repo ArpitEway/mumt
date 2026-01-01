@@ -81,7 +81,7 @@
 						$query_reg = $this->db->query($sql_reg);
 						$count_reg = $query_reg->result_array();
 
-						$sql_back_reg="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` AND `s`.`id` = `e`.`backlog_student_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."' AND exam_year='Dec 2025' and b.class_id not in (215) AND exam_form!='D' AND `e`.`status`='B' and mode='REG'";    
+						$sql_back_reg="SELECT count(*) as cnt FROM `backlog_exam_form` as `e` JOIN `backlog_student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` AND `s`.`id` = `e`.`backlog_student_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."' AND exam_year='Dec 2025' and s.class_id not in (215) AND exam_form!='D' AND `e`.`status`='B' and mode='REG'";    
 						$query_back_reg = $this->db->query($sql_back_reg);
 						$count_back_reg = $query_back_reg->result_array();
 						
