@@ -75,7 +75,7 @@
 
 						/*********** Regular Start ****************/
 
-						$sql_reg="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` WHERE `e`.`paper_code` = '".$data->paper_code."' AND `s`.`class_id` = '".$data->class_id."' and university_mode='REG' AND new_exam_form!='D' and class_id in (215,217,229,231,233,235,237,239,241,243,245,247,249,251,253,277,281,304,406,410,414,418,422,426,430,434,438,442,446,450,454,458,462,466,470,474,478,504,508,512,155,182,154,181)";
+						$sql_reg="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` WHERE `e`.`paper_code` = '".$data->paper_code."' AND `s`.`class_id` = '".$data->class_id."' and university_mode='REG' AND new_exam_form!='D' and s.class_id in (215,217,229,231,233,235,237,239,241,243,245,247,249,251,253,277,281,304,406,410,414,418,422,426,430,434,438,442,446,450,454,458,462,466,470,474,478,504,508,512,155,182,154,181)";
 						// $sql_reg="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` WHERE `e`.`paper_code` = '".$data->paper_code."' AND `s`.`class_id` = '".$data->class_id."' and university_mode='REG' AND (new_exam_form!='D' OR ( `s`.`session` = 'July 2024' AND `s`.`class_name` = 'I Year' ));";    
 						// // ( `s`.`session` = 'July 2023' AND `s`.`class_name` = 'I Year' ) OR ( `s`.`session` = 'Jan 2024' AND `s`.`class_name` = 'I SEM' )
 						$query_reg = $this->db->query($sql_reg);
@@ -167,7 +167,7 @@
 					$class=$this->Common_model->getRecordByWhere('class_master',array("id"=>$row->class_id));
  
 					/*********** Regular Start ****************/
-					 $sql_reg="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."' and university_mode='REG'  AND new_exam_form!='D' and class_id in (215,217,229,231,233,235,237,239,241,243,245,247,249,251,253,277,281,304,406,410,414,418,422,426,430,434,438,442,446,450,454,458,462,466,470,474,478,504,508,512,155,182,154,181)";
+					 $sql_reg="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."' and university_mode='REG'  AND new_exam_form!='D' and s.class_id in (215,217,229,231,233,235,237,239,241,243,245,247,249,251,253,277,281,304,406,410,414,418,422,426,430,434,438,442,446,450,454,458,462,466,470,474,478,504,508,512,155,182,154,181)";
 
 					// $sql_reg="SELECT count(*) as cnt FROM `new_exam_form` as `e` JOIN `student` as `s` ON `e`.`student_id` = `s`.`student_id` AND `s`.`class_id` = `e`.`class_id` WHERE `e`.`paper_code` = '".$row->paper_code."' AND `s`.`class_id` = '".$row->class_id."' and university_mode='REG'  AND (new_exam_form!='D' OR  ( `s`.`session` = 'July 2024' AND `s`.`class_name` = 'I Year' ))";
 
