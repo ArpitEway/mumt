@@ -4,7 +4,7 @@
     
     <!-- <p style="text-align:center;font-size:12px;">(Regular/Private)</p> -->
     <!-- <p style="text-align:center;font-size:12px;"><strong>Early Morning Shift Time 07:00 AM To 10:00 AM </strong></p> -->
-    <p style="text-align:center;font-size:12px;"><strong>Programme for Annual/Semester - Main/Backlog Examination December 2025 </strong></p>
+    <p style="text-align:center;font-size:12px;"><strong>Programme for Annual/Semester - Main/Backlog Examination <?= ($paper_list[0]['class_id'] == 215)?'December 2025':'January 2026'?> </strong></p>
     <p style="text-align:center;font-size:12px;"><strong> Morning Shift Time 10:00 AM To 01:00 PM </strong></p>
 
     <!-- <p style="text-align:center;font-size:12px;"><strong> Afternoon Shift Time 02:00 PM To 05:00 PM </strong></p> 
