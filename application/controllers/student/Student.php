@@ -265,7 +265,7 @@ class Student extends CI_Controller {
 
 	public function student_login($student_id){
 		
-		// $student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
+		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
 		$results=   $this->Common_model->getRecordById('student','student_id',$student_id);;
 		
 		if($results){
