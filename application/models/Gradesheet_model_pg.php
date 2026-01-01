@@ -508,6 +508,11 @@ class Gradesheet_model_pg extends CI_Model
 			}
 			
 			echo "<th>".$result['paper_name']."</th>";
+			if($this->session->account_type == 'ExamController'){
+				echo "<th class='text-center'>".$result['max_marks']."/".$result['min_marks']."</th>";
+				echo "<th class='text-center'>".$result['int_max_marks']."/".$result['int_min_marks']."</th>";
+				echo "<th class='text-center'>".$result['obt_marks']."/".$result['int_obt_marks']."</th>";
+			}
 			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory'&& !$this->withheld && !$this->withheld_practical && !$this->withheld_internal) {
 				$this->check_grace_marks = true;
 				$this->obt_tot_credit += $result['credit'];
@@ -606,6 +611,11 @@ class Gradesheet_model_pg extends CI_Model
 		echo '<tr>';
 			echo '<td></td>';
 			echo '<td class="text-right font-weight-bold" style="padding-right: 3rem!important;">Total</td>';
+			if($this->session->account_type == 'ExamController'){
+				echo '<td></td>';
+				echo '<td></td>';
+				echo '<td></td>';
+			}
 			echo '<td class="text-center font-weight-bold">'.$this->obt_tot_credit.'</td>';
 			echo '<td></td>';
 			echo '<td></td>';

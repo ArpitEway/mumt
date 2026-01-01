@@ -10,9 +10,9 @@
 		<?php $i=1; ?>
 		<?php foreach ($courses as $course){
 			$this->db->order_by('id');
-		 // $this->db->where_in('id',array(109,112,127,130,133,134,135,136,180,287,288,246,292,262));
+		 $this->db->where_in('id',array(101,102,104,105,106,107,108,109,110,111,112,120,121,125,126,127,128,129,131,132,133,134,135,136,137,138,143,147,150,155,171,174,180,182,191,198,208,214,216,224,226,228,232,236,240,242,246,248,250,252,254,256,262,264,268,218,273,276,280,282,283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,300,301,310));
 		//121,198,240,276,280,282,224,264,273,300,301,206,294	
-        $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id'],"backlog_exam_form_permission"=>'Y'));
+        $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id'],"backlog_result_permission"=>'Y'));
 		// ,"backlog_exam_form_permission"=>'Y'
 		// backlog_result_permission, "backlog_exam_form_permission"=>'Y'
 		
@@ -48,7 +48,7 @@
 					</td>
 			<td>
 				<?php
-				$class_pg= array(205,206,252,282,240);
+				$class_pg= array(205,206,239,240,248,278,282,252);
 				if ($class->practical_internal_marks=='Y' && (!in_array($class->id, $class_pg))){ //class->id 252 for non cbcs students remove next year
 					 
 					 
@@ -75,7 +75,9 @@
 				 } ?>
 			</td>
 			<td>
-				<?php if ($class->practical_internal_marks=='Y' && $class->id !=205 && $class->id !=206 && $class->id !=252){//class->id 252 for non cbcs students remove next year  
+				<?php 
+				$class_pg= array(205,206,239,240,248,278,282,252);
+				if ($class->practical_internal_marks=='Y' && !in_array($class->id, $class_pg)){//class->id 252 for non cbcs students remove next year  
 					if($class->regular_class=='Y') {?>
 				<a target="_blank" href="<?php echo  base_url('admin/admins/backlog_student_notification_list_bed/'."/REG/M/".$course_id.'/'.$class_id)  ?>">Notification Regular</a>
                 

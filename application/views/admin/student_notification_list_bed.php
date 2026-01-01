@@ -111,7 +111,7 @@ $abs_count = 0 ;
 					$fc2_min =0;
 					$grand_obt=0;
 					$grand_tot =0;
-					$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136);
+					$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136,328,329);
 					$paper_marks = $this->Common_model->student_info_for_BEd_result($student->student_id,$student->old_class_id);
 					// $this->Common_model->last_query();
 					foreach($paper_marks as  $new_exam_form){
@@ -540,7 +540,7 @@ $abs_count = 0 ;
 							
 						}
 						if((in_array($student->old_class_id, $class_ids)) && $mode=='REG'){
-						echo $this->Gradesheet_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+						 $this->Gradesheet_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
 						}else{
 							echo $final_result;
 						}
@@ -631,7 +631,7 @@ $abs_count = 0 ;
                                         }else{
                                         $div = "Pass";
                                         }
-                                        if($final_result == "RWPM" || $final_result == "RW"){
+                                        if($final_result == "RWPM" || $final_result == "RW" || $final_result == "FAIL"){
                                             ?>
                                              <td class="text-center" style="padding:0px" align="center"></td>
                                              <td class="text-center" style="padding:0px" align="center"></td>
@@ -668,7 +668,13 @@ $abs_count = 0 ;
 										if($percentage>=60){
 										$division = "First";
 										}elseif($percentage<60 && $percentage>=40){
-										$division  = "Second";
+											  $final_obtain_check = (!$isOneClass)?($grand_obtain+1):($total_marks_obt+1);	
+												$final_div_check= (!$isOneClass)?round(($final_obtain_check/$grand_total)*100,2):round(($final_obtain_check/$total_paper_marks)*100,2);
+												if($final_div_check>=60){
+													$division = "First By VCG";
+												}else{
+													$division  = "Second";
+												}
 										}else{
 										$division = "Third";
 										}
@@ -687,8 +693,9 @@ $abs_count = 0 ;
 								
 								if((in_array($student->old_class_id, $class_ids)) && $mode=='REG')	
 								{
-									
-									if($check_grace_marks){
+									if($final_result == 'RWPM'){
+										echo 'RWPM';
+									}elseif($check_grace_marks){
 										echo " ";
 									}elseif($Withheld || $gradesheetData['result'] == 'RW'|| $gradesheetData['result'] == 'RWAS' || $gradesheetData['result'] == 'RWPR'){
                                         echo " ";
@@ -716,7 +723,9 @@ $abs_count = 0 ;
 									}
 								}else{
 									
-									if($check_grace_marks){
+									if($final_result == 'RWPM'){
+										echo 'RWPM';
+									}elseif($check_grace_marks){
 										echo " ";
 									}elseif($Withheld){
                                         echo " ";

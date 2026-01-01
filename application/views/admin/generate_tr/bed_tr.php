@@ -628,7 +628,13 @@
     if($percent>=60){
       $div = "First";
     }elseif($percent<60 && $percent>=40){
-      $div  = "Second";
+      $final_obtain_check = $grandTotal_ob+1;	
+        $final_div_check= round(($final_obtain_check/$grandTotal_mar)*100,2);
+          if($final_div_check>=60){
+            $div = "First By VCG";
+          }else{
+          $div  = "Second";
+        }
     }else{
       $div = "Third";
     }

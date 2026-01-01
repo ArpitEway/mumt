@@ -27,7 +27,7 @@
 						<td><?=$student->course_name;?></td>
 						<td><?=$student->session;?></td>
 						<td><?=$student->enrollment_no;?></td>
-						<td><input type="checkbox" class="enrollment_no" name="enrollment_no[]" value="<?=$student->enrollment_no;?>"></td>
+						<td><input type="checkbox" class="student_id" name="student_id[]" value="<?=$student->student_id;?>"></td>
 					</tr>
 					<?php 
 					}
@@ -47,9 +47,9 @@
 		// Check All
 		$('#allEnrolled').on('change', function() {
 			if($('#allEnrolled').is(":checked")){
-				$(".enrollment_no").attr("checked", "checked");
+				$(".student_id").attr("checked", "checked");
 				}else{
-					$(".enrollment_no").attr("checked",false );
+					$(".student_id").attr("checked",false );
 			}
 		});
 

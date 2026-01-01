@@ -106,7 +106,7 @@ foreach($backlog_exam_form as $marks){
     if($marks->p_marks>=$paper_master[0]->min_theory_marks){
       $result = "PASS";
     }
-    if($marks->p_marks=='' || $marks->p_marks=='N'){
+    if($marks->p_marks=='' || $marks->p_marks=='N' ){
       $withheld = true;
     }
     if($marks->p_marks<$paper_master[0]->min_theory_marks){

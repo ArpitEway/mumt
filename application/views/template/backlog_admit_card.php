@@ -42,8 +42,15 @@
 			<div class="BoxC border- padding mar-bot">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Schedule of Exam for Annual/Semester Backlog Examination of <?= (in_array($student[0]->class_id,array(137,149,183,185,191,138,184,192,187,143,146,139,144,188,145,147,148,150,186,141,151,142,190,264,140,189,262,268,270,256,258,260,317,173,174,175,177,180,300,301)))?'July':'June'?> 2025<?php 
-						// echo (in_array($student[0]->class_id, array(300,301,255,257,259)))?'February':'January'?> 
+						<h5>Schedule of Exam for Annual/Semester Backlog Examination of December 2025</h5>
+						<!-- <h5>Schedule of Exam for Annual Backlog Examination December 2025</h5> -->
+
+							<?php 
+
+						// <?= (in_array($student[0]->class_id,array(137,149,183,185,191,138,184,192,187,143,146,139,144,188,145,147,148,150,186,141,151,142,190,264,140,189,262,268,270,256,258,260,317,173,174,175,177,180,300,301)))?'July':'June'
+						// // // echo (in_array($student[0]->class_id, array(300,301,255,257,259)))?'February':'January
+						// ?>
+				
 								<?php
 								/*
 								if($student[0]->course_group_id==75 || $student[0]->course_group_id==76 || $student[0]->course_group_id==77)
@@ -59,7 +66,7 @@
 							}
 							*/
 							?> 
-						</h5>
+						
 					</div>
 				</div>
 			</div>
@@ -75,7 +82,7 @@
 						  <?php 
 							  // 169 MDE165 MMYVV UTD KAROUNDI
 							  // 167 MDE163 Nachiketa Collage of computer science commerce & Advanced Technology
-							  if($student[0]->course_group_id==75 || $student[0]->course_group_id==76 || $student[0]->course_group_id==77 || $student[0]->exam_center_id==169  || $student[0]->exam_center_id==167 ){ ?>
+							  if($student[0]->course_group_id==75 || $student[0]->course_group_id==76 || $student[0]->course_group_id==77 || $student[0]->exam_center_id==169  || $student[0]->exam_center_id==167 || $student[0]->exam_center_id==178){ ?>
 							<tr>
 							  <td colspan="4"><b>Exam Center: </b>
 							  <?php echo $exam[0]->schoolcollegename.', '.$exam[0]->examcenteraddress;
@@ -96,7 +103,8 @@
 							</tr>
 							<tr>
 							  <td><b>Course: </b> <?= $this->Common_model->getCourseNameByCourseId($student[0]->course_group_id);?> ( <?= $this->Common_model->getClassNameByClassId($student[0]->class_id);?> )</td>
-							  <td colspan="2"><b>EC Code: </b><?=$exam[0]->exam_center_user;?></td>
+							  <td colspan="2"><b>EC Code: </b><?php echo $exam[0]->exam_center_user;?></td>
+							   <!-- <td colspan="2"><b>Mode: </b>N/C</td> -->
 							</tr>
 							<tr>
 							  <td colspan="3"><b>Student Name: </b> <?=$student[0]->name;?></td>
@@ -159,7 +167,7 @@
 					$class_ids = array(104,101,107,110,116,119,273,125,128,131,134,162,163,164,165,283,285,287,289,310,291,293,295,274,297,168,169,170,171,214,106,103,109,112,118,121,127,130,133,136,264,137,149,183,185,191,138,184,192,187,143,146,139,144,188,145,147,148,150,186,141,151,142,190,140,189,173,174,175,177,180);
 						if($student[0]->mode == 'PVT' && in_array($student[0]->class_id,$pvtClasses)){
 							if($paper->pvt_exam_shift=='Afternoon' && in_array($student[0]->class_id,$class_ids)){
-									echo '3:00 PM To 6:00 PM';		
+									echo '2:00 PM To 5:00 PM';		
 							}
 							elseif($paper->pvt_exam_shift=='Afternoon'){
 									echo '2:00 PM To 5:00 PM';
@@ -169,7 +177,7 @@
 							}
 						}else{
 							if($paper->exam_shift=='Afternoon' && in_array($student[0]->class_id,$class_ids)){
-								echo '3:00 PM To 6:00 PM';		
+								echo '2:00 PM To 5:00 PM';		
 							}
 							elseif($paper->exam_shift=='Afternoon'){
 								echo '2:00 PM To 5:00 PM';

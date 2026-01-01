@@ -298,7 +298,7 @@
 		</div>
 		<div class="col-md-4">
 			<div class="form-group">
-				<label class="col-form-label">Handicapped</label>
+				<label class="col-form-label">Person with Disability</label>
 				<div class="col-form-label">
 					<div class="radio-inline">
 						<label class="radio radio-success">
@@ -467,7 +467,7 @@
 					<div class="form-group">
 						<select class="form-control" name="passing_year">
 							<option value="">---Select---</option>
-							<?php for ($year=2024; $year > 1990; $year--) { ?>
+							<?php for ($year=2025; $year > 1990; $year--) { ?>
 								<option <?php if($student_data->passing_year == $year){ echo "selected";} ?>><?=$year?></option>
 							<?php } ?>
 						</select>

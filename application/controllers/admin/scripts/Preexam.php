@@ -18,14 +18,20 @@ class Preexam extends CI_Controller {
 		$this->load->view('admin/script/header',array('title' => 'Upload Exam Paper'));
 		/* class which dose not have elective papers */
 		
-		$classes = $this->Common_model->get_record('class_master','GROUP_CONCAT(id) as class_id',array('class_group' => 'N'));
+		$classes = $this->Common_model->get_record('class_master','GROUP_CONCAT(id) as class_id',array('class_group' => 'Y'));
 		// ,'mode'=>'Semester'
 		//,'exam_form_permission' => 'Y','exam_form_permission' => 'Y','admission_permission' => 'Y'
 		$class_ids = $classes[0]['class_id'];
 		
 		$this->db->select('count(class_id) as num,course_name,class_name,class_id');
-		$this->db->where(' temp_exam_form="N" and new_exam_form="N"');// and payment_status="Y"class_id in ('.$class_ids.') and
-		$this->db->where('class_id',325);
+		$this->db->where(' temp_exam_form="N" and class_id not in ('.$class_ids.')');
+
+		// and payment_status="Y" and  and new_exam_form="N"
+		$this->db->where_not_in('class_id',[269]);
+
+		// $this->db->where('class_id',325);
+		$this->db->where_in('class_id',[275,279,223,225,460,476]);
+
 		$this->db->group_by('class_id');
 		$this->db->order_by('course_group_id');
 		$studentClasses = $this->db->get('student')->result();
@@ -36,11 +42,14 @@ class Preexam extends CI_Controller {
 							'temp_exam_form' => "N",
 							'university_mode'=>'REG',
 						);
+			$this->db->where('session','July 2025');
+
 			$studentsReg = $this->Common_model->getCountByWhere('student',$where);
 			$where = array('class_id' => $row->class_id,
 				'temp_exam_form' => "N",
 				'university_mode'=>'PVT',
 				);
+
 			$studentsPvt = $this->Common_model->getCountByWhere('student',$where);
 			
 			$row->privateCount=$studentsPvt;
@@ -63,20 +72,26 @@ class Preexam extends CI_Controller {
 	{
 		$where = array('class_id' => $class_id,
 					//'payment_status' => 'Y',
-					'new_exam_form' => 'N',
+					// 'new_exam_form' => 'N',
 					'temp_exam_form' => "N",
 					'university_mode'=>$university_mode,
 		);
-	
+		$this->db->where('session','July 2025');
+
 		$this->db->limit(1000);
+
 		$students = $this->Common_model->get_record('student','*',$where);
 		$classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 		
 		$cbcs = ($classData->cbcs == 'Y')?'Y':'N';
+
 		if($university_mode=='PVT') 
 					$paperWhere=array('class_id'=>$class_id,'type'=>'theory', 'cbcs_paper'=> $cbcs);
 			else			
 					$paperWhere=array('class_id'=>$class_id,'cbcs_paper'=> $cbcs);
+
+					$this->db->where('paper_pattern','NEW');
+
 			$papers = $this->Common_model->get_record('paper_master','*',$paperWhere);
 		foreach ($students as $student) {
 			$where = array('student_id'=>$student['student_id']);
@@ -106,7 +121,7 @@ class Preexam extends CI_Controller {
 		$class_ids = $classes[0]['class_id'];
 		
 		$this->db->select('count(class_id) as num,course_name,class_name,class_id');
-		$this->db->where('class_id in ('.$class_ids.') and new_exam_form="D" and new_admission_permission="N" and enrolled = "Y" and session="July 2024" and class_name = "I Year" ');
+		$this->db->where('class_id in ('.$class_ids.') and new_exam_form="D" and new_admission_permission="N" and enrolled = "Y" and session="July 2025" and class_name = "I SEM" ');
 
 		//and (( session="July 2023" and class_name = "I Year") || ( session="Jan 2024" and class_name = "I SEM"))
 		
@@ -132,7 +147,9 @@ class Preexam extends CI_Controller {
 		//'temp_exam_form' => "Y",
 		// $this->db->where('((session="July 2023" and class_name = "I Year") || ( session="Jan 2024" and class_name = "I SEM"))');
 
-		$this->db->where('session="July 2024" and class_name = "I Year"');
+		// $this->db->where('session="July 2024" and class_name = "I Year"');
+
+		$this->db->where('session="July 2025" and class_name = "I SEM"');
 		
 		$students = $this->Common_model->get_record('student','*',$where);
 		// $this->Common_model->last_query();

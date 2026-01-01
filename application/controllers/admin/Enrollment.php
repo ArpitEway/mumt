@@ -708,10 +708,10 @@
 			$this->load->view('admin/enrollment/set_enrollment_permission',$data);
 			$this->load->view('footer');
 		}else if($_POST['action']=='setPermission'){
-			$enrollment_nos = $this->input->post('enrollment_no');
+			$student_ids = $this->input->post('student_id');
 			
-			foreach($enrollment_nos as $en){
-				$student = $this->Common_model->getRecordByWhere('student',array('enrollment_no'=>$en));
+			foreach($student_ids as $en){
+				$student = $this->Common_model->getRecordByWhere('student',array('student_id'=>$en));
 
 				$exam_form_permission = $this->Common_model->getRecordByWhere('class_master',array('id'=>$student[0]->class_id));
 
@@ -722,7 +722,9 @@
 
 				// ( ( $student[0]->session=='July 2023' && $student[0]->class_name=="I Year") || ( $student[0]->session=='Jan 2024' &&  $student[0]->class_name=="I SEM") ) 
 
-				 if($exam_form_permission[0]->exam_form_permission=='Y' && $session[0]->exam_form_permission=="Y" && $student[0]->session=='July 2024' && $student[0]->class_name=="I Year" )
+				// if($exam_form_permission[0]->exam_form_permission=='Y' && $session[0]->exam_form_permission=="Y" && $student[0]->session=='July 2024' && $student[0]->class_name=="I Year" )
+
+				 if($exam_form_permission[0]->exam_form_permission=='Y' && $session[0]->exam_form_permission=="Y" && $student[0]->session=='July 2025' && $student[0]->class_name=="I SEM" )
 				 {
 				 	$data['new_exam_form'] ='N';
 				 } 
@@ -831,8 +833,8 @@
 			$data['tot_enrolled'] = $this->Common_model->getCountByWhere('student',$where);
 
 			// not enrolled
-			$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july,'new_admission_permission'=>'N');
-			if($mode!=""){ 	$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N'); 	}
+			$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july,'new_admission_permission'=>'N','approved'=>'Y');
+			if($mode!=""){ 	$where = array('enrolled'=>'N','enrollment_no !='=>'-','session'=>$session_july,'university_mode'=>$mode,'new_admission_permission'=>'N','approved'=>'Y'); 	}
 			$data['tot_not_enrolled'] = $this->Common_model->getCountByWhere('student',$where);
 
 			
@@ -1242,6 +1244,10 @@
 		}
 		$this->db->where('student_id', $param);
 		$this->db->update('student', $data);	
+	
+		if($student->user_id != '0'){
+			$this->Common_model->updateRecordByConditions('student',array('user_id'=>$student->user_id,'additional_course' =>"Y"),array('enrollment_no'=>$student->enrollment_no));
+		}
 		$this->session->set_flashdata('ajax_flash_message','approved');
 		echo json_encode(array(
 		"status" => 'true',

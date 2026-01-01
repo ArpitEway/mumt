@@ -117,7 +117,14 @@
 					<td><?php echo $student["center_name"]; ?></td>
 				   <td><?php echo $student["adhar_no"]; ?></td>
 					<td>
-						<?php if($student["temp_exam_form"]=='Y'){ ?>
+						<?php
+						if($this->session->account_type == "Admins"){
+							?>
+						<a target="_blank"  class="mx-2" href="<?=base_url('admin/Admins/editform/'.$student_id);?>"><i class="fas fa-pencil-alt" aria-hidden="true"></i></a>
+						<?php 
+						}
+						
+						if($student["temp_exam_form"]=='Y'){ ?>
 						<a target="_blank"  class="" href="<?=base_url('show_paper/'.$student_id);?>"><i class="fa fa-eye" aria-hidden="true"></i></a>
 					 	<?php if($this->session->account_type =="Admins"){?>
 					  <button  class="btn btn-sm  " onclick="delete__student_paper(this)" data-id = "<?=$student['student_id']; ?>" data-classid = "<?=$student['class_id']; ?>"><i class="fa fa-trash" aria-hidden="true"></i></button>   

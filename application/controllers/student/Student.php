@@ -351,9 +351,15 @@ class Student extends CI_Controller {
 		}
 		$this->db->order_by('id');
 		if($student['university_mode'] != "PVT"){
-		
+		if(in_array($student['class_id'] , [268,273])) { 
+			$this->db->where('paper_pattern','NEW');
+			$condition = ' and group_pattern="NEW"';
+		}else{
+			$condition = '';
+		}
 		$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory" and cbcs_paper="'.$cbcs.'"');
-		$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id join paper_master as m on m.id=p.paper_id where g.class_id='.$student['class_id'].' and cbcs_paper="'.$cbcs.'"  Order by g.id,p.sub_group_id,p.id')->result();
+
+		$groupPaper = $this->db->query('select p.*,g.group_name,m.paper_code_utd from `group` as g join group_paper as p  on g.id=p.group_id join paper_master as m on m.id=p.paper_id where g.class_id='.$student['class_id'].' and cbcs_paper="'.$cbcs.'" '.$condition.' Order by g.id,p.sub_group_id,p.id')->result();
 		//echo $this->Common_model->last_query();
 		}else{
 			$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory" and type="theory" and cbcs_paper="'.$cbcs.'"');

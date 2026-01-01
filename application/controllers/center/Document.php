@@ -42,7 +42,7 @@
  			// 	$where.= "document_uploaded!='Y' and payment_status='Y' and center_id=".$this->session->center_id ."  and student.class_name not like '%SEM%' and student.session='July 2024'";
 			// }else{
 						$permission_session= $this->Common_model->getRecordByWhere('session',array('document_permission'=>'Y' )); 
-						$where.= "document_uploaded!='Y' and payment_status='Y' and student.class_name not like '%SEM%'  and ( "; //and student.class_name not like '%SEM%'
+						$where.= "document_uploaded!='Y' and payment_status='Y' and ( "; //and student.class_name not like '%SEM%'
 						foreach($permission_session as $key=>$row){
 							
 							if($row->semester_permission=='N' && $row->annual_permission=='Y' )

@@ -596,15 +596,13 @@
                 }
 		}
 	
-		
-		if ($isFinalClass && $pattern == 'MARKS') {	?>
+		if ($isFinalClass && $student->exam_pattern == 'MARKS') {	?>
 		<td  class="text-center" style="padding:0px" align="center"><?php
 			if(!$isOneClass){
 				$percentage = round(($grand_obtain/$grand_total)*100,2);  
 			}else{
 				$percentage = round(($total_obtained_marks/$total_max_marks)*100,2);	
-			}
-			  
+			} 
 			if($percentage>=60){
 			  $division = "First";
 			}elseif($percentage<60 && $percentage>=40){

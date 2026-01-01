@@ -47,12 +47,12 @@
 <body>
   <center>
     <?php 
-
+ 
     $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
     $marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
-    $border = ($classData->admission_permission == 'Y')?'border: 1px solid black;margin-top:20px;':'border: 0px solid #22316C;';
-    $margin = ($classData->admission_permission == 'Y')?'min-height:420px;margin-top: 20px;':'min-height:420px;margin-top: 20px;';
+    $border = ($classData->admission_permission == 'Y' || $university_mode == 'PVT')?'border: 1px solid black;margin-top:20px;':'border: 0px solid #22316C;';
+    $margin = ($classData->admission_permission == 'Y' || $university_mode == 'PVT')?'min-height:420px;margin-top: 20px;':'min-height:420px;margin-top: 20px;';
     $isOneClass = $isFinalClass = $this->Common_model->hasOneClass($course_group_id);
      
     if($isFinalClass){
@@ -511,7 +511,13 @@
                           if($percentage>=60){
                             $division = "First";
                           }elseif($percentage<60 && $percentage>=40){
+                             $final_obtain_check = (!$isOneClass)?($gtot_obtain_marks+1):($tot_std_marks+1);	
+	                        $final_div_check= (!$isOneClass)?round(($final_obtain_check/$gtot_total_marks)*100,2):round(($final_obtain_check/$tot_marks)*100,2);
+                            if($final_div_check>=60){
+                              $division = "First By VCG";
+                            }else{
                             $division  = "Second";
+                            }
                           }else{
                             $division = "Third";
                           }

@@ -207,7 +207,7 @@
             ?>
             <tr>
             <td><?php echo $i; ?></td>
-            <td><?php echo $paper->paper_code; ?></td>
+            <td><?php echo (in_array($student['class_id'], [273]))?$paper->paper_code_utd:$paper->paper_code; ?></td>
             <?php if ($paper->sub_group!=0): ?>
             <td><?php echo $this->Common_model->getSubGroupNameById($paper->sub_group); ?></td>
             <?php endif ?>
@@ -285,7 +285,7 @@
 				
 			}
 
-			$where=array('center_id'=>$student['center_id'],'exam_session'=>'June 2025','fees_head'=>'Exam Fees','payment'=>'Y','student_id'=>$student['student_id']);
+			$where=array('center_id'=>$student['center_id'],'exam_session'=>'Dec 2025','fees_head'=>'Exam Fees','payment'=>'Y','student_id'=>$student['student_id']);
 			$paid= $this->Common_model->getRecordByWhere('online_payment_transaction',$where);
 			if(!$paid){
 						if(in_array($this->session->center_id, $center_ids)){

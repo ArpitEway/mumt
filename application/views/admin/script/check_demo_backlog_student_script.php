@@ -48,16 +48,20 @@
               //    $data = array('demo'=>'Y','new_exam_form_permission'=>'Y');
               // }
              
-             $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+             // $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
              
              $student_demo_details = $this->Common_model->getRecordByWhere('student',array('student_id' => $row->student_id));
              echo " <br> Promote Data ".$student_demo_details[0]->promote."<br>";
             } else{ ?>
+
              <a class="text-info" href="<?=base_url('admin/scripts/Postexam/backlog_marks_update_scripts/'.$row->student_id.'/'.$row->class_id)?>" target="_blank">Set Backlog</a> <?php 
 
               ####### Add Backlog Script For Main Exam End #######
 
-                 $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$row->class_id,'student_id'=>$row->student_id,'exam_year'=>'June 2024'));
+                 $this->db->where_in('exam_year',array('January 2025','February 2025'));
+
+                 $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$row->class_id,'student_id'=>$row->student_id));
+                 // ,'exam_year'=>'June 2025'
 
                  $fail_count =0;
                 if($students[0]->course_group_id == '76'){
@@ -78,7 +82,7 @@
                 'roll_no' => 0,
                 'session' => $students[0]->session,
                 'mode'=>$students[0]->university_mode,
-                'exam_year'=>'June 2025',
+                'exam_year'=>'Dec 2025',
                 'exam_form' => 'N',
                 'enrollment_no' => $students[0]->enrollment_no,
                 'center_id' => $students[0]->center_id,
@@ -90,7 +94,7 @@
                 'upload_result' =>  'N',
                 'result_permission' => 'N',
                 );
-                $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students[0]->student_id,'class_id'=>$students[0]->class_id,'exam_year'=>'June 2025'));
+                $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students[0]->student_id,'class_id'=>$students[0]->class_id,'exam_year'=>'Dec 2025'));
                 if( $duplicate == Array ( )){
                 $backlog_student_id = $this->Common_model->insertAll('backlog_student',$data);
 

@@ -275,7 +275,7 @@
 		</div>
 		<div class="col-md-4">
 			<div class="form-group">
-				<label class="col-form-label">Handicapped</label>
+				<label class="col-form-label">Person with Disability</label>
 				<div class="col-form-label">
 					<div class="radio-inline">
 						<label class="radio radio-success">

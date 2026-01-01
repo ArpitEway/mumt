@@ -200,13 +200,13 @@ table.last_table, .last_table td, .last_table th{
       }else if($classData->project!='N' || $classData->practical!='N' && $classData->internal =='Y'){
         $rowspandata = "4";
       }else if($classData->project =='N' &&  $classData->practical=='N' && $classData->internal=='N'){
-        $rowspandata = "3";
+        $rowspandata = ($classData->id==143)?"7":"3";
       }
 
       
     }else{
       $rowspanhead = "4";
-      $rowspandata = "3";
+      $rowspandata = ($classData->id==143)?"7":"3";
     }
     foreach($marks as $new_exam_form)
     {
@@ -297,8 +297,11 @@ table.last_table, .last_table td, .last_table th{
         $p_abs_count++;
         array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
       }
-      if($new_exam_form->p_marks<$new_exam_form->min_theory_marks){
+      if(($new_exam_form->p_marks + $new_exam_form->int_marks<$new_exam_form->min_theory_marks+$new_exam_form->min_internal_marks) && $classData->practical_internal_marks=="Y"){
         $p_fail_count++;
+        array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
+      }elseif($new_exam_form->p_marks < $new_exam_form->min_theory_marks){
+         $p_fail_count++;
         array_push( $atkt_paper_codes_array ,$new_exam_form->paper_code );
       }
       if($new_exam_form->int_marks=='N' && $classData->practical_internal_marks=="Y" && $student->university_mode != 'PVT' && $new_exam_form->max_internal_marks !=0){
@@ -540,7 +543,7 @@ table.last_table, .last_table td, .last_table th{
           
               if($new_exam_form->theory_marks==''){
                 echo '-';
-              }elseif($new_exam_form->theory_marks>=$new_exam_form->min_theory_marks && $new_exam_form->theory_marks!="ABS"){
+              }elseif($new_exam_form->theory_marks+$new_exam_form->int_marks>=$new_exam_form->min_theory_marks+$new_exam_form->min_internal_marks && $new_exam_form->theory_marks!="ABS"){
                 echo $new_exam_form->theory_marks;
               }else{
                 echo $new_exam_form->theory_marks;
@@ -607,8 +610,10 @@ table.last_table, .last_table td, .last_table th{
         echo "ABS F";
       }
       else{
-        if($new_exam_form->p_marks < $new_exam_form->min_theory_marks && $new_exam_form->p_marks!=''){
+        if((($new_exam_form->p_marks + $new_exam_form->int_marks) < ($new_exam_form->min_theory_marks + $new_exam_form->min_internal_marks) ) && $new_exam_form->p_marks!='' && $classData->practical_internal_marks=="Y"){
           echo  $new_exam_form->p_marks .' F';
+        }elseif(($new_exam_form->p_marks  < $new_exam_form->min_theory_marks && $classData->practical_internal_marks=="N") && $new_exam_form->p_marks!=''){
+           echo  $new_exam_form->p_marks .' F';
         }elseif($new_exam_form->p_marks ==''){
           echo "RWPR";
         }
@@ -663,7 +668,7 @@ table.last_table, .last_table td, .last_table th{
         if($student->university_mode != 'PVT'){
        if($check_grace_marks==true){
         echo $paper_master->theory_marks+ $paper_master->int_marks;
-      } elseif(($paper_master->theory_marks<$paper_master->min_theory_marks) || $paper_master->theory_marks=='ABS' || $paper_master->int_marks=='ABS'){
+      } elseif(($paper_master->theory_marks + $paper_master->int_marks  <$paper_master->min_theory_marks + $paper_master->min_internal_marks  ) || $paper_master->theory_marks=='ABS' || $paper_master->int_marks=='ABS'){
 
         if($paper_master->theory_marks==''){
           echo "-";
@@ -695,8 +700,11 @@ table.last_table, .last_table td, .last_table th{
     }else{ 
       if($paper_master->p_marks=='ABS'){
         echo ($paper_master->int_marks=='ABS' || $paper_master->int_marks=='N') ? 'ABS F' : $paper_master->int_marks.' F';
-      }elseif($paper_master->p_marks<$paper_master->min_theory_marks){
+      }elseif($paper_master->p_marks + $paper_master->int_marks<$paper_master->min_theory_marks + $paper_master->min_internal_marks && $classData->practical_internal_marks=="Y"){
+        echo $paper_master->p_marks + $paper_master->int_marks.' F';
+      }elseif($paper_master->p_marks <$paper_master->min_theory_marks  && $classData->practical_internal_marks=="N"){
         echo $paper_master->p_marks.' F';
+
       }else{
         echo $paper_master->p_marks+$paper_master->int_marks;
       }

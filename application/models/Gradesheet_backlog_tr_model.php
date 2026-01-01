@@ -494,7 +494,7 @@ class Gradesheet_backlog_tr_model extends CI_Model
 				$paper_codes=array('1RBBA2','1RBBA4','1RCBBA2','1RCBBA4','1RBA2','1RBA4','1RBCOM2','1RBCOM4','1RBCOMCA2','1RBCOMCA4','1RBCOMT2','1RBCOMT4','1RBCA2','1RBCA4','1RBSCCBC2','1RBSCCBC4','1RBSCCS2','1RBSCCS4','1RBSCPCM2','1RBSCPCM4','1RBSW2','1RBSW4','2RBBA2','2RBBA4','2RBA2','2RBA4','2RBCOM2','2RBCOM4','2RBCOMCA2','2RBCOMCA4','2RBCOMT2','2RBCOMT4','2RBCA2','2RBCA4','2RBSCCBC2','2RBSCCBC4','2RBSCCS2','2RBSCCS4','2RBSCPCM2','2RBSCPCM4','2RBSW2','2RBSW4','3RBBA2','3RBBA4','3RBA2','3RBA4','3RBCOM2','3RBCOM4','3RBCOMCA2','3RBCOMCA4','3RBCOMT2','3RBCOMT4','3RBCA2','3RBCA4','3RBSCCBC2','3RBSCCBC4','3RBSCCS2','3RBSCCS4','3RBSCPCM2','3RBSCPCM4','3RBSW2','3RBSW4');
 				if(in_array($key,$paper_codes))	
 				{
-                    $obt = ($result['obt_credit'] == 2)?$result['obt_credit'].' C':$result['obt_credit'];
+                    $obt = ($result['obt_credit'] == 2 && $result['letter_grade'] !="F")?$result['obt_credit'].' C':$result['obt_credit'];
 				echo "<td colspan= '2' class='text-center'>".$obt."</td>";
 				}else{
 					

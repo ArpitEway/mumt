@@ -124,11 +124,11 @@
 						</div>
 					</a> -->
 					
-					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('paper_missing_list/private');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('paper_missing_list/private');?>">
 						<div>
 							<span class="nav-text">Paper Missing List</span>
 						</div>
-					</a> -->
+					</a>
 					<a class="border-0 custom-menu-item" href="<?=base_url('photo_missing_list/PVT');?>">
 						<div>
 							<span class="nav-text">Photo Missing List</span>
@@ -214,11 +214,11 @@
 						</div>
 					</a>
 					
-					<!-- <a class="border-0 custom-menu-item" href="<?=base_url('paper_missing_list/regular');?>">
+					<a class="border-0 custom-menu-item" href="<?=base_url('paper_missing_list/regular');?>">
 						<div>
 							<span class="nav-text">Paper Missing List</span>
 						</div>
-					</a> -->
+					</a>
 					<a class="border-0 custom-menu-item" href="<?=base_url('photo_missing_list/REG');?>">
 						<div>
 							<span class="nav-text">Photo Missing List</span>
@@ -243,10 +243,9 @@
 			<div class="tab-pane fade" id="exam" role="tabpanel" aria-labelledby="exam-tab">
 				<div class="row">
 				  	
-					<?php 
-                    if($this->session->center_id < 100){ ?>
+					<?php // if($this->session->center_id < 100 && $this->session->center_id > 100){ ?>
                    	
-					  <a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
+					 <!--  <a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>">
 						<div>
 							<span class="nav-text">Practical Marks Submission </span>
 						</div>
@@ -255,8 +254,8 @@
 						<div>
 							<span class="nav-text">Internal Marks Submission (Regular)</span>
 						</div>
-					</a> 
-					<?php  } ?>
+					</a>  -->
+					<?php //  }  ?>
 					
 				<?php if ($center->admit_card_permission=='Y'): ?>
 						<a class="border-0 custom-menu-item" href="<?=base_url('admit_card_list');?>">
@@ -274,28 +273,35 @@
 				<?php 
               //  $count = $this->Common_model->getCountByWhere('student',array('center_id'=>$center->id,'new_exam_form !='=>'D'));
                 //&& $count>0href="<?=base_url('exam_form_students');"
-                if ($center->exam_form_permission=='Y' ): ?>
-				 <a class="border-0 custom-menu-item" id="main-exam" >
+                if ($center->exam_form_permission=='Y' ){ ?>
+				 <!-- <a class="border-0 custom-menu-item" id="main-exam" >
 							<div>
-								<span class="nav-text">Exam Form June 2025</span>
+								<span class="nav-text">Exam Form Dec 2025</span>
 							</div>
-					</a> 
+					</a>  -->
+				<?php if($center->id > 100){?>
 					<a class="border-0 custom-menu-item" href="<?=base_url('backlog_exam_form_students/notSubmitted/center');?>">
 							<div>
-								<span class="nav-text">Backlog Exam Form June 2025</span>
+								<span class="nav-text">Backlog Exam Form Dec 2025</span>
 							</div>
 					</a>  
+					<?php
+				}
+					if($center->id < 100 || $center->id == 2115){?>
 					<a class="border-0 custom-menu-item karaundi-exam" data-id="main" >
 							<div>
-								<span class="nav-text">Exam Form Karaundi June 2025</span>
+								<span class="nav-text">Exam Form Karaundi Dec 2025</span>
 							</div>
 					</a> 
 					<a class="border-0 custom-menu-item karaundi-exam" data-id="backlog">
 							<div>
-								<span class="nav-text">Backlog Exam Form Karaundi June 2025</span>
+								<span class="nav-text">Backlog Exam Form Karaundi Dec 2025</span>
 							</div>
 					</a>  
-					<?php endif ?>
+				
+				<?php
+					} 
+				} ?>
 				
 				
 					<?php if ($center->result_permission=='Y'): ?>
@@ -319,11 +325,11 @@
 							</div>
 						</a> 
  -->
-						 <a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
+						 <!-- <a class="border-0 custom-menu-item" href="<?=base_url('search_exam_by_course');?>">
 					 		<div>
 								<span class="nav-text">Time Table June 2025</span>
 					 		</div>
-						</a>   
+						</a>    -->
 					
 					
 
@@ -500,7 +506,9 @@ $("#main-exam").click(function (e) {
 
 $(".karaundi-exam").click(function (e) {
 	let exam = $(this).data('id');
-	let html = (exam == 'main') ? '<b> आवश्यक सुचना :- </b>सूचित किया जाता है कि मई - जून 2025 में आयोजित होने वाली परीक्षाएं विश्वविद्यालय के मुख्यालय करौंदी जिला कटनी में आयोजित की जाएगी एवं  परीक्षाओं के लिये परीक्षा आवेदन पत्र भरने की अंतिम तिथि 10 मई 2025 एवं विलम्ब शुल्क 200 रुपये सहित परीक्षा आवेदन पत्र भरने की अंतिम तिथि 22 मई 2025 एवं विलंब शुल्क 500 रुपये सहित परीक्षा आवेदन पत्र भरने की अंतिम तिथि 26 मई 2025 निर्धारित की गयी है। निर्धारित तिथि तक परीक्षा आवेदन पत्र भरने की प्रक्रिया पूर्ण करे|' : '<b> आवश्यक सुचना :- </b>सूचित किया जाता है कि मई - जून 2025 में आयोजित होने वाली परीक्षाएं विश्वविद्यालय के मुख्यालय करौंदी जिला कटनी में आयोजित की जाएगी|';
+	// let html = (exam == 'main') ? '<b> आवश्यक सुचना :- </b>सूचित किया जाता है कि मई - जून 2025 में आयोजित होने वाली परीक्षाएं विश्वविद्यालय के मुख्यालय करौंदी जिला कटनी में आयोजित की जाएगी एवं  परीक्षाओं के लिये परीक्षा आवेदन पत्र भरने की अंतिम तिथि 10 मई 2025 एवं विलम्ब शुल्क 200 रुपये सहित परीक्षा आवेदन पत्र भरने की अंतिम तिथि 22 मई 2025 एवं विलंब शुल्क 500 रुपये सहित परीक्षा आवेदन पत्र भरने की अंतिम तिथि 26 मई 2025 निर्धारित की गयी है। निर्धारित तिथि तक परीक्षा आवेदन पत्र भरने की प्रक्रिया पूर्ण करे|' : '<b> आवश्यक सुचना :- </b>सूचित किया जाता है कि मई - जून 2025 में आयोजित होने वाली परीक्षाएं विश्वविद्यालय के मुख्यालय करौंदी जिला कटनी में आयोजित की जाएगी|';
+	let html = '<b> आवश्यक सुचना :- </b>सूचित किया जाता है कि दिसम्बर 2025 में आयोजित होने वाली परीक्षाएं विश्वविद्यालय के मुख्यालय करौंदी जिला कटनी में आयोजित की जाएगी |';
+ 
     Swal.fire({
         html: html,
         icon: "info",

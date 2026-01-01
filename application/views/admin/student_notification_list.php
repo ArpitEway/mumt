@@ -478,7 +478,6 @@
 							
 							
 						}
-				  
                         if($final_result == 'RWPM'){
                             if(($fail_count>0 || $abs_count>0) && !$check_grace_marks){
                                 $final_result =  'FAIL';
@@ -486,7 +485,7 @@
                             }
                         }
 				//    echo $final_result;
-				if((in_array($student->old_class_id, $class_ids)) && $student->exam_pattern=='GRADE' ){//&& $mode=='REG'
+				if((in_array($student->old_class_id, $class_ids)) && $student->exam_pattern=='GRADE' && $final_result != 'RWPM'){//&& $mode=='REG'
 						 $final_result = $this->Gradesheet_tr_model->view_notification_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
 						}else{
 							echo $final_result;
@@ -629,7 +628,13 @@
 			if($percentage>=60){
 			  $division = "First";
 			}elseif($percentage<60 && $percentage>=40){
-			  $division  = "Second";
+			    $final_obtain_check = (!$isOneClass)?($grand_obtain+1):($total_obtained_marks+1);	
+				$final_div_check= (!$isOneClass)?round(($final_obtain_check/$grand_total)*100,2):round(($final_obtain_check/$total_max_marks)*100,2);
+				if($final_div_check>=60){
+					$division = "First By VCG";
+				}else{
+					$division  = "Second";
+				}
 			}else{
 			  $division = "Third";
 			}

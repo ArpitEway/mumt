@@ -65,7 +65,7 @@
 	 if($paper_count){
 
 		  // $newstring = date('y')."1".substr($student->center_code, -4); 
-		  $newstring = "251".substr($student->center_code, -4); 
+		  $newstring = "252".substr($student->center_code, -4); 
      ?>   
 <section class="break" style="font-size: 16px;">
 		<div class="admit-card" style="width:1030px !important; ">
@@ -83,19 +83,22 @@
 			<div class="BoxC border- padding">
 				<div class="row">
 					<div class="col-12 text-center">
-						<!-- <h5>
-							ATTENDANCE SHEET OF CANCELLED EXAM FOR ANNUAL/SEMESTER EXAMINATION OF JANUARY 2024
-						</h5> -->
-						<h5>Attendance Sheet Examination <?php echo in_array($student->class_id, array(328, 329,313)) 
-    ? 'August' 
-    : (in_array($student->class_id, array(
-        137,149,183,185,191,138,184,192,187,143,146,139,144,188,145,147,148,
-        150,186,141,151,142,190,264,140,189,262,268,270,256,258,260,317,
-        173,174,175,177,180,300,301,325
-    )) 
-        ? 'July' 
-        : 'June');?> 2025
+						<h5>
+							ATTENDANCE SHEET FOR ANNUAL/SEMESTER EXAMINATION OF DECEMBER 2025
 						</h5>
+						<!-- 
+						OF CANCELLED EXAM
+						<h5>Attendance Sheet Examination December 2025
+						</h5> -->
+						<?php //echo in_array($student->class_id, array(328, 329,313)) 
+    //? 'August' 
+    //: (in_array($student->class_id, array(
+     //   137,149,183,185,191,138,184,192,187,143,146,139,144,188,145,147,148,
+     //   150,186,141,151,142,190,264,140,189,262,268,270,256,258,260,317,
+     //   173,174,175,177,180,300,301,325
+    //)) (Session - Dec 2025)
+       // ? 'July' 
+       // : 'June');?>
 					</div>
 				</div>
 			</div>
@@ -114,7 +117,7 @@
 						  <?php 
 							  // 169 MDE165 MMYVV UTD KAROUNDI
 							  // 178 MDE172 Nachiketa Collage of computer science commerce & Advanced Technology
-							  if($student->course_group_id==75 || $student->course_group_id==76 || $student->course_group_id==77 || $student->exam_center_id==169 || $student->exam_center_id==167){ ?>
+							  if($student->course_group_id==75 || $student->course_group_id==76 || $student->course_group_id==77 || $student->exam_center_id==169 || $student->exam_center_id==167 || $student->exam_center_id==178){ ?>
 							<tr>
 							  <td colspan="4"><b>Exam Center: </b>
 							  <?php echo $exam[0]->schoolcollegename.', '.$exam[0]->examcenteraddress;
@@ -136,8 +139,9 @@
 								 <td rowspan="4" class="text-center"><img src="<?=$img_url;?>"  width="115px" height="166px" /></td> 
 							</tr>
 							<tr>
-							  <td><b>Course: </b> <?=$student->course_name;?> <?php if($student->class_id!=163 && $student->class_id!=175 ) echo  '('.$student->class_name.')';?> </td>
-							  <td colspan="2"><b>EC Code: </b> <?=$exam[0]->exam_center_user;?></td>
+							  <td colspan=""><b>Course: </b> <?=$student->course_name;?> <?php if($student->class_id!=163 && $student->class_id!=175 ) echo  '('.$student->class_name.')';?> </td>
+							  <td colspan=""><b>EC Code: </b> <?php echo $exam[0]->exam_center_user;?></td>
+							   <!-- <td colspan="2"><b> </b></td> -->
 							</tr>
 							<tr>
 							  <td colspan="3"><b>Student Name: </b> <?=$student->name;?></td>
@@ -196,7 +200,7 @@
 					$class_ids = array(104,101,107,110,116,119,273,125,128,131,134,162,163,164,165,283,285,287,289,310,291,293,295,274,297,168,169,170,171,214,106,103,109,112,118,121,127,130,133,136,264,137,149,183,185,191,138,184,192,187,143,146,139,144,188,145,147,148,150,186,141,151,142,190,140,189,173,174,175,177,180);
 				if($student->university_mode == 'PVT' && in_array($student->class_id,$classIdsRegOnly)){
 							if($paper->pvt_exam_shift=='Afternoon' && in_array($student->class_id,$class_ids)){
-									echo '3:00 PM To 6:00 PM';		
+									echo '2:00 PM To 5:00 PM';		
 							}
 							elseif($paper->pvt_exam_shift=='Afternoon'){
 									echo '2:00 PM To 5:00 PM';
@@ -206,7 +210,7 @@
 							}
 						}else{
 							if($paper->exam_shift=='Afternoon' && in_array($student->class_id,$class_ids)){
-								echo '3:00 PM To 6:00 PM';		
+								echo '2:00 PM To 5:00 PM';		
 							}
 							elseif($paper->exam_shift=='Afternoon'){
 								echo '2:00 PM To 5:00 PM';

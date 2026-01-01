@@ -53,7 +53,7 @@
             $center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29,1975,2098,2115 );
             $pending="";
 				if(in_array($this->session->center_id, $center_ids) ){
-                     $where=array('center_id'=>$student->center_id,'exam_session'=>'June 2025','fees_head'=>'Exam Fees','payment'=>'Y','student_id'=>$student->student_id);
+                     $where=array('center_id'=>$student->center_id,'exam_session'=>'Dec 2025','fees_head'=>'Exam Fees','payment'=>'Y','student_id'=>$student->student_id);
                    $paid= $this->Common_model->getRecordByWhere('online_payment_transaction',$where);
                    if($paid){
                     //continue;
@@ -170,7 +170,7 @@
 $(".karaundi-exam").click(function (e) {
    
     Swal.fire({
-        html: '<b> आवश्यक सुचना :- </b>सूचित किया जाता है कि मई - जून 2025 में आयोजित होने वाली परीक्षाएं विश्वविद्यालय के मुख्यालय करौंदी जिला कटनी में आयोजित की जाएगी |',
+        html: '<b> आवश्यक सुचना :- </b>सूचित किया जाता है कि दिसम्बर 2025 में आयोजित होने वाली परीक्षाएं विश्वविद्यालय के मुख्यालय करौंदी जिला कटनी में आयोजित की जाएगी |',
         icon: "info",
         showCancelButton: true,
         confirmButtonText: "I Agree",

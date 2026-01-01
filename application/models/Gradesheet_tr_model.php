@@ -36,13 +36,15 @@ class Gradesheet_tr_model extends CI_Model
 		
 		$std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $class_id,'student_id'=>$student_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
+		$student = $this->Common_model->getRecordById('student','student_id',$student_id);
+		$session= explode(' ',$student->session);
 		
-		
-		if($std[0]->sub_group_id == 1 || in_array($class_id, [325,328,329])){
+		if($std[0]->sub_group_id == 1 || in_array($class_id, [325,328,329,143])){
 			$papers = $this->Common_model->get_all_papers($student_id,$class_id);
+			// $this->Common_model->last_query();
 		}
 		
-		if($this->classData->class_group == 'Y'){
+		if($this->classData->class_group == 'Y' || (in_array($session[1],array(2021,2022)) && ($class_id == 101 || $class_id == 102))){
 			$papers_list = $this->Common_model->get_all_group_papers($student_id,$class_id);
 		}
        
@@ -96,13 +98,14 @@ class Gradesheet_tr_model extends CI_Model
 		
 		$std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $class_id,'student_id'=>$student_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
-		
+		$student = $this->Common_model->getRecordById('student','student_id',$student_id);
+		$session= explode(' ',$student->session);
 		
 		if($std[0]->sub_group_id == 1 || in_array($class_id, [325,328,329])){
 			$papers = $this->Common_model->get_all_papers($student_id,$class_id);
 		}
 
-		if($this->classData->class_group == 'Y'){
+		if($this->classData->class_group == 'Y' || (in_array($session[1],array(2021,2022)) && ($class_id == 101 || $class_id == 102))){
 			$papers_list = $this->Common_model->get_all_group_papers($student_id,$class_id);
 		}
 	
@@ -144,13 +147,14 @@ class Gradesheet_tr_model extends CI_Model
 		
 		$std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $class_id,'student_id'=>$student_id));
 		$this->classData = $this->Common_model->getRecordById('class_master','id',$class_id);
-		
+		$student = $this->Common_model->getRecordById('student','student_id',$student_id);
+		$session= explode(' ',$student->session);
 		
 		if($std[0]->sub_group_id == 1 || in_array($class_id, [325,328,329])){
 			$papers = $this->Common_model->get_all_papers($student_id,$class_id);
 		}
 
-		if($this->classData->class_group == 'Y'){
+		if($this->classData->class_group == 'Y' || (in_array($session[1],array(2021,2022)) && ($class_id == 101 || $class_id == 102))){
 			$papers_list = $this->Common_model->get_all_group_papers($student_id,$class_id);
 		}
 	
