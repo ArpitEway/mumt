@@ -89,8 +89,8 @@ class Payment extends CI_Controller {
 			$posted['txnid'] = $txnid; 
 			// $posted['surl'] = ($this->session->has_userdata('studentdata')) ? base_url('Payment/response') : base_url('center/payment/response');
 			// $posted['furl'] = ($this->session->has_userdata('studentdata')) ? base_url('Payment/response') : base_url('center/payment/response');
-			$posted['surl'] =base_url('payment/response');
-			$posted['furl'] =base_url('payment/response');
+			$posted['surl'] =base_url('center/payment/response');
+			$posted['furl'] =base_url('center/payment/response');
 			$posted['amount'] =$txnAmt;
 			$posted['firstname'] = $student['name'];
 			$posted['email'] = $student['p_email'];
