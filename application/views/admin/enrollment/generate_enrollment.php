@@ -84,10 +84,13 @@
 						$enrollment = $enrolment_code[0]['enrollment_code_pvt'].'/'.$lastTwoNumbers.'2'.$last_number;
 					}	
 				}
-				
-				
+				 
+				if($student['user_id']=='0'){
+					$whereUpdate = array('student_id' => $student['student_id']);
+				}else{
+					$whereUpdate = array('user_id' => $student['user_id']);
+				}
 
-				$whereUpdate = array('student_id' => $student['student_id']);
 				$updateData = array('enrollment_no' =>$enrollment);
 				$updateEnrollment = $this->Common_model->updateRecordByConditions('student',$whereUpdate,$updateData);
 
