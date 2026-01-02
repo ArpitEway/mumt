@@ -4902,17 +4902,17 @@ public function update_exam_datewise_permission(){
 		$cbcs = ($classData->cbcs == 'Y' && $student['exam_pattern']=="GRADE")?'Y':'N';
 		$this->db->order_by('id');
 		if($student['university_mode'] != "PVT"){
-		if($student['session'] >='July 2024' && in_array($student['class_id'] , [268,273,223])){
+		if($student['session'] >='July 2024' && in_array($student['class_id'] , [268,269,273,223])){
 			$this->db->where('paper_pattern','NEW');
-		}elseif($student['class_id'] == 268){
+		}elseif(in_array($student['class_id'],[268,269])){
 			$this->db->where('paper_pattern','OLD');
 		}
 		}
 		$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory" and cbcs_paper="'.$cbcs.'"');
 		if($student['university_mode'] == "REG"){
-			if($student['session'] >='July 2024' && in_array($student['class_id'] , [268,273,223])){
+			if($student['session'] >='July 2024' && in_array($student['class_id'] , [268,269,273,223])){
 			$condition = ' and group_pattern="NEW"';
-		}elseif($student['class_id'] ==268){
+		}elseif(in_array($student['class_id'],[268,269])){
 			$condition = ' and group_pattern="OLD"';
 		}
 			$groupPaper = $this->db->query('select p.*,g.group_name,m.paper_code_utd from `group` as g join group_paper as p  on g.id=p.group_id join paper_master as m on m.id=p.paper_id where g.class_id='.$student['class_id'].'  and cbcs_paper="'.$cbcs.'" '.$condition.' Order by g.id,sub_group_id,p.id')->result();
