@@ -150,6 +150,7 @@ class saveFormdata extends CI_Controller {
     $data['course_name']     = $this->Common_model->getCourseNameByCourseId($additional_course_group_id);
     $data['class_name']      = $this->Common_model->getClassNameByClassId($additional_class_id);
 	$data['exam_pattern'] ="MARKS";
+	$data['university_mode'] = "REG";
 
 			// $this->db->like('allot_course_group_id',$additional_course_group_id);
 			$this->db->where("FIND_IN_SET('".$additional_course_group_id."', allot_course_group_id) !=", 0);
