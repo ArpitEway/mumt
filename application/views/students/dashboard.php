@@ -241,7 +241,8 @@ if($this->session->admission_by=='web'){
       $step3Url=base_url('show_fees/'.$this->Common_model->encrypt_decrypt($recipt[0]['id'],'encrypt'));
       $step4Url=base_url('showDocuments/'.$st);
       $verification="Document Verified";
-      $step6Url='#';
+      // $step6Url='#';
+       $step6Url=base_url('Payment/exam_form').'/'.$st;
     }
 ?>
 <div>

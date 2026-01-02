@@ -1038,7 +1038,20 @@
         if($this->session->has_userdata('adminData')){
             //$where = array("status" => "Pending");
             //$centers = $this->Common_model->get_record_group_by_where('payment_complaint','center_id',$where);
-            $centers = $this->Common_model->getRecordByWhere('center',array('payment_gateway_permission'=>'N'));
+            // $centers = $this->Common_model->getRecordByWhere('center',array('payment_gateway_permission'=>'N'));
+			 $this->db->select('c.*');
+            $this->db->from('`center` as c');
+            $this->db->join('`backlog_student` as b','b.center_id=c.id');
+            $this->db->join('online_payment_transaction as p', 'p.student_id=b.student_id and p.class_id=b.class_id');
+            $this->db->where('p.payment','Y');
+            $this->db->where('b.exam_form','N');
+			$this->db->where('c.payment_gateway_permission','N');
+            $this->db->where('p.fees_head','Backlog Exam Fees');
+            $this->db->where('b.exam_year','Dec 2025');
+            $this->db->where('p.exam_session','Dec 2025');
+            $this->db->group_by('c.id');
+           
+            $centers = $this->db->get()->result();
             $data = array('name_csrf' => $this->security->get_csrf_token_name(),
                 'hash_csrf' => $this->security->get_csrf_hash(),
                 'centers' =>$centers

@@ -87,8 +87,10 @@ class Payment extends CI_Controller {
 			$posted = array();
 			$posted['key'] = $MERCHANT_KEY;
 			$posted['txnid'] = $txnid; 
-			$posted['surl'] =base_url('center/payment/response');
-			$posted['furl'] =base_url('center/payment/response');
+			// $posted['surl'] = ($this->session->has_userdata('studentdata')) ? base_url('Payment/response') : base_url('center/payment/response');
+			// $posted['furl'] = ($this->session->has_userdata('studentdata')) ? base_url('Payment/response') : base_url('center/payment/response');
+			$posted['surl'] =base_url('payment/response');
+			$posted['furl'] =base_url('payment/response');
 			$posted['amount'] =$txnAmt;
 			$posted['firstname'] = $student['name'];
 			$posted['email'] = $student['p_email'];
@@ -104,6 +106,7 @@ class Payment extends CI_Controller {
 			$posted['udf3'] = "-";
 			$posted['udf4'] = $student["center_id"].' / '.$student['class_id'];
 			$posted['udf5'] = $student["name"]."/".$student["f_h_name"];
+			$posted['udf6'] = $this->session->has_userdata('studentdata') ? 'student' : 'center';
 			$hash = '';
 
 			$hashSequence = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10";
@@ -133,6 +136,7 @@ class Payment extends CI_Controller {
 		$udf3=$_POST["udf3"];
 		$udf4=$_POST["udf4"];
 		$udf5=$_POST["udf5"];
+		$udf6=$_POST["udf6"];
 		$status=$_POST["status"];
 		$firstname=$_POST["firstname"];
 		$amount=$_POST["amount"]; 
@@ -249,7 +253,8 @@ class Payment extends CI_Controller {
 			$this->session->set_userdata($sessionData);
 			$this->session->set_flashdata($remsg,$msg);
 			$id = $this->Common_model->encrypt_decrypt($txnid);
-			if($student->admission_by=='web'){
+			// if($student->admission_by=='web'){
+			if($udf6=='student'){
 				redirect(base_url('payment/detail/'.$id));
 			}else{
 				redirect(base_url('center/payment/detail/'.$id));
@@ -294,13 +299,13 @@ class Payment extends CI_Controller {
 	}
 
 	public function exam_form($student_id){
-		if(!$this->session->has_userdata('centerdata')){
+		if(!$this->session->has_userdata('centerdata') && (!$this->session->has_userdata('studentdata'))){
 			redirect(base_url('login'));
 		}else{
 				$center_id =  $this->session->center_id;
 				$center_permission = $this->Common_model->get_record('center','exam_form_permission,temp_exam_form',array('id'=>$center_id));
 				
-				if(($center_permission[0]['exam_form_permission']!='Y') ){
+				if(($center_permission[0]['exam_form_permission']!='Y') && ($this->session->has_userdata('centerdata'))){
 					$this->session->set_flashdata('error','Exam form fill & Payment Permission is denied !');
 					redirect(base_url('dashboard'));
 				}else{
@@ -359,7 +364,7 @@ class Payment extends CI_Controller {
 
 	public function exam_form_payment($student_id){
 		
-		if(!$this->session->has_userdata('centerdata')){
+		if(!$this->session->has_userdata('centerdata') && (!$this->session->has_userdata('studentdata'))){
 			redirect(base_url('login'));
 		}
 		$student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
