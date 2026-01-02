@@ -1067,15 +1067,15 @@
        
            
             // $this->db->limit(1);
-            $this->db->select('bs.student_id as student_id,s.name as name,s.f_h_name as fathername,s.course_name as course_name,bs.class_id,p.amount as amount,p.payment_date,p.txnId,p.payment_mode,p.receipt_number,p.id as payment_id,p.fees_head');
+            $this->db->select('bs.id as backlog_id,bs.student_id as student_id,s.name as name,s.f_h_name as fathername,s.course_name as course_name,bs.class_id,p.amount as amount,p.payment_date,p.txnId,p.payment_mode,p.receipt_number,p.id as payment_id,p.fees_head');
             $this->db->from('`backlog_student` as bs');
             $this->db->join('`student` as s','s.student_id=bs.student_id');
             $this->db->join('online_payment_transaction as p', 'p.student_id=bs.student_id and p.class_id=bs.class_id');
             $this->db->where('p.payment','Y');
             $this->db->where('bs.exam_form','N');
             $this->db->where('p.fees_head','Backlog Exam Fees');
-            $this->db->where('bs.exam_year','June 2025');
-            $this->db->where('p.exam_session','June 2025');
+            $this->db->where('bs.exam_year','Dec 2025');
+            $this->db->where('p.exam_session','Dec 2025');
             $this->db->where('p.center_id',$center_id);
            
             $complaints = $this->db->get()->result();
@@ -1103,8 +1103,9 @@
  
             $student_id  = $this->input->post("student_id");
             $student_id = $this->Common_model->encrypt_decrypt($student_id,'decrypt');
+			$backlog_id = $this->input->post("backlog_id");
            
-            $response = $this->Common_model->updateRecordByConditions('backlog_student',array('student_id'=> $student_id),array('exam_form'=>'Y'));
+            $response = $this->Common_model->updateRecordByConditions('backlog_student',array('student_id'=> $student_id,'id'=>$backlog_id),array('exam_form'=>'Y'));
  
             if($response){
             echo json_encode(array("status" => 'true'));
