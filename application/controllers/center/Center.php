@@ -1461,16 +1461,16 @@ class Center extends CI_Controller {
 		}
 		$this->db->order_by('id');
 		if($student['university_mode'] != "PVT"){
-		if($student['session'] >='July 2024' && in_array($student['class_id'] , [268,273,223])){
+		if($student['session'] >='July 2024' && in_array($student['class_id'] , [268,269,273,223])){
 			$this->db->where('paper_pattern','NEW');
-		}elseif($student['class_id'] == 268){
+		}elseif(in_array($student['class_id'],[268,269])){
 			$this->db->where('paper_pattern','OLD');
 		}
 		$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory" and cbcs_paper="'.$cbcs.'"');
 		$condition = '';
-		if($student['session'] >='July 2024' && in_array($student['class_id'] , [268,273,223])){
+		if($student['session'] >='July 2024' && in_array($student['class_id'] , [268,269,273,223])){
 			$condition = ' and group_pattern="NEW"';
-		}elseif($student['class_id'] ==268){
+		}elseif(in_array($student['class_id'],[268,269])){
 			$condition = ' and group_pattern="OLD"';
 		}
 		$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id join paper_master as m on m.id=p.paper_id where g.class_id='.$student['class_id'].' and cbcs_paper="'.$cbcs.'" '.$condition.' Order by g.id,p.sub_group_id,p.id')->result();
@@ -1640,7 +1640,7 @@ class Center extends CI_Controller {
 		if(!$this->session->has_userdata('centerdata')){
 			redirect(base_url());
 		}
-		$titleData = array('title' => 'Admit Card List 2025' );
+		$titleData = array('title' => 'Admit Card List 2026' );
 		$this->load->view('Centers/header',$titleData);
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
@@ -1674,7 +1674,7 @@ class Center extends CI_Controller {
 			redirect(base_url());
 		}
 		$class_id=$this->Common_model->encrypt_decrypt($class_id,'decrypt');
-		$titleData = array('title' => 'Admit Card Student List 2025' );
+		$titleData = array('title' => 'Admit Card Student List 2026' );
 		$this->load->view('Centers/header',$titleData);
 		if ($this->session->center_id!=13) {
 			$this->db->where('center_id',$this->session->center_id);
@@ -1735,7 +1735,7 @@ class Center extends CI_Controller {
 		}
 		$en_student_id = $student_id;
 		$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
-		$titleData = array('title' => 'Admit Card 2025' );
+		$titleData = array('title' => 'Admit Card 2026' );
 		$this->load->view('Centers/header',$titleData);
 		//$center_id =  $this->session->center_id;
 		if ($this->session->center_id!=13) {
