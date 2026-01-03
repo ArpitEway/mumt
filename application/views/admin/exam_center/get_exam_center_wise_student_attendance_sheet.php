@@ -84,7 +84,7 @@
 				<div class="row">
 					<div class="col-12 text-center">
 						<h5>
-							ATTENDANCE SHEET FOR ANNUAL/SEMESTER EXAMINATION OF DECEMBER 2025
+							ATTENDANCE SHEET FOR ANNUAL/SEMESTER EXAMINATION OF JANUARY 2026
 						</h5>
 						<!-- 
 						OF CANCELLED EXAM
