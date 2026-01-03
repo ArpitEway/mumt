@@ -548,7 +548,17 @@
 		if($this->session->has_userdata('adminData')){
 			$where = array("status" => "Pending");
 			//$centers = $this->Common_model->get_record_group_by_where('payment_complaint','center_id',$where);
-			$centers = $this->Common_model->getRecordByWhere('center',array('payment_gateway_permission'=>'N'));
+			// $centers = $this->Common_model->getRecordByWhere('center',array('payment_gateway_permission'=>'N'));
+			$this->db->select('c.*');
+			$this->db->from('`center` as c');
+			$this->db->join('student as s', 's.center_id=c.id');
+			$this->db->join('online_payment_transaction as p', 'p.student_id=s.student_id');
+			$this->db->where('p.payment','Y');
+			$this->db->where('s.payment_status','N');
+            $this->db->where('p.fees_head','Admission Fees');
+			$this->db->where('c.payment_gateway_permission','N'); 
+			
+			$centers = $this->db->get()->result();
 			$data = array('name_csrf' => $this->security->get_csrf_token_name(),
 				'hash_csrf' => $this->security->get_csrf_hash(),
 				'centers' =>$centers
