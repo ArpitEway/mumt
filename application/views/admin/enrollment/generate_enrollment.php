@@ -45,7 +45,7 @@
 				'additional_course'=>'N',
 				'enrollment_no'=>'-',
 				'payment_status' =>'Y',
-				'center_code' => 'MYCS',
+				// 'center_code' => 'MYCS',
 			);
 
 			
