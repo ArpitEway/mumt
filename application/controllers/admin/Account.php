@@ -556,7 +556,8 @@
 			$this->db->where('p.payment','Y');
 			$this->db->where('s.payment_status','N');
             $this->db->where('p.fees_head','Admission Fees');
-			$this->db->where('c.payment_gateway_permission','N'); 
+			$this->db->where('c.payment_gateway_permission','N');
+			$this->db->group_by('c.id'); 
 			
 			$centers = $this->db->get()->result();
 			$data = array('name_csrf' => $this->security->get_csrf_token_name(),
