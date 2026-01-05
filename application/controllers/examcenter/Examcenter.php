@@ -329,7 +329,7 @@ class Examcenter extends CI_Controller {
 				$this->db->from('backlog_student');
 				$this->db->join('student', 'backlog_student.student_id = student.student_id ' );
 				$this->db->order_by("roll_no", "asc");
-				$this->db->where('backlog_student.exam_year','June 2025');
+				$this->db->where('backlog_student.exam_year','Dec 2025');
 				$this->db->where($where);	
 				$data['exam_center_students'] = $this->db->get()->result();
 		   echo $this->load->view('examcenter/get_search_backlog_student_attendance_sheet',$data, TRUE);
