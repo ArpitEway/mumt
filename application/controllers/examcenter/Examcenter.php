@@ -94,7 +94,8 @@ class Examcenter extends CI_Controller {
 	public function logout()
 	 {
 		$this->session->sess_destroy();
-		redirect('http://162.144.38.91/~mmyvvdde/main/examcenter/index.php');
+		redirect(base_url('Examcenter/login'));
+		// redirect('http://162.144.38.91/~mmyvvdde/main/examcenter/index.php');
 	 }
 
 	 //Exam Center Wise Paper Count by Date & Shift
