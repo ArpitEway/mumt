@@ -59,7 +59,7 @@
 	 $paper_count = count($papers);
 	 if($paper_count){
 
-		  $newstring = "251".substr($student['center_code'], -4); 
+		  $newstring = "252".substr($student['center_code'], -4); 
      ?>  
 <!-- <div id="ss">       -->
 <section class="break" style="font-size: 16px;" >
@@ -78,31 +78,10 @@
 			<div class="BoxC border- padding">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Attendance Sheet Examination <?php echo in_array($student['class_id'], array(328, 329,313)) 
-    ? 'August' 
-    : (in_array($student['class_id'], array(
-        137,149,183,185,191,138,184,192,187,143,146,139,144,188,145,147,148,
-        150,186,141,151,142,190,264,140,189,262,268,270,256,258,260,317,
-        173,174,175,177,180,300,301,325
-    )) 
-        ? 'July' 
-        : 'June');?> 2025
-							<?php
-							// if($student['course_group_id']==75 || $student['course_group_id']==76 ||$student['course_group_id']==77 ){
-							// 	if($student['class_id']==256 || $student['class_id']==258 ||  $student['class_id']==260 || $student['class_id']==262 )
-							// 		echo 'July 2024';
-							// 		else
-							// 		echo '2024';
-							// }
-							// elseif($student['course_group_id']==80) {
-							// 	echo 'August 2024';
-							// }
-							// else{
-							// 	echo 'June 2024';
-							// }
-							
-							?>
+						<h5>
+							ATTENDANCE SHEET FOR ANNUAL/SEMESTER EXAMINATION OF JANUARY 2026
 						</h5>
+
 					</div>
 				</div>
 			</div>
@@ -193,7 +172,7 @@
 					<td>
 					<?php 
 					if($paper->pvt_exam_shift=='Afternoon' && in_array($student['class_id'],$class_ids) ){
-						echo '3:00 PM To 6:00 PM';
+						echo '2:00 PM To 5:00 PM';
 					}
 					elseif($paper->pvt_exam_shift=='Afternoon'){
 						echo '2:00 PM To 5:00 PM';
@@ -209,7 +188,7 @@
 					<td>
 					<?php 
 					if($paper->exam_shift=='Afternoon' && in_array($student['class_id'],$class_ids) ){
-						echo '3:00 PM To 6:00 PM';
+						echo '2:00 PM To 5:00 PM';
 					}
 					elseif($paper->exam_shift=='Afternoon'){
 						echo '2:00 PM To 5:00 PM';
