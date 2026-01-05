@@ -16,14 +16,19 @@
         <div class="tab-content">
             <div class="tab-pane fade active show" id="Enrollment" role="tabpanel" aria-labelledby="Enrollment-tab">
                 <div class="row">
-                    <a class="border-0 custom-menu-item" href="<?=base_url('Examcenter/exam_center_wise_paper_count_report');?>">
+                    <!-- <a class="border-0 custom-menu-item" href="<?=base_url('Examcenter/exam_center_wise_paper_count_report');?>">
                         <div>
                             <span class="nav-text">Paper Count Report</span>
                         </div>
-                    </a>   
+                    </a>   --> 
                      <a class="border-0 custom-menu-item" href="<?=base_url('Examcenter/search_attendance_sheet');?>">
                         <div>
                             <span class="nav-text">Search Attendance Sheet </span>
+                        </div>
+                    </a> 
+                    <a class="border-0 custom-menu-item" href="<?=base_url('Examcenter/search_backlog_attendance_sheet');?>">
+                        <div>
+                            <span class="nav-text">Search Backlog Attendance Sheet </span>
                         </div>
                     </a> 
                 </div>    
