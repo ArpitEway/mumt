@@ -58,9 +58,9 @@
 
               ####### Add Backlog Script For Main Exam End #######
 
-                 // $this->db->where_in('exam_year',array('January 2025','February 2025'));
+                 $this->db->where_in('exam_year',array('January 2025','February 2025'));
 
-                  $this->db->where_in('exam_year',array('June 2025'));
+                  // $this->db->where_in('exam_year',array('June 2025'));
                   
                  $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$row->class_id,'student_id'=>$row->student_id));
                  // ,'exam_year'=>'June 2025'
