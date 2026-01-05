@@ -73,7 +73,7 @@
 			<div class="BoxC border- padding">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>ATTENDANCE SHEET FOR ANNUAL/SEMESTER EXAMINATION OF JANUARY 2026
+						<h5>ATTENDANCE SHEET FOR ANNUAL/SEMESTER BACKLOG EXAMINATION OF JANUARY 2026
 						</h5>
 						<?php 
 						// ATTENDANCE SHEET OF EXAM FOR ANNUAL/SEMESTER BACKLOG EXAMINATION OF 2025
