@@ -1989,7 +1989,7 @@ class ExamController extends CI_Controller {
 			$data['course_group_id'] = $_POST['course_group_id'];
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();	
-			echo $this->db->last_query();die; 
+			// echo $this->db->last_query();die; 
 			$dt = $this->load->view('admin/examController/get_assign_examcenter',$data,true);
 			echo json_encode(array(
 				"status" => true,
