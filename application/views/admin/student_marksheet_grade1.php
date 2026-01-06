@@ -21,7 +21,7 @@
       font-weight: bold;
     }
     .style4 {font-size: 16px; font-weight: bold; }
-    .style7 {font-size: 12px; font-weight: bold; }
+    .style7 {font-size: 13px; font-weight: bold; }
     .barcode img{
       height: 25px;
     }
