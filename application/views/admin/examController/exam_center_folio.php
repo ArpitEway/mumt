@@ -183,7 +183,7 @@
         return false ;
         }
 var frm = $('.answersheet').serialize();
-console.log("hello test ");
+// console.log("hello test ");
   /*  $.ajax({
     	url: '<?php echo site_url('admin/<?=$this->session->account_type; ?>/show_counter_folio'); ?>',
     	type: 'POST',

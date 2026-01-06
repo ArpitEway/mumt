@@ -1949,9 +1949,9 @@ class ExamController extends CI_Controller {
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();	
 		$this->db->order_by('course_name');
-		//$data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id), course_name ',''.$this->exam_form.'="Y"');
-		$this->db->where('examcentercode','MDE172');
-		$data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id), course_name ','exam_form="Y"');
+		// $data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id), course_name ',''.$this->exam_form.'="Y"');
+		$this->db->where('examcentercode','MDE165');
+		$data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id), course_name ','new_exam_form="Y"');
 		$this->load->view('admin/examController/exam_center_folio',$data);
 		$this->load->view('footer');
 	} 
@@ -1961,8 +1961,8 @@ class ExamController extends CI_Controller {
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();	
 		$this->db->order_by('course_group_id');
-		$this->db->where('exam_center_code','MDE172');
-		$data['courses'] = $this->Common_model->get_record('backlog_student','DISTINCT (course_group_id)','exam_form="Y" and exam_year="June 2025"');
+		$this->db->where('exam_center_code','MDE165');
+		$data['courses'] = $this->Common_model->get_record('backlog_student','DISTINCT (course_group_id)','exam_form="Y" and exam_year="Dec 2025"');
 		$this->load->view('admin/examController/backlog_exam_center_folio',$data);
 		$this->load->view('footer');
 	} 
@@ -1976,10 +1976,10 @@ class ExamController extends CI_Controller {
 			$this->db->where('new_exam_form.course_group_id',$_POST['course_group_id']);
 			$this->db->where('new_exam_form.class_id',$_POST['class_id']);
 			$this->db->where('student.exam_center_id!=',0);
-			$this->db->where('student.examcentercode','MDE172');
+			$this->db->where('student.examcentercode','MDE165');
 			//$this->db->where('student.'.$this->roll_no.'!=',0);
-			$this->db->where('student.exam_form','Y');
-			$this->db->where('student.roll_number!=',0);
+			$this->db->where('student.new_exam_form','Y');
+			$this->db->where('student.roll_no!=',0);
 			$this->db->where('student.university_mode',$_POST['university_mode']);
 			$this->db->order_by('student.examcentercode');
 			$data['examcenters'] = $this->db->get()->result();
@@ -2011,10 +2011,10 @@ class ExamController extends CI_Controller {
 			$this->db->where('backlog_exam_form.status','B');
 			$this->db->where('backlog_student.exam_center_id!=',0);
 			$this->db->where('backlog_student.exam_form','Y');
-			$this->db->where('backlog_student.exam_year','June 2025');
+			$this->db->where('backlog_student.exam_year','Dec 2025');
 			$this->db->where('backlog_student.mode',$_POST['university_mode']);
 			$this->db->where('backlog_student.roll_no!=',0);
-			$this->db->where('exam_center_code','MDE172');
+			$this->db->where('exam_center_code','MDE165');
 			$this->db->order_by('backlog_student.exam_center_code');
 			$data['examcenters'] = $this->db->get()->result();
 			$data['university_mode'] = $_POST['university_mode'];
@@ -2051,11 +2051,11 @@ class ExamController extends CI_Controller {
 
 			//	$this->db->where('student.'.$this->roll_no.'!=',0);
 			//	$this->db->where('student.'.$this->exam_form.'','Y');
-				$this->db->where('student.roll_number!=',0);
-				$this->db->where('student.exam_form','Y');
+				$this->db->where('student.roll_no!=',0);
+				$this->db->where('student.new_exam_form','Y');
 				
 			//	$this->db->order_by('student.'.$this->roll_no.'');
-				$this->db->order_by('student.roll_number');
+				$this->db->order_by('student.roll_no');
 				$dataArray['students'][$exam_center_id] = $this->db->get()->result();
 				$dataArray['teachername'][$exam_center_id] = $this->Common_model->getSinglefield('exam_center','superintendent',array('id'=>$exam_center_id));
 				$dataArray['detail'][$exam_center_id] = $this->Common_model->getRecordByWhere('exam_center',array('id'=>$exam_center_id));	
@@ -2077,7 +2077,7 @@ class ExamController extends CI_Controller {
 			}
 			$dataArray['paper']= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'] , 'paper_code'=>$_POST['paper_code']));
 			$dataArray['title'] = 'COUNTERFOIL';
-			$dataArray['examSession']="June 2025";
+			$dataArray['examSession']="December 2025";
 			$this->load->view('admin/examController/show_examcenter_folio',$dataArray);
 		}
 	}
@@ -2098,7 +2098,7 @@ class ExamController extends CI_Controller {
 				$this->db->where('backlog_student.exam_center_id',$exam_center_id);
 				$this->db->where('backlog_student.roll_no!=',0);
 				$this->db->where('backlog_student.exam_form','Y');
-				$this->db->where('backlog_student.exam_year','June 2025');
+				$this->db->where('backlog_student.exam_year','Dec 2025');
 				$this->db->where('backlog_student.mode',$_POST['university_mode']);
 				$this->db->order_by('backlog_student.roll_no');
 				$dataArray['students'][$exam_center_id] = $this->db->get()->result();
@@ -2121,7 +2121,7 @@ class ExamController extends CI_Controller {
 			}
 			$dataArray['paper']= $this->Common_model->getRecordByWhere('paper_master',array('class_id'=>$_POST['class_id'] , 'paper_code'=>$_POST['paper_code']));
 			$dataArray['title'] = 'COUNTERFOIL';
-			$dataArray['examSession']="June 2025";
+			$dataArray['examSession']="December 2025";
 			$this->load->view('admin/examController/backlog_show_examcenter_folio',$dataArray);
 		}
 	}
