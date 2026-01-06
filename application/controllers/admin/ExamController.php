@@ -1971,7 +1971,7 @@ class ExamController extends CI_Controller {
 		if($_POST['action1']=='submit'){
 			$this->db->select('Distinct(examcentercode) ,exam_center_id');
 			$this->db->from("student");
-			$this->db->join('new_exam_form', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id=student.old_class_id');
+			$this->db->join('new_exam_form', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id=student.class_id');
 			$this->db->where('new_exam_form.paper_code',$_POST['paper_code']);
 			$this->db->where('new_exam_form.course_group_id',$_POST['course_group_id']);
 			$this->db->where('new_exam_form.class_id',$_POST['class_id']);
@@ -1989,7 +1989,7 @@ class ExamController extends CI_Controller {
 			$data['course_group_id'] = $_POST['course_group_id'];
 			$data['name_csrf'] = $this->security->get_csrf_token_name();
 			$data['hash_csrf'] = $this->security->get_csrf_hash();	
-			//echo $this->db->last_query();die; 
+			echo $this->db->last_query();die; 
 			$dt = $this->load->view('admin/examController/get_assign_examcenter',$data,true);
 			echo json_encode(array(
 				"status" => true,
@@ -2042,7 +2042,7 @@ class ExamController extends CI_Controller {
 			foreach($_POST['exam_center_id'] as $exam_center_id){
 				$this->db->select('*');
 				$this->db->from("student");
-				$this->db->join('new_exam_form', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id=student.old_class_id');
+				$this->db->join('new_exam_form', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id=student.class_id');
 				$this->db->where('new_exam_form.paper_code',$_POST['paper_code']);
 				$this->db->where('new_exam_form.course_group_id',$_POST['course_group_id']);
 				$this->db->where('new_exam_form.class_id',$_POST['class_id']);
