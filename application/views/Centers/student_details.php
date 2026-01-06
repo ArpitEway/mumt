@@ -1,6 +1,6 @@
 <div class="mt-5" >
-	<div class="row mb-4">
-		<div class="col-md-4">
+	<div class="row mb-3">
+		<div class="col-md-3">
 			<div class="form-group">
 				<label>Session</label>
 				<select class="form-control filter" name="session" id="session">
@@ -23,7 +23,7 @@
 				</select>
 			</div>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-2">
 			<div class="form-group">
 				<label>Class</label>
 				<select class="form-control filter" name="class_id" id="class_id">
@@ -31,6 +31,14 @@
 				</select>
 			</div>
 		</div>
+		<div class="form-group col-md-3">
+			<label for="class">Additional Course</label>
+			<select name="additional_course" id="additional_course" class="form-control filter" >
+			    <option value="All">All</option>
+				<option value="Y">Yes</option> 
+				<option value="N">No</option>
+			</select>
+		</div> 
  
        <div class="form-group col-md-3">
 			<label for="class">Admission Mode</label>
@@ -119,6 +127,7 @@
                   			session: $('#session').val(),
                   			course_group_id: $('#allClassBycourse').val(),
                   			class_id: $('#class_id').val(),
+				  			additional_course: $('#additional_course').val(),
                   			approved: $('#approved').val(),
                   			enrolled: $('#enrolled').val(),
                   			document: $('#document').val(),

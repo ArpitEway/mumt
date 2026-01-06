@@ -370,6 +370,9 @@ class Center extends CI_Controller {
 		if($_POST['document']!='All'){
 			$where['document_uploaded'] = $this->input->post('document');
 		}
+		if($_POST['additional_course']!='All'){
+			$where['additional_course'] = $this->input->post('additional_course');
+		}
 		 if($_POST['university_mode']!='All'){
 			$where['university_mode'] = $this->input->post('university_mode');
 		 	}
