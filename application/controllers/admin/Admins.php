@@ -4915,10 +4915,10 @@ public function update_exam_datewise_permission(){
 		}elseif(in_array($student['class_id'],[267,268,269])){
 			$condition = ' and group_pattern="OLD"';
 		}
-			$groupPaper = $this->db->query('select p.*,g.group_name,m.paper_code_utd from `group` as g join group_paper as p  on g.id=p.group_id join paper_master as m on m.id=p.paper_id where g.class_id='.$student['class_id'].'  and cbcs_paper="'.$cbcs.'" '.$condition.' Order by g.id,sub_group_id,p.id')->result();
+			$groupPaper = $this->db->query('select p.*,m.type,g.group_name,m.paper_code_utd from `group` as g join group_paper as p  on g.id=p.group_id join paper_master as m on m.id=p.paper_id where g.class_id='.$student['class_id'].'  and cbcs_paper="'.$cbcs.'" '.$condition.' Order by g.id,sub_group_id,p.id')->result();
 
 		}else{
-			$groupPaper = $this->db->query('select p.*,g.group_name,m.paper_code_utd from `group` as g join group_paper as p  on g.id=p.group_id join paper_master as m on p.paper_id=m.id  where g.class_id='.$student['class_id'].'   and m.type="theory" Order by g.id,sub_group_id,p.id')->result();
+			$groupPaper = $this->db->query('select p.*,m.type,g.group_name,m.paper_code_utd from `group` as g join group_paper as p  on g.id=p.group_id join paper_master as m on p.paper_id=m.id  where g.class_id='.$student['class_id'].'   and m.type="theory" Order by g.id,sub_group_id,p.id')->result();
 		}
 		
 		$data['compulsoryPapers'] = $compulsoryPapers;

@@ -1473,8 +1473,8 @@ class Center extends CI_Controller {
 		}elseif(in_array($student['class_id'],[267,268,269])){
 			$condition = ' and group_pattern="OLD"';
 		}
-		$groupPaper = $this->db->query('select p.*,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id join paper_master as m on m.id=p.paper_id where g.class_id='.$student['class_id'].' and cbcs_paper="'.$cbcs.'" '.$condition.' Order by g.id,p.sub_group_id,p.id')->result();
-		//echo $this->Common_model->last_query();
+		$groupPaper = $this->db->query('select p.*,m.type,g.group_name from `group` as g join group_paper as p  on g.id=p.group_id join paper_master as m on m.id=p.paper_id where g.class_id='.$student['class_id'].' and cbcs_paper="'.$cbcs.'" '.$condition.' Order by g.id,p.sub_group_id,p.id')->result();
+		// echo $this->Common_model->last_query();
 		}else{
 			$compulsoryPapers = $this->Common_model->get_record('paper_master','*','class_id='.$student['class_id'].' and ce="compulsory" and type="theory" and cbcs_paper="'.$cbcs.'"');
 			 $this->db->select('p.*,g.group_name') ;

@@ -187,8 +187,9 @@
 
 		<div class="mt-5">
 			<div class="row border border-primary bg-primary text-white p-2">
-				<div class="col-2"><strong>#</strong></div>
-				<div class="col-3"><strong>Paper code</strong></div>
+				<div class="col-1"><strong>#</strong></div>
+				<div class="col-2"><strong>Paper code</strong></div>
+				<div class="col-2"><strong>Paper type</strong></div>
 				 <?php if ($compulsoryPapers[0]['sub_group_id']!=0): ?>
 					<div class="col-2"><strong>Sub Group</strong></div>
 				<?php endif ?>
@@ -203,9 +204,10 @@
            
 				?>
 				<div class="row border border-default p-2">
-					<div class="col-2"><?=++$i; ?></div>
+					<div class="col-1"><?=++$i; ?></div>
 					
-					 <div class="col-3"><?=(in_array($paper['class_id'],[273]))?$paper['paper_code_utd']:$paper['paper_code']; ?></div>
+					 <div class="col-2"><?=(in_array($paper['class_id'],[273]))?$paper['paper_code_utd']:$paper['paper_code']; ?></div>
+					 <div class="col-2"><?=$paper['type']; ?></div>
 					
                 	<?php
                 	if ($paper['sub_group_id']!=0) {
@@ -235,9 +237,9 @@
 						</div>
 					<?php }  ?>
 					<div class="row border border-default p-2">
-						<div class="col-2"><?=++$i; ?></div>
-						<div class="col-3"><?= (in_array($student['class_id'],[273]))?$paper->paper_code_utd:$paper->paper_code; ?></div>
-						
+						<div class="col-1"><?=++$i; ?></div>
+						<div class="col-2"><?= (in_array($student['class_id'],[273]))?$paper->paper_code_utd:$paper->paper_code; ?></div>
+						<div class="col-2"><?=$paper->type; ?></div>
 								<?php
 								if ($paper->sub_group_id!=0) {
 									echo '<div class="col-2">';

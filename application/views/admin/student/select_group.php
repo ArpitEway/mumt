@@ -180,8 +180,9 @@
             </div>
 <form>
     <div class="row border border-primary bg-primary text-white p-2 mt-5">
-        <div class="col-2"><strong>#</strong></div>
-        <div class="col-3"><strong>Paper code</strong></div>
+        <div class="col-1"><strong>#</strong></div>
+        <div class="col-2"><strong>Paper code</strong></div>
+		<div class="col-2"><strong>Paper type</strong></div>
         <div class="col-2"> <?php if ($compulsoryPapers[0]['sub_group_id']!=0): ?>
         	<strong>Sub Group</strong>
         <?php endif ?></div>
@@ -201,8 +202,9 @@
                 
             ?>
             <div class="row border border-default p-2">
-                <div class="col-2"><?=++$i; ?></div>
-                <div class="col-3"><?=$paper['paper_code']; ?></div>
+                <div class="col-1"><?=++$i; ?></div>
+                <div class="col-2"><?=$paper['paper_code']; ?></div>
+				<div class="col-2"><?=$paper['type']; ?></div>
                 <div class="col-2">
                 	<?php
                 	if ($paper['sub_group_id']!=0) {
@@ -228,8 +230,8 @@
                         $group_name=$paper->group_name;
                     ?>
                     <div class="row border border-primary bg-primary p-2 mt-3 text-white">
-                        <div class="col-2">#</div>
-                        <div class="col-3">
+                        <div class="col-1">#</div>
+                        <div class="col-4">
                             <label class="checkbox checkbox-dark">
                                 <input name="group_id[]" class="checkbox" value="<?=$paper->group_id; ?>" type="checkbox" >
 
@@ -240,8 +242,9 @@
                     </div>
                 <?php } ?>
                 <div class="row border border-default p-2">
-                    <div class="col-2"><?=++$i; ?></div>
-                    <div class="col-3"><?=$paper->paper_code; ?></div>
+                    <div class="col-1"><?=++$i; ?></div>
+                    <div class="col-2"><?=$paper->paper_code; ?></div>
+					<div class="col-2"><?=$paper->type; ?></div>
                     <div class="col-2"><?=$this->Common_model->getSubGroupNameById($paper->sub_group_id); ?></div>
                     <div class="col-5"><?=$paper->paper_name; ?></div>
                 </div>
