@@ -20,7 +20,7 @@
       font-size: 13px;
       font-weight: bold;
     }
-    .style4 {font-size: 16px; font-weight: bold; }
+    .style4 {font-size: 14px; font-weight: bold; }
     .style7 {font-size: 12px; font-weight: bold; }
     .barcode img{
       height: 25px;
@@ -267,7 +267,7 @@
               <!-- if starts -->
               <tr>
                 <td align="left" colspan="2" style='border:none;'>
-                  <table width="100%" style="margin-top:2px;">
+                  <table width="100%" style="margin-top:20px;">
                     <tr>
                     <td width="17" align="center">
                   <div align="left">
@@ -280,7 +280,7 @@
              
                   <tr class="" >
                     <td colspan="" style="padding:2px;border:none">
-                      <?php echo $generator->getBarcode($marksheet_variables->bar_code_no.$student->roll_number, $generator::TYPE_CODE_128,2,25);  ?>
+                      <?php  echo $generator->getBarcode($marksheet_variables->bar_code_no.$student->roll_number, $generator::TYPE_CODE_128,2,25); ?>
                     </td>
                   </tr>
                  

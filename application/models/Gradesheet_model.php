@@ -834,13 +834,13 @@ class Gradesheet_model extends CI_Model
 			echo "<th>".$key."</th>";
 			//echo "<td><table style='border:0px solid black'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='100px' style='border:0px solid black'><strong>".$paper[0]."</strong></td><td style='border:0px solid black'></td><td style='border:0px solid black'><strong>".$paper[1]."</strong></td></tr></table></td>";
 			if($this->paper["course_group_id"]==12){
-				echo "<td><table style='border:0px solid black'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='100%' style='border:0px solid black'><strong>".$paper[0]."</strong><br><strong>".$paper[1]."</strong></td></tr></table></td>
+				echo "<td><table style='border:0px solid black'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:14px;' align='left' valign='center'><td width='100%' style='border:0px solid black'><strong>".$paper[0]."</strong><br><strong>".$paper[1]."</strong></td></tr></table></td>
 				";
 				}else{
 					if(in_array($this->classData->id,[325,328,329])){
-						echo "<td><table style='border:0px solid black'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td style='border:0px solid black'><strong>".$paper[1]."</strong></td></tr></table></td>";
+						echo "<td><table style='border:0px solid black'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:14px;' align='left' valign='center'><td style='border:0px solid black'><strong>".$paper[1]."</strong></td></tr></table></td>";
 					}else{
-							echo "<td><table style='border:0px solid black'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='100px' style='border:0px solid black'><strong>".$paper[0]."</strong></td><td style='border:0px solid black'></td><td style='border:0px solid black'><strong>".$paper[1]."</strong></td></tr></table></td>";
+							echo "<td><table style='border:0px solid black'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:14px;' align='left' valign='center'><td width='100px' style='border:0px solid black'><strong>".$paper[0]."</strong></td><td style='border:0px solid black'></td><td style='border:0px solid black'><strong>".$paper[1]."</strong></td></tr></table></td>";
 					}
 			
 				}
@@ -913,16 +913,16 @@ class Gradesheet_model extends CI_Model
 		foreach ($this->result_array as $key => $result) {
 			$paper = explode('#',$result['paper_name']);
 						
-			echo '<tr style="padding:4px;font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="center">';
+			echo '<tr style="padding:4px;font-family:Arial, Helvetica, sans-serif; font-size:14px;" align="center" valign="center">';
 			echo '<td style="margin-top:2px;" align="center"><strong>'.$key.'</strong></td>';
 			if($this->paper["course_group_id"]==12){
-			echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td ><strong>".$paper[0]."</strong><br><br><strong>".$paper[1]."</strong></td></tr></table></td>";
+			echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:13px;' align='left' valign='center'><td ><strong>".$paper[0]."</strong><br><br><strong>".$paper[1]."</strong></td></tr></table></td>";
 			}else{
 				
 				if(in_array($this->classData->id, [325,328,329])){
-					echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td><strong>".$paper[1]."</strong></td></tr></table></td>";
+					echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:13px;' align='left' valign='center'><td><strong>".$paper[1]."</strong></td></tr></table></td>";
 				}else{
-					echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='50px'><strong>".$paper[0]."</strong></td><td></td><td><strong>".$paper[1]."</strong></td></tr></table></td>";
+					echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:13px;' align='left' valign='center'><td width='50px'><strong>".$paper[0]."</strong></td><td></td><td><strong>".$paper[1]."</strong></td></tr></table></td>";
 				}
 			
 			}
