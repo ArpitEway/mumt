@@ -46,7 +46,7 @@
   <center>
     <?php 
 
-    $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
+    // $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
     $marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
     $isOneClass = $this->Common_model->hasOneClass($course_group_id);
@@ -175,8 +175,8 @@
                             ?>
                     </tbody></table>
                   </div>
-                  <h4 style="text-align:center;margin:10px;">Result Year Wise</h4>
-                  <table border='1' cellpadding="2"  width="103%">
+                  <h4 style="text-align:center;margin:10px; font-size:20px" >Result Year Wise</h4>
+                  <table border='1' cellpadding="2"  width="103%" style ="font-size:20px;>
                   <tr align="center"><th width='12.5%'>Year</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>AGPA</th><?php if($classData->last_class == 'L'){ ?><th width='12.5%'>Attempt</th><?php }?></tr>
                     <?php
                     if($student->class_name == 'IV Year'){
@@ -240,23 +240,23 @@
                             $div = "Pass";
                             }
                     ?>
-                    <table width="103%" cellpadding="2" style="margin-top:10px;" border="1" align="center">
+                    <table width="103%" cellpadding="2" style="margin-top:10px; font-size:20px" border="1" align="center">
                         <tr>
                             <td colspan="4" align="center">
                                 Final Result - <strong><?=$gradesheetData['result']?></strong>
                             </td>
                         </tr>
                         <tr>
-                            <th width="9.2%">Total Credits</th>
+                            <th width="9.2%" >Total Credits</th>
                             <th width="9.2%">CGPA</th>
-                            <th width="18.4%">Equivalent Percentage</th>
-                            <th width="18.4%">Division</th>
+                            <th width="18.4%" >Equivalent Percentage</th>
+                            <th width="18.4%" >Division</th>
                         </tr>
                         <tr>
-                            <td align="center"><?= $total_course_credit?></td>
-                            <td align="center"><?=$cgpa?></td>
-                            <td align="center"><?=$percent.'%'?></td>
-                            <td align="center"><?=$div?></td>
+                            <td align="center" ><?= $total_course_credit?></td>
+                            <td align="center" ><?=$cgpa?></td>
+                            <td align="center" ><?=$percent.'%'?></td>
+                            <td align="center" ><?=$div?></td>
                         </tr>
                     </table>
                      <?php
@@ -280,7 +280,7 @@
              
                   <tr class="" >
                     <td colspan="" style="padding:2px;border:none">
-                      <?php echo $generator->getBarcode($marksheet_variables->bar_code_no.$student->roll_number, $generator::TYPE_CODE_128,2,25); ?>
+                      <!-- <?php echo $generator->getBarcode($marksheet_variables->bar_code_no.$student->roll_number, $generator::TYPE_CODE_128,2,25); ?> -->
                     </td>
                   </tr>
                  
