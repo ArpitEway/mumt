@@ -46,7 +46,7 @@
   <center>
     <?php 
 
-    // $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
+    $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
     $marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
     $isOneClass = $this->Common_model->hasOneClass($course_group_id);
@@ -280,7 +280,7 @@
              
                   <tr class="" >
                     <td colspan="" style="padding:2px;border:none">
-                      <!-- <?php echo $generator->getBarcode($marksheet_variables->bar_code_no.$student->roll_number, $generator::TYPE_CODE_128,2,25); ?> -->
+                      <?php echo $generator->getBarcode($marksheet_variables->bar_code_no.$student->roll_number, $generator::TYPE_CODE_128,2,25); ?>
                     </td>
                   </tr>
                  
