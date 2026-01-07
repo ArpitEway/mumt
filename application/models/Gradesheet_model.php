@@ -697,7 +697,13 @@ class Gradesheet_model extends CI_Model
 				$foundation_fc=' - Foundation Course 1 ';
 			else
 				$foundation_fc=' - Foundation Course 2 ';
-			$data = ''.$this->paper["group_paper_name"].$foundation_fc.'#'.$this->foundation_paper[$sub_group_id]["paper_name"].'<br><br>'.'B) '.$this->paper["paper_name"];
+				$data = ''
+				.$this->paper["group_paper_name"]
+				.$foundation_fc
+				.'#'.$this->foundation_paper[$sub_group_id]["paper_name"]
+				.'<span style="display:block; height:6px;"></span>'
+				.'B) '.$this->paper["paper_name"];
+			
 		}
 		
 		else
@@ -915,22 +921,14 @@ class Gradesheet_model extends CI_Model
 			$fc_paper_1 = $result['sub_group']==1;			
 			echo '<tr style="padding:4px;font-family:Arial, Helvetica, sans-serif; font-size:18px;" align="center" valign="center">';
 			echo '<td style="margin-top:2px;" align="center"><strong>'.$key.'</strong></td>';
-			if($this->paper["course_group_id"]==12){
-				if($fc_paper_1){
-						echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:17px;' align='left' valign='center'><td ><strong>".$paper[0]."</strong><br><br><strong>".$paper[1]."</strong></td></tr></table></td>";
-				}else{
-					echo "<td align='left'>
-							<table border='0'>
-								<tr style='font-family:Arial, Helvetica, sans-serif; font-size:17px;' align='left' valign='center'>
-									<td>
-										<strong>".$paper[0]."</strong> <strong>(".$paper[1].")</strong>
-									</td>
-								</tr>
-							</table>
-						  </td>";
-				}
-			}else{
-				
+			if ($this->paper["course_group_id"] == 12) {
+				echo "<td align='left' style='font-family:Arial, Helvetica, sans-serif; font-size:17px;'>
+						<strong>{$paper[0]}</strong>
+						<div style='margin-top:6px;'></div>
+						<strong>{$paper[1]}</strong>
+					  </td>";
+			}
+			else{
 				if(in_array($this->classData->id, [325,328,329])){
 					echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:17px;' align='left' valign='center'><td><strong>".$paper[1]."</strong></td></tr></table></td>";
 				}else{
