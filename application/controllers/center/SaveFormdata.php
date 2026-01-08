@@ -31,7 +31,7 @@ class saveFormdata extends CI_Controller {
 		$data['course_name'] = $this->Common_model->getCourseNameByCourseId($course_group_id);
 		$data['class_name'] = $this->Common_model->getClassNameByClassId($class_id);
 		if ($this->session->center_id!=13) {
-			$data['center_id'] = $this->session->center_id;
+			$data['center_id'] = $main_center_id = $this->session->center_id;
 			$data['center_code'] = $this->session->centerdata;
 			$data['center_name'] = $this->Common_model->getSinglefield('center','center_name','id='.$this->session->center_id);
 		}else{
