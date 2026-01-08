@@ -40,7 +40,7 @@ class saveFormdata extends CI_Controller {
 			$this->db->where_in('id',array(21, 22, 23, 24, 25, 26, 27, 28));
 			$this->db->from('center');
 			$centerData = $this->db->get()->row();
-			$data['center_id'] = $centerData->id;
+			$data['center_id'] = $main_center_id = $centerData->id;
 			$data['center_code'] = $centerData->center_code;
 			$data['center_name'] = $centerData->center_name;
 		}
@@ -233,7 +233,7 @@ class saveFormdata extends CI_Controller {
 			$amount = $amount[0]->p_form_fees+ $amount[0]->p_admission_fees+$late_fees;
 			$admission_type = 'private';
 		}
-	    
+	    $data['center_id'] = $main_center_id;
 		$OnlinePayTxnData = array('student_id' => $student_id,'center_id' => $data['center_id'] ,'fees_head' => 'Admission Fees','amount' => $amount,'payment_status'=>'pending','course_group_id' => $course_group_id,'class_id' => $class_id,'student_name' => $data['name'],'admission_type'=>$admission_type,'remark'=>$remark);
 
 		// Department center by default set status & approved
