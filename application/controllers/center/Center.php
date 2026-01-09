@@ -2133,7 +2133,7 @@ class Center extends CI_Controller {
 	 	$titleData = array('title' => 'Regular Internal Marks Submission' );
 	 	$this->load->view('Centers/header',$titleData);
 	 	$center_id =  $this->session->center_id;
-	 	$where = array('university_mode' => 'REG','center_id' => $center_id, $this->exam_form => 'Y','internal'=>"Y",'result_show ' => 'N');
+	 	$where = array('university_mode' => 'REG','center_id' => $center_id, 'new_exam_form' => 'Y','internal'=>"Y",'result_show ' => 'N');
 	 	// ,"demo"=>'N' ,'class_id'=>264
 	 	$this->db->order_by("int_marks_sub,".$this->exam_table.".course_group_id,".$this->exam_table.".class_id", "asc");
 	 	$this->db->select('*');
@@ -2926,7 +2926,8 @@ public function backlog_grade_marksheet_pg($student_id=""){
 		$titleData = array('title' => 'Practical Marks Submission' );
 		$this->load->view('Centers/header',$titleData);
 		$center_id =  $this->session->center_id;
-		$where = array('center_id' => $center_id,'result_show' => 'N',$this->exam_form => 'Y');
+		// $where = array('center_id' => $center_id,'result_show' => 'N',$this->exam_form => 'Y');
+		$where = array('center_id' => $center_id,'result_show' => 'N','new_exam_form' => 'Y');
 		// ,'demo'=>'N','class_id'=>264
 		
 		
