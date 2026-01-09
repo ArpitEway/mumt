@@ -3193,7 +3193,7 @@ public function update_exam_datewise_permission(){
 		else{
 			$pattern="GRADE";
 		}
-		$where =array("course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y', 'roll_number!='=>'0' ,'university_mode'=> $mode ,'exam_pattern'=>$pattern);
+		$where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'exam_form'=>'Y', 'roll_number!='=>'0' ,'university_mode'=> $mode ,'exam_pattern'=>$pattern);
 		//,'examcentercode'=>'MDE165'
 		//, 'student_id'=>718196	
 		$this->db->order_by('center_id','ASC');
@@ -3376,7 +3376,7 @@ public function update_exam_datewise_permission(){
 		
 		// $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' )";
 
-        $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y'  and class_id in (147,183,185,290,106,109,298,139,145,148,184))";
+        $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y'  and class_id in (215))";
 
         // 103,112,118,109,121,127,130,133,252
         // and class_id in (102,111,120,126,328,129,329,132,137,149,150,151,162,165,170,299,174,192)
