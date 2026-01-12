@@ -3377,7 +3377,7 @@ public function update_exam_datewise_permission(){
 		// $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' )";
 
         $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y'  )";
-		
+
 		// and class_id in (215)
         // 103,112,118,109,121,127,130,133,252
         // and class_id in (102,111,120,126,328,129,329,132,137,149,150,151,162,165,170,299,174,192)
@@ -3565,7 +3565,7 @@ public function update_exam_datewise_permission(){
 		}	
 	//	$this->db->where_in('roll_number',array(210414167,210414296,210416271,210416325,210417759,210420469,210412133,210420009,210420534,210412125,210413275,210417990));
 		//$this->db->where_in('roll_number',array(210412125,210413275,210417990,210412133,210420009,210420534));
-		$this->db->limit(1);
+		// $this->db->limit(1);
 		
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
 		$data['title'] = $title;
