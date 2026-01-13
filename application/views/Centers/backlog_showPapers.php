@@ -239,7 +239,7 @@
 
 			if(($center_permission[0]['exam_form_permission']=='Y' && $papers[0]->exam_form=='N' ) &&  ($class_permission[0]['backlog_exam_form_permission']=='Y' || $center_permission[0]['temp_exam_form']=='Y') ){ 
 
-                $center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29,1975,2098,2115 );
+                $center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,1975,2098,2115 );
                 if(in_array($this->session->center_id, $center_ids)){
             //         $where = array(
             //             'course_group_id' => $papers[0]->course_group_id,
