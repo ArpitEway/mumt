@@ -3193,7 +3193,7 @@ public function update_exam_datewise_permission(){
 		else{
 			$pattern="GRADE";
 		}
-		$where =array("course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y', 'roll_number!='=>'0' ,'university_mode'=> $mode ,'exam_pattern'=>$pattern);
+		$where =array("course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y', 'roll_number!='=>'0' , 'old_result_show'=>'N','university_mode'=> $mode ,'exam_pattern'=>$pattern);
 		//,'examcentercode'=>'MDE165'
 		//, 'student_id'=>718196	
 		$this->db->order_by('center_id','ASC');
@@ -3260,7 +3260,7 @@ public function update_exam_datewise_permission(){
 			$pattern="GRADE";
 		}
 		
-		$where =array("bs.course_group_id"=>$course_group_id ,'bs.class_id' => $class_id ,'bs.exam_form'=>'Y', 'bs.roll_no!='=>'0' ,'bs.mode'=> $mode,'bs.exam_year'=>'June 2025', 's.exam_pattern'=>$pattern);
+		$where =array("bs.course_group_id"=>$course_group_id ,'bs.class_id' => $class_id ,'bs.exam_form'=>'Y', 'bs.roll_no!='=>'0' , 'bs.result_show'=>'N','bs.mode'=> $mode,'bs.exam_year'=>'June 2025', 's.exam_pattern'=>$pattern);
 		//,'bs.student_id'=>734487
 		$this->db->order_by('bs.center_id','ASC');
 		$this->db->order_by('bs.roll_no','ASC');
