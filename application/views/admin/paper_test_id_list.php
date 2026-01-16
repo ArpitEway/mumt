@@ -18,6 +18,7 @@
 			<th>Exam Day</th>
 			<th>Exam Date</th>
 			<th>Exam Shift</th>
+			<th>Paper Pattern</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -61,6 +62,7 @@
 				<td><?php if(!empty($old_paper_master[0]->exam_date)) echo $old_paper_master[0]->exam_date; ?></td>
 				<td><?php if(!empty($old_paper_master[0]->exam_shift)) echo $old_paper_master[0]->exam_shift ?></td>
 				<!-- <td><?php if(!empty($old_paper_master[0]->exam_day))  echo $old_paper_master[0]->exam_day ?></td>  -->
+				<td><?=$paper->paper_pattern ?></td>
 			</tr>
 		<?php endforeach ?>
 	</tbody>
