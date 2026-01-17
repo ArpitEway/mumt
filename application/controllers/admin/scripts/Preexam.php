@@ -129,7 +129,7 @@ class Preexam extends CI_Controller {
 		$this->db->group_by('class_id');
 		$this->db->order_by('course_group_id');
 		$studentClasses = $this->db->get('student')->result();
-		echo $this->db->last_query().'<br>';
+		//echo $this->db->last_query().'<br>';
 		$data = array('studentClasses' => $studentClasses);
 		$this->load->view('admin/script/new_exam_form_permission',$data);
 		$this->load->view('admin/script/footer');
