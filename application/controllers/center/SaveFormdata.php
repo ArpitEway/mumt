@@ -271,7 +271,7 @@ class saveFormdata extends CI_Controller {
 					$paperWhere=array('class_id'=>$class_id,'type'=>'theory','cbcs_paper'=>$cbcs);
 			else			
 					$paperWhere=array('class_id'=>$class_id,'cbcs_paper'=>$cbcs);
-					if(in_array($class_id,[275,279,223,225,460,476]))
+					if(in_array($class_id,[275,279,223,225,460,476,193,197,199,201,203,205,302,207,209,211,213,221,227]))
 					{
 						$this->db->where('paper_pattern','NEW');
 					}
