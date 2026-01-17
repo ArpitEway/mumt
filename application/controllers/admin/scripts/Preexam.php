@@ -30,7 +30,8 @@ class Preexam extends CI_Controller {
 		$this->db->where_not_in('class_id',[269]);
 
 		// $this->db->where('class_id',325);
-		$this->db->where_in('class_id',[275,279,223,225,460,476]);
+		$this->db->where_in('class_id',[275,279,223,225,460,476,193,197,199,201,203,205,302,207,209,211,213,221,227
+	]);
 
 		$this->db->group_by('class_id');
 		$this->db->order_by('course_group_id');
