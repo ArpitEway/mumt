@@ -62,7 +62,7 @@
 				<td><?=$paper->pvt_exam_date ?></td>
 				<td><?=$paper->pvt_exam_shift ?></td> -->
 				<td><?=$exam_time ?></td>
-				<td><?=$paper->exam_day ?></td>	
+				<!-- <td><?=$paper->exam_day ?></td>	 -->
 			<!-- 	<td><?php if(!empty($old_paper_master[0]->exam_date)) echo $old_paper_master[0]->exam_date; ?></td>
 				<td><?php if(!empty($old_paper_master[0]->exam_shift)) echo $old_paper_master[0]->exam_shift ?></td> -->
 				<!-- <td><?php if(!empty($old_paper_master[0]->exam_day))  echo $old_paper_master[0]->exam_day ?></td>  -->
