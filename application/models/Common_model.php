@@ -1188,7 +1188,7 @@ class Common_Model extends CI_Model{
 	{
 		$return = '';
 		$arr = explode(' ', $class_name);
-		$romanArray = array('I'=>'First','II'=>'Second','III'=>'Third','IV'=>'Fourth','V'=>'Fifth','VI'=>'Sixth','VII'=>'Seventh','VIII'=>'eighth');
+		$romanArray = array('I'=>'First','II'=>'Second','III'=>'Third','IV'=>'Fourth','V'=>'Fifth','VI'=>'Sixth','VII'=>'Seventh','VIII'=>'Eighth');
 		$return .=$romanArray[$arr[0]];
 
 		$return .= ($arr[1]=='SEM') ? ' Semester' : ' Year';
