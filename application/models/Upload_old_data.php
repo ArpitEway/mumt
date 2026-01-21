@@ -558,8 +558,11 @@ class Upload_old_data extends CI_Model
 					// $oldreResultDataultdata['result'] = 'PASS BY GRACE';
                     $result_this =  'PASS BY GRACE';
                     $ResultData['result'] = $result_this;
-					$this->tot_credit_point += 16;
-						$this->grace_agpa = $this->tot_credit_point/$this->tot_credit;
+				
+					$this->tot_credit_point += $result['credit']*4;
+				
+					$this->grace_agpa = $this->tot_credit_point/$this->tot_credit;
+						
 					// $oldreultdata['credit'] = $result['credit'];
 					$this->check_grace_marks = true;
 				}else{
