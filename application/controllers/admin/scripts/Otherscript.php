@@ -1596,7 +1596,7 @@ public function update_roll_no_old_data(){
        
 		$this->load->model('GradeSheet_old_model_pg');
 		$this->db->where_in('class_id', $class_ids);
-		$this->db->where_in('exam_year', array('June 2025','July 2025','August 2025'))
+		$this->db->where_in('exam_year', array('June 2025','July 2025','August 2025'));
 		// $this->db->where('enrollment_no','AK/23200725');
         $old_datas = $this->Common_model->getRecordByWhere('old_exam_data', array('exam_status'=>$exam_status,'marks_pattern'=>'GRADE','university_mode'=>'REG'));
 		
