@@ -1564,7 +1564,7 @@ public function update_roll_no_old_data(){
 		$this->db->where_in('class_id', $class_ids);
 		// $this->db->where('exam_year !=','June 2024');
 		$this->db->where_in('exam_year', array('June 2025','July 2025','August 2025'));
-        $old_datas = $this->Common_model->getRecordByWhere('old_exam_data', array('exam_status'=>'R','marks_pattern'=>'GRADE','university_mode'=>'PVT'));
+        $old_datas = $this->Common_model->getRecordByWhere('old_exam_data', array('exam_status'=>'R','marks_pattern'=>'GRADE','university_mode'=>'REG'));
 		
        $student = [];
         foreach($old_datas as $data){
