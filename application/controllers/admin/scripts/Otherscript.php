@@ -1504,7 +1504,7 @@ public function update_roll_no_old_data(){
 	public function dg_locker_data($startlimit=0){
 		$start=0;
 		if($startlimit==!0){
-			$start=($startlimit-1)*5000;
+			$start=($startlimit-1)*4000;
 			//$this->db->limit(1000,$start);
 			$pagetitle=$startlimit;
 		}
