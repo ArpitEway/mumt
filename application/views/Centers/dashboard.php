@@ -244,7 +244,7 @@
 				<div class="row">
 				  	
 					<?php // if($this->session->center_id < 100 && $this->session->center_id > 100 && $this->session->center_id== 25){ ?>
-						<?php  if($this->session->center_id== 25){ ?>
+						<?php  if($this->session->center_id < 100){ ?>
                    	
 				    <a class="border-0 custom-menu-item" href="<?=base_url('practical_marks_list');?>"> 
 						<div>
