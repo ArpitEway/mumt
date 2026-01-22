@@ -49,8 +49,9 @@
             <!-- <th>GRAND_TOT_GRADE</th> -->
 			
 
-	<?php		
-		for($sub=1;$sub<=12;$sub++){
+	<?php	
+    $count_papper = ($course_group_id == 80) ? 15 : 12;	
+		for($sub=1;$sub<= $count_papper;$sub++){
 			?>
 			<th>SUB<?=$sub?>NM</th>
 			<th>SUB<?=$sub?></th>
@@ -232,7 +233,7 @@
                 }
 				
 			
-				 $loop_td_count=108-$td_count;
+				 $loop_td_count=(($course_group_id == 80) ? 135: 108)-$td_count;
 				for($c=1;$c<=$loop_td_count;$c++){
 					echo "<td> </td>";
 				}

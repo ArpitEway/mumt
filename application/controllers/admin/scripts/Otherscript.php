@@ -1673,6 +1673,7 @@ public function update_roll_no_old_data(){
 		$this->db->order_by('roll_no');
 		// $this->db->limit(1);
 		$data['rs'] = $this->db->get()->result_array();
+		$data['course_group_id'] = $course_group_id;
 		$data['title'] = "DIGI LOCKER DATA Of ".$this->Common_model->getCourseNameByCourseId($course_group_id)." ".$exam_year;
 
 		$this->load->view('admin/digi_locker_data_non_grading',$data);
