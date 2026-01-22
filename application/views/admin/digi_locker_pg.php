@@ -164,6 +164,7 @@
                    }
 				   
                   if($cls->id < $student['class_id']){
+					$this->db->order_by('id','desc');
 					$old_data = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student['student_id'],'class_id'=>$cls->id));
                     $gradeData   = $this->GradeSheet_old_model_pg->view_old_results($student['student_id'],$student['course_group_id'],$cls->id,$student['university_mode'],$old_data[0]->id);
 				// print_r( $gradeData);die;
