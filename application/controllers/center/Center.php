@@ -1703,7 +1703,7 @@ class Center extends CI_Controller {
 		// if(!$this->session->has_userdata('centerdata')){
 			// redirect(base_url());
 		// }
-		$titleData = array('title' => 'Admit Card Backlog Student List 2025' );
+		$titleData = array('title' => 'Admit Card Backlog Student List 2026' );
 		$classes = $this->Common_model->getRecordByWhere('class_master',array('admit_card_permission'=>'Y'));
 		$ids = array_column($classes, 'id');
 		$this->load->view('Centers/header',$titleData);
@@ -1782,7 +1782,7 @@ class Center extends CI_Controller {
 		// }
 		// $en_student_id = $student_id;
 		$backlog_student_id=$this->Common_model->encrypt_decrypt($backlog_student_id,'decrypt');
-		$titleData = array('title' => 'Backlog Admit Card 2025' );
+		$titleData = array('title' => 'Backlog Admit Card 2026' );
 		$this->load->view('Centers/header',$titleData);
 		//$center_id =  $this->session->center_id;
 		if ($this->session->center_id!=13) {
