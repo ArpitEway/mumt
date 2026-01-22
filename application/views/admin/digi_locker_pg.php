@@ -148,7 +148,7 @@
                 //previous data
                 
                 $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$student['course_group_id'],'mode'=>'Semester'));
-               
+             
                $count = 0;
                $prev_tot_crdit =0;
                $prev_tot_grade =0;
@@ -156,23 +156,26 @@
 			   $prev_tot_credit_point=0;
                $class_order = 1;
                $admission_year = explode(" ", $studentDetail->session);
-               $cgpa = number_format((float)$gradesheetData['agpa'], 2, '.', '');
+            //    $cgpa = number_format((float)$gradesheetData['agpa'], 2, '.', '');
                 foreach($classes as $cls){
                    $count++;
                    if($cls->id < $student['class_id']){
                     $class_order = $cls->class_order;
                    }
+				   
                   if($cls->id < $student['class_id']){
-                    $gradeData   = $this->GradeSheet_old_model_pg->view_old_results($student['student_id'],$student['course_group_id'],$cls->id,$student['university_mode'],$student['id']);
-					// print_r($gradeData);die;
+					$old_data = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student['student_id'],'class_id'=>$cls->id));
+                    $gradeData   = $this->GradeSheet_old_model_pg->view_old_results($student['student_id'],$student['course_group_id'],$cls->id,$student['university_mode'],$old_data[0]->id);
+				// print_r( $gradeData);die;
                     $prev_tot_crdit += $gradeData['tot_credit'];
                     $prev_tot_grade += $gradeData['total_grade_point'];
+					// echo $prev_tot_crdit."---".$prev_tot_grade."<br>";
 					$prev_tot_credit_point += $gradeData['credit_point'];
-                    $cgpa += number_format((float)$gradeData['agpa'], 2, '.', '');
+                    // $cgpa += number_format((float)$gradeData['agpa'], 2, '.', '');
                   }
                 
                 }
-                   
+                 	$cgpa = number_format((float)(((int)$prev_tot_credit_point + (int)$gradesheetData['credit_point'])/((int)$prev_tot_crdit + (int)$gradesheetData['tot_credit'])), 2, '.', '');  
 
                 // print_r($gradesheetData);die;
                 $exam_arr=explode(" ",$student['exam_year']);
@@ -211,7 +214,7 @@
 				echo "<td>".$studentDetail->dob."</td>";
 				echo "<td>".$student['f_h_name']."</td>";
 				echo "<td>".$student['mother_name']."</td>";
-				echo "<td></td>";
+				echo "<td>".$student['photo']."</td>";
 				echo "<td>O</td>";
 				// echo "<td>".$gradesheetData['result']."</td>";
 				echo "<td>".$exam_arr[1]."</td>";
@@ -223,19 +226,22 @@
 				echo "<td>".$gradesheetData['credit_point']."</td>";
 				echo "<td>".$gradesheetData['total_grade_point']."</td>";
 				echo "<td>".$prev_tot_crdit."</td>";
-				echo "<td></td>";
+				echo "<td>". $prev_tot_grade ."</td>";
 				// echo "<td>".($gradesheetData['credit_point'] + $prev_tot_credit_point)."</td>";
 				echo "<td>".($gradesheetData['tot_credit'] + $prev_tot_crdit)."</td>";
 
 				?>
-                <td></td>
+                <td><?= $cgpa ?></td>
                 <td></td>
                 <td><?=number_format((float)$gradesheetData['agpa'], 2, '.', '')?></td>
 				<td><?=$studentDetail->abc_id?></td>
                 <?php
-               
+               $tot_grade_point=((int)$gradesheetData['total_grade_point'] + (int)$prev_tot_grade);
                 echo "<td>SEMESTER</td>";
-               echo "<td></td><td></td><td></td>";//<td></td>
+            //    echo "<td></td><td></td><td></td>";//<td></td>
+                echo "<td>".$tot_grade_point."</td>";
+                echo "<td>".$cgpa."</td>";
+                echo "<td>".$tot_grade_point."</td>";
                 echo " <td>".$studentDetail->center_name."  </td> ";
                 
                 echo $gradesheetData['html'];
@@ -247,7 +253,7 @@
 					echo "<td> </td>";
 				}
 				//<td></td><td></td>
-                echo "<td>".$admission_year[1]."</td><td></td><td></td>";
+                echo "<td>".$admission_year[1]."</td><td></td><td>".($prev_tot_crdit + $gradesheetData['tot_credit'])."</td>";
 				// $sess_arr=explode(" ",$student['session']);
 				// echo "<td>".$sess_arr[1]."</td>";
 				// echo "<td></td>";
