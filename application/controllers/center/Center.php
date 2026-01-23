@@ -1691,7 +1691,8 @@ class Center extends CI_Controller {
 			'roll_no!=' => 0,
 			'new_exam_form' => 'Y',
 			// 'examcentercode'=>'MDE172',
-			'university_mode'=>'REG'
+			'university_mode'=>'REG',
+			'student_id !=' => '776396'
 		);
         // $this->db->where_not_in('student_id', array(374292,374779,379155,379652,380605,380673,381026,382024,385894,685803,686581,686621,687158,687165,687390,687395,687622,722149));
         $data['students'] = $this->Common_model->getRecordByWhere('student',$where);
