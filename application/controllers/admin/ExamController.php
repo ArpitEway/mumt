@@ -3452,7 +3452,7 @@ public function getStudentData()
 	public function getEditBacklogStudentMarksData()
 	{
 		$roll_no = $this->input->post('roll_no');
-		$where = array('backlog_student.roll_no'=>$roll_no,'backlog_student.exam_form'=>'Y','backlog_student.exam_year'=>'June 2025');
+		$where = array('backlog_student.roll_no'=>$roll_no,'backlog_student.exam_form'=>'Y','backlog_student.exam_year'=>'Dec 2025');
 		$this->db->select('student.name,student.course_name,backlog_student.*');
 		$this->db->from('backlog_student');
 		$this->db->join('student','student.student_id = backlog_student.student_id');
