@@ -177,7 +177,7 @@
 							}
 						}else{
 							if($paper->exam_shift=='Afternoon' && in_array($student[0]->class_id,$class_ids)){
-								echo '12:00 PM To 05:00 PM';		
+								echo '12:00 PM To 03:00 PM';		
 							}
 							elseif($paper->exam_shift=='Afternoon'){
 								echo '2:00 PM To 5:00 PM';
