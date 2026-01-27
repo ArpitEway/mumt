@@ -4,9 +4,24 @@
     
     <!-- <p style="text-align:center;font-size:12px;">(Regular/Private)</p> -->
     <!-- <p style="text-align:center;font-size:12px;"><strong>Early Morning Shift Time 07:00 AM To 10:00 AM </strong></p> -->
-    <p style="text-align:center;font-size:12px;"><strong>Programme for Annual/Semester - Main/Backlog Examination <?= ($paper_list[0]['class_id'] == 215)?'December 2025':'January 2026'?> </strong></p>
-    <p style="text-align:center;font-size:12px;"><strong> Morning Shift Time 10:00 AM To 01:00 PM </strong></p>
-
+  <p style="text-align:center;font-size:12px;">
+    <strong>
+        Programme for Annual/Semester - Main/Backlog Examination
+        <?= ($paper_list[0]['class_id'] == 215)
+            ? 'December 2025'
+            : (in_array($paper_list[0]['class_id'], [502, 510, 432, 506, 464, 497])
+                ? 'February 2025'
+                : 'January 2026'
+            )
+        ?>
+    </strong>
+</p>
+<?php
+ if(in_array($paper_list[0]['class_id'],[464,497])){  ?>
+    <p style="text-align:center;font-size:12px;"><strong> Morning Shift Time 11:00 AM To 02:00 PM </strong></p>
+<?php }else{  ?>
+     <p style="text-align:center;font-size:12px;"><strong> Morning Shift Time 10:00 AM To 01:00 PM </strong></p>
+<?php } ?>
     <!-- <p style="text-align:center;font-size:12px;"><strong> Afternoon Shift Time 02:00 PM To 05:00 PM </strong></p> 
     echo in_array($paper_list[0]['class_id'], array(328, 329,313)) 
     ? 'August' 
@@ -22,7 +37,11 @@
 $class_ids = array(193,197,199,201,203,205,302,207,209,211,213,221,227,275,279,223,225,460,476,261,263,267,269);
      if(in_array($paper_list[0]['class_id'],$class_ids)){  ?>
      <p style="text-align:center;font-size:12px;"><strong> Afternoon Shift Time 12:00 PM To 03:00 PM </strong></p>
-    <?php }else{  ?>
+    <?php }
+    else if(in_array($paper_list[0]['class_id'],[502, 510, 432, 506])){  ?>
+    <p style="text-align:center;font-size:12px;"><strong> Afternoon Shift Time 03:00 PM To 06:00 PM </strong></p>
+    <?php }
+    else{  ?>
      <p style="text-align:center;font-size:12px;"><strong> Afternoon Shift Time 02:00 PM To 05:00 PM </strong></p> <?php } ?>
 
         <?php /*if($paper_list[0]['course_group_id']==45){ ?> 
