@@ -10,7 +10,7 @@
         <?= ($paper_list[0]['class_id'] == 215)
             ? 'December 2025'
             : (in_array($paper_list[0]['class_id'], [502, 510, 432, 506, 464, 497])
-                ? 'February 2025'
+                ? 'February 2026'
                 : 'January 2026'
             )
         ?>
