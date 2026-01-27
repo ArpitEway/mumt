@@ -3260,8 +3260,8 @@ public function update_exam_datewise_permission(){
 			$pattern="GRADE";
 		}
 		
-		$where =array("bs.course_group_id"=>$course_group_id ,'bs.class_id' => $class_id ,'bs.exam_form'=>'Y', 'bs.roll_no!='=>'0' , 'bs.result_show'=>'N','bs.mode'=> $mode,'bs.exam_year'=>'June 2025', 's.exam_pattern'=>$pattern);
-		//,'bs.student_id'=>734487
+		$where =array("bs.course_group_id"=>$course_group_id ,'bs.class_id' => $class_id ,'bs.exam_form'=>'Y', 'bs.roll_no!='=>'0' ,'bs.mode'=> $mode,'bs.exam_year'=>'June 2025', 's.exam_pattern'=>$pattern);
+		//,'bs.student_id'=>734487, 'bs.result_show'=>'N'
 		$this->db->order_by('bs.center_id','ASC');
 		$this->db->order_by('bs.roll_no','ASC');
 		
@@ -3317,8 +3317,8 @@ public function update_exam_datewise_permission(){
 		else{
 			$pattern="GRADE";
 		}
-        $where =array("bs.course_group_id"=>$course_group_id ,'bs.class_id' => $class_id ,'bs.exam_form'=>'Y', 'bs.roll_no!='=>'0' ,'bs.result_show'=> 'N','bs.mode'=> $mode,'bs.exam_year'=>'June 2025','exam_pattern'=>$pattern);
-		//,'student_id'=>702823
+        $where =array("bs.course_group_id"=>$course_group_id ,'bs.class_id' => $class_id ,'bs.exam_form'=>'Y', 'bs.roll_no!='=>'0' ,'bs.mode'=> $mode,'bs.exam_year'=>'June 2025','exam_pattern'=>$pattern);
+		//,'student_id'=>702823 ,'bs.result_show'=> 'N'
 		$this->db->order_by('bs.center_id','ASC');
 		$this->db->order_by('bs.roll_no','ASC');
 		
@@ -3406,7 +3406,7 @@ public function update_exam_datewise_permission(){
 	}
 
 	public function backlog_tr_class_list(){
-		$where = "id in (select distinct(course_group_id) from backlog_student where exam_form = 'Y' and exam_year='June 2025' and class_id in (101,102,104,105,106,107,108,109,110,111,112,120,121,125,126,127,128,129,131,132,133,134,135,136,137,138,143,147,150,155,171,174,180,182,191,198,208,214,216,224,226,228,232,236,240,242,246,248,250,252,254,256,262,264,268,218,273,276,280,282,283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,300,301,310) and class_id in (104,105,106,107,108,109,111,126,129,136,286,288,292,295,296,297) ) ";
+		$where = "id in (select distinct(course_group_id) from backlog_student where exam_form = 'Y' and exam_year='June 2025' and class_id in (101,102,104,105,106,107,108,109,110,111,112,120,121,125,126,127,128,129,131,132,133,134,135,136,137,138,143,147,150,155,171,174,180,182,191,198,208,214,216,224,226,228,232,236,240,242,246,248,250,252,254,256,262,264,268,218,273,276,280,282,283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,300,301,310) and class_id not in (104,105,106,107,108,109,111,126,129,136,286,288,292,295,296,297) ) ";
 		// and class_id in (109,112,127,130,133,134,135,136,180,287,288,246,292,262)
 		//121,198,240,276,280,282,224,264,273,300,301,206,294
 		// 101,102,104,105,106,107,108,109,110,111,112,120,121,125,126,127,128,129,131,132,133,134,135,136,137,138,143,147,150,155,171,174,180,182,191,198,208,214,216,224,226,228,232,236,240,242,246,248,250,252,254,256,262,264,268,218,273,276,280,282,283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,300,301,310

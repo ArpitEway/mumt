@@ -9,7 +9,7 @@
         Programme for Annual/Semester - Main/Backlog Examination
         <?= ($paper_list[0]['class_id'] == 215)
             ? 'December 2025'
-            : (in_array($paper_list[0]['class_id'], [502, 510, 432, 506, 464, 497])
+            : (in_array($paper_list[0]['class_id'], [502, 510, 432, 506, 464, 497,332])
                 ? 'February 2026'
                 : 'January 2026'
             )
@@ -38,7 +38,7 @@ $class_ids = array(193,197,199,201,203,205,302,207,209,211,213,221,227,275,279,2
      if(in_array($paper_list[0]['class_id'],$class_ids)){  ?>
      <p style="text-align:center;font-size:12px;"><strong> Afternoon Shift Time 12:00 PM To 03:00 PM </strong></p>
     <?php }
-    else if(in_array($paper_list[0]['class_id'],[502, 510, 432, 506])){  ?>
+    else if(in_array($paper_list[0]['class_id'],[502, 510, 432, 506, 332])){  ?>
     <p style="text-align:center;font-size:12px;"><strong> Afternoon Shift Time 03:00 PM To 06:00 PM </strong></p>
     <?php }
     else{  ?>
