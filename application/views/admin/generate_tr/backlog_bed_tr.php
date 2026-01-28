@@ -422,7 +422,7 @@
               echo 'Absent In Practical';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
     }
       // echo 'Absent In';
-      if($theory_abs_count == $count_theory){
+      if($theory_abs_count == $count_theory && $theory_abs_count !=0){
         echo 'ABSENT';
       }
       
