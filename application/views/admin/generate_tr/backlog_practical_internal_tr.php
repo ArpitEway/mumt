@@ -617,7 +617,7 @@ table.last_table, .last_table td, .last_table th{
             //     echo 'Year Break';
             //   }
             //   else
-              if($theory_abs_count == $count_theory){
+              if($theory_abs_count == $count_theory && $theory_abs_count !=0){
                 echo 'ABSENT';
               }
               else{
