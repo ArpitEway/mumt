@@ -48,7 +48,7 @@ class Gradesheet_old_model extends CI_Model
 			$papers = $this->Common_model->get_all_old_papers($student_id,$class_id,$exam_data_id);
             // print_r($papers);
 		}
-		if($this->classData->class_group == 'Y' || (in_array($session[1],array(2021,2022)) && $class_id == 101)){
+		if($this->classData->class_group == 'Y' || (in_array($session[1],array(2021,2022)) && in_array($class_id,array(101,102)))){
 		$papers_list = $this->Common_model->get_all_old_group_papers($student_id,$class_id,$exam_data_id,$course_group_id);
 		}
 		// get_all_group_papers
@@ -760,7 +760,7 @@ class Gradesheet_old_model extends CI_Model
 			}
 			if(($result['f_abs'] === 'ABS' && $result['obt_marks'] != '0')){
 				$result['obt_credit'] = 2;
-				$this->obt_tot_credit -=2; 
+				$this->obt_tot_credit +=2; 
 				$credit_point = $result['obt_credit']*$result['grade_point'];
 			$result['credit_point']=$credit_point;
 			$this->tot_credit_point -= $credit_point;
@@ -1472,7 +1472,7 @@ class Gradesheet_old_model extends CI_Model
 		if($std[0]->sub_group_id == 1){
 			$papers = $this->Common_model->get_all_old_papers($student_id,$class_id,$exam_data_id);
 		}
-		if($this->classData->class_group == 'Y' || (in_array($session[1],array(2021,2022)) && $class_id == 101)){
+		if($this->classData->class_group == 'Y' || (in_array($session[1],array(2021,2022)) && in_array($class_id,array(101,102)))){
 		$papers_list = $this->Common_model->get_all_old_group_papers($student_id,$class_id,$exam_data_id,$course_group_id);
 		}
 		// get_all_group_papers
