@@ -318,7 +318,7 @@
 							
 							
 						}
-				  if($student->exam_pattern == 'GRADE'){
+				  if($student->exam_pattern == 'GRADE' && $final_result !='RWPM'){
 					echo $this->Gradesheet_backlog_tr_model_pg->view_notification_result($student->student_id,$student->course_group_id,$student->class_id,$student->mode,$student->id);
 				  }else{
 					echo $final_result;
