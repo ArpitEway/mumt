@@ -664,7 +664,6 @@ $abs_count = 0 ;
 									} ?>
 							<td class="text-center"> 
 								<?php 
-								
 								if((in_array($student->class_id, $class_ids)) && $mode=='REG')	
 								{
 									// echo $gradesheetData['result'];
@@ -674,7 +673,7 @@ $abs_count = 0 ;
                                    // elseif( $theory_abs_count== ($theory_paper_count-2) && $p_abs_count==$p_paper_count){
 										//echo 'Year Break';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
 									//   }else
-                                      elseif( $theory_abs_count== $theory_paper_count){
+                                      elseif( $theory_abs_count== $theory_paper_count && $theory_abs_count !=0){
 										echo 'ABSENT';//$int_abs_count==($theory_paper_count+$p_paper_count )&& 
 									  }
 									 elseif( $p_abs_count==$p_paper_count){
@@ -694,7 +693,7 @@ $abs_count = 0 ;
 									}
 								}else{
 									
-									if($theory_abs_count == $theory_paper_count){
+									if($theory_abs_count == $theory_paper_count && $theory_abs_count !=0){
 										echo 'ABSENT';
 									  }
 									elseif( $theory_abs_count==$theory_paper_count && $p_abs_count==$p_paper_count && $student->course_group_id == 76){
