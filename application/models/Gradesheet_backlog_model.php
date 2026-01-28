@@ -614,7 +614,7 @@ class Gradesheet_backlog_model extends CI_Model
                     $result['obt_credit'] = 2;
                 }
 				
-				$this->obt_tot_credit -=2; 
+				$this->obt_tot_credit +=2; 
 				$credit_point = $result['obt_credit']*$result['grade_point'];
 				$result['credit_point']=$credit_point;
 				$this->tot_credit_point -= $credit_point;

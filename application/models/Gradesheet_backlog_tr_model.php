@@ -485,7 +485,7 @@ class Gradesheet_backlog_tr_model extends CI_Model
 		
 				if(($result['f_abs'] === 'ABS' && $result['obt_marks'] != '0')){
 					$result['obt_credit'] = 2;
-					$this->obt_tot_credit -=2; 
+					$this->obt_tot_credit +=2; 
 					$credit_point = $result['obt_credit']*$result['grade_point'];
 				$this->result_array[$key]['credit_point']=$credit_point;
 				$this->tot_credit_point -= $credit_point;
