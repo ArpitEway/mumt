@@ -3260,7 +3260,7 @@ public function update_exam_datewise_permission(){
 			$pattern="GRADE";
 		}
 		
-		$where =array("bs.course_group_id"=>$course_group_id ,'bs.class_id' => $class_id ,'bs.exam_form'=>'Y', 'bs.roll_no!='=>'0' ,'bs.mode'=> $mode,'bs.exam_year'=>'June 2025', 's.exam_pattern'=>$pattern);
+		$where =array("bs.course_group_id"=>$course_group_id ,'bs.class_id' => $class_id ,'bs.exam_form'=>'Y', 'bs.roll_no!='=>'0' ,'bs.mode'=> $mode,'bs.exam_year'=>'June 2025', 's.exam_pattern'=>$pattern,'bs.result_show'=>'N');
 		//,'bs.student_id'=>734487, 'bs.result_show'=>'N'
 		$this->db->order_by('bs.center_id','ASC');
 		$this->db->order_by('bs.roll_no','ASC');
@@ -3317,7 +3317,7 @@ public function update_exam_datewise_permission(){
 		else{
 			$pattern="GRADE";
 		}
-        $where =array("bs.course_group_id"=>$course_group_id ,'bs.class_id' => $class_id ,'bs.exam_form'=>'Y', 'bs.roll_no!='=>'0' ,'bs.mode'=> $mode,'bs.exam_year'=>'June 2025','exam_pattern'=>$pattern);
+        $where =array("bs.course_group_id"=>$course_group_id ,'bs.class_id' => $class_id ,'bs.exam_form'=>'Y', 'bs.roll_no!='=>'0' ,'bs.mode'=> $mode,'bs.exam_year'=>'June 2025','exam_pattern'=>$pattern,'bs.result_show'=>'N');
 		//,'student_id'=>702823 ,'bs.result_show'=> 'N'
 		$this->db->order_by('bs.center_id','ASC');
 		$this->db->order_by('bs.roll_no','ASC');
