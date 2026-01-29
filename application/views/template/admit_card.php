@@ -42,7 +42,10 @@
 			<div class="BoxC border- padding mar-bot">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Schedule of Exam for Annual/Semester Examination of <?=($student[0]->class_id == 215)?"December 2025":"January 2026"?> 	</h5>
+						<h5>Schedule of Exam for Annual/Semester Examination of <?=($student[0]->class_id == 215)?"December 2025" : (in_array($paper_list[0]['class_id'], [502, 510, 432, 506, 464, 497,332])
+                ? 'February 2026'
+                : 'January 2026'
+            )?> 	</h5>
 						<!-- <h5>Schedule of Exam for Annual Examination December 2025</h5> -->
 
 							<?php 
@@ -188,12 +191,18 @@
 							elseif($paper->pvt_exam_shift=='Morning' ){
 									echo '10:00 AM To 1:00 PM';
 							}
-						}else{
+						    }else{
 							if($paper->exam_shift=='Afternoon' && in_array($student[0]->class_id,$class_ids)){
 								echo '12:00 PM To 03:00 PM';		
 							}
+							elseif($paper->exam_shift=='Afternoon' && in_array($student[0]->class_id,[502, 510, 432, 506, 332])){  ?>
+								<?php echo '3:00 PM To 6:00 PM'; ?>
+							<?php }
 							elseif($paper->exam_shift=='Afternoon'){
 								echo '2:00 PM To 5:00 PM';
+							}
+							elseif($paper->exam_shift=='Morning' && in_array($student[0]->class_id,[464,497])){
+								echo '11:00 AM To 2:00 PM';
 							}
 							elseif($paper->exam_shift=='Morning' ){
 								 echo '10:00 AM To 1:00 PM';
