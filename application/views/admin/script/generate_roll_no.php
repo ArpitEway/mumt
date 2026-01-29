@@ -44,6 +44,8 @@
 
 					// $this->db->where_in('id',array(193,197,199,201,203,205,207,209,211,213,221,223,225,227,261,263,267,269,275,279,302,460,476));
 
+					$this->db->where_not_in('id',array(257,259));
+
 					$classData = $this->Common_model->getRecordByWhere('class_master',$whereclass);
 					$j=0;
 					foreach ($classData as $class) {
