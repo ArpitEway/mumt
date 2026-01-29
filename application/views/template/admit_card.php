@@ -42,7 +42,7 @@
 			<div class="BoxC border- padding mar-bot">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Schedule of Exam for Annual/Semester Examination of <?=($student[0]->class_id == 215)?"December 2025" : (in_array($paper_list[0]['class_id'], [502, 510, 432, 506, 464, 497,332])
+						<h5>Schedule of Exam for Annual/Semester Examination of <?=($student[0]->class_id == 215)?"December 2025" : (in_array($student[0]->class_id, [502, 510, 432, 506, 464, 497,332])
                 ? 'February 2026'
                 : 'January 2026'
             )?> 	</h5>
