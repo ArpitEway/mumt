@@ -42,7 +42,10 @@
 			<div class="BoxC border- padding mar-bot">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>Schedule of Exam for Annual/Semester Backlog Examination of <?=($student[0]->class_id == 215)?"December 2025":"January 2026"?></h5>
+						<h5>Schedule of Exam for Annual/Semester Backlog Examination of <?=($student[0]->class_id == 215)?"December 2025":(in_array($student[0]->class_id, [502, 510, 432, 506, 464, 497,332,264,270])
+                ? 'February 2026'
+                : 'January 2026'
+            )?></h5>
 						<!-- <h5>Schedule of Exam for Annual Backlog Examination December 2025</h5> -->
 
 							<?php 
@@ -164,7 +167,7 @@
 					<?php //endif ?> -->
 					<!-- <td><?= ($paper->exam_shift=='मध्याह्न') ? '१२:०० से ०३:०० बजे तक' : ''; ?></td> -->
 					<td><?php
-					$class_ids = array(193,197,199,201,203,205,302,207,209,211,213,221,227,275,279,223,225,460,476,261,263,267,269);
+					$class_ids = array(193,197,199,201,203,205,302,207,209,211,213,221,227,275,279,223,225,460,476,261,263,267,269,264,270);
 						if($student[0]->mode == 'PVT' && in_array($student[0]->class_id,$pvtClasses)){
 							if($paper->pvt_exam_shift=='Afternoon' && in_array($student[0]->class_id,$class_ids)){
 									echo '2:00 PM To 5:00 PM';		
