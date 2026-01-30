@@ -3193,11 +3193,12 @@ public function update_exam_datewise_permission(){
 		else{
 			$pattern="GRADE";
 		}
-		$where =array("course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y', 'roll_number!='=>'0' , 'old_result_show'=>'N','university_mode'=> $mode ,'exam_pattern'=>$pattern);
+		// $where =array("course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y', 'roll_number!='=>'0' , 'old_result_show'=>'N','university_mode'=> $mode ,'exam_pattern'=>$pattern);
 		//,'examcentercode'=>'MDE165'
 		//, 'student_id'=>718196	
+		$where =array("course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'new_exam_form'=>'Y', 'roll_no!='=>'0' , 'result_show'=>'N','university_mode'=> $mode ,'exam_pattern'=>$pattern);
 		$this->db->order_by('center_id','ASC');
-		$this->db->order_by('roll_number','ASC');
+		$this->db->order_by('roll_no','ASC');
 
 		// $this->db->where_not_in('student_id',array(702074,708852,715685,717482));
 		// $this->db->where_in('student_id',array(709841));
@@ -4012,9 +4013,9 @@ public function update_exam_datewise_permission(){
 			$pattern="GRADE";
 		}
 
-		$this->db->order_by('center_id,roll_number','ASC');
+		$this->db->order_by('center_id,roll_no','ASC');
 		
-		$data['students'] = $this->Common_model->getRecordByWhere('student',array("university_mode"=>$mode,"course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y','roll_number!='=>'0','old_result_show'=> 'N' ,'exam_pattern'=> $pattern));
+		$data['students'] = $this->Common_model->getRecordByWhere('student',array("university_mode"=>$mode,"course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y','roll_no!='=>'0','result_show'=> 'N' ,'exam_pattern'=> $pattern));
 		//  $data['students'] = $this->Common_model->getRecordByWhere('student',array("university_mode"=>$mode,"course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y','roll_number!='=>'0' ,'exam_pattern'=> $pattern));
 
 		//'result_show' => 'N' ,'student_id'=>'685381'
