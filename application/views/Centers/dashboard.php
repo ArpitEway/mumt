@@ -280,7 +280,7 @@
 								<span class="nav-text">Exam Form Dec 2025</span>
 							</div>
 					</a>  -->
-				<?php if($center->id > 100){?>
+				<?php if($center->id > 100 || $center->id == 12){?>
 					<a class="border-0 custom-menu-item" href="<?=base_url('backlog_exam_form_students/notSubmitted/center');?>">
 							<div>
 								<span class="nav-text">Backlog Exam Form Dec 2025</span>
