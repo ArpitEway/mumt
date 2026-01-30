@@ -3376,7 +3376,9 @@ public function update_exam_datewise_permission(){
 		
 		// $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' )";
 
-        $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and class_id in (103,106,109,112,121,127,130,133,136,148,284,286,288,290,292,294,296,298,311))";
+        $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and class_id in (143,146,142,313,139,145,148,184))";
+
+        // 103,106,109,112,121,127,130,133,136,148,284,286,288,290,292,294,296,298,311
         
         // 105,108,135
 
@@ -3447,12 +3449,14 @@ public function update_exam_datewise_permission(){
 		}
 		if($_POST['not_permitted']){
 			$student_ids = (implode(',',$_POST['not_permitted']));
-			$data = array('old_result_show' => 'Y','result_show' => 'Y');
+			$data = array('old_result_show' => 'Y');
+			// ,'result_show' => 'Y'
 			$where = " student_id in (".$student_ids.")";//provisional_remark in ('','N') &&
 			$update =$this->Common_model->updateRecordByConditions('student',$where,$data);
 		}else{
 			$student_ids = (implode(',',$_POST['permitted']));
-			$data = array('old_result_show' => 'N','result_show' => 'N');
+			$data = array('old_result_show' => 'N');
+			// ,'result_show' => 'N'
 			$where ='student_id in ('.$student_ids.')';
 			$update = 	$this->Common_model->updateRecordByConditions('student',$where,$data);
 		}  
