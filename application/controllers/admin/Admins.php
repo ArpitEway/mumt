@@ -3196,7 +3196,7 @@ public function update_exam_datewise_permission(){
 		// $where =array("course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y', 'roll_number!='=>'0' , 'old_result_show'=>'N','university_mode'=> $mode ,'exam_pattern'=>$pattern);
 		//,'examcentercode'=>'MDE165'
 		//, 'student_id'=>718196	
-		$where =array("course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'new_exam_form'=>'Y', 'roll_no!='=>'0' , 'result_show'=>'N','university_mode'=> $mode ,'exam_pattern'=>$pattern);
+		$where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y', 'roll_no!='=>'0' , 'result_show'=>'N','university_mode'=> $mode ,'exam_pattern'=>$pattern);
 		$this->db->order_by('center_id','ASC');
 		$this->db->order_by('roll_no','ASC');
 
