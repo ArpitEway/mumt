@@ -3271,7 +3271,7 @@ public function update_exam_datewise_permission(){
         $this->db->from('backlog_student as bs');
         $this->db->join('student as s', 's.student_id=bs.student_id');
 		// $this->db->where_not_in('bs.session', array('July 2021','July 2022'));
-		$this->db->where_not_in('bs.enrollment_no',array('PC/22234374','PC/22246746','PC/22246698','PC/22247280','PC/22236918','PC/22240563','PC/22232782','PC/22248549','PC/22219400','PC/22230583','PC/22227955','PC/22227990','PC/22234809','PC/22225351','PA/21212563','PC/22231963','PC/22226880','PC/22233975','PC/22223544','PC/22226223','PC/22224508'
+		$this->db->where_in('bs.enrollment_no',array('PC/22234374','PC/22246746','PC/22246698','PC/22247280','PC/22236918','PC/22240563','PC/22232782','PC/22248549','PC/22219400','PC/22230583','PC/22227955','PC/22227990','PC/22234809','PC/22225351','PA/21212563','PC/22231963','PC/22226880','PC/22233975','PC/22223544','PC/22226223','PC/22224508'
 ));
         $this->db->where($where);
         $data['students'] = $this->db->get()->result();
