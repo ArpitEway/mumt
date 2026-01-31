@@ -84,7 +84,10 @@
 				<div class="row">
 					<div class="col-12 text-center">
 						<h5>
-							ATTENDANCE SHEET FOR ANNUAL/SEMESTER EXAMINATION OF JANUARY 2026
+							ATTENDANCE SHEET FOR ANNUAL/SEMESTER EXAMINATION OF <?=($student->class_id == 215)?"December 2025":(in_array($student->class_id, [502, 510, 432, 506, 464, 497,332,264,270])
+                ? 'February 2026'
+                : 'January 2026'
+            )?>
 						</h5>
 						<!-- 
 						OF CANCELLED EXAM
@@ -198,7 +201,7 @@
 					<td><?php echo date("d-m-Y", strtotime(($student->university_mode == 'PVT' && in_array($student->class_id,$classIdsRegOnly))?$paper->pvt_exam_date:$paper->exam_date)); ?></td>
 					<td><?php 
 					// 104,101,107,110,116,119,273,125,128,131,134,162,163,164,165,283,285,287,289,310,291,293,295,274,297,168,169,170,171,214,106,103,109,112,118,121,127,130,133,136,264,137,149,183,185,191,138,184,192,187,143,146,139,144,188,145,147,148,150,186,141,151,142,190,140,189,173,174,175,177,180
-					$class_ids = array(193,197,199,201,203,205,207,209,211,213,221,223,225,227,261,263,267,269,275,279,302,460,476);
+					$class_ids = array(193,197,199,201,203,205,207,209,211,213,221,223,225,227,261,263,267,269,275,279,302,460,476,261,263,267,269,264,270);
 				if($student->university_mode == 'PVT' && in_array($student->class_id,$classIdsRegOnly)){
 							if($paper->pvt_exam_shift=='Afternoon' && in_array($student->class_id,$class_ids)){
 									echo '2:00 PM To 5:00 PM';		
@@ -212,11 +215,15 @@
 						}else{
 							if($paper->exam_shift=='Afternoon' && in_array($student->class_id,$class_ids)){
 								echo '12:00 PM To 03:00 PM';		
+							}elseif($paper->exam_shift=='Afternoon' && in_array($student->class_id,[502, 510, 432, 506, 332])){
+								echo '03:00 PM To 06:00 PM';
 							}
 							elseif($paper->exam_shift=='Afternoon'){
 								echo '2:00 PM To 5:00 PM';
 							}
-							elseif($paper->exam_shift=='Morning' ){
+							elseif($paper->exam_shift=='Morning' && in_array($student->class_id,[464,497])){
+								 echo '11:00 AM To 02:00 PM';
+							}elseif($paper->exam_shift=='Morning' ){
 								 echo '10:00 AM To 1:00 PM';
 							}
 						}	
