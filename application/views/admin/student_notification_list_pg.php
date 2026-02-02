@@ -274,7 +274,7 @@
 		?>
 		<tr class="alternate">
 			<td class="text-center">
-				<?php echo $student->roll_number ?>
+				<?php echo $student->roll_no; ?>
 			</td>
 			<td scope="row" style="padding-left: 10px;" >
 				<?php echo $student->name  .' / '.  $student->f_h_name; ?>
@@ -336,7 +336,7 @@
 							
 						}
 						
-						echo $this->Gradesheet_tr_model_pg->view_notification_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+						echo $this->Gradesheet_tr_model_pg->view_notification_result($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
 						
 					}
 				}
@@ -377,11 +377,11 @@
                         <td class="text-center" style="padding:0px" align="center"></td>
                         <?php
                     }else{
-                        $gradesheetData = $this->Gradesheet_tr_model_pg->view_notification($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+                        $gradesheetData = $this->Gradesheet_tr_model_pg->view_notification($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
                     }
 				
                 if($isFinalClass && $student->exam_pattern == 'GRADE'){
-                    $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$course_group_id,'mode'=>$classData->mode,'id!='=>$student->old_class_id));
+                    $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$course_group_id,'mode'=>$classData->mode,'id!='=>$student->class_id));
                     $total_grade_point = 0;
                     $total_course_credit = 0;
                     foreach($classes as $cls){
