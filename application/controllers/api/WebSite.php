@@ -105,7 +105,7 @@ class WebSite extends REST_Controller {
 	{
 		$eligibility = html_escape($this->input->post('eligibility'));
         //$eligibility ="GRADUATION";
-		$session ="July 2024";
+		$session ="July 2025";
 		$mode = 'REG';
 		$myString =$eligibility;
 		
