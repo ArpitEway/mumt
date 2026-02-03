@@ -1950,7 +1950,7 @@ class ExamController extends CI_Controller {
 		$data['hash_csrf'] = $this->security->get_csrf_hash();	
 		$this->db->order_by('course_name');
 		// $data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id), course_name ',''.$this->exam_form.'="Y"');
-		$this->db->where('examcentercode','MDE165');
+		// $this->db->where('examcentercode','MDE165');
 		$data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id), course_name ','new_exam_form="Y"');
 		$this->load->view('admin/examController/exam_center_folio',$data);
 		$this->load->view('footer');
@@ -1961,7 +1961,7 @@ class ExamController extends CI_Controller {
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();	
 		$this->db->order_by('course_group_id');
-		$this->db->where('exam_center_code','MDE165');
+		// $this->db->where('exam_center_code','MDE165');
 		$data['courses'] = $this->Common_model->get_record('backlog_student','DISTINCT (course_group_id)','exam_form="Y" and exam_year="Dec 2025"');
 		$this->load->view('admin/examController/backlog_exam_center_folio',$data);
 		$this->load->view('footer');
@@ -1976,7 +1976,7 @@ class ExamController extends CI_Controller {
 			$this->db->where('new_exam_form.course_group_id',$_POST['course_group_id']);
 			$this->db->where('new_exam_form.class_id',$_POST['class_id']);
 			$this->db->where('student.exam_center_id!=',0);
-			$this->db->where('student.examcentercode','MDE165');
+			// $this->db->where('student.examcentercode','MDE165');
 			//$this->db->where('student.'.$this->roll_no.'!=',0);
 			$this->db->where('student.new_exam_form','Y');
 			$this->db->where('student.roll_no!=',0);
@@ -2014,7 +2014,7 @@ class ExamController extends CI_Controller {
 			$this->db->where('backlog_student.exam_year','Dec 2025');
 			$this->db->where('backlog_student.mode',$_POST['university_mode']);
 			$this->db->where('backlog_student.roll_no!=',0);
-			$this->db->where('exam_center_code','MDE165');
+			// $this->db->where('exam_center_code','MDE165');
 			$this->db->order_by('backlog_student.exam_center_code');
 			$data['examcenters'] = $this->db->get()->result();
 			$data['university_mode'] = $_POST['university_mode'];
