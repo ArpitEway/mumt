@@ -194,6 +194,7 @@ class WebSite extends REST_Controller {
         $center_id=30;
         $center_code='MYUTD';
         $center_name='MMYVV University Teaching Department';
+        $mode = html_escape($this->input->post("mode"));
         $eligibility = html_escape($this->input->post("eligibility"));
         $course_group_id = html_escape($this->input->post("course_group_id"));
         $name    = html_escape($this->input->post("name"));
@@ -207,7 +208,11 @@ class WebSite extends REST_Controller {
         $this->db->select('class_master.*');
 		$this->db->from('class_master');
 		$this->db->join('course_group', 'class_master.course_group_id = course_group.id');
-		$this->db->where('class_master.mode=course_group.mode');
+        if($mode=='REG'){
+		    $this->db->where('class_master.mode=course_group.mode');
+        }else{
+            $this->db->where('class_master.mode=course_group.private_mode'); 
+        }
 		$this->db->where('class_master.admission_permission','Y');
 		$this->db->where('course_group_id',$course_group_id);
 		$class_list = $this->db->get()->result_array();
@@ -223,7 +228,8 @@ class WebSite extends REST_Controller {
         $data['f_h_name']=$f_h_name;
         $data['adhar_no']=$adhar_no;
         $data['dob']=$dob;
-        $data['university_mode']='REG';
+        // $data['university_mode']='REG';
+        $data['university_mode']=$mode;
         $data['form_fees']='N';
         $data['admission_by']='web';
         $data['session']='July 2025';
