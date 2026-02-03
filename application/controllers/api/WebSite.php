@@ -104,9 +104,10 @@ class WebSite extends REST_Controller {
     public function getCourseByEligibility_post()
 	{
 		$eligibility = html_escape($this->input->post('eligibility'));
+        $mode = html_escape($this->input->post('mode'));
         //$eligibility ="GRADUATION";
+		// $mode = 'REG';
 		$session ="July 2025";
-		$mode = 'REG';
 		$myString =$eligibility;
 		
 		 
@@ -127,7 +128,10 @@ class WebSite extends REST_Controller {
 		if($mode=='REG' || $mode=='regular'){
 			$where['admission_permission_regular'] = 'Y';
 			$this->db->where('admission_permission_regular','Y');
-		  }
+		  }elseif($mode=='PVT' || $mode=='private'){
+            $where['admission_permission_private'] = 'Y';
+            $this->db->where('admission_permission_private','Y');
+          }
 		$this->db->group_end();
         $this->db->group_start();
 		$this->db->where('course_group_id in ('.$centerdata->allot_course_group_id.')');
