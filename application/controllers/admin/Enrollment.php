@@ -1228,7 +1228,7 @@
 		$admissionEntry = $this->Common_model->get_record('online_payment_transaction','*',$wherearray);
 		
 		if(($student->admission_by=='web' )  && (!@($admissionEntry))){
-			$amount = $this->Common_model->getRecordByWhere('course',array('course_group_id'=> $student->course_group_id));
+			$amount = $this->Common_model->getRecordByWhere('course',array('course_group_id'=> $student->course_group_id, 'session'=>$student->session));
 	
             $mode = 'regular';
             $late_fees=0;
