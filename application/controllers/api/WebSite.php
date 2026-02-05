@@ -252,14 +252,16 @@ class WebSite extends REST_Controller {
             $results['student_id']=$center_code = $this->Common_model->encrypt_decrypt($student_id,'encrypt');
             $amount = $this->Common_model->getRecordByWhere('course',array('course_group_id'=> $course_group_id));
 	
-            $mode = 'regular';
+            // $mode = 'regular';
             $late_fees=0;
             $remark="From Web";
-            if($mode=='regular'){
+            if($mode=='REG'){
                 $amount = $amount[0]->form_fees;//+$amount[0]->admission_fees;
-                $admission_type = 'regular';
-            }
-            
+                $admission_type = 'Regular';
+            }else{
+                $amount = $amount[0]->p_form_fees;//+$amount[0]->p_admission_fees;
+                $admission_type = 'Private';
+            }            
 
             $OnlinePayTxnData = array('student_id' => $student_id,'center_id' => $center_id ,'fees_head' => 'Form Fees','amount' => $amount,'payment_status'=>'pending','course_group_id' => $course_group_id,'class_id' => $class_id,'student_name' => $data['name'],'admission_type'=>$admission_type,'remark'=>$remark);
             $OnlinePayTxn = $this->Common_model->insertAll('online_payment_transaction',$OnlinePayTxnData);
