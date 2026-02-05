@@ -44,8 +44,8 @@
     $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
    // $marksheet_variables = $this->Common_model->getRecordById('marksheet_variables','class_id',$class_id);
     $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
-    $border = ($classData->admission_permission == 'Y')?'border: 1px solid black;margin-top:20px;':'border: 0px solid #22316C;';
-    $margin = ($classData->admission_permission == 'Y')?'min-height:420px;margin-top: 20px;':'min-height:420px;margin-top: 20px;';
+    $border = ($classData->admission_permission == 'Y' || $classData->id=='313')?'border: 1px solid black;margin-top:20px;':'border: 0px solid #22316C;';
+    $margin = ($classData->admission_permission == 'Y' || $classData->id=='313')?'min-height:420px;margin-top: 20px;':'min-height:420px;margin-top: 20px;';
     $isOneClass = $this->Common_model->hasOneClass($classData->course_group_id);
     $papers = $old_result_data;
     ?>
@@ -118,7 +118,7 @@
                       <td class="Normaltext" align="left" width="29%"><div align="left">Father's / Husband's Name</div></td>
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo strtoupper( $exam_data->f_h_name); ?></span></div></td>
                     </tr>
-                    <?php if ($exam_data->course_group_id==76 || $exam_data->course_group_id==75){ ?>
+                    <?php if ($exam_data->course_group_id==76 || $exam_data->course_group_id==75 || $exam_data->course_group_id==81){ ?>
                     <?php if ($exam_data->center_id==10 || $exam_data->center_id==28 ||$exam_data->center_id==12){ ?>
                     <tr>
                       <td class="Normaltext" align="left" width="29%"><div align="left">Department</div></td>
