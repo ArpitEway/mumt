@@ -607,7 +607,7 @@ table.last_table, .last_table td, .last_table th{
                 echo 'Year Break';
               }elseif($int_abs_count == $count_int){
                 echo ' Absent In Internal'; 
-              }elseif($p_abs_count == $count_practical){
+              }elseif($p_abs_count == $count_practical && $count_practical !=0){
                 echo ' Absent In Practical';
               }
             }else{
