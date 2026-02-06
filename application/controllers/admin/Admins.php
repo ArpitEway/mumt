@@ -3382,7 +3382,7 @@ public function update_exam_datewise_permission(){
 		
 		// $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' )";
 
-        $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and class_id in (217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253,143))";
+        $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and class_id in (217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253,143,135))";
 
         // Dec 2025
         // 217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253
