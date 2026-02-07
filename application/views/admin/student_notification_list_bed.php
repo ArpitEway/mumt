@@ -456,7 +456,7 @@ $abs_count = 0 ;
 					<tr class="alternate">
 					
 						<td class="text-center" scope="row">
-							<?php echo $student->roll_no; ?>
+							<?php echo $student->roll_number; ?>
 							</td>
 							<td scope="row"  style="padding-left: 10px;" >
 								<?php echo $student->name .' / '.  $student->f_h_name; ?>
