@@ -3085,7 +3085,7 @@ public function update_exam_datewise_permission(){
 		$class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
 		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
 		// $this->db->order_by('roll_number','ASC');
-		$this->db->order_by('roll_no','ASC');
+		$this->db->order_by('roll_number','ASC');
 		$data['mode']= $mode;
 		//$this->db->where_in('student_id',array(379146,386106,684818,698913,698935,699440,699688,701898,701899,703694,703888,703975,704028,704055,704305,704409,704469,704783,705021,706439,706847,707041,707337,708030,708197,708273,708298,708485,708918,709142,709236,709265,709365,709953,710434,711824,711864,711971,712142,712149,712334,712568,712742,713081,713086,713178,713241,713315,713513,714111,714126,714131,714588,714715,715096,715361,715750,715807,715826,715833,716010,716336,716338,716340,716515,718064,718991,719124,719153,719358,719361,719601,719952,720778,720794,720900,721070,721977,722129,722265,722285,722615,722616,722642,722644,722711,723053,723529,723536,723716,723718,724366));
 		//$this->db->limit(1000);
@@ -3107,7 +3107,7 @@ public function update_exam_datewise_permission(){
 		//$this->db->where_in('roll_number', array(210710017,210712137));
 		// $data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y' ,'roll_number!='=>'0', 'university_mode'=>$mode,'exam_pattern'=>$pattern));
 		
-		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'new_exam_form'=>'Y' ,'roll_no!='=>'0', 'university_mode'=>$mode,'exam_pattern'=>$pattern));
+		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'exam_form'=>'Y' ,'roll_number!='=>'0', 'university_mode'=>$mode,'exam_pattern'=>$pattern));
 
 		//'result_show'=>'Y','old_result_show'=>'Y',
         // $this->Common_model->last_query();
@@ -3380,9 +3380,9 @@ public function update_exam_datewise_permission(){
 		
 		// $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and old_class_id in (154,155,181,182,193,217,195,197,231,199,233,201,235,203,237,205,239,241,209,243,211,245,213,215,302,304,275,277,279,281,221,247,223,249,225,251,227,253) )  ";
 		
-		// $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' )";
+		$where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and old_class_id in (146,142,313,139,145,148,184) )  ";
 
-        $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and class_id in (217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253,143,135))";
+        // $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and class_id in (217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253,143,135))";
 
         // Dec 2025
         // 217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253
