@@ -3084,8 +3084,8 @@ public function update_exam_datewise_permission(){
 		$course_id = $this->Common_model->encrypt_decrypt($course_id,'decrypt');
 		$class_id = $this->Common_model->encrypt_decrypt($class_id,'decrypt');
 		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
-		// $this->db->order_by('roll_number','ASC');
 		$this->db->order_by('roll_number','ASC');
+		// $this->db->order_by('roll_no','ASC');
 		$data['mode']= $mode;
 		//$this->db->where_in('student_id',array(379146,386106,684818,698913,698935,699440,699688,701898,701899,703694,703888,703975,704028,704055,704305,704409,704469,704783,705021,706439,706847,707041,707337,708030,708197,708273,708298,708485,708918,709142,709236,709265,709365,709953,710434,711824,711864,711971,712142,712149,712334,712568,712742,713081,713086,713178,713241,713315,713513,714111,714126,714131,714588,714715,715096,715361,715750,715807,715826,715833,716010,716336,716338,716340,716515,718064,718991,719124,719153,719358,719361,719601,719952,720778,720794,720900,721070,721977,722129,722265,722285,722615,722616,722642,722644,722711,723053,723529,723536,723716,723718,724366));
 		//$this->db->limit(1000);
@@ -3198,7 +3198,7 @@ public function update_exam_datewise_permission(){
 		else{
 			$pattern="GRADE";
 		}
-		$where =array("course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y', 'roll_number!='=>'0' , 'old_result_show'=>'N','university_mode'=> $mode ,'exam_pattern'=>$pattern);
+		$where =array("course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y', 'roll_number!='=>'0' , 'old_result_show'=>'Y','university_mode'=> $mode ,'exam_pattern'=>$pattern);
 		//,'examcentercode'=>'MDE165'
 		//, 'student_id'=>718196	
 		// $where =array("course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y', 'roll_no!='=>'0' , 'result_show'=>'N','university_mode'=> $mode ,'exam_pattern'=>$pattern);
@@ -4059,8 +4059,8 @@ public function update_exam_datewise_permission(){
 		$course_id=$this->Common_model->encrypt_decrypt($course_id,'decrypt');
 		$class_id=$this->Common_model->encrypt_decrypt($class_id,'decrypt');
 
-		// $this->db->order_by('roll_number','ASC');
-		$this->db->order_by('roll_no','ASC');
+		$this->db->order_by('roll_number','ASC');
+		// $this->db->order_by('roll_no','ASC');
 
 		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
         $class_ids=array(103,106,109,112,118,121,127,130,133,136);
