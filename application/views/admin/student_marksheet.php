@@ -117,7 +117,7 @@
                       <td class="Normaltext" align="left" width="29%"><div align="left">Father's / Husband's Name</div></td>
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo strtoupper( $student->f_h_name); ?></span></div></td>
                     </tr>
-                    <?php if ($student->course_group_id==76 || $student->course_group_id==75): ?>
+                    <?php if ($student->course_group_id==76 || $student->course_group_id==75  || $student->course_group_id==81): ?>
                     <tr>
                       <td class="Normaltext" align="left" width="29%"><div align="left">Department</div></td>
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;">
