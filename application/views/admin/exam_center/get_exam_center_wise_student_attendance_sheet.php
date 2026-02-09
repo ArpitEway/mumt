@@ -84,7 +84,7 @@
 				<div class="row">
 					<div class="col-12 text-center">
 						<h5>
-							ATTENDANCE SHEET FOR ANNUAL/SEMESTER EXAMINATION OF <?=($student->class_id == 215)?"December 2025":(in_array($student->class_id, [502, 510, 432, 506, 464, 497,332,264,270])
+							ATTENDANCE SHEET FOR ANNUAL/SEMESTER EXAMINATION OF <?=($student->class_id == 215)?"December 2025":(in_array($student->class_id, [502, 510, 432, 506, 464, 497,332,264,270,255,257,259,316,314])
                 ? 'February 2026'
                 : 'January 2026'
             )?>
@@ -215,7 +215,7 @@
 						}else{
 							if($paper->exam_shift=='Afternoon' && in_array($student->class_id,$class_ids)){
 								echo '12:00 PM To 03:00 PM';		
-							}elseif($paper->exam_shift=='Afternoon' && in_array($student->class_id,[502, 510, 432, 506, 332])){
+							}elseif($paper->exam_shift=='Afternoon' && in_array($student->class_id,[502, 510, 432, 506, 332,255,257,259,316,314])){
 								echo '03:00 PM To 06:00 PM';
 							}
 							elseif($paper->exam_shift=='Afternoon'){
