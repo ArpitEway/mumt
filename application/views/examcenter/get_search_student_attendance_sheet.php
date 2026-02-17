@@ -79,7 +79,7 @@
 				<div class="row">
 					<div class="col-12 text-center">
 						<h5>
-							ATTENDANCE SHEET FOR ANNUAL/SEMESTER EXAMINATION OF <?=($student['class_id'] == 215)?"December 2025":(in_array($student['class_id'], [502, 510, 432, 506, 464, 497,332,264,270,255,257,259,316,314])
+							ATTENDANCE SHEET FOR ANNUAL/SEMESTER EXAMINATION OF <?=($student['class_id'] == 215)?"December 2025":(in_array($student['class_id'], [502, 510, 432, 506, 464, 497,332,264,270,255,257,259,316,314,495])
                 ? 'February 2026'
                 : 'January 2026'
             )?>
@@ -164,7 +164,7 @@
 						  <tbody>
 						  <?php
 						  $i = 1;
-					$class_ids = array(193,197,199,201,203,205,207,209,211,213,221,223,225,227,261,263,267,269,275,279,302,460,476);	
+					$class_ids = array(193,197,199,201,203,205,207,209,211,213,221,223,225,227,261,263,267,269,275,279,302,460,476,495);	
 			foreach($papers as $paper){
 				?>
 				<tr>
