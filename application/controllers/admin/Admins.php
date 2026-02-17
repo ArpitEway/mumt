@@ -3599,7 +3599,7 @@ public function update_exam_datewise_permission(){
 			{
                 $this->load->model('GradeSheet_old_model_pg');
                 $this->load->model('Gradesheet_model_pg');
-				if(in_array($class_id, [267,268,612,131])){
+				if(in_array($class_id, [267,268,312,313])){
 					$this->load->view('admin/student_marksheet_grade_bped',$data);
 				}else{
 					$this->load->view('admin/student_marksheet_grade_pg',$data);
