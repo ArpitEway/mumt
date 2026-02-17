@@ -336,7 +336,7 @@
 							
 						}
 						
-						echo $this->Gradesheet_tr_model_pg->view_notification_result($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
+						echo $this->Gradesheet_tr_model_pg->view_notification_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
 						
 					}
 				}
@@ -377,7 +377,7 @@
                         <td class="text-center" style="padding:0px" align="center"></td>
                         <?php
                     }else{
-                        $gradesheetData = $this->Gradesheet_tr_model_pg->view_notification($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
+                        $gradesheetData = $this->Gradesheet_tr_model_pg->view_notification($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
                     }
 				
                 if($isFinalClass && $student->exam_pattern == 'GRADE'){

@@ -193,9 +193,7 @@
                     $count = 0;
                     foreach($classes as $cls){
                         $count++;
-                        if($count == 1){ $sno = 'First';}elseif($count == 2){ $sno = 'Second';}elseif($count == 3){ $sno = 'Third';}elseif($count == 4){
-                            $sno= 'Fourth';
-                        }
+                        if($count == 1){ $sno = 'First';}elseif($count == 2){ $sno = 'Second';}elseif($count == 3){ $sno = 'Third';}elseif($count == 4){$sno= 'Fourth';}elseif($count == 5){$sno= 'Fifth';}elseif($count == 6){$sno= 'Sixth';}elseif($count == 7){$sno= 'Seventh';}elseif($count == 8){$sno= 'Eighth';}
                         $this->db->order_by('id', 'desc');
                         $this->db->limit(1);
                         $old = $this->Common_model->getRecordByWhere('old_exam_data', array('student_id'=>$exam_data->student_id,'class_id'=>$cls->id,'course_group_id'=>$exam_data->course_group_id,'university_mode'=>$exam_data->university_mode));
