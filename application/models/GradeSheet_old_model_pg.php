@@ -110,6 +110,7 @@ class GradeSheet_old_model_pg extends CI_Model
         $old_data = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id'=>$student_id,'class_id'=>$class_id));
         $papers = $this->Common_model->get_all_old_papers($student_id,$class_id,$exam_id);
 		// get_all_group_papers
+		// echo '<pre>';
 		//  print_r($papers);die;
 		
 		// print_r($this->allclass);die;
