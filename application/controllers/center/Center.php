@@ -3379,6 +3379,9 @@ public function practical_assignment_marks_edit(){
 		// {
 		// 	$this->db->where_in('student_id',[724247,721257,716719,711338,706161]);
 		// }	
+		if($exam_form1 =="notSubmitted"){
+			$this->db->where_in('student_id',[765964,764560,718318,774638,773356,773345,373587]);
+		}
 		$data['documents'] = $this->Common_model->getRecordByWhere('backlog_student',$where);
 		$data['center'] = $center;
 		if($center_permission[0]['exam_form_permission']!='Y' && $exam_form1 =="notSubmitted"){
