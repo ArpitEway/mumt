@@ -1694,6 +1694,7 @@ class Center extends CI_Controller {
 			'university_mode'=>'REG',
 		);
         // $this->db->where_not_in('student_id', array(374292,374779,379155,379652,380605,380673,381026,382024,385894,685803,686581,686621,687158,687165,687390,687395,687622,722149));
+        $this->db->where_not_in('student_id', array(768589));
         $data['students'] = $this->Common_model->getRecordByWhere('student',$where);
 		$this->load->view('Centers/class_wise_admit_card_list',$data);
 		$this->load->view('Centers/footer');
@@ -1726,6 +1727,7 @@ class Center extends CI_Controller {
 		// $this->db->where_in('class_id',[106,109,136,148]);
 		$this->db->order_by('course_group_id,class_id');
         // $this->db->where_not_in('student_id', array(188428,686377,375381));
+        $this->db->where_not_in('student_id', array(724247,765964,764560,776287,718318,774638,773356,773345,373587));
 		$data['students'] = $this->Common_model->getRecordByWhere('backlog_student',$where);
 		$this->load->view('Centers/class_wise_backlog_admit_card_list',$data);
 		$this->load->view('Centers/footer');
