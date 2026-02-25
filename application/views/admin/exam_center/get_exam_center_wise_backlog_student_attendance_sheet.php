@@ -73,10 +73,7 @@
 			<div class="BoxC border- padding">
 				<div class="row">
 					<div class="col-12 text-center">
-						<h5>ATTENDANCE SHEET FOR ANNUAL/SEMESTER BACKLOG EXAMINATION OF <?=($student->class_id == 215)?"December 2025":(in_array($student->class_id, [502, 510, 432, 506, 464, 497,332,264,270,255,257,259,316,314])
-                ? 'February 2026'
-                : 'January 2026'
-            )?>
+						<h5>ATTENDANCE SHEET FOR SEMESTER SPECIAL BACKLOG EXAMINATION OF FEBRUARY 2026
 						</h5>
 						<?php 
 						// ATTENDANCE SHEET OF EXAM FOR ANNUAL/SEMESTER BACKLOG EXAMINATION OF 2025
@@ -182,32 +179,34 @@
 						<td><?php echo date("d-m-Y", strtotime(($student->mode == 'PVT' && in_array($student->class_id,$classIdsRegOnly))?$paper->pvt_exam_date:$paper->exam_date)); ?></td>
 					
 					<td><?php
-						$class_ids = array(193,197,199,201,203,205,207,209,211,213,221,223,225,227,261,263,267,269,275,279,302,460,476,261,263,267,269,264,270);
-						if($student->mode == 'PVT' && in_array($student->class_id,$classIdsRegOnly)){
-							if($paper->pvt_exam_shift=='Afternoon' && in_array($student->class_id,$class_ids)){
-									echo '2:00 PM To 5:00 PM';		
-							}
-							elseif($paper->pvt_exam_shift=='Afternoon'){
-									echo '2:00 PM To 5:00 PM';
-							}
-							elseif($paper->pvt_exam_shift=='Morning' ){
-									echo '10:00 AM To 1:00 PM';
-							}
-						}else{
-							if($paper->exam_shift=='Afternoon' && in_array($student->class_id,$class_ids)){
-								echo '12:00 PM To 03:00 PM';		
-							}elseif($paper->exam_shift=='Afternoon' && in_array($student->class_id,[502, 510, 432, 506, 332,255,257,259,316,314])){
-								echo '03:00 PM To 06:00 PM';
-							}
-							elseif($paper->exam_shift=='Afternoon'){
-								echo '2:00 PM To 5:00 PM';
-							}elseif($paper->exam_shift=='Morning' && in_array($student->class_id,[464,497])){
-								 echo '11:00 AM To 02:00 PM';
-							}
-							elseif($paper->exam_shift=='Morning' ){
-								 echo '10:00 AM To 1:00 PM';
-							}
-						}	?></td>
+						// $class_ids = array(193,197,199,201,203,205,207,209,211,213,221,223,225,227,261,263,267,269,275,279,302,460,476,261,263,267,269,264,270);
+						// if($student->mode == 'PVT' && in_array($student->class_id,$classIdsRegOnly)){
+						// 	if($paper->pvt_exam_shift=='Afternoon' && in_array($student->class_id,$class_ids)){
+						// 			echo '2:00 PM To 5:00 PM';		
+						// 	}
+						// 	elseif($paper->pvt_exam_shift=='Afternoon'){
+						// 			echo '2:00 PM To 5:00 PM';
+						// 	}
+						// 	elseif($paper->pvt_exam_shift=='Morning' ){
+						// 			echo '10:00 AM To 1:00 PM';
+						// 	}
+						// }else{
+						// 	if($paper->exam_shift=='Afternoon' && in_array($student->class_id,$class_ids)){
+						// 		echo '12:00 PM To 03:00 PM';		
+						// 	}elseif($paper->exam_shift=='Afternoon' && in_array($student->class_id,[502, 510, 432, 506, 332,255,257,259,316,314])){
+						// 		echo '03:00 PM To 06:00 PM';
+						// 	}
+						// 	elseif($paper->exam_shift=='Afternoon'){
+						// 		echo '2:00 PM To 5:00 PM';
+						// 	}elseif($paper->exam_shift=='Morning' && in_array($student->class_id,[464,497])){
+						// 		 echo '11:00 AM To 02:00 PM';
+						// 	}
+						// 	elseif($paper->exam_shift=='Morning' ){
+						// 		 echo '10:00 AM To 1:00 PM';
+						// 	}
+						// }
+						echo '12:00 PM To 03:00 PM';
+							?></td>
 					<td style="text-align:left;"><?php 
 					$st_arr=array(776229,776268,776212);
 					if($paper->paper_code=='1RBPED2' && in_array($student->student_id,$st_arr)){
