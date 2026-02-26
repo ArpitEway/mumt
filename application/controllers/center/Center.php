@@ -1727,7 +1727,7 @@ class Center extends CI_Controller {
 		// $this->db->where_in('class_id',[106,109,136,148]);
 		$this->db->order_by('course_group_id,class_id');
         // $this->db->where_not_in('student_id', array(188428,686377,375381));
-        $this->db->where_not_in('student_id', array(724247,765964,764560,718318,774638,773356,773345,373587));
+        $this->db->where_not_in('student_id', array(724247,765964,764560,776287,718318,774638,773356,773345,373587));
 		$data['students'] = $this->Common_model->getRecordByWhere('backlog_student',$where);
 		$this->load->view('Centers/class_wise_backlog_admit_card_list',$data);
 		$this->load->view('Centers/footer');
