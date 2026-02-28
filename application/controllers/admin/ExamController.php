@@ -2940,6 +2940,16 @@ public function getStudentData()
 		$this->load->view('footer');
 	}
 
+	public function search_student_result_old($rollno=""){
+		// redirect(base_url().'ExamController/');
+		$data['name_csrf'] = $this->security->get_csrf_token_name();
+		$data['hash_csrf'] = $this->security->get_csrf_hash();
+		$data['rollno']=$rollno;
+		$this->load->view('header',array('title' => 'Edit Student Marks'));	
+		$this->load->view('admin/Dataentry/search_student_old',$data);
+		$this->load->view('footer');
+	}
+
 	public function getEditStudentMarksData()
 	{
 	    
@@ -2969,6 +2979,28 @@ public function getStudentData()
 	   }
 	}
 
+	public function getEditStudentMarksDataOld()
+	{
+	    
+		if($this->input->post('roll_no')!=0){
+			$roll_no = $this->input->post('roll_no');
+		}
+		$studentData = $this->Common_model->getRecordByWhere('student',array('roll_number'=>$roll_no,'exam_form'=>'Y'));
+		
+		$studentPaper = $this->Common_model->get_student_papers($studentData[0]->student_id,$studentData[0]->old_class_id);
+	
+		$data['student'] = $studentData;
+		if($studentData){
+		$data['studentPaper'] = $studentPaper;
+		$result['data'] = $this->load->view('admin/Dataentry/edit_student_marks_old',$data,true);
+	
+		
+		echo json_encode($result);
+	   }else{
+		$result['data'] = "Student Not Found";
+		echo json_encode($result); 
+	   }
+	}
 	
 
 	
