@@ -61,7 +61,7 @@ class Otherscript extends CI_Controller {
 		// $where = " paper_code in ('2RBED6')";
 		//$where = " paper_code in ('1RMLIS10','1RMLIS11')";
 		//$where="`paper_code` in ('1RCMSCCH7','1RCMSCCH8','1RCMSCCH9','1RCMSCBT7','1RCMSCBT8','1RCMSCC7','1RCMSCM7','3RMSCC6','3RMSCC7')";
-		$where="`id` in (0)";
+		$where="`id` in (2196,2197,2198,2199,2200,2201,2202,2203,2204,2205,2206,2207)";
 		// 1968,1969,1970,1971,1972,1973
 		// 1491,1501,1579 // 1945,1946
 		// 1829,1830,1831 // 382,392,292 // 947,985,1054

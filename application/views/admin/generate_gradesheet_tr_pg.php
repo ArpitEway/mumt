@@ -157,7 +157,7 @@ table.last_table, .last_table td, .last_table th{
    
     $current_center=$student->center_id;
     $page_break_count++;
-    $marks = $this->Common_model->student_info_for_result($student->student_id,$student->old_class_id);
+    $marks = $this->Common_model->student_info_for_result($student->student_id,$student->class_id);
     // $this->Common_model->last_query();
     $BarCodecolspan = 10 + count($marks); 
     $total_theory_marks_obt = 0;
@@ -430,11 +430,11 @@ table.last_table, .last_table td, .last_table th{
 		<td class="align-middle text-right">Course Credit</td>
     <?php
     $credit = 0;
-    $std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $student->old_class_id,'student_id'=>$student->student_id));
-		$this->classData = $this->Common_model->getRecordById('class_master','id',$student->old_class_id);
+    $std  = $this->Common_model->getRecordByWhere('new_exam_form',array('class_id'=> $student->class_id,'student_id'=>$student->student_id));
+		$this->classData = $this->Common_model->getRecordById('class_master','id',$student->class_id);
    
    
-			$papers = $this->Common_model->get_all_papers($student->student_id,$student->old_class_id);
+			$papers = $this->Common_model->get_all_papers($student->student_id,$student->class_id);
      
 		
 		
@@ -464,7 +464,7 @@ table.last_table, .last_table td, .last_table th{
     
 <span style="display:none;">
 <?php
-   $gradesheetData = $this->Gradesheet_tr_model_pg->view_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+   $gradesheetData = $this->Gradesheet_tr_model_pg->view_result($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
   
   ?>
 </span>
@@ -472,7 +472,7 @@ table.last_table, .last_table td, .last_table th{
     <table class="table table1">
       <tbody>
         <tr>
-          <th  class="align-middle text-center roll_no" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_number  ?> <br> <?php echo $student->enrollment_no  ?></th>
+          <th  class="align-middle text-center roll_no" rowspan="<?php echo $rowspandata ?>"><?php  echo $student->roll_no  ?> <br> <?php echo $student->enrollment_no  ?></th>
           <th class="align-middle text-center ms_no" rowspan="<?php echo $rowspandata ?>">
             <?php  echo $student->marksheet_no  ?>
           </th>
@@ -707,7 +707,7 @@ table.last_table, .last_table td, .last_table th{
   </tr>
   
   <?php
-   $ddd = $this->Gradesheet_tr_model_pg->view_result($student->student_id,$student->course_group_id,$student->old_class_id,$student->university_mode);
+   $ddd = $this->Gradesheet_tr_model_pg->view_result($student->student_id,$student->course_group_id,$student->class_id,$student->university_mode);
 //   echo $final_result;die;
    
 //    if($ddd['agpa']<4 && $student->promote!="D" && $student->new_exam_form !="D"){
@@ -813,7 +813,7 @@ $total_course_credit +=$old_grade_data['tot_credit'];
 <td class="align-middle text-center "  colspan="<?= (count($marks) < 7)?'1':'2'?>"><strong>%</strong><br><?= $percent?></td>
 <td class="align-middle text-center "  colspan="<?= (count($marks) < 7)?'1':'2'?>"><strong>Division</strong><br><?= $div?></td>
 <td class="align-middle text-center "  colspan="2"><strong>Degree No. And Date</strong><br>-</td>
-<td class="align-middle text-center "  colspan="<?= (count($marks) > 7 || in_array($student->old_class_id , array(240,248,252)))?'5':'2'?>"><strong>Remark</strong><br><?= $final_remark?></td>
+<td class="align-middle text-center "  colspan="<?= (count($marks) > 7 || in_array($student->class_id , array(240,248,252)))?'5':'2'?>"><strong>Remark</strong><br><?= $final_remark?></td>
   </tr>
   <?php
  
@@ -838,7 +838,7 @@ $total_course_credit +=$old_grade_data['tot_credit'];
   <tr class="">
 
     <td  class="align-middle text-left " colspan="<?=$BarCodecolspan ?>">
-          <?php  echo $generator->getBarcode($marksheetData[0]->bar_code_no.$student->roll_number, $generator::TYPE_CODE_128,2,25); ?>
+          <?php  echo $generator->getBarcode($marksheetData[0]->bar_code_no.$student->roll_no, $generator::TYPE_CODE_128,2,25); ?>
     </td>
   </tr>
  
