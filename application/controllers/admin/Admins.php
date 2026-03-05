@@ -4022,7 +4022,7 @@ public function update_exam_datewise_permission(){
 		// $this->db->order_by('center_id,roll_no','ASC');
 		
 		// $data['students'] = $this->Common_model->getRecordByWhere('student',array("university_mode"=>$mode,"course_group_id"=>$course_group_id ,'class_id' => $class_id ,'new_exam_form'=>'Y','roll_no!='=>'0','result_show'=> 'Y' ,'exam_pattern'=> $pattern));
-
+		$this->db->where_in('examcentercode',array('MDE028','MDE172'));
 		 $data['students'] = $this->Common_model->getRecordByWhere('student',array("university_mode"=>$mode,"course_group_id"=>$course_group_id ,'old_class_id' => $class_id ,'exam_form'=>'Y','roll_number!='=>'0' ,'exam_pattern'=> $pattern));
 
 		//'result_show' => 'N' ,'student_id'=>'685381'
