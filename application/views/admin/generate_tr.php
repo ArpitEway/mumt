@@ -153,7 +153,7 @@ table.last_table, .last_table td, .last_table th{
   {
     $current_center=$student->center_id;
     $page_break_count++;
-    $marks = $this->Common_model->student_info_for_result($student->student_id,$student->class_id);
+    $marks = $this->Common_model->student_info_for_result($student->student_id,$student->old_class_id);
     $BarCodecolspan = 10 + count($marks); 
     $total_theory_marks_obt = 0;
     $total_int_marks_obt = 0;
@@ -261,7 +261,7 @@ table.last_table, .last_table td, .last_table th{
         }
       }
 
-      if($new_exam_form->type!='theory' && ($student->university_mode != 'PVT' || in_array($student->class_id,[185,186,188,190]))){
+      if($new_exam_form->type!='theory' && ($student->university_mode != 'PVT' || in_array($student->old_class_id,[185,186,188,190]))){
         $total_paper_marks += (int) $new_exam_form->max_theory_marks;
         $total_marks_obt += (int) $new_exam_form->p_marks;
         $count_practical++;
@@ -363,7 +363,7 @@ table.last_table, .last_table td, .last_table th{
         </tr>
         <?php 
         }
-        if(($classData->project!='N' || $classData->practical!='N') && ($student->university_mode != 'PVT' || in_array($student->class_id,[185,186,188,190]))){
+        if(($classData->project!='N' || $classData->practical!='N') && ($student->university_mode != 'PVT' || in_array($student->old_class_id,[185,186,188,190]))){
           // echo $student->university_mode;die;
         ?>
         <tr>
@@ -396,7 +396,7 @@ table.last_table, .last_table td, .last_table th{
           </th>
           <th  class="align-middle text-center photo" rowspan="<?php echo $rowspandata ?>"><img alt="N/A" src="<?= base_url('assets/student_image/'.$student->session.'/'.$student->photo) ?>" width="65px" height="90px"></th>
           <td  class="align-middle text-center name"  rowspan="<?php  echo $rowspandata ?>"><?php  echo $student->name ?>/ <br><?php  echo $student->f_h_name ?></td>
-          <td  class="align-middle text-right paper" colspan="<?= ($student->class_id == 317)?10:0; ?>">Paper-></td>
+          <td  class="align-middle text-right paper" colspan="<?= ($student->old_class_id == 317)?10:0; ?>">Paper-></td>
           <?php  foreach($marks as $paper_master){  ?>
             <td  class="align-middle text-center paper_code"><?php echo  $paper_master->paper_code;  ?></td>
           <?php   }  ?>
@@ -442,7 +442,7 @@ table.last_table, .last_table td, .last_table th{
         </td>
       </tr>
       <tr>
-        <td class="align-middle text-right paper" colspan="<?= ($student->class_id == 317)?10:0; ?>">Theory Marks-></td>
+        <td class="align-middle text-right paper" colspan="<?= ($student->old_class_id == 317)?10:0; ?>">Theory Marks-></td>
         <?php foreach($marks as $new_exam_form){ ?>
           <td  class="align-middle text-center">
           <?php if($new_exam_form->paper_type=="theory" && $student->university_mode != 'PVT'){
@@ -473,7 +473,7 @@ table.last_table, .last_table td, .last_table th{
       </tr>
       <?php if($classData->internal=="Y" && $student->university_mode != 'PVT'){ ?>
       <tr>
-        <td class="align-middle text-right paper" colspan="<?= ($student->class_id == 317)?10:0; ?>">Internal Marks-></td>
+        <td class="align-middle text-right paper" colspan="<?= ($student->old_class_id == 317)?10:0; ?>">Internal Marks-></td>
           <?php foreach($marks as $paper_master){ ?>
         <td  class="align-middle text-center">
           <?php
@@ -495,7 +495,7 @@ table.last_table, .last_table td, .last_table th{
         <?php } ?>
         <td class="align-middle text-center result"><?php echo $total_int_marks_obt;  ?></td>
     </tr> <?php } ?>
-  <?php if(($classData->project!='N' || $classData->practical!='N') && ($student->university_mode != 'PVT' || in_array($student->class_id,[185,186,188,190]) )){ ?>
+  <?php if(($classData->project!='N' || $classData->practical!='N') && ($student->university_mode != 'PVT' || in_array($student->old_class_id,[185,186,188,190]) )){ ?>
   <tr>
     <td class="align-middle text-right paper">Practical Marks.</td>
     <?php
@@ -526,7 +526,7 @@ table.last_table, .last_table td, .last_table th{
 </tr>
 <?php } ?>
   <tr>
-    <td class="align-middle text-right" colspan="<?= ($student->class_id == 317)?10:0; ?>">Total Marks Obt.</td>
+    <td class="align-middle text-right" colspan="<?= ($student->old_class_id == 317)?10:0; ?>">Total Marks Obt.</td>
     <?php foreach($marks as $paper_master){ ?>
       <td  class="align-middle text-center"><?php
       if($paper_master->paper_type=="theory" ){
@@ -671,7 +671,7 @@ table.last_table, .last_table td, .last_table th{
   }
   ?>
   <tr class="">
-    <td  class="align-middle text-left " colspan="<?= ($student->class_id ==317)?'28':'20';?>">
+    <td  class="align-middle text-left " colspan="<?= ($student->old_class_id ==317)?'28':'20';?>">
           <?php  echo $generator->getBarcode($marksheetData[0]->bar_code_no.$student->roll_number, $generator::TYPE_CODE_128,2,25); ?>
     </td>
   </tr>
