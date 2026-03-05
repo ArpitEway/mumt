@@ -65,7 +65,7 @@ class Postexam extends CI_Controller {
             $this->db->where('exam_form', 'Y');
             $this->db->where('upload_result', 'N');
             // $this->db->where('student_id',718196);
-            $this->db->where('old_result_show', 'Y');
+            // $this->db->where('old_result_show', 'Y');
             $this->db->where('result_permission', 'Y');
             $this->db->where('final_result_permission', 'Y');
             // $this->db->where('marksheet_dispatch', 'Y');
@@ -89,7 +89,7 @@ class Postexam extends CI_Controller {
         $this->db->limit(500);
        // $this->db->where_not_in('student_id',array(711707,708907));
       //  $this->db->where('student_id',771494);
-        $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'N','university_mode'=>$mode ,'old_result_show'=>'Y','exam_pattern'=>'MARKS')); //, "marksheet_dispatch"=>'Y'
+        $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'N','university_mode'=>$mode ,'exam_pattern'=>'MARKS')); //, "marksheet_dispatch"=>'Y''old_result_show'=>'Y',
          // $this->db->where_in('course_group.course_type',array('Diploma','PGDiploma'));
         // $course_type = $this->Common_model->getRecordByWhere("course_group",array('id'=> $students[0]->course_group_id));
 
@@ -1136,8 +1136,9 @@ public function upload_old_grade_data_script($class_id="",$mode){
    //s $this->db->where_not_in('student_id',array(711707,708907));
    // $this->db->where_in('student_id',array(702981,700979));
     // $this->db->where('student_id',718196);
-    $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'N','university_mode'=>$mode ,'exam_pattern'=>'GRADE' ,'old_result_show'=>'Y' ));
+    $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'N','university_mode'=>$mode ,'exam_pattern'=>'GRADE' ));
     //, "marksheet_dispatch"=>'Y'
+    // 'old_result_show'=>'Y' 
     // $this->Common_model->last_query();
      // $this->db->where_in('course_group.course_type',array('Diploma','PGDiploma'));
     // $course_type = $this->Common_model->getRecordByWhere("course_group",array('id'=> $students[0]->course_group_id));
