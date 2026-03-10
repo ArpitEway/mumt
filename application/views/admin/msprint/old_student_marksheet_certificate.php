@@ -413,7 +413,7 @@
                     <?php $j=$i; ?>
                     <tr>
                       <td height="20" ><strong>Obtained Marks</strong></td>
-                      <?php if ($classData->last_class=="L" && !$isOneClass): ?>
+                      <?php if ($classData->last_class=="L" && !$isOneClass  && $result!="FAIL"): ?>
                       <?php
                         $gtot_obtain_marks = 0;
                         $gtot_total_marks = 0;
@@ -432,7 +432,7 @@
                       <?php while ($j<=3): ?>
                         <td><?php $j++; ?></td>
                       <?php endwhile; ?>
-                      <?php if ($classData->last_class=="L") { ?>
+                      <?php if ($classData->last_class=="L"  && $result!="FAIL") { ?>
                         <td>
                         <?php
                          $percentage = (!$isOneClass)? round(($gtot_obtain_marks/$gtot_total_marks)*100,2) : round(($tot_std_marks/$tot_marks)*100,2);
@@ -466,7 +466,7 @@
                     <?php $j=$i; ?>
                     <tr>
                       <td height="20"><strong>Maximum Marks</strong></td>
-                      <?php if ($classData->last_class=="L" && !$isOneClass): ?>
+                      <?php if ($classData->last_class=="L" && !$isOneClass  && $result!="FAIL"): ?>
                       <?php 
                       foreach ($oldClassResult as $row) {  ?>
                          <th style="text-align: center;width:10%"><?=$row->total_marks; ?></th>
@@ -477,7 +477,7 @@
                       <?php while ($i<=3): ?>
                           <td><?php $i++; ?></td>
                         <?php endwhile; ?>
-                        <?php if ($classData->last_class=="L"){ ?>
+                        <?php if ($classData->last_class=="L"  && $result!="FAIL"){ ?>
                         <th style="text-align:left;">Percentage</th>
                         <th style="text-align:left;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo (!$isOneClass)? round(($gtot_obtain_marks/$gtot_total_marks)*100,2) :
                            round(($tot_std_marks/$tot_marks)*100,2); ?>%</th>
@@ -490,7 +490,7 @@
                  
                     <tr>
                       <td colspan="8">
-                        <strong>Total Marks Obtained (in words)</strong> &nbsp;&nbsp;<strong><?php echo ($classData->last_class=="L" && !$isOneClass) ? $this->numbertowordconvertsconver->convert_number("$gtot_obtain_marks") : $this->numbertowordconvertsconver->convert_number("$tot_std_marks") ?></strong>
+                        <strong>Total Marks Obtained (in words)</strong> &nbsp;&nbsp;<strong><?php echo ($classData->last_class=="L" && !$isOneClass  && $result!="FAIL") ? $this->numbertowordconvertsconver->convert_number("$gtot_obtain_marks") : $this->numbertowordconvertsconver->convert_number("$tot_std_marks") ?></strong>
                       </td>
                     </tr>
                   </tbody>
