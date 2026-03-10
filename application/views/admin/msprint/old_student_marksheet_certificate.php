@@ -432,7 +432,7 @@
                       <?php while ($j<=3): ?>
                         <td><?php $j++; ?></td>
                       <?php endwhile; ?>
-                      <?php if ($classData->last_class=="L") { ?>
+                      <?php if ($classData->last_class=="L" && $result!="FAIL") { ?>
                         <td>
                         <?php
                          $percentage = (!$isOneClass)? round(($gtot_obtain_marks/$gtot_total_marks)*100,2) : round(($tot_std_marks/$tot_marks)*100,2);
