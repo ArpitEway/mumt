@@ -382,12 +382,12 @@
                    
 
 
-                    <?php if ($classData->last_class=="L" && !$isOneClass): ?>
+                    <?php if ($classData->last_class=="L" && !$isOneClass  && $result!="FAIL"): ?>
                     </table>
                     <table border="0" cellpadding="0" height="112" width="100%">
                     <?php endif ?>  
                     <?php $i=1; ?>
-                    <?php if ($classData->last_class=="L" && !$isOneClass): ?>
+                    <?php if ($classData->last_class=="L" && !$isOneClass  && $result!="FAIL"): ?>
                     <tr>
                       <th height="20" width="22%" style="text-align:left" ><strong><?=$classData->mode ?></strong></th>
                       <?php
@@ -432,7 +432,7 @@
                       <?php while ($j<=3): ?>
                         <td><?php $j++; ?></td>
                       <?php endwhile; ?>
-                      <?php if ($classData->last_class=="L" && $result!="FAIL") { ?>
+                      <?php if ($classData->last_class=="L") { ?>
                         <td>
                         <?php
                          $percentage = (!$isOneClass)? round(($gtot_obtain_marks/$gtot_total_marks)*100,2) : round(($tot_std_marks/$tot_marks)*100,2);
