@@ -3382,12 +3382,16 @@ public function update_exam_datewise_permission(){
 		
 		// $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and old_class_id in (154,155,181,182,193,217,195,197,231,199,233,201,235,203,237,205,239,241,209,243,211,245,213,215,302,304,275,277,279,281,221,247,223,249,225,251,227,253) )  ";examcentercode in ('MDE028','MDE172') and exam_form='Y' and old_class_id in (136,106,109,121,133,127,112,108,135,130,105,298,290,292,288,103,148,286,284,294,296,311)
 		
-		$where = "id in (select DISTINCT(course_group_id) from student where new_exam_form = 'Y' and class_id in (197,201,203,211,213,221,223,225,275,279,302))";
+		$where = "id in (select DISTINCT(course_group_id) from student where new_exam_form = 'Y' and class_id in (197,201,203,211,213,221,223,225,275,279,302,217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253))";
+
+
 		//and old_class_id in (select distinct(old_class_id) from student where exam_form = 'Y' and 'examcentercode' in ('MDE028','MDE172'))
         // $where = "id in (select distinct(course_group_id) from student where exam_form = 'Y' and class_id in (217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253,143,135))";
 
         // Dec 2025
         // 217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253
+
+        // 197,201,203,211,213,221,223,225,275,279,302
 
         // June 2025 Class
         // 143,146,142,313,139,145,148,184
@@ -3422,9 +3426,9 @@ public function update_exam_datewise_permission(){
 			redirect(base_url());
 			exit;
 		}
-		$data['not_permited_students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id , 'old_result_show'=>'N' , 'exam_form'=>'Y' ,'university_mode'=>$mode ));
+		$data['not_permited_students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id , 'result_show'=>'N' , 'new_exam_form'=>'Y' ,'university_mode'=>$mode ));
 		// ,'examcentercode'=>'MDE165'
-		$data['permited_students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id , 'old_result_show'=>'Y' , 'exam_form'=>'Y' ,'university_mode'=>$mode));
+		$data['permited_students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'class_id' => $class_id , 'result_show'=>'Y' , 'new_exam_form'=>'Y' ,'university_mode'=>$mode));
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();
 		$data['mode']=$mode;
@@ -3440,14 +3444,14 @@ public function update_exam_datewise_permission(){
 		}
 		if($_POST['not_permitted']){
 			$student_ids = (implode(',',$_POST['not_permitted']));
-			$data = array('old_result_show' => 'Y');
-			// ,'result_show' => 'Y'
+			$data = array('result_show' => 'Y');
+			// ,'old_result_show' => 'Y'
 			$where = " student_id in (".$student_ids.")";//provisional_remark in ('','N') &&
 			$update =$this->Common_model->updateRecordByConditions('student',$where,$data);
 		}else{
 			$student_ids = (implode(',',$_POST['permitted']));
-			$data = array('old_result_show' => 'N');
-			// ,'result_show' => 'N'
+			$data = array('result_show' => 'N');
+			// ,'old_result_show' => 'N'
 			$where ='student_id in ('.$student_ids.')';
 			$update = 	$this->Common_model->updateRecordByConditions('student',$where,$data);
 		}  
