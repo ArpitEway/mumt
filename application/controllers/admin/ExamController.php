@@ -2139,7 +2139,7 @@ class ExamController extends CI_Controller {
 			#total
 			$this->db->select('count(*) as num');
 			$this->db->from('new_exam_form');
-			$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.old_class_id');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id and new_exam_form.class_id = student.class_id');
 			$this->db->where('student.'.$this->exam_form.'','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
 			$count = $this->db->get()->result();
@@ -2147,7 +2147,7 @@ class ExamController extends CI_Controller {
 			#Absent
 			$this->db->select('count(*) as num');
 			$this->db->from('new_exam_form');
-			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.old_class_id');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.class_id');
 			$this->db->where('student.'.$this->exam_form.'','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
 			$this->db->where('new_exam_form.theory_marks','ABS');
@@ -2156,7 +2156,7 @@ class ExamController extends CI_Controller {
 			#uploaded
 			$this->db->select('count(*) as num');
 			$this->db->from('new_exam_form');
-			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.old_class_id');
+			$this->db->join('student', 'new_exam_form.student_id = student.student_id  and new_exam_form.class_id = student.class_id');
 			$this->db->where('student.'.$this->exam_form.'','Y');
 			$this->db->where('new_exam_form.paper_type','theory');
 			$this->db->where_not_in('theory_marks',array('ABS','')); // 'ABS',
@@ -2169,7 +2169,7 @@ class ExamController extends CI_Controller {
 			$this->db->from('backlog_exam_form');
 			$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id and backlog_exam_form.class_id = backlog_student.class_id and backlog_exam_form.backlog_student_id=backlog_student.id');
 			$this->db->where('backlog_student.exam_form','Y');
-			$this->db->where('backlog_student.exam_year','June 2025');
+			$this->db->where('backlog_student.exam_year','Dec 2025');
 			$this->db->where('backlog_exam_form.status','B');
 			$this->db->where('backlog_exam_form.paper_type','theory');
 			$backlog_count = $this->db->get()->result();
@@ -2179,7 +2179,7 @@ class ExamController extends CI_Controller {
 			$this->db->from('backlog_exam_form');
 			$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id  and backlog_exam_form.class_id = backlog_student.class_id and backlog_exam_form.backlog_student_id=backlog_student.id');
 			$this->db->where('backlog_student.exam_form','Y');
-			$this->db->where('backlog_student.exam_year','June 2025');
+			$this->db->where('backlog_student.exam_year','Dec 2025');
 			$this->db->where('backlog_exam_form.status','B');
 			$this->db->where('backlog_exam_form.paper_type','theory');
 			$this->db->where('backlog_exam_form.theory_marks','ABS');
@@ -2190,7 +2190,7 @@ class ExamController extends CI_Controller {
 			$this->db->from('backlog_exam_form');
 			$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id  and backlog_exam_form.class_id = backlog_student.class_id and backlog_exam_form.backlog_student_id=backlog_student.id');
 			$this->db->where('backlog_student.exam_form','Y');
-			$this->db->where('backlog_student.exam_year','June 2025');
+			$this->db->where('backlog_student.exam_year','Dec 2025');
 			$this->db->where('backlog_exam_form.status','B');
 			$this->db->where('backlog_exam_form.paper_type','theory');
 			$this->db->where_not_in('theory_marks',array('','ABS'));
@@ -2246,8 +2246,8 @@ class ExamController extends CI_Controller {
             $course_groupids = array_column($course_group, 'id');
  			$this->db->where_in('course_group_id',$course_groupids);
 			$this->db->order_by('course_group_id', "asc");
-			$this->db->where_in('class_id',array(101,102,104,105,106,107,108,109,110,111,112,120,121,125,126,127,128,129,131,132,133,134,135,136,137,138,143,147,150,155,171,174,180,182,191,198,208,214,216,218,224,226,228,232,236,240,242,246,248,250,252,254,256,262,264,268,273,276,280,282,283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,300,301,310));
-			$course_group = $this->Common_model->get_record('backlog_student','DISTINCT(class_id) as  class_id, course_group_id' ,array('exam_form'=>'Y','exam_year'=>'June 2025'));
+			// $this->db->where_in('class_id',array(101,102,104,105,106,107,108,109,110,111,112,120,121,125,126,127,128,129,131,132,133,134,135,136,137,138,143,147,150,155,171,174,180,182,191,198,208,214,216,218,224,226,228,232,236,240,242,246,248,250,252,254,256,262,264,268,273,276,280,282,283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,300,301,310));
+			$course_group = $this->Common_model->get_record('backlog_student','DISTINCT(class_id) as  class_id, course_group_id' ,array('exam_form'=>'Y','exam_year'=>'Dec 2025'));
 			
 			$data = array('course_group' => $course_group,
 				'name_csrf' => $this->security->get_csrf_token_name(),
@@ -2279,7 +2279,7 @@ class ExamController extends CI_Controller {
 				$classArr['class_name']=$class["class_name"];
 				$this->db->select('count(*) as num');
 				$this->db->from('new_exam_form as e');
-				$this->db->join('student', 'e.student_id = student.student_id  and e.class_id = student.old_class_id ');
+				$this->db->join('student', 'e.student_id = student.student_id  and e.class_id = student.class_id ');
 				$this->db->where('student.'.$this->exam_form.'','Y');
 				if($courseType!="ALL")
 					$this->db->where('student.university_mode',$courseType);
@@ -2290,7 +2290,7 @@ class ExamController extends CI_Controller {
 
 				$this->db->select('count(*) as num');
 				$this->db->from('new_exam_form as e');
-				$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.old_class_id ');
+				$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.class_id ');
 				$this->db->where('student.'.$this->exam_form.'','Y');
 				if($courseType!="ALL")
 					$this->db->where('student.university_mode',$courseType);
@@ -2302,7 +2302,7 @@ class ExamController extends CI_Controller {
 
 				$this->db->select('count(*) as num');
 				$this->db->from('new_exam_form as e');
-				$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.old_class_id ');
+				$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.class_id ');
 				$this->db->where('student.'.$this->exam_form.'','Y');
 				if($courseType!="ALL")
 					$this->db->where('student.university_mode',$courseType);
@@ -2321,7 +2321,7 @@ class ExamController extends CI_Controller {
 				}else{
 					$this->db->select('count(*) as num');
 					$this->db->from('new_exam_form as e');
-					$this->db->join('student', 'e.student_id = student.student_id  and e.class_id = student.old_class_id ');
+					$this->db->join('student', 'e.student_id = student.student_id  and e.class_id = student.class_id ');
 					$this->db->where('student.'.$this->exam_form.'','Y');
 					if($courseType!="PVT")
 						$this->db->where('student.university_mode',"REG");
@@ -2334,7 +2334,7 @@ class ExamController extends CI_Controller {
 
 					$this->db->select('count(*) as num');
 					$this->db->from('new_exam_form as e');
-					$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.old_class_id ');
+					$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.class_id ');
 					$this->db->where('student.'.$this->exam_form.'','Y');
 					if($courseType!="ALL")
 						$this->db->where('student.university_mode',$courseType);
@@ -2349,7 +2349,7 @@ class ExamController extends CI_Controller {
 
 					$this->db->select('count(*) as num');
 					$this->db->from('new_exam_form as e');
-					$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.old_class_id ');
+					$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.class_id ');
 					$this->db->where('student.'.$this->exam_form.'','Y');
 					if($courseType!="ALL")
 						$this->db->where('student.university_mode',$courseType);
@@ -2361,7 +2361,7 @@ class ExamController extends CI_Controller {
 					
 					$this->db->select('count(*) as num');
 					$this->db->from('new_exam_form as e');
-					$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.old_class_id ');
+					$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.class_id ');
 					$this->db->where('student.'.$this->exam_form.'','Y');
 					if($courseType!="ALL")
 						$this->db->where('student.university_mode',$courseType);
@@ -2669,7 +2669,7 @@ public function getStudentData()
 			if($remaining=="theory"){
 				$this->db->select('DISTINCT(examcentercode)');
 				$this->db->from('new_exam_form as e');
-				$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.old_class_id');
+				$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.class_id');
 				$this->db->where('student.'.$this->exam_form.'','Y');
 				if($courseType!="ALL")
 					$this->db->where('student.university_mode',$courseType);
@@ -2683,7 +2683,7 @@ public function getStudentData()
 			if($remaining=="internal"){
 				$this->db->select('DISTINCT(examcentercode)');
 				$this->db->from('new_exam_form as e');
-				$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.old_class_id');
+				$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.class_id');
 				$this->db->where('student.'.$this->exam_form.'','Y');
 				$this->db->where('student.university_mode','REG');
 				$this->db->where('e.course_group_id',$course_group_id);
@@ -2698,7 +2698,7 @@ public function getStudentData()
 			if($remaining=="practical"){
 				$this->db->select('DISTINCT(examcentercode)');
 				$this->db->from('new_exam_form as e');
-				$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.old_class_id');
+				$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.class_id');
 				$this->db->where('student.'.$this->exam_form.'','Y');
 				$this->db->where('student.university_mode','REG');
 				$this->db->where('e.course_group_id',$course_group_id);
@@ -2742,7 +2742,7 @@ public function getStudentData()
 				$this->db->from('backlog_exam_form');
 				$this->db->join('backlog_student', 'backlog_exam_form.student_id = backlog_student.student_id and backlog_exam_form.class_id = backlog_student.class_id and backlog_exam_form.backlog_student_id=backlog_student.id');
 				$this->db->where('backlog_student.exam_form','Y');
-				$this->db->where('backlog_student.exam_year','June 2025');
+				$this->db->where('backlog_student.exam_year','Dec 2025');
 				
 					
 				$this->db->where('backlog_exam_form.theory_marks','');
@@ -3084,12 +3084,12 @@ public function getStudentData()
 		{
 			if($text_val !='' && $radio_val == 'enrollment_no')
 			{
-				$where = array('exam_form'=>'Y','enrollment_no'=>$text_val);
+				$where = array('new_exam_form'=>'Y','enrollment_no'=>$text_val);
 				//,'result_show'=>'Y'
 
 			}else if($text_val !='' && $radio_val == 'roll_no')
 			{
-				$where = array('exam_form'=>'Y','roll_no'=>$text_val );
+				$where = array('new_exam_form'=>'Y','roll_no'=>$text_val );
 			//,'result_show'=>'Y'
 			}
 
@@ -3106,12 +3106,12 @@ public function getStudentData()
 					
 				}else{
 			
-					if($student[0]->old_result_show =="N"){
+					if($student[0]->result_show =="N"){
 						
 							$msg="<p style='text-align: center;' id='result_msg'><b>Student result not declared!</b></p>"; 
 					}
 						$data['student']=$student[0];
-						$data['exam_session']  = 'June 2025';
+						$data['exam_session']  = 'January 2026';
 						/**********************/
 						if($data['student']->provisional_remark!="N" && $data['student']->provisional_remark!="")
 						{
@@ -3128,13 +3128,13 @@ public function getStudentData()
 						$this->db->select('*');
 						$this->db->from($this->exam_form_table);
 						$this->db->where(''.$this->exam_form_table.'.student_id',$data['student']->student_id);
-						$this->db->where(''.$this->exam_form_table.'.class_id',$data['student']->old_class_id);
+						$this->db->where(''.$this->exam_form_table.'.class_id',$data['student']->class_id);
 						$this->db->order_by(''.$this->exam_form_table.'.paper_order',''.$this->exam_form_table.'.paper_id');
 						$new_exam_form = $this->db->get()->result();
 						// $this->Common_model->last_query();
 						$data['classData']  = $classData;
 						$data['new_exam_form']  = $new_exam_form;
-						// if(($data['student']->old_class_id == '104' || $data['student']->old_class_id == '107' || $data['student']->old_class_id == '101' || $data['student']->old_class_id == '134' || $data['student']->old_class_id == '116' || $data['student']->old_class_id == '110'|| $data['student']->old_class_id == '119' || $data['student']->old_class_id == '131') && $data['student']->university_mode == 'REG')
+						
 						
 						$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136);
 						$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302,303,304,305,278,282,250,252,216,232,236,238,240,246,248,254,218,305,210,325);
@@ -3227,7 +3227,7 @@ public function getStudentData()
 				$this->db->select('backlog_student.*,student.name,student.f_h_name,student.course_name,student.photo,student.session,student.exam_pattern,student.university_mode');
 				$this->db->from('backlog_student');
 				$this->db->join('student','backlog_student.student_id=student.student_id');
-				$this->db->where('backlog_student.exam_year','June 2025');
+				$this->db->where('backlog_student.exam_year','Dec 2025');
 				$this->db->where($where);
 				$student = $this->db->get()->result();
 				// print_r($student); die;
@@ -3246,7 +3246,7 @@ public function getStudentData()
 							$msg="<p style='text-align: center;' id='result_msg'><b>Student result not declared!</b></p>"; 
 					}
 						$data['student']=$student[0];
-						$data['exam_session']  = 'June 2025';
+						$data['exam_session']  = 'January 2026';
 						/**********************/
 						// if($data['student']->provisional_remark!="N" && $data['student']->provisional_remark!="")
 						// {
@@ -3269,7 +3269,7 @@ public function getStudentData()
 						$new_exam_form = $this->db->get()->result();
 						$data['classData']  = $classData;
 						$data['backlog_exam_form']  = $new_exam_form;
-						// if(($data['student']->old_class_id == '104' || $data['student']->old_class_id == '107' || $data['student']->old_class_id == '101' || $data['student']->old_class_id == '134' || $data['student']->old_class_id == '116' || $data['student']->old_class_id == '110'|| $data['student']->old_class_id == '119' || $data['student']->old_class_id == '131') && $data['student']->university_mode == 'REG')
+					
 						$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136,267,325);
 						$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302,303,304,305,278,282,250,252,216,232,236,238,240,246,248,254,218,305,210);
 						if((in_array($data['student']->class_id, $class_ids)) && $data['student']->university_mode=='REG')	
@@ -3345,7 +3345,7 @@ public function getStudentData()
 			 }
 			 $countWh = $qry->num_rows();
 			*/
-			 $whereWh = array('student_id' =>$studentData[0]->student_id ,'class_id' =>$studentData[0]->old_class_id,'paper_type' =>'theory' , 'theory_marks' =>'' );
+			 $whereWh = array('student_id' =>$studentData[0]->student_id ,'class_id' =>$studentData[0]->class_id,'paper_type' =>'theory' , 'theory_marks' =>'' );
 			$countWh = $this->Common_model->getCountByWhere('new_exam_form',$whereWh);
 			
 		
@@ -3547,7 +3547,7 @@ public function getStudentData()
 				if($remaining=="theory"){
 					$this->db->select('*');
 					$this->db->from('new_exam_form as e');
-					$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.old_class_id');
+					$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.class_id');
 					$this->db->where('student.'.$this->exam_form.'','Y');
 					if($courseType!="ALL")
 						$this->db->where('student.university_mode',$courseType);
@@ -3563,7 +3563,7 @@ public function getStudentData()
 				if($remaining=="internal"){
 					$this->db->select('*');
 					$this->db->from('new_exam_form as e');
-					$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.old_class_id');
+					$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.class_id');
 					$this->db->where('student.'.$this->exam_form.'','Y');
 					$this->db->where('student.university_mode','REG');
 					$this->db->where('e.course_group_id',$course_group_id);
@@ -3580,7 +3580,7 @@ public function getStudentData()
 				if($remaining=="practical"){
 					$this->db->select('*');
 					$this->db->from('new_exam_form as e');
-					$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.old_class_id');
+					$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.class_id');
 					$this->db->where('student.'.$this->exam_form.'','Y');
 					$this->db->where('student.university_mode','REG');
 					$this->db->where('e.course_group_id',$course_group_id);

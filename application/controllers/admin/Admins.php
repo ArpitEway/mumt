@@ -5512,8 +5512,8 @@ public function update_exam_datewise_permission(){
 			$set = array_column($classes,'id');
 				$this->db->select('*');
 				$this->db->from('new_exam_form as e' );
-				$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.old_class_id');
-				$this->db->where('student.exam_form','Y');
+				$this->db->join('student', 'e.student_id = student.student_id and e.class_id = student.class_id');
+				$this->db->where('student.new_exam_form','Y');
 				// $this->db->where('student.old_result_show','Y');
 				// if($mode != 'All'){
 				// 	$this->db->where_in('new_exam_form.class_id',$set);
@@ -5521,7 +5521,7 @@ public function update_exam_datewise_permission(){
 				$this->db->where_in('e.class_id',$set);
 				 $this->db->where('e.theory_marks','');
 				$this->db->where('e.paper_type',"theory");
-				$this->db->order_by('student.course_group_id','student.old_class_id','student.university_mode','student.roll_number');
+				$this->db->order_by('student.course_group_id','student.class_id','student.university_mode','student.roll_number');
 				
 			$data['students'] = $this->db->get()->result();
 			
