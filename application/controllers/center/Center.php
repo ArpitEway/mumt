@@ -2740,7 +2740,7 @@ public function marksheet_admin($student_id="")
  public function grade_marksheet_pg($student_id=""){
 	
 	$student_id=$this->Common_model->encrypt_decrypt($student_id,'decrypt');
-	   $student = $this->Common_model->getRecordByWhere($this->result_table,array($this->exam_form_result=>'Y','old_result_show'=>'Y','student_id'=>$student_id));
+	   $student = $this->Common_model->getRecordByWhere($this->result_table,array($this->exam_form_result=>'Y','result_show'=>'Y','student_id'=>$student_id));
 	   // print_r($student);die;
 	   if (count($student)==0) {
 		   redirect(base_url());
