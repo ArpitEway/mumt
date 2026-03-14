@@ -727,7 +727,8 @@ class Postexam extends CI_Controller {
           // $this->db->where_in('student.class_id',array(101,107,108,109,117,128,135,136,161,165,171,174,177,180,194,200,202,204,238,206,208,210,244,216,303,276,280,222,248,224,250,228));
           $this->db->where('last_class', 'L');
           $this->db->where('exam_form', 'Y');
-          $this->db->where('result_permission', 'Y');
+          // $this->db->where('result_permission', 'Y');
+          $this->db->where('old_exam_form_permission', 'Y');
           $this->db->where('course_complete', 'N');
           $this->db->where('upload_result', 'Y');
           $this->db->group_by('old_class_id');          
