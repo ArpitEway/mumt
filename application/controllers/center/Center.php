@@ -1416,12 +1416,21 @@ class Center extends CI_Controller {
     	$center_id =  $this->session->center_id;
     	if($mode == "regular"){
     		$titleData = array('title' => 'Paper Missing List (Regular)' );
+			if($this->session->center_id!=28) {
     		$where = array(
     			'temp_exam_form' =>'N',
     			'university_mode'=>'REG',
 				'class_name!='=>'II Year',
 				'session >='=>'July 2025',
     		);
+			}else{
+					$where = array(
+    			'temp_exam_form' =>'N',
+    			'university_mode'=>'REG',
+				'class_name!='=>'II Year',
+				'class_id' => 257,
+    		);
+			}
     	}else{
     		$titleData = array('title' => 'Paper Missing List (Private)' );
     		$where = array(
@@ -1439,6 +1448,7 @@ class Center extends CI_Controller {
 		}
 		// $this->db->where_not_in('class_id',array( 102,103,105,106,216));
     	$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
+		// $this->Common_model->last_query();
     	$this->load->view('Centers/paper_missing_list',$data);
     	$this->load->view('Centers/footer');
     }
