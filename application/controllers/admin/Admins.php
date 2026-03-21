@@ -3381,7 +3381,7 @@ public function update_exam_datewise_permission(){
 		}
 		
 		// $where = "id IN (SELECT DISTINCT course_group_id FROM student WHERE exam_form = 'Y' AND examcentercode IN ('MDE028','MDE172') AND exam_form = 'Y' AND old_class_id IN (103,106,109,112,121,127,130,133,136,148))";		
-		$where = "id IN (SELECT DISTINCT course_group_id FROM student WHERE new_exam_form = 'Y' AND  class_id IN (476,209,207,205))";	
+		$where = "id IN (SELECT DISTINCT course_group_id FROM student WHERE new_exam_form = 'Y' AND  class_id IN (476,209,207,205,261,263))";	
 		// $where = "id in (select DISTINCT(course_group_id) from student where new_exam_form = 'Y' and class_id in (197,201,203,211,213,221,223,225,275,279,302,217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253))";and old_class_id in (154,155,181,182,193,217,195,197,231,199,233,201,235,203,237,205,239,241,209,243,211,245,213,215,302,304,275,277,279,281,221,247,223,249,225,251,227,253) 
 
 
