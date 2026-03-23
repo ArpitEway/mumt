@@ -242,8 +242,8 @@
                     </div>
                 <?php } ?>
                 <div class="row border border-default p-2">
-                    <div class="col-2"><?=++$i; ?></div>
-                    <div class="col-3"><?=$paper->paper_code; ?></div>
+                    <div class="col-1"><?=++$i; ?></div>
+                    <div class="col-2"><?=$paper->paper_code; ?></div>
 					<div class="col-2"><?=$paper->type; ?></div>
                     <div class="col-2"><?=$this->Common_model->getSubGroupNameById($paper->sub_group_id); ?></div>
                     <div class="col-5"><?=$paper->paper_name; ?></div>
