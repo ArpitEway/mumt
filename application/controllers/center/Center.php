@@ -1428,8 +1428,8 @@ class Center extends CI_Controller {
     			'temp_exam_form' =>'N',
     			'university_mode'=>'REG',
 				'class_name!='=>'II Year',
-			);
-				$this->db->where_in('class_id', [257, 316]);
+				'class_id' => 257,
+    		);
 			}
     	}else{
     		$titleData = array('title' => 'Paper Missing List (Private)' );
