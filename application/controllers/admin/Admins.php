@@ -4069,8 +4069,8 @@ public function update_exam_datewise_permission(){
 		$course_id=$this->Common_model->encrypt_decrypt($course_id,'decrypt');
 		$class_id=$this->Common_model->encrypt_decrypt($class_id,'decrypt');
 
-		$this->db->order_by('roll_number','ASC');
-		// $this->db->order_by('roll_no','ASC');
+		// $this->db->order_by('roll_number','ASC');
+		$this->db->order_by('roll_no','ASC');
 
 		$data = array('course_group_id' => $course_id, 'class_id' => $class_id);
         $class_ids=array(103,106,109,112,118,121,127,130,133,136);
@@ -4082,10 +4082,10 @@ public function update_exam_datewise_permission(){
 		// elseif(in_array($class_id, $class_ids)&& $pattern=="GRADE"){
         //     $this->db->where_not_in('center_id', $dept_ids);
         // }
-		$this->db->where_in('examcentercode',array('MDE028','MDE172'));
-		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id, 'old_class_id' => $class_id, 'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode ,'exam_pattern'=>$pattern));
+		// $this->db->where_in('examcentercode',array('MDE028','MDE172'));
+		// $data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id, 'old_class_id' => $class_id, 'exam_form'=>'Y','roll_number!='=>'0','university_mode'=>$mode ,'exam_pattern'=>$pattern));
 
-		// $data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id, 'class_id' => $class_id, 'new_exam_form'=>'Y','roll_no!='=>'0','university_mode'=>$mode ,'exam_pattern'=>$pattern));
+		$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id, 'class_id' => $class_id, 'new_exam_form'=>'Y','roll_no!='=>'0','university_mode'=>$mode ,'exam_pattern'=>$pattern));
 
 		$data['title'] = "Notification ".$this->Common_model->getCourseNameByCourseId($course_id).' '.$this->Common_model->getClassNameByClassId($class_id);
 		$data['mode'] = $mode;
