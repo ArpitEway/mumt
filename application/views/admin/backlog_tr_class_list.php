@@ -10,11 +10,11 @@
 		<?php $i=1; ?>
 		<?php foreach ($courses as $course){
 			$this->db->order_by('id');
-			// $this->db->where_in('id',array(104,105,106,107,108,109,111,126,129,136,286,288,292,295,296,297));
+			$this->db->where_in('id',array(154,155,181,182,197,232,209,213,215,304,277,279,251,227,253,255,257,261,264,267,269,270));
 		
-        	$classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id'],"backlog_exam_form_permission"=>'Y'));
+        	$classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id']));
 		// ,"backlog_exam_form_permission"=>'Y'
-		// backlog_result_permission 
+		// backlog_result_permission,,"backlog_exam_form_permission"=>'Y'
 		
         ?>
 		<tr>
