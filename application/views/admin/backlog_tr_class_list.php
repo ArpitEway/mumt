@@ -48,7 +48,7 @@
 					</td>
 			<td>
 				<?php
-				$class_pg= array(205,206,239,240,248,278,282,252);
+				$class_pg= array(205,206,239,240,248,278,282,252,267);
 				if ($class->practical_internal_marks=='Y' && (!in_array($class->id, $class_pg))){ //class->id 252 for non cbcs students remove next year
 					 
 					 
