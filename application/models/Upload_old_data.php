@@ -492,7 +492,7 @@ class Upload_old_data extends CI_Model
             'course_name' => $this->student->course_name,
             'class_id' => $this->student->old_class_id,
             'enrollment_no' => $this->student->enrollment_no,
-            'roll_no' => $this->student->roll_number,
+            'roll_no' => $this->student->roll_no,
             'name' => $this->student->name,
             'exam_year' => $this->exam_year,
             'marks_pattern' => 'GRADE',
