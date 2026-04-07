@@ -3268,7 +3268,7 @@ public function update_exam_datewise_permission(){
 			$pattern="GRADE";
 		}
 		
-		$where =array("bs.course_group_id"=>$course_group_id ,'bs.class_id' => $class_id ,'bs.exam_form'=>'Y', 'bs.roll_no!='=>'0' ,'bs.mode'=> $mode,'bs.exam_year'=>'Dec 2025', 's.exam_pattern'=>$pattern,'bs.result_show'=>'Y');
+		$where =array("bs.course_group_id"=>$course_group_id ,'bs.class_id' => $class_id ,'bs.exam_form'=>'Y', 'bs.roll_no!='=>'0' ,'bs.mode'=> $mode,'bs.exam_year'=>'Dec 2025', 's.exam_pattern'=>$pattern);
 		//,'bs.student_id'=>734487, 'bs.result_show'=>'N'
 		$this->db->order_by('bs.center_id','ASC');
 		$this->db->order_by('bs.roll_no','ASC');
@@ -3325,7 +3325,7 @@ public function update_exam_datewise_permission(){
 		else{
 			$pattern="GRADE";
 		}
-        $where =array("bs.course_group_id"=>$course_group_id ,'bs.class_id' => $class_id ,'bs.exam_form'=>'Y', 'bs.roll_no!='=>'0' ,'bs.mode'=> $mode,'bs.exam_year'=>'Dec 2025','exam_pattern'=>$pattern,'bs.result_show'=>'Y');
+        $where =array("bs.course_group_id"=>$course_group_id ,'bs.class_id' => $class_id ,'bs.exam_form'=>'Y', 'bs.roll_no!='=>'0' ,'bs.mode'=> $mode,'bs.exam_year'=>'Dec 2025','exam_pattern'=>$pattern);
 		//,'student_id'=>702823 ,'bs.result_show'=> 'N'
 		$this->db->order_by('bs.center_id','ASC');
 		$this->db->order_by('bs.roll_no','ASC');
@@ -3655,7 +3655,7 @@ public function update_exam_datewise_permission(){
 			$this->db->select('bs.*, st.photo,st.session,st.course_name,st.name,st.f_h_name');
             $this->db->from('backlog_student as bs');
             $this->db->join('student as st','st.student_id=bs.student_id');
-            $this->db->where(array("bs.course_group_id"=>$course_id ,'bs.class_id' => $class_id,'bs.exam_form'=>'Y','bs.roll_no!='=>'0','mode'=>$mode,'st.course_complete'=>'Y','st.exam_pattern'=>"GRADE",'bs.exam_year'=>'Dec 2025','bs.result_show'=>'Y' ));
+            $this->db->where(array("bs.course_group_id"=>$course_id ,'bs.class_id' => $class_id,'bs.exam_form'=>'Y','bs.roll_no!='=>'0','mode'=>$mode,'st.course_complete'=>'Y','st.exam_pattern'=>"GRADE",'bs.exam_year'=>'Dec 2025','bs.result_show'=>'Y'));
             $data['students']=  $this->db->get()->result();
             // $this->Common_model->getRecordByWhere('backlog_student',array("course_group_id"=>$course_id ,'class_id' => $class_id,'exam_form'=>'Y','roll_no!='=>'0','mode'=>$mode ));
 		}else{
