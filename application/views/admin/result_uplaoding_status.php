@@ -16,7 +16,7 @@
 		<tbody>
 			<tr>
                 <td>1</td>
-				<td><?php echo  $total_paper_count ; ?></td>
+				<td><?php echo $total_paper_count ; ?></td>
 				<td><?php echo $uploaded;//=$uploaded-$absent ; ?></td>
                 <td><?php echo $absent ; ?></td>
 				<td><?php echo $total_paper_count-$uploaded -$absent; ?></td>

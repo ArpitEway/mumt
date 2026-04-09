@@ -7,7 +7,7 @@
             <select  class="form-control" name="mode"  id="mode">
             	<option value="">Select</option>
                 <!-- <option value="All">All</option> -->
-                <option value="Annual">Annual</option>
+                <!-- <option value="Annual">Annual</option> -->
                 <option value="Semester">Semester</option>
             </select>
         </div>
