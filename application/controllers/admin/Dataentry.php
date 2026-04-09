@@ -49,9 +49,9 @@ class Dataentry extends CI_Controller {
 		$data['hash_csrf'] = $this->security->get_csrf_hash();	
 		$this->db->order_by('course_name');
 
-		// $data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id), course_name ',''.$this->exam_form.'="Y"');
+		$data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id), course_name ',''.$this->exam_form.'="Y"');
 
-		$data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id), course_name ','new_exam_form="Y"');
+		// $data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id), course_name ','new_exam_form="Y"');
 
 		$this->load->view('admin/Dataentry/mark_entry_course',$data);
 		$this->load->view('footer');
@@ -113,11 +113,11 @@ class Dataentry extends CI_Controller {
 
 		$where = array('new_exam_form.paper_code' => $paper_code, 'theory_marks' => '','university_mode' => $mode,'paper_type' => 'theory','exam_center_id'=>$exam_center,'student.new_exam_form' => 'Y');
 		//,'student.result_show'=>'N'
-		// $this->db->select('student.student_id, student.name,enrollment_no,'.$this->roll_no.'');
-		$this->db->select('student.student_id, student.name,enrollment_no,student.roll_no');
+		$this->db->select('student.student_id, student.name,enrollment_no,'.$this->roll_no.'');
+		// $this->db->select('student.student_id, student.name,enrollment_no,student.roll_no');
 		$this->db->from('new_exam_form');
-		// $this->db->order_by("student.".$this->roll_no."","student.enrollment_no","asc");
-		$this->db->order_by("student.roll_no","student.enrollment_no","asc");
+		$this->db->order_by("student.".$this->roll_no."","student.enrollment_no","asc");
+		// $this->db->order_by("student.roll_no","student.enrollment_no","asc");
 		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
 		$this->db->where('student.class_id = new_exam_form.class_id');
 		$this->db->where($where); 
@@ -128,10 +128,11 @@ class Dataentry extends CI_Controller {
 		$config = array();
 		$config["base_url"] = base_url() ."Dataentry/marks_entry_form/".$this->Common_model->encrypt_decrypt($mode,'encrypt')."/".$this->Common_model->encrypt_decrypt($class_id,'encrypt')."/".$this->Common_model->encrypt_decrypt($paper_code,'encrypt')."/".$exam_center;
 
-		$this->db->select('student.student_id, student.name,enrollment_no,student.roll_no');
+		$this->db->select('student.student_id, student.name,enrollment_no,'.$this->roll_no.'');
+		// $this->db->select('student.student_id, student.name,enrollment_no,student.roll_no');
 		$this->db->from('new_exam_form');
-		// $this->db->order_by("student.".$this->roll_no."","student.enrollment_no","asc");
-		$this->db->order_by("student.roll_no","student.enrollment_no","asc");
+		$this->db->order_by("student.".$this->roll_no."","student.enrollment_no","asc");
+		// $this->db->order_by("student.roll_no","student.enrollment_no","asc");
 		$this->db->join('student', 'student.student_id = new_exam_form.student_id');
 		$this->db->where('student.class_id = new_exam_form.class_id');
 		$this->db->where($where);
@@ -293,8 +294,8 @@ class Dataentry extends CI_Controller {
 		$data['name_csrf'] = $this->security->get_csrf_token_name();
 		$data['hash_csrf'] = $this->security->get_csrf_hash();	
 		$this->db->order_by('course_name');
-		// $data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id), course_name ',''.$this->exam_form.'="Y"');
-		$data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id), course_name ','new_exam_form="Y"');
+		$data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id), course_name ',''.$this->exam_form.'="Y"');
+		// $data['courses'] = $this->Common_model->get_record('student','DISTINCT (course_group_id), course_name ','new_exam_form="Y"');
 		$this->load->view('admin/examController/exam_center_folio',$data);
 		$this->load->view('footer');
 	} 
