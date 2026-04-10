@@ -344,7 +344,8 @@ class Postexam extends CI_Controller {
         $this->db->where('class_master.mode!=', 'Semester');
         $this->db->where('student.course_complete', 'N');
         $this->db->where('student.university_mode', 'PVT');
-
+        $this->db->where('class_master.last_class IS NULL');
+        
         // Grouping the complex OR conditions
         // $this->db->group_start();
         //     $this->db->where('class_master.last_class IS NULL');
