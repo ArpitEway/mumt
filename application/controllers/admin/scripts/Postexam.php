@@ -522,7 +522,8 @@ class Postexam extends CI_Controller {
         $this->db->select('DISTINCT(id)');
         $this->db->from('class_master');
         $this->db->where('mode','Annual');
-        $this->db->where('last_class!=','L');
+        // $this->db->where('last_class','L');
+        $this->db->where('last_class', NULL);
         $this->db->where('private_class','Y');
 
         // $this->db->where_in('class_name',array('I SEM','III SEM'));
