@@ -90,7 +90,7 @@ class Preexam extends CI_Controller {
 			else			
 					$paperWhere=array('class_id'=>$class_id,'cbcs_paper'=> $cbcs);
 
-					$this->db->where('paper_pattern','NEW');
+					// $this->db->where('paper_pattern','NEW');
 
 			$papers = $this->Common_model->get_record('paper_master','*',$paperWhere);
 		foreach ($students as $student) {
