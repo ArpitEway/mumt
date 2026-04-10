@@ -53,7 +53,7 @@
             $center_ids = array( 10,11,12,13,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,1975,2098,2115 );
             $pending="";
 				if(in_array($this->session->center_id, $center_ids) ){
-                     $where=array('center_id'=>$student->center_id,'exam_session'=>'Dec 2025','fees_head'=>'Exam Fees','payment'=>'Y','student_id'=>$student->student_id);
+                     $where=array('center_id'=>$student->center_id,'exam_session'=>'June 2026','fees_head'=>'Exam Fees','payment'=>'Y','student_id'=>$student->student_id);
                    $paid= $this->Common_model->getRecordByWhere('online_payment_transaction',$where);
                    if($paid){
                     //continue;
