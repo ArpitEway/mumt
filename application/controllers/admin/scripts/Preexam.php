@@ -24,14 +24,13 @@ class Preexam extends CI_Controller {
 		$class_ids = $classes[0]['class_id'];
 		
 		$this->db->select('count(class_id) as num,course_name,class_name,class_id');
-		$this->db->where(' temp_exam_form="N" and class_id not in ('.$class_ids.')');
+		$this->db->where(' temp_exam_form="N" and new_exam_form="N" and class_id not in ('.$class_ids.')');
 
 		// and payment_status="Y" and  and new_exam_form="N"
 		$this->db->where_not_in('class_id',[269]);
 
 		// $this->db->where('class_id',325);
-		$this->db->where_in('class_id',[275,279,223,225,460,476,193,197,199,201,203,205,302,207,209,211,213,221,227
-	]);
+		// $this->db->where_in('class_id',[275,279,223,225,460,476,193,197,199,201,203,205,302,207,209,211,213,221,227]);
 
 		$this->db->group_by('class_id');
 		$this->db->order_by('course_group_id');
@@ -73,11 +72,11 @@ class Preexam extends CI_Controller {
 	{
 		$where = array('class_id' => $class_id,
 					//'payment_status' => 'Y',
-					// 'new_exam_form' => 'N',
+					'new_exam_form' => 'N',
 					'temp_exam_form' => "N",
 					'university_mode'=>$university_mode,
 		);
-		$this->db->where('session','July 2025');
+		// $this->db->where('session','July 2025');
 
 		$this->db->limit(1000);
 
