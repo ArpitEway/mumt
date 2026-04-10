@@ -58,7 +58,7 @@
 
               ####### Add Backlog Script For Main Exam End #######
 
-                 $this->db->where_in('exam_year',array('June 2025','July 2025'));
+               $this->db->where_in('exam_year',array('June 2025','July 2025','August 2025'));
                  
                  // $this->db->where_in('exam_year',array('January 2025','February 2025'));
 
@@ -86,7 +86,7 @@
                 'roll_no' => 0,
                 'session' => $students[0]->session,
                 'mode'=>$students[0]->university_mode,
-                'exam_year'=>'Dec 2025',
+                'exam_year'=>'June 2026',
                 'exam_form' => 'N',
                 'enrollment_no' => $students[0]->enrollment_no,
                 'center_id' => $students[0]->center_id,
@@ -98,7 +98,7 @@
                 'upload_result' =>  'N',
                 'result_permission' => 'N',
                 );
-                $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students[0]->student_id,'class_id'=>$students[0]->class_id,'exam_year'=>'Dec 2025'));
+                $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students[0]->student_id,'class_id'=>$students[0]->class_id,'exam_year'=>'June 2026'));
                 if( $duplicate == Array ( )){
                 $backlog_student_id = $this->Common_model->insertAll('backlog_student',$data);
 

@@ -521,7 +521,9 @@ class Postexam extends CI_Controller {
       {
         $this->db->select('DISTINCT(id)');
         $this->db->from('class_master');
-        // $this->db->where('class_name','I Year');
+        $this->db->where('mode','Annual');
+        $this->db->where('last_class','L');
+
         // $this->db->where_in('class_name',array('I SEM','III SEM'));
         //  $this->db->where('backlog_exam_form_permission','Y');
         // $this->db->where_not_in('id',array('154','172','181'));
@@ -531,7 +533,7 @@ class Postexam extends CI_Controller {
         // $this->db->where_not_in('id',array('155','299','182'));
         // $this->db->where('exam_form_permission','Y');
 
-        $this->db->where_in('id',array('264','270'));
+        // $this->db->where_in('id',array('264','270'));
         
         $classes = $this->db->get()->result();
         $class_id = array_column($classes,'id');
@@ -541,7 +543,8 @@ class Postexam extends CI_Controller {
            // $this->db->where('exam_year', 'June 2025');
            // $this->db->where('exam_year', 'January 2025');
            // $this->db->where_in('exam_year',array('January 2025','February 2025'));
-           $this->db->where_in('exam_year',array('June 2025','July 2025'));
+           $this->db->where_in('exam_year',array('June 2025','July 2025','August 2025'));
+
            $this->db->where('exam_result', 'FAIL');
            $this->db->where('exam_status', 'R');
            $this->db->where_in('class_id',$class_id );
@@ -562,10 +565,10 @@ class Postexam extends CI_Controller {
         $this->load->view('header',array('title' => 'Backlog Students'));
         $this->db->select('*');
         $this->db->from('old_exam_data');
-        // $this->db->where('exam_year', 'June 2025');
+        $this->db->where('university_mode', 'PVT');
         //$this->db->where('exam_year', 'January 2025');
         // $this->db->where_in('exam_year',array('January 2025','February 2025'));
-        $this->db->where_in('exam_year',array('June 2025','July 2025'));
+        $this->db->where_in('exam_year',array('June 2025','July 2025','August 2025'));
         $this->db->where('exam_result', 'FAIL');
         $this->db->where('exam_status', 'R');
         //$this->db->where('id>', '52355');
@@ -599,7 +602,8 @@ class Postexam extends CI_Controller {
     public function backlog_marks_update_scripts($student_id,$class_id='')
     {
          // $this->db->where('exam_year', 'June 2025');
-         $this->db->where_in('exam_year',array('January 2025','February 2025'));
+         // $this->db->where_in('exam_year',array('January 2025','February 2025'));
+         $this->db->where_in('exam_year',array('June 2025','July 2025','August 2025'));
         $students = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$class_id,'student_id'=>$student_id));
         //,'exam_year'=>'June 2024'
 
@@ -620,7 +624,7 @@ class Postexam extends CI_Controller {
                 'roll_no' => 0,
                 'session' => $students[0]->session,
                 'mode'=>$students[0]->university_mode,
-                'exam_year'=>'Dec 2025',
+                'exam_year'=>'June 2026',
                 'exam_form' => 'N',
                 'enrollment_no' => $students[0]->enrollment_no,
                 'center_id' => $students[0]->center_id,
@@ -632,7 +636,7 @@ class Postexam extends CI_Controller {
                 'upload_result' =>  'N',
                 'result_permission' => 'N',
                );
-              $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students[0]->student_id,'class_id'=>$students[0]->class_id,'exam_year'=>'Dec 2025'));
+              $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students[0]->student_id,'class_id'=>$students[0]->class_id,'exam_year'=>'June 2026'));
             if( $duplicate !== Array ( )){
                 echo "Already Exist";
               }else{
