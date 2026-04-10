@@ -537,7 +537,7 @@ class Preexam extends CI_Controller {
 		$this->load->view('admin/script/footer');
 	}
 
-	
+
 	public function group_upload_group_exam_paper_sub($class_id)
 	{
 		$where = array('class_id' => $class_id,
@@ -565,7 +565,7 @@ class Preexam extends CI_Controller {
 		else{
 			
 			$paperWhere=array('class_id'=>$class_id,'ce'=>'compulsory','cbcs_paper'=>'N');
-			if($class_id=103){
+			if($class_id==103){
 				$paperWhere['id>']='1700';
 			}
 		}
