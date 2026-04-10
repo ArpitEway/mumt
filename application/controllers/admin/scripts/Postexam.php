@@ -372,7 +372,7 @@ class Postexam extends CI_Controller {
         $this->db->limit(1000);
            // $data['students']= $this->Common_model->getRecordByWhere('student',array('class_id' => $class_id, 'exam_form'=>'Y' , 'promote'=>'N' ,'course_complete'=>'N' ));
 
-         $data['students']= $this->Common_model->getRecordByWhere('student_result_june_2025',array('class_id' => $class_id, 'exam_form'=>'Y' , 'promote'=>'N' ,'course_complete'=>'N' ));
+         $data['students']= $this->Common_model->getRecordByWhere('student_result_june_2025',array('class_id' => $class_id, 'exam_form'=>'Y' , 'promote'=>'N' ,'course_complete'=>'N','university_mode'=>'PVT' ));
 
           $data['course_name']= $this->Common_model->getCourseNameByCourseId($course_group_id);
           $data['class_name']= $this->Common_model->getClassNameByClassId($class_id);
