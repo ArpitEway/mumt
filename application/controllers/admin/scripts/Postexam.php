@@ -523,6 +523,7 @@ class Postexam extends CI_Controller {
         $this->db->from('class_master');
         $this->db->where('mode','Annual');
         $this->db->where('last_class','L');
+        $this->db->where('private_class','Y');
 
         // $this->db->where_in('class_name',array('I SEM','III SEM'));
         //  $this->db->where('backlog_exam_form_permission','Y');
@@ -548,6 +549,7 @@ class Postexam extends CI_Controller {
            $this->db->where('exam_result', 'FAIL');
            $this->db->where('exam_status', 'R');
            $this->db->where_in('class_id',$class_id );
+           $this->db->where('university_mode', 'PVT');
            //$this->db->where('id>', '52355');
            $this->db->group_by('class_id');         
            $data['courses'] = $this->db->get('old_exam_data')->result();
