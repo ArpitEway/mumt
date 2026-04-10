@@ -396,31 +396,6 @@ class Preexam extends CI_Controller {
 	}
 
 
-	public function upload_group_exam_paper(){
-		$this->load->view('admin/script/header',array('title' => 'Upload Exam Paper'));
-		/* class which dose not have elective papers */
-		
-		$classes = $this->Common_model->get_record('class_master','GROUP_CONCAT(id) as class_id',array('class_group' => 'Y','admission_permission' => 'N'));
-		//,'exam_form_permission' => 'Y','admission_permission' => 'Y'
-		// $class_ids = $classes[0]['class_id'];
-		$class_ids =216; //103,105,106,216;
-		$this->db->select('count(class_id) as num,course_name,class_name,class_id');
-		$this->db->where('class_id in ('.$class_ids.') and temp_exam_form="N" and demo="N" and group_id!="" and new_exam_form="N"');
-		// and payment_status="Y" // and new_exam_form="N"
-		$this->db->group_by('class_id');
-		$this->db->order_by('course_group_id');
-		$studentClasses = $this->db->get('student')->result();
-		$i=0;
-		
-		
-		
-		// $this->Common_model->last_query();
-		$data = array(
-			'studentClasses' => $studentClasses,
-		);
-		$this->load->view('admin/script/upload_group_exam_paper',$data);
-		$this->load->view('admin/script/footer');
-	}
 
 	/*public function upload_group_exam_paper_sub($class_id)
 	{
@@ -533,6 +508,36 @@ class Preexam extends CI_Controller {
 		}
 	}
 */
+
+
+
+	public function upload_group_exam_paper(){
+		$this->load->view('admin/script/header',array('title' => 'Upload Exam Paper'));
+		/* class which dose not have elective papers */
+		
+		$classes = $this->Common_model->get_record('class_master','GROUP_CONCAT(id) as class_id',array('class_group' => 'Y','admission_permission' => 'N'));
+		//,'exam_form_permission' => 'Y','admission_permission' => 'Y'
+		// $class_ids = $classes[0]['class_id'];
+		$class_ids =106; //103,105,106,216;
+		$this->db->select('count(class_id) as num,course_name,class_name,class_id');
+		$this->db->where('class_id in ('.$class_ids.') and temp_exam_form="N" and demo="N" and group_id!="" and new_exam_form="N"');
+		// and payment_status="Y" // and new_exam_form="N"
+		$this->db->group_by('class_id');
+		$this->db->order_by('course_group_id');
+		$studentClasses = $this->db->get('student')->result();
+		$i=0;
+		
+		
+		
+		// $this->Common_model->last_query();
+		$data = array(
+			'studentClasses' => $studentClasses,
+		);
+		$this->load->view('admin/script/upload_group_exam_paper',$data);
+		$this->load->view('admin/script/footer');
+	}
+
+	
 	public function group_upload_group_exam_paper_sub($class_id)
 	{
 		$where = array('class_id' => $class_id,
