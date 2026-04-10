@@ -275,19 +275,20 @@
               //  $count = $this->Common_model->getCountByWhere('student',array('center_id'=>$center->id,'new_exam_form !='=>'D'));
                 //&& $count>0href="<?=base_url('exam_form_students');"
                 if ($center->exam_form_permission=='Y' ){ ?>
-				 <!-- <a class="border-0 custom-menu-item" id="main-exam" >
+				 	<a class="border-0 custom-menu-item" id="main-exam" >
 							<div>
 								<span class="nav-text">Exam Form June 2026</span>
 							</div>
-					</a>  -->
-				<?php if($center->id > 100 || $center->id == 12){?>
+					</a> 
 					<a class="border-0 custom-menu-item" href="<?=base_url('backlog_exam_form_students/notSubmitted/center');?>">
 							<div>
 								<span class="nav-text">Backlog Exam Form June 2026</span>
 							</div>
 					</a>  
+					
 					<?php
-				}
+				 
+				    /*
 					if($center->id < 100 || $center->id == 2115){?>
 					<a class="border-0 custom-menu-item karaundi-exam" data-id="main" >
 							<div>
@@ -299,9 +300,10 @@
 								<span class="nav-text">Backlog Exam Form Karaundi June 2026</span>
 							</div>
 					</a>  
-				
-				<?php
+					<?php
 					} 
+					*/
+
 				} ?>
 				
 				
