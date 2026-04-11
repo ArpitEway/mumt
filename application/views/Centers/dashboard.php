@@ -314,11 +314,11 @@
 							</div>
 						</a>
 						
-						<!-- <a class="border-0 custom-menu-item" href="<?=base_url('backlog_result');?>">
+						<a class="border-0 custom-menu-item" href="<?=base_url('backlog_result');?>">
 							<div>
 								<span class="nav-text">Backlog Result (Jan 2026)</span>
 							</div>
-						</a> -->
+						</a>
 
 						<?php endif ?>
 
