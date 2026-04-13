@@ -56,7 +56,7 @@
 				<?php
 				
 				// if ($class->practical_internal_marks=='Y' && $class->id !=205 && $class->id !=206 && $class->id !=239 && $class->id !=278&& $class->id !=282){ 
-					 $class_pg= array(205,206,239,240,248,278,282,252,267,268,312,313,197,201,203,211,213,221,223,225,275,279,302,476);
+					 $class_pg= array(205,206,239,240,248,278,282,252,267,268,269,312,313,197,201,203,211,213,221,223,225,275,279,302,476);
                     if ($class->practical_internal_marks=='Y' && (!in_array($class->id, $class_pg))){ 
                         if($class->regular_class=='Y') { ?>    
                         <a href="<?php echo base_url("admin/admins/generate_tr_bed")."/REG/M/".$course['id']."/".$class->id; ?>">Regular Tr</a>
