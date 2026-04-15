@@ -3243,7 +3243,7 @@ public function update_exam_datewise_permission(){
 			
 			$this->load->view('admin/generate_tr',$data);
 		}
-		else if( $class_id==256 || $class_id==257 ) {
+		else if( $class_id==256 || $class_id==257 || $class_id==316 ) {
 			
 			$this->load->view('admin/generate_tr_sessional',$data);
 		}
