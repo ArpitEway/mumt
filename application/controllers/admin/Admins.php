@@ -4053,6 +4053,8 @@ public function update_exam_datewise_permission(){
             $this->load->model('Gradesheet_model');
 			$this->load->view('admin/generate_gradesheet_tr_fourth_year',$data);
 			# code...
+		}elseif($class_id==316){
+			$this->load->view('admin/generate_tr/bed_tr_sessional',$data);
 		}else{
 			$this->load->view('admin/generate_tr/bed_tr',$data);
 		}
