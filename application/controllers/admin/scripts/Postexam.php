@@ -28,7 +28,7 @@ class Postexam extends CI_Controller {
             252 - Dec 2025
         */
             $this->db->order_by('center_id,course_group_id,class_id,roll_no');
-            $data['students'] = $this->Common_model->getRecordByWhere('student', array('new_exam_form'=>'Y' ,'roll_no!='=>0 ,'marksheet_no'=>'','class_id'=>'215'));
+            $data['students'] = $this->Common_model->getRecordByWhere('student', array('exam_form'=>'Y' ,'roll_no!='=>0 ,'marksheet_no'=>'','class_id!'=>'215'));
             // M10161241YEDU ,'class_id'=>'270'
             //  $starting_no = 10001 ;
              $starting_no = 10018 ;
@@ -46,7 +46,7 @@ class Postexam extends CI_Controller {
                 $starting_no++ ;
            }
 
-           $data['students'] = $this->Common_model->getRecordByWhere('student', array('new_exam_form' => 'Y' ,'roll_no!=' => 0 ,'marksheet_no!='=>''));
+           $data['students'] = $this->Common_model->getRecordByWhere('student', array('exam_form' => 'Y' ,'roll_no!=' => 0 ,'marksheet_no!='=>''));
             $this->load->view('admin/script/header');
             $this->load->view('admin/script/student_marksheet_no',$data);
             $this->load->view('admin/script/footer');
