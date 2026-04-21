@@ -218,7 +218,7 @@
 			$updateDataStd = array('payment_status'=> 'Y'); 
 		}elseif($txnDetails->fees_head=='Backlog Exam Fees'){ 
             $updateDataStd = array('exam_form'=> 'Y'); 
-			$whereStudent = array('student_id'=>  $student_id,'exam_year'=> 'June 2025'); 
+			$whereStudent = array('student_id'=>  $student_id,'exam_year'=> 'June 2026'); 
         }
 
         if($txnDetails->fees_head=='Backlog Exam Fees'){
@@ -452,7 +452,7 @@
 		if($Fess_head == 'Admission Fees'){
 	     $session = $student_details[0]->session;
 		}else{
-			$session = 'June 2025';
+			$session = 'June 2026';
 		}
 		$class_id = $student_details[0]->class_id;
 		$name = $this->Common_model->getStudentNameById($student_details[0]->student_id);
