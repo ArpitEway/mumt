@@ -13,7 +13,9 @@
 			
       	// $this->db->where_in('id', array(217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253,143,135));
 		// $this->db->where_in('id', array(197,201,203,211,213,221,223,225,275,279,302,217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253));
-		$this->db->where_in('id', array(255,257,259,316,267,269));
+			
+		// $this->db->where_in('id', array(255,257,259,316,267,269));
+		$this->db->where_in('id', array(267,269,261,263));
         $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id']));
 	
 		//, 'result_permission' => 'Y'
