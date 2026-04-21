@@ -3607,12 +3607,12 @@ public function update_exam_datewise_permission(){
 		}
 		// $this->Common_model->last_query();
 	 	// if($class->internal=="Y" && $mode!="PVT"){
-			$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,243,245,215,247,249,251,253,277,281,209,302,303,304,305,278,282,250,252,216,232,236,238,240,246,248,254,218,305,210,267,244,268,312,313);
+			$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,243,245,215,247,249,251,253,277,281,209,302,303,304,305,278,282,250,252,216,232,236,238,240,246,248,254,218,305,210,267,244,268,312,313,269);
 			if(in_array($class_id , $class_cbcs))
 			{
                 $this->load->model('GradeSheet_old_model_pg');
                 $this->load->model('Gradesheet_model_pg');
-				if(in_array($class_id, [267,268,312,313])){
+				if(in_array($class_id, [267,268,312,313,269])){
 					$this->load->view('admin/student_marksheet_grade_bped',$data);
 				}else{
 					$this->load->view('admin/student_marksheet_grade_pg',$data);
