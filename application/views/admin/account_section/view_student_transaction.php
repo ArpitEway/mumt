@@ -237,18 +237,31 @@
 		</div>
 	</div>
 </div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.8/jquery.inputmask.min.js"></script>
+
+<script>
+$(document).ready(function () {
+    $('.dateTime').inputmask("datetime", {
+        inputFormat: "yyyy-mm-dd HH:MM:ss",
+        placeholder: "yyyy-mm-dd hh:mm:ss",
+        hourFormat: "24"
+    });
+});
+</script>
 <script type="text/javascript">
 	$( ".modalOpen" ).on('click', function(){
 		$('#paymentId').val($(this).attr("data-paymentId"));
 	});
 	$j=jQuery.noConflict();
-	$('.dateTime').inputmask("yyyy-mm-dd hh:mm:ss", {
-		placeholder: "yyyy-mm-dd hh:mm:ss", 
-		insertMode: false, 
-		showMaskOnHover: false,
-		hourFormat: '24'
-	});
+	// $('.dateTime').inputmask("yyyy-mm-dd hh:mm:ss", {
+	// 	placeholder: "yyyy-mm-dd hh:mm:ss", 
+	// 	insertMode: false, 
+	// 	showMaskOnHover: false,
+	// 	hourFormat: '24'
+	// });
 
 	$('#submit').on('click',function (e) {
 		e.preventDefault();
