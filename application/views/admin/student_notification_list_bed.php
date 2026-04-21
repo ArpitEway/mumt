@@ -9,7 +9,7 @@
 	<br><?php
 	
 	$isFinalClass = false;
-$notification_no = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id' => $students[0]->class_id));
+$notification_no = $this->Common_model->getRecordByWhere('marksheet_variables',array('class_id' => $students[0]->old_class_id));
 $classData = $this->Common_model->getRecordById('class_master','id',$class_id);
 // print_r($classData);die;
 $isOneClass = $this->Common_model->hasOneClass($course_group_id);
@@ -456,7 +456,7 @@ $abs_count = 0 ;
 					<tr class="alternate">
 					
 						<td class="text-center" scope="row">
-							<?php echo $student->roll_no; ?>
+							<?php echo $student->roll_number; ?>
 							</td>
 							<td scope="row"  style="padding-left: 10px;" >
 								<?php echo $student->name .' / '.  $student->f_h_name; ?>
