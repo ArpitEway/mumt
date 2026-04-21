@@ -3536,7 +3536,7 @@ public function update_exam_datewise_permission(){
 		$title .= ($startlimit!=0) ? ' Part - '.$pagetitle : '';
 		$data['title'] = $title;
 		$data['university_mode'] = $mode;
- 		$this->db->where_in('examcentercode',array('MDE028','MDE172'));
+ 		// $this->db->where_in('examcentercode',array('MDE028','MDE172'));
 		if($class->last_class == 'L'){
 			$this->db->order_by('center_id,roll_number','ASC');
 			// $this->db->where_in('student_id',array(188247,188249,188265,188272,188302,188306,188311,188322,188324,188338,188343,188346,188353,188361,188366,188368,188455,188495));
@@ -3591,7 +3591,7 @@ public function update_exam_datewise_permission(){
 			// $this->db->where_in('center_id',array(11,12));
 			$this->db->order_by('center_id,roll_number','ASC'); 
 			// $this->db->where('student_id',755463);
-				$this->db->where_in('examcentercode',array('MDE028','MDE172'));
+				// $this->db->where_in('examcentercode',array('MDE028','MDE172'));
 			$data['students']= $this->Common_model->getRecordByWhere('student',array("course_group_id"=>$course_id ,'old_class_id' => $class_id,'exam_form'=>'Y','roll_number!='=>'0','course_complete'=>'Y','university_mode'=>$mode,'old_result_show'=>'Y','exam_pattern'=>'GRADE' ));
 			
 			
