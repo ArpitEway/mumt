@@ -28,10 +28,11 @@ class Postexam extends CI_Controller {
             252 - Dec 2025
         */
             $this->db->order_by('center_id,course_group_id,class_id,roll_no');
-            $data['students'] = $this->Common_model->getRecordByWhere('student', array('exam_form'=>'Y' ,'roll_no!='=>0 ,'marksheet_no'=>'','class_id'=>'215'));
+            $data['students'] = $this->Common_model->getRecordByWhere('student', array('exam_form'=>'Y' ,'roll_no!='=>0 ,'marksheet_no'=>''));
+            // ,'class_id'=>'215'
             // M10161241YEDU ,'class_id'=>'270'
             //  $starting_no = 10001 ;
-             $starting_no = 10018 ;
+             $starting_no = 10019 ;
            
             foreach($data['students']  as $key =>  $student){
                 $f_l_center_code = substr($student->center_code, 0, 1);
