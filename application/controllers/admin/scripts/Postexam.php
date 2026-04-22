@@ -453,6 +453,7 @@ class Postexam extends CI_Controller {
             // $this->db->where_in('exam_year', ['January 2025','February 2025']);
              // $this->db->where('exam_year', 'June 2025');
             $this->db->where_in('exam_year',array('June 2025','July 2025','August 2025'));
+            $this->db->where('university_mode', 'PVT');
             $studentall = $this->Common_model->getRecordByWhere("old_exam_data",array("class_id"=>$class_id,'exam_result'=>'Fail','exam_status'=>'B'));
             foreach($studentall as $key=>$students){
               //  print_r($students); die;,'exam_year'=>'January 2025'
