@@ -691,7 +691,7 @@ class Postexam extends CI_Controller {
                  'roll_no' => 0,
                  'session' => $students[0]->session,
                  'mode'=>$students[0]->university_mode,
-                 'exam_year'=>'June 2025',
+                 'exam_year'=>'June 2026',
                  'exam_form' => 'N',
                  'enrollment_no' => $students[0]->enrollment_no,
                  'center_id' => $students[0]->center_id,
@@ -703,7 +703,7 @@ class Postexam extends CI_Controller {
                  'upload_result' =>  'N',
                  'result_permission' => 'N',
                 );
-               $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students[0]->student_id,'class_id'=>$students[0]->class_id,'exam_year'=>'June 2025'));
+               $duplicate =  $this->Common_model->getRecordByWhere('backlog_student',array('student_id'=>$students[0]->student_id,'class_id'=>$students[0]->class_id,'exam_year'=>'June 2026'));
              if( $duplicate !== Array ( )){
                  echo "Already Exist";
                }else{

@@ -144,7 +144,7 @@
                         <?php //} ?>
 
                         <?php 
-                $backlog = $this->Common_model->getRecordByWhere('backlog_student',array('student_id' =>$student->student_id,'exam_year'=>'Dec 2025'));
+                $backlog = $this->Common_model->getRecordByWhere('backlog_student',array('student_id' =>$student->student_id,'exam_year'=>'June 2026'));
                 if($backlog){
                 ?>
                 <div class="col-md-4">
