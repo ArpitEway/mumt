@@ -287,7 +287,15 @@
 					</a>  
 
 					<?php
-				 
+				 	if($center->id > 100 ){ ?>
+					<a class="border-0 custom-menu-item karaundi-exam" data-id="main" >
+							<div>
+								<span class="nav-text">Exam Form Karaundi June 2026</span>
+							</div>
+					</a> 
+					<?php
+
+					}
 				    /*
 					if($center->id < 100 || $center->id == 2115){?>
 					<a class="border-0 custom-menu-item karaundi-exam" data-id="main" >
@@ -295,6 +303,8 @@
 								<span class="nav-text">Exam Form Karaundi June 2026</span>
 							</div>
 					</a> 
+
+					}
 					<a class="border-0 custom-menu-item karaundi-exam" data-id="backlog">
 							<div>
 								<span class="nav-text">Backlog Exam Form Karaundi June 2026</span>
@@ -510,7 +520,7 @@ $("#main-exam").click(function (e) {
 $(".karaundi-exam").click(function (e) {
 	let exam = $(this).data('id');
 	// let html = (exam == 'main') ? '<b> आवश्यक सुचना :- </b>सूचित किया जाता है कि मई - जून 2025 में आयोजित होने वाली परीक्षाएं विश्वविद्यालय के मुख्यालय करौंदी जिला कटनी में आयोजित की जाएगी एवं  परीक्षाओं के लिये परीक्षा आवेदन पत्र भरने की अंतिम तिथि 10 मई 2025 एवं विलम्ब शुल्क 200 रुपये सहित परीक्षा आवेदन पत्र भरने की अंतिम तिथि 22 मई 2025 एवं विलंब शुल्क 500 रुपये सहित परीक्षा आवेदन पत्र भरने की अंतिम तिथि 26 मई 2025 निर्धारित की गयी है। निर्धारित तिथि तक परीक्षा आवेदन पत्र भरने की प्रक्रिया पूर्ण करे|' : '<b> आवश्यक सुचना :- </b>सूचित किया जाता है कि मई - जून 2025 में आयोजित होने वाली परीक्षाएं विश्वविद्यालय के मुख्यालय करौंदी जिला कटनी में आयोजित की जाएगी|';
-	let html = '<b> आवश्यक सुचना :- </b>सूचित किया जाता है कि दिसम्बर 2025 में आयोजित होने वाली परीक्षाएं विश्वविद्यालय के मुख्यालय करौंदी जिला कटनी में आयोजित की जाएगी |';
+	let html = '<b> आवश्यक सुचना :- </b>सूचित किया जाता है कि मई - जून 2026 में आयोजित होने वाली परीक्षाएं विश्वविद्यालय के मुख्यालय करौंदी जिला कटनी में आयोजित की जाएगी |';
  
     Swal.fire({
         html: html,
