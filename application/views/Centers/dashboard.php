@@ -286,8 +286,6 @@
 							</div>
 					</a>  
 
-					<?php
-				 	if($center->id > 100 ){ ?>
 					<a class="border-0 custom-menu-item karaundi-exam" data-id="main" >
 							<div>
 								<span class="nav-text">Exam Form Karaundi June 2026</span>
@@ -295,7 +293,6 @@
 					</a> 
 					<?php
 
-					}
 				    /*
 					if($center->id < 100 || $center->id == 2115){?>
 					<a class="border-0 custom-menu-item karaundi-exam" data-id="main" >
