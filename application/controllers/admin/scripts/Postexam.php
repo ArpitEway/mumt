@@ -527,6 +527,7 @@ class Postexam extends CI_Controller {
         // $this->db->where('last_class','L');
         $this->db->where('last_class', NULL);
         $this->db->where('private_class','Y');
+        $this->db->where_in('id',array(105,107,134,143));
 
         // $this->db->where_in('class_name',array('I SEM','III SEM'));
         //  $this->db->where('backlog_exam_form_permission','Y');
