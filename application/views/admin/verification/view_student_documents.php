@@ -124,7 +124,7 @@
 			<?php } ?>
 		</div>
 	</div>
-</div>
+<!-- </div>
 <div class=" text-center">
 	<label class="text-heading mt-3"><button type="button" class="btn btn-primary modalOpen1 " data-toggle="modal"  data-student_id="<?=$student->student_id;?>" data-target="#addNewTxn"> Add New Transaction</button></label>
 </div>
@@ -158,9 +158,9 @@
 		</form>
 		</div>
 	</div>
-</div>
+</div> -->
 
-
+<!-- 
 <div class="modal fade" id="addNewTxn" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
@@ -202,7 +202,7 @@
 		</form>
 		</div>
 	</div>
-</div>
+</div> -->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
