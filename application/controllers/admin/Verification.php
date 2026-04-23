@@ -153,11 +153,11 @@
 					'hash_csrf' => $this->security->get_csrf_hash(),
 				);
 
-				if($documentDetails){
+				if($data){
 					$dt =  $this->load->view('admin/verification/view_student_documents',$data,true);
 					$status = true;
 				}else{
-					$dt = "This student Does Not Have Any Documents Uploaded !";
+					$dt = "This Student Not Found !";
 					$status = false;
 				}
 				echo json_encode(array(

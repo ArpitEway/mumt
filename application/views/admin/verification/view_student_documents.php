@@ -96,6 +96,8 @@
 	<div class="card card-custom my-10 details-bg">	
 		<div class="container-fluid profile mt-5">
 			<h4 class="card-title">Documents Details</h4>
+            <?php            if($documentDetails){
+            ?>
 			<div class="row">
 				<div class="col-md-4">
 					<label class="text-heading">Document Name</label>
@@ -108,101 +110,30 @@
 				</div>
 				
 			</div>
-			<?php foreach ($documentDetails as $document) { ?>
+			<?php
+           
+            foreach ($documentDetails as $document) { ?>
 				<div class="row mt-3">
 
 					<div class="col-md-4">
 						<label class="text-heading mt-3"><?=$document->document_name; ?></label>
 					</div>
 					<div class="col-md-4">
-						<label class="text-heading mt-3"><a  target="_blank" href="<?php echo BASE_URL('assets/enrolled_documents/'.$student->session.'/'.$document->document_image); ?>"><?php echo $document->document_image; ?></a></label>
+						<label class="text-heading mt-3"><a  target="_blank" href="<?php echo ($student->enrolled !="Y")?BASE_URL('assets/documents/'.$document->document_image):BASE_URL('assets/enrolled_documents/'.$student->session.'/'.$document->document_image); ?>"><?php echo $document->document_image; ?></a></label>
 					</div>
 					<div class="col-md-4">
-						<label class="text-heading mt-3"><?=$document->date_time; ?></label>
+						<label class="text-heading mt-3"><?= date('d-m-Y', strtotime($document->date_time)); ?></label>
 					</div>
                 </div>
-			<?php } ?>
+			<?php }
+            }else{
+                ?> <div class="d-flex justify-content-center text-heading">This Student Does Not Have Any Documents Uploaded !</div>
+                <?php
+            }
+            ?>
 		</div>
 	</div>
-<!-- </div>
-<div class=" text-center">
-	<label class="text-heading mt-3"><button type="button" class="btn btn-primary modalOpen1 " data-toggle="modal"  data-student_id="<?=$student->student_id;?>" data-target="#addNewTxn"> Add New Transaction</button></label>
-</div>
-<div class="modal fade" id="updateTxn" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<form id="updateTxnForm">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Update Transaction</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<i aria-hidden="true" class="ki ki-close"></i>
-				</button>
-			</div>
-			<div class="modal-body row">
-				<fieldset class="form-group col-md-6">
-					<label for="transaction">Transaction Id</label>
-					<input  type="hidden" name="id" id="paymentId">
-					<input  type="hidden" name="student_id" id="student_id" value="<?=$student->student_id ?>">
-					<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-					<input type="text" required name="txnid" class="form-control" id="transaction" placeholder="">
-				</fieldset>
-				<fieldset class="form-group col-md-6">
-					<label for="date">Date</label>
-					<input type="text" required class="form-control dateTime" name="dateTime">
-				</fieldset>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
-				<button type="submit" id="submit"  class="btn btn-primary font-weight-bold">Submit</button>
-			</div>
-		</form>
-		</div>
-	</div>
-</div> -->
 
-<!-- 
-<div class="modal fade" id="addNewTxn" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<form id="addTxnForm">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Add Transaction</h5>
-				<input  type="hidden" name="student_id" id="student_id" value="<?=$student->student_id ?>">
-				<input type="hidden" class="csrfname" name="<?= $name_csrf; ?>" value="<?= $hash_csrf; ?>">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<i aria-hidden="true" class="ki ki-close"></i>
-				</button>
-			</div>
-			<div class="modal-body row">
-           <fieldset class="form-group col-md-6">
-           	<label for="fees">Fees Head</label>	
-						<select name="fees_head" id="fees_head" class="form-control" >
-							<option value="">Select</option>
-                            <?php if( $student->payment_status =="N" || $this->session->account_type=="Admins"){?>
-							<option <?=( $student->payment_status =="N")?'selected':'';?> value="Admission Fees">Admission fees</option>
-                            <?php }?>
-							<option  value="Exam Fees">Exam fees</option>
-                            <option  value="Backlog Exam Fees">Backlog Exam fees</option>
-							<option  value="Late Exam Fees">Late Exam fees</option>
-						</select>
-					</fieldset>
-					<fieldset class="form-group col-md-6">
-						<label for="transaction">Transaction Id</label>	
-						<input type="text" required name="txnId" class="form-control" id="txnId" placeholder="">
-					</fieldset>
-					<fieldset class="form-group col-md-6">
-						<label for="date"> Payment Date</label>
-						<input type="text" required class="form-control dateTime" name="dateTime">
-					</fieldset>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
-					<button type="button" id="submit1"  class="btn btn-primary font-weight-bold">Submit</button>
-			</div>
-		</form>
-		</div>
-	</div>
-</div> -->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
