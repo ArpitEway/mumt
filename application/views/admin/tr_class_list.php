@@ -11,11 +11,11 @@
 		<?php foreach ($courses as $course){
 			$this->db->order_by('id');
 			
-      	// $this->db->where_in('id', array(217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253,143,135));
+      // $this->db->where_in('id', array(217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253,143,135));
 		// $this->db->where_in('id', array(197,201,203,211,213,221,223,225,275,279,302,217,229,231,233,235,237,239,241,243,245,215,304,277,281,247,249,251,253));
 			
 		// $this->db->where_in('id', array(255,257,259,316,267,269));
-		$this->db->where_in('id', array(267,269,261,263));
+		$this->db->where_in('id', array(267,269,261,263,332,432,502,506,510));
         $classes= $this->Common_model->getRecordByWhere('class_master',array("course_group_id"=>$course['id']));
 	
 		//, 'result_permission' => 'Y'
@@ -35,7 +35,7 @@
         <tr>
         <td></td>
 		<?php 
-		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136,267,268,325,328,329,312,313,269);
+		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136,267,268,325,328,329,312,313,269,332,432,502,506,510);
 		
 		$cbcs = ($class->cbcs == 'Y' || in_array($class->id, $class_ids))?' (CBCS)':'';
         ?>
@@ -58,7 +58,7 @@
 				<?php
 				
 				// if ($class->practical_internal_marks=='Y' && $class->id !=205 && $class->id !=206 && $class->id !=239 && $class->id !=278&& $class->id !=282){ 
-					 $class_pg= array(205,206,239,240,248,278,282,252,267,268,269,312,313,197,201,203,211,213,221,223,225,275,279,302,476);
+					 $class_pg= array(205,206,239,240,248,278,282,252,267,268,269,312,313,197,201,203,211,213,221,223,225,275,279,302,476,332,432,502,506,510);
                     if ($class->practical_internal_marks=='Y' && (!in_array($class->id, $class_pg))){ 
                         if($class->regular_class=='Y') { ?>    
                         <a href="<?php echo base_url("admin/admins/generate_tr_bed")."/REG/M/".$course['id']."/".$class->id; ?>">Regular Tr</a>
