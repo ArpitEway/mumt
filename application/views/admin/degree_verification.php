@@ -81,8 +81,7 @@
                     $('#student_data_tbl').html(resp.data);
                     $('#student_data_tbl').show();
                         $j=jQuery.noConflict();
-                    $('#dateTime').inputmask("yyyy-mm-dd hh:mm:ss");
-                }
+                   }
             }//success
         })//ajax
     }
