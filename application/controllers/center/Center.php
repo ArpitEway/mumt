@@ -2605,7 +2605,7 @@ class Center extends CI_Controller {
 			//|| ($student[0]->class_id==106 && $student[0]->exam_pattern=='MARKS' )
 			$this->load->view('Centers/marksheet_without_int',$data);
 		}else{
-			if($data['student']->old_class_id=='168' || $data['student']->old_class_id=='256' || $data['student']->old_class_id=='257'){
+			if($data['student']->old_class_id=='168' || $data['student']->old_class_id=='256' || $data['student']->old_class_id=='257'  || $data['student']->old_class_id=='316' ){
 				$this->load->view('Centers/marksheet_mom',$data);
 			}else{
 				$this->load->view('Centers/marksheet_bottom',$data);
