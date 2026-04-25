@@ -2179,7 +2179,7 @@ public function getStudentData()
         }
 
         if($txnDetails->fees_head=='Backlog Exam Fees'){
-            $whereStudent = array('student_id'=> $student_id ,'exam_year'=>'Dec 2025');
+            $whereStudent = array('student_id'=> $student_id ,'exam_year'=>'June 2026');
 		    $result = $this->Common_model->updateRecordByConditions('backlog_student',$whereStudent,$updateData);
         }else{
             $whereStudent = array('student_id'=> $student_id);
