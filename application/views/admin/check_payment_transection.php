@@ -47,6 +47,7 @@
 <!-- table by ajax append here -->
     </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.8/jquery.inputmask.min.js"></script>
 <script type="text/javascript">
     var site_url = "<?php echo base_url(); ?>"
 
@@ -80,8 +81,13 @@
                 if($('#myLoader').hide()){
                     $('#student_data_tbl').html(resp.data);
                     $('#student_data_tbl').show();
-                        $j=jQuery.noConflict();
-                    $('#dateTime').inputmask("yyyy-mm-dd hh:mm:ss");
+                     $('.dateTime').inputmask("datetime", {
+        inputFormat: "yyyy-mm-dd HH:MM:ss",
+        placeholder: "yyyy-mm-dd hh:mm:ss",
+        hourFormat: "24"
+    });
+                        // $j=jQuery.noConflict();
+                    // $('#dateTime').inputmask("yyyy-mm-dd hh:mm:ss");
                 }
             }//success
         })//ajax
