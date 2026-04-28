@@ -40,6 +40,7 @@ class Preexam extends CI_Controller {
 		foreach($studentClasses as $row){
 			$where = array('class_id' => $row->class_id,
 							'temp_exam_form' => "N",
+							'new_exam_form' => 'N',
 							'university_mode'=>'REG',
 						);
 			// $this->db->where('session','July 2025');
