@@ -42,7 +42,7 @@ class Preexam extends CI_Controller {
 							'temp_exam_form' => "N",
 							'university_mode'=>'REG',
 						);
-			$this->db->where('session','July 2025');
+			// $this->db->where('session','July 2025');
 
 			$studentsReg = $this->Common_model->getCountByWhere('student',$where);
 			$where = array('class_id' => $row->class_id,
