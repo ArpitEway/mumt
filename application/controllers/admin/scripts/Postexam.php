@@ -344,9 +344,9 @@ class Postexam extends CI_Controller {
         $this->db->where('student.promote', 'N');
         $this->db->where('class_master.mode!=', 'Semester');
         $this->db->where('student.course_complete', 'N');
-        $this->db->where('student.university_mode', 'PVT');
+        $this->db->where('student.university_mode', 'REG');
         $this->db->where('class_master.last_class IS NULL');
-        $this->db->where_in('class_master.id', [107,104,134,143]);
+        // $this->db->where_in('class_master.id', [107,104,134,143]);
         
         // Grouping the complex OR conditions
         // $this->db->group_start();
@@ -375,7 +375,7 @@ class Postexam extends CI_Controller {
         $this->db->limit(1000);
            // $data['students']= $this->Common_model->getRecordByWhere('student',array('class_id' => $class_id, 'exam_form'=>'Y' , 'promote'=>'N' ,'course_complete'=>'N' ));
 
-         $data['students']= $this->Common_model->getRecordByWhere('student_result_june_2025',array('class_id' => $class_id, 'exam_form'=>'Y' , 'promote'=>'N' ,'course_complete'=>'N','university_mode'=>'PVT' ));
+         $data['students']= $this->Common_model->getRecordByWhere('student_result_june_2025',array('class_id' => $class_id, 'exam_form'=>'Y' , 'promote'=>'N' ,'course_complete'=>'N','university_mode'=>'REG' ));
 
           $data['course_name']= $this->Common_model->getCourseNameByCourseId($course_group_id);
           $data['class_name']= $this->Common_model->getClassNameByClassId($class_id);
