@@ -116,8 +116,17 @@ class Student extends CI_Controller {
 
 	public function logout()
 	{
+		$this->session->student_id;
+		$student= 	$this->Common_model->getRecordById('student','student_id',$this->session->student_id);
+
 		$this->session->sess_destroy();
-		redirect(base_url('login'));
+		 if($student->admission_by=='center'){
+			redirect(base_url('login'));
+			 exit;
+		 }else{
+			redirect('https://mmyvvonline.com/signin.php');
+			 exit;	
+		 }
 	}
 
 	public function profile(){
