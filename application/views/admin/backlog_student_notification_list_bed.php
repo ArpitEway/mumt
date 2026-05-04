@@ -91,6 +91,7 @@ $abs_count = 0 ;
 					$int_abs_count = 0;
 					$int_fail_count = 0;
 					$p_abs_count = 0;
+					$abs_count = 0;
 					$p_fail_count = 0;
 					$rwpr_count = 0;
 					$fail_count = 0;
@@ -499,14 +500,7 @@ $abs_count = 0 ;
 									$grand_obt += $row->obtain_marks;
 									$grand_tot += $row->total_marks;
 								}
-								if($fail_count>0 || $abs_count>0){
-									$final_result = 'FAIL';
-
-								}elseif($final_fail !=0){
-									$final_result = 'RWPM';
-								}else{
-									$final_result = 'PASS';
-								}
+								
 							// }else{
 							// 	$final_result = 'RWPM';
 							// }
@@ -514,6 +508,15 @@ $abs_count = 0 ;
 							
 							
 						}
+
+						if($fail_count>0 || $abs_count>0){
+									$final_result = 'FAIL';
+
+								}elseif($final_fail !=0){
+									$final_result = 'RWPM';
+								}else{
+									$final_result = 'PASS';
+								}
 				  
 				   echo $final_result;
 					$grand_obtain = $grand_obt + $total_marks_obt;
@@ -667,7 +670,10 @@ $abs_count = 0 ;
 								if((in_array($student->class_id, $class_ids)) && $mode=='REG')	
 								{
 									// echo $gradesheetData['result'];
-									if($Withheld || $gradesheetData['result'] == 'RW'){
+									if($final_result == 'RWPM'){
+										echo 'RWPM';
+									}
+									else if($Withheld || $gradesheetData['result'] == 'RW'){
 										echo " ";
 									}
                                    // elseif( $theory_abs_count== ($theory_paper_count-2) && $p_abs_count==$p_paper_count){
@@ -692,8 +698,10 @@ $abs_count = 0 ;
 										echo '';
 									}
 								}else{
-									
-									if($theory_abs_count == $theory_paper_count && $theory_abs_count !=0){
+									if($final_result == 'RWPM'){
+										echo 'RWPM';
+									}
+									else if($theory_abs_count == $theory_paper_count && $theory_abs_count !=0){
 										echo 'ABSENT';
 									  }
 									elseif( $theory_abs_count==$theory_paper_count && $p_abs_count==$p_paper_count && $student->course_group_id == 76){
