@@ -262,7 +262,7 @@ class WebSite extends REST_Controller {
                 $amount = $amount[0]->p_form_fees;//+$amount[0]->p_admission_fees;
                 $admission_type = 'Private';
             }            
-
+            $amount= 1;
             $OnlinePayTxnData = array('student_id' => $student_id,'center_id' => $center_id ,'fees_head' => 'Form Fees','amount' => $amount,'payment_status'=>'pending','course_group_id' => $course_group_id,'class_id' => $class_id,'student_name' => $data['name'],'admission_type'=>$admission_type,'remark'=>$remark);
             $OnlinePayTxn = $this->Common_model->insertAll('online_payment_transaction',$OnlinePayTxnData);
         }else{
