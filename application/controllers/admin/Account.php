@@ -628,7 +628,7 @@
 			$this->db->where('c.payment_gateway_permission','N');
 			$this->db->where('s.new_exam_form','N');
             $this->db->where('p.fees_head','Exam Fees');
-			$this->db->where('p.exam_session','Dec 2025');
+			$this->db->where('p.exam_session','June 2026');
 			$this->db->group_by('c.id');
 			
 			
@@ -667,7 +667,7 @@
 			$this->db->where('p.payment','Y');
 			$this->db->where('s.new_exam_form','N');
             $this->db->where('p.fees_head','Exam Fees');
-			$this->db->where('p.exam_session','Dec 2025');
+			$this->db->where('p.exam_session','June 2026');
 			$this->db->where('p.center_id',$center_id); 
 			
 			$complaints = $this->db->get()->result();
@@ -1071,8 +1071,8 @@
             $this->db->where('b.exam_form','N');
 			$this->db->where('c.payment_gateway_permission','N');
             $this->db->where('p.fees_head','Backlog Exam Fees');
-            $this->db->where('b.exam_year','Dec 2025');
-            $this->db->where('p.exam_session','Dec 2025');
+            $this->db->where('b.exam_year','June 2026');
+            $this->db->where('p.exam_session','June 2026');
             $this->db->group_by('c.id');
            
             $centers = $this->db->get()->result();
@@ -1111,8 +1111,8 @@
             $this->db->where('p.payment','Y');
             $this->db->where('bs.exam_form','N');
             $this->db->where('p.fees_head','Backlog Exam Fees');
-            $this->db->where('bs.exam_year','Dec 2025');
-            $this->db->where('p.exam_session','Dec 2025');
+            $this->db->where('bs.exam_year','June 2026');
+            $this->db->where('p.exam_session','June 2026');
             $this->db->where('p.center_id',$center_id);
            
             $complaints = $this->db->get()->result();
