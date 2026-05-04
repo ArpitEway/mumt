@@ -48,7 +48,7 @@
               //    $data = array('demo'=>'Y','new_exam_form_permission'=>'Y');
               // }
              
-             $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
+             // $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
              
              $student_demo_details = $this->Common_model->getRecordByWhere('student',array('student_id' => $row->student_id));
              echo " <br> Promote Data ".$student_demo_details[0]->promote."<br>";
