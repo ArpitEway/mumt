@@ -590,6 +590,7 @@ class Student extends CI_Controller {
      	$this->db->where('exam_form', 'Y');
 		$this->db->where('dob', $dob);
 		$this->db->where('university_mode !=', 'PVT');
+		$this->db->where_in('center_id', [10,13,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35]);
 
 		$this->db->group_start();
 		$this->db->where('roll_no', $roll_no);
@@ -672,6 +673,7 @@ class Student extends CI_Controller {
       	$this->db->where('student.dob', $dob);
         $this->db->where('student.university_mode','REG');
         $this->db->where('backlog_student.exam_year',"Dec 2025");
+		$this->db->where_in('center_id', [10,13,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35]);
 		$this->db->group_start();
 		$this->db->where('backlog_student.roll_no', $roll_no);
 		$this->db->or_where('backlog_student.enrollment_no', $roll_no);
