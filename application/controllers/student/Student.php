@@ -563,9 +563,9 @@ class Student extends CI_Controller {
     $dob = $dtObj->format('Y-m-d');
 
     // Common config
-    $exam_session = 'June 2025';
-    $class_ids = array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136,267,325);
-    $class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302,303,304,305,278,282,250,252,216,232,236,238,240,246,248,254,218,305,210,325);
+    $exam_session = 'January 2026';
+   	$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136,325,328,329);
+	$class_cbcs = array(193,194,197,198,201,202,203,204,205,206,211,212,213,214,221,222,223,224,225,226,227,228,275,276,279,280,217,231,235,237,239,245,215,247,249,251,253,277,281,209,302,303,304,305,278,282,250,252,216,232,236,238,240,246,248,254,218,305,210,243,267,244,268,207,476,269,432,502,506,510);
 
     // Helper function (closure) to build and send "no data" / "not declared" responses
     $send_error = function($message) {
@@ -579,7 +579,7 @@ class Student extends CI_Controller {
     if ($radio_val === 'main') {
         // Build where for main student table
         $where = [
-            'new_exam_form' => 'Y',
+            'exam_form' => 'Y',
             'roll_no'       => $roll_no,
             'dob'           => $dob,
             // keep university_mode != 'PVT' logic using a where_not_in style
@@ -587,11 +587,16 @@ class Student extends CI_Controller {
 
         // Fetch student record from $this->result_table (as original)
         // Because original used 'university_mode !='=>'PVT', use query builder to exclude PVT
-        $this->db->where('new_exam_form', 'Y');
-        $this->db->where('roll_no', $roll_no);
-        $this->db->where('dob', $dob);
-        $this->db->where('university_mode !=', 'PVT');
-        $student = $this->db->get($this->result_table)->result();
+     	$this->db->where('exam_form', 'Y');
+		$this->db->where('dob', $dob);
+		$this->db->where('university_mode !=', 'PVT');
+
+		$this->db->group_start();
+		$this->db->where('roll_no', $roll_no);
+		$this->db->or_where('enrollment_no', $roll_no);
+		$this->db->group_end();
+
+		$student = $this->db->get($this->result_table)->result();
 
         if (empty($student)) {
             echo json_encode([
@@ -640,7 +645,7 @@ class Student extends CI_Controller {
             if (isset($classData->internal) && $classData->internal === 'N') {
                 $marksheet_bottom = $this->load->view('Centers/marksheet_without_int', $data, true);
             } else {
-                if (isset($student[0]->class_id) && $student[0]->class_id == '168') {
+                if (isset($student[0]->class_id) && in_array($student[0]->class_id, [168, 256, 257, 316])) {
                     $marksheet_bottom = $this->load->view('Centers/marksheet_mom', $data, true);
                 } else {
                     $marksheet_bottom = $this->load->view('Centers/marksheet_bottom', $data, true);
@@ -664,10 +669,14 @@ class Student extends CI_Controller {
         $this->db->from('backlog_student');
         $this->db->join('student','backlog_student.student_id=student.student_id');
         $this->db->where('backlog_student.exam_form','Y');
-        $this->db->where('backlog_student.roll_no', $roll_no);
-        $this->db->where('student.dob', $dob);
+      	$this->db->where('student.dob', $dob);
         $this->db->where('student.university_mode','REG');
-        $this->db->where('backlog_student.exam_year', $exam_session);
+        $this->db->where('backlog_student.exam_year',"Dec 2025");
+		$this->db->group_start();
+		$this->db->where('backlog_student.roll_no', $roll_no);
+		$this->db->or_where('backlog_student.enrollment_no', $roll_no);
+		$this->db->group_end();
+
         $student = $this->db->get()->result();
 
         if (empty($student)) {
@@ -716,7 +725,7 @@ class Student extends CI_Controller {
             if (isset($classData->internal) && $classData->internal === 'N') {
                 $marksheet_bottom = $this->load->view('Centers/marksheet_without_int_backlog', $data, true);
             } else {
-                if (isset($student[0]->class_id) && $student[0]->class_id == '168') {
+                if (isset($student[0]->class_id) && in_array($student[0]->class_id, [168, 256, 257])) {
                     $marksheet_bottom = $this->load->view('Centers/marksheet_mom_backlog', $data, true);
                 } else {
                     $marksheet_bottom = $this->load->view('Centers/marksheet_bottom_backlog', $data, true);

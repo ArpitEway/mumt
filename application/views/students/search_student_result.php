@@ -86,11 +86,11 @@
                     <div class="row">
                         <div class="col-lg-6 m-auto">
                             <div class="form-group row">
-                                <label class=" col-form-label col-2" >Roll No: </label> 
-                            <input class="form-control  placeholder-dark-75 col-9" type="text" placeholder="Roll no" name="roll_no" id="roll_no" autocomplete="off" required />	
+                                <label class=" col-form-label col-3" >Roll / Enrollment No: </label> 
+                            <input class="form-control  placeholder-dark-75 col-9" type="text" placeholder="Roll / Enrollment No" name="roll_no" id="roll_no" autocomplete="off" required />	
                             </div>
                             <div class="form-group row">
-                                <label class="col-2 col-form-label" >DOB : </label>
+                                <label class="col-3 col-form-label" >DOB : </label>
                                 <input data-inputmask="'alias': 'dd-mm-yyyy'" class="form-control  placeholder-dark-75 col-9" type="text" placeholder="dd-mm-yyyy" name="dob" id="dob" />
                                 </div>
                             </div> <!-- from-group row -->
@@ -98,7 +98,7 @@
                         </div>
                         <div class="row"><div class="col-lg-6 m-auto">
                             <div class="form-group row">
-                                <label class="col-2 col-form-label" >Search By : </label>
+                                <label class="col-3 col-form-label" >Search By : </label>
                                 <div class="col-9 col-form-label">
                                     <div class="radio-inline">
                                     
@@ -346,7 +346,16 @@ function callTheCallBackFunction() {
 <script src="<?=base_url()?>assets/theme/admin.js?token=<?=date('dmyhis')?>"></script>
 <script src="<?=base_url()?>assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js"></script>
 <script src="<?=base_url()?>assets/js/pages/crud/forms/widgets/bootstrap-daterangepicker.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.8/jquery.inputmask.min.js"></script>
+<script>
+$(document).ready(function () {
+    $('#dob').inputmask("datetime", {
+        inputFormat: "dd-mm-yyyy",
+        placeholder: "dd-mm-yyyy",
+        hourFormat: "24"
+    });
+});
+</script>
 
 
 <!--end::Page Scripts-->
