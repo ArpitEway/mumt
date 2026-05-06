@@ -787,7 +787,7 @@ class Gradesheet_old_model extends CI_Model
 			
 		
 			
-			echo '<tr style="padding:4px;font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="center">';
+			echo '<tr style="padding:4px;font-family:Arial, Helvetica, sans-serif; font-size:18px;" align="center" valign="center">';
 			echo '<td style="margin-top:2px;" align="center"><strong>'.$key.'</strong></td>';
 			// if($this->paper["course_group_id"]==12){
 			// 	echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td ><strong>".$paper[0]."</strong><br><br><strong>".$paper[1]."</strong></td></tr></table></td>";

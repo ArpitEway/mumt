@@ -90,7 +90,7 @@
                       </td>
                     </tr>
                     <?php }?>
-                    <tr>
+                    <tr style="font-weight: bold;">
                       <td width="35%" class="Normaltext" align="left"><div align="left">Roll No</div></td>
                       <td width="53%" class="resultText">
                         <div align="left">
@@ -111,7 +111,7 @@
                         <img border="1"  class="student_image" src="<?= base_url($src) ?>" width="90px" height="105px">
                       </td>
                     </tr>
-                    <tr>
+                    <tr style="font-weight: bold;">
                       <td class="Normaltext" align="left">
                         <div align="left">Enrollment / Registration No.</div>
                       </td>
@@ -120,7 +120,7 @@
                       </td>
                     </tr>
                     <?php if($exam_data->university_mode=='PVT'){ ?>
-                    <tr class="rowHeight">
+                    <tr class="rowHeight" style="font-weight: bold;">
                       <td class="Normaltext" align="left" width="29%">
                         <div align="left">Category</div>
                       </td>
@@ -129,7 +129,7 @@
                       </td>
                     </tr>
                     <?php } ?>
-                    <tr>
+                    <tr style="font-weight: bold;">
                       <td class="Normaltext" align="left" width="29%">
                         <div align="left">Name of the Candidate</div>
                       </td>
@@ -137,12 +137,12 @@
                         <span id="lblSemesterGrading" style="color:Black;"><?php echo  $student->name; ?></span></div>
                       </td>
                     </tr>
-                    <tr>
+                    <tr style="font-weight: bold;">
                       <td class="Normaltext" align="left" width="29%"><div align="left">Father's / Husband's Name</div></td>
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;"><?php echo strtoupper( $student->f_h_name); ?></span></div></td>
                     </tr>
                     <?php if ($student->course_group_id==76): ?>
-                    <tr>
+                    <tr style="font-weight: bold;">
                       <td class="Normaltext" align="left" width="29%"><div align="left">Department</div></td>
                       <td class="resultText"><div align="left"><span id="lblSemesterGrading" style="color:Black;">
                         <?php if ($student->center_id==10) {
