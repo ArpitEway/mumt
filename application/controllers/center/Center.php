@@ -1447,6 +1447,7 @@ class Center extends CI_Controller {
     		);
 			$this->db->where_in('class_id', [257, 316]);	
 		}
+		$this->db->where_not_in('class_name',array('II SEM','IV SEM','VI SEM','VIII SEM'));
     	$data['students'] = $this->Common_model->getRecordByWhere('student',$where);
 		// $this->Common_model->last_query();
     	$this->load->view('Centers/paper_missing_list',$data);
