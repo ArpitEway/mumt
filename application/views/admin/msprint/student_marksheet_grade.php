@@ -20,8 +20,8 @@
       font-size: 13px;
       font-weight: bold;
     }
-    .style4 {font-size: 14px; font-weight: bold; }
-    .style7 {font-size: 12px; font-weight: bold; }
+    .style4 {font-size: 20px; font-weight: bold; }
+    .style7 {font-size: 17px; font-weight: bold; }
     .barcode img{
       height: 25px;
     }
@@ -182,7 +182,7 @@
                     </tbody></table>
                   </div>
                   <h4 style="text-align:center;margin:10px;">Result Year Wise</h4>
-                  <table border='1' cellpadding="2"  width="103%">
+                  <table border='1' cellpadding="2"  width="103%" style ="font-size:20px;>
                     <tbody>
                      <tr align="center"><th width='12.5%'>Year</th><th width='12.5%'>Total Credits</th><th width='12.5%'>Credits Earned</th><th width='12.5%'>Credit Points</th><th width='12.5%'>AGPA</th><?php if($classData->last_class == 'L' && $student->course_complete == 'Y'){ ?><th width='12.5%'>Attempt</th><?php }?></tr>
                      <?php
@@ -280,7 +280,7 @@
                             $div = "Pass";
                             }
                     ?>
-                    <table width="103%" cellpadding="2" style="margin-top:10px;" border="1" align="center">
+                    <table width="103%" cellpadding="2" style="margin-top:10px; font-size:20px" border="1" align="center">
                         <tr>
                             <td colspan="4" align="center">
                                 Final Result - <strong><?=$gradesheetData['result']?></strong>

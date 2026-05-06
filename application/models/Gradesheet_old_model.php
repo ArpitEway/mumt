@@ -927,17 +927,17 @@ class Gradesheet_old_model extends CI_Model
 		echo '<tr  style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="middle">';
 		
 		
-		echo '<th colspan="2" style="font-size:14px;">Total</th>';
-			echo '<th colspan="3" style="font-size:14px;"> '.$this->tot_credit.'</th>';
-			echo '<th colspan="3" style="font-size:14px;">'.$this->obt_tot_credit.'</th>';
+		echo '<th colspan="2" style="font-size:18px;">Total</th>';
+			echo '<th colspan="3" style="font-size:18px;"> '.$this->tot_credit.'</th>';
+			echo '<th colspan="3" style="font-size:18px;">'.$this->obt_tot_credit.'</th>';
 			echo '<th colspan="2"></th>';
-			echo '<th style="font-size:14px;" colspan="3">'.$this->tot_credit_point.'</th>';
+			echo '<th style="font-size:18px;" colspan="3">'.$this->tot_credit_point.'</th>';
 			echo '<th colspan=""></th>';
 			
 			
 		echo '</tr>';
-		echo '<tr  style="font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="middle">';
-		echo '<th colspan="14" style="font-size:13px;" >Result - '.$result.'</th>';
+		echo '<tr  style="font-family:Arial, Helvetica, sans-serif; font-size:16px;" align="center" valign="middle">';
+		echo '<th colspan="14" style="font-size:17px;" >Result - '.$result.'</th>';
 		echo '</tr>';
 	}
 
