@@ -62,13 +62,13 @@ class Postexam extends CI_Controller {
             $this->db->join('class_master', 'student.class_id = class_master.id');
             // $this->db->where('cbcs', 'Y');
             //  $this->db->where('last_class', 'L');
-            //  $this->db->where('mode', 'Semester');
+             $this->db->where('mode', 'Semester');
             $this->db->where('exam_form', 'Y');
             $this->db->where('upload_result', 'N');
             // $this->db->where('student_id',718196);
             // $this->db->where('old_result_show', 'Y');
-            // $this->db->where('result_permission', 'Y');
-            // $this->db->where('final_result_permission', 'Y');
+            $this->db->where('result_permission', 'Y');
+            $this->db->where('final_result_permission', 'Y');
             // $this->db->where('marksheet_dispatch', 'Y');
              // $this->db->where('university_mode','PVT');
             // 155,234,278,282,273,274,103,118,218,236,246,230,130,184,186,169,170,173,188,
@@ -90,7 +90,7 @@ class Postexam extends CI_Controller {
         $this->db->limit(500);
        // $this->db->where_not_in('student_id',array(711707,708907));
       //  $this->db->where('student_id',771494);
-        $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'N','university_mode'=>$mode ,'exam_pattern'=>'MARKS')); //, "marksheet_dispatch"=>'Y''old_result_show'=>'Y',
+        $students = $this->Common_model->getRecordByWhere("student",array("class_id"=>$class_id, "exam_form"=>'Y', "upload_result"=>'N','university_mode'=>$mode ,'exam_pattern'=>'MARKS','old_result_show'=>'Y')); //, "marksheet_dispatch"=>'Y''old_result_show'=>'Y',
          // $this->db->where_in('course_group.course_type',array('Diploma','PGDiploma'));
         // $course_type = $this->Common_model->getRecordByWhere("course_group",array('id'=> $students[0]->course_group_id));
 
