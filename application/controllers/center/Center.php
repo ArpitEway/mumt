@@ -2397,7 +2397,7 @@ class Center extends CI_Controller {
 			'where' => $where,
 			'table' => $this->result_table,
 			'table2' => 'class_master',
-			'joinOn' => ''.$this->result_table.'.class_id=class_master.id'
+			'joinOn' => ''.$this->result_table.'.old_class_id=class_master.id'
 		);
 		
 		
