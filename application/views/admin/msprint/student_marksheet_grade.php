@@ -189,8 +189,13 @@
                        $total_grade_point = 0;
                        $total_course_credit = 0;
                        $wordNumerals = [1 => 'One',2 => 'Two',3 => 'Three',4 => 'Four',5 => 'Five',6 => 'Six',7 => 'Seven',8 => 'Eight'];
-                       $this->db->where_not_in('id',array(322,323,324,325,326,327,328,329,330,331));
-                     $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$exam_data->course_group_id));
+                    //    $this->db->where_not_in('id',array(322,323,324,325,326,327,328,329,330,331));
+                    //  $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$exam_data->course_group_id));
+                      if($this->Common_model->getClassNameByClassId($class_id) == 'IV Year'){
+                      $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$student->course_group_id));
+                    }else{
+                      $classes = $this->Common_model->getRecordByWhere("class_master",array('course_group_id'=>$student->course_group_id,'class_name!='=>'IV Year'));
+                    }
                     $count = 0;
                     foreach($classes as $cls){
                         $count++;
@@ -260,7 +265,7 @@
                     </tbody>
                  </table>
                  <?php //!in_array($exam_data->center_id, $dept_ids)
-              if($classData->last_class == 'L' && $student->course_complete == 'Y')
+              if($classData->last_class == 'L' && $student->course_complete == 'Y' && ($student->class_name == $this->Common_model->getClassNameByClassId($class_id)))
                      {
 
                         $cgpa = number_format((float)($total_grade_point/$total_course_credit), 2, '.', '');

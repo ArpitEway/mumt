@@ -152,7 +152,7 @@ class Gradesheet_old_model extends CI_Model
 		$student = $this->Common_model->getRecordById('student','student_id',$student_id);
 		$session = explode(' ',$student->session);
 		
-		if($std[0]->sub_group_id == 1){
+		if($std[0]->sub_group_id == 1 || in_array($class_id,[325,328,329])){
 			$papers = $this->Common_model->get_all_old_papers($student_id,$class_id,$exam_data_id);
 		}
 		// echo count($papers);die;
@@ -789,11 +789,27 @@ class Gradesheet_old_model extends CI_Model
 			
 			echo '<tr style="padding:4px;font-family:Arial, Helvetica, sans-serif; font-size:12px;" align="center" valign="center">';
 			echo '<td style="margin-top:2px;" align="center"><strong>'.$key.'</strong></td>';
-			if($this->paper["course_group_id"]==12){
-				echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td ><strong>".$paper[0]."</strong><br><br><strong>".$paper[1]."</strong></td></tr></table></td>";
+			// if($this->paper["course_group_id"]==12){
+			// 	echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td ><strong>".$paper[0]."</strong><br><br><strong>".$paper[1]."</strong></td></tr></table></td>";
+			// 	}else{
+			// 	echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='50px'><strong>".$paper[0]."</strong></td><td></td><td><strong>".$paper[1]."</strong></td></tr></table></td>";
+			// 	}
+
+			if ($this->paper["course_group_id"] == 12) {
+				echo "<td align='left' style='font-family:Arial, Helvetica, sans-serif; font-size:17px;'>
+						<strong>{$paper[0]}</strong>
+						<div style='margin-top:6px;'></div>
+						<strong>{$paper[1]}</strong>
+					  </td>";
+			}
+			else{
+				if(in_array($this->classData->id, [325,328,329])){
+					echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:17px;' align='left' valign='center'><td><strong>".$paper[1]."</strong></td></tr></table></td>";
 				}else{
-				echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:12px;' align='left' valign='center'><td width='50px'><strong>".$paper[0]."</strong></td><td></td><td><strong>".$paper[1]."</strong></td></tr></table></td>";
+					echo "<td align='left'><table border='0'><tr style='font-family:Arial, Helvetica, sans-serif; font-size:17px;' align='left' valign='center'><td width='50px'><strong>".$paper[0]."</strong></td><td></td><td><strong>".$paper[1]."</strong></td></tr></table></td>";
 				}
+			
+			}
 			if ($this->fail_count>0 && $this->fail_count<2 && $require_grace_marks<4 && $result['letter_grade']=='F' && $result['type'] == 'theory') {
 				$this->check_grace_marks = true;
 				
