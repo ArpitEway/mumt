@@ -1409,7 +1409,7 @@ public function update_roll_no_old_data(){
     public function check_student_course_duration(){
         $students = $this->Common_model->getRecordByWhere('student',array('new_exam_form !='=>'D'));
         $current_exam_month ='6';
-        $current_exam_year ='2025';
+        $current_exam_year ='2026';
         $student_data = [];
         foreach($students as $student){
             $course_d = $this->Common_model->getRecordById('course','course_group_id',$student->course_group_id);
@@ -1440,9 +1440,9 @@ public function update_roll_no_old_data(){
     }
 
 	public function check_backlog_student_course_duration(){
-        $students = $this->Common_model->getRecordByWhere('backlog_student',array('exam_form !='=>'D','exam_year'=>'June 2025' ));
+        $students = $this->Common_model->getRecordByWhere('backlog_student',array('exam_form !='=>'D','exam_year'=>'June 2026' ));
         $current_exam_month ='6';
-        $current_exam_year ='2025';
+        $current_exam_year ='2026';
         $student_data = [];
         foreach($students as $student){
 			$course_d = $this->Common_model->getRecordById('course','course_group_id',$student->course_group_id);
