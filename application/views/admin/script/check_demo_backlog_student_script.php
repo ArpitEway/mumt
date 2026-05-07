@@ -59,9 +59,9 @@
 
               ####### Add Backlog Script For Main Exam End #######
 
-               // $this->db->where_in('exam_year',array('June 2025','July 2025','August 2025'));
+               $this->db->where_in('exam_year',array('June 2025','July 2025','August 2025'));
                  
-                 $this->db->where_in('exam_year',array('January 2025','February 2025'));
+                 // $this->db->where_in('exam_year',array('January 2025','February 2025'));
 
                   // $this->db->where_in('exam_year',array('June 2025'));
                   
