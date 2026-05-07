@@ -42,6 +42,7 @@ class Preexam extends CI_Controller {
 							'temp_exam_form' => "N",
 							'new_exam_form' => 'N',
 							'university_mode'=>'REG',
+							'class_name'=>'IV SEM'
 						);
 			// $this->db->where('session','July 2025');
 
