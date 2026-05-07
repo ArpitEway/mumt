@@ -436,15 +436,17 @@
                     <?php if ($classData->last_class=="L" && !$isOneClass): ?>
                     <tr>
                       <!-- <td height="20" ><strong><?=$classData->mode ?></strong></td> -->
-                      <td height="20" width="16%" style="text-align:left" ><strong><?=$classData->mode ?></strong></td>
+                      <th height="20" width="16%" style="text-align:left" ><strong><?=$classData->mode ?></strong></th>
                       <?php
                         $whereClass = array( 'course_group_id'=> $classData->course_group_id,'class_id !=' => $classData->id,'student_id' =>$student->student_id,'exam_result!='=>'FAIL');
                         $this->db->order_by('old_exam_data.class_order,old_exam_data.class_id');
-                       $oldClassResult = $this->Common_model->getRecordByWhere('old_exam_data',$whereClass);
+                        $oldClassResult = $this->Common_model->getRecordByWhere('old_exam_data',$whereClass);
+                        $width = (count($oldClassResult) < 3) ? '20.3%' : (($student->class_id == 317) ? '8%' : '12.18%');                      
                         foreach ($oldClassResult as $row) {
                         $i++;
                         ?>
-                         <th style="text-align: center"><?=$this->Common_model->getClassNameByClassId($row->class_id); ?></th>
+                         <!-- <th style="text-align: center"><?=$this->Common_model->getClassNameByClassId($row->class_id); ?></th> -->
+                          <th  width='<?=$width?>' style="text-align: center;"><?=$this->Common_model->getClassNameByClassId($row->class_id); ?></th>
                         <?php } ?>
                         <th style="text-align: center"><?=$classData->class_name ?></th>
                         <th style="text-align: center">Grand Total</th>
