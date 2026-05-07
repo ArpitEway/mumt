@@ -24,7 +24,7 @@ class Preexam extends CI_Controller {
 		$class_ids = $classes[0]['class_id'];
 		
 		$this->db->select('count(class_id) as num,course_name,class_name,class_id');
-		$this->db->where(' temp_exam_form="N" and class_name="IV SEM" and new_exam_form="N" and class_id not in ('.$class_ids.')');
+		$this->db->where(' temp_exam_form="N" and new_exam_form="N" and class_id not in ('.$class_ids.')');
 
 		// and payment_status="Y" and  and new_exam_form="N"
 		$this->db->where_not_in('class_id',[269]);
@@ -42,7 +42,6 @@ class Preexam extends CI_Controller {
 							'temp_exam_form' => "N",
 							'new_exam_form' => 'N',
 							'university_mode'=>'REG',
-
 						);
 			// $this->db->where('session','July 2025');
 
