@@ -47,20 +47,21 @@
               // {
               //    $data = array('demo'=>'Y','new_exam_form_permission'=>'Y');
               // }
+
              
              $update =$this->Common_model->updateRecordByConditions('student',$where,$data);
              
              $student_demo_details = $this->Common_model->getRecordByWhere('student',array('student_id' => $row->student_id));
              echo " <br> Promote Data ".$student_demo_details[0]->promote."<br>";
-            } else{ ?>
+            }elseif(!in_array($row->class_id,array(270,232,264))){ ?>
               
              <a class="text-info" href="<?=base_url('admin/scripts/Postexam/backlog_marks_update_scripts/'.$row->student_id.'/'.$row->class_id)?>" target="_blank">Set Backlog</a> <?php 
 
               ####### Add Backlog Script For Main Exam End #######
 
-               $this->db->where_in('exam_year',array('June 2025','July 2025','August 2025'));
+               // $this->db->where_in('exam_year',array('June 2025','July 2025','August 2025'));
                  
-                 // $this->db->where_in('exam_year',array('January 2025','February 2025'));
+                 $this->db->where_in('exam_year',array('January 2025','February 2025'));
 
                   // $this->db->where_in('exam_year',array('June 2025'));
                   

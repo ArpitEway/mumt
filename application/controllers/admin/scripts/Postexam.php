@@ -528,14 +528,17 @@ class Postexam extends CI_Controller {
       {
         $this->db->select('DISTINCT(id)');
         $this->db->from('class_master');
-        $this->db->where('mode','Annual');
+        $this->db->where('mode!=','Annual');
         // $this->db->where('last_class','L');
         // $this->db->where('last_class', NULL);
         // $this->db->where('private_class','Y');
         // $this->db->where_in('id',array(104,107,134,143));
         // $this->db->where_in('id',array(105,108,135,144));
-        $this->db->where_in('class_name',array('III Year','II Year','I Year'));
-        $this->db->where('exam_form_permission','Y');
+        // $this->db->where_in('class_name',array('III Year','II Year','I Year'));
+
+        $this->db->where_not_in('id',array(155,182));
+        $this->db->where_in('class_name',array('II SEM','IV SEM','VI SEM','VIII SEM'));
+        // $this->db->where('exam_form_permission','Y');
 
         // $this->db->where_in('class_name',array('I SEM','III SEM'));
         //  $this->db->where('backlog_exam_form_permission','Y');
@@ -554,8 +557,8 @@ class Postexam extends CI_Controller {
            $this->db->select('course_name,class_id, COUNT(student_id) as cnt');
            // $this->db->where('exam_year', 'June 2025');
            // $this->db->where('exam_year', 'January 2025');
-           // $this->db->where_in('exam_year',array('January 2025','February 2025'));
-           $this->db->where_in('exam_year',array('June 2025','July 2025','August 2025'));
+           $this->db->where_in('exam_year',array('January 2025','February 2025'));
+           // $this->db->where_in('exam_year',array('June 2025','July 2025','August 2025'));
 
            $this->db->where('exam_result', 'FAIL');
            $this->db->where('exam_status', 'R');
@@ -580,8 +583,8 @@ class Postexam extends CI_Controller {
         $this->db->from('old_exam_data');
         $this->db->where('university_mode', 'REG');
         //$this->db->where('exam_year', 'January 2025');
-        //$this->db->where_in('exam_year',array('January 2025','February 2025'));
-        $this->db->where_in('exam_year',array('June 2025','July 2025','August 2025'));
+        $this->db->where_in('exam_year',array('January 2025','February 2025'));
+        // $this->db->where_in('exam_year',array('June 2025','July 2025','August 2025'));
         $this->db->where('exam_result', 'FAIL');
         $this->db->where('exam_status', 'R');
         //$this->db->where('id>', '52355');
