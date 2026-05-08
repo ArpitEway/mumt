@@ -619,23 +619,23 @@ class Student extends CI_Controller {
         $data['exam_session'] = $exam_session;
 
         // Class data & marks form
-        $classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
+        $classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
         $data['practical_internal_marks'] = isset($classData->practical_internal_marks) ? $classData->practical_internal_marks : null;
 
         $this->db->select('*');
         $this->db->from($this->exam_form_table);
         $this->db->where($this->exam_form_table . '.student_id', $data['student']->student_id);
-        $this->db->where($this->exam_form_table . '.class_id', $data['student']->class_id);
+        $this->db->where($this->exam_form_table . '.class_id', $data['student']->old_class_id);
         $this->db->order_by($this->exam_form_table . '.paper_order,' . $this->exam_form_table . '.paper_id');
         $data['new_exam_form'] = $this->db->get()->result();
 
         $data['classData'] = $classData;
 
         // Decide which view to load
-        if (in_array($data['student']->class_id, $class_ids) && $data['student']->exam_pattern == 'GRADE') {
+        if (in_array($data['student']->old_class_id, $class_ids) && $data['student']->exam_pattern == 'GRADE') {
             $this->load->model('Gradesheet_model');
             $dt = $this->load->view('Centers/grade_marksheet', $data, true);
-        } elseif (in_array($data['student']->class_id, $class_cbcs) && $data['student']->university_mode == 'REG' && $data['student']->exam_pattern == 'GRADE') {
+        } elseif (in_array($data['student']->old_class_id, $class_cbcs) && $data['student']->university_mode == 'REG' && $data['student']->exam_pattern == 'GRADE') {
             $this->load->model('Gradesheet_model_pg');
             $this->load->model('GradeSheet_old_model_pg');
             $dt = $this->load->view('Centers/grade_marksheet_pg', $data, true);
@@ -646,7 +646,7 @@ class Student extends CI_Controller {
             if (isset($classData->internal) && $classData->internal === 'N') {
                 $marksheet_bottom = $this->load->view('Centers/marksheet_without_int', $data, true);
             } else {
-                if (isset($student[0]->class_id) && in_array($student[0]->class_id, [168, 256, 257, 316])) {
+                if (isset($student[0]->old_class_id) && in_array($student[0]->old_class_id, [168, 256, 257, 316])) {
                     $marksheet_bottom = $this->load->view('Centers/marksheet_mom', $data, true);
                 } else {
                     $marksheet_bottom = $this->load->view('Centers/marksheet_bottom', $data, true);
