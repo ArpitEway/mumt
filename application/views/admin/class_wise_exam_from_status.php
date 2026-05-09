@@ -25,7 +25,7 @@
 					<td><?php echo $count['class_name']; ?></td>
 					<td><?php echo $count['cnt']; ?></td>
 					<?php 
-					$where = array('new_exam_form!='  =>'D','class_id'=>$count['class_id']);
+					$where = array('new_exam_form'  =>'Y','class_id'=>$count['class_id']);
 					$Permitted = $this->Common_model->getCountByWhere('student',$where);
 					$where_reg = array('new_exam_form!='  =>'D','university_mode'  =>'REG','class_id'=>$count['class_id']);
 					$Permitted_reg = $this->Common_model->getCountByWhere('student',$where_reg);
