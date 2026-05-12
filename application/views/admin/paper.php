@@ -14,6 +14,7 @@
                 <option value="All">All</option>
                 <?php 
                  // $courses = $this->db->get_where('course', array())->result_array();
+                $this->db->order_by('course_name', 'ASC');
                  $courses = $this->Common_model->get_record('course_group','id,course_name'); 
                     foreach($courses as $course)
                     {
