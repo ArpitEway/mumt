@@ -21,7 +21,6 @@
 				<th>Min Internal Marks</th>	
 				<th>Private Max Theory Marks</th>
 				<th>Private Min Theory Marks</th>
-				<th>Pattern</th>
 							
 			</tr>
 		</thead>
@@ -70,7 +69,6 @@
 					<td><?=$paper["min_internal_marks"]?></td>
 					<td><?=$paper["private_max_theory_marks"]?></td>
 					<td><?=$paper["private_min_theory_marks"]?></td>
-					<td><?=$paper["paper_pattern"]?></td>
 				</tr>
 			<?php $i++; }  ?>			
 		</tbody>

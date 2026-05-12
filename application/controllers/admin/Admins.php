@@ -477,7 +477,7 @@ class Admins extends CI_Controller {
 			if($class_id!='All'){
 				$where = array('class_id' => $class_id);
 			}
-			$this->db->where_in('class_id',array(198,202,204,206,210,212,214,222,224,226,256,262,268,276,280,303,433,477,503,507,511,323,344,348,368,384,465,515));
+			// $this->db->where_in('class_id',array(198,202,204,206,210,212,214,222,224,226,256,262,268,276,280,303,433,477,503,507,511,323,344,348,368,384,465,515));
 			$this->db->order_by("course_group_id,class_id,cbcs_paper,paper_no ","asc");
 			$papers = $this->db->get_where("paper_master",$where)->result_array();
 
