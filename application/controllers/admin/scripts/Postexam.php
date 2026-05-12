@@ -530,7 +530,8 @@ class Postexam extends CI_Controller {
       {
         $this->db->select('DISTINCT(id)');
         $this->db->from('class_master');
-        $this->db->where('mode!=','Annual');
+        $this->db->where('mode','Annual');
+        $this->db->where_in('id',array(103));
         // $this->db->where('last_class','L');
         // $this->db->where('last_class', NULL);
         // $this->db->where('private_class','Y');
@@ -538,8 +539,8 @@ class Postexam extends CI_Controller {
         // $this->db->where_in('id',array(105,108,135,144));
         // $this->db->where_in('class_name',array('III Year','II Year','I Year'));
 
-        $this->db->where_not_in('id',array(155,182));
-        $this->db->where_in('class_name',array('II SEM','IV SEM','VI SEM','VIII SEM'));
+        // $this->db->where_not_in('id',array(155,182));
+        // $this->db->where_in('class_name',array('II SEM','IV SEM','VI SEM','VIII SEM'));
         // $this->db->where('exam_form_permission','Y');
 
         // $this->db->where_in('class_name',array('I SEM','III SEM'));
