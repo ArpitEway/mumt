@@ -4694,7 +4694,7 @@ public function update_exam_datewise_permission(){
 		// $query = $this->db->query("SELECT p.* FROM `paper_master` as p join class_master as c on c.id=p.class_id WHERE  type='Theory' and class_id in (172,181,193,195,197,199,201,203,205,207,209,211,213,215,217,221,223,225,227,229,231,233,235,237,239,241,243,245,247,249,251,253,275,277,279,281,302,304,404,406,408,410,412,414,416,418,420,422,424,426,428,430,432,434,436,438,440,442,444,446,448,450,452,454,456,458,460,462,464,466,468,470,472,474,476,478,480,482,484,486,488,490,492,497,502,504,506,508,510,512,155,182) and class_id in (251,243) order by p.course_group_id,class_id,cbcs_paper,paper_no asc");
 
 		
-		$query = $this->db->query("SELECT p.* FROM `paper_master` as p join class_master as c on c.id=p.class_id WHERE type='Theory' and cbcs_paper=cbcs and class_id in (193,197,199,201,203,205,302,207,209,211,213,221,227,275,279,223,225,460,476,432,464,497,502,506,510) and ( class_name in ('I SEM','III SEM') or c.id in (155,182)) and paper_pattern='NEW' order by p.course_group_id,class_id,cbcs_paper,paper_pattern,paper_no asc");
+		// $query = $this->db->query("SELECT p.* FROM `paper_master` as p join class_master as c on c.id=p.class_id WHERE type='Theory' and cbcs_paper=cbcs and class_id in (193,197,199,201,203,205,302,207,209,211,213,221,227,275,279,223,225,460,476,432,464,497,502,506,510) and ( class_name in ('I SEM','III SEM') or c.id in (155,182)) and paper_pattern='NEW' order by p.course_group_id,class_id,cbcs_paper,paper_pattern,paper_no asc");
 
 		// $query = $this->db->query("SELECT p.* FROM `paper_master` as p join class_master as c on c.id=p.class_id WHERE  type='Theory' and cbcs_paper=cbcs and class_id in (106,109,112,118,121,127,130,133,103) order by p.course_group_id,class_id,cbcs_paper,paper_no asc");
 
@@ -4712,6 +4712,9 @@ public function update_exam_datewise_permission(){
 		//`class_id` in (195,197,199,201,203,205,209,211,213,221,223,225,227,275,279) and  `exam_date`='0000-00-00' and old_exam_date!='0000-00-00'
 
 		// $query = $this->db->query("SELECT p.* FROM `paper_master` as p join class_master as c on c.id=p.class_id WHERE type='Theory' and `class_id` in (101,154,172,181,194,198,202,204,206,212,214,216,218,222,224,226,228,232,236,238,240,246,248,250,252,254,300)  order by p.course_group_id,class_id,cbcs_paper,paper_no asc");
+
+		$query = $this->db->query("SELECT p.* FROM `paper_master` as p join class_master as c on c.id=p.class_id WHERE type='Theory' and cbcs_paper=cbcs and paper_pattern!='OLD' and class_name!='II SEM' and (`exam_form_permission`='Y' or `backlog_exam_form_permission`='Y')  order by p.course_group_id,class_id,cbcs_paper,paper_pattern,paper_no asc");
+
 
 		$papers =$query->result();
 

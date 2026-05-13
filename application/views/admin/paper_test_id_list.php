@@ -11,14 +11,16 @@
 			<th>Paper Code</th>
 			<th>Type</th>
 			<th>Other</th>
-			<th>Test ID</th>
-			<th>Exam Date</th>
-			<th>Exam Shift</th>
-			<th>Exam Time</th>
-			<!-- <th>Exam Day</th>
-			<th>Exam Date</th>
-			<th>Exam Shift</th> -->
-			<th>Paper Pattern</th>
+			<th>Reg Test ID</th>
+			<th>Reg Exam Date</th>
+			<th>Reg Exam Shift</th>
+			<th>Reg Exam Day</th>
+			<!-- <th>Exam Time</th> -->
+			<th>Pvt Test ID</th>
+			<th>Pvt Exam Date</th>
+			<th>Pvt Exam Shift</th>
+			<th>Pvt Exam Day</th>
+			<!-- <th>Paper Pattern</th> -->
 		</tr>
 	</thead>
 	<tbody>
@@ -29,19 +31,20 @@
 		$exam_time ="";
 		foreach ($papers as $paper): 
 			// $old_paper_master ="";
-			$old_paper_master = $this->Common_model->getRecordByWhere('paper_master_dec_24',array('id'=>$paper->id));
-			if($paper->exam_shift=='Afternoon' && in_array($paper->class_id,$class_ids)){
-				$exam_time = '3:00 PM To 6:00 PM';		
-			}
-			elseif($paper->exam_shift=='Afternoon' && in_array($paper->class_id,$pgclass_ids)){
-				$exam_time = '12:00 PM To 03:00 PM';		
-			}
-			elseif($paper->exam_shift=='Afternoon'){
-				$exam_time = '2:00 PM To 5:00 PM';
-			}
-			elseif($paper->exam_shift=='Morning' ){
-				$exam_time ='10:00 AM To 1:00 PM';
-			}
+			$old_paper_master = $this->Common_model->getRecordByWhere('paper_master_june_25',array('id'=>$paper->id));
+
+			// if($paper->exam_shift=='Afternoon' && in_array($paper->class_id,$class_ids)){
+			// 	$exam_time = '3:00 PM To 6:00 PM';		
+			// }
+			// elseif($paper->exam_shift=='Afternoon' && in_array($paper->class_id,$pgclass_ids)){
+			// 	$exam_time = '12:00 PM To 03:00 PM';		
+			// }
+			// elseif($paper->exam_shift=='Afternoon'){
+			// 	$exam_time = '2:00 PM To 5:00 PM';
+			// }
+			// elseif($paper->exam_shift=='Morning' ){
+			// 	$exam_time ='10:00 AM To 1:00 PM';
+			// }
 			
 			?>
 			<tr>
@@ -56,17 +59,21 @@
 				<td><?=$paper->type ?></td>
 				<td><?=$paper->ce ?></td>
 				<td><?=$paper->test_id ?></td>
-				<td><?=$paper->exam_date ?></td>
-				<td><?=$paper->exam_shift ?></td>
+				<!-- <td><?=$paper->exam_date ?></td> -->
+				<!-- <td><?=$paper->exam_shift ?></td> -->
 				<!-- <td><?=$paper->pvt_test_id ?></td>
 				<td><?=$paper->pvt_exam_date ?></td>
 				<td><?=$paper->pvt_exam_shift ?></td> -->
-				<td><?=$exam_time ?></td>
+				<!-- <td><?=$exam_time ?></td> -->
 				<!-- <td><?=$paper->exam_day ?></td>	 -->
-			<!-- 	<td><?php if(!empty($old_paper_master[0]->exam_date)) echo $old_paper_master[0]->exam_date; ?></td>
-				<td><?php if(!empty($old_paper_master[0]->exam_shift)) echo $old_paper_master[0]->exam_shift ?></td> -->
-				<!-- <td><?php if(!empty($old_paper_master[0]->exam_day))  echo $old_paper_master[0]->exam_day ?></td>  -->
-				<td><?=$paper->paper_pattern ?></td>
+				<td><?php if(!empty($old_paper_master[0]->exam_date)) echo $old_paper_master[0]->exam_date; ?></td>
+				<td><?php if(!empty($old_paper_master[0]->exam_shift)) echo $old_paper_master[0]->exam_shift ?></td>
+				<td><?php if(!empty($old_paper_master[0]->exam_day))  echo $old_paper_master[0]->exam_day ?></td> 
+				<td><?=$paper->pvt_test_id ?></td>
+				<td><?php if(!empty($old_paper_master[0]->pvt_exam_date)) echo $old_paper_master[0]->pvt_exam_date; ?></td>
+				<td><?php if(!empty($old_paper_master[0]->pvt_exam_shift)) echo $old_paper_master[0]->pvt_exam_shift ?></td>
+				<td><?php if(!empty($old_paper_master[0]->pvt_exam_day))  echo $old_paper_master[0]->pvt_exam_day ?></td> 
+				<!-- <td><?=$paper->paper_pattern ?></td> -->
 			</tr>
 		<?php endforeach ?>
 	</tbody>
