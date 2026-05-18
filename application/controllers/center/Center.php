@@ -2757,7 +2757,7 @@ public function marksheet_admin($student_id="")
 		   redirect(base_url());
 	   }
 	   $data['student']=$student[0];
-	   $classData = $this->Common_model->getRecordById('class_master','id',$data['student']->class_id);
+	   $classData = $this->Common_model->getRecordById('class_master','id',$data['student']->old_class_id);
 	   $data['practical_internal_marks']=$classData->practical_internal_marks;
 	   $this->db->select('*');
 	   $this->db->from($this->exam_form_table.' as new_exam_form');
