@@ -14,7 +14,7 @@
                             <input type = "radio"
                             name = "radio_stduent_search"
                             id = "radio_enroll_no"
-                            value = "enrollment_no" />
+                            value = "enrollment_no" checked />
                             <span></span>
                             Enrollment No.
                         </label>
@@ -22,7 +22,7 @@
                             <input type = "radio"
                             name = "radio_stduent_search"
                             id = "radio_form_id"
-                            value = "student_id" checked />
+                            value = "student_id"  />
                             <span></span>
                             Form Id
                         </label>
