@@ -144,11 +144,13 @@
 				$studentContactData = $this->Common_model->getRecordById('student_data','student_id',$student->student_id);
 				$this->db->order_by('id');
 				$documentDetails = $this->Common_model->getRecordByWhere('admission_document',array('student_id' => $student->student_id ));
+				$result = $this->Common_model->getRecordByWhere('old_exam_data',array('student_id' =>$student->student_id));
 			
 				$data = array(
 					'student' => $student,
 					'studentContactData'=>$studentContactData,
 					'documentDetails' => $documentDetails,
+					'result' => $result,
 					'name_csrf' => $this->security->get_csrf_token_name(),
 					'hash_csrf' => $this->security->get_csrf_hash(),
 				);
@@ -167,6 +169,53 @@
 			}
 		}
 	}
-
+	public function marksheet($exam_data_id="")
+	{
+		$this->load->library('numbertowordconvertsconver');
+		$exam_data_id =  $this->Common_model->encrypt_decrypt($exam_data_id,'decrypt');
+		$this->db->select('*');
+		$this->db->from('old_result_data');
+		$this->db->where('old_result_data.exam_data_id',$exam_data_id);
+		$this->db->order_by('p_order','ASC');
+		$new_exam_form = $this->db->get()->result();
+		$course_id = $new_exam_form[0]->course_group_id;
+		$data['old_result_data']  = $new_exam_form;
+		$data['class_id']  = $new_exam_form[0]->class_id;
+		$data['exam_data_id']=$exam_data_id ;
+		$class_ids=array(101,104,107,110,116,119,125,128,131,134,102,105,108,111,117,120,126,129,132,135,103,106,109,112,118,121,127,130,133,136);
+		// $title = array('title' => 'Result');
+		$data['exam_data'] = $this->Common_model->getRecordById('old_exam_data','id',$exam_data_id);
+		// $course_id !=36 && $course_id !=37
+		//$class = $this->Common_model->getRecordByID('class_master','id', $data['exam_data']->class_id);
+		$data['class'] = $this->Common_model->getRecordByID('class_master','id', $data['exam_data']->class_id);
+		$this->load->view('admin/generate_tr/header2',$title);
+		$this->load->view('admin/old_marksheet_top',$data);
+		
+		// if((in_array($new_exam_form[0]->class_id , $class_ids)) && $data['exam_data']->university_mode=='REG'){
+		// 	$this->load->model('Gradesheet_old_model');
+		// 	$this->load->view('admin/grade_marksheet',$data);
+		// }else if($data['exam_data']->university_mode !="PVT" || $class->internal !='N'){
+			
+		// 	$this->load->view('admin/marksheet_student',$data);
+		// }else{
+			
+		// 	$this->load->view('admin/marksheet_student_pvt',$data);
+		// }
+	
+		if((in_array($new_exam_form[0]->class_id , $class_ids)) && $data['exam_data']->marks_pattern=='GRADE'){
+            $this->load->model('Gradesheet_model');
+			$this->load->model('Gradesheet_old_model');
+			$this->load->view('admin/grade_marksheet',$data);
+		}else if($data['class']->cbcs=='Y' && $data['exam_data']->university_mode=='REG' && $data['exam_data']->marks_pattern=='GRADE'){
+				$this->load->model('GradeSheet_old_model_pg');
+				$this->load->view('admin/grade_marksheet_pg',$data);
+		}else if($data['exam_data']->university_mode !="PVT"  && $data['class']->internal !='N'){
+			$this->load->view('admin/marksheet_student',$data);
+		}else{
+			
+			$this->load->view('admin/marksheet_student_pvt',$data);
+		}
+		$this->load->view('admin/generate_tr/footer2');
+	}
 	
 }
