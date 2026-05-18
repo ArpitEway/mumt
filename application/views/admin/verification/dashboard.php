@@ -45,7 +45,7 @@
                             $heading_id=$menu->heading_id;
                             }
                         ?>
-                        <a class="border-0 custom-menu-item" href="<?=BASE_URL($menu->url);?>">
+                        <a class="border-0 custom-menu-item" href="<?=($menu->id=='211')?$menu->url:BASE_URL($menu->url);?>">
                             <div>
                                 <span class="nav-text"><?=$menu->option?></span>
                             </div>
