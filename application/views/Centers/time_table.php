@@ -15,8 +15,6 @@
 <p style="text-align:center;font-size:12px;"><strong> Morning Shift Time 10:00 AM To 01:00 PM </strong></p>
 <p style="text-align:center;font-size:12px;"><strong> Afternoon Shift Time 02:30 PM To 05:30 PM </strong></p>
 
-?>
-
     <table align="center" cellpadding="5">
         <tbody>
             <tr bgcolor="#FFCC99">
