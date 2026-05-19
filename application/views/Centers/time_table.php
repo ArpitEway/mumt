@@ -6,53 +6,15 @@
     <!-- <p style="text-align:center;font-size:12px;"><strong>Early Morning Shift Time 07:00 AM To 10:00 AM </strong></p> -->
   <p style="text-align:center;font-size:12px;">
     <strong>
-        Programme for Annual/Semester - Main/Backlog Examination
-        <?= ($paper_list[0]['class_id'] == 215)
-            ? 'December 2025'
-            : (in_array($paper_list[0]['class_id'], [502, 510, 432, 506, 464, 497,332,264,270,255,257,259,316,314,495])
-                ? 'February 2026'
-                : 'January 2026'
-            )
+        Programme for Annual/Semester - Main/Backlog Examination May 2026        
+        <?php
+        // echo ($paper_list[0]['class_id'] == 215)? 'December 2025':(in_array($paper_list[0]['class_id'],[502, 510, 432, 506, 464, 497,332,264,270,255,257,259,316,314,495])? 'February 2026':'January 2026')
         ?>
     </strong>
 </p>
-<?php
- if(in_array($paper_list[0]['class_id'],[464,497])){  ?>
-    <p style="text-align:center;font-size:12px;"><strong> Morning Shift Time 11:00 AM To 02:00 PM </strong></p>
-<?php }else{  ?>
-     <p style="text-align:center;font-size:12px;"><strong> Morning Shift Time 10:00 AM To 01:00 PM </strong></p>
-<?php } ?>
-    <!-- <p style="text-align:center;font-size:12px;"><strong> Afternoon Shift Time 02:00 PM To 05:00 PM </strong></p> 
-    echo in_array($paper_list[0]['class_id'], array(328, 329,313)) 
-    ? 'August' 
-    : (in_array($paper_list[0]['class_id'], array(
-        137,149,183,185,191,138,184,192,187,143,146,139,144,188,145,147,148,
-        150,186,141,151,142,190,264,140,189,262,268,270,256,258,260,317,
-        173,174,175,177,180,300,301,325
-    )) 
-        ? 'July' 
-        : 'June'); ?> 104,101,107,110,116,119,273,125,128,131,134,162,163,164,165,283,285,287,289,310,291,293,295,274,297,168,169,170,171,214,106,103,109,112,118,121,127,130,133,136,173,174,175,177,180,264,137,149,183,185,191,138,184,192,187,143,146,139,144,188,145,147,148,150,186,141,151,142,190,140,189
-    -->
-<?php
-$class_ids = array(193,197,199,201,203,205,302,207,209,211,213,221,227,275,279,223,225,460,476,261,263,267,269,264,270,495);
-     if(in_array($paper_list[0]['class_id'],$class_ids)){  ?>
-     <p style="text-align:center;font-size:12px;"><strong> Afternoon Shift Time 12:00 PM To 03:00 PM </strong></p>
-    <?php }
-    else if(in_array($paper_list[0]['class_id'],[502, 510, 432, 506, 332,255,257,259,316,314])){  ?>
-    <p style="text-align:center;font-size:12px;"><strong> Afternoon Shift Time 03:00 PM To 06:00 PM </strong></p>
-    <?php }
-    else{  ?>
-     <p style="text-align:center;font-size:12px;"><strong> Afternoon Shift Time 02:00 PM To 05:00 PM </strong></p> <?php } ?>
+<p style="text-align:center;font-size:12px;"><strong> Morning Shift Time 10:00 AM To 01:00 PM </strong></p>
+<p style="text-align:center;font-size:12px;"><strong> Afternoon Shift Time 02:30 PM To 05:30 PM </strong></p>
 
-        <?php /*if($paper_list[0]['course_group_id']==45){ ?> 
-        <p style="text-align:center;font-size:12px;"><strong>Programme for Annual/Semester - Main/Backlog Examination June 2025 </strong></p>
-        <p style="text-align:center;font-size:12px;"><strong> Morning Shift Time 10:00 AM To 01:00 PM </strong></p>
-    <?php }else{  ?> 
-        <p style="text-align:center;font-size:12px;"><strong>Programme for Annual/Semester - Main/Backlog Examination June 2025 </strong></p>
-    <p style="text-align:center;font-size:12px;"><strong> Morning Shift Time 11:00 AM To 02:00 PM </strong></p>
-    <?php }
-    ?>
-   */  
 ?>
 
     <table align="center" cellpadding="5">
@@ -72,9 +34,9 @@ $class_ids = array(193,197,199,201,203,205,302,207,209,211,213,221,227,275,279,2
             <?php $i=1; foreach($paper_list as $rows){  ?>
                 <tr bgcolor="#E8F6FF">
                     <td align="center"><?=$i?></td>
-                    <td align="center"><?php echo date("d-m-Y", strtotime(($mode =="PVT" && in_array($rows['class_id'],[104,107,134]))?$rows['pvt_exam_date']:$rows['exam_date'])); ?></td>
-                    <td align="center"><?= ($mode =="PVT" && in_array($rows['class_id'],[104,107,134]))?$rows['pvt_exam_day']:$rows['exam_day']?></td>
-                    <td align="center"><?= ($mode =="PVT" && in_array($rows['class_id'],[104,107,134]))?$rows['pvt_exam_shift']:$rows['exam_shift']?></td>
+                    <td align="center"><?php echo date("d-m-Y", strtotime(($mode =="PVT" && in_array($rows['course_group_id'],[12,13,21]))?$rows['pvt_exam_date']:$rows['exam_date'])); ?></td>
+                    <td align="center"><?= ($mode =="PVT" && in_array($rows['course_group_id'],[12,13,21]))?$rows['pvt_exam_day']:$rows['exam_day']?></td>
+                    <td align="center"><?= ($mode =="PVT" && in_array($rows['course_group_id'],[12,13,21]))?$rows['pvt_exam_shift']:$rows['exam_shift']?></td>
                     <td align="center"><?=$rows['course_name']?></td>
                     <td align="center"><?=$rows['paper_no_for_time_table']?></td>
                     <td align="center"><?=$rows['paper_code']?></td>
