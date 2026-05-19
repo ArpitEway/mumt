@@ -30,7 +30,7 @@
 		<div class="form-group col-md-4 ">
 			<label for="class_id">Class</label>
 			<select name="class_id" id="class_id" class="form-control"  required >
-				<option value=""></option>
+				<option value="">Select Class</option>
 			</select>       
 		</div>
                     
