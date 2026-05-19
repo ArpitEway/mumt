@@ -368,7 +368,7 @@
 							<span class="nav-text">Regular Course Migration</span>
 						</div>
 					</a>
-					<a class="border-0 custom-menu-item" href="<?=base_url('assets/images/center/Regular/')?>Regular Degree Form 2024.pdf" download>
+					<a class="border-0 custom-menu-item" href="<?=base_url('assets/images/center/Regular/')?>Regular Degree Form.pdf" download>
 						<div>
 							<span class="nav-text">Regular Degree Form </span>
 						</div>
@@ -384,7 +384,7 @@
 						</div>
 					</a>
 					<!-------Private Form---->	
-					<a class="border-0 custom-menu-item" href="<?=base_url('assets/images/center/Private/')?>Degree Form 2024.pdf" download>
+					<a class="border-0 custom-menu-item" href="<?=base_url('assets/images/center/Private/')?>Private Degree Form.pdf" download>
 						<div>
 							<span class="nav-text">Private Degree Form</span>
 						</div>
