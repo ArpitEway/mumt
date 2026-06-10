@@ -1,0 +1,24 @@
+{
+  "pipeline": {
+    "dev": {
+      "cache": false,
+      "outputs": []
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", "build/**"]
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "test": {
+      "dependsOn": ["^test"]
+    },
+    "db:push": {
+      "dependsOn": []
+    },
+    "db:migrate": {
+      "dependsOn": []
+    }
+  }
+}

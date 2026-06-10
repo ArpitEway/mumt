@@ -1,1 +1,0 @@
-<iframe width="100%" style="height: 95vh" src="<?php echo BASE_URL('exam_pdf/'.$question[0]->test_id.'.pdf'); ?>" ></iframe>

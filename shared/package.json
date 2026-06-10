@@ -1,0 +1,10 @@
+{
+  "name": "@mmyvv/shared",
+  "private": true,
+  "version": "1.0.0",
+  "main": "schemas.js",
+  "type": "module",
+  "dependencies": {
+    "zod": "^3.22.4"
+  }
+}

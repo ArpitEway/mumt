@@ -1,0 +1,5914 @@
+
+Table: activity
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "date",
+    "Type": "varchar(222)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "activity_name",
+    "Type": "varchar(222)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "description",
+    "Type": "varchar(222)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "photos",
+    "Type": "varchar(222)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "center_id",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: admin_master
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "name",
+    "Type": "varchar(251)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "designation",
+    "Type": "varchar(51)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "user_name",
+    "Type": "varchar(251)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "password",
+    "Type": "varchar(551)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "account_type",
+    "Type": "varchar(51)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "support_ids",
+    "Type": "varchar(50)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(21)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "Y"
+  },
+  {
+    "Field": "created_at",
+    "Type": "timestamp",
+    "Null": "NO",
+    "Key": "",
+    "Default": "current_timestamp()"
+  },
+  {
+    "Field": "admin_order",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: admission_document
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "student_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "course_group_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "document_name",
+    "Type": "varchar(256)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "document_image",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "date_time",
+    "Type": "timestamp",
+    "Null": "NO",
+    "Key": "",
+    "Default": "current_timestamp()"
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(25)",
+    "Null": "YES",
+    "Key": "MUL",
+    "Default": "Y"
+  },
+  {
+    "Field": "remark",
+    "Type": "mediumtext",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "document_category_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: allot_exam_center
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "exam_center_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "center_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "UNI",
+    "Default": null
+  },
+  {
+    "Field": "examcentercode",
+    "Type": "varchar(15)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: application_field
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "field",
+    "Type": "varchar(150)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "amount",
+    "Type": "varchar(150)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(100)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "Y"
+  }
+]
+
+Table: application_form
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "student_uid",
+    "Type": "varchar(250)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "center_id",
+    "Type": "varchar(100)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "apply_for",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "class",
+    "Type": "varchar(100)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "name_eng",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "name_hindi",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "fname_eng",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "fname_hindi",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "roll_no",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "enrollment",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "session",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "course",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "amount",
+    "Type": "varchar(100)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "payment",
+    "Type": "varchar(100)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "phone",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "address",
+    "Type": "longtext",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "marksheet",
+    "Type": "varchar(250)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "adhar",
+    "Type": "varchar(250)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "policecomplaint",
+    "Type": "varchar(250)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "affidavit",
+    "Type": "varchar(250)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "document",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "Pending"
+  }
+]
+
+Table: assign_answersheet
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "teacher_id",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "course_group_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "class_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "paper_code",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "center_id",
+    "Type": "varchar(50000)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "removed_exam_center_id",
+    "Type": "longtext",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "date",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "exam_session",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: backlog_exam_form
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "student_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "backlog_student_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "course_group_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "class_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "date",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "paper_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "paper_code",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "paper_code_utd",
+    "Type": "varchar(56)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "paper_type",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "group_id",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "paper_order",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "theory_marks",
+    "Type": "varchar(256)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "int_marks",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "p_marks",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "attendance",
+    "Type": "varchar(30)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(10)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "R"
+  }
+]
+
+Table: backlog_student
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "student_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "course_group_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "class_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "approved",
+    "Type": "varchar(56)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "roll_no",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "result_show",
+    "Type": "varchar(8)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "session",
+    "Type": "varchar(56)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "mode",
+    "Type": "varchar(56)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "exam_year",
+    "Type": "varchar(56)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "exam_form",
+    "Type": "varchar(56)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "D"
+  },
+  {
+    "Field": "enrollment_no",
+    "Type": "varchar(250)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "institute_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "institute_code",
+    "Type": "varchar(250)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "attempt_no",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "exam_center_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "back_marksheet_no",
+    "Type": "varchar(56)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "upload_result",
+    "Type": "varchar(8)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "int_marks_sub",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "p_marks_sub",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "result_permission",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "cbcs",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  }
+]
+
+Table: center
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "center_code",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "center_name",
+    "Type": "varchar(100)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "contactpersonname",
+    "Type": "varchar(100)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "email",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "address",
+    "Type": "varchar(100)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "pin_code",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "city",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "distt_id",
+    "Type": "smallint(6)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "division_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "state_id",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "std_code",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "phoneno",
+    "Type": "varchar(12)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "mobile_no_1",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "mobile_no_2",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "password",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(5)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "D"
+  },
+  {
+    "Field": "old_session_permission",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "admission_permission",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "admission_permission_private",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "exam_form_permission",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "Y"
+  },
+  {
+    "Field": "temp_exam_form",
+    "Type": "varchar(10)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "admit_card_permission",
+    "Type": "varchar(2)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "result_permission",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "bulk_admission_link",
+    "Type": "varchar(244)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "payment_gateway_permission",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "remarks",
+    "Type": "varchar(100)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "balance",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "0"
+  },
+  {
+    "Field": "allot_course_group_id",
+    "Type": "varchar(512)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "11 , 12 , 13 , 14 , 15 , 16 , 17 , 18 , 19 , 20 , 21 , 22 , 23 , 24 , 25 , 26 , 27 , 28 , 29 , 30 , 31 , 32 , 33 , 34 , 35 , 36 , 37 , 38 , 39 , 40 , 41 , 42 , 43 , 44 , 45 , 46 , 47 , 48 , 49 , 50 , 51 , 52 , 53 , 54 , 55 , 56 , 57 , 58 , 59 , 60 , 61 , 62 , 63 , 64 , 65 , 66 , 67 , 71 , 72 , 73 , 74"
+  },
+  {
+    "Field": "temp_admission_payment",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  }
+]
+
+Table: center_complaint
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "center_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "student_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "type",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "date",
+    "Type": "varchar(55)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(5)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "details",
+    "Type": "text",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "remark",
+    "Type": "varchar(10)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "remark_detail",
+    "Type": "varchar(1000)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: center_menu
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "heading_id",
+    "Type": "int(11)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "url",
+    "Type": "varchar(255)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "option",
+    "Type": "varchar(255)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "menu_order",
+    "Type": "int(11)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(255)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: center_menu_heading
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "heading",
+    "Type": "varchar(255)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "heading_order",
+    "Type": "int(11)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(255)",
+    "Null": "YES",
+    "Key": "",
+    "Default": "Y"
+  }
+]
+
+Table: center_payment
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "center_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "center_code",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "type",
+    "Type": "varchar(500)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "payment_date",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "amount",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "transection_num",
+    "Type": "varchar(500)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "bank",
+    "Type": "varchar(500)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "remark",
+    "Type": "varchar(500)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "dept_remark",
+    "Type": "text",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "enter_date",
+    "Type": "timestamp",
+    "Null": "NO",
+    "Key": "",
+    "Default": "current_timestamp()"
+  },
+  {
+    "Field": "receipt_number",
+    "Type": "varchar(500)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "receipt_date",
+    "Type": "varchar(500)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: class_master
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "course_group_id",
+    "Type": "int(11)",
+    "Null": "YES",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "class_name",
+    "Type": "varchar(500)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "class_group",
+    "Type": "varchar(20)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "total_group",
+    "Type": "int(11)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "select_group",
+    "Type": "int(11)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "group_type",
+    "Type": "varchar(56)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "cbcs",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "mode",
+    "Type": "varchar(25)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "admission_permission",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "exam_form_permission",
+    "Type": "varchar(8)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "old_exam_form_permission",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "backlog_exam_form_permission",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "admit_card_permission",
+    "Type": "varchar(8)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "result_permission",
+    "Type": "varchar(8)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "backlog_result_permission",
+    "Type": "varchar(8)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "final_result_permission",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "class_order",
+    "Type": "varchar(25)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "last_class",
+    "Type": "varchar(25)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "total_paper",
+    "Type": "int(11)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "temp_id",
+    "Type": "int(11)",
+    "Null": "YES",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "internal",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "project",
+    "Type": "varchar(25)",
+    "Null": "YES",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "practical",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "practical_internal_marks",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "regular_class",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "Y"
+  },
+  {
+    "Field": "private_class",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  }
+]
+
+Table: complaint
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "user_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "student_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "course_group_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "class_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "institute_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "message",
+    "Type": "varchar(1024)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "image",
+    "Type": "varchar(256)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "remark",
+    "Type": "varchar(1024)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(250)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "P"
+  },
+  {
+    "Field": "date",
+    "Type": "timestamp",
+    "Null": "NO",
+    "Key": "",
+    "Default": "current_timestamp()"
+  },
+  {
+    "Field": "updated_at",
+    "Type": "timestamp",
+    "Null": "NO",
+    "Key": "",
+    "Default": "current_timestamp()"
+  },
+  {
+    "Field": "type",
+    "Type": "varchar(250)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: course
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "course_group_id",
+    "Type": "int(11)",
+    "Null": "YES",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "course_name",
+    "Type": "varchar(200)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "admission_permission_regular",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "Y"
+  },
+  {
+    "Field": "admission_permission_private",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "course_code",
+    "Type": "varchar(40)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "min_duration",
+    "Type": "varchar(10)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "max_duration",
+    "Type": "varchar(10)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "form_fees",
+    "Type": "varchar(21)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "admission_fees",
+    "Type": "varchar(10)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "500"
+  },
+  {
+    "Field": "program_fees",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "exam_fees",
+    "Type": "varchar(21)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "practical_exam_fees",
+    "Type": "varchar(55)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "0"
+  },
+  {
+    "Field": "p_form_fees",
+    "Type": "varchar(55)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "0"
+  },
+  {
+    "Field": "p_admission_fees",
+    "Type": "varchar(55)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "0"
+  },
+  {
+    "Field": "p_program_fees",
+    "Type": "varchar(55)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "0"
+  },
+  {
+    "Field": "p_exam_fees",
+    "Type": "varchar(55)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "0"
+  },
+  {
+    "Field": "session",
+    "Type": "varchar(10)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: course_group
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "course_name",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "course_name_hindi",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "mode",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "private_mode",
+    "Type": "varchar(21)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "university_mode",
+    "Type": "varchar(55)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "admission_permission",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "admission_permission_pvt",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "exam_form_permission",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "A"
+  },
+  {
+    "Field": "course_type",
+    "Type": "varchar(55)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "eligibility",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "duration",
+    "Type": "varchar(55)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "private_duration",
+    "Type": "varchar(55)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "eligibility_detail",
+    "Type": "varchar(255)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "document_id",
+    "Type": "int(11)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "paper_code_pattern",
+    "Type": "varchar(100)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: course_seat_availability
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "course_group_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "course_id",
+    "Type": "int(11)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "class_id",
+    "Type": "int(11)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "center_id",
+    "Type": "int(11)",
+    "Null": "YES",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "institute_id",
+    "Type": "int(11)",
+    "Null": "YES",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "session",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "admission_mode",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "regular"
+  },
+  {
+    "Field": "category",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "ALL"
+  },
+  {
+    "Field": "total_seats",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "0"
+  },
+  {
+    "Field": "reserved_seats",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "0"
+  },
+  {
+    "Field": "filled_seats",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "0"
+  },
+  {
+    "Field": "available_seats",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "0"
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "Y"
+  },
+  {
+    "Field": "created_at",
+    "Type": "timestamp",
+    "Null": "NO",
+    "Key": "",
+    "Default": "current_timestamp()"
+  },
+  {
+    "Field": "updated_at",
+    "Type": "timestamp",
+    "Null": "NO",
+    "Key": "",
+    "Default": "current_timestamp()"
+  }
+]
+
+Table: department
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "department_name",
+    "Type": "varchar(200)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "image",
+    "Type": "varchar(1000)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(10)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "orders",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: department_complaint
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "name",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "Y"
+  },
+  {
+    "Field": "department_order",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "support_ids",
+    "Type": "varchar(250)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: distt
+[
+  {
+    "Field": "state_id",
+    "Type": "smallint(6)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "division_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "distt_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "name",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: document_category
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "category",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "document",
+    "Type": "varchar(256)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "Y"
+  }
+]
+
+Table: enquiry
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "name",
+    "Type": "varchar(500)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "email",
+    "Type": "varchar(500)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "department",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "program",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "mobile",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "City",
+    "Type": "varchar(500)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "date",
+    "Type": "timestamp",
+    "Null": "NO",
+    "Key": "",
+    "Default": "current_timestamp()"
+  }
+]
+
+Table: exam_center
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "examcentercode",
+    "Type": "varchar(15)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "schoolcollegename",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "examcenteraddress",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "city",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "district",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "pincode",
+    "Type": "varchar(6)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "superintendent",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "phonenumber",
+    "Type": "varchar(12)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "bankaccountnumber",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "bankname",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "bankbranch",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "bankisfc",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "csname",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "csnumber_1",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "csnumber_2",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "exam_center_user",
+    "Type": "varchar(250)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "password",
+    "Type": "varchar(250)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "123456"
+  },
+  {
+    "Field": "download_permission",
+    "Type": "varchar(1)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "regular_download_permission",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "admit_card_permission",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "study_center_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "billing_amount",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "0"
+  }
+]
+
+Table: exam_form
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "student_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "course_group_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "class_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "paper_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "paper_code",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "theory_marks",
+    "Type": "varchar(500)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "int_marks",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "p_marks",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "paper_type",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "group_id",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "sub_group_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "0"
+  },
+  {
+    "Field": "paper_order",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "book_code",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "teacher_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "0"
+  },
+  {
+    "Field": "entry_by",
+    "Type": "int(11)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: group
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "course_group_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "class_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "course_name",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "group_name",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "group_pattern",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "NEW"
+  }
+]
+
+Table: group_paper
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "group_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "paper_name",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "paper_code",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "paper_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "sub_group_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "0"
+  },
+  {
+    "Field": "group_paper_name",
+    "Type": "varchar(25)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "credit_point",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: letter_grade
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "letter_grade",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "grade_point",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "min_marks",
+    "Type": "varchar(56)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "max_marks",
+    "Type": "varchar(56)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: letter_grade_pg
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "letter_grade",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "grade_point",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "min_marks",
+    "Type": "varchar(56)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "max_marks",
+    "Type": "varchar(56)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: marksheet_variables
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "course_name",
+    "Type": "varchar(151)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "class_name",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "class_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "notification_no",
+    "Type": "varchar(50)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "pvt_notification_no",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "backlog_notification_no",
+    "Type": "varchar(255)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "backlog_pvt_notification_no",
+    "Type": "varchar(250)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "result_date",
+    "Type": "varchar(255)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "pvt_result_date",
+    "Type": "varchar(255)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "backlog_result_date",
+    "Type": "varchar(255)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "backlog_pvt_result_date",
+    "Type": "varchar(250)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "exam_session",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "bar_code_no",
+    "Type": "varchar(255)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "Y"
+  }
+]
+
+Table: master
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "student_exam_table",
+    "Type": "varchar(150)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "student_result_table",
+    "Type": "varchar(150)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "exam_form_col",
+    "Type": "varchar(150)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "exam_form_col_result",
+    "Type": "varchar(150)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "roll_number_col",
+    "Type": "varchar(150)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "exam_form_table",
+    "Type": "varchar(150)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "old_student_result_table",
+    "Type": "varchar(150)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "old_exam_form_table",
+    "Type": "varchar(150)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "p_late_fee_status",
+    "Type": "varchar(10)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "p_late_fees",
+    "Type": "varchar(100)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "0"
+  },
+  {
+    "Field": "remove_class_from_center",
+    "Type": "text",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "late_exam_fee_status",
+    "Type": "varchar(10)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  }
+]
+
+Table: menu
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "admin_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "heading_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "option",
+    "Type": "varchar(3000)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "url",
+    "Type": "varchar(500)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(30)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "menu_order",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: menu_heading
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "admin_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "heading",
+    "Type": "varchar(300)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "heading_order",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "Y"
+  }
+]
+
+Table: new_exam_form
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "student_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "course_group_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "class_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "paper_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "paper_code",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "paper_code_utd",
+    "Type": "varchar(56)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "theory_marks",
+    "Type": "varchar(500)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "int_marks",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "p_marks",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "attendance",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "paper_type",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "group_id",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "paper_order",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "book_code",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "foundation_paper",
+    "Type": "varchar(8)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  }
+]
+
+Table: old_exam_data
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "student_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "institute_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "institute_code",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "session",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "course_group_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "course_name",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "class_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "class_order",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "enrollment_no",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "roll_no",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "name",
+    "Type": "varchar(500)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "f_h_name",
+    "Type": "varchar(500)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "mother_name",
+    "Type": "varchar(500)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "marksheet_no",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "mode",
+    "Type": "varchar(250)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "marks_pattern",
+    "Type": "varchar(56)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "exam_result",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "exam_year",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "exam_status",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "R"
+  },
+  {
+    "Field": "marksheet_date",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "update_status",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "update_date",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "total_marks",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "obtain_marks",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "percentage",
+    "Type": "float",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "obtain_grade",
+    "Type": "varchar(56)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "total_grade_point",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "creditXgradepoint",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "digi_status",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  }
+]
+
+Table: old_result_data
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "institute_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "exam_data_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "student_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "course_group_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "class_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "paper_code",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "type",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "max_theory_marks",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "min_theory_marks",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "theory_marks",
+    "Type": "varchar(500)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "max_int_marks",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "min_int_marks",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "int_marks",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "max_p_marks",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "min_p_marks",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "p_marks",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "obtain_credit",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "credit",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "letter_grade",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "grade_point",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "result",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(10)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "R"
+  },
+  {
+    "Field": "carry_theory",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "carry_int",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "current_status",
+    "Type": "varchar(10)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "Y"
+  },
+  {
+    "Field": "paper_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "paper_name",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "p_order",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: online_payment_transaction
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "student_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "institute_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "course_group_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "class_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "amount",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "fees_head",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "remark",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "exam_session",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "student_name",
+    "Type": "varchar(512)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "payment",
+    "Type": "varchar(15)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "payment_status",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "image",
+    "Type": "varchar(150)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "payment_date",
+    "Type": "varchar(100)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "payment_mode",
+    "Type": "varchar(501)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "payment_time",
+    "Type": "varchar(100)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "entry_time",
+    "Type": "timestamp",
+    "Null": "NO",
+    "Key": "",
+    "Default": "current_timestamp()"
+  },
+  {
+    "Field": "clientTxnId",
+    "Type": "varchar(500)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "PGTxnNo",
+    "Type": "varchar(251)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "SabPaisaTxId",
+    "Type": "varchar(251)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "issuerRefNo",
+    "Type": "varchar(251)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: other_examination
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "student_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "exam_name",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "dateofissue",
+    "Type": "date",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "subject",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "subject_code",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "roll_no",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "certificate_no",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "file",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: paper_master
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "course_group_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "class_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "course_name",
+    "Type": "varchar(100)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "paper_no",
+    "Type": "int(11)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "paper_no_for_time_table",
+    "Type": "varchar(55)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "paper_code",
+    "Type": "varchar(250)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "paper_code_utd",
+    "Type": "varchar(50)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "paper_name",
+    "Type": "varchar(255)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "type",
+    "Type": "varchar(20)",
+    "Null": "YES",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "ce",
+    "Type": "varchar(21)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "cbcs_paper",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "exam_date",
+    "Type": "date",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "exam_day",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "exam_shift",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "test_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "pvt_test_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "pvt_exam_date",
+    "Type": "date",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "pvt_exam_day",
+    "Type": "varchar(110)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "pvt_exam_shift",
+    "Type": "varchar(110)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "max_theory_marks",
+    "Type": "int(11)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "min_theory_marks",
+    "Type": "int(11)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "max_internal_marks",
+    "Type": "int(11)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "min_internal_marks",
+    "Type": "int(11)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "private_max_theory_marks",
+    "Type": "int(11)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "private_min_theory_marks",
+    "Type": "int(11)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "book_code",
+    "Type": "varchar(256)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "0"
+  },
+  {
+    "Field": "sub_group_id",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "0"
+  },
+  {
+    "Field": "paper_file",
+    "Type": "varchar(256)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "old_exam_date",
+    "Type": "date",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "old_exam_day",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "old_exam_shift",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "old_pvt_exam_date",
+    "Type": "date",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "old_pvt_exam_day",
+    "Type": "varchar(110)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "old_pvt_exam_shift",
+    "Type": "varchar(110)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "group_paper_name",
+    "Type": "varchar(25)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "credit_point",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "paper_pattern",
+    "Type": "varchar(11)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: paper_master_sub
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "papersname",
+    "Type": "varchar(255)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "papercode",
+    "Type": "varchar(250)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "new_test_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "new_exam_date",
+    "Type": "date",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "new_exam_shift",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "new_exam_day",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: paper_testid_relation
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "paper_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "paper_code",
+    "Type": "varchar(200)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "test_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: payment_complaint
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "center_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "student_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "enrollment_no",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "type",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "date",
+    "Type": "varchar(55)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "details",
+    "Type": "text",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "remark",
+    "Type": "varchar(10)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: provisional_remark_details
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "document_category_id",
+    "Type": "varchar(51)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "provisional_remarks",
+    "Type": "varchar(151)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: request
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "center_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "student_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "detail",
+    "Type": "text",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "date",
+    "Type": "date",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "Pending"
+  },
+  {
+    "Field": "request_remark",
+    "Type": "varchar(15)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "approve_date",
+    "Type": "varchar(25)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "edit_by",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: request_mode_change
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "center_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "student_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "detail",
+    "Type": "text",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "date",
+    "Type": "date",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "from_mode",
+    "Type": "varchar(10)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "to_mode",
+    "Type": "varchar(10)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(10)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "Pending"
+  },
+  {
+    "Field": "remark",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: session
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "session",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "enrollment_code_reg",
+    "Type": "varchar(16)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "enrollment_code_pvt",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "admission_permission_ic",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "Y"
+  },
+  {
+    "Field": "pvt_admission_permission_ic",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "admission_permission_dep",
+    "Type": "varchar(11)",
+    "Null": "YES",
+    "Key": "",
+    "Default": "Y"
+  },
+  {
+    "Field": "annual_permission",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "semester_permission",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "unpaid_permission",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "Y"
+  },
+  {
+    "Field": "document_permission",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "Y"
+  },
+  {
+    "Field": "exam_form_permission",
+    "Type": "varchar(8)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "enrollment_permission",
+    "Type": "varchar(8)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "type",
+    "Type": "varchar(255)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: state
+[
+  {
+    "Field": "state_id",
+    "Type": "tinyint(4)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "country_id",
+    "Type": "tinyint(4)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "name",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: student
+[
+  {
+    "Field": "student_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "user_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "course_group_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "enrollment_no",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "-"
+  },
+  {
+    "Field": "abc_id",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "course_name",
+    "Type": "varchar(100)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "class_name",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "session",
+    "Type": "varchar(10)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "name",
+    "Type": "varchar(75)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "name_hindi",
+    "Type": "varchar(1008)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "f_h_name_hindi",
+    "Type": "varchar(1008)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "class_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "old_class_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "institute_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "institute_code",
+    "Type": "varchar(30)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "exam_center_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "0"
+  },
+  {
+    "Field": "remark",
+    "Type": "varchar(500)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "remark_detail",
+    "Type": "varchar(500)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "exam_form",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "D"
+  },
+  {
+    "Field": "f_h_name",
+    "Type": "varchar(75)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "mother_name",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "mother_name_hindi",
+    "Type": "varchar(250)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "dob",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "gender",
+    "Type": "varchar(10)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "permanent_resident",
+    "Type": "varchar(56)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "category",
+    "Type": "varchar(10)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "course_before_phd",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "photo",
+    "Type": "varchar(100)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "eligibility",
+    "Type": "varchar(256)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "form_status",
+    "Type": "varchar(10)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "approved",
+    "Type": "varchar(10)",
+    "Null": "NO",
+    "Key": "",
+    "Default": ""
+  },
+  {
+    "Field": "approved_by",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "cur_time",
+    "Type": "timestamp",
+    "Null": "NO",
+    "Key": "",
+    "Default": "current_timestamp()"
+  },
+  {
+    "Field": "enrolled",
+    "Type": "varchar(1)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": "N"
+  },
+  {
+    "Field": "roll_number",
+    "Type": "varchar(56)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "roll_no",
+    "Type": "varchar(51)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": "0"
+  },
+  {
+    "Field": "result_show",
+    "Type": "varchar(1)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "marksheet_no",
+    "Type": "varchar(500)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "int_marks_sub",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "p_marks_sub",
+    "Type": "varchar(100)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "notification_no",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": null
+  },
+  {
+    "Field": "temp_exam_form",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "course_complete",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "group_id",
+    "Type": "varchar(200)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "demo",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "upload_result",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "new_exam_form",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "D"
+  },
+  {
+    "Field": "late_exam_form",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "exam_year",
+    "Type": "varchar(56)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "document_uploaded",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "MUL",
+    "Default": "N"
+  },
+  {
+    "Field": "adhar_no",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "adhar_name",
+    "Type": "varchar(256)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "adhar_dob",
+    "Type": "varchar(256)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "aadhaar_verifed",
+    "Type": "varchar(12)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "sm_id",
+    "Type": "varchar(21)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "additional_course",
+    "Type": "varchar(10)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "payment_status",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "installment_permission",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "program_fees",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "course_category",
+    "Type": "varchar(250)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "course_duration",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "cbcs",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "exam_pattern",
+    "Type": "varchar(256)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "NEW"
+  },
+  {
+    "Field": "other_exam_certificate",
+    "Type": "varchar(10)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "mode",
+    "Type": "varchar(16)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "old_enrollment",
+    "Type": "varchar(8)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "old_upload_result",
+    "Type": "varchar(8)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "promote",
+    "Type": "varchar(16)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "roll_no_permission",
+    "Type": "varchar(56)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "Y"
+  },
+  {
+    "Field": "pass_in_eaxm",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "id_card",
+    "Type": "varchar(11)",
+    "Null": "YES",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "portal_charges",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "D"
+  },
+  {
+    "Field": "degree",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "BPL",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "MP",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "IV_YEAR",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: student_data
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "student_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "UNI",
+    "Default": null
+  },
+  {
+    "Field": "password",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "123456"
+  },
+  {
+    "Field": "nationality",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "religion",
+    "Type": "varchar(10)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "f_h_occupation",
+    "Type": "varchar(108)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "mother_occupation",
+    "Type": "varchar(108)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "p_handicapped",
+    "Type": "varchar(5)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "c_address",
+    "Type": "varchar(150)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "c_city",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "c_district",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "c_state",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "c_pin_code",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "f_h_mobile_no",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "p_address",
+    "Type": "varchar(150)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "p_city",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "p_district",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "p_state",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "p_pin_code",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "p_mobile_no",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "p_email",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "eligibility",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "ten_board",
+    "Type": "varchar(201)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "ten_total_marks",
+    "Type": "varchar(10)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "ten_marks",
+    "Type": "varchar(10)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "ten_subjects",
+    "Type": "varchar(501)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "ten_year",
+    "Type": "varchar(10)",
+    "Null": "YES",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "twowelth_board",
+    "Type": "varchar(251)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "twowelth_total_marks",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "twowelth_marks",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "twowelth_subject",
+    "Type": "varchar(251)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "twowelth_year",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "graduation_university",
+    "Type": "varchar(251)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "graduation_total_marks",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "graduation_marks",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "graduation_subject",
+    "Type": "varchar(251)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "graduation_year",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "pg_marks",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "pg_total_marks",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "pg_year",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "pg_subject",
+    "Type": "varchar(150)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "pg_university",
+    "Type": "varchar(250)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "freedom_fighter",
+    "Type": "varchar(11)",
+    "Null": "YES",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "national_award",
+    "Type": "varchar(11)",
+    "Null": "YES",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "NCC_NSS",
+    "Type": "varchar(11)",
+    "Null": "YES",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "blood_group",
+    "Type": "varchar(21)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "guardian_mob",
+    "Type": "varchar(21)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "samagra_id",
+    "Type": "varchar(30)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "gap_certificate",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": ""
+  },
+  {
+    "Field": "retirement",
+    "Type": "varchar(501)",
+    "Null": "NO",
+    "Key": "",
+    "Default": ""
+  },
+  {
+    "Field": "complaint",
+    "Type": "varchar(501)",
+    "Null": "NO",
+    "Key": "",
+    "Default": ""
+  },
+  {
+    "Field": "police_complaint",
+    "Type": "varchar(501)",
+    "Null": "NO",
+    "Key": "",
+    "Default": ""
+  },
+  {
+    "Field": "p_ews",
+    "Type": "varchar(50)",
+    "Null": "YES",
+    "Key": "",
+    "Default": "N"
+  }
+]
+
+Table: student_menu
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "option",
+    "Type": "varchar(3000)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "url",
+    "Type": "varchar(500)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(30)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "menu_order",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "icon",
+    "Type": "varchar(250)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "image",
+    "Type": "varchar(250)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: student_menu_heading
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "heading",
+    "Type": "varchar(300)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "heading_order",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "Y"
+  }
+]
+
+Table: sub_group
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "sub_group_name",
+    "Type": "varchar(256)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: support_complaint
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "center_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "student_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "enrollment_no",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "type",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "department",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "details",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "date",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "Pending"
+  },
+  {
+    "Field": "remark",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  },
+  {
+    "Field": "attachment",
+    "Type": "varchar(250)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "reply_text",
+    "Type": "text",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: support_system
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "name",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "Y"
+  },
+  {
+    "Field": "support_order",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: teacher
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "name",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "address",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "email",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "phone",
+    "Type": "varchar(15)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "subject",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "clg_name",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "password",
+    "Type": "varchar(80)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "Y"
+  },
+  {
+    "Field": "bank_name",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "account_no",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "account_name",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "ifsc_code",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "image",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: time_table
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "course_name",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "course_group_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "class_name",
+    "Type": "varchar(255)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "class_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "exam_start_date",
+    "Type": "date",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "exam_end_date",
+    "Type": "date",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "exam_permission",
+    "Type": "varchar(25)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "N"
+  }
+]
+
+Table: user_enquiry
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "name",
+    "Type": "varchar(251)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "f_h_name",
+    "Type": "varchar(251)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "email",
+    "Type": "varchar(251)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "dob",
+    "Type": "varchar(251)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "mobile_no",
+    "Type": "varchar(21)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "category",
+    "Type": "varchar(151)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "course_group_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "created_at",
+    "Type": "timestamp",
+    "Null": "NO",
+    "Key": "",
+    "Default": "current_timestamp()"
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "student_id",
+    "Type": "longtext",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "institute_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "fcm_token",
+    "Type": "longtext",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: user_notification
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "user_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "student_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "course_group_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "class_id",
+    "Type": "varchar(250)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "message",
+    "Type": "varchar(250)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "status",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "created_at",
+    "Type": "timestamp",
+    "Null": "NO",
+    "Key": "",
+    "Default": "current_timestamp()"
+  }
+]
+
+Table: user_transaction
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "user_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "student_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "student_mode",
+    "Type": "varchar(128)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "course_group_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "class_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "online_payment_txn_id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "amount",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "fees_head",
+    "Type": "varchar(56)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "payment_type",
+    "Type": "varchar(20)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "payment_mode",
+    "Type": "varchar(108)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "remark",
+    "Type": "varchar(256)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "entry_date",
+    "Type": "timestamp",
+    "Null": "NO",
+    "Key": "",
+    "Default": "current_timestamp()"
+  },
+  {
+    "Field": "payment_date",
+    "Type": "varchar(64)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  }
+]
+
+Table: utd_complaint
+[
+  {
+    "Field": "id",
+    "Type": "int(11)",
+    "Null": "NO",
+    "Key": "PRI",
+    "Default": null
+  },
+  {
+    "Field": "enrollment_no",
+    "Type": "varchar(256)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "student_id",
+    "Type": "varchar(50)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "message",
+    "Type": "varchar(1024)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "image",
+    "Type": "varchar(256)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "remark",
+    "Type": "varchar(250)",
+    "Null": "NO",
+    "Key": "",
+    "Default": null
+  },
+  {
+    "Field": "status",
+    "Type": "varchar(250)",
+    "Null": "NO",
+    "Key": "",
+    "Default": "P"
+  },
+  {
+    "Field": "date",
+    "Type": "timestamp",
+    "Null": "NO",
+    "Key": "",
+    "Default": "current_timestamp()"
+  }
+]
