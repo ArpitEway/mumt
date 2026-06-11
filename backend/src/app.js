@@ -1,4 +1,5 @@
 import express from 'express';
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
@@ -22,7 +23,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan(env.nodeEnv === 'production' ? 'combined' : 'dev'));
 app.use('/uploads', express.static(path.resolve(__dirname, '../uploads')));
-app.use('/assets', express.static(path.resolve(__dirname, '../../assets')));
+app.use(express.static(path.resolve(__dirname, '../../frontend/dist')));
 
 app.get('/api/health', (req, res) => {
   res.json({ ok: true, service: 'mumt-backend' });
@@ -34,6 +35,15 @@ app.use('/api/resources', resourceRoutes);
 app.use('/api/students', studentRoutes);
 app.use('/api/registration', registrationRoutes);
 app.use('/api/payment', paymentRoutes);
+
+app.get('*', (req, res) => {
+  const indexPath = path.resolve(__dirname, '../../frontend/dist/index.html');
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.status(404).send('Frontend build not found. Run npm run build in the frontend folder.');
+  }
+});
 
 app.use(notFound);
 app.use(errorHandler);
