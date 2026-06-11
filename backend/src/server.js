@@ -1,4 +1,5 @@
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { app } from './app.js';
 import { pool } from './config/db.js';
@@ -13,7 +14,12 @@ async function start() {
   app.get('*', (req, res) => {
     // Serve the React app for any non-API route
     const indexPath = path.join(__dirname, '../../frontend/dist', 'index.html');
-    res.sendFile(indexPath);
+    if (fs.existsSync(indexPath)) {
+      res.sendFile(indexPath);
+    } else {
+      // If frontend isn't built on the server, return a helpful message
+      res.status(200).send('Frontend not found (build not present). API is running.');
+    }
   });
 
   app.listen(env.port, () => {
