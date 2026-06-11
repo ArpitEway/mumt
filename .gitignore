@@ -12,8 +12,8 @@ pnpm-lock.yaml
 .env.*
 
 # Build output
-dist/
-build/
+# dist/
+# build/
 coverage/
 
 # Turbo
