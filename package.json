@@ -9,7 +9,7 @@
     "shared"
   ],
   "scripts": {
-    "start": "node app.js",
+    "start": "node scripts/start-prod.js",
     "dev": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
     "dev:backend": "npm run dev --prefix backend",
     "dev:frontend": "npm run dev --prefix frontend",
