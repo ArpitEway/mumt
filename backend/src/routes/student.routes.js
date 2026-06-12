@@ -4,6 +4,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import multer from 'multer';
 import { studentFormSchema } from '@mmyvv/shared';
+import { decodeId } from '@mmyvv/shared/idEncryption';
 import { validate } from '../middleware/validate.js';
 import { query, transaction } from '../config/db.js';
 import { requireAuth } from '../middleware/auth.js';
@@ -20,7 +21,8 @@ const upload = multer({
     destination: (req, file, cb) => cb(null, uploadRoot),
     filename: (req, file, cb) => {
       const safeBase = path.basename(file.originalname).replace(/[^a-zA-Z0-9._-]/g, '_');
-      cb(null, `${req.params.studentId}-${Date.now()}-${safeBase}`);
+      const studentId = req.studentId || req.params.studentId;
+      cb(null, `${studentId}-${Date.now()}-${safeBase}`);
     }
   })
 });
@@ -30,9 +32,23 @@ const photoUpload = multer({
     destination: (req, file, cb) => cb(null, photoUploadRoot),
     filename: (req, file, cb) => {
       const extension = path.extname(file.originalname || '') || '.jpg';
-      cb(null, `${req.params.studentId}-${Date.now()}${extension}`);
+      const studentId = req.studentId || req.params.studentId;
+      cb(null, `${studentId}-${Date.now()}${extension}`);
     }
   })
+});
+
+function normalizeStudentId(rawId) {
+  return decodeId(rawId);
+}
+
+router.param('studentId', (req, res, next, rawId) => {
+  const studentId = normalizeStudentId(rawId);
+  if (!studentId) {
+    return res.status(400).json({ message: 'Invalid student id' });
+  }
+  req.studentId = studentId;
+  next();
 });
 
 const studentFormGroups = [
@@ -43,6 +59,7 @@ const studentFormGroups = [
       { name: 'session', label: 'Session', table: 'student' },
       { name: 'course_category', label: 'Course Category', table: 'student' },
       { name: 'course_name', label: 'Course Name', table: 'student' },
+       { name: 'course_group_id', label: 'Course Group ID', table: 'student' },
       { name: 'class_name', label: 'Class Name', table: 'student' },
       { name: 'course_duration', label: 'Course Duration', table: 'student' },
       { name: 'mode', label: 'Mode', table: 'student' },
@@ -227,7 +244,7 @@ async function profileFor(studentId) {
 
 router.get('/:studentId/dashboard', async (req, res, next) => {
   try {
-    const student = await profileFor(req.params.studentId);
+    const student = await profileFor(req.studentId);
     if (!student) return res.status(404).json({ message: 'Student not found' });
     res.json({
       data: {
@@ -247,7 +264,7 @@ router.get('/:studentId/dashboard', async (req, res, next) => {
 
 router.get('/:studentId/form', async (req, res, next) => {
   try {
-    const student = await profileFor(req.params.studentId);
+    const student = await profileFor(req.studentId);
     if (!student) return res.status(404).json({ message: 'Student not found' });
 
     const fieldGroups = studentFormGroups.map((group) => ({
@@ -276,7 +293,7 @@ router.get('/:studentId/form', async (req, res, next) => {
 
 router.put('/:studentId/form', validate(studentFormSchema), async (req, res, next) => {
   try {
-    const studentId = req.params.studentId;
+    const studentId = req.studentId;
     const student = await profileFor(studentId);
     if (!student) return res.status(404).json({ message: 'Student not found' });
     if ((student.form_status || 'N') !== 'N') {
@@ -338,7 +355,7 @@ router.post('/:studentId/photo', photoUpload.single('photo'), async (req, res, n
   try {
     if (!req.file) return res.status(400).json({ message: 'Photo file is required' });
 
-    const studentId = req.params.studentId;
+    const studentId = req.studentId;
     const student = await profileFor(studentId);
     if (!student) return res.status(404).json({ message: 'Student not found' });
 
@@ -365,7 +382,7 @@ router.get('/:studentId/payments', async (req, res, next) => {
        FROM online_payment_transaction
        WHERE student_id = :studentId
        ORDER BY id DESC`,
-      { studentId: req.params.studentId }
+      { studentId: req.studentId }
     );
     res.json({ data: rows });
   } catch (error) {
@@ -375,7 +392,7 @@ router.get('/:studentId/payments', async (req, res, next) => {
 
 router.get('/:studentId/documents', async (req, res, next) => {
   try {
-    const student = await profileFor(req.params.studentId);
+    const student = await profileFor(req.studentId);
     if (!student) return res.status(404).json({ message: 'Student not found' });
 
     const categoryColumns = await columnsFor('document_category');
@@ -412,7 +429,7 @@ router.get('/:studentId/documents', async (req, res, next) => {
        FROM admission_document
        WHERE student_id = :studentId
        ORDER BY id DESC`,
-      { studentId: req.params.studentId }
+      { studentId: req.studentId }
     );
 
     res.json({ required: requiredDocs.length ? requiredDocs : fallbackDocs, uploaded: uploads });
@@ -424,7 +441,7 @@ router.get('/:studentId/documents', async (req, res, next) => {
 router.post('/:studentId/documents', upload.single('document'), async (req, res, next) => {
   try {
     if (!req.file) return res.status(400).json({ message: 'Document file is required' });
-    const student = await profileFor(req.params.studentId);
+    const student = await profileFor(req.studentId);
     if (!student) return res.status(404).json({ message: 'Student not found' });
 
     const documentCategoryId = Number(req.body.documentCategoryId || 0);
@@ -439,7 +456,7 @@ router.post('/:studentId/documents', upload.single('document'), async (req, res,
           :studentId, :courseGroupId, :documentName, :filePath, 'Y', '', :documentCategoryId
         )`,
         {
-          studentId: req.params.studentId,
+          studentId: req.studentId,
           courseGroupId: student.course_group_id || 0,
           documentName,
           filePath,
@@ -449,7 +466,7 @@ router.post('/:studentId/documents', upload.single('document'), async (req, res,
 
       await connection.execute(
         `UPDATE student SET document_uploaded = 'Y' WHERE student_id = :studentId`,
-        { studentId: req.params.studentId }
+        { studentId: req.studentId }
       );
     });
 

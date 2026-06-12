@@ -16,6 +16,17 @@ function normalizeMobile(mobile) {
   return String(mobile || '').replace(/\D/g, '');
 }
 
+function convertDOBFormat(dob) {
+  // Convert DD/MM/YYYY to YYYY-MM-DD
+  if (!dob) return dob;
+  const parts = dob.split('/');
+  if (parts.length === 3) {
+    const [day, month, year] = parts;
+    return `${year}-${month}-${day}`;
+  }
+  return dob;
+}
+
 function normalizeCategory(value) {
   const text = String(value || '').toLowerCase();
   if (text.includes('diploma') || text.includes('पत्रोपाधि')) return 'Diploma';
@@ -109,20 +120,75 @@ router.get('/options', async (req, res, next) => {
   }
 });
 
-// Public registration endpoint. Inserts a student record and returns the new studentId.
-router.post('/', validate(registerSchema), async (req, res, next) => {
+// Check if mobile number already exists
+router.post('/check-mobile', async (req, res, next) => {
   try {
-    
-    const { fullName, dob, mobile, fatherName, email, mode, category, course } = req.body;
+    const { mobile } = req.body;
     const cleanMobile = normalizeMobile(mobile);
 
-    const duplicateRows = await query(
+    if (!cleanMobile || cleanMobile.length !== 10) {
+      return res.json({ exists: false });
+    }
+
+    const rows = await query(
       `SELECT student_id FROM student_data WHERE p_mobile_no = :mobile LIMIT 1`,
       { mobile: cleanMobile }
     );
 
-    if (duplicateRows.length) {
+    res.json({ exists: rows.length > 0 });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Check if aadhar number already exists
+router.post('/check-aadhar', async (req, res, next) => {
+  try {
+    const { aadhar } = req.body;
+    const cleanAadhar = String(aadhar || '').replace(/\D/g, '');
+
+    if (!cleanAadhar || cleanAadhar.length !== 12) {
+      return res.json({ exists: false });
+    }
+
+    const rows = await query(
+      `SELECT student_id FROM student WHERE adhar_no = :aadhar LIMIT 1`,
+      { aadhar: cleanAadhar }
+    );
+
+    res.json({ exists: rows.length > 0 });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Public registration endpoint. Inserts a student record and returns the new studentId.
+router.post('/', validate(registerSchema), async (req, res, next) => {
+  try {
+    
+    const { fullName, dob, mobile, fatherName, email, aadharNo, eligibility, course,courseName } = req.body;
+    const cleanMobile = normalizeMobile(mobile);
+    const cleanAadhar = String(aadharNo || '').replace(/\D/g, '');
+    const formattedDob = convertDOBFormat(dob);
+
+    // Check for duplicate mobile number
+    const duplicateMobileRows = await query(
+      `SELECT student_id FROM student_data WHERE p_mobile_no = :mobile LIMIT 1`,
+      { mobile: cleanMobile }
+    );
+
+    if (duplicateMobileRows.length) {
       throw badRequest('Mobile number already exists');
+    }
+
+    // Check for duplicate aadhar number
+    const duplicateAadharRows = await query(
+      `SELECT student_id FROM student WHERE adhar_no = :aadhar LIMIT 1`,
+      { aadhar: cleanAadhar }
+    );
+
+    if (duplicateAadharRows.length) {
+      throw badRequest('Aadhaar number already exists');
     }
 
     const selectedCourseId = Number(course);
@@ -130,40 +196,41 @@ router.post('/', validate(registerSchema), async (req, res, next) => {
       throw badRequest('Please select a course');
     }
 
-    const metadata = await getCourseGroupMetadata();
-    const { nameField, nameEnField, eligibilityField, categoryField, statusField, permissionField } = metadata;
-    if (!nameField) {
-      throw badRequest('The course group table is not configured properly');
-    }
+    // const metadata = await getCourseGroupMetadata();
+    // const { nameField, nameEnField, eligibilityField, categoryField, statusField, permissionField } = metadata;
+    // if (!nameField) {
+    //   throw badRequest('The course group table is not configured properly');
+    // }
 
-    const nameEnSql = nameEnField || nameField;
-    const categorySql = eligibilityField
-      ? `${eligibilityField} AS category`
-      : categoryField
-        ? `${categoryField} AS category`
-        : `'General' AS category`;
-    const statusWhere = statusField ? `AND ${statusField} IN ('A', 'Y', 'yes')` : '';
-    const permissionWhere = permissionField ? `AND ${permissionField} = 'Y'` : '';
+    // const nameEnSql = nameEnField || nameField;
+    // const categorySql = eligibilityField
+    //   ? `${eligibilityField} AS category`
+    //   : categoryField
+    //     ? `${categoryField} AS category`
+    //     : `'General' AS category`;
+    // const statusWhere = statusField ? `AND ${statusField} IN ('A', 'Y', 'yes')` : '';
+    // const permissionWhere = permissionField ? `AND ${permissionField} = 'Y'` : '';
 
-    const courseRows = await query(
-      `SELECT id, id AS course_group_id, ${nameField} AS course_name, ${categorySql}, mode
-       FROM course_group
-       WHERE id = :selectedCourseId ${permissionWhere} ${statusWhere}
-       LIMIT 1`,
-      { selectedCourseId }
-    );
-    const selectedCourse = courseRows[0];
-    if (!selectedCourse) {
-      throw badRequest('Selected course is not available for admission');
-    }
-    if (category && normalizeCategory(selectedCourse.category) !== normalizeCategory(category)) {
-      throw badRequest('Selected course does not belong to the selected category');
-    }
+    // const courseRows = await query(
+    //   `SELECT id, id AS course_group_id, ${nameField} AS course_name, ${categorySql}, mode
+    //    FROM course_group
+    //    WHERE id = :selectedCourseId ${permissionWhere} ${statusWhere}
+    //    LIMIT 1`,
+    //   { selectedCourseId }
+    // );
+    // const selectedCourse = courseRows[0];
+    // if (!selectedCourse) {
+    //   throw badRequest('Selected course is not available for admission');
+    // }
+    // if (category && normalizeCategory(selectedCourse.category) !== normalizeCategory(category)) {
+    //   throw badRequest('Selected course does not belong to the selected category');
+    // }
 
-    const admissionMode = mode === 'Regular' ? 'REG' : (selectedCourse.mode || mode || 'REG');
-    const courseGroupId = Number(selectedCourse.course_group_id || 0);
-    const courseCategory = normalizeCategory(selectedCourse.category || category);
-    const courseName = selectedCourse.course_name || '';
+    const admissionMode = 'Regular';
+    const courseGroupId = Number(selectedCourseId);
+    // const courseCategory = normalizeCategory(selectedCourse.category || category);
+    const courseNames = courseName || '';
+    const courseEligibility = eligibility || '';
 
     const result = await transaction(async (connection) => {
       const [nextStudentRows] = await connection.execute(
@@ -184,23 +251,24 @@ router.post('/', validate(registerSchema), async (req, res, next) => {
           course_category, course_duration, mode, form_status, approved, document_uploaded,
           payment_status, enrolled, new_exam_form, late_exam_form, old_enrollment, degree, MP, IV_YEAR
         ) VALUES (
-          :studentId, 0, :courseGroupId, '-', '', :courseName, '', :session,
+          :studentId, 0, :courseGroupId, '-', '', :courseNames, '', :session,
           :name, '', '', 0, 0, 0, '',
           :fatherName, '', '', :dob, '', '', '',
-          '', '', '', '', '', '',
-          0, '', :session, '', '', '', '',
-          :courseCategory, '', :mode, 'N', 'N', 'N',
+          '', '', :courseEligibility, '', '', '',
+          0, '', :session, :aadhar, '', '', '',
+          '', '', :mode, 'N', 'N', 'N',
           'N', 'N', 'N', 'N', '', '', '', ''
         )`,
         {
           studentId,
           courseGroupId,
-          courseName,
+          courseNames,
+          courseEligibility,
           session: ADMISSION_SESSION,
           name: fullName,
           fatherName: fatherName || '',
-          dob,
-          courseCategory,
+          dob: formattedDob,
+          aadhar: cleanAadhar,
           mode: admissionMode
         }
       );

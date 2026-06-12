@@ -1,8 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { toast, Toaster } from 'react-hot-toast';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
+import { toast } from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
+import InputMask from 'react-input-mask';
 import { api } from '../api/client';
 import { registerSchema } from '@mmyvv/shared';
+import { encodeId } from '@mmyvv/shared/idEncryption';
 import PageWrapper from '../components/PageWrapper.jsx';
 import TextInput from '../components/forms/TextInput.jsx';
 import SelectInput from '../components/forms/SelectInput.jsx';
@@ -19,6 +21,7 @@ const initialForm = {
   aadharNo: '',
   eligibility: '',
   course: '',
+  courseName: '',
 };
 
 export default function Register() {
@@ -32,8 +35,26 @@ export default function Register() {
   const [loadingOptions, setLoadingOptions] = useState(true);
   const [saving, setSaving] = useState(false);
 
+  // Validation state
+  const [validationState, setValidationState] = useState({
+    mobileExists: false,
+    aadharExists: false,
+    checkingMobile: false,
+    checkingAadhar: false,
+  });
+
+  const debounceTimerRef = useRef({});
+
   const navigate = useNavigate();
   const { login } = useAuth();
+
+  // Cleanup debounce timers on unmount
+  useEffect(() => {
+    return () => {
+      clearTimeout(debounceTimerRef.current.mobile);
+      clearTimeout(debounceTimerRef.current.aadhar);
+    };
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -93,6 +114,68 @@ export default function Register() {
     }));
   }
 
+  // Check if mobile number already exists
+  function checkMobileUniqueness(mobile) {
+    const cleanMobile = mobile.replace(/\D/g, '');
+    
+    if (cleanMobile.length !== 10) {
+      setValidationState(prev => ({ ...prev, mobileExists: false, checkingMobile: false }));
+      return;
+    }
+
+    setValidationState(prev => ({ ...prev, checkingMobile: true }));
+
+    // Debounce the API call
+    clearTimeout(debounceTimerRef.current.mobile);
+    debounceTimerRef.current.mobile = setTimeout(async () => {
+      try {
+        const response = await api('/registration/check-mobile', {
+          method: 'POST',
+          body: { mobile: cleanMobile }
+        });
+        setValidationState(prev => ({ 
+          ...prev, 
+          mobileExists: response.exists || false,
+          checkingMobile: false 
+        }));
+      } catch (err) {
+        console.error('Error checking mobile:', err);
+        setValidationState(prev => ({ ...prev, checkingMobile: false }));
+      }
+    }, 500);
+  }
+
+  // Check if aadhar number already exists
+  function checkAadharUniqueness(aadhar) {
+    const cleanAadhar = aadhar.replace(/\D/g, '');
+    
+    if (cleanAadhar.length !== 12) {
+      setValidationState(prev => ({ ...prev, aadharExists: false, checkingAadhar: false }));
+      return;
+    }
+
+    setValidationState(prev => ({ ...prev, checkingAadhar: true }));
+
+    // Debounce the API call
+    clearTimeout(debounceTimerRef.current.aadhar);
+    debounceTimerRef.current.aadhar = setTimeout(async () => {
+      try {
+        const response = await api('/registration/check-aadhar', {
+          method: 'POST',
+          body: { aadhar: cleanAadhar }
+        });
+        setValidationState(prev => ({ 
+          ...prev, 
+          aadharExists: response.exists || false,
+          checkingAadhar: false 
+        }));
+      } catch (err) {
+        console.error('Error checking aadhar:', err);
+        setValidationState(prev => ({ ...prev, checkingAadhar: false }));
+      }
+    }, 500);
+  }
+
   const [fieldErrors, setFieldErrors] = useState({});
 
   function handleSubmit(event) {
@@ -100,6 +183,17 @@ export default function Register() {
 
     const mobile = form.mobile.replace(/\\D/g, '');
     const payload = { ...form, mobile };
+
+    // Check for existing mobile or aadhar
+    if (validationState.mobileExists) {
+      setError('Mobile number already exists');
+      return;
+    }
+
+    if (validationState.aadharExists) {
+      setError('Aadhaar number already exists');
+      return;
+    }
 
     const result = registerSchema.safeParse(payload);
     if (!result.success) {
@@ -136,10 +230,12 @@ export default function Register() {
               role: 'student',
               nonEnrolled: true,
             });
-            navigate(`/student-dashboard/${id}`);
+            toast.success('Registration successful');
+            navigate(`/student-dashboard/${encodeId(id)}`);
           } catch (loginError) {
-            setError(loginError.message || 'Registration succeeded but auto-login failed');
-            toast.error(loginError.message || 'Auto-login failed');
+            const msg = loginError.message || 'Registration succeeded but auto-login failed';
+            setError(msg);
+            toast.error(msg);
             setSubmitted(true);
           }
         } else {
@@ -177,8 +273,7 @@ export default function Register() {
 
   return (
     <PageWrapper>
-      <Toaster />
-          <div className="register-page">
+      <div className="register-page">
         <div className="register-card">
           <div className="section-heading">
             <span className="eyebrow">
@@ -195,6 +290,11 @@ export default function Register() {
               type="hidden"
               name="session"
               value={form.session}
+            />
+            <input
+              type="hidden"
+              name="courseName"
+              value={form.courseName}
             />
 
             <div className="register-grid">
@@ -223,34 +323,50 @@ export default function Register() {
               error={fieldErrors.email?.[0]}
             />
 
-            <TextInput
-              label="Date Of Birth"
-              type="date"
-              value={form.dob}
-              onChange={e => updateField('dob', e.target.value)}
-              error={fieldErrors.dob?.[0]}
-            />
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Date Of Birth
+              </label>
+              <InputMask
+                mask="99/99/9999"
+                value={form.dob}
+                onChange={e => updateField('dob', e.target.value)}
+                placeholder="DD/MM/YYYY"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              {fieldErrors.dob?.[0] && (
+                <p className="text-red-500 text-sm mt-1">{fieldErrors.dob[0]}</p>
+              )}
+            </div>
                  <TextInput
               label="Mobile No."
               type="tel"
               value={form.mobile}
-              onChange={e => updateField('mobile', e.target.value)}
+              onChange={e => {
+                updateField('mobile', e.target.value);
+                checkMobileUniqueness(e.target.value);
+              }}
+              onBlur={() => checkMobileUniqueness(form.mobile)}
               placeholder="Enter your Mobile No"
-              error={fieldErrors.mobile?.[0]}
+              error={validationState.mobileExists ? 'Mobile number already exists' : (validationState.checkingMobile ? 'Checking...' : fieldErrors.mobile?.[0])}
             />
 
              <TextInput
               label="Aadhaar No."
               value={form.aadharNo}
-              onChange={e => updateField('aadharNo', e.target.value)}
+              onChange={e => {
+                updateField('aadharNo', e.target.value);
+                checkAadharUniqueness(e.target.value);
+              }}
+              onBlur={() => checkAadharUniqueness(form.aadharNo)}
               placeholder="Enter your Aadhaar No."
-              error={fieldErrors.aadharNo?.[0]}
+              error={validationState.aadharExists ? 'Aadhaar number already exists' : (validationState.checkingAadhar ? 'Checking...' : fieldErrors.aadharNo?.[0])}
             />
 
             <SelectInput
               label="Eligibility"
               value={form.eligibility}
-              onChange={e => { updateField('eligibility', e.target.value); updateField('course', ''); }}
+              onChange={e => { updateField('eligibility', e.target.value); updateField('course', ''); updateField('courseName', ''); }}
               loading={loadingOptions}
               options={[{ value: '', label: loadingOptions ? 'Loading eligibilities...' : 'Select Eligibility' }].concat(options.eligibilities.map(item => ({ value: item.name, label: item.name })))}
               error={fieldErrors.eligibility?.[0]}
@@ -259,10 +375,14 @@ export default function Register() {
             <SelectInput
               label="Course"
               value={form.course}
-              onChange={e => updateField('course', e.target.value)}
+              onChange={e => {
+                updateField('course', e.target.value);
+                const selected = courses.find(courseOption => String(courseOption.id) === String(e.target.value));
+                updateField('courseName', selected?.name || '');
+              }}
               disabled={!form.eligibility || loadingOptions}
               options={[{ value: '', label: 'Select Course' }].concat(courses.map(courseOption => ({ value: courseOption.id, label: courseOption.name })))}
-             error={fieldErrors.course?.[0]}
+              error={fieldErrors.course?.[0]}
             />
             </div>
 {/* 

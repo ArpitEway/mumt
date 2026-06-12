@@ -20,13 +20,46 @@ export const changePasswordSchema = z.object({
 // --- Registration Schemas ---
 export const registerSchema = z.object({
   fullName: z.string().min(3, "Full name is required").max(255),
-  dob: z.string().refine(val => !isNaN(Date.parse(val)), "Invalid date"),
+  dob: z.string().regex(/^\d{2}\/\d{2}\/\d{4}$/, "Date must be in DD/MM/YYYY format"),
   mobile: z.string().regex(/^\d{10}$/, "Mobile must be 10 digits"),
   fatherName: z.string().min(3, "Father/Husband name is required").max(255),
   email: z.string().email("Invalid email"),
   aadharNo: z.string().regex(/^\d{12}$/, "Aadhaar number must be 12 digits"),
   eligibility: z.string().min(1, 'Eligibility is required'),
   course: z.string().min(1, "Course is required")
+});
+
+export const studentRegistrationSchema = z.object({
+  session: z.string().min(1, 'Session is required'),
+  course: z.string().min(1, 'Course is required'),
+  eligibility: z.string().min(1, 'Eligibility is required'),
+  class: z.string().min(1, 'Class is required'),
+  fullName: z.string().min(3, 'Full name is required'),
+  fatherName: z.string().min(3, 'Father/Husband name is required'),
+  motherName: z.string().min(3, 'Mother name is required'),
+  gender: z.string().min(1, 'Gender is required'),
+  medium: z.string().optional(),
+  maritalStatus: z.string().optional(),
+  phoneNumber: z.string().regex(/^\d{10}$/, 'Phone number must be 10 digits'),
+  email: z.string().email('Invalid email'),
+  dateOfBirth: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Date of Birth is required'),
+  nationality: z.string().min(1, 'Nationality is required'),
+  religion: z.string().min(1, 'Religion is required'),
+  category: z.string().min(1, 'Category is required'),
+  minority: z.string().optional(),
+  disabilityStatus: z.string().optional(),
+  aadharNumber: z.union([z.string().regex(/^\d{12}$/, 'Aadhaar number must be 12 digits'), z.literal('')]).optional(),
+  currentAddress: z.string().min(1, 'Current address is required'),
+  currentState: z.string().min(1, 'Current state is required'),
+  currentDistrict: z.string().min(1, 'Current district is required'),
+  currentCity: z.string().min(1, 'Current city is required'),
+  currentPinCode: z.string().regex(/^\d{6}$/, 'Current PIN code must be 6 digits'),
+  permanentAddress: z.string().min(1, 'Permanent address is required'),
+  permanentState: z.string().min(1, 'Permanent state is required'),
+  permanentDistrict: z.string().min(1, 'Permanent district is required'),
+  permanentCity: z.string().min(1, 'Permanent city is required'),
+  permanentPinCode: z.string().regex(/^\d{6}$/, 'Permanent PIN code must be 6 digits'),
+  photo: z.any().optional(),
 });
 
 // --- Resources Schemas ---
@@ -63,7 +96,7 @@ export const updateStudentSchema = z.object({
   adhar_dob: z.string().min(1,"Aadhaar DOB is required"),
   aadhaar_verifed: z.string().min(1,"Aadhaar verified status is required"),
   sm_id: z.string().min(1,"SM ID is required"),
-});
+}).partial();
 
 export const updateStudentDataSchema = z.object({
   // p_mobile_no: z.string().min(1,"Primary mobile number is required"),
@@ -107,7 +140,7 @@ export const updateStudentDataSchema = z.object({
   blood_group: z.string().min(1,"Blood group is required"),
   guardian_mob: z.string().min(1,"Guardian mobile is required"),
   samagra_id: z.string().min(1,"Samagra ID is required"),
-});
+}).partial();
 
 export const studentFormSchema = z.object({
   student: updateStudentSchema,

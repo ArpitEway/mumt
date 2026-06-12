@@ -7,16 +7,27 @@ function getToken() {
 export async function api(path, options = {}) {
   console.log('API request', { url: `${API_URL}${path}`, options });
   const headers = {
-    'Content-Type': 'application/json',
     ...(options.headers || {})
   };
   const token = getToken();
   if (token) headers.Authorization = `Bearer ${token}`;
 
+  const isFormData = options.body instanceof FormData;
+  if (!isFormData && options.body && typeof options.body !== 'string' && !headers['Content-Type']) {
+    headers['Content-Type'] = 'application/json';
+  }
+  if (isFormData && headers['Content-Type']) {
+    delete headers['Content-Type'];
+  }
+
   const response = await fetch(`${API_URL}${path}`, {
     ...options,
     headers,
-    body: options.body && typeof options.body !== 'string' ? JSON.stringify(options.body) : options.body
+    body: isFormData
+      ? options.body
+      : options.body && typeof options.body !== 'string'
+      ? JSON.stringify(options.body)
+      : options.body
   });
 
   console.log('Response status', response.status);

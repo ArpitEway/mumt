@@ -1,252 +1,818 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { toast, Toaster } from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
+import { useNavigate, useParams } from 'react-router-dom';
 import { api, API_URL } from '../api/client.js';
+import { decodeId, encodeId } from '@mmyvv/shared/idEncryption';
+import { studentRegistrationSchema } from '@mmyvv/shared';
 import { useAuth } from '../state/AuthContext.jsx';
-import { useParams } from 'react-router-dom';
-import { StudentDashboardShell } from './StudentDashboard.jsx';
-import { studentFormSchema } from '@mmyvv/shared';
+import PageWrapper from '../components/PageWrapper.jsx';
+import SelectInput from '../components/forms/SelectInput.jsx';
+import RadioInput from '../components/forms/RadioInput.jsx';
 import TextInput from '../components/forms/TextInput.jsx';
-
-function displayValue(value) {
-  if (value === null || value === undefined || value === '') return '-';
-  return value;
-}
+import InputMask from 'react-input-mask';
 
 export default function StudentRegistrationPage() {
-  const { id } = useParams();
+  const navigate = useNavigate();
   const { user } = useAuth();
-  const studentId = id || user?.id;
-  const [formMeta, setFormMeta] = useState({
-    canEdit: false,
-    formStatus: 'N',
-    reviewMode: false,
-    fieldGroups: []
+  const { id } = useParams();
+  const studentId = decodeId(id) || user?.id;
+  const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
+  const [photoPreview, setPhotoPreview] = useState(null);
+  const [options, setOptions] = useState({
+    session: '2026',
+    eligibilities: [],
   });
-  const [formValues, setFormValues] = useState({
-    student: {},
-    student_data: {}
+  const [loadingOptions, setLoadingOptions] = useState(true);
+
+  const [formData, setFormData] = useState({
+    // Educational Details
+    session: '2026',
+    course: '',
+    courseGroupId: '',
+    eligibility: '',
+    class: '',
+    // Personal Details
+    fullName: '',
+    fatherName: '',
+    motherName: '',
+    gender: 'Male',
+    medium: 'English',
+    maritalStatus: 'Unmarried',
+    phoneNumber: '',
+    email: '',
+    dateOfBirth: '',
+    nationality: '',
+    religion: '',
+    category: '',
+    minority: 'Yes',
+    disabilityStatus: 'Yes',
+    aadharNumber: '',
+    // Current Address
+    currentAddress: '',
+    currentState: '',
+    currentDistrict: '',
+    currentCity: '',
+    currentPinCode: '',
+    // Permanent Address
+    permanentAddress: '',
+    permanentState: '',
+    permanentDistrict: '',
+    permanentCity: '',
+    permanentPinCode: '',
+    // Photo
+    photo: null,
   });
-  const [error, setError] = useState('');
-  const [message, setMessage] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [photoPath, setPhotoPath] = useState('');
-  const [photoFile, setPhotoFile] = useState(null);
-  const [fieldErrors, setFieldErrors] = useState({});
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
+  };
+
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Check file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setErrors(prev => ({ ...prev, photo: 'File size must be less than 5MB' }));
+        toast.error('File size must be less than 5MB');
+        return;
+      }
+      
+      // Check file type
+      if (!['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)) {
+        setErrors(prev => ({ ...prev, photo: 'Only JPEG and PNG files are allowed' }));
+        toast.error('Only JPEG and PNG files are allowed');
+        return;
+      }
+
+      setFormData(prev => ({ ...prev, photo: file }));
+      
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPhotoPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+      
+      if (errors.photo) setErrors(prev => ({ ...prev, photo: '' }));
+    }
+  };
+
+  const validateForm = () => {
+    const result = studentRegistrationSchema.safeParse(formData);
+    if (result.success) {
+      setErrors({});
+      return true;
+    }
+
+    const fieldErrors = result.error.flatten().fieldErrors;
+    const newErrors = {};
+    Object.keys(fieldErrors).forEach((field) => {
+      newErrors[field] = fieldErrors[field]?.[0] || 'Invalid value';
+    });
+
+    setErrors(newErrors);
+    return false;
+  };
+
+  useEffect(() => {
+    let active = true;
+    api('/registration/options')
+      .then((res) => {
+        if (!active) return;
+        setOptions({
+          session: res.session || '2026',
+          eligibilities: Array.isArray(res.eligibilities) ? res.eligibilities : [],
+        });
+      })
+      .catch((err) => {
+        console.error('Failed to load registration options:', err);
+      })
+      .finally(() => {
+        if (active) setLoadingOptions(false);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const selectedEligibility = useMemo(
+    () => options.eligibilities.find((item) => item.name === formData.eligibility),
+    [formData.eligibility, options.eligibilities]
+  );
+
+ 
+
+  const courseOptions = selectedEligibility?.courses || [];
+  const selectedCourse = useMemo(
+    () => courseOptions.find((course) => String(course.id) === String(formData.courseGroupId) || course.name === formData.course),
+    [formData.courseGroupId, formData.course, courseOptions]
+  );
+  console.log('Selected course based on courseGroupId or course name:', selectedCourse);
 
   useEffect(() => {
     if (!studentId) return;
-    loadForm();
+
+    setIsFetching(true);
+    api(`/students/${studentId}/form`)
+      .then((res) => {
+        const fieldValues = {};
+        (res.fieldGroups || []).forEach((group) => {
+          (group.fields || []).forEach((field) => {
+            fieldValues[field.name] = field.value;
+          });
+        });
+
+        const normalizedDob = fieldValues.dob ? String(fieldValues.dob).split('T')[0] : '';
+        setFormData((prev) => ({
+          ...prev,
+          session: fieldValues.session || prev.session,
+          course: fieldValues.course_name || prev.course,
+          eligibility: fieldValues.eligibility || prev.eligibility,
+          courseGroupId: fieldValues.course_group_id ? String(fieldValues.course_group_id) : prev.courseGroupId,
+          class: fieldValues.class_name || prev.class,
+          fullName: fieldValues.name || prev.fullName,
+          fatherName: fieldValues.f_h_name || prev.fatherName,
+          motherName: fieldValues.mother_name || prev.motherName,
+          gender: fieldValues.gender || prev.gender,
+          phoneNumber: fieldValues.p_mobile_no || prev.phoneNumber,
+          email: fieldValues.p_email || prev.email,
+          dateOfBirth: normalizedDob || prev.dateOfBirth,
+          nationality: fieldValues.nationality || prev.nationality,
+          religion: fieldValues.religion || prev.religion,
+          category: fieldValues.category || prev.category,
+          disabilityStatus: fieldValues.p_handicapped || prev.disabilityStatus,
+          aadharNumber: fieldValues.adhar_no || prev.aadharNumber,
+          currentAddress: fieldValues.c_address || prev.currentAddress,
+          currentState: fieldValues.c_state || prev.currentState,
+          currentDistrict: fieldValues.c_district || prev.currentDistrict,
+          currentCity: fieldValues.c_city || prev.currentCity,
+          currentPinCode: fieldValues.c_pin_code || prev.currentPinCode,
+          permanentAddress: fieldValues.p_address || prev.permanentAddress,
+          permanentState: fieldValues.p_state || prev.permanentState,
+          permanentDistrict: fieldValues.p_district || prev.permanentDistrict,
+          permanentCity: fieldValues.p_city || prev.permanentCity,
+          permanentPinCode: fieldValues.p_pin_code || prev.permanentPinCode,
+        }));
+
+        if (res.photo) {
+          const baseUrl = API_URL.replace(/\/api$/, '');
+          setPhotoPreview(res.photo.startsWith('http') ? res.photo : `${baseUrl}${res.photo}`);
+        }
+      })
+      .catch((err) => {
+        console.error('Failed to load student registration data:', err);
+      })
+      .finally(() => {
+        setIsFetching(false);
+      });
   }, [studentId]);
 
-  async function loadForm() {
-    try {
-      setLoading(true);
-      setError('');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-      const response = await api(`/students/${studentId}/form`);
-      setFormMeta({
-        canEdit: Boolean(response?.canEdit),
-        formStatus: response?.formStatus || 'N',
-        reviewMode: Boolean(response?.reviewMode),
-        fieldGroups: response?.fieldGroups || []
-      });
-      setPhotoPath(response?.photo || '');
-      // Aggregate fields from all groups (Admission Details, Personal Details, etc.)
-      const studentEntries = [];
-      const studentDataEntries = [];
-      response?.fieldGroups?.forEach((group) => {
-        if (group.table === 'student') {
-          group.fields?.forEach((f) => studentEntries.push([f.name, f.value ?? '']));
-        } else if (group.table === 'student_data') {
-          group.fields?.forEach((f) => studentDataEntries.push([f.name, f.value ?? '']));
+    if (!studentId) {
+      const message = 'Student ID is not available for registration update';
+      setErrors({ submit: message });
+      toast.error(message);
+      return;
+    }
+
+    if (!validateForm()) {
+      toast.error('Please correct the highlighted errors');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const payload = {
+        student: {
+          session: formData.session,
+          course_name: selectedCourse ? selectedCourse.name : formData.course,
+          course_group_id: formData.courseGroupId || undefined,
+          class_name: formData.class,
+          eligibility: formData.eligibility,
+          name: formData.fullName,
+          f_h_name: formData.fatherName,
+          mother_name: formData.motherName,
+          gender: formData.gender,
+          dob: formData.dateOfBirth,
+          category: formData.category,
+          permanent_resident: '',
+          adhar_no: formData.aadharNumber,
+        },
+        student_data: {
+          nationality: formData.nationality,
+          religion: formData.religion,
+          p_mobile_no: formData.phoneNumber,
+          p_email: formData.email,
+          c_address: formData.currentAddress,
+          c_state: formData.currentState,
+          c_district: formData.currentDistrict,
+          c_city: formData.currentCity,
+          c_pin_code: formData.currentPinCode,
+          p_address: formData.permanentAddress,
+          p_state: formData.permanentState,
+          p_district: formData.permanentDistrict,
+          p_city: formData.permanentCity,
+          p_pin_code: formData.permanentPinCode,
+          p_handicapped: formData.disabilityStatus,
         }
-      });
-      const newFormValues = {
-        student: Object.fromEntries(studentEntries),
-        student_data: Object.fromEntries(studentDataEntries)
       };
-      setFormValues(newFormValues);
-      console.log('Form values set to', newFormValues);
-      console.log('Full response', response);
-    } catch (err) {
-      setError(err.message || 'Failed to load registration form');
-    } finally {
-      setLoading(false);
-    }
-  }
 
-  function updateFormField(table, field, value) {
-    setFormValues((current) => ({
-      ...current,
-      [table]: {
-        ...current[table],
-        [field]: value
-      }
-    }));
-  }
+      await api(`/students/${studentId}/form`, {
+        method: 'PUT',
+        body: payload,
+      });
 
-  const formPayload = useMemo(() => ({
-    student: formValues.student || {},
-    student_data: formValues.student_data || {}
-  }), [formValues]);
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-    try {
-      setError('');
-      setMessage('');
-
-      if (photoFile) {
-        const body = new FormData();
-        body.append('photo', photoFile);
-        const token = localStorage.getItem('mumt_token');
-        const response = await fetch(`${API_URL}/students/${studentId}/photo`, {
+      if (formData.photo) {
+        const photoForm = new FormData();
+        photoForm.append('photo', formData.photo);
+        await api(`/students/${studentId}/photo`, {
           method: 'POST',
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
-          body
+          body: photoForm,
         });
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(data.message || 'Could not upload photograph');
-        }
-        setPhotoPath(data.photo || '');
       }
 
-   
-        // Validate payload against schema
-        const validationResult = studentFormSchema.safeParse(formPayload);
-        if (!validationResult.success) {
-          const rawFieldErrs = validationResult.error.format();
-          console.log('DEBUG: Zod raw errors →', rawFieldErrs);
-
-          const flattenErrors = (obj, prefix = '') => {
-  const out = {};
-
-  for (const [key, value] of Object.entries(obj)) {
-    if (key === '_errors') {
-      if (value.length > 0 && prefix) {
-        out[prefix] = value;
-      }
-      continue;
-    }
-
-    const path = prefix ? `${prefix}.${key}` : key;
-
-    if (typeof value === 'object' && value !== null) {
-      Object.assign(out, flattenErrors(value, path));
-    }
-  }
-
-  return out;
-};
-
-          const fieldErrs = flattenErrors(rawFieldErrs);
-          console.log(flattenErrors(validationResult.error.format()));
-          console.log('DEBUG: flattened errors →', fieldErrs);
-          setFieldErrors(fieldErrs);
-          console.log('DEBUG: setFieldErrors called with', fieldErrs);
-          toast.error('Please correct the highlighted errors.');
-          return;
-        }
-        // ---------------------------------------------------------------------
-
-        const response = await api(`/students/${studentId}/form`, {
-          method: 'PUT',
-          body: formPayload
-        });
-      setMessage(response.message || 'Registration form submitted');
-      await loadForm();
+      toast.success('Registration form saved successfully');
+      navigate(`/student-dashboard/${id || encodeId(studentId)}`);
     } catch (err) {
-      setError(err.message || 'Could not submit form');
-      if (err.details) setFieldErrors(err.details); else setFieldErrors({});
+      const errorMessage = err.message || 'Failed to submit form';
+      setErrors({ submit: errorMessage });
+      toast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
-  }
+  };
 
-  if (loading) return <div className="empty-state">Loading registration form...</div>;
+  return (
+    <PageWrapper>
+      <div className="max-w-7xl mx-auto p-4">
+        <div className="bg-white rounded-lg shadow-md">
+          <div className="mb-6 px-6 pt-6">
+            <h1 className="text-2xl font-bold text-gray-800">Registration Form</h1>
+            <p className="text-gray-600 text-sm mt-1">Fill in all the required fields marked with <span className="text-red-500">*</span></p>
+          </div>
 
-  const content = (
-    <div className="dashboard-card student-page-card">
-      <Toaster />
-      <div className="student-page-header">
-        <div>
-          <span className="eyebrow">Registration</span>
-          <h2>{formMeta.canEdit ? 'Edit Form' : 'Review Form'}</h2>
-          <p>{formMeta.canEdit ? 'Form status: Pending' : 'Form status: Under Review'}</p>
+          <form onSubmit={handleSubmit} className="px-6 pb-6">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+              {/* Main form content - takes 3 columns */}
+              <div className="lg:col-span-3 space-y-6">
+                {/* Educational Details */}
+                <div className="border-b pb-6">
+                  <h2 className="text-lg font-bold text-gray-800 mb-4">Educational Details</h2>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <SelectInput
+                        label="Session *"
+                        name="session"
+                        value={formData.session}
+                        onChange={handleChange}
+                        options={[
+                          { value: '2026', label: '2026' },
+                          { value: '2025', label: '2025' },
+                          { value: '2024', label: '2024' },
+                        ]}
+                        error={errors.session}
+                        className="focus:outline-none focus:ring-2 focus:ring-primary-300"
+                      />
+                    </div>
+                    <div>
+                      <SelectInput
+                        label="Eligibility *"
+                        name="eligibility"
+                        value={formData.eligibility}
+                        onChange={(e) => {
+                          handleChange(e);
+                          setFormData((prev) => ({ ...prev, course: '' }));
+                        }}
+                        options={
+                          [{ value: '', label: loadingOptions ? 'Loading eligibilities...' : 'Select Eligibility' }]
+                            .concat(options.eligibilities.map((item) => ({ value: item.name, label: item.name })))
+                        }
+                        error={errors.eligibility}
+                        className="focus:outline-none focus:ring-2 focus:ring-primary-300"
+                      />
+                    </div>
+                    <div>
+                      <SelectInput
+                          label="Course *"
+                          name="course"
+                          value={selectedCourse ? String(selectedCourse.id) : formData.courseGroupId || ''}
+                          onChange={(e) => {
+                            const selectedId = e.target.value;
+                            const found = courseOptions.find(c => String(c.id) === String(selectedId));
+                            setFormData(prev => ({ ...prev, courseGroupId: selectedId, course: found ? found.name : '' }));
+                          }}
+                          options={
+                            [{ value: '', label: loadingOptions ? 'Loading courses...' : 'Select Course' }]
+                              .concat(courseOptions.map((course) => ({ value: String(course.id), label: course.name || course.label })))
+                          }
+                          error={errors.course}
+                          className="focus:outline-none focus:ring-2 focus:ring-primary-300"
+                          disabled={!formData.eligibility}
+                        />
+                    </div>
+                    <div>
+                      <SelectInput
+                        label="Class *"
+                        name="class"
+                        value={formData.class}
+                        onChange={handleChange}
+                        options={[
+                          { value: '', label: 'Select Class' },
+                          { value: 'I-BM', label: 'I-BM' },
+                          { value: 'I-CS', label: 'I-CS' },
+                          { value: 'I-EC', label: 'I-EC' },
+                        ]}
+                        error={errors.class}
+                        className="focus:outline-none focus:ring-2 focus:ring-primary-300"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Personal Details */}
+                <div className="border-b pb-6">
+                  <h2 className="text-lg font-bold text-gray-800 mb-4">Personal Details</h2>
+                  
+                  <div className="grid grid-cols-3 gap-4 mb-4">
+                    <div>
+                      <TextInput
+                        label="Student Name *"
+                        name="fullName"
+                        placeholder="Full Name"
+                        value={formData.fullName}
+                        onChange={handleChange}
+                        error={errors.fullName}
+                      />
+                    </div>
+                     <div>
+                      <TextInput
+                        label="Father / Husband Name *"
+                        name="fatherName"
+                        value={formData.fatherName}
+                        onChange={handleChange}
+                        error={errors.fatherName}
+                      />
+                    </div>
+                    <div>
+                      <TextInput
+                        label="Mother's Name *"
+                        name="motherName"
+                        value={formData.motherName}
+                        onChange={handleChange}
+                        error={errors.motherName}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-4 gap-4 mb-4">
+                    <RadioInput
+                      label="Gender *"
+                      name="gender"
+                      value={formData.gender}
+                      onChange={handleChange}
+                      options={[
+                        { value: 'Male', label: 'Male' },
+                        { value: 'Female', label: 'Female' },
+                      ]}
+                      error={errors.gender}
+                      className="lg:col-span-1"
+                    />
+                    <div>
+                      {/* <SelectInput
+                        label="Medium"
+                        name="medium"
+                        value={formData.medium}
+                        onChange={handleChange}
+                        options={[
+                          { value: '', label: 'Select' },
+                          { value: 'English', label: 'English' },
+                          { value: 'Hindi', label: 'Hindi' },
+                        ]}
+                        className="focus:outline-none focus:ring-2 focus:ring-primary-300"
+                      /> */}
+                       <RadioInput
+                      label="Medium *"
+                      name="medium"
+                      value={formData.medium}
+                      onChange={handleChange}
+                      options={[
+                      { value: 'English', label: 'English' },
+                          { value: 'Hindi', label: 'Hindi' },
+                      ]}
+                      error={errors.medium}
+                      className="lg:col-span-1"
+                    />
+                    </div>
+                    <div>
+                      {/* <SelectInput
+                        label="Marital Status"
+                        name="maritalStatus"
+                        value={formData.maritalStatus}
+                        onChange={handleChange}
+                        options={[
+                          { value: '', label: 'Select' },
+                          { value: 'Unmarried', label: 'Unmarried' },
+                          { value: 'Married', label: 'Married' },
+                        ]}
+                        className="focus:outline-none focus:ring-2 focus:ring-primary-300"
+                      /> */}
+                        <RadioInput
+                      label="Marital Status"
+                        name="maritalStatus"
+                        value={formData.maritalStatus}
+                        onChange={handleChange}
+                        options={[
+                          { value: 'Unmarried', label: 'Unmarried' },
+                          { value: 'Married', label: 'Married' },
+                        ]}
+                      error={errors.maritalStatus}
+                      className="lg:col-span-1"
+                    />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-4 mb-4">
+                    <div>
+                      <TextInput
+                        label="Mobile No. *"
+                        name="phoneNumber"
+                        placeholder="10 digits"
+                        value={formData.phoneNumber}
+                        onChange={handleChange}
+                        error={errors.phoneNumber}
+                        type="tel"
+                      />
+                    </div>
+                    <div>
+                      <TextInput
+                        label="Email *"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        error={errors.email}
+                        type="email"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">Date of Birth <span className="text-red-500">*</span></label>
+                      <InputMask
+                        mask="9999-99-99"
+                        value={formData.dateOfBirth}
+                        onChange={handleChange}
+                        name="dateOfBirth"
+                      >
+                        {(inputProps) => (
+                          <input
+                            {...inputProps}
+                            type="text"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-300"
+                            placeholder="YYYY-MM-DD"
+                          />
+                        )}
+                      </InputMask>
+                      {errors.dateOfBirth && <p className="text-red-500 text-sm mt-1">{errors.dateOfBirth}</p>}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-4 mb-4">
+                    <div>
+                      <SelectInput
+                        label="Nationality *"
+                        name="nationality"
+                        value={formData.nationality}
+                        onChange={handleChange}
+                        options={[
+                          { value: '', label: 'Select' },
+                          { value: 'Indian', label: 'Indian' },
+                          { value: 'Other', label: 'Other' },
+                        ]}
+                        error={errors.nationality}
+                        className="focus:outline-none focus:ring-2 focus:ring-primary-300"
+                      />
+                    </div>
+                    <div>
+                      <SelectInput
+                        label="Religion *"
+                        name="religion"
+                        value={formData.religion}
+                        onChange={handleChange}
+                        options={[
+                          { value: '', label: 'Select' },
+                          { value: 'Hindu', label: 'Hindu' },
+                          { value: 'Muslim', label: 'Muslim' },
+                          { value: 'Christian', label: 'Christian' },
+                          { value: 'Sikh', label: 'Sikh' },
+                          { value: 'Other', label: 'Other' },
+                        ]}
+                        error={errors.religion}
+                        className="focus:outline-none focus:ring-2 focus:ring-primary-300"
+                      />
+                    </div>
+                     <div>
+                      <SelectInput
+                        label="Category *"
+                        name="category"
+                        value={formData.category}
+                        onChange={handleChange}
+                        options={[
+                          { value: '', label: 'Select' },
+                          { value: 'General', label: 'General' },
+                          { value: 'OBC', label: 'OBC' },
+                          { value: 'SC', label: 'SC' },
+                          { value: 'ST', label: 'ST' },
+                        ]}
+                        error={errors.category}
+                        className="focus:outline-none focus:ring-2 focus:ring-primary-300"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-4 mb-4">
+                   
+                    <RadioInput
+                      label="Minority Status"
+                      name="minority"
+                      value={formData.minority}
+                      onChange={handleChange}
+                      options={[
+                        { value: 'Yes', label: 'Yes' },
+                        { value: 'No', label: 'No' },
+                      ]}
+                      className="lg:col-span-1"
+                    />
+                    <RadioInput
+                      label="Person with Disability"
+                      name="disabilityStatus"
+                      value={formData.disabilityStatus}
+                      onChange={handleChange}
+                      options={[
+                        { value: 'Yes', label: 'Yes' },
+                        { value: 'No', label: 'No' },
+                      ]}
+                      className="lg:col-span-1"
+                    />
+                     <TextInput
+                      label="Aadhar Number"
+                      name="aadharNumber"
+                      placeholder="12 digits"
+                      value={formData.aadharNumber}
+                      onChange={handleChange}
+                      error={errors.aadharNumber}
+                    />
+                  </div>
+
+                </div>
+
+                {/* Current Address */}
+                <div className="border-b pb-6">
+                  <h2 className="text-lg font-bold text-gray-800 mb-4">Current Address of Student</h2>
+                  <div className="mb-4">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Address *</label>
+                    <textarea
+                      name="currentAddress"
+                      rows="2"
+                      value={formData.currentAddress}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-300"
+                    />
+                    {errors.currentAddress && <p className="text-red-500 text-sm mt-1">{errors.currentAddress}</p>}
+                  </div>
+                  <div className="grid grid-cols-4 gap-4">
+                    <div>
+                      <TextInput
+                        label="State *"
+                        name="currentState"
+                        value={formData.currentState}
+                        onChange={handleChange}
+                        error={errors.currentState}
+                      />
+                    </div>
+                    <div>
+                      <TextInput
+                        label="District *"
+                        name="currentDistrict"
+                        value={formData.currentDistrict}
+                        onChange={handleChange}
+                        error={errors.currentDistrict}
+                      />
+                    </div>
+                    <div>
+                      <TextInput
+                        label="City *"
+                        name="currentCity"
+                        value={formData.currentCity}
+                        onChange={handleChange}
+                        error={errors.currentCity}
+                      />
+                    </div>
+                    <div>
+                      <TextInput
+                        label="Pin Code *"
+                        name="currentPinCode"
+                        placeholder="6 digits"
+                        value={formData.currentPinCode}
+                        onChange={handleChange}
+                        error={errors.currentPinCode}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Permanent Address */}
+                <div className="border-b pb-6">
+                  <h2 className="text-lg font-bold text-gray-800 mb-4">Permanent Address of Student</h2>
+                  <div className="mb-4">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Address *</label>
+                    <textarea
+                      name="permanentAddress"
+                      rows="2"
+                      value={formData.permanentAddress}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-300"
+                    />
+                    {errors.permanentAddress && <p className="text-red-500 text-sm mt-1">{errors.permanentAddress}</p>}
+                  </div>
+                  <div className="grid grid-cols-4 gap-4">
+                    <div>
+                      <TextInput
+                        label="State *"
+                        name="permanentState"
+                        value={formData.permanentState}
+                        onChange={handleChange}
+                        error={errors.permanentState}
+                      />
+                    </div>
+                    <div>
+                      <TextInput
+                        label="District *"
+                        name="permanentDistrict"
+                        value={formData.permanentDistrict}
+                        onChange={handleChange}
+                        error={errors.permanentDistrict}
+                      />
+                    </div>
+                    <div>
+                      <TextInput
+                        label="City *"
+                        name="permanentCity"
+                        value={formData.permanentCity}
+                        onChange={handleChange}
+                        error={errors.permanentCity}
+                      />
+                    </div>
+                    <div>
+                      <TextInput
+                        label="Pin Code *"
+                        name="permanentPinCode"
+                        placeholder="6 digits"
+                        value={formData.permanentPinCode}
+                        onChange={handleChange}
+                        error={errors.permanentPinCode}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Error Message */}
+                {errors.submit && (
+                  <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                    {errors.submit}
+                  </div>
+                )}
+
+                {/* Form Buttons */}
+                <div className="flex gap-4 pt-6">
+                  <button
+                    type="button"
+                    onClick={() => navigate(-1)}
+                    className="flex-1 px-6 py-2 border border-gray-300 text-gray-700 font-semibold rounded hover:bg-gray-50 transition"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isLoading || isFetching}
+                    className="flex-1 px-6 py-2 bg-primary-300 text-white font-semibold rounded hover:bg-primary-400 transition disabled:opacity-50"
+                  >
+                    {isLoading || isFetching ? 'Saving...' : 'Submit Application'}
+                  </button>
+                </div>
+              </div>
+
+              {/* Photo Upload - Right Side Column */}
+              <div className="lg:col-span-1">
+                <div className="bg-primary-50 rounded-lg p-6 sticky top-8 border border-primary-100">
+                  <h3 className="text-lg font-bold text-gray-800 mb-4">Student Photo</h3>
+                  
+                  {photoPreview ? (
+                    <div className="mb-4">
+                      <img 
+                        src={photoPreview} 
+                        alt="Preview" 
+                        className="w-full aspect-square object-cover rounded-lg border-2 border-primary-300"
+                      />
+                    </div>
+                  ) : (
+                    <div className="mb-4 w-full aspect-square bg-gray-200 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center">
+                      <div className="text-center">
+                        <svg className="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                        </svg>
+                        <p className="text-sm text-gray-500">No photo</p>
+                      </div>
+                    </div>
+                  )}
+
+                  <label className="block">
+                    <input
+                      type="file"
+                      name="photo"
+                      accept="image/jpeg,image/png,image/jpg"
+                      onChange={handlePhotoChange}
+                      className="hidden"
+                    />
+                    <span className="block w-full px-4 py-2 bg-primary-300 text-white text-center font-semibold rounded-lg cursor-pointer hover:bg-primary-400 transition">
+                      Choose Photo
+                    </span>
+                  </label>
+
+                  {photoPreview && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFormData(prev => ({ ...prev, photo: null }));
+                        setPhotoPreview(null);
+                      }}
+                      className="w-full mt-2 px-4 py-2 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition"
+                    >
+                      Remove Photo
+                    </button>
+                  )}
+
+                  {errors.photo && <p className="text-red-500 text-sm mt-2">{errors.photo}</p>}
+
+                  <div className="mt-6 p-4 bg-white rounded-lg border border-primary-200">
+                    <p className="text-xs text-slate-700">
+                      <strong>Requirements:</strong>
+                      <br />• JPG or PNG format
+                      <br />• Max size: 5MB
+                      <br />• Aspect Ratio: 1:1
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
-        <div className="payment-badge">{formMeta.canEdit ? 'Editable' : 'Locked for Review'}</div>
       </div>
-      {error && <div className="alert">{error}</div>}
-      {message && <div className="alert success-alert">{message}</div>}
-      <form onSubmit={handleSubmit} className="student-form-stack">
-        <section className="form-band">
-          <h2>Photograph</h2>
-          <div className="register-grid">
-            <div className="register-field">
-              <label htmlFor="student-photo">Upload Photograph</label>
-              {photoPath ? (
-                <div className="student-photo-preview-wrap">
-                  <img className="student-photo-preview" src={`${API_URL.replace('/api', '')}${photoPath}`} alt="Student photograph" />
-                </div>
-              ) : (
-                <div className="register-readonly-field">No photograph uploaded</div>
-              )}
-
-              {formMeta.canEdit && (
-                <input
-                  id="student-photo"
-                  type="file"
-                  accept="image/*"
-                  onChange={(event) => setPhotoFile(event.target.files?.[0] || null)}
-                />
-              )}
-            </div>
-          </div>
-        </section>
-
-        {formMeta.fieldGroups.map((group, index) => (
-          
-          <section className="form-band" key={`${group.table}-${index}`} >
-            <h2>{group.title}</h2>
-
-            <div className="register-grid">
-              {group.fields.map((field) => (
-                <div className="register-field" key={`${group.table}-${field.name}`}>
-                  {formMeta.canEdit ? (
-  <TextInput
-    label={field.label}
-    name={`${group.table}-${field.name}`}
-    type={field.type || 'text'}
-    value={formValues[group.table]?.[field.name] || ''}
-    onChange={(event) =>
-      updateFormField(field.table || group.table, field.name, event.target.value)
-    }
-    error={fieldErrors[`${group.table}.${field.name}`]?.join(', ')}
-  />
-) : (
-  <div className="register-readonly-field">
-    {displayValue(field.value)}
-  </div>
-)}
-                </div>
-              ))}
-            </div>
-          </section>
-        ))}
-
-        {formMeta.canEdit && (
-          <div className="form-actions">
-            <button className="primary-button" type="submit">
-              Submit Form
-            </button>
-          </div>
-        )}
-      </form>
-    </div>
+    </PageWrapper>
   );
-
-  if (id) {
-    return <StudentDashboardShell studentId={studentId}>{content}</StudentDashboardShell>;
-  }
-
-  return content;
 }
+

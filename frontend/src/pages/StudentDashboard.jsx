@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../state/AuthContext.jsx';
 import { api } from '../api/client.js';
+import { decodeId, encodeId } from '@mmyvv/shared/idEncryption';
 import PageWrapper from '../components/PageWrapper.jsx';
 
 export function StudentDashboardShell({ children, studentId }) {
@@ -51,7 +52,7 @@ export function StudentDashboardShell({ children, studentId }) {
   const topActions = (
     <>
       <NavLink
-        to={studentId ? `/student-dashboard/${studentId}` : '/'}
+        to={studentId ? `/student-dashboard/${encodeId(studentId)}` : '/'}
         className="site-header-button"
       >
         Dashboard
@@ -148,13 +149,13 @@ export default function StudentDashboard() {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const studentId = id || user?.id;
+  const studentId = decodeId(id) || user?.id;
 
   const items = studentId
     ? [
-        { id: 1, label: 'Registration', link: `/students/registration/${studentId}` },
-        { id: 2, label: 'Document', link: `/students/documents/${studentId}` },
-        { id: 3, label: 'Payment', link: `/students/payments/${studentId}` }
+        { id: 1, label: 'Registration', link: `/students/registration/${encodeId(studentId)}` },
+        { id: 2, label: 'Document', link: `/students/documents/${encodeId(studentId)}` },
+        { id: 3, label: 'Payment', link: `/students/payments/${encodeId(studentId)}` }
       ]
     : [
         { id: 1, label: 'Registration', link: '/students/registration' },

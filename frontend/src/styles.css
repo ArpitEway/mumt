@@ -72,6 +72,73 @@ a {
   .btn-primary {
     @apply inline-flex w-full items-center justify-center rounded-3xl bg-primary-400 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-primary-500/20 transition hover:bg-primary-500;
   }
+
+  /* Custom radio styles to match design */
+  .custom-radio {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 9999px;
+    border: 2px solid #d9d9d9;
+    background-clip: content-box;
+    padding: 2px;
+    display: inline-block;
+    position: relative;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+
+  .custom-radio:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(12, 184, 183, 0.08);
+    border-color: rgba(12, 184, 183, 0.4);
+  }
+
+  .custom-radio::after {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 9999px;
+    background: transparent;
+    margin: 0 auto;
+    transform: translateY(0);
+    transition: background 0.12s ease, transform 0.12s ease;
+  }
+
+  .custom-radio:checked {
+    border-color: #06b8b7; /* teal ring */
+    background-color: transparent;
+  }
+
+  .custom-radio:checked::after {
+    background: #06b8b7; /* teal inner dot */
+  }
+ 
+
+  /* spacing tweaks for radio labels */
+  .form-field .flex.items-center { /* target radio label wrapper */
+    align-items: center;
+  }
+
+  /* Ensure radio option text stays inline with the circle */
+  .radio-option {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+
+  .radio-option .radio-label {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .custom-radio {
+    vertical-align: middle;
+  }
 }
 
 button {

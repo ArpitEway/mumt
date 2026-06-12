@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth, isAdmin } from '../state/AuthContext.jsx';
+import { encodeId } from '@mmyvv/shared/idEncryption';
 
 export const Spinner = () => (
   <svg className="animate-spin h-8 w-8 text-primary-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -17,7 +18,7 @@ export default function PageWrapper({ children }) {
       logout();
       navigate('/login');
     };
-  const homeLink = user?.role === 'student' ? `/student-dashboard/${user.id}` : '/';
+  const homeLink = user?.role === 'student' ? `/student-dashboard/${encodeId(user.id)}` : '/';
 
   return (
     <div className="min-h-screen flex flex-col justify-between bg-gradient-to-r from-primary-100 to-primary-50">

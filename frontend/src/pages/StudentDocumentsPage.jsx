@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-hot-toast';
 import { api, API_URL } from '../api/client.js';
 import { useAuth } from '../state/AuthContext.jsx';
 import { useParams } from 'react-router-dom';
 import { StudentDashboardShell } from './StudentDashboard.jsx';
+import { decodeId } from '@mmyvv/shared/idEncryption';
 
 export default function StudentDocumentsPage() {
   const { id } = useParams();
   const { user } = useAuth();
-  const studentId = id || user?.id;
+  const studentId = decodeId(id) || user?.id;
   const [documents, setDocuments] = useState({ required: [], uploaded: [] });
   const [uploadFiles, setUploadFiles] = useState({});
   const [error, setError] = useState('');
@@ -36,7 +38,9 @@ export default function StudentDocumentsPage() {
     try {
       const file = uploadFiles[documentItem.id];
       if (!file) {
-        setError('Please choose a file first');
+        const errorMessage = 'Please choose a file first';
+        setError(errorMessage);
+        toast.error(errorMessage);
         return;
       }
 
@@ -60,10 +64,14 @@ export default function StudentDocumentsPage() {
         throw new Error(data.message || 'Upload failed');
       }
 
-      setMessage(data.message || 'Document uploaded');
+      const successMessage = data.message || 'Document uploaded';
+      setMessage(successMessage);
+      toast.success(successMessage);
       await loadDocuments();
     } catch (err) {
-      setError(err.message || 'Upload failed');
+      const errorMessage = err.message || 'Upload failed';
+      setError(errorMessage);
+      toast.error(errorMessage);
     }
   }
 

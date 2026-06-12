@@ -4,6 +4,10 @@
   "version": "1.0.0",
   "main": "schemas.js",
   "type": "module",
+  "exports": {
+    ".": "./schemas.js",
+    "./idEncryption": "./idEncryption.js"
+  },
   "dependencies": {
     "zod": "^3.22.4"
   }

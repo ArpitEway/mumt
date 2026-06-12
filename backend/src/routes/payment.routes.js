@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { query, transaction } from '../config/db.js';
+import { decodeId } from '@mmyvv/shared/idEncryption';
 
 const router = Router();
 
@@ -8,7 +9,10 @@ const router = Router();
 ========================= */
 router.get('/:studentId', async (req, res, next) => {
   try {
-    const { studentId } = req.params;
+    const studentId = decodeId(req.params.studentId);
+    if (!studentId) {
+      return res.status(400).json({ message: 'Invalid student id' });
+    }
     console.log("PAYMENT GET studentId:", studentId, typeof studentId);
 
     const rows = await query(
@@ -65,7 +69,10 @@ router.get('/:studentId', async (req, res, next) => {
 ========================= */
 router.post('/:studentId/pay', async (req, res, next) => {
   try {
-    const { studentId } = req.params;
+    const studentId = decodeId(req.params.studentId);
+    if (!studentId) {
+      return res.status(400).json({ message: 'Invalid student id' });
+    }
 
     const rows = await query(
       `SELECT 
@@ -192,7 +199,7 @@ router.post('/:studentId/pay', async (req, res, next) => {
     res.status(201).json({
       ...result,
       studentId: Number(studentId),
-      redirectTo: `/student-dashboard/${studentId}`
+      redirectTo: `/student-dashboard/${encodeId(studentId)}`
     });
 
   } catch (error) {

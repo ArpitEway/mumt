@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import InputMask from 'react-input-mask';
 import { useNavigate, Link } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 import { useAuth } from '../state/AuthContext.jsx';
 import { loginSchema } from '@mmyvv/shared';
+import { encodeId } from '@mmyvv/shared/idEncryption';
 
 export default function Login() {
   const [formData, setFormData] = useState({  mobileNo: '', enrollmentNo: '', dob: '' });
@@ -44,9 +46,12 @@ export default function Login() {
       }
 
       const user = await login(payload);
-      navigate(`/student-dashboard/${user.id}`); // navigate using logged-in user ID
+      toast.success('Login successful');
+      navigate(`/student-dashboard/${encodeId(user.id)}`);
     } catch (err) {
-      setErrors({ submit: err.message || 'Login failed' });
+      const message = err.message || 'Login failed';
+      toast.error(message);
+      setErrors({ submit: message });
     } finally {
       setIsLoading(false);
     }

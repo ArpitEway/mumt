@@ -1,18 +1,31 @@
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-hot-toast';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { api } from '../api/client';
+import { decodeId, encodeId } from '@mmyvv/shared/idEncryption';
 import PageWrapper from '../components/PageWrapper.jsx';
 
 export default function Payment() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const studentId = id ? decodeId(id) : null;
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    if (!id) return setError('Missing student id');
+    if (!id) {
+      setError('Missing student id');
+      setLoading(false);
+      return;
+    }
+
+    if (!studentId) {
+      setError('Invalid student id');
+      setLoading(false);
+      return;
+    }
 
     setLoading(true);
 
@@ -26,15 +39,25 @@ export default function Payment() {
       .finally(() => {
         setLoading(false);
       });
-  }, [id]);
+  }, [id, studentId]);
 
   function handlePayNow() {
+    if (!studentId) {
+      const message = 'Invalid student id';
+      setError(message);
+      toast.error(message);
+      return;
+    }
+
     api(`/payment/${id}/pay`, { method: 'POST' })
       .then((res) => {
-        navigate(res.redirectTo || `/student-dashboard/${id}`);
+        toast.success('Payment completed successfully');
+        navigate(res.redirectTo || `/student-dashboard/${encodeId(studentId)}`);
       })
       .catch((err) => {
-        setError(err.message || 'Payment failed');
+        const message = err.message || 'Payment failed';
+        setError(message);
+        toast.error(message);
       });
   }
 

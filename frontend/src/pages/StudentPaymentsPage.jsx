@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { toast } from 'react-hot-toast';
 import { api } from '../api/client.js';
 import { useAuth } from '../state/AuthContext.jsx';
 import { useParams } from 'react-router-dom';
 import { StudentDashboardShell } from './StudentDashboard.jsx';
+import { decodeId } from '@mmyvv/shared/idEncryption';
 
 const paymentDetailFields = [
   ['payment_date', 'Payment Date'],
@@ -26,7 +28,7 @@ function displayValue(value) {
 export default function StudentPaymentsPage() {
   const { id } = useParams();
   const { user } = useAuth();
-  const studentId = id || user?.id;
+  const studentId = decodeId(id) || user?.id;
   const [payments, setPayments] = useState([]);
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [error, setError] = useState('');
