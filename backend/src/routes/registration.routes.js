@@ -23,54 +23,74 @@ function normalizeCategory(value) {
   return 'UG';
 }
 
-async function getCourseGroups() {
+async function getCourseGroupMetadata() {
   const groupColumns = await query(
     `SELECT COLUMN_NAME AS name
      FROM INFORMATION_SCHEMA.COLUMNS
-     WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'course_group'`
+     WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = :table`,
+    { table: 'course_group' }
   );
-  const groupColumnNames = new Set(groupColumns.map((column) => column.name));
+  const columnNames = new Set(groupColumns.map((column) => column.name));
+  const nameField = columnNames.has('course_name') ? 'course_name' : columnNames.has('name') ? 'name' : null;
+  const nameEnField = columnNames.has('course_name_en') ? 'course_name_en' : nameField;
+  const eligibilityField = columnNames.has('eligibility')
+    ? 'eligibility'
+    : columnNames.has('eligibility_criteria')
+      ? 'eligibility_criteria'
+      : columnNames.has('course_eligibility')
+        ? 'course_eligibility'
+        : null;
+  const categoryField = columnNames.has('category') ? 'category' : columnNames.has('course_type') ? 'course_type' : null;
+  const statusField = columnNames.has('status') ? 'status' : null;
+  const permissionField = columnNames.has('admission_permission') ? 'admission_permission' : null;
 
-  if (groupColumnNames.has('course_name')) {
-    const nameEnSql = groupColumnNames.has('course_name_en') ? 'course_name_en' : 'course_name';
-    const categorySql = groupColumnNames.has('category')
-      ? 'category'
-      : groupColumnNames.has('course_type')
-        ? 'course_type'
-        : `'General'`;
-    const statusWhere = groupColumnNames.has('status') ? `AND status IN ('A', 'Y', 'yes')` : '';
-    const permissionWhere = groupColumnNames.has('admission_permission') ? `AND admission_permission = 'Y'` : '';
-    const groupRows = await query(
-      `SELECT CONCAT('group-', id) AS id, id AS source_id, course_name, ${nameEnSql} AS course_name_en,
-              ${categorySql} AS category, mode, 'course_group' AS source
-       FROM course_group
-       WHERE 1 = 1 ${permissionWhere} ${statusWhere}
-       ORDER BY category, course_name`
-    );
+  return {
+    nameField,
+    nameEnField,
+    eligibilityField,
+    categoryField,
+    statusField,
+    permissionField
+  };
+}
 
-    if (groupRows.length) return groupRows;
-  }
+async function getCourseGroups() {
+  const metadata = await getCourseGroupMetadata();
+  const { nameField, nameEnField, eligibilityField, categoryField, statusField, permissionField } = metadata;
+  if (!nameField) return [];
 
-  return query(
-    `SELECT id, id AS source_id, course_name, course_name AS course_name_en,
-            'General' AS category, 'REG' AS mode, 'course' AS source
-     FROM course
-     WHERE admission_permission_regular IN ('Y', 'yes')
-     ORDER BY course_name`
+  const nameEnSql = nameEnField || nameField;
+  const categorySql = eligibilityField
+    ? eligibilityField
+    : categoryField
+      ? categoryField
+      : `'General'`;
+  const statusWhere = statusField ? `AND ${statusField} IN ('A', 'Y', 'yes')` : '';
+  const permissionWhere = permissionField ? `AND ${permissionField} = 'Y'` : '';
+
+  const rows = await query(
+    `SELECT id AS id, id AS source_id ,${nameField} AS course_name,
+            ${nameEnSql} AS course_name_en, ${categorySql} AS category,${eligibilityField} AS eligibility, mode, 'course_group' AS source
+     FROM course_group
+     WHERE 1 = 1 ${permissionWhere} ${statusWhere}
+     ORDER BY category, course_name`
   );
+
+  return rows;
 }
 
 router.get('/options', async (req, res, next) => {
   try {
     const rows = await getCourseGroups();
-    const categoryMap = new Map();
+    console.log('Fetched course groups:', rows);
+    const eligibilityMap = new Map();
 
     rows.forEach((row) => {
-      const category = normalizeCategory(row.category);
-      if (!categoryMap.has(category)) {
-        categoryMap.set(category, { name: category, courses: [] });
+      const eligibility = String(row.eligibility).trim();
+      if (!eligibilityMap.has(eligibility)) {
+        eligibilityMap.set(eligibility, { name: eligibility, courses: [] });
       }
-      categoryMap.get(category).courses.push({
+      eligibilityMap.get(eligibility).courses.push({
         id: row.id,
         sourceId: row.source_id,
         source: row.source,
@@ -80,13 +100,9 @@ router.get('/options', async (req, res, next) => {
       });
     });
 
-    ['UG', 'PG', 'Diploma'].forEach((category) => {
-      if (!categoryMap.has(category)) categoryMap.set(category, { name: category, courses: [] });
-    });
-
     res.json({
       session: ADMISSION_SESSION,
-      categories: ['UG', 'PG', 'Diploma'].map((category) => categoryMap.get(category))
+      eligibilities: Array.from(eligibilityMap.values())
     });
   } catch (error) {
     next(error);
@@ -109,36 +125,33 @@ router.post('/', validate(registerSchema), async (req, res, next) => {
       throw badRequest('Mobile number already exists');
     }
 
-    // const [courseSource, rawCourseId] = String(course || '').split('-');
     const selectedCourseId = Number(course);
     if (!selectedCourseId) {
       throw badRequest('Please select a course');
     }
 
-    // const source = courseSource === 'course' ? 'course' : 'group';
-    // const courseRows = source === 'course'
-    //   ? await query(
-    //     `SELECT id, COALESCE(course_group_id, 0) AS course_group_id, course_name, 'General' AS category, 'REG' AS mode
-    //      FROM course
-    //      WHERE id = :selectedCourseId AND admission_permission_regular IN ('Y', 'yes')
-    //      LIMIT 1`,
-    //     { selectedCourseId }
-    //   )
-    //   : await query(
-    //     `SELECT id, id AS course_group_id, course_name,
-    //             ${category ? ':category' : `'General'`} AS category, mode
-    //      FROM course_group
-    //      WHERE id = :selectedCourseId
-    //      LIMIT 1`,
-    //     { selectedCourseId, category }
-    //   );
-       const courseRows = await query(
-        `SELECT id, COALESCE(course_group_id, 0) AS course_group_id, course_name, 'General' AS category, 'REG' AS mode
-         FROM course
-         WHERE id = :selectedCourseId AND admission_permission_regular IN ('Y', 'yes')
-         LIMIT 1`,
-        { selectedCourseId }
-      )
+    const metadata = await getCourseGroupMetadata();
+    const { nameField, nameEnField, eligibilityField, categoryField, statusField, permissionField } = metadata;
+    if (!nameField) {
+      throw badRequest('The course group table is not configured properly');
+    }
+
+    const nameEnSql = nameEnField || nameField;
+    const categorySql = eligibilityField
+      ? `${eligibilityField} AS category`
+      : categoryField
+        ? `${categoryField} AS category`
+        : `'General' AS category`;
+    const statusWhere = statusField ? `AND ${statusField} IN ('A', 'Y', 'yes')` : '';
+    const permissionWhere = permissionField ? `AND ${permissionField} = 'Y'` : '';
+
+    const courseRows = await query(
+      `SELECT id, id AS course_group_id, ${nameField} AS course_name, ${categorySql}, mode
+       FROM course_group
+       WHERE id = :selectedCourseId ${permissionWhere} ${statusWhere}
+       LIMIT 1`,
+      { selectedCourseId }
+    );
     const selectedCourse = courseRows[0];
     if (!selectedCourse) {
       throw badRequest('Selected course is not available for admission');

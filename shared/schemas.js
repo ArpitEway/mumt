@@ -24,8 +24,8 @@ export const registerSchema = z.object({
   mobile: z.string().regex(/^\d{10}$/, "Mobile must be 10 digits"),
   fatherName: z.string().min(3, "Father/Husband name is required").max(255),
   email: z.string().email("Invalid email"),
-  mode: z.string().optional(),
-  category: z.string().min(1, 'Category is required'),
+  aadharNo: z.string().regex(/^\d{12}$/, "Aadhaar number must be 12 digits"),
+  eligibility: z.string().min(1, 'Eligibility is required'),
   course: z.string().min(1, "Course is required")
 });
 

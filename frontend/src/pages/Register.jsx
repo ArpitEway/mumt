@@ -16,9 +16,8 @@ const initialForm = {
   email: '',
   dob: '',
   mobile: '',
-  boardUniversity: '',
-  mode: 'Regular',
-  category: '',
+  aadharNo: '',
+  eligibility: '',
   course: '',
 };
 
@@ -28,7 +27,7 @@ export default function Register() {
   const [error, setError] = useState('');
   const [options, setOptions] = useState({
     session: '2026',
-    categories: [],
+    eligibilities: [],
   });
   const [loadingOptions, setLoadingOptions] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -47,8 +46,8 @@ export default function Register() {
 
         setOptions({
           session,
-          categories: Array.isArray(res.categories)
-            ? res.categories
+          eligibilities: Array.isArray(res.eligibilities)
+            ? res.eligibilities
             : [],
         });
 
@@ -76,15 +75,15 @@ export default function Register() {
     };
   }, []);
 
-  const selectedCategory = useMemo(
+  const selectedEligibility = useMemo(
     () =>
-      options.categories.find(
-        (item) => item.name === form.category
+      options.eligibilities.find(
+        (item) => item.name === form.eligibility
       ),
-    [form.category, options.categories]
+    [form.eligibility, options.eligibilities]
   );
 
-  const courses = selectedCategory?.courses || [];
+  const courses = selectedEligibility?.courses || [];
 
 
   function updateField(field, value) {
@@ -231,10 +230,6 @@ export default function Register() {
               onChange={e => updateField('dob', e.target.value)}
               error={fieldErrors.dob?.[0]}
             />
-
-           
-                
-               
                  <TextInput
               label="Mobile No."
               type="tel"
@@ -243,38 +238,29 @@ export default function Register() {
               placeholder="Enter your Mobile No"
               error={fieldErrors.mobile?.[0]}
             />
-      
 
-            <SelectInput
-              label="Board/University"
-              value={form.boardUniversity}
-              onChange={e => updateField('boardUniversity', e.target.value)}
-              options={[{ value: '', label: 'Select' }, { value: 'yes', label: 'हाँ' }, { value: 'no', label: 'नहीं' }]}
-              error={fieldErrors.boardUniversity?.[0]}
+             <TextInput
+              label="Aadhaar No."
+              value={form.aadharNo}
+              onChange={e => updateField('aadharNo', e.target.value)}
+              placeholder="Enter your Aadhaar No."
+              error={fieldErrors.aadharNo?.[0]}
             />
 
             <SelectInput
-              label="Mode"
-              value={form.mode}
-              onChange={() => {}}
-              disabled
-              options={[{ value: 'Regular', label: 'Regular' }]}
-            />
-
-            <SelectInput
-              label="Category"
-              value={form.category}
-              onChange={e => { updateField('category', e.target.value); updateField('course', ''); }}
+              label="Eligibility"
+              value={form.eligibility}
+              onChange={e => { updateField('eligibility', e.target.value); updateField('course', ''); }}
               loading={loadingOptions}
-              options={[{ value: '', label: loadingOptions ? 'Loading categories...' : 'Select Category' }].concat(options.categories.map(item => ({ value: item.name, label: item.name })))}
-              error={fieldErrors.category?.[0]}
+              options={[{ value: '', label: loadingOptions ? 'Loading eligibilities...' : 'Select Eligibility' }].concat(options.eligibilities.map(item => ({ value: item.name, label: item.name })))}
+              error={fieldErrors.eligibility?.[0]}
             />
 
             <SelectInput
               label="Course"
               value={form.course}
               onChange={e => updateField('course', e.target.value)}
-              disabled={!form.category || loadingOptions}
+              disabled={!form.eligibility || loadingOptions}
               options={[{ value: '', label: 'Select Course' }].concat(courses.map(courseOption => ({ value: courseOption.id, label: courseOption.name })))}
              error={fieldErrors.course?.[0]}
             />
