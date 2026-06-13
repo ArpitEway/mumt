@@ -123,21 +123,25 @@ a {
 
   /* Ensure radio option text stays inline with the circle */
   .radio-option {
-    display: inline-flex;
-    align-items: center;
+    display: inline-flex !important;
+    align-items: center !important;
     gap: 8px;
     white-space: nowrap;
+    flex-wrap: nowrap;
   }
 
   .radio-option .radio-label {
-    display: inline-block;
+    display: inline !important;
     vertical-align: middle;
     font-size: 13px;
     color: var(--muted);
+    margin: 0;
+    padding: 0;
   }
 
   .custom-radio {
     vertical-align: middle;
+    flex-shrink: 0;
   }
 }
 
@@ -1776,5 +1780,39 @@ tr:hover td {
   .site-footer {
     flex-direction: column;
     gap: 4px;
+  }
+}
+
+.document-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.document-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.document-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.document-info span {
+  color: #666;
+  font-size: 14px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .document-list {
+    grid-template-columns: 1fr;
   }
 }

@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import multer from 'multer';
-import { studentFormSchema } from '@mmyvv/shared';
+import { z } from 'zod';
 import { decodeId } from '@mmyvv/shared/idEncryption';
 import { validate } from '../middleware/validate.js';
 import { query, transaction } from '../config/db.js';
@@ -80,7 +80,7 @@ const studentFormGroups = [
       { name: 'gender', label: 'Gender', table: 'student' },
       { name: 'dob', label: 'Date of Birth', type: 'date', table: 'student' },
       { name: 'category', label: 'Category', table: 'student' },
-      { name: 'permanent_resident', label: 'Permanent Resident', table: 'student' },
+      // { name: 'permanent_resident', label: 'Permanent Resident', table: 'student' },
       { name: 'adhar_no', label: 'Aadhaar No', table: 'student' },
       { name: 'adhar_name', label: 'Aadhaar Name', table: 'student' },
       { name: 'adhar_dob', label: 'Aadhaar DOB', type: 'date', table: 'student' },
@@ -291,14 +291,48 @@ router.get('/:studentId/form', async (req, res, next) => {
   }
 });
 
-router.put('/:studentId/form', validate(studentFormSchema), async (req, res, next) => {
+const studentFormPayloadSchema = z.object({
+  student: z.object({
+    session: z.string().min(1, 'Session is required'),
+    course_name: z.string().min(1, 'Course name is required'),
+    course_group_id: z.string().optional(),
+    class_name: z.string().min(1, 'Class is required'),
+    eligibility: z.string().min(1, 'Eligibility is required'),
+    name: z.string().min(1, 'Name is required'),
+    f_h_name: z.string().min(1, 'Father/Husband name is required'),
+    mother_name: z.string().min(1, 'Mother name is required'),
+    gender: z.string().min(1, 'Gender is required'),
+    dob: z.string().min(1, 'Date of Birth is required'),
+    category: z.string().min(1, 'Category is required'),
+    adhar_no: z.union([z.string().regex(/^\d{12}$/, 'Aadhaar number must be 12 digits'), z.literal('')]).optional(),
+  }),
+  student_data: z.object({
+    nationality: z.string().min(1, 'Nationality is required'),
+    religion: z.string().min(1, 'Religion is required'),
+    p_mobile_no: z.string().optional(),
+    p_email: z.string().email('Invalid email').optional(),
+    c_address: z.string().min(1, 'Current address is required'),
+    c_state: z.string().min(1, 'Current state is required'),
+    c_district: z.string().min(1, 'Current district is required'),
+    c_city: z.string().min(1, 'Current city is required'),
+    c_pin_code: z.string().regex(/^\d{6}$/, 'Current PIN code must be 6 digits'),
+    p_address: z.string().min(1, 'Permanent address is required'),
+    p_state: z.string().min(1, 'Permanent state is required'),
+    p_district: z.string().min(1, 'Permanent district is required'),
+    p_city: z.string().min(1, 'Permanent city is required'),
+    p_pin_code: z.string().regex(/^\d{6}$/, 'Permanent PIN code must be 6 digits'),
+    p_handicapped: z.string().optional(),
+  })
+});
+
+router.put('/:studentId/form', validate(studentFormPayloadSchema), async (req, res, next) => {
   try {
     const studentId = req.studentId;
     const student = await profileFor(studentId);
     if (!student) return res.status(404).json({ message: 'Student not found' });
-    if ((student.form_status || 'N') !== 'N') {
-      return res.status(409).json({ message: 'Registration form is already submitted' });
-    }
+    // if ((student.form_status || 'N') !== 'N') {
+    //   return res.status(409).json({ message: 'Registration form is already submitted' });
+    // }
 
     const studentAllowed = new Set(
       studentFormGroups
@@ -344,8 +378,11 @@ router.put('/:studentId/form', validate(studentFormSchema), async (req, res, nex
         { studentId }
       );
     });
-
+    if(student.form_status  == 'N') {
     res.json({ message: 'Registration form submitted', formStatus: 'Y' });
+    }else{
+    res.json({ message: 'Student form updated', formStatus: 'Y' });
+    }
   } catch (error) {
     next(error);
   }

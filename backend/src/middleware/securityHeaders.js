@@ -16,4 +16,5 @@ export const securityHeaders = () =>
       },
     },
     referrerPolicy: { policy: 'no-referrer' },
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
   });

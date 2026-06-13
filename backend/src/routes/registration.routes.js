@@ -123,17 +123,25 @@ router.get('/options', async (req, res, next) => {
 // Check if mobile number already exists
 router.post('/check-mobile', async (req, res, next) => {
   try {
-    const { mobile } = req.body;
+    const { mobile, excludeStudentId } = req.body;
     const cleanMobile = normalizeMobile(mobile);
+    const excludeId = Number(excludeStudentId);
 
     if (!cleanMobile || cleanMobile.length !== 10) {
       return res.json({ exists: false });
     }
 
-    const rows = await query(
-      `SELECT student_id FROM student_data WHERE p_mobile_no = :mobile LIMIT 1`,
-      { mobile: cleanMobile }
-    );
+    let sql = `SELECT student_id FROM student_data WHERE p_mobile_no = :mobile`;
+    const params = { mobile: cleanMobile };
+
+    if (excludeStudentId && !Number.isNaN(excludeId)) {
+      sql += ` AND student_id != :excludeStudentId`;
+      params.excludeStudentId = excludeId;
+    }
+
+    sql += ` LIMIT 1`;
+
+    const rows = await query(sql, params);
 
     res.json({ exists: rows.length > 0 });
   } catch (error) {
@@ -144,17 +152,25 @@ router.post('/check-mobile', async (req, res, next) => {
 // Check if aadhar number already exists
 router.post('/check-aadhar', async (req, res, next) => {
   try {
-    const { aadhar } = req.body;
+    const { aadhar, excludeStudentId } = req.body;
     const cleanAadhar = String(aadhar || '').replace(/\D/g, '');
+    const excludeId = Number(excludeStudentId);
 
     if (!cleanAadhar || cleanAadhar.length !== 12) {
       return res.json({ exists: false });
     }
 
-    const rows = await query(
-      `SELECT student_id FROM student WHERE adhar_no = :aadhar LIMIT 1`,
-      { aadhar: cleanAadhar }
-    );
+    let sql = `SELECT student_id FROM student WHERE adhar_no = :aadhar`;
+    const params = { aadhar: cleanAadhar };
+
+    if (excludeStudentId && !Number.isNaN(excludeId)) {
+      sql += ` AND student_id != :excludeStudentId`;
+      params.excludeStudentId = excludeId;
+    }
+
+    sql += ` LIMIT 1`;
+
+    const rows = await query(sql, params);
 
     res.json({ exists: rows.length > 0 });
   } catch (error) {

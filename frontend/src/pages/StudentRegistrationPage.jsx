@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
 import { api, API_URL } from '../api/client.js';
@@ -65,10 +65,163 @@ export default function StudentRegistrationPage() {
     photo: null,
   });
 
+  const [stateOptions, setStateOptions] = useState([]);
+  const [districtOptions, setDistrictOptions] = useState([]);
+  const [loadingLocationOptions, setLoadingLocationOptions] = useState(true);
+  const [copyAddress, setCopyAddress] = useState(false);
+  const [validationState, setValidationState] = useState({
+    mobileExists: false,
+    aadharExists: false,
+    checkingMobile: false,
+    checkingAadhar: false,
+  });
+  const debounceTimerRef = useRef({});
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(debounceTimerRef.current.mobile);
+      clearTimeout(debounceTimerRef.current.aadhar);
+    };
+  }, []);
+
+  const fetchResourceRows = async (table) => {
+    const rows = [];
+    let page = 1;
+    let total = 0;
+
+    do {
+      const res = await api(`/resources/${table}?limit=100&page=${page}`);
+      if (res?.data) {
+        rows.push(...res.data);
+      }
+      total = res.pagination?.total || 0;
+      page += 1;
+    } while (rows.length < total && page <= 10);
+
+    return rows;
+  };
+
+  const checkMobileUniqueness = (mobile) => {
+    const cleanMobile = mobile.replace(/\D/g, '');
+
+    if (cleanMobile.length !== 10) {
+      setValidationState((prev) => ({ ...prev, mobileExists: false, checkingMobile: false }));
+      return;
+    }
+
+    setValidationState((prev) => ({ ...prev, checkingMobile: true }));
+    clearTimeout(debounceTimerRef.current.mobile);
+    debounceTimerRef.current.mobile = setTimeout(async () => {
+      try {
+        const response = await api('/registration/check-mobile', {
+          method: 'POST',
+          body: {
+            mobile: cleanMobile,
+            excludeStudentId: studentId,
+          },
+        });
+
+        const exists = response.exists || false;
+        setValidationState((prev) => ({
+          ...prev,
+          mobileExists: exists,
+          checkingMobile: false,
+        }));
+
+        setErrors((prev) => ({
+          ...prev,
+          phoneNumber: exists ? 'Mobile number already exists' : '',
+        }));
+      } catch (err) {
+        console.error('Error checking mobile:', err);
+        setValidationState((prev) => ({ ...prev, checkingMobile: false }));
+      }
+    }, 500);
+  };
+
+  const checkAadharUniqueness = (aadhar) => {
+    const cleanAadhar = aadhar.replace(/\D/g, '');
+
+    if (cleanAadhar.length !== 12) {
+      setValidationState((prev) => ({ ...prev, aadharExists: false, checkingAadhar: false }));
+      return;
+    }
+
+    setValidationState((prev) => ({ ...prev, checkingAadhar: true }));
+    clearTimeout(debounceTimerRef.current.aadhar);
+    debounceTimerRef.current.aadhar = setTimeout(async () => {
+      try {
+        const response = await api('/registration/check-aadhar', {
+          method: 'POST',
+          body: {
+            aadhar: cleanAadhar,
+            excludeStudentId: studentId,
+          },
+        });
+
+        const exists = response.exists || false;
+        setValidationState((prev) => ({
+          ...prev,
+          aadharExists: exists,
+          checkingAadhar: false,
+        }));
+
+        setErrors((prev) => ({
+          ...prev,
+          aadharNumber: exists ? 'Aadhaar number already exists' : '',
+        }));
+      } catch (err) {
+        console.error('Error checking aadhar:', err);
+        setValidationState((prev) => ({ ...prev, checkingAadhar: false }));
+      }
+    }, 500);
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
+
+    if (name === 'phoneNumber') {
+      checkMobileUniqueness(value);
+    }
+    if (name === 'aadharNumber') {
+      checkAadharUniqueness(value);
+    }
+
+    setFormData((prev) => {
+      const next = { ...prev, [name]: value };
+
+      if (name === 'currentState') {
+        next.currentDistrict = '';
+        if (copyAddress) next.permanentDistrict = '';
+      }
+
+      if (copyAddress && name.startsWith('current')) {
+        const permanentName = name.replace(/^current/, 'permanent');
+        if (permanentName in prev) {
+          next[permanentName] = value;
+        }
+      }
+
+      return next;
+    });
+
+    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }));
+  };
+
+  const toggleCopyAddress = () => {
+    setCopyAddress((prevCopy) => {
+      if (!prevCopy) {
+        setFormData((prevForm) => ({
+          ...prevForm,
+          permanentAddress: prevForm.currentAddress,
+          permanentState: prevForm.currentState,
+          permanentDistrict: prevForm.currentDistrict,
+          permanentCity: prevForm.currentCity,
+          permanentPinCode: prevForm.currentPinCode,
+        }));
+      }
+      return !prevCopy;
+    });
   };
 
   const handlePhotoChange = (e) => {
@@ -152,7 +305,50 @@ export default function StudentRegistrationPage() {
     () => courseOptions.find((course) => String(course.id) === String(formData.courseGroupId) || course.name === formData.course),
     [formData.courseGroupId, formData.course, courseOptions]
   );
-  console.log('Selected course based on courseGroupId or course name:', selectedCourse);
+
+  useEffect(() => {
+    if (!formData.course && selectedCourse?.name) {
+      setFormData((prev) => ({ ...prev, course: selectedCourse.name }));
+    }
+  }, [selectedCourse, formData.course]);
+
+  useEffect(() => {
+    let active = true;
+
+    const loadLocationOptions = async () => {
+      try {
+        const [states, districts] = await Promise.all([
+          fetchResourceRows('state'),
+          fetchResourceRows('distt'),
+        ]);
+
+        if (!active) return;
+
+        setStateOptions(states.map((row) => ({ value: String(row.state_id || row.id || row.name), label: row.name })));
+        setDistrictOptions(districts.map((row) => ({ value: String(row.distt_id || row.id || row.name), label: row.name, stateId: String(row.state_id) })));
+      } catch (err) {
+        console.error('Failed to load state/district options:', err);
+      } finally {
+        if (active) setLoadingLocationOptions(false);
+      }
+    };
+
+    loadLocationOptions();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const currentDistrictOptions = useMemo(
+    () => districtOptions.filter((district) => !district.stateId || district.stateId === String(stateOptions.find((s) => s.value === formData.currentState)?.value)),
+    [districtOptions, formData.currentState, stateOptions]
+  );
+
+  const permanentDistrictOptions = useMemo(
+    () => districtOptions.filter((district) => !district.stateId || district.stateId === String(stateOptions.find((s) => s.value === formData.permanentState)?.value)),
+    [districtOptions, formData.permanentState, stateOptions]
+  );
 
   useEffect(() => {
     if (!studentId) return;
@@ -191,12 +387,12 @@ export default function StudentRegistrationPage() {
           currentState: fieldValues.c_state || prev.currentState,
           currentDistrict: fieldValues.c_district || prev.currentDistrict,
           currentCity: fieldValues.c_city || prev.currentCity,
-          currentPinCode: fieldValues.c_pin_code || prev.currentPinCode,
+          currentPinCode: String(fieldValues.c_pin_code) || String(prev.currentPinCode),
           permanentAddress: fieldValues.p_address || prev.permanentAddress,
           permanentState: fieldValues.p_state || prev.permanentState,
           permanentDistrict: fieldValues.p_district || prev.permanentDistrict,
           permanentCity: fieldValues.p_city || prev.permanentCity,
-          permanentPinCode: fieldValues.p_pin_code || prev.permanentPinCode,
+          permanentPinCode: String(fieldValues.p_pin_code) || String(prev.permanentPinCode),
         }));
 
         if (res.photo) {
@@ -212,12 +408,44 @@ export default function StudentRegistrationPage() {
       });
   }, [studentId]);
 
+  const classOptions = selectedEligibility?.name === 'HSSC'
+    ? [
+        { value: '', label: 'Select Class' },
+        { value: 'I Year', label: 'I Year' },
+        { value: 'II Year', label: 'II Year' },
+        { value: 'III Year', label: 'III Year' },
+        { value: 'IV Year', label: 'IV Year' },
+      ]
+    : selectedEligibility?.name === 'GRADUATION'
+    ? [
+        { value: '', label: 'Select Class' },
+        { value: 'I Sem', label: 'I Sem' },
+        { value: 'II Sem', label: 'II Sem' },
+        { value: 'III Sem', label: 'III Sem' },
+        { value: 'IV Sem', label: 'IV Sem' },
+      ]
+    : [{ value: '', label: 'Select Class' }];
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!studentId) {
       const message = 'Student ID is not available for registration update';
       setErrors({ submit: message });
+      toast.error(message);
+      return;
+    }
+
+    if (validationState.mobileExists) {
+      const message = 'Mobile number already exists';
+      setErrors((prev) => ({ ...prev, phoneNumber: message }));
+      toast.error(message);
+      return;
+    }
+
+    if (validationState.aadharExists) {
+      const message = 'Aadhaar number already exists';
+      setErrors((prev) => ({ ...prev, aadharNumber: message }));
       toast.error(message);
       return;
     }
@@ -242,7 +470,6 @@ export default function StudentRegistrationPage() {
           gender: formData.gender,
           dob: formData.dateOfBirth,
           category: formData.category,
-          permanent_resident: '',
           adhar_no: formData.aadharNumber,
         },
         student_data: {
@@ -328,7 +555,7 @@ export default function StudentRegistrationPage() {
                         value={formData.eligibility}
                         onChange={(e) => {
                           handleChange(e);
-                          setFormData((prev) => ({ ...prev, course: '' }));
+                          setFormData((prev) => ({ ...prev, course: '', courseGroupId: '' }));
                         }}
                         options={
                           [{ value: '', label: loadingOptions ? 'Loading eligibilities...' : 'Select Eligibility' }]
@@ -339,26 +566,31 @@ export default function StudentRegistrationPage() {
                       />
                     </div>
                     <div>
+                      <input type="hidden" name="courseGroupId" value={formData.courseGroupId} />
                       <SelectInput
-                          label="Course *"
-                          name="course"
-                          value={selectedCourse ? String(selectedCourse.id) : formData.courseGroupId || ''}
-                          onChange={(e) => {
-                            const selectedId = e.target.value;
-                            const found = courseOptions.find(c => String(c.id) === String(selectedId));
-                            setFormData(prev => ({ ...prev, courseGroupId: selectedId, course: found ? found.name : '' }));
-                          }}
-                          options={
-                            [{ value: '', label: loadingOptions ? 'Loading courses...' : 'Select Course' }]
-                              .concat(courseOptions.map((course) => ({ value: String(course.id), label: course.name || course.label })))
-                          }
-                          error={errors.course}
-                          className="focus:outline-none focus:ring-2 focus:ring-primary-300"
-                          disabled={!formData.eligibility}
-                        />
+                        label="Course *"
+                        name="course"
+                        value={selectedCourse?.name || formData.course}
+                        onChange={(e) => {
+                          const selectedName = e.target.value;
+                          const found = courseOptions.find((c) => c.name === selectedName || String(c.id) === String(selectedName));
+                          setFormData((prev) => ({
+                            ...prev,
+                            course: selectedName,
+                            courseGroupId: found ? String(found.id) : '',
+                          }));
+                        }}
+                        options={
+                          [{ value: '', label: loadingOptions ? 'Loading courses...' : 'Select Course' }]
+                            .concat(courseOptions.map((course) => ({ value: course.name, label: course.name || course.label })))
+                        }
+                        error={errors.course}
+                        className="focus:outline-none focus:ring-2 focus:ring-primary-300"
+                        disabled={!formData.eligibility}
+                      />
                     </div>
                     <div>
-                      <SelectInput
+                      {/* <SelectInput
                         label="Class *"
                         name="class"
                         value={formData.class}
@@ -371,7 +603,16 @@ export default function StudentRegistrationPage() {
                         ]}
                         error={errors.class}
                         className="focus:outline-none focus:ring-2 focus:ring-primary-300"
-                      />
+                      /> */}
+                      <SelectInput
+  label="Class *"
+  name="class"
+  value={formData.class}
+  onChange={handleChange}
+  options={classOptions}
+  error={errors.class}
+  className="focus:outline-none focus:ring-2 focus:ring-primary-300"
+/>
                     </div>
                   </div>
                 </div>
@@ -411,7 +652,7 @@ export default function StudentRegistrationPage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-4 gap-4 mb-4">
+                  <div className="grid grid-cols-3 gap-4 mb-4">
                     <RadioInput
                       label="Gender *"
                       name="gender"
@@ -424,19 +665,8 @@ export default function StudentRegistrationPage() {
                       error={errors.gender}
                       className="lg:col-span-1"
                     />
-                    <div>
-                      {/* <SelectInput
-                        label="Medium"
-                        name="medium"
-                        value={formData.medium}
-                        onChange={handleChange}
-                        options={[
-                          { value: '', label: 'Select' },
-                          { value: 'English', label: 'English' },
-                          { value: 'Hindi', label: 'Hindi' },
-                        ]}
-                        className="focus:outline-none focus:ring-2 focus:ring-primary-300"
-                      /> */}
+                   
+                    
                        <RadioInput
                       label="Medium *"
                       name="medium"
@@ -449,20 +679,8 @@ export default function StudentRegistrationPage() {
                       error={errors.medium}
                       className="lg:col-span-1"
                     />
-                    </div>
-                    <div>
-                      {/* <SelectInput
-                        label="Marital Status"
-                        name="maritalStatus"
-                        value={formData.maritalStatus}
-                        onChange={handleChange}
-                        options={[
-                          { value: '', label: 'Select' },
-                          { value: 'Unmarried', label: 'Unmarried' },
-                          { value: 'Married', label: 'Married' },
-                        ]}
-                        className="focus:outline-none focus:ring-2 focus:ring-primary-300"
-                      /> */}
+                   
+                   
                         <RadioInput
                       label="Marital Status"
                         name="maritalStatus"
@@ -475,7 +693,7 @@ export default function StudentRegistrationPage() {
                       error={errors.maritalStatus}
                       className="lg:col-span-1"
                     />
-                    </div>
+                   
                   </div>
 
                   <div className="grid grid-cols-3 gap-4 mb-4">
@@ -575,7 +793,14 @@ export default function StudentRegistrationPage() {
                   </div>
 
                   <div className="grid grid-cols-3 gap-4 mb-4">
-                   
+                    <TextInput
+                      label="Aadhar Number"
+                      name="aadharNumber"
+                      placeholder="12 digits"
+                      value={formData.aadharNumber}
+                      onChange={handleChange}
+                      error={errors.aadharNumber}
+                    />
                     <RadioInput
                       label="Minority Status"
                       name="minority"
@@ -598,14 +823,7 @@ export default function StudentRegistrationPage() {
                       ]}
                       className="lg:col-span-1"
                     />
-                     <TextInput
-                      label="Aadhar Number"
-                      name="aadharNumber"
-                      placeholder="12 digits"
-                      value={formData.aadharNumber}
-                      onChange={handleChange}
-                      error={errors.aadharNumber}
-                    />
+                   
                   </div>
 
                 </div>
@@ -614,7 +832,7 @@ export default function StudentRegistrationPage() {
                 <div className="border-b pb-6">
                   <h2 className="text-lg font-bold text-gray-800 mb-4">Current Address of Student</h2>
                   <div className="mb-4">
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Address *</label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Address <span className="text-red-500">*</span></label>
                     <textarea
                       name="currentAddress"
                       rows="2"
@@ -626,21 +844,31 @@ export default function StudentRegistrationPage() {
                   </div>
                   <div className="grid grid-cols-4 gap-4">
                     <div>
-                      <TextInput
+                      <SelectInput
                         label="State *"
                         name="currentState"
                         value={formData.currentState}
                         onChange={handleChange}
+                        options={[
+                          { value: '', label: loadingLocationOptions ? 'Loading states...' : 'Select State' },
+                          ...stateOptions,
+                        ]}
                         error={errors.currentState}
+                        disabled={loadingLocationOptions}
                       />
                     </div>
                     <div>
-                      <TextInput
+                      <SelectInput
                         label="District *"
                         name="currentDistrict"
                         value={formData.currentDistrict}
                         onChange={handleChange}
+                        options={[
+                          { value: '', label: loadingLocationOptions ? 'Loading districts...' : 'Select District' },
+                          ...currentDistrictOptions,
+                        ]}
                         error={errors.currentDistrict}
+                        disabled={loadingLocationOptions || !formData.currentState}
                       />
                     </div>
                     <div>
@@ -667,35 +895,60 @@ export default function StudentRegistrationPage() {
 
                 {/* Permanent Address */}
                 <div className="border-b pb-6">
-                  <h2 className="text-lg font-bold text-gray-800 mb-4">Permanent Address of Student</h2>
+                  <div className="flex items-center justify-between mb-4 gap-4">
+                    <div>
+                      <h2 className="text-lg font-bold text-gray-800">Permanent Address of Student</h2>
+                      <p className="text-sm text-gray-600">Use current address for permanent address if same</p>
+                    </div>
+                    <label className="inline-flex items-center gap-2 text-sm text-gray-700">
+                      <input
+                        type="checkbox"
+                        checked={copyAddress}
+                        onChange={toggleCopyAddress}
+                        className="form-checkbox h-4 w-4 text-primary-500"
+                      />
+                      Copy current address to permanent address
+                    </label>
+                  </div>
                   <div className="mb-4">
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Address *</label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Address <span className="text-red-500">*</span></label>
                     <textarea
                       name="permanentAddress"
                       rows="2"
                       value={formData.permanentAddress}
                       onChange={handleChange}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-300"
+                      disabled={copyAddress}
                     />
                     {errors.permanentAddress && <p className="text-red-500 text-sm mt-1">{errors.permanentAddress}</p>}
                   </div>
                   <div className="grid grid-cols-4 gap-4">
                     <div>
-                      <TextInput
+                      <SelectInput
                         label="State *"
                         name="permanentState"
                         value={formData.permanentState}
                         onChange={handleChange}
+                        options={[
+                          { value: '', label: loadingLocationOptions ? 'Loading states...' : 'Select State' },
+                          ...stateOptions,
+                        ]}
                         error={errors.permanentState}
+                        disabled={loadingLocationOptions}
                       />
                     </div>
                     <div>
-                      <TextInput
+                      <SelectInput
                         label="District *"
                         name="permanentDistrict"
                         value={formData.permanentDistrict}
                         onChange={handleChange}
+                        options={[
+                          { value: '', label: loadingLocationOptions ? 'Loading districts...' : 'Select District' },
+                          ...permanentDistrictOptions,
+                        ]}
                         error={errors.permanentDistrict}
+                        disabled={loadingLocationOptions || !formData.permanentState}
                       />
                     </div>
                     <div>
@@ -705,6 +958,7 @@ export default function StudentRegistrationPage() {
                         value={formData.permanentCity}
                         onChange={handleChange}
                         error={errors.permanentCity}
+                        disabled={copyAddress}
                       />
                     </div>
                     <div>
@@ -715,6 +969,7 @@ export default function StudentRegistrationPage() {
                         value={formData.permanentPinCode}
                         onChange={handleChange}
                         error={errors.permanentPinCode}
+                        disabled={copyAddress}
                       />
                     </div>
                   </div>

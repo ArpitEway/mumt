@@ -47,52 +47,142 @@ router.get('/:table/schema', requireAuth, async (req, res, next) => {
   }
 });
 
-router.get('/:table', requireAuth, validate(listSchema, 'query'), async (req, res, next) => {
-  try {
-    const table = req.params.table;
-    assertAllowedTable(table);
-    const parsed = req.query;
-    const columns = await columnsFor(table);
-    const searchable = columns
-      .filter((column) => ['varchar', 'text', 'char', 'longtext', 'mediumtext'].includes(column.type))
-      .slice(0, 8);
+// router.get('/:table', requireAuth, validate(listSchema, 'query'), async (req, res, next) => {
+//   try {
+//     const table = req.params.table;
+//     assertAllowedTable(table);
+//     const parsed = req.query;
+//     const columns = await columnsFor(table);
+//     const searchable = columns
+//       .filter((column) => ['varchar', 'text', 'char', 'longtext', 'mediumtext'].includes(column.type))
+//       .slice(0, 8);
 
-    const tableSql = coerceIdentifier(table);
-    // Ensure the requested sort column exists on the table; otherwise fall back to primary key
-    const columnNames = columns.map((c) => c.name);
-    const sortColumn = columnNames.includes(parsed.sortBy) ? parsed.sortBy : primaryKeyColumn(columns) || columnNames[0];
-    const sortSql = coerceIdentifier(sortColumn);
-    const offset = (parsed.page - 1) * parsed.limit;
-    const whereParts = [];
-    const params = { limit: parsed.limit, offset };
+//     const tableSql = coerceIdentifier(table);
+//     // Ensure the requested sort column exists on the table; otherwise fall back to primary key
+//     const columnNames = columns.map((c) => c.name);
+//     const sortColumn = columnNames.includes(parsed.sortBy) ? parsed.sortBy : primaryKeyColumn(columns) || columnNames[0];
+//     const sortSql = coerceIdentifier(sortColumn);
+//     const offset = (parsed.page - 1) * parsed.limit;
+//     const whereParts = [];
+//     const params = { limit: parsed.limit, offset };
 
-    if (parsed.q && searchable.length) {
-      searchable.forEach((column, index) => {
-        whereParts.push(`${coerceIdentifier(column.name)} LIKE :q${index}`);
-        params[`q${index}`] = `%${parsed.q}%`;
-      });
-    }
+//     if (parsed.q && searchable.length) {
+//       searchable.forEach((column, index) => {
+//         whereParts.push(`${coerceIdentifier(column.name)} LIKE :q${index}`);
+//         params[`q${index}`] = `%${parsed.q}%`;
+//       });
+//     }
 
-    const where = whereParts.length ? `WHERE (${whereParts.join(' OR ')})` : '';
-    const rows = await query(
-      `SELECT * FROM ${tableSql} ${where} ORDER BY ${sortSql} ${parsed.sortDir.toUpperCase()} LIMIT :limit OFFSET :offset`,
-      params
-    );
-    const countRows = await query(`SELECT COUNT(*) AS total FROM ${tableSql} ${where}`, params);
+//     const where = whereParts.length ? `WHERE (${whereParts.join(' OR ')})` : '';
+//     const rows = await query(
+//       `SELECT * FROM ${tableSql} ${where} ORDER BY ${sortSql} ${parsed.sortDir.toUpperCase()} LIMIT :limit OFFSET :offset`,
+//       params
+//     );
+//     const countRows = await query(`SELECT COUNT(*) AS total FROM ${tableSql} ${where}`, params);
 
-    res.json({
-      data: rows,
-      columns,
-      pagination: {
-        page: parsed.page,
-        limit: parsed.limit,
-        total: Number(countRows[0]?.total || 0)
+//     res.json({
+//       data: rows,
+//       columns,
+//       pagination: {
+//         page: parsed.page,
+//         limit: parsed.limit,
+//         total: Number(countRows[0]?.total || 0)
+//       }
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
+router.get(
+  '/:table',
+  requireAuth,
+  validate(listSchema, 'query'),
+  async (req, res, next) => {
+    try {
+      const table = req.params.table;
+
+      assertAllowedTable(table);
+
+      const parsed = req.query;
+      const columns = await columnsFor(table);
+
+      const searchable = columns
+        .filter((column) =>
+          ['varchar', 'text', 'char', 'longtext', 'mediumtext'].includes(
+            String(column.type).toLowerCase()
+          )
+        )
+        .slice(0, 8);
+
+      const tableSql = coerceIdentifier(table);
+
+      // Find valid sort column
+      const columnNames = columns.map((c) => c.name);
+
+      const sortColumn = columnNames.includes(parsed.sortBy)
+        ? parsed.sortBy
+        : primaryKeyColumn(columns) || columnNames[0];
+
+      const sortSql = coerceIdentifier(sortColumn);
+
+      const page = Number(parsed.page || 1);
+      const limit = Number(parsed.limit || 25);
+      const offset = (page - 1) * limit;
+
+      const whereParts = [];
+      const searchParams = {};
+
+      // Search query
+      if (parsed.q && searchable.length) {
+        searchable.forEach((column, index) => {
+          whereParts.push(
+            `${coerceIdentifier(column.name)} LIKE :q${index}`
+          );
+
+          searchParams[`q${index}`] = `%${parsed.q}%`;
+        });
       }
-    });
-  } catch (error) {
-    next(error);
+
+      const where =
+        whereParts.length > 0
+          ? `WHERE (${whereParts.join(' OR ')})`
+          : '';
+
+      const dataSql = `
+        SELECT *
+        FROM ${tableSql}
+        ${where}
+        ORDER BY ${sortSql} ${String(parsed.sortDir || 'ASC').toUpperCase()}
+        LIMIT ${limit}
+        OFFSET ${offset}
+      `;
+
+      const countSql = `
+        SELECT COUNT(*) AS total
+        FROM ${tableSql}
+        ${where}
+      `;
+
+      const rows = await query(dataSql, searchParams);
+
+      const countRows = await query(countSql, searchParams);
+
+      res.json({
+        data: rows,
+        columns,
+        pagination: {
+          page,
+          limit,
+          total: Number(countRows?.[0]?.total || 0)
+        }
+      });
+    } catch (error) {
+      console.error('Resource List Error:', error);
+      next(error);
+    }
   }
-});
+);
 
 router.get('/:table/:id', requireAuth, async (req, res, next) => {
   try {
